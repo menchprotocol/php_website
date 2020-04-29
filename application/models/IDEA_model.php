@@ -994,7 +994,7 @@ class IDEA_model extends CI_Model
 
             foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id, false);
+                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
 
                 if(!$metadata_recursion){
                     continue;
@@ -1056,7 +1056,7 @@ class IDEA_model extends CI_Model
 
             foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id, false);
+                $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights($expansion_in_id);
 
                 if(!$metadata_recursion){
                     continue;
