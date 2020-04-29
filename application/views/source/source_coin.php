@@ -398,13 +398,22 @@ $is_source = en_is_source($en['en_id']);
             }
 
             if($counter){
+
+                //Determine how to order:
+                if($counter > config_var(11064)){
+                    $order_columns = array('en_weight' => 'DESC');
+                } else {
+                    $order_columns = array('ln_order' => 'ASC', 'en_name' => 'ASC');
+                }
+
                 //Fetch Portfolios
                 $en__portfolios = $this->LEDGER_model->ln_fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                     'ln_profile_source_id' => $en['en_id'],
-                ), array('en_portfolio'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
+                ), array('en_portfolio'), config_var(11064), 0, $order_columns);
+
             }
 
 
