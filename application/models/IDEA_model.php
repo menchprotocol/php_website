@@ -884,7 +884,7 @@ class IDEA_model extends CI_Model
         );
 
 
-        //IDEA SOURCES
+        //AGGREGATE IDEA SOURCES
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id >' => 0,
             'ln_next_idea_id' => $in['in_id'],
@@ -921,7 +921,7 @@ class IDEA_model extends CI_Model
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
             'ln_previous_idea_id' => $in['in_id'],
-        ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in__next){
+        ), array('in_next'), 0) as $in__next){
 
             $metadata_local = array(
                 'local__in__metadata_min_steps'=> null,
@@ -932,92 +932,93 @@ class IDEA_model extends CI_Model
 
             //RECURSION
             $metadata_recursion = $this->IDEA_model->in_metadata_extra_insights2($in__next);
-            if($metadata_recursion){
+            if(!$metadata_recursion){
+                continue;
+            }
 
-                //MERGE - 3 General Scenarios can happen here...
-                if(in_array($in__next['ln_type_source_id'], $this->config->item('en_ids_12842')) || in_array($in['in_type_source_id'], $this->config->item('en_ids_12883'))){
+            //MERGE - 3 General Scenarios can happen here...
+            if(in_array($in__next['ln_type_source_id'], $this->config->item('en_ids_12842')) || in_array($in['in_type_source_id'], $this->config->item('en_ids_12883'))){
 
-                    //ONE
+                //ONE
 
-                    //MIN
-                    if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
-                        $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
-                    }
-                    if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
-                        $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
-                    }
-
-                    //MAX
-                    if(is_null($metadata_local['local__in__metadata_max_steps']) || $metadata_recursion['__in__metadata_max_steps'] > $metadata_local['local__in__metadata_max_steps']){
-                        $metadata_local['local__in__metadata_max_steps'] = $metadata_recursion['__in__metadata_max_steps'];
-                    }
-                    if(is_null($metadata_local['local__in__metadata_max_seconds']) || $metadata_recursion['__in__metadata_max_seconds'] > $metadata_local['local__in__metadata_max_seconds']){
-                        $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
-                    }
-
-                } elseif(in_array($in['in_type_source_id'], $this->config->item('en_ids_12884'))){
-
-                    //SOME
-
-                    //MIN
-                    if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
-                        $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
-                    }
-                    if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
-                        $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
-                    }
-
-                    //MAX
-                    $metadata_this['__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
-                    $metadata_this['__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
-
-                } else {
-
-                    //ALL
-
-                    //MIN
-                    $metadata_this['__in__metadata_min_steps'] += intval($metadata_recursion['__in__metadata_min_steps']);
-                    $metadata_this['__in__metadata_min_seconds'] += intval($metadata_recursion['__in__metadata_min_seconds']);
-
-                    //MAX
-                    $metadata_this['__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
-                    $metadata_this['__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
-
+                //MIN
+                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
+                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
+                }
+                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
+                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
                 }
 
-
-                //ADD LOCAL MIN/MAX
-                if(!is_null($metadata_local['local__in__metadata_min_steps'])){
-                    $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
+                //MAX
+                if(is_null($metadata_local['local__in__metadata_max_steps']) || $metadata_recursion['__in__metadata_max_steps'] > $metadata_local['local__in__metadata_max_steps']){
+                    $metadata_local['local__in__metadata_max_steps'] = $metadata_recursion['__in__metadata_max_steps'];
                 }
-                if(!is_null($metadata_local['local__in__metadata_max_steps'])){
-                    $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
-                }
-                if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
-                    $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
-                }
-                if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
-                    $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
+                if(is_null($metadata_local['local__in__metadata_max_seconds']) || $metadata_recursion['__in__metadata_max_seconds'] > $metadata_local['local__in__metadata_max_seconds']){
+                    $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
                 }
 
+            } elseif(in_array($in['in_type_source_id'], $this->config->item('en_ids_12884'))){
 
-                //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
-                foreach($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
-                    foreach($source_ens as $en_id => $source_en) {
-                        if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
-                            $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
-                        }
+                //SOME
+
+                //MIN
+                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
+                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
+                }
+                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
+                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
+                }
+
+                //MAX
+                $metadata_this['local__in__metadata_max_steps'] = intval($metadata_recursion['__in__metadata_max_steps']);
+                $metadata_this['local__in__metadata_max_seconds'] = intval($metadata_recursion['__in__metadata_max_seconds']);
+
+            } else {
+
+                //ALL
+
+                //MIN
+                $metadata_this['local__in__metadata_min_steps'] = intval($metadata_recursion['__in__metadata_min_steps']);
+                $metadata_this['local__in__metadata_min_seconds'] = intval($metadata_recursion['__in__metadata_min_seconds']);
+
+                //MAX
+                $metadata_this['local__in__metadata_max_steps'] = intval($metadata_recursion['__in__metadata_max_steps']);
+                $metadata_this['local__in__metadata_max_seconds'] = intval($metadata_recursion['__in__metadata_max_seconds']);
+
+            }
+
+
+            //ADD LOCAL MIN/MAX
+            if(!is_null($metadata_local['local__in__metadata_min_steps'])){
+                $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
+            }
+            if(!is_null($metadata_local['local__in__metadata_max_steps'])){
+                $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
+            }
+            if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
+                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
+            }
+            if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
+                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
+            }
+
+
+            //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
+            foreach($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
+                foreach($source_ens as $en_id => $source_en) {
+                    if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
+                        $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
                     }
                 }
+            }
 
 
-                //CONTENT CHANNELS (GROUPED BY CHANNEL)
-                foreach($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
-                    //Is this a new expert?
-                    if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
-                        //Yes, add them to the list:
-                        $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
-                    }
+            //CONTENT CHANNELS (GROUPED BY CHANNEL)
+            foreach($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
+                //Is this a new expert?
+                if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
+                    //Yes, add them to the list:
+                    $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
                 }
             }
         }
