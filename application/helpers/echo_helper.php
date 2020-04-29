@@ -215,22 +215,11 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function echo_in_title($in, $push_message = false, $common_prefix = null){
-
+function echo_in_title($in, $common_prefix = null){
     if(strlen($common_prefix) > 0){
         $in['in_title'] = trim(substr($in['in_title'], strlen($common_prefix)));
     }
-
-    if($push_message){
-
-        return $in['in_title'];
-
-    } else {
-
-        return '<span class="text__4736_'.$in['in_id'].'">'.htmlentities(trim($in['in_title'])).'</span>';
-
-    }
-
+    return '<span class="text__4736_'.$in['in_id'].'">'.htmlentities(trim($in['in_title'])).'</span>';
 }
 
 
@@ -1045,7 +1034,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
     //DISCOVER ICON
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="fad fa-eye-slash discover"></i>' ).'</span>';
-    $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, false, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, $common_prefix).'</b>';
 
 
     //Search for Idea Image:
@@ -1115,7 +1104,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$en_all_7585[$in_ln['in_type_source_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_source_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$en_all_4737[$in_ln['in_status_source_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_source_id']]['m_icon']. '</span>';
-        $ui .= '<a href="?in_id='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln, false) . '</u></a>';
+        $ui .= '<a href="?in_id='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Ideas */ )) || ($in_ln['ln_type_source_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
@@ -1447,25 +1436,7 @@ function echo_in_list($in, $in__next, $recipient_en, $push_message, $prefix_stat
 
 
         foreach($in__next as $key => $child_in){
-
-            if($push_message){
-
-                $message_content .= ($key+1).'. '.echo_in_title($child_in, $push_message, $common_prefix)."\n";
-
-
-                //We know that the $next_step_message length cannot surpass the limit defined by facebook
-                if (($key >= $max_and_list || strlen($message_content) > (config_var(11074) - 150))) {
-                    //We cannot add any more, indicate truncating:
-                    $remainder = count($in__next) - $max_and_list;
-                    $message_content .= "\n\n".'... plus ' . $remainder . ' more discover' . echo__s($remainder) . '.';
-                    break;
-                }
-
-            } else {
-
-                echo echo_in_discover($child_in, false, $common_prefix);
-
-            }
+            echo echo_in_discover($child_in, false, $common_prefix);
         }
 
         if($push_message){

@@ -908,13 +908,6 @@ class COMMUNICATION_model extends CI_Model
          *                          source as required based on its other parameters.
          *
          *
-         * - $push_message:         If TRUE this function will prepare a message to be
-         *                          delivered to use using either Messenger or Chrome. If FALSE, it
-         *                          would prepare a message for immediate HTML view. The HTML
-         *                          format will consider if a Player is logged in or not,
-         *                          which will alter the HTML format.
-         *
-         *
          * - $quick_replies:        Only supported if $push_message = TRUE, and
          *                          will append an array of quick replies that will give
          *                          Users an easy way to tap and select their next step.

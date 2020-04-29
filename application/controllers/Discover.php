@@ -222,7 +222,7 @@ class Discover extends CI_Controller
         }
 
         $this->load->view('header', array(
-            'title' => echo_in_title($ins[0], true),
+            'title' => $ins[0]['in_title'],
             'in' => $ins[0],
         ));
 
