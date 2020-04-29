@@ -552,7 +552,7 @@ class SOURCE_model extends CI_Model
     function en_metadat_experts($en, $level = 1){
 
         //Goes through $max_search_levels of sources to find expert channels, people & organizations
-        $max_search_levels = 2;
+        $max_search_levels = 3;
         $metadata_this = array(
             '__in__metadata_experts' => array(),
             '__in__metadata_sources' => array(),
