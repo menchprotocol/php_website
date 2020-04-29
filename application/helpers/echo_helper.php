@@ -369,7 +369,7 @@ function echo_number($number)
         );
     }
 
-    return $formatting['suffix'] . round(($number * $formatting['multiplier']), $formatting['decimals']);
+    return round(($number * $formatting['multiplier']), $formatting['decimals']) . $formatting['suffix'];
 
 }
 
