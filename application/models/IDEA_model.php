@@ -892,9 +892,26 @@ class IDEA_model extends CI_Model
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_profile'), 0) as $en) {
+
             $en_metadat_experts = $this->SOURCE_model->en_metadat_experts($en);
-            $metadata_this['__in__metadata_experts'] = array_merge($metadata_this['__in__metadata_experts'] , $en_metadat_experts['__in__metadata_experts']);
-            $metadata_this['__in__metadata_sources'] = array_merge($metadata_this['__in__metadata_sources'] , $en_metadat_experts['__in__metadata_sources']);
+
+            //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
+            foreach($en_metadat_experts['__in__metadata_sources'] as $type_en_id => $source_ens) {
+                foreach($source_ens as $en_id => $source_en) {
+                    if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
+                        $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
+                    }
+                }
+            }
+
+            //CONTENT CHANNELS (GROUPED BY CHANNEL)
+            foreach($en_metadat_experts['__in__metadata_experts'] as $en_id => $expert_en) {
+                //Is this a new expert?
+                if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
+                    //Yes, add them to the list:
+                    $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
+                }
+            }
         }
 
 
