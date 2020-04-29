@@ -1442,7 +1442,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $en_all_2738 = $CI->config->item('en_all_2738');
     $en_all_4592 = $CI->config->item('en_all_4592');
     $en_all_6186 = $CI->config->item('en_all_6186'); //Transaction Status
-    $en_all_11028 = $CI->config->item('en_all_11028'); //SOURCEERS LINKS DIRECTION
 
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
     $is_link_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));

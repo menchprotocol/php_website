@@ -898,55 +898,6 @@ class SOURCE_model extends CI_Model
         );
     }
 
-    function en_search_match($en_parent_id, $value)
-    {
-
-        if($en_parent_id<1 || strlen(trim($value))<1){
-            return 0;
-        }
-
-        //Is this a timezone? We need to adjust the timezone according to our limited timezone sources
-        if ($en_parent_id == 3289) {
-            $valid_halfs = array(-4, -3, 3, 4, 9); //These are timezones with half values so far
-            $decimal = fmod(doubleval($value), 1);
-            if (!($decimal == 0)) {
-                $whole = intval(str_replace('.' . $decimal, '', $value));
-                if (in_array(intval($whole), $valid_halfs)) {
-                    $value = $whole + ($whole < 0 ? -0.5 : +0.5);
-                } else {
-                    $value = round(doubleval($value));
-                }
-            }
-        }
-
-
-        //Search and see if we can find $value in the link content:
-        $matching_sources = $this->LEDGER_model->ln_fetch(array(
-            'ln_profile_source_id' => $en_parent_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-            'ln_content' => trim($value),
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        ), array(), 0);
-
-
-        if (count($matching_sources) == 1) {
-
-            //Bingo, return result:
-            return intval($matching_sources[0]['ln_portfolio_source_id']);
-
-        } else {
-
-            //Ooooopsi, this value did not exist! Notify the Player so we can look into this:
-            $this->LEDGER_model->ln_create(array(
-                'ln_content' => 'en_search_match() found [' . count($matching_sources) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_portfolio_source_id' => $en_parent_id,
-            ));
-
-            return 0;
-        }
-    }
-
     function en_mass_update($en_id, $action_en_id, $action_command1, $action_command2, $ln_creator_source_id)
     {
 

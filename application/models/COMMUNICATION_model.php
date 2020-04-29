@@ -321,7 +321,6 @@ class COMMUNICATION_model extends CI_Model
             }
 
             //Direct Media URLs supported:
-            $en_all_11059 = $this->config->item('en_all_11059');
             $en_all_6177 = $this->config->item('en_all_6177');
 
 

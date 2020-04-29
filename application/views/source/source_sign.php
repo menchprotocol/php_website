@@ -1,6 +1,5 @@
 <?php
 $en_all_4269 = $this->config->item('en_all_4269');
-$en_all_7555 = $this->config->item('en_all_7555');
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
 //See if we have a session assigned:
@@ -71,7 +70,6 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-source transparent btn-circle btn-raised  <?= ( $referrer_in_id > 0 && count($en_all_7555)>=2 ? '' : ' hidden ' ) ?>"><i class="fas fa-step-backward"></i></a>
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised btn-circle"><i class="fas fa-step-forward"></i></a>
             </span>
         </div>
