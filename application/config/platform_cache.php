@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-30 15:35:49 PST
+//Generated 2020-04-30 15:45:40 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588286149;
-$config['cache_count_transaction'] = 1170579;
+$config['cache_timestamp'] = 1588286740;
+$config['cache_count_transaction'] = 1170599;
 $config['cache_count_discover'] = 121153;
 $config['cache_count_idea'] = 5432;
 $config['cache_count_source'] = 5199;
@@ -31,7 +31,7 @@ $config['en_all_12893'] = array(
     7347 => array(
         'm_icon' => '<i class="fas fa-book discover" aria-hidden="true"></i>',
         'm_name' => 'READS',
-        'm_desc' => '/read',
+        'm_desc' => '/discover',
         'm_parents' => array(12893,12701,12677,11018,11035,11089,6205,12228,4527),
     ),
     12896 => array(
