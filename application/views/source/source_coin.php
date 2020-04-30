@@ -287,7 +287,15 @@ $is_source = en_is_source($en['en_id']);
                     //Load Website URLs:
                     $en_all_10876 = $this->config->item('en_all_10876'); //MENCH WEBSITE
 
-                    //List Activated Powers:
+                    //Mass Control:
+                    if(count($this->session->userdata('session_superpowers_activated')) >= 2){
+                        $this_tab .= '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
+                  <a href="javascript:void(0)" onclick="account_toggle_all(1)" class="btn btn-far"><i class="fas fa-toggle-on"></i></a>
+                  <a href="javascript:void(0)" onclick="account_toggle_all(0)" class="btn btn-fad"><i class="fas fa-toggle-off"></i></a>
+                </div><div class="doclear">&nbsp;</div>';
+                    }
+
+
                     $this_tab .= '<div class="list-group">';
 
                     //List avatars:
@@ -302,12 +310,12 @@ $is_source = en_is_source($en['en_id']);
                         if(superpower_assigned($superpower_en_id)){
 
                             //Allow Toggle
-                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" href="javascript:void();" onclick="account_toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_en_id.'" href="javascript:void();" onclick="account_toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                         } elseif($has_req_powers && $has_discover_url){
 
                             //Does not have it, but can get it:
-                            $this_tab .= '<a class="list-group-item itemsetting btn-superpower" href="'.$has_discover_url.'"><span class="icon-block"><i class="fas fa-lock-open black"></i></span>'.$m3['m_icon'].'&nbsp;<b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                            $this_tab .= '<a class="list-group-item itemsetting" href="'.$has_discover_url.'"><span class="icon-block"><i class="fas fa-lock-open black"></i></span>'.$m3['m_icon'].'&nbsp;<b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                         }
                     }

@@ -206,6 +206,14 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 }
 
 
+function account_toggle_all(is_enabled){
+    //Turn all superpowers on/off:
+    $(".btn-superpower").each(function () {
+        if ((is_enabled && !$(this).hasClass('active')) || (!is_enabled && $(this).hasClass('active'))) {
+            account_toggle_superpower(parseInt($(this).attr('en-id')));
+        }
+    });
+}
 
 
 
