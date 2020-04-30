@@ -823,9 +823,11 @@ class DISCOVER_model extends CI_Model
 
 
                 //Expert References?
-                $source_count = count($metadata['in__metadata_experts']);
-                foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
-                    $source_count += count($channel_contents);
+                $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
+                if(isset($metadata['in__metadata_sources'])){
+                    foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
+                        $source_count += count($channel_contents);
+                    }
                 }
                 if ($source_count > 0) {
 
@@ -834,13 +836,17 @@ class DISCOVER_model extends CI_Model
                     echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
                     echo '<div class="list-group">';
 
-                    foreach($metadata['in__metadata_experts'] as $expert){
-                        echo echo_en_basic($expert);
+                    if(isset($metadata['in__metadata_experts'])){
+                        foreach($metadata['in__metadata_experts'] as $expert){
+                            echo echo_en_basic($expert);
+                        }
                     }
 
-                    foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
-                        foreach($channel_contents as $channel_content){
-                            echo echo_en_basic($channel_content);
+                    if(isset($metadata['in__metadata_sources'])) {
+                        foreach ($metadata['in__metadata_sources'] as $channel_id => $channel_contents) {
+                            foreach ($channel_contents as $channel_content) {
+                                echo echo_en_basic($channel_content);
+                            }
                         }
                     }
 
