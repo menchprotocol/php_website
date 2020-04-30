@@ -424,7 +424,7 @@ class Source extends CI_Controller
                 ));
             }
 
-            //Make sure not already linked:
+            //Make sure not alreads linked:
             if(count($this->LEDGER_model->ln_fetch(array(
                 'ln_next_idea_id' => $ins[0]['in_id'],
                 'ln_profile_source_id' => $_POST['en_existing_id'],
@@ -1547,7 +1547,7 @@ class Source extends CI_Controller
             if($in_id > 0){
                 return redirect_message('/idea/go/' . $in_id);
             } else {
-                return redirect_message('/discover');
+                return redirect_message('/read');
             }
         }
 
@@ -1702,8 +1702,8 @@ class Source extends CI_Controller
             ));
 
             if(count($referrer_ins) > 0){
-                //Add this Idea to their DISCOVER LIST:
-                $this->DISCOVER_model->discover_start($user_en['en']['en_id'], $_POST['referrer_in_id']);
+                //Add this Idea to their READ LIST:
+                $this->READ_model->read_start($user_en['en']['en_id'], $_POST['referrer_in_id']);
             } else {
                 //Cannot be added, likely because its not published:
                 $_POST['referrer_in_id'] = 0;
@@ -1873,10 +1873,10 @@ class Source extends CI_Controller
 
         //All good...
 
-        //Was there a Idea to discover?
+        //Was there a Idea to read?
         if(intval($_POST['referrer_in_id']) > 0){
-            //Add this Idea to their DISCOVER LIST:
-            $this->DISCOVER_model->discover_start($ens[0]['en_id'], $_POST['referrer_in_id']);
+            //Add this Idea to their READ LIST:
+            $this->READ_model->read_start($ens[0]['en_id'], $_POST['referrer_in_id']);
         }
 
 
@@ -1917,7 +1917,7 @@ class Source extends CI_Controller
             ));
         } else {
 
-            //Validate DISCOVER ID and matching email:
+            //Validate READ ID and matching email:
             $validate_links = $this->LEDGER_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_content' => $_POST['input_email'],
@@ -1996,7 +1996,7 @@ class Source extends CI_Controller
             //Their next Idea in line:
             return echo_json(array(
                 'status' => 1,
-                'login_url' => '/discover/next',
+                'login_url' => '/read/next',
             ));
 
 
@@ -2078,10 +2078,10 @@ class Source extends CI_Controller
             return redirect_message('/');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/source/sign', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
+            return redirect_message('/source/sign', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Missing Email</div>');
         }
 
-        //Validate DISCOVER ID and matching email:
+        //Validate READ ID and matching email:
         $validate_links = $this->LEDGER_model->ln_fetch(array(
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],
@@ -2089,10 +2089,10 @@ class Source extends CI_Controller
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['ln_timestamp']) + config_var(11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic link has expired. Try again.</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Magic link has expired. Try again.</div>');
         }
 
         //Fetch source:
@@ -2100,14 +2100,14 @@ class Source extends CI_Controller
             'en_id' => $validate_links[0]['ln_creator_source_id'],
         ));
         if(count($ens) < 1){
-            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
+            return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>User not found</div>');
         }
 
         //Log them in:
         $ens[0] = $this->SOURCE_model->en_activate_session($ens[0]);
 
-        //Take them to DISCOVER HOME
-        return redirect_message( '/discover' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
+        //Take them to READ HOME
+        return redirect_message( '/read' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
 
     }
 

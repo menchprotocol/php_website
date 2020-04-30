@@ -157,8 +157,8 @@ if(!isset($hide_header)){
                             //Skip superpowers if not assigned
                             if($en_id==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
                                 continue;
-                            } elseif($en_id==6415 && !($first_segment=='discover' && !$second_segment)){
-                                //Deleting discoveries only available on Discovery home
+                            } elseif($en_id==6415 && !($first_segment=='read' && !$second_segment)){
+                                //Deleting reads only available on Reads home
                                 continue;
                             } elseif($en_id==12749 && (!is_numeric($first_segment) || !superpower_active(10939, true))){
                                 //Contributing to ideas can only happen when reading
@@ -191,8 +191,8 @@ if(!isset($hide_header)){
 
                             } elseif($en_id==6415) {
 
-                                //CLEAR DISCOVERIES
-                                $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')"';
+                                //CLEAR READS
+                                $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')"';
 
                             } elseif(in_array($en_id, $this->config->item('en_ids_12467'))) {
 
@@ -206,7 +206,7 @@ if(!isset($hide_header)){
                                     //IDEA
                                     $source_field = 'ln_profile_source_id';
                                 } elseif($en_id==6255){
-                                    //DISCOVER
+                                    //READ
                                     $source_field = 'ln_creator_source_id';
                                 } elseif($en_id==12274){
                                     //SOURCE

@@ -94,7 +94,7 @@ class Idea extends CI_Controller {
             'in_id' => $in_id,
         ));
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>IDEA #' . $in_id . ' Not Found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>IDEA #' . $in_id . ' Not Found</div>');
         }
 
 
@@ -252,7 +252,7 @@ class Idea extends CI_Controller {
                 ));
             }
 
-            //Find the single discover type in parent links:
+            //Find the single read type in parent links:
             $link_update_types = array_intersect($this->config->item('en_ids_4593'), $en_all_4527[$_POST['element_id']]['m_parents']);
             if(count($link_update_types)!=1){
                 return echo_json(array(
@@ -593,7 +593,7 @@ class Idea extends CI_Controller {
     function in_notes_create_upload()
     {
 
-        //TODO: MERGE WITH FUNCTION discover_file_upload()
+        //TODO: MERGE WITH FUNCTION read_file_upload()
 
         //Authenticate Player:
         $session_en = superpower_assigned(10939);

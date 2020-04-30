@@ -84,8 +84,8 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_in
 //IDEA TIME
 echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
-//IDEA DISCOVER (IF PUBLIC)
-echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-discover btn-circle" href="/'.$in['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[12750]['m_name'].'">'.$en_all_11035[12750]['m_icon'].'</a></div>';
+//IDEA READ (IF PUBLIC)
+echo '<div class="inline-block pull-right both-margin left-half-margin idea-read '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-read btn-circle" href="/'.$in['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[12750]['m_name'].'">'.$en_all_11035[12750]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
@@ -198,7 +198,7 @@ foreach($this->config->item('en_all_11018') as $en_id => $m){
 
     } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 
-        //DISCOVER & BOOKMARKS
+        //READ & BOOKMARKS
         $item_counters = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id)) . ')' => null,
@@ -210,7 +210,7 @@ foreach($this->config->item('en_all_11018') as $en_id => $m){
         if($counter > 0){
 
             //Dynamic Loading when clicked:
-            $this_tab .= '<div class="dynamic-discoveries"></div>';
+            $this_tab .= '<div class="dynamic-reads"></div>';
 
         } else {
 

@@ -39,7 +39,7 @@ if(count($orphan_ens) > 0){
     if(!isset($_GET['take_action']) || $_GET['take_action']!='delete_all'){
         echo '<br />';
         echo '<a class="delete-all" href="javascript:void(0);" onclick="$(\'.delete-all\').toggleClass(\'hidden\')">Delete All</a>';
-        echo '<div class="delete-all hidden maxout"><b class="discover">WARNING</b>: All sources and all their links will be deleted. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing source.<br /><br /></div>';
+        echo '<div class="delete-all hidden maxout"><b class="read">WARNING</b>: All sources and all their links will be deleted. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing source.<br /><br /></div>';
         echo '<a class="delete-all hidden maxout" href="?take_action=delete_all" onclick="">Confirm: <b>Delete All</b> &raquo;</a>';
     }
 

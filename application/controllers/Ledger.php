@@ -31,7 +31,7 @@ class Ledger extends CI_Controller
         $this->load->view('header', array(
             'title' => $en_all_11035[4341]['m_name'],
         ));
-        $this->load->view('discover/discover_ledger');
+        $this->load->view('read/read_ledger');
         $this->load->view('footer');
 
     }
@@ -91,7 +91,7 @@ class Ledger extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-discover" onclick="ledger_load(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="ledger_load(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.echo__s($lns_count[0]['total_count']).' have been loaded</div>';
@@ -205,7 +205,7 @@ class Ledger extends CI_Controller
                 'status' => 1,
             ));
 
-        } elseif($_POST['cache_en_id']==4356 /* DISCOVER TIME */){
+        } elseif($_POST['cache_en_id']==4356 /* READ TIME */){
 
             $ins = $this->IDEA_model->in_fetch(array(
                 'in_id' => $_POST['object_id'],
@@ -241,7 +241,7 @@ class Ledger extends CI_Controller
 
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
                     'original_val' => $ins[0]['in_time_seconds'],
                 ));
 
@@ -258,7 +258,7 @@ class Ledger extends CI_Controller
 
             }
 
-        } elseif($_POST['cache_en_id']==4358 /* DISCOVER MARKS */){
+        } elseif($_POST['cache_en_id']==4358 /* READ MARKS */){
 
             //Fetch/Validate Link:
             $lns = $this->LEDGER_model->ln_fetch(array(

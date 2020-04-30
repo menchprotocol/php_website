@@ -287,13 +287,13 @@ class IDEA_model extends CI_Model
 
             $stats['scanned']++;
 
-            //Find creation discover:
-            $discoveries = $this->LEDGER_model->ln_fetch(array(
+            //Find creation read:
+            $reads = $this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id' => $stats['ln_type_source_id'],
                 'ln_next_idea_id' => $in['in_id'],
             ));
 
-            if(!count($discoveries)){
+            if(!count($reads)){
 
                 $stats['missing_creation_fix']++;
 
@@ -305,10 +305,10 @@ class IDEA_model extends CI_Model
                     'ln_status_source_id' => $status_converter[$in['in_status_source_id']],
                 ));
 
-            } elseif($discoveries[0]['ln_status_source_id'] != $status_converter[$in['in_status_source_id']]){
+            } elseif($reads[0]['ln_status_source_id'] != $status_converter[$in['in_status_source_id']]){
 
                 $stats['status_sync']++;
-                $this->LEDGER_model->ln_update($discoveries[0]['ln_id'], array(
+                $this->LEDGER_model->ln_update($reads[0]['ln_id'], array(
                     'ln_status_source_id' => $status_converter[$in['in_status_source_id']],
                 ));
 
@@ -468,7 +468,7 @@ class IDEA_model extends CI_Model
 
             $relation = $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $ln_creator_source_id,
-                'ln_type_source_id' => 4228, //Idea Link Regular Discovery
+                'ln_type_source_id' => 4228, //Idea Link Regular Reads
                 ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
                 ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
                 'ln_order' => 1 + $this->LEDGER_model->ln_max_order(array(
@@ -613,9 +613,9 @@ class IDEA_model extends CI_Model
         $conditional_steps = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__in__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an DISCOVER LIST idea by answering OR ideas
+            '__in__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an READ LIST idea by answering OR ideas
             '__in__metadata_expansion_some' => array(), //Ideas that allows players to select one or more
-            '__in__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an DISCOVER LIST idea via Conditional Idea links
+            '__in__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an READ LIST idea via Conditional Idea links
         );
 
         //Fetch children:
@@ -1056,7 +1056,7 @@ class IDEA_model extends CI_Model
         $child_unlock_paths = array();
 
 
-        //Discovery 1: Is there an OR parent that we can simply answer and unlock?
+        //Reads 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
@@ -1070,7 +1070,7 @@ class IDEA_model extends CI_Model
         }
 
 
-        //Discovery 2: Are there any locked link parents that the user might be able to unlock?
+        //Reads 2: Are there any locked link parents that the user might be able to unlock?
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
@@ -1097,7 +1097,7 @@ class IDEA_model extends CI_Model
         }
 
 
-        //Discovery 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
+        //Reads 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $in__next = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC

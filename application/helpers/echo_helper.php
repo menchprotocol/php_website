@@ -166,7 +166,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
                 //Inform User that this is a sliced video
                 if ($start_sec || $end_sec) {
-                    $embed_html_code .= '<div class="discover-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'"><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . echo_time_minutes(($end_sec - $start_sec)) . '</b>' : '<b><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
+                    $embed_html_code .= '<div class="read-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'"><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . echo_time_minutes(($end_sec - $start_sec)) . '</b>' : '<b><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -445,7 +445,7 @@ function echo_ln($ln, $is_parent_tr = false)
 
     //COINS AWARDED?
     if(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_6255'))){
-        $coin_type = 'discover';
+        $coin_type = 'read';
     } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12274'))){
         $coin_type = 'source';
     } elseif(in_array($ln['ln_type_source_id'], $CI->config->item('en_ids_12273')) && $ln['ln_profile_source_id']>0){
@@ -720,17 +720,17 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 
 
 
-function echo_coins_count_discover($in_id = 0, $en_id = 0){
+function echo_coins_count_read($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
-    $discover_coins = $CI->LEDGER_model->ln_fetch(array(
+    $read_coins = $CI->LEDGER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
         ( $in_id > 0 ? 'ln_previous_idea_id' : 'ln_creator_source_id' ) => ( $in_id > 0 ? $in_id : $en_id ),
     ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
-    if($discover_coins[0]['totals'] > 0){
-        return '<span class="montserrat discover"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($discover_coins[0]['totals']).'</span>';
+    if($read_coins[0]['totals'] > 0){
+        return '<span class="montserrat read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['totals']).'</span>';
     } else {
         return false;
     }
@@ -768,7 +768,7 @@ function echo_coins_count_source($in_id = 0, $en_id = 0){
 
 
 
-function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
+function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
 {
 
     //See if user is logged-in:
@@ -782,7 +782,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
     if(!$completion_rate){
         if($recipient_en){
-            $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $in);
+            $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
         } else {
             $completion_rate['completion_percentage'] = 0;
         }
@@ -791,19 +791,19 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
     $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor ); //|| $recipient_en
 
 
-    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemdiscover '.$extra_class.'">';
-    $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemdiscover">' : '' );
+    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemread '.$extra_class.'">';
+    $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
     if($can_click && $completion_rate['completion_percentage']>0){
-        $ui .= '<div class="progress-bg" title="Discovered '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        $ui .= '<div class="progress-bg" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
 
 
 
-    //DISCOVER
+    //READ
     $ui .= '<td class="MENCHcolumn1">';
-    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : ( !$recipient_en ? '<i class="fas fa-circle idea"></i>' : '<i class="far fa-lock discover"></i>' ) ).'</span>';
+    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : ( !$recipient_en ? '<i class="fas fa-circle idea"></i>' : '<i class="far fa-lock read"></i>' ) ).'</span>';
     $ui .= '<b class="montserrat idea-url title-block">'.echo_in_title($in, $common_prefix).'</b>';
     $ui .= '</td>';
 
@@ -842,9 +842,9 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
         $ui .= '<span class="show-on-hover">';
 
-        $ui .= '<span class="discover-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
+        $ui .= '<span class="read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
 
-        $ui .= '<span title="REMOVE"><span class="discover_remove_item" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
+        $ui .= '<span title="REMOVE"><span class="read_remove_item" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
@@ -1079,9 +1079,9 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
     $ui .= '</td>';
 
 
-    //DISCOVER
-    $ui .= '<td class="MENCHcolumn2 discover">';
-    $ui .= echo_coins_count_discover($in['in_id']);
+    //READ
+    $ui .= '<td class="MENCHcolumn2 read">';
+    $ui .= echo_coins_count_read($in['in_id']);
     $ui .= '</td>';
 
 
@@ -1212,14 +1212,14 @@ function echo_in_list($in, $in__next, $recipient_en, $prefix_statement = null, $
         $has_content = ($prefix_statement || strlen($common_prefix));
 
         if($has_content){
-            echo '<div class="discover-topic">'.trim($prefix_statement).'</div>';
+            echo '<div class="read-topic">'.trim($prefix_statement).'</div>';
         } else {
-            echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>IDEAS</div>';
+            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>IDEAS</div>';
         }
 
         echo '<div class="list-group">';
         foreach($in__next as $key => $child_in){
-            echo echo_in_discover($child_in, false, $common_prefix);
+            echo echo_in_read($child_in, false, $common_prefix);
         }
         echo '</div>';
     }
@@ -1236,28 +1236,28 @@ function echo_in_next_previous($in_id, $recipient_en){
     $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
 
     //PREVIOUS:
-    echo echo_in_previous_discover($in_id, $recipient_en);
+    echo echo_in_previous_read($in_id, $recipient_en);
 
     //NEXT:
-    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="/discover/next/'.$in_id.'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
+    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="/read/next/'.$in_id.'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 
 }
 
-function echo_in_previous_discover($in_id, $recipient_en){
+function echo_in_previous_read($in_id, $recipient_en){
 
     if(!$recipient_en || $recipient_en['en_id'] < 1){
         return null;
     }
 
-    //DISCOVER LIST
+    //READ LIST
     $CI =& get_instance();
     $ui = null;
     $in_level_up = 0;
     $previous_level_id = 0; //The ID of the Idea one level up
-    $player_discover_ids = $CI->DISCOVER_model->discover_ids($recipient_en['en_id']);
+    $player_read_ids = $CI->READ_model->read_ids($recipient_en['en_id']);
     $top_completion_rate = null;
 
-    if(in_array($in_id, $player_discover_ids)){
+    if(in_array($in_id, $player_read_ids)){
 
         //A reading list item:
         $ins_this = $CI->IDEA_model->in_fetch(array(
@@ -1269,7 +1269,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
         //Find it:
         $recursive_parents = $CI->IDEA_model->in_recursive_parents($in_id, true, true);
         foreach($recursive_parents as $grand_parent_ids) {
-            foreach(array_intersect($grand_parent_ids, $player_discover_ids) as $intersect) {
+            foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
                 foreach($grand_parent_ids as $parent_in_id) {
 
                     if($in_level_up==0){
@@ -1281,7 +1281,7 @@ function echo_in_previous_discover($in_id, $recipient_en){
                         'in_id' => $parent_in_id,
                     ));
 
-                    $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins_this[0]);
+                    $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $ins_this[0]);
 
                     $in_level_up++;
 
@@ -1305,16 +1305,16 @@ function echo_in_previous_discover($in_id, $recipient_en){
 
         //Previous
         if(isset($_GET['came_from']) && $_GET['came_from']>0){
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/'.$_GET['came_from'].'"><i class="fas fa-step-backward"></i></a></div>';
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/'.$_GET['came_from'].'"><i class="fas fa-step-backward"></i></a></div>';
         } else {
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/discover/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fas fa-step-backward"></i></a></div>';
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/read/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fas fa-step-backward"></i></a></div>';
         }
 
-        //Main Discovery:
+        //Main Reads:
         if($top_completion_rate){
-            $ui .= '<div class="main_discovery_bottom hidden">';
+            $ui .= '<div class="main_reads_bottom hidden">';
             $ui .= '<div class="list-group">';
-            $ui .= echo_in_discover($top_completion_rate['top_in'], false, null, null, false, $top_completion_rate);
+            $ui .= echo_in_read($top_completion_rate['top_in'], false, null, null, false, $top_completion_rate);
             $ui .= '</div>';
             $ui .= '</div>';
         }
@@ -1483,7 +1483,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
     $is_link_source = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_4592')));
-    $is_discover_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
+    $is_read_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
     $is_source_only = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_7551')));
     $show_toolbar = ($control_enabled && superpower_active(12706, true));
 
@@ -1594,8 +1594,8 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
 
-    //DISCOVER
-    $ui .= '<td class="MENCHcolumn2 discover">';
+    //READ
+    $ui .= '<td class="MENCHcolumn2 read">';
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
@@ -1620,7 +1620,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ui .= '</div>';
     $ui .= '</div>';
 
-    $ui .= echo_coins_count_discover(0, $en['en_id']);
+    $ui .= echo_coins_count_read(0, $en['en_id']);
     $ui .= '</td>';
 
 
@@ -1652,9 +1652,9 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
 
-        } elseif($is_discover_progress && strlen($en['ln_content'])){
+        } elseif($is_read_progress && strlen($en['ln_content'])){
 
-            //DISCOVER PROGRESS
+            //READ PROGRESS
             $ui .= '<div class="message_content paddingup">';
             $ui .= $CI->COMMUNICATION_model->send_message($en['ln_content']);
             $ui .= '</div>';

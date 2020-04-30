@@ -218,7 +218,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
     var ln_content_search = '<?= ( isset($_GET['ln_content_search']) && strlen($_GET['ln_content_search']) > 0 ? $_GET['ln_content_search'] : '' ) ?>';
     var ln_content_replace = '<?= ( isset($_GET['ln_content_replace']) && strlen($_GET['ln_content_replace']) > 0 ? $_GET['ln_content_replace'] : '' ) ?>';
 </script>
-<script src="/application/views/discover/discover_ledger.js?v=<?= config_var(11060) ?>"
+<script src="/application/views/read/read_ledger.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php
@@ -281,7 +281,7 @@ echo '<div class="container">';
 
     echo '<table class="table table-sm maxout"><tr>';
 
-    //ANY DISCOVER
+    //ANY READ
     echo '<td><div style="padding-right:5px;">';
     echo '<span class="mini-header">ANY TRANSACTION:</span>';
     echo '<input type="text" name="any_ln_id" value="' . ((isset($_GET['any_ln_id'])) ? $_GET['any_ln_id'] : '') . '" class="form-control border">';
@@ -319,7 +319,7 @@ echo '<div class="container">';
 
 
 
-    //DISCOVER Type Filter Groups
+    //READ Type Filter Groups
     echo '<td></td>';
 
 
@@ -372,7 +372,7 @@ echo '</div></td>';
 
             //Load all fast:
             echo '<option value="0">ALL TRANSACTION TYPES</option>';
-            foreach($this->config->item('en_all_4593') /* DISCOVER Types */ as $en_id => $m){
+            foreach($this->config->item('en_all_4593') /* READ Types */ as $en_id => $m){
                 //Echo drop down:
                 echo '<option value="' . $en_id . '" ' . ((isset($_GET['ln_type_source_id']) && $_GET['ln_type_source_id'] == $en_id) ? 'selected="selected"' : '') . '>' . $m['m_name'] . '</option>';
             }
@@ -386,7 +386,7 @@ echo '</div></td>';
 
     echo '</div>';
 
-    //Optional IDEA/SOURCE status filter ONLY IF DISCOVER Type = Create New IDEA/SOURCE
+    //Optional IDEA/SOURCE status filter ONLY IF READ Type = Create New IDEA/SOURCE
 
 echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Status(es)</span><input type="text" name="in_status_source_id" value="' . ((isset($_GET['in_status_source_id'])) ? $_GET['in_status_source_id'] : '') . '" class="form-control border"></div>';
 
@@ -406,7 +406,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
 
 
 
-    echo '<input type="submit" class="btn btn-discover" value="Apply" />';
+    echo '<input type="submit" class="btn btn-read" value="Apply" />';
 
     if($has_filters){
         echo ' &nbsp;<a href="/ledger" style="font-size: 0.8em;">Remove Filters</a>';

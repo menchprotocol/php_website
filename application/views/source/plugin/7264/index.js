@@ -12,7 +12,7 @@ $(document).ready(function () {
     }, function (data) {
         if (!data.status) {
             //Show Errors:
-            $('#ajax_7264').html('<span class="discover">'+ data.message +'</span>');
+            $('#ajax_7264').html('<span class="read">'+ data.message +'</span>');
         } else {
             //Load Report:
             $('#ajax_7264').html(data.message);

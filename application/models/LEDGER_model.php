@@ -128,7 +128,7 @@ class LEDGER_model extends CI_Model
             ));
         }
 
-        //Do we need to check for entity tagging after discover success?
+        //Do we need to check for entity tagging after read success?
         if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_source_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_previous_idea_id'] > 0 && $insert_columns['ln_creator_source_id'] > 0){
 
             //See what this is:
@@ -322,14 +322,14 @@ class LEDGER_model extends CI_Model
 
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
-                        //DISCOVER
+                        //READ
                         $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="https://mench.com/plugin/12722?ln_id=' . $insert_columns[$en_all_6232[$en_id]['m_desc']] . '" target="_parent">'.$insert_columns[$en_all_6232[$en_id]['m_desc']].'</a></div>';
 
                     }
 
                 }
 
-                //Finally append DISCOVER ID:
+                //Finally append READ ID:
                 $html_message .= '<div>TRANSACTION ID: <a href="https://mench.com/plugin/12722?ln_id=' . $insert_columns['ln_id'] . '">' . $insert_columns['ln_id'] . '</a></div>';
 
                 //Inform how to change settings:

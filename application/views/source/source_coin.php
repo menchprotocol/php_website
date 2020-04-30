@@ -60,7 +60,7 @@ $is_source = en_is_source($en['en_id']);
                         <div class="notify_en_delete hidden">
 
                             <input type="hidden" id="en_link_count" value="0" />
-                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="source_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
+                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Saving will delete this source and UNLINK ALL <span class="source_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
 
                             <span class="mini-header"><span class="tr_in_link_title"></span> Merge Source Into:</span>
                             <input style="padding-left:3px;" type="text" class="form-control algolia_search border en_text_search" id="en_merge" value="" placeholder="Search source to merge..." />
@@ -120,7 +120,7 @@ $is_source = en_is_source($en['en_id']);
                             </select>
 
                             <div class="notify_unlink_en hidden">
-                                <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will unlink source</div>
+                                <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Saving will unlink source</div>
                             </div>
 
 
@@ -304,7 +304,7 @@ $is_source = en_is_source($en['en_id']);
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
                         $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
                         $has_req_powers = (!count($superpower_actives3) || superpower_assigned(end($superpower_actives3)));
-                        $has_discover_url = ( isset($en_all_10876[$superpower_en_id]['m_desc']) && strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
+                        $has_read_url = ( isset($en_all_10876[$superpower_en_id]['m_desc']) && strlen($en_all_10876[$superpower_en_id]['m_desc']) ? $en_all_10876[$superpower_en_id]['m_desc'] : false );
 
                         //What is the superpower requirement?
                         if(superpower_assigned($superpower_en_id)){
@@ -312,10 +312,10 @@ $is_source = en_is_source($en['en_id']);
                             //Allow Toggle
                             $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_en_id.'" href="javascript:void();" onclick="account_toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
-                        } elseif($has_req_powers && $has_discover_url){
+                        } elseif($has_req_powers && $has_read_url){
 
                             //Does not have it, but can get it:
-                            $this_tab .= '<a class="list-group-item itemsetting" href="'.$has_discover_url.'"><span class="icon-block"><i class="fas fa-lock-open black"></i></span>'.$m3['m_icon'].'&nbsp;<b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                            $this_tab .= '<a class="list-group-item itemsetting" href="'.$has_read_url.'"><span class="icon-block"><i class="fas fa-lock-open black"></i></span>'.$m3['m_icon'].'&nbsp;<b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                         }
                     }
@@ -539,7 +539,7 @@ $is_source = en_is_source($en['en_id']);
                 $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;"><a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$en_all_11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[4997]['m_icon'].'</a></div>';
                 $this_tab .= '<div class="doclear">&nbsp;</div>';
                 $this_tab .= '<div class="source_editor hidden">';
-                $this_tab .= '<div class="discover-topic"><span class="icon-block">&nbsp;</span>'.$en_all_11035[4997]['m_name'].'</div>';
+                $this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$en_all_11035[4997]['m_name'].'</div>';
                 $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
                 $this_tab .= '<div class="inline-box">';
 
@@ -630,7 +630,7 @@ $is_source = en_is_source($en['en_id']);
         } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
 
 
-            //SOURCE COINS (DISCOVER & IDEA)
+            //SOURCE COINS (READ & IDEA)
             $join_objects = array();
             $match_columns = array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -642,11 +642,11 @@ $is_source = en_is_source($en['en_id']);
                 $match_columns['ln_profile_source_id'] = $en['en_id'];
                 $join_objects = array('in_next');
             } elseif($en_id == 6255){
-                //DISCOVER COIN
+                //READ COIN
                 $match_columns['ln_creator_source_id'] = $en['en_id'];
             }
 
-            //DISCOVER & BOOKMARKS
+            //READ & BOOKMARKS
             $item_counters = $this->LEDGER_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
 
             $counter = $item_counters[0]['totals'];
@@ -654,8 +654,8 @@ $is_source = en_is_source($en['en_id']);
             if($counter > 0 && (!$disable_content_loading || $auto_expand_tab)){
 
                 //Dynamic Loading when clicked:
-                $discover_history_ui = $this->DISCOVER_model->discover_history_ui($en_id, 0, $en['en_id']);
-                $this_tab .= $discover_history_ui['message'];
+                $read_history_ui = $this->READ_model->read_history_ui($en_id, 0, $en['en_id']);
+                $this_tab .= $read_history_ui['message'];
 
             }
 
@@ -684,7 +684,7 @@ $is_source = en_is_source($en['en_id']);
                 foreach($in_notes_query as $count => $in_notes) {
                     if(in_array($en_id, $this->config->item('en_ids_12321'))){
 
-                        $this_tab .= echo_in_discover($in_notes);
+                        $this_tab .= echo_in_read($in_notes);
 
                     } elseif(in_array($en_id, $this->config->item('en_ids_12322'))){
 
@@ -713,15 +713,15 @@ $is_source = en_is_source($en['en_id']);
 
             }
 
-        } elseif($en_id == 7347 /* DISCOVER LIST */){
+        } elseif($en_id == 7347 /* READ LIST */){
 
-            $player_discoveries = $this->LEDGER_model->ln_fetch(array(
+            $player_reads = $this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ), array('in_previous'), 1, 0, array(), 'COUNT(ln_id) as totals');
-            $counter = $player_discoveries[0]['totals'];
+            $counter = $player_reads[0]['totals'];
 
         }
 
@@ -733,7 +733,7 @@ $is_source = en_is_source($en['en_id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].( $counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_active(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].( $counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_active(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';

@@ -62,7 +62,7 @@ foreach($this->LEDGER_model->ln_fetch(array(
 
             //Update user progression link type:
             $user_steps = $this->LEDGER_model->ln_fetch(array(
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                 'ln_previous_idea_id' => $in_ln['in_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ), array(), 0);

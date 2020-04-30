@@ -76,7 +76,7 @@ function en_source_only_add(en_existing_id, note_type_id) {
 
             in_notes_counter(note_type_id, +1);
 
-            //Raw input to make it discovery for next URL:
+            //Raw input to make it reads for next URL:
             input.focus();
 
             //Add new object to list:
@@ -293,13 +293,13 @@ $(document).ready(function () {
 
 });
 
-function discover_preview(){
+function read_preview(){
     if(parseInt($('.dropi_4737_'+in_loaded_id+'_0.active').attr('new-en-id')) in js_en_all_7355){
         //Idea is public, go to preview:
         window.location = '/' + in_loaded_id;
     } else {
-        //Inform them that they cannot discover yet:
-        alert('You must publish idea before discovering it.');
+        //Inform them that they cannot read yet:
+        alert('You must publish idea before reading it.');
     }
 }
 
@@ -600,7 +600,7 @@ function in_notes_modify_save(ln_id, note_type_id) {
 
         } else {
             //Oops, some sort of an error, lets
-            $("#ul-nav-" + ln_id + " .edit-updates").html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + ln_id + " .edit-updates").html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
         }
 
         //Tooltips:
@@ -651,7 +651,7 @@ function in_message_form_unlock(result, note_type_id) {
 
     } else {
 
-        $(".note_error_"+note_type_id).html('<span class="discover">'+result.message+'</span>');
+        $(".note_error_"+note_type_id).html('<span class="read">'+result.message+'</span>');
 
     }
 }
@@ -973,16 +973,16 @@ function in_update_dropdown(element_id, new_en_id, in_id, ln_id, show_full_name)
         }
 
 
-        //Discovery Setting:
+        //Reads Setting:
         if(is_in_public){
 
-            //Enable Discovery:
-            $('.idea-discover').removeClass('hidden');
+            //Enable Reads:
+            $('.idea-read').removeClass('hidden');
 
         } else {
 
-            //Disable Discovery:
-            $('.idea-discover').addClass('hidden');
+            //Disable Reads:
+            $('.idea-read').addClass('hidden');
 
         }
 

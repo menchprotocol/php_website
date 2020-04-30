@@ -29,9 +29,9 @@ echo '/*<br />
 //PLATFORM STATS
 $cache_timestamp = time();
 $transactions = $this->LEDGER_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$discover_coins = $this->LEDGER_model->ln_fetch(array(
+$read_coins = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 $in_coins = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -50,7 +50,7 @@ echo '//Generated '.date("Y-m-d H:i:s", $cache_timestamp).' PST<br />';
 echo '<br />//PLATFORM STATS:<br />';
 echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
 echo '$config[\'cache_count_transaction\'] = '.$transactions[0]['totals'].';<br />';
-echo '$config[\'cache_count_discover\'] = '.$discover_coins[0]['totals'].';<br />';
+echo '$config[\'cache_count_read\'] = '.$read_coins[0]['totals'].';<br />';
 echo '$config[\'cache_count_idea\'] = '.$in_coins[0]['totals'].';<br />';
 echo '$config[\'cache_count_source\'] = '.$en_coins[0]['totals'].';<br />';
 echo '<br /><br />';

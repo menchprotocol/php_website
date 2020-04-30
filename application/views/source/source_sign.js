@@ -26,7 +26,7 @@ $(document).ready(function () {
 
 function goto_step(this_step_count){
 
-    //Update discover count:
+    //Update read count:
     step_count = this_step_count;
 
     $('.signup-steps').addClass('hidden');
@@ -73,12 +73,12 @@ function search_email(){
             $('.focus_email').html(data.clean_input_email);
             $('#email_errors').html('');
 
-            //Go to next discovery:
+            //Go to next reads:
             goto_step(( data.email_existed_previously ? 3 /* To ask for password */ : 4 /* To check their email and create new account */ ));
 
         } else {
             //Show errors:
-            $('#email_errors').html('<b class="montserrat discover"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+            $('#email_errors').html('<b class="montserrat read"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
             $('#input_email').focus();
         }
     });
@@ -113,7 +113,7 @@ function add_account(){
             $('#new_account_errors').html('');
 
             setTimeout(function () {
-                //Redirect to next discovery:
+                //Redirect to next reads:
                 window.location = data.login_url;
             }, 377);
 
@@ -131,7 +131,7 @@ function add_account(){
             }
 
             //Show errors:
-            $('#new_account_errors').html('<b class="montserrat discover"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+            $('#new_account_errors').html('<b class="montserrat read"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
         }
 
     });
@@ -175,7 +175,7 @@ function singin_check_password(){
             $('#input_password').prop('disabled', false).css('background-color','#FFFFFF').focus();
 
             //Show errors:
-            $('#password_errors').html('<b class="montserrat discover"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+            $('#password_errors').html('<b class="montserrat read"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
         }
 
     });
@@ -200,7 +200,7 @@ function magicemail(){
                 $('.magic_result').html('<div><i class="fas fa-eye"></i> Check your email and SPAM FOLDER</div>').hide().fadeIn();
             } else {
                 //Show errors:
-                $('.magic_result').html('<div class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</div>').hide().fadeIn();
+                $('.magic_result').html('<div class="read montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</div>').hide().fadeIn();
             }
         });
     }

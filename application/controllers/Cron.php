@@ -135,19 +135,19 @@ class Cron extends CI_Controller
         $in_coins_growth_rate = format_percentage(($in_coins_last_week[0]['totals'] / ( $in_coins_last_week[0]['totals'] - $in_coins_new_last_week[0]['totals'] ) * 100) - 100);
 
 
-        //DISCOVER
-        $discover_coins_new_last_week = $this->LEDGER_model->ln_fetch(array(
+        //READ
+        $read_coins_new_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_timestamp >=' => $last_week_start,
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $discover_coins_last_week = $this->LEDGER_model->ln_fetch(array(
+        $read_coins_last_week = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_timestamp <=' => $last_week_end,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-        $discover_coins_growth_rate = format_percentage(( $discover_coins_last_week[0]['totals'] / ( $discover_coins_last_week[0]['totals'] - $discover_coins_new_last_week[0]['totals'] ) * 100)-100);
+        $read_coins_growth_rate = format_percentage(( $read_coins_last_week[0]['totals'] / ( $read_coins_last_week[0]['totals'] - $read_coins_new_last_week[0]['totals'] ) * 100)-100);
 
 
 
@@ -188,7 +188,7 @@ class Cron extends CI_Controller
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $in_coins_growth_rate >= 0 ? '+' : '-' ).$in_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($in_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($in_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/idea" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">IDEA &raquo;</a></div>';
 
-        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $discover_coins_growth_rate >= 0 ? '+' : '-' ).$discover_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($discover_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($discover_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">DISCOVER &raquo;</a></div>';
+        $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($read_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($read_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
 
         $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $en_coins_growth_rate >= 0 ? '+' : '-' ).$en_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($en_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($en_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCE &raquo;</a></div>';
 

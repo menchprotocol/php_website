@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class DISCOVER_model extends CI_Model
+class READ_model extends CI_Model
 {
 
     /*
@@ -15,11 +15,11 @@ class DISCOVER_model extends CI_Model
     }
 
 
-    function discover_next_find($en_id, $in, $first_step = true){
+    function read_next_find($en_id, $in, $first_step = true){
 
         /*
          *
-         * Searches within a user DISCOVER LIST to find
+         * Searches within a user READ LIST to find
          * first incomplete step.
          *
          * */
@@ -70,7 +70,7 @@ class DISCOVER_model extends CI_Model
                     //See if this answer was selected:
                     if(count($this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINK
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
                         'ln_previous_idea_id' => $common_step_in_id,
                         'ln_next_idea_id' => $ln['in_id'],
                         'ln_creator_source_id' => $en_id, //Belongs to this User
@@ -81,7 +81,7 @@ class DISCOVER_model extends CI_Model
                         //Yes was answered, see if it's completed:
                         if(!count($this->LEDGER_model->ln_fetch(array(
                             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                            'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+                            'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                             'ln_creator_source_id' => $en_id, //Belongs to this User
                             'ln_previous_idea_id' => $ln['in_id'],
                         )))){
@@ -92,7 +92,7 @@ class DISCOVER_model extends CI_Model
                         } else {
 
                             //Answer previously completed, see if there is anyting else:
-                            $found_in_id = $this->DISCOVER_model->discover_next_find($en_id, $ln, false);
+                            $found_in_id = $this->READ_model->read_next_find($en_id, $ln, false);
                             if($found_in_id != 0){
                                 return $found_in_id;
                             }
@@ -109,7 +109,7 @@ class DISCOVER_model extends CI_Model
 
                 //See which path they got unlocked, if any:
                 foreach($this->LEDGER_model->ln_fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                     'ln_creator_source_id' => $en_id, //Belongs to this User
                     'ln_previous_idea_id' => $common_step_in_id,
                     'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
@@ -117,7 +117,7 @@ class DISCOVER_model extends CI_Model
                 ), array('in_next')) as $unlocked_condition){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_in_id = $this->DISCOVER_model->discover_next_find($en_id, $unlocked_condition, false);
+                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition, false);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -127,7 +127,7 @@ class DISCOVER_model extends CI_Model
 
             } elseif(!count($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+                    'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_creator_source_id' => $en_id, //Belongs to this User
                     'ln_previous_idea_id' => $common_step_in_id,
                 )))){
@@ -140,19 +140,19 @@ class DISCOVER_model extends CI_Model
         }
 
 
-        //If not part of the discovery list, go to discovery idea
+        //If not part of the reads list, go to reads idea
         if($first_step){
-            $player_discover_ids = $this->DISCOVER_model->discover_ids($en_id);
-            if(!in_array($in['in_id'], $player_discover_ids)){
+            $player_read_ids = $this->READ_model->read_ids($en_id);
+            if(!in_array($in['in_id'], $player_read_ids)){
                 foreach($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
-                    if (array_intersect($grand_parent_ids, $player_discover_ids)) {
+                    if (array_intersect($grand_parent_ids, $player_read_ids)) {
                         foreach($grand_parent_ids as $parent_in_id){
                             $ins = $this->IDEA_model->in_fetch(array(
                                 'in_id' => $parent_in_id,
                                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                             ));
                             if(count($ins)){
-                                $found_in_id = $this->DISCOVER_model->discover_next_find($en_id, $ins[0], false);
+                                $found_in_id = $this->READ_model->read_next_find($en_id, $ins[0], false);
                                 if($found_in_id != 0){
                                     return $found_in_id;
                                 }
@@ -170,36 +170,36 @@ class DISCOVER_model extends CI_Model
 
     }
 
-    function discover_next_go($en_id)
+    function read_next_go($en_id)
     {
 
         /*
          *
-         * Searches for the next DISCOVER LIST step
+         * Searches for the next READ LIST step
          *
          * */
 
-        $player_discoveries = $this->LEDGER_model->ln_fetch(array(
+        $player_reads = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
 
-        if(!count($player_discoveries)){
+        if(!count($player_reads)){
             return 0;
         }
 
-        //Loop through DISCOVER LIST Ideas and see what's next:
-        foreach($player_discoveries as $user_in){
+        //Loop through READ LIST Ideas and see what's next:
+        foreach($player_reads as $user_in){
 
-            //Find first incomplete step for this DISCOVER LIST Idea:
-            $next_in_id = $this->DISCOVER_model->discover_next_find($en_id, $user_in);
+            //Find first incomplete step for this READ LIST Idea:
+            $next_in_id = $this->READ_model->read_next_find($en_id, $user_in);
 
             if($next_in_id < 0){
 
                 //We need to terminate this:
-                $this->DISCOVER_model->discover_delete($en_id, $user_in['in_id'], 7757); //MENCH REMOVED BOOKMARK
+                $this->READ_model->read_delete($en_id, $user_in['in_id'], 7757); //MENCH REMOVED BOOKMARK
                 break;
 
             } elseif($next_in_id > 0){
@@ -216,11 +216,11 @@ class DISCOVER_model extends CI_Model
     }
 
 
-    function discover_focus($en_id){
+    function read_focus($en_id){
 
         /*
          *
-         * A function that goes through the DISCOVER LIST
+         * A function that goes through the READ LIST
          * and finds the top-priority that the user
          * is currently working on.
          *
@@ -229,13 +229,13 @@ class DISCOVER_model extends CI_Model
         $top_priority_in = false;
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
-            $completion_rate = $this->DISCOVER_model->discover_completion_progress($en_id, $actionplan_in);
+            $completion_rate = $this->READ_model->read_completion_progress($en_id, $actionplan_in);
 
             if($completion_rate['completion_percentage'] < 100){
                 //This is the top priority now:
@@ -257,10 +257,10 @@ class DISCOVER_model extends CI_Model
 
     }
 
-    function discover_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
+    function read_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
 
 
-        if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* DISCOVER LIST Idea Completed */)){
+        if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* READ LIST Idea Completed */)){
             return array(
                 'status' => 0,
                 'message' => 'Invalid stop method',
@@ -278,22 +278,22 @@ class DISCOVER_model extends CI_Model
             );
         }
 
-        //Go ahead and delete from DISCOVER LIST:
-        $player_discoveries = $this->LEDGER_model->ln_fetch(array(
+        //Go ahead and delete from READ LIST:
+        $player_reads = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_previous_idea_id' => $in_id,
         ));
-        if(count($player_discoveries) < 1){
+        if(count($player_reads) < 1){
             return array(
                 'status' => 0,
-                'message' => 'Could not locate DISCOVER LIST',
+                'message' => 'Could not locate READ LIST',
             );
         }
 
         //Delete Bookmark:
-        foreach($player_discoveries as $ln){
+        foreach($player_reads as $ln){
             $this->LEDGER_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $stop_feedback,
                 'ln_status_source_id' => 6173, //DELETED
@@ -307,7 +307,7 @@ class DISCOVER_model extends CI_Model
 
     }
 
-    function discover_start($en_id, $in_id, $recommender_in_id = 0){
+    function read_start($en_id, $in_id, $recommender_in_id = 0){
 
         //Validate Idea ID:
         $ins = $this->IDEA_model->in_fetch(array(
@@ -319,37 +319,37 @@ class DISCOVER_model extends CI_Model
         }
 
 
-        //Make sure not previously added to this User's DISCOVER LIST:
+        //Make sure not previously added to this User's READ LIST:
         if(!count($this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in_id,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             )))){
 
-            //Not added to their discovery list so far, let's go ahead and add it:
+            //Not added to their reads list so far, let's go ahead and add it:
             $in_rank = 1;
             $actionplan = $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => ( $recommender_in_id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id' => $ins[0]['in_id'], //The Idea they are adding
                 'ln_next_idea_id' => $recommender_in_id, //Store the recommended idea
-                'ln_order' => $in_rank, //Always place at the top of their discovery list
+                'ln_order' => $in_rank, //Always place at the top of their reads list
             ));
 
-            //Mark as discovered if possible:
+            //Mark as readed if possible:
             if($ins[0]['in_type_source_id']==6677){
-                $this->DISCOVER_model->discover_is_complete($ins[0], array(
-                    'ln_type_source_id' => 4559, //DISCOVER MESSAGES
+                $this->READ_model->read_is_complete($ins[0], array(
+                    'ln_type_source_id' => 4559, //READ MESSAGES
                     'ln_creator_source_id' => $en_id,
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 ));
             }
 
-            //Move other ideas down in the discovery list:
+            //Move other ideas down in the reads list:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_id !=' => $actionplan['ln_id'], //Not the newly added idea
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_creator_source_id' => $en_id, //Belongs to this User
             ), array(''), 0, 0, array('ln_order' => 'ASC')) as $current_ins){
@@ -372,7 +372,7 @@ class DISCOVER_model extends CI_Model
 
 
 
-    function discover_completion_recursive_up($en_id, $in, $is_bottom_level = true){
+    function read_completion_recursive_up($en_id, $in, $is_bottom_level = true){
 
         /*
          *
@@ -384,7 +384,7 @@ class DISCOVER_model extends CI_Model
 
 
         //First let's make sure this entire Idea completed by the user:
-        $completion_rate = $this->DISCOVER_model->discover_completion_progress($en_id, $in);
+        $completion_rate = $this->READ_model->read_completion_progress($en_id, $in);
 
 
         if($completion_rate['completion_percentage'] < 100){
@@ -400,7 +400,7 @@ class DISCOVER_model extends CI_Model
             //Make sure previous link unlocks have NOT happened before:
             $existing_expansions = $this->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
+                'ln_type_source_id' => 6140, //READ UNLOCK LINK
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in['in_id'],
                 'ln_next_idea_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
@@ -430,7 +430,7 @@ class DISCOVER_model extends CI_Model
 
 
             //Yes, Let's calculate user's score for this idea:
-            $user_marks = $this->DISCOVER_model->discover_completion_marks($en_id, $in);
+            $user_marks = $this->READ_model->read_completion_marks($en_id, $in);
 
 
 
@@ -466,9 +466,9 @@ class DISCOVER_model extends CI_Model
                     //Found a match:
                     $found_match++;
 
-                    //Unlock DISCOVER LIST:
+                    //Unlock READ LIST:
                     $this->LEDGER_model->ln_create(array(
-                        'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
+                        'ln_type_source_id' => 6140, //READ UNLOCK LINK
                         'ln_creator_source_id' => $en_id,
                         'ln_previous_idea_id' => $in['in_id'],
                         'ln_next_idea_id' => $locked_link['in_id'],
@@ -504,7 +504,7 @@ class DISCOVER_model extends CI_Model
         if($is_bottom_level){
 
             //Fetch user ideas:
-            $player_discover_ids = $this->DISCOVER_model->discover_ids($en_id);
+            $player_read_ids = $this->READ_model->read_ids($en_id);
 
             //Prevent duplicate processes even if on multiple parent ideas:
             $parents_checked = array();
@@ -513,8 +513,8 @@ class DISCOVER_model extends CI_Model
             foreach($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user ideas?
-                if(!array_intersect($grand_parent_ids, $player_discover_ids)){
-                    //Parent idea is NOT part of their DISCOVER LIST:
+                if(!array_intersect($grand_parent_ids, $player_read_ids)){
+                    //Parent idea is NOT part of their READ LIST:
                     continue;
                 }
 
@@ -538,12 +538,12 @@ class DISCOVER_model extends CI_Model
                     if(count($parent_ins) > 0){
 
                         //Fetch parent completion:
-                        $this->DISCOVER_model->discover_completion_recursive_up($en_id, $parent_ins[0], false);
+                        $this->READ_model->read_completion_recursive_up($en_id, $parent_ins[0], false);
 
                     }
 
-                    //Terminate if we reached the DISCOVER LIST idea level:
-                    if(in_array($p_id , $player_discover_ids)){
+                    //Terminate if we reached the READ LIST idea level:
+                    if(in_array($p_id , $player_read_ids)){
                         break;
                     }
                 }
@@ -555,7 +555,7 @@ class DISCOVER_model extends CI_Model
     }
 
 
-    function discover_unlock_locked_step($en_id, $in){
+    function read_unlock_locked_step($en_id, $in){
 
         /*
          * A function that starts from a locked idea and checks:
@@ -613,7 +613,7 @@ class DISCOVER_model extends CI_Model
                 //Always add all the first users to the full list:
                 $qualified_completed_users = $this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                     'ln_previous_idea_id' => $child_in['in_id'],
                 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -630,7 +630,7 @@ class DISCOVER_model extends CI_Model
                     //Update list of qualified users:
                     $qualified_completed_users = $this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                         'ln_previous_idea_id' => $child_in['in_id'],
                     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -650,22 +650,22 @@ class DISCOVER_model extends CI_Model
 
 
 
-    function discover_is_complete($in, $insert_columns){
+    function read_is_complete($in, $insert_columns){
 
         //Log completion link:
         $new_link = $this->LEDGER_model->ln_create($insert_columns);
 
         //Process completion automations:
-        $this->DISCOVER_model->discover_completion_recursive_up($insert_columns['ln_creator_source_id'], $in);
+        $this->READ_model->read_completion_recursive_up($insert_columns['ln_creator_source_id'], $in);
 
         return $new_link;
 
     }
 
-    function discover_echo($in_id, $recipient_en){
+    function read_echo($in_id, $recipient_en){
 
         /*
-         * Function to discover na Idea, it's messages,
+         * Function to read na Idea, it's messages,
          * and necessary inputs to complete it.
          *
          */
@@ -716,15 +716,15 @@ class DISCOVER_model extends CI_Model
         ));
 
 
-        $in_discovery_list = false;
+        $in_reads_list = false;
         if($recipient_en['en_id'] > 0){
 
-            //Fetch entire discovery list:
-            $player_discover_ids = $this->DISCOVER_model->discover_ids($recipient_en['en_id']);
+            //Fetch entire reads list:
+            $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
 
-            if(in_array($ins[0]['in_id'], $player_discover_ids)){
+            if(in_array($ins[0]['in_id'], $player_read_ids)){
 
-                $in_discovery_list = true;
+                $in_reads_list = true;
 
             } else {
 
@@ -732,9 +732,9 @@ class DISCOVER_model extends CI_Model
                 foreach($this->IDEA_model->in_recursive_parents($ins[0]['in_id']) as $grand_parent_ids) {
 
                     //Does this parent and its grandparents have an intersection with the user ideas?
-                    if (array_intersect($grand_parent_ids, $player_discover_ids)) {
-                        //Idea is part of their DISCOVER LIST:
-                        $in_discovery_list = true;
+                    if (array_intersect($grand_parent_ids, $player_read_ids)) {
+                        //Idea is part of their READ LIST:
+                        $in_reads_list = true;
                         break;
                     }
                 }
@@ -745,13 +745,13 @@ class DISCOVER_model extends CI_Model
 
         /*
          *
-         * Determine next Discovery
+         * Determine next Reads
          *
          */
-        if(!$in_discovery_list){
+        if(!$in_reads_list){
 
             //IDEA TITLE
-            echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
+            echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle read"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
 
 
             foreach($in__messages as $message_ln) {
@@ -787,7 +787,7 @@ class DISCOVER_model extends CI_Model
                     //List Children:
                     echo '<div class="list-group">';
                     foreach($in__next as $key => $child_in){
-                        echo echo_in_discover($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
+                        echo echo_in_read($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
                     }
                     echo '</div>';
                 }
@@ -805,7 +805,7 @@ class DISCOVER_model extends CI_Model
                         $metadata['in__metadata_max_steps']--;//Do not include the main idea itself
                     }
 
-                    echo '<div class="discover-topic skip-grey"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="idea doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas idea"></i><i class="fas fa-minus-circle contentTabIdeas hidden idea"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $has_time ? ( $has_idea ? ' in ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
+                    echo '<div class="read-topic skip-grey"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="idea doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas idea"></i><i class="fas fa-minus-circle contentTabIdeas hidden idea"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $has_time ? ( $has_idea ? ' in ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
 
                     //BODY
                     echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
@@ -813,7 +813,7 @@ class DISCOVER_model extends CI_Model
                         //List Children:
                         echo '<div class="list-group">';
                         foreach($in__next as $key => $child_in){
-                            echo echo_in_discover($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
+                            echo echo_in_read($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
                         }
                         echo '</div>';
                     }
@@ -831,7 +831,7 @@ class DISCOVER_model extends CI_Model
                 }
                 if ($source_count > 0) {
 
-                    echo '<div class="discover-topic skip-grey"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="source doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts source"></i><i class="fas fa-minus-circle contentTabExperts source hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
+                    echo '<div class="read-topic skip-grey"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="source doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts source"></i><i class="fas fa-minus-circle contentTabExperts source hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
                     echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
                     echo '<div class="list-group">';
@@ -858,7 +858,7 @@ class DISCOVER_model extends CI_Model
 
 
                 //Redirect to login page:
-                echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
+                echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$ins[0]['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
 
             }
 
@@ -870,7 +870,7 @@ class DISCOVER_model extends CI_Model
 
 
         /*
-         * Previously in source's discovery list...
+         * Previously in source's reads list...
          *
          */
 
@@ -879,9 +879,9 @@ class DISCOVER_model extends CI_Model
 
 
         //Fetch progress history:
-        $discover_completes = $this->LEDGER_model->ln_fetch(array(
+        $read_completes = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
             'ln_creator_source_id' => $recipient_en['en_id'],
             'ln_previous_idea_id' => $ins[0]['in_id'],
         ));
@@ -891,15 +891,15 @@ class DISCOVER_model extends CI_Model
 
 
         //Is it incomplete & can it be instantly marked as complete?
-        if (!count($discover_completes) && in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_12330'))) {
+        if (!count($read_completes) && in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_12330'))) {
 
             //We might be able to complete it now:
             //It can, let's process it accordingly for each type within @12330
             if ($ins[0]['in_type_source_id'] == 6677 && $qualify_for_autocomplete) {
 
-                //They should discover and then complete...
-                array_push($discover_completes, $this->DISCOVER_model->discover_is_complete($ins[0], array(
-                    'ln_type_source_id' => 4559, //DISCOVER MESSAGES
+                //They should read and then complete...
+                array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
+                    'ln_type_source_id' => 4559, //READ MESSAGES
                     'ln_creator_source_id' => $recipient_en['en_id'],
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 )));
@@ -910,7 +910,7 @@ class DISCOVER_model extends CI_Model
                 $unlocked_connections = $this->LEDGER_model->ln_fetch(array(
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                     'ln_next_idea_id' => $ins[0]['in_id'],
                     'ln_creator_source_id' => $recipient_en['en_id'],
                 ), array('in_previous'), 1);
@@ -919,21 +919,21 @@ class DISCOVER_model extends CI_Model
 
                     //They previously have unlocked a path here!
 
-                    //Determine DISCOVER COIN type based on it's connection type's parents that will hold the appropriate discover coin.
-                    $discover_completion_type_id = 0;
-                    foreach($this->config->item('en_all_12327') /* DISCOVER UNLOCKS */ as $en_id => $m){
+                    //Determine READ COIN type based on it's connection type's parents that will hold the appropriate read coin.
+                    $read_completion_type_id = 0;
+                    foreach($this->config->item('en_all_12327') /* READ UNLOCKS */ as $en_id => $m){
                         if(in_array($unlocked_connections[0]['ln_type_source_id'], $m['m_parents'])){
-                            $discover_completion_type_id = $en_id;
+                            $read_completion_type_id = $en_id;
                             break;
                         }
                     }
 
                     //Could we determine the coin type?
-                    if($discover_completion_type_id > 0){
+                    if($read_completion_type_id > 0){
 
                         //Yes, Issue coin:
-                        array_push($discover_completes, $this->DISCOVER_model->discover_is_complete($ins[0], array(
-                            'ln_type_source_id' => $discover_completion_type_id,
+                        array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
+                            'ln_type_source_id' => $read_completion_type_id,
                             'ln_creator_source_id' => $recipient_en['en_id'],
                             'ln_previous_idea_id' => $ins[0]['in_id'],
                         )));
@@ -944,7 +944,7 @@ class DISCOVER_model extends CI_Model
                         $this->LEDGER_model->ln_create(array(
                             'ln_type_source_id' => 4246, //Platform Bug Reports
                             'ln_creator_source_id' => $recipient_en['en_id'],
-                            'ln_content' => 'discover_coin() found idea connector ['.$unlocked_connections[0]['ln_type_source_id'].'] without a valid unlock method @12327',
+                            'ln_content' => 'read_coin() found idea connector ['.$unlocked_connections[0]['ln_type_source_id'].'] without a valid unlock method @12327',
                             'ln_previous_idea_id' => $ins[0]['in_id'],
                             'ln_parent_transaction_id' => $unlocked_connections[0]['ln_id'],
                         ));
@@ -960,7 +960,7 @@ class DISCOVER_model extends CI_Model
                     if(!count($unlock_paths)){
 
                         //No path found:
-                        array_push($discover_completes, $this->DISCOVER_model->discover_is_complete($ins[0], array(
+                        array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
                             'ln_type_source_id' => 7492, //TERMINATE
                             'ln_creator_source_id' => $recipient_en['en_id'],
                             'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -974,23 +974,23 @@ class DISCOVER_model extends CI_Model
 
 
         // % DONE
-        $completion_rate = $this->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $ins[0]);
+        $completion_rate = $this->READ_model->read_completion_progress($recipient_en['en_id'], $ins[0]);
         $metadata = unserialize($ins[0]['in_metadata']);
         $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
 
-        echo '<div class="hideIfEmpty main_discovery_top"></div>';
+        echo '<div class="hideIfEmpty main_reads_top"></div>';
 
-        //DISCOVER PROGRESS
+        //READ PROGRESS
         if($completion_rate['completion_percentage']>0){
-            echo '<div class="progress-bg no-horizonal-margin" title="Discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+            echo '<div class="progress-bg no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
         } else {
             //Replace with empty space:
             echo '<div class="high3x">&nbsp;</div>';
         }
 
-        //DISCOVER TITLE
-        echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
+        //READ TITLE
+        echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
 
 
 
@@ -1003,9 +1003,9 @@ class DISCOVER_model extends CI_Model
 
 
 
-        if(count($discover_completes) && $qualify_for_autocomplete){
+        if(count($read_completes) && $qualify_for_autocomplete){
             //Move to the next one as there is nothing to do here:
-            echo "<script> $(document).ready(function () { window.location = '/discover/next/' + in_loaded_id + '".( isset($_GET['came_from']) && $_GET['came_from']>0 ? '?came_from='.$_GET['came_from'] : '' )."'; }); </script>";
+            echo "<script> $(document).ready(function () { window.location = '/read/next/' + in_loaded_id + '".( isset($_GET['came_from']) && $_GET['came_from']>0 ? '?came_from='.$_GET['came_from'] : '' )."'; }); </script>";
         }
 
 
@@ -1015,7 +1015,7 @@ class DISCOVER_model extends CI_Model
         $unlocked_steps = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-            'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
+            'ln_type_source_id' => 6140, //READ UNLOCK LINK
             'ln_creator_source_id' => $recipient_en['en_id'],
             'ln_previous_idea_id' => $ins[0]['in_id'],
         ), array('in_next'), 0);
@@ -1033,7 +1033,7 @@ class DISCOVER_model extends CI_Model
 
 
             //Requirement lock
-            if(!count($discover_completes) && !count($unlocked_connections) && count($unlock_paths)){
+            if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
                 //List Unlock paths:
                 echo_in_list($ins[0], $unlock_paths, $recipient_en, '<span class="icon-block"><i class="fas fa-step-forward"></i></span>SUGGESTED IDEAS:');
@@ -1054,13 +1054,13 @@ class DISCOVER_model extends CI_Model
                 //Mark this as complete since there is no child to choose from:
                 if(!count($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+                    'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_creator_source_id' => $recipient_en['en_id'],
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 )))){
 
-                    array_push($discover_completes, $this->DISCOVER_model->discover_is_complete($ins[0], array(
-                        'ln_type_source_id' => 4559, //DISCOVER MESSAGES
+                    array_push($read_completes, $this->READ_model->read_is_complete($ins[0], array(
+                        'ln_type_source_id' => 4559, //READ MESSAGES
                         'ln_creator_source_id' => $recipient_en['en_id'],
                         'ln_previous_idea_id' => $ins[0]['in_id'],
                     )));
@@ -1073,7 +1073,7 @@ class DISCOVER_model extends CI_Model
             } else {
 
                 //First fetch answers based on correct order:
-                $discover_answers = array();
+                $read_answers = array();
                 foreach($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
@@ -1083,27 +1083,27 @@ class DISCOVER_model extends CI_Model
                     //See if this answer was seleted:
                     if(count($this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINK
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
                         'ln_previous_idea_id' => $ins[0]['in_id'],
                         'ln_next_idea_id' => $ln['in_id'],
                         'ln_creator_source_id' => $recipient_en['en_id'],
                     )))){
-                        array_push($discover_answers, $ln);
+                        array_push($read_answers, $ln);
                     }
                 }
 
-                if(count($discover_answers) > 0){
+                if(count($read_answers) > 0){
                     //MODIFY ANSWER
                     echo '<div class="edit_select_answer">';
 
                     //List answers:
-                    echo_in_list($ins[0], $discover_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
+                    echo_in_list($ins[0], $read_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
 
                     echo '<div class="doclear">&nbsp;</div>';
 
                     echo_in_next_previous($ins[0]['in_id'], $recipient_en);
 
-                    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
+                    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
 
                     echo '<div class="doclear">&nbsp;</div>';
 
@@ -1111,16 +1111,16 @@ class DISCOVER_model extends CI_Model
                 }
 
 
-                echo '<div class="edit_select_answer '.( count($discover_answers)>0 ? 'hidden' : '' ).'">';
+                echo '<div class="edit_select_answer '.( count($read_answers)>0 ? 'hidden' : '' ).'">';
 
                 //HTML:
                 if ($ins[0]['in_type_source_id'] == 6684) {
 
-                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
+                    echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
 
                 } elseif ($ins[0]['in_type_source_id'] == 7231) {
 
-                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
+                    echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
 
                 }
 
@@ -1140,18 +1140,18 @@ class DISCOVER_model extends CI_Model
                     //Has this been previously selected?
                     $previously_selected = count($this->LEDGER_model->ln_fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                         'ln_previous_idea_id' => $ins[0]['in_id'],
                         'ln_next_idea_id' => $child_in['in_id'],
                         'ln_creator_source_id' => $recipient_en['en_id'],
                     )));
 
 
-                    echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemdiscover no-left-padding">';
+                    echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread no-left-padding">';
 
 
                     echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                    echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle discover"></i></td>';
+                    echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
 
                     echo '<td style="width: 100%; padding: 0 !important;">';
                     echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, false, $common_prefix).'</b>';
@@ -1172,14 +1172,14 @@ class DISCOVER_model extends CI_Model
 
                 echo '<div class="result-update margin-top-down"></div>';
 
-                echo echo_in_previous_discover($in_id, $recipient_en);
+                echo echo_in_previous_read($in_id, $recipient_en);
 
                 //Button to submit selection:
-                if(count($discover_answers)>0){
-                    echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
+                if(count($read_answers)>0){
+                    echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
                 }
 
-                echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="discover_answer()"><i class="fas fa-step-forward"></i></a></div>';
+                echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0)" onclick="read_answer()"><i class="fas fa-step-forward"></i></a></div>';
 
                 echo '</div>';
 
@@ -1189,7 +1189,7 @@ class DISCOVER_model extends CI_Model
 
             if ($ins[0]['in_type_source_id'] == 6677) {
 
-                //DISCOVER ONLY
+                //READ ONLY
 
                 //Next Ideas:
                 echo_in_list($ins[0], $in__next, $recipient_en);
@@ -1198,23 +1198,23 @@ class DISCOVER_model extends CI_Model
 
                 //TEXT RESPONSE
 
-                echo '<textarea class="border i_content padded discover_input" placeholder="Your Answer Here..." id="discover_text_answer">'.( count($discover_completes) ? trim($discover_completes[0]['ln_content']) : '' ).'</textarea>';
+                echo '<textarea class="border i_content padded read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( count($read_completes) ? trim($read_completes[0]['ln_content']) : '' ).'</textarea>';
 
                 echo '<div class="text_saving_result margin-top-down"></div>';
 
                 //Show Previous Button:
-                echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
+                echo echo_in_previous_read($ins[0]['in_id'], $recipient_en);
 
                 //Save/Upload & Next:
-                echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="discover_text_answer()"><i class="fas fa-step-forward"></i></a></div>';
+                echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_text_answer()"><i class="fas fa-step-forward"></i></a></div>';
 
 
-                if(count($discover_completes)){
+                if(count($read_completes)){
                     //Next Ideas:
                     echo_in_list($ins[0], $in__next, $recipient_en, null,false);
                 }
 
-                echo '<script> $(document).ready(function () { autosize($(\'#discover_text_answer\')); $(\'#discover_text_answer\').focus(); }); </script>';
+                echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
 
 
             } elseif (in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7751'))) {
@@ -1227,11 +1227,11 @@ class DISCOVER_model extends CI_Model
                 echo '<input class="inputfile" type="file" name="file" id="fileType'.$ins[0]['in_type_source_id'].'" />';
 
 
-                if(!count($discover_completes)) {
+                if(!count($read_completes)) {
 
                     //Show Previous Button:
                     echo '<div class="file_saving_result">';
-                    echo echo_in_previous_discover($ins[0]['in_id'], $recipient_en);
+                    echo echo_in_previous_read($ins[0]['in_id'], $recipient_en);
                     echo '</div>';
 
                     //Show next here but keep hidden until file is uploaded:
@@ -1239,20 +1239,20 @@ class DISCOVER_model extends CI_Model
                     echo_in_next_previous($ins[0]['in_id'], $recipient_en);
                     echo '</div>';
 
-                    echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$ins[0]['in_type_source_id'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+                    echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-read btn-circle inline-block" for="fileType'.$ins[0]['in_type_source_id'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
                 } else {
 
                     echo '<div class="file_saving_result">';
 
-                    echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->send_message($discover_completes[0]['ln_content']).'</div>';
+                    echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->send_message($read_completes[0]['ln_content']).'</div>';
 
                     echo '</div>';
 
                     //Any child ideas?
                     echo_in_list($ins[0], $in__next, $recipient_en, null, true, false);
 
-                    echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+                    echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-read inline-block btn-circle" for="fileType'.$ins[0]['in_type_source_id'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
                 }
 
@@ -1277,16 +1277,16 @@ class DISCOVER_model extends CI_Model
 
     }
 
-    function discover_completion_marks($en_id, $in, $top_level = true)
+    function read_completion_marks($en_id, $in, $top_level = true)
     {
 
-        //Fetch/validate DISCOVER LIST Common Ideas:
+        //Fetch/validate READ LIST Common Ideas:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
 
             //Should not happen, log error:
             $this->LEDGER_model->ln_create(array(
-                'ln_content' => 'completion_marks() Detected user DISCOVER LIST without in__metadata_common_steps value!',
+                'ln_content' => 'completion_marks() Detected user READ LIST without in__metadata_common_steps value!',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in['in_id'],
@@ -1369,7 +1369,7 @@ class DISCOVER_model extends CI_Model
             //Now let's check user answers to see what they have done:
             $total_completion = $this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_completions');
@@ -1380,14 +1380,14 @@ class DISCOVER_model extends CI_Model
             //Go through answers:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_next'), 500) as $answer_in) {
 
                 //Fetch recursively:
-                $recursive_stats = $this->DISCOVER_model->discover_completion_marks($en_id, $answer_in, false);
+                $recursive_stats = $this->READ_model->read_completion_marks($en_id, $answer_in, false);
 
                 $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
                 $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['in_id']] + $recursive_stats['steps_answered_marks'];
@@ -1449,7 +1449,7 @@ class DISCOVER_model extends CI_Model
             //Now let's check user answers to see what they have done:
             $total_completion = $this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             ), array(), 0, 0, array(), 'COUNT(ln_id) as total_completions');
@@ -1460,14 +1460,14 @@ class DISCOVER_model extends CI_Model
             //Go through answers:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_next'), 500) as $answer_in) {
 
                 //Fetch recursively:
-                $recursive_stats = $this->DISCOVER_model->discover_completion_marks($en_id, $answer_in, false);
+                $recursive_stats = $this->READ_model->read_completion_marks($en_id, $answer_in, false);
 
                 $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
                 $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['in_id']] + $recursive_stats['steps_answered_marks'];
@@ -1499,14 +1499,14 @@ class DISCOVER_model extends CI_Model
 
 
 
-    function discover_completion_progress($en_id, $in, $top_level = true)
+    function read_completion_progress($en_id, $in, $top_level = true)
     {
 
         if(!isset($in['in_metadata'])){
             return false;
         }
 
-        //Fetch/validate DISCOVER LIST Common Ideas:
+        //Fetch/validate READ LIST Common Ideas:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
             //Since it's not there yet we assume the idea it self only!
@@ -1527,7 +1527,7 @@ class DISCOVER_model extends CI_Model
 
         //Count completed for user:
         $common_completed = $this->LEDGER_model->ln_fetch(array(
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
             'ln_creator_source_id' => $en_id, //Belongs to this User
             'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -1557,7 +1557,7 @@ class DISCOVER_model extends CI_Model
 
             //Now let's check user answers to see what they have done:
             foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //DISCOVER IDEA LINKS
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_next_idea_id IN (' . join(',', $answer_array) . ')' => null,
@@ -1566,7 +1566,7 @@ class DISCOVER_model extends CI_Model
             ), array('in_next')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->DISCOVER_model->discover_completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->READ_model->read_completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -1582,7 +1582,7 @@ class DISCOVER_model extends CI_Model
 
             //Now let's check if user has unlocked any Miletones:
             foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_type_source_id' => 6140, //DISCOVER UNLOCK LINK
+                'ln_type_source_id' => 6140, //READ UNLOCK LINK
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_next_idea_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
@@ -1591,7 +1591,7 @@ class DISCOVER_model extends CI_Model
             ), array('in_next')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->DISCOVER_model->discover_completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->READ_model->read_completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -1607,7 +1607,7 @@ class DISCOVER_model extends CI_Model
 
             /*
              *
-             * Completing an DISCOVER LIST depends on two factors:
+             * Completing an READ LIST depends on two factors:
              *
              * 1) number of steps (some may have 0 time estimate)
              * 2) estimated seconds (usual ly accurate)
@@ -1643,25 +1643,25 @@ class DISCOVER_model extends CI_Model
     }
 
 
-    function discover_ids($en_id){
-        //Simply returns all the idea IDs for a user's DISCOVER LIST:
-        $player_discover_ids = array();
+    function read_ids($en_id){
+        //Simply returns all the idea IDs for a user's READ LIST:
+        $player_read_ids = array();
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0) as $user_in){
-            array_push($player_discover_ids, intval($user_in['in_id']));
+            array_push($player_read_ids, intval($user_in['in_id']));
         }
-        return $player_discover_ids;
+        return $player_read_ids;
     }
 
 
 
 
 
-    function discover_history_ui($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
+    function read_history_ui($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
         if (!$note_in_id && !$owner_en_id) {
 
@@ -1670,11 +1670,11 @@ class DISCOVER_model extends CI_Model
                 'message' => 'Require either Idea or Play ID',
             );
 
-        } elseif (!in_array($tab_group_id, $this->config->item('en_ids_12410') /* IDEA & DISCOVER COIN */) || !count($this->config->item('en_ids_'.$tab_group_id))) {
+        } elseif (!in_array($tab_group_id, $this->config->item('en_ids_12410') /* IDEA & READ COIN */) || !count($this->config->item('en_ids_'.$tab_group_id))) {
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid Discovery Type Group ID',
+                'message' => 'Invalid Reads Type Group ID',
             );
 
         }
@@ -1699,11 +1699,11 @@ class DISCOVER_model extends CI_Model
             if($tab_group_id == 12273 /* IDEA COIN */){
 
                 $order_columns = array('in_weight' => 'DESC');
-                $list_class = 'itemdiscover';
+                $list_class = 'itemread';
                 $join_objects = array('in_next');
                 $match_columns['ln_profile_source_id'] = $owner_en_id;
 
-            } elseif($tab_group_id == 6255 /* DISCOVER COIN */){
+            } elseif($tab_group_id == 6255 /* READ COIN */){
 
                 $order_columns = array('in_weight' => 'DESC');
                 $list_class = 'itemsource';
@@ -1717,12 +1717,12 @@ class DISCOVER_model extends CI_Model
 
         $in_query = $this->LEDGER_model->ln_fetch($match_columns, $join_objects, config_var(11064), 0, $order_columns);
 
-        //List Discovery History:
-        $ui = '<div class="list-group dynamic-discoveries">';
+        //List Reads History:
+        $ui = '<div class="list-group dynamic-reads">';
         if($note_in_id > 0){
 
-            foreach($in_query as $count => $in_discover){
-                $ui .= echo_en($in_discover);
+            foreach($in_query as $count => $in_read){
+                $ui .= echo_en($in_read);
             }
 
         } elseif($owner_en_id > 0){
@@ -1731,23 +1731,23 @@ class DISCOVER_model extends CI_Model
             $bold_upto_weight = in_calc_bold_upto_weight($in_query);
             $show_max = config_var(11986);
 
-            foreach($in_query as $count => $in_discover){
+            foreach($in_query as $count => $in_read){
 
                 $infobar_details = null;
-                if(strlen($in_discover['ln_content'])){
+                if(strlen($in_read['ln_content'])){
                     $infobar_details .= '<div class="message_content">';
-                    $infobar_details .= $this->COMMUNICATION_model->send_message($in_discover['ln_content']);
+                    $infobar_details .= $this->COMMUNICATION_model->send_message($in_read['ln_content']);
                     $infobar_details .= '</div>';
                 }
 
-                $do_hide = (($bold_upto_weight && $bold_upto_weight>=$in_discover['in_weight']) || ($count >= $show_max));
+                $do_hide = (($bold_upto_weight && $bold_upto_weight>=$in_read['in_weight']) || ($count >= $show_max));
 
                 if(!$previous_do_hide && $do_hide){
                     $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
                     $ui .= '<div class="see_more_sources"></div>';
                 }
 
-                $ui .= echo_in($in_discover, 0, false, false, null, ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+                $ui .= echo_in($in_read, 0, false, false, null, ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
 
                 $previous_do_hide = $do_hide;
 
@@ -1767,7 +1767,7 @@ class DISCOVER_model extends CI_Model
 
 
 
-    function discover_answer($en_id, $question_in_id, $answer_in_ids){
+    function read_answer($en_id, $question_in_id, $answer_in_ids){
 
         $ins = $this->IDEA_model->in_fetch(array(
             'in_id' => $question_in_id,
@@ -1818,13 +1818,13 @@ class DISCOVER_model extends CI_Model
         //Delete ALL previous answers:
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //DISCOVER ANSWERED
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //READ ANSWERED
             'ln_creator_source_id' => $en_id,
             'ln_previous_idea_id' => $ins[0]['in_id'],
-        )) as $discover_progress){
-            $this->LEDGER_model->ln_update($discover_progress['ln_id'], array(
+        )) as $read_progress){
+            $this->LEDGER_model->ln_update($read_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
-            ), $en_id, 12129 /* DISCOVER ANSWER DELETED */);
+            ), $en_id, 12129 /* READ ANSWER DELETED */);
         }
 
         //Add New Answers
@@ -1848,8 +1848,8 @@ class DISCOVER_model extends CI_Model
             );
         }
 
-        //Issue DISCOVER/IDEA COIN:
-        $this->DISCOVER_model->discover_is_complete($ins[0], array(
+        //Issue READ/IDEA COIN:
+        $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_source_id' => $ln_type_source_id,
             'ln_creator_source_id' => $en_id,
             'ln_previous_idea_id' => $ins[0]['in_id'],

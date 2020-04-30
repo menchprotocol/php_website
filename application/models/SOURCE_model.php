@@ -514,13 +514,13 @@ class SOURCE_model extends CI_Model
 
             $stats['scanned']++;
 
-            //Find creation discover:
-            $discoveries = $this->LEDGER_model->ln_fetch(array(
+            //Find creation read:
+            $reads = $this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id' => $stats['ln_type_source_id'],
                 'ln_portfolio_source_id' => $en['en_id'],
             ));
 
-            if(!count($discoveries)){
+            if(!count($reads)){
 
                 $stats['missing_creation_fix']++;
 
@@ -532,10 +532,10 @@ class SOURCE_model extends CI_Model
                     'ln_status_source_id' => $status_converter[$en['en_status_source_id']],
                 ));
 
-            } elseif($discoveries[0]['ln_status_source_id'] != $status_converter[$en['en_status_source_id']]){
+            } elseif($reads[0]['ln_status_source_id'] != $status_converter[$en['en_status_source_id']]){
 
                 $stats['status_sync']++;
-                $this->LEDGER_model->ln_update($discoveries[0]['ln_id'], array(
+                $this->LEDGER_model->ln_update($reads[0]['ln_id'], array(
                     'ln_status_source_id' => $status_converter[$en['en_status_source_id']],
                 ));
 

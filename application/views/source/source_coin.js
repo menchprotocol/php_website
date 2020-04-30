@@ -298,7 +298,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
         if (data.status) {
 
-            //Raw input to make it discovery for next URL:
+            //Raw input to make it reads for next URL:
             input.focus();
 
             //Add new object to list:
@@ -679,7 +679,7 @@ function en_modify_save() {
 
         } else {
             //Ooops there was an error!
-            $('.save_source_changes').html('<span class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
+            $('.save_source_changes').html('<span class="read montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
         }
 
     });
@@ -783,7 +783,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
         if (!data.status) {
 
             //Ooops there was an error!
-            $(notify_el).html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $(notify_el).html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
 
         } else {
 
@@ -810,7 +810,7 @@ function account_update_email(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_email').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_email').html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -841,7 +841,7 @@ function account_update_password(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_password').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_password').html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 

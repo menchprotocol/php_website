@@ -538,8 +538,8 @@ function extract_icon_color($en_icon){
 
     //NOTE: Has a twin JS function
 
-    if(substr_count($en_icon, 'discover')>0){
-        return ' discover ';
+    if(substr_count($en_icon, 'read')>0){
+        return ' read ';
     } elseif(substr_count($en_icon, 'idea')>0){
         return ' idea ';
     } elseif(substr_count($en_icon, 'source')>0 || !$en_icon){
@@ -573,8 +573,8 @@ function current_mench($part1 = null){
     } else {
         return array(
             'x_id' => 6205,
-            'x_class' => 'discover',
-            'x_name' => 'discover',
+            'x_class' => 'read',
+            'x_name' => 'read',
         );
     }
 
@@ -609,12 +609,12 @@ function count_ln_type($en_id){
 
         } elseif($en_id==6255){
 
-            $discover_coins = $CI->LEDGER_model->ln_fetch(array(
+            $read_coins = $CI->LEDGER_model->ln_fetch(array(
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
                 'ln_creator_source_id' => $session_en['en_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $discover_coins[0]['totals'];
+            return $read_coins[0]['totals'];
 
         } elseif($en_id==10573){
 
@@ -627,13 +627,13 @@ function count_ln_type($en_id){
 
         } elseif($en_id==7347){
 
-            $discover_bookmarks = $CI->LEDGER_model->ln_fetch(array(
+            $read_bookmarks = $CI->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_previous'), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $discover_bookmarks[0]['totals'];
+            return $read_bookmarks[0]['totals'];
 
         }
     }
@@ -678,7 +678,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.echo_unauthorized_message($superpower_en_id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.echo_unauthorized_message($superpower_en_id).'</div>');
     }
 
 }

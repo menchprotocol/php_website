@@ -21,7 +21,7 @@ foreach($this->IDEA_model->in_fetch(array(
     ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
         $user_steps = $this->LEDGER_model->ln_fetch(array(
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_previous_idea_id' => $child_or['in_id'],
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         ), array(), 0);
@@ -34,5 +34,5 @@ foreach($this->IDEA_model->in_fetch(array(
     echo '<hr />';
 }
 
-echo 'DISCOVER: '.$all_steps.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
+echo 'READ: '.$all_steps.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
 

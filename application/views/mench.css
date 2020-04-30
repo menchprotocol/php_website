@@ -184,7 +184,7 @@ li a {
 }
 
 /* FONTS */
-.montserrat, .add-input, .algolia-autocomplete, .discover-topic, .btn {
+.montserrat, .add-input, .algolia-autocomplete, .read-topic, .btn {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-decoration: none;
@@ -211,7 +211,7 @@ li a {
     font-weight: bold;
     color: #000000 !important;
 }
-.bottom-discover-line{
+.bottom-read-line{
     order-bottom: 1px solid #FC1B44;
     margin-bottom: 10px;
 }
@@ -455,13 +455,13 @@ img.no-radius {
 /* MENCH Colors */
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }
 .idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffc500 !important; }
-.discover, .discover .fas, .discover .far, .discover .fal, .discover .fad, .color6205, .info-item i.discover:hover, .info-item a.discover:hover, .fas.redalert  { color:#FC1B44 !important; }
+.read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover, .fas.redalert  { color:#FC1B44 !important; }
 .grey, .grey i { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
-.btn-source i, .btn-discover i, .btn-idea i { color: #000000 !important; }
+.btn-source i, .btn-read i, .btn-idea i { color: #000000 !important; }
 
-.en-status-filter.active .source, .en-status-filter.active .discover, .en-status-filter.active .idea {
+.en-status-filter.active .source, .en-status-filter.active .read, .en-status-filter.active .idea {
     color: #000000 !important;
 }
 
@@ -582,7 +582,7 @@ img.no-radius {
     border-color:#000000 !important;
 }
 
-#discover_text_answer{
+#read_text_answer{
     padding: 5px;
     border: 1px solid #000000 !important;
     height: 55px;
@@ -1123,7 +1123,7 @@ label {
     padding-left: 0 !important;
 }
 
-.btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal, .btn-superpower .fad, .btn-superpower:not(.active) .source, .btn-superpower:not(.active) .idea, .btn-superpower:not(.active) .discover {
+.btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal, .btn-superpower .fad, .btn-superpower:not(.active) .source, .btn-superpower:not(.active) .idea, .btn-superpower:not(.active) .read {
     color: #999999 !important;
 }
 
@@ -1138,7 +1138,7 @@ label {
 .btn-superpower.active .fas.idea, .btn-superpower.active .far.idea, .btn-superpower.active .fal.idea, .btn-superpower.active .fad.idea {
     color:#ffc500 !important;
 }
-.btn-superpower.active .fas.discover, .btn-superpower.active .far.discover, .btn-superpower.active .fal.discover, .btn-superpower.active .fad.discover {
+.btn-superpower.active .fas.read, .btn-superpower.active .far.read, .btn-superpower.active .fal.read, .btn-superpower.active .fad.read {
     color:#FC1B44 !important;
 }
 
@@ -1157,13 +1157,13 @@ label {
     color: #FFFFFF;
 }
 
-.btn.btn-discover, .btn.btn-discover:hover, .btn.btn-discover:focus, .btn.btn-discover:active, .btn.btn-discover.active, .btn.btn-discover:active:focus, .btn.btn-discover:active:hover, .btn.btn-discover.active:focus, .btn.btn-discover.active:hover, .open > .btn.btn-discover.dropdown-toggle, .open > .btn.btn-discover.dropdown-toggle:focus, .open > .btn.btn-discover.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-discover, .navbar .navbar-nav > li > a.btn.btn-discover:hover, .navbar .navbar-nav > li > a.btn.btn-discover:focus, .navbar .navbar-nav > li > a.btn.btn-discover:active, .navbar .navbar-nav > li > a.btn.btn-discover.active, .navbar .navbar-nav > li > a.btn.btn-discover:active:focus, .navbar .navbar-nav > li > a.btn.btn-discover:active:hover, .navbar .navbar-nav > li > a.btn.btn-discover.active:focus, .navbar .navbar-nav > li > a.btn.btn-discover.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-discover.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-discover.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-discover.dropdown-toggle:hover {
+.btn.btn-read, .btn.btn-read:hover, .btn.btn-read:focus, .btn.btn-read:active, .btn.btn-read.active, .btn.btn-read:active:focus, .btn.btn-read:active:hover, .btn.btn-read.active:focus, .btn.btn-read.active:hover, .open > .btn.btn-read.dropdown-toggle, .open > .btn.btn-read.dropdown-toggle:focus, .open > .btn.btn-read.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-read, .navbar .navbar-nav > li > a.btn.btn-read:hover, .navbar .navbar-nav > li > a.btn.btn-read:focus, .navbar .navbar-nav > li > a.btn.btn-read:active, .navbar .navbar-nav > li > a.btn.btn-read.active, .navbar .navbar-nav > li > a.btn.btn-read:active:focus, .navbar .navbar-nav > li > a.btn.btn-read:active:hover, .navbar .navbar-nav > li > a.btn.btn-read.active:focus, .navbar .navbar-nav > li > a.btn.btn-read.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:hover {
     background-color: #FC1B44;
     color: #000000;
 }
 
 
-.btn-discover .fas,.btn-discover .far,.btn-discover .fal ,.btn-discover .fad { color: #000000 !important; }
+.btn-read .fas,.btn-read .far,.btn-read .fal ,.btn-read .fad { color: #000000 !important; }
 
 .btn.btn-idea, .btn.btn-idea:hover, .btn.btn-idea:focus, .btn.btn-idea:active, .btn.btn-idea.active, .btn.btn-idea:active:focus, .btn.btn-idea:active:hover, .btn.btn-idea.active:focus, .btn.btn-idea.active:hover, .open > .btn.btn-idea.dropdown-toggle, .open > .btn.btn-idea.dropdown-toggle:focus, .open > .btn.btn-idea.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-idea, .navbar .navbar-nav > li > a.btn.btn-idea:hover, .navbar .navbar-nav > li > a.btn.btn-idea:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active, .navbar .navbar-nav > li > a.btn.btn-idea.active, .navbar .navbar-nav > li > a.btn.btn-idea:active:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active:hover, .navbar .navbar-nav > li > a.btn.btn-idea.active:focus, .navbar .navbar-nav > li > a.btn.btn-idea.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:hover {
     background-color: #ffc500;
@@ -1174,15 +1174,15 @@ label {
 
 
 
-.discover-micro-data {
+.read-micro-data {
     text-transform: uppercase;
 }
 
-.discover-history-msg{
+.read-history-msg{
     padding: 5px;
     margin-bottom: 10px;
 }
-.discover-history-msg .msg{
+.read-history-msg .msg{
     margin-bottom:0;
 }
 
@@ -1320,7 +1320,7 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.input-group .algolia-autocomplete, .ln_content, .discover_input {
+.input-group .algolia-autocomplete, .ln_content, .read_input {
     width: -webkit-calc(100% - 68px);
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
@@ -1400,20 +1400,20 @@ label {
 .pull-middle a, .pull-middle span{
     color: #999999;
 }
-.discover-topic{
+.read-topic{
     padding: 10px 0;
 }
-.discover-topic:not(.skip-grey), .discover-topic:not(.skip-grey) a {
+.read-topic:not(.skip-grey), .read-topic:not(.skip-grey) a {
     color: #999999 !important;
     text-transform: uppercase;
 }
-.discover-topic i {
+.read-topic i {
     color: #999999 !important;
 }
-.discover-info-topic{
+.read-info-topic{
     margin: -10px 0 30px;
 }
-.list-group .discover-topic{
+.list-group .read-topic{
     margin:5px 0;
     color: #000000;
 }
@@ -1487,7 +1487,7 @@ label {
     .itemsource:hover {
         background-color:#b2defd !important;
     }
-    .itemdiscover:hover {
+    .itemread:hover {
         background-color:#fbc4ce !important;
     }
 }

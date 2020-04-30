@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Discover extends CI_Controller
+class Read extends CI_Controller
 {
 
     function __construct()
@@ -17,26 +17,26 @@ class Discover extends CI_Controller
 
     function index(){
 
-        //My Bookmarks discovery List
+        //My Bookmarks reads List
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         $session_en = superpower_assigned(null, true);
 
 
-        //Fetch discovery list:
-        $player_discoveries = $this->LEDGER_model->ln_fetch(array(
+        //Fetch reads list:
+        $player_reads = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $session_en['en_id'],
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //DISCOVER LIST Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
-        if(!count($player_discoveries)){
-            //Nothing in their discovery list:
+        if(!count($player_reads)){
+            //Nothing in their reads list:
             return redirect_message('/');
         }
 
-        //Log DISCOVER LIST View:
+        //Log READ LIST View:
         $this->LEDGER_model->ln_create(array(
-            'ln_type_source_id' => 4283, //Opened DISCOVER LIST
+            'ln_type_source_id' => 4283, //Opened READ LIST
             'ln_creator_source_id' => $session_en['en_id'],
         ));
 
@@ -45,9 +45,9 @@ class Discover extends CI_Controller
             'title' => $en_all_2738[6205]['m_name'],
         ));
 
-        $this->load->view('discover/discover_home', array(
+        $this->load->view('read/read_home', array(
             'session_en' => $session_en,
-            'player_discoveries' => $player_discoveries,
+            'player_reads' => $player_reads,
         ));
 
         $this->load->view('footer');
@@ -57,23 +57,23 @@ class Discover extends CI_Controller
 
     function start($in_id){
 
-        //Adds Idea to the Players Discovery List
+        //Adds Idea to the Players Reads List
 
         $session_en = superpower_assigned();
 
-        //Check to see if added to DISCOVER LIST for logged-in users:
+        //Check to see if added to READ LIST for logged-in users:
         if(!$session_en){
             return redirect_message('/source/sign/'.$in_id);
         }
 
-        //Add this Idea to their DISCOVER LIST:
-        if(!$this->DISCOVER_model->discover_start($session_en['en_id'], $in_id)){
-            //Failed to add to discovery list:
-            return redirect_message('/discover', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Failed to add idea to your discovery list.</div>');
+        //Add this Idea to their READ LIST:
+        if(!$this->READ_model->read_start($session_en['en_id'], $in_id)){
+            //Failed to add to reads list:
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your reads list.</div>');
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$in_id, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to discovery list</div>');
+        return redirect_message('/'.$in_id, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to reads list</div>');
 
     }
 
@@ -100,17 +100,17 @@ class Discover extends CI_Controller
 
             } elseif($ins[0]['in_type_source_id']==6677){
 
-                //Mark as discover If not previously:
-                $discover_completes = $this->LEDGER_model->ln_fetch(array(
+                //Mark as read If not previously:
+                $read_completes = $this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //DISCOVER COMPLETE
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_creator_source_id' => $session_en['en_id'],
                     'ln_previous_idea_id' => $ins[0]['in_id'],
                 ));
 
-                if(!count($discover_completes)){
-                    $this->DISCOVER_model->discover_is_complete($ins[0], array(
-                        'ln_type_source_id' => 4559, //DISCOVER MESSAGES
+                if(!count($read_completes)){
+                    $this->READ_model->read_is_complete($ins[0], array(
+                        'ln_type_source_id' => 4559, //READ MESSAGES
                         'ln_creator_source_id' => $session_en['en_id'],
                         'ln_previous_idea_id' => $ins[0]['in_id'],
                     ));
@@ -119,27 +119,27 @@ class Discover extends CI_Controller
             }
 
 
-            //Find next Idea based on source's discovery list:
-            $next_in_id = $this->DISCOVER_model->discover_next_find($session_en['en_id'], $ins[0]);
+            //Find next Idea based on source's reads list:
+            $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
             } else {
-                $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id']);
+                $next_in_id = $this->READ_model->read_next_go($session_en['en_id']);
                 if($next_in_id > 0){
                     return redirect_message('/'.$next_in_id.$append_url);
                 } else {
-                    return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire list.</div></div>');
+                    return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully readed your entire list.</div></div>');
                 }
             }
 
         } else {
 
-            //Find the next idea in the DISCOVER LIST:
-            $next_in_id = $this->DISCOVER_model->discover_next_go($session_en['en_id']);
+            //Find the next idea in the READ LIST:
+            $next_in_id = $this->READ_model->read_next_go($session_en['en_id']);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
             } else {
-                return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully discovered your entire list.</div></div>');
+                return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully readed your entire list.</div></div>');
             }
 
         }
@@ -173,9 +173,9 @@ class Discover extends CI_Controller
 
     }
 
-    function discover_in_history($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
+    function read_in_history($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
 
-        return echo_json($this->DISCOVER_model->discover_history_ui($tab_group_id, $note_in_id, $owner_en_id, $last_loaded_ln_id));
+        return echo_json($this->READ_model->read_history_ui($tab_group_id, $note_in_id, $owner_en_id, $last_loaded_ln_id));
 
     }
 
@@ -183,12 +183,12 @@ class Discover extends CI_Controller
 
 
 
-    function discover_coin($in_id = 0)
+    function read_coin($in_id = 0)
     {
 
         /*
          *
-         * Enables a Player to DISCOVER a IDEA
+         * Enables a Player to READ a IDEA
          * on the public web
          *
          * */
@@ -208,7 +208,7 @@ class Discover extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea #' . $in_id . ' not found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Idea #' . $in_id . ' not found</div>');
         } elseif(!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355') /* PUBLIC */)){
 
             if(superpower_assigned(10939)){
@@ -216,7 +216,7 @@ class Discover extends CI_Controller
                 return redirect_message('/idea/' . $in_id);
             } else {
                 //Inform them not published:
-                return redirect_message('/', '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Cannot discover this idea because it\'s not published yet.</div>');
+                return redirect_message('/', '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Cannot read this idea because it\'s not published yet.</div>');
             }
 
         }
@@ -227,7 +227,7 @@ class Discover extends CI_Controller
         ));
 
         //Load specific view based on Idea Level:
-        $this->load->view('discover/discover_coin', array(
+        $this->load->view('read/read_coin', array(
             'in' => $ins[0],
             'session_en' => $session_en,
         ));
@@ -238,7 +238,7 @@ class Discover extends CI_Controller
 
 
 
-    function discover_file_upload()
+    function read_file_upload()
     {
 
         //TODO: MERGE WITH FUNCTION in_notes_create_upload()
@@ -318,18 +318,18 @@ class Discover extends CI_Controller
         //Delete previous answer(s):
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
-        )) as $discover_progress){
-            $this->LEDGER_model->ln_update($discover_progress['ln_id'], array(
+        )) as $read_progress){
+            $this->LEDGER_model->ln_update($read_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
-            ), $session_en['en_id'], 12129 /* DISCOVER ANSWER DELETED */);
+            ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
         }
 
         //Save new answer:
         $new_message = '@'.$cdn_status['cdn_en']['en_id'];
-        $this->DISCOVER_model->discover_is_complete($ins[0], array(
+        $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_source_id' => 12117,
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
@@ -340,7 +340,7 @@ class Discover extends CI_Controller
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->send_message($new_message).'</div>',
+            'message' => '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->send_message($new_message).'</div>',
         ));
 
     }
@@ -348,7 +348,7 @@ class Discover extends CI_Controller
 
 
 
-    function discover_text_answer(){
+    function read_text_answer(){
 
         $session_en = superpower_assigned();
         if (!$session_en) {
@@ -361,7 +361,7 @@ class Discover extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing idea ID.',
             ));
-        } elseif (!isset($_POST['discover_text_answer']) || !strlen($_POST['discover_text_answer'])) {
+        } elseif (!isset($_POST['read_text_answer']) || !strlen($_POST['read_text_answer'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing text answer.',
@@ -383,21 +383,21 @@ class Discover extends CI_Controller
         //Delete previous answer(s):
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //DISCOVER COIN
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
-        )) as $discover_progress){
-            $this->LEDGER_model->ln_update($discover_progress['ln_id'], array(
+        )) as $read_progress){
+            $this->LEDGER_model->ln_update($read_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
-            ), $session_en['en_id'], 12129 /* DISCOVER ANSWER DELETED */);
+            ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
         }
 
         //Save new answer:
-        $this->DISCOVER_model->discover_is_complete($ins[0], array(
+        $this->READ_model->read_is_complete($ins[0], array(
             'ln_type_source_id' => 6144,
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
-            'ln_content' => $_POST['discover_text_answer'],
+            'ln_content' => $_POST['read_text_answer'],
         ));
 
         //All good:
@@ -409,7 +409,7 @@ class Discover extends CI_Controller
     }
 
 
-    function discover_answer(){
+    function read_answer(){
 
         $session_en = superpower_assigned();
         if (!$session_en) {
@@ -430,14 +430,14 @@ class Discover extends CI_Controller
         }
 
         //Save answer:
-        return echo_json($this->DISCOVER_model->discover_answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
+        return echo_json($this->READ_model->read_answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
 
     }
 
 
 
 
-    function discover_coins_remove_all($en_id, $timestamp, $secret_key){
+    function read_coins_remove_all($en_id, $timestamp, $secret_key){
 
         if($secret_key != md5($en_id . $this->config->item('cred_password_salt') . $timestamp)){
             die('Invalid Secret Key');
@@ -453,12 +453,12 @@ class Discover extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your discovery list.';
+            $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your reads list.';
 
             //Log link:
             $clear_all_link = $this->LEDGER_model->ln_create(array(
                 'ln_content' => $message,
-                'ln_type_source_id' => 6415, //DISCOVER LIST Reset Discoveries
+                'ln_type_source_id' => 6415, //READ LIST Reset Reads
                 'ln_creator_source_id' => $en_id,
             ));
 
@@ -467,30 +467,30 @@ class Discover extends CI_Controller
                 $this->LEDGER_model->ln_update($progress_link['ln_id'], array(
                     'ln_status_source_id' => 6173, //Transaction Deleted
                     'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was deleted
-                ), $en_id, 6415 /* User Cleared DISCOVER LIST */);
+                ), $en_id, 6415 /* User Cleared READ LIST */);
             }
 
         } else {
 
             //Nothing to do:
-            $message = 'Your DISCOVER LIST was empty as there was nothing to delete';
+            $message = 'Your READ LIST was empty as there was nothing to delete';
 
         }
 
         //Show basic UI for now:
-        return redirect_message('/discover', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+        return redirect_message('/read', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
 
     }
 
 
-    function discover_remove_item(){
+    function read_remove_item(){
 
         /*
          *
          * When users indicate they want to stop
          * a IDEA this function saves the changes
          * necessary and delete the idea from their
-         * DISCOVER LIST.
+         * READ LIST.
          *
          * */
 
@@ -507,8 +507,8 @@ class Discover extends CI_Controller
             ));
         }
 
-        //Call function to delete form DISCOVER LIST:
-        $delete_result = $this->DISCOVER_model->discover_delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //REMOVED BOOKMARK
+        //Call function to delete form READ LIST:
+        $delete_result = $this->READ_model->read_delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //REMOVED BOOKMARK
 
         if(!$delete_result['status']){
             return echo_json($delete_result);
@@ -520,11 +520,11 @@ class Discover extends CI_Controller
     }
 
 
-    function discover_sort_save()
+    function read_sort_save()
     {
         /*
          *
-         * Saves the order of DISCOVER LIST ideas based on
+         * Saves the order of READ LIST ideas based on
          * user preferences.
          *
          * */
@@ -541,7 +541,7 @@ class Discover extends CI_Controller
             ));
         }
 
-        //Update the order of their DISCOVER LIST:
+        //Update the order of their READ LIST:
         $results = array();
         foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){

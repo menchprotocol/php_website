@@ -131,8 +131,8 @@ function js_extract_icon_color(en_icon){
 
     //NOTE: Has a twin PHP function
 
-    if(en_icon.includes('discover')){
-        return ' discover ';
+    if(en_icon.includes('read')){
+        return ' read ';
     } else if(en_icon.includes( 'idea')){
         return ' idea ';
     } else if(en_icon.includes('source') || !en_icon.length){
@@ -147,7 +147,7 @@ function echo_search_result(alg_obj){
     //Determine object type:
     var is_idea = (parseInt(alg_obj.alg_obj_type_id)==4535);
     var is_public = ( parseInt(alg_obj.alg_obj_status) in ( is_idea ? js_en_all_7355 : js_en_all_7357 ));
-    var obj_icon = ( is_idea ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'idea' : 'discover' )+'"></i>' : alg_obj.alg_obj_icon );
+    var obj_icon = ( is_idea ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'idea' : 'read' )+'"></i>' : alg_obj.alg_obj_icon );
     var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
 
     return '<span class="icon-block-sm">'+ obj_icon +'</span>' + ( is_public ? '' : '<span class="icon-block-sm"><i class="far fa-spinner fa-spin"></i></span>' ) + '<span class="'+ ( !is_idea ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>'; //htmlentitiesjs()
@@ -167,17 +167,17 @@ function js_echo_platform_message(en_id){
 }
 
 
-function discover_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_ln_id){
+function read_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_ln_id){
 
-    var load_class = '.tab-data-'+tab_group_id+' .dynamic-discoveries';
+    var load_class = '.tab-data-'+tab_group_id+' .dynamic-reads';
     $(load_class).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">LOADING...</b>');
 
     //Yes, we need to load dynamically:
-    $.post("/discover/discover_in_history/"+tab_group_id+"/"+note_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
+    $.post("/read/read_in_history/"+tab_group_id+"/"+note_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
         if (data.status) {
             $(load_class).html(data.message);
         } else {
-            $(load_class).html('<b class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>');
+            $(load_class).html('<b class="read montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>');
         }
 
         //Tooltips:
@@ -197,9 +197,9 @@ function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
     $('.tab-nav-'+tab_group_id+'.tab-head-'+tab_data_id).addClass('active');
 
     //Need to dynamically load data?
-    if($('.tab-data-'+tab_data_id).find('div.dynamic-discoveries').length > 0){
+    if($('.tab-data-'+tab_data_id).find('div.dynamic-reads').length > 0){
         //Load First Page:
-        discover_in_history(tab_data_id, note_in_id, owner_en_id, 0);
+        read_in_history(tab_data_id, note_in_id, owner_en_id, 0);
     } else {
         //Do we need to focus on input field?
         $('#ln_content'+tab_data_id).focus();
@@ -459,7 +459,7 @@ function en_ln_type_preview() {
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
-        $('#en_type_link_id').html((data.status ? data.html_ui : '<b class="discover">' + data.message+'</b>'));
+        $('#en_type_link_id').html((data.status ? data.html_ui : '<b class="read">' + data.message+'</b>'));
 
         if(data.status && data.en_link_preview.length > 0){
             $('#en_link_preview').html(data.en_link_preview);

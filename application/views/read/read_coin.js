@@ -2,15 +2,15 @@
 
 $(document).ready(function () {
 
-    autosize($('#discover_text_answer'));
+    autosize($('#read_text_answer'));
 
     //Watchout for file uplods:
     $('.boxUpload').find('input[type="file"]').change(function () {
-        discover_file_upload(droppedFiles, 'file');
+        read_file_upload(droppedFiles, 'file');
     });
 
-    //Move main discovery, if any:
-    $('.main_discovery_top').html($('.main_discovery_bottom').html());
+    //Move main reads, if any:
+    $('.main_reads_top').html($('.main_reads_bottom').html());
 
     //Should we auto start?
     if (isAdvancedUpload) {
@@ -31,7 +31,7 @@ $(document).ready(function () {
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
                 e.preventDefault();
-                discover_file_upload(droppedFiles, 'drop');
+                read_file_upload(droppedFiles, 'drop');
             });
     }
 
@@ -72,7 +72,7 @@ function select_answer(in_id){
 }
 
 
-function discover_file_upload(droppedFiles, uploadType) {
+function read_file_upload(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
     if ($('.boxUpload').hasClass('is-uploading')) {
@@ -98,7 +98,7 @@ function discover_file_upload(droppedFiles, uploadType) {
         ajaxData.append('in_id', in_loaded_id);
 
         $.ajax({
-            url: '/discover/discover_file_upload',
+            url: '/read/read_file_upload',
             type: $('.boxUpload').attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -125,26 +125,26 @@ function discover_file_upload(droppedFiles, uploadType) {
 }
 
 
-function discover_text_answer(){
+function read_text_answer(){
     //Show Loading:
     $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    $.post("/discover/discover_text_answer", {
+    $.post("/read/read_text_answer", {
         in_id:in_loaded_id,
-        discover_text_answer:$('#discover_text_answer').val(),
+        read_text_answer:$('#read_text_answer').val(),
     }, function (data) {
         if (data.status) {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/discover/next/'+in_loaded_id;
+                window.location = '/read/next/'+in_loaded_id;
             }, 987);
         } else {
-            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');
+            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><span class="read montserrat">'+data.message+'</span>');
         }
     });
 }
 
-function discover_answer(){
+function read_answer(){
 
     //Check
     var answered_ins = [];
@@ -156,7 +156,7 @@ function discover_answer(){
 
     //Show Loading:
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    $.post("/discover/discover_answer", {
+    $.post("/read/read_answer", {
         in_loaded_id:in_loaded_id,
         answered_ins:answered_ins
     }, function (data) {
@@ -164,10 +164,10 @@ function discover_answer(){
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/discover/next/'+in_loaded_id;
+                window.location = '/read/next/'+in_loaded_id;
             }, 987);
         } else {
-            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');
+            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><span class="read montserrat">'+data.message+'</span>');
         }
     });
 }

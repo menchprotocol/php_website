@@ -68,7 +68,7 @@ if(count($current_sign_in_attempt) == 0){
         <div id="step2" class="signup-steps hidden">
             <span class="montserrat"><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
-            <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
+            <div id="email_errors" class="read margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised btn-circle"><i class="fas fa-step-forward"></i></a>
             </span>
@@ -86,7 +86,7 @@ if(count($current_sign_in_attempt) == 0){
 
             <span class="montserrat"><?= $en_all_4269[3286]['m_icon'].' '.$en_all_4269[3286]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
-            <div id="password_errors" class="discover margin-top-down hideIfEmpty"></div>
+            <div id="password_errors" class="read margin-top-down hideIfEmpty"></div>
             <span id="step3buttons">
                 <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-source transparent btn-raised  btn-circle"><i class="fas fa-step-backward"></i></a>
                 <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle"><i class="fas fa-step-forward"></i></a>
@@ -105,7 +105,7 @@ if(count($current_sign_in_attempt) == 0){
         <!-- Step 4: Create New Account -->
         <div id="step4" class="signup-steps hidden">
 
-            <div class="discover-topic montserrat"><span class="icon-block-sm"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT</div>
+            <div class="read-topic montserrat"><span class="icon-block-sm"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT</div>
 
             <!-- pre-set Email -->
             <div class="margin-top-down">
@@ -128,7 +128,7 @@ if(count($current_sign_in_attempt) == 0){
 
 
             <!-- Signup Buttons -->
-            <div id="new_account_errors" class="discover margin-top-down hideIfEmpty"></div>
+            <div id="new_account_errors" class="read margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
                 <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source transparent btn-raised btn-circle"><i class="fas fa-step-backward"></i></a>
                 <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source btn-raised btn-circle"><i class="fas fa-step-forward"></i></a>
