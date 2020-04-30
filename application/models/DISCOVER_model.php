@@ -823,19 +823,25 @@ class DISCOVER_model extends CI_Model
                 $has_channels = ( isset($metadata['in__metadata_sources']) ? count($metadata['in__metadata_sources']) : 0 );
                 if ($has_experts || $has_channels) {
 
-                    echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $has_channels ? $has_channels.' Source'.echo__s($has_experts) : '' ).( $has_experts ? ( $has_channels ? ' from ' : '' ).$has_experts.' Expert'.echo__s($has_experts) : '' ).'</a></div>';
+                    $count_content = 0;
+                    foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
+                        $count_content += count($channel_contents);
+                    }
+
+                    echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $has_channels ? $count_content.' Source'.echo__s($count_content) : '' ).( $has_experts ? ( $has_channels ? ' from ' : '' ).$has_experts.' Expert'.echo__s($has_experts) : '' ).'</a></div>';
 
                     //BODY
                     echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
                     echo '<div class="list-group">';
 
                     foreach($metadata['in__metadata_experts'] as $expert){
+                        unset($expert['ln_content']);
                         echo echo_en($expert);
                     }
 
-                    //$en_all_3000 = $this->config->item('en_all_3000');
                     foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
                         foreach($channel_contents as $channel_content){
+                            unset($channel_content['ln_content']);
                             echo echo_en($channel_content);
                         }
                     }
