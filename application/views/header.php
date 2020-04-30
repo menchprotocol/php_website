@@ -92,7 +92,7 @@ if(!isset($hide_header)){
     <!-- MENCH LINE -->
     <div class="container fixed-top" style="padding-bottom: 0 !important;">
         <div class="row">
-            <table class="mench-navigation">
+            <table class="mench-navigation <?= ( !$session_en ? 'guest' : '' ) ?>">
                 <tr>
                     <td>
                         <?php
