@@ -109,10 +109,10 @@ if(!isset($hide_header)){
                             //Show Mench Menu:
                             foreach($this->config->item('en_all_12893') as $en_id => $m) {
 
-                                $is_current_mench = ( $_SERVER['PHP_SELF'] == $m['m_desc'] );
+                                $is_current_mench = ( $_SERVER['REQUEST_URI'] == $m['m_desc'] );
                                 $class = extract_icon_color($m['m_icon']);
 
-                                echo '<div class="btn-group mench_coin '.$class.' border-' . $class.'" title="'.$_SERVER['PHP_SELF'].'">'; //($is_current_mench ? ' focustab ' : '')
+                                echo '<div class="btn-group mench_coin '.$class.' border-' . $class.'" title="'.$_SERVER['REQUEST_URI'].'">'; //($is_current_mench ? ' focustab ' : '')
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $class . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
