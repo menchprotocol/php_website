@@ -797,9 +797,13 @@ class DISCOVER_model extends CI_Model
                 //IDEA METADATA
                 $metadata = unserialize($ins[0]['in_metadata']);
                 $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-                $has_idea = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>0 );
+                $has_idea = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 );
 
                 if ($has_time || $has_idea || count($in__next)) {
+
+                    if($has_idea){
+                        $metadata['in__metadata_max_steps']--;//Do not include the main idea itself
+                    }
 
                     echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $has_time ? ( $has_idea ? ' in ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
 
