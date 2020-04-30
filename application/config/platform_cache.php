@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-30 13:47:51 PST
+//Generated 2020-04-30 13:58:10 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588279671;
-$config['cache_count_transaction'] = 1170335;
+$config['cache_timestamp'] = 1588280290;
+$config['cache_count_transaction'] = 1170357;
 $config['cache_count_discover'] = 121153;
 $config['cache_count_idea'] = 5432;
 $config['cache_count_source'] = 5199;
@@ -488,7 +488,7 @@ $config['en_all_12500'] = array(
         'm_parents' => array(12744,6194,11035,12728,12500,10876,4527,6405),
     ),
     7291 => array(
-        'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
         'm_desc' => '',
         'm_parents' => array(12500,10876,11035),
@@ -898,7 +898,7 @@ $config['en_all_10876'] = array(
         'm_parents' => array(12897,12500,10876,12489,11035),
     ),
     7291 => array(
-        'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
         'm_desc' => 'https://mench.com/source/signout',
         'm_parents' => array(12500,10876,11035),
@@ -2962,7 +2962,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     7291 => array(
-        'm_icon' => '<i class="fad fa-power-off" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
         'm_desc' => '',
         'm_parents' => array(12500,10876,11035),
@@ -3004,13 +3004,13 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035),
     ),
     7256 => array(
-        'm_icon' => '<i class="fad fa-search" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
         'm_name' => 'SEARCH MENCH',
         'm_desc' => '',
         'm_parents' => array(12701,12497,11035,3323),
     ),
     4269 => array(
-        'm_icon' => '<i class="fad fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
         'm_parents' => array(4527,11035),
@@ -4209,7 +4209,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(12701,4755,6771,4527),
     ),
     4269 => array(
-        'm_icon' => '<i class="fad fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
         'm_parents' => array(4527,11035),

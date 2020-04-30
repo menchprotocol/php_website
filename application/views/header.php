@@ -57,7 +57,7 @@ if($found_at > 1){
     //PLAYER VARIABLES
     echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_en && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( $session_en ? $session_en['en_id'] : 0 ) . '; ';
-    echo ' var js_pl_name = \'' . ( $session_en ? $session_en['en_name'] : 'Unknown' ) . '\'; ';
+    echo ' var js_pl_name = \'' . ( $session_en ? $session_en['en_name'] : '' ) . '\'; ';
 
     //JAVASCRIPT PLATFORM MEMORY
     foreach($this->config->item('en_all_11054') as $en_id => $m){
@@ -177,9 +177,6 @@ if(!isset($hide_header)){
 
                     <?php
 
-                    //Live Chat & Feedback
-                    echo '<td class="block-link"><a id="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
-
                     //Account
                     if ($session_en) {
 
@@ -187,6 +184,9 @@ if(!isset($hide_header)){
                         if(intval(config_var(12678))){
                             echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$en_all_11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
                         }
+
+                        //Live Chat & Feedback
+                        echo '<td class="block-link"><a id="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
 
                         //Player Menu
                         $en_all_4527 = $this->config->item('en_all_4527'); //Platform Memory
@@ -285,13 +285,15 @@ if(!isset($hide_header)){
 
                     } else {
 
+                        //Live Chat & Feedback
+                        echo '<td class="block-link"><a id="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
+
                         //Sign In/Up
                         echo '<td class="block-link"><a href="/source/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
                     }
 
                     ?>
-
                 </tr>
             </table>
         </div>
