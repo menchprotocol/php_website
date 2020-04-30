@@ -816,10 +816,13 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
     //SOURCE
     $ui .= '<td class="MENCHcolumn2 source">';
-    $source_count = count($metadata['in__metadata_experts']);
-    foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
-        $source_count += count($channel_contents);
+    $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
+    if(isset($metadata['in__metadata_sources'])){
+        foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
+            $source_count += count($channel_contents);
+        }
     }
+
     if($source_count > 0){
         $ui .= '<span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_count).'</span>';
     }
