@@ -803,7 +803,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
 
     //DISCOVER ICON
-    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="fad fa-eye-slash discover"></i>' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="fas fa-lock discover"></i>' ).'</span>';
     $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, $common_prefix).'</b>';
 
 
@@ -1438,7 +1438,7 @@ function echo_en_basic($en)
     $ui = '<a href="/source/'.$en['en_id'] . '" class="list-group-item no-side-padding itemsource en-item object_highlight">';
     $ui .= '<span class="icon-block">' . echo_en_icon($en['en_icon']) . '</span>';
     $ui .= '<span class="title-block title-no-right montserrat">'.$en['en_name'].'</span>';
-    $ui .= '<span class="message_content paddingup ln_content hideIfEmpty">'.$en['ln_content'].'</span>';
+    $ui .= '<span class="message_content paddingup ln_content hideIfEmpty">'.trim(str_replace('@'.$en['en_id'], '', $en['ln_content'])).'</span>';
     $ui .= '</a>';
     return $ui;
 }
