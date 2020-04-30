@@ -780,7 +780,6 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
     $metadata = unserialize($in['in_metadata']);
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-
     if(!$completion_rate){
         if($recipient_en){
             $completion_rate = $CI->DISCOVER_model->discover_completion_progress($recipient_en['en_id'], $in);
@@ -794,19 +793,40 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
     $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemdiscover '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemdiscover">' : '' );
-
-
-
     if($can_click && $completion_rate['completion_percentage']>0){
         $ui .= '<div class="progress-bg" title="Discovered '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
+    $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
 
-    //DISCOVER ICON
-    $metadata = unserialize($in['in_metadata']);
+
+
+    //DISCOVER
+    $ui .= '<td class="MENCHcolumn1">';
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="far fa-lock discover"></i>' ).'</span>';
-    $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, $common_prefix).( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? '&nbsp+'.($metadata['in__metadata_max_steps']-1) : '' ).'</b>';
+    $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, $common_prefix).'</b>';
+    $ui .= '</td>';
 
+
+
+    //SOURCE
+    $ui .= '<td class="MENCHcolumn2 discover">';
+    $source_count = count($metadata['in__metadata_experts']);
+    foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
+        $source_count += count($channel_contents);
+    }
+    if($source_count > 0){
+        $ui .= '<span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_count).'</span>';
+    }
+    $ui .= '</td>';
+
+
+
+    //IDEA
+    $ui .= '<td class="MENCHcolumn3 source">';
+    if(isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2){
+        $ui .= '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($metadata['in__metadata_max_steps']-1).'</span>';
+    }
 
     //Search for Idea Image:
     if($show_editor){
@@ -823,10 +843,12 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
         $ui .= '</div>';
 
     }
+    $ui .= '</td>';
 
+
+
+    $ui .= '</tr></table>';
     $ui .= ( $can_click ? '</a>' : '' );
-
-
     $ui .= '</div>';
 
     return $ui;
