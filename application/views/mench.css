@@ -864,9 +864,9 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 
-#MENCHmenu a.focustab  { background-color:#ececec;  }
+#MENCHmenu .focustab  { background-color:#ececec;  }
 
-#MENCHmenu a{
+#MENCHmenu a {
     padding:7px 0 5px;
     display: block !important;
     text-decoration: none;
