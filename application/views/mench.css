@@ -524,7 +524,7 @@ img.no-radius {
     max-width: none !important;
 }
 .mench_nav{
-    height: 42px;
+    height: 40px;
     overflow: hidden;
 }
 .mench-spin {
@@ -896,7 +896,7 @@ td.MENCHcolumn3  { width: 13%; }
     text-align: center;
     margin-left:5px;
     color:#000000;
-    padding:11px 10px;
+    padding:9px 10px;
 }
 
 .mench-navigation .block-link .fas, .block-link .fal, .block-link .far, .block-link .fad{
@@ -1112,7 +1112,7 @@ label {
     text-decoration: none;
     line-height: 100%;
     border: 0;
-    padding: 12px;
+    padding: 11px;
     border-radius:10px !important;
 }
 
