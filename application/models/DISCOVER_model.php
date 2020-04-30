@@ -860,6 +860,8 @@ class DISCOVER_model extends CI_Model
                 }
             }
 
+            echo '<div class="doclear">&nbsp;</div>';
+
 
             return true;
         }
