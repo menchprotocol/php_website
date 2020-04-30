@@ -131,7 +131,7 @@ h4.thin{
 }
 
 h4.thin b{
-    background-color: #ececec;
+    background-color: #f0f0f0;
     padding:3px;
 }
 
@@ -298,7 +298,7 @@ img.no-radius {
     background-color:#FFFFFF;
 }
 .table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even), .card:nth-of-type(even) .card-header {
-    background-color:#ececec;
+    background-color:#f0f0f0;
 }
 
 .form-control:disabled, .form-control[readonly] {
@@ -352,7 +352,7 @@ img.no-radius {
 
 .aa-dropdown-menu .aa-suggestion, .suggestion {
     background-color: #FFFFFF;
-    border:0px solid #ececec;
+    border:0px solid #f0f0f0;
     cursor: pointer;
     padding: 7px 5px;
     color: #000000;
@@ -488,7 +488,7 @@ img.no-radius {
 
 .fixed-bottom{
     padding: 0;
-    background-color: #ececec;
+    background-color: #f0f0f0;
 }
 .fixed-top, .fixed-bottom {
     z-index: 99999 !important;
@@ -502,7 +502,7 @@ img.no-radius {
 
 
 /* Color Palette @10604 */
-.isgrey, .isgrey a, .lightgrey      { color:#ececec !important; }
+.isgrey, .isgrey a, .lightgrey      { color:#f0f0f0 !important; }
 
 .mixed-a{
     text-decoration:none !important;
@@ -635,7 +635,7 @@ img.no-radius {
 }
 
 .msg-nav > li > a:hover {
-    background-color: #ececec;
+    background-color: #f0f0f0;
 }
 
 
@@ -661,8 +661,8 @@ img.no-radius {
 
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
     border-color:#000000 !important;
-    border-bottom: 1px solid #ececec !important;
-    background-color: #ececec !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    background-color: #f0f0f0 !important;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -775,7 +775,7 @@ textarea.note-textarea{
 
 #MENCHmenu {
     width: 100%;
-    background-color: #ececec;
+    background-color: #f0f0f0;
 }
 
 #MENCHmenu td, #leaderboard td{
@@ -855,11 +855,11 @@ td.MENCHcolumn3  { width: 13%; }
 .mench_coin{
     text-decoration: none;
     line-height: 110%;
-    border-top: 3px solid #ececec;
+    border-top: 3px solid #f0f0f0;
 }
 
 
-.focustab  { background-color:#ececec;  }
+.focustab  { background-color:#f0f0f0;  }
 
 #MENCHmenu a {
     padding:7px 0 5px;
@@ -867,7 +867,7 @@ td.MENCHcolumn3  { width: 13%; }
     text-decoration: none;
     border-top:0px solid;
     line-height: 110%;
-    border-bottom: 8px solid #ececec;
+    border-bottom: 8px solid #f0f0f0;
 }
 
 
