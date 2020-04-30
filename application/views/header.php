@@ -5,42 +5,7 @@ $first_segment = $this->uri->segment(1);
 $second_segment = $this->uri->segment(2);
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 $en_all_2738 = $this->config->item('en_all_2738');
-
-
-//DETECT CURRENT MENCH
 $current_mench = current_mench();
-$en_all_2738_mench = array();
-$did_find = false;
-$found_at = 1; //1 or 2 or 3
-foreach($en_all_2738 /* Source Status */ as $en_id => $m){
-    if(!$did_find){
-        if($current_mench['x_id']==$en_id){
-            $did_find = true;
-        } else {
-            $found_at++;
-        }
-    }
-
-    //Did we find?
-    if($did_find){
-        $en_all_2738_mench[$en_id] = $m;
-    }
-}
-if($found_at > 1){
-
-    $append_end = 1;
-
-    foreach($en_all_2738 /* Source Status */ as $en_id => $m){
-        //Append this:
-        $en_all_2738_mench[$en_id] = $m;
-        $append_end++;
-
-        //We did it all?
-        if($append_end==$found_at){
-            break;
-        }
-    }
-}
 
 ?><!doctype html>
 <html lang="en" >
@@ -141,26 +106,16 @@ if(!isset($hide_header)){
 
                         } else {
 
-                            //MENCH NAVIGATION
-                            $coin_counts = array();
-                            $count_controller = array(
-                                6205 => 6255, //DISCOVER
-                                4536 => 12274, //SOURCE
-                                4535 => 12273, //IDEA
-                            );
-
                             //Show Mench Menu:
-                            foreach($en_all_2738_mench as $en_id => $m) {
+                            foreach($this->config->item('en_all_12893') as $en_id => $m) {
 
-                                $is_current_mench = ($current_mench['x_id'] == $en_id);
-                                $this_mench = current_mench(strtolower($m['m_name']));
-                                $coin_counts[$en_id] = count_ln_type($count_controller[$en_id]);
+                                $is_current_mench = ( $_SERVER['PHP_SELF'] == $m['m_desc'] );
+                                $class = extract_icon_color($m['m_icon']);
 
-                                echo '<div class="btn-group mench_coin ' . $this_mench['x_class'] . ' border-' . $this_mench['x_class'].'">'; //($is_current_mench ? ' focustab ' : '')
-                                echo '<a class="btn ' . $this_mench['x_class'] . '" href="/' . $this_mench['x_name'].'">';
+                                echo '<div class="btn-group mench_coin '.$class.' border-' . $class.'" title="'.$_SERVER['PHP_SELF'].'">'; //($is_current_mench ? ' focustab ' : '')
+                                echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                                echo '<span class="montserrat ' . $this_mench['x_class'] . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
-                                echo '<span class="montserrat" title="'.$coin_counts[$en_id].'">'.echo_number($coin_counts[$en_id]).'</span>';
+                                echo '<span class="montserrat ' . $class . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '</a>';
                                 echo '</div>';
 
@@ -239,27 +194,25 @@ if(!isset($hide_header)){
 
                             } elseif(in_array($en_id, $this->config->item('en_ids_12467'))) {
 
+                                $counts = count_ln_type($en_id);
+                                if(!$counts){
+                                    continue;
+                                }
+
                                 //HACK FOR MENCH COIN MENU
                                 if($en_id==12273){
                                     //IDEA
-                                    $counts = $coin_counts[4535];
                                     $source_field = 'ln_profile_source_id';
                                 } elseif($en_id==6255){
                                     //DISCOVER
-                                    $counts = $coin_counts[6205];
                                     $source_field = 'ln_creator_source_id';
                                 } elseif($en_id==12274){
                                     //SOURCE
-                                    $counts = $coin_counts[4536];
                                     if($counts < 2){
                                         //If 1 then only themselves, which is covered with @12205
                                         continue;
                                     }
                                     $source_field = 'ln_creator_source_id';
-                                }
-
-                                if(!$counts){
-                                    continue;
                                 }
 
                                 //MENCH COIN
