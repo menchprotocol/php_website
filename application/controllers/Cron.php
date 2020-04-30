@@ -36,7 +36,7 @@ class Cron extends CI_Controller
         boost_power();
 
         //Running from browser? If so, authenticate:
-        $this->is_player_request = isset($_ENV['SSH_CLIENT']);
+        $this->is_player_request = isset($_SERVER['SERVER_NAME']);
         if($this->is_player_request){
             $this->session_en = superpower_assigned(12728, true);
         }
