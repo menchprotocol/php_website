@@ -288,7 +288,7 @@ $is_source = en_is_source($en['en_id']);
                     $en_all_10876 = $this->config->item('en_all_10876'); //MENCH WEBSITE
 
                     //Mass Control:
-                    if(count($this->session->userdata('session_superpowers_activated')) >= 2){
+                    if(count($this->session->userdata('session_superpowers_assigned')) >= 2){
                         $this_tab .= '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_toggle_all(1)" class="btn btn-far"><i class="fas fa-toggle-on"></i></a>
                   <a href="javascript:void(0)" onclick="account_toggle_all(0)" class="btn btn-fad"><i class="fas fa-toggle-off"></i></a>
