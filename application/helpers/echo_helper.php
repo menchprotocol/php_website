@@ -810,7 +810,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
 
     //SOURCE
-    $ui .= '<td class="MENCHcolumn2 discover">';
+    $ui .= '<td class="MENCHcolumn2 source">';
     $source_count = count($metadata['in__metadata_experts']);
     foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
         $source_count += count($channel_contents);
@@ -823,7 +823,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
 
     //IDEA
-    $ui .= '<td class="MENCHcolumn3 source">';
+    $ui .= '<td class="MENCHcolumn3 idea">';
     if(isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2){
         $ui .= '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($metadata['in__metadata_max_steps']-1).'</span>';
     }
