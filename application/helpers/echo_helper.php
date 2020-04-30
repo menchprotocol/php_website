@@ -1158,9 +1158,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
         $ui .= '</div>';
 
 
-        //IDEA DISCOVER TIME
-        $ui .= echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source, ($in['ln_order']*10)+1);
-
 
         $ui .= '</div>';
 
