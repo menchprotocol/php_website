@@ -1451,9 +1451,9 @@ label {
     .avatar-item { width:110px !important; padding:10px 0 !important; }
     .avatar-item .avatar-icon { font-size: 2.4em; }
 
-    td.MENCHcolumn1  { width: 65%; }
-    td.MENCHcolumn2  { width: 17%; }
-    td.MENCHcolumn3  { width: 18%; }
+    td.MENCHcolumn1  { width: 60%; }
+    td.MENCHcolumn2  { width: 20%; }
+    td.MENCHcolumn3  { width: 20%; }
 
     .media-content, .ln_content img, .ln_content video, .i_content img { max-width: 100%; }
     .container-wide .content-image {
