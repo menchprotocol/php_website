@@ -1,4 +1,5 @@
 
+
 window['_fs_debug'] = false;
 window['_fs_host'] = 'fullstory.com';
 window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
@@ -29,6 +30,15 @@ if(js_pl_id>0){
         profileURL: 'https://mench.com/source/'+js_pl_id
     });
 }
+
+
+
+window.intercomSettings = {
+    app_id: "l6o1vqhv",
+    custom_launcher_selector:'#icon_12899'
+};
+// We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/l6o1vqhv'
+(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/l6o1vqhv';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
 
 
 

@@ -177,12 +177,15 @@ if(!isset($hide_header)){
 
                     <?php
 
+                    //Live Chat & Feedback
+                    echo '<td class="block-link><a id="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
+
                     //Account
                     if ($session_en) {
 
                         //Search
                         if(intval(config_var(12678))){
-                            echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$en_all_11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
+                            echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$en_all_11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
                         }
 
                         //Player Menu
@@ -283,9 +286,10 @@ if(!isset($hide_header)){
                     } else {
 
                         //Sign In/Up
-                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/source/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-link"><a href="/source/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
                     }
+
                     ?>
 
                 </tr>
