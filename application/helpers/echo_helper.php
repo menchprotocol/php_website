@@ -803,7 +803,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
 
     //DISCOVER ICON
-    $metadata = unserialize($ins[0]['in_metadata']);
+    $metadata = unserialize($in['in_metadata']);
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="far fa-lock discover"></i>' ).'</span>';
     $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, $common_prefix).( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? '&nbsp+'.($metadata['in__metadata_max_steps']-1) : '' ).'</b>';
 
