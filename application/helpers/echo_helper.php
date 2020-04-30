@@ -1438,9 +1438,7 @@ function echo_en_basic($en)
     $ui = '<a href="/source/'.$en['en_id'] . '" class="list-group-item no-side-padding itemsource en-item object_highlight">';
     $ui .= '<span class="icon-block">' . echo_en_icon($en['en_icon']) . '</span>';
     $ui .= '<span class="title-block title-no-right montserrat">'.$en['en_name'].'</span>';
-    if(strlen($en['ln_content'])){
-        $ui .= '<span>&nbsp;'.echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']).'</span>';
-    }
+    $ui .= '<span class="message_content paddingup ln_content hideIfEmpty">'.$en['ln_content'].'</span>';
     $ui .= '</a>';
     return $ui;
 }
