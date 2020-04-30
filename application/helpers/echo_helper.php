@@ -1459,11 +1459,11 @@ function echo_unauthorized_message($superpower_en_id = 0){
 
 function echo_en_basic($en)
 {
-    $ui = '<a href="/source/'.$en['en_id'] . '" class="list-group-item no-side-padding itemsource en-item object_highlight">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_highlight">';
     $ui .= '<span class="icon-block">' . echo_en_icon($en['en_icon']) . '</span>';
     $ui .= '<span class="title-block title-no-right montserrat">'.$en['en_name'].'</span>';
-    $ui .= '<span class="message_content paddingup ln_content hideIfEmpty">'.trim(str_replace('@'.$en['en_id'], '', $en['ln_content'])).'</span>';
-    $ui .= '</a>';
+    //$ui .= '<span class="message_content paddingup ln_content hideIfEmpty">'.trim(str_replace('@'.$en['en_id'], '', $en['ln_content'])).'</span>';
+    $ui .= '</div>';
     return $ui;
 }
 
