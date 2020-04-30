@@ -828,11 +828,6 @@ class DISCOVER_model extends CI_Model
 
                 }
 
-
-
-                //Redirect to login page:
-                echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
-
             }
 
 
@@ -858,9 +853,13 @@ class DISCOVER_model extends CI_Model
                     }
                     echo '</div>';
                 }
+            } else {
+                //START BUTTON
+                echo '<div class="doclear">&nbsp;</div>';
+                echo '<div class="inline-block margin-top-down discover-add pull-right"><a class="btn btn-discover btn-circle" href="/discover/start/'.$ins[0]['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
+                echo '<div class="doclear">&nbsp;</div>';
             }
 
-            echo '<div class="doclear">&nbsp;</div>';
 
 
             return true;
