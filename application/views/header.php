@@ -109,7 +109,7 @@ if(!isset($hide_header)){
                             //Show Mench Menu:
                             foreach($this->config->item('en_all_12893') as $en_id => $m) {
 
-                                $is_current_mench = ( $_SERVER['REQUEST_URI'] == $m['m_desc'] );
+                                $is_current_mench = ( $_SERVER['REQUEST_URI'] == $m['m_desc'] || ( is_numeric($first_segment) && $en_id==7347 /* READS */ ) );
                                 $class = extract_icon_color($m['m_icon']);
 
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.($is_current_mench ? ' focustab ' : '').'" title="'.$_SERVER['REQUEST_URI'].'">';
