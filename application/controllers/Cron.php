@@ -111,13 +111,6 @@ class Cron extends CI_Controller
 
     function cron__12114(){
 
-        if($this->is_player_request && !isset($_GET['password'])){
-            die('missing password');
-        } else {
-            $this->COMMUNICATION_model->send_email(array('shervin@mench.com'), 'Test', '<div>Hi 👋</div>');
-            die('Email sent');
-        }
-
         //Calculates the weekly coins issued:
         $last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
         $last_week_end_timestamp = mktime(23, 59, 59, date("n"), date("j")-1, date("Y"));
