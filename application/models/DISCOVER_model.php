@@ -819,17 +819,13 @@ class DISCOVER_model extends CI_Model
 
 
                 //Expert References?
-                $has_experts = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
-                $has_channels = ( isset($metadata['in__metadata_sources']) ? count($metadata['in__metadata_sources']) : 0 );
-                if ($has_experts || $has_channels) {
+                $source_count = count($metadata['in__metadata_experts']);
+                foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
+                    $source_count += count($channel_contents);
+                }
+                if ($source_count > 0) {
 
-                    $count_content = 0;
-                    foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
-                        $count_content += count($channel_contents);
-                    }
-
-                    echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $has_channels ? $count_content.' Source'.echo__s($count_content) : '' ).( $has_experts ? ( $has_channels ? ' from ' : '' ).$has_experts.' Expert'.echo__s($has_experts) : '' ).'</a></div>';
-
+                    echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
                     echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
                     echo '<div class="list-group">';
