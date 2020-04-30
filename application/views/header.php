@@ -178,7 +178,7 @@ if(!isset($hide_header)){
                     <?php
 
                     //Live Chat & Feedback
-                    echo '<td class="block-link><a id="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
+                    echo '<td class="block-link"><a id="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
 
                     //Account
                     if ($session_en) {
