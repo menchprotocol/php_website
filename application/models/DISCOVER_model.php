@@ -835,13 +835,13 @@ class DISCOVER_model extends CI_Model
                     echo '<div class="list-group">';
 
                     foreach($metadata['in__metadata_experts'] as $expert){
-                        unset($expert['ln_content']);
+                        $expert['ln_content'] = '';
                         echo echo_en($expert);
                     }
 
                     foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
                         foreach($channel_contents as $channel_content){
-                            unset($channel_content['ln_content']);
+                            $channel_content['ln_content'] = '';
                             echo echo_en($channel_content);
                         }
                     }
