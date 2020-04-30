@@ -810,12 +810,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
 
 
 
-    //IDEA
-    $ui .= '<td class="MENCHcolumn3 idea">';
-    if(isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2){
-        $ui .= '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($metadata['in__metadata_max_steps']-1).'</span>';
-    }
-    $ui .= '</td>';
+
 
 
 
@@ -827,6 +822,15 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
     }
     if($source_count > 0){
         $ui .= '<span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_count).'</span>';
+    }
+    $ui .= '</td>';
+
+
+
+    //IDEA
+    $ui .= '<td class="MENCHcolumn3 idea">';
+    if(isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2){
+        $ui .= '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($metadata['in__metadata_max_steps']-1).'</span>';
     }
     //Search for Idea Image:
     if($show_editor){
