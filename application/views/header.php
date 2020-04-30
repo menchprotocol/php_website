@@ -112,7 +112,7 @@ if(!isset($hide_header)){
                                 $is_current_mench = ( $_SERVER['REQUEST_URI'] == $m['m_desc'] );
                                 $class = extract_icon_color($m['m_icon']);
 
-                                echo '<div class="btn-group mench_coin '.$class.' border-' . $class.'" title="'.$_SERVER['REQUEST_URI'].'">'; //($is_current_mench ? ' focustab ' : '')
+                                echo '<div class="btn-group mench_coin '.$class.' border-' . $class.($is_current_mench ? ' focustab ' : '').'" title="'.$_SERVER['REQUEST_URI'].'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $class . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
@@ -139,9 +139,6 @@ if(!isset($hide_header)){
                         if(intval(config_var(12678))){
                             echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$en_all_11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
                         }
-
-                        //Live Chat & Feedback
-                        echo '<td class="block-link"><a id="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
 
                         //Player Menu
                         $en_all_4527 = $this->config->item('en_all_4527'); //Platform Memory
@@ -238,7 +235,7 @@ if(!isset($hide_header)){
 
                     } else {
 
-                        //Live Chat & Feedback
+                        //FEEDBACK SUPPORT
                         echo '<td class="block-link"><a id="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up

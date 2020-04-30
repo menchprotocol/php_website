@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-30 15:01:50 PST
+//Generated 2020-04-30 15:35:49 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588284110;
-$config['cache_count_transaction'] = 1170474;
+$config['cache_timestamp'] = 1588286149;
+$config['cache_count_transaction'] = 1170579;
 $config['cache_count_discover'] = 121153;
 $config['cache_count_idea'] = 5432;
 $config['cache_count_source'] = 5199;
@@ -431,7 +431,7 @@ $config['en_all_12677'] = array(
 );
 
 //PLAYER MENU:
-$config['en_ids_12500'] = array(12205,12437,12274,12273,12749,6255,6415,6287,7274,7291);
+$config['en_ids_12500'] = array(12205,12437,12274,12273,12749,6255,6415,12899,6287,7274,7291);
 $config['en_all_12500'] = array(
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -474,6 +474,12 @@ $config['en_all_12500'] = array(
         'm_name' => 'CLEAR DISCOVERIES',
         'm_desc' => '',
         'm_parents' => array(12500,4755,4593),
+    ),
+    12899 => array(
+        'm_icon' => '<i class="fas fa-headset"></i>',
+        'm_name' => 'FEEDBACK SUPPORT',
+        'm_desc' => '',
+        'm_parents' => array(12500,11035),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
@@ -2881,7 +2887,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11068,6225,7274,3000,12707,12581,10573,12749,3084,12437,12899,7291,4341,4430,12205,12211,6287,12750,7347,7256,4269,4997,12275,10957,7540);
+$config['en_ids_11035'] = array(11068,6225,7274,3000,12899,12707,12581,10573,12749,3084,12437,7291,4341,4430,12205,12211,6287,12750,7347,7256,4269,4997,12275,10957,7540);
 $config['en_all_11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -2906,6 +2912,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'EXPERT CHANNEL',
         'm_desc' => '',
         'm_parents' => array(11054,11035,4600,4527),
+    ),
+    12899 => array(
+        'm_icon' => '<i class="fas fa-headset"></i>',
+        'm_name' => 'FEEDBACK SUPPORT',
+        'm_desc' => '',
+        'm_parents' => array(12500,11035),
     ),
     12707 => array(
         'm_icon' => '<i class="far fa-filter" aria-hidden="true"></i>',
@@ -2942,12 +2954,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'LEADERBOARD',
         'm_desc' => '',
         'm_parents' => array(12897,12500,10876,12489,11035),
-    ),
-    12899 => array(
-        'm_icon' => '<i class="fas fa-headset"></i>',
-        'm_name' => 'LIVE CHAT',
-        'm_desc' => '',
-        'm_parents' => array(11035),
     ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
