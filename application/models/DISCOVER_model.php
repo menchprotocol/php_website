@@ -805,7 +805,7 @@ class DISCOVER_model extends CI_Model
                         $metadata['in__metadata_max_steps']--;//Do not include the main idea itself
                     }
 
-                    echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="idea"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas idea"></i><i class="fas fa-minus-circle contentTabIdeas hidden idea"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $has_time ? ( $has_idea ? ' in ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
+                    echo '<div class="discover-topic skip-grey"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="idea doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas idea"></i><i class="fas fa-minus-circle contentTabIdeas hidden idea"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $has_time ? ( $has_idea ? ' in ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
 
                     //BODY
                     echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
@@ -829,7 +829,7 @@ class DISCOVER_model extends CI_Model
                 }
                 if ($source_count > 0) {
 
-                    echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="source"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts source"></i><i class="fas fa-minus-circle contentTabExperts source hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
+                    echo '<div class="discover-topic skip-grey"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="source doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts source"></i><i class="fas fa-minus-circle contentTabExperts source hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
                     echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
                     echo '<div class="list-group">';

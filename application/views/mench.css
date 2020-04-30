@@ -1407,7 +1407,7 @@ label {
 .discover-topic{
     padding: 10px 0;
 }
-.discover-topic, .discover-topic a {
+.discover-topic:not(.skip-grey), .discover-topic:not(.skip-grey) a {
     color: #999999 !important;
     text-transform: uppercase;
 }
