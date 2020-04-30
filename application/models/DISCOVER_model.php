@@ -750,19 +750,8 @@ class DISCOVER_model extends CI_Model
          */
         if(!$in_discovery_list){
 
-            //IDEA TITLE
-            echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
-
-
-            foreach($in__messages as $message_ln) {
-                echo $this->COMMUNICATION_model->send_message(
-                    $message_ln['ln_content'],
-                    $recipient_en
-                );
-            }
-
+            //ALL FEATURED?
             $is_or = in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_6193'));
-
             if($is_or){
                 $all_child_featured = true;
                 foreach($in__next as $key => $child_in){
@@ -777,22 +766,12 @@ class DISCOVER_model extends CI_Model
 
 
 
+            //IDEA TITLE
+            echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle discover"></i></span><span class="title-block-lg">' . echo_in_title($ins[0]) . '</span></h1>';
 
 
 
-
-            if($all_child_featured){
-
-                if(count($in__next) > 0){
-                    //List Children:
-                    echo '<div class="list-group">';
-                    foreach($in__next as $key => $child_in){
-                        echo echo_in_discover($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
-                    }
-                    echo '</div>';
-                }
-
-            } else {
+            if(!$all_child_featured){
 
                 //IDEA METADATA
                 $metadata = unserialize($ins[0]['in_metadata']);
@@ -856,7 +835,31 @@ class DISCOVER_model extends CI_Model
 
             }
 
-            echo '<div class="doclear">&nbsp;</div>';
+
+
+
+            //MESSAGES
+            foreach($in__messages as $message_ln) {
+                echo $this->COMMUNICATION_model->send_message(
+                    $message_ln['ln_content'],
+                    $recipient_en
+                );
+            }
+
+
+
+            //FEATURED OPEN LIST
+            if($all_child_featured){
+                if(count($in__next) > 0){
+                    //List Children:
+                    echo '<div class="list-group">';
+                    foreach($in__next as $key => $child_in){
+                        echo echo_in_discover($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
+                    }
+                    echo '</div>';
+                }
+            }
+
 
             return true;
         }
