@@ -804,7 +804,7 @@ function echo_in_discover($in, $parent_is_or = false, $common_prefix = null, $ex
     //DISCOVER
     $ui .= '<td class="MENCHcolumn1">';
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle discover"></i>' : '<i class="far fa-lock"></i>' ).'</span>';
-    $ui .= '<b class="montserrat idea-url title-block" style="padding-right:23px;">'.echo_in_title($in, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat idea-url title-block">'.echo_in_title($in, $common_prefix).'</b>';
     $ui .= '</td>';
 
 
