@@ -830,20 +830,18 @@ class DISCOVER_model extends CI_Model
 
                     echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $has_channels ? $count_content.' Source'.echo__s($count_content) : '' ).( $has_experts ? ( $has_channels ? ' from ' : '' ).$has_experts.' Expert'.echo__s($has_experts) : '' ).'</a></div>';
 
-                    //BODY
+
                     echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
                     echo '<div class="list-group">';
 
-                    foreach($metadata['in__metadata_experts'] as $expert){
-                        $expert['ln_content'] = '';
-                        echo echo_en($expert);
-                    }
-
                     foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
                         foreach($channel_contents as $channel_content){
-                            $channel_content['ln_content'] = '';
-                            echo echo_en($channel_content);
+                            echo echo_en_basic($channel_content);
                         }
+                    }
+
+                    foreach($metadata['in__metadata_experts'] as $expert){
+                        echo echo_en_basic($expert);
                     }
 
                     echo '</div>';

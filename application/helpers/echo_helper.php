@@ -1433,6 +1433,16 @@ function echo_unauthorized_message($superpower_en_id = 0){
 }
 
 
+function echo_en_basic($en)
+{
+    $ui = '<a href="/source/'.$en['en_id'] . '" class="list-group-item no-side-padding itemsource en-item object_highlight">';
+    $ui .= '<span class="icon-block">' . echo_en_icon($en['en_icon']) . '</span>';
+    $ui .= '<span class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">'.$en['en_name'].'</span>';
+    $ui .= '</a>';
+    return $ui;
+}
+
+
 function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled = false, $is_source = false)
 {
 
@@ -1522,27 +1532,27 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ui .= '<td class="MENCHcolumn1">';
 
 
-        //SOURCE ICON
-        $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="WEIGHT '.$en['en_weight'].' LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
+    //SOURCE ICON
+    $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="WEIGHT '.$en['en_weight'].' LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
 
 
-        //SOURCE TOOLBAR?
-        if($show_toolbar){
+    //SOURCE TOOLBAR?
+    if($show_toolbar){
 
-            $ui .= echo_input_text(6197, $en['en_name'], $en['en_id'], $is_source, 0, false, null, extract_icon_color($en['en_icon']));
-            $ui .= $child_counter;
-            $ui .= '<div class="space-content">'.$info_items_list.'</div>';
+        $ui .= echo_input_text(6197, $en['en_name'], $en['en_id'], $is_source, 0, false, null, extract_icon_color($en['en_icon']));
+        $ui .= $child_counter;
+        $ui .= '<div class="space-content">'.$info_items_list.'</div>';
 
-        } else {
+    } else {
 
-            //SOURCE NAME
-            $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
-            $ui .= $info_items_list;
-            $ui .= '<span class="text__6197_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
-            $ui .= $child_counter;
-            $ui .= '</a>';
+        //SOURCE NAME
+        $ui .= '<a href="/source/'.$en['en_id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($en['en_icon']).'">';
+        $ui .= $info_items_list;
+        $ui .= '<span class="text__6197_' . $en['en_id'] . '">'.$en['en_name'].'</span>';
+        $ui .= $child_counter;
+        $ui .= '</a>';
 
-        }
+    }
 
     $ui .= '</td>';
 
