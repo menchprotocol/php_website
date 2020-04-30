@@ -31,7 +31,7 @@
                            class="form-control form-control-thick montserrat algolia_search dotransparent add-input"
                            maxlength="' . config_var(4736) . '"
                            id="newIdeaTitle"
-                           placeholder="NEW IDEA">
+                           placeholder="NEW TITLE">
                 </div><div class="algolia_pad_search hidden"></div></div>';
 
         echo '</div>';

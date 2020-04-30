@@ -291,14 +291,14 @@ img.no-radius {
     border:0;
 }
 
-.table-striped tbody tr:nth-of-type(odd), .ledger-list:nth-of-type(odd) {
+.table-striped tbody tr:nth-of-type(even), .ledger-list:nth-of-type(even) {
     background-color:transparent;
 }
 .table-striped tbody tr:nth-of-type(odd), .ledger-list:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
-    background-color:#f0f0f0;
+    background-color:#FFFFFF;
 }
 .table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even), .card:nth-of-type(even) .card-header {
-    background-color:#FFFFFF;
+    background-color:#f0f0f0;
 }
 
 .form-control:disabled, .form-control[readonly] {
