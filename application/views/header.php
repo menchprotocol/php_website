@@ -184,6 +184,11 @@ if(!isset($hide_header)){
                                 //Contribute to Idea
                                 $page_url = 'href="/idea/'.$first_segment.'"';
 
+                            } elseif($en_id==12899) {
+
+                                //FEEDBACK SUPPORT
+                                $page_url = 'href="javascript:void(0);" id="icon_12899"';
+
                             } elseif($en_id==6415) {
 
                                 //CLEAR DISCOVERIES
