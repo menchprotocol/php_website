@@ -914,6 +914,10 @@ td.MENCHcolumn3  { width: 13%; }
     padding-right: 0 !important;
 }
 
+.mench-navigation .btn-group:first-child.focustab{
+    border-left: 1px solid #f0f0f0;
+}
+
 .mench-navigation .btn-group{
     padding-left: 1px;
     padding-right: 1px;
