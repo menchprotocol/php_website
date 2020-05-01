@@ -502,8 +502,8 @@ function toggle_search(){
         $('.search_nav').removeClass('hidden');
 
         setTimeout(function () {
-            $('#mench_search').focus();
-        }, 610);
+            $('#mench_search').focus().prompt();
+        }, 233);
 
     }
 }
