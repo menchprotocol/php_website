@@ -893,7 +893,6 @@ td.MENCHcolumn3  { width: 13%; }
 .mench-navigation {
     width: 100%;
     background-color: #FFFFFF;
-    height: 41px;
     overflow: hidden;
     border-bottom: 1px solid #000;
 }
@@ -909,10 +908,8 @@ td.MENCHcolumn3  { width: 13%; }
     width: 100% !important;
     max-width: none !important;
 }
-.mench_nav{
-    height: 40px;
-}
-.mench_nav .btn-group:hover{
+
+.mench-navigation .btn-group:hover{
     background-color: #f0f0f0;
 }
 
