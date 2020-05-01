@@ -81,7 +81,7 @@ if($recipient_en['en_id'] > 0){
 if(!$in_reads_list){
 
     //IDEA TITLE
-    echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle read"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
+    echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon"><i class="fas fa-circle read"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
 
 
     foreach($in__messages as $message_ln) {
@@ -319,7 +319,7 @@ if($completion_rate['completion_percentage']>0){
 }
 
 //READ TITLE
-echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
+echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
 
 
 
