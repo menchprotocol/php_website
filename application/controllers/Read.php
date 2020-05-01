@@ -30,7 +30,7 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => $en_all_11035[7347]['m_name'],
         ));
-        $this->load->view('read/read_home', array(
+        $this->load->view('read/read_bookshelf', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
