@@ -930,6 +930,7 @@ td.MENCHcolumn3  { width: 13%; }
 
 .mench-navigation.guest {
     background-color: #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
 }
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
      width: 100%;
