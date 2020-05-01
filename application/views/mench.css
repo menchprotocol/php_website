@@ -451,9 +451,19 @@ img.no-radius {
     padding-bottom: 2px;
     cursor: help;
 }
+
+.cover-block{
+    display: inline-block;
+    width: 150px;
+    height: 233px;
+    background-color: #EFEFEF;
+    overflow: hidden;
+    float: left;
+    margin: 0 20px 20px 0;
+}
 .cover-image{
     width: 144px;
-    height: 233px;
+    height: 210px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     vertical-align: middle;

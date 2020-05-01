@@ -1460,7 +1460,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null){
     $metadata = unserialize($in['in_metadata']);
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-    $ui  = '<a href="/'.$in['in_id'] . '" class="inline-block">';
+    $ui  = '<a href="/'.$in['in_id'] . '" class="cover-block">';
 
     if($recipient_en){
         $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
