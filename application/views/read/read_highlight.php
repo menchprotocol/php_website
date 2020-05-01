@@ -13,6 +13,7 @@
 
     if(!count($player_highlights)){
 
+        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
         echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>No highlights yet. Highlight ideas using the '.$en_all_11035[12896]['m_icon'].' button.</div>';
 
     } else {
