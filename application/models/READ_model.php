@@ -1004,7 +1004,7 @@ class READ_model extends CI_Model
 
         if(count($read_completes) && $qualify_for_autocomplete){
             //Move to the next one as there is nothing to do here:
-            echo "<script> $(document).ready(function () { window.location = '/read/next/' + in_loaded_id + '".( isset($_GET['came_from']) && $_GET['came_from']>0 ? '?came_from='.$_GET['came_from'] : '' )."'; }); </script>";
+            echo "<script> $(document).ready(function () { window.location = '/read/next/' + in_loaded_id + '".( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? '?previous_read='.$_GET['previous_read'] : '' )."'; }); </script>";
         }
 
 

@@ -109,8 +109,18 @@ if(!isset($hide_header)){
                             //Show Mench Menu:
                             foreach($this->config->item('en_all_12893') as $en_id => $m) {
 
-                                $is_current_mench = ( $_SERVER['REQUEST_URI'] == $m['m_desc'] || ( is_numeric($first_segment) && $en_id==7347 /* READS */ ) );
+                                $is_current_mench = ( $_SERVER['REQUEST_URI'] == $m['m_desc'] || ( is_numeric($first_segment) && $en_id==7347 /* READS */ ) || ( $first_segment=='idea' && is_numeric($second_segment) && $en_id==12898 /* PUBLISH */ ) );
                                 $class = extract_icon_color($m['m_icon']);
+
+
+                                if($en_id==12749) {
+                                    if(is_numeric($first_segment) && superpower_active(10939, true)){
+                                        //Contribute to Idea
+                                        $m['m_desc'] = '/idea/'.$first_segment;
+                                    } else {
+                                        continue;
+                                    }
+                                }
 
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.($is_current_mench ? ' focustab ' : '').'" title="'.$_SERVER['REQUEST_URI'].'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
@@ -160,9 +170,6 @@ if(!isset($hide_header)){
                             } elseif($en_id==6415 && !($first_segment=='read' && !$second_segment)){
                                 //Deleting reads only available on Reads home
                                 continue;
-                            } elseif($en_id==12749 && (!is_numeric($first_segment) || !superpower_active(10939, true))){
-                                //Contributing to ideas can only happen when reading
-                                continue;
                             }
 
                             $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
@@ -178,11 +185,6 @@ if(!isset($hide_header)){
 
                                 //Profile Page:
                                 $page_url = 'href="/source/'.$session_en['en_id'].'"';
-
-                            } elseif($en_id==12749) {
-
-                                //Contribute to Idea
-                                $page_url = 'href="/idea/'.$first_segment.'"';
 
                             } elseif($en_id==12899) {
 

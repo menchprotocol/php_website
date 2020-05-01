@@ -1265,8 +1265,8 @@ function echo_in_previous_read($in_id, $recipient_en){
     if($previous_level_id > 0){
 
         //Previous
-        if(isset($_GET['came_from']) && $_GET['came_from']>0){
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/'.$_GET['came_from'].'"><i class="fas fa-step-backward"></i></a></div>';
+        if(isset($_GET['previous_read']) && $_GET['previous_read']>0){
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/'.$_GET['previous_read'].'"><i class="fas fa-step-backward"></i></a></div>';
         } else {
             $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/read/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fas fa-step-backward"></i></a></div>';
         }

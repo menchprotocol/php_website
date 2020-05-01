@@ -50,7 +50,7 @@ class Read extends CI_Controller
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
-        
+
     }
 
 
@@ -78,7 +78,7 @@ class Read extends CI_Controller
 
     function next($in_id = 0){
 
-        $append_url = '?came_from='.( isset($_GET['came_from']) && $_GET['came_from']>0 ? $_GET['came_from'] : $in_id );
+        $append_url = '?previous_read='.( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $in_id );
         $session_en = superpower_assigned();
         if(!$session_en){
             return redirect_message('/source/sign');

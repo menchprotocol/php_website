@@ -8,19 +8,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-30 17:59:21 PST
+//Generated 2020-04-30 19:30:09 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588294761;
-$config['cache_count_transaction'] = 1171223;
-$config['cache_count_read'] = 121129;
+$config['cache_timestamp'] = 1588300209;
+$config['cache_count_transaction'] = 1171431;
+$config['cache_count_read'] = 121132;
 $config['cache_count_idea'] = 5432;
 $config['cache_count_source'] = 5196;
 
 
 
 //MAIN MENU:
-$config['en_ids_12893'] = array(12581,7347,12896,12898);
+$config['en_ids_12893'] = array(12581,7347,12896,12898,12749);
 $config['en_all_12893'] = array(
     12581 => array(
         'm_icon' => '<i class="fas fa-home read" aria-hidden="true"></i>',
@@ -45,6 +45,12 @@ $config['en_all_12893'] = array(
         'm_name' => 'PUBLISH',
         'm_desc' => '/idea',
         'm_parents' => array(11035,10939,4535,10876,12893),
+    ),
+    12749 => array(
+        'm_icon' => '<i class="fas fa-plus-circle idea"></i>',
+        'm_name' => 'CONTRIBUTE',
+        'm_desc' => '',
+        'm_parents' => array(12893,11035),
     ),
 );
 
@@ -407,7 +413,7 @@ $config['en_all_12677'] = array(
 );
 
 //PLAYER MENU:
-$config['en_ids_12500'] = array(12205,12437,12274,12273,12749,6255,6415,12899,6287,7274,7291);
+$config['en_ids_12500'] = array(12205,12437,12274,12273,6255,6415,12899,6287,7274,7291);
 $config['en_all_12500'] = array(
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -432,12 +438,6 @@ $config['en_all_12500'] = array(
         'm_name' => 'IDEA COINS',
         'm_desc' => '',
         'm_parents' => array(4535,12500,12571,12467,12321,12410,11089,12228,4527),
-    ),
-    12749 => array(
-        'm_icon' => '<i class="fas fa-pen idea"></i>',
-        'm_name' => 'IDEA CONTRIBUTE',
-        'm_desc' => '',
-        'm_parents' => array(12500,11035),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
@@ -2875,7 +2875,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11068,6225,10573,7274,3000,12899,12707,12896,12581,12749,3084,12437,7291,4341,4430,12205,12211,6287,12750,12898,7347,7256,4269,4997,12275,10957,7540);
+$config['en_ids_11035'] = array(11068,6225,10573,12749,7274,3000,12899,12707,12896,12581,3084,12437,7291,4341,4430,12205,12211,6287,12750,12898,7347,7256,4269,4997,12275,10957,7540);
 $config['en_all_11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -2894,6 +2894,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'BOOKMARKS',
         'm_desc' => '',
         'm_parents' => array(12898,11054,4527,10984,11018,11035,11089,12321,4593,7551,4485),
+    ),
+    12749 => array(
+        'm_icon' => '<i class="fas fa-plus-circle idea"></i>',
+        'm_name' => 'CONTRIBUTE',
+        'm_desc' => '',
+        'm_parents' => array(12893,11035),
     ),
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -2930,12 +2936,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'HOME',
         'm_desc' => '',
         'm_parents' => array(12893,11035),
-    ),
-    12749 => array(
-        'm_icon' => '<i class="fas fa-pen idea"></i>',
-        'm_name' => 'IDEA CONTRIBUTE',
-        'm_desc' => '',
-        'm_parents' => array(12500,11035),
     ),
     3084 => array(
         'm_icon' => '<i class="fad fa-user-astronaut source" aria-hidden="true"></i>',
