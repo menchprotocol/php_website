@@ -527,7 +527,7 @@ img.no-radius {
     height: 40px;
     overflow: hidden;
 }
-.mench_nav .btn:hover{
+.mench_nav .btn-group:hover{
     background-color: #f0f0f0;
 }
 .mench-spin {
