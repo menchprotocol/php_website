@@ -903,13 +903,13 @@ td.MENCHcolumn3  { width: 13%; }
 
 .mench-navigation .focustab  {
     background-color:#f0f0f0;
-    margin-bottom: -1px;
-    border-color: #000000;
+    margin-bottom: -3px;
+    border-color: #000000 !important;
 }
 
 .mench-navigation .btn-group{
-    border-left: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+    border-left: 1px solid #FFFFFF;
+    border-right: 1px solid #FFFFFF;
 }
 
 .mench-navigation .btn-group:hover{
@@ -1155,7 +1155,7 @@ label {
     text-decoration: none;
     line-height: 100%;
     border: 0;
-    padding: 11px;
+    padding: 10px;
     border-radius:10px !important;
 }
 
