@@ -194,10 +194,13 @@ class Read extends CI_Controller
 
         //Fetch user session:
         $session_en = superpower_assigned();
+        $primary_in_id = config_var(12156);
 
-        if(!$in_id){
+        if($in_id > 0 && $in_id==$primary_in_id){
+            return redirect_message('/');
+        } elseif(!$in_id){
             //Load the Starting Idea:
-            $in_id = config_var(12156);
+            $in_id = $primary_in_id;
         }
 
         //Fetch data:
