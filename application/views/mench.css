@@ -575,17 +575,7 @@ img.no-radius {
     font-weight: bold;
 }
 
-.main_nav{
-    width: 100% !important;
-    max-width: none !important;
-}
-.mench_nav{
-    height: 40px;
-    overflow: hidden;
-}
-.mench_nav .btn-group:hover{
-    background-color: #f0f0f0;
-}
+
 .mench-spin {
     -webkit-animation: mench-spin 13s infinite linear;
     animation: mench-spin 13s infinite linear;
@@ -917,9 +907,6 @@ td.MENCHcolumn3  { width: 13%; }
     border-top: 3px solid #f0f0f0;
 }
 
-
-.focustab  { background-color:#f0f0f0;  }
-
 #MENCHmenu a {
     padding:7px 0 5px;
     display: block !important;
@@ -935,7 +922,29 @@ td.MENCHcolumn3  { width: 13%; }
 .mench-navigation {
     width: 100%;
     background-color: #FFFFFF;
+    height: 41px;
+    overflow: hidden;
 }
+
+.mench-navigation .focustab  {
+    background-color:#f0f0f0;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    margin-bottom: -1px;
+}
+
+.main_nav{
+    width: 100% !important;
+    max-width: none !important;
+}
+.mench_nav{
+    height: 40px;
+    border-bottom: 1px solid #000;
+}
+.mench_nav .btn-group:hover{
+    background-color: #f0f0f0;
+}
+
 .mench-navigation.guest {
     background-color: #f0f0f0;
 }
