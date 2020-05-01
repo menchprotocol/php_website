@@ -527,6 +527,9 @@ img.no-radius {
     height: 40px;
     overflow: hidden;
 }
+.mench_nav .btn:hover{
+    background-color: #f0f0f0;
+}
 .mench-spin {
     -webkit-animation: mench-spin 13s infinite linear;
     animation: mench-spin 13s infinite linear;
