@@ -475,16 +475,21 @@ img.no-radius {
     padding: 0;
 }
 
-
+.cover-list{
+    display: block;
+    width: 100%;
+    padding-left: 33px;
+    padding-bottom: 33px;
+}
 .cover-block{
     display: block;
     width: 146px;
     height: 270px;
     overflow: hidden;
     float: left;
-    margin: 0 0px 33px 33px;
+    margin: 0 0px 21px 34px;
 }
-.image-frame{
+.cover-image{
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
     display: block;
@@ -494,7 +499,7 @@ img.no-radius {
     margin-bottom: 10px;
     box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
 }
-.image-frame img{
+.cover-image img{
     width: 100%;
     height: 100%;
 }

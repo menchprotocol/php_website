@@ -1463,7 +1463,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null){
     $ui  = '<a href="/'.$in['in_id'] . '" class="cover-block">';
 
 
-    $ui .= '<div class="image-frame">';
+    $ui .= '<div class="cover-image">';
     if($recipient_en){
         $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
         $ui .= '<div class="progress-bg-image" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';

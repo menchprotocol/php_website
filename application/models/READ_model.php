@@ -783,12 +783,14 @@ class READ_model extends CI_Model
 
             if($all_child_featured){
 
+                echo '<div class="cover-list">';
                 if(count($in__next) > 0){
                     //List Children:
                     foreach($in__next as $key => $child_in){
                         echo echo_in_cover($child_in, false, in_calc_common_prefix($in__next, 'in_title'));
                     }
                 }
+                echo '</div>';
 
             } else {
 
