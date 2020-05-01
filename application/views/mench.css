@@ -487,7 +487,7 @@ img.no-radius {
     height: 270px;
     overflow: hidden;
     float: left;
-    margin: 0 0px 21px 34px;
+    margin: 0 21px 34px 0;
 }
 .cover-image{
     border-top-right-radius: 15px;
