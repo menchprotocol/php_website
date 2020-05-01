@@ -731,7 +731,7 @@ $is_source = en_is_source($en['en_id']);
 
 
         //HEADER
-        echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+        echo '<div class="'.( count($superpower_actives) && !$is_source ? superpower_active(end($superpower_actives)) : '' ).'">';
 
         echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].( $counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_active(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
 
