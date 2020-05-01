@@ -231,10 +231,7 @@ a.btn, .btn.dropdown-toggle, label.btn {
     padding:10px;
 }
 .main_nav .btn {
-    padding:10px 5px 10px 5px !important;
-}
-.main_nav .btn:first-child{
-    padding-left:0 !important;
+    padding:10px 0 10px 0 !important;
 }
 
 img.no-radius {
@@ -498,7 +495,7 @@ img.no-radius {
     height: 209px;
     overflow: hidden;
     margin-bottom: 10px;
-    box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
+    box-shadow: 1px 0 1px 0 rgba(150,150,150,.55);
     position: relative;
 }
 .cover-image img{
