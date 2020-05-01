@@ -903,8 +903,8 @@ td.MENCHcolumn3  { width: 13%; }
 
 .mench-navigation .focustab  {
     background-color:#f0f0f0;
-    margin-bottom: -2px;
-    padding-bottom: 2px;
+    margin-bottom: -1px;
+    padding-bottom: 1px;
     border-color: #000000 !important;
 }
 
