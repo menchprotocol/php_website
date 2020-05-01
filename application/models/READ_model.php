@@ -785,11 +785,9 @@ class READ_model extends CI_Model
 
                 if(count($in__next) > 0){
                     //List Children:
-                    echo '<div class="list-group">';
                     foreach($in__next as $key => $child_in){
                         echo echo_in_cover($child_in, false, in_calc_common_prefix($in__next, 'in_title'));
                     }
-                    echo '</div>';
                 }
 
             } else {
