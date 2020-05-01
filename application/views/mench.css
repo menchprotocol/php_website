@@ -452,23 +452,6 @@ img.no-radius {
     cursor: help;
 }
 
-.cover-block{
-    display: inline-block;
-    width: 150px;
-    height: 233px;
-    background-color: #EFEFEF;
-    overflow: hidden;
-    float: left;
-    margin: 0 20px 20px 0;
-}
-.cover-image{
-    width: 144px;
-    height: 210px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    vertical-align: middle;
-    box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
-}
 
 /* MENCH Colors */
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }
@@ -493,12 +476,37 @@ img.no-radius {
 }
 
 
+.cover-block{
+    display: block;
+    width: 146px;
+    height: 270px;
+    background-color: #FFFFFF;
+    overflow: hidden;
+    float: left;
+    margin: 0 0px 20px 33px;
+}
+.cover-image{
+    width: 144px;
+    height: 204px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
+}
+
 .progress-bg{
     margin: -10px 0 10px 0;
     width: 100% !important;
 }
+.progress-bg-image{
+    width: 100% !important;
+    background-color: #999999;
+}
 
 .progress-bg .progress-done{
+    height: 3px;
+    background-color: #FC1B44;
+}
+.progress-bg-image .progress-done{
     height: 3px;
     background-color: #FC1B44;
 }
