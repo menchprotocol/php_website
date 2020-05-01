@@ -893,6 +893,7 @@ td.MENCHcolumn3  { width: 13%; }
 .mench-navigation {
     width: 100%;
     border-bottom: 1px solid #000;
+    background-color: #f0f0f0;
 }
 
 .mench-navigation .focustab  {
@@ -908,7 +909,6 @@ td.MENCHcolumn3  { width: 13%; }
 .mench-navigation .btn-group{
     padding-left: 1px;
     padding-right: 1px;
-    background-color: #f0f0f0;
 }
 
 .mench-navigation .btn-group:first-child{
@@ -921,7 +921,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .mench-navigation.guest {
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid transparent;
 }
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
      width: 100%;
