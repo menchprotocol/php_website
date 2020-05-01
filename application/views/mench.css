@@ -822,24 +822,6 @@ textarea.note-textarea{
     background-color: #FFFFFF;
 }
 
-#MENCHmenu {
-    width: 100%;
-    background-color: #f0f0f0;
-}
-
-#MENCHmenu td, #leaderboard td{
-    vertical-align:top;
-    /* white-space: nowrap; */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border-spacing: 0 !important;
-    border: 0 !important;
-    margin: 0 !important;
-}
-
-#MENCHmenu td{
-    padding: 0 !important;
-}
 .space-left{
     padding-left: 33px;
 }
@@ -904,18 +886,7 @@ td.MENCHcolumn3  { width: 13%; }
 .mench_coin{
     text-decoration: none;
     line-height: 110%;
-    border-top: 3px solid #f0f0f0;
 }
-
-#MENCHmenu a {
-    padding:7px 0 5px;
-    display: block !important;
-    text-decoration: none;
-    border-top:0px solid;
-    line-height: 110%;
-    border-bottom: 8px solid #f0f0f0;
-}
-
 
 
 /* FOOTER */
