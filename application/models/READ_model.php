@@ -834,6 +834,7 @@ class READ_model extends CI_Model
                     echo '<div class="read-topic skip-grey"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="source doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts source"></i><i class="fas fa-minus-circle contentTabExperts source hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
                     echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
+                    echo '<div class="list-group single-color">';
 
                     if(isset($metadata['in__metadata_experts'])){
                         foreach($metadata['in__metadata_experts'] as $expert){
@@ -849,6 +850,7 @@ class READ_model extends CI_Model
                         }
                     }
 
+                    echo '</div>';
                     echo '</div>';
 
                 }

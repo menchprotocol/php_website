@@ -1494,7 +1494,9 @@ label {
         background-color:#fbc4ce !important;
     }
 }
-
+.single-color .list-group-item{
+    background-color: #f0f0f0 !important;
+}
 .hideIfEmpty:empty {
     display: none !important;
 }
