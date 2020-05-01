@@ -484,11 +484,16 @@ img.no-radius {
     float: left;
     margin: 0 0px 33px 33px;
 }
+.image-frame{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: block;
+    width: 144px;
+    height: 207px;
+}
 .cover-image{
     width: 144px;
     height: 204px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
     box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
     margin-bottom: 5px;
 }
@@ -498,7 +503,7 @@ img.no-radius {
     width: 100% !important;
 }
 .progress-bg-image{
-    width: calc(100% - 10px) !important;
+    width:100% !important;
     background-color: #999999;
 }
 
