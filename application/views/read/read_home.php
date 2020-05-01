@@ -26,13 +26,6 @@ $player_reads = $this->LEDGER_model->ln_fetch(array(
 <div class="container">
 <?php
 
-
-$en_all_11035 = $this->config->item('en_all_11035'); //SOURCE
-echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[7347]['m_icon'].'</span>'.$en_all_11035[7347]['m_name'].'</div>';
-
-
-
-
 //List Reads:
 if(!count($player_reads)){
 

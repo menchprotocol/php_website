@@ -11,13 +11,9 @@
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     ), array('in_previous'), 0, 0, array('ln_id' => 'DESC'));
 
-    //DISPLAY HIGHLIGHTS
-    $en_all_11035 = $this->config->item('en_all_11035'); //SOURCE
-    echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12896]['m_icon'].'</span>'.$en_all_11035[12896]['m_name'].'</div>';
-
     if(!count($player_highlights)){
 
-        echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>No highlights yet. You can highlight an idea using the '.$en_all_11035[12896]['m_icon'].' icon while reading.</div>';
+        echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>No highlights yet. Highlight ideas using the '.$en_all_11035[12896]['m_icon'].' button.</div>';
 
     } else {
 
