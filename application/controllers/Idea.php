@@ -629,7 +629,7 @@ class Idea extends CI_Controller {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Unknown error 1 while trying to save file.',
+                'message' => 'Unknown error 1 while trying to save file.'.print_r($_FILES, true),
             ));
 
         } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
