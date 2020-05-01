@@ -51,7 +51,8 @@ if($recipient_en['en_id'] > 0){
 
     //Fetch entire Bookshelf:
     $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
-    $is_in_bookshelf = in_array($in['in_id'], $player_read_ids);
+    $is_in_top_bookshelf = in_array($in['in_id'], $player_read_ids);
+    $is_in_bookshelf = $is_in_top_bookshelf;
 
     if(!$is_in_bookshelf){
         //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
@@ -306,7 +307,7 @@ $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata
 echo '<div class="hideIfEmpty main_reads_top"></div>';
 
 //READ PROGRESS ONLY AT TOP LEVEL
-if($is_in_bookshelf){
+if($is_in_top_bookshelf){
     if($completion_rate['completion_percentage']>0){
         echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     } else {
