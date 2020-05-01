@@ -1467,8 +1467,8 @@ function echo_in_cover($in, $show_editor, $common_prefix = null){
         $ui .= '<div class="progress-bg" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
-    echo $cover_photo;
-    echo echo_in_title($in, $common_prefix);
+    $ui .= $cover_photo;
+    $ui .= echo_in_title($in, $common_prefix);
 
     //Search for Idea Image:
     if($show_editor){
