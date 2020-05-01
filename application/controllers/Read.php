@@ -55,6 +55,47 @@ class Read extends CI_Controller
     }
 
 
+
+    function highlight(){
+
+        //My Bookmarks reads List
+        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
+        $session_en = superpower_assigned(null, true);
+
+
+        //Fetch reads list:
+        $player_reads = $this->LEDGER_model->ln_fetch(array(
+            'ln_creator_source_id' => $session_en['en_id'],
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+        ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
+        if(!count($player_reads)){
+            //Nothing in their reads list:
+            return redirect_message('/');
+        }
+
+        //Log READ LIST View:
+        $this->LEDGER_model->ln_create(array(
+            'ln_type_source_id' => 4283, //Opened READ LIST
+            'ln_creator_source_id' => $session_en['en_id'],
+        ));
+
+
+        $this->load->view('header', array(
+            'title' => $en_all_2738[6205]['m_name'],
+        ));
+
+        $this->load->view('read/read_home', array(
+            'session_en' => $session_en,
+            'player_reads' => $player_reads,
+        ));
+
+        $this->load->view('footer');
+
+    }
+
+
     function start($in_id){
 
         //Adds Idea to the Players Reads List

@@ -1,8 +1,5 @@
 <?php
-
 $timestamp = time();
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
-
 ?>
 
 <style>
