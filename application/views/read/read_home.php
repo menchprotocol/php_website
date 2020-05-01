@@ -1,5 +1,12 @@
 <?php
 $timestamp = time();
+//Fetch reads list:
+$player_reads = $this->LEDGER_model->ln_fetch(array(
+    'ln_creator_source_id' => $session_en['en_id'],
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
+    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
 ?>
 
 <style>
