@@ -233,6 +233,9 @@ a.btn, .btn.dropdown-toggle, label.btn {
 .main_nav .btn {
     padding:10px 5px 10px 5px !important;
 }
+.main_nav .btn:first-child{
+    padding-left:0 !important;
+}
 
 img.no-radius {
     border-radius:0 !important;
