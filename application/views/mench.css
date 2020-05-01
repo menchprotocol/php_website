@@ -1468,6 +1468,7 @@ label {
     width: 70px;
     height: 70px;
 }
+.show-min{display:none;}
 .btn-five{ margin-left:5px; }
 .list-group-item.active {color:#000000;}
 .mobile-left-top{
@@ -1509,6 +1510,7 @@ label {
     }
 
     .show-max{display: none !important;}
+    .show-min{display: block !important;}
 }
 
 .itemidea.list-group-item {

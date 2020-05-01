@@ -4,6 +4,9 @@
 <div class="container">
     <?php
 
+    $en_all_11035 = $this->config->item('en_all_11035'); //NAVIGATION
+    echo '<div class="read-topic show-min"><span class="icon-block">'.$en_all_11035[12898]['m_icon'].'</span>'.$en_all_11035[12898]['m_name'].'</div>';
+
     if(!superpower_assigned(10939)) {
 
         //START PUBLISHING

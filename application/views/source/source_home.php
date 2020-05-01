@@ -5,7 +5,7 @@
 
     <?php
 
-    $en_all_11035 = $this->config->item('en_all_11035'); //SOURCE
+    $en_all_11035 = $this->config->item('en_all_11035'); //NAVIGATION
 
 
     //My Sources:

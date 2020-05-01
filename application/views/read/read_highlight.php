@@ -4,6 +4,9 @@
 <div class="container">
     <?php
 
+    $en_all_11035 = $this->config->item('en_all_11035'); //NAVIGATION
+    echo '<div class="read-topic show-min"><span class="icon-block">'.$en_all_11035[12896]['m_icon'].'</span>'.$en_all_11035[12896]['m_name'].'</div>';
+
     $player_highlights = $this->LEDGER_model->ln_fetch(array(
         'ln_creator_source_id' => $session_en['en_id'],
         'ln_type_source_id' => 12896, //HIGHLIGHTS
