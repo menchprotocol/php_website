@@ -478,8 +478,14 @@ img.no-radius {
 .cover-list{
     display: block;
     width: 100%;
+}
+.padding-left-bottom{
     padding-left: 33px;
     padding-bottom: 33px;
+}
+.padding-top-down{
+    padding-top: 21px;
+    padding-bottom: 21px;
 }
 .cover-block{
     display: block;

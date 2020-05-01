@@ -783,7 +783,7 @@ class READ_model extends CI_Model
 
             if($all_child_featured){
 
-                echo '<div class="cover-list">';
+                echo '<div class="cover-list adding-left-bottom">';
                 if(count($in__next) > 0){
                     //List Children:
                     foreach($in__next as $key => $child_in){
