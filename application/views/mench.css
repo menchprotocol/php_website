@@ -451,6 +451,14 @@ img.no-radius {
     padding-bottom: 2px;
     cursor: help;
 }
+.cover-image{
+    width: 144px;
+    height: 233px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    vertical-align: middle;
+    box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
+}
 
 /* MENCH Colors */
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }

@@ -1420,11 +1420,14 @@ function echo_unauthorized_message($superpower_en_id = 0){
 
 }
 
-function echo_in_cover($in){
+function echo_in_cover($in, $show_editor, $common_prefix = null){
+
+
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
 
-    //Let's see what we find:
+    //Try to find a cover photo:
+    $cover_photo = null;
     foreach($CI->LEDGER_model->ln_fetch(array( //IDEA SOURCE
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
@@ -1434,20 +1437,58 @@ function echo_in_cover($in){
         'ln_type_source_id' => 'ASC', //Messages First, Sources Second
         'ln_order' => 'ASC', //Sort by message order
     )) as $en){
-
         //See if this source has a photo:
-        //Source Profile
         foreach($CI->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id' => 4260, //IMAGES ONLY
             'ln_portfolio_source_id' => $en['ln_profile_source_id'],
         )) as $en_image) {
-            return $en_image['ln_content'];
+            $cover_photo = '<img src="'.$en_image['ln_content'].'" class="cover-image" />';
+            break;
         }
+        if($cover_photo){
+            break;
+        }
+    }
+
+    if(!$cover_photo){
+        //Use Default cover if not found:
+        $cover_photo = '<img src="https://s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg" class="cover-image" />';
+    }
+
+    $recipient_en = superpower_assigned();
+    $metadata = unserialize($in['in_metadata']);
+    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+
+    $ui  = '<a href="/'.$in['in_id'] . '" class="inline-block">';
+
+    if($recipient_en){
+        $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
+        $ui .= '<div class="progress-bg" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    }
+
+    echo $cover_photo;
+    echo echo_in_title($in, $common_prefix);
+
+    //Search for Idea Image:
+    if($show_editor){
+
+        $ui .= '<div class="note-editor edit-off">';
+
+        $ui .= '<span class="show-on-hover">';
+
+        $ui .= '<span class="read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
+
+        $ui .= '<span title="REMOVE"><span class="read_remove_item" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
+
+        $ui .= '</span>';
+        $ui .= '</div>';
 
     }
 
-    //Still Here? Return default thumbnail:
+    $ui .= '</a>';
+
+    return $ui;
 
 }
 
