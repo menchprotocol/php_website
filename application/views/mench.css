@@ -893,7 +893,6 @@ td.MENCHcolumn3  { width: 13%; }
 .mench-navigation {
     width: 100%;
     background-color: #FFFFFF;
-    overflow: hidden;
     border-bottom: 1px solid #000;
 }
 
