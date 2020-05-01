@@ -505,11 +505,13 @@ img.no-radius {
     height: 100%;
 }
 .cover-image span{
-    padding: 3px;
+    padding: 1px 5px;
     background: rgba(0, 0, 0, 0.8);
-    position: fixed;
-    color:#FFF;
-    font-weight:bold;
+    position: absolute;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 0.8em;
+    border-radius: 10px;
 }
 
 .cover-image .bottom-right{
