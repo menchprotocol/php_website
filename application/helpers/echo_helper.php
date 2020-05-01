@@ -796,45 +796,10 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
     if($can_click && $completion_rate['completion_percentage']>0){
         $ui .= '<div class="progress-bg" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
-    $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-
-
-
-    //READ
-    $ui .= '<td class="MENCHcolumn1">';
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : ( !$recipient_en ? '<i class="fas fa-circle idea"></i>' : '<i class="far fa-lock read"></i>' ) ).'</span>';
     $ui .= '<b class="montserrat idea-url title-block">'.echo_in_title($in, $common_prefix).'</b>';
-    $ui .= '</td>';
 
-
-
-
-
-
-
-
-    //SOURCE
-    $ui .= '<td class="MENCHcolumn2 source">';
-    $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
-    if(isset($metadata['in__metadata_sources'])){
-        foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
-            $source_count += count($channel_contents);
-        }
-    }
-
-    if($source_count > 0){
-        $ui .= '<span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($source_count).'</span>';
-    }
-    $ui .= '</td>';
-
-
-
-    //IDEA
-    $ui .= '<td class="MENCHcolumn3 idea">';
-    if(isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2){
-        $ui .= '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($metadata['in__metadata_max_steps']-1).'</span>';
-    }
     //Search for Idea Image:
     if($show_editor){
 
@@ -850,11 +815,7 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
         $ui .= '</div>';
 
     }
-    $ui .= '</td>';
 
-
-
-    $ui .= '</tr></table>';
     $ui .= ( $can_click ? '</a>' : '' );
     $ui .= '</div>';
 
@@ -1464,8 +1425,7 @@ function echo_en_basic($en)
 {
     $ui = '<div class="list-group-item no-side-padding itemsource en-item object_highlight">';
     $ui .= '<span class="icon-block">' . echo_en_icon($en['en_icon']) . '</span>';
-    $ui .= '<span class="title-block title-no-right montserrat">'.$en['en_name'].'</span>';
-    //$ui .= '<span class="message_content paddingup ln_content hideIfEmpty">'.trim(str_replace('@'.$en['en_id'], '', $en['ln_content'])).'</span>';
+    $ui .= '<span class="title-block title-no-right">'.$en['en_name'].'</span>';
     $ui .= '</div>';
     return $ui;
 }
