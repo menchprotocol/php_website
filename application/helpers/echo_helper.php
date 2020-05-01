@@ -1425,7 +1425,7 @@ function echo_en_basic($en)
 {
     $ui = '<div class="list-group-item no-side-padding">';
     $ui .= '<span class="icon-block">' . echo_en_icon($en['en_icon']) . '</span>';
-    $ui .= '<span class="title-block title-no-right">'.$en['en_name'].'</span>';
+    $ui .= '<span class="title-block title-no-right montserrat">'.$en['en_name'].'</span>';
     $ui .= '</div>';
     return $ui;
 }

@@ -856,7 +856,6 @@ class READ_model extends CI_Model
                 }
 
 
-
                 //Redirect to login page:
                 echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$ins[0]['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
 
