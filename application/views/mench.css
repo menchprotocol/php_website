@@ -521,11 +521,11 @@ img.no-radius {
 }
 .cover-image .top-right{
     right: 5px;
-    top: 5px;
+    top: 10px;
 }
 .cover-image .top-left{
     left: 5px;
-    top: 5px;
+    top: 10px;
 }
 
 .progress-bg-image{
