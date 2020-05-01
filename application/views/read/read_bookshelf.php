@@ -37,15 +37,17 @@ if(!count($player_reads)){
     echo '<div class="clear-reads-list">';
 
     $all_completed = true;
-    echo '<div id="actionplan_steps" class="list-group no-side-padding">';
-    foreach($player_reads as $priority => $in) {
+
+    echo '<div id="bookshelf_reads" class="cover-list">';
+    foreach($player_reads as $in) {
         $completion_rate = $this->READ_model->read_completion_progress($session_en['en_id'], $in);
-        echo echo_in_read($in, false, null, null, true, $completion_rate);
+        echo echo_in_cover($in, true, null, $completion_rate);
         if($completion_rate['completion_percentage']!=100 && $all_completed){
             $all_completed = false;
         }
     }
     echo '</div>';
+
 
     //NEXT
     if(!$all_completed){

@@ -232,14 +232,14 @@ class READ_model extends CI_Model
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-        ), array('in_previous'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
+        ), array('in_previous'), 0, 0, array('ln_order' => 'ASC')) as $bookshelf_in){
 
             //See progress rate so far:
-            $completion_rate = $this->READ_model->read_completion_progress($en_id, $actionplan_in);
+            $completion_rate = $this->READ_model->read_completion_progress($en_id, $bookshelf_in);
 
             if($completion_rate['completion_percentage'] < 100){
                 //This is the top priority now:
-                $top_priority_in = $actionplan_in;
+                $top_priority_in = $bookshelf_in;
                 break;
             }
 
@@ -329,7 +329,7 @@ class READ_model extends CI_Model
 
             //Not added to their reads list so far, let's go ahead and add it:
             $in_rank = 1;
-            $actionplan = $this->LEDGER_model->ln_create(array(
+            $bookshelf = $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => ( $recommender_in_id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id' => $ins[0]['in_id'], //The Idea they are adding
@@ -348,7 +348,7 @@ class READ_model extends CI_Model
 
             //Move other ideas down in the reads list:
             foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_id !=' => $actionplan['ln_id'], //Not the newly added idea
+                'ln_id !=' => $bookshelf['ln_id'], //Not the newly added idea
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_creator_source_id' => $en_id, //Belongs to this User
@@ -982,7 +982,7 @@ class READ_model extends CI_Model
 
         //READ PROGRESS
         if($completion_rate['completion_percentage']>0){
-            echo '<div class="progress-bg no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+            echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
         } else {
             //Replace with empty space:
             echo '<div class="high3x">&nbsp;</div>';

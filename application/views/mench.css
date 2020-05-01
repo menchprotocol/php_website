@@ -433,7 +433,7 @@ img.no-radius {
 }
 
 .info-item a, .info-item i {
-    color:#999999 !important;
+    color:#AAAAAA !important;
 }
 .info-item a {
     text-decoration: underline;
@@ -447,7 +447,7 @@ img.no-radius {
     background-color:transparent !important;
 }
 .underdot{
-    border-bottom: 1px dotted #999999;
+    border-bottom: 1px dotted #AAAAAA;
     padding-bottom: 2px;
     cursor: help;
 }
@@ -457,7 +457,7 @@ img.no-radius {
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }
 .idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffc500 !important; }
 .read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover, .fas.redalert  { color:#FC1B44 !important; }
-.grey, .grey i { color:#999999 !important; }
+.grey, .grey i { color:#AAAAAA !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
 .btn-source i, .btn-read i, .btn-idea i { color: #000000 !important; }
@@ -498,34 +498,48 @@ img.no-radius {
     overflow: hidden;
     margin-bottom: 10px;
     box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
+    position: relative;
 }
 .cover-image img{
     width: 100%;
     height: 100%;
 }
+.cover-image span{
+    padding: 3px;
+    background: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    color:#FFF;
+    font-weight:bold;
+}
+
+.cover-image .bottom-right{
+    right: 5px;
+    bottom: 5px;
+}
+.cover-image .top-right{
+    right: 5px;
+    top: 5px;
+}
+.cover-image .top-left{
+    left: 5px;
+    top: 5px;
+}
 
 .progress-bg-image{
     width:100% !important;
-    background-color: #CCCCCC;
-}
-.progress-bg-image .progress-done{
-    height: 5px;
-    background-color: #FC1B44;
+    background-color: #AAAAAA;
 }
 
-
-
-
-
-.progress-bg{
-    margin: -10px 0 10px 0;
-    width: 100% !important;
-}
-.progress-bg .progress-done{
+.progress-bg-list .progress-done, .progress-bg-image .progress-done{
     height: 3px;
     background-color: #FC1B44;
 }
 
+.progress-bg-list{
+    margin: -10px 0 10px 0;
+    width: 100% !important;
+    background-color: #AAAAAA;
+}
 
 
 .fixed-bottom{
@@ -1028,7 +1042,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .dynamic_saving{
-    background-color: #999999 !important;
+    background-color: #AAAAAA !important;
 }
 
 .itemsource{
@@ -1169,7 +1183,7 @@ label {
 }
 
 .btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal, .btn-superpower .fad, .btn-superpower:not(.active) .source, .btn-superpower:not(.active) .idea, .btn-superpower:not(.active) .read {
-    color: #999999 !important;
+    color: #AAAAAA !important;
 }
 
 
@@ -1246,7 +1260,7 @@ label {
 
 
 .is-working {
-    background-color: #999999 !important;
+    background-color: #AAAAAA !important;
 }
 
 .inputfile {
@@ -1292,7 +1306,7 @@ label {
 }
 
 .idea-info, .idea-info i {
-    color:#999999 !important;
+    color:#AAAAAA !important;
 }
 
 .idea-desc{
@@ -1413,7 +1427,7 @@ label {
     font-weight: bold;
 }
 .form-control::placeholder{
-    color: #999999;
+    color: #AAAAAA;
 }
 .texttype__sm{
     width:55px;
@@ -1443,17 +1457,17 @@ label {
     text-decoration: underline;
 }
 .pull-middle a, .pull-middle span{
-    color: #999999;
+    color: #AAAAAA;
 }
 .read-topic{
     padding: 10px 0;
 }
 .read-topic:not(.skip-grey), .read-topic:not(.skip-grey) a {
-    color: #999999 !important;
+    color: #AAAAAA !important;
     text-transform: uppercase;
 }
 .read-topic i {
-    color: #999999 !important;
+    color: #AAAAAA !important;
 }
 .read-info-topic{
     margin: -10px 0 30px;

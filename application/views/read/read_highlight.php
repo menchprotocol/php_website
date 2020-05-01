@@ -17,7 +17,7 @@
 
     } else {
 
-        echo '<div id="actionplan_steps" class="list-group no-side-padding">';
+        echo '<div class="list-group no-side-padding">';
         foreach($player_highlights as $priority => $in) {
             echo echo_in_read($in, false, null, null, true);
         }

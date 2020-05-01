@@ -791,10 +791,10 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
     $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor ); //|| $recipient_en
 
 
-    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'actionplan_sort' : '' ).' itemread '.$extra_class.'">';
+    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'bookshelf_sort' : '' ).' itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
     if($can_click && $completion_rate['completion_percentage']>0){
-        $ui .= '<div class="progress-bg" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        $ui .= '<div class="progress-bg-list" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
     $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : ( !$recipient_en ? '<i class="fas fa-circle idea"></i>' : '<i class="far fa-lock read"></i>' ) ).'</span>';
@@ -1420,13 +1420,22 @@ function echo_unauthorized_message($superpower_en_id = 0){
 
 }
 
-function echo_in_cover($in, $show_editor, $common_prefix = null){
+function echo_time_digital($total_seconds){
+
+    $hours = floor($total_seconds/3600);
+    $minutes = floor(fmod($total_seconds, 3600)/60);
+    $seconds = fmod($total_seconds, 60);
+    return ( $hours ? $hours.':' : '' ).$minutes.':'.$seconds;
+
+}
+
+function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rate = null){
 
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
 
-    //Try to find a cover photo:
+    //FIND IMAGE
     $cover_photo = null;
     foreach($CI->LEDGER_model->ln_fetch(array( //IDEA SOURCE
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -1450,46 +1459,36 @@ function echo_in_cover($in, $show_editor, $common_prefix = null){
             break;
         }
     }
-
     if(!$cover_photo){
-        //Use Default cover if not found:
+        //DEFAULT IMAGE
         $cover_photo = '<img src="https://s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg" />';
     }
 
     $recipient_en = superpower_assigned();
     $metadata = unserialize($in['in_metadata']);
-    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
-    $ui  = '<a href="/'.$in['in_id'] . '" class="cover-block">';
+    $ui  = '<a href="/'.$in['in_id'] . '" class="cover-block '.( $show_editor ? ' bookshelf_sort ' : '' ).'">';
 
 
     $ui .= '<div class="cover-image">';
     if($recipient_en){
-        $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
+        if(!$completion_rate){
+            $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
+        }
         $ui .= '<div class="progress-bg-image" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
     $ui .= $cover_photo;
-    $ui .= '</div>';
-
-
-
-    $ui .= '<b class="montserrat">'.echo_in_title($in, $common_prefix).'</b>';
-
+    if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
+        $ui .= '<span class="bottom-right">'.echo_time_digital($metadata['in__metadata_max_seconds']).'</span>';
+    }
     //Search for Idea Image:
     if($show_editor){
-
-        $ui .= '<div class="note-editor edit-off">';
-
-        $ui .= '<span class="show-on-hover">';
-
-        $ui .= '<span class="read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
-
-        $ui .= '<span title="REMOVE"><span class="read_remove_item" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
-
-        $ui .= '</span>';
-        $ui .= '</div>';
-
+        $ui .= '<span class="top-left read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
+        $ui .= '<span class="top-right read_remove_item" in-id="'.$in['in_id'].'" title="REMOVE"><i class="fas fa-times"></i></span>';
     }
+    $ui .= '</div>';
+
+    $ui .= '<b class="montserrat">'.echo_in_title($in, $common_prefix).'</b>';
 
     $ui .= '</a>';
 

@@ -2,18 +2,18 @@
 function read_sort_save() {
 
     var sort_rank = 0;
-    var new_actionplan_order = [];
-    $("#actionplan_steps .actionplan_sort").each(function () {
+    var new_bookshelf_order = [];
+    $("#bookshelf_reads .bookshelf_sort").each(function () {
         var link_id = parseInt($(this).attr('sort-link-id'));
         if(link_id > 0){
             sort_rank++;
-            new_actionplan_order[sort_rank] = link_id;
+            new_bookshelf_order[sort_rank] = link_id;
         }
     });
 
     //Update READ LIST order:
     if(sort_rank > 0){
-        $.post("/read/read_sort_save", {js_pl_id: js_pl_id, new_actionplan_order: new_actionplan_order}, function (data) {
+        $.post("/read/read_sort_save", {js_pl_id: js_pl_id, new_bookshelf_order: new_bookshelf_order}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -79,9 +79,9 @@ $(document).ready(function () {
 
 function read_sort_load(){
     //Load sorter:
-    var sort = Sortable.create(document.getElementById('actionplan_steps'), {
+    var sort = Sortable.create(document.getElementById('bookshelf_reads'), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".actionplan_sort", // Specifies which items inside the element should be sortable
+        draggable: ".bookshelf_sort", // Specifies which items inside the element should be sortable
         handle: ".fa-bars", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             read_sort_save();

@@ -536,7 +536,7 @@ class Read extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid player ID',
             ));
-        } elseif (!isset($_POST['new_actionplan_order']) || !is_array($_POST['new_actionplan_order']) || count($_POST['new_actionplan_order']) < 1) {
+        } elseif (!isset($_POST['new_bookshelf_order']) || !is_array($_POST['new_bookshelf_order']) || count($_POST['new_bookshelf_order']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing sorting ideas',
@@ -545,7 +545,7 @@ class Read extends CI_Controller
 
         //Update the order of their READ LIST:
         $results = array();
-        foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
+        foreach($_POST['new_bookshelf_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){
                 //Update order of this link:
                 $results[$ln_order] = $this->LEDGER_model->ln_update(intval($ln_id), array(
@@ -557,7 +557,7 @@ class Read extends CI_Controller
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => count($_POST['new_actionplan_order']).' Ideas Sorted',
+            'message' => count($_POST['new_bookshelf_order']).' Ideas Sorted',
         ));
     }
 
