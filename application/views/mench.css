@@ -1378,7 +1378,7 @@ label {
     width:         calc(100% - 33px) !important;
 }
 .block-one {
-    margin-top: 13px;
+    padding-top: 13px;
     width: -webkit-calc(100% - 10px) !important;
     width:    -moz-calc(100% - 10px) !important;
     width:         calc(100% - 10px) !important;
