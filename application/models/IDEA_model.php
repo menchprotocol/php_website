@@ -885,7 +885,7 @@ class IDEA_model extends CI_Model
 
         //AGGREGATE IDEA SOURCES
         foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_profile_source_id >' => 0,
+            'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             'ln_next_idea_id' => $in['in_id'],
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')).')' => null, //IDEA COIN
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC

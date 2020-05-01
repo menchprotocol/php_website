@@ -114,9 +114,10 @@ if(!isset($hide_header)){
 
 
                                 if($en_id==12749) {
-                                    if(superpower_active(10984, true) && (is_numeric($first_segment) || !$first_segment)){
+                                    $focus_in_id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? config_var(12156) : 0 ) );
+                                    if( $focus_in_id>0 && in_is_source($focus_in_id) ){
                                         //Contribute to Idea
-                                        $m['m_desc'] = '/idea/'.( $first_segment>0 ? $first_segment : config_var(12156));
+                                        $m['m_desc'] = '/idea/'.$focus_in_id;
                                     } else {
                                         continue;
                                     }

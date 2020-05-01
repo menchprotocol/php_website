@@ -1420,6 +1420,36 @@ function echo_unauthorized_message($superpower_en_id = 0){
 
 }
 
+function echo_in_cover($in){
+    //Search to see if an idea has a thumbnail:
+    $CI =& get_instance();
+
+    //Let's see what we find:
+    foreach($CI->LEDGER_model->ln_fetch(array( //IDEA SOURCE
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+        'ln_next_idea_id' => $in['in_id'],
+        'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+    ), array(), 0, 0, array(
+        'ln_type_source_id' => 'ASC', //Messages First, Sources Second
+        'ln_order' => 'ASC', //Sort by message order
+    )) as $en){
+
+        //See if this source has a photo:
+        //Source Profile
+        foreach($CI->LEDGER_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id' => 4260, //IMAGES ONLY
+            'ln_portfolio_source_id' => $en['ln_profile_source_id'],
+        )) as $en_image) {
+            return $en_image['ln_content'];
+        }
+
+    }
+
+    //Still Here? Return default thumbnail:
+
+}
 
 function echo_en_basic($en)
 {

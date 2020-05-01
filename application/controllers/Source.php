@@ -267,7 +267,7 @@ class Source extends CI_Controller
         } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Unknown error while trying to save file.',
+                'message' => 'Unknown error 3 while trying to save file.',
             ));
         } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
             return echo_json(array(

@@ -272,7 +272,7 @@ class Read extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Unknown error while trying to save file.',
+                'message' => 'Unknown error 2 while trying to save file.',
             ));
 
         } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {

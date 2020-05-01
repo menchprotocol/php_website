@@ -1079,18 +1079,23 @@ function in_is_source($in_id, $session_en = array()){
     //Ways a player can modify an idea:
     $CI =& get_instance();
     return (
-        superpower_active(10984, true) || //Player has Global idea editing superpower
-        count($CI->LEDGER_model->ln_fetch(array( //Player created the idea
-            'ln_type_source_id' => 4250, //IDEA CREATOR
-            'ln_next_idea_id' => $in_id,
-            'ln_creator_source_id' => $session_en['en_id'],
-        ))) ||
-        count($CI->LEDGER_model->ln_fetch(array( //Player has an idea coin by being listed as a source
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-            'ln_next_idea_id' => $in_id,
-            'ln_profile_source_id' => $session_en['en_id'],
-        )))
+        superpower_active(10984, true) || //GLOBAL EDITING
+        (
+            superpower_active(10939, true) && //PUBLISHING PEN
+                (
+                count($CI->LEDGER_model->ln_fetch(array( //Player created the idea
+                    'ln_type_source_id' => 4250, //IDEA CREATOR
+                    'ln_next_idea_id' => $in_id,
+                    'ln_creator_source_id' => $session_en['en_id'],
+                ))) ||
+                count($CI->LEDGER_model->ln_fetch(array( //IDEA SOURCE
+                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+                    'ln_next_idea_id' => $in_id,
+                    'ln_profile_source_id' => $session_en['en_id'],
+                )))
+            )
+        )
     );
 
 }
@@ -1349,7 +1354,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $db_row['in_id'],
-                    'ln_profile_source_id >' => 0, //Where the source is stored
+                    'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array(), 0) as $source){
                     array_push($export_row['_tags'], 'alg_source_' . $source['ln_profile_source_id']);
                 }
