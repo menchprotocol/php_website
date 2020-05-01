@@ -126,7 +126,7 @@ if(!isset($hide_header)){
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.($is_current_mench ? ' focustab ' : '').'" title="'.$_SERVER['REQUEST_URI'].'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                                echo '<span class="montserrat ' . $class . '_name '.( $is_current_mench ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
+                                echo '<span class="montserrat ' . $class . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '</a>';
                                 echo '</div>';
 
