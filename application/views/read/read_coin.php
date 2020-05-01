@@ -51,20 +51,15 @@ if($recipient_en['en_id'] > 0){
 
     //Fetch entire Bookshelf:
     $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
+    $is_in_bookshelf = in_array($in['in_id'], $player_read_ids);
 
-    if(in_array($in['in_id'], $player_read_ids)){
-
-        $in_reads_list = true;
-
-    } else {
-
+    if(!$is_in_bookshelf){
         //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
         foreach($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
-
             //Does this parent and its grandparents have an intersection with the user ideas?
             if (array_intersect($grand_parent_ids, $player_read_ids)) {
                 //Idea is part of their Bookshelf:
-                $in_reads_list = true;
+                $is_in_bookshelf = true;
                 break;
             }
         }
@@ -78,10 +73,10 @@ if($recipient_en['en_id'] > 0){
  * Determine next Reads
  *
  */
-if(!$in_reads_list){
+if(!$is_in_bookshelf){
 
     //IDEA TITLE
-    echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon"><i class="fas fa-circle read"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
+    echo '<h1 class="block-one" '.( $recipient_en['en_id'] > 0 ? '' : ' style="padding-top: 21px;" ' ).'><span class="icon-block top-icon"><i class="fas fa-circle read"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
 
 
     foreach($in__messages as $message_ln) {
@@ -310,13 +305,16 @@ $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata
 
 echo '<div class="hideIfEmpty main_reads_top"></div>';
 
-//READ PROGRESS
-if($completion_rate['completion_percentage']>0){
-    echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
-} else {
-    //Replace with empty space:
-    echo '<div class="high3x">&nbsp;</div>';
+//READ PROGRESS ONLY AT TOP LEVEL
+if($is_in_bookshelf){
+    if($completion_rate['completion_percentage']>0){
+        echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    } else {
+        //Replace with empty space:
+        echo '<div class="high3x">&nbsp;</div>';
+    }
 }
+
 
 //READ TITLE
 echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
