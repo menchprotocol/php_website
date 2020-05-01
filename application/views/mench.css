@@ -491,12 +491,12 @@ img.no-radius {
     width: 144px;
     height: 207px;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 .cover-image{
     width: 144px;
     height: 204px;
     box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
-    margin-bottom: 5px;
 }
 
 .progress-bg{
@@ -505,7 +505,7 @@ img.no-radius {
 }
 .progress-bg-image{
     width:100% !important;
-    background-color: #999999;
+    background-color: #CCCCCC;
 }
 
 .progress-bg .progress-done{
