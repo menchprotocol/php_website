@@ -29,9 +29,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width:767px;
     padding:0 0 60px;
 }
-.container-wide {
-    max-width:767px;
-}
 .padded {
     margin: 0 33px 15px 33px;
 }
@@ -44,7 +41,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .paddingup{
     padding:10px 0 0;
 }
-.container-wide .content-image {
+.content-image {
     margin:0;
     max-width: 377px;
     max-height: 377px;
@@ -1378,7 +1375,6 @@ label {
     width:         calc(100% - 33px) !important;
 }
 .block-one {
-    padding-top: 13px;
     width: -webkit-calc(100% - 10px) !important;
     width:    -moz-calc(100% - 10px) !important;
     width:         calc(100% - 10px) !important;
@@ -1501,7 +1497,7 @@ label {
     td.MENCHcolumn3  { width: 20%; }
 
     .media-content, .ln_content img, .ln_content video, .i_content img { max-width: 100%; }
-    .container-wide .content-image {
+    .content-image {
         max-width: calc(100% - 66px);
         max-height:377px;
     }
