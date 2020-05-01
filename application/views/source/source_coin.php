@@ -213,7 +213,7 @@ $is_source = en_is_source($en['en_id']);
 
         //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
-        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+        if(!$is_source && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             continue;
         }
 
