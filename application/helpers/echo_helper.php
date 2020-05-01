@@ -1468,7 +1468,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null){
     }
 
     $ui .= $cover_photo;
-    $ui .= echo_in_title($in, $common_prefix);
+    $ui .= '<b class="montserrat">'.echo_in_title($in, $common_prefix).'</b>';
 
     //Search for Idea Image:
     if($show_editor){

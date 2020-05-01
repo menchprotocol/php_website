@@ -480,17 +480,17 @@ img.no-radius {
     display: block;
     width: 146px;
     height: 270px;
-    background-color: #FFFFFF;
     overflow: hidden;
     float: left;
-    margin: 0 0px 20px 33px;
+    margin: 0 0px 33px 33px;
 }
 .cover-image{
     width: 144px;
     height: 204px;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
+    margin-bottom: 5px;
 }
 
 .progress-bg{
@@ -498,7 +498,7 @@ img.no-radius {
     width: 100% !important;
 }
 .progress-bg-image{
-    width: 100% !important;
+    width: calc(100% - 10px) !important;
     background-color: #999999;
 }
 
