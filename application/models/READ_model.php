@@ -1625,7 +1625,7 @@ class READ_model extends CI_Model
 
             //Calculate completion rate based on estimated time cost:
             if($metadata_this['steps_total'] > 0 || $metadata_this['seconds_total'] > 0){
-                $metadata_this['completion_percentage'] = intval(floor( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 ));
+                $metadata_this['completion_percentage'] = intval(ceil( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 ));
             }
 
 
