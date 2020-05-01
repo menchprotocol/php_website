@@ -231,7 +231,7 @@ a.btn, .btn.dropdown-toggle, label.btn {
     padding:10px;
 }
 .main_nav .btn {
-    padding:10px 5px 10px 0 !important;
+    padding:10px 5px 10px 5px !important;
 }
 
 img.no-radius {
