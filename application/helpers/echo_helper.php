@@ -1443,7 +1443,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null){
             'ln_type_source_id' => 4260, //IMAGES ONLY
             'ln_portfolio_source_id' => $en['ln_profile_source_id'],
         )) as $en_image) {
-            $cover_photo = '<img src="'.$en_image['ln_content'].'" class="cover-image" />';
+            $cover_photo = '<img src="'.$en_image['ln_content'].'" />';
             break;
         }
         if($cover_photo){
@@ -1453,7 +1453,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null){
 
     if(!$cover_photo){
         //Use Default cover if not found:
-        $cover_photo = '<img src="https://s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg" class="cover-image" />';
+        $cover_photo = '<img src="https://s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg" />';
     }
 
     $recipient_en = superpower_assigned();
