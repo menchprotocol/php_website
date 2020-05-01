@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-30 17:58:37 PST
+//Generated 2020-04-30 17:59:21 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588294717;
-$config['cache_count_transaction'] = 1171220;
+$config['cache_timestamp'] = 1588294761;
+$config['cache_count_transaction'] = 1171223;
 $config['cache_count_read'] = 121129;
 $config['cache_count_idea'] = 5432;
 $config['cache_count_source'] = 5196;
@@ -44,7 +44,7 @@ $config['en_all_12893'] = array(
         'm_icon' => '<i class="fas fa-pen idea"></i>',
         'm_name' => 'PUBLISH',
         'm_desc' => '/idea',
-        'm_parents' => array(10939,4535,10876,12893),
+        'm_parents' => array(11035,10939,4535,10876,12893),
     ),
 );
 
@@ -901,7 +901,7 @@ $config['en_all_10876'] = array(
         'm_icon' => '<i class="fas fa-pen idea"></i>',
         'm_name' => 'PUBLISH',
         'm_desc' => 'https://mench.com/idea',
-        'm_parents' => array(10939,4535,10876,12893),
+        'm_parents' => array(11035,10939,4535,10876,12893),
     ),
 );
 
@@ -2875,7 +2875,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11068,6225,10573,7274,3000,12899,12707,12896,12581,12749,3084,12437,7291,4341,4430,12205,12211,6287,12750,7347,7256,4269,4997,12275,10957,7540);
+$config['en_ids_11035'] = array(11068,6225,10573,7274,3000,12899,12707,12896,12581,12749,3084,12437,7291,4341,4430,12205,12211,6287,12750,12898,7347,7256,4269,4997,12275,10957,7540);
 $config['en_all_11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -2990,6 +2990,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'PREVIEW IDEA READ',
         'm_desc' => '',
         'm_parents' => array(11035),
+    ),
+    12898 => array(
+        'm_icon' => '<i class="fas fa-pen idea"></i>',
+        'm_name' => 'PUBLISH',
+        'm_desc' => '',
+        'm_parents' => array(11035,10939,4535,10876,12893),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-book read" aria-hidden="true"></i>',
