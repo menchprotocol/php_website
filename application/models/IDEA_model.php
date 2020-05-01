@@ -613,9 +613,9 @@ class IDEA_model extends CI_Model
         $conditional_steps = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__in__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an READ LIST idea by answering OR ideas
+            '__in__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an Bookshelf idea by answering OR ideas
             '__in__metadata_expansion_some' => array(), //Ideas that allows players to select one or more
-            '__in__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an READ LIST idea via Conditional Idea links
+            '__in__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an Bookshelf idea via Conditional Idea links
         );
 
         //Fetch children:

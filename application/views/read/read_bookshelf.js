@@ -11,7 +11,7 @@ function read_sort_save() {
         }
     });
 
-    //Update READ LIST order:
+    //Update Bookshelf order:
     if(sort_rank > 0){
         $.post("/read/read_sort_save", {js_pl_id: js_pl_id, new_bookshelf_order: new_bookshelf_order}, function (data) {
             //Update UI to confirm with user:
@@ -37,11 +37,11 @@ function read_clear_all(){
 
 $(document).ready(function () {
 
-    //Watch for READ LIST removal click:
+    //Watch for Bookshelf removal click:
     $('.read_remove_item').on('click', function(e) {
 
         var in_id = $(this).attr('in-id');
-        var r = confirm("Remove ["+$('.text__4736_'+in_id).text()+"] from your reads list?");
+        var r = confirm("Remove ["+$('.text__4736_'+in_id).text()+"] from your Bookshelf?");
         if (r == true) {
             //Save changes:
             $.post("/read/read_remove_item", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {

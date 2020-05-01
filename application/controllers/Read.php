@@ -17,13 +17,13 @@ class Read extends CI_Controller
 
     function index(){
 
-        //My Bookmarks reads List
+        //My Bookmarks Bookshelf
         $session_en = superpower_assigned(null, true);
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
-        //Log READ LIST View:
+        //Log Bookshelf View:
         $this->LEDGER_model->ln_create(array(
-            'ln_type_source_id' => 4283, //Opened READ LIST
+            'ln_type_source_id' => 4283, //Opened Bookshelf
             'ln_creator_source_id' => $session_en['en_id'],
         ));
 
@@ -56,23 +56,23 @@ class Read extends CI_Controller
 
     function start($in_id){
 
-        //Adds Idea to the Players Reads List
+        //Adds Idea to the Players Bookshelf
 
         $session_en = superpower_assigned();
 
-        //Check to see if added to READ LIST for logged-in users:
+        //Check to see if added to Bookshelf for logged-in users:
         if(!$session_en){
             return redirect_message('/source/sign/'.$in_id);
         }
 
-        //Add this Idea to their READ LIST:
+        //Add this Idea to their Bookshelf:
         if(!$this->READ_model->read_start($session_en['en_id'], $in_id)){
-            //Failed to add to reads list:
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your reads list.</div>');
+            //Failed to add to Bookshelf:
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your Bookshelf.</div>');
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$in_id, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to reads list</div>');
+        return redirect_message('/'.$in_id, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Bookshelf</div>');
 
     }
 
@@ -118,7 +118,7 @@ class Read extends CI_Controller
             }
 
 
-            //Find next Idea based on source's reads list:
+            //Find next Idea based on source's Bookshelf:
             $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
@@ -133,7 +133,7 @@ class Read extends CI_Controller
 
         } else {
 
-            //Find the next idea in the READ LIST:
+            //Find the next idea in the Bookshelf:
             $next_in_id = $this->READ_model->read_next_go($session_en['en_id']);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
@@ -455,12 +455,12 @@ class Read extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your reads list.';
+            $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your Bookshelf.';
 
             //Log link:
             $clear_all_link = $this->LEDGER_model->ln_create(array(
                 'ln_content' => $message,
-                'ln_type_source_id' => 6415, //READ LIST Reset Reads
+                'ln_type_source_id' => 6415, //Bookshelf Reset Reads
                 'ln_creator_source_id' => $en_id,
             ));
 
@@ -469,13 +469,13 @@ class Read extends CI_Controller
                 $this->LEDGER_model->ln_update($progress_link['ln_id'], array(
                     'ln_status_source_id' => 6173, //Transaction Deleted
                     'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was deleted
-                ), $en_id, 6415 /* User Cleared READ LIST */);
+                ), $en_id, 6415 /* User Cleared Bookshelf */);
             }
 
         } else {
 
             //Nothing to do:
-            $message = 'Your READ LIST was empty as there was nothing to delete';
+            $message = 'Your Bookshelf was empty as there was nothing to delete';
 
         }
 
@@ -492,7 +492,7 @@ class Read extends CI_Controller
          * When users indicate they want to stop
          * a IDEA this function saves the changes
          * necessary and delete the idea from their
-         * READ LIST.
+         * Bookshelf.
          *
          * */
 
@@ -509,7 +509,7 @@ class Read extends CI_Controller
             ));
         }
 
-        //Call function to delete form READ LIST:
+        //Call function to delete form Bookshelf:
         $delete_result = $this->READ_model->read_delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //REMOVED BOOKMARK
 
         if(!$delete_result['status']){
@@ -526,7 +526,7 @@ class Read extends CI_Controller
     {
         /*
          *
-         * Saves the order of READ LIST ideas based on
+         * Saves the order of Bookshelf ideas based on
          * user preferences.
          *
          * */
@@ -543,7 +543,7 @@ class Read extends CI_Controller
             ));
         }
 
-        //Update the order of their READ LIST:
+        //Update the order of their Bookshelf:
         $results = array();
         foreach($_POST['new_bookshelf_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){

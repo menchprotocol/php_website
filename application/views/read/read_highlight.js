@@ -3,7 +3,7 @@
 
 $(document).ready(function () {
 
-    //Watch for READ LIST removal click:
+    //Watch for Bookshelf removal click:
     $('.highlight_remove_item').on('click', function(e) {
 
         var in_id = $(this).attr('in-id');

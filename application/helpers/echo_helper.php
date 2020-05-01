@@ -1210,7 +1210,7 @@ function echo_in_previous_read($in_id, $recipient_en){
         return null;
     }
 
-    //READ LIST
+    //Bookshelf
     $CI =& get_instance();
     $ui = null;
     $in_level_up = 0;

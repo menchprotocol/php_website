@@ -1,10 +1,10 @@
 <?php
 $timestamp = time();
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
-//Fetch reads list:
+//Fetch Bookshelf:
 $player_reads = $this->LEDGER_model->ln_fetch(array(
     'ln_creator_source_id' => $session_en['en_id'],
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //READ LIST Idea Set
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Bookshelf Idea Set
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
 ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
