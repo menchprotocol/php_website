@@ -482,10 +482,10 @@ img.no-radius {
 .cover-block{
     display: block;
     width: 146px;
-    height: 270px;
+    height: 305px;
     overflow: hidden;
     float: left;
-    margin: 0 21px 34px 0;
+    margin: 0 21px 0 0;
 }
 .cover-image{
     border-top-right-radius: 15px;
