@@ -30,7 +30,7 @@ $player_reads = $this->LEDGER_model->ln_fetch(array(
 //List Reads:
 if(!count($player_reads)){
 
-    echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>No Reads yet. Visit <a href="/" class="underline">Home</a> to start reading.</div>';
+    echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>No Reads yet. Visit <a href="/" class="underline">Home</a> to get started.</div>';
 
 } else {
 
