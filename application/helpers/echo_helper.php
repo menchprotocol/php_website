@@ -797,7 +797,7 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
         $ui .= '<div class="progress-bg-list" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
-    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : ( !$recipient_en ? '<i class="fas fa-circle idea"></i>' : '<i class="far fa-lock read"></i>' ) ).'</span>';
+    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : ( !$recipient_en ? '<i class="fas fa-circle idea"></i>' : '<i class="far fa-lock"></i>' ) ).'</span>';
     $ui .= '<b class="montserrat idea-url title-block">'.echo_in_title($in, $common_prefix).'</b>';
 
     //Search for Idea Image:

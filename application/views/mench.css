@@ -530,7 +530,6 @@ img.no-radius {
 
 .progress-bg-image{
     width:100% !important;
-    background-color: #999999;
 }
 
 .progress-bg-list .progress-done, .progress-bg-image .progress-done{
@@ -541,7 +540,6 @@ img.no-radius {
 .progress-bg-list{
     margin: -10px 0 10px 0;
     width: 100% !important;
-    background-color: #999999;
 }
 
 
@@ -1482,9 +1480,6 @@ label {
 .list-group-item.active {color:#000000;}
 /* RESPONSIVE */
 @media (max-width:767px) {
-    body {
-        margin:39px 0 0 0;
-    }
     .mini-hidden{
         display: none;
     }
