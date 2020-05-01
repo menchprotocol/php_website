@@ -1,5 +1,6 @@
 <?php
 $timestamp = time();
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 //Fetch reads list:
 $player_reads = $this->LEDGER_model->ln_fetch(array(
     'ln_creator_source_id' => $session_en['en_id'],
