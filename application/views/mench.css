@@ -489,7 +489,7 @@ img.no-radius {
     border-bottom-right-radius: 15px;
     display: block;
     width: 144px;
-    height: 207px;
+    height: 209px;
     overflow: hidden;
     margin-bottom: 10px;
 }
@@ -499,23 +499,28 @@ img.no-radius {
     box-shadow: 1px 0 2px 1px rgba(150,150,150,.55);
 }
 
-.progress-bg{
-    margin: -10px 0 10px 0;
-    width: 100% !important;
-}
 .progress-bg-image{
     width:100% !important;
     background-color: #CCCCCC;
 }
+.progress-bg-image .progress-done{
+    height: 5px;
+    background-color: #FC1B44;
+}
 
+
+
+
+
+.progress-bg{
+    margin: -10px 0 10px 0;
+    width: 100% !important;
+}
 .progress-bg .progress-done{
     height: 3px;
     background-color: #FC1B44;
 }
-.progress-bg-image .progress-done{
-    height: 3px;
-    background-color: #FC1B44;
-}
+
 
 
 .fixed-bottom{
