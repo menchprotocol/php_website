@@ -41,7 +41,7 @@ if(!count($player_reads)){
 
     $all_completed = true;
 
-    echo '<div id="bookshelf_reads" class="cover-list" style="padding-top:21px; padding-left:33px;">';
+    echo '<div id="bookshelf_reads" class="cover-list" style="padding-top:21px; padding-left:35px;">';
     foreach($player_reads as $in) {
         $completion_rate = $this->READ_model->read_completion_progress($session_en['en_id'], $in);
         echo echo_in_cover($in, true, null, $completion_rate);
