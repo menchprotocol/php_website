@@ -114,7 +114,7 @@ if(!isset($hide_header)){
 
 
                                 if($en_id==12749) {
-                                    if((is_numeric($first_segment) || !$first_segment) && superpower_active(10939, true)){
+                                    if(superpower_active(10984, true) && (is_numeric($first_segment) || !$first_segment)){
                                         //Contribute to Idea
                                         $m['m_desc'] = '/idea/'.( $first_segment>0 ? $first_segment : config_var(12156));
                                     } else {

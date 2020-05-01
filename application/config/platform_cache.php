@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-30 19:36:18 PST
+//Generated 2020-04-30 19:48:19 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588300578;
-$config['cache_count_transaction'] = 1171466;
-$config['cache_count_read'] = 121132;
+$config['cache_timestamp'] = 1588301299;
+$config['cache_count_transaction'] = 1171531;
+$config['cache_count_read'] = 121133;
 $config['cache_count_idea'] = 5432;
 $config['cache_count_source'] = 5196;
 
@@ -48,9 +48,9 @@ $config['en_all_12893'] = array(
     ),
     12749 => array(
         'm_icon' => '<i class="fas fa-plus-circle idea"></i>',
-        'm_name' => 'CONTRIBUTE',
+        'm_name' => 'MODIFY',
         'm_desc' => '',
-        'm_parents' => array(12893,11035),
+        'm_parents' => array(10984,12893,11035),
     ),
 );
 
@@ -447,7 +447,7 @@ $config['en_all_12500'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="fas fa-trash-alt read" aria-hidden="true"></i>',
-        'm_name' => 'CLEAR READS',
+        'm_name' => 'CLEAR BOOKSHELF',
         'm_desc' => '',
         'm_parents' => array(12500,4755,4593),
     ),
@@ -2875,7 +2875,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11068,6225,10573,7347,12749,7274,3000,12899,12707,12896,12581,3084,12437,7291,4341,4430,12205,12211,6287,12750,12898,7256,4269,4997,12275,10957,7540);
+$config['en_ids_11035'] = array(11068,6225,10573,7347,7274,3000,12899,12707,12896,12581,3084,12437,7291,4341,4430,12749,12205,12211,6287,12750,12898,7256,4269,4997,12275,10957,7540);
 $config['en_all_11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -2900,12 +2900,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'BOOKSHELF',
         'm_desc' => '',
         'm_parents' => array(12893,12701,12677,11018,11035,11089,6205,12228,4527),
-    ),
-    12749 => array(
-        'm_icon' => '<i class="fas fa-plus-circle idea"></i>',
-        'm_name' => 'CONTRIBUTE',
-        'm_desc' => '',
-        'm_parents' => array(12893,11035),
     ),
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -2972,6 +2966,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'MENCH PLAYER',
         'm_desc' => '',
         'm_parents' => array(4983,1278,11035,10573),
+    ),
+    12749 => array(
+        'm_icon' => '<i class="fas fa-plus-circle idea"></i>',
+        'm_name' => 'MODIFY',
+        'm_desc' => '',
+        'm_parents' => array(10984,12893,11035),
     ),
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -5840,7 +5840,7 @@ $config['en_ids_4755'] = array(6415,12896,12773,12453,10681,12450,6232,4783,4755
 $config['en_all_4755'] = array(
     6415 => array(
         'm_icon' => '<i class="fas fa-trash-alt read" aria-hidden="true"></i>',
-        'm_name' => 'CLEAR READS',
+        'm_name' => 'CLEAR BOOKSHELF',
         'm_desc' => '',
         'm_parents' => array(12500,4755,4593),
     ),
@@ -6319,7 +6319,7 @@ $config['en_all_4593'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="fas fa-trash-alt read" aria-hidden="true"></i>',
-        'm_name' => 'CLEAR READS',
+        'm_name' => 'CLEAR BOOKSHELF',
         'm_desc' => 'Removes all player read coins so everything is reset to 0% again.',
         'm_parents' => array(12500,4755,4593),
     ),
