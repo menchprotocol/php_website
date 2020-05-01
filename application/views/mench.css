@@ -914,13 +914,14 @@ td.MENCHcolumn3  { width: 13%; }
     padding-right: 0 !important;
 }
 
-.mench-navigation .btn-group:first-child{
-    border-left:0 !important;
-}
-
 .mench-navigation .btn-group{
     padding-left: 1px;
     padding-right: 1px;
+}
+
+.mench-navigation .btn-group:first-child{
+    border-left:0 !important;
+    padding-left:0 !important;
 }
 
 .mench-navigation .btn-group:hover{
