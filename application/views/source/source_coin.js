@@ -452,7 +452,7 @@ function en_modify_load(en_id, ln_id) {
 }
 
 function source_link_form_lock(){
-    $('#ln_content').prop("disabled", true).css('background-color','#AAAAAA');
+    $('#ln_content').prop("disabled", true).css('background-color','#999999');
 
     $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Uploading');
 

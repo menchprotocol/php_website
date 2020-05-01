@@ -433,7 +433,7 @@ img.no-radius {
 }
 
 .info-item a, .info-item i {
-    color:#AAAAAA !important;
+    color:#999999 !important;
 }
 .info-item a {
     text-decoration: underline;
@@ -447,7 +447,7 @@ img.no-radius {
     background-color:transparent !important;
 }
 .underdot{
-    border-bottom: 1px dotted #AAAAAA;
+    border-bottom: 1px dotted #999999;
     padding-bottom: 2px;
     cursor: help;
 }
@@ -457,7 +457,7 @@ img.no-radius {
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover  { color:#007AFD !important; }
 .idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover  { color:#ffc500 !important; }
 .read, .read .fas, .read .far, .read .fal, .read .fad, .color6205, .info-item i.read:hover, .info-item a.read:hover, .fas.redalert  { color:#FC1B44 !important; }
-.grey, .grey i { color:#AAAAAA !important; }
+.grey, .grey i { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
 .btn-source i, .btn-read i, .btn-idea i { color: #000000 !important; }
@@ -527,7 +527,7 @@ img.no-radius {
 
 .progress-bg-image{
     width:100% !important;
-    background-color: #AAAAAA;
+    background-color: #999999;
 }
 
 .progress-bg-list .progress-done, .progress-bg-image .progress-done{
@@ -538,7 +538,7 @@ img.no-radius {
 .progress-bg-list{
     margin: -10px 0 10px 0;
     width: 100% !important;
-    background-color: #AAAAAA;
+    background-color: #999999;
 }
 
 
@@ -1026,7 +1026,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .dynamic_saving{
-    background-color: #AAAAAA !important;
+    background-color: #999999 !important;
 }
 
 .itemsource{
@@ -1167,7 +1167,7 @@ label {
 }
 
 .btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal, .btn-superpower .fad, .btn-superpower:not(.active) .source, .btn-superpower:not(.active) .idea, .btn-superpower:not(.active) .read {
-    color: #AAAAAA !important;
+    color: #999999 !important;
 }
 
 
@@ -1244,7 +1244,7 @@ label {
 
 
 .is-working {
-    background-color: #AAAAAA !important;
+    background-color: #999999 !important;
 }
 
 .inputfile {
@@ -1290,7 +1290,7 @@ label {
 }
 
 .idea-info, .idea-info i {
-    color:#AAAAAA !important;
+    color:#999999 !important;
 }
 
 .idea-desc{
@@ -1411,7 +1411,7 @@ label {
     font-weight: bold;
 }
 .form-control::placeholder{
-    color: #AAAAAA;
+    color: #999999;
 }
 .texttype__sm{
     width:55px;
@@ -1441,17 +1441,17 @@ label {
     text-decoration: underline;
 }
 .pull-middle a, .pull-middle span{
-    color: #AAAAAA;
+    color: #999999;
 }
 .read-topic{
     padding: 10px 0;
 }
 .read-topic:not(.skip-grey), .read-topic:not(.skip-grey) a {
-    color: #AAAAAA !important;
+    color: #999999 !important;
     text-transform: uppercase;
 }
 .read-topic i {
-    color: #AAAAAA !important;
+    color: #999999 !important;
 }
 .read-info-topic{
     margin: -10px 0 30px;

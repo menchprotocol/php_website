@@ -22,9 +22,9 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])){
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Start at #</span>
                         <input style="padding-left:3px; min-width:56px;" type="number" min="1" step="1" name="in_id" id="in_id" value="'.$_GET['in_id'].'" class="form-control">
-                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #AAAAAA;"> and go </span>
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #999999;"> and go </span>
                         <input style="padding-left:3px; min-width:56px;" type="number" min="1" step="1" name="depth_levels" id="depth_levels" value="'.$_GET['depth_levels'].'" class="form-control">
-                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #AAAAAA; border-right:0px solid #FFF;"> levels deep.</span>
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #999999; border-right:0px solid #FFF;"> levels deep.</span>
                     </div>
                 </div>
                 <input type="submit" class="btn btn-idea" value="Go" style="display: inline-block; margin-top: -41px;" />
