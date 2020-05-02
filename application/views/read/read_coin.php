@@ -21,14 +21,6 @@ $this->LEDGER_model->ln_create(array(
     'ln_order' => fetch_cookie_order('7610_'.$in['in_id']),
 ));
 
-//HOME PAGE?
-$is_home_page = ( $in['in_id'] == config_var(12156) );
-if($is_home_page){
-    $en_all_11035 = $this->config->item('en_all_11035'); //NAVIGATION
-    echo '<div class="read-topic show-min"><span class="icon-block">'.$en_all_11035[12581]['m_icon'].'</span>'.$en_all_11035[12581]['m_name'].'</div>';
-}
-
-
 
 //MESSAGES
 $in__messages = $this->LEDGER_model->ln_fetch(array(
