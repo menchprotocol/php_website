@@ -208,7 +208,7 @@ if ($is_in_bookshelf) {
 
 
 //READ TITLE
-echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
+echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon">'.( $completion_rate['completion_percentage']==100 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-circle idea"></i>' ).'</span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
 
 
 //MESSAGES
