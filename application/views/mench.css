@@ -509,6 +509,10 @@ img.no-radius {
     right: 5px;
     bottom: 5px;
 }
+.media-info.mid-right{
+    right: 5px;
+    bottom: 45px;
+}
 .media-info.top-right{
     right: 5px;
     top: 10px;

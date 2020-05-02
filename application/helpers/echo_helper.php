@@ -150,7 +150,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
                 //Set the Clean URL:
                 $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_sec ? '<span class="media-info bottom-right">'.echo_time_hours($end_sec - $start_sec).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
+                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_sec ? '<span class="media-info mid-right">'.echo_time_hours($end_sec - $start_sec).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
 
             }
 
