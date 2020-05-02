@@ -378,38 +378,45 @@ class COMMUNICATION_model extends CI_Model
             $output_body_message .= $source_appendix;
 
 
+            //PLAYER REFERENCE
+            if($current_mench['x_name']=='read' && !superpower_active(10967, true)){
 
-            /*
-             *
-             * include a link to the Player for quick access
-             * to more information about that source:
-             *
-             * */
+                //NO LINK so we can maintain focus...
 
-            $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block '.( $current_mench['x_name']=='read' && !$has_text && $message_any>0 ? superpower_active(10967) : '' ).'">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span>' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
+                if(!$has_text || ($message_any==1 && ($message_visual_media==1 || count($valid_url)==1))){
 
+                    //HIDE
+                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '', $output_body_message);
+
+                } else {
+
+                    //TEXT ONLY
+                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span>' . $ens[0]['en_name']  . '</span>', $output_body_message);
+
+                }
+
+            } else {
+
+                //FULL SOURCE LINK
+                $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block"><a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span>' . $ens[0]['en_name']  . '</a></span>', $output_body_message);
+
+            }
         }
-
-
-        $output_messages = array();
-
-
-        array_push($output_messages, array(
-            'message_type_en_id' => 4570, //User Received Email Message
-            'message_body' => '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
-        ));
 
 
         //Return results:
         return array(
             'status' => 1,
             'input_message' => trim($input_message),
-            'output_messages' => $output_messages,
+            'output_messages' => array(
+                array(
+                    'message_type_en_id' => 4570, //User Received Email Message
+                    'message_body' => '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
+                ),
+            ),
             'ln_profile_source_id' => (count($string_references['ref_sources']) > 0 ? $string_references['ref_sources'][0] : 0),
         );
-
     }
-
 }
 
 ?>

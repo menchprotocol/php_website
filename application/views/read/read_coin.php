@@ -8,6 +8,8 @@
 <?php
 
 //PLAYER
+$metadata = unserialize($in['in_metadata']);
+$has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 $recipient_en = superpower_assigned();
 if(!isset($recipient_en['en_id']) ){
     $recipient_en['en_id'] = 0;
@@ -29,6 +31,7 @@ $in__messages = $this->LEDGER_model->ln_fetch(array(
     'ln_next_idea_id' => $in['in_id'],
 ), array(), 0, 0, array('ln_order' => 'ASC'));
 
+
 //NEXT IDEAS
 $in__next = $this->LEDGER_model->ln_fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -38,6 +41,26 @@ $in__next = $this->LEDGER_model->ln_fetch(array(
 ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
 $chapters = count($in__next);
+
+
+
+//FEATURED?
+$is_or = in_array($in['in_type_source_id'], $this->config->item('en_ids_6193'));
+if($is_or){
+    $all_child_featured = true;
+    foreach($in__next as $key => $child_in){
+        if(!in_array($child_in['in_status_source_id'], $this->config->item('en_ids_12138'))){
+            $all_child_featured = false;
+            break;
+        }
+    }
+} else {
+    $all_child_featured = false;
+}
+
+
+
+//ALREADY IN BOOKSHELF?
 $is_in_bookshelf = false;
 if($recipient_en['en_id'] > 0){
 
@@ -60,43 +83,146 @@ if($recipient_en['en_id'] > 0){
 
 
 
-/*
- *
- * Determine next Reads
- *
- */
-if(!$is_in_bookshelf){
-
-    //IDEA TITLE
-    echo '<h1 class="block-one" '.( $recipient_en['en_id'] > 0 ? '' : ' style="padding-top: 21px;" ' ).'><span class="icon-block top-icon"><i class="fas fa-circle read"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
 
 
-    foreach($in__messages as $message_ln) {
-        echo $this->COMMUNICATION_model->send_message(
-            $message_ln['ln_content'],
-            $recipient_en
-        );
-    }
 
-    $is_or = in_array($in['in_type_source_id'], $this->config->item('en_ids_6193'));
 
-    if($is_or){
-        $all_child_featured = true;
-        foreach($in__next as $key => $child_in){
-            if(!in_array($child_in['in_status_source_id'], $this->config->item('en_ids_12138'))){
-                $all_child_featured = false;
-                break;
+if ($is_in_bookshelf) {
+
+
+    // % DONE
+    $completion_rate = $this->READ_model->read_completion_progress($recipient_en['en_id'], $in);
+
+    //Fetch progress history:
+    $read_completes = $this->LEDGER_model->ln_fetch(array(
+        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+        'ln_creator_source_id' => $recipient_en['en_id'],
+        'ln_previous_idea_id' => $in['in_id'],
+    ));
+
+    $qualify_for_autocomplete = ( isset($_GET['check_if_empty']) && !$chapters || ($chapters==1 && $in['in_type_source_id'] == 6677)) && !count($in__messages) && !in_array($in['in_type_source_id'], $this->config->item('en_ids_12324'));
+
+
+
+
+    //AUTO COMPLETE?
+    if(!count($read_completes) && in_array($in['in_type_source_id'], $this->config->item('en_ids_12330'))){
+        //We might be able to complete it now:
+        //It can, let's process it accordingly for each type within @12330
+        if ($in['in_type_source_id'] == 6677 && $qualify_for_autocomplete) {
+
+            //They should read and then complete...
+            array_push($read_completes, $this->READ_model->read_is_complete($in, array(
+                'ln_type_source_id' => 4559, //READ MESSAGES
+                'ln_creator_source_id' => $recipient_en['en_id'],
+                'ln_previous_idea_id' => $in['in_id'],
+            )));
+
+        } elseif (in_array($in['in_type_source_id'], array(6914,6907))) {
+
+            //Reverse check answers to see if they have previously unlocked a path:
+            $unlocked_connections = $this->LEDGER_model->ln_fetch(array(
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
+                'ln_next_idea_id' => $in['in_id'],
+                'ln_creator_source_id' => $recipient_en['en_id'],
+            ), array('in_previous'), 1);
+
+            if(count($unlocked_connections) > 0){
+
+                //They previously have unlocked a path here!
+
+                //Determine READ COIN type based on it's connection type's parents that will hold the appropriate read coin.
+                $read_completion_type_id = 0;
+                foreach($this->config->item('en_all_12327') /* READ UNLOCKS */ as $en_id => $m){
+                    if(in_array($unlocked_connections[0]['ln_type_source_id'], $m['m_parents'])){
+                        $read_completion_type_id = $en_id;
+                        break;
+                    }
+                }
+
+                //Could we determine the coin type?
+                if($read_completion_type_id > 0){
+
+                    //Yes, Issue coin:
+                    array_push($read_completes, $this->READ_model->read_is_complete($in, array(
+                        'ln_type_source_id' => $read_completion_type_id,
+                        'ln_creator_source_id' => $recipient_en['en_id'],
+                        'ln_previous_idea_id' => $in['in_id'],
+                    )));
+
+                } else {
+
+                    //Oooops, we could not find it, report bug:
+                    $this->LEDGER_model->ln_create(array(
+                        'ln_type_source_id' => 4246, //Platform Bug Reports
+                        'ln_creator_source_id' => $recipient_en['en_id'],
+                        'ln_content' => 'read_coin() found idea connector ['.$unlocked_connections[0]['ln_type_source_id'].'] without a valid unlock method @12327',
+                        'ln_previous_idea_id' => $in['in_id'],
+                        'ln_parent_transaction_id' => $unlocked_connections[0]['ln_id'],
+                    ));
+
+                }
+
+            } else {
+
+                //Try to find paths to unlock:
+                $unlock_paths = $this->IDEA_model->in_unlock_paths($in);
+
+                //Set completion method:
+                if(!count($unlock_paths)){
+
+                    //No path found:
+                    array_push($read_completes, $this->READ_model->read_is_complete($in, array(
+                        'ln_type_source_id' => 7492, //TERMINATE
+                        'ln_creator_source_id' => $recipient_en['en_id'],
+                        'ln_previous_idea_id' => $in['in_id'],
+                    )));
+
+
+                }
             }
         }
-    } else {
-        $all_child_featured = false;
     }
 
 
+    //BOOKSHELF UI
+    echo '<div class="hideIfEmpty main_reads_top"></div>';
+
+    //READ PROGRESS ONLY AT TOP LEVEL
+    if($completion_rate['completion_percentage']>0){
+        echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    }
+
+    if(count($read_completes) && $qualify_for_autocomplete){
+        //Move to the next one as there is nothing to do here:
+        echo "<script> $(document).ready(function () { window.location = '/read/next/' + in_loaded_id + '".( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? '?previous_read='.$_GET['previous_read'] : '' )."'; }); </script>";
+    }
+}
 
 
 
 
+
+//READ TITLE
+echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
+
+
+//MESSAGES
+foreach($in__messages as $message_ln) {
+    echo $this->COMMUNICATION_model->send_message(
+        $message_ln['ln_content'],
+        $recipient_en
+    );
+}
+
+
+
+
+
+if(!$is_in_bookshelf){
 
     if($all_child_featured){
 
@@ -178,340 +304,202 @@ if(!$is_in_bookshelf){
 
         }
 
-
-        //Redirect to login page:
-        echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$in['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
-
-    }
-
-    echo '<div class="doclear">&nbsp;</div>';
-
-    return true;
-}
-
-
-
-/*
- * Previously in source's Bookshelf...
- *
- */
-
-
-
-
-
-//Fetch progress history:
-$read_completes = $this->LEDGER_model->ln_fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
-    'ln_creator_source_id' => $recipient_en['en_id'],
-    'ln_previous_idea_id' => $in['in_id'],
-));
-
-
-$qualify_for_autocomplete = ( isset($_GET['check_if_empty']) && !$chapters || ($chapters==1 && $in['in_type_source_id'] == 6677)) && !count($in__messages) && !in_array($in['in_type_source_id'], $this->config->item('en_ids_12324'));
-
-
-//Is it incomplete & can it be instantly marked as complete?
-if (!count($read_completes) && in_array($in['in_type_source_id'], $this->config->item('en_ids_12330'))) {
-
-    //We might be able to complete it now:
-    //It can, let's process it accordingly for each type within @12330
-    if ($in['in_type_source_id'] == 6677 && $qualify_for_autocomplete) {
-
-        //They should read and then complete...
-        array_push($read_completes, $this->READ_model->read_is_complete($in, array(
-            'ln_type_source_id' => 4559, //READ MESSAGES
-            'ln_creator_source_id' => $recipient_en['en_id'],
-            'ln_previous_idea_id' => $in['in_id'],
-        )));
-
-    } elseif (in_array($in['in_type_source_id'], array(6914,6907))) {
-
-        //Reverse check answers to see if they have previously unlocked a path:
-        $unlocked_connections = $this->LEDGER_model->ln_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
-            'ln_next_idea_id' => $in['in_id'],
-            'ln_creator_source_id' => $recipient_en['en_id'],
-        ), array('in_previous'), 1);
-
-        if(count($unlocked_connections) > 0){
-
-            //They previously have unlocked a path here!
-
-            //Determine READ COIN type based on it's connection type's parents that will hold the appropriate read coin.
-            $read_completion_type_id = 0;
-            foreach($this->config->item('en_all_12327') /* READ UNLOCKS */ as $en_id => $m){
-                if(in_array($unlocked_connections[0]['ln_type_source_id'], $m['m_parents'])){
-                    $read_completion_type_id = $en_id;
-                    break;
-                }
-            }
-
-            //Could we determine the coin type?
-            if($read_completion_type_id > 0){
-
-                //Yes, Issue coin:
-                array_push($read_completes, $this->READ_model->read_is_complete($in, array(
-                    'ln_type_source_id' => $read_completion_type_id,
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_previous_idea_id' => $in['in_id'],
-                )));
-
-            } else {
-
-                //Oooops, we could not find it, report bug:
-                $this->LEDGER_model->ln_create(array(
-                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_content' => 'read_coin() found idea connector ['.$unlocked_connections[0]['ln_type_source_id'].'] without a valid unlock method @12327',
-                    'ln_previous_idea_id' => $in['in_id'],
-                    'ln_parent_transaction_id' => $unlocked_connections[0]['ln_id'],
-                ));
-
-            }
-
-        } else {
-
-            //Try to find paths to unlock:
-            $unlock_paths = $this->IDEA_model->in_unlock_paths($in);
-
-            //Set completion method:
-            if(!count($unlock_paths)){
-
-                //No path found:
-                array_push($read_completes, $this->READ_model->read_is_complete($in, array(
-                    'ln_type_source_id' => 7492, //TERMINATE
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_previous_idea_id' => $in['in_id'],
-                )));
-
-
-            }
-        }
-    }
-}
-
-
-// % DONE
-$completion_rate = $this->READ_model->read_completion_progress($recipient_en['en_id'], $in);
-$metadata = unserialize($in['in_metadata']);
-$has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-
-
-echo '<div class="hideIfEmpty main_reads_top"></div>';
-
-//READ PROGRESS ONLY AT TOP LEVEL
-if($completion_rate['completion_percentage']>0){
-    echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
-}
-
-
-//READ TITLE
-echo '<h1 class="block-one"><span class="icon-block top-icon"><i class="fas fa-circle read" aria-hidden="true"></i></span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
-
-
-
-foreach($in__messages as $message_ln) {
-    echo $this->COMMUNICATION_model->send_message(
-        $message_ln['ln_content'],
-        $recipient_en
-    );
-}
-
-
-
-if(count($read_completes) && $qualify_for_autocomplete){
-    //Move to the next one as there is nothing to do here:
-    echo "<script> $(document).ready(function () { window.location = '/read/next/' + in_loaded_id + '".( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? '?previous_read='.$_GET['previous_read'] : '' )."'; }); </script>";
-}
-
-
-
-
-//PREVIOUSLY UNLOCKED:
-$unlocked_steps = $this->LEDGER_model->ln_fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-    'ln_type_source_id' => 6140, //READ UNLOCK LINK
-    'ln_creator_source_id' => $recipient_en['en_id'],
-    'ln_previous_idea_id' => $in['in_id'],
-), array('in_next'), 0);
-
-//Did we have any steps unlocked?
-if(count($unlocked_steps) > 0){
-    echo_in_list($in, $unlocked_steps, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
-}
-
-
-
-
-//LOCKED
-if (in_array($in['in_type_source_id'], $this->config->item('en_ids_7309'))) {
-
-
-    //Requirement lock
-    if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
-
-        //List Unlock paths:
-        echo_in_list($in, $unlock_paths, $recipient_en, '<span class="icon-block"><i class="fas fa-step-forward"></i></span>SUGGESTED IDEAS:');
-
-    }
-
-    //List Children if any:
-    echo_in_list($in, $in__next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
-
-
-} elseif (in_array($in['in_type_source_id'], $this->config->item('en_ids_7712'))){
-
-    //SELECT ANSWER
-
-    //Has no children:
-    if(!$chapters){
-
-        //Mark this as complete since there is no child to choose from:
-        if(!count($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
-            'ln_creator_source_id' => $recipient_en['en_id'],
-            'ln_previous_idea_id' => $in['in_id'],
-        )))){
-
-            array_push($read_completes, $this->READ_model->read_is_complete($in, array(
-                'ln_type_source_id' => 4559, //READ MESSAGES
-                'ln_creator_source_id' => $recipient_en['en_id'],
-                'ln_previous_idea_id' => $in['in_id'],
-            )));
-
-        }
-
-        echo_in_next_previous($in['in_id'], $recipient_en);
-        return true;
-
-    } else {
-
-        //First fetch answers based on correct order:
-        $read_answers = array();
-        foreach($this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'ln_previous_idea_id' => $in['in_id'],
-        ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
-            //See if this answer was seleted:
-            if(count($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
-                'ln_previous_idea_id' => $in['in_id'],
-                'ln_next_idea_id' => $ln['in_id'],
-                'ln_creator_source_id' => $recipient_en['en_id'],
-            )))){
-                array_push($read_answers, $ln);
-            }
-        }
-
-        if(count($read_answers) > 0){
-            //MODIFY ANSWER
-            echo '<div class="edit_select_answer">';
-
-            //List answers:
-            echo_in_list($in, $read_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
-
-            echo '<div class="doclear">&nbsp;</div>';
-
-            echo_in_next_previous($in['in_id'], $recipient_en);
-
-            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
-
-            echo '<div class="doclear">&nbsp;</div>';
-
-            echo '</div>';
-        }
-
-
-        echo '<div class="edit_select_answer '.( count($read_answers)>0 ? 'hidden' : '' ).'">';
-
-        //HTML:
-        if ($in['in_type_source_id'] == 6684) {
-
-            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
-
-        } elseif ($in['in_type_source_id'] == 7231) {
-
-            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
-
-        }
-
-        //Open for list to be printed:
-        echo '<div class="list-group list-answers" in_type_source_id="'.$in['in_type_source_id'].'">';
-
-
-
-
-        //Determine Prefix:
-        $common_prefix = in_calc_common_prefix($in__next, 'in_title');
-
-
-        //List children to choose from:
-        foreach($in__next as $key => $child_in) {
-
-            //Has this been previously selected?
-            $previously_selected = count($this->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
-                'ln_previous_idea_id' => $in['in_id'],
-                'ln_next_idea_id' => $child_in['in_id'],
-                'ln_creator_source_id' => $recipient_en['en_id'],
-            )));
-
-
-            echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread no-left-padding">';
-
-
-            echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-            echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
-
-            echo '<td style="width: 100%; padding: 0 !important;">';
-            echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, false, $common_prefix).'</b>';
-            echo '</td>';
-
-            echo '</tr></table>';
-
-
-            echo '</a>';
-        }
-
-
-        //Close list:
-        echo '</div>';
-
-
-
-
-        echo '<div class="result-update margin-top-down"></div>';
-
-        echo echo_in_previous_read($in['in_id'], $recipient_en);
-
-        //Button to submit selection:
-        if(count($read_answers)>0){
-            echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
-        }
-
-        echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0)" onclick="read_answer()"><i class="fas fa-step-forward"></i></a></div>';
-
-        echo '</div>';
+        //GET STARTED
+        echo '<div class="inline-block margin-top-down read-add pull-left"><a class="btn btn-read" href="/read/start/'.$in['in_id'].'">GET STARTED <i class="fas fa-step-forward"></i></a></div>';
 
     }
 
 } else {
 
-    if ($in['in_type_source_id'] == 6677) {
+
+
+    //PREVIOUSLY UNLOCKED:
+    $unlocked_steps = $this->LEDGER_model->ln_fetch(array(
+        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+        'ln_type_source_id' => 6140, //READ UNLOCK LINK
+        'ln_creator_source_id' => $recipient_en['en_id'],
+        'ln_previous_idea_id' => $in['in_id'],
+    ), array('in_next'), 0);
+
+    //Did we have any steps unlocked?
+    if(count($unlocked_steps) > 0){
+        echo_in_list($in, $unlocked_steps, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
+    }
+
+
+
+    /*
+     *
+     * IDEA TYPE INPUT CONTROLLER
+     * Now let's show the appropriate
+     * inputs that correspond to the
+     * idea type that enable the reader
+     * to move forward.
+     *
+     * */
+
+
+    //LOCKED
+    if (in_array($in['in_type_source_id'], $this->config->item('en_ids_7309'))) {
+
+
+        //Requirement lock
+        if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
+
+            //List Unlock paths:
+            echo_in_list($in, $unlock_paths, $recipient_en, '<span class="icon-block"><i class="fas fa-step-forward"></i></span>SUGGESTED IDEAS:');
+
+        }
+
+        //List Children if any:
+        echo_in_list($in, $in__next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
+
+
+    } elseif (in_array($in['in_type_source_id'], $this->config->item('en_ids_7712'))){
+
+        //SELECT ANSWER
+
+        //Has no children:
+        if(!$chapters){
+
+            //Mark this as complete since there is no child to choose from:
+            if(!count($this->LEDGER_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                'ln_creator_source_id' => $recipient_en['en_id'],
+                'ln_previous_idea_id' => $in['in_id'],
+            )))){
+
+                array_push($read_completes, $this->READ_model->read_is_complete($in, array(
+                    'ln_type_source_id' => 4559, //READ MESSAGES
+                    'ln_creator_source_id' => $recipient_en['en_id'],
+                    'ln_previous_idea_id' => $in['in_id'],
+                )));
+
+            }
+
+            echo_in_next_previous($in['in_id'], $recipient_en);
+            return true;
+
+        } else {
+
+            //First fetch answers based on correct order:
+            $read_answers = array();
+            foreach($this->LEDGER_model->ln_fetch(array(
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'ln_previous_idea_id' => $in['in_id'],
+            ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
+                //See if this answer was seleted:
+                if(count($this->LEDGER_model->ln_fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
+                    'ln_previous_idea_id' => $in['in_id'],
+                    'ln_next_idea_id' => $ln['in_id'],
+                    'ln_creator_source_id' => $recipient_en['en_id'],
+                )))){
+                    array_push($read_answers, $ln);
+                }
+            }
+
+            if(count($read_answers) > 0){
+                //MODIFY ANSWER
+                echo '<div class="edit_select_answer">';
+
+                //List answers:
+                echo_in_list($in, $read_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
+
+                echo '<div class="doclear">&nbsp;</div>';
+
+                echo_in_next_previous($in['in_id'], $recipient_en);
+
+                echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
+
+                echo '<div class="doclear">&nbsp;</div>';
+
+                echo '</div>';
+            }
+
+
+            echo '<div class="edit_select_answer '.( count($read_answers)>0 ? 'hidden' : '' ).'">';
+
+            //HTML:
+            if ($in['in_type_source_id'] == 6684) {
+
+                echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
+
+            } elseif ($in['in_type_source_id'] == 7231) {
+
+                echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
+
+            }
+
+            //Open for list to be printed:
+            echo '<div class="list-group list-answers" in_type_source_id="'.$in['in_type_source_id'].'">';
+
+
+
+
+            //Determine Prefix:
+            $common_prefix = in_calc_common_prefix($in__next, 'in_title');
+
+
+            //List children to choose from:
+            foreach($in__next as $key => $child_in) {
+
+                //Has this been previously selected?
+                $previously_selected = count($this->LEDGER_model->ln_fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
+                    'ln_previous_idea_id' => $in['in_id'],
+                    'ln_next_idea_id' => $child_in['in_id'],
+                    'ln_creator_source_id' => $recipient_en['en_id'],
+                )));
+
+
+                echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread no-left-padding">';
+
+
+                echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
+                echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
+
+                echo '<td style="width: 100%; padding: 0 !important;">';
+                echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, false, $common_prefix).'</b>';
+                echo '</td>';
+
+                echo '</tr></table>';
+
+
+                echo '</a>';
+            }
+
+
+            //Close list:
+            echo '</div>';
+
+
+
+
+            echo '<div class="result-update margin-top-down"></div>';
+
+            echo echo_in_previous_read($in['in_id'], $recipient_en);
+
+            //Button to submit selection:
+            if(count($read_answers)>0){
+                echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
+            }
+
+            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0)" onclick="read_answer()"><i class="fas fa-step-forward"></i></a></div>';
+
+            echo '</div>';
+
+        }
+
+    } elseif ($in['in_type_source_id'] == 6677) {
 
         //READ ONLY
-
-        //Next Ideas:
         echo_in_list($in, $in__next, $recipient_en);
 
     } elseif ($in['in_type_source_id'] == 6683) {
@@ -592,7 +580,6 @@ if (in_array($in['in_type_source_id'], $this->config->item('en_ids_7309'))) {
         ));
 
     }
-
 }
 
 ?>
