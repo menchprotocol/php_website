@@ -502,6 +502,7 @@ img.no-radius {
     font-weight: bold;
     font-size: 0.8em;
     border-radius: 10px;
+    z-index: 9999999;
 }
 
 .media-info.bottom-right{
