@@ -37,7 +37,7 @@ $in__next = $this->LEDGER_model->ln_fetch(array(
     'ln_previous_idea_id' => $in['in_id'],
 ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
-
+$chapters = count($in__next);
 $is_in_bookshelf = false;
 if($recipient_en['en_id'] > 0){
 
@@ -101,7 +101,7 @@ if(!$is_in_bookshelf){
     if($all_child_featured){
 
         echo '<div class="cover-list" style="padding: 33px 0 33px 33px;">';
-        if(count($in__next) > 0){
+        if($chapters){
             //List Children:
             foreach($in__next as $key => $child_in){
                 echo echo_in_cover($child_in, false, in_calc_common_prefix($in__next, 'in_title'));
@@ -116,17 +116,17 @@ if(!$is_in_bookshelf){
         $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
         $has_idea = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 );
 
-        if ($has_time || $has_idea || count($in__next)) {
+        if ($has_time || $has_idea || $chapters) {
 
             if($has_idea){
                 $metadata['in__metadata_max_steps']--;//Do not include the main idea itself
             }
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( count($in__next) ? ( $has_idea ? ' IN ' : '').count($in__next).' CHATPERS' : '').( $has_time || count($in__next) ? ( $has_idea ? ' | ' : '' ).echo_time_digital($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $chapters ? ( $has_idea ? ' IN ' : '').$chapters.' Chapter'.echo__s($chapters) : '').( $has_time || $chapters ? ( $has_idea ? ' | ' : '' ).echo_time_digital($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
-            if(count($in__next) > 0){
+            if($chapters > 0){
                 //List Children:
                 echo '<div class="list-group '.( !$recipient_en['en_id'] ? 'single-color' : '' ).'">';
                 foreach($in__next as $key => $child_in){
@@ -149,7 +149,7 @@ if(!$is_in_bookshelf){
         }
         if ($content_count || $expert_count) {
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $expert_count ? $expert_count.' Expert'.echo__s($expert_count) : '' ).( $content_count ? ( $expert_count ? ' | ' : '' ).$content_count.' Source'.echo__s($content_count) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $content_count ? $content_count.' Source'.echo__s($content_count) : '' ).( $expert_count ? ( $expert_count ? ' From ' : '' ).$expert_count.' Expert'.echo__s($expert_count) : '' ).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             echo '<div class="list-group single-color">';
@@ -162,7 +162,7 @@ if(!$is_in_bookshelf){
 
             if($expert_count && $content_count){
                 //Add middle divider:
-                $ui = '<div class="list-group-item divider">&nbsp;</div>';
+                echo '<div class="list-group-item divider">&nbsp;</div>';
             }
 
             if($content_count) {
@@ -209,7 +209,7 @@ $read_completes = $this->LEDGER_model->ln_fetch(array(
 ));
 
 
-$qualify_for_autocomplete = ( isset($_GET['check_if_empty']) && !count($in__next) || (count($in__next)==1 && $in['in_type_source_id'] == 6677)) && !count($in__messages) && !in_array($in['in_type_source_id'], $this->config->item('en_ids_12324'));
+$qualify_for_autocomplete = ( isset($_GET['check_if_empty']) && !$chapters || ($chapters==1 && $in['in_type_source_id'] == 6677)) && !count($in__messages) && !in_array($in['in_type_source_id'], $this->config->item('en_ids_12324'));
 
 
 //Is it incomplete & can it be instantly marked as complete?
@@ -369,7 +369,7 @@ if (in_array($in['in_type_source_id'], $this->config->item('en_ids_7309'))) {
     //SELECT ANSWER
 
     //Has no children:
-    if(!count($in__next)){
+    if(!$chapters){
 
         //Mark this as complete since there is no child to choose from:
         if(!count($this->LEDGER_model->ln_fetch(array(
