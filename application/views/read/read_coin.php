@@ -300,9 +300,6 @@ echo '<div class="hideIfEmpty main_reads_top"></div>';
 //READ PROGRESS ONLY AT TOP LEVEL
 if($completion_rate['completion_percentage']>0){
     echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
-} else {
-    //Replace with empty space:
-    echo '<div class="high3x">&nbsp;</div>';
 }
 
 

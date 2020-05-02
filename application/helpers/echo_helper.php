@@ -1475,7 +1475,9 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         if(!$completion_rate){
             $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
         }
-        $ui .= '<div class="progress-bg-image" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        if($completion_rate['completion_percentage']>0){
+            $ui .= '<div class="progress-bg-image" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        }
     }
     $ui .= $cover_photo;
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
