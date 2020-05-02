@@ -232,6 +232,14 @@ if(!isset($hide_header)){
 
                             }
 
+                            //Logout? Append Name:
+                            if($en_id==7291){
+                                $m['m_name'] = $m['m_name'] . ' ' . one_two_explode('',' ', $session_en['en_name']);
+                            } elseif($en_id==12205){
+                                //Set User Avatar:
+                                $m['m_icon'] = $session_en['en_icon'];
+                            }
+
                             //Navigation
                             echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
 
