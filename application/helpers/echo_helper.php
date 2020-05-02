@@ -1168,7 +1168,7 @@ function echo_in_previous_read($in_id, $recipient_en){
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         )));
 
-        $ui .= '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="in_bookmark('.$in_id.', '.( $is_highlighted ? 0 : 1 ).')">'.( $is_highlighted ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>' ).'</a></div>';
+        $ui .= '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_toggle_highlight()"><i class="fas fa-bookmark toggle_highlight '.( $is_highlighted ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_highlight '.( $is_highlighted ? 'hidden' : '' ).'"></i></a></div>';
 
         //Main Reads:
         if($top_completion_rate){

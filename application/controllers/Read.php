@@ -485,6 +485,73 @@ class Read extends CI_Controller
     }
 
 
+    function read_toggle_highlight(){
+
+        //See if we need to add or remove a highlight:
+        //Authenticate Player:
+        $session_en = superpower_assigned();
+        if (!$session_en) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(),
+            ));
+
+        } elseif (!isset($_POST['in_id'])) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Idea ID',
+            ));
+
+        }
+
+        $ins = $this->IDEA_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+        ));
+        if (!count($ins)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea ID',
+            ));
+        }
+
+        //First try to remove:
+        $removed = 0;
+        foreach($this->LEDGER_model->ln_fetch(array(
+            'ln_profile_source_id' => $session_en['en_id'],
+            'ln_next_idea_id' => $_POST['in_id'],
+            'ln_type_source_id' => 12896, //HIGHLIGHTS
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+        )) as $remove_highlight){
+            $removed++;
+            $this->LEDGER_model->ln_update($remove_highlight['ln_id'], array(
+                'ln_status_source_id' => 6173, //Transaction Deleted
+            ), $session_en['en_id'], 12906 /* HIGHLIGHT REMOVED */);
+        }
+
+        //Need to add?
+        if(!$removed){
+            //Then we must add:
+            $this->LEDGER_model->ln_create(array(
+                'ln_creator_source_id' => $session_en['en_id'],
+                'ln_profile_source_id' => $session_en['en_id'],
+                'ln_content' => '@'.$session_en['en_id'],
+                'ln_next_idea_id' => $_POST['in_id'],
+                'ln_type_source_id' => 12896, //HIGHLIGHTS
+            ));
+        }
+
+        //All Good:
+        return echo_json(array(
+            'status' => 1,
+        ));
+
+    }
+
+
+
     function read_remove_item(){
 
         /*
@@ -520,6 +587,9 @@ class Read extends CI_Controller
             ));
         }
     }
+
+
+
 
 
     function read_sort_save()

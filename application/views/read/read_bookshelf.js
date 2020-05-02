@@ -23,9 +23,6 @@ function read_sort_save() {
     }
 }
 
-function in_bookmark(in_id, highlight_status){
-    alert(in_id);
-}
 
 function read_clear_all(){
 
