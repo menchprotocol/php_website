@@ -1165,7 +1165,6 @@ function echo_in_previous_read($in_id, $recipient_en){
             'ln_profile_source_id' => $recipient_en['en_id'],
             'ln_next_idea_id' => $in_id,
             'ln_type_source_id' => 12896, //HIGHLIGHTS
-            'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         )));
 
