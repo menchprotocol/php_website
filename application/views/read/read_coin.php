@@ -305,7 +305,7 @@ if(!$is_in_bookshelf){
         }
 
         //GET STARTED
-        echo '<div class="inline-block margin-top-down read-add pull-left"><a class="btn btn-read" href="/read/start/'.$in['in_id'].'">GET STARTED <i class="fas fa-step-forward"></i></a></div>';
+        echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$in['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
 
     }
 
