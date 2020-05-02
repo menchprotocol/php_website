@@ -227,7 +227,7 @@ echo '<div class="container">';
 
     echo '<h1 class="'.extract_icon_color($en_all_11035[4341]['m_icon']).' inline-block"><span class="icon-block">'.$en_all_11035[4341]['m_icon'].'</span>'.$en_all_11035[4341]['m_name'].'</h1>';
 
-    echo '<div class="inline-block '.superpower_active(12701).'" style="padding-left:7px;">'.$en_all_11035[12707]['m_icon'].'<a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$en_all_11035[12707]['m_name'].'</a></div>';
+    echo '<div class="inline-block '.superpower_active(12701).'" style="padding-left:7px;"><span class="icon-block">'.$en_all_11035[12707]['m_icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$en_all_11035[12707]['m_name'].'</a></div>';
 
 
     echo '<div class="inline-box show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
