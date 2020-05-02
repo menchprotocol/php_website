@@ -41,6 +41,7 @@ $in__next = $this->LEDGER_model->ln_fetch(array(
 ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
 
 $chapters = count($in__next);
+$common_prefix = in_calc_common_prefix($in__next, 'in_title');
 
 
 
@@ -442,10 +443,6 @@ if(!$is_in_bookshelf){
 
 
 
-            //Determine Prefix:
-            $common_prefix = in_calc_common_prefix($in__next, 'in_title');
-
-
             //List children to choose from:
             foreach($in__next as $key => $child_in) {
 
@@ -466,7 +463,7 @@ if(!$is_in_bookshelf){
                 echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
 
                 echo '<td style="width: 100%; padding: 0 !important;">';
-                echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, false, $common_prefix).'</b>';
+                echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, $common_prefix).'</b>';
                 echo '</td>';
 
                 echo '</tr></table>';
