@@ -1558,7 +1558,7 @@ label {
 .icon-adder{
     margin-top: 5px;
 }
-.list-group-item.divider{
+.divider{
     height: 1px;
     background-color: #000000 !important;
 }

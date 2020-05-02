@@ -122,7 +122,7 @@ if(!$is_in_bookshelf){
                 $metadata['in__metadata_max_steps']--;//Do not include the main idea itself
             }
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $chapters ? ( $has_idea ? ' IN ' : '').$chapters.' Chapter'.echo__s($chapters) : '').( $has_time || $chapters ? ( $has_idea ? ' | ' : '' ).echo_time_digital($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $chapters ? ( $has_idea ? ' IN ' : '').$chapters.' Chapter'.echo__s($chapters) : '').( $has_time || $chapters ? ( $has_idea ? ' ○ ' : '' ).echo_time_digital($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
@@ -149,7 +149,7 @@ if(!$is_in_bookshelf){
         }
         if ($content_count || $expert_count) {
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $content_count ? $content_count.' Source'.echo__s($content_count) : '' ).( $expert_count ? ( $expert_count ? ' From ' : '' ).$expert_count.' Expert'.echo__s($expert_count) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $content_count ? $content_count.' Source'.echo__s($content_count) : '' ).( $expert_count ? ( $expert_count ? ' ○ ' : '' ).$expert_count.' Expert'.echo__s($expert_count) : '' ).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             echo '<div class="list-group single-color">';
@@ -162,7 +162,7 @@ if(!$is_in_bookshelf){
 
             if($expert_count && $content_count){
                 //Add middle divider:
-                echo '<div class="list-group-item divider">&nbsp;</div>';
+                echo '<div class="divider">&nbsp;</div>';
             }
 
             if($content_count) {
