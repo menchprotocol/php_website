@@ -401,7 +401,7 @@ class Cron extends CI_Controller
             //Show json:
             echo_json(array(
                 'message' => $success_message,
-                'total_time' => echo_time_minutes($total_time),
+                'total_time' => echo_time_hours($total_time),
                 'item_time' => round(($total_time/count($published_ins)),1).' Seconds',
                 'last_item' => $idea,
             ));

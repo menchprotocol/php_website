@@ -49,20 +49,6 @@ function echo_db_field($field_name){
 }
 
 
-
-function echo_time_minutes($sec_int)
-{
-    //Turns seconds into a nice format with minutes, like "1m 23s"
-    $sec_int = intval($sec_int);
-    $min = 0;
-    $sec = fmod($sec_int, 60);
-    if ($sec_int >= 60) {
-        $min = floor($sec_int / 60);
-    }
-
-    return ( $min ? $min . ' MINUTE'.strtoupper(echo__s($min)) : ( $sec ? $sec . ' SECOND'.strtoupper(echo__s($min)) : false ) );
-}
-
 function echo_url_types($url, $en_type_link_id)
 {
 
@@ -166,7 +152,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
                 //Inform User that this is a sliced video
                 if ($start_sec || $end_sec) {
-                    $embed_html_code .= '<div class="read-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'"><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . echo_time_minutes(($end_sec - $start_sec)) . '</b>' : '<b><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . ($start_sec ? echo_time_minutes($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'END') . '</b>') . ':</div>';
+                    $embed_html_code .= '<div class="read-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'"><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . echo_time_hours(($end_sec - $start_sec)) . '</b>' : '<b><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . ($start_sec ? echo_time_hours($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_hours($end_sec) : 'END') . '</b>') . ':</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -549,104 +535,6 @@ function echo_url_clean($url)
 {
     //Returns the watered-down version of the URL for a cleaner UI:
     return rtrim(str_replace('http://', '', str_replace('https://', '', str_replace('www.', '', $url))), '/');
-}
-
-
-function echo_time_hours($seconds, $micro = false)
-{
-
-    /*
-     * A function that will return a fancy string representing hours & minutes
-     *
-     * */
-
-    if ($seconds < 1) {
-        //Under 30 seconds would not round up to even 1 minute, so don't show:
-        return 0;
-    } elseif ($seconds < 60) {
-        return 1 . ($micro ? ' Min.' : ' Minutes');
-    } elseif ($seconds < 3600) {
-        return round($seconds / 60) . ($micro ? ' Min.' : ' Minutes');
-    } else {
-        //Roundup the hours:
-        $hours = round($seconds / 3600);
-        return $hours . ' Hour' . echo__s($hours);
-    }
-}
-
-
-
-
-
-
-
-function echo_time_range($in, $micro = false, $hide_zero = false)
-{
-
-    //Make sure we have metadata passed on via $in as sometimes it might miss it (Like when passed on via Algolia results...)
-    if (!isset($in['in_metadata'])) {
-        //We don't have it, so fetch it:
-        $CI =& get_instance();
-        $ins = $CI->IDEA_model->in_fetch(array(
-            'in_id' => $in['in_id'], //We should always have Idea ID
-        ));
-        if (count($ins) > 0) {
-            $in = $ins[0];
-        } else {
-            return false;
-        }
-    }
-
-    //By now we have the metadata, extract it:
-    $metadata = unserialize($in['in_metadata']);
-
-    if (!isset($metadata['in__metadata_max_seconds']) || !isset($metadata['in__metadata_min_seconds'])) {
-        return false;
-    } elseif($hide_zero && $metadata['in__metadata_max_seconds'] < 1){
-        return false;
-    }
-
-    //Construct the UI:
-    if ($metadata['in__metadata_max_seconds'] == $metadata['in__metadata_min_seconds']) {
-
-        //Exactly the same, show a single value:
-        return echo_time_hours($metadata['in__metadata_max_seconds'], $micro);
-
-    } elseif ($metadata['in__metadata_min_seconds'] < 3600) {
-
-        if ($metadata['in__metadata_min_seconds'] < 7200 && $metadata['in__metadata_max_seconds'] < 10800) {
-            $is_minutes = true;
-            $hours_decimal = 0;
-        } elseif ($metadata['in__metadata_min_seconds'] < 36000) {
-            $is_minutes = false;
-            $hours_decimal = 1;
-        } else {
-            //Number too large to matter, just treat as one:
-            return echo_time_hours($metadata['in__metadata_max_seconds'], $micro);
-        }
-
-    } else {
-        $is_minutes = false;
-        $hours_decimal = 0;
-    }
-
-    $min_minutes = round($metadata['in__metadata_min_seconds'] / 60);
-    $min_hours = round(($metadata['in__metadata_min_seconds'] / 3600), $hours_decimal);
-    $max_minutes = round($metadata['in__metadata_max_seconds'] / 60);
-    $max_hours = round(($metadata['in__metadata_max_seconds'] / 3600), $hours_decimal);
-
-    //Generate hours range:
-    $the_min = ($is_minutes ? $min_minutes : $min_hours );
-    $the_max = ($is_minutes ? $max_minutes : $max_hours );
-    $ui_time = $the_min;
-    if($the_min != $the_max){
-        $ui_time .= ( $micro ? '-' : ' - ' );
-        $ui_time .= $the_max;
-    }
-    $ui_time .= strtoupper($is_minutes ? ($micro ? ' Min.' : ' Minute'.echo__s($max_minutes)) : ' Hour'.echo__s($max_hours));
-
-    //Generate UI to return:
-    return $ui_time;
 }
 
 
@@ -1420,15 +1308,14 @@ function echo_unauthorized_message($superpower_en_id = 0){
 
 }
 
-function echo_time_digital($total_seconds){
-
+function echo_time_hours($total_seconds){
+    //Turns seconds into HH:MM:SS
     $hours = floor($total_seconds/3600);
     $minutes = floor(fmod($total_seconds, 3600)/60);
     $minutes = ( $hours && $minutes<10 ? '0'.$minutes  : $minutes );
     $seconds = fmod($total_seconds, 60);
     $seconds = ( $seconds<10 ? '0'.$seconds  : $seconds );
     return ( $hours ? $hours.':' : '' ).$minutes.':'.$seconds;
-
 }
 
 function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rate = null){
@@ -1483,7 +1370,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     }
     $ui .= $cover_photo;
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= '<span class="bottom-right">'.echo_time_digital($metadata['in__metadata_max_seconds']).'</span>';
+        $ui .= '<span class="bottom-right">'.echo_time_hours($metadata['in__metadata_max_seconds']).'</span>';
     }
     //Search for Idea Image:
     if($show_editor){
