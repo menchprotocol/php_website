@@ -662,14 +662,14 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
     if(!$completion_rate){
-        if(!$is_highlight && $recipient_en){
+        if($recipient_en){
             $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
         } else {
             $completion_rate['completion_percentage'] = 0;
         }
     }
 
-    $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor ); //|| $recipient_en
+    $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor || $is_highlight ); //|| $recipient_en
 
 
     $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'bookshelf_sort' : '' ).' itemread '.$extra_class.'">';
