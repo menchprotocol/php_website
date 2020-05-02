@@ -62,6 +62,7 @@ if($is_or){
 
 
 //ALREADY IN BOOKSHELF?
+$completion_rate['completion_percentage'] = 0;
 $is_in_bookshelf = false;
 if($recipient_en['en_id'] > 0){
 
