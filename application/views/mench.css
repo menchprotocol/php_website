@@ -920,6 +920,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
      width: 100%;
+    padding-left: 0.5px !important;
 }
 .mench-navigation td {
     padding:0;
