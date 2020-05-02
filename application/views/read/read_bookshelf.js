@@ -23,6 +23,10 @@ function read_sort_save() {
     }
 }
 
+function in_bookmark(in_id, highlight_status){
+    alert(in_id);
+}
+
 function read_clear_all(){
 
     $('.clear-reads-list').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL DISCOVR COINS...</b>');

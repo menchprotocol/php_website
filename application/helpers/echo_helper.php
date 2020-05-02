@@ -1159,13 +1159,29 @@ function echo_in_previous_read($in_id, $recipient_en){
             $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/read/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fas fa-step-backward"></i></a></div>';
         }
 
+
         //Main Reads:
         if($top_completion_rate){
+
             $ui .= '<div class="main_reads_bottom hidden">';
             $ui .= '<div class="list-group">';
             $ui .= echo_in_read($top_completion_rate['top_in'], false, null, null, false, $top_completion_rate);
             $ui .= '</div>';
             $ui .= '</div>';
+
+        } else {
+
+            //Check Highlight status
+            $is_highlighted = count($this->LEDGER_model->ln_fetch(array(
+                'ln_profile_source_id' => $recipient_en['en_id'],
+                'ln_next_idea_id' => $in_id,
+                'ln_type_source_id' => 12896, //HIGHLIGHTS
+                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            )));
+
+            $ui .= '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="in_bookmark('.$in_id.', '.( $is_highlighted ? 0 : 1 ).')">'.( $is_highlighted ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>' ).'</a></div>';
+
         }
 
     }
