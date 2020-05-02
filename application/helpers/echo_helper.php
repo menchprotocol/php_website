@@ -150,12 +150,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
                 //Set the Clean URL:
                 $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-                //Inform User that this is a sliced video
-                if ($start_sec || $end_sec) {
-                    $embed_html_code .= '<div class="read-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'"><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . echo_time_hours(($end_sec - $start_sec)) . '</b>' : '<b><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . ($start_sec ? echo_time_hours($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_hours($end_sec) : 'END') . '</b>') . '</div>';
-                }
-
-                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
+                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_sec ? '<span class="media-info bottom-right">'.echo_time_hours($end_sec - $start_sec).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
 
             }
 
@@ -1391,12 +1386,12 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     }
     $ui .= $cover_photo;
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= '<span class="bottom-right">'.echo_time_hours($metadata['in__metadata_max_seconds']).'</span>';
+        $ui .= '<span class="media-info bottom-right">'.echo_time_hours($metadata['in__metadata_max_seconds']).'</span>';
     }
     //Search for Idea Image:
     if($show_editor){
-        $ui .= '<span class="top-left read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
-        $ui .= '<span class="top-right read_remove_item" in-id="'.$in['in_id'].'" title="REMOVE"><i class="fas fa-times"></i></span>';
+        $ui .= '<span class="media-info top-left read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
+        $ui .= '<span class="media-info top-right read_remove_item" in-id="'.$in['in_id'].'" title="REMOVE"><i class="fas fa-times"></i></span>';
     }
     $ui .= '</div>';
 
