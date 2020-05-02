@@ -482,7 +482,7 @@ img.no-radius {
     height: 305px;
     overflow: hidden;
     float: left;
-    margin-left:34px;
+    margin-right:34px;
 }
 .cover-image{
     border-top-right-radius: 15px;
@@ -1478,7 +1478,7 @@ label {
     }
 
     .cover-block{
-        margin-left:21px;
+        margin-right:21px;
     }
 
     .icon-block-lg img {
