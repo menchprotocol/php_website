@@ -1467,7 +1467,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     $recipient_en = superpower_assigned();
     $metadata = unserialize($in['in_metadata']);
 
-    $ui  = '<a href="/'.$in['in_id'] . '" class="cover-block '.( $show_editor ? ' bookshelf_sort ' : '' ).'">';
+    $ui  = '<a href="/'.$in['in_id'] . '" id="ap_in_'.$in['in_id'].'" class="cover-block '.( $show_editor ? ' bookshelf_sort ' : '' ).'">';
 
 
     $ui .= '<div class="cover-image">';
