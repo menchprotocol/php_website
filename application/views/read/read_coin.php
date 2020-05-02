@@ -128,7 +128,7 @@ if(!$is_in_bookshelf){
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
             if(count($in__next) > 0){
                 //List Children:
-                echo '<div class="list-group single-color">';
+                echo '<div class="list-group '.( !$recipient_en['en_id'] ? 'single-color' : '' ).'">';
                 foreach($in__next as $key => $child_in){
                     echo echo_in_read($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
                 }
