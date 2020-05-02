@@ -232,11 +232,10 @@ if(!isset($hide_header)){
 
                             }
 
-                            //Logout? Append Name:
-                            if($en_id==7291){
-                                $m['m_name'] = $m['m_name'] . ' ' . one_two_explode('',' ', $session_en['en_name']);
-                            } elseif($en_id==12205){
+                            //My Account? Replace Name/Icon:
+                            if($en_id==12205){
                                 //Set User Avatar:
+                                $m['m_name'] = $session_en['en_name'];
                                 $m['m_icon'] = $session_en['en_icon'];
                             }
 
