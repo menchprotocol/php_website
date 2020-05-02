@@ -937,6 +937,9 @@ td.MENCHcolumn3  { width: 13%; }
     line-height: 100% !important;
     text-align: center;
 }
+.block-menu:hover{
+    background-color: #FFFFFF;
+}
 .mench-navigation .block-link a {
     display: block;
     text-align: center;
