@@ -692,7 +692,7 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
 
             $ui .= '<div class="note-editor edit-off">';
             $ui .= '<span class="show-on-hover">';
-            $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="read_toggle_highlight('.$in['in_id'].');$(\'#ap_in_'.$in['in_id'].'\').fadeOut();"><i class="fas fa-times"></i></a></span>';
+            $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="read_toggle_highlight('.$in['in_id'].');$(\'#ap_in_'.$in['in_id'].'\').remove();"><i class="fas fa-times"></i></a></span>';
             $ui .= '</span>';
             $ui .= '</div>';
 
