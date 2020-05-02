@@ -187,6 +187,10 @@ if(!isset($hide_header)){
                                 //Profile Page:
                                 $page_url = 'href="/source/'.$session_en['en_id'].'"';
 
+                                //Update Name & Avatar:
+                                $m['m_name'] = $session_en['en_name'];
+                                $m['m_icon'] = $session_en['en_icon'];
+
                             } elseif($en_id==12899) {
 
                                 //FEEDBACK SUPPORT
@@ -230,13 +234,6 @@ if(!isset($hide_header)){
 
                                 continue;
 
-                            }
-
-                            //My Account? Replace Name/Icon:
-                            if($en_id==12205){
-                                //Set User Avatar:
-                                $m['m_name'] = $session_en['en_name'];
-                                $m['m_icon'] = $session_en['en_icon'];
                             }
 
                             //Navigation
