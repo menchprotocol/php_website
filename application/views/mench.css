@@ -482,7 +482,7 @@ img.no-radius {
     height: 305px;
     overflow: hidden;
     float: left;
-    margin: 0 21px 0 0;
+    margin-left:34px;
 }
 .cover-image{
     border-top-right-radius: 15px;
@@ -1446,7 +1446,7 @@ label {
 .read-topic{
     padding: 10px 0;
 }
-.read-topic:not(.skip-grey), .read-topic:not(.skip-grey) a {
+.read-topic, .read-topic a {
     color: #999999 !important;
     text-transform: uppercase;
 }
@@ -1475,6 +1475,10 @@ label {
 @media (max-width:767px) {
     .mini-hidden{
         display: none;
+    }
+
+    .cover-block{
+        margin-left:21px;
     }
 
     .icon-block-lg img {
@@ -1536,8 +1540,12 @@ label {
         background-color:#fbc4ce !important;
     }
 }
+.single-color {
+    border-radius: 10px;
+    background-color: #FFFFFF !important;
+}
 .single-color .list-group-item{
-    background-color: #f0f0f0 !important;
+    background-color: #FFFFFF !important;
 }
 .hideIfEmpty:empty {
     display: none !important;

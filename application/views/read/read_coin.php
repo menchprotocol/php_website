@@ -130,13 +130,13 @@ if(!$is_in_bookshelf){
                 $metadata['in__metadata_max_steps']--;//Do not include the main idea itself
             }
 
-            echo '<div class="read-topic skip-grey"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="idea doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas idea"></i><i class="fas fa-minus-circle contentTabIdeas hidden idea"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $has_time ? ( $has_idea ? ' in ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $has_time ? ( $has_idea ? ' in ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
             if(count($in__next) > 0){
                 //List Children:
-                echo '<div class="list-group">';
+                echo '<div class="list-group single-color">';
                 foreach($in__next as $key => $child_in){
                     echo echo_in_read($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
                 }
@@ -156,7 +156,7 @@ if(!$is_in_bookshelf){
         }
         if ($source_count > 0) {
 
-            echo '<div class="read-topic skip-grey"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="source doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts source"></i><i class="fas fa-minus-circle contentTabExperts source hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             echo '<div class="list-group single-color">';
