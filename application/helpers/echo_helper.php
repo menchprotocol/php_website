@@ -1175,7 +1175,7 @@ function echo_in_list($in, $in__next, $recipient_en, $prefix_statement = null, $
         if($has_content){
             echo '<div class="read-topic">'.trim($prefix_statement).'</div>';
         } else {
-            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>IDEAS</div>';
+            //echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>IDEAS</div>';
         }
 
         echo '<div class="list-group">';

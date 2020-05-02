@@ -122,7 +122,7 @@ if(!$is_in_bookshelf){
                 $metadata['in__metadata_max_steps']--;//Do not include the main idea itself
             }
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( $has_time ? ( $has_idea ? ' in ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.( $has_idea ? $metadata['in__metadata_max_steps'].' Idea'.echo__s($metadata['in__metadata_max_steps']) : '' ).( count($in__next) ? ( $has_idea ? ' IN ' : '').count($in__next).' CHATPERS' : '').( $has_time || count($in__next) ? ( $has_idea ? ' | ' : '' ).echo_time_digital($metadata['in__metadata_max_seconds']) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
@@ -140,26 +140,32 @@ if(!$is_in_bookshelf){
 
 
         //Expert References?
-        $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
+        $expert_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
+        $content_count = 0;
         if(isset($metadata['in__metadata_sources'])){
             foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
-                $source_count += count($channel_contents);
+                $content_count += count($channel_contents);
             }
         }
-        if ($source_count > 0) {
+        if ($content_count || $expert_count) {
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $expert_count ? $expert_count.' Expert'.echo__s($expert_count) : '' ).( $content_count ? ( $expert_count ? ' | ' : '' ).$content_count.' Source'.echo__s($content_count) : '' ).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             echo '<div class="list-group single-color">';
 
-            if(isset($metadata['in__metadata_experts'])){
+            if($expert_count){
                 foreach($metadata['in__metadata_experts'] as $expert){
                     echo echo_en_basic($expert);
                 }
             }
 
-            if(isset($metadata['in__metadata_sources'])) {
+            if($expert_count && $content_count){
+                //Add middle divider:
+                $ui = '<div class="list-group-item divider">&nbsp;</div>';
+            }
+
+            if($content_count) {
                 foreach ($metadata['in__metadata_sources'] as $channel_id => $channel_contents) {
                     foreach ($channel_contents as $channel_content) {
                         echo echo_en_basic($channel_content);
