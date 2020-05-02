@@ -155,7 +155,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
                     $embed_html_code .= '<div class="read-topic">' . ( $end_sec ? '<b title="FROM SECOND '.$start_sec.' to '.$end_sec.'"><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . echo_time_hours(($end_sec - $start_sec)) . '</b>' : '<b><span class="icon-block-xs"><i class="fas fa-clock"></i></span>' . ($start_sec ? echo_time_hours($start_sec) : 'START') . '</b> TO <b>' . ($end_sec ? echo_time_hours($end_sec) : 'END') . '</b>') . '</div>';
                 }
 
-                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
+                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
 
             }
 
