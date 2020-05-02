@@ -66,7 +66,7 @@ if(!count($player_reads)){
     //READ DELETE ALL (ACCESSIBLE VIA MAIN MENU)
     echo '<div class="clear-reads-list hidden margin-top-down">';
     echo '<div class="alert alert-danger" role="alert">';
-    echo '<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><b class="read montserrat">DELETE ALL READ COINS?</b>';
+    echo '<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><b class="read montserrat">DELETE ALL READS IN BOOKSHELF?</b>';
     echo '<br /><span class="icon-block">&nbsp;</span>Action cannot be undone.';
     echo '</div>';
     echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="read_clear_all()" class="btn btn-read"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
