@@ -1388,6 +1388,9 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
         $ui .= '<span class="media-info bottom-right">'.echo_time_hours($metadata['in__metadata_max_seconds']).'</span>';
     }
+    if($completion_rate['completion_percentage']==100){
+        $ui .= '<span class="media-info bottom-left">100% DONE</span>';
+    }
     //Search for Idea Image:
     if($show_editor){
         $ui .= '<span class="media-info top-left read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';

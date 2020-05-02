@@ -505,6 +505,10 @@ img.no-radius {
     z-index: 9999999;
 }
 
+.media-info.bottom-left{
+    left: 5px;
+    bottom: 5px;
+}
 .media-info.bottom-right{
     right: 5px;
     bottom: 5px;
