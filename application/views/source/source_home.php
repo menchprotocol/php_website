@@ -10,8 +10,7 @@
 
     //My Sources:
     if($session_en){
-        echo '<div class="read-topic"><span class="icon-block">'.$en_all_11035[12205]['m_icon'].'</span>'.$en_all_11035[12205]['m_name'].'</div>';
-        echo '<div class="list-group" style="padding-bottom:21px;">';
+        echo '<div class="list-group" style="padding-bottom:34px;">';
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
