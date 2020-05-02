@@ -38,17 +38,6 @@ $(document).ready(function () {
 
 });
 
-function read_toggle_highlight(highlight_status){
-    $('.toggle_highlight').toggleClass('hidden');
-    $.post("/read/read_toggle_highlight", {
-        in_id:in_loaded_id,
-    }, function (data) {
-        if (!data.status) {
-            alert(data.message);
-            $('.toggle_highlight').toggleClass('hidden');
-        }
-    });
-}
 
 
 function select_answer(in_id){

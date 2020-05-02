@@ -665,15 +665,13 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
         $recipient_en = superpower_assigned();
     }
 
+    $is_highlight = ( isset($in['ln_type_source_id']) && $in['ln_type_source_id']==12896 );
     $metadata = unserialize($in['in_metadata']);
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+    $completion_rate['completion_percentage'] = 0;
 
-    if(!$completion_rate){
-        if($recipient_en){
-            $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
-        } else {
-            $completion_rate['completion_percentage'] = 0;
-        }
+    if(!$completion_rate && !$is_highlight && $recipient_en){
+        $completion_rate = $CI->READ_model->read_completion_progress($recipient_en['en_id'], $in);
     }
 
     $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor ); //|| $recipient_en
@@ -690,18 +688,28 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
 
     //Search for Idea Image:
     if($show_editor){
+        if($is_highlight){
 
-        $ui .= '<div class="note-editor edit-off">';
+            $ui .= '<div class="note-editor edit-off">';
+            $ui .= '<span class="show-on-hover">';
+            $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="read_toggle_highlight('.$in['in_id'].');$(\'#ap_in_'.$in['in_id'].'\').fadeOut();"><i class="fas fa-times"></i></a></span>';
+            $ui .= '</span>';
+            $ui .= '</div>';
 
-        $ui .= '<span class="show-on-hover">';
+        } else {
 
-        $ui .= '<span class="read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
+            $ui .= '<div class="note-editor edit-off">';
 
-        $ui .= '<span title="REMOVE"><span class="read_remove_item" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
+            $ui .= '<span class="show-on-hover">';
 
-        $ui .= '</span>';
-        $ui .= '</div>';
+            $ui .= '<span class="read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
 
+            $ui .= '<span title="REMOVE"><span class="read_remove_item" in-id="'.$in['in_id'].'"><i class="fas fa-times"></i></span></span>';
+
+            $ui .= '</span>';
+            $ui .= '</div>';
+
+        }
     }
 
     $ui .= ( $can_click ? '</a>' : '' );
@@ -1168,7 +1176,7 @@ function echo_in_previous_read($in_id, $recipient_en){
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         )));
 
-        $ui .= '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_toggle_highlight()"><i class="fas fa-bookmark toggle_highlight '.( $is_highlighted ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_highlight '.( $is_highlighted ? 'hidden' : '' ).'"></i></a></div>';
+        $ui .= '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_toggle_highlight('.$in_id.')"><i class="fas fa-bookmark toggle_highlight '.( $is_highlighted ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_highlight '.( $is_highlighted ? 'hidden' : '' ).'"></i></a></div>';
 
         //Main Reads:
         if($top_completion_rate){

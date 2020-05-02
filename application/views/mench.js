@@ -507,6 +507,18 @@ function toggle_search(){
 
 
 
+function read_toggle_highlight(in_id){
+    $('.toggle_highlight').toggleClass('hidden');
+    $.post("/read/read_toggle_highlight", {
+        in_id:in_id,
+    }, function (data) {
+        if (!data.status) {
+            alert(data.message);
+            $('.toggle_highlight').toggleClass('hidden');
+        }
+    });
+}
+
 
 function modify_cancel(){
     $('.fixed-box').addClass('hidden');
