@@ -1559,6 +1559,6 @@ label {
     margin-top: 5px;
 }
 .list-group-item.divider{
-    height: 10px;
-    background-color: #f0f0f0 !important;
+    height: 1px;
+    background-color: #000000 !important;
 }
