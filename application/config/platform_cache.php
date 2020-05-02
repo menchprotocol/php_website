@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-04-30 19:50:01 PST
+//Generated 2020-05-01 17:16:11 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588301401;
-$config['cache_count_transaction'] = 1171536;
-$config['cache_count_read'] = 121133;
-$config['cache_count_idea'] = 5432;
-$config['cache_count_source'] = 5196;
+$config['cache_timestamp'] = 1588378571;
+$config['cache_count_transaction'] = 1173237;
+$config['cache_count_read'] = 121153;
+$config['cache_count_idea'] = 5433;
+$config['cache_count_source'] = 5198;
 
 
 
@@ -256,7 +256,7 @@ $config['en_all_12741'] = array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
         'm_name' => 'MENCH MEMORY',
         'm_desc' => '',
-        'm_parents' => array(6403,12741,6287,4527),
+        'm_parents' => array(4755,6403,12741,6287,4527),
     ),
     12710 => array(
         'm_icon' => '👤',
@@ -453,7 +453,7 @@ $config['en_all_12500'] = array(
     ),
     12899 => array(
         'm_icon' => '<i class="fas fa-headset"></i>',
-        'm_name' => 'FEEDBACK SUPPORT',
+        'm_name' => 'FEEDBACK/SUPPORT',
         'm_desc' => '',
         'm_parents' => array(12500,11035),
     ),
@@ -2637,7 +2637,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.3613346',
+        'm_desc' => 'v1.361',
         'm_parents' => array(6404),
     ),
     12156 => array(
@@ -2915,7 +2915,7 @@ $config['en_all_11035'] = array(
     ),
     12899 => array(
         'm_icon' => '<i class="fas fa-headset"></i>',
-        'm_name' => 'FEEDBACK SUPPORT',
+        'm_name' => 'FEEDBACK/SUPPORT',
         'm_desc' => '',
         'm_parents' => array(12500,11035),
     ),
@@ -4050,13 +4050,13 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
         'm_name' => 'MENCH MEMORY',
         'm_desc' => '',
-        'm_parents' => array(6403,12741,6287,4527),
+        'm_parents' => array(4755,6403,12741,6287,4527),
     ),
     11054 => array(
         'm_icon' => '<i class="fal fa-memory" aria-hidden="true"></i>',
         'm_name' => 'MENCH MEMORY JAVASCRIPT',
         'm_desc' => '',
-        'm_parents' => array(6403,4527),
+        'm_parents' => array(4755,6403,4527),
     ),
     12687 => array(
         'm_icon' => '<i class="fad fa-comments-alt" aria-hidden="true"></i>',
@@ -5249,7 +5249,7 @@ $config['en_all_6287'] = array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
         'm_name' => 'MENCH MEMORY',
         'm_desc' => '',
-        'm_parents' => array(6403,12741,6287,4527),
+        'm_parents' => array(4755,6403,12741,6287,4527),
     ),
     12710 => array(
         'm_icon' => '👤',
@@ -5836,7 +5836,7 @@ $config['en_all_4997'] = array(
 );
 
 //PRIVATE TRANSACTION:
-$config['en_ids_4755'] = array(6415,12896,12773,12453,10681,12450,6232,4783,4755,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,4235,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,7563,6157,7489,4246,3288,12117,3286,7504,4559,6144,7485,7486,6997,12489);
+$config['en_ids_4755'] = array(6415,12896,12773,12453,10681,12450,4527,11054,6232,4783,4755,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,4235,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,7563,6157,7489,4246,3288,12117,3286,7504,4559,6144,7485,7486,6997,12489);
 $config['en_all_4755'] = array(
     6415 => array(
         'm_icon' => '<i class="fas fa-trash-alt read" aria-hidden="true"></i>',
@@ -5873,6 +5873,18 @@ $config['en_all_4755'] = array(
         'm_name' => 'IDEA SOURCE REQUEST',
         'm_desc' => '',
         'm_parents' => array(4593,4755,5967),
+    ),
+    4527 => array(
+        'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MEMORY',
+        'm_desc' => '',
+        'm_parents' => array(4755,6403,12741,6287,4527),
+    ),
+    11054 => array(
+        'm_icon' => '<i class="fal fa-memory" aria-hidden="true"></i>',
+        'm_name' => 'MENCH MEMORY JAVASCRIPT',
+        'm_desc' => '',
+        'm_parents' => array(4755,6403,4527),
     ),
     6232 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
