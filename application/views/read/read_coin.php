@@ -63,34 +63,10 @@ if($is_or){
 
 //ALREADY IN BOOKSHELF?
 $completion_rate['completion_percentage'] = 0;
-$is_in_bookshelf = false;
-if($recipient_en['en_id'] > 0){
-
-    //Fetch entire Bookshelf:
-    $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
-    $is_in_bookshelf = in_array($in['in_id'], $player_read_ids);
-
-    if(!$is_in_bookshelf){
-        //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-        foreach($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
-            //Does this parent and its grandparents have an intersection with the user ideas?
-            if (array_intersect($grand_parent_ids, $player_read_ids)) {
-                //Idea is part of their Bookshelf:
-                $is_in_bookshelf = true;
-                break;
-            }
-        }
-    }
-}
+$read_in_bookshelf = $this->READ_model->read_in_bookshelf($in['in_id'], $recipient_en);
 
 
-
-
-
-
-
-if ($is_in_bookshelf) {
-
+if ($read_in_bookshelf) {
 
     // % DONE
     $completion_rate = $this->READ_model->read_completion_progress($recipient_en['en_id'], $in);
@@ -224,7 +200,7 @@ foreach($in__messages as $message_ln) {
 
 
 
-if(!$is_in_bookshelf){
+if(!$read_in_bookshelf){
 
     if($all_child_featured){
 

@@ -649,6 +649,32 @@ class READ_model extends CI_Model
     }
 
 
+    function read_in_bookshelf($in_id, $recipient_en){
+
+        $read_in_bookshelf = false;
+
+        if($recipient_en['en_id'] > 0){
+            //Fetch entire Bookshelf:
+            $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
+            $read_in_bookshelf = in_array($in_id, $player_read_ids);
+
+            if(!$read_in_bookshelf){
+                //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+                foreach($this->IDEA_model->in_recursive_parents($in_id) as $grand_parent_ids) {
+                    //Does this parent and its grandparents have an intersection with the user ideas?
+                    if (array_intersect($grand_parent_ids, $player_read_ids)) {
+                        //Idea is part of their Bookshelf:
+                        $read_in_bookshelf = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $read_in_bookshelf;
+
+    }
+
 
     function read_is_complete($in, $insert_columns){
 

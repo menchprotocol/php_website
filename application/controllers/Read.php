@@ -65,14 +65,20 @@ class Read extends CI_Controller
             return redirect_message('/source/sign/'.$in_id);
         }
 
-        //Add this Idea to their Bookshelf:
-        if(!$this->READ_model->read_start($session_en['en_id'], $in_id)){
-            //Failed to add to Bookshelf:
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your Bookshelf.</div>');
+        //Add this Idea to their Bookshelf If not already there:
+        $success_message = null;
+        $read_in_bookshelf = $this->READ_model->read_in_bookshelf($in_id, $session_en);
+        if(!$read_in_bookshelf){
+            if($this->READ_model->read_start($session_en['en_id'], $in_id)){
+                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Bookshelf</div>';
+            } else {
+                //Failed to add to Bookshelf:
+                return redirect_message('/read', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your Bookshelf.</div>');
+            }
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$in_id, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Bookshelf</div>');
+        return redirect_message('/'.$in_id, $success_message);
 
     }
 
