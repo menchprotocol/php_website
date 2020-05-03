@@ -69,6 +69,7 @@ class Read extends CI_Controller
         $success_message = null;
         $read_in_bookshelf = $this->READ_model->read_in_bookshelf($in_id, $session_en);
         if(!$read_in_bookshelf){
+            die('no there'.$in_id);
             if($this->READ_model->read_start($session_en['en_id'], $in_id)){
                 $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Bookshelf</div>';
             } else {

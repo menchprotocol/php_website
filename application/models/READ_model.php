@@ -654,6 +654,7 @@ class READ_model extends CI_Model
         $read_in_bookshelf = false;
 
         if($recipient_en['en_id'] > 0){
+
             //Fetch entire Bookshelf:
             $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
             $read_in_bookshelf = in_array($in_id, $player_read_ids);
