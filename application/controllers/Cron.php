@@ -252,6 +252,22 @@ class Cron extends CI_Controller
 
         foreach($this->IDEA_model->in_fetch($filters) as $in){
 
+
+            //First see if manually updated:
+            if(count($this->LEDGER_model->ln_fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id' => 10650,
+                    'ln_next_idea_id' => $in_id,
+                ))) && $in['in_time_seconds']!=config_var(12176)){
+                //Yes, so we ignore:
+                if($in_id){
+                    //Show details:
+                    echo $in_id.' Will be ignored since it was manually updated<hr />';
+                }
+                continue;
+            }
+
+
             //Start by counting the title:
             $total_scanned++;
             $estimated_time = words_to_seconds($in['in_title']);

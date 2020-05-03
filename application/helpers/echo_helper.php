@@ -150,7 +150,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
                 //Set the Clean URL:
                 $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_sec ? '<span class="media-info mid-right" title="Video Clip From '.echo_time_hours($start_sec).' to '.echo_time_hours($end_sec).'" data-toggle="tooltip" data-placement="top">'.echo_time_hours($end_sec - $start_sec).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
+                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_sec ? '<span class="media-info mid-right" title="Video Clip from '.echo_time_hours($start_sec).' to '.echo_time_hours($end_sec).'" data-toggle="tooltip" data-placement="top">'.echo_time_hours($end_sec - $start_sec).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
 
             }
 
@@ -1261,7 +1261,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
     //YouTube Clip:
     if($handles_url){
-        $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEO_ID_HERE?start=SECOND_HERE&end=SECOND_HERE\');" data-toggle="tooltip" title="YOUTUBE CLIPPER: Slice a video using start & end time" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
+        $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEOIDHERE?start=&end=\');" data-toggle="tooltip" title="YOUTUBE CLIPPER: Slice a video using start & end time" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
     }
 
 

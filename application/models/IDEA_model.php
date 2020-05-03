@@ -23,7 +23,7 @@ class IDEA_model extends CI_Model
             return false;
         }
 
-        if(!isset($insert_columns['in_time_seconds']) || $insert_columns['in_time_seconds'] < 0){
+        if(!isset($insert_columns['in_time_seconds']) || $insert_columns['in_time_seconds'] < config_var(12427)){
             $insert_columns['in_time_seconds'] = config_var(12176);
         }
 
