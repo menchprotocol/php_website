@@ -94,7 +94,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 table td { border: none !important; }
 
 h1 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.4em;
     margin-top:0;
     margin-bottom:10px;
@@ -106,7 +106,7 @@ h1 i {
 }
 
 h2 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.2em;
     color:#000000 !important;
     padding:10px 0 0;
@@ -123,7 +123,7 @@ h4 a{
 }
 
 h4.thin{
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     padding:15px 0 0;
     color:#000000;
 }
@@ -183,7 +183,7 @@ li a {
 
 /* FONTS */
 .montserrat, .add-input, .algolia-autocomplete, .read-topic, .btn {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: bold;
     text-decoration: none;
 }
@@ -215,7 +215,7 @@ li a {
 }
 
 .btn {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     text-transform: uppercase;
     font-size: 1em !important;
     border-radius: 0 !important;
@@ -241,14 +241,14 @@ img.no-radius {
     background-color: #FFFFFF;
     border-radius:0;
     padding: 10px 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .alert{
     padding:10px 0 !important;
     border-radius: 0;
     margin:0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .alert a{
@@ -690,14 +690,14 @@ img.no-radius {
 .nav-pill-sm .nav-link {
     display: block;
     padding: .4rem 0.7rem;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     margin-right: 6px;
 }
 
 .nav-sm .nav-link {
     display: block;
     padding: .5rem .5rem;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     text-transform: uppercase;
 }
 
@@ -1398,7 +1398,7 @@ label {
 .texttype__lg {
     background-color: transparent;
     font-size: 1.4em;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: bold;
     color:#000000;
     padding:7px 0 0 0;
@@ -1410,7 +1410,7 @@ label {
 }
 
 .texttype__lg::placeholder{
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: bold;
 }
 .form-control::placeholder{
@@ -1435,7 +1435,7 @@ label {
     padding-top: 7px;
     margin-bottom: -77px;
     margin-top: 47px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 .small-click{
     display: block;
