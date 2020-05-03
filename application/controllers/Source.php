@@ -1871,23 +1871,18 @@ class Source extends CI_Controller
         }
 
 
-        //All good...
-
-        //Was there a Idea to read?
-        if(intval($_POST['referrer_in_id']) > 0){
-            //Add this Idea to their Bookshelf:
-            $this->READ_model->read_start($ens[0]['en_id'], $_POST['referrer_in_id']);
-        }
-
-
         //Assign session & log link:
         $this->SOURCE_model->en_activate_session($ens[0]);
 
 
         if (intval($_POST['referrer_in_id']) > 0) {
-            $login_url = '/idea/go/'.$_POST['referrer_in_id'];
+
+            $login_url = '/read/start/'.$_POST['referrer_in_id'];
+
         } elseif (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
+
             $login_url = urldecode($_POST['referrer_url']);
+
         } else {
             $login_url = '/';
         }
