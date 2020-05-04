@@ -330,9 +330,10 @@ class COMMUNICATION_model extends CI_Model
             $message_any = 0;
             $source_appendix = null;
             $current_mench = current_mench();
+            $ln_content_append = trim(str_replace('@'.$string_references['ref_sources'][0], '', $input_message));
 
             //Determine what type of Media this reference has:
-            if(!($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0])){
+            if(!($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0] && !$ln_content_append)){
 
                 //Source Profile
                 foreach($this->LEDGER_model->ln_fetch(array(
@@ -365,7 +366,7 @@ class COMMUNICATION_model extends CI_Model
 
                     }
 
-                    $source_appendix .= '<div class="source-appendix paddingup">' . echo_ln_content($parent_en['ln_content'], $parent_en['ln_type_source_id'], trim(str_replace('@'.$string_references['ref_sources'][0], '', $input_message))) . '</div>';
+                    $source_appendix .= '<div class="source-appendix paddingup">' . echo_ln_content($parent_en['ln_content'], $parent_en['ln_type_source_id'], $ln_content_append) . '</div>';
 
                 }
             }

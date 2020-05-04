@@ -70,7 +70,7 @@ function echo_ln_content($ln_content, $ln_type_source_id, $ln_content_append = n
 
     } elseif ($ln_type_source_id == 4257 /* Embed Widget URL? */) {
 
-        return echo_url_embed($ln_content);
+        return echo_url_embed($ln_content, $ln_content_append);
 
     } elseif ($ln_type_source_id == 4260 /* Image URL */) {
 
@@ -108,7 +108,7 @@ function echo_ln_content($ln_content, $ln_type_source_id, $ln_content_append = n
 
 
 
-function echo_url_embed($url, $full_message = null, $return_array = false)
+function echo_url_embed($url, $ln_content_append = null, $return_array = false)
 {
 
 
@@ -129,10 +129,6 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     $prefix_message = null;
     $CI =& get_instance();
 
-    if (!$full_message) {
-        $full_message = $url;
-    }
-
     if(is_https_url($url)){
 
         //See if $url has a valid embed video in it, and transform it if it does:
@@ -143,10 +139,17 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
             $start_sec = 0;
             $end_sec = 0;
             $video_id = extract_youtube_id($url);
+            if(substr($ln_content_append, 0, 1)==':'){
+                $times = explode(':',$ln_content_append);
+                if(is_numeric($times[1]) && is_numeric($times[2])){
+                    $start_sec = intval($times[1]);
+                    $end_sec = intval($times[2]);
+                }
+            }
 
             if ($video_id) {
 
-                if($is_embed){
+                if($is_embed && !$start_sec && !$end_sec){
                     if(is_numeric(one_two_explode('start=','&',$url))){
                         $start_sec = intval(one_two_explode('start=','&',$url));
                     }
@@ -194,13 +197,10 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
         );
 
     } else {
+
         //Just return the embed code:
-        if ($embed_html_code) {
-            return trim(str_replace($url, $embed_html_code, $full_message));
-        } else {
-            //Not matched with an embed rule:
-            return false;
-        }
+        return $embed_html_code;
+
     }
 }
 
@@ -950,7 +950,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
 
     if($input_message){
-        $ui .= '<div class="idea-footer space-content">' . $CI->COMMUNICATION_model->send_message($input_message, $session_en) . '</div>';
+        $ui .= '<div class="idea-footer">' . $CI->COMMUNICATION_model->send_message($input_message, $session_en) . '</div>';
     }
 
 
