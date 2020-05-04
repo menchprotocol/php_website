@@ -741,29 +741,27 @@ function echo_input_text_count(cache_en_id, object_id) {
 
 }
 
-function update_en_name(en_id, en_name){
-    $(".text__6197_" + en_id).val(en_name).text(en_name).attr('old-value', en_name);
+function update_text_name(cache_en_id, en_id, en_name){
+    $(".text__"+cache_en_id+"_" + en_id).val(en_name).text(en_name).attr('old-value', en_name);
 }
 
 function echo_input_text_update(this_handler){
 
-    var handler = '.text__'+$(this_handler).attr('cache_en_id')+'_'+$(this_handler).attr('object_id');
-    var new_value = $(this_handler).val().trim();
+    var modify_data = {
+        object_id: parseInt($(this_handler).attr('object_id')),
+        cache_en_id: parseInt($(this_handler).attr('cache_en_id')),
+        field_value: $(this_handler).val().trim()
+    };
 
     //See if anything changes:
-    if( $(this_handler).attr('old-value') == new_value ){
+    if( $(this_handler).attr('old-value') == modify_data['field_value'] ){
         //Nothing changed:
         return false;
     }
 
     //Grey background to indicate saving...
+    var handler = '.text__'+modify_data['cache_en_id']+'_'+modify_data['object_id'];
     $(handler).addClass('dynamic_saving');
-    var modify_data = {
-        object_id: parseInt($(this_handler).attr('object_id')),
-        cache_en_id: parseInt($(this_handler).attr('cache_en_id')),
-        field_value: new_value
-    };
-
 
     $.post("/ledger/echo_input_text_update", modify_data, function (data) {
 
@@ -772,17 +770,14 @@ function echo_input_text_update(this_handler){
             //Reset to original value:
             $(handler).val(data.original_val);
 
-            //If Updating Text, Updating Corresponding Fields:
-            if(modify_data['object_id']==6197){
-                update_en_name(modify_data['cache_en_id'], modify_data['field_value']);
-            }
-
             //Show error:
             alert(data.message);
 
         } else {
-            //Update value:
-            $(this_handler).attr('old-value', new_value)
+
+            //If Updating Text, Updating Corresponding Fields:
+            update_text_name(modify_data['cache_en_id'], modify_data['object_id'], modify_data['field_value']);
+
         }
 
         setTimeout(function () {

@@ -628,7 +628,7 @@ function en_modify_save() {
 
                 //Reflect changed:
                 //Might be in an INPUT or a DIV based on active superpowers:
-                update_en_name(modify_data['en_id'], modify_data['en_name']);
+                update_text_name(6197, modify_data['en_id'], modify_data['en_name']);
 
 
                 //Player Status:
