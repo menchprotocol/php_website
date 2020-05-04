@@ -380,9 +380,8 @@ class COMMUNICATION_model extends CI_Model
             //SOURCE IDENTIFIER
             $identifier_string = '@' . $string_references['ref_sources'][0];
             $message_parts = explode($identifier_string, $output_body_message, 2);
-            $message2_parts = explode(' ', $message_parts[1], 2);
-            if(substr($message2_parts[0], 0, 1)==':'){
-                $identifier_string .= $message2_parts[0];
+            if(substr($message_parts[1], 0, 1)==':'){
+                $identifier_string .= trim(one_two_explode('',' ', $message_parts[1]));
             }
 
 
