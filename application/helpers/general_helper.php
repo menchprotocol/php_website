@@ -1544,14 +1544,14 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
     foreach($new_fields as $metadata_key => $metadata_value) {
 
         //We are doing an absolute adjustment if needed:
-        if (is_null($metadata_value)) {
+        if (!is_array($metadata_value) && is_null($metadata_value)) {
 
             //User asked to delete this value:
             unset($metadata[$metadata_key]);
 
         } else {
 
-            //Value has changed, adjust:
+            //Set Value
             $metadata[$metadata_key] = $metadata_value;
 
         }
