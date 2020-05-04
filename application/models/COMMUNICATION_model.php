@@ -335,13 +335,10 @@ class COMMUNICATION_model extends CI_Model
 
             //SOURCE IDENTIFIER
             $identifier_string = '@' . $string_references['ref_sources'][0];
-            $message_parts = explode($identifier_string, $input_message, 2);
-            if(isset($message_parts[1]) && substr($message_parts[1], 0, 1)==':'){
-                $identifier_string .= trim(one_two_explode('',' ', $message_parts[1]));
-            }
-
-
             $ln_content_append = trim(str_replace($identifier_string, '', $input_message));
+            //Expanded Identifier:
+            $message_parts = explode($identifier_string, $input_message, 2);
+            $identifier_slicer = ( isset($message_parts[1]) && substr($message_parts[1], 0, 1)==':' ? trim(one_two_explode('',' ', $message_parts[1])) : null );
 
             //Determine what type of Media this reference has:
             if(!($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0] && !$ln_content_append)){
@@ -386,7 +383,7 @@ class COMMUNICATION_model extends CI_Model
 
             //Append any appendix generated:
             $output_body_message .= $source_appendix;
-
+            $identifier_string .= $identifier_slicer; //Expand Definition for Removal
 
             //PLAYER REFERENCE
             if($current_mench['x_name']=='read' && !superpower_active(10967, true)){
