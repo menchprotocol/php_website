@@ -381,11 +381,13 @@ class COMMUNICATION_model extends CI_Model
             $message_parts = explode($identifier_string, $parent_en['ln_content'], 2);
             if(isset($message_parts[1]) && substr($message_parts[1], 0, 1)==':'){
                 $identifier_string .= trim(one_two_explode('',' ', $message_parts[1]));
+                die($identifier_string);
             }
 
 
             //Append any appendix generated:
-            $output_body_message .= $source_appendix . $identifier_string;
+            $output_body_message .= $source_appendix;
+
 
             //PLAYER REFERENCE
             if($current_mench['x_name']=='read' && !superpower_active(10967, true)){
