@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-04 10:21:14 PST
+//Generated 2020-05-04 12:36:17 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588612874;
-$config['cache_count_transaction'] = 1178712;
+$config['cache_timestamp'] = 1588620977;
+$config['cache_count_transaction'] = 1178987;
 $config['cache_count_read'] = 121188;
-$config['cache_count_idea'] = 5433;
-$config['cache_count_source'] = 5210;
+$config['cache_count_idea'] = 5434;
+$config['cache_count_source'] = 5211;
 
 
 
@@ -1772,7 +1772,7 @@ $config['en_all_12274'] = array(
 $config['en_ids_12273'] = array(4983,4231);
 $config['en_all_12273'] = array(
     4983 => array(
-        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -1949,7 +1949,7 @@ $config['en_all_12227'] = array(
 $config['en_ids_12141'] = array(4983,6157,7489,4251,12117,4559,6144,7485,7486,6997);
 $config['en_all_12141'] = array(
     4983 => array(
-        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -2631,7 +2631,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.372',
+        'm_desc' => 'v1.371',
         'm_parents' => array(6404),
     ),
     12156 => array(
@@ -2736,7 +2736,7 @@ $config['en_all_11054'] = array(
         'm_parents' => array(12700,11054,6232,12079,10662,4527),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -3036,13 +3036,19 @@ $config['en_all_11035'] = array(
 );
 
 //IDEA LAYOUT:
-$config['en_ids_11018'] = array(11020,4601,12419,10573,12589,7347,12896,6255,6146,4983,12682,7545,11047);
+$config['en_ids_11018'] = array(11020,4983,4601,12419,10573,12589,7347,12896,6255,6146,12682,7545,11047);
 $config['en_all_11018'] = array(
     11020 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA NEXT',
         'm_desc' => 'Define reading flow',
         'm_parents' => array(12675,12413,11018),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => 'People & Content referencing this idea',
+        'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
@@ -3091,12 +3097,6 @@ $config['en_all_11018'] = array(
         'm_name' => 'UNFINISHED',
         'm_desc' => 'Players who failed to complete read',
         'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
-    ),
-    4983 => array(
-        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
-        'm_name' => 'IDEA SOURCES',
-        'm_desc' => 'People & Content referencing this idea',
-        'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
     ),
     12682 => array(
         'm_icon' => '<i class="fas fa-lightbulb-exclamation source" aria-hidden="true"></i>',
@@ -3879,7 +3879,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4535,12500,12571,12467,12321,12410,11089,12228,4527),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -4430,7 +4430,7 @@ $config['en_all_10593'] = array(
         'm_parents' => array(4593,10593),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -5146,7 +5146,7 @@ $config['en_all_7551'] = array(
         'm_parents' => array(12701,12321,4485,7551,11089,11018,11035,4755,4593,12893),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -6468,7 +6468,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593,4755,5967),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
@@ -7276,7 +7276,7 @@ $config['en_all_4485'] = array(
         'm_parents' => array(10984,11018,12322,10593,4593,4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="fas fa-comment source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
         'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
