@@ -372,8 +372,6 @@ class COMMUNICATION_model extends CI_Model
             }
 
 
-            //Append any appendix generated:
-            $output_body_message .= $source_appendix;
 
             //Determine if we have text:
             $has_text = substr_count($parent_en['ln_content'], ' ');
@@ -385,6 +383,9 @@ class COMMUNICATION_model extends CI_Model
                 $identifier_string .= trim(one_two_explode('',' ', $message_parts[1]));
             }
 
+
+            //Append any appendix generated:
+            $output_body_message .= $source_appendix . $identifier_string;
 
             //PLAYER REFERENCE
             if($current_mench['x_name']=='read' && !superpower_active(10967, true)){
