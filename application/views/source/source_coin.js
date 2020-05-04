@@ -628,7 +628,7 @@ function en_modify_save() {
 
                 //Reflect changed:
                 //Might be in an INPUT or a DIV based on active superpowers:
-                $(".text__6197_" + modify_data['en_id']).val(modify_data['en_name']).text(modify_data['en_name']).attr('old-value', modify_data['en_name']);
+                update_en_name(modify_data['en_id'], modify_data['en_name']);
 
 
                 //Player Status:
@@ -668,7 +668,6 @@ function en_modify_save() {
                     $('.ln_status_source_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6186[modify_data['ln_status_source_id']]["m_name"] + ': ' + js_en_all_6186[modify_data['ln_status_source_id']]["m_desc"] + '">' + js_en_all_6186[modify_data['ln_status_source_id']]["m_icon"] + '</span>');
 
                 }
-
 
                 //Update source timestamp:
                 $('.save_source_changes').html(data.message);

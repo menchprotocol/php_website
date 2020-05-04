@@ -741,6 +741,9 @@ function echo_input_text_count(cache_en_id, object_id) {
 
 }
 
+function update_en_name(en_id, en_name){
+    $(".text__6197_" + en_id).val(en_name).text(en_name).attr('old-value', en_name);
+}
 
 function echo_input_text_update(this_handler){
 
@@ -755,19 +758,24 @@ function echo_input_text_update(this_handler){
 
     //Grey background to indicate saving...
     $(handler).addClass('dynamic_saving');
-
-    $.post("/ledger/echo_input_text_update", {
-
-        object_id: $(this_handler).attr('object_id'),
-        cache_en_id: $(this_handler).attr('cache_en_id'),
+    var modify_data = {
+        object_id: parseInt($(this_handler).attr('object_id')),
+        cache_en_id: parseInt($(this_handler).attr('cache_en_id')),
         field_value: new_value
+    };
 
-    }, function (data) {
+
+    $.post("/ledger/echo_input_text_update", modify_data, function (data) {
 
         if (!data.status) {
 
             //Reset to original value:
             $(handler).val(data.original_val);
+
+            //If Updating Text, Updating Corresponding Fields:
+            if(modify_data['object_id']==6197){
+                update_en_name(modify_data['cache_en_id'], modify_data['field_value']);
+            }
 
             //Show error:
             alert(data.message);

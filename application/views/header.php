@@ -12,7 +12,7 @@ $current_mench = current_mench();
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= $current_mench['x_class'] ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['x_class'] ) ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : '' ) ?></title>
 
@@ -184,10 +184,9 @@ if(!isset($hide_header)){
 
                             } elseif($en_id==12205) {
 
-                                //Profile Page:
-                                $page_url = 'href="/source/'.$session_en['en_id'].'"';
-
-                                //Update Name & Avatar:
+                                //SET TO PLAYER
+                                $en_id = $session_en['en_id'];
+                                $page_url = 'href="/source/'.$en_id.'"';
                                 $m['m_name'] = $session_en['en_name'];
                                 $m['m_icon'] = $session_en['en_icon'];
 
@@ -237,7 +236,7 @@ if(!isset($hide_header)){
                             }
 
                             //Navigation
-                            echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+                            echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span><span class="text__6197_'.$en_id.'">'.$m['m_name'].'</span></a>';
 
                         }
 

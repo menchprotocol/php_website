@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-04 08:46:51 PST
+//Generated 2020-05-04 10:21:14 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588607211;
-$config['cache_count_transaction'] = 1178596;
+$config['cache_timestamp'] = 1588612874;
+$config['cache_count_transaction'] = 1178712;
 $config['cache_count_read'] = 121188;
-$config['cache_count_idea'] = 5438;
+$config['cache_count_idea'] = 5433;
 $config['cache_count_source'] = 5210;
 
 
@@ -423,7 +423,7 @@ $config['en_all_12500'] = array(
     ),
     12437 => array(
         'm_icon' => '<i class="fas fa-medal source" aria-hidden="true"></i>',
-        'm_name' => 'LEADERBOARD',
+        'm_name' => 'TOP SOURCES',
         'm_desc' => '',
         'm_parents' => array(12897,12500,10876,12489,11035),
     ),
@@ -859,7 +859,7 @@ $config['en_all_12413'] = array(
 );
 
 //MENCH URL:
-$config['en_ids_10876'] = array(7274,10939,12437,7291,4341,6287,12898);
+$config['en_ids_10876'] = array(7274,10939,7291,4341,6287,12898,12437);
 $config['en_all_10876'] = array(
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -872,12 +872,6 @@ $config['en_all_10876'] = array(
         'm_name' => 'IDEA PEN',
         'm_desc' => 'https://mench.com/13467',
         'm_parents' => array(10876,10957),
-    ),
-    12437 => array(
-        'm_icon' => '<i class="fas fa-medal source" aria-hidden="true"></i>',
-        'm_name' => 'LEADERBOARD',
-        'm_desc' => 'https://mench.com/source',
-        'm_parents' => array(12897,12500,10876,12489,11035),
     ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
@@ -902,6 +896,12 @@ $config['en_all_10876'] = array(
         'm_name' => 'PUBLISH',
         'm_desc' => 'https://mench.com/idea',
         'm_parents' => array(11035,10939,4535,10876,12893),
+    ),
+    12437 => array(
+        'm_icon' => '<i class="fas fa-medal source" aria-hidden="true"></i>',
+        'm_name' => 'TOP SOURCES',
+        'm_desc' => 'https://mench.com/source',
+        'm_parents' => array(12897,12500,10876,12489,11035),
     ),
 );
 
@@ -2631,7 +2631,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.37',
+        'm_desc' => 'v1.371',
         'm_parents' => array(6404),
     ),
     12156 => array(
@@ -2869,7 +2869,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11068,6225,10573,7347,7274,3000,12899,12707,12896,12581,3084,12437,7291,4341,4430,12749,12205,12211,6287,12750,12898,7256,4269,4997,12275,10957,7540);
+$config['en_ids_11035'] = array(11068,6225,10573,7347,7274,3000,12899,12707,12896,12581,3084,7291,4341,4430,12749,12205,12211,6287,12750,12898,7256,4269,4997,12275,10957,7540,12437);
 $config['en_all_11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -2936,12 +2936,6 @@ $config['en_all_11035'] = array(
         'm_name' => 'INDUSTRY EXPERT',
         'm_desc' => '',
         'm_parents' => array(4600,12864,4983,11035,1278,12523),
-    ),
-    12437 => array(
-        'm_icon' => '<i class="fas fa-medal source" aria-hidden="true"></i>',
-        'm_name' => 'LEADERBOARD',
-        'm_desc' => '',
-        'm_parents' => array(12897,12500,10876,12489,11035),
     ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
@@ -3032,6 +3026,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'TERMS OF SERVICE',
         'm_desc' => '',
         'm_parents' => array(11035),
+    ),
+    12437 => array(
+        'm_icon' => '<i class="fas fa-medal source" aria-hidden="true"></i>',
+        'm_name' => 'TOP SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(12897,12500,10876,12489,11035),
     ),
 );
 
