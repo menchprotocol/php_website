@@ -894,16 +894,14 @@ class IDEA_model extends CI_Model
 
             $en_metadat_experts = $this->SOURCE_model->en_metadat_experts($en);
 
-            //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
-            foreach($en_metadat_experts['__in__metadata_sources'] as $type_en_id => $source_ens) {
-                foreach($source_ens as $en_id => $source_en) {
-                    if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
-                        $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
-                    }
+            //CONTENT CHANNELS
+            foreach($en_metadat_experts['__in__metadata_sources'] as $en_id => $source_en) {
+                if (!isset($metadata_this['__in__metadata_sources'][$en_id])) {
+                    $metadata_this['__in__metadata_sources'][$en_id] = $source_en;
                 }
             }
 
-            //CONTENT CHANNELS (GROUPED BY CHANNEL)
+            //EXPERT PEOPLE/ORGANIZATIONS
             foreach($en_metadat_experts['__in__metadata_experts'] as $en_id => $expert_en) {
                 //Is this a new expert?
                 if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
@@ -987,21 +985,16 @@ class IDEA_model extends CI_Model
             }
 
 
-            //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
-            foreach($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
-                foreach($source_ens as $en_id => $source_en) {
-                    if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
-                        $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
-                    }
+            //EXPERT CONTENT
+            foreach($metadata_recursion['__in__metadata_sources'] as $en_id => $source_en) {
+                if (!isset($metadata_this['__in__metadata_sources'][$en_id])) {
+                    $metadata_this['__in__metadata_sources'][$en_id] = $source_en;
                 }
             }
 
-
-            //CONTENT CHANNELS (GROUPED BY CHANNEL)
+            //EXPERT PEOPLE/ORGANIZATIONS
             foreach($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
-                //Is this a new expert?
                 if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
-                    //Yes, add them to the list:
                     $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
                 }
             }
@@ -1028,8 +1021,8 @@ class IDEA_model extends CI_Model
             'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
             'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
             'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-            'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
-            'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
+            'in__metadata_experts' => usort($metadata_this['__in__metadata_experts'], 'sortByWeight'),
+            'in__metadata_sources' => usort($metadata_this['__in__metadata_sources'], 'sortByWeight'),
         ));
 
         //Return data:

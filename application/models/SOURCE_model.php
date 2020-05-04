@@ -567,12 +567,12 @@ class SOURCE_model extends CI_Model
         ), array('en_profile'), 0) as $en__profile){
 
             if(in_array($en__profile['en_id'], $this->config->item('en_ids_3000'))){
-                //CONTENT CHANNELS (GROUPED BY CHANNEL)
-                if (!isset($metadata_this['__in__metadata_sources'][$en__profile['en_id']][$en['en_id']])) {
-                    $metadata_this['__in__metadata_sources'][$en__profile['en_id']][$en['en_id']] = $en;
+                //CONTENT CHANNELS
+                if (!isset($metadata_this['__in__metadata_sources'][$en['en_id']])) {
+                    $metadata_this['__in__metadata_sources'][$en['en_id']] = $en;
                 }
             } elseif(in_array($en__profile['en_id'], $this->config->item('en_ids_12864'))) {
-                //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
+                //EXPERT PEOPLE/ORGANIZATIONS
                 if (!isset($metadata_this['__in__metadata_experts'][$en['en_id']])) {
                     $metadata_this['__in__metadata_experts'][$en['en_id']] = $en;
                 }
@@ -583,16 +583,14 @@ class SOURCE_model extends CI_Model
 
                 $metadata_recursion = $this->SOURCE_model->en_metadat_experts($en__profile, ($level + 1));
 
-                //CONTENT CHANNELS (GROUPED BY CHANNEL)
-                foreach($metadata_recursion['__in__metadata_sources'] as $type_en_id => $source_ens) {
-                    foreach($source_ens as $en_id => $source_en){
-                        if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
-                            $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $source_en;
-                        }
+                //CONTENT CHANNELS
+                foreach($metadata_recursion['__in__metadata_sources'] as $en_id => $source_en) {
+                    if (!isset($metadata_this['__in__metadata_sources'][$en_id])) {
+                        $metadata_this['__in__metadata_sources'][$en_id] = $source_en;
                     }
                 }
 
-                //EXPERT PEOPLE/ORGANIZATIONS (NOT GROUPED)
+                //EXPERT PEOPLE/ORGANIZATIONS
                 foreach($metadata_recursion['__in__metadata_experts'] as $en_id => $expert_en) {
                     if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
                         $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;

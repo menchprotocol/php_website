@@ -512,6 +512,9 @@ function redirect_message($url, $message = null)
     }
 }
 
+function sortByWeight($a, $b) {
+    return $a['en_weight'] - $b['en_weight'];
+}
 
 function superpower_active($superpower_en_id, $boolean_only = false){
 

@@ -245,12 +245,7 @@ if(!$read_in_bookshelf){
 
         //Expert References?
         $expert_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
-        $content_count = 0;
-        if(isset($metadata['in__metadata_sources'])){
-            foreach($metadata['in__metadata_sources'] as $channel_id => $channel_contents){
-                $content_count += count($channel_contents);
-            }
-        }
+        $content_count = ( isset($metadata['in__metadata_sources']) ? count($metadata['in__metadata_sources']) : 0 );
         if ($content_count || $expert_count) {
 
             echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $content_count ? $content_count.' Source'.echo__s($content_count) : '' ).( $expert_count ? ( $expert_count ? ' From ' : '' ).$expert_count.' Expert'.echo__s($expert_count) : '' ).'</a></div>';
@@ -258,9 +253,9 @@ if(!$read_in_bookshelf){
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             echo '<div class="list-group single-color">';
 
-            if($expert_count){
-                foreach($metadata['in__metadata_experts'] as $expert){
-                    echo echo_en_basic($expert);
+            if($content_count) {
+                foreach ($metadata['in__metadata_sources'] as $channel_content) {
+                    echo echo_en_basic($channel_content);
                 }
             }
 
@@ -269,11 +264,9 @@ if(!$read_in_bookshelf){
                 echo '<div class="divider">&nbsp;</div>';
             }
 
-            if($content_count) {
-                foreach ($metadata['in__metadata_sources'] as $channel_id => $channel_contents) {
-                    foreach ($channel_contents as $channel_content) {
-                        echo echo_en_basic($channel_content);
-                    }
+            if($expert_count){
+                foreach($metadata['in__metadata_experts'] as $expert){
+                    echo echo_en_basic($expert);
                 }
             }
 
