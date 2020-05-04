@@ -346,7 +346,7 @@ class COMMUNICATION_model extends CI_Model
 
                     if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_12524'))) {
 
-                        //Raw media file: Audio, Video, Image OR File...
+                        //SOURCE LINK VISUAL
                         $message_visual_media++;
 
                     } elseif($parent_en['ln_type_source_id'] == 4256 /* URL */){
@@ -365,7 +365,7 @@ class COMMUNICATION_model extends CI_Model
 
                     }
 
-                    $source_appendix .= '<div class="source-appendix paddingup">' . echo_url_types($parent_en['ln_content'], $parent_en['ln_type_source_id']) . '</div>';
+                    $source_appendix .= '<div class="source-appendix paddingup">' . echo_ln_content($parent_en['ln_content'], $parent_en['ln_type_source_id'], trim(str_replace('@'.$string_references['ref_sources'][0], '', $input_message))) . '</div>';
 
                 }
             }

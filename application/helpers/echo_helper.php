@@ -49,50 +49,57 @@ function echo_db_field($field_name){
 }
 
 
-function echo_url_types($url, $en_type_link_id)
+function echo_ln_content($ln_content, $ln_type_source_id, $ln_content_append = null)
 {
 
     /*
      *
-     * Displays Player Links that are a URL based on their
-     * $en_type_link_id as listed under Player URL Links:
-     * https://mench.com/source/4537
+     * Displays Source Links
+     * https://mench.com/source/4592
+     *
+     * $ln_content_append Would be the additional message
+     * in an idea message that would be passed down
+     * to the source profile $ln_content value.
      *
      * */
 
 
-    if ($en_type_link_id == 4256 /* Generic URL */) {
+    if ($ln_type_source_id == 4256 /* Generic URL */) {
 
-        return '<div class="block"><a href="' . $url . '" target="_blank"><span class="icon-block-xs inline-block"><i class="far fa-external-link"></i></span><span class="url_truncate">' . echo_url_clean($url) . '</span></a></div>';
+        return '<div class="block"><a href="' . $ln_content . '" target="_blank"><span class="icon-block-xs inline-block"><i class="far fa-external-link"></i></span><span class="url_truncate">' . echo_url_clean($ln_content) . '</span></a></div>';
 
-    } elseif ($en_type_link_id == 4257 /* Embed Widget URL? */) {
+    } elseif ($ln_type_source_id == 4257 /* Embed Widget URL? */) {
 
-        return echo_url_embed($url);
+        return echo_url_embed($ln_content);
 
-    } elseif ($en_type_link_id == 4260 /* Image URL */) {
+    } elseif ($ln_type_source_id == 4260 /* Image URL */) {
 
         $current_mench = current_mench();
         if($current_mench['x_name']=='source'){
-            return '<a href="' . $url . '"><img data-src="' . $url . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" /></a>';
+            return '<a href="' . $ln_content . '"><img data-src="' . $ln_content . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" /></a>';
         } else {
-            return '<img data-src="' . $url . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" />';
+            return '<img data-src="' . $ln_content . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" />';
         }
 
-    } elseif ($en_type_link_id == 4259 /* Audio URL */) {
+    } elseif ($ln_type_source_id == 4259 /* Audio URL */) {
 
-        return  '<audio controls><source src="' . $url . '" type="audio/mpeg"></audio>' ;
+        return  '<audio controls><source src="' . $ln_content . '" type="audio/mpeg"></audio>' ;
 
-    } elseif ($en_type_link_id == 4258 /* Video URL */) {
+    } elseif ($ln_type_source_id == 4258 /* Video URL */) {
 
-        return  '<video width="100%" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="' . $url . '" type="video/mp4"></video>' ;
+        return  '<video width="100%" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="' . $ln_content . '" type="video/mp4"></video>' ;
 
-    } elseif ($en_type_link_id == 4261 /* File URL */) {
+    } elseif ($ln_type_source_id == 4261 /* File URL */) {
 
-        return '<a href="' . $url . '" class="btn btn-idea" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+        return '<a href="' . $ln_content . '" class="btn btn-idea" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+
+    } elseif(strlen($ln_content) > 0) {
+
+        return htmlentities($ln_content);
 
     } else {
 
-        //Unknown, return null:
+        //UNKNOWN
         return false;
 
     }
@@ -127,6 +134,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 
     if(is_https_url($url)){
+
         //See if $url has a valid embed video in it, and transform it if it does:
         $is_embed = (substr_count($url, 'youtube.com/embed/') == 1);
 
@@ -302,12 +310,6 @@ function echo_en_icon($en_icon = null)
     }
 }
 
-function echo_url($text)
-{
-    //Find and makes links within $text clickable
-    return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1"><u>$1</u></a>', $text);
-}
-
 
 function echo_number($number)
 {
@@ -352,30 +354,6 @@ function echo_number($number)
 
     return round(($number * $formatting['multiplier']), $formatting['decimals']) . $formatting['suffix'];
 
-}
-
-
-function echo_ln_urls($ln_content, $ln_type_source_id){
-
-    $CI =& get_instance();
-    if (in_array($ln_type_source_id, $CI->config->item('en_ids_4537'))) {
-
-        //Player URL Links
-        return echo_url_types($ln_content, $ln_type_source_id);
-
-    } elseif($ln_type_source_id==10669) {
-
-        return '<i class="'.$ln_content.'"></i>';
-
-    } elseif(strlen($ln_content) > 0) {
-
-        return echo_url(htmlentities($ln_content));
-
-    } else {
-
-        return null;
-
-    }
 }
 
 
@@ -837,7 +815,7 @@ function echo_in_marks($in_ln){
 }
 
 
-function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = null, $extra_class = null, $control_enabled = true)
+function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -971,9 +949,8 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $infobar_details = 
 
 
 
-
-    if($infobar_details){
-        $ui .= '<div class="idea-footer">' . $infobar_details . '</div>';
+    if($input_message){
+        $ui .= '<div class="idea-footer space-content">' . $CI->COMMUNICATION_model->send_message($input_message, $session_en) . '</div>';
     }
 
 
@@ -1592,7 +1569,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     if ($ln_id > 0) {
         if($is_link_source){
 
-            $ui .= '<span class="message_content paddingup ln_content hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_urls($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
+            $ui .= '<span class="message_content paddingup ln_content hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_content($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';

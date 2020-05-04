@@ -173,13 +173,6 @@ function ln_detect_type($string)
             'ln_type_source_id' => 4230, //Raw
         );
 
-    } elseif (in_array(substr($string, 0, 3), array('fas', 'far', 'fal', 'fad')) && substr($string, 3, 4)==' fa-') {
-
-        return array(
-            'status' => 1,
-            'ln_type_source_id' => 10669, //ICON
-        );
-
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(

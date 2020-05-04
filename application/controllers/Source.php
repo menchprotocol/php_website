@@ -243,7 +243,7 @@ class Source extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'html_ui' => '<b class="montserrat doupper '.extract_icon_color($en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon']).'">' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_name'] . '</b>',
-            'en_link_preview' => ( in_array($detected_ln_type['ln_type_source_id'], $this->config->item('en_ids_12524')) ? '<span class="paddingup inline-block">'.echo_url_types($_POST['ln_content'], $detected_ln_type['ln_type_source_id']).'</span>' : ''),
+            'en_link_preview' => ( in_array($detected_ln_type['ln_type_source_id'], $this->config->item('en_ids_12524')) ? '<span class="paddingup inline-block">'.echo_ln_content($_POST['ln_content'], $detected_ln_type['ln_type_source_id']).'</span>' : ''),
         ));
 
     }
@@ -1089,7 +1089,7 @@ class Source extends CI_Controller
             ), array('en_creator'));
 
             //Prep last updated:
-            $return_array['ln_content'] = echo_ln_urls($ln_content, $js_ln_type_source_id);
+            $return_array['ln_content'] = echo_ln_content($ln_content, $js_ln_type_source_id);
             $return_array['ln_content_final'] = $ln_content; //In case content was updated
 
         }

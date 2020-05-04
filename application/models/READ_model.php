@@ -1159,7 +1159,7 @@ class READ_model extends CI_Model
                     $ui .= '<div class="see_more_sources"></div>';
                 }
 
-                $ui .= echo_in($in_read, 0, false, false, (trim(str_replace('@'.$in_read['ln_profile_source_id'],'',$in_read['ln_content']))), ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+                $ui .= echo_in($in_read, 0, false, false, $in_read['ln_content'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
 
                 $previous_do_hide = $do_hide;
 
