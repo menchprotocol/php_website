@@ -1986,7 +1986,7 @@ class Source extends CI_Controller
 
 
             //Log them in:
-            $ens[0] = $this->SOURCE_model->en_activate_session($ens[0]);
+            $this->SOURCE_model->en_activate_session($ens[0]);
 
             //Their next Idea in line:
             return echo_json(array(
@@ -2099,7 +2099,7 @@ class Source extends CI_Controller
         }
 
         //Log them in:
-        $ens[0] = $this->SOURCE_model->en_activate_session($ens[0]);
+        $this->SOURCE_model->en_activate_session($ens[0]);
 
         //Take them to READ HOME
         return redirect_message( '/read' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
