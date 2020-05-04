@@ -377,6 +377,14 @@ class COMMUNICATION_model extends CI_Model
             //Append any appendix generated:
             $output_body_message .= $source_appendix;
 
+            //SOURCE IDENTIFIER
+            $identifier_string = '@' . $string_references['ref_sources'][0];
+            $message_parts = explode($identifier_string, $output_body_message, 2);
+            $message2_parts = explode(' ', $message_parts[1], 2);
+            if(substr($message2_parts[0], 0, 1)==':'){
+                $identifier_string .= $message2_parts[0];
+            }
+
 
             //PLAYER REFERENCE
             if($current_mench['x_name']=='read' && !superpower_active(10967, true)){
@@ -386,19 +394,19 @@ class COMMUNICATION_model extends CI_Model
                 if(!$has_text || ($message_any==1 && ($message_visual_media==1 || count($valid_url)==1))){
 
                     //HIDE
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '', $output_body_message);
 
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span class="inline-block montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace('@' . $string_references['ref_sources'][0], '<span class="inline-block"><a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></a></span>', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span class="inline-block"><a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></a></span>', $output_body_message);
 
             }
         }
