@@ -1535,10 +1535,6 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
 
     //Prepare newly fetched metadata:
     $metadata = (strlen($db_objects[0][$obj_type . '_metadata']) > 0 ? unserialize($db_objects[0][$obj_type . '_metadata']) : array() );
-    return echo_json(array(
-        'metadata' => $metadata,
-        'new_fields' => $new_fields,
-    ));
 
     //Go through all the new fields and see if they differ from current metadata fields:
     foreach($new_fields as $metadata_key => $metadata_value) {

@@ -1015,14 +1015,18 @@ class IDEA_model extends CI_Model
             $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
         }
 
+        //Sort Expert Content
+        usort($metadata_this['__in__metadata_experts'], 'sortByWeight');
+        usort($metadata_this['__in__metadata_sources'], 'sortByWeight');
+
         //Save to DB
         update_metadata('in', $in['in_id'], array(
             'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
             'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
             'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
             'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-            'in__metadata_experts' => usort($metadata_this['__in__metadata_experts'], 'sortByWeight'),
-            'in__metadata_sources' => usort($metadata_this['__in__metadata_sources'], 'sortByWeight'),
+            'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
+            'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
         ));
 
         //Return data:
