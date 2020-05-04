@@ -204,6 +204,7 @@ class Ledger extends CI_Controller
             //Reset user session data if this data belongs to the logged-in user:
             if ($ens[0]['en_id'] == $session_en['en_id']) {
                 //Re-activate Session with new data:
+                $ens[0]['en_name'] = $en_name_validate['en_clean_name'];
                 $this->SOURCE_model->en_activate_session($ens[0], true);
             }
 
