@@ -253,24 +253,11 @@ if(!$read_in_bookshelf){
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             echo '<div class="list-group single-color">';
 
-            if($content_count) {
-                //Sort Expert Content
-                usort($metadata['in__metadata_sources'], 'sortByWeight');
-                foreach ($metadata['in__metadata_sources'] as $channel_content) {
-                    echo echo_en_basic($channel_content);
-                }
-            }
-
-            if($expert_count && $content_count){
-                //Add middle divider:
-                echo '<div class="divider">&nbsp;</div>';
-            }
-
-            if($expert_count){
-                usort($metadata['in__metadata_experts'], 'sortByWeight');
-                foreach($metadata['in__metadata_experts'] as $expert){
-                    echo echo_en_basic($expert);
-                }
+            //Sort Expert Content
+            $experts_content = array_merge($metadata['in__metadata_sources'], $metadata['in__metadata_experts']);
+            usort($experts_content, 'sortByWeight');
+            foreach ($experts_content as $en_source) {
+                echo echo_en_basic($en_source);
             }
 
             echo '</div>';
