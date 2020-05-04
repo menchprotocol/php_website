@@ -330,7 +330,18 @@ class COMMUNICATION_model extends CI_Model
             $message_any = 0;
             $source_appendix = null;
             $current_mench = current_mench();
-            $ln_content_append = trim(str_replace('@'.$string_references['ref_sources'][0], '', $input_message));
+            $has_text = substr_count($input_message, ' ');
+            //Determine if we have text:
+
+            //SOURCE IDENTIFIER
+            $identifier_string = '@' . $string_references['ref_sources'][0];
+            $message_parts = explode($identifier_string, $input_message, 2);
+            if(isset($message_parts[1]) && substr($message_parts[1], 0, 1)==':'){
+                $identifier_string .= trim(one_two_explode('',' ', $message_parts[1]));
+            }
+
+
+            $ln_content_append = trim(str_replace($identifier_string, '', $input_message));
 
             //Determine what type of Media this reference has:
             if(!($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0] && !$ln_content_append)){
@@ -371,18 +382,6 @@ class COMMUNICATION_model extends CI_Model
                 }
             }
 
-
-
-            //Determine if we have text:
-            $has_text = substr_count($parent_en['ln_content'], ' ');
-
-            //SOURCE IDENTIFIER
-            $identifier_string = '@' . $string_references['ref_sources'][0];
-            $message_parts = explode($identifier_string, $parent_en['ln_content'], 2);
-            if(isset($message_parts[1]) && substr($message_parts[1], 0, 1)==':'){
-                $identifier_string .= trim(one_two_explode('',' ', $message_parts[1]));
-                die($identifier_string);
-            }
 
 
             //Append any appendix generated:
