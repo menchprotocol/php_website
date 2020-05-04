@@ -903,9 +903,7 @@ class IDEA_model extends CI_Model
 
             //EXPERT PEOPLE/ORGANIZATIONS
             foreach($en_metadat_experts['__in__metadata_experts'] as $en_id => $expert_en) {
-                //Is this a new expert?
                 if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
-                    //Yes, add them to the list:
                     $metadata_this['__in__metadata_experts'][$en_id] = $expert_en;
                 }
             }
@@ -1014,10 +1012,6 @@ class IDEA_model extends CI_Model
         if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
             $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
         }
-
-        //Sort Expert Content
-        usort($metadata_this['__in__metadata_experts'], 'sortByWeight');
-        usort($metadata_this['__in__metadata_sources'], 'sortByWeight');
 
         //Save to DB
         update_metadata('in', $in['in_id'], array(

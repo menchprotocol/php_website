@@ -254,6 +254,8 @@ if(!$read_in_bookshelf){
             echo '<div class="list-group single-color">';
 
             if($content_count) {
+                //Sort Expert Content
+                usort($metadata['in__metadata_sources'], 'sortByWeight');
                 foreach ($metadata['in__metadata_sources'] as $channel_content) {
                     echo echo_en_basic($channel_content);
                 }
@@ -265,6 +267,7 @@ if(!$read_in_bookshelf){
             }
 
             if($expert_count){
+                usort($metadata['in__metadata_experts'], 'sortByWeight');
                 foreach($metadata['in__metadata_experts'] as $expert){
                     echo echo_en_basic($expert);
                 }
