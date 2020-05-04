@@ -962,7 +962,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
         $ui .= $info_items_list;
 
         //IDEA TYPE
-        $ui .= '<div class="inline-block '.superpower_active(10986).'">'.echo_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
+        $ui .= '<div class="inline-block">'.echo_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
 
         //IDEA STATUS
         $ui .= '<div class="inline-block">' . echo_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
