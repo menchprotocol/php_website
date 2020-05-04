@@ -371,15 +371,16 @@ class COMMUNICATION_model extends CI_Model
                 }
             }
 
-            //Determine if we have text:
-            $has_text = substr_count($output_body_message, ' ');
 
             //Append any appendix generated:
             $output_body_message .= $source_appendix;
 
+            //Determine if we have text:
+            $has_text = substr_count($parent_en['ln_content'], ' ');
+
             //SOURCE IDENTIFIER
             $identifier_string = '@' . $string_references['ref_sources'][0];
-            $message_parts = explode($identifier_string, $output_body_message, 2);
+            $message_parts = explode($identifier_string, $parent_en['ln_content'], 2);
             if(substr($message_parts[1], 0, 1)==':'){
                 $identifier_string .= trim(one_two_explode('',' ', $message_parts[1]));
             }
