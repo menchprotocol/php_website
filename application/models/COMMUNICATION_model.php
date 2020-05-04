@@ -372,8 +372,7 @@ class COMMUNICATION_model extends CI_Model
             }
 
             //Determine if we have text:
-            $has_text = !(trim($output_body_message) == '@' . $string_references['ref_sources'][0]);
-
+            $has_text = substr_count($output_body_message, ' ');
 
             //Append any appendix generated:
             $output_body_message .= $source_appendix;
