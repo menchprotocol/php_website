@@ -513,7 +513,7 @@ function redirect_message($url, $message = null)
 }
 
 function sortByWeight($a, $b) {
-    return $a['en_weight'] - $b['en_weight'];
+    return $b['en_weight'] - $a['en_weight'];
 }
 
 function superpower_active($superpower_en_id, $boolean_only = false){
@@ -1534,17 +1534,17 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
 
 
     //Prepare newly fetched metadata:
-    if (strlen($db_objects[0][$obj_type . '_metadata']) > 0) {
-        $metadata = unserialize($db_objects[0][$obj_type . '_metadata']);
-    } else {
-        $metadata = array();
-    }
+    $metadata = (strlen($db_objects[0][$obj_type . '_metadata']) > 0 ? unserialize($db_objects[0][$obj_type . '_metadata']) : array() );
+    return echo_json(array(
+        'metadata' => $metadata,
+        'new_fields' => $new_fields,
+    ));
 
     //Go through all the new fields and see if they differ from current metadata fields:
     foreach($new_fields as $metadata_key => $metadata_value) {
 
         //We are doing an absolute adjustment if needed:
-        if (!is_array($metadata_value) && is_null($metadata_value)) {
+        if (is_null($metadata_value)) {
 
             //User asked to delete this value:
             unset($metadata[$metadata_key]);
