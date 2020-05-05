@@ -37,7 +37,31 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
             }
         }
 
-        echo '<tr><td>'.($counter+1).'</td><td><a href="/source/'.$en_embed['en_id'].'">'.$en_embed['en_name'].'</a></td><td>'.$en_embed['ln_content'].'</td><td>'.( $expert_video_parent ? '<a href="/source/'.$expert_video_parent['en_id'].'">'.$expert_video_parent['en_name'].'</a>' : 'NOT FOUND!!!' ).'</td></tr>';
+        $start_time = intval(one_two_explode('start=', '&', $en_embed['ln_content']));
+        $end_time = intval(one_two_explode('end=', '&', $en_embed['ln_content']));
+
+        echo '<tr><td>'.($counter+1).'</td><td><a href="/source/'.$en_embed['en_id'].'">'.$en_embed['en_name'].'</a></td><td>'.$en_embed['ln_content'].'</td><td>'.$start_time.' - '.$end_time.'</td><td>'.extract_youtube_id($en_embed['ln_content']).'</td><td><a href="/source/'.$expert_video_parent['en_id'].'">'.$expert_video_parent['en_name'].'</a></td><td>';
+
+        //List ALl Ideas With Text:
+        $ideas = $this->LEDGER_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null,
+            'ln_profile_source_id' => $en_embed['en_id'],
+        ), array('in_next'), 0);
+
+        foreach($ideas as $in){
+            echo '<a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a><hr />';
+        }
+
+
+        //Move Idea Message Reference
+
+        //Update URL to YouTUbe Only
+
+        //Delete Child source
+
+
+        echo '</td></tr>';
 
     }
 
