@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-04 19:45:15 PST
+//Generated 2020-05-04 20:43:51 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588646715;
-$config['cache_count_transaction'] = 1183944;
+$config['cache_timestamp'] = 1588650231;
+$config['cache_count_transaction'] = 1184690;
 $config['cache_count_read'] = 121192;
 $config['cache_count_idea'] = 5425;
-$config['cache_count_source'] = 5242;
+$config['cache_count_source'] = 5234;
 
 
 
@@ -172,7 +172,7 @@ $config['en_all_12822'] = array(
         'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
     ),
     4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fab fa-youtube source" aria-hidden="true"></i>',
         'm_name' => 'EMBED',
         'm_desc' => '',
         'm_parents' => array(12822,12605,12524,12403,4593,4592,4537),
@@ -337,7 +337,7 @@ $config['en_all_7274'] = array(
     ),
     12523 => array(
         'm_icon' => '<i class="fad fa-sync source" aria-hidden="true"></i>',
-        'm_name' => 'SYNC ICONS IF MISSING',
+        'm_name' => 'SYNC ICONS WHEN NEW',
         'm_desc' => '',
         'm_parents' => array(7274,4527,4758),
     ),
@@ -586,7 +586,7 @@ $config['en_all_12359'] = array(
 );
 
 //PORTFOLIO EDITOR UPPERCASE:
-$config['en_ids_12577'] = array(4999,4998,5000,5981,11956,5982);
+$config['en_ids_12577'] = array(4999,4998,5000,5982,5981,11956);
 $config['en_all_12577'] = array(
     4999 => array(
         'm_icon' => '<i class="source fad fa-fingerprint"></i>',
@@ -606,21 +606,21 @@ $config['en_all_12577'] = array(
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
+    5982 => array(
+        'm_icon' => '<i class="fad fa-layer-minus source"></i>',
+        'm_name' => 'PROFILE- ALL',
+        'm_desc' => '',
+        'm_parents' => array(12577,4593,4997),
+    ),
     5981 => array(
-        'm_icon' => '<i class="fad fa-layer-plus source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE ADD',
+        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
+        'm_name' => 'PROFILE+ ALL',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
     11956 => array(
-        'm_icon' => '<i class="source fad fa-layer-plus" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE IF ADD',
-        'm_desc' => '',
-        'm_parents' => array(12577,4593,4997),
-    ),
-    5982 => array(
-        'm_icon' => '<i class="source fad fa-layer-minus"></i>',
-        'm_name' => 'PROFILE REMOVE',
+        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
+        'm_name' => 'PROFILE+ IF @SOURCE',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
@@ -693,7 +693,7 @@ $config['en_all_12524'] = array(
         'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
     ),
     4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fab fa-youtube source" aria-hidden="true"></i>',
         'm_name' => 'EMBED',
         'm_desc' => '',
         'm_parents' => array(12822,12605,12524,12403,4593,4592,4537),
@@ -718,7 +718,7 @@ $config['en_all_12524'] = array(
     ),
 );
 
-//SYNC ICONS IF MISSING:
+//SYNC ICONS WHEN NEW:
 $config['en_ids_12523'] = array(2997,4446,3005,3147,4763,2999,3192,2998,6293,3084,3308);
 $config['en_all_12523'] = array(
     2997 => array(
@@ -764,16 +764,16 @@ $config['en_all_12523'] = array(
         'm_parents' => array(4983,12523,3000),
     ),
     2998 => array(
-        'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle source"></i>',
         'm_name' => 'EXPERT VIDEO',
         'm_desc' => '',
         'm_parents' => array(4983,12523,3000),
     ),
     6293 => array(
-        'm_icon' => '<i class="fad fa-image source"></i>',
-        'm_name' => 'GIPHY',
+        'm_icon' => '<i class="fas fa-draw-circle read fa-spin"></i>',
+        'm_name' => 'GIPHY GIFS',
         'm_desc' => '',
-        'm_parents' => array(12523,1326),
+        'm_parents' => array(12891,12523,1326),
     ),
     3084 => array(
         'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
@@ -782,10 +782,10 @@ $config['en_all_12523'] = array(
         'm_parents' => array(12864,4983,11035,1278,12523),
     ),
     3308 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
-        'm_name' => 'YOUTUBE URL',
+        'm_icon' => '<i class="fab fa-youtube read"></i>',
+        'm_name' => 'YOUTUBE',
         'm_desc' => '',
-        'm_parents' => array(4257,12523,1326),
+        'm_parents' => array(12891,4257,12523,1326),
     ),
 );
 
@@ -926,7 +926,7 @@ $config['en_all_12410'] = array(
 $config['en_ids_12403'] = array(4257);
 $config['en_all_12403'] = array(
     4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fab fa-youtube source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK EMBED',
         'm_desc' => '',
         'm_parents' => array(12822,12605,12524,12403,4593,4592,4537),
@@ -2631,7 +2631,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.371',
+        'm_desc' => 'v1.374',
         'm_parents' => array(6404),
     ),
     12156 => array(
@@ -2775,7 +2775,7 @@ $config['en_all_11054'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
-        'm_parents' => array(12497,2,11054,12041,4527,1,7312),
+        'm_parents' => array(12891,12497,2,11054,12041,4527,1,7312),
     ),
     6404 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
@@ -4014,7 +4014,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
-        'm_parents' => array(12497,2,11054,12041,4527,1,7312),
+        'm_parents' => array(12891,12497,2,11054,12041,4527,1,7312),
     ),
     12744 => array(
         'm_icon' => '<i class="fad fa-mobile"></i>',
@@ -4354,7 +4354,7 @@ $config['en_all_4527'] = array(
     ),
     12523 => array(
         'm_icon' => '<i class="fad fa-sync source" aria-hidden="true"></i>',
-        'm_name' => 'SYNC ICONS IF MISSING',
+        'm_name' => 'SYNC ICONS WHEN NEW',
         'm_desc' => '',
         'm_parents' => array(7274,4527,4758),
     ),
@@ -4667,7 +4667,7 @@ $config['en_all_4983'] = array(
         'm_parents' => array(4983,12523,3000),
     ),
     2998 => array(
-        'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle source"></i>',
         'm_name' => 'EXPERT VIDEO',
         'm_desc' => '',
         'm_parents' => array(4983,12523,3000),
@@ -5759,7 +5759,7 @@ $config['en_all_6146'] = array(
 );
 
 //SOURCE LIST EDITOR:
-$config['en_ids_4997'] = array(5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956);
+$config['en_ids_4997'] = array(5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956,12928);
 $config['en_all_4997'] = array(
     5000 => array(
         'm_icon' => '<i class="source fad fa-fingerprint"></i>',
@@ -5816,22 +5816,28 @@ $config['en_all_4997'] = array(
         'm_parents' => array(4593,4997),
     ),
     5982 => array(
-        'm_icon' => '<i class="source fad fa-layer-minus"></i>',
-        'm_name' => 'PROFILE REMOVE',
+        'm_icon' => '<i class="fad fa-layer-minus source"></i>',
+        'm_name' => 'PROFILE- ALL',
         'm_desc' => 'If already added as the parent, this will remove searched entity as the parent of all child entities',
         'm_parents' => array(12577,4593,4997),
     ),
     5981 => array(
-        'm_icon' => '<i class="fad fa-layer-plus source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE ADD',
+        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
+        'm_name' => 'PROFILE+ ALL',
         'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
         'm_parents' => array(12577,4593,4997),
     ),
     11956 => array(
-        'm_icon' => '<i class="source fad fa-layer-plus" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE IF ADD',
+        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
+        'm_name' => 'PROFILE+ IF @SOURCE',
         'm_desc' => 'Adds a parent entity only IF the entity has another parent entity.',
         'm_parents' => array(12577,4593,4997),
+    ),
+    12928 => array(
+        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
+        'm_name' => 'PROFILE+ IF 1+ IDEA',
+        'm_desc' => 'Adds a profile source if the source has 1 or more ideas',
+        'm_parents' => array(4997),
     ),
 );
 
@@ -6321,7 +6327,7 @@ $config['en_all_4755'] = array(
 );
 
 //TRANSACTION TYPE:
-$config['en_ids_4593'] = array(7545,10573,4235,6415,12419,12906,12896,12773,4250,6182,12453,4229,4228,10686,10663,10664,6226,10676,10678,10679,10677,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5981,11956,5982,5003,12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,12682,7563,6157,7489,4246,4251,6178,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,4559,10654,6144,5007,7485,7486,6997,4994,12489);
+$config['en_ids_4593'] = array(7545,10573,4235,6415,12419,12906,12896,12773,4250,6182,12453,4229,4228,10686,10663,10664,6226,10676,10678,10679,10677,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,12591,12592,5001,10625,5943,12318,5865,4999,4998,5000,5982,5981,11956,5003,12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,12682,7563,6157,7489,4246,4251,6178,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,4559,10654,6144,5007,7485,7486,6997,4994,12489);
 $config['en_all_4593'] = array(
     7545 => array(
         'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
@@ -6581,21 +6587,21 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
+    5982 => array(
+        'm_icon' => '<i class="fad fa-layer-minus source"></i>',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE- ALL',
+        'm_desc' => '',
+        'm_parents' => array(12577,4593,4997),
+    ),
     5981 => array(
-        'm_icon' => '<i class="fad fa-layer-plus source" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO EDITOR PROFILE ADD',
+        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE+ ALL',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
     11956 => array(
-        'm_icon' => '<i class="source fad fa-layer-plus" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO EDITOR PROFILE IF ADD',
-        'm_desc' => '',
-        'm_parents' => array(12577,4593,4997),
-    ),
-    5982 => array(
-        'm_icon' => '<i class="source fad fa-layer-minus"></i>',
-        'm_name' => 'PORTFOLIO EDITOR PROFILE REMOVE',
+        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE+ IF @SOURCE',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
@@ -7008,7 +7014,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10593,4593),
     ),
     4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fab fa-youtube source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK EMBED',
         'm_desc' => '',
         'm_parents' => array(12822,12605,12524,12403,4593,4592,4537),
@@ -7175,7 +7181,7 @@ $config['en_all_4592'] = array(
         'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
     ),
     4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fab fa-youtube source" aria-hidden="true"></i>',
         'm_name' => 'EMBED',
         'm_desc' => 'Embeddable videos',
         'm_parents' => array(12822,12605,12524,12403,4593,4592,4537),
@@ -7322,7 +7328,7 @@ $config['en_all_4537'] = array(
         'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
     ),
     4257 => array(
-        'm_icon' => '<i class="fad fa-play-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fab fa-youtube source" aria-hidden="true"></i>',
         'm_name' => 'EMBED',
         'm_desc' => 'Recognizable URL that offers an embed widget for a more engaging play-back experience',
         'm_parents' => array(12822,12605,12524,12403,4593,4592,4537),
@@ -7369,7 +7375,7 @@ $config['en_all_3000'] = array(
         'm_parents' => array(4983,12523,10809,3000),
     ),
     2998 => array(
-        'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle source"></i>',
         'm_name' => 'VIDEO',
         'm_desc' => '',
         'm_parents' => array(4983,12523,3000),

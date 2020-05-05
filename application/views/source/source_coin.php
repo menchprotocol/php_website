@@ -458,7 +458,7 @@ $is_source = en_is_source($en['en_id']);
                         $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
 
 
-                    } elseif(in_array($action_en_id, array(5981, 5982))){
+                    } elseif(in_array($action_en_id, array(5981, 12928, 5982))){
 
                         //Player search box:
 

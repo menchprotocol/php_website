@@ -596,7 +596,7 @@ function echo_coins_count_read($in_id = 0, $en_id = 0){
 
 }
 
-function echo_coins_count_source($in_id = 0, $en_id = 0){
+function echo_coins_count_source($in_id = 0, $en_id = 0, $number_only = false){
 
     $CI =& get_instance();
 
@@ -618,11 +618,12 @@ function echo_coins_count_source($in_id = 0, $en_id = 0){
     }
 
     $en_coins = $CI->LEDGER_model->ln_fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    if($en_coins[0]['totals'] > 0){
-        return '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($en_coins[0]['totals']).'</span>';
-    }
 
-    return null;
+    if($number_only){
+        return $en_coins[0]['totals'];
+    } else {
+        return ($en_coins[0]['totals'] > 0 ? '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($en_coins[0]['totals']).'</span>' : null);
+    }
 }
 
 
