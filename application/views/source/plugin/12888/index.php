@@ -65,7 +65,7 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
             }
 
 
-            echo '!'.$in['ln_id'].' <a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a> ['.$in['ln_content'].'] => ['.$new_content.']<hr />';
+            echo '!'.$in['ln_id'].' <a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a> ['.$in['ln_content'].'] => ['.'@'.$expert_video_parent['en_id'].':'.$start_time.':'.$end_time.']<hr />';
 
 
         }
