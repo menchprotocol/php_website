@@ -339,42 +339,47 @@ class COMMUNICATION_model extends CI_Model
             //Expanded Identifier:
             $message_parts = explode($identifier_string, $input_message, 2);
             $identifier_slicer = ( isset($message_parts[1]) && substr($message_parts[1], 0, 1)==':' ? trim(one_two_explode('',' ', $message_parts[1])) : null );
+            $is_current_source = $current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0];
+
 
             //Determine what type of Media this reference has:
             //Source Profile
-            foreach($this->LEDGER_model->ln_fetch(array(
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
-                'ln_portfolio_source_id' => $string_references['ref_sources'][0],
-            ), array('en_profile'), 0, 0, array('en_id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
+            if(!$is_current_source || $identifier_slicer){
+                foreach($this->LEDGER_model->ln_fetch(array(
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
+                    'ln_portfolio_source_id' => $string_references['ref_sources'][0],
+                ), array('en_profile'), 0, 0, array('en_id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
 
-                $message_any++;
+                    $message_any++;
 
-                if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_12524'))) {
+                    if (in_array($parent_en['ln_type_source_id'], $this->config->item('en_ids_12524'))) {
 
-                    //SOURCE LINK VISUAL
-                    $message_visual_media++;
+                        //SOURCE LINK VISUAL
+                        $message_visual_media++;
 
-                } elseif($parent_en['ln_type_source_id'] == 4256 /* URL */){
+                    } elseif($parent_en['ln_type_source_id'] == 4256 /* URL */){
 
-                    array_push($valid_url, $parent_en['ln_content']);
+                        array_push($valid_url, $parent_en['ln_content']);
 
-                } elseif($parent_en['ln_type_source_id'] == 4255 /* TEXT */){
+                    } elseif($parent_en['ln_type_source_id'] == 4255 /* TEXT */){
 
-                    $source_appendix .= '<div class="source-appendix paddingup"><span class="icon-block-xs"><i class="far fa-info-circle"></i></span>' . $parent_en['ln_content'] . '</div>';
-                    continue;
+                        $source_appendix .= '<div class="source-appendix paddingup"><span class="icon-block-xs"><i class="far fa-info-circle"></i></span>' . $parent_en['ln_content'] . '</div>';
+                        continue;
 
-                } else {
+                    } else {
 
-                    //Not supported for now:
-                    continue;
+                        //Not supported for now:
+                        continue;
+
+                    }
+
+                    $source_appendix .= '<div class="source-appendix paddingup">' . echo_ln_content($parent_en['ln_content'], $parent_en['ln_type_source_id'], $ln_content_append) . '</div>';
 
                 }
-
-                $source_appendix .= '<div class="source-appendix paddingup">' . echo_ln_content($parent_en['ln_content'], $parent_en['ln_type_source_id'], $ln_content_append) . '</div>';
-
             }
+
 
 
             //Append any appendix generated:
@@ -382,7 +387,7 @@ class COMMUNICATION_model extends CI_Model
             $identifier_string .= $identifier_slicer; //Expand Definition for Removal
 
             //PLAYER REFERENCE
-            if(($current_mench['x_name']=='read' && !superpower_active(10967, true)) || ($current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0])){
+            if(($current_mench['x_name']=='read' && !superpower_active(10967, true)) || $is_current_source){
 
                 //NO LINK so we can maintain focus...
 
