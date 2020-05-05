@@ -419,7 +419,7 @@ class COMMUNICATION_model extends CI_Model
             'output_messages' => array(
                 array(
                     'message_type_en_id' => 4570, //User Received Email Message
-                    'message_body' => '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
+                    'message_body' => ( strlen($output_body_message) ? '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>' : null ),
                 ),
             ),
             'ln_profile_source_id' => (count($string_references['ref_sources']) > 0 ? $string_references['ref_sources'][0] : 0),
