@@ -187,7 +187,7 @@ $is_source = en_is_source($en['en_id']);
     echo '<span class="icon-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
 
     //Modify
-    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',0)" class="icon-block '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
+    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
 
 
     //ADMIN MENU

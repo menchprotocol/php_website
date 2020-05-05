@@ -647,8 +647,8 @@ img.no-radius {
 .nav-link.active, .nav-pills .show>.nav-link {
     color: #fff;
     background-color: #000000;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .tab-content{
