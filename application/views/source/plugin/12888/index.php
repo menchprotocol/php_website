@@ -50,7 +50,7 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
         ), array('in_next'), 0);
 
         foreach($ideas as $in){
-            echo '<a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a><hr />';
+            echo '<a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a> '.$in['ln_content'].'<hr />';
         }
 
 
