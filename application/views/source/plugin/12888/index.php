@@ -41,12 +41,6 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
 
 
 
-        if(is_null($just_do)){
-            $just_do = $expert_video_parent['en_id'];
-        } elseif($just_do!=$expert_video_parent['en_id']){
-            break;
-        }
-
         $start_time = intval(one_two_explode('start=', '&', $en_embed['ln_content']));
         $end_time = intval(one_two_explode('end=', '&', $en_embed['ln_content']));
 
@@ -61,17 +55,14 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
 
         foreach($ideas as $in){
 
-            $new_content = str_replace('@'.$en_embed['en_id'],'@'.$expert_video_parent['en_id'].':'.$start_time.':'.$end_time, $in['ln_content']);
-
             if($perfrom_db){
                 //Update Reference
                 $this->LEDGER_model->ln_update($in['ln_id'], array(
-                    'ln_content' => $new_content,
+                    'ln_content' => '@'.$expert_video_parent['en_id'].':'.$start_time.':'.$end_time,
                     'ln_profile_source_id' => $expert_video_parent['en_id'],
                     'ln_status_source_id' => 6176,
                 ));
             }
-
 
 
             echo '!'.$in['ln_id'].' <a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a> ['.$in['ln_content'].'] => ['.$new_content.']<hr />';
