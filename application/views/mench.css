@@ -415,8 +415,12 @@ img.no-radius {
     overflow-x: hidden;
 }
 
-.nav-tabs, .nav-pills {
+.nav-tabs {
     margin:10px 0 0;
+    margin-left: 33px;
+}
+.nav-pills {
+    margin:10px 0;
     margin-left: 33px;
 }
 
@@ -644,11 +648,16 @@ img.no-radius {
     font-family: 'Montserrat', sans-serif;
 }
 
-.nav-link.active, .nav-pills .show>.nav-link {
+.nav-link.active {
     color: #fff;
     background-color: #000000;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #000000;
+    border-radius: 10px;
 }
 
 .tab-content{
