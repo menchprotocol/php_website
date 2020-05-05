@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-04 21:01:00 PST
+//Generated 2020-05-04 21:01:38 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588651260;
-$config['cache_count_transaction'] = 1185024;
+$config['cache_timestamp'] = 1588651298;
+$config['cache_count_transaction'] = 1185028;
 $config['cache_count_read'] = 121192;
 $config['cache_count_idea'] = 5425;
 $config['cache_count_source'] = 5206;
@@ -5759,14 +5759,8 @@ $config['en_all_6146'] = array(
 );
 
 //SOURCE LIST EDITOR:
-$config['en_ids_4997'] = array(12930,5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956,12928);
+$config['en_ids_4997'] = array(5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956,12928,12930);
 $config['en_all_4997'] = array(
-    12930 => array(
-        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
-        'm_name' => 'PROFILE+ IF NO IDEA',
-        'm_desc' => 'Adds a profile source if the source has 0 ideas',
-        'm_parents' => array(4997),
-    ),
     5000 => array(
         'm_icon' => '<i class="source fad fa-fingerprint"></i>',
         'm_name' => 'NAME REPLACE',
@@ -5843,6 +5837,12 @@ $config['en_all_4997'] = array(
         'm_icon' => '<i class="fad fa-layer-plus source"></i>',
         'm_name' => 'PROFILE+ IF 1+ IDEA',
         'm_desc' => 'Adds a profile source if the source has 1 or more ideas',
+        'm_parents' => array(4997),
+    ),
+    12930 => array(
+        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
+        'm_name' => 'PROFILE+ IF NO IDEA',
+        'm_desc' => 'Adds a profile source if the source has 0 ideas',
         'm_parents' => array(4997),
     ),
 );
