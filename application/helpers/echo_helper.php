@@ -949,7 +949,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
-            $ui .= '<div class="inline-block btn montserrat idea" title="'.$en_all_12413[11019]['m_name'].'">'.$next_ins[0]['total_ins'].$en_all_12413[11019]['m_icon'].'&nbsp;</div>';
+            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11019]['m_name'].'">'.$next_ins[0]['total_ins'].$en_all_12413[11019]['m_icon'].'&nbsp;</div>';
         }
 
         //NEXT IDEAS COUNT
@@ -959,7 +959,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
-            $ui .= '<div class="inline-block btn montserrat idea" title="'.$en_all_12413[11020]['m_name'].'">'.$next_ins[0]['total_ins'].'&nbsp;</div>';
+            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11020]['m_name'].'">'.$next_ins[0]['total_ins'].'&nbsp;</div>';
         }
 
         //IDEA TYPE
@@ -982,7 +982,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
         $ui .='</span>';
 
 
-        //LINK CONDIITONAL RANGE
+        //LINK CONDITIONAL RANGE
         $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
         //MIN
         $ui .= echo_input_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
