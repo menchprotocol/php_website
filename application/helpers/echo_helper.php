@@ -854,25 +854,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
 
 
-
-    //NEXT IDEAS COUNT (SYNC WITH SOURCE PORTFOLIO COUNT)
-    $child_counter = '';
-    if(superpower_active(10939, true)) {
-        $next_ins = $CI->LEDGER_model->ln_fetch(array(
-            'ln_previous_idea_id' => $in['in_id'],
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-        if($next_ins[0]['total_ins'] > 0){
-            $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -18px;" ' : '' ).'><span class="icon-block doright montserrat idea" title="'.number_format($next_ins[0]['total_ins'], 0).' NEXT IDEAS">'.echo_number($next_ins[0]['total_ins']).'</span></span>';
-            $child_counter .= '<div class="doclear">&nbsp;</div>';
-        }
-    }
-
-
-
-
-
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
 
 
@@ -890,7 +871,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
             if($show_toolbar){
 
                 $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
-                $ui .= $child_counter;
 
             } else {
 
@@ -902,7 +882,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
                     $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
                 }
                 $ui .= echo_in_title($in); //IDEA TITLE
-                $ui .= $child_counter;
                 $ui .= '</a>';
 
             }
@@ -956,12 +935,32 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
     }
 
 
-    if($show_toolbar){
+    if($show_toolbar && superpower_active(12673, true)){
 
         //Idea Toolbar
         $ui .= '<div class="space-content ' . superpower_active(12673) . '" style="padding-left:25px;">';
 
         $ui .= $info_items_list;
+
+        //PREVIOUS IDEAS COUNT
+        $next_ins = $CI->LEDGER_model->ln_fetch(array(
+            'ln_profile_idea_id' => $in['in_id'],
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+        if($next_ins[0]['total_ins'] > 0){
+            $ui .= '<div class="inline-block" class="montserrat idea" title="'.$en_all_12413[11019]['m_name'].'">'.$next_ins[0]['total_ins'].$en_all_12413[11019]['m_icon'].'&nbsp;</div>';
+        }
+
+        //NEXT IDEAS COUNT
+        $next_ins = $CI->LEDGER_model->ln_fetch(array(
+            'ln_previous_idea_id' => $in['in_id'],
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+        if($next_ins[0]['total_ins'] > 0){
+            $ui .= '<div class="inline-block" class="montserrat idea" title="'.$en_all_12413[11020]['m_name'].'">'.$next_ins[0]['total_ins'].'&nbsp;</div>';
+        }
 
         //IDEA TYPE
         $ui .= '<div class="inline-block">'.echo_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
@@ -990,7 +989,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
         $ui .= echo_input_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
         $ui .= '</span>';
         $ui .= '</div>';
-
 
 
         $ui .= '</div>';

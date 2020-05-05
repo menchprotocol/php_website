@@ -114,6 +114,7 @@ if(!isset($hide_header)){
 
 
                                 if($en_id==12749) {
+
                                     $focus_in_id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? config_var(12156) : 0 ) );
                                     if( $focus_in_id>0 && in_is_source($focus_in_id) ){
                                         //Contribute to Idea
@@ -121,6 +122,21 @@ if(!isset($hide_header)){
                                     } else {
                                         continue;
                                     }
+
+                                } elseif($en_id==12896){
+
+                                    $highlights = $this->LEDGER_model->ln_fetch(array(
+                                        'ln_profile_source_id' => $session_en['en_id'],
+                                        'ln_type_source_id' => 12896, //HIGHLIGHTS
+                                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                                    ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+
+                                    if($highlights[0]['totals']){
+                                        $m['m_name'] = $highlights[0]['totals'].' '.$m['m_name'];
+                                    } else {
+                                        continue;
+                                    }
+
                                 }
 
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.($is_current_mench ? ' focustab ' : '').'">';

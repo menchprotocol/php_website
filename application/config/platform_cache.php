@@ -8,18 +8,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-04 21:01:38 PST
+//Generated 2020-05-05 11:29:04 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588651298;
-$config['cache_count_transaction'] = 1185028;
+$config['cache_timestamp'] = 1588703344;
+$config['cache_count_transaction'] = 1187180;
 $config['cache_count_read'] = 121192;
-$config['cache_count_idea'] = 5425;
-$config['cache_count_source'] = 5206;
+$config['cache_count_idea'] = 5400;
+$config['cache_count_source'] = 5010;
 
 
 
-//MAIN MENU:
+//TOP MENU:
 $config['en_ids_12893'] = array(12581,7347,12896,12898,12749);
 $config['en_all_12893'] = array(
     12581 => array(
@@ -333,7 +333,7 @@ $config['en_all_7274'] = array(
         'm_icon' => '',
         'm_name' => 'SYNC GEPHI INDEX',
         'm_desc' => '',
-        'm_parents' => array(7311,7287,7274),
+        'm_parents' => array(7287,7274),
     ),
     12523 => array(
         'm_icon' => '<i class="fad fa-sync source" aria-hidden="true"></i>',
@@ -3726,7 +3726,7 @@ $config['en_all_10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['en_ids_4527'] = array(6225,10956,12279,12588,6150,10573,7347,7274,3000,12864,12359,11047,6192,11018,12675,12677,4229,12842,4486,12840,4485,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,6201,12420,12413,7585,12330,12324,7309,7712,12883,12884,7751,10717,12571,12574,10692,12893,2738,12744,12467,6404,12079,4341,4527,11054,12687,11035,12112,10876,6232,12589,12410,12500,12741,6287,12577,4755,11081,7704,5967,12229,12326,12446,12227,6255,7304,7360,7364,7359,12327,4269,6204,4536,12887,6194,11089,11080,12822,4592,12403,11059,4537,12524,4997,4986,7551,12274,6177,7358,12575,7357,12401,10957,6206,12523,12322,12321,6103,6186,4593,10593,12141,6146);
+$config['en_ids_4527'] = array(6225,10956,12279,12588,6150,10573,7347,7274,3000,12864,12359,11047,6192,11018,12675,12677,4229,12842,4486,12840,4485,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,6201,12420,12413,7585,12330,12324,7309,7712,12883,12884,7751,10717,12571,12574,10692,2738,12744,12467,6404,12079,4341,4527,11054,12687,11035,12112,10876,6232,12589,12410,12500,12741,6287,12577,4755,11081,7704,5967,12229,12326,12446,12227,6255,7304,7360,7364,7359,12327,4269,6204,4536,12887,6194,11089,11080,12822,4592,12403,11059,4537,12524,4997,4986,7551,12274,6177,7358,12575,7357,12401,10957,6206,12523,12322,12321,12893,6103,6186,4593,10593,12141,6146);
 $config['en_all_4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3927,7 +3927,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(7254,4527),
     ),
     12413 => array(
-        'm_icon' => '<i class="fad fa-circle idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-sitemap idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
         'm_parents' => array(4527),
@@ -4003,12 +4003,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'LEDGER FIVE LINKS',
         'm_desc' => '',
         'm_parents' => array(4527,6771),
-    ),
-    12893 => array(
-        'm_icon' => '<i class="fas fa-ellipsis-h"></i>',
-        'm_name' => 'MAIN MENU',
-        'm_desc' => '',
-        'm_parents' => array(6403,4527),
     ),
     2738 => array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
@@ -4369,6 +4363,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'TEMPLATE IDEA READ',
         'm_desc' => '',
         'm_parents' => array(10889,4527),
+    ),
+    12893 => array(
+        'm_icon' => '<i class="fas fa-ellipsis-h"></i>',
+        'm_name' => 'TOP MENU',
+        'm_desc' => '',
+        'm_parents' => array(6403,4527),
     ),
     6103 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
