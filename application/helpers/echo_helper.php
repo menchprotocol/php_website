@@ -942,13 +942,22 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
         $ui .= $info_items_list;
 
+
+        //IDEA TYPE
+        $ui .= '<div class="inline-block">'.echo_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
+
+        //IDEA STATUS
+        $ui .= '<div class="inline-block">' . echo_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
+
+
+
         //PREVIOUS IDEAS COUNT
         $next_ins = $CI->LEDGER_model->ln_fetch(array(
             'ln_next_idea_id' => $in['in_id'],
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-        if($next_ins[0]['total_ins'] > 0){
+        if($next_ins[0]['total_ins'] > 1){
             $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11019]['m_name'].'">'.$next_ins[0]['total_ins'].$en_all_12413[11019]['m_icon'].'&nbsp;</div>';
         }
 
@@ -959,19 +968,13 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
-            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11020]['m_name'].'">'.$next_ins[0]['total_ins'].'&nbsp;</div>';
+            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11020]['m_name'].'">'.$en_all_12413[11020]['m_icon'].$next_ins[0]['total_ins'].'&nbsp;</div>';
         }
-
-        //IDEA TYPE
-        $ui .= '<div class="inline-block">'.echo_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
-
-        //IDEA STATUS
-        $ui .= '<div class="inline-block">' . echo_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
 
 
 
         //IDEA LINK BAR
-        $ui .= '<div class="inline-block ' . superpower_active(12700) . '">';
+        $ui .= '<span class="' . superpower_active(12700) . '">';
 
         //LINK TYPE
         $ui .= echo_input_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
@@ -989,7 +992,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
         //MAX
         $ui .= echo_input_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
         $ui .= '</span>';
-        $ui .= '</div>';
+        $ui .= '</span>';
 
 
         $ui .= '</div>';
