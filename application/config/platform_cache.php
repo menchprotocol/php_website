@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-04 20:43:51 PST
+//Generated 2020-05-04 21:01:00 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588650231;
-$config['cache_count_transaction'] = 1184690;
+$config['cache_timestamp'] = 1588651260;
+$config['cache_count_transaction'] = 1185024;
 $config['cache_count_read'] = 121192;
 $config['cache_count_idea'] = 5425;
-$config['cache_count_source'] = 5234;
+$config['cache_count_source'] = 5206;
 
 
 
@@ -746,7 +746,7 @@ $config['en_all_12523'] = array(
         'm_parents' => array(4983,12523,3000),
     ),
     4763 => array(
-        'm_icon' => '<i class="fas fa-megaphone source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-megaphone source mench-spin" aria-hidden="true"></i>',
         'm_name' => 'EXPERT MARKETING',
         'm_desc' => '',
         'm_parents' => array(4983,12523,3000),
@@ -4649,7 +4649,7 @@ $config['en_all_4983'] = array(
         'm_parents' => array(4983,12523,3000),
     ),
     4763 => array(
-        'm_icon' => '<i class="fas fa-megaphone source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-megaphone source mench-spin" aria-hidden="true"></i>',
         'm_name' => 'EXPERT MARKETING',
         'm_desc' => '',
         'm_parents' => array(4983,12523,3000),
@@ -5759,8 +5759,14 @@ $config['en_all_6146'] = array(
 );
 
 //SOURCE LIST EDITOR:
-$config['en_ids_4997'] = array(5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956,12928);
+$config['en_ids_4997'] = array(12930,5000,4998,4999,5001,5003,5865,5943,12318,10625,5982,5981,11956,12928);
 $config['en_all_4997'] = array(
+    12930 => array(
+        'm_icon' => '<i class="fad fa-layer-plus source"></i>',
+        'm_name' => 'PROFILE+ IF NO IDEA',
+        'm_desc' => 'Adds a profile source if the source has 0 ideas',
+        'm_parents' => array(4997),
+    ),
     5000 => array(
         'm_icon' => '<i class="source fad fa-fingerprint"></i>',
         'm_name' => 'NAME REPLACE',
@@ -5787,25 +5793,25 @@ $config['en_all_4997'] = array(
     ),
     5003 => array(
         'm_icon' => '<i class="source fad fa-sliders-h"></i>',
-        'm_name' => 'STATUS REPLACE',
+        'm_name' => 'STATUS',
         'm_desc' => 'Updates all child entity statuses that match the initial entity status condition',
         'm_parents' => array(4593,4997),
     ),
     5865 => array(
         'm_icon' => '<i class="source fad fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'LINK STATUS REPLACE',
+        'm_name' => 'LINK STATUS',
         'm_desc' => 'Updates all child entity link statuses that match the initial link status condition',
         'm_parents' => array(4593,4997),
     ),
     5943 => array(
         'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'ICON UPDATE FOR ALL',
+        'm_name' => 'ICON SET ALL',
         'm_desc' => 'Updates all child entity icons with string which needs to be a valid icon',
         'm_parents' => array(4593,4997),
     ),
     12318 => array(
         'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'ICON UPDATE IF MISSING',
+        'm_name' => 'ICON SET IF NONE',
         'm_desc' => 'Updates all icons that are not set to the new value.',
         'm_parents' => array(4593,4997),
     ),
@@ -6553,19 +6559,19 @@ $config['en_all_4593'] = array(
     ),
     5943 => array(
         'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO EDITOR ICON UPDATE FOR ALL',
+        'm_name' => 'PORTFOLIO EDITOR ICON SET ALL',
         'm_desc' => '',
         'm_parents' => array(4593,4997),
     ),
     12318 => array(
         'm_icon' => '<i class="fad fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO EDITOR ICON UPDATE IF MISSING',
+        'm_name' => 'PORTFOLIO EDITOR ICON SET IF NONE',
         'm_desc' => '',
         'm_parents' => array(4593,4997),
     ),
     5865 => array(
         'm_icon' => '<i class="source fad fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO EDITOR LINK STATUS REPLACE',
+        'm_name' => 'PORTFOLIO EDITOR LINK STATUS',
         'm_desc' => '',
         'm_parents' => array(4593,4997),
     ),
@@ -6607,7 +6613,7 @@ $config['en_all_4593'] = array(
     ),
     5003 => array(
         'm_icon' => '<i class="source fad fa-sliders-h"></i>',
-        'm_name' => 'PORTFOLIO EDITOR STATUS REPLACE',
+        'm_name' => 'PORTFOLIO EDITOR STATUS',
         'm_desc' => '',
         'm_parents' => array(4593,4997),
     ),
@@ -7405,7 +7411,7 @@ $config['en_all_3000'] = array(
         'm_parents' => array(4983,12523,3000),
     ),
     4763 => array(
-        'm_icon' => '<i class="fas fa-megaphone source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-megaphone source mench-spin" aria-hidden="true"></i>',
         'm_name' => 'MARKETING',
         'm_desc' => '',
         'm_parents' => array(4983,12523,3000),

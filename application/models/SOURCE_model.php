@@ -926,7 +926,7 @@ class SOURCE_model extends CI_Model
                 'message' => $is_valid_icon['message'],
             );
 
-        } elseif(in_array($action_en_id, array(5981, 5982, 12928, 11956)) && !is_valid_en_string($action_command1)){
+        } elseif(in_array($action_en_id, array(5981, 5982, 12928, 12930, 11956)) && !is_valid_en_string($action_command1)){
 
             return array(
                 'status' => 0,
@@ -981,7 +981,7 @@ class SOURCE_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif (in_array($action_en_id, array(5981, 5982, 12928, 11956))) { //Add/Delete parent source
+            } elseif (in_array($action_en_id, array(5981, 5982, 12928, 12930, 11956))) { //Add/Delete parent source
 
                 //What player searched for:
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
@@ -994,7 +994,7 @@ class SOURCE_model extends CI_Model
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 ));
 
-                if(($action_en_id==5981 && count($child_parent_ens)==0) || ($action_en_id==12928 && echo_coins_count_source(0,$en['en_id'],true) > 0)){
+                if(($action_en_id==5981 && count($child_parent_ens)==0) || ($action_en_id==12928 && echo_coins_count_source(0,$en['en_id'],true) > 0) || ($action_en_id==12930 && !echo_coins_count_source(0,$en['en_id'],true))){
 
                     //Parent Player Addition
                     $this->LEDGER_model->ln_create(array(
