@@ -1146,13 +1146,15 @@ class READ_model extends CI_Model
             foreach($in_query as $count => $in_read){
 
                 $infobar_details = null;
+                $has_content_append = false;
                 if(strlen($in_read['ln_content'])){
                     $infobar_details .= '<div class="message_content">';
                     $infobar_details .= $this->COMMUNICATION_model->send_message($in_read['ln_content']);
                     $infobar_details .= '</div>';
+                    $has_content_append = ( substr_count($in_read['ln_content'],'@')==1 && substr_count($in_read['ln_content'],':')==2 && !substr_count($in_read['ln_content'],'::') );
                 }
 
-                $do_hide = (($bold_upto_weight && $bold_upto_weight>=$in_read['in_weight']) || ($count >= $show_max));
+                $do_hide = (!$has_content_append && (($bold_upto_weight && $bold_upto_weight>=$in_read['in_weight']) || ($count >= $show_max)));
 
                 if(!$previous_do_hide && $do_hide){
                     $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';

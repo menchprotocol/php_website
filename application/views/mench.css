@@ -41,6 +41,9 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .paddingup{
     padding:10px 0 0;
 }
+.idea-footer .paddingup{
+    padding:0 !important;
+}
 .content-image {
     margin:0;
     max-width: 377px;
