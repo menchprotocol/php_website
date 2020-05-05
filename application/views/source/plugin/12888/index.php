@@ -68,6 +68,7 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
                 $this->LEDGER_model->ln_update($in['ln_id'], array(
                     'ln_content' => $new_content,
                     'ln_profile_source_id' => $expert_video_parent['en_id'],
+                    'ln_status_source_id' => 6176,
                 ));
             }
 
