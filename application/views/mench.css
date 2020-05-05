@@ -839,6 +839,9 @@ textarea.note-textarea{
     padding-right:33px;
     display: block;
 }
+.space-content .btn{
+    margin:-10px 0;
+}
 .title-block{
     display: block;
     padding-left: 33px;
