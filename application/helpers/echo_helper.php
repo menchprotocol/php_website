@@ -140,7 +140,7 @@ function echo_url_embed($url, $ln_content_append = null, $return_array = false)
             $end_sec = 0;
             $video_id = extract_youtube_id($url);
             if(substr($ln_content_append, 0, 1)==':'){
-                $times = explode(':',$ln_content_append);
+                $times = explode(':', one_two_explode('',' ',$ln_content_append));
                 if(is_numeric($times[1]) && is_numeric($times[2])){
                     $start_sec = intval($times[1]);
                     $end_sec = intval($times[2]);
@@ -149,6 +149,7 @@ function echo_url_embed($url, $ln_content_append = null, $return_array = false)
 
             if ($video_id) {
 
+                //TO BE RETIRED
                 if($is_embed && !$start_sec && !$end_sec){
                     if(is_numeric(one_two_explode('start=','&',$url))){
                         $start_sec = intval(one_two_explode('start=','&',$url));
