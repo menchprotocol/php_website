@@ -59,7 +59,19 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
         ), array('in_next'), 0);
 
         foreach($ideas as $in){
-            echo '<a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a> '.$in['ln_content'].'<hr />';
+
+            $new_content = str_replace('@'.$en_embed['en_id'],'@'.$expert_video_parent['en_id'].':'.$start_time.':'.$end_time, $in['ln_content']);
+
+            /*
+            $this->LEDGER_model->ln_update(intval($_POST['ln_id']), array(
+                'ln_content' => $new_content,
+                'ln_profile_source_id' => $expert_video_parent['en_id'],
+            ), 1, 10679, update_description($in['ln_content'], $new_content));
+            */
+
+            echo '!'.$in['ln_id'].' <a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a> ['.$in['ln_content'].'] => ['.$new_content.']<hr />';
+
+
         }
 
 
