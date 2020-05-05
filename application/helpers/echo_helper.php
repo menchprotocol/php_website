@@ -944,7 +944,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
         //PREVIOUS IDEAS COUNT
         $next_ins = $CI->LEDGER_model->ln_fetch(array(
-            'ln_profile_idea_id' => $in['in_id'],
+            'ln_next_idea_id' => $in['in_id'],
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
