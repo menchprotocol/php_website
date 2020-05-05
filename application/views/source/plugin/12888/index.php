@@ -3,6 +3,7 @@
 if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
 
     echo 'Missing source ID (Append ?en_id=SOURCE_ID in URL)';
+    $just_do = null;
 
     //Add here for now:
     echo '<table>';
@@ -35,6 +36,14 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
             if($expert_video_parent){
                 break;
             }
+        }
+
+
+
+        if(is_null($just_do)){
+            $just_do = $expert_video_parent['en_id'];
+        } elseif($just_do!=$expert_video_parent['en_id']){
+            break;
         }
 
         $start_time = intval(one_two_explode('start=', '&', $en_embed['ln_content']));
