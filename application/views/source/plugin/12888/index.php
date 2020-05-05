@@ -49,7 +49,7 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
         $start_time = intval(one_two_explode('start=', '&', $en_embed['ln_content']));
         $end_time = intval(one_two_explode('end=', '&', $en_embed['ln_content']));
 
-        echo '<tr><td>'.($counter+1).'</td><td><a href="/source/'.$en_embed['en_id'].'">'.$en_embed['en_name'].'</a></td><td>'.$en_embed['ln_content'].'</td><td>'.$start_time.' - '.$end_time.'</td><td>'.extract_youtube_id($en_embed['ln_content']).'</td><td><a href="/source/'.$expert_video_parent['en_id'].'">'.$expert_video_parent['en_name'].'</a></td><td>';
+        echo '<tr><td>'.($counter+1).'</td><td><a href="/source/'.$en_embed['en_id'].'">'.$en_embed['en_name'].'</a></td><td>'.$en_embed['ln_content'].'</td><td><a href="/source/'.$expert_video_parent['en_id'].'">'.$expert_video_parent['en_name'].'</a></td><td>';
 
         //List ALl Ideas With Text:
         $ideas = $this->LEDGER_model->ln_fetch(array(
@@ -62,12 +62,12 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
 
             $new_content = str_replace('@'.$en_embed['en_id'],'@'.$expert_video_parent['en_id'].':'.$start_time.':'.$end_time, $in['ln_content']);
 
-            /*
+            //Update Reference
             $this->LEDGER_model->ln_update(intval($_POST['ln_id']), array(
                 'ln_content' => $new_content,
                 'ln_profile_source_id' => $expert_video_parent['en_id'],
             ), 1, 10679, update_description($in['ln_content'], $new_content));
-            */
+
 
             echo '!'.$in['ln_id'].' <a href="/idea/'.$in['in_id'].'">'.$in['in_title'].'</a> ['.$in['ln_content'].'] => ['.$new_content.']<hr />';
 
@@ -75,11 +75,13 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
         }
 
 
-        //Move Idea Message Reference
-
-        //Update URL to YouTUbe Only
-
         //Delete Child source
+        $links_deleted = $this->SOURCE_model->en_unlink($en_embed['en_id'], 1);
+
+        //Delete source:
+        $this->SOURCE_model->en_update($en_embed['en_id'], array(
+            'en_status_source_id' => 6178, /* Player Deleted */
+        ), true, 1);
 
 
         echo '</td></tr>';
