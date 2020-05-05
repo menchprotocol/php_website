@@ -25,7 +25,7 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
             if(count($this->LEDGER_model->ln_fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                'ln_portfolio_source_id' => $en_embed['en_id'],
+                'ln_portfolio_source_id' => $parent_en['en_id'],
                 'ln_profile_source_id' => 2998, //EXPERT VIDEO
             )))){
                 $expert_video_parent = $parent_en;
