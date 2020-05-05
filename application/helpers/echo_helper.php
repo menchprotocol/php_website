@@ -931,7 +931,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
 
     if($input_message){
-        $ui .= '<div class="idea-footer">' . $CI->COMMUNICATION_model->send_message($input_message, $session_en) . '</div>';
+        $ui .= '<div class="idea-footer hideIfEmpty">' . $CI->COMMUNICATION_model->send_message($input_message, $session_en) . '</div>';
     }
 
 
