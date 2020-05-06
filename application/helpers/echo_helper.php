@@ -49,7 +49,7 @@ function echo_db_field($field_name){
 }
 
 
-function echo_ln_content($ln_content, $ln_type_source_id, $ln_content_append = null)
+function echo_ln_content($ln_content, $ln_type_source_id, $full_message = null)
 {
 
     /*
@@ -57,7 +57,7 @@ function echo_ln_content($ln_content, $ln_type_source_id, $ln_content_append = n
      * Displays Source Links
      * https://mench.com/source/4592
      *
-     * $ln_content_append Would be the additional message
+     * $full_message Would be the entire message
      * in an idea message that would be passed down
      * to the source profile $ln_content value.
      *
@@ -70,7 +70,7 @@ function echo_ln_content($ln_content, $ln_type_source_id, $ln_content_append = n
 
     } elseif ($ln_type_source_id == 4257 /* Embed Widget URL? */) {
 
-        return echo_url_embed($ln_content, $ln_content_append);
+        return echo_url_embed($ln_content, $full_message);
 
     } elseif ($ln_type_source_id == 4260 /* Image URL */) {
 
@@ -108,7 +108,7 @@ function echo_ln_content($ln_content, $ln_type_source_id, $ln_content_append = n
 
 
 
-function echo_url_embed($url, $ln_content_append = null, $return_array = false)
+function echo_url_embed($url, $full_message = null, $return_array = false)
 {
 
 
@@ -136,33 +136,33 @@ function echo_url_embed($url, $ln_content_append = null, $return_array = false)
 
         if ((substr_count($url, 'youtube.com/watch') == 1) || substr_count($url, 'youtu.be/') == 1 || $is_embed) {
 
-            $start_sec = 0;
-            $end_sec = 0;
+            $start_time = 0;
+            $end_time = 0;
             $video_id = extract_youtube_id($url);
-            if(substr($ln_content_append, 0, 1)==':'){
-                $times = explode(':', one_two_explode('',' ',$ln_content_append));
-                if(is_numeric($times[1]) && is_numeric($times[2])){
-                    $start_sec = intval($times[1]);
-                    $end_sec = intval($times[2]);
-                }
-            }
 
             if ($video_id) {
 
-                //TO BE RETIRED
-                if($is_embed && !$start_sec && !$end_sec){
+                $string_references = extract_source_references($full_message, true);
+
+                if($string_references['ref_time_found']){
+
+                    $start_time = $string_references['ref_time_start'];
+                    $end_time = $string_references['ref_time_end'];
+
+                } elseif($is_embed){
+
                     if(is_numeric(one_two_explode('start=','&',$url))){
-                        $start_sec = intval(one_two_explode('start=','&',$url));
+                        $start_time = intval(one_two_explode('start=','&',$url));
                     }
                     if(is_numeric(one_two_explode('end=','&',$url))){
-                        $end_sec = intval(one_two_explode('end=','&',$url));
+                        $end_time = intval(one_two_explode('end=','&',$url));
                     }
                 }
 
                 //Set the Clean URL:
                 $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_sec ? '<span class="media-info mid-right" title="Video Clip from '.echo_time_hours($start_sec).' to '.echo_time_hours($end_sec).'" data-toggle="tooltip" data-placement="top">'.echo_time_hours($end_sec - $start_sec).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
+                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_time ? '<span class="media-info mid-right" title="Video Clip from '.echo_time_hours($start_time).' to '.echo_time_hours($end_time).'" data-toggle="tooltip" data-placement="top">'.echo_time_hours($end_time - $start_time).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
 
             }
 
@@ -192,7 +192,7 @@ function echo_url_embed($url, $ln_content_append = null, $return_array = false)
 
         //Return all aspects of this parsed URL:
         return array(
-            'status' => ($embed_html_code ? 1 : 0),
+            'status' => ( $embed_html_code ? 1 : 0 ),
             'embed_code' => $embed_html_code,
             'clean_url' => $clean_url,
         );
@@ -951,25 +951,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
 
 
-        //PREVIOUS IDEAS COUNT
-        $next_ins = $CI->LEDGER_model->ln_fetch(array(
-            'ln_next_idea_id' => $in['in_id'],
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-        if($next_ins[0]['total_ins'] > 1){
-            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11019]['m_name'].'">'.$next_ins[0]['total_ins'].$en_all_12413[11019]['m_icon'].'&nbsp;</div>';
-        }
-
-        //NEXT IDEAS COUNT
-        $next_ins = $CI->LEDGER_model->ln_fetch(array(
-            'ln_previous_idea_id' => $in['in_id'],
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
-        if($next_ins[0]['total_ins'] > 0){
-            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11020]['m_name'].'">'.$en_all_12413[11020]['m_icon'].$next_ins[0]['total_ins'].'&nbsp;</div>';
-        }
 
 
 
@@ -996,6 +977,31 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
 
         $ui .= '</div>';
+
+
+
+
+
+
+        //PREVIOUS IDEAS COUNT
+        $next_ins = $CI->LEDGER_model->ln_fetch(array(
+            'ln_next_idea_id' => $in['in_id'],
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+        if($next_ins[0]['total_ins'] > 1){
+            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11019]['m_name'].'">'.$next_ins[0]['total_ins'].$en_all_12413[11019]['m_icon'].'&nbsp;</div>';
+        }
+
+        //NEXT IDEAS COUNT
+        $next_ins = $CI->LEDGER_model->ln_fetch(array(
+            'ln_previous_idea_id' => $in['in_id'],
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
+        if($next_ins[0]['total_ins'] > 0){
+            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11020]['m_name'].'">'.$en_all_12413[11020]['m_icon'].$next_ins[0]['total_ins'].'&nbsp;</div>';
+        }
 
     }
 
@@ -1240,15 +1246,9 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $note_type_en_id . '" class="hidden"><span id="charNum' . $note_type_en_id . '">0</span>/' . config_var(4485).'</span></td>';
 
 
-    //YouTube Clip:
-    if($handles_url){
-        $ui .= '<td style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_notes_insert_string('.$note_type_en_id.', \'https://www.youtube.com/embed/VIDEOIDHERE?start=&end=\');" data-toggle="tooltip" title="YOUTUBE CLIPPER: Slice a video using start & end time" data-placement="top"><span class="icon-block"><i class="fab fa-youtube"></i></span></a></td>';
-    }
-
-
     //Upload File:
     if($handles_uploads){
-        $ui .= '<td style="width:36px; padding: 10px 0 0 0;">';
+        $ui .= '<td style="width:42px; padding: 10px 0 0 0;">';
         $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$note_type_en_id.'" />';
         $ui .= '<label class="file_label_'.$note_type_en_id.'" for="fileIdeaType'.$note_type_en_id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB, or upload elsewhere & paste URL here" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
         $ui .= '</td>';

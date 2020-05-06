@@ -311,6 +311,7 @@ class Cron extends CI_Controller
 
                 //Any source references?
                 if($message['ln_profile_source_id'] > 0){
+
                     //Yes, see
                     //Source Profile
                     foreach($this->LEDGER_model->ln_fetch(array(
@@ -320,18 +321,15 @@ class Cron extends CI_Controller
                         'ln_portfolio_source_id' => $message['ln_profile_source_id'],
                     ), array('en_profile'), 0, 0, array('en_id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
 
-                        $this_time = 0;
-
                         if($parent_en['ln_type_source_id'] == 4257 /* EMBED */){
 
                             //See if we have a Start/End time:
-                            if(substr_count($parent_en['ln_content'], 'youtube.com/embed/')){
-                                $start_time = intval(one_two_explode('start=', '&', $parent_en['ln_content']));
-                                $end_time = intval(one_two_explode('end=', '&', $parent_en['ln_content']));
+                            $string_references = extract_source_references($parent_en['ln_content'], true);
+                            if($string_references['ref_time_found']){
+                                $start_time = $string_references['ref_time_start'];
+                                $end_time = $string_references['ref_time_end'];
                                 $this_time = $end_time - $start_time;
-                            }
-
-                            if(!$this_time){
+                            } else {
                                 $this_time = 90;
                             }
 

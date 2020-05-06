@@ -678,6 +678,7 @@ class SOURCE_model extends CI_Model
 
                 //URL Was detected as an embed URL:
                 $ln_type_source_id = 4257;
+                $url = $embed_code['clean_url'];
 
             } elseif ($domain_analysis['url_file_extension'] && is_https_url($url)) {
 
@@ -704,7 +705,7 @@ class SOURCE_model extends CI_Model
 
         //Only fetch URL content in certain situations:
         $url_content = null;
-        if(!in_array($ln_type_source_id, $this->config->item('en_ids_11059')) /* not a direct file type */ && !(substr_count($url,'youtube.com/embed/')>0 && (substr_count($url,'start=')>0 || substr_count($url,'end=')>0))){
+        if(!in_array($ln_type_source_id, $this->config->item('en_ids_11059')) /* not a direct file type */){
 
             //Make CURL call:
             $url_content = @file_get_contents($url);
@@ -887,7 +888,7 @@ class SOURCE_model extends CI_Model
                 'status' => ($url_previously_existed && !$ln_creator_source_id ? 0 : 1),
                 'message' => ($url_previously_existed && !$ln_creator_source_id ? 'URL already belongs to [' . $en_url['en_name'].'] with source ID @' . $en_url['en_id'] : 'Success'),
                 'url_previously_existed' => $url_previously_existed,
-                'cleaned_url' => $url,
+                'clean_url' => $url,
                 'ln_type_source_id' => $ln_type_source_id,
                 'page_title' => html_entity_decode($page_title, ENT_QUOTES),
                 'en_domain' => $domain_source['en_domain'],

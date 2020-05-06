@@ -76,7 +76,7 @@ function array_flatten($hierarchical_array){
 }
 
 
-function extract_source_references($ln_content)
+function extract_source_references($ln_content, $look_for_slice = false)
 {
 
     //Analyzes a message text to extract Source References (Like @123) and URLs
@@ -89,17 +89,52 @@ function extract_source_references($ln_content)
     $string_references = array(
         'ref_urls' => array(),
         'ref_sources' => array(),
+        'ref_time_found' => false,
+        'ref_time_start' => 0,
+        'ref_time_end' => 0,
     );
 
     //See what we can find:
     foreach(preg_split('/\s+/', $ln_content) as $word) {
         if (filter_var($word, FILTER_VALIDATE_URL)) {
 
+            if(substr_count($word,':')==3){
+                //See if this is it:
+                $times = explode(':',$word,4);
+                if(is_numeric($times[2]) && is_numeric($times[3]) && $word==$times[0].':'.$times[1].':'.$times[2].':'.$times[3]){
+                    $string_references['ref_time_found'] = true;
+                    $string_references['ref_time_start'] = intval($times[2]);
+                    $string_references['ref_time_end'] = intval($times[3]);
+                    $word = $times[0].':'.$times[1];
+                }
+            }
+
             array_push($string_references['ref_urls'], $word);
 
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
 
-            array_push($string_references['ref_sources'], intval(substr($word, 1)));
+            $en_id = intval(substr($word, 1));
+            array_push($string_references['ref_sources'], $en_id);
+
+            if($look_for_slice && substr_count($word,':')==2){
+                //See if this is it:
+                $times = explode(':',$word,2);
+                if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$en_id.':'.$times[1].':'.$times[2]){
+                    $string_references['ref_time_found'] = true;
+                    $string_references['ref_time_start'] = intval($times[1]);
+                    $string_references['ref_time_end'] = intval($times[2]);
+                }
+            }
+
+        } elseif ($look_for_slice && substr($word, 0, 1) == ':' && substr_count($word,':')==2) {
+
+            //See if this is it:
+            $times = explode(':',$word,2);
+            if(is_numeric($times[1]) && is_numeric($times[2]) && $word==':'.$times[1].':'.$times[2]){
+                $string_references['ref_time_found'] = true;
+                $string_references['ref_time_start'] = intval($times[1]);
+                $string_references['ref_time_end'] = intval($times[2]);
+            }
 
         }
     }

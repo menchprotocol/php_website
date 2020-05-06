@@ -331,20 +331,16 @@ class COMMUNICATION_model extends CI_Model
             $source_appendix = null;
             $current_mench = current_mench();
             $has_text = substr_count($input_message, ' ');
-            //Determine if we have text:
 
             //SOURCE IDENTIFIER
-            $identifier_string = '@' . $string_references['ref_sources'][0];
-            $ln_content_append = trim(str_replace($identifier_string, '', $input_message));
-            //Expanded Identifier:
-            $message_parts = explode($identifier_string, $input_message, 2);
-            $identifier_slicer = ( isset($message_parts[1]) && substr($message_parts[1], 0, 1)==':' ? trim(one_two_explode('',' ', $message_parts[1])) : null );
+            $string_references = extract_source_references($input_message, true);
             $is_current_source = $current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0];
 
 
             //Determine what type of Media this reference has:
             //Source Profile
-            if(!$is_current_source || $identifier_slicer){
+            if(!$is_current_source || $string_references['ref_time_found']){
+
                 foreach($this->LEDGER_model->ln_fetch(array(
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -375,7 +371,7 @@ class COMMUNICATION_model extends CI_Model
 
                     }
 
-                    $source_appendix .= '<div class="source-appendix paddingup">' . echo_ln_content($parent_en['ln_content'], $parent_en['ln_type_source_id'], $ln_content_append) . '</div>';
+                    $source_appendix .= '<div class="source-appendix paddingup">' . echo_ln_content($parent_en['ln_content'], $parent_en['ln_type_source_id'], $input_message) . '</div>';
 
                 }
             }
@@ -384,7 +380,11 @@ class COMMUNICATION_model extends CI_Model
 
             //Append any appendix generated:
             $output_body_message .= $source_appendix;
-            $identifier_string .= $identifier_slicer; //Expand Definition for Removal
+            if($string_references['ref_time_found']){
+                $identifier_string = '@' . $string_references['ref_sources'][0].':'.$string_references['ref_time_start'].':'.$string_references['ref_time_end'];
+            } else {
+                $identifier_string = '@' . $string_references['ref_sources'][0];
+            }
 
             //PLAYER REFERENCE
             if(($current_mench['x_name']=='read' && !superpower_active(10967, true)) || $is_current_source){

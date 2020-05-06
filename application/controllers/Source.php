@@ -615,12 +615,12 @@ class Source extends CI_Controller
             if (isset($url_source['url_is_root']) && $url_source['url_is_root']) {
 
                 $ln_type_source_id = 4256; //Generic URL (Domains always are generic)
-                $ln_content = $url_source['cleaned_url'];
+                $ln_content = $url_source['clean_url'];
 
             } elseif (isset($domain_source['en_domain'])) {
 
                 $ln_type_source_id = $url_source['ln_type_source_id'];
-                $ln_content = $url_source['cleaned_url'];
+                $ln_content = $url_source['clean_url'];
 
             } else {
 
