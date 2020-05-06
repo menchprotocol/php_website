@@ -976,8 +976,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
         $ui .= '</span>';
 
 
-        $ui .= '</div>';
-
 
 
 
@@ -1002,6 +1000,10 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
         if($next_ins[0]['total_ins'] > 0){
             $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11020]['m_name'].'">'.$en_all_12413[11020]['m_icon'].$next_ins[0]['total_ins'].'&nbsp;</div>';
         }
+
+
+        $ui .= '</div>';
+
 
     }
 

@@ -1021,45 +1021,79 @@ function in_title_validate($string){
 
 }
 
-function en_name_validate($string){
+function en_name_validate($string, $ln_type_source_id = 0){
 
     //Validate:
+    $CI =& get_instance();
+    $en_all_4592 = $CI->config->item('en_all_4592');
+    $errors = false;
+    $en_clean_name = trim($string);
+
     if(!strlen(trim($string))){
 
-        return array(
+        if($ln_type_source_id){
+            $en_clean_name = $en_all_4592[$ln_type_source_id]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+        }
+
+        $errors = array(
             'status' => 0,
             'message' => 'Name missing',
         );
 
     } elseif(strlen(trim($string)) < config_var(12232)){
 
-        return array(
+        if($ln_type_source_id){
+            $en_clean_name = $en_all_4592[$ln_type_source_id]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+        }
+
+        $errors = array(
             'status' => 0,
             'message' => 'Name is shorter than the minimum ' . config_var(12232) . ' characters.',
         );
 
     } elseif(substr_count($string , '  ') > 0){
 
-        return array(
+        if($ln_type_source_id){
+            $en_clean_name = str_replace('  ',' ',str_replace('  ',' ',str_replace('  ',' ',$string)));
+        }
+
+        $errors = array(
             'status' => 0,
             'message' => 'Name cannot include double spaces',
         );
 
     } elseif (strlen($string) > config_var(6197)) {
 
-        return array(
+        if($ln_type_source_id){
+            $en_clean_name = substr($string, 0, config_var(6197));
+        }
+
+        $errors = array(
             'status' => 0,
             'message' => 'Name must be '.config_var(6197).' characters or less',
         );
 
     }
 
-    //All good, return success:
-    return array(
-        'status' => 1,
-        'en_clean_name' => strtoupper(trim($string)),
-    );
+    $en_clean_name = strtoupper(trim($en_clean_name));
 
+    //Just the clean name?
+    if($ln_type_source_id){
+        return $en_clean_name;
+    }
+
+
+    if($errors){
+
+        return $errors;
+
+    } else {
+        //All good, return success:
+        return array(
+            'status' => 1,
+            'en_clean_name' => $en_clean_name,
+        );
+    }
 }
 
 

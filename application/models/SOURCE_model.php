@@ -710,38 +710,9 @@ class SOURCE_model extends CI_Model
         }
 
 
-        //Fetch page title if source name not provided:
+        //Update Name:
         if (!$name_was_passed) {
-
-            //Attempt to fetch from page if we have content:
-            if($url_content){
-                $page_title = one_two_explode('>', '', one_two_explode('<title', '</title', $url_content));
-            }
-
-            //Trim title:
-            $page_title = trim($page_title);
-            $url_identified = substr(md5($url), 0, 8);
-
-            if (strlen($page_title) > 0) {
-
-                //Make sure this is not a duplicate name:
-                $dup_name_us = $this->SOURCE_model->en_fetch(array(
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-                    'en_name' => $page_title,
-                ));
-
-                if (count($dup_name_us) > 0) {
-                    //Yes, we did find a duplicate name! Append a unique identifier:
-                    $page_title = $page_title . ' ' . $url_identified;
-                }
-
-            } else {
-
-                //did not find a <title> tag, so let's use URL Type & identifier as its name:
-                $page_title = $en_all_4592[$ln_type_source_id]['m_name'].' '.$url_identified;
-
-            }
-
+            $page_title = en_name_validate(( $url_content ? one_two_explode('>', '', one_two_explode('<title', '</title', $url_content)) : $page_title ), $ln_type_source_id);
         }
 
 
