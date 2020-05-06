@@ -1305,6 +1305,10 @@ function echo_unauthorized_message($superpower_en_id = 0){
 
 }
 
+function echo_time_range($metadata){
+    return '<span title="An Estimated '.( $metadata['in__metadata_min_seconds'] < $metadata['in__metadata_max_seconds'] ? echo_time_hours($metadata['in__metadata_min_seconds']).' - ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']).' Read" data-toggle="tooltip" data-placement="top">'.echo_time_hours(round(($metadata['in__metadata_min_seconds']+$metadata['in__metadata_max_seconds'])/2)).'</span>';
+}
+
 function echo_time_hours($total_seconds){
     //Turns seconds into HH:MM:SS
     $hours = floor($total_seconds/3600);
@@ -1367,7 +1371,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     }
     $ui .= $cover_photo;
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= '<span class="media-info bottom-right">'.echo_time_hours($metadata['in__metadata_max_seconds']).'</span>';
+        $ui .= '<span class="media-info bottom-right">'.echo_time_range($metadata).'</span>';
     }
     if($completion_rate['completion_percentage']==100){
         $ui .= '<span class="media-info bottom-left">100% <i class="fas fa-check-circle"></i></span>';
