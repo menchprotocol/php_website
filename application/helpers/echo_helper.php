@@ -1383,7 +1383,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     }
     $ui .= '</div>';
 
-    $ui .= '<b class="montserrat">'.echo_in_title($in, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.echo_in_title($in, $common_prefix).'</b>';
 
     $ui .= '</a>';
 
