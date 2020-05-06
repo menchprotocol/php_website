@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-06 09:16:33 PST
+//Generated 2020-05-06 13:41:55 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588781793;
-$config['cache_count_transaction'] = 1188957;
-$config['cache_count_read'] = 121205;
-$config['cache_count_idea'] = 5395;
-$config['cache_count_source'] = 4808;
+$config['cache_timestamp'] = 1588797715;
+$config['cache_count_transaction'] = 1189608;
+$config['cache_count_read'] = 121136;
+$config['cache_count_idea'] = 5443;
+$config['cache_count_source'] = 4812;
 
 
 
@@ -813,31 +813,13 @@ $config['en_all_12446'] = array(
 );
 
 //IDEA TEXT INPUT SHOW ICON:
-$config['en_ids_12420'] = array(4356,4358,4739,4735);
+$config['en_ids_12420'] = array(4356);
 $config['en_all_12420'] = array(
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => '',
         'm_parents' => array(11047,7274,6404,12112,12420,10888,10650,6232,6201),
-    ),
-    4358 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
-        'm_name' => 'READ MARKS',
-        'm_desc' => '',
-        'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
-    ),
-    4739 => array(
-        'm_icon' => '<i class="fas fa-temperature-up idea" aria-hidden="true"></i>',
-        'm_name' => 'UNLOCK MAX PERCENTAGE',
-        'm_desc' => '',
-        'm_parents' => array(12420,12112,6402,6232),
-    ),
-    4735 => array(
-        'm_icon' => '<i class="fas fa-temperature-down idea" aria-hidden="true"></i>',
-        'm_name' => 'UNLOCK MIN PERCENTAGE',
-        'm_desc' => '',
-        'm_parents' => array(12420,12112,6402,6232),
     ),
 );
 
@@ -2058,7 +2040,7 @@ $config['en_all_12112'] = array(
         'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
         'm_desc' => '',
-        'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
+        'm_parents' => array(12700,12112,10663,6103,6410,6232),
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
@@ -2070,13 +2052,13 @@ $config['en_all_12112'] = array(
         'm_icon' => '<i class="fas fa-temperature-up idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MAX PERCENTAGE',
         'm_desc' => '',
-        'm_parents' => array(12420,12112,6402,6232),
+        'm_parents' => array(12112,6402,6232),
     ),
     4735 => array(
         'm_icon' => '<i class="fas fa-temperature-down idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MIN PERCENTAGE',
         'm_desc' => '',
-        'm_parents' => array(12420,12112,6402,6232),
+        'm_parents' => array(12112,6402,6232),
     ),
 );
 
@@ -2389,7 +2371,7 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
         'm_desc' => 'tr__assessment_points',
-        'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
+        'm_parents' => array(12700,12112,10663,6103,6410,6232),
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
@@ -2515,13 +2497,13 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="fas fa-temperature-up idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MAX PERCENTAGE',
         'm_desc' => 'tr__conditional_score_max',
-        'm_parents' => array(12420,12112,6402,6232),
+        'm_parents' => array(12112,6402,6232),
     ),
     4735 => array(
         'm_icon' => '<i class="fas fa-temperature-down idea" aria-hidden="true"></i>',
         'm_name' => 'UNLOCK MIN PERCENTAGE',
         'm_desc' => 'tr__conditional_score_min',
-        'm_parents' => array(12420,12112,6402,6232),
+        'm_parents' => array(12112,6402,6232),
     ),
 );
 
@@ -4728,7 +4710,7 @@ $config['en_all_6103'] = array(
         'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
         'm_name' => 'READ MARKS',
         'm_desc' => '',
-        'm_parents' => array(12700,12420,12112,10663,6103,6410,6232),
+        'm_parents' => array(12700,12112,10663,6103,6410,6232),
     ),
 );
 
