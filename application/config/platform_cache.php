@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-05 20:12:21 PST
+//Generated 2020-05-06 09:16:33 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588734741;
-$config['cache_count_transaction'] = 1188276;
-$config['cache_count_read'] = 121204;
-$config['cache_count_idea'] = 5393;
+$config['cache_timestamp'] = 1588781793;
+$config['cache_count_transaction'] = 1188957;
+$config['cache_count_read'] = 121205;
+$config['cache_count_idea'] = 5395;
 $config['cache_count_source'] = 4808;
 
 
@@ -155,7 +155,7 @@ $config['en_all_12842'] = array(
 $config['en_ids_12840'] = array(4228);
 $config['en_all_12840'] = array(
     4228 => array(
-        'm_icon' => '<i class="fad fa-play-circle idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LINK FIXED',
         'm_desc' => '',
         'm_parents' => array(12840,6410,4593,4486),
@@ -1866,7 +1866,7 @@ $config['en_all_12229'] = array(
 $config['en_ids_12227'] = array(4235,12336,12334,7495,6143,7492,6140,6157,7489,12117,4559,6144,7485,7486,6997);
 $config['en_all_12227'] = array(
     4235 => array(
-        'm_icon' => '<i class="fad fa-play-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF ADD',
         'm_desc' => '',
         'm_parents' => array(12227,7347,5967,4755,4593),
@@ -4591,7 +4591,7 @@ $config['en_all_10593'] = array(
 $config['en_ids_7347'] = array(4235,7495);
 $config['en_all_7347'] = array(
     4235 => array(
-        'm_icon' => '<i class="fad fa-play-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF ADD',
         'm_desc' => 'Bookmarked to begin with',
         'm_parents' => array(12227,7347,5967,4755,4593),
@@ -5087,7 +5087,7 @@ $config['en_all_7585'] = array(
 $config['en_ids_5967'] = array(4235,12419,12773,4250,12453,12450,4246,7504);
 $config['en_all_5967'] = array(
     4235 => array(
-        'm_icon' => '<i class="fad fa-play-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF ADD',
         'm_desc' => '&var_en_subscriber_ids=1',
         'm_parents' => array(12227,7347,5967,4755,4593),
@@ -5863,7 +5863,7 @@ $config['en_all_4997'] = array(
 $config['en_ids_4755'] = array(4235,6415,12906,12896,12773,12453,10681,12450,4527,11054,6232,4783,4755,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,12328,7578,6224,4553,7562,7563,6157,7489,4246,3288,12117,3286,7504,4559,6144,7485,7486,6997,12489);
 $config['en_all_4755'] = array(
     4235 => array(
-        'm_icon' => '<i class="fad fa-play-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF ADD',
         'm_desc' => '',
         'm_parents' => array(12227,7347,5967,4755,4593),
@@ -6360,7 +6360,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(12898,11054,4527,10984,11018,11035,11089,12321,4593,7551,4485),
     ),
     4235 => array(
-        'm_icon' => '<i class="fad fa-play-circle read" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF ADD',
         'm_desc' => '',
         'm_parents' => array(12227,7347,5967,4755,4593),
@@ -6420,7 +6420,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(12842,4527,6410,6283,4593,4486),
     ),
     4228 => array(
-        'm_icon' => '<i class="fad fa-play-circle idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LINK FIXED',
         'm_desc' => '',
         'm_parents' => array(12840,6410,4593,4486),
@@ -7323,7 +7323,7 @@ $config['en_all_4485'] = array(
 $config['en_ids_4486'] = array(4228,4229);
 $config['en_all_4486'] = array(
     4228 => array(
-        'm_icon' => '<i class="fad fa-play-circle idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle idea" aria-hidden="true"></i>',
         'm_name' => 'FIXED',
         'm_desc' => 'Follow each other',
         'm_parents' => array(12840,6410,4593,4486),
