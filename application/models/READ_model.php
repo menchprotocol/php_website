@@ -181,7 +181,7 @@ class READ_model extends CI_Model
 
         $player_reads = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Bookshelf Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
@@ -229,7 +229,7 @@ class READ_model extends CI_Model
         $top_priority_in = false;
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Bookshelf Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC')) as $bookshelf_in){
@@ -281,7 +281,7 @@ class READ_model extends CI_Model
         //Go ahead and delete from Bookshelf:
         $player_reads = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Bookshelf Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_previous_idea_id' => $in_id,
         ));
@@ -323,7 +323,7 @@ class READ_model extends CI_Model
         if(!count($this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in_id,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Bookshelf Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             )))){
 
@@ -349,7 +349,7 @@ class READ_model extends CI_Model
             //Move other ideas down in the Bookshelf:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_id !=' => $bookshelf['ln_id'], //Not the newly added idea
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Bookshelf Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_creator_source_id' => $en_id, //Belongs to this User
             ), array(''), 0, 0, array('ln_order' => 'ASC')) as $current_ins){
@@ -1060,7 +1060,7 @@ class READ_model extends CI_Model
         $player_read_ids = array();
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Bookshelf Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0) as $user_in){

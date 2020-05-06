@@ -4,7 +4,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 //Fetch Bookshelf:
 $player_reads = $this->LEDGER_model->ln_fetch(array(
     'ln_creator_source_id' => $session_en['en_id'],
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Bookshelf Idea Set
+    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
 ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
@@ -28,7 +28,7 @@ $player_reads = $this->LEDGER_model->ln_fetch(array(
 <?php
 
 $en_all_11035 = $this->config->item('en_all_11035'); //NAVIGATION
-echo '<div class="read-topic show-min"><span class="icon-block">'.$en_all_11035[7347]['m_icon'].'</span>'.$en_all_11035[7347]['m_name'].'</div>';
+echo '<div class="read-topic show-min"><span class="icon-block">'.$en_all_11035[6205]['m_icon'].'</span>'.$en_all_11035[6205]['m_name'].'</div>';
 
 //List Reads:
 if(!count($player_reads)){
