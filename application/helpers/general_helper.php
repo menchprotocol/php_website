@@ -100,7 +100,7 @@ function extract_source_references($ln_content, $look_for_slice = false)
 
             if(substr_count($word,':')==3){
                 //See if this is it:
-                $times = explode(':',$word,4);
+                $times = explode(':',$word);
                 if(is_numeric($times[2]) && is_numeric($times[3]) && $word==$times[0].':'.$times[1].':'.$times[2].':'.$times[3]){
                     $string_references['ref_time_found'] = true;
                     $string_references['ref_time_start'] = intval($times[2]);
@@ -118,7 +118,7 @@ function extract_source_references($ln_content, $look_for_slice = false)
 
             if($look_for_slice && substr_count($word,':')==2){
                 //See if this is it:
-                $times = explode(':',$word,2);
+                $times = explode(':',$word);
                 if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$en_id.':'.$times[1].':'.$times[2]){
                     $string_references['ref_time_found'] = true;
                     $string_references['ref_time_start'] = intval($times[1]);
@@ -129,7 +129,7 @@ function extract_source_references($ln_content, $look_for_slice = false)
         } elseif ($look_for_slice && substr($word, 0, 1) == ':' && substr_count($word,':')==2) {
 
             //See if this is it:
-            $times = explode(':',$word,2);
+            $times = explode(':',$word);
             if(is_numeric($times[1]) && is_numeric($times[2]) && $word==':'.$times[1].':'.$times[2]){
                 $string_references['ref_time_found'] = true;
                 $string_references['ref_time_start'] = intval($times[1]);
