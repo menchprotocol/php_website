@@ -703,16 +703,15 @@ class SOURCE_model extends CI_Model
             }
         }
 
-        //Only fetch URL content in certain situations:
-        $url_content = null;
-        if(!in_array($ln_type_source_id, $this->config->item('en_ids_11059')) /* not a direct file type */){
-            $url_content = @file_get_contents($url);
-        }
 
 
         //Update Name:
         if (!$name_was_passed) {
+
+            //Only fetch URL content in certain situations:
+            $url_content = ( in_array($ln_type_source_id, $this->config->item('en_ids_11059')) /* not a direct file type */ ? null : @file_get_contents($url) );
             $page_title = en_name_validate(( $url_content ? one_two_explode('>', '', one_two_explode('<title', '</title', $url_content)) : $page_title ), $ln_type_source_id);
+
         }
 
 

@@ -979,8 +979,6 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
 
 
-
-
         //PREVIOUS IDEAS COUNT
         $next_ins = $CI->LEDGER_model->ln_fetch(array(
             'ln_next_idea_id' => $in['in_id'],
