@@ -706,51 +706,21 @@ class SOURCE_model extends CI_Model
         //Only fetch URL content in certain situations:
         $url_content = null;
         if(!in_array($ln_type_source_id, $this->config->item('en_ids_11059')) /* not a direct file type */){
-
-            //Make CURL call:
             $url_content = @file_get_contents($url);
-
-            //See if we have a canonical metadata on page?
-            if(0 && !$domain_analysis['url_is_root'] && substr_count($url_content,'rel="canonical"') > 0){
-                //We seem to have it:
-                $page_parts = explode('rel="canonical"',$url_content,2);
-                $canonical_url = one_two_explode('href="', '"', $page_parts[1]);
-                if(filter_var($canonical_url, FILTER_VALIDATE_URL)){
-                    //Replace this with the input URL:
-                    $url = $canonical_url;
-                }
-            }
         }
 
 
         //Fetch page title if source name not provided:
         if (!$name_was_passed) {
 
-            //Define unique URL identifier string:
-            $url_identified = substr(md5($url), 0, 8);
-
             //Attempt to fetch from page if we have content:
             if($url_content){
                 $page_title = one_two_explode('>', '', one_two_explode('<title', '</title', $url_content));
-                /*
-                $title_exclusions = array('-', '|');
-                foreach($title_exclusions as $keyword) {
-                    if (substr_count($page_title, $keyword) > 0) {
-                        $parts = explode($keyword, $page_title);
-                        $last_peace = $parts[(count($parts) - 1)];
-
-                        //Should we delete the last part if not too long?
-                        if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
-                            $page_title = str_replace($keyword . $last_peace, '', $page_title);
-                            break; //Only a single extension, so break the loop
-                        }
-                    }
-                }
-                */
             }
 
             //Trim title:
             $page_title = trim($page_title);
+            $url_identified = substr(md5($url), 0, 8);
 
             if (strlen($page_title) > 0) {
 
