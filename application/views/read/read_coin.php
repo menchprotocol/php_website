@@ -171,7 +171,7 @@ if ($read_in_bookshelf) {
 
     //READ PROGRESS ONLY AT TOP LEVEL
     if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
-        echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
     if(count($read_completes) && $qualify_for_autocomplete){
