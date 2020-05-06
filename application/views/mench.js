@@ -507,14 +507,14 @@ function toggle_search(){
 
 
 
-function read_toggle_highlight(in_id){
-    $('.toggle_highlight').toggleClass('hidden');
-    $.post("/read/read_toggle_highlight", {
+function read_toggle_saved(in_id){
+    $('.toggle_saved').toggleClass('hidden');
+    $.post("/read/read_toggle_saved", {
         in_id:in_id,
     }, function (data) {
         if (!data.status) {
             alert(data.message);
-            $('.toggle_highlight').toggleClass('hidden');
+            $('.toggle_saved').toggleClass('hidden');
         }
     });
 }
@@ -522,7 +522,7 @@ function read_toggle_highlight(in_id){
 
 function modify_cancel(){
     $('.fixed-box').addClass('hidden');
-    delete_all_highlights();
+    delete_all_saved();
     $("input").blur();
     if(history.pushState) {
         history.pushState(null, null, '#');
@@ -547,8 +547,8 @@ function en_fetch_canonical_url(query_string, not_found){
 }
 
 
-function delete_all_highlights(){
-    $('.object_highlight').removeClass('en_highlight');
+function delete_all_saved(){
+    $('.object_saved').removeClass('en_saved');
 }
 
 function validURL(str) {

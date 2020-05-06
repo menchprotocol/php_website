@@ -17,20 +17,20 @@ class Read extends CI_Controller
 
     function index(){
 
-        //My Bookmarks Bookshelf
+        //My Reads
         $session_en = superpower_assigned(null, true);
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
-        //Log Bookshelf View:
+        //Log home View:
         $this->LEDGER_model->ln_create(array(
-            'ln_type_source_id' => 4283, //Opened Bookshelf
+            'ln_type_source_id' => 4283, //Opened Reads
             'ln_creator_source_id' => $session_en['en_id'],
         ));
 
         $this->load->view('header', array(
             'title' => $en_all_11035[6205]['m_name'],
         ));
-        $this->load->view('read/read_bookshelf', array(
+        $this->load->view('read/read_home', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
@@ -46,7 +46,7 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => $en_all_11035[12896]['m_name'],
         ));
-        $this->load->view('read/read_highlight', array(
+        $this->load->view('read/read_saved', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
@@ -56,24 +56,24 @@ class Read extends CI_Controller
 
     function start($in_id){
 
-        //Adds Idea to the Players Bookshelf
+        //Adds Idea to the Players Reads
 
         $session_en = superpower_assigned();
 
-        //Check to see if added to Bookshelf for logged-in users:
+        //Check to see if added to Reads for logged-in users:
         if(!$session_en){
             return redirect_message('/source/sign/'.$in_id);
         }
 
-        //Add this Idea to their Bookshelf If not already there:
+        //Add this Idea to their Reads If not already there:
         $success_message = null;
-        $read_in_bookshelf = $this->READ_model->read_in_bookshelf($in_id, $session_en);
-        if(!$read_in_bookshelf){
+        $read_in_home = $this->READ_model->read_in_home($in_id, $session_en);
+        if(!$read_in_home){
             if($this->READ_model->read_start($session_en['en_id'], $in_id)){
-                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Bookshelf</div>';
+                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Reads</div>';
             } else {
-                //Failed to add to Bookshelf:
-                return redirect_message('/read', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your Bookshelf.</div>');
+                //Failed to add to Reads:
+                return redirect_message('/read', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your Reads.</div>');
             }
         }
 
@@ -124,7 +124,7 @@ class Read extends CI_Controller
             }
 
 
-            //Find next Idea based on source's Bookshelf:
+            //Find next Idea based on source's Reads:
             $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
@@ -139,7 +139,7 @@ class Read extends CI_Controller
 
         } else {
 
-            //Find the next idea in the Bookshelf:
+            //Find the next idea in the Reads:
             $next_in_id = $this->READ_model->read_next_go($session_en['en_id']);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
@@ -461,12 +461,12 @@ class Read extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your Bookshelf.';
+            $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your Reads.';
 
             //Log link:
             $clear_all_link = $this->LEDGER_model->ln_create(array(
                 'ln_content' => $message,
-                'ln_type_source_id' => 6415, //Bookshelf Reset Reads
+                'ln_type_source_id' => 6415, //Reads Reset Reads
                 'ln_creator_source_id' => $en_id,
             ));
 
@@ -475,13 +475,13 @@ class Read extends CI_Controller
                 $this->LEDGER_model->ln_update($progress_link['ln_id'], array(
                     'ln_status_source_id' => 6173, //Transaction Deleted
                     'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was deleted
-                ), $en_id, 6415 /* User Cleared Bookshelf */);
+                ), $en_id, 6415 /* User Cleared Reads */);
             }
 
         } else {
 
             //Nothing to do:
-            $message = 'Your Bookshelf was empty as there was nothing to delete';
+            $message = 'Your Reads was empty as there was nothing to delete';
 
         }
 
@@ -491,7 +491,7 @@ class Read extends CI_Controller
     }
 
 
-    function read_toggle_highlight(){
+    function read_toggle_saved(){
 
         //See if we need to add or remove a highlight:
         //Authenticate Player:
@@ -530,9 +530,9 @@ class Read extends CI_Controller
             'ln_next_idea_id' => $_POST['in_id'],
             'ln_type_source_id' => 12896, //HIGHLIGHTS
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-        )) as $remove_highlight){
+        )) as $remove_saved){
             $removed++;
-            $this->LEDGER_model->ln_update($remove_highlight['ln_id'], array(
+            $this->LEDGER_model->ln_update($remove_saved['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
             ), $session_en['en_id'], 12906 /* HIGHLIGHT REMOVED */);
         }
@@ -565,7 +565,7 @@ class Read extends CI_Controller
          * When users indicate they want to stop
          * a IDEA this function saves the changes
          * necessary and delete the idea from their
-         * Bookshelf.
+         * Reads.
          *
          * */
 
@@ -582,7 +582,7 @@ class Read extends CI_Controller
             ));
         }
 
-        //Call function to delete form Bookshelf:
+        //Call function to delete form Reads:
         $delete_result = $this->READ_model->read_delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //REMOVED BOOKMARK
 
         if(!$delete_result['status']){
@@ -602,7 +602,7 @@ class Read extends CI_Controller
     {
         /*
          *
-         * Saves the order of Bookshelf ideas based on
+         * Saves the order of Reads ideas based on
          * user preferences.
          *
          * */
@@ -612,16 +612,16 @@ class Read extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid player ID',
             ));
-        } elseif (!isset($_POST['new_bookshelf_order']) || !is_array($_POST['new_bookshelf_order']) || count($_POST['new_bookshelf_order']) < 1) {
+        } elseif (!isset($_POST['new_read_order']) || !is_array($_POST['new_read_order']) || count($_POST['new_read_order']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing sorting ideas',
             ));
         }
 
-        //Update the order of their Bookshelf:
+        //Update the order of their Reads:
         $results = array();
-        foreach($_POST['new_bookshelf_order'] as $ln_order => $ln_id){
+        foreach($_POST['new_read_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){
                 //Update order of this link:
                 $results[$ln_order] = $this->LEDGER_model->ln_update(intval($ln_id), array(
@@ -633,7 +633,7 @@ class Read extends CI_Controller
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => count($_POST['new_bookshelf_order']).' Ideas Sorted',
+            'message' => count($_POST['new_read_order']).' Ideas Sorted',
         ));
     }
 

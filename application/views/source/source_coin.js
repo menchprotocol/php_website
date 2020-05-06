@@ -403,8 +403,8 @@ function en_modify_load(en_id, ln_id) {
     $('.notify_en_delete, .notify_unlink_en').addClass('hidden');
 
     //Set opacity:
-    delete_all_highlights();
-    $(".highlight_en_"+en_id).addClass('en_highlight');
+    delete_all_saved();
+    $(".highlight_en_"+en_id).addClass('en_saved');
 
     //Might be in an INPUT or a DIV based on active superpowers:
     var en_full_name = $(".text__6197_" + en_id + ":first").val();
@@ -606,7 +606,7 @@ function en_modify_save() {
                 } else {
 
                     //Reset opacity:
-                    delete_all_highlights();
+                    delete_all_saved();
 
                     //Delete from UI:
                     $('.tr_' + modify_data['ln_id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();

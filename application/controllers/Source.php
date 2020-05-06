@@ -1702,7 +1702,7 @@ class Source extends CI_Controller
             ));
 
             if(count($referrer_ins) > 0){
-                //Add this Idea to their Bookshelf:
+                //Add this Idea to their Reads:
                 $this->READ_model->read_start($user_en['en']['en_id'], $_POST['referrer_in_id']);
             } else {
                 //Cannot be added, likely because its not published:

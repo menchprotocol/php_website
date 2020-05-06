@@ -19,7 +19,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Searches within a user Bookshelf to find
+         * Searches within a user Reads to find
          * first incomplete step.
          *
          * */
@@ -140,7 +140,7 @@ class READ_model extends CI_Model
         }
 
 
-        //If not part of the Bookshelf, go to reads idea
+        //If not part of the Reads, go to reads idea
         if($first_step){
             $player_read_ids = $this->READ_model->read_ids($en_id);
             if(!in_array($in['in_id'], $player_read_ids)){
@@ -175,13 +175,13 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Searches for the next Bookshelf step
+         * Searches for the next Reads step
          *
          * */
 
         $player_reads = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Reads Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
@@ -190,10 +190,10 @@ class READ_model extends CI_Model
             return 0;
         }
 
-        //Loop through Bookshelf Ideas and see what's next:
+        //Loop through Reads Ideas and see what's next:
         foreach($player_reads as $user_in){
 
-            //Find first incomplete step for this Bookshelf Idea:
+            //Find first incomplete step for this Reads Idea:
             $next_in_id = $this->READ_model->read_next_find($en_id, $user_in);
 
             if($next_in_id < 0){
@@ -220,7 +220,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * A function that goes through the Bookshelf
+         * A function that goes through the Reads
          * and finds the top-priority that the user
          * is currently working on.
          *
@@ -229,17 +229,17 @@ class READ_model extends CI_Model
         $top_priority_in = false;
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Reads Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-        ), array('in_previous'), 0, 0, array('ln_order' => 'ASC')) as $bookshelf_in){
+        ), array('in_previous'), 0, 0, array('ln_order' => 'ASC')) as $home_in){
 
             //See progress rate so far:
-            $completion_rate = $this->READ_model->read_completion_progress($en_id, $bookshelf_in);
+            $completion_rate = $this->READ_model->read_completion_progress($en_id, $home_in);
 
             if($completion_rate['completion_percentage'] < 100){
                 //This is the top priority now:
-                $top_priority_in = $bookshelf_in;
+                $top_priority_in = $home_in;
                 break;
             }
 
@@ -260,7 +260,7 @@ class READ_model extends CI_Model
     function read_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
 
 
-        if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* Bookshelf Idea Completed */)){
+        if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* Reads Idea Completed */)){
             return array(
                 'status' => 0,
                 'message' => 'Invalid stop method',
@@ -278,17 +278,17 @@ class READ_model extends CI_Model
             );
         }
 
-        //Go ahead and delete from Bookshelf:
+        //Go ahead and delete from Reads:
         $player_reads = $this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Reads Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_previous_idea_id' => $in_id,
         ));
         if(count($player_reads) < 1){
             return array(
                 'status' => 0,
-                'message' => 'Could not locate Bookshelf',
+                'message' => 'Could not locate Reads',
             );
         }
 
@@ -319,22 +319,22 @@ class READ_model extends CI_Model
         }
 
 
-        //Make sure not previously added to this User's Bookshelf:
+        //Make sure not previously added to this User's Reads:
         if(!count($this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in_id,
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Reads Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             )))){
 
-            //Not added to their Bookshelf so far, let's go ahead and add it:
+            //Not added to their Reads so far, let's go ahead and add it:
             $in_rank = 1;
-            $bookshelf = $this->LEDGER_model->ln_create(array(
+            $home = $this->LEDGER_model->ln_create(array(
                 'ln_type_source_id' => ( $recommender_in_id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id' => $ins[0]['in_id'], //The Idea they are adding
                 'ln_next_idea_id' => $recommender_in_id, //Store the recommended idea
-                'ln_order' => $in_rank, //Always place at the top of their Bookshelf
+                'ln_order' => $in_rank, //Always place at the top of their Reads
             ));
 
             //Mark as readed if possible:
@@ -346,10 +346,10 @@ class READ_model extends CI_Model
                 ));
             }
 
-            //Move other ideas down in the Bookshelf:
+            //Move other ideas down in the Reads:
             foreach($this->LEDGER_model->ln_fetch(array(
-                'ln_id !=' => $bookshelf['ln_id'], //Not the newly added idea
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
+                'ln_id !=' => $home['ln_id'], //Not the newly added idea
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Reads Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_creator_source_id' => $en_id, //Belongs to this User
             ), array(''), 0, 0, array('ln_order' => 'ASC')) as $current_ins){
@@ -466,7 +466,7 @@ class READ_model extends CI_Model
                     //Found a match:
                     $found_match++;
 
-                    //Unlock Bookshelf:
+                    //Unlock Reads:
                     $this->LEDGER_model->ln_create(array(
                         'ln_type_source_id' => 6140, //READ UNLOCK LINK
                         'ln_creator_source_id' => $en_id,
@@ -514,7 +514,7 @@ class READ_model extends CI_Model
 
                 //Does this parent and its grandparents have an intersection with the user ideas?
                 if(!array_intersect($grand_parent_ids, $player_read_ids)){
-                    //Parent idea is NOT part of their Bookshelf:
+                    //Parent idea is NOT part of their Reads:
                     continue;
                 }
 
@@ -542,7 +542,7 @@ class READ_model extends CI_Model
 
                     }
 
-                    //Terminate if we reached the Bookshelf idea level:
+                    //Terminate if we reached the Reads idea level:
                     if(in_array($p_id , $player_read_ids)){
                         break;
                     }
@@ -649,30 +649,30 @@ class READ_model extends CI_Model
     }
 
 
-    function read_in_bookshelf($in_id, $recipient_en){
+    function read_in_home($in_id, $recipient_en){
 
-        $read_in_bookshelf = false;
+        $read_in_home = false;
 
         if($recipient_en['en_id'] > 0){
 
-            //Fetch entire Bookshelf:
+            //Fetch entire Reads:
             $player_read_ids = $this->READ_model->read_ids($recipient_en['en_id']);
-            $read_in_bookshelf = in_array($in_id, $player_read_ids);
+            $read_in_home = in_array($in_id, $player_read_ids);
 
-            if(!$read_in_bookshelf){
+            if(!$read_in_home){
                 //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
                 foreach($this->IDEA_model->in_recursive_parents($in_id) as $grand_parent_ids) {
                     //Does this parent and its grandparents have an intersection with the user ideas?
                     if (array_intersect($grand_parent_ids, $player_read_ids)) {
-                        //Idea is part of their Bookshelf:
-                        $read_in_bookshelf = true;
+                        //Idea is part of their Reads:
+                        $read_in_home = true;
                         break;
                     }
                 }
             }
         }
 
-        return $read_in_bookshelf;
+        return $read_in_home;
 
     }
 
@@ -692,13 +692,13 @@ class READ_model extends CI_Model
     function read_completion_marks($en_id, $in, $top_level = true)
     {
 
-        //Fetch/validate Bookshelf Common Ideas:
+        //Fetch/validate Reads Common Ideas:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
 
             //Should not happen, log error:
             $this->LEDGER_model->ln_create(array(
-                'ln_content' => 'completion_marks() Detected user Bookshelf without in__metadata_common_steps value!',
+                'ln_content' => 'completion_marks() Detected user Reads without in__metadata_common_steps value!',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in['in_id'],
@@ -918,7 +918,7 @@ class READ_model extends CI_Model
             return false;
         }
 
-        //Fetch/validate Bookshelf Common Ideas:
+        //Fetch/validate Reads Common Ideas:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
             //Since it's not there yet we assume the idea it self only!
@@ -1019,7 +1019,7 @@ class READ_model extends CI_Model
 
             /*
              *
-             * Completing an Bookshelf depends on two factors:
+             * Completing an Reads depends on two factors:
              *
              * 1) number of steps (some may have 0 time estimate)
              * 2) estimated seconds (usual ly accurate)
@@ -1056,11 +1056,11 @@ class READ_model extends CI_Model
 
 
     function read_ids($en_id){
-        //Simply returns all the idea IDs for a user's Bookshelf:
+        //Simply returns all the idea IDs for a user's Reads:
         $player_read_ids = array();
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_creator_source_id' => $en_id,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Bookshelf Idea Set
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Reads Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ), array('in_previous'), 0) as $user_in){

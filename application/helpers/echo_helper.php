@@ -637,7 +637,7 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
         $recipient_en = superpower_assigned();
     }
 
-    $is_highlight = ( isset($in['ln_type_source_id']) && $in['ln_type_source_id']==12896 );
+    $is_saved = ( isset($in['ln_type_source_id']) && $in['ln_type_source_id']==12896 );
     $metadata = unserialize($in['in_metadata']);
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 
@@ -649,10 +649,10 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
         }
     }
 
-    $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor || $is_highlight || $recipient_en['en_id'] );
+    $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor || $is_saved || $recipient_en['en_id'] );
 
 
-    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'bookshelf_sort' : '' ).' itemread '.$extra_class.'">';
+    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).' itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
     if($can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
         $ui .= '<div class="progress-bg-list" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
@@ -663,11 +663,11 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
 
     //Search for Idea Image:
     if($show_editor){
-        if($is_highlight){
+        if($is_saved){
 
             $ui .= '<div class="note-editor edit-off">';
             $ui .= '<span class="show-on-hover">';
-            $ui .= '<span><a href="javascript:void(0);" title="Remove Highlight" data-toggle="tooltip" data-placement="left" onclick="read_toggle_highlight('.$in['in_id'].');$(\'#ap_in_'.$in['in_id'].'\').remove();"><i class="fas fa-times"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" title="Remove Highlight" data-toggle="tooltip" data-placement="left" onclick="read_toggle_saved('.$in['in_id'].');$(\'#ap_in_'.$in['in_id'].'\').remove();"><i class="fas fa-times"></i></a></span>';
             $ui .= '</span>';
             $ui .= '</div>';
 
@@ -854,7 +854,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
 
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_highlight highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
+    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1088,7 +1088,7 @@ function echo_in_previous_read($in_id, $recipient_en){
         return null;
     }
 
-    //Bookshelf
+    //Reads
     $CI =& get_instance();
     $ui = null;
     $in_level_up = 0;
@@ -1151,14 +1151,14 @@ function echo_in_previous_read($in_id, $recipient_en){
 
 
         //Check Highlight status
-        $is_highlighted = count($CI->LEDGER_model->ln_fetch(array(
+        $is_saveded = count($CI->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $recipient_en['en_id'],
             'ln_next_idea_id' => $in_id,
             'ln_type_source_id' => 12896, //HIGHLIGHTS
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         )));
 
-        $ui .= '<div class="inline-block margin-top-down pull-left edit_select_answer"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_toggle_highlight('.$in_id.')"><i class="fas fa-bookmark toggle_highlight '.( $is_highlighted ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_highlight '.( $is_highlighted ? 'hidden' : '' ).'"></i></a></div>';
+        $ui .= '<div class="inline-block margin-top-down pull-left edit_select_answer"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_toggle_saved('.$in_id.')"><i class="fas fa-bookmark toggle_saved '.( $is_saveded ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saveded ? 'hidden' : '' ).'"></i></a></div>';
 
         //Main Reads:
         if($top_completion_rate){
@@ -1357,7 +1357,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     $recipient_en = superpower_assigned();
     $metadata = unserialize($in['in_metadata']);
 
-    $ui  = '<a href="/'.$in['in_id'] . '" id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' bookshelf_sort ' : '' ).'">';
+    $ui  = '<a href="/'.$in['in_id'] . '" id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
 
 
     $ui .= '<div class="cover-image">';
@@ -1480,7 +1480,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
     //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_highlight highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';

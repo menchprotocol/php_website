@@ -1330,11 +1330,11 @@ label {
     padding: 10px 10px 10px 0;
 }
 
-.in_highlight, .in_highlight:hover, .in_highlight:focus{
+.in_saved, .in_saved:hover, .in_saved:focus{
     background-color:#fff3a9 !important;
 }
 
-.en_highlight, .en_highlight:hover, .en_highlight:focus{
+.en_saved, .en_saved:hover, .en_saved:focus{
     background-color:#c1dffb !important;
 }
 

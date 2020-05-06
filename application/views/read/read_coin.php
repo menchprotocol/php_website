@@ -61,12 +61,12 @@ if($is_or){
 
 
 
-//ALREADY IN BOOKSHELF?
+//ALREADY IN READS?
 $completion_rate['completion_percentage'] = 0;
-$read_in_bookshelf = $this->READ_model->read_in_bookshelf($in['in_id'], $recipient_en);
+$read_in_home = $this->READ_model->read_in_home($in['in_id'], $recipient_en);
 
 
-if ($read_in_bookshelf) {
+if ($read_in_home) {
 
     // % DONE
     $completion_rate = $this->READ_model->read_completion_progress($recipient_en['en_id'], $in);
@@ -166,7 +166,7 @@ if ($read_in_bookshelf) {
     }
 
 
-    //BOOKSHELF UI
+    //READS UI
     echo '<div class="hideIfEmpty main_reads_top"></div>';
 
     //READ PROGRESS ONLY AT TOP LEVEL
@@ -200,7 +200,7 @@ foreach($in__messages as $message_ln) {
 
 
 
-if(!$read_in_bookshelf){
+if(!$read_in_home){
 
     if($all_child_featured){
 
