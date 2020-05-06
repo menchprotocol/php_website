@@ -324,7 +324,7 @@ class Cron extends CI_Controller
                         if($parent_en['ln_type_source_id'] == 4257 /* EMBED */){
 
                             //See if we have a Start/End time:
-                            $string_references = extract_source_references($parent_en['ln_content'], true);
+                            $string_references = extract_source_references($message['ln_content'], true);
                             if($string_references['ref_time_found']){
                                 $start_time = $string_references['ref_time_start'];
                                 $end_time = $string_references['ref_time_end'];
