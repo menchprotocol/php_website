@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-05 11:29:04 PST
+//Generated 2020-05-05 20:12:21 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588703344;
-$config['cache_count_transaction'] = 1187180;
-$config['cache_count_read'] = 121192;
-$config['cache_count_idea'] = 5400;
-$config['cache_count_source'] = 5010;
+$config['cache_timestamp'] = 1588734741;
+$config['cache_count_transaction'] = 1188276;
+$config['cache_count_read'] = 121204;
+$config['cache_count_idea'] = 5393;
+$config['cache_count_source'] = 4808;
 
 
 
@@ -32,7 +32,7 @@ $config['en_all_12893'] = array(
         'm_icon' => '<i class="fas fa-book read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF',
         'm_desc' => '/read',
-        'm_parents' => array(12893,12701,12677,11018,11035,11089,6205,12228,4527),
+        'm_parents' => array(10876,12893,12701,12677,11018,11035,11089,6205,12228,4527),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
@@ -396,7 +396,7 @@ $config['en_all_12677'] = array(
         'm_icon' => '<i class="fas fa-book read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF',
         'm_desc' => '',
-        'm_parents' => array(12893,12701,12677,11018,11035,11089,6205,12228,4527),
+        'm_parents' => array(10876,12893,12701,12677,11018,11035,11089,6205,12228,4527),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
@@ -488,7 +488,7 @@ $config['en_all_12012'] = array(
     ),
     6173 => array(
         'm_icon' => '<i class="fas fa-trash-alt" aria-hidden="true"></i>',
-        'm_name' => 'UNLINKED',
+        'm_name' => 'UNPUBLISH',
         'm_desc' => '',
         'm_parents' => array(12012,10686,10678,10673,6186),
     ),
@@ -859,8 +859,14 @@ $config['en_all_12413'] = array(
 );
 
 //MENCH URL:
-$config['en_ids_10876'] = array(7274,10939,7291,4341,6287,12898,12437);
+$config['en_ids_10876'] = array(7347,7274,10939,7291,4341,6287,12898,4269,12437);
 $config['en_all_10876'] = array(
+    7347 => array(
+        'm_icon' => '<i class="fas fa-book read" aria-hidden="true"></i>',
+        'm_name' => 'BOOKSHELF',
+        'm_desc' => 'https://mench.com/read',
+        'm_parents' => array(10876,12893,12701,12677,11018,11035,11089,6205,12228,4527),
+    ),
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
         'm_name' => 'CRON JOBS',
@@ -896,6 +902,12 @@ $config['en_all_10876'] = array(
         'm_name' => 'PUBLISH',
         'm_desc' => 'https://mench.com/idea',
         'm_parents' => array(11035,10939,4535,10876,12893),
+    ),
+    4269 => array(
+        'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_name' => 'SIGN IN/UP',
+        'm_desc' => 'https://mench.com/sign',
+        'm_parents' => array(10876,4527,11035),
     ),
     12437 => array(
         'm_icon' => '<i class="fas fa-medal source" aria-hidden="true"></i>',
@@ -2128,7 +2140,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-book read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF',
         'm_desc' => '',
-        'm_parents' => array(12893,12701,12677,11018,11035,11089,6205,12228,4527),
+        'm_parents' => array(10876,12893,12701,12677,11018,11035,11089,6205,12228,4527),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
@@ -2893,7 +2905,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-book read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF',
         'm_desc' => '',
-        'm_parents' => array(12893,12701,12677,11018,11035,11089,6205,12228,4527),
+        'm_parents' => array(10876,12893,12701,12677,11018,11035,11089,6205,12228,4527),
     ),
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -3001,7 +3013,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
-        'm_parents' => array(4527,11035),
+        'm_parents' => array(10876,4527,11035),
     ),
     4997 => array(
         'm_icon' => '<i class="fad fa-edit source" aria-hidden="true"></i>',
@@ -3077,8 +3089,8 @@ $config['en_all_11018'] = array(
     7347 => array(
         'm_icon' => '<i class="fas fa-book read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF',
-        'm_desc' => 'Players who started here',
-        'm_parents' => array(12893,12701,12677,11018,11035,11089,6205,12228,4527),
+        'm_desc' => '',
+        'm_parents' => array(10876,12893,12701,12677,11018,11035,11089,6205,12228,4527),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
@@ -3768,7 +3780,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-book read" aria-hidden="true"></i>',
         'm_name' => 'BOOKSHELF',
         'm_desc' => '',
-        'm_parents' => array(12893,12701,12677,11018,11035,11089,6205,12228,4527),
+        'm_parents' => array(10876,12893,12701,12677,11018,11035,11089,6205,12228,4527),
     ),
     7274 => array(
         'm_icon' => '<i class="far fa-magic" aria-hidden="true"></i>',
@@ -4206,7 +4218,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
-        'm_parents' => array(4527,11035),
+        'm_parents' => array(10876,4527,11035),
     ),
     6204 => array(
         'm_icon' => '<i class="fas fa-check" aria-hidden="true"></i>',
@@ -5508,7 +5520,7 @@ $config['en_all_6186'] = array(
     ),
     6173 => array(
         'm_icon' => '<i class="fas fa-trash-alt" aria-hidden="true"></i>',
-        'm_name' => 'UNLINKED',
+        'm_name' => 'UNPUBLISH',
         'm_desc' => '',
         'm_parents' => array(12012,10686,10678,10673,6186),
     ),
