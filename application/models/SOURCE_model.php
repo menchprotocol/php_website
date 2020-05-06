@@ -732,6 +732,7 @@ class SOURCE_model extends CI_Model
             //Attempt to fetch from page if we have content:
             if($url_content){
                 $page_title = one_two_explode('>', '', one_two_explode('<title', '</title', $url_content));
+                /*
                 $title_exclusions = array('-', '|');
                 foreach($title_exclusions as $keyword) {
                     if (substr_count($page_title, $keyword) > 0) {
@@ -745,6 +746,7 @@ class SOURCE_model extends CI_Model
                         }
                     }
                 }
+                */
             }
 
             //Trim title:
