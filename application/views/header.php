@@ -155,7 +155,7 @@ if(!isset($hide_header)){
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.( !$count ? ' focustab ' : '').'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                                echo '<span class="montserrat ' . $class . '_name '.( !$count ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;&nbsp;</span>';
+                                echo '<span class="montserrat ' . $class . '_name '.( !$count ? '' : 'show-max' ).'">' . $m['m_name'] .$count. '&nbsp;&nbsp;</span>';
                                 echo '</a>';
                                 echo '</div>';
 
