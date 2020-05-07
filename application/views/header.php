@@ -227,7 +227,8 @@ if(!isset($hide_header)){
                             } elseif($en_id==12899) {
 
                                 //FEEDBACK SUPPORT
-                                $page_url = 'href="javascript:void(0);" id="icon_12899"';
+                                $page_url = 'href="javascript:void(0);"';
+                                $extra_class = ' icon_12899 ';
 
                             } elseif($en_id==6415) {
 
@@ -270,7 +271,7 @@ if(!isset($hide_header)){
                             }
 
                             //Navigation
-                            echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span><span class="text__6197_'.$en_id.'">'.$m['m_name'].'</span></a>';
+                            echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m_icon'].'</span><span class="text__6197_'.$en_id.'">'.$m['m_name'].'</span></a>';
 
                         }
 
@@ -281,7 +282,7 @@ if(!isset($hide_header)){
                     } else {
 
                         //FEEDBACK SUPPORT
-                        echo '<td class="block-link"><a id="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
+                        echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
                         echo '<td class="block-link"><a href="/source/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
