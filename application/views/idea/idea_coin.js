@@ -626,7 +626,7 @@ function in_message_form_lock(note_type_id) {
 function in_message_form_unlock(result, note_type_id) {
 
     //Update UI to unlock:
-    $('.save_notes_' + note_type_id).html('SAVE').attr('href', 'javascript:in_notes_add('+note_type_id+');');
+    $('.save_notes_' + note_type_id).html('<i class="fas fa-plus"></i>').attr('href', 'javascript:in_notes_add('+note_type_id+');');
     $('.add_notes_' + note_type_id).removeClass('is-working');
     $("#ln_content" + note_type_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
