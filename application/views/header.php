@@ -114,8 +114,8 @@ if(!isset($hide_header)){
                                 $is_current_mench = (
                                     $_SERVER['REQUEST_URI'] == $m['m_desc'] ||
                                     ( $en_id==6205 /*  READ  */ && is_numeric($first_segment) ) ||
-                                    ( $en_id==4535 /* IDEATE */ && is_numeric($second_segment) && $first_segment=='source' ) ||
-                                    ( $en_id==4536 /* SOURCE */ && is_numeric($second_segment) && $first_segment=='idea' )
+                                    ( $en_id==4535 /* IDEATE */ && is_numeric($second_segment) && $first_segment=='idea' ) ||
+                                    ( $en_id==4536 /* SOURCE */ && is_numeric($second_segment) && $first_segment=='source' )
                                 );
                                 if($is_current_mench){
                                     $en_all_12893_resort[0] = $m;
