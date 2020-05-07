@@ -92,7 +92,7 @@ if(!isset($hide_header)){
     <!-- MENCH LINE -->
     <div class="container fixed-top" style="padding-bottom: 0 !important;">
         <div class="row">
-            <table class="mench-navigation <?= ( !$session_en ? 'guest' : '' ) ?>">
+            <table class="mench-navigation">
                 <tr>
                     <td>
                         <?php
@@ -153,7 +153,7 @@ if(!isset($hide_header)){
 
                                 }
 
-                                echo '<div class="btn-group mench_coin '.$class.' border-' . $class.( !$count ? ' focustab ' : '').'">';
+                                echo '<div class="btn-group mench_coin '.$class.' border-' . $class.'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $class . '_name '.( !$count ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;&nbsp;</span>';

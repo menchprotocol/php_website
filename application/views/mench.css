@@ -911,39 +911,15 @@ td.MENCHcolumn3  { width: 13%; }
 
 .mench-navigation {
     width: 100%;
-    border-bottom: 1px solid #000;
     background-color: #f0f0f0;
-}
-
-.mench-navigation .focustab  {
-    background-color:#f0f0f0;
-    margin-bottom: -1px;
-    padding-bottom: 2px;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-.mench-navigation .btn-group{
-    padding-left: 1px;
-    padding-right: 1px;
-}
-
-.mench-navigation .btn-group:first-child{
-    border-left:0 !important;
-    padding-left:0 !important;
 }
 
 .mench-navigation .btn-group:hover{
     background-color: #FFFFFF;
 }
 
-.mench-navigation.guest {
-    border-bottom: 1px solid transparent;
-}
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
-     width: 100%;
+    width: 100%;
     padding-left: 0.5px !important;
 }
 .mench-navigation td {
