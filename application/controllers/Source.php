@@ -134,10 +134,15 @@ class Source extends CI_Controller
         }
         */
 
-
         //Start with top Players:
         echo '<div class="list-group">';
-        echo '<div class="list-group-item no-height"></div>';
+
+        if($session_en){
+            //Make it even for the user row:
+            echo '<div class="list-group-item no-height"></div>';
+        } else {
+            $show_max++;
+        }
 
         foreach($this->LEDGER_model->ln_fetch($filters_in, array('en_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight') as $count=>$en) {
 

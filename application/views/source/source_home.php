@@ -5,12 +5,9 @@
 
     <?php
 
-    $en_all_11035 = $this->config->item('en_all_11035'); //NAVIGATION
-
-
     //My Sources:
     if($session_en){
-        echo '<div class="list-group" style="padding-bottom:34px;">';
+        echo '<div class="list-group">';
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
