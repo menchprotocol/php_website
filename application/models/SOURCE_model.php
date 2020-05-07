@@ -568,11 +568,13 @@ class SOURCE_model extends CI_Model
 
             if(in_array($en__profile['en_id'], $this->config->item('en_ids_3000'))){
                 //CONTENT CHANNELS
+                $en['ln_content'] = $en__profile['ln_content']; //Update Description
                 if (!isset($metadata_this['__in__metadata_sources'][$en['en_id']])) {
                     $metadata_this['__in__metadata_sources'][$en['en_id']] = $en;
                 }
             } elseif(in_array($en__profile['en_id'], $this->config->item('en_ids_12864'))) {
                 //EXPERT PEOPLE/ORGANIZATIONS
+                $en['ln_content'] = $en__profile['ln_content']; //Update Description
                 if (!isset($metadata_this['__in__metadata_experts'][$en['en_id']])) {
                     $metadata_this['__in__metadata_experts'][$en['en_id']] = $en;
                 }
