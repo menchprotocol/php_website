@@ -941,7 +941,7 @@ td.MENCHcolumn3  { width: 13%; }
     text-align: center;
     margin-left:5px;
     color:#000000;
-    padding:9px 10px;
+    padding:10px 10px 9px;
 }
 
 .mench-navigation .block-link .fas, .block-link .fal, .block-link .far, .block-link .fad{
