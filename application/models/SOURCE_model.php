@@ -380,7 +380,7 @@ class SOURCE_model extends CI_Model
                 //Delete this link:
                 $adjusted_count += $this->LEDGER_model->ln_update($adjust_tr['ln_id'], array(
                     'ln_status_source_id' => 6173, //Link Deleted
-                ), $ln_creator_source_id, 10673 /* Player Link Unlinked */);
+                ), $ln_creator_source_id, 10673 /* Player Link Unpublished */);
 
             }
         }
@@ -958,7 +958,7 @@ class SOURCE_model extends CI_Model
 
                             $this->LEDGER_model->ln_update($delete_tr['ln_id'], array(
                                 'ln_status_source_id' => 6173, //Link Deleted
-                            ), $ln_creator_source_id, 10673 /* Player Link Unlinked  */);
+                            ), $ln_creator_source_id, 10673 /* Player Link Unpublished  */);
 
                             $applied_success++;
                         }
@@ -1039,7 +1039,7 @@ class SOURCE_model extends CI_Model
 
                 $this->LEDGER_model->ln_update($en['ln_id'], array(
                     'ln_status_source_id' => $action_command2,
-                ), $ln_creator_source_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* ACTIVE */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unlinked */ ));
+                ), $ln_creator_source_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* ACTIVE */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unpublished */ ));
 
                 $applied_success++;
 

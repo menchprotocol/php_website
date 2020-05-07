@@ -243,7 +243,7 @@ class IDEA_model extends CI_Model
             //Delete this link:
             $links_deleted += $this->LEDGER_model->ln_update($ln['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
-            ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
+            ), $ln_creator_source_id, 10686 /* Idea Link Unpublished */);
         }
 
 
@@ -257,7 +257,7 @@ class IDEA_model extends CI_Model
             //Delete this link:
             $links_deleted += $this->LEDGER_model->ln_update($in_note['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
-            ), $ln_creator_source_id, 10686 /* Idea Link Unlinked */);
+            ), $ln_creator_source_id, 10686 /* Idea Link Unpublished */);
         }
 
 
@@ -791,7 +791,7 @@ class IDEA_model extends CI_Model
                     //Has and must be deleted:
                     $this->LEDGER_model->ln_update($in_has_sources[0]['ln_id'], array(
                         'ln_status_source_id' => 6173,
-                    ), $ln_creator_source_id, 10678 /* IDEA NOTES Unlinked */);
+                    ), $ln_creator_source_id, 10678 /* IDEA NOTES Unpublished */);
 
                     $applied_success++;
 

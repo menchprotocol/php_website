@@ -110,7 +110,6 @@ class Source extends CI_Controller
     function load_leaderboard(){
 
         //Fetch top sources
-
         $session_en = superpower_assigned();
         $load_max = config_var(11064);
         $show_max = config_var(11986);
@@ -136,13 +135,11 @@ class Source extends CI_Controller
         */
 
 
-        //Fetch leaderboard:
-        $in_en_coins = $this->LEDGER_model->ln_fetch($filters_in, array('en_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight');
-
-
         //Start with top Players:
         echo '<div class="list-group">';
-        foreach($in_en_coins as $count=>$en) {
+        echo '<div class="list-group-item no-height"></div>';
+
+        foreach($this->LEDGER_model->ln_fetch($filters_in, array('en_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight') as $count=>$en) {
 
             if($count==$show_max){
 
@@ -356,7 +353,7 @@ class Source extends CI_Controller
         //Archive Link:
         $this->LEDGER_model->ln_update($_POST['ln_id'], array(
             'ln_status_source_id' => 6173,
-        ), $session_en['en_id'], 10678 /* IDEA NOTES Unlinked */);
+        ), $session_en['en_id'], 10678 /* IDEA NOTES Unpublished */);
 
         return echo_json(array(
             'status' => 1,
@@ -933,7 +930,7 @@ class Source extends CI_Controller
                 }
 
                 //Display proper message:
-                $success_message = 'Source deleted & its ' . $links_adjusted . ' links have been unlinked.';
+                $success_message = 'Source deleted & its ' . $links_adjusted . ' links have been Unpublished.';
 
             }
 
@@ -962,7 +959,7 @@ class Source extends CI_Controller
                     $ln_status_source_id = 10656; //Player Link updated Status
                 } else {
                     $delete_from_ui = 1;
-                    $ln_status_source_id = 10673; //Player Link Unlinked
+                    $ln_status_source_id = 10673; //Player Link Unpublished
                 }
 
                 $this->LEDGER_model->ln_update($_POST['ln_id'], array(

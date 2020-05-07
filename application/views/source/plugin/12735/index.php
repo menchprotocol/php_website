@@ -77,7 +77,7 @@ foreach($this->IDEA_model->in_fetch() as $in) {
             //Delete this link:
             $stats['note_deleted'] += $this->LEDGER_model->ln_update($in_note['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
-            ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
+            ), $session_en['en_id'], 10686 /* Idea Link Unpublished */);
         }
 
     } elseif(count($in_sources) >= 2){

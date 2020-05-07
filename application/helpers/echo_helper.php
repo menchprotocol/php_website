@@ -667,7 +667,7 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
 
             $ui .= '<div class="note-editor edit-off">';
             $ui .= '<span class="show-on-hover">';
-            $ui .= '<span><a href="javascript:void(0);" title="Remove Highlight" data-toggle="tooltip" data-placement="left" onclick="read_toggle_saved('.$in['in_id'].');$(\'#ap_in_'.$in['in_id'].'\').remove();"><i class="fas fa-times"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="read_toggle_saved('.$in['in_id'].');$(\'#ap_in_'.$in['in_id'].'\').remove();"><i class="fas fa-times"></i></a></span>';
             $ui .= '</span>';
             $ui .= '</div>';
 
@@ -854,7 +854,7 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
 
 
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved highlight_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
+    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1150,11 +1150,11 @@ function echo_in_previous_read($in_id, $recipient_en){
         }
 
 
-        //Check Highlight status
+        //Is Saved?
         $is_saveded = count($CI->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $recipient_en['en_id'],
             'ln_next_idea_id' => $in_id,
-            'ln_type_source_id' => 12896, //HIGHLIGHTS
+            'ln_type_source_id' => 12896, //SAVED
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         )));
 
@@ -1480,7 +1480,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
     //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';

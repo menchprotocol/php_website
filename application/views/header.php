@@ -110,8 +110,13 @@ if(!isset($hide_header)){
                             $en_all_12893_resort = array();
                             $count = 0;
                             foreach($this->config->item('en_all_12893') as $en_id => $m) {
-                                $is_current_mench = ( $_SERVER['REQUEST_URI'] == $m['m_desc'] || ( is_numeric($first_segment) && $en_id==6205 /* READS */ ) || ( $first_segment=='idea' && is_numeric($second_segment) && $en_id==4535 /* PUBLISH */ ) );
                                 $m['en_id'] = $en_id;
+                                $is_current_mench = (
+                                    $_SERVER['REQUEST_URI'] == $m['m_desc'] ||
+                                    ( $en_id==6205 /*  READ  */ && is_numeric($first_segment) ) ||
+                                    ( $en_id==4535 /* IDEATE */ && is_numeric($second_segment) && $first_segment=='source' ) ||
+                                    ( $en_id==4536 /* SOURCE */ && is_numeric($second_segment) && $first_segment=='idea' )
+                                );
                                 if($is_current_mench){
                                     $en_all_12893_resort[0] = $m;
                                 } else {
@@ -124,10 +129,9 @@ if(!isset($hide_header)){
                             //Show Mench Menu:
                             foreach($en_all_12893_resort as $count => $m) {
 
-                                $en_id = $m['en_id'];
                                 $class = extract_icon_color($m['m_icon']);
 
-                                if($en_id==12749) {
+                                if($m['en_id']==12749) {
 
                                     $focus_in_id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? config_var(12156) : 0 ) );
                                     if( $focus_in_id>0 && in_is_source($focus_in_id) ){
@@ -137,11 +141,11 @@ if(!isset($hide_header)){
                                         continue;
                                     }
 
-                                } elseif($en_id==12896){
+                                } elseif($m['en_id']==12896){
 
                                     $highlights = $this->LEDGER_model->ln_fetch(array(
                                         'ln_profile_source_id' => $session_en['en_id'],
-                                        'ln_type_source_id' => 12896, //HIGHLIGHTS
+                                        'ln_type_source_id' => 12896, //SAVED
                                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                                     ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 

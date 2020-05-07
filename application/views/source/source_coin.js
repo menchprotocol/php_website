@@ -399,12 +399,12 @@ function en_modify_load(en_id, ln_id) {
     $('#modifybox').attr('source-link-id', ln_id);
     $('#modifybox').attr('source-id', en_id);
 
-    //Cannot be deleted OR unlinked as this would not load, so delete them:
+    //Cannot be deleted OR Unpublished as this would not load, so delete them:
     $('.notify_en_delete, .notify_unlink_en').addClass('hidden');
 
     //Set opacity:
     delete_all_saved();
-    $(".highlight_en_"+en_id).addClass('en_saved');
+    $(".saved_en_"+en_id).addClass('en_saved');
 
     //Might be in an INPUT or a DIV based on active superpowers:
     var en_full_name = $(".text__6197_" + en_id + ":first").val();
@@ -597,7 +597,7 @@ function en_modify_save() {
             if(data.delete_from_ui){
 
                 //need to delete this source:
-                //Idea has been either deleted OR unlinked:
+                //Idea has been either deleted OR Unpublished:
                 if (data.delete_redirect_url) {
 
                     //move up 1 level as this was the focus idea:

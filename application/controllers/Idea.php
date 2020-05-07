@@ -365,7 +365,7 @@ class Idea extends CI_Controller {
         //Delete this link:
         $this->LEDGER_model->ln_update($_POST['ln_id'], array(
             'ln_status_source_id' => 6173, //Transaction Deleted
-        ), $session_en['en_id'], 10686 /* Idea Link Unlinked */);
+        ), $session_en['en_id'], 10686 /* Idea Link Unpublished */);
 
         return echo_json(array(
             'status' => 1,
@@ -870,7 +870,7 @@ class Idea extends CI_Controller {
                 //New status is no longer active, so delete the IDEA NOTES:
                 $affected_rows = $this->LEDGER_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_source_id' => $_POST['message_ln_status_source_id'],
-                ), $session_en['en_id'], 10678 /* IDEA NOTES Unlinked */);
+                ), $session_en['en_id'], 10678 /* IDEA NOTES Unpublished */);
 
                 //Return success:
                 if($affected_rows > 0){

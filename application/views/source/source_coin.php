@@ -484,7 +484,6 @@ $is_source = en_is_source($en['en_id']);
 
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set Condition...</option>';
                         $input_options .= '<option value="*">Update All Statuses</option>';
                         foreach($this->config->item('en_all_6177') /* Source Status */ as $en_id3 => $m3){
                             $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
@@ -506,7 +505,6 @@ $is_source = en_is_source($en['en_id']);
 
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
-                        $input_options .= '<option value="">Set Condition...</option>';
                         $input_options .= '<option value="*">Update All Statuses</option>';
                         foreach($this->config->item('en_all_6186') /* Transaction Status */ as $en_id3 => $m3){
                             $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';

@@ -200,7 +200,7 @@ class LEDGER_model extends CI_Model
                                 )) as $single_selectable_siblings_preset){
                                     $links_deleted += $this->LEDGER_model->ln_update($single_selectable_siblings_preset['ln_id'], array(
                                         'ln_status_source_id' => 6173, //Link Deleted
-                                    ), $insert_columns['ln_creator_source_id'], 10673 /* Player Link Unlinked */);
+                                    ), $insert_columns['ln_creator_source_id'], 10673 /* Player Link Unpublished */);
                                 }
                             }
                         }

@@ -39,7 +39,7 @@ class Read extends CI_Controller
 
 
 
-    function highlight(){
+    function saved(){
 
         $session_en = superpower_assigned(null, true);
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
@@ -528,13 +528,13 @@ class Read extends CI_Controller
         foreach($this->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $session_en['en_id'],
             'ln_next_idea_id' => $_POST['in_id'],
-            'ln_type_source_id' => 12896, //HIGHLIGHTS
+            'ln_type_source_id' => 12896, //SAVED
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         )) as $remove_saved){
             $removed++;
             $this->LEDGER_model->ln_update($remove_saved['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
-            ), $session_en['en_id'], 12906 /* HIGHLIGHT REMOVED */);
+            ), $session_en['en_id'], 12906 /* UNSAVED */);
         }
 
         //Need to add?
@@ -545,7 +545,7 @@ class Read extends CI_Controller
                 'ln_profile_source_id' => $session_en['en_id'],
                 'ln_content' => '@'.$session_en['en_id'],
                 'ln_next_idea_id' => $_POST['in_id'],
-                'ln_type_source_id' => 12896, //HIGHLIGHTS
+                'ln_type_source_id' => 12896, //SAVED
             ));
         }
 
