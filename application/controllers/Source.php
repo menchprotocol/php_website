@@ -120,6 +120,11 @@ class Source extends CI_Controller
             'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
 
+        if($session_en){
+            //This source is already listed at the top of the page, skip:
+            $filters_in['en_id !='] = $session_en['en_id'];
+        }
+
         /*
         if(1){ //Weekly
 
