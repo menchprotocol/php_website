@@ -197,6 +197,7 @@ if(!isset($hide_header)){
 
                         echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
 
+
                         foreach($this->config->item('en_all_12500') as $en_id => $m) {
 
                             //Skip superpowers if not assigned
@@ -208,7 +209,7 @@ if(!isset($hide_header)){
                             }
 
                             $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
-
+                            $extra_class = null;
 
                             //Fetch URL:
                             if(in_array($en_id, $this->config->item('en_ids_10876'))){
