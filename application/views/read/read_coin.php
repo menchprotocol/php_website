@@ -248,7 +248,7 @@ if(!$read_in_home){
         $content_count = ( isset($metadata['in__metadata_sources']) ? count($metadata['in__metadata_sources']) : 0 );
         if ($content_count || $expert_count) {
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $content_count ? $content_count.' Source'.echo__s($content_count) : '' ).( $expert_count ? ( $expert_count ? ' From ' : '' ).$expert_count.' Expert'.echo__s($expert_count) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $content_count ? $content_count.' Source'.echo__s($content_count).( $expert_count ? ' From ' : '' ) : '' ).( $expert_count ? $expert_count.' Expert'.echo__s($expert_count) : '' ).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             echo '<div class="list-group single-color">';

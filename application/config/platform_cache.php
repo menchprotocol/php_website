@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-07 18:22:57 PST
+//Generated 2020-05-08 10:07:58 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588900977;
-$config['cache_count_transaction'] = 1192221;
-$config['cache_count_read'] = 121150;
-$config['cache_count_idea'] = 5489;
-$config['cache_count_source'] = 4811;
+$config['cache_timestamp'] = 1588957678;
+$config['cache_count_transaction'] = 1194265;
+$config['cache_count_read'] = 121143;
+$config['cache_count_idea'] = 5525;
+$config['cache_count_source'] = 4814;
 
 
 
@@ -159,7 +159,7 @@ $config['en_all_12864'] = array(
         'm_icon' => '<i class="fas fa-space-shuttle source rotate270"></i>',
         'm_name' => 'EXPERT ORGANIZATION',
         'm_desc' => '',
-        'm_parents' => array(12864),
+        'm_parents' => array(12523,12864),
     ),
     3084 => array(
         'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
@@ -742,7 +742,7 @@ $config['en_all_12524'] = array(
 );
 
 //SYNC ICONS WHEN NEW:
-$config['en_ids_12523'] = array(2997,4446,3005,3147,4763,2999,3192,2998,6293,3084);
+$config['en_ids_12523'] = array(2997,4446,3005,3147,4763,2750,2999,3192,2998,6293,3084);
 $config['en_all_12523'] = array(
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
@@ -774,6 +774,12 @@ $config['en_all_12523'] = array(
         'm_desc' => '',
         'm_parents' => array(4983,12523,3000),
     ),
+    2750 => array(
+        'm_icon' => '<i class="fas fa-space-shuttle source rotate270"></i>',
+        'm_name' => 'EXPERT ORGANIZATION',
+        'm_desc' => '',
+        'm_parents' => array(12523,12864),
+    ),
     2999 => array(
         'm_icon' => '<i class="fas fa-microphone source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT PODCAST',
@@ -793,7 +799,7 @@ $config['en_all_12523'] = array(
         'm_parents' => array(4983,12523,3000),
     ),
     6293 => array(
-        'm_icon' => '<i class="fas fa-draw-circle read fa-spin"></i>',
+        'm_icon' => '<i class="fas fa-image source"></i>',
         'm_name' => 'GIPHY GIFS',
         'm_desc' => '',
         'm_parents' => array(12891,12523,1326),
@@ -3094,7 +3100,7 @@ $config['en_all_11018'] = array(
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ COINS',
-        'm_desc' => 'Players who read idea',
+        'm_desc' => '',
         'm_parents' => array(6205,12500,12677,10939,11018,12467,11089,12410,12228,4527),
     ),
     12896 => array(
