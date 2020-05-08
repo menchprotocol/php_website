@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-07 18:18:39 PST
+//Generated 2020-05-07 18:22:57 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588900719;
-$config['cache_count_transaction'] = 1192197;
+$config['cache_timestamp'] = 1588900977;
+$config['cache_count_transaction'] = 1192221;
 $config['cache_count_read'] = 121150;
-$config['cache_count_idea'] = 5488;
+$config['cache_count_idea'] = 5489;
 $config['cache_count_source'] = 4811;
 
 
@@ -742,7 +742,7 @@ $config['en_all_12524'] = array(
 );
 
 //SYNC ICONS WHEN NEW:
-$config['en_ids_12523'] = array(2997,4446,3005,3147,4763,2999,3192,2998,6293,3084,3308);
+$config['en_ids_12523'] = array(2997,4446,3005,3147,4763,2999,3192,2998,6293,3084);
 $config['en_all_12523'] = array(
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
@@ -803,12 +803,6 @@ $config['en_all_12523'] = array(
         'm_name' => 'INDUSTRY EXPERT',
         'm_desc' => '',
         'm_parents' => array(12864,4983,11035,1278,12523),
-    ),
-    3308 => array(
-        'm_icon' => '<i class="fab fa-youtube read"></i>',
-        'm_name' => 'YOUTUBE',
-        'm_desc' => '',
-        'm_parents' => array(12891,4257,12523,1326),
     ),
 );
 
