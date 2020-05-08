@@ -243,6 +243,7 @@ class Cron extends CI_Controller
         $total_scanned = 0;
         $total_updated = 0;
         $en_all_12822 = $this->config->item('en_all_12822');
+        $en_all_12955 = $this->config->item('en_all_12955'); //Idea Type Completion Time
         $filters = array();
         if($in_id > 0){
             $filters['in_id'] = $in_id;
@@ -274,6 +275,18 @@ class Cron extends CI_Controller
             if($in_id){
                 //Show details:
                 echo $estimated_time.' Seconds TITLE: '.$in['in_title'].'<hr />';
+            }
+
+
+            //Idea Type Has Time?
+            if(array_key_exists($in['in_type_source_id'], $en_all_12955)){
+                //Yes, add Extra Time:
+                $extra_time = intval($en_all_12955[$in['in_type_source_id']]['m_desc']);
+                $estimated_time += $extra_time;
+                if($in_id){
+                    //Show details:
+                    echo $extra_time.' Seconds For being '.$en_all_12955[$in['in_type_source_id']]['m_name'].'<hr />';
+                }
             }
 
 
