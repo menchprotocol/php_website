@@ -1315,11 +1315,12 @@ function echo_time_range($metadata){
 function echo_time_hours($total_seconds){
     //Turns seconds into HH:MM:SS
     $hours = floor($total_seconds/3600);
+    $hours = ( $hours<10 ? '0'.$hours  : $hours );
     $minutes = floor(fmod($total_seconds, 3600)/60);
-    $minutes = ( $hours && $minutes<10 ? '0'.$minutes  : $minutes );
+    $minutes = ( $minutes<10 ? '0'.$minutes  : $minutes );
     $seconds = fmod($total_seconds, 60);
     $seconds = ( $seconds<10 ? '0'.$seconds  : $seconds );
-    return ( $hours ? $hours.':' : '' ).$minutes.':'.$seconds;
+    return $hours.':'.$minutes.':'.$seconds;
 }
 
 function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rate = null){

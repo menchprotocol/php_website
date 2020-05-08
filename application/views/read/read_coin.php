@@ -463,7 +463,7 @@ if(!$read_in_home){
 
         //TEXT RESPONSE
 
-        echo '<textarea class="border i_content padded read_input" placeholder="Your Answer Here..." id="read_text_answer">'.( count($read_completes) ? trim($read_completes[0]['ln_content']) : '' ).'</textarea>';
+        echo '<textarea class="border i_content padded read_input" placeholder="Write answer here" id="read_text_answer">'.( count($read_completes) ? trim($read_completes[0]['ln_content']) : '' ).'</textarea>';
 
         echo '<div class="text_saving_result margin-top-down"></div>';
 
