@@ -251,11 +251,19 @@ if(!$read_in_home){
             echo '<div class="list-group single-color">';
 
             //Sort Expert Content
-            $experts_content = array_merge($metadata['in__metadata_sources'], $metadata['in__metadata_experts']);
+            $experts_content = array();
+            foreach($metadata['in__metadata_sources'] as $md_en_id => $md){
+                if(!isset($experts_content[$md_en_id])){
+                    $experts_content[$md_en_id] = $md;
+                }
+            }
+            foreach($metadata['in__metadata_experts'] as $md_en_id => $md){
+                if(!isset($experts_content[$md_en_id])){
+                    $experts_content[$md_en_id] = $md;
+                }
+            }
+
             usort($experts_content, 'sortByWeight');
-
-            print_r($experts_content);
-
             foreach ($experts_content as $en_source) {
                 echo echo_en_basic($en_source);
             }
