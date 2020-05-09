@@ -817,18 +817,6 @@ class Idea extends CI_Controller {
                 'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
             ), $session_en['en_id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['ln_content'], $msg_validation['input_message']));
 
-            //Did we add a new source here?
-            if($msg_validation['ln_profile_source_id']>0 && $msg_validation['ln_profile_source_id']!=$messages[0]['ln_profile_source_id']){
-                //referencing a new source:
-                $this->LEDGER_model->ln_create(array(
-                    'ln_creator_source_id' => $session_en['en_id'],
-                    'ln_type_source_id' => 4983, //IDEA SOURCES
-                    'ln_next_idea_id' => $ins[0]['in_id'],
-                    'ln_profile_source_id' => $msg_validation['ln_profile_source_id'],
-                    'ln_content' => '@'.$msg_validation['ln_profile_source_id'],
-                ));
-            }
-
         }
 
 
