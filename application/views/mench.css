@@ -496,6 +496,7 @@ img.no-radius {
     overflow: hidden;
     margin-bottom: 10px;
     position: relative;
+    border: 1px solid #000;
 }
 .cover-image img{
     width: 100%;
