@@ -555,7 +555,7 @@ class SOURCE_model extends CI_Model
         $max_search_levels = 3;
         $metadata_this = array(
             '__in__metadata_experts' => array(),
-            '__in__metadata_sources' => array(),
+            '__in__metadata_content' => array(),
         );
 
         //SOURCE PROFILE
@@ -569,8 +569,8 @@ class SOURCE_model extends CI_Model
             if(in_array($en__profile['en_id'], $this->config->item('en_ids_3000'))){
                 //CONTENT CHANNELS
                 $en['ln_content'] = $en__profile['ln_content']; //Update Description
-                if (!isset($metadata_this['__in__metadata_sources'][$en['en_id']])) {
-                    $metadata_this['__in__metadata_sources'][$en['en_id']] = $en;
+                if (!isset($metadata_this['__in__metadata_content'][$en['en_id']])) {
+                    $metadata_this['__in__metadata_content'][$en['en_id']] = $en;
                 }
             } elseif(in_array($en__profile['en_id'], $this->config->item('en_ids_12864'))) {
                 //EXPERT PEOPLE/ORGANIZATIONS
@@ -586,9 +586,9 @@ class SOURCE_model extends CI_Model
                 $metadata_recursion = $this->SOURCE_model->en_metadat_experts($en__profile, ($level + 1));
 
                 //CONTENT CHANNELS
-                foreach($metadata_recursion['__in__metadata_sources'] as $en_id => $source_en) {
-                    if (!isset($metadata_this['__in__metadata_sources'][$en_id])) {
-                        $metadata_this['__in__metadata_sources'][$en_id] = $source_en;
+                foreach($metadata_recursion['__in__metadata_content'] as $en_id => $source_en) {
+                    if (!isset($metadata_this['__in__metadata_content'][$en_id])) {
+                        $metadata_this['__in__metadata_content'][$en_id] = $source_en;
                     }
                 }
 

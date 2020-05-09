@@ -879,7 +879,7 @@ class IDEA_model extends CI_Model
             '__in__metadata_min_seconds' => $in['in_time_seconds'],
             '__in__metadata_max_seconds' => $in['in_time_seconds'],
             '__in__metadata_experts' => array(),
-            '__in__metadata_sources' => array(),
+            '__in__metadata_content' => array(),
         );
 
 
@@ -895,9 +895,9 @@ class IDEA_model extends CI_Model
             $en_metadat_experts = $this->SOURCE_model->en_metadat_experts($en);
 
             //CONTENT CHANNELS
-            foreach($en_metadat_experts['__in__metadata_sources'] as $en_id => $source_en) {
-                if (!isset($metadata_this['__in__metadata_sources'][$en_id])) {
-                    $metadata_this['__in__metadata_sources'][$en_id] = $source_en;
+            foreach($en_metadat_experts['__in__metadata_content'] as $en_id => $source_en) {
+                if (!isset($metadata_this['__in__metadata_content'][$en_id])) {
+                    $metadata_this['__in__metadata_content'][$en_id] = $source_en;
                 }
             }
 
@@ -984,9 +984,9 @@ class IDEA_model extends CI_Model
 
 
             //EXPERT CONTENT
-            foreach($metadata_recursion['__in__metadata_sources'] as $en_id => $source_en) {
-                if (!isset($metadata_this['__in__metadata_sources'][$en_id])) {
-                    $metadata_this['__in__metadata_sources'][$en_id] = $source_en;
+            foreach($metadata_recursion['__in__metadata_content'] as $en_id => $source_en) {
+                if (!isset($metadata_this['__in__metadata_content'][$en_id])) {
+                    $metadata_this['__in__metadata_content'][$en_id] = $source_en;
                 }
             }
 
@@ -1020,7 +1020,7 @@ class IDEA_model extends CI_Model
             'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
             'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
             'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
-            'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
+            'in__metadata_content' => $metadata_this['__in__metadata_content'],
         ));
 
         //Return data:

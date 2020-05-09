@@ -242,7 +242,7 @@ if(!$read_in_home){
 
         //Expert References?
         $expert_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
-        $content_count = ( isset($metadata['in__metadata_sources']) ? count($metadata['in__metadata_sources']) : 0 );
+        $content_count = ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
         if ($content_count || $expert_count) {
 
             echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $content_count ? $content_count.' Source'.echo__s($content_count).( $expert_count ? ' From ' : '' ) : '' ).( $expert_count ? $expert_count.' Expert'.echo__s($expert_count) : '' ).'</a></div>';
@@ -251,18 +251,7 @@ if(!$read_in_home){
             echo '<div class="list-group single-color">';
 
             //Sort Expert Content
-            $experts_content = array();
-            foreach($metadata['in__metadata_sources'] as $md){
-                if(isset($md['en_id']) && !isset($experts_content[$md['en_id']])){
-                    $experts_content[$md['en_id']] = $md;
-                }
-            }
-            foreach($metadata['in__metadata_experts'] as $md){
-                if(isset($md['en_id']) && !isset($experts_content[$md['en_id']])){
-                    $experts_content[$md['en_id']] = $md;
-                }
-            }
-
+            $experts_content = array_merge($metadata['in__metadata_content'], $metadata['in__metadata_experts']);
             usort($experts_content, 'sortByWeight');
             foreach ($experts_content as $en_source) {
                 echo echo_en_basic($en_source);
