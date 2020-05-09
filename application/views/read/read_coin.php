@@ -254,9 +254,9 @@ if(!$read_in_home){
             if($content_count && $expert_count){
                 $experts_content = array_merge($metadata['in__metadata_content'], $metadata['in__metadata_experts']);
             } elseif($content_count){
-                $experts_content = $content_count;
+                $experts_content = $metadata['in__metadata_content'];
             } elseif($expert_count){
-                $experts_content = $expert_count;
+                $experts_content = $metadata['in__metadata_experts'];
             }
             usort($experts_content, 'sortByWeight');
             foreach ($experts_content as $en_source) {
