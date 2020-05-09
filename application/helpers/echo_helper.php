@@ -997,7 +997,17 @@ function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = nu
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_ins');
         if($next_ins[0]['total_ins'] > 0){
             $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[11020]['m_name'].'">'.$en_all_12413[11020]['m_icon'].$next_ins[0]['total_ins'].'&nbsp;</div>';
+
+            //TREE SIZE
+            $tree_size = ( isset($in_metadata['in__metadata_max_steps']) && $in_metadata['in__metadata_max_steps']>$next_ins[0]['total_ins'] ? intval($in_metadata['in__metadata_max_steps']) : 0 );
+            if($tree_size){
+                $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$en_all_12413[6170]['m_name'].'">'.$en_all_12413[6170]['m_icon'].$tree_size.'&nbsp;</div>';
+            }
         }
+
+
+
+
 
 
         $ui .= '</div>';

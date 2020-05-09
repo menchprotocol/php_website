@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-08 20:39:15 PST
+//Generated 2020-05-08 21:30:47 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1588995555;
-$config['cache_count_transaction'] = 1195656;
+$config['cache_timestamp'] = 1588998647;
+$config['cache_count_transaction'] = 1195754;
 $config['cache_count_read'] = 121153;
-$config['cache_count_idea'] = 5558;
+$config['cache_count_idea'] = 5562;
 $config['cache_count_source'] = 4829;
 
 
@@ -875,7 +875,7 @@ $config['en_all_12420'] = array(
 );
 
 //IDEA TREE:
-$config['en_ids_12413'] = array(11020,11019);
+$config['en_ids_12413'] = array(11020,11019,6170,6169);
 $config['en_all_12413'] = array(
     11020 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
@@ -888,6 +888,18 @@ $config['en_all_12413'] = array(
         'm_name' => 'PREVIOUS',
         'm_desc' => '',
         'm_parents' => array(12413,10990),
+    ),
+    6170 => array(
+        'm_icon' => '<i class="fas fa-sitemap idea"></i>',
+        'm_name' => 'TREE MAX',
+        'm_desc' => '',
+        'm_parents' => array(12413,6232,6214,6159),
+    ),
+    6169 => array(
+        'm_icon' => '<i class="fal fa-sitemap idea"></i>',
+        'm_name' => 'TREE MIN',
+        'm_desc' => '',
+        'm_parents' => array(12413,6232,6214,6159),
     ),
 );
 
@@ -2308,7 +2320,7 @@ $config['en_all_11081'] = array(
 );
 
 //MENCH VARIABLE:
-$config['en_ids_6232'] = array(6203,6202,4486,6159,6208,6168,6283,12885,6228,6165,6162,6170,6161,6169,6167,4356,4737,4736,7585,4358,6197,6198,6160,6172,6207,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
+$config['en_ids_6232'] = array(6203,6202,4486,6159,6208,6168,6283,12885,6228,6165,6162,6161,6167,4356,4737,4736,6170,6169,7585,4358,6197,6198,6160,6172,6207,6177,4364,7694,4367,4372,6103,4369,4429,4368,4366,4370,4371,6186,4362,4593,4739,4735);
 $config['en_all_6232'] = array(
     6203 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -2376,23 +2388,11 @@ $config['en_all_6232'] = array(
         'm_desc' => 'in__metadata_max_seconds',
         'm_parents' => array(4739,6232,6214,4356,6159),
     ),
-    6170 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
-        'm_name' => 'IDEA METADATA MAXIMUM STEPS',
-        'm_desc' => 'in__metadata_max_steps',
-        'm_parents' => array(6232,6214,6159),
-    ),
     6161 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA MINIMUM SECONDS',
         'm_desc' => 'in__metadata_min_seconds',
         'm_parents' => array(4735,6232,6214,4356,6159),
-    ),
-    6169 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
-        'm_name' => 'IDEA METADATA MINIMUM STEPS',
-        'm_desc' => 'in__metadata_min_steps',
-        'm_parents' => array(6232,6214,6159),
     ),
     6167 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -2417,6 +2417,18 @@ $config['en_all_6232'] = array(
         'm_name' => 'IDEA TITLE',
         'm_desc' => 'in_title',
         'm_parents' => array(6404,10990,12112,10644,6232,6201),
+    ),
+    6170 => array(
+        'm_icon' => '<i class="fas fa-sitemap idea"></i>',
+        'm_name' => 'IDEA TREE MAX',
+        'm_desc' => 'in__metadata_max_steps',
+        'm_parents' => array(12413,6232,6214,6159),
+    ),
+    6169 => array(
+        'm_icon' => '<i class="fal fa-sitemap idea"></i>',
+        'm_name' => 'IDEA TREE MIN',
+        'm_desc' => 'in__metadata_min_steps',
+        'm_parents' => array(12413,6232,6214,6159),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random idea" aria-hidden="true"></i>',
