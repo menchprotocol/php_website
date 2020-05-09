@@ -541,7 +541,9 @@ function redirect_message($url, $message = null)
 }
 
 function sortByWeight($a, $b) {
-    return $b['en_weight'] - $a['en_weight'];
+    if(isset($a['en_weight']) && isset($b['en_weight'])){
+        return $b['en_weight'] - $a['en_weight'];
+    }
 }
 
 function superpower_active($superpower_en_id, $boolean_only = false){
