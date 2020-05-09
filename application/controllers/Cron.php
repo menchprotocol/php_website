@@ -4,17 +4,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
 
 # ACTIVE:
-* * * * *       /usr/bin/php /var/www/platform/index.php cron cron__7275  # Common Base
-5 * * * *       /usr/bin/php /var/www/platform/index.php cron cron__4356  # Idea Time
-10 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__7276  # Extra Insights
-20 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__12523 # Icon Sync
-30 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__12569 # Weight Sync
-01 7 * * 1      /usr/bin/php /var/www/platform/index.php cron cron__12114 # Growth Report Email
-40 3 * * *      /usr/bin/php /var/www/platform/index.php cron cron__7278  # Gephi Sync
-50 6 * * *      /usr/bin/php /var/www/platform/index.php cron cron__7277  # Metadata Cleanup
+* * * * *               /usr/bin/php /var/www/platform/index.php cron cron__7275  # Common Base
+0,15,30,45 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__12967 # Icon Sync
+5,20,35,50 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__4356  # Idea Time
+10,25,40,55 * * * *     /usr/bin/php /var/www/platform/index.php cron cron__7276  # Extra Insights
+30 * * * *              /usr/bin/php /var/www/platform/index.php cron cron__12569 # Weight Sync
+01 7 * * 1              /usr/bin/php /var/www/platform/index.php cron cron__12114 # Growth Report Email
+40 3 * * *              /usr/bin/php /var/www/platform/index.php cron cron__7278  # Gephi Sync
+50 6 * * *              /usr/bin/php /var/www/platform/index.php cron cron__7277  # Metadata Cleanup
 
 # INACTIVE:
-# 45 1 19 * *   /usr/bin/php /var/www/platform/index.php cron cron__7279  # Algolia Search SYNC
+# 45 1 19 * *           /usr/bin/php /var/www/platform/index.php cron cron__7279  # Algolia Search SYNC
 
 */
 
@@ -734,18 +734,19 @@ class Cron extends CI_Controller
 
 
 
-    function cron__12523()
+    function cron__12967()
     {
 
         /*
          *
-         * Cronjob to sync icons where granchildren of source 12523 will inherit their parent icon (child of 12523)
+         * Cronjob to sync source icons
          *
          * */
 
+
+        //IF NEW
         $updated = 0;
         foreach($this->config->item('en_all_12523') as $en_id => $m) {
-
             //Update All Child Icons that are not the same:
             foreach($this->LEDGER_model->ln_fetch(array(
                 'ln_profile_source_id' => $en_id,
@@ -761,8 +762,30 @@ class Cron extends CI_Controller
             }
 
         }
+        echo $updated.' Icons updated across '.count($this->config->item('en_all_12523')).' IF NEW sources.<br />';
 
-        echo $updated.' Icons updated across '.count($this->config->item('en_all_12523')).' sources.';
+
+
+
+        //IF DIFFERENT
+        $updated = 0;
+        foreach($this->config->item('en_all_12968') as $en_id => $m) {
+            //Update All Child Icons that are not the same:
+            foreach($this->LEDGER_model->ln_fetch(array(
+                'ln_profile_source_id' => $en_id,
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+                'en_icon !=' => $m['m_icon'], //Different Icon
+            ), array('en_portfolio'), 0) as $en) {
+                $updated++;
+                $this->SOURCE_model->en_update($en['en_id'], array(
+                    'en_icon' => $m['m_icon'],
+                ), true);
+            }
+
+        }
+        echo $updated.' Icons updated across '.count($this->config->item('en_all_12968')).' IF DIFFERENT sources.<br />';
 
     }
 
