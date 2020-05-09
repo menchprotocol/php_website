@@ -252,14 +252,14 @@ if(!$read_in_home){
 
             //Sort Expert Content
             $experts_content = array();
-            foreach($metadata['in__metadata_sources'] as $md_en_id => $md){
-                if(!isset($experts_content[$md_en_id]) && isset($md['en_id'])){
-                    $experts_content[$md_en_id] = $md;
+            foreach($metadata['in__metadata_sources'] as $md){
+                if(isset($md['en_id']) && !isset($experts_content[$md['en_id']])){
+                    $experts_content[$md['en_id']] = $md;
                 }
             }
-            foreach($metadata['in__metadata_experts'] as $md_en_id => $md){
-                if(!isset($experts_content[$md_en_id]) && isset($md['en_id'])){
-                    $experts_content[$md_en_id] = $md;
+            foreach($metadata['in__metadata_experts'] as $md){
+                if(isset($md['en_id']) && !isset($experts_content[$md['en_id']])){
+                    $experts_content[$md['en_id']] = $md;
                 }
             }
 
