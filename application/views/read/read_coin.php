@@ -251,7 +251,13 @@ if(!$read_in_home){
             echo '<div class="list-group single-color">';
 
             //Sort Expert Content
-            $experts_content = array_merge($metadata['in__metadata_content'], $metadata['in__metadata_experts']);
+            if($content_count && $expert_count){
+                $experts_content = array_merge($metadata['in__metadata_content'], $metadata['in__metadata_experts']);
+            } elseif($content_count){
+                $experts_content = $content_count;
+            } elseif($expert_count){
+                $experts_content = $expert_count;
+            }
             usort($experts_content, 'sortByWeight');
             foreach ($experts_content as $en_source) {
                 echo echo_en_basic($en_source);
