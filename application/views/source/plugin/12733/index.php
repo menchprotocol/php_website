@@ -11,7 +11,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
 
     $player_reads = $this->LEDGER_model->ln_fetch(array(
         'ln_creator_source_id' => $_GET['en_id'],
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6205')) . ')' => null, //Reads Idea Set
+        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
     ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));

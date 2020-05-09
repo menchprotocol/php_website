@@ -656,11 +656,11 @@ function count_ln_type($en_id){
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             return $idea_bookmarks[0]['totals'];
 
-        } elseif($en_id==6205){
+        } elseif($en_id==12969){
 
             $read_bookmarks = $CI->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6205')) . ')' => null, //Reads Idea Set
+                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
                 'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             ), array('in_previous'), 0, 0, array(), 'COUNT(ln_id) as totals');

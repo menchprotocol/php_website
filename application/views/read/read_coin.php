@@ -197,9 +197,6 @@ foreach($in__messages as $message_ln) {
 }
 
 
-
-
-
 if(!$read_in_home){
 
     if($all_child_featured){
@@ -226,7 +223,7 @@ if(!$read_in_home){
                 $metadata['in__metadata_max_steps']--;//Do not include the main idea itself
             }
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.$chapters.' Idea'.echo__s($chapters).( $has_idea ? ' + '.($metadata['in__metadata_max_steps']-$chapters).' Sub-Idea'.echo__s($metadata['in__metadata_max_steps']-$chapters) : '' ).( $has_time || $chapters ? ( $has_idea ? ' <i class="fas fa-clock"></i> ' : '' ).echo_time_range($metadata) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.$chapters.' Idea'.echo__s($chapters).( $has_idea ? ' +'.($metadata['in__metadata_max_steps']-$chapters).' Sub-Idea'.echo__s($metadata['in__metadata_max_steps']-$chapters) : '' ).( $has_time || $chapters ? ( $has_idea ? ' <i class="fas fa-clock"></i> ' : '' ).echo_time_range($metadata) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
