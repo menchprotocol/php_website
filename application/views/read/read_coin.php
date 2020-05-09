@@ -253,6 +253,9 @@ if(!$read_in_home){
             //Sort Expert Content
             $experts_content = array_merge($metadata['in__metadata_sources'], $metadata['in__metadata_experts']);
             usort($experts_content, 'sortByWeight');
+
+            print_r($experts_content);
+
             foreach ($experts_content as $en_source) {
                 echo echo_en_basic($en_source);
             }
