@@ -11,6 +11,7 @@
 $metadata = unserialize($in['in_metadata']);
 $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 $recipient_en = superpower_assigned();
+$is_home_page = $in['in_id']==config_var(12156);
 if(!isset($recipient_en['en_id']) ){
     $recipient_en['en_id'] = 0;
 }
@@ -47,18 +48,6 @@ $common_prefix = in_calc_common_prefix($in__next, 'in_title');
 
 //FEATURED?
 $is_or = in_array($in['in_type_source_id'], $this->config->item('en_ids_6193'));
-if($is_or){
-    $all_child_featured = true;
-    foreach($in__next as $key => $child_in){
-        if(!in_array($child_in['in_status_source_id'], $this->config->item('en_ids_12138'))){
-            $all_child_featured = false;
-            break;
-        }
-    }
-} else {
-    $all_child_featured = false;
-}
-
 
 
 //ALREADY IN READS?
@@ -199,7 +188,7 @@ foreach($in__messages as $message_ln) {
 
 if(!$read_in_home){
 
-    if($all_child_featured){
+    if($is_home_page){
 
         echo '<div class="cover-list" style="padding: 33px 0 33px 33px;">';
         if($chapters){
