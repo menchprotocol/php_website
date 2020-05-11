@@ -1385,15 +1385,15 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     }
     $ui .= $cover_photo;
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= '<span class="media-info bottom-right">'.echo_time_range($metadata).'</span>';
+        $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
     if($completion_rate['completion_percentage']==100){
-        $ui .= '<span class="media-info bottom-left">100% <i class="fas fa-check-circle"></i></span>';
+        $ui .= '<span class="media-info top-left">100% <i class="fas fa-check-circle"></i></span>';
     }
     //Search for Idea Image:
     if($show_editor){
-        $ui .= '<span class="media-info top-left read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
-        $ui .= '<span class="media-info top-right read_remove_item" in-id="'.$in['in_id'].'" title="REMOVE"><i class="fas fa-times"></i></span>';
+        $ui .= '<span class="media-info bottom-left read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
+        $ui .= '<span class="media-info bottom-right read_remove_item" in-id="'.$in['in_id'].'" title="REMOVE"><i class="fas fa-times"></i></span>';
     }
     $ui .= '</div>';
 
