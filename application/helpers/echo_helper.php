@@ -1414,10 +1414,7 @@ function echo_en_basic($en)
 {
     $ui = '<div class="list-group-item no-side-padding">';
     $ui .= '<span class="icon-block">' . echo_en_icon($en['en_icon']) . '</span>';
-    $ui .= '<span class="title-block title-no-right">'.$en['en_name'].'</span>';
-    if(strlen($en['ln_content']) > 0){
-        $ui .= '<div class="space-content">'.$en['ln_content'].'</div>';
-    }
+    $ui .= '<span class="title-block title-no-right">'.$en['en_name'].(strlen($en['ln_content']) > 0 ? ': '.$en['ln_content'] : '').'</span>';
     $ui .= '</div>';
     return $ui;
 }
