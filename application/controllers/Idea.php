@@ -64,7 +64,7 @@ class Idea extends CI_Controller {
 
     function index(){
         //Idea Bookmarks
-        $session_en = superpower_assigned(null, true);
+        $session_en = superpower_assigned(10939, true);
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
             'title' => $en_all_11035[4535]['m_name'],
@@ -96,7 +96,6 @@ class Idea extends CI_Controller {
         if ( count($ins) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>IDEA #' . $in_id . ' Not Found</div>');
         }
-
 
 
         $session_en = superpower_assigned(10939); //Idea Pen?
