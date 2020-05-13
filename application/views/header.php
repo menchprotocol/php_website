@@ -217,7 +217,6 @@ if(!isset($hide_header)){
                             //Fetch URL:
                             if(in_array($en_id, $this->config->item('en_ids_10876'))){
 
-                                $en_all_10876 = $this->config->item('en_all_10876'); //Mench Website
                                 $page_url = 'href="'.$en_all_10876[$en_id]['m_desc'].'"';
 
                             } elseif($en_id==12205) {
