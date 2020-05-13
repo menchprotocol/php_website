@@ -158,7 +158,7 @@ if(!isset($hide_header)){
                                 }
 
                                 //Apply superpower to Mench actions only
-                                $superpower_actives = ( in_array($m['en_id'], $this->config->item('en_ids_10957')) ? array_intersect($this->config->item('en_ids_10957'), $m['m_parents']) : array());
+                                $superpower_actives = ( in_array($m['en_id'], $this->config->item('en_ids_2738')) ? array_intersect($this->config->item('en_ids_10957'), $m['m_parents']) : array());
 
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
