@@ -204,15 +204,11 @@ if(!$read_in_home){
         //IDEA METADATA
         $metadata = unserialize($in['in_metadata']);
         $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-        $has_idea = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 && $metadata['in__metadata_max_steps']>$chapters );
+        $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : $chapters );
 
-        if ($has_time || $has_idea || $chapters) {
+        if ($has_time || $idea_count) {
 
-            if($has_idea){
-                $metadata['in__metadata_max_steps']--;//Do not include the main idea itself
-            }
-
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.$chapters.' Idea'.echo__s($chapters).( $has_idea ? ' +'.($metadata['in__metadata_max_steps']-$chapters).' Sub-Idea'.echo__s($metadata['in__metadata_max_steps']-$chapters) : '' ).( $has_time || $chapters ? ( $has_idea ? ' <i class="fas fa-clock"></i> ' : '' ).echo_time_range($metadata) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.echo__s($idea_count).( $has_time ? ' <i class="fas fa-clock"></i> '.echo_time_range($metadata) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';

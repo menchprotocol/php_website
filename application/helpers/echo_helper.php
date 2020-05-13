@@ -649,7 +649,7 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
         }
     }
 
-    $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor || $is_saved || $recipient_en['en_id'] );
+    $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor || $is_saved ); //|| $recipient_en['en_id']
 
 
     $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).' itemread '.$extra_class.'">';
@@ -1370,6 +1370,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
 
     $recipient_en = superpower_assigned();
     $metadata = unserialize($in['in_metadata']);
+    $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : 0 );
 
     $ui  = '<a href="/'.$in['in_id'] . '" id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
 
@@ -1387,8 +1388,8 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
         $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
-    if($completion_rate['completion_percentage']==100){
-        $ui .= '<span class="media-info top-left">100% <i class="fas fa-check-circle"></i></span>';
+    if($idea_count){
+        $ui .= '<span class="media-info top-left"><i class="fas fa-lightbulb-on"></i> '.$idea_count.'</span>';
     }
     //Search for Idea Image:
     if($show_editor){
