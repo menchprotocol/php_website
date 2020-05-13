@@ -174,7 +174,7 @@ if ($read_in_home) {
 
 
 //READ TITLE
-echo '<h1 class="block-one" '.( !$recipient_en['en_id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.( $completion_rate['completion_percentage']>0 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-circle idea"></i>' ).'</span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
+echo '<h1 class="block-one" '.( !$recipient_en['en_id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.echo_in_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
 
 
 //MESSAGES

@@ -626,7 +626,9 @@ function echo_coins_count_source($in_id = 0, $en_id = 0, $number_only = false){
     }
 }
 
-
+function echo_in_icon($can_click, $completion_percentage){
+    return ( $can_click ? ( $completion_percentage>=100 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-circle read"></i>' ) : '<i class="fas fa-circle idea"></i>' );
+}
 
 function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
 {
@@ -649,16 +651,18 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
         }
     }
 
-    $can_click = ( ( $parent_is_or && in_array($in['in_status_source_id'], $CI->config->item('en_ids_12138')) ) || $completion_rate['completion_percentage']>0 || $show_editor || $is_saved ); //|| $recipient_en['en_id']
+    $can_click = ( $completion_rate['completion_percentage']>0 || $show_editor || $is_saved ); //|| $recipient_en['en_id']
 
 
     $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).' itemread '.$extra_class.'">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
+
     if($can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
         $ui .= '<div class="progress-bg-list" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
-    $ui .= '<span class="icon-block">'.( $can_click ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-circle idea"></i>' ).'</span>';
+    $ui .= '<span class="icon-block">'.echo_in_icon($can_click, $completion_rate['completion_percentage']).'</span>';
+
     $ui .= '<b class="montserrat idea-url title-block">'.echo_in_title($in, $common_prefix).'</b>';
 
     //Search for Idea Image:
