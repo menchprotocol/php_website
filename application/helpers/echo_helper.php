@@ -630,7 +630,7 @@ function echo_in_icon($can_click, $completion_percentage){
     return ( $can_click ? ( $completion_percentage>=100 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-play-circle read"></i>' ) : '<i class="fas fa-circle idea"></i>' );
 }
 
-function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
+function echo_in_read($in, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
 {
 
     //See if user is logged-in:
@@ -654,7 +654,7 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
     $can_click = ( $completion_rate['completion_percentage']>0 || $show_editor || $is_saved ); //|| $recipient_en['en_id']
 
 
-    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).' itemread '.$extra_class.'">';
+    $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).' itemread">';
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
 
     if($can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
@@ -663,7 +663,7 @@ function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_
 
     $ui .= '<span class="icon-block">'.echo_in_icon($can_click, $completion_rate['completion_percentage']).'</span>';
 
-    $ui .= '<b class="montserrat idea-url title-block">'.echo_in_title($in, $common_prefix).'</b>';
+    $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.echo_in_title($in, $common_prefix).'</b>';
 
     //Search for Idea Image:
     if($show_editor){
@@ -1072,7 +1072,7 @@ function echo_in_list($in, $in__next, $recipient_en, $prefix_statement = null, $
 
         echo '<div class="list-group">';
         foreach($in__next as $key => $child_in){
-            echo echo_in_read($child_in, false, $common_prefix);
+            echo echo_in_read($child_in, $common_prefix);
         }
         echo '</div>';
     }
@@ -1179,7 +1179,7 @@ function echo_in_previous_read($in_id, $recipient_en){
 
             $ui .= '<div class="main_reads_bottom hidden">';
             $ui .= '<div class="list-group">';
-            $ui .= echo_in_read($top_completion_rate['top_in'], false, null, null, false, $top_completion_rate);
+            $ui .= echo_in_read($top_completion_rate['top_in'], null, false, $top_completion_rate);
             $ui .= '</div>';
             $ui .= '</div>';
 
@@ -1414,7 +1414,7 @@ function echo_en_basic($en)
 {
     $ui = '<div class="list-group-item no-side-padding">';
     $ui .= '<span class="icon-block">' . echo_en_icon($en['en_icon']) . '</span>';
-    $ui .= '<span class="title-block title-no-right montserrat">'.$en['en_name'].'</span>';
+    $ui .= '<span class="title-block title-no-right">'.$en['en_name'].'</span>';
     if(strlen($en['ln_content']) > 0){
         $ui .= '<div class="space-content">'.$en['ln_content'].'</div>';
     }

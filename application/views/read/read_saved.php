@@ -17,7 +17,7 @@
 
         echo '<div class="list-group no-side-padding">';
         foreach($player_saved as $priority => $in) {
-            echo echo_in_read($in, false, null, null, true);
+            echo echo_in_read($in, null, true);
         }
         echo '</div>';
 

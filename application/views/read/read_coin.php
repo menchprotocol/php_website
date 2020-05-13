@@ -46,10 +46,6 @@ $common_prefix = in_calc_common_prefix($in__next, 'in_title');
 
 
 
-//FEATURED?
-$is_or = in_array($in['in_type_source_id'], $this->config->item('en_ids_6193'));
-
-
 //ALREADY IN READS?
 $completion_rate['completion_percentage'] = 0;
 $read_in_home = $this->READ_model->read_in_home($in['in_id'], $recipient_en);
@@ -216,7 +212,7 @@ if(!$read_in_home){
                 //List Children:
                 echo '<div class="list-group '.( !$recipient_en['en_id'] ? 'single-color' : '' ).'">';
                 foreach($in__next as $key => $child_in){
-                    echo echo_in_read($child_in, $is_or, in_calc_common_prefix($in__next, 'in_title'));
+                    echo echo_in_read($child_in, in_calc_common_prefix($in__next, 'in_title'));
                 }
                 echo '</div>';
             }
