@@ -157,7 +157,9 @@ if(!isset($hide_header)){
 
                                 }
 
-                                echo '<div class="btn-group mench_coin '.$class.' border-' . $class.'">';
+                                $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+
+                                echo '<div class="btn-group mench_coin '.$class.' border-' . $class.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $class . '_name '.( !$count ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
