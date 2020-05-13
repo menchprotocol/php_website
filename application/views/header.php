@@ -163,7 +163,7 @@ if(!isset($hide_header)){
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                                echo '<span class="montserrat ' . $class . '_name '.( !$count ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
+                                echo '<span class="montserrat ' . $class . '_name '.( !$count || !superpower_active(10939, true) ? '' : 'show-max' ).'">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '</a>';
                                 echo '</div>';
 

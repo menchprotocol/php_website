@@ -9,6 +9,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 $is_public = in_array($en['en_status_source_id'], $this->config->item('en_ids_7357'));
 $is_active = in_array($en['en_status_source_id'], $this->config->item('en_ids_7358'));
 $superpower_10967 = superpower_active(10967, true);
+$superpower_any = count($this->session->userdata('session_superpowers_assigned'));
 $is_source = en_is_source($en['en_id']);
 
 
@@ -236,6 +237,11 @@ $is_source = en_is_source($en['en_id']);
             //Display account fields ordered with their SOURCE LINKS:
             foreach($this->config->item('en_all_6225') as $acc_en_id => $acc_detail) {
 
+                //Do they have any assigned? Skip this section if not:
+                if($acc_en_id == 10957 /* Superpowers */ && !$superpower_any){
+                    continue;
+                }
+
                 //Print header:
                 $this_tab .= '<div class="card">
 <div class="card-header" id="heading' . $acc_en_id . '">
@@ -284,20 +290,12 @@ $is_source = en_is_source($en['en_id']);
 
                 } elseif ($acc_en_id == 10957 /* Superpowers */) {
 
-                    //Do they have any assigned? Skip this section if not:
-                    $session_superpowers_assigned = count($this->session->userdata('session_superpowers_assigned'));
-                    if(!$session_superpowers_assigned){
-
-                        continue;
-
-                    } elseif($session_superpowers_assigned >= 3){
-
+                    if($superpower_any >= 2){
                         //Mass Toggle Option:
                         $this_tab .= '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_toggle_all(1)" class="btn btn-far"><i class="fas fa-toggle-on"></i></a>
                   <a href="javascript:void(0)" onclick="account_toggle_all(0)" class="btn btn-fad"><i class="fas fa-toggle-off"></i></a>
                 </div><div class="doclear">&nbsp;</div>';
-
                     }
 
 
