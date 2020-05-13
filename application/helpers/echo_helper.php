@@ -1389,7 +1389,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
     if($idea_count){
-        $ui .= '<span class="media-info top-left" title="'.$idea_count.' Ideas" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle idea"></i> '.$idea_count.'</span>';
+        //$ui .= '<span class="media-info top-left" title="'.$idea_count.' Ideas" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle idea"></i> '.$idea_count.'</span>';
     }
     //Search for Idea Image:
     if($show_editor){
