@@ -9,7 +9,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 $is_public = in_array($en['en_status_source_id'], $this->config->item('en_ids_7357'));
 $is_active = in_array($en['en_status_source_id'], $this->config->item('en_ids_7358'));
 $superpower_10967 = superpower_active(10967, true);
-$superpower_any = count($this->session->userdata('session_superpowers_assigned'));
+$superpower_any = ( $session_en ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
 $is_source = en_is_source($en['en_id']);
 
 
