@@ -627,7 +627,7 @@ function echo_coins_count_source($in_id = 0, $en_id = 0, $number_only = false){
 }
 
 function echo_in_icon($can_click, $completion_percentage){
-    return ( $can_click ? ( $completion_percentage>=100 ? '<i class="fas fa-circle read"></i>' : '<i class="far fa-circle read"></i>' ) : '<i class="fas fa-circle idea"></i>' );
+    return ( $can_click ? ( $completion_percentage>=100 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-play-circle read"></i>' ) : '<i class="fas fa-circle idea"></i>' );
 }
 
 function echo_in_read($in, $parent_is_or = false, $common_prefix = null, $extra_class = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
