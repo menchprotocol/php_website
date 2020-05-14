@@ -271,11 +271,7 @@ class Cron extends CI_Controller
 
             //Start by counting the title:
             $total_scanned++;
-            $estimated_time = words_to_seconds($in['in_title']);
-            if($in_id){
-                //Show details:
-                echo $estimated_time.' Seconds TITLE: '.$in['in_title'].'<hr />';
-            }
+            $estimated_time = 0;
 
 
             //Idea Type Has Time?
