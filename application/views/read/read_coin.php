@@ -390,6 +390,10 @@ if(!$read_in_home){
             //List children to choose from:
             foreach($in__next as $key => $child_in) {
 
+                $metadata = unserialize($child_in['in_metadata']);
+                $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+                $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : 0 );
+
                 //Has this been previously selected?
                 $previously_selected = count($this->LEDGER_model->ln_fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -402,16 +406,12 @@ if(!$read_in_home){
 
                 echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread no-left-padding">';
 
+                //Right Stats:
+                if($has_time_estimate || $idea_count){
+                    $ui .= '<div class="pull-right montserrat" style="width:158px;"><span style="width:55px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<i class="far fa-clock grey"></i><span style="padding-left:3px;" class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
+                }
 
-                echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
-
-                echo '<td style="width: 100%; padding: 0 !important;">';
                 echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, $common_prefix).'</b>';
-                echo '</td>';
-
-                echo '</tr></table>';
-
 
                 echo '</a>';
             }

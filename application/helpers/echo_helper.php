@@ -665,7 +665,6 @@ function echo_in_read($in, $common_prefix = null, $show_editor = false, $complet
     }
 
 
-
     if($can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
         $ui .= '<div class="progress-bg-list" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
