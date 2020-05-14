@@ -162,7 +162,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
                 //Set the Clean URL:
                 $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_time ? '<span class="media-info mid-right" title="Clip from '.echo_time_hours($start_time).' to '.echo_time_hours($end_time).'" data-toggle="tooltip" data-placement="top"><i class="far fa-clock"></i> '.echo_time_hours($end_time - $start_time).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
+                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_time ? '<span class="media-info mid-right" title="Clip from '.echo_time_hours($start_time).' to '.echo_time_hours($end_time).'" data-toggle="tooltip" data-placement="top">'.echo_time_hours($end_time - $start_time).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
 
             }
 
@@ -661,7 +661,7 @@ function echo_in_read($in, $common_prefix = null, $show_editor = false, $complet
 
     //Right Stats:
     if($has_time_estimate || $idea_count){
-        $ui .= '<div class="pull-right montserrat" style="width:158px;"><span style="width:55px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<i class="far fa-clock grey"></i><span style="padding-left:3px;" class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
+        $ui .= '<div class="pull-right montserrat" style="width:144px;"><span style="width:55px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<span class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
     }
 
 
@@ -1399,7 +1399,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     }
     $ui .= $cover_photo;
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= '<span class="media-info top-right"><i class="far fa-clock"></i><span style="padding-left: 2px;">'.echo_time_range($metadata).'</span></span>';
+        $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
     if($idea_count){
         $ui .= '<span class="media-info top-left" title="'.$idea_count.' Ideas" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.$idea_count.'</span></span>';
