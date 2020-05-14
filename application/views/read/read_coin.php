@@ -197,10 +197,13 @@ if(!$read_in_home){
 
     } else {
 
-        //IDEA METADATA
+        //METADATA
         $metadata = unserialize($in['in_metadata']);
-        $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : $chapters );
 
+
+
+        //IDEA
+        $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : $chapters );
         if ($idea_count) {
 
             $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
@@ -221,7 +224,9 @@ if(!$read_in_home){
         }
 
 
-        //Expert References?
+
+
+        //SOURCE
         $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 ) + ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
         if ($source_count) {
 
@@ -249,7 +254,10 @@ if(!$read_in_home){
         }
 
 
-        //Read Stats?
+
+
+
+        //READ
         $all_steps = array_merge(array_flatten($metadata['in__metadata_common_steps']) , array_flatten($metadata['in__metadata_expansion_steps']));
         $read_coins = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -258,7 +266,7 @@ if(!$read_in_home){
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $read_count = $read_coins[0]['totals'];
         if($read_count){
-            echo '<div class="read-topic read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.$read_count.' Total Read'.echo__s($read_count).'</div>';
+            echo '<div class="read-topic read"><span class="icon-block"><i class="fas fa-info-circle"></i></span>'.$read_count.' Read'.echo__s($read_count).'</div>';
         }
 
 
