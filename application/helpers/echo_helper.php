@@ -1391,7 +1391,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
         'ln_previous_idea_id IN (' . join(',', $all_steps) . ')' => null, //READ COIN
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $read_count = $read_coins[0]['total'];
+    $read_count = $read_coins[0]['totals'];
 
 
 
