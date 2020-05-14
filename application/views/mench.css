@@ -596,6 +596,7 @@ img.no-radius {
     width: 55px;
     margin: 10px;
     display: block;
+    border:0 !important;
 }
 .mench-large{
     width:128px;
