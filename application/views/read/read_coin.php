@@ -408,7 +408,7 @@ if(!$read_in_home){
 
                 //Right Stats:
                 if($has_time_estimate || $idea_count){
-                    $ui .= '<div class="pull-right montserrat" style="width:158px;"><span style="width:55px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<i class="far fa-clock grey"></i><span style="padding-left:3px;" class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
+                    echo '<div class="pull-right montserrat" style="width:158px;"><span style="width:55px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<i class="far fa-clock grey"></i><span style="padding-left:3px;" class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
                 }
 
                 echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, $common_prefix).'</b>';
