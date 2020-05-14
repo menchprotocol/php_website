@@ -66,7 +66,7 @@ function echo_ln_content($ln_content, $ln_type_source_id, $full_message = null)
 
     if ($ln_type_source_id == 4256 /* Generic URL */) {
 
-        return '<div class="block"><a href="' . $ln_content . '"><span class="icon-block-xs inline-block"><i class="fas fa-browser"></i></span><span class="url_truncate">' . echo_url_clean($ln_content) . '</span></a></div>';
+        return '<div class="block"><a href="' . $ln_content . '" target="_blank"><span class="icon-block-xs inline-block"><i class="far fa-external-link"></i></span><span class="url_truncate">' . echo_url_clean($ln_content) . '</span></a></div>';
 
     } elseif ($ln_type_source_id == 4257 /* Embed Widget URL? */) {
 
