@@ -661,7 +661,7 @@ function echo_in_read($in, $common_prefix = null, $show_editor = false, $complet
 
     //Right Stats:
     if($has_time_estimate || $idea_count){
-        $ui .= '<div class="pull-right montserrat" style="width:127px;"><span style="width:50px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<span class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
+        $ui .= '<div class="pull-right montserrat" style="width:130px;"><span style="width:52px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<span class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
     }
 
 
