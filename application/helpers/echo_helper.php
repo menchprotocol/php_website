@@ -1383,9 +1383,20 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
 
     $recipient_en = superpower_assigned();
     $metadata = unserialize($in['in_metadata']);
+    $all_steps = array_merge(array_flatten($metadata['in__metadata_common_steps']) , array_flatten($metadata['in__metadata_expansion_steps']));
     $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : 0 );
+    $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 ) + ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
+    $read_coins = $this->LEDGER_model->ln_fetch(array(
+        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
+        'ln_previous_idea_id IN (' . join(',', $all_steps) . ')' => null, //READ COIN
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    $read_count = $read_coins[0]['total'];
 
-    $ui  = '<a href="/'.$in['in_id'] . '" id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
+
+
+
+    $ui  = '<a href="/'.$in['in_id'] . '" id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'" title="'.count($all_steps).': '.join(', ',$all_steps).'">';
 
 
     $ui .= '<div class="cover-image">';
@@ -1401,9 +1412,21 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
         $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
+
+    $ui .= '<span class="media-info top-left hideIfEmpty" title="Interactive Book contains '.echo_number($idea_count).' Ideas from '.echo_number($source_count).' Expert Sources that has been read '.echo_number($read_count).' times." data-toggle="tooltip" data-placement="top">';
+
     if($idea_count){
-        $ui .= '<span class="media-info top-left" title="'.$idea_count.' Ideas" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.$idea_count.'</span></span>';
+        $ui .= '<div><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.echo_number($idea_count).'</span></div>';
     }
+    if($source_count){
+        $ui .= '<div><i class="fas fa-circle source"></i><span style="padding-left: 2px;">'.echo_number($source_count).'</span></div>';
+    }
+    if($read_count){
+        $ui .= '<div><i class="fas fa-circle read"></i><span style="padding-left: 2px;">'.echo_number($read_count).'</span></div>';
+    }
+
+    $ui .= '</span>';
+
     //Search for Idea Image:
     if($show_editor){
         $ui .= '<span class="media-info bottom-left read-sorter" title="SORT"><i class="fas fa-bars"></i></span>';

@@ -222,21 +222,20 @@ if(!$read_in_home){
 
 
         //Expert References?
-        $expert_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
-        $content_count = ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
-        if ($content_count || $expert_count) {
+        $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 ) + ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
+        if ($source_count) {
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.( $content_count ? $content_count.' Source'.echo__s($content_count).( $expert_count ? ' By ' : '' ) : '' ).( $expert_count ? $expert_count.' Expert'.echo__s($expert_count) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             echo '<div class="list-group single-color">';
 
             //Sort Expert Content
-            if($content_count && $expert_count){
+            if(isset($metadata['in__metadata_experts']) && isset($metadata['in__metadata_content'])){
                 $experts_content = array_merge($metadata['in__metadata_content'], $metadata['in__metadata_experts']);
-            } elseif($content_count){
+            } elseif(isset($metadata['in__metadata_content'])){
                 $experts_content = $metadata['in__metadata_content'];
-            } elseif($expert_count){
+            } else {
                 $experts_content = $metadata['in__metadata_experts'];
             }
             usort($experts_content, 'sortByWeight');
