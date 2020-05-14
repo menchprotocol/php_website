@@ -46,8 +46,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 }
 .content-image {
     margin:0;
-    max-width: 377px;
-    max-height: 377px;
+    border:1px solid #000;
 }
 
 .dorubik{
@@ -63,8 +62,12 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .span__4356{
     display: inline-block;
 }
-.media-content, .ln_content img, .ln_content video, .i_content img {
+.media-content, .ln_content video {
     max-width: 377px;
+}
+.ln_content img, .i_content img, .content-image {
+    max-width: 100%;
+    max-height: 100%;
 }
 .yt-container{
     margin: 10px 0 0;
