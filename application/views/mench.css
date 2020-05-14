@@ -514,6 +514,7 @@ img.no-radius {
     font-size: 0.8em;
     border-radius: 10px;
     z-index: 1;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .media-info.bottom-left{
