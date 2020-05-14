@@ -417,11 +417,11 @@ if(!$read_in_home){
                 echo '</td>';
 
                 //Right Stats:
+                echo '<td style="width:158px; padding: 0 !important;">';
                 if($has_time_estimate || $idea_count){
-                    echo '<td style="width:158px; padding: 0 !important;">';
                     echo '<span style="width:55px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<i class="far fa-clock grey"></i><span style="padding-left:3px;" class="grey montserrat">'.echo_time_range($metadata).'</span>': '' );
-                    echo '</td>';
                 }
+                echo '</td>';
 
                 echo '</tr></table>';
 
