@@ -503,7 +503,7 @@ img.no-radius {
     height: 100%;
 }
 .media-info {
-    padding: 1px 4px;
+    padding: 1px 3px;
     background: rgba(0, 0, 0, 0.8);
     position: absolute;
     color: #FFF;
@@ -514,23 +514,23 @@ img.no-radius {
 }
 
 .media-info.bottom-left{
-    left: 5px;
+    left: 4px;
     bottom: 5px;
 }
 .media-info.bottom-right{
-    right: 5px;
+    right: 4px;
     bottom: 5px;
 }
 .media-info.mid-right{
-    right: 5px;
+    right: 4px;
     bottom: 45px;
 }
 .media-info.top-right{
-    right: 5px;
+    right: 4px;
     top: 5px;
 }
 .media-info.top-left{
-    left: 5px;
+    left: 4px;
     top: 5px;
 }
 

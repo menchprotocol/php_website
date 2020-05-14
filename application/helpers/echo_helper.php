@@ -1399,10 +1399,10 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     }
     $ui .= $cover_photo;
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= '<span class="media-info top-right"><i class="far fa-clock"></i>&nbsp;'.echo_time_range($metadata).'</span>';
+        $ui .= '<span class="media-info top-right"><i class="far fa-clock"></i><span style="padding-left: 2px;">'.echo_time_range($metadata).'</span></span>';
     }
     if($idea_count){
-        $ui .= '<span class="media-info top-left" title="'.$idea_count.' Ideas" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle idea"></i>&nbsp;'.$idea_count.'</span>';
+        $ui .= '<span class="media-info top-left" title="'.$idea_count.' Ideas" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.$idea_count.'</span></span>';
     }
     //Search for Idea Image:
     if($show_editor){
