@@ -1417,13 +1417,13 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     $ui .= '<span class="media-info top-left hideIfEmpty" title="'.echo_number($idea_count).' Ideas summarized from '.echo_number($source_count).' expert sources that have been read '.echo_number($read_count).' times" data-toggle="tooltip" data-placement="bottom">';
 
     if($idea_count){
-        $ui .= '<div><i class="fas fa-circle idea"></i><span class="idea" style="padding-left: 2px;">'.echo_number($idea_count).'</span></div>';
+        $ui .= '<div><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.echo_number($idea_count).'</span></div>';
     }
     if($source_count){
-        $ui .= '<div><i class="fas fa-circle source"></i><span class="source" style="padding-left: 2px;">'.echo_number($source_count).'</span></div>';
+        $ui .= '<div><i class="fas fa-circle source"></i><span style="padding-left: 2px;">'.echo_number($source_count).'</span></div>';
     }
     if($read_count){
-        $ui .= '<div><i class="fas fa-circle read"></i><span class="read" style="padding-left: 2px;">'.echo_number($read_count).'</span></div>';
+        $ui .= '<div><i class="fas fa-circle read"></i><span style="padding-left: 2px;">'.echo_number($read_count).'</span></div>';
     }
 
     $ui .= '</span>';
