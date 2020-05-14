@@ -661,7 +661,7 @@ function echo_in_read($in, $common_prefix = null, $show_editor = false, $complet
 
     //Right Stats:
     if($has_time_estimate || $idea_count){
-        $ui .= '<div class="pull-right montserrat" style="width:158px;"><span style="width:55px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<i class="fas fa-clock grey"></i><span style="padding-left:3px;" class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
+        $ui .= '<div class="pull-right montserrat" style="width:158px;"><span style="width:55px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<i class="fas fa-stopwatch grey"></i><span style="padding-left:3px;" class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
     }
 
 
@@ -1400,7 +1400,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     }
     $ui .= $cover_photo;
     if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= '<span class="media-info top-right"><i class="fas fa-clock"></i>&nbsp;'.echo_time_range($metadata).'</span>';
+        $ui .= '<span class="media-info top-right"><i class="fas fa-stopwatch"></i>&nbsp;'.echo_time_range($metadata).'</span>';
     }
     if($idea_count){
         $ui .= '<span class="media-info top-left" title="'.$idea_count.' Ideas" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle idea"></i>&nbsp;'.$idea_count.'</span>';
