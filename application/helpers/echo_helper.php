@@ -1397,7 +1397,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
 
 
 
-    $ui  = '<a href="/'.$in['in_id'] . '" id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'" title="'.count($all_steps).': '.join(', ',$all_steps).'">';
+    $ui  = '<a href="/'.$in['in_id'] . '" id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
 
 
     $ui .= '<div class="cover-image">';
