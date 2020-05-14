@@ -60,7 +60,7 @@ function search_email(){
 
         //Release field lock:
         email_is_searching = false;
-        $('#email_check_next').html('<i class="fas fa-step-forward"></i>');
+        $('#email_check_next').html(go_next_icon);
         $('#input_email').prop('disabled', false).css('background-color','#FFFFFF');
 
         if (data.status) {
@@ -122,7 +122,7 @@ function add_account(){
 
             //Release field lock:
             account_is_adding = false;
-            $('#add_acount_next').html('Create Account <i class="fas fa-step-forward"></i>');
+            $('#add_acount_next').html(go_next_icon);
             $('#new_password, #input_name').prop('disabled', false).css('background-color','#FFFFFF');
 
             //Do we know which field to focus on?
@@ -171,7 +171,7 @@ function singin_check_password(){
 
             //Release field lock:
             password_is_checking = false;
-            $('#password_check_next').html('<i class="fas fa-step-forward"></i>');
+            $('#password_check_next').html(go_next_icon);
             $('#input_password').prop('disabled', false).css('background-color','#FFFFFF').focus();
 
             //Show errors:

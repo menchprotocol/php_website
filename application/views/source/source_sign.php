@@ -49,6 +49,7 @@ if(count($current_sign_in_attempt) == 0){
 ?>
 
 <script>
+    var go_next_icon = '<?= $en_all_11035[12211]['m_icon'] ?>';
     var referrer_in_id = <?= intval($referrer_in_id) ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
 </script>
@@ -70,7 +71,7 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="read margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised btn-circle"><i class="fas fa-step-forward"></i></a>
+                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised btn-circle" title="<?= $en_all_11035[12211]['m_name'] ?>"><?= $en_all_11035[12211]['m_icon'] ?></a>
             </span>
         </div>
 
@@ -88,15 +89,13 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="read margin-top-down hideIfEmpty"></div>
             <span id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-source transparent btn-raised  btn-circle"><i class="fas fa-step-backward"></i></a>
-                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle"><i class="fas fa-step-forward"></i></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source transparent btn-raised  btn-circle" title="<?= $en_all_11035[12991]['m_name'] ?>"><?= $en_all_11035[12991]['m_icon'] ?></a>
+                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle" title="<?= $en_all_11035[12211]['m_name'] ?>"><?= $en_all_11035[12211]['m_icon'] ?></a>
             </span>
 
             <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="magicemail()" class="dounderline"><?= $en_all_11035[11068]['m_name'] ?></a> <?= $en_all_11035[11068]['m_icon'] ?></span>
 
         </div>
-
-
 
 
 
@@ -130,8 +129,8 @@ if(count($current_sign_in_attempt) == 0){
             <!-- Signup Buttons -->
             <div id="new_account_errors" class="read margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source transparent btn-raised btn-circle"><i class="fas fa-step-backward"></i></a>
-                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source btn-raised btn-circle"><i class="fas fa-step-forward"></i></a>
+                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source transparent btn-raised btn-circle" title="<?= $en_all_11035[12991]['m_name'] ?>"><?= $en_all_11035[12991]['m_icon'] ?></a>
+                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source btn-raised btn-circle" title="<?= $en_all_11035[12211]['m_name'] ?>"><?= $en_all_11035[12211]['m_icon'] ?></a>
             </span>
 
         </div>
@@ -141,7 +140,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 5: Check your email -->
         <div id="step5" class="signup-steps hidden">
-            <span><i class="fas fa-envelope-open"></i> <span class="focus_email"></span></span>
+            <span style="padding-bottom: 10px;"><i class="fas fa-envelope-open"></i> <span class="focus_email"></span></span>
             <span class="medium-header magic_result"></span>
         </div>
 

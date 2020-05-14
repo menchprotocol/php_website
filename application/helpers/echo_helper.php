@@ -1109,6 +1109,7 @@ function echo_in_previous_read($in_id, $recipient_en){
     $previous_level_id = 0; //The ID of the Idea one level up
     $player_read_ids = $CI->READ_model->read_ids($recipient_en['en_id']);
     $top_completion_rate = null;
+    $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
 
     if(in_array($in_id, $player_read_ids)){
 
@@ -1158,9 +1159,9 @@ function echo_in_previous_read($in_id, $recipient_en){
 
         //Previous
         if(isset($_GET['previous_read']) && $_GET['previous_read']>0){
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/'.$_GET['previous_read'].'"><i class="fas fa-step-backward"></i></a></div>';
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/'.$_GET['previous_read'].'" title="'.$en_all_11035[12991]['m_name'].'">'.$en_all_11035[12991]['m_icon'].'</a></div>';
         } else {
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/read/previous/'.$previous_level_id.'/'.$in_id.'"><i class="fas fa-step-backward"></i></a></div>';
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-read btn-circle" href="/read/previous/'.$previous_level_id.'/'.$in_id.'" title="'.$en_all_11035[12991]['m_name'].'">'.$en_all_11035[12991]['m_icon'].'</a></div>';
         }
 
 

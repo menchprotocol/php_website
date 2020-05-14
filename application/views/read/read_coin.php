@@ -7,7 +7,7 @@
 <div class="container">
 <?php
 
-//PLAYER
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 $metadata = unserialize($in['in_metadata']);
 $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
 $recipient_en = superpower_assigned();
@@ -250,7 +250,7 @@ if(!$read_in_home){
         }
 
         //GET STARTED
-        echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$in['in_id'].'"><i class="fas fa-step-forward"></i></a></div>';
+        echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$in['in_id'].'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 
     }
 
@@ -293,7 +293,7 @@ if(!$read_in_home){
         if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
             //List Unlock paths:
-            echo_in_list($in, $unlock_paths, $recipient_en, '<span class="icon-block"><i class="fas fa-step-forward"></i></span>SUGGESTED IDEAS:');
+            echo_in_list($in, $unlock_paths, $recipient_en, '<span class="icon-block">&nbsp;</span>SUGGESTED IDEAS:');
 
         }
 
@@ -432,7 +432,7 @@ if(!$read_in_home){
                 echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
             }
 
-            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0)" onclick="read_answer()"><i class="fas fa-step-forward"></i></a></div>';
+            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0)" onclick="read_answer()">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 
             echo '</div>';
 
@@ -455,7 +455,7 @@ if(!$read_in_home){
         echo echo_in_previous_read($in['in_id'], $recipient_en);
 
         //Save/Upload & Next:
-        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_text_answer()"><i class="fas fa-step-forward"></i></a></div>';
+        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_text_answer()">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 
 
         if(count($read_completes)){
