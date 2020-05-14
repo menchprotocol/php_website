@@ -248,6 +248,21 @@ if(!$read_in_home){
 
         }
 
+
+        //Read Stats?
+        $all_steps = array_merge(array_flatten($metadata['in__metadata_common_steps']) , array_flatten($metadata['in__metadata_expansion_steps']));
+        $read_coins = $CI->LEDGER_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
+            'ln_previous_idea_id IN (' . join(',', $all_steps) . ')' => null, //READ COIN
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+        $read_count = $read_coins[0]['totals'];
+        if($read_count){
+            echo '<div class="read-topic"><span class="icon-block"><i class="far fa-info-circle"></i></span>'.$read_count.' Total Read'.echo__s($read_count).'</div>';
+        }
+
+
+
         //GET STARTED
         echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$in['in_id'].'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 
