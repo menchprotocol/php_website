@@ -412,7 +412,7 @@ if(!$read_in_home){
                 echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
                 echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
 
-                echo '<td style="width:calc(100% - 193px); padding: 0 !important;">';
+                echo '<td style="width:calc(100% - 193px); padding: 0 !important;" class="inline-block">';
                 echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, $common_prefix).'</b>';
                 echo '</td>';
 
