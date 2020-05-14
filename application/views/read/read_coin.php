@@ -204,7 +204,7 @@ if(!$read_in_home){
         if ($idea_count) {
 
             $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.echo__s($idea_count).( $has_time ? ' IN '.echo_time_range($metadata) : '' ).'</a></div>';
+            echo '<div class="idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.echo__s($idea_count).( $has_time ? ' IN '.echo_time_range($metadata) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
@@ -225,7 +225,7 @@ if(!$read_in_home){
         $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 ) + ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
         if ($source_count) {
 
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabExperts"></i><i class="far fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
+            echo '<div class="source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             echo '<div class="list-group single-color">';
@@ -258,7 +258,7 @@ if(!$read_in_home){
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $read_count = $read_coins[0]['totals'];
         if($read_count){
-            echo '<div class="read-topic"><span class="icon-block"><i class="far fa-info-circle"></i></span>'.$read_count.' Total Read'.echo__s($read_count).'</div>';
+            echo '<div class="read"><span class="icon-block"><i class="fas fa-circle read"></i></span>'.$read_count.' Total Read'.echo__s($read_count).'</div>';
         }
 
 
