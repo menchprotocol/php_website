@@ -204,7 +204,7 @@ if(!$read_in_home){
         if ($idea_count) {
 
             $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.echo__s($idea_count).( $has_time ? ' <i class="fas fa-clock"></i> '.echo_time_range($metadata) : '' ).'</a></div>';
+            echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="far fa-plus-circle contentTabIdeas"></i><i class="far fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.echo__s($idea_count).( $has_time ? ' IN <i class="fas fa-clock"></i> '.echo_time_range($metadata) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
