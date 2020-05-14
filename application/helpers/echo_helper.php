@@ -642,6 +642,7 @@ function echo_in_read($in, $common_prefix = null, $show_editor = false, $complet
     $is_saved = ( isset($in['ln_type_source_id']) && $in['ln_type_source_id']==12896 );
     $metadata = unserialize($in['in_metadata']);
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+    $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : 0 );
 
     if(!$completion_rate){
         if($recipient_en){
@@ -655,7 +656,15 @@ function echo_in_read($in, $common_prefix = null, $show_editor = false, $complet
 
 
     $ui  = '<div id="ap_in_'.$in['in_id'].'" '.( isset($in['ln_id']) ? ' sort-link-id="'.$in['ln_id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).' itemread">';
+
     $ui .= ( $can_click ? '<a href="/'.$in['in_id'] . '" class="itemread">' : '' );
+
+    //Right Stats:
+    if($has_time_estimate || $idea_count){
+        $ui .= '<div class="pull-right montserrat" style="width: 100px; background-color: #FF0000;">'.( $idea_count ? '<i class="fas fa-circle idea"></i>&nbsp;'.$idea_count : '' ).( $has_time_estimate ? ( $idea_count ? 'IN&nbsp;' : '' ).'<i class="fas fa-clock"></i>&nbsp;'.echo_time_range($metadata) : '' ).'</div>';
+    }
+
+
 
     if($can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
         $ui .= '<div class="progress-bg-list" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
