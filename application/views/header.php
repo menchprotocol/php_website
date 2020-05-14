@@ -213,6 +213,7 @@ if(!isset($hide_header)){
 
                             $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
                             $extra_class = null;
+                            $text_class = null;
 
                             //Fetch URL:
                             if(in_array($en_id, $this->config->item('en_ids_10876'))){
@@ -226,6 +227,7 @@ if(!isset($hide_header)){
                                 $page_url = 'href="/source/'.$en_id.'"';
                                 $m['m_name'] = $session_en['en_name'];
                                 $m['m_icon'] = $session_en['en_icon'];
+                                $text_class = 'text__6197_'.$en_id;
 
                             } elseif($en_id==12899) {
 
@@ -274,7 +276,7 @@ if(!isset($hide_header)){
                             }
 
                             //Navigation
-                            echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m_icon'].'</span><span class="text__6197_'.$en_id.'">'.$m['m_name'].'</span></a>';
+                            echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m_icon'].'</span><span class="'.$text_class.'">'.$m['m_name'].'</span></a>';
 
                         }
 
