@@ -695,7 +695,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             empty: function (data) {
                 if(is_add_mode=='link_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="far fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                     } else {
                         return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
