@@ -1414,7 +1414,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
 
-    $ui .= '<span class="media-info top-left hideIfEmpty" title="'.echo_number($idea_count).' Ideas summarized from '.echo_number($source_count).' expert sources read '.echo_number($read_count).' times" data-toggle="tooltip" data-placement="top">';
+    $ui .= '<span class="media-info top-left hideIfEmpty" title="'.echo_number($idea_count).' Ideas summarized from '.echo_number($source_count).' expert sources read '.echo_number($read_count).' times" data-toggle="tooltip" data-placement="bottom">';
 
     if($idea_count){
         $ui .= '<div><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.echo_number($idea_count).'</span></div>';
