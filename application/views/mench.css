@@ -503,7 +503,7 @@ img.no-radius {
     height: 100%;
 }
 .media-info {
-    padding: 1px 5px;
+    padding: 1px 4px 1px 3px;
     background: rgba(0, 0, 0, 0.8);
     position: absolute;
     color: #FFF;
