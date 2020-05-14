@@ -1413,7 +1413,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
 
-    $ui .= '<span class="media-info top-left hideIfEmpty" title="Interactive Book contains '.echo_number($idea_count).' Ideas from '.echo_number($source_count).' Expert Sources that has been read '.echo_number($read_count).' times." data-toggle="tooltip" data-placement="top">';
+    $ui .= '<span class="media-info top-left hideIfEmpty" title="'.echo_number($idea_count).' Ideas from '.echo_number($source_count).' Expert Sources read '.echo_number($read_count).' times" data-toggle="tooltip" data-placement="top">';
 
     if($idea_count){
         $ui .= '<div><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.echo_number($idea_count).'</span></div>';
