@@ -251,9 +251,9 @@ if(!$read_in_home){
 
         //Read Stats?
         $all_steps = array_merge(array_flatten($metadata['in__metadata_common_steps']) , array_flatten($metadata['in__metadata_expansion_steps']));
-        $read_coins = $CI->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
+        $read_coins = $this->LEDGER_model->ln_fetch(array(
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_previous_idea_id IN (' . join(',', $all_steps) . ')' => null, //READ COIN
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $read_count = $read_coins[0]['totals'];
