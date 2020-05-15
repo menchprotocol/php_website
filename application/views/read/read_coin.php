@@ -240,7 +240,7 @@ if(!$read_in_home){
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             if($idea_count > $chapters){
-                echo '<p>All '.$idea_count.' ideas summarized from an total of '.$in__metadata_content.' source'.echo__s($in__metadata_content).' published by '.$in__metadata_experts.' expert'.echo__s($in__metadata_experts).':</p>';
+                echo '<p>The '.$idea_count.' ideas were summarized from a total of '.$in__metadata_content.' source'.echo__s($in__metadata_content).' published by '.$in__metadata_experts.' expert'.echo__s($in__metadata_experts).':</p>';
             }
             echo '<div class="list-group single-color">';
 
