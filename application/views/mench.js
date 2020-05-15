@@ -226,7 +226,11 @@ $(document).ready(function () {
 
     lazy_load();
     load_intercom();
-    load_fullstory();
+
+    if(js_pl_id > 1){
+        //For any logged in player except shervin:
+        load_fullstory();
+    }
 
     $('#topnav li a').click(function (e) {
 

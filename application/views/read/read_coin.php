@@ -212,9 +212,6 @@ if(!$read_in_home){
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
-            if($idea_count > $chapters){
-                echo '<p>Contains '.( $idea_min ? $idea_min.' - ' : '' ).$idea_count.' ideas'.( $idea_min ? ' based on your answers' : '' ).':</p>';
-            }
             if($chapters > 0){
                 //List Children:
                 echo '<div class="list-group '.( !$recipient_en['en_id'] ? 'single-color' : '' ).'">';
@@ -239,9 +236,6 @@ if(!$read_in_home){
             echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
-            if($idea_count > $chapters){
-                echo '<p>The '.$idea_count.' ideas on '.$in['in_title'].' were summarized from '.$in__metadata_content.' source'.echo__s($in__metadata_content).' published by '.$in__metadata_experts.' expert'.echo__s($in__metadata_experts).':</p>';
-            }
             echo '<div class="list-group single-color">';
 
             //Sort Expert Content
