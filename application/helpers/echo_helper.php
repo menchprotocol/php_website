@@ -1386,7 +1386,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : 0 );
     $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 ) + ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
 
-    $read_coins = 0;
+    $read_count = 0;
     /*
     $all_steps = array_merge(array_flatten($metadata['in__metadata_common_steps']) , array_flatten($metadata['in__metadata_expansion_steps']));
     $read_coins = $CI->LEDGER_model->ln_fetch(array(
