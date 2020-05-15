@@ -212,7 +212,9 @@ if(!$read_in_home){
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
-            echo '<p>This interactive book contains '.( $idea_min ? $idea_min.' - ' : '' ).$idea_count.'</p>';
+            if($idea_count > $chapters){
+                echo '<p>Contains '.( $idea_min ? $idea_min.' - ' : '' ).$idea_count.' ideas'.( $idea_min ? ' based on your answers' : '' ).':</p>';
+            }
             if($chapters > 0){
                 //List Children:
                 echo '<div class="list-group '.( !$recipient_en['en_id'] ? 'single-color' : '' ).'">';
@@ -229,18 +231,23 @@ if(!$read_in_home){
 
 
         //SOURCE
-        $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 ) + ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
+        $in__metadata_experts = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
+        $in__metadata_content = ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
+        $source_count = $in__metadata_experts + $in__metadata_content;
         if ($source_count) {
 
             echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
+            if($idea_count > $chapters){
+                echo '<p>All '.$idea_count.' ideas summarized from an total of '.$in__metadata_content.' source'.echo__s($in__metadata_content).' published by '.$in__metadata_experts.' expert'.echo__s($in__metadata_experts).':</p>';
+            }
             echo '<div class="list-group single-color">';
 
             //Sort Expert Content
-            if(isset($metadata['in__metadata_experts']) && isset($metadata['in__metadata_content'])){
+            if($in__metadata_experts && $in__metadata_content){
                 $experts_content = array_merge($metadata['in__metadata_content'], $metadata['in__metadata_experts']);
-            } elseif(isset($metadata['in__metadata_content'])){
+            } elseif($in__metadata_content){
                 $experts_content = $metadata['in__metadata_content'];
             } else {
                 $experts_content = $metadata['in__metadata_experts'];
