@@ -266,7 +266,7 @@ if(!$read_in_home){
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         $read_count = $read_coins[0]['totals'];
         if($read_count){
-            echo '<div class="read-topic read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.$read_count.' Read'.echo__s($read_count).'</div>';
+            echo '<div class="read-topic read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.$read_count.' Read'.echo__s($read_count).' SO FAR</div>';
         }
 
 
