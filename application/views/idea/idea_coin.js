@@ -306,6 +306,9 @@ function read_preview(){
 
 function in_unlink(in_id, ln_id, is_parent){
     var in_title = $('.text__4736_'+in_id).text();
+    if(!in_title.length){
+        in_title = $('.text__4736_'+in_id).val();
+    }
     var r = confirm("Unlink ["+in_title+"]?");
     if (r == true) {
 

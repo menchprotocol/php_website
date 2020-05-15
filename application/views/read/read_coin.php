@@ -204,6 +204,7 @@ if(!$read_in_home){
 
         //IDEA
         $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : $chapters );
+        $idea_min = ( $idea_count && $metadata['in__metadata_min_steps']<$metadata['in__metadata_max_steps'] ? $metadata['in__metadata_min_steps']-1 : 0 );
         if ($idea_count) {
 
             $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
@@ -211,6 +212,7 @@ if(!$read_in_home){
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
+            echo '<p>This interactive book contains '.( $idea_min ? $idea_min.' - ' : '' ).$idea_count.'</p>';
             if($chapters > 0){
                 //List Children:
                 echo '<div class="list-group '.( !$recipient_en['en_id'] ? 'single-color' : '' ).'">';
