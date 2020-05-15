@@ -236,6 +236,9 @@ if(!$read_in_home){
             echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
+            if($idea_count > $chapters){
+                echo '<p>The '.$idea_count.' ideas on '.$in['in_title'].' were summarized from these '.$source_count.' expert source'.echo__s($source_count).':</p>';
+            }
             echo '<div class="list-group single-color">';
 
             //Sort Expert Content
