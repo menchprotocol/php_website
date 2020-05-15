@@ -1386,6 +1386,8 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : 0 );
     $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 ) + ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
 
+    $read_coins = 0;
+    /*
     $all_steps = array_merge(array_flatten($metadata['in__metadata_common_steps']) , array_flatten($metadata['in__metadata_expansion_steps']));
     $read_coins = $CI->LEDGER_model->ln_fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -1393,7 +1395,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         'ln_previous_idea_id IN (' . join(',', $all_steps) . ')' => null, //READ COIN
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     $read_count = $read_coins[0]['totals'];
-
+    */
 
 
 
@@ -1414,16 +1416,17 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
 
-    $ui .= '<span class="media-info top-left hideIfEmpty" title="'.echo_number($idea_count).' Ideas summarized from '.echo_number($source_count).' expert sources that have been read '.echo_number($read_count).' times" data-toggle="tooltip" data-placement="bottom">';
+    //summarized from '.echo_number($source_count).' expert sources that have been read '.echo_number($read_count).' times
+    $ui .= '<span class="media-info top-left hideIfEmpty" title="'.echo_number($idea_count).' Ideas" data-toggle="tooltip" data-placement="bottom">';
 
     if($idea_count){
         $ui .= '<div><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.echo_number($idea_count).'</span></div>';
     }
     if($source_count){
-        $ui .= '<div><i class="fas fa-circle source"></i><span style="padding-left: 2px;">'.echo_number($source_count).'</span></div>';
+        //$ui .= '<div><i class="fas fa-circle source"></i><span style="padding-left: 2px;">'.echo_number($source_count).'</span></div>';
     }
     if($read_count){
-        $ui .= '<div><i class="fas fa-circle read"></i><span style="padding-left: 2px;">'.echo_number($read_count).'</span></div>';
+        //$ui .= '<div><i class="fas fa-circle read"></i><span style="padding-left: 2px;">'.echo_number($read_count).'</span></div>';
     }
 
     $ui .= '</span>';

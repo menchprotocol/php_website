@@ -267,6 +267,7 @@ if(!$read_in_home){
 
 
         //READ
+        /*
         $all_steps = array_merge(array_flatten($metadata['in__metadata_common_steps']) , array_flatten($metadata['in__metadata_expansion_steps']));
         $read_coins = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -277,7 +278,7 @@ if(!$read_in_home){
         if($read_count){
             echo '<div class="read-topic read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.$read_count.' Read'.echo__s($read_count).' SO FAR</div>';
         }
-
+        */
 
 
         //GET STARTED
