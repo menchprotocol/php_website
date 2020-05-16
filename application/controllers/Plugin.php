@@ -1,6 +1,21 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+
+# PLUGINS WITH CRON JOBS:
+
+5,20,35,50 * * * *      /usr/bin/php /var/www/platform/index.php plugin plugin_load 4356  # Idea Time
+* * * * *               /usr/bin/php /var/www/platform/index.php plugin plugin_load 7275  # Common Base
+10,25,40,55 * * * *     /usr/bin/php /var/www/platform/index.php plugin plugin_load 7276  # Extra Insights
+50 6 * * *              /usr/bin/php /var/www/platform/index.php plugin plugin_load 7277  # Metadata Cleanup
+40 3 * * *              /usr/bin/php /var/www/platform/index.php plugin plugin_load 7278  # Gephi Sync
+01 7 * * 1              /usr/bin/php /var/www/platform/index.php plugin plugin_load 12114 # Growth Report Email
+30 * * * *              /usr/bin/php /var/www/platform/index.php plugin plugin_load 12569 # Weight Sync
+0,15,30,45 * * * *      /usr/bin/php /var/www/platform/index.php plugin plugin_load 12967 # Icon Sync
+
+*/
+
 class Plugin extends CI_Controller
 {
 

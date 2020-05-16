@@ -1620,8 +1620,8 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ui .= '<div class="space-content hideIfEmpty">';
     //PROFILE SOURCES:
     $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block hideIfEmpty">';
-    foreach($en__profiles as $en_parent) {
-        $ui .= '<span class="icon-block-img en_child_icon_' . $en_parent['en_id'] . '"><a href="/source/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span> ';
+    foreach($en__profiles as $en_profile) {
+        $ui .= '<span class="icon-block-img en_child_icon_' . $en_profile['en_id'] . '"><a href="/source/' . $en_profile['en_id'] . '" data-toggle="tooltip" title="' . $en_profile['en_name'] . (strlen($en_profile['ln_content']) > 0 ? ' = ' . $en_profile['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_profile['en_icon']) . '</a></span> ';
     }
     $ui .= '</span>';
     $ui .= '</div>';
@@ -1657,29 +1657,28 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 }
 
-function echo_basic_list_link($m, $url){
+function echo_basic_list_link($en_id, $m, $url){
 
     $CI =& get_instance();
-    $en_all_6287 = $CI->config->item('en_all_6287'); //MENCH PLUGIN
-    $en_all_10957 = $CI->config->item('en_all_10957');
-
     $ui = '<a href="'.$url.'" class="list-group-item no-side-padding">';
 
-
-    //Icon
+    //SOURCE
     $ui .= '<span class="icon-block">' . echo_en_icon($m['m_icon']) . '</span>';
     $ui .= '<b class="montserrat '.extract_icon_color($m['m_icon']).'">'.$m['m_name'].'</b>';
-
-
-    //Needs extra superpowers?
-    $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
-    foreach($superpower_actives as $needed_superpower_en_id){
-        $ui .= '<span title="Requires '.$en_all_10957[$needed_superpower_en_id]['m_name'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$en_all_10957[$needed_superpower_en_id]['m_icon'].'</span>';
-    }
-
-
-    //Description
     $ui .= ( strlen($m['m_desc']) ? '&nbsp;'.$m['m_desc'] : '' );
+
+
+    //PROFILE
+    $ui .= '<div class="pull-right inline-block">';
+    foreach($CI->LEDGER_model->ln_fetch(array(
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+        'ln_portfolio_source_id' => $en_id,
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+        'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+    ), array('en_profile')) as $en_profile){
+        $ui .= '<span class="icon-block-img en_child_icon_' . $en_profile['en_id'] . '"><a href="/source/' . $en_profile['en_id'] . '" data-toggle="tooltip" title="' . $en_profile['en_name'] . (strlen($en_profile['ln_content']) > 0 ? ' = ' . $en_profile['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_profile['en_icon']) . '</a></span> ';
+    }
+    $ui .= '</div>';
 
 
     $ui .= '</a>';

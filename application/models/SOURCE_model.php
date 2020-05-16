@@ -45,25 +45,25 @@ class SOURCE_model extends CI_Model
             'ln_portfolio_source_id' => $en['en_id'], //This child source
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
-        ), array('en_profile')) as $en_parent){
+        ), array('en_profile')) as $en_profile){
 
             //Push to parent IDs:
-            array_push($session_data['session_parent_ids'], intval($en_parent['en_id']));
+            array_push($session_data['session_parent_ids'], intval($en_profile['en_id']));
 
-            if(in_array($en_parent['en_id'], $this->config->item('en_ids_10957'))){
+            if(in_array($en_profile['en_id'], $this->config->item('en_ids_10957'))){
 
                 //It's assigned!
-                array_push($session_data['session_superpowers_assigned'], intval($en_parent['en_id']));
+                array_push($session_data['session_superpowers_assigned'], intval($en_profile['en_id']));
 
                 //Was the latest toggle to de-activate? If not, assume active:
                 $last_advance_settings = $this->LEDGER_model->ln_fetch(array(
                     'ln_creator_source_id' => $en['en_id'],
                     'ln_type_source_id' => 5007, //TOGGLE SUPERPOWER
-                    'ln_profile_source_id' => $en_parent['en_id'],
+                    'ln_profile_source_id' => $en_profile['en_id'],
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 ), array(), 1); //Fetch the single most recent supoerpower toggle only
                 if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['ln_content'] , ' DEACTIVATED')){
-                    array_push($session_data['session_superpowers_activated'], intval($en_parent['en_id']));
+                    array_push($session_data['session_superpowers_activated'], intval($en_profile['en_id']));
                 }
 
             }
@@ -275,14 +275,14 @@ class SOURCE_model extends CI_Model
     }
 
 
-    function en_radio_set($en_parent_bucket_id, $set_en_child_id, $ln_creator_source_id)
+    function en_radio_set($en_profile_bucket_id, $set_en_child_id, $ln_creator_source_id)
     {
 
         /*
          * Treats an source child group as a drop down menu where:
          *
-         *  $en_parent_bucket_id is the parent of the drop down
-         *  $ln_creator_source_id is the user source ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
+         *  $en_profile_bucket_id is the parent of the drop down
+         *  $ln_creator_source_id is the user source ID that one of the children of $en_profile_bucket_id should be assigned (like a drop down)
          *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like User communication levels
@@ -290,9 +290,9 @@ class SOURCE_model extends CI_Model
          * */
 
 
-        //Fetch all the child sources for $en_parent_bucket_id and make sure they match $set_en_child_id
-        $children = $this->config->item('en_ids_' . $en_parent_bucket_id);
-        if ($en_parent_bucket_id < 1) {
+        //Fetch all the child sources for $en_profile_bucket_id and make sure they match $set_en_child_id
+        $children = $this->config->item('en_ids_' . $en_profile_bucket_id);
+        if ($en_profile_bucket_id < 1) {
             return false;
         } elseif (!$children) {
             return false;
