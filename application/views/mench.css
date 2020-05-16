@@ -672,6 +672,9 @@ img.no-radius {
     padding:0;
 }
 
+.msg{
+    line-height: 130%;
+}
 
 .msg-nav {
     list-style-type: none;
