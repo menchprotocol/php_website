@@ -1676,7 +1676,7 @@ function echo_basic_list_link($en_id, $m, $url){
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //ACTIVE
     ), array('en_profile')) as $en_profile){
-        $ui .= '<span class="icon-block-img en_child_icon_' . $en_profile['en_id'] . '"><a href="/source/' . $en_profile['en_id'] . '" data-toggle="tooltip" title="' . $en_profile['en_name'] . (strlen($en_profile['ln_content']) > 0 ? ' = ' . $en_profile['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_profile['en_icon']) . '</a></span> ';
+        $ui .= '<span class="icon-block-img en_child_icon_' . $en_profile['en_id'] . '" data-toggle="tooltip" title="' . $en_profile['en_name'] . (strlen($en_profile['ln_content']) > 0 ? ' = ' . $en_profile['ln_content'] : '') . '" data-placement="top">' . echo_en_icon($en_profile['en_icon']) . '</span>&nbsp;';
     }
     $ui .= '</div>';
 
