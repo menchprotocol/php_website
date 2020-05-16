@@ -399,7 +399,7 @@ class COMMUNICATION_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span class="montserrat doupper '.( !substr_count($ens[0]['en_name'], ' ') ? ' inline-block ' : '' ).extract_icon_color($ens[0]['en_icon']).'"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
 
                 }
 
