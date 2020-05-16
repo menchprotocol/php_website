@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-15 19:07:22 PST
+//Generated 2020-05-15 19:22:17 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589594842;
-$config['cache_count_transaction'] = 1204220;
+$config['cache_timestamp'] = 1589595737;
+$config['cache_count_transaction'] = 1204276;
 $config['cache_count_read'] = 121229;
-$config['cache_count_idea'] = 5588;
+$config['cache_count_idea'] = 5589;
 $config['cache_count_source'] = 4854;
 
 
@@ -160,7 +160,7 @@ $config['en_all_12887'] = array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
         'm_desc' => '/cron/cron__7279/en/',
-        'm_parents' => array(12887,11047,3323,7287,7274),
+        'm_parents' => array(6287,12741,12887,11047,3323,7287,7274),
     ),
 );
 
@@ -307,8 +307,14 @@ $config['en_all_12744'] = array(
 );
 
 //PLUGIN EXCLUDE MENCH UI:
-$config['en_ids_12741'] = array(11049,12733,4527,12710,12709,12888,12732,12712,12722);
+$config['en_ids_12741'] = array(4356,11049,12733,7275,7276,4527,12114,7277,12710,12709,12888,12732,12712,7278,12967,7279,12722,12569);
 $config['en_all_12741'] = array(
+    4356 => array(
+        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ TIME (SECONDS)',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+    ),
     11049 => array(
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA REVIEW JSON',
@@ -321,11 +327,35 @@ $config['en_all_12741'] = array(
         'm_desc' => '',
         'm_parents' => array(11047,12741,12701,6287),
     ),
+    7275 => array(
+        'm_icon' => '<i class="fad fa-sync idea"></i>',
+        'm_name' => 'IDEA SYNC COMMON BASE',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,11047,7286,7274),
+    ),
+    7276 => array(
+        'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SYNC EXTRA INSIGHTS',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,11047,7286,7274),
+    ),
     4527 => array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
         'm_name' => 'MENCH MEMORY',
         'm_desc' => '',
         'm_parents' => array(4755,6403,12741,6287,4527),
+    ),
+    12114 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'MENCH WEEKLY GROWTH REPORT',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,12701,7274,7569),
+    ),
+    7277 => array(
+        'm_icon' => '',
+        'm_name' => 'METADATA CLEAN VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,7287,7274),
     ),
     12710 => array(
         'm_icon' => '👤',
@@ -357,11 +387,35 @@ $config['en_all_12741'] = array(
         'm_desc' => '',
         'm_parents' => array(12887,12741,6287),
     ),
+    7278 => array(
+        'm_icon' => '',
+        'm_name' => 'SYNC GEPHI INDEX',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,7287,7274),
+    ),
+    12967 => array(
+        'm_icon' => '<i class="far fa-sync source fa-spin" aria-hidden="true"></i>',
+        'm_name' => 'SYNC ICONS',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,4758,7274),
+    ),
+    7279 => array(
+        'm_icon' => '<i class="fad fa-search"></i>',
+        'm_name' => 'SYNC SEARCH INDEX',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,12887,11047,3323,7287,7274),
+    ),
     12722 => array(
         'm_icon' => '',
         'm_name' => 'TRANSACTION REVIEW JSON',
         'm_desc' => '',
         'm_parents' => array(12741,6287),
+    ),
+    12569 => array(
+        'm_icon' => '<i class="fad fa-weight"></i>',
+        'm_name' => 'WEIGHT ALGORITHM',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,7274),
     ),
 );
 
@@ -372,55 +426,55 @@ $config['en_all_7274'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => 'Auto update idea read time based on messages',
-        'm_parents' => array(11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
     7275 => array(
         'm_icon' => '<i class="fad fa-sync idea"></i>',
         'm_name' => 'IDEA SYNC COMMON BASE',
         'm_desc' => '',
-        'm_parents' => array(11047,7286,7274),
+        'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     7276 => array(
         'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SYNC EXTRA INSIGHTS',
         'm_desc' => '',
-        'm_parents' => array(11047,7286,7274),
+        'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     12114 => array(
         'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
         'm_name' => 'MENCH WEEKLY GROWTH REPORT',
         'm_desc' => '',
-        'm_parents' => array(12701,7274,7569),
+        'm_parents' => array(6287,12741,12701,7274,7569),
     ),
     7277 => array(
         'm_icon' => '',
         'm_name' => 'METADATA CLEAN VARIABLES',
         'm_desc' => '',
-        'm_parents' => array(7287,7274),
+        'm_parents' => array(6287,12741,7287,7274),
     ),
     7278 => array(
         'm_icon' => '',
         'm_name' => 'SYNC GEPHI INDEX',
         'm_desc' => '',
-        'm_parents' => array(7287,7274),
+        'm_parents' => array(6287,12741,7287,7274),
     ),
     12967 => array(
         'm_icon' => '<i class="far fa-sync source fa-spin" aria-hidden="true"></i>',
         'm_name' => 'SYNC ICONS',
         'm_desc' => '',
-        'm_parents' => array(4758,7274),
+        'm_parents' => array(6287,12741,4758,7274),
     ),
     7279 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
         'm_desc' => '',
-        'm_parents' => array(12887,11047,3323,7287,7274),
+        'm_parents' => array(6287,12741,12887,11047,3323,7287,7274),
     ),
     12569 => array(
         'm_icon' => '<i class="fad fa-weight"></i>',
         'm_name' => 'WEIGHT ALGORITHM',
         'm_desc' => '',
-        'm_parents' => array(7274),
+        'm_parents' => array(6287,12741,7274),
     ),
 );
 
@@ -870,7 +924,7 @@ $config['en_all_12420'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => '',
-        'm_parents' => array(11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
 );
 
@@ -2091,7 +2145,7 @@ $config['en_all_12112'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => '',
-        'm_parents' => array(11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -2404,7 +2458,7 @@ $config['en_all_6232'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => 'in_time_seconds',
-        'm_parents' => array(11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -2665,7 +2719,7 @@ $config['en_all_6404'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => '7200',
-        'm_parents' => array(11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
     4736 => array(
         'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
@@ -2891,7 +2945,7 @@ $config['en_all_11047'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ TIME (SECONDS)',
         'm_desc' => '/cron/cron__4356/',
-        'm_parents' => array(11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
     11049 => array(
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
@@ -2909,13 +2963,13 @@ $config['en_all_11047'] = array(
         'm_icon' => '<i class="fad fa-sync idea"></i>',
         'm_name' => 'IDEA SYNC COMMON BASE',
         'm_desc' => '/cron/cron__7275/',
-        'm_parents' => array(11047,7286,7274),
+        'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     7276 => array(
         'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SYNC EXTRA INSIGHTS',
         'm_desc' => '/cron/cron__7276/',
-        'm_parents' => array(11047,7286,7274),
+        'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
@@ -2927,7 +2981,7 @@ $config['en_all_11047'] = array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
         'm_desc' => '/cron/cron__7279/in/',
-        'm_parents' => array(12887,11047,3323,7287,7274),
+        'm_parents' => array(6287,12741,12887,11047,3323,7287,7274),
     ),
 );
 
@@ -4915,7 +4969,7 @@ $config['en_all_6201'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'READ TIME (SECONDS)',
         'm_desc' => '',
-        'm_parents' => array(11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -5223,7 +5277,7 @@ $config['en_all_7309'] = array(
 );
 
 //PLUGINS:
-$config['en_ids_6287'] = array(7264,7261,12731,12734,7260,7263,11049,12733,7259,12735,7712,4527,12710,12709,12729,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,12739,12722);
+$config['en_ids_6287'] = array(7264,7261,12731,12734,7260,7263,4356,11049,12733,7259,7275,7276,12735,7712,4527,12114,7277,12710,12709,12729,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12739,12722,12569);
 $config['en_all_6287'] = array(
     7264 => array(
         'm_icon' => '<i class="fad fa-sitemap idea"></i>',
@@ -5261,6 +5315,12 @@ $config['en_all_6287'] = array(
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
+    4356 => array(
+        'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ TIME (SECONDS)',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+    ),
     11049 => array(
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA REVIEW JSON',
@@ -5279,6 +5339,18 @@ $config['en_all_6287'] = array(
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
+    7275 => array(
+        'm_icon' => '<i class="fad fa-sync idea"></i>',
+        'm_name' => 'IDEA SYNC COMMON BASE',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,11047,7286,7274),
+    ),
+    7276 => array(
+        'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SYNC EXTRA INSIGHTS',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,11047,7286,7274),
+    ),
     12735 => array(
         'm_icon' => '',
         'm_name' => 'IDEA SYNC/FIX SOURCES',
@@ -5296,6 +5368,18 @@ $config['en_all_6287'] = array(
         'm_name' => 'MENCH MEMORY',
         'm_desc' => '',
         'm_parents' => array(4755,6403,12741,6287,4527),
+    ),
+    12114 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'MENCH WEEKLY GROWTH REPORT',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,12701,7274,7569),
+    ),
+    7277 => array(
+        'm_icon' => '',
+        'm_name' => 'METADATA CLEAN VARIABLES',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,7287,7274),
     ),
     12710 => array(
         'm_icon' => '👤',
@@ -5375,6 +5459,24 @@ $config['en_all_6287'] = array(
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
+    7278 => array(
+        'm_icon' => '',
+        'm_name' => 'SYNC GEPHI INDEX',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,7287,7274),
+    ),
+    12967 => array(
+        'm_icon' => '<i class="far fa-sync source fa-spin" aria-hidden="true"></i>',
+        'm_name' => 'SYNC ICONS',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,4758,7274),
+    ),
+    7279 => array(
+        'm_icon' => '<i class="fad fa-search"></i>',
+        'm_name' => 'SYNC SEARCH INDEX',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,12887,11047,3323,7287,7274),
+    ),
     12739 => array(
         'm_icon' => '',
         'm_name' => 'TRANSACTION ANALYZE URLS',
@@ -5386,6 +5488,12 @@ $config['en_all_6287'] = array(
         'm_name' => 'TRANSACTION REVIEW JSON',
         'm_desc' => '?ln_id=',
         'm_parents' => array(12741,6287),
+    ),
+    12569 => array(
+        'm_icon' => '<i class="fad fa-weight"></i>',
+        'm_name' => 'WEIGHT ALGORITHM',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,7274),
     ),
 );
 

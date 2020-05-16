@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
 
 # ACTIVE:
-* * * * *               /usr/bin/php /var/www/platform/index.php cron cron__7275  # Common Base
+* * * * *               /usr/bin/php /var/www/platform/index.php plugin plugin_load 7275  # Common Base
 0,15,30,45 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__12967 # Icon Sync
 5,20,35,50 * * * *      /usr/bin/php /var/www/platform/index.php cron cron__4356  # Idea Time
 10,25,40,55 * * * *     /usr/bin/php /var/www/platform/index.php cron cron__7276  # Extra Insights
@@ -15,6 +15,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 # INACTIVE:
 # 45 1 19 * *           /usr/bin/php /var/www/platform/index.php cron cron__7279  # Algolia Search SYNC
+
+
+# * * * * *               /usr/bin/php /var/www/platform/index.php cron cron__7275  # Common Base
 
 */
 
