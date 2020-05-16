@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-15 20:18:54 PST
+//Generated 2020-05-15 20:33:40 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589599134;
-$config['cache_count_transaction'] = 1204501;
+$config['cache_timestamp'] = 1589600020;
+$config['cache_count_transaction'] = 1204524;
 $config['cache_count_read'] = 121240;
 $config['cache_count_idea'] = 5588;
 $config['cache_count_source'] = 4855;
@@ -300,7 +300,7 @@ $config['en_all_12744'] = array(
     ),
 );
 
-//PLUGIN EXCLUDE MENCH UI:
+//PLUGIN NO HEADER/FOOTER:
 $config['en_ids_12741'] = array(4356,11049,12733,7275,7276,4527,12114,7277,12710,12709,12888,12732,12712,7278,12967,7279,12722,12569);
 $config['en_all_12741'] = array(
     4356 => array(
@@ -4123,8 +4123,8 @@ $config['en_all_4527'] = array(
         'm_parents' => array(7524,12079,12497,12823,4527),
     ),
     12741 => array(
-        'm_icon' => '',
-        'm_name' => 'PLUGIN EXCLUDE MENCH UI',
+        'm_icon' => '<i class="fas fa-code"></i>',
+        'm_name' => 'PLUGIN NO HEADER/FOOTER',
         'm_desc' => '',
         'm_parents' => array(12999,4527),
     ),
@@ -5235,13 +5235,13 @@ $config['en_all_6287'] = array(
     11049 => array(
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA REVIEW JSON',
-        'm_desc' => '?in_id=',
+        'm_desc' => '',
         'm_parents' => array(12741,6287,11047),
     ),
     12733 => array(
         'm_icon' => '<i class="fad fa-code read"></i>',
         'm_name' => 'IDEA REVIEW READ',
-        'm_desc' => '?in_id=',
+        'm_desc' => '',
         'm_parents' => array(11047,12741,12701,6287),
     ),
     7259 => array(
@@ -5313,7 +5313,7 @@ $config['en_all_6287'] = array(
     12888 => array(
         'm_icon' => '<i class="fas fa-shield-check source"></i>',
         'm_name' => 'SOURCE EXPLORE EXPERTS',
-        'm_desc' => '?en_id=',
+        'm_desc' => '',
         'm_parents' => array(12741,6287,12887),
     ),
     7267 => array(
@@ -5355,7 +5355,7 @@ $config['en_all_6287'] = array(
     12712 => array(
         'm_icon' => '<i class="fad fa-lambda source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE REVIEW JSON',
-        'm_desc' => '?en_id=',
+        'm_desc' => '',
         'm_parents' => array(12887,12741,6287),
     ),
     12737 => array(
@@ -5397,7 +5397,7 @@ $config['en_all_6287'] = array(
     12722 => array(
         'm_icon' => '',
         'm_name' => 'TRANSACTION REVIEW JSON',
-        'm_desc' => '?ln_id=',
+        'm_desc' => '',
         'm_parents' => array(12741,6287),
     ),
     12569 => array(
