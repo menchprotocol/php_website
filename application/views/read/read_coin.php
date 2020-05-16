@@ -237,7 +237,7 @@ if(!$read_in_home){
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             if($idea_count > $chapters){
-                echo '<p>The '.$idea_count.' ideas on '.$in['in_title'].' were summarized from these '.$source_count.' expert source'.echo__s($source_count).':</p>';
+                echo '<p>The '.$idea_count.' ideas on '.$in['in_title'].' were synthesized from these '.$source_count.' expert source'.echo__s($source_count).':</p>';
             }
             echo '<div class="list-group single-color">';
 

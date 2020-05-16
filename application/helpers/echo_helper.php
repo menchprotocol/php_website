@@ -1416,7 +1416,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
 
-    //summarized from '.echo_number($source_count).' expert sources that have been read '.echo_number($read_count).' times
+    //synthesized from '.echo_number($source_count).' expert sources that have been read '.echo_number($read_count).' times
     $ui .= '<span class="media-info top-left hideIfEmpty" title="'.echo_number($idea_count).' Ideas" data-toggle="tooltip" data-placement="bottom">';
 
     if($idea_count){
