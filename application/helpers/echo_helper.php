@@ -1657,37 +1657,6 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 }
 
-function echo_basic_list_link($en_id, $m, $url){
-
-    $CI =& get_instance();
-    $ui = '<a href="'.$url.'" class="list-group-item no-side-padding">';
-
-    //SOURCE
-    $ui .= '<span class="icon-block">' . echo_en_icon($m['m_icon']) . '</span>';
-    $ui .= '<b class="montserrat '.extract_icon_color($m['m_icon']).'">'.$m['m_name'].'</b>';
-    $ui .= ( strlen($m['m_desc']) ? '&nbsp;'.$m['m_desc'] : '' );
-
-
-    //PROFILE
-    $ui .= '<div class="pull-right inline-block">';
-    foreach($CI->LEDGER_model->ln_fetch(array(
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-        'ln_portfolio_source_id' => $en_id,
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-        'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-    ), array('en_profile')) as $en_profile){
-        $ui .= '<span class="icon-block-img en_child_icon_' . $en_profile['en_id'] . '" data-toggle="tooltip" title="' . $en_profile['en_name'] . (strlen($en_profile['ln_content']) > 0 ? ' = ' . $en_profile['ln_content'] : '') . '" data-placement="top">' . echo_en_icon($en_profile['en_icon']) . '</span>&nbsp;';
-    }
-    $ui .= '</div>';
-
-
-    $ui .= '</a>';
-
-    return $ui;
-
-}
-
-
 
 function echo_input_text($cache_en_id, $current_value, $object_id, $is_source, $tabindex = 0, $extra_large = false, $en_icon = null, $append_css = null){
 
