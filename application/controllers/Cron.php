@@ -210,7 +210,7 @@ class Cron extends CI_Controller
         );
 
         //Should we limit the scope?
-        if($this->is_player_request){
+        if($is_player_request){
             $subscriber_filters['ln_portfolio_source_id'] = $this->session_en['en_id'];
         }
 

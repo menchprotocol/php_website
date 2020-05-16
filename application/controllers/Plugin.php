@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Plugin extends CI_Controller
 {
 
+    var $is_player_request;
     var $session_en;
 
     function __construct()
@@ -17,8 +18,11 @@ class Plugin extends CI_Controller
 
         boost_power();
 
-        //Validate superpowers:
-        $this->session_en = superpower_assigned(12699, true);
+        //Running from browser? If so, authenticate:
+        $this->is_player_request = isset($_SERVER['SERVER_NAME']);
+        if($this->is_player_request){
+            $this->session_en = superpower_assigned(12699, true);
+        }
 
     }
 
@@ -51,13 +55,19 @@ class Plugin extends CI_Controller
             die(echo_unauthorized_message(end($superpower_actives)));
         }
 
+
+        //This is also duplicated in source_plugin_load to pass-on to plugin file:
+        $view_data = array(
+            'plugin_en_id' => $plugin_en_id,
+            'session_en' => $this->session_en,
+            'is_player_request' => $this->is_player_request,
+        );
+
+
         if(in_array($plugin_en_id, $this->config->item('en_ids_12741'))){
 
             //Raw UI:
-            $this->load->view('source/plugin/'.$plugin_en_id.'/index', array(
-                'plugin_en_id' => $plugin_en_id,
-                'session_en' => $this->session_en,
-            ));
+            $this->load->view('source/plugin/'.$plugin_en_id.'/index', $view_data);
 
         } else {
 
@@ -66,10 +76,7 @@ class Plugin extends CI_Controller
             $this->load->view('header', array(
                 'title' => strip_tags($en_all_6287[$plugin_en_id]['m_icon']).$en_all_6287[$plugin_en_id]['m_name'].' | PLUGIN',
             ));
-            $this->load->view('source/source_plugin_load' , array(
-                'plugin_en_id' => $plugin_en_id,
-                'session_en' => $this->session_en,
-            ));
+            $this->load->view('source/source_plugin_load', $view_data);
             $this->load->view('footer');
 
         }

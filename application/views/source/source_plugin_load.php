@@ -19,6 +19,7 @@ echo '<div class="container">';
     $this->load->view('source/plugin/'.$plugin_en_id.'/index', array(
         'plugin_en_id' => $plugin_en_id,
         'session_en' => $session_en,
+        'is_player_request' => $is_player_request,
     ));
 
 echo '</div>';
