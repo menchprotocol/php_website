@@ -638,18 +638,9 @@ $is_source = en_is_source($en['en_id']);
             if($counter>0){
 
                 $in_notes_query = $this->LEDGER_model->ln_fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
-
                 $this_tab .= '<div class="list-group">';
                 foreach($in_notes_query as $count => $in_notes) {
-                    //Include the message:
-                    $infobar_details = null;
-                    if($in_notes['ln_content']){
-                        $infobar_details .= '<div class="message_content">';
-                        $infobar_details .= $this->COMMUNICATION_model->send_message($in_notes['ln_content']);
-                        $infobar_details .= '</div>';
-                    }
-
-                    $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details, null, false);
+                    $this_tab .= echo_in($in_notes, 0, false, false, $in_notes['ln_content'], null, false);
                 }
                 $this_tab .= '</div>';
 
