@@ -379,6 +379,7 @@ class COMMUNICATION_model extends CI_Model
 
 
             //Append any appendix generated:
+            $single_word_class = ( !substr_count($ens[0]['en_name'], ' ') ? ' inline-block ' : '' );
             $output_body_message .= $source_appendix;
             if($string_references['ref_time_found']){
                 $identifier_string = '@' . $string_references['ref_sources'][0].':'.$string_references['ref_time_start'].':'.$string_references['ref_time_end'];
@@ -399,14 +400,14 @@ class COMMUNICATION_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span class="montserrat doupper '.( !substr_count($ens[0]['en_name'], ' ') ? ' inline-block ' : '' ).extract_icon_color($ens[0]['en_icon']).'"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span class="'.$single_word_class.extract_icon_color($ens[0]['en_icon']).'"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<a class="montserrat doupper '.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></a>', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<a class="montserrat doupper '.$single_word_class.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></a>', $output_body_message);
 
             }
         }

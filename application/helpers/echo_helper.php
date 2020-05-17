@@ -162,7 +162,14 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
                 //Set the Clean URL:
                 $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;">'.($end_time ? '<span class="media-info mid-right" title="Clip from '.echo_time_hours($start_time).' to '.echo_time_hours($end_time).'" data-toggle="tooltip" data-placement="top">'.echo_time_hours($end_time - $start_time).'</span>' : '').'<iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
+                //($end_time ? '<span class="media-info mid-right" title="Clip from '.echo_time_hours($start_time).' to '.echo_time_hours($end_time).'" data-toggle="tooltip" data-placement="top">'.echo_time_hours($end_time - $start_time).'</span>' : '')
+
+                //Header For Time
+                if($end_time){
+                    $embed_html_code .= '<div class="read-topic"><span class="icon-block"><i class="fab fa-youtube"></i></span>WATCH VIDEO SLICE FROM '.echo_time_hours($start_time, true).' to '.echo_time_hours($end_time, true).' - :</div>';
+                }
+
+                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
 
             }
 
@@ -1335,15 +1342,14 @@ function echo_time_range($metadata){
     return '<span title="Estimated Read Time Of '.( $metadata['in__metadata_min_seconds'] < $metadata['in__metadata_max_seconds'] ? echo_time_hours($metadata['in__metadata_min_seconds']).' - ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']).'" data-toggle="tooltip" data-placement="bottom">'.echo_time_hours(round(($metadata['in__metadata_min_seconds']+$metadata['in__metadata_max_seconds'])/2)).'</span>';
 }
 
-function echo_time_hours($total_seconds){
+function echo_time_hours($total_seconds, $hide_hour = false){
+
     //Turns seconds into HH:MM:SS
     $hours = floor($total_seconds/3600);
-    $hours = ( $hours<10 ? '0'.$hours  : $hours );
     $minutes = floor(fmod($total_seconds, 3600)/60);
-    $minutes = ( $minutes<10 ? '0'.$minutes  : $minutes );
     $seconds = fmod($total_seconds, 60);
-    $seconds = ( $seconds<10 ? '0'.$seconds  : $seconds );
-    return $hours.':'.$minutes.':'.$seconds;
+
+    return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
 function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rate = null){
