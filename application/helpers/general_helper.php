@@ -770,7 +770,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 
                 if(strlen($item['ln_content'])){
                     $infobar_details .= '<div class="message_content">';
-                    $infobar_details .= $this->COMMUNICATION_model->send_message($item['ln_content']);
+                    $infobar_details .= $CI->COMMUNICATION_model->send_message($item['ln_content']);
                     $infobar_details .= '</div>';
                     $string_references = extract_source_references($item['ln_content'], true);
                 }
