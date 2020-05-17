@@ -635,10 +635,9 @@ $is_source = en_is_source($en['en_id']);
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
-            if($counter>0 && $auto_expand_tab){
+            if($counter>0){
 
                 $in_notes_query = $this->LEDGER_model->ln_fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
-
 
                 $this_tab .= '<div class="list-group">';
                 foreach($in_notes_query as $count => $in_notes) {
@@ -664,12 +663,8 @@ $is_source = en_is_source($en['en_id']);
 
             } else {
 
-                if(!superpower_assigned(12701)){
-                    continue;
-                } else {
-                    //TODO Implement this UI:
-                    $this_tab .= '<div class="alert alert-warning"><span class="icon-block"><i class="fas fa-info-circle"></i></span>This Section is Under Development...</div>';
-                }
+                $en_all_4485 = $this->config->item('en_all_4485');
+                $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not added any '.$en_all_4485[$ln_type_source_id]['m_name'].' yet</div>';
 
             }
 
