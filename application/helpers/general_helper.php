@@ -672,7 +672,7 @@ function ln_coins_in($ln_type_source_id, $in_id, $load_page = 0){
     } else {
 
         //No Results:
-        $en_all_12467 = $this->config->item('en_all_12467'); //MENCH COINS
+        $en_all_12467 = $CI->config->item('en_all_12467'); //MENCH COINS
         $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$en_all_12467[$ln_type_source_id]['m_name'].' yet</div>';
 
     }
@@ -759,7 +759,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
     } else {
 
         //No Results:
-        $en_all_12467 = $this->config->item('en_all_12467'); //MENCH COINS
+        $en_all_12467 = $CI->config->item('en_all_12467'); //MENCH COINS
         $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$en_all_12467[$ln_type_source_id]['m_name'].' yet</div>';
 
     }
