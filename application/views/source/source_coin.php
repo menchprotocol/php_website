@@ -53,8 +53,8 @@ $is_source = en_is_source($en['en_id']);
                         <span class="mini-header"><?= $en_all_6206[6177]['m_icon'].' '.$en_all_6206[6177]['m_name'] ?></span>
                         <select class="form-control border" id="en_status_source_id">
                             <?php
-                            foreach($this->config->item('en_all_6177') /* Source Status */ as $en_id => $m){
-                                echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
+                            foreach($this->config->item('en_all_6177') /* Source Status */ as $ln_type_source_id => $m){
+                                echo '<option value="' . $ln_type_source_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                             }
                             ?>
                         </select>
@@ -114,8 +114,8 @@ $is_source = en_is_source($en['en_id']);
                             <span class="mini-header"><?= $en_all_4341[6186]['m_icon'].' '.$en_all_4341[6186]['m_name'] ?></span>
                             <select class="form-control border" id="ln_status_source_id">
                                 <?php
-                                foreach($this->config->item('en_all_6186') /* Transaction Status */ as $en_id => $m){
-                                    echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
+                                foreach($this->config->item('en_all_6186') /* Transaction Status */ as $ln_type_source_id => $m){
+                                    echo '<option value="' . $ln_type_source_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -208,9 +208,7 @@ $is_source = en_is_source($en['en_id']);
 
 
     //Print Play Layout
-    $disable_content_loading = !isset($_GET['load']);
-
-    foreach($this->config->item('en_all_11089') as $en_id => $m){
+    foreach($this->config->item('en_all_11089') as $ln_type_source_id => $m){
 
         //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
@@ -220,11 +218,11 @@ $is_source = en_is_source($en['en_id']);
 
         $this_tab = null;
         $counter = 0;
-        $auto_expand_tab = in_array($en_id, $this->config->item('en_ids_12571'));
+        $auto_expand_tab = in_array($ln_type_source_id, $this->config->item('en_ids_12571'));
 
 
         //SOURCE
-        if($en_id==6225){
+        if($ln_type_source_id==6225){
 
             //Account Setting
             if(!$session_en || $session_en['en_id']!=$en['en_id']){
@@ -276,7 +274,7 @@ $is_source = en_is_source($en['en_id']);
 
 
                     //List avatars:
-                    foreach($this->config->item('en_all_12279') as $en_id3 => $m3) {
+                    foreach($this->config->item('en_all_12279') as $ln_type_source_id3 => $m3) {
 
                         $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m_icon']));
                         $avatar_type_match = ($en_icon_parts[0] == $avatar_icon_parts[0]);
@@ -347,7 +345,7 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '</div>'; //End of accordion
 
-        } elseif($en_id==11030){
+        } elseif($ln_type_source_id==11030){
 
             //SOURCE PROFILE
             //FETCH ALL PARENTS
@@ -380,7 +378,7 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '</div>';
 
-        } elseif($en_id==11029){
+        } elseif($ln_type_source_id==11029){
 
             //SOURCE PORTFOLIO
             $en__portfolios_count = $this->LEDGER_model->ln_fetch(array(
@@ -477,16 +475,16 @@ $is_source = en_is_source($en['en_id']);
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('en_all_6177') /* Source Status */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
+                        foreach($this->config->item('en_all_6177') /* Source Status */ as $ln_type_source_id3 => $m3){
+                            $input_options .= '<option value="'.$ln_type_source_id3.'">Update All '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
 
                         //Replace:
                         $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('en_all_6177') /* Source Status */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
+                        foreach($this->config->item('en_all_6177') /* Source Status */ as $ln_type_source_id3 => $m3){
+                            $input_options .= '<option value="'.$ln_type_source_id3.'">Set to '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
 
@@ -498,16 +496,16 @@ $is_source = en_is_source($en['en_id']);
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('en_all_6186') /* Transaction Status */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Update All '.$m3['m_name'].'</option>';
+                        foreach($this->config->item('en_all_6186') /* Transaction Status */ as $ln_type_source_id3 => $m3){
+                            $input_options .= '<option value="'.$ln_type_source_id3.'">Update All '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
 
                         //Replace:
                         $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('en_all_6186') /* Transaction Status */ as $en_id3 => $m3){
-                            $input_options .= '<option value="'.$en_id3.'">Set to '.$m3['m_name'].'</option>';
+                        foreach($this->config->item('en_all_6186') /* Transaction Status */ as $ln_type_source_id3 => $m3){
+                            $input_options .= '<option value="'.$ln_type_source_id3.'">Set to '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
 
@@ -617,46 +615,18 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '</div>';
 
-        } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
+        } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_12467'))){
 
+            $counter = ln_coins_en($ln_type_source_id, $en['en_id']);
+            $this_tab = ln_coins_en($ln_type_source_id, $en['en_id'], 1);
 
-            //SOURCE COINS (READ & IDEA)
-            $join_objects = array();
-            $match_columns = array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id)) . ')' => null,
-            );
-
-            if($en_id == 12273){
-                //IDEA COIN
-                $match_columns['ln_profile_source_id'] = $en['en_id'];
-                $join_objects = array('in_next');
-            } elseif($en_id == 6255){
-                //READ COIN
-                $match_columns['ln_creator_source_id'] = $en['en_id'];
-            }
-
-            //READ & BOOKMARKS
-            $item_counters = $this->LEDGER_model->ln_fetch($match_columns, $join_objects, 1, 0, array(), 'COUNT(ln_id) as totals');
-
-            $counter = $item_counters[0]['totals'];
-
-            if($counter > 0 && (!$disable_content_loading || $auto_expand_tab)){
-
-                //Dynamic Loading when clicked:
-                $read_history_ui = $this->READ_model->read_history_ui($en_id, 0, $en['en_id']);
-                $this_tab .= $read_history_ui['message'];
-
-            }
-
-
-        } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
+        } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_4485'))){
 
             //IDEA NOTES
             $in_notes_filters = array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-                'ln_type_source_id' => $en_id,
+                'ln_type_source_id' => $ln_type_source_id,
                 '(ln_creator_source_id='.$en['en_id'].' OR ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].')' => null,
             );
 
@@ -665,18 +635,18 @@ $is_source = en_is_source($en['en_id']);
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
-            if($counter>0 && (!$disable_content_loading || $auto_expand_tab)){
+            if($counter>0 && $auto_expand_tab){
 
                 $in_notes_query = $this->LEDGER_model->ln_fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
 
 
                 $this_tab .= '<div class="list-group">';
                 foreach($in_notes_query as $count => $in_notes) {
-                    if(in_array($en_id, $this->config->item('en_ids_12321'))){
+                    if(in_array($ln_type_source_id, $this->config->item('en_ids_12321'))){
 
                         $this_tab .= echo_in_read($in_notes);
 
-                    } elseif(in_array($en_id, $this->config->item('en_ids_12322'))){
+                    } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_12322'))){
 
                         //Include the message:
                         $infobar_details = null;
@@ -703,7 +673,7 @@ $is_source = en_is_source($en['en_id']);
 
             }
 
-        } elseif($en_id == 12969 /* Reads */){
+        } elseif($ln_type_source_id == 12969 /* Reads */){
 
             $player_reads = $this->LEDGER_model->ln_fetch(array(
                 'ln_creator_source_id' => $en['en_id'],
@@ -715,7 +685,7 @@ $is_source = en_is_source($en['en_id']);
 
         }
 
-        if(!$counter && (!in_array($en_id, $this->config->item('en_ids_12574')) || !$session_en)){
+        if(!$counter && (!in_array($ln_type_source_id, $this->config->item('en_ids_12574')) || !$session_en)){
             continue;
         }
 
@@ -723,10 +693,10 @@ $is_source = en_is_source($en['en_id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$en_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$en_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].( $counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_active(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$ln_type_source_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].( $counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_active(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
 
         //BODY
-        echo '<div class="contentTab'.$en_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
+        echo '<div class="contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
         echo $this_tab;
         echo '</div>';
         echo '</div>';

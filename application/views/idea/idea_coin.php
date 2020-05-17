@@ -96,12 +96,12 @@ echo '<div class="doclear">&nbsp;</div>';
 $tab_group = 1;
 $tab_content = '';
 echo '<ul class="nav nav-tabs nav-sm">';
-foreach($this->config->item('en_all_11018') as $en_id => $m){
+foreach($this->config->item('en_all_11018') as $ln_type_source_id => $m){
 
 
     //Is this a caret menu?
     if(in_array(11040 , $m['m_parents'])){
-        echo echo_caret($en_id, $m, $in['in_id']);
+        echo echo_caret($ln_type_source_id, $m, $in['in_id']);
         continue;
     }
 
@@ -117,7 +117,7 @@ foreach($this->config->item('en_all_11018') as $en_id => $m){
     $this_tab = '';
 
 
-    if($en_id==11020){
+    if($ln_type_source_id==11020){
 
 
         //IDEA NEXT
@@ -153,77 +153,57 @@ foreach($this->config->item('en_all_11018') as $en_id => $m){
 
         $this_tab .= '</div>';
 
-    } elseif(in_array($en_id, $this->config->item('en_ids_7551'))){
+    } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_7551'))){
 
         //Reference Sources Only:
         $in_notes = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-            'ln_type_source_id' => $en_id,
+            'ln_type_source_id' => $ln_type_source_id,
             'ln_next_idea_id' => $in['in_id'],
         ), array('en_profile'), 0, 0, array('ln_order' => 'ASC'));
 
         $counter = count($in_notes);
 
-        $this_tab .= '<div id="add-source-' .$en_id . '" class="list-group source-adder">';
+        $this_tab .= '<div id="add-source-' .$ln_type_source_id . '" class="list-group source-adder">';
 
         foreach($in_notes as $in_note) {
             $this_tab .= echo_en($in_note, 0, null, $is_source && $is_active, $is_source);
         }
 
         if($is_source && $is_active) {
-            $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-' . $en_id . '" note_type_id="' . $en_id . '">
+            $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-' . $ln_type_source_id . '" note_type_id="' . $ln_type_source_id . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $en_all_2738[4536]['m_icon'] . '</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
                            placeholder="NEW SOURCE">
-                </div><div class="algolia_pad_search hidden pad_expand source-pad-' . $en_id . '"></div></div>';
+                </div><div class="algolia_pad_search hidden pad_expand source-pad-' . $ln_type_source_id . '"></div></div>';
         }
 
         $this_tab .= '</div>';
 
+    } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_12467'))){
 
-    } elseif(in_array($en_id, $this->config->item('en_ids_4485'))){
+        //MENCH COINS
+        $counter = ln_coins_in($ln_type_source_id, $in['in_id']);
+        $this_tab = ln_coins_in($ln_type_source_id, $in['in_id'], 1);
+
+    } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_4485'))){
 
         //IDEA NOTES
         $in_notes = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-            'ln_type_source_id' => $en_id,
+            'ln_type_source_id' => $ln_type_source_id,
             'ln_next_idea_id' => $in['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         $counter = count($in_notes);
-        $this_tab .= echo_in_note_mix($en_id, $in_notes, ($is_source && $is_active));
+        $this_tab .= echo_in_note_mix($ln_type_source_id, $in_notes, ($is_source && $is_active));
 
-    } elseif(in_array($en_id, $this->config->item('en_ids_12410'))){
-
-        //READ & BOOKMARKS
-        $item_counters = $this->LEDGER_model->ln_fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_'.$en_id)) . ')' => null,
-            'ln_previous_idea_id' => $in['in_id'],
-        ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
-
-        $counter = $item_counters[0]['totals'];
-
-        if($counter > 0){
-
-            //Dynamic Loading when clicked:
-            $this_tab .= '<div class="dynamic-reads"></div>';
-
-        } else {
-
-            //Inform that nothing was found:
-            $en_all_12410 = $this->config->item('en_all_12410');
-            $this_tab .= '<div class="alert alert-warning"><span class="icon-block">'.$en_all_12410[$en_id]['m_icon'].'</span><span class="montserrat '.extract_icon_color($en_all_12410[$en_id]['m_icon']).'">'.$en_all_12410[$en_id]['m_name'].'</span> is not added yet.</div>';
-
-        }
-
-    } elseif($en_id==12589){
+    } elseif($ln_type_source_id==12589){
 
         //NEXT EDITOR
-
         $dropdown_options = '';
         $input_options = '';
         $counter = 0;
@@ -286,18 +266,18 @@ foreach($this->config->item('en_all_11018') as $en_id => $m){
 
 
 
-    if(!$counter && in_array($en_id, $this->config->item('en_ids_12677'))){
+    if(!$counter && in_array($ln_type_source_id, $this->config->item('en_ids_12677'))){
         //Hide since Zero:
         continue;
     }
 
 
-    $default_active = in_array($en_id, $this->config->item('en_ids_12675'));
+    $default_active = in_array($ln_type_source_id, $this->config->item('en_ids_12675'));
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$en_id.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$en_id.', '.$in['in_id'].', 0)" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$en_id.'">'.echo_number($counter).'</span>' ).'</a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$ln_type_source_id.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$ln_type_source_id.', '.$in['in_id'].', 0)" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$ln_type_source_id.'">'.echo_number($counter).'</span>' ).'</a></li>';
 
 
-    $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$en_id.( $default_active ? '' : ' hidden ' ).'">';
+    $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$ln_type_source_id.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $this_tab;
     $tab_content .= '</div>';
 

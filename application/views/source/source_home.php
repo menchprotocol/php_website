@@ -22,7 +22,7 @@
     echo '<div id="load_leaderboard"></div>';
 
     //MENCH COINS
-    $en_all_12467 = $this->config->item('en_all_12467'); //MENCH
+    $en_all_12467 = $this->config->item('en_all_12467'); //MENCH COINS
     echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
     echo '<tr></tr>'; //Skip white
     echo '<tr>';

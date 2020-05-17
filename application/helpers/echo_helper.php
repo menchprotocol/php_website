@@ -836,7 +836,7 @@ function echo_in_marks($in_ln){
 }
 
 
-function echo_in($in, $in_linked_id, $is_parent, $is_source, $input_message = null, $extra_class = null, $control_enabled = true)
+function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false, $input_message = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();

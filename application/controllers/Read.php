@@ -178,14 +178,6 @@ class Read extends CI_Controller
 
     }
 
-    function read_in_history($tab_group_id, $note_in_id = 0, $owner_en_id = 0, $last_loaded_ln_id = 0){
-
-        return echo_json($this->READ_model->read_history_ui($tab_group_id, $note_in_id, $owner_en_id, $last_loaded_ln_id));
-
-    }
-
-
-
 
 
     function read_coin($in_id = 0)

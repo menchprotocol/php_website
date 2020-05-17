@@ -615,63 +615,158 @@ function current_mench($part1 = null){
 
 
 
-function count_ln_type($en_id){
+function ln_coins_in($ln_type_source_id, $in_id, $load_page = 0){
 
-    $session_en = superpower_assigned();
+    /*
+     * Counts MENCH COINS for ideas
+     *
+     * IF $load_page=0 then just returns count, but
+     * IF $load_page>0 then returns result list
+     *
+     * */
+
     $CI =& get_instance();
-    if($session_en){
 
-        //We need to count this:
-        if($en_id==12274){
+    //We need to count this:
+    if($ln_type_source_id==12273){
 
-            $en_coins = $CI->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
-                'ln_creator_source_id' => $session_en['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $en_coins[0]['totals'];
+        $join_objects = array('en_profile');
+        $match_columns = array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_next_idea_id' => $in_id,
+        );
 
-        } elseif($en_id==12273){
+    } elseif($ln_type_source_id==6255){
 
-            $in_coins = $CI->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-                'ln_profile_source_id' => $session_en['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $in_coins[0]['totals'];
+        $join_objects = array('en_creator');
+        $match_columns = array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
+            'ln_previous_idea_id' => $in_id,
+        );
 
-        } elseif($en_id==6255){
+    } else {
 
-            $read_coins = $CI->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
-                'ln_creator_source_id' => $session_en['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $read_coins[0]['totals'];
+        return null;
 
-        } elseif($en_id==10573){
-
-            $idea_bookmarks = $CI->LEDGER_model->ln_fetch(array(
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id' => 10573, //IDEA NOTES Bookmarks
-                'ln_profile_source_id' => $session_en['en_id'], //For this player
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $idea_bookmarks[0]['totals'];
-
-        } elseif($en_id==12969){
-
-            $read_bookmarks = $CI->LEDGER_model->ln_fetch(array(
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
-                'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-            ), array('in_previous'), 0, 0, array(), 'COUNT(ln_id) as totals');
-            return $read_bookmarks[0]['totals'];
-
-        }
     }
 
-    return null;
+    //Fetch Results:
+    $query = $CI->LEDGER_model->ln_fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('ln_id' => 'DESC') ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
+
+    if(!$load_page){
+        return $query[0]['totals'];
+    }
+
+
+    if(count($query)){
+
+        //Return UI:
+        $ui = '<div class="list-group">';
+        foreach($query as $item){
+            $ui .= echo_en($item);
+        }
+        $ui .= '</div>';
+
+    } else {
+
+        //No Results:
+        $en_all_12467 = $this->config->item('en_all_12467'); //MENCH COINS
+        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$en_all_12467[$ln_type_source_id]['m_name'].' yet</div>';
+
+    }
+
+
+    return $ui;
+
+}
+
+function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
+
+    /*
+     * Counts MENCH COINS for sources
+     *
+     * IF $load_page=0 then just returns count, but
+     * IF $load_page>0 then returns result list
+     *
+     * */
+
+    $CI =& get_instance();
+
+    //We need to count this:
+    if($ln_type_source_id==12274){
+
+        $join_objects = array('en_portfolio');
+        $match_columns = array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
+            'ln_creator_source_id' => $en_id,
+        );
+
+    } elseif($ln_type_source_id==12273){
+
+        $join_objects = array('in_next');
+        $match_columns = array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+            'ln_profile_source_id' => $en_id,
+        );
+
+    } elseif($ln_type_source_id==6255){
+
+        $join_objects = array('in_previous');
+        $match_columns = array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
+            'ln_creator_source_id' => $en_id,
+        );
+
+    } else {
+
+        return null;
+
+    }
+
+    //Fetch Results:
+    $query = $CI->LEDGER_model->ln_fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('ln_id' => 'DESC') ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
+
+    if(!$load_page){
+        return $query[0]['totals'];
+    }
+
+    if(count($query)){
+
+        //Return UI:
+        $ui = '<div class="list-group">';
+        if($ln_type_source_id==12274){
+
+            //SOURCE COIN
+            foreach($query as $item){
+                $ui .= echo_en($item);
+            }
+
+        } elseif($ln_type_source_id==12273 || $ln_type_source_id==6255){
+
+            //READ COIN
+            foreach($query as $item){
+                $ui .= echo_in($item);
+            }
+
+        }
+        $ui .= '</div>';
+
+    } else {
+
+        //No Results:
+        $en_all_12467 = $this->config->item('en_all_12467'); //MENCH COINS
+        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$en_all_12467[$ln_type_source_id]['m_name'].' yet</div>';
+
+    }
+
+
+    return $ui;
+
 }
 
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)

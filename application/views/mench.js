@@ -167,43 +167,18 @@ function js_echo_platform_message(en_id){
 }
 
 
-function read_in_history(tab_group_id, note_in_id, owner_en_id, last_loaded_ln_id){
-
-    var load_class = '.tab-data-'+tab_group_id+' .dynamic-reads';
-    $(load_class).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">LOADING...</b>');
-
-    //Yes, we need to load dynamically:
-    $.post("/read/read_in_history/"+tab_group_id+"/"+note_in_id+"/"+owner_en_id+"/"+last_loaded_ln_id, { }, function (data) {
-        if (data.status) {
-            $(load_class).html(data.message);
-        } else {
-            $(load_class).html('<b class="read montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>');
-        }
-
-        //Tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-
-}
-
-function loadtab(tab_group_id, tab_data_id, note_in_id, owner_en_id){
+function loadtab(ln_type_source_id, tab_data_id, note_in_id, owner_en_id){
 
     //Hide all tabs:
-    $('.tab-group-'+tab_group_id).addClass('hidden');
-    $('.tab-nav-'+tab_group_id).removeClass('active');
+    $('.tab-group-'+ln_type_source_id).addClass('hidden');
+    $('.tab-nav-'+ln_type_source_id).removeClass('active');
 
     //Show this tab:
-    $('.tab-group-'+tab_group_id+'.tab-data-'+tab_data_id).removeClass('hidden');
-    $('.tab-nav-'+tab_group_id+'.tab-head-'+tab_data_id).addClass('active');
+    $('.tab-group-'+ln_type_source_id+'.tab-data-'+tab_data_id).removeClass('hidden');
+    $('.tab-nav-'+ln_type_source_id+'.tab-head-'+tab_data_id).addClass('active');
 
-    //Need to dynamically load data?
-    if($('.tab-data-'+tab_data_id).find('div.dynamic-reads').length > 0){
-        //Load First Page:
-        read_in_history(tab_data_id, note_in_id, owner_en_id, 0);
-    } else {
-        //Do we need to focus on input field?
-        $('#ln_content'+tab_data_id).focus();
-    }
+    //Focus on potential input field if any:
+    $('#ln_content'+tab_data_id).focus();
 
 }
 
