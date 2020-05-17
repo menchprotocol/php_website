@@ -697,6 +697,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
     //We need to count this:
     if($ln_type_source_id==12274){
 
+        $order_columns = array('en_weight' => 'DESC'); //BEST SOURCES
         $join_objects = array('en_portfolio');
         $match_columns = array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -706,6 +707,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 
     } elseif($ln_type_source_id==12273){
 
+        $order_columns = array('in_weight' => 'DESC'); //BEST IDEAS
         $join_objects = array('in_next');
         $match_columns = array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -715,6 +717,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 
     } elseif($ln_type_source_id==6255){
 
+        $order_columns = array('ln_id' => 'DESC'); //LATEST READS
         $join_objects = array('in_previous');
         $match_columns = array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -729,7 +732,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->LEDGER_model->ln_fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('ln_id' => 'DESC') ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
+    $query = $CI->LEDGER_model->ln_fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -746,11 +749,43 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
                 $ui .= echo_en($item);
             }
 
-        } elseif($ln_type_source_id==12273 || $ln_type_source_id==6255){
+        } elseif($ln_type_source_id==6255){
 
             //READ COIN
             foreach($query as $item){
                 $ui .= echo_in($item);
+            }
+
+        } elseif($ln_type_source_id==12273){
+
+            $previous_do_hide = true;
+            $bold_upto_weight = in_calc_bold_upto_weight($query);
+            $show_max = config_var(11986);
+
+
+            foreach($query as $count => $item){
+
+                $infobar_details = null;
+                $string_references['ref_time_found'] = false;
+
+                if(strlen($item['ln_content'])){
+                    $infobar_details .= '<div class="message_content">';
+                    $infobar_details .= $this->COMMUNICATION_model->send_message($item['ln_content']);
+                    $infobar_details .= '</div>';
+                    $string_references = extract_source_references($item['ln_content'], true);
+                }
+
+                $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['in_weight']) || ($count >= $show_max)));
+
+                if(!$previous_do_hide && $do_hide){
+                    $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                    $ui .= '<div class="see_more_sources"></div>';
+                }
+
+                $ui .= echo_in($item, 0, false, false, $item['ln_content'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+
+                $previous_do_hide = $do_hide;
+
             }
 
         }
