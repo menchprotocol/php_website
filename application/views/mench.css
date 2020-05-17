@@ -10,7 +10,7 @@ body {
     font-size: 1em;
     margin:39px 0 144px 0 !important;
     font-weight: 400;
-    line-height: 110%;
+    line-height: 132%;
     font-family: 'Rubik', sans-serif;
 }
 
@@ -361,7 +361,7 @@ img.no-radius {
     padding: 7px 5px;
     color: #000000;
     font-weight: 500;
-    line-height: 110%;
+    line-height: 132%;
     margin: 0;
     display: block;
     text-decoration: none;
@@ -370,7 +370,7 @@ img.no-radius {
 .aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
     background-color: #DDDDDD;
     text-decoration: none;
-    line-height: 110%;
+    line-height: 132%;
 }
 
 .aa-dropdown-menu .aa-suggestion em {
@@ -628,7 +628,7 @@ img.no-radius {
 .form-control, .border {
     border-radius:0;
     border:0 !important;
-    line-height: 1.1;
+    line-height: 132%;
     height: 100%;
 }
 
@@ -763,13 +763,13 @@ textarea.note-textarea{
     box-shadow: none;
     color: #000000;
     padding: 0 33px 5px 0;
-    line-height: 110% !important;
+    line-height: 132% !important;
 }
 
 .note-textarea.edit-on {
     margin-left: 33px;
     padding: 5px 33px 10px 0;
-    line-height: 110% !important;
+    line-height: 132% !important;
 }
 
 .text_message{
@@ -910,7 +910,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 .mench_coin{
     text-decoration: none;
-    line-height: 110%;
+    line-height: 132%;
 }
 
 
@@ -1293,7 +1293,7 @@ label {
 }
 .idea-url{
     margin:0;
-    line-height: 110%;
+    line-height: 132%;
 }
 .idea-info, .idea-footer {
     margin:10px 0 0;

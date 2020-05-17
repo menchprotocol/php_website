@@ -8,16 +8,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-17 14:37:23 PST
+//Generated 2020-05-17 16:32:54 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589751443;
-$config['cache_count_transaction'] = 1205974;
+$config['cache_timestamp'] = 1589758374;
+$config['cache_count_transaction'] = 1206150;
 $config['cache_count_read'] = 121200;
 $config['cache_count_idea'] = 5597;
-$config['cache_count_source'] = 4857;
+$config['cache_count_source'] = 4858;
 
 
+
+//SOURCE LAYOUT HIDE COUNTS:
+$config['en_ids_13004'] = array(11029,11030);
+$config['en_all_13004'] = array(
+    11029 => array(
+        'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO',
+        'm_desc' => '',
+        'm_parents' => array(13004,12574,12571,11089,11028),
+    ),
+    11030 => array(
+        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(13004,12571,12574,11089,11028),
+    ),
+);
 
 //READ LIST:
 $config['en_ids_12969'] = array(7495,4235);
@@ -300,7 +317,7 @@ $config['en_all_12744'] = array(
     ),
 );
 
-//PLUGIN NO HEADER/FOOTER:
+//PLUGIN RETURN CODE ONLY:
 $config['en_ids_12741'] = array(4356,11049,12733,7275,7276,4527,12114,7277,12710,12709,12888,12732,12712,7278,12967,7279,12722,12569);
 $config['en_all_12741'] = array(
     4356 => array(
@@ -672,7 +689,7 @@ $config['en_all_12577'] = array(
     ),
 );
 
-//LAYOUT SHOW EVEN IF ZERO:
+//SOURCE LAYOUT SHOW EVEN IF ZERO:
 $config['en_ids_12574'] = array(6225,11029,11030);
 $config['en_all_12574'] = array(
     6225 => array(
@@ -685,13 +702,13 @@ $config['en_all_12574'] = array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(12574,12571,11089,11028),
+        'm_parents' => array(13004,12574,12571,11089,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12571,12574,11089,11028),
+        'm_parents' => array(13004,12571,12574,11089,11028),
     ),
 );
 
@@ -706,7 +723,7 @@ $config['en_all_12575'] = array(
     ),
 );
 
-//LAYOUT OPEN BY DEFAULT:
+//SOURCE LAYOUT OPEN BY DEFAULT:
 $config['en_ids_12571'] = array(12273,11029,11030);
 $config['en_all_12571'] = array(
     12273 => array(
@@ -719,13 +736,13 @@ $config['en_all_12571'] = array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(12574,12571,11089,11028),
+        'm_parents' => array(13004,12574,12571,11089,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12571,12574,11089,11028),
+        'm_parents' => array(13004,12571,12574,11089,11028),
     ),
 );
 
@@ -2187,7 +2204,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(12571,12574,11089,11028),
+        'm_parents' => array(13004,12571,12574,11089,11028),
     ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -2205,7 +2222,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(12574,12571,11089,11028),
+        'm_parents' => array(13004,12574,12571,11089,11028),
     ),
 );
 
@@ -3749,7 +3766,7 @@ $config['en_all_10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['en_ids_4527'] = array(6225,10956,12279,12588,6150,12864,12359,11047,6192,12273,11018,12675,12677,4229,12842,4486,12840,10573,4485,12012,6193,10990,4983,4737,7356,12138,7355,12400,6201,12420,12413,7585,12955,12330,12324,7309,7712,12883,12884,7751,10717,12571,12574,10692,2738,12744,12467,6404,12079,4341,12893,4527,11054,12687,11035,12112,10876,6232,12589,3000,12500,12741,6287,12577,4755,11081,7704,5967,6255,12229,12326,12446,12969,12227,7304,7360,7364,7359,12327,4269,6204,4536,12887,12274,6194,11089,11080,12822,4592,12403,11059,4537,12524,4997,4986,7551,6177,7358,12575,7357,12401,10957,6206,12968,12523,12322,12321,6103,6186,4593,10593,12141,6146);
+$config['en_ids_4527'] = array(6225,10956,12279,12588,6150,12864,12359,11047,6192,12273,11018,12675,12677,4229,12842,4486,12840,10573,4485,12012,6193,10990,4983,4737,7356,12138,7355,12400,6201,12420,12413,7585,12955,12330,12324,7309,7712,12883,12884,7751,10717,10692,2738,12744,12467,6404,12079,4341,12893,4527,11054,12687,11035,12112,10876,6232,12589,3000,12500,12741,6287,12577,4755,11081,7704,5967,6255,12229,12326,12446,12969,12227,7304,7360,7364,7359,12327,4269,6204,4536,12887,12274,6194,11089,13004,12571,12574,11080,12822,4592,12403,11059,4537,12524,4997,4986,7551,6177,7358,12575,7357,12401,10957,6206,12968,12523,12322,12321,6103,6186,4593,10593,12141,6146);
 $config['en_all_4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3997,18 +4014,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(10710,4527),
     ),
-    12571 => array(
-        'm_icon' => '<i class="fas fa-expand" aria-hidden="true"></i>',
-        'm_name' => 'LAYOUT OPEN BY DEFAULT',
-        'm_desc' => '',
-        'm_parents' => array(12573,4527),
-    ),
-    12574 => array(
-        'm_icon' => '<i class="fad fa-check-double"></i>',
-        'm_name' => 'LAYOUT SHOW EVEN IF ZERO',
-        'm_desc' => '',
-        'm_parents' => array(4527,12573),
-    ),
     10692 => array(
         'm_icon' => '<i class="fas fa-bezier-curve"></i>',
         'm_name' => 'LEDGER FIVE LINKS',
@@ -4119,7 +4124,7 @@ $config['en_all_4527'] = array(
     ),
     12741 => array(
         'm_icon' => '<i class="fas fa-code"></i>',
-        'm_name' => 'PLUGIN NO HEADER/FOOTER',
+        'm_name' => 'PLUGIN RETURN CODE ONLY',
         'm_desc' => '',
         'm_parents' => array(12999,4527),
     ),
@@ -4266,6 +4271,24 @@ $config['en_all_4527'] = array(
         'm_name' => 'SOURCE LAYOUT',
         'm_desc' => '',
         'm_parents' => array(4536,4527),
+    ),
+    13004 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'SOURCE LAYOUT HIDE COUNTS',
+        'm_desc' => '',
+        'm_parents' => array(4527,12573),
+    ),
+    12571 => array(
+        'm_icon' => '<i class="fas fa-expand" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE LAYOUT OPEN BY DEFAULT',
+        'm_desc' => '',
+        'm_parents' => array(12573,4527),
+    ),
+    12574 => array(
+        'm_icon' => '<i class="fad fa-check-double"></i>',
+        'm_name' => 'SOURCE LAYOUT SHOW EVEN IF ZERO',
+        'm_desc' => '',
+        'm_parents' => array(4527,12573),
     ),
     11080 => array(
         'm_icon' => '<i class="far fa-file source"></i>',

@@ -686,7 +686,7 @@ $is_source = en_is_source($en['en_id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$ln_type_source_id.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? echo_number($counter).'&nbsp;' : '').$m['m_name'].'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$ln_type_source_id.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( !in_array($ln_type_source_id, $this->config->item('en_ids_13004')) && $counter>0 ? echo_number($counter).'&nbsp;' : '').$m['m_name'].'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
