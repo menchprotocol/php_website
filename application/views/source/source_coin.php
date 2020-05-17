@@ -641,23 +641,15 @@ $is_source = en_is_source($en['en_id']);
 
                 $this_tab .= '<div class="list-group">';
                 foreach($in_notes_query as $count => $in_notes) {
-                    if(in_array($ln_type_source_id, $this->config->item('en_ids_12321'))){
-
-                        $this_tab .= echo_in_read($in_notes);
-
-                    } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_12322'))){
-
-                        //Include the message:
-                        $infobar_details = null;
-                        if($in_notes['ln_content']){
-                            $infobar_details .= '<div class="message_content">';
-                            $infobar_details .= $this->COMMUNICATION_model->send_message($in_notes['ln_content']);
-                            $infobar_details .= '</div>';
-                        }
-
-                        $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details, null, false);
-
+                    //Include the message:
+                    $infobar_details = null;
+                    if($in_notes['ln_content']){
+                        $infobar_details .= '<div class="message_content">';
+                        $infobar_details .= $this->COMMUNICATION_model->send_message($in_notes['ln_content']);
+                        $infobar_details .= '</div>';
                     }
+
+                    $this_tab .= echo_in($in_notes, 0, false, false, $infobar_details, null, false);
                 }
                 $this_tab .= '</div>';
 
