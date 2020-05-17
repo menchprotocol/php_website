@@ -1344,6 +1344,10 @@ function echo_time_range($metadata){
 
 function echo_time_hours($total_seconds, $hide_hour = false){
 
+    if(!$total_seconds){
+        return 'START';
+    }
+
     //Turns seconds into HH:MM:SS
     $hours = floor($total_seconds/3600);
     $minutes = floor(fmod($total_seconds, 3600)/60);
