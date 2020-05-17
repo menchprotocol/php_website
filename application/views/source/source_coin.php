@@ -6,6 +6,8 @@ $en_all_4341 = $this->config->item('en_all_4341'); //Link Table
 $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+$en_all_11089 = $this->config->item('en_all_11089'); //SOURCE LAYOUT
+$en_all_10957 = $this->config->item('en_all_10957'); //SUPERPOWERS
 $is_public = in_array($en['en_status_source_id'], $this->config->item('en_ids_7357'));
 $is_active = in_array($en['en_status_source_id'], $this->config->item('en_ids_7358'));
 $superpower_10967 = superpower_active(10967, true);
@@ -208,14 +210,11 @@ $is_source = en_is_source($en['en_id']);
 
 
     //Print Play Layout
-    foreach($this->config->item('en_all_11089') as $ln_type_source_id => $m){
+    foreach($en_all_11089 as $ln_type_source_id => $m){
 
         //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
-        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-            continue;
-        }
-
+        $has_superpower = ( !count($superpower_actives) || superpower_active(end($superpower_actives), true) );
         $this_tab = null;
         $counter = 0;
         $auto_expand_tab = in_array($ln_type_source_id, $this->config->item('en_ids_12571'));
@@ -228,7 +227,6 @@ $is_source = en_is_source($en['en_id']);
             if(!$session_en || $session_en['en_id']!=$en['en_id']){
                 continue;
             }
-
 
             $this_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
 
@@ -299,7 +297,7 @@ $is_source = en_is_source($en['en_id']);
 
                     //List avatars:
                     $this_tab .= '<div class="list-group">';
-                    foreach($this->config->item('en_all_10957') as $superpower_en_id => $m3){
+                    foreach($en_all_10957 as $superpower_en_id => $m3){
 
                         //What is the superpower requirement?
                         if(!superpower_assigned($superpower_en_id)){
@@ -618,7 +616,9 @@ $is_source = en_is_source($en['en_id']);
         } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_12467'))){
 
             $counter = ln_coins_en($ln_type_source_id, $en['en_id']);
-            $this_tab = ln_coins_en($ln_type_source_id, $en['en_id'], 1);
+            if($has_superpower){
+                $this_tab = ln_coins_en($ln_type_source_id, $en['en_id'], 1);
+            }
 
         } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_4485'))){
 
@@ -635,31 +635,46 @@ $is_source = en_is_source($en['en_id']);
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
-            if($counter>0){
+            if($has_superpower){
+                if($counter>0){
 
-                $in_notes_query = $this->LEDGER_model->ln_fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
-                $this_tab .= '<div class="list-group">';
-                foreach($in_notes_query as $count => $in_notes) {
-                    $this_tab .= echo_in($in_notes, 0, false, false, $in_notes['ln_content'], null, false);
+                    $in_notes_query = $this->LEDGER_model->ln_fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
+                    $this_tab .= '<div class="list-group">';
+                    foreach($in_notes_query as $count => $in_notes) {
+                        $this_tab .= echo_in($in_notes, 0, false, false, $in_notes['ln_content'], null, false);
+                    }
+                    $this_tab .= '</div>';
+
+                } else {
+
+                    $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$en_all_11089[$ln_type_source_id]['m_name'].' yet</div>';
+
                 }
-                $this_tab .= '</div>';
-
-            } else {
-
-                $en_all_4485 = $this->config->item('en_all_4485');
-                $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not added any '.$en_all_4485[$ln_type_source_id]['m_name'].' yet</div>';
-
             }
 
         } elseif($ln_type_source_id == 12969 /* Reads */){
 
-            $player_reads = $this->LEDGER_model->ln_fetch(array(
+            $in_reads_filters = array(
                 'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            ), array('in_previous'), 1, 0, array(), 'COUNT(ln_id) as totals');
+            );
+            $player_reads = $this->LEDGER_model->ln_fetch($in_reads_filters, array('in_previous'), 1, 0, array(), 'COUNT(ln_id) as totals');
             $counter = $player_reads[0]['totals'];
+
+            if($has_superpower){
+                if($counter > 0){
+                    $in_reads_query = $this->LEDGER_model->ln_fetch($in_reads_filters, array('in_previous'), config_var(11064), 0, array('ln_order' => 'ASC'));
+                    $this_tab .= '<div class="list-group">';
+                    foreach($in_reads_query as $count => $in_notes) {
+                        $this_tab .= echo_in($in_notes);
+                    }
+                    $this_tab .= '</div>';
+                } else {
+                    $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$en_all_11089[$ln_type_source_id]['m_name'].' yet</div>';
+                }
+            }
 
         }
 
@@ -671,11 +686,16 @@ $is_source = en_is_source($en['en_id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$ln_type_source_id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.$m['m_name'].( $counter>0 ? '<span title="'.number_format($counter, 0).'" class="'.superpower_active(12701).'">&nbsp;'.echo_number($counter).'</span>' : '').'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$ln_type_source_id.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? echo_number($counter).'&nbsp;' : '').$m['m_name'].'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
-        echo $this_tab;
+        if($this_tab) {
+            echo $this_tab;
+        } elseif(!$has_superpower){
+            $superpower = $en_all_10957[end($superpower_actives)];
+            echo '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Missing <span class="'.extract_icon_color($superpower['m_icon']).'">'. $superpower['m_icon'] . '&nbsp;' . $superpower['m_name'] . '</span></div>';
+        }
         echo '</div>';
         echo '</div>';
 
