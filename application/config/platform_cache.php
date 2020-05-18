@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-17 17:41:00 PST
+//Generated 2020-05-17 17:49:21 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589762460;
-$config['cache_count_transaction'] = 1206248;
+$config['cache_timestamp'] = 1589762961;
+$config['cache_count_transaction'] = 1206287;
 $config['cache_count_read'] = 121200;
 $config['cache_count_idea'] = 5597;
 $config['cache_count_source'] = 4861;
@@ -2138,19 +2138,19 @@ $config['en_all_12079'] = array(
 );
 
 //SOURCE LAYOUT:
-$config['en_ids_11089'] = array(6225,10573,12273,12419,12969,6255,12896,6146,11030,12274,7545,11029);
+$config['en_ids_11089'] = array(10573,6225,12273,12419,12969,6255,12896,6146,11030,12274,7545,11029);
 $config['en_all_11089'] = array(
-    6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'ACCOUNT SETTINGS',
-        'm_desc' => '',
-        'm_parents' => array(12574,11089,12205,11035,4527),
-    ),
     10573 => array(
         'm_icon' => '<i class="fas fa-user-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LIST',
         'm_desc' => '',
         'm_parents' => array(4535,11054,4527,10984,11018,11035,11089,12321,4593,7551,4485),
+    ),
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'ACCOUNT SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(12574,11089,12205,11035,4527),
     ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -3074,7 +3074,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(12412,11035),
     ),
     13007 => array(
-        'm_icon' => '<i class="fad fa-bars source"></i>',
+        'm_icon' => '<i class="fad fa-sort-alpha-down source"></i>',
         'm_name' => 'SOURCE SORT RESET',
         'm_desc' => '',
         'm_parents' => array(11035,4593),
@@ -7199,7 +7199,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593),
     ),
     13007 => array(
-        'm_icon' => '<i class="fad fa-bars source"></i>',
+        'm_icon' => '<i class="fad fa-sort-alpha-down source"></i>',
         'm_name' => 'SOURCE SORT RESET',
         'm_desc' => 'Removes the sort value of all portfolio sources which would sort it by alphabetical value',
         'm_parents' => array(11035,4593),
