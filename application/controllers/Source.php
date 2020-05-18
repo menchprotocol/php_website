@@ -1997,7 +1997,7 @@ class Source extends CI_Controller
                 //Bad password
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Incorrect password',
+                    'message' => 'Incorrect password' . hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']),
                 ));
 
             }
