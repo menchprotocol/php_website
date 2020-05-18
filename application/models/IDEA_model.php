@@ -532,7 +532,11 @@ class IDEA_model extends CI_Model
             }
         }
 
-        return $grand_parents;
+        if($first_level){
+            return recursive_merge($grand_parents);
+        } else {
+            return $grand_parents;
+        }
     }
 
     function in_recursive_parents($in_id, $first_level = true, $public_only = true)

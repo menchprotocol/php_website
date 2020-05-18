@@ -804,8 +804,25 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 
 }
 
-function recursive_flat($multid_array){
+function recursive_merge($multid_array){
 
+    $return_array = array();
+
+    //No children, return simple:
+    if(count($multid_array)==1){
+        return array($multid_array[0]);
+    }
+
+    //Go down the rabbit hole:
+    foreach($multid_array as $key => $value){
+        if($key >= 1){
+            foreach(recursive_merge($value) as $recursive_merge){
+                array_push($return_array, array_merge(array($multid_array[0]), $recursive_merge));
+            }
+        }
+    }
+
+    return $return_array;
 }
 
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
