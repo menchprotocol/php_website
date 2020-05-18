@@ -506,13 +506,13 @@ class IDEA_model extends CI_Model
     }
 
 
-    function in_recursive_parents_new($in_id, $first_level = true, $public_only = true)
+    function in_find_previous($en_id, $in_id)
     {
 
-        $grand_parents = array();
-
-        if($first_level){
-            array_push($grand_parents, intval($in_id));
+        if($en_id){
+            $player_read_ids = $this->READ_model->read_ids($en_id);
+        } else {
+            $grand_parents = array();
         }
 
         //Fetch parents:
@@ -523,20 +523,25 @@ class IDEA_model extends CI_Model
             'ln_next_idea_id' => $in_id,
         ), array('in_previous'), 0, 0, array(), 'in_id') as $in_parent) {
 
-            $recursive_parents = $this->IDEA_model->in_recursive_parents_new($in_parent['in_id'], false);
+            $recursive_parents = $this->IDEA_model->in_find_previous(0, $in_parent['in_id']);
 
-            if(count($recursive_parents)){
-                array_push($grand_parents, array_merge(array(intval($in_parent['in_id'])), $recursive_parents));
+            if($en_id){
+                if(array_intersect($recursive_parents, array_flatten($player_read_ids))){
+                    return intval($in_parent['in_id']);
+                } else {
+                    continue;
+                }
             } else {
-                array_push($grand_parents, array(intval($in_parent['in_id'])));
+                if(count($recursive_parents)){
+                    array_push($grand_parents, array_merge(array(intval($in_parent['in_id'])), $recursive_parents));
+                } else {
+                    array_push($grand_parents, array(intval($in_parent['in_id'])));
+                }
             }
+
         }
 
-        if($first_level){
-            return recursive_merge($grand_parents);
-        } else {
-            return $grand_parents;
-        }
+        return $grand_parents;
     }
 
     function in_recursive_parents($in_id, $first_level = true, $public_only = true)

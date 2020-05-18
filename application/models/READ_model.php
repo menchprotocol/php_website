@@ -142,17 +142,16 @@ class READ_model extends CI_Model
 
         //If not part of the Reads, go to reads idea
         if($first_step){
-            $player_read_ids = $this->READ_model->read_ids($en_id);
-
             if($en_id==13013){
                 echo_json(array(
-                    'player_read_ids' => $player_read_ids,
-                    'in_recursive_parents_new' => $this->IDEA_model->in_recursive_parents_new($in['in_id']),
-                    'in_recursive_parents' => $this->IDEA_model->in_recursive_parents($in['in_id'])
+                    'en_id' => $en_id,
+                    'in_id' => $in['in_id'],
+                    'in_find_previous' => $this->IDEA_model->in_find_previous($en_id, $in['in_id']),
                 ));
                 die();
             }
 
+            $player_read_ids = $this->READ_model->read_ids($en_id);
             if(!in_array($in['in_id'], $player_read_ids)){
                 foreach($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
                     if (array_intersect($grand_parent_ids, $player_read_ids)) {
