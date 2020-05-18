@@ -126,6 +126,7 @@ class Read extends CI_Controller
 
             //Find next Idea based on source's Reads:
             $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
+            die('aa'.$next_in_id);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
             } else {
