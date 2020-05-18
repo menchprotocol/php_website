@@ -808,33 +808,21 @@ function recursive_merge($multid_array){
 
     $return_array = array();
 
-    if(count($multid_array)==1){
+    //Go down the rabbit hole:
+    foreach($multid_array as $key => $value){
+        if($key == 0 && count($value)<=1) {
 
-        //No children, return simple:
-        return array($multid_array[0]);
+            array_push($return_array, array($multid_array[0]));
 
-    } else {
+        } else {
 
-        //Go down the rabbit hole:
-        foreach($multid_array as $key => $value){
-            if($key >= 1){
-                $recursive_merge = recursive_merge($value);
-                if(count($recursive_merge)==1){
-                    array_push($return_array, array_merge(array($multid_array[0]), $recursive_merge));
-                } else {
-                    foreach($recursive_merge as $key2 => $value2){
-                        if($key2 >= 1){
-                            array_push($return_array, array_merge(array($multid_array[0]), $value2));
-                        }
-                    }
-                }
-
+            foreach(recursive_merge($value) as $key2 => $value2){
+                array_push($return_array, array_merge(array($multid_array[0]), $value2));
             }
         }
-
-        return $return_array;
-
     }
+
+    return $return_array;
 }
 
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
