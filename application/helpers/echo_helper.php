@@ -1339,7 +1339,7 @@ function echo_time_range($metadata){
     if(!isset($metadata['in__metadata_min_seconds']) || !isset($metadata['in__metadata_max_seconds'])){
         return null;
     }
-    return '<span title="Estimated Read Time Of '.( $metadata['in__metadata_min_seconds'] < $metadata['in__metadata_max_seconds'] ? echo_time_hours($metadata['in__metadata_min_seconds']).' - ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']).'" data-toggle="tooltip" data-placement="bottom">'.echo_time_hours(round(($metadata['in__metadata_min_seconds']+$metadata['in__metadata_max_seconds'])/2)).'</span>';
+    return '<span title="Estimated Read Time Of '.( $metadata['in__metadata_min_seconds'] < $metadata['in__metadata_max_seconds'] ? echo_time_hours($metadata['in__metadata_min_seconds']).' - ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']).'">'.echo_time_hours(round(($metadata['in__metadata_min_seconds']+$metadata['in__metadata_max_seconds'])/2)).'</span>';
 }
 
 function echo_time_hours($total_seconds, $hide_hour = false){
