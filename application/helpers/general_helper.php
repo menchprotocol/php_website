@@ -807,7 +807,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 function recursive_merge($multid_array){
 
     if(count($multid_array)==1){
-        return $multid_array;
+        return array($multid_array);
     }
 
     //Aggregate & Return:
