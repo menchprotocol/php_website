@@ -512,7 +512,7 @@ class IDEA_model extends CI_Model
         $grand_parents = array();
 
         if($first_level){
-            array_push($grand_parents, array(intval($in_id)));
+            array_push($grand_parents, intval($in_id));
         }
 
         //Fetch parents:
