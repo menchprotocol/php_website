@@ -519,7 +519,7 @@ class IDEA_model extends CI_Model
             'ln_next_idea_id' => $in_id,
         ), array('in_previous'), 0, 0, array(), 'in_id') as $in_parent) {
             foreach($this->IDEA_model->in_recursive_parents_new($in_parent['in_id'], false) as $recursive_parent){
-                array_push($grand_parents, array_merge(intval($in_parent['in_id']), array_flatten($recursive_parent)));
+                array_push($grand_parents, array_merge(array(intval($in_parent['in_id'])), array_flatten($recursive_parent)));
             }
         }
 
