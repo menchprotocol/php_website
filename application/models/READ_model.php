@@ -152,6 +152,7 @@ class READ_model extends CI_Model
                                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                             ));
                             if(count($ins)){
+                                die('die:'.$parent_in_id);
                                 $found_in_id = $this->READ_model->read_next_find($en_id, $ins[0], false);
                                 if($found_in_id != 0){
                                     return $found_in_id;
