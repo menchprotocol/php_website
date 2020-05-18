@@ -522,7 +522,7 @@ $is_source = en_is_source($en['en_id']);
 
                 }
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;"><span class="sort_reset hidden" title="'.$en_all_11035[13007]['m_name'].'"><a href="javascript:void(0);" onclick="en_sort_reset()">'.$en_all_11035[13007]['m_icon'].'</a></span><a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$en_all_11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;"><span class="sort_reset hidden icon-block" title="'.$en_all_11035[13007]['m_name'].'"><a href="javascript:void(0);" onclick="en_sort_reset()">'.$en_all_11035[13007]['m_icon'].'</a></span><a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$en_all_11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[4997]['m_icon'].'</a></div>';
                 $this_tab .= '<div class="doclear">&nbsp;</div>';
                 $this_tab .= '<div class="source_editor hidden">';
                 $this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$en_all_11035[4997]['m_name'].'</div>';
