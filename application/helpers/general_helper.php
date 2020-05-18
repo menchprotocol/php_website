@@ -806,20 +806,16 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 
 function recursive_merge($multid_array){
 
-    return array_flatten($multid_array);
+    if(count($multid_array)==1){
+        return $multid_array;
+    }
 
+    //Aggregate & Return:
     $return_array = array();
-
-    //Go down the rabbit hole:
     foreach($multid_array as $key => $value){
-        if($key == 0 && count($multid_array)<=1) {
-
-            array_push($return_array, $multid_array[0]);
-
-        } else {
-
-            foreach(recursive_merge($value) as $key2 => $value2){
-                array_push($return_array, array_merge(array($multid_array[0]), $value2));
+        if($key > 1) {
+            foreach(recursive_merge($value) as $recursive_merge){
+                array_push($return_array, array_merge(array($multid_array[0]), $recursive_merge));
             }
         }
     }
