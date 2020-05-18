@@ -1,6 +1,6 @@
 <?php
 
-function echo_en_load_more($page, $limit, $en__portfolios_count)
+function echo_en_load_more($page, $limit, $en__portfolio_count)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
@@ -10,7 +10,7 @@ function echo_en_load_more($page, $limit, $en__portfolios_count)
 
     //Regular section:
     $max_sources = (($page + 1) * $limit);
-    $max_sources = ($max_sources > $en__portfolios_count ? $en__portfolios_count : $max_sources);
+    $max_sources = ($max_sources > $en__portfolio_count ? $en__portfolio_count : $max_sources);
     $ui .= '<span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source">SEE MORE</b>';
     $ui .= '</a></div>';
 
@@ -242,7 +242,7 @@ function echo_in_notes($ln)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_en_type_' . $ln['ln_type_source_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" tr-id="' . $ln['ln_id'] . '">';
+    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_en_type_' . $ln['ln_type_source_id'] . '" id="ul-nav-' . $ln['ln_id'] . '" ln_id="' . $ln['ln_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
@@ -873,7 +873,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
 
 
 
-    $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
+    $ui = '<div ln_id="' . $ln_id . '" in-tr-type="' . $in['ln_type_source_id'] . '" idea-id="' . $in['in_id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_in_'.$in['in_id'] . ' in_line_' . $in['in_id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$ln_id.' '.$extra_class.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1531,21 +1531,21 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     //PORTFOLIO COUNT (SYNC WITH NEXT IDEA COUNT)
     $child_counter = '';
     if(superpower_active(10967, true)){
-        $en__portfolios_count = $CI->LEDGER_model->ln_fetch(array(
+        $en__portfolio_count = $CI->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $en['en_id'],
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
-        if($en__portfolios_count[0]['totals'] > 0){
-            $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolios_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolios_count[0]['totals']).'</span></span>';
+        if($en__portfolio_count[0]['totals'] > 0){
+            $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolio_count[0]['totals']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
 
 
     //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['en_id'] . '" en-status="' . $en['en_status_source_id'] . '" ln_id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_source_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1600,8 +1600,12 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     if($control_enabled && $is_source){
         if($is_link_source){
 
+            //Sort
+            $ui .= '<span title="SORT"><i class="fas fa-bars hidden"></i></span>';
+
             //Manage source link:
             $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+
 
         } elseif($is_source_only){
 

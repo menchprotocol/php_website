@@ -379,13 +379,13 @@ $is_source = en_is_source($en['en_id']);
         } elseif($ln_type_source_id==11029){
 
             //SOURCE PORTFOLIO
-            $en__portfolios_count = $this->LEDGER_model->ln_fetch(array(
+            $en__portfolio_count = $this->LEDGER_model->ln_fetch(array(
                 'ln_profile_source_id' => $en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
-            $counter = $en__portfolios_count[0]['totals'];
+            $counter = $en__portfolio_count[0]['totals'];
             $en__portfolios = array(); //Fetch some
 
 
@@ -522,7 +522,7 @@ $is_source = en_is_source($en['en_id']);
 
                 }
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;"><a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$en_all_11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;"><span class="sort_reset hidden" title="'.$en_all_11035[13007]['m_name'].'"><a href="javascript:void(0);" onclick="en_sort_reset()">'.$en_all_11035[13007]['m_icon'].'</a></span><a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$en_all_11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[4997]['m_icon'].'</a></div>';
                 $this_tab .= '<div class="doclear">&nbsp;</div>';
                 $this_tab .= '<div class="source_editor hidden">';
                 $this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$en_all_11035[4997]['m_name'].'</div>';
@@ -592,7 +592,7 @@ $is_source = en_is_source($en['en_id']);
                 }
             }
 
-            $this_tab .= '<div id="list-children" class="list-group">';
+            $this_tab .= '<div id="en__portfolio" class="list-group">';
 
             foreach($en__portfolios as $en_portfolio) {
                 $this_tab .= echo_en($en_portfolio,false, null, true, $is_source);
@@ -602,7 +602,7 @@ $is_source = en_is_source($en['en_id']);
             }
 
             //Input to add new child:
-            $this_tab .= '<div id="new-children" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
+            $this_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
                     <input type="text"

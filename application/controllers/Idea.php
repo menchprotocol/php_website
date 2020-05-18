@@ -482,13 +482,6 @@ class Idea extends CI_Controller {
                 ));
             } else {
 
-                //Fetch for the record:
-                $children_before = $this->LEDGER_model->ln_fetch(array(
-                    'ln_previous_idea_id' => intval($_POST['in_id']),
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
-
                 //Update them all:
                 foreach($_POST['new_ln_orders'] as $rank => $ln_id) {
                     $this->LEDGER_model->ln_update(intval($ln_id), array(
@@ -496,17 +489,9 @@ class Idea extends CI_Controller {
                     ), $session_en['en_id'], 10675 /* Ideas Ordered by Player */);
                 }
 
-                //Fetch again for the record:
-                $children_after = $this->LEDGER_model->ln_fetch(array(
-                    'ln_previous_idea_id' => intval($_POST['in_id']),
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                ), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
-
                 //Display message:
                 echo_json(array(
                     'status' => 1,
-                    'message' => '<i class="fas fa-check-circle"></i> Sorted',
                 ));
             }
         }

@@ -185,7 +185,7 @@ $(document).ready(function () {
 
     $('#expand_ins .expand_all').click(function (e) {
         $(".next_ins .ideas_sortable").each(function () {
-            ms_toggle($(this).attr('in-link-id'), 1);
+            ms_toggle($(this).attr('ln_id'), 1);
         });
     });
 
@@ -208,12 +208,12 @@ $(document).ready(function () {
     //Watch the expand/close all buttons:
     $('#expand_ins .expand_all').click(function (e) {
         $(".next_ins .ideas_sortable").each(function () {
-            ms_toggle($(this).attr('in-link-id'), 1);
+            ms_toggle($(this).attr('ln_id'), 1);
         });
     });
     $('#expand_ins .close_all').click(function (e) {
         $(".next_ins .ideas_sortable").each(function () {
-            ms_toggle($(this).attr('in-link-id'), 0);
+            ms_toggle($(this).attr('ln_id'), 0);
         });
     });
 
@@ -347,9 +347,6 @@ function in_ui_delete(in_id,ln_id){
         //Hide editing box:
         $('#modifybox').addClass('hidden');
 
-        //Re-sort sibling ideas:
-        in_sort_save(parent_in_id);
-
     }, 610);
 
 }
@@ -457,7 +454,7 @@ function in_notes_sort_apply(note_type_id) {
     var this_ln_id = 0;
 
     $(".msg_en_type_" + note_type_id).each(function () {
-        this_ln_id = parseInt($(this).attr('tr-id'));
+        this_ln_id = parseInt($(this).attr('ln_id'));
         if (this_ln_id > 0) {
             sort_rank++;
             new_ln_orders[sort_rank] = this_ln_id;
@@ -491,7 +488,7 @@ function in_notes_sort_load(note_type_id) {
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
             //See if this is a YouTube or Vimeo iFrame that needs to be temporarily deleted:
-            var ln_id = $(evt.item).attr('tr-id');
+            var ln_id = $(evt.item).attr('ln_id');
             if ($('#ul-nav-' + ln_id).find('.video-sorting').length !== 0) {
                 inner_content = $('#msgbody_' + ln_id).html();
                 $('#msgbody_' + ln_id).css('height', $('#msgbody_' + ln_id).height()).html('<i class="fas fa-bars"></i> SORT VIDEO');
@@ -501,7 +498,7 @@ function in_notes_sort_load(note_type_id) {
         },
         onEnd: function (evt/**Event*/) {
             if (inner_content) {
-                var ln_id = $(evt.item).attr('tr-id');
+                var ln_id = $(evt.item).attr('ln_id');
                 $('#msgbody_' + ln_id).html(inner_content);
             }
         }
@@ -803,7 +800,7 @@ function in_sort_save(in_id) {
     $("#list-in-" + in_loaded_id + "-0 .ideas_sortable").each(function () {
         //Fetch variables for this idea:
         var in_id = parseInt($(this).attr('idea-id'));
-        var ln_id = parseInt($(this).attr('in-link-id'));
+        var ln_id = parseInt($(this).attr('ln_id'));
 
         sort_rank++;
 

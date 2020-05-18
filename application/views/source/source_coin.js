@@ -11,6 +11,12 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
+    //Source Loader:
+    var portfolio_count = parseInt($('#new_portfolio').attr('current-count'));
+    if(portfolio_count>0 && portfolio_count<parseInt(js_en_all_6404[13005]['m_desc'])){
+        en_sort_portfolio_load();
+    }
+
     //Lookout for textinput updates
     echo_input_text_update_start();
 
@@ -41,10 +47,10 @@ $(document).ready(function () {
         $('#new-parent .pad_expand').addClass('hidden');
     });
 
-    $('#new-children').focus(function() {
-        $('#new-children .pad_expand').removeClass('hidden');
+    $('#new_portfolio').focus(function() {
+        $('#new_portfolio .pad_expand').removeClass('hidden');
     }).focusout(function() {
-        $('#new-children .pad_expand').addClass('hidden');
+        $('#new_portfolio .pad_expand').addClass('hidden');
     });
 
 
@@ -109,7 +115,7 @@ $(document).ready(function () {
 
     //Loadup various search bars:
     en_load_search("#new-parent", 1, 'q');
-    en_load_search("#new-children", 0, 'w');
+    en_load_search("#new_portfolio", 0, 'w');
 
 
     //Watchout for file uplods:
@@ -268,8 +274,8 @@ function en_add_or_link(en_existing_id, is_parent) {
         var input = $('#new-parent .add-input');
         var list_id = 'list-parent';
     } else {
-        var input = $('#new-children .add-input');
-        var list_id = 'list-children';
+        var input = $('#new_portfolio .add-input');
+        var list_id = 'en__portfolio';
     }
 
     var en_new_string = null;
@@ -307,6 +313,8 @@ function en_add_or_link(en_existing_id, is_parent) {
             //Allow inline editing if enabled:
             echo_input_text_update_start();
 
+            en_sort_portfolio_load();
+
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 
@@ -343,9 +351,9 @@ function en_load_next_page(page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
-        var append_div = $('#new-children').html();
+        var append_div = $('#new_portfolio').html();
         //The padding-bottom would delete the scrolling effect on the left side!
-        $('#list-children').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+        $('#en__portfolio').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
@@ -361,12 +369,12 @@ function en_load_next_page(page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#list-children').html(data + '<div id="new-children" class="list-group-item itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#en__portfolio').html(data + '<div id="new_portfolio" class="list-group-item itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            en_load_search("#new-children", 0, 'w');
+            en_load_search("#new_portfolio", 0, 'w');
         } else {
             //Update UI to confirm with user:
-            $(data).insertBefore('#new-children');
+            $(data).insertBefore('#new_portfolio');
         }
 
         echo_input_text_update_start();
@@ -549,6 +557,82 @@ function en_save_file_upload(droppedFiles, uploadType) {
     } else {
         // ajax for legacy browsers
     }
+}
+
+
+function en_sort_save() {
+
+    var new_ln_orders = [];
+    var sort_rank = 0;
+
+    $("#en__portfolio .en-item").each(function () {
+        //Fetch variables for this idea:
+        var en_id = parseInt($(this).attr('source-id'));
+        var ln_id = parseInt($(this).attr('ln_id'));
+
+        sort_rank++;
+
+        //Store in DB:
+        new_ln_orders[sort_rank] = ln_id;
+    });
+
+    //It might be zero for lists that have jsut been emptied
+    if (sort_rank > 0) {
+        //Update backend:
+        $.post("/source/en_sort_save", {en_id: en_focus_id, new_ln_orders: new_ln_orders}, function (data) {
+            //Update UI to confirm with user:
+            if (!data.status) {
+                //There was some sort of an error returned!
+                alert(data.message);
+            }
+        });
+    }
+}
+
+function en_sort_reset(){
+
+    $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
+
+    //Update via call:
+    $.post("/source/en_sort_reset", {
+        en_id: en_focus_id
+    }, function (data) {
+
+        if (!data.status) {
+
+            //Ooops there was an error!
+            alert(data.message);
+
+        } else {
+
+            //Refresh page:
+            window.location = '/source/' + en_focus_id;
+
+        }
+    });
+
+}
+
+function en_sort_portfolio_load() {
+
+    var element_key = null;
+    var theobject = document.getElementById("en__portfolio");
+    if (!theobject) {
+        //due to duplicate ideas belonging in this idea:
+        return false;
+    }
+
+    //Show sort icon:
+    $('.fa-bars, .sort_reset').removeClass('hidden');
+
+    var sort = Sortable.create(theobject, {
+        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+        draggable: ".en-item", // Specifies which items inside the element should be sortable
+        handle: ".fa-bars", // Restricts sort start click/touch to the specified element
+        onUpdate: function (evt/**Event*/) {
+            en_sort_save();
+        }
+    });
 }
 
 function en_modify_save() {

@@ -107,6 +107,121 @@ class Source extends CI_Controller
     }
 
 
+    function en_sort_reset()
+    {
+
+        //Authenticate Player:
+        $session_en = superpower_assigned(10967);
+
+        //Validate Source:
+        $ens = $this->SOURCE_model->en_fetch(array(
+            'en_id' => $_POST['en_id'],
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+        ));
+
+        if (!$session_en) {
+            echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(10967),
+            ));
+        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || count($ens) < 1) {
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid en_id',
+            ));
+        }
+
+
+
+        //All good, reset sort value for all children:
+        foreach($this->LEDGER_model->ln_fetch(array(
+            'ln_profile_source_id' => $_POST['en_id'],
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+            'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+        ), array('en_portfolio'), 0, 0, array(), 'ln_id') as $ln) {
+            $this->LEDGER_model->ln_update($ln['ln_id'], array(
+                'ln_order' => 0,
+            ), $session_en['en_id'], 13007 /* SOURCE SORT RESET */);
+        }
+
+        //Display message:
+        echo_json(array(
+            'status' => 1,
+        ));
+    }
+
+
+    function en_sort_save()
+    {
+
+        //Authenticate Player:
+        $session_en = superpower_assigned(10967);
+        if (!$session_en) {
+            echo_json(array(
+                'status' => 0,
+                'message' => echo_unauthorized_message(10967),
+            ));
+        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid en_id',
+            ));
+        } elseif (!isset($_POST['new_ln_orders']) || !is_array($_POST['new_ln_orders']) || count($_POST['new_ln_orders']) < 1) {
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Nothing passed for sorting',
+            ));
+        } else {
+
+            //Validate Source:
+            $ens = $this->SOURCE_model->en_fetch(array(
+                'en_id' => $_POST['en_id'],
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+            ));
+
+            //Count Portfolio:
+            $en__portfolio_count = $this->LEDGER_model->ln_fetch(array(
+                'ln_profile_source_id' => $_POST['en_id'],
+                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+            ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
+
+            if (count($ens) < 1) {
+
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid en_id',
+                ));
+
+            } elseif($en__portfolio_count[0]['totals'] > config_var(13005)){
+
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Cannot sort sources if greater than '.config_var(13005),
+                ));
+
+            } else {
+
+                //Update them all:
+                foreach($_POST['new_ln_orders'] as $rank => $ln_id) {
+                    $this->LEDGER_model->ln_update(intval($ln_id), array(
+                        'ln_order' => intval($rank),
+                    ), $session_en['en_id'], 13006 /* SOURCE SORT MANUAL */);
+                }
+
+                //Display message:
+                echo_json(array(
+                    'status' => 1,
+                ));
+
+            }
+        }
+    }
+
+
+
     function load_leaderboard(){
 
         //Fetch top sources
