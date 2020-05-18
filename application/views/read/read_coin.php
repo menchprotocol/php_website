@@ -279,7 +279,7 @@ if(!$read_in_home){
 
 
         //GET STARTED
-        echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$in['in_id'].'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
+        echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$in['in_id'].'" title="'.$en_all_11035[13008]['m_name'].'">'.$en_all_11035[13008]['m_icon'].'</a></div>';
 
     }
 
