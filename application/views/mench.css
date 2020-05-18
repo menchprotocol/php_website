@@ -627,6 +627,7 @@ img.no-radius {
     border-radius:0;
     border:0 !important;
     height: 100%;
+    line-height: 100%;
 }
 
 .form-control:focus {
