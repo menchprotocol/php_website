@@ -1422,24 +1422,13 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         }
     }
     $ui .= $cover_photo;
-    if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
+
+    if($idea_count && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
         $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
     }
 
-    //synthesized from '.echo_number($source_count).' expert sources that have been read '.echo_number($read_count).' times
-    $ui .= '<span class="media-info top-left hideIfEmpty" title="'.echo_number($idea_count).' Ideas" data-toggle="tooltip" data-placement="bottom">';
-
-    if($idea_count){
-        $ui .= '<div><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.echo_number($idea_count).'</span></div>';
-    }
-    if($source_count){
-        //$ui .= '<div><i class="fas fa-circle source"></i><span style="padding-left: 2px;">'.echo_number($source_count).'</span></div>';
-    }
-    if($read_count){
-        //$ui .= '<div><i class="fas fa-circle read"></i><span style="padding-left: 2px;">'.echo_number($read_count).'</span></div>';
-    }
-
-    $ui .= '</span>';
+    //TOP LEFT
+    $ui .= '<span class="media-info top-left hideIfEmpty">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.echo_number($idea_count).'</span>' : 'COMING SOON' ).'</span>';
 
     //Search for Idea Image:
     if($show_editor){
