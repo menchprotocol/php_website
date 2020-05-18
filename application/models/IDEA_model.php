@@ -506,7 +506,7 @@ class IDEA_model extends CI_Model
     }
 
 
-    function in_find_previous($en_id, $in_id)
+    function in_find_previous($en_id, $in_id, $public_only = true)
     {
 
         if($en_id){
