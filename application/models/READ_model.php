@@ -146,7 +146,7 @@ class READ_model extends CI_Model
 
             echo_json(array(
                 'player_read_ids' => $player_read_ids,
-                'player_read_ids' => $this->IDEA_model->in_recursive_parents($in['in_id'])
+                'in_recursive_parents' => $this->IDEA_model->in_recursive_parents($in['in_id'])
             ));
             die();
 
