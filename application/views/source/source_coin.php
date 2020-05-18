@@ -523,15 +523,17 @@ $is_source = en_is_source($en['en_id']);
                 }
 
                 //Anything sorted so far?
-                $en__portfolio_sort_count = $this->LEDGER_model->ln_fetch(array(
-                    'ln_order >' => 0, //Sorted
-                    'ln_profile_source_id' => $en['en_id'],
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-                ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
+                if(superpower_active(10967, true)){
+                    $en__portfolio_sort_count = $this->LEDGER_model->ln_fetch(array(
+                        'ln_order >' => 0, //Sorted
+                        'ln_profile_source_id' => $en['en_id'],
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+                    ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
+                }
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;">'.($en__portfolio_sort_count[0]['totals'] > 0 ? '<span class="sort_reset hidden icon-block" title="'.$en_all_11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="en_sort_reset()">'.$en_all_11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$en_all_11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;">'.( isset($en__portfolio_sort_count) && $en__portfolio_sort_count[0]['totals'] > 0 ? '<span class="sort_reset hidden icon-block" title="'.$en_all_11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="en_sort_reset()">'.$en_all_11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$en_all_11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[4997]['m_icon'].'</a></div>';
                 $this_tab .= '<div class="doclear">&nbsp;</div>';
                 $this_tab .= '<div class="source_editor hidden">';
                 $this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$en_all_11035[4997]['m_name'].'</div>';

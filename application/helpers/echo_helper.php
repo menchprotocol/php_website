@@ -1470,6 +1470,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $is_read_progress = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_12227')));
     $is_source_only = ( $ln_id > 0 && in_array($en['ln_type_source_id'], $CI->config->item('en_ids_7551')));
     $show_toolbar = ($control_enabled && superpower_active(12706, true));
+    $has_source_editor = superpower_active(10967, true);
 
     $en__profiles = $CI->LEDGER_model->ln_fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -1519,7 +1520,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     //PORTFOLIO COUNT (SYNC WITH NEXT IDEA COUNT)
     $child_counter = '';
-    if(superpower_active(10967, true)){
+    if($has_source_editor){
         $en__portfolio_count = $CI->LEDGER_model->ln_fetch(array(
             'ln_profile_source_id' => $en['en_id'],
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -1590,7 +1591,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         if($is_link_source){
 
             //Sort
-            if(!$is_parent){
+            if(!$is_parent && $has_source_editor){
                 $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
             }
 
