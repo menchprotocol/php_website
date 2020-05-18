@@ -147,6 +147,7 @@ class READ_model extends CI_Model
             if($en_id==13013){
                 echo_json(array(
                     'player_read_ids' => $player_read_ids,
+                    'in_recursive_parents_new' => $this->IDEA_model->in_recursive_parents_new($in['in_id']),
                     'in_recursive_parents' => $this->IDEA_model->in_recursive_parents($in['in_id'])
                 ));
                 die();
