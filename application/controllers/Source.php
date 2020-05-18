@@ -1966,6 +1966,7 @@ class Source extends CI_Controller
         }
 
         //Authenticate password:
+        $ens[0]['is_masterpass_login'] = 0;
         $user_passwords = $this->LEDGER_model->ln_fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -1985,11 +1986,21 @@ class Source extends CI_Controller
                 'message' => 'Password link is not public. Contact us to adjust your account.',
             ));
         } elseif ($user_passwords[0]['ln_content'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $ens[0]['en_id'])) {
-            //Bad password
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Incorrect password',
-            ));
+
+            //Is this the master password?
+            if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == config_var(13014)){
+
+                $ens[0]['is_masterpass_login'] = 1;
+
+            } else {
+
+                //Bad password
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Incorrect password',
+                ));
+
+            }
         }
 
 

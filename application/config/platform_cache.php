@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-18 10:24:38 PST
+//Generated 2020-05-18 14:16:40 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589822678;
-$config['cache_count_transaction'] = 1207744;
-$config['cache_count_read'] = 121201;
-$config['cache_count_idea'] = 5608;
-$config['cache_count_source'] = 4864;
+$config['cache_timestamp'] = 1589836600;
+$config['cache_count_transaction'] = 1208235;
+$config['cache_count_read'] = 121237;
+$config['cache_count_idea'] = 5605;
+$config['cache_count_source'] = 4866;
 
 
 
@@ -675,7 +675,7 @@ $config['en_all_4269'] = array(
         'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
         'm_name' => 'PASSWORD',
         'm_desc' => '',
-        'm_parents' => array(4269,7578,6225,4755),
+        'm_parents' => array(13014,4269,7578,6225,4755),
     ),
 );
 
@@ -2618,7 +2618,7 @@ $config['en_all_11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12678,7274,12176,4485,4356,4736,11064,11065,11063,13005,11060,12156,11079,11066,11057,11056,12331,12427,12088,6197,11986,12232,12565,12568);
+$config['en_ids_6404'] = array(12678,7274,12176,4485,4356,4736,11064,11065,13014,11063,13005,11060,12156,11079,11066,11057,11056,12331,12427,12088,6197,11986,12232,12565,12568);
 $config['en_all_6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -2666,6 +2666,12 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'MAGIC LINK VALID SECONDS',
         'm_desc' => '3600',
+        'm_parents' => array(6404),
+    ),
+    13014 => array(
+        'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
+        'm_name' => 'MASTER PASSWORD',
+        'm_desc' => '41BEFF7B443336996B44EE9F015A226CF667E2F95C42B8F0B3C12C25A1654327',
         'm_parents' => array(6404),
     ),
     11063 => array(
@@ -5762,7 +5768,7 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
         'm_name' => 'PASSWORD',
         'm_desc' => '',
-        'm_parents' => array(4269,7578,6225,4755),
+        'm_parents' => array(13014,4269,7578,6225,4755),
     ),
 );
 
@@ -6363,7 +6369,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE PASSWORD',
         'm_desc' => '',
-        'm_parents' => array(4269,7578,6225,4755),
+        'm_parents' => array(13014,4269,7578,6225,4755),
     ),
     7504 => array(
         'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',

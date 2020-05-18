@@ -36,6 +36,7 @@ class SOURCE_model extends CI_Model
             $this->LEDGER_model->ln_create(array(
                 'ln_creator_source_id' => $en['en_id'],
                 'ln_type_source_id' => 7564, //PLAYER SIGN
+                'ln_metadata' => $en,
             ));
 
         }
