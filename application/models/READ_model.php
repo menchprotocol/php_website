@@ -39,9 +39,16 @@ class READ_model extends CI_Model
             $recursive_parents = $this->READ_model->read_find_previous(0, $in_parent['in_id']);
 
             if($en_id){
-                if(array_intersect($player_read_ids, array_flatten($recursive_parents))){
-                    //This is it:
-                    return intval($in_parent['in_id']);
+                $top_read_ids = array_intersect($player_read_ids, array_flatten($recursive_parents));
+                if(count($top_read_ids)){
+
+                    $ins = $this->IDEA_model->in_fetch(array(
+                        'in_id' => end($top_read_ids),
+                    ));
+
+                    //Find the next idea from the top read:
+                    return $this->READ_model->read_find_next($en_id, $ins[0], false);
+
                 }
             } else {
                 if(count($recursive_parents)){
