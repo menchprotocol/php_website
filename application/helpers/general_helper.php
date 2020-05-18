@@ -818,7 +818,17 @@ function recursive_merge($multid_array){
         //Go down the rabbit hole:
         foreach($multid_array as $key => $value){
             if($key >= 1){
-                array_push($return_array, array_merge(array($multid_array[0]), recursive_merge($value)));
+                $recursive_merge = recursive_merge($value);
+                if(count($recursive_merge)==1){
+                    array_push($return_array, array_merge(array($multid_array[0]), $recursive_merge));
+                } else {
+                    foreach($recursive_merge as $key2 => $value2){
+                        if($key2 >= 1){
+                            array_push($return_array, array_merge(array($multid_array[0]), $value2));
+                        }
+                    }
+                }
+
             }
         }
 
