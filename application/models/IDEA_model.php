@@ -506,50 +506,6 @@ class IDEA_model extends CI_Model
     }
 
 
-    function in_find_previous($en_id, $in_id, $public_only = true)
-    {
-
-        if($en_id){
-            $player_read_ids = $this->READ_model->read_ids($en_id);
-            if(!count($player_read_ids)){
-                return 0;
-            }
-        } else {
-            $grand_parents = array();
-        }
-
-        //Fetch parents:
-        foreach($this->LEDGER_model->ln_fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356'))) . ')' => null,
-            'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360'))) . ')' => null,
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'ln_next_idea_id' => $in_id,
-        ), array('in_previous'), 0, 0, array(), 'in_id') as $in_parent) {
-
-            $recursive_parents = $this->IDEA_model->in_find_previous(0, $in_parent['in_id']);
-
-            if($en_id){
-                if(array_intersect($player_read_ids, array_flatten($recursive_parents))){
-                    return intval($in_parent['in_id']);
-                } else {
-                    continue;
-                }
-            } else {
-                if(count($recursive_parents)){
-                    array_push($grand_parents, array_merge(array(intval($in_parent['in_id'])), $recursive_parents));
-                } else {
-                    array_push($grand_parents, array(intval($in_parent['in_id'])));
-                }
-            }
-
-        }
-
-        if($en_id){
-            return 0;
-        } else {
-            return $grand_parents;
-        }
-    }
 
     function in_recursive_parents($in_id, $first_level = true, $public_only = true)
     {

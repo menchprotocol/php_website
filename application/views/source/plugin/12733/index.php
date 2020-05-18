@@ -40,7 +40,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
                 'in_metadata_common_base' => $this->IDEA_model->in_metadata_common_base($ins[0]),
             ),
             'in_user' => array(
-                'read_next_find' => $this->READ_model->read_next_find($_GET['en_id'], $ins[0]),
+                'read_find_next' => $this->READ_model->read_find_next($_GET['en_id'], $ins[0]),
                 'read_completion_progress' => $this->READ_model->read_completion_progress($_GET['en_id'], $ins[0]),
                 'read_completion_marks' => $this->READ_model->read_completion_marks($_GET['en_id'], $ins[0]),
             ),

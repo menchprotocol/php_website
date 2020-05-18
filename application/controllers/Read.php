@@ -125,11 +125,11 @@ class Read extends CI_Controller
 
 
             //Find next Idea based on source's Reads:
-            $next_in_id = $this->READ_model->read_next_find($session_en['en_id'], $ins[0]);
+            $next_in_id = $this->READ_model->read_find_next($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
             } else {
-                $next_in_id = $this->READ_model->read_next_go($session_en['en_id']);
+                $next_in_id = $this->READ_model->read_find_next_go($session_en['en_id']);
                 if($next_in_id > 0){
                     return redirect_message('/'.$next_in_id.$append_url);
                 } else {
@@ -140,7 +140,7 @@ class Read extends CI_Controller
         } else {
 
             //Find the next idea in the Reads:
-            $next_in_id = $this->READ_model->read_next_go($session_en['en_id']);
+            $next_in_id = $this->READ_model->read_find_next_go($session_en['en_id']);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
             } else {

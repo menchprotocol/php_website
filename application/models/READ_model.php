@@ -15,7 +15,48 @@ class READ_model extends CI_Model
     }
 
 
-    function read_next_find($en_id, $in, $first_step = true){
+
+    function read_find_previous($en_id, $in_id, $public_only = true)
+    {
+
+        if($en_id){
+            $player_read_ids = $this->READ_model->read_ids($en_id);
+            if(!count($player_read_ids)){
+                return 0;
+            }
+        } else {
+            $grand_parents = array();
+        }
+
+        //Fetch parents:
+        foreach($this->LEDGER_model->ln_fetch(array(
+            'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356'))) . ')' => null,
+            'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360'))) . ')' => null,
+            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'ln_next_idea_id' => $in_id,
+        ), array('in_previous'), 0, 0, array(), 'in_id') as $in_parent) {
+
+            $recursive_parents = $this->READ_model->read_find_previous(0, $in_parent['in_id']);
+
+            if($en_id){
+                if(array_intersect($player_read_ids, array_flatten($recursive_parents))){
+                    //This is it:
+                    return intval($in_parent['in_id']);
+                }
+            } else {
+                if(count($recursive_parents)){
+                    array_push($grand_parents, array_merge(array(intval($in_parent['in_id'])), $recursive_parents));
+                } else {
+                    array_push($grand_parents, array(intval($in_parent['in_id'])));
+                }
+            }
+
+        }
+
+        return ( $en_id ? 0 /* We could not find it */ : $grand_parents );
+    }
+
+    function read_find_next($en_id, $in, $first_step = true){
 
         /*
          *
@@ -92,7 +133,7 @@ class READ_model extends CI_Model
                         } else {
 
                             //Answer previously completed, see if there is anyting else:
-                            $found_in_id = $this->READ_model->read_next_find($en_id, $ln, false);
+                            $found_in_id = $this->READ_model->read_find_next($en_id, $ln, false);
                             if($found_in_id != 0){
                                 return $found_in_id;
                             }
@@ -117,7 +158,7 @@ class READ_model extends CI_Model
                 ), array('in_next')) as $unlocked_condition){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_in_id = $this->READ_model->read_next_find($en_id, $unlocked_condition, false);
+                    $found_in_id = $this->READ_model->read_find_next($en_id, $unlocked_condition, false);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -142,36 +183,8 @@ class READ_model extends CI_Model
 
         //If not part of the Reads, go to reads idea
         if($first_step){
-            if($en_id==13013){
-                echo_json(array(
-                    'en_id' => $en_id,
-                    'in_id' => $in['in_id'],
-                    'in_find_previous' => $this->IDEA_model->in_find_previous($en_id, $in['in_id']),
-                ));
-                die();
-            }
-
-            $player_read_ids = $this->READ_model->read_ids($en_id);
-            if(!in_array($in['in_id'], $player_read_ids)){
-                foreach($this->IDEA_model->in_recursive_parents($in['in_id']) as $grand_parent_ids) {
-                    if (array_intersect($grand_parent_ids, $player_read_ids)) {
-                        foreach($grand_parent_ids as $parent_in_id){
-                            $ins = $this->IDEA_model->in_fetch(array(
-                                'in_id' => $parent_in_id,
-                                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-                            ));
-                            if(count($ins)){
-                                $found_in_id = $this->READ_model->read_next_find($en_id, $ins[0], false);
-                                if($found_in_id != 0){
-                                    return $found_in_id;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            return $this->READ_model->read_find_previous($en_id, $in['in_id']);
         }
-
 
 
         //Really not found:
@@ -179,7 +192,7 @@ class READ_model extends CI_Model
 
     }
 
-    function read_next_go($en_id)
+    function read_find_next_go($en_id)
     {
 
         /*
@@ -203,7 +216,7 @@ class READ_model extends CI_Model
         foreach($player_reads as $user_in){
 
             //Find first incomplete step for this Reads Idea:
-            $next_in_id = $this->READ_model->read_next_find($en_id, $user_in);
+            $next_in_id = $this->READ_model->read_find_next($en_id, $user_in);
 
             if($next_in_id < 0){
 
