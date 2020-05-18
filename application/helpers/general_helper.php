@@ -810,7 +810,7 @@ function recursive_merge($multid_array){
 
     //Go down the rabbit hole:
     foreach($multid_array as $key => $value){
-        if($key == 0 && count($value)<=1) {
+        if($key == 0 && count($multid_array)<=1) {
 
             array_push($return_array, array($multid_array[0]));
 
