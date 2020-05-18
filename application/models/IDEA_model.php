@@ -511,6 +511,9 @@ class IDEA_model extends CI_Model
 
         if($en_id){
             $player_read_ids = $this->READ_model->read_ids($en_id);
+            if(!count($player_read_ids)){
+                return 0;
+            }
         } else {
             $grand_parents = array();
         }
@@ -526,7 +529,7 @@ class IDEA_model extends CI_Model
             $recursive_parents = $this->IDEA_model->in_find_previous(0, $in_parent['in_id']);
 
             if($en_id){
-                if(array_intersect($recursive_parents, array_flatten($player_read_ids))){
+                if(array_intersect($player_read_ids, array_flatten($recursive_parents))){
                     return intval($in_parent['in_id']);
                 } else {
                     continue;
@@ -541,7 +544,11 @@ class IDEA_model extends CI_Model
 
         }
 
-        return $grand_parents;
+        if($en_id){
+            return 0;
+        } else {
+            return $grand_parents;
+        }
     }
 
     function in_recursive_parents($in_id, $first_level = true, $public_only = true)
