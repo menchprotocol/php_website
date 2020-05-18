@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-17 17:57:29 PST
+//Generated 2020-05-17 18:01:10 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589763449;
-$config['cache_count_transaction'] = 1206381;
+$config['cache_timestamp'] = 1589763670;
+$config['cache_count_transaction'] = 1206398;
 $config['cache_count_read'] = 121200;
 $config['cache_count_idea'] = 5597;
 $config['cache_count_source'] = 4861;
@@ -2138,7 +2138,7 @@ $config['en_all_12079'] = array(
 );
 
 //SOURCE LAYOUT:
-$config['en_ids_11089'] = array(6225,10573,12969,12896,6146,6255,12273,12274,11030,11029,12419,7545);
+$config['en_ids_11089'] = array(6225,10573,12969,12896,12274,12273,6255,6146,11030,11029,12419,7545);
 $config['en_all_11089'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -2164,17 +2164,11 @@ $config['en_all_11089'] = array(
         'm_desc' => '',
         'm_parents' => array(12994,10876,12701,12321,4485,7551,11089,11018,11035,4755,4593,12893),
     ),
-    6146 => array(
-        'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
-        'm_name' => 'UNFINISHED',
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE COINS',
         'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
-    ),
-    6255 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ COINS',
-        'm_desc' => '',
-        'm_parents' => array(6205,12500,12677,10939,11018,12467,11089,12228,4527),
+        'm_parents' => array(11089,4536,12500,12467,12228,4527),
     ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -2182,11 +2176,17 @@ $config['en_all_11089'] = array(
         'm_desc' => '',
         'm_parents' => array(4535,12500,12571,12467,12321,11089,12228,4527),
     ),
-    12274 => array(
-        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE COINS',
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'READ COINS',
         'm_desc' => '',
-        'm_parents' => array(11089,4536,12500,12467,12228,4527),
+        'm_parents' => array(6205,12500,12677,10939,11018,12467,11089,12228,4527),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
+        'm_name' => 'UNFINISHED',
+        'm_desc' => '',
+        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
