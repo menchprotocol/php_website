@@ -1601,7 +1601,9 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         if($is_link_source){
 
             //Sort
-            $ui .= '<span title="SORT"><i class="fas fa-bars hidden"></i></span>';
+            if(!$is_parent){
+                $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
+            }
 
             //Manage source link:
             $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-pen-square black"></i></a></span>';
