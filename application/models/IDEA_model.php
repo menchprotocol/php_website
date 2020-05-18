@@ -518,10 +518,13 @@ class IDEA_model extends CI_Model
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'ln_next_idea_id' => $in_id,
         ), array('in_previous'), 0, 0, array(), 'in_id') as $in_parent) {
-            array_push($grand_parents, intval($in_parent['in_id']));
-            continue;
+
             foreach($this->IDEA_model->in_recursive_parents_new($in_parent['in_id'], false) as $recursive_parent){
-                array_push($grand_parents, array_merge(array(intval($in_parent['in_id'])), array_flatten($recursive_parent)));
+                if(count($recursive_parent)){
+                    array_push($grand_parents, array_merge(array(intval($in_parent['in_id'])), $recursive_parent));
+                } else {
+                    array_push($grand_parents, array(intval($in_parent['in_id'])));
+                }
             }
         }
 
