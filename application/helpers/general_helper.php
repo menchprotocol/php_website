@@ -804,6 +804,10 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 
 }
 
+function recursive_flat($multid_array){
+
+}
+
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 {
 

@@ -511,6 +511,10 @@ class IDEA_model extends CI_Model
 
         $grand_parents = array();
 
+        if($first_level){
+            array_push($grand_parents, array(intval($in_id)));
+        }
+
         //Fetch parents:
         foreach($this->LEDGER_model->ln_fetch(array(
             'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356'))) . ')' => null,
