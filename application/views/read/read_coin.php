@@ -156,14 +156,12 @@ echo '<h1 class="block-one" '.( !$recipient_en['en_id'] ? ' style="padding-top: 
 
 
 //MESSAGES
-$messages_ui = null;
 foreach($in__messages as $message_ln) {
-    $messages_ui .= $this->READ_model->send_message(
+    echo $this->READ_model->send_message(
         $message_ln['ln_content'],
         $recipient_en
     );
 }
-echo $messages_ui;
 
 
 if(!$read_in_home){
@@ -520,9 +518,9 @@ if(!$read_in_home){
 //Share this button, only visible after saving:
 echo '<div class="share-this hidden space-content">';
     echo '<div class="doclear">&nbsp;</div>';
-    echo '<div style="padding-bottom:13px;">Share this idea using:</div>';
+    echo '<div style="padding-bottom:13px;">Share using:</div>';
     foreach($this->config->item('en_all_13023') as $en_id => $m) {
-        echo '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="https://mench.com/'.$in['in_id'].'" data-title="'.$in['in_title'].'" data-image="'.$in_fetch_cover.'" data-description="'.strip_tags($messages_ui).'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
+        echo '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="https://mench.com/'.$in['in_id'].'" data-title="'.$in['in_title'].'" data-image="'.$in_fetch_cover.'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
     }
 echo '</div>';
 
