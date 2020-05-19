@@ -256,7 +256,7 @@ if(!isset($hide_header)){
                                     $source_field = 'ln_creator_source_id';
                                 } elseif($ln_type_source_id==12274){
                                     //SOURCE
-                                    if($counts < 2){
+                                    if($counts < 2 && !superpower_active(10939, true)){
                                         //If 1 then only themselves, which is covered with @12205
                                         continue;
                                     }
