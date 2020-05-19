@@ -9,7 +9,7 @@ foreach($this->IDEA_model->fetch(array(
     'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
 ), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
-    echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Idea Status */, $in['in_status_source_id']).' '.echo_en_cache('en_all_6193' /* OR Ideas */, $in['in_type_source_id']).' <b><a href="/idea/go/'.$in['in_id'].'">'.echo_in_title($in).'</a></b></div>';
+    echo '<div>'.($count+1).') '.view_en_cache('en_all_4737' /* Idea Status */, $in['in_status_source_id']).' '.view_en_cache('en_all_6193' /* OR Ideas */, $in['in_type_source_id']).' <b><a href="/idea/go/'.$in['in_id'].'">'.view_in_title($in).'</a></b></div>';
 
     echo '<ul>';
     //Fetch all children for this OR:
@@ -28,7 +28,7 @@ foreach($this->IDEA_model->fetch(array(
         $all_steps += count($user_steps);
 
         $all_children++;
-        echo '<li>'.echo_en_cache('en_all_6186' /* Transaction Status */, $child_or['ln_status_source_id']).' '.echo_en_cache('en_all_4737' /* Idea Status */, $child_or['in_status_source_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_source_id']).' <a href="/idea/go/'.$child_or['in_id'].'">'.echo_in_title($child_or).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+        echo '<li>'.view_en_cache('en_all_6186' /* Transaction Status */, $child_or['ln_status_source_id']).' '.view_en_cache('en_all_4737' /* Idea Status */, $child_or['in_status_source_id']).' '.view_en_cache('en_all_7585', $child_or['in_type_source_id']).' <a href="/idea/go/'.$child_or['in_id'].'">'.view_in_title($child_or).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
     }
     echo '</ul>';
     echo '<hr />';

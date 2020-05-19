@@ -70,7 +70,7 @@ if($search_for_is_set){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Idea Status */, $in['in_status_source_id'], true, 'right').' <a href="/idea/go/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_en_cache('en_all_4737' /* Idea Status */, $in['in_status_source_id'], true, 'right').' <a href="/idea/go/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
 
             if($replace_with_is_set){
 

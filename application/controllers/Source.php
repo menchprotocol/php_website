@@ -120,12 +120,12 @@ class Source extends CI_Controller
         ));
 
         if (!$session_en) {
-            echo_json(array(
+            view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(10967),
+                'message' => view_unauthorized_message(10967),
             ));
         } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || count($ens) < 1) {
-            echo_json(array(
+            view_json(array(
                 'status' => 0,
                 'message' => 'Invalid en_id',
             ));
@@ -146,7 +146,7 @@ class Source extends CI_Controller
         }
 
         //Display message:
-        echo_json(array(
+        view_json(array(
             'status' => 1,
         ));
     }
@@ -158,17 +158,17 @@ class Source extends CI_Controller
         //Authenticate Player:
         $session_en = superpower_assigned(10967);
         if (!$session_en) {
-            echo_json(array(
+            view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(10967),
+                'message' => view_unauthorized_message(10967),
             ));
         } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
-            echo_json(array(
+            view_json(array(
                 'status' => 0,
                 'message' => 'Invalid en_id',
             ));
         } elseif (!isset($_POST['new_ln_orders']) || !is_array($_POST['new_ln_orders']) || count($_POST['new_ln_orders']) < 1) {
-            echo_json(array(
+            view_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
             ));
@@ -190,14 +190,14 @@ class Source extends CI_Controller
 
             if (count($ens) < 1) {
 
-                echo_json(array(
+                view_json(array(
                     'status' => 0,
                     'message' => 'Invalid en_id',
                 ));
 
             } elseif($en__portfolio_count[0]['totals'] > config_var(13005)){
 
-                echo_json(array(
+                view_json(array(
                     'status' => 0,
                     'message' => 'Cannot sort sources if greater than '.config_var(13005),
                 ));
@@ -212,7 +212,7 @@ class Source extends CI_Controller
                 }
 
                 //Display message:
-                echo_json(array(
+                view_json(array(
                     'status' => 1,
                 ));
 
@@ -274,7 +274,7 @@ class Source extends CI_Controller
 
             }
 
-            echo echo_en($en, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
+            echo view_en($en, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
 
         }
         echo '</div>';
@@ -293,9 +293,9 @@ class Source extends CI_Controller
 
         $session_en = superpower_assigned();
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
                 'url_source' => array(),
             ));
         }
@@ -305,14 +305,14 @@ class Source extends CI_Controller
 
         if (!$url_source['status']) {
             //Oooopsi, we had some error:
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => $url_source['message'],
             ));
         }
 
         //Return results:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'source_domain_ui' => '<span class="en_mini_ui_icon">' . (isset($url_source['en_domain']['en_icon']) && strlen($url_source['en_domain']['en_icon']) > 0 ? $url_source['en_domain']['en_icon'] : detect_fav_icon($url_source['url_clean_domain'], true)) . '</span> ' . (isset($url_source['en_domain']['en_name']) ? $url_source['en_domain']['en_name'] . ' <a href="/source/' . $url_source['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain source" data-placement="top">@' . $url_source['en_domain']['en_id'] . '</a>' : $url_source['url_domain_name'] . ' [<span data-toggle="tooltip" title="Domain source not yet added" data-placement="top">New</span>]'),
             'js_url_source' => $url_source,
@@ -325,7 +325,7 @@ class Source extends CI_Controller
     {
 
         if (!isset($_POST['ln_content']) || !isset($_POST['ln_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing inputs',
             ));
@@ -339,7 +339,7 @@ class Source extends CI_Controller
 
         if(!$_POST['ln_id'] && !in_array($detected_ln_type['ln_type_source_id'], $this->config->item('en_ids_4537'))){
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid URL',
             ));
@@ -355,17 +355,17 @@ class Source extends CI_Controller
             //Are they both different?
             if (count($en_lns) < 1 || ($en_lns[0]['ln_profile_source_id'] != $detected_ln_type['en_url']['en_id'] && $en_lns[0]['ln_portfolio_source_id'] != $detected_ln_type['en_url']['en_id'])) {
                 //return error:
-                return echo_json($detected_ln_type);
+                return view_json($detected_ln_type);
             }
 
         }
 
 
 
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'html_ui' => '<b class="montserrat doupper '.extract_icon_color($en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon']).'">' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_source_id']]['m_name'] . '</b>',
-            'en_link_preview' => ( in_array($detected_ln_type['ln_type_source_id'], $this->config->item('en_ids_12524')) ? '<span class="paddingup inline-block">'.echo_ln_content($_POST['ln_content'], $detected_ln_type['ln_type_source_id']).'</span>' : ''),
+            'en_link_preview' => ( in_array($detected_ln_type['ln_type_source_id'], $this->config->item('en_ids_12524')) ? '<span class="paddingup inline-block">'.view_ln_content($_POST['ln_content'], $detected_ln_type['ln_type_source_id']).'</span>' : ''),
         ));
 
     }
@@ -377,22 +377,22 @@ class Source extends CI_Controller
         //Authenticate Player:
         $session_en = superpower_assigned(10939);
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(10939),
+                'message' => view_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Unknown upload type.',
             ));
         } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Unknown error 3 while trying to save file.',
             ));
         } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'File is larger than ' . config_var(11063) . ' MB.',
             ));
@@ -413,7 +413,7 @@ class Source extends CI_Controller
         }
 
         //Return the CDN uploader results:
-        return echo_json(upload_to_cdn($temp_local, 0, $_FILES[$_POST['upload_type']], true));
+        return view_json(upload_to_cdn($temp_local, 0, $_FILES[$_POST['upload_type']], true));
 
     }
 
@@ -440,7 +440,7 @@ class Source extends CI_Controller
         ));
 
         foreach($child_sources as $en) {
-            echo echo_en($en,false, null, true, $is_source);
+            echo view_en($en,false, null, true, $is_source);
         }
 
         //Count total children:
@@ -448,7 +448,7 @@ class Source extends CI_Controller
 
         //Do we need another load more button?
         if ($child_sources_count[0]['totals'] > (($page * $items_per_page) + count($child_sources))) {
-            echo echo_en_load_more(($page + 1), $items_per_page, $child_sources_count[0]['totals']);
+            echo view_en_load_more(($page + 1), $items_per_page, $child_sources_count[0]['totals']);
         }
 
     }
@@ -459,17 +459,17 @@ class Source extends CI_Controller
         $session_en = superpower_assigned(10939);
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(10939),
+                'message' => view_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['ln_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Transaction ID',
             ));
         } elseif (!isset($_POST['in_id']) || !in_is_source($_POST['in_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'You are not the author of this source',
             ));
@@ -480,7 +480,7 @@ class Source extends CI_Controller
             'ln_status_source_id' => 6173,
         ), $session_en['en_id'], 10678 /* IDEA NOTES Unpublished */);
 
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
         ));
 
@@ -493,22 +493,22 @@ class Source extends CI_Controller
         $session_en = superpower_assigned(10939);
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(10939),
+                'message' => view_unauthorized_message(10939),
             ));
         } elseif (intval($_POST['in_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
             ));
         } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('en_ids_7551'))) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea Note Type ID',
             ));
         } elseif (!isset($_POST['en_existing_id']) || !isset($_POST['en_new_string']) || (intval($_POST['en_existing_id']) < 1 && strlen($_POST['en_new_string']) < 1)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Either New Source ID or Source Name',
             ));
@@ -521,7 +521,7 @@ class Source extends CI_Controller
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         ));
         if (count($ins) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea',
             ));
@@ -540,7 +540,7 @@ class Source extends CI_Controller
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             ));
             if (count($ens) < 1) {
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid active source',
                 ));
@@ -554,7 +554,7 @@ class Source extends CI_Controller
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             )))){
                 $en_all_7551 = $this->config->item('en_all_7551');
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => $ens[0]['en_name'].' is already added as idea '.$en_all_7551[$_POST['note_type_id']]['m_name'],
                 ));
@@ -570,7 +570,7 @@ class Source extends CI_Controller
             $added_en = $this->SOURCE_model->verify_create($_POST['en_new_string'], $session_en['en_id']);
             if(!$added_en['status']){
                 //We had an error, return it:
-                return echo_json($added_en);
+                return view_json($added_en);
             }
 
             //Assign new source:
@@ -595,9 +595,9 @@ class Source extends CI_Controller
         ));
 
         //Return newly added or linked source:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
-            'en_new_echo' => echo_en(array_merge($focus_en, $new_note), 0, null, true, true),
+            'en_new_echo' => view_en(array_merge($focus_en, $new_note), 0, null, true, true),
         ));
 
     }
@@ -610,22 +610,22 @@ class Source extends CI_Controller
         $session_en = superpower_assigned(10939);
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(10939),
+                'message' => view_unauthorized_message(10939),
             ));
         } elseif (intval($_POST['en_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Parent Source',
             ));
         } elseif (!isset($_POST['is_parent'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Source Link Direction',
             ));
         } elseif (!isset($_POST['en_existing_id']) || !isset($_POST['en_new_string']) || (intval($_POST['en_existing_id']) < 1 && strlen($_POST['en_new_string']) < 1)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Either New Source ID or Source Name',
             ));
@@ -636,7 +636,7 @@ class Source extends CI_Controller
             'en_id' => $_POST['en_id'],
         ));
         if (count($current_en) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid parent source ID',
             ));
@@ -658,7 +658,7 @@ class Source extends CI_Controller
             ));
 
             if (count($ens) < 1) {
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid active source',
                 ));
@@ -677,7 +677,7 @@ class Source extends CI_Controller
                 //Digest URL to see what type it is and if we have any errors:
                 $url_source = $this->SOURCE_model->url($_POST['en_new_string']);
                 if (!$url_source['status']) {
-                    return echo_json($url_source);
+                    return view_json($url_source);
                 }
 
                 //Is this a root domain? Add to domains if so:
@@ -704,7 +704,7 @@ class Source extends CI_Controller
                 $added_en = $this->SOURCE_model->verify_create($_POST['en_new_string'], $session_en['en_id']);
                 if(!$added_en['status']){
                     //We had an error, return it:
-                    return echo_json($added_en);
+                    return view_json($added_en);
                 } else {
                     //Assign new source:
                     $focus_en = $added_en['en'];
@@ -767,16 +767,16 @@ class Source extends CI_Controller
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
         ));
         if(!count($ens_latest)){
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Failed to create/fetch new source',
             ));
         }
 
         //Return newly added or linked source:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
-            'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent'], null, true, true),
+            'en_new_echo' => view_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent'], null, true, true),
         ));
 
     }
@@ -785,7 +785,7 @@ class Source extends CI_Controller
     {
 
         if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source ID',
             ));
@@ -798,7 +798,7 @@ class Source extends CI_Controller
             '(ln_portfolio_source_id = ' . $_POST['en_id'] . ' OR ln_profile_source_id = ' . $_POST['en_id'] . ')' => null,
         ), array(), 0);
 
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'message' => 'Success',
             'en_link_count' => count($all_en_links),
@@ -817,15 +817,15 @@ class Source extends CI_Controller
 
         if(!$session_en){
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(10939),
+                'message' => view_unauthorized_message(10939),
             ));
 
         } elseif(!superpower_assigned($superpower_en_id)){
 
             //Access not authorized:
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'You have not yet unlocked the superpower of '.$en_all_10957[$superpower_en_id]['m_name'],
             ));
@@ -859,7 +859,7 @@ class Source extends CI_Controller
         ));
 
         //Return to JS function:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'message' => 'Success',
         ));
@@ -884,37 +884,37 @@ class Source extends CI_Controller
 
         $en_name_validate = en_name_validate($_POST['en_name']);
         if(!$en_name_validate['status']){
-            return echo_json($en_name_validate);
+            return view_json($en_name_validate);
         }
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(10939),
+                'message' => view_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !(count($ens) == 1)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid ID',
             ));
         } elseif (!isset($_POST['en_focus_id']) || intval($_POST['en_focus_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Focus ID',
             ));
         } elseif (!isset($_POST['en_status_source_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing status',
             ));
         } elseif (!isset($_POST['ln_id']) || !isset($_POST['ln_content']) || !isset($_POST['ln_status_source_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing source link data',
             ));
         } elseif(!$is_valid_icon['status']){
             //Check if valid icon:
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => $is_valid_icon['message'],
             ));
@@ -944,10 +944,10 @@ class Source extends CI_Controller
                 //Construct the message:
                 $error_message = 'Cannot be deleted because source is referenced as ';
                 foreach($en_count_db_references as $en_id=>$en_count){
-                    $error_message .= $en_all_6194[$en_id]['m_name'].' '.echo_number($en_count).' times ';
+                    $error_message .= $en_all_6194[$en_id]['m_name'].' '.view_number($en_count).' times ';
                 }
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => $error_message,
                 ));
@@ -981,14 +981,14 @@ class Source extends CI_Controller
 
                 if ($merger_en_id < 1) {
 
-                    return echo_json(array(
+                    return view_json(array(
                         'status' => 0,
                         'message' => 'Unrecognized merger source [' . $_POST['en_merge'] . ']',
                     ));
 
                 } elseif ($merger_en_id == $_POST['en_id']) {
 
-                    return echo_json(array(
+                    return view_json(array(
                         'status' => 0,
                         'message' => 'Cannot merge source into itself',
                     ));
@@ -1001,7 +1001,7 @@ class Source extends CI_Controller
                         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
                     ));
                     if (count($merged_ens) == 0) {
-                        return echo_json(array(
+                        return view_json(array(
                             'status' => 0,
                             'message' => 'Could not find source @' . $merger_en_id,
                         ));
@@ -1012,7 +1012,7 @@ class Source extends CI_Controller
             } elseif(count($messages) > 0){
 
                 //Cannot delete this source until Idea references are deleted:
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'You can delete source after removing all its IDEA NOTES references',
                 ));
@@ -1070,7 +1070,7 @@ class Source extends CI_Controller
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             ));
             if (count($en_lns) < 1) {
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'INVALID TRANSACTION ID',
                 ));
@@ -1107,7 +1107,7 @@ class Source extends CI_Controller
 
                 if (!$detected_ln_type['status']) {
 
-                    return echo_json($detected_ln_type);
+                    return view_json($detected_ln_type);
 
                 } elseif (in_array($detected_ln_type['ln_type_source_id'], $this->config->item('en_ids_4537'))) {
 
@@ -1123,7 +1123,7 @@ class Source extends CI_Controller
                         } else {
 
                             //Domains can only be added to the domain source:
-                            return echo_json(array(
+                            return view_json(array(
                                 'status' => 0,
                                 'message' => 'Domain URLs must link to <b>@1326 Domains</b> as source profile',
                             ));
@@ -1134,7 +1134,7 @@ class Source extends CI_Controller
 
                         if ($en_lns[0]['ln_profile_source_id'] == 1326) {
 
-                            return echo_json(array(
+                            return view_json(array(
                                 'status' => 0,
                                 'message' => 'Only domain URLs can be linked to Domain source.',
                             ));
@@ -1142,14 +1142,14 @@ class Source extends CI_Controller
                         } elseif ($detected_ln_type['en_domain']) {
                             //We do have the domain mapped! Is this connected to the domain source as its parent?
                             if ($detected_ln_type['en_domain']['en_id'] != $en_lns[0]['ln_profile_source_id']) {
-                                return echo_json(array(
+                                return view_json(array(
                                     'status' => 0,
                                     'message' => 'Must link to <b>@' . $detected_ln_type['en_domain']['en_id'] . ' ' . $detected_ln_type['en_domain']['en_name'] . '</b> as source profile',
                                 ));
                             }
                         } else {
                             //We don't have the domain mapped, this is for sure not allowed:
-                            return echo_json(array(
+                            return view_json(array(
                                 'status' => 0,
                                 'message' => 'Requires a new parent source for <b>' . $detected_ln_type['url_tld'] . '</b>. Add by pasting URL into the [Add @Source] input field.',
                             ));
@@ -1211,13 +1211,13 @@ class Source extends CI_Controller
             ), array('en_creator'));
 
             //Prep last updated:
-            $return_array['ln_content'] = echo_ln_content($ln_content, $js_ln_type_source_id);
+            $return_array['ln_content'] = view_ln_content($ln_content, $js_ln_type_source_id);
             $return_array['ln_content_final'] = $ln_content; //In case content was updated
 
         }
 
         //Show success:
-        return echo_json($return_array);
+        return view_json($return_array);
 
     }
 
@@ -1228,13 +1228,13 @@ class Source extends CI_Controller
         $session_en = superpower_assigned();
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
             ));
         } elseif (!isset($_POST['search_url']) || !filter_var($_POST['search_url'], FILTER_VALIDATE_URL)) {
             //This string was incorrectly detected as a URL by JS, return not found:
-            return echo_json(array(
+            return view_json(array(
                 'status' => 1,
                 'url_previously_existed' => 0,
             ));
@@ -1244,13 +1244,13 @@ class Source extends CI_Controller
         $url_source = $this->SOURCE_model->url($_POST['search_url']);
 
         if($url_source['url_previously_existed']){
-            return echo_json(array(
+            return view_json(array(
                 'status' => 1,
                 'url_previously_existed' => 1,
                 'algolia_object' => update_algolia('en', $url_source['en_url']['en_id'], 1),
             ));
         } else {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 1,
                 'url_previously_existed' => 0,
             ));
@@ -1265,29 +1265,29 @@ class Source extends CI_Controller
         /*
          *
          * Saves the radio selection of some account fields
-         * that are displayed using echo_radio_sources()
+         * that are displayed using view_radio_sources()
          *
          * */
 
         $session_en = superpower_assigned();
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
             ));
         } elseif (!isset($_POST['parent_en_id']) || intval($_POST['parent_en_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing parent source',
             ));
         } elseif (!isset($_POST['selected_en_id']) || intval($_POST['selected_en_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing selected source',
             ));
         } elseif (!isset($_POST['enable_mulitiselect']) || !isset($_POST['was_previously_selected'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing multi-select setting',
             ));
@@ -1354,7 +1354,7 @@ class Source extends CI_Controller
         ));
 
         //All good:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'message' => 'Updated', //Alert: NOT shown in UI
         ));
@@ -1371,17 +1371,17 @@ class Source extends CI_Controller
         $session_en = superpower_assigned();
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
             ));
         } elseif (!isset($_POST['type_css'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing type_css',
             ));
         } elseif (!isset($_POST['icon_css'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing icon_css',
             ));
@@ -1397,7 +1397,7 @@ class Source extends CI_Controller
             }
         }
         if(!$validated){
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid icon',
             ));
@@ -1416,7 +1416,7 @@ class Source extends CI_Controller
         $this->SOURCE_model->activate_session($session_en, true);
 
 
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'message' => 'Name updated',
             'new_avatar' => $new_avatar,
@@ -1431,12 +1431,12 @@ class Source extends CI_Controller
         $session_en = superpower_assigned();
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
             ));
         } elseif (!isset($_POST['en_email']) || !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Email',
             ));
@@ -1458,7 +1458,7 @@ class Source extends CI_Controller
             ));
             if (count($duplicates) > 0) {
                 //This is a duplicate, disallow:
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Email previously in-use. Use another email or contact support for assistance.',
                 ));
@@ -1547,7 +1547,7 @@ class Source extends CI_Controller
 
 
         //Return results:
-        return echo_json($return);
+        return view_json($return);
 
 
     }
@@ -1559,12 +1559,12 @@ class Source extends CI_Controller
         $session_en = superpower_assigned();
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
             ));
         } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'New password must be '.config_var(11066).' characters or more',
             ));
@@ -1636,7 +1636,7 @@ class Source extends CI_Controller
 
 
         //Return results:
-        return echo_json($return);
+        return view_json($return);
 
     }
 
@@ -1708,17 +1708,17 @@ class Source extends CI_Controller
     function sign_create_account(){
 
         if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_url'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
             ));
         } elseif (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Email',
             ));
         } elseif (!isset($_POST['input_name']) || strlen($_POST['input_name'])<1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing name',
                 'focus_input_field' => 'input_name',
@@ -1730,13 +1730,13 @@ class Source extends CI_Controller
         $_POST['input_name'] = trim($_POST['input_name']);
         $name_parts = explode(' ', trim($_POST['input_name']));
         if (strlen($_POST['input_name']) < config_var(12232)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Name must longer than '.config_var(12232).' characters',
                 'focus_input_field' => 'input_name',
             ));
         } elseif (strlen($_POST['input_name']) > config_var(6197)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Name must be less than '.config_var(6197).' characters',
                 'focus_input_field' => 'input_name',
@@ -1744,19 +1744,19 @@ class Source extends CI_Controller
 
             /*
             } elseif (!isset($name_parts[1])) {
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'There must be a space between your your first and last name',
                     'focus_input_field' => 'input_name',
                 ));
             } elseif (strlen($name_parts[1])<2) {
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Last name must be 2 characters or longer',
                     'focus_input_field' => 'input_name',
                 ));
             } elseif (strlen($name_parts[0])<2) {
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'First name must be 2 characters or longer',
                     'focus_input_field' => 'input_name',
@@ -1764,13 +1764,13 @@ class Source extends CI_Controller
             */
 
         } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing password',
                 'focus_input_field' => 'new_password',
             ));
         } elseif (strlen($_POST['new_password']) < config_var(11066)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'New password must be '.config_var(11066).' characters or longer',
                 'focus_input_field' => 'new_password',
@@ -1783,7 +1783,7 @@ class Source extends CI_Controller
         $user_en = $this->SOURCE_model->verify_create(trim($_POST['input_name']), 0, 6181, random_player_avatar());
         if(!$user_en['status']){
             //We had an error, return it:
-            return echo_json($user_en);
+            return view_json($user_en);
         }
 
 
@@ -1843,7 +1843,7 @@ class Source extends CI_Controller
         ##Email Body
         $html_message = '<div>Just wanted to welcome you to Mench. You can create your first idea here:</div>';
         $html_message .= '<br /><br />';
-        $html_message .= '<div>'.echo_platform_message(12691).'</div><br />';
+        $html_message .= '<div>'.view_platform_message(12691).'</div><br />';
         $html_message .= '<div>MENCH</div>';
 
         //Send Welcome Email:
@@ -1873,7 +1873,7 @@ class Source extends CI_Controller
             $login_url = '/';
         }
 
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'login_url' => $login_url,
         ));
@@ -1892,7 +1892,7 @@ class Source extends CI_Controller
         if(count($ens)){
             return redirect_message('https://www.google.com/search?q='.urlencode($ens[0]['en_name']));
         } else {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source ID'
             ));
@@ -1914,14 +1914,14 @@ class Source extends CI_Controller
                 return redirect_message('/source/plugin/7267?search_for=' . urlencode($ens[0]['en_icon']));
 
             } else {
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Source Missing Icon'
                 ));
             }
 
         } else {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source ID'
             ));
@@ -1931,22 +1931,22 @@ class Source extends CI_Controller
     function singin_check_password(){
 
         if (!isset($_POST['login_en_id']) || intval($_POST['login_en_id'])<1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing user ID',
             ));
         } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Password',
             ));
         } elseif (!isset($_POST['referrer_url'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing referrer URL',
             ));
         } elseif (!isset($_POST['referrer_in_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea referrer',
             ));
@@ -1959,7 +1959,7 @@ class Source extends CI_Controller
             'en_id' => $_POST['login_en_id'],
         ));
         if (!in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357') /* PUBLIC */)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Your account source is not public. Contact us to adjust your account.',
             ));
@@ -1975,13 +1975,13 @@ class Source extends CI_Controller
         ));
         if (count($user_passwords) == 0) {
             //They do not have a password assigned yet!
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.',
             ));
         } elseif (!in_array($user_passwords[0]['ln_status_source_id'], $this->config->item('en_ids_7359') /* PUBLIC */)) {
             //They do not have a password assigned yet!
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Password link is not public. Contact us to adjust your account.',
             ));
@@ -1995,7 +1995,7 @@ class Source extends CI_Controller
             } else {
 
                 //Bad password
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Incorrect password',
                 ));
@@ -2020,7 +2020,7 @@ class Source extends CI_Controller
             $login_url = '/';
         }
 
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'login_url' => $login_url,
         ));
@@ -2034,12 +2034,12 @@ class Source extends CI_Controller
 
         //This function updates the user's new password as requested via a password reset:
         if (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1 || !isset($_POST['input_email']) || strlen($_POST['input_email']) < 1 || !isset($_POST['input_password'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
             ));
         } elseif (strlen($_POST['input_password']) < config_var(11066)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Must be longer than '.config_var(11066).' characters',
             ));
@@ -2053,7 +2053,7 @@ class Source extends CI_Controller
             )); //The user making the request
             if(count($validate_links) < 1){
                 //Probably previously completed the reset password:
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Reset password link not found',
                 ));
@@ -2064,7 +2064,7 @@ class Source extends CI_Controller
                 'en_id' => $validate_links[0]['ln_creator_source_id'],
             ));
             if(count($ens) < 1){
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'User not found',
                 ));
@@ -2087,7 +2087,7 @@ class Source extends CI_Controller
 
                 $detected_ln_type = ln_detect_type($password_hash);
                 if (!$detected_ln_type['status']) {
-                    return echo_json($detected_ln_type);
+                    return view_json($detected_ln_type);
                 }
 
                 //Update existing password:
@@ -2122,7 +2122,7 @@ class Source extends CI_Controller
             $this->SOURCE_model->activate_session($ens[0]);
 
             //Their next Idea in line:
-            return echo_json(array(
+            return view_json(array(
                 'status' => 1,
                 'login_url' => '/read/next',
             ));
@@ -2138,12 +2138,12 @@ class Source extends CI_Controller
 
 
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Email',
             ));
         } elseif (!isset($_POST['referrer_in_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
             ));
@@ -2158,7 +2158,7 @@ class Source extends CI_Controller
             'ln_profile_source_id' => 3288, //Mench Email
         ), array('en_portfolio'));
         if(count($user_emails) < 1){
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Email not associated with a registered account',
             ));
@@ -2182,19 +2182,19 @@ class Source extends CI_Controller
         $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' 👋</div><br /><br />';
 
         $magic_link_expiry_hours = (config_var(11065)/3600);
-        $html_message .= '<div>Login within the next '.$magic_link_expiry_hours.' hour'.echo__s($magic_link_expiry_hours).':</div>';
+        $html_message .= '<div>Login within the next '.$magic_link_expiry_hours.' hour'.view__s($magic_link_expiry_hours).':</div>';
         $magic_url = $this->config->item('base_url').'source/magic/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
-        $html_message .= '<div>'.echo_platform_message(12691).'</div>';
+        $html_message .= '<div>'.view_platform_message(12691).'</div>';
         $html_message .= '<div>MENCH</div>';
 
         //Send email:
         $this->READ_model->send_email(array($_POST['input_email']), $subject, $html_message);
 
         //Return success
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
         ));
     }
@@ -2242,12 +2242,12 @@ class Source extends CI_Controller
     function singin_check_email(){
 
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Email',
             ));
         } elseif (!isset($_POST['referrer_in_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
             ));
@@ -2279,7 +2279,7 @@ class Source extends CI_Controller
 
         if(count($user_emails) > 0){
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 1,
                 'email_existed_previously' => 1,
                 'login_en_id' => $user_emails[0]['en_id'],
@@ -2288,7 +2288,7 @@ class Source extends CI_Controller
 
         } else {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 1,
                 'email_existed_previously' => 0,
                 'login_en_id' => 0,
@@ -2330,7 +2330,7 @@ class Source extends CI_Controller
             $en_all_6287 = $this->config->item('en_all_6287'); //MENCH PLUGIN
             $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $en_all_6287[$plugin_en_id]['m_parents']);
             if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-                die(echo_unauthorized_message(end($superpower_actives)));
+                die(view_unauthorized_message(end($superpower_actives)));
             }
 
 
@@ -2366,17 +2366,17 @@ class Source extends CI_Controller
         $session_en = superpower_assigned(12700);
 
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(12700),
+                'message' => view_unauthorized_message(12700),
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Starting Idea',
             ));
         } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Depth',
             ));
@@ -2388,7 +2388,7 @@ class Source extends CI_Controller
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         ));
         if(count($ins) != 1){
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Could not find idea #'.$_POST['in_id'],
             ));
@@ -2401,9 +2401,9 @@ class Source extends CI_Controller
 
 
         //Return report:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
-            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_source_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_source_id']]['m_icon'].' '.echo_in_title($ins[0]).'</h3>'.echo_in_scores_answer($_POST['in_id'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_source_id']),
+            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_source_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_source_id']]['m_icon'].' '.view_in_title($ins[0]).'</h3>'.view_in_scores_answer($_POST['in_id'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_source_id']),
         ));
 
 

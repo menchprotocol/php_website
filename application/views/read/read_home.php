@@ -41,7 +41,7 @@ if(!count($player_reads)){
     echo '<div id="home_reads" class="cover-list" style="padding-top:21px; padding-left:34px;">';
     foreach($player_reads as $in) {
         $completion_rate = $this->READ_model->completion_progress($session_en['en_id'], $in);
-        echo echo_in_cover($in, true, null, $completion_rate);
+        echo view_in_cover($in, true, null, $completion_rate);
         if($completion_rate['completion_percentage']!=100 && $all_completed){
             $all_completed = false;
         }

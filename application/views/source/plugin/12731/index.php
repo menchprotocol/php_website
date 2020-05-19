@@ -31,7 +31,7 @@ foreach($active_ins as $count=>$in){
         //Update idea:
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-        echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Idea Status */, $in['in_status_source_id'], true, 'right').' <a href="/idea/go/'.$in['in_id'].'">'.echo_in_title($in).'</a></td>';
+        echo '<td style="text-align: left;">'.view_en_cache('en_all_4737' /* Idea Status */, $in['in_status_source_id'], true, 'right').' <a href="/idea/go/'.$in['in_id'].'">'.view_in_title($in).'</a></td>';
         echo '</tr>';
 
     }

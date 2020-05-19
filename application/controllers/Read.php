@@ -94,7 +94,7 @@ class Read extends CI_Controller
             $message .= '<div class="list-group list-grey">';
             foreach($lns as $ln) {
 
-                $message .= echo_ln($ln);
+                $message .= view_ln($ln);
 
                 if($session_en && strlen($ln['ln_content'])>0 && strlen($_POST['ln_content_search'])>0 && strlen($_POST['ln_content_replace'])>0 && substr_count($ln['ln_content'], $_POST['ln_content_search'])>0){
 
@@ -116,7 +116,7 @@ class Read extends CI_Controller
                 $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="ledger_load(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.echo__s($lns_count[0]['total_count']).' have been loaded</div>';
+                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.view__s($lns_count[0]['total_count']).' have been loaded</div>';
 
             }
 
@@ -128,7 +128,7 @@ class Read extends CI_Controller
         }
 
 
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'message' => $message,
         ));
@@ -136,7 +136,7 @@ class Read extends CI_Controller
 
     }
 
-    function echo_input_text_update(){
+    function view_input_text_update(){
 
         //Authenticate Player:
         $session_en = superpower_assigned();
@@ -144,15 +144,15 @@ class Read extends CI_Controller
 
         if (!$session_en) {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
                 'original_val' => '',
             ));
 
         } elseif(!isset($_POST['object_id']) || !isset($_POST['cache_en_id']) || !isset($_POST['field_value'])){
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core variables',
                 'original_val' => '',
@@ -165,7 +165,7 @@ class Read extends CI_Controller
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
             ));
             if(!count($ins)){
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid Idea ID.',
                     'original_val' => '',
@@ -176,7 +176,7 @@ class Read extends CI_Controller
             $in_title_validation = in_title_validate($_POST['field_value']);
             if(!$in_title_validation['status']){
                 //We had an error, return it:
-                return echo_json(array_merge($in_title_validation, array(
+                return view_json(array_merge($in_title_validation, array(
                     'original_val' => $ins[0]['in_title'],
                 )));
             }
@@ -187,7 +187,7 @@ class Read extends CI_Controller
                 'in_title' => trim($_POST['field_value']),
             ), true, $session_en['en_id']);
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 1,
             ));
 
@@ -198,7 +198,7 @@ class Read extends CI_Controller
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
             ));
             if(!count($ens)){
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid Source ID.',
                     'original_val' => '',
@@ -208,7 +208,7 @@ class Read extends CI_Controller
 
             $en_name_validate = en_name_validate($_POST['field_value']);
             if(!$en_name_validate['status']){
-                return echo_json(array_merge($en_name_validate, array(
+                return view_json(array_merge($en_name_validate, array(
                     'original_val' => $ens[0]['en_name'],
                 )));
             }
@@ -225,7 +225,7 @@ class Read extends CI_Controller
                 $this->SOURCE_model->activate_session($ens[0], true);
             }
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 1,
             ));
 
@@ -238,7 +238,7 @@ class Read extends CI_Controller
 
             if(!count($ins)){
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid Idea ID.',
                     'original_val' => '',
@@ -246,7 +246,7 @@ class Read extends CI_Controller
 
             } elseif(!is_numeric($_POST['field_value']) || $_POST['field_value'] < 0){
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be a number greater than zero.',
                     'original_val' => $ins[0]['in_time_seconds'],
@@ -255,15 +255,15 @@ class Read extends CI_Controller
             } elseif($_POST['field_value'] > config_var(4356)){
 
                 $hours = rtrim(number_format((config_var(4356)/3600), 1), '.0');
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.echo__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
+                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
                     'original_val' => $ins[0]['in_time_seconds'],
                 ));
 
             } elseif($_POST['field_value'] < config_var(12427)){
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
                     'original_val' => $ins[0]['in_time_seconds'],
@@ -276,7 +276,7 @@ class Read extends CI_Controller
                     'in_time_seconds' => $_POST['field_value'],
                 ), true, $session_en['en_id']);
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 1,
                 ));
 
@@ -297,7 +297,7 @@ class Read extends CI_Controller
 
             if(!count($lns)){
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid Link ID.',
                     'original_val' => '',
@@ -305,7 +305,7 @@ class Read extends CI_Controller
 
             } elseif(!is_numeric($_POST['field_value']) || fmod($_POST['field_value'], 1)>0 || $_POST['field_value'] < config_var(11056) ||  $_POST['field_value'] > config_var(11057)){
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
                     'original_val' => ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : 0 ),
@@ -320,7 +320,7 @@ class Read extends CI_Controller
                     )),
                 ), $session_en['en_id'], 10663 /* Idea Link updated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' updated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 1,
                 ));
 
@@ -339,7 +339,7 @@ class Read extends CI_Controller
 
             if(!count($lns)){
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid Link ID.',
                     'original_val' => '',
@@ -347,7 +347,7 @@ class Read extends CI_Controller
 
             } elseif(!is_numeric($_POST['field_value']) || fmod($_POST['field_value'], 1)>0 || $_POST['field_value'] < 0 || $_POST['field_value'] > 100){
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be an integer between 0 and 100.',
                     'original_val' => ( isset($ln_metadata[$field_name]) ? $ln_metadata[$field_name] : '' ),
@@ -362,7 +362,7 @@ class Read extends CI_Controller
                     )),
                 ), $session_en['en_id'], 10664 /* Idea Link updated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' updated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
-                return echo_json(array(
+                return view_json(array(
                     'status' => 1,
                 ));
 
@@ -370,7 +370,7 @@ class Read extends CI_Controller
 
         } else {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Unknown Update Type ['.$_POST['cache_en_id'].']',
                 'original_val' => '',
@@ -583,35 +583,35 @@ class Read extends CI_Controller
         $session_en = superpower_assigned();
         if (!$session_en) {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
             ));
 
         } elseif (!isset($_POST['in_id'])) {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing IDEA',
             ));
 
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Unknown upload type.',
             ));
 
         } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Unknown error 2 while trying to save file.',
             ));
 
         } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'File is larger than ' . config_var(11063) . ' MB.',
             ));
@@ -624,7 +624,7 @@ class Read extends CI_Controller
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
         if(count($ins)<1){
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
             ));
@@ -647,7 +647,7 @@ class Read extends CI_Controller
         $cdn_status = upload_to_cdn($temp_local, $session_en['en_id'], $_FILES[$_POST['upload_type']], true, $ins[0]['in_title']);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
-            return echo_json($cdn_status);
+            return view_json($cdn_status);
         }
 
 
@@ -674,7 +674,7 @@ class Read extends CI_Controller
         ));
 
         //All good:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'message' => '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->send_message($new_message).'</div>',
         ));
@@ -688,17 +688,17 @@ class Read extends CI_Controller
 
         $session_en = superpower_assigned();
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
             ));
         } elseif (!isset($_POST['in_id']) || !intval($_POST['in_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea ID.',
             ));
         } elseif (!isset($_POST['read_text_answer']) || !strlen($_POST['read_text_answer'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing text answer.',
             ));
@@ -710,7 +710,7 @@ class Read extends CI_Controller
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
         if(count($ins) < 1){
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Idea not published.',
             ));
@@ -737,7 +737,7 @@ class Read extends CI_Controller
         ));
 
         //All good:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'message' => 'Answer Saved',
         ));
@@ -749,24 +749,24 @@ class Read extends CI_Controller
 
         $session_en = superpower_assigned();
         if (!$session_en) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
             ));
         } elseif (!isset($_POST['in_loaded_id'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea id.',
             ));
         } elseif (!isset($_POST['answered_ins']) || !is_array($_POST['answered_ins']) || !count($_POST['answered_ins'])) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Select an answer',
             ));
         }
 
         //Save answer:
-        return echo_json($this->READ_model->answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
+        return view_json($this->READ_model->answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
 
     }
 
@@ -789,7 +789,7 @@ class Read extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your Reads.';
+            $message = 'Removed '.count($progress_links).' idea'.view__s(count($progress_links)).' from your Reads.';
 
             //Log link:
             $clear_all_link = $this->READ_model->create(array(
@@ -826,14 +826,14 @@ class Read extends CI_Controller
         $session_en = superpower_assigned();
         if (!$session_en) {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
-                'message' => echo_unauthorized_message(),
+                'message' => view_unauthorized_message(),
             ));
 
         } elseif (!isset($_POST['in_id'])) {
 
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Idea ID',
             ));
@@ -845,7 +845,7 @@ class Read extends CI_Controller
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
         if (!count($ins)) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
             ));
@@ -878,7 +878,7 @@ class Read extends CI_Controller
         }
 
         //All Good:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
         ));
 
@@ -899,12 +899,12 @@ class Read extends CI_Controller
 
 
         if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid player ID',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea ID',
             ));
@@ -914,9 +914,9 @@ class Read extends CI_Controller
         $delete_result = $this->READ_model->delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //REMOVED BOOKMARK
 
         if(!$delete_result['status']){
-            return echo_json($delete_result);
+            return view_json($delete_result);
         } else {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 1,
             ));
         }
@@ -936,12 +936,12 @@ class Read extends CI_Controller
          * */
 
         if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid player ID',
             ));
         } elseif (!isset($_POST['new_read_order']) || !is_array($_POST['new_read_order']) || count($_POST['new_read_order']) < 1) {
-            return echo_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Missing sorting ideas',
             ));
@@ -959,7 +959,7 @@ class Read extends CI_Controller
         }
 
         //All good:
-        return echo_json(array(
+        return view_json(array(
             'status' => 1,
             'message' => count($_POST['new_read_order']).' Ideas Sorted',
         ));

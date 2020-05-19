@@ -13,7 +13,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])){
         if(strlen($ins[0]['in_metadata']) > 0){
             $ins[0]['in_metadata'] = unserialize($ins[0]['in_metadata']);
         }
-        echo_json($ins[0]);
+        view_json($ins[0]);
 
     } else {
         echo 'Source @'.intval($_GET['in_id']).' not found!';

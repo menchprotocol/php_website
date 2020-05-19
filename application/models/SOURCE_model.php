@@ -227,12 +227,12 @@ class SOURCE_model extends CI_Model
                         $ln_type_source_id = 6178; //Source Deleted
                     }
                     $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
-                    $ln_content = echo_db_field($key) . ' updated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
+                    $ln_content = view_db_field($key) . ' updated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
 
                 } elseif($key=='en_icon') {
 
                     $ln_type_source_id = 10653; //Player Updated Icon
-                    $ln_content = echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+                    $ln_content = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
 
@@ -675,7 +675,7 @@ class SOURCE_model extends CI_Model
              * */
 
             //Is this an embed URL?
-            $embed_code = echo_url_embed($url, null, true);
+            $embed_code = view_url_embed($url, null, true);
 
             if ($embed_code['status']) {
 
@@ -940,7 +940,7 @@ class SOURCE_model extends CI_Model
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 ));
 
-                if(($action_en_id==5981 && count($child_parent_ens)==0) || ($action_en_id==12928 && echo_coins_count_source(0,$en['en_id'],true) > 0) || ($action_en_id==12930 && !echo_coins_count_source(0,$en['en_id'],true))){
+                if(($action_en_id==5981 && count($child_parent_ens)==0) || ($action_en_id==12928 && view_coins_count_source(0,$en['en_id'],true) > 0) || ($action_en_id==12930 && !view_coins_count_source(0,$en['en_id'],true))){
 
                     //Parent Player Addition
                     $this->READ_model->create(array(

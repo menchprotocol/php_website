@@ -85,7 +85,7 @@ function load_editor(){
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return echo_search_result(suggestion);
+                    return view_search_result(suggestion);
                 },
                 empty: function (data) {
                     return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
@@ -116,7 +116,7 @@ function load_editor(){
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return echo_search_result(suggestion);
+                    return view_search_result(suggestion);
                 },
                 empty: function (data) {
                     return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
@@ -142,7 +142,7 @@ function js_extract_icon_color(en_icon){
     }
 }
 
-function echo_search_result(alg_obj){
+function view_search_result(alg_obj){
 
     //Determine object type:
     var is_idea = (parseInt(alg_obj.alg_obj_type_id)==4535);
@@ -155,7 +155,7 @@ function echo_search_result(alg_obj){
 }
 
 
-function js_echo_platform_message(en_id){
+function js_view_platform_message(en_id){
     var messages = js_en_all_12687[en_id]['m_desc'].split(" | ");
     if(messages.length == 1){
         //Return message:
@@ -352,7 +352,7 @@ $(document).ready(function () {
                 },
                 templates: {
                     suggestion: function (suggestion) {
-                        return echo_search_result(suggestion);
+                        return view_search_result(suggestion);
                     },
                     header: function (data) {
                         if(validURL(data.query)){
@@ -519,7 +519,7 @@ function en_fetch_canonical_url(query_string, not_found){
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
-            $('.not-found').html('<a href="/source/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_search_result(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/source/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + view_search_result(searchdata.algolia_object)+'</a>');
         }
     });
 
@@ -664,7 +664,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_search_result(suggestion);
+                return view_search_result(suggestion);
             },
             header: function (data) {
                 if (is_add_mode=='link_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
@@ -689,19 +689,19 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
 
 
 
-function echo_input_text_update_start(){
-    $('.echo_input_text_update').keypress(function(e) {
+function view_input_text_update_start(){
+    $('.view_input_text_update').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-            echo_input_text_update(this);
+            view_input_text_update(this);
             e.preventDefault();
         }
     }).change(function() {
-        echo_input_text_update(this);
+        view_input_text_update(this);
     });
 }
 
-function echo_input_text_count(cache_en_id, object_id) {
+function view_input_text_count(cache_en_id, object_id) {
 
     //Count text area characters:
 
@@ -729,7 +729,7 @@ function update_text_name(cache_en_id, en_id, en_name){
     $(".text__"+cache_en_id+"_" + en_id).val(en_name).text(en_name).attr('old-value', en_name);
 }
 
-function echo_input_text_update(this_handler){
+function view_input_text_update(this_handler){
 
     var modify_data = {
         object_id: parseInt($(this_handler).attr('object_id')),
@@ -747,7 +747,7 @@ function echo_input_text_update(this_handler){
     var handler = '.text__'+modify_data['cache_en_id']+'_'+modify_data['object_id'];
     $(handler).addClass('dynamic_saving');
 
-    $.post("/read/echo_input_text_update", modify_data, function (data) {
+    $.post("/read/view_input_text_update", modify_data, function (data) {
 
         if (!data.status) {
 

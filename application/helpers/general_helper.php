@@ -178,7 +178,7 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     if (@file_get_contents($fav_icon)) {
         return '<img src="'.$fav_icon.'">';
     } else {
-        return ( $return_icon ? echo_en_icon() : null );
+        return ( $return_icon ? view_en_icon() : null );
     }
 }
 
@@ -361,16 +361,16 @@ function en_count_db_references($en_id, $return_html = true){
         4737 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id=',
         7585 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id IN ('.join(',', $CI->config->item('en_ids_7355')).') AND in_type_source_id=',
         6177 => 'SELECT count(en_id) as totals FROM mench_source WHERE en_status_source_id=',
-        4364 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_creator_source_id=',
-        6186 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id=',
-        4593 => 'SELECT count(ln_id) as totals FROM mench_ledger WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_type_source_id=',
+        4364 => 'SELECT count(ln_id) as totals FROM mench_read WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_creator_source_id=',
+        6186 => 'SELECT count(ln_id) as totals FROM mench_read WHERE ln_status_source_id=',
+        4593 => 'SELECT count(ln_id) as totals FROM mench_read WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_type_source_id=',
     ) as $en_app_id => $query){
 
         $query = $CI->db->query( $query . $en_id );
         foreach($query->result() as $row)
         {
             if($row->totals > 0){
-                $en_count_db_references[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($en_all_6194[$en_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$en_all_6194[$en_app_id]['m_icon'] . ' '. echo_number($row->totals).'</span>&nbsp;' : $row->totals );
+                $en_count_db_references[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($en_all_6194[$en_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$en_all_6194[$en_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
             }
         }
 
@@ -696,7 +696,7 @@ function ln_coins_in($ln_type_source_id, $in_id, $load_page = 0){
         //Return UI:
         $ui = '<div class="list-group">';
         foreach($query as $item){
-            $ui .= echo_en($item);
+            $ui .= view_en($item);
         }
         $ui .= '</div>';
 
@@ -777,14 +777,14 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 
             //SOURCE COIN
             foreach($query as $item){
-                $ui .= echo_en($item);
+                $ui .= view_en($item);
             }
 
         } elseif($ln_type_source_id==6255){
 
             //READ COIN
             foreach($query as $item){
-                $ui .= echo_in($item);
+                $ui .= view_in($item);
             }
 
         } elseif($ln_type_source_id==12273){
@@ -813,7 +813,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
                     $ui .= '<div class="see_more_sources"></div>';
                 }
 
-                $ui .= echo_in($item, 0, false, false, $item['ln_content'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+                $ui .= view_in($item, 0, false, false, $item['ln_content'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
 
                 $previous_do_hide = $do_hide;
 
@@ -872,7 +872,7 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.echo_unauthorized_message($superpower_en_id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.view_unauthorized_message($superpower_en_id).'</div>');
     }
 
 }
@@ -1512,7 +1512,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['en_id']);
                 $export_row['alg_obj_url'] = '/source/' . $db_row['en_id'];
                 $export_row['alg_obj_status'] = intval($db_row['en_status_source_id']);
-                $export_row['alg_obj_icon'] = echo_en_icon($db_row['en_icon']);
+                $export_row['alg_obj_icon'] = view_en_icon($db_row['en_icon']);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
                 $export_row['alg_obj_weight'] = intval($db_row['en_weight']);
 

@@ -50,7 +50,7 @@ foreach($this->IDEA_model->fetch() as $in) {
                 continue; //Keep first one
             } else {
                 $stats['creator_extra']++;
-                $this->db->query("DELETE FROM mench_ledger WHERE ln_id=".$in_creator_tr['ln_id']);
+                $this->db->query("DELETE FROM mench_read WHERE ln_id=".$in_creator_tr['ln_id']);
             }
         }
     }

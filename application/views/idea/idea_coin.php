@@ -41,7 +41,7 @@ $in__previous = $this->READ_model->fetch(array(
 
 echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group previous_ins">';
 foreach($in__previous as $parent_in) {
-    echo echo_in($parent_in, 0, true, in_is_source($parent_in['in_id']));
+    echo view_in($parent_in, 0, true, in_is_source($parent_in['in_id']));
 }
 if( $is_source && $is_active && $in['in_id']!=config_var(12156)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
@@ -63,12 +63,12 @@ echo '</div>';
 
 //IDEA TITLE
 echo '<div class="itemidea">';
-echo echo_input_text(4736, $in['in_title'], $in['in_id'], ($is_source && $is_active), 0, true);
+echo view_input_text(4736, $in['in_title'], $in['in_id'], ($is_source && $is_active), 0, true);
 echo '</div>';
 
 
 //IDEA MESSAGES:
-echo echo_in_note_mix(4231, $this->READ_model->fetch(array(
+echo view_in_note_mix(4231, $this->READ_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
     'ln_type_source_id' => 4231,
     'ln_next_idea_id' => $in['in_id'],
@@ -76,13 +76,13 @@ echo echo_in_note_mix(4231, $this->READ_model->fetch(array(
 
 
 //IDEA TYPE
-echo '<div class="inline-block pull-left both-margin left-margin">'.echo_input_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_dropdown(7585, $in['in_type_source_id'], 'btn-idea', $is_source && $is_active, true, $in['in_id']).'</div>';
 
 //IDEA STATUS
-echo '<div class="inline-block pull-left both-margin left-half-margin">'.echo_input_dropdown(4737, $in['in_status_source_id'], 'btn-idea', $is_source, true, $in['in_id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $in['in_status_source_id'], 'btn-idea', $is_source, true, $in['in_id']).'</div>';
 
 //IDEA TIME
-echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.echo_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $in['in_time_seconds'], $in['in_id'], $is_source && $is_active, 0).'</div>';
 
 //IDEA READ (IF PUBLIC)
 echo '<div class="inline-block pull-right both-margin left-half-margin idea-read '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-read btn-circle" href="/'.$in['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[12750]['m_name'].'">'.$en_all_11035[12750]['m_icon'].'</a></div>';
@@ -101,7 +101,7 @@ foreach($this->config->item('en_all_11018') as $ln_type_source_id => $m){
 
     //Is this a caret menu?
     if(in_array(11040 , $m['m_parents'])){
-        echo echo_caret($ln_type_source_id, $m, $in['in_id']);
+        echo view_caret($ln_type_source_id, $m, $in['in_id']);
         continue;
     }
 
@@ -135,7 +135,7 @@ foreach($this->config->item('en_all_11018') as $ln_type_source_id => $m){
 
         $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group next_ins">';
         foreach($in__next as $child_in) {
-            $this_tab .= echo_in($child_in, $in['in_id'], false, $is_source);
+            $this_tab .= view_in($child_in, $in['in_id'], false, $is_source);
         }
 
         if($is_source && $is_active){
@@ -167,7 +167,7 @@ foreach($this->config->item('en_all_11018') as $ln_type_source_id => $m){
         $this_tab .= '<div id="add-source-' .$ln_type_source_id . '" class="list-group source-adder">';
 
         foreach($in_notes as $in_note) {
-            $this_tab .= echo_en($in_note, 0, null, $is_source && $is_active, $is_source);
+            $this_tab .= view_en($in_note, 0, null, $is_source && $is_active, $is_source);
         }
 
         if($is_source && $is_active) {
@@ -199,7 +199,7 @@ foreach($this->config->item('en_all_11018') as $ln_type_source_id => $m){
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         $counter = count($in_notes);
-        $this_tab .= echo_in_note_mix($ln_type_source_id, $in_notes, ($is_source && $is_active));
+        $this_tab .= view_in_note_mix($ln_type_source_id, $in_notes, ($is_source && $is_active));
 
     } elseif($ln_type_source_id==12589){
 
@@ -274,7 +274,7 @@ foreach($this->config->item('en_all_11018') as $ln_type_source_id => $m){
 
     $default_active = in_array($ln_type_source_id, $this->config->item('en_ids_12675'));
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$ln_type_source_id.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$ln_type_source_id.', '.$in['in_id'].', 0)" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$ln_type_source_id.'">'.echo_number($counter).'</span>' ).'</a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$ln_type_source_id.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$ln_type_source_id.', '.$in['in_id'].', 0)" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$ln_type_source_id.'">'.view_number($counter).'</span>' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$ln_type_source_id.( $default_active ? '' : ' hidden ' ).'">';

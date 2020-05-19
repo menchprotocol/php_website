@@ -23,9 +23,9 @@ $total_time = time() - $start_time;
 
 
 //Show json:
-echo_json(array(
-    'message' => 'Common Base Metadata updated for '.count($published_ins).' published idea'.echo__s(count($published_ins)).'.',
-    'total_time' => echo_time_hours($total_time),
+view_json(array(
+    'message' => 'Common Base Metadata updated for '.count($published_ins).' published idea'.view__s(count($published_ins)).'.',
+    'total_time' => view_time_hours($total_time),
     'item_time' => round(($total_time/count($published_ins)),1).' Seconds',
     'last_item' => $idea,
 ));

@@ -43,7 +43,7 @@ if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Source Status */, $en['en_status_source_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en['en_icon']).'</span><a href="/source/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_en_cache('en_all_6177' /* Source Status */, $en['en_status_source_id'], true, 'right').' <span class="icon-block">'.view_en_icon($en['en_icon']).'</span><a href="/source/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
             echo '</tr>';
 
         }

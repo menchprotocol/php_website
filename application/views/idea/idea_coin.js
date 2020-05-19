@@ -147,7 +147,7 @@ function en_source_only_search(note_type_id) {
             templates: {
                 suggestion: function (suggestion) {
                     //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
-                    return echo_search_result(suggestion);
+                    return view_search_result(suggestion);
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
@@ -174,7 +174,7 @@ $(document).ready(function () {
     load_editor();
 
     //Lookout for textinput updates
-    echo_input_text_update_start();
+    view_input_text_update_start();
 
     //Put focus on messages if no message:
     if(!$('#in_notes_list_4231 .note_sortable').length){
@@ -883,7 +883,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_echo_platform_message(12695) +  '</div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_view_platform_message(12695) +  '</div>');
 
 
     //Update backend:
@@ -912,7 +912,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
             in_sort_load(in_linked_id);
 
             //Lookout for textinput updates
-            echo_input_text_update_start();
+            view_input_text_update_start();
 
             //Expand selections:
             prep_search_pad();

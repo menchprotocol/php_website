@@ -271,7 +271,7 @@ if(!isset($hide_header)){
                                 $page_url = 'href="/read/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_'.$ln_type_source_id)).'&'.$source_field.'='.$session_en['en_id'].'"';
 
                                 //APPEND COUNT:
-                                $m['m_name'] = echo_number($counts).' '.$m['m_name'];
+                                $m['m_name'] = view_number($counts).' '.$m['m_name'];
 
                             } else {
 

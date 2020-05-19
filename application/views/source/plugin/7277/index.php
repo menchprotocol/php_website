@@ -87,4 +87,4 @@ if(count($invalid_variables) > 0){
     ));
 }
 
-echo_json($ln_metadata);
+view_json($ln_metadata);

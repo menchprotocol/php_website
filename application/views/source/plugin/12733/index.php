@@ -17,7 +17,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
     ), array('in_previous'), 0, 0, array('ln_order' => 'ASC'));
 
     foreach($player_reads as $priority => $ln) {
-        echo '<div>' . ($priority + 1) . ') <a href="?in_id=' . $ln['in_id'] . '&en_id=' . $_GET['en_id'] . '">' . echo_in_title($ln) . '</a></div>';
+        echo '<div>' . ($priority + 1) . ') <a href="?in_id=' . $ln['in_id'] . '&en_id=' . $_GET['en_id'] . '">' . view_in_title($ln) . '</a></div>';
     }
 
 } else {
@@ -34,7 +34,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
     } else {
 
         //List the idea:
-        echo_json(array(
+        view_json(array(
             'in_general' => array(
                 'in_recursive_parents' => $this->IDEA_model->recursive_parents($ins[0]['in_id']),
                 'in_metadata_common_base' => $this->IDEA_model->metadata_common_base($ins[0]),

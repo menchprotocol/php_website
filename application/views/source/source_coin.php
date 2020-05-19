@@ -35,7 +35,7 @@ $is_source = en_is_source($en['en_id']);
 
     <?php
     //SOURCE NAME
-    echo '<div class="itemsource">'.echo_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, '<span class="en_ui_icon_'.$en['en_id'].'">'.echo_en_icon($en['en_icon']).'</span>', extract_icon_color($en['en_icon'])).'</div>';
+    echo '<div class="itemsource">'.view_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, '<span class="en_ui_icon_'.$en['en_id'].'">'.view_en_icon($en['en_icon']).'</span>', extract_icon_color($en['en_icon'])).'</div>';
 
     ?>
 
@@ -173,7 +173,7 @@ $is_source = en_is_source($en['en_id']);
 
 
     //FOR EDITING ONLY:
-    echo '<div class="hidden">'.echo_en($en).'</div>';
+    echo '<div class="hidden">'.view_en($en).'</div>';
 
 
 
@@ -197,7 +197,7 @@ $is_source = en_is_source($en['en_id']);
     if(superpower_assigned(12703)){
         $en_all_4527 = $this->config->item('en_all_4527'); //Platform Memory
         echo '<ul class="nav nav-tabs nav-sm" style="display: inline-block; border: 0; margin: 0;">';
-        echo echo_caret(12887, $en_all_4527[12887], $en['en_id']);
+        echo view_caret(12887, $en_all_4527[12887], $en['en_id']);
         echo '</ul>';
     }
 
@@ -331,7 +331,7 @@ $is_source = en_is_source($en['en_id']);
 
                 } elseif ($is_multi_selectable || $is_single_selectable) {
 
-                    $this_tab .= echo_radio_sources($acc_en_id, $session_en['en_id'], ($is_multi_selectable ? 1 : 0));
+                    $this_tab .= view_radio_sources($acc_en_id, $session_en['en_id'], ($is_multi_selectable ? 1 : 0));
 
                 }
 
@@ -361,7 +361,7 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach($en__profiles as $en_profile) {
-                $this_tab .= echo_en($en_profile,true, null, true, $is_source);
+                $this_tab .= view_en($en_profile,true, null, true, $is_source);
             }
 
             //Input to add new parents:
@@ -606,10 +606,10 @@ $is_source = en_is_source($en['en_id']);
             $this_tab .= '<div id="en__portfolio" class="list-group">';
 
             foreach($en__portfolios as $en_portfolio) {
-                $this_tab .= echo_en($en_portfolio,false, null, true, $is_source);
+                $this_tab .= view_en($en_portfolio,false, null, true, $is_source);
             }
             if ($counter > count($en__portfolios)) {
-                $this_tab .= echo_en_load_more(1, config_var(11064), $counter);
+                $this_tab .= view_en_load_more(1, config_var(11064), $counter);
             }
 
             //Input to add new child:
@@ -652,7 +652,7 @@ $is_source = en_is_source($en['en_id']);
                     $in_notes_query = $this->READ_model->fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($in_notes_query as $count => $in_notes) {
-                        $this_tab .= echo_in($in_notes, 0, false, false, $in_notes['ln_content'], null, false);
+                        $this_tab .= view_in($in_notes, 0, false, false, $in_notes['ln_content'], null, false);
                     }
                     $this_tab .= '</div>';
 
@@ -679,7 +679,7 @@ $is_source = en_is_source($en['en_id']);
                     $in_reads_query = $this->READ_model->fetch($in_reads_filters, array('in_previous'), config_var(11064), 0, array('ln_order' => 'ASC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($in_reads_query as $count => $in_notes) {
-                        $this_tab .= echo_in($in_notes);
+                        $this_tab .= view_in($in_notes);
                     }
                     $this_tab .= '</div>';
                 } else {
@@ -697,7 +697,7 @@ $is_source = en_is_source($en['en_id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$ln_type_source_id.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( !in_array($ln_type_source_id, $this->config->item('en_ids_13004')) && $counter>0 ? echo_number($counter).'&nbsp;' : '').$m['m_name'].'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$ln_type_source_id.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( !in_array($ln_type_source_id, $this->config->item('en_ids_13004')) && $counter>0 ? view_number($counter).'&nbsp;' : '').$m['m_name'].'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';

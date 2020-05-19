@@ -20,7 +20,7 @@ if(!isset($_GET['ln_id']) || !intval($_GET['ln_id'])){
 
     } elseif(!superpower_assigned(12701)) {
 
-        echo echo_unauthorized_message(12701);
+        echo view_unauthorized_message(12701);
 
     } else {
 
@@ -30,7 +30,7 @@ if(!isset($_GET['ln_id']) || !intval($_GET['ln_id'])){
         }
 
         //Print on scree:
-        echo_json($lns[0]);
+        view_json($lns[0]);
 
     }
 

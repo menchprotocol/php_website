@@ -61,7 +61,7 @@ class READ_model extends CI_Model
         }
 
         //Lets log:
-        $this->db->insert('mench_ledger', $insert_columns);
+        $this->db->insert('mench_read', $insert_columns);
 
 
         //Fetch inserted id:
@@ -434,7 +434,7 @@ class READ_model extends CI_Model
     {
 
         $this->db->select($select);
-        $this->db->from('mench_ledger');
+        $this->db->from('mench_read');
 
         //Any Idea joins?
         if (in_array('in_previous', $join_objects)) {
@@ -505,7 +505,7 @@ class READ_model extends CI_Model
 
         //Update:
         $this->db->where('ln_id', $id);
-        $this->db->update('mench_ledger', $update_columns);
+        $this->db->update('mench_read', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
@@ -531,12 +531,12 @@ class READ_model extends CI_Model
                         if($key=='ln_status_source_id'){
 
                             $en_all_6186 = $this->config->item('en_all_6186'); //Transaction Status
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
+                            $ln_content .= view_db_field($key) . ' updated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
 
                         } elseif($key=='ln_type_source_id'){
 
                             $en_all_4593 = $this->config->item('en_all_4593'); //Link Types
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
+                            $ln_content .= view_db_field($key) . ' updated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
 
                         } elseif(in_array($key, array('ln_profile_source_id', 'ln_portfolio_source_id'))) {
 
@@ -548,7 +548,7 @@ class READ_model extends CI_Model
                                 'en_id' => $value,
                             ));
 
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_ens[0]['en_name'] . '] to [' . $after_ens[0]['en_name'] . ']' . "\n";
+                            $ln_content .= view_db_field($key) . ' updated from [' . $before_ens[0]['en_name'] . '] to [' . $after_ens[0]['en_name'] . ']' . "\n";
 
                         } elseif(in_array($key, array('ln_previous_idea_id', 'ln_next_idea_id'))) {
 
@@ -560,11 +560,11 @@ class READ_model extends CI_Model
                                 'in_id' => $value,
                             ));
 
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_ins[0]['in_title'] . '] to [' . $after_ins[0]['in_title'] . ']' . "\n";
+                            $ln_content .= view_db_field($key) . ' updated from [' . $before_ins[0]['in_title'] . '] to [' . $after_ins[0]['in_title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('ln_content', 'ln_order'))){
 
-                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
+                            $ln_content .= view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
 
                         } else {
 
@@ -616,7 +616,7 @@ class READ_model extends CI_Model
 
         //Fetches the maximum order value
         $this->db->select('MAX(ln_order) as largest_order');
-        $this->db->from('mench_ledger');
+        $this->db->from('mench_read');
         foreach($match_columns as $key => $value) {
             $this->db->where($key, $value);
         }
@@ -984,7 +984,7 @@ class READ_model extends CI_Model
 
                     }
 
-                    $source_appendix .= '<div class="source-appendix paddingup">' . echo_ln_content($parent_en['ln_content'], $parent_en['ln_type_source_id'], $input_message) . '</div>';
+                    $source_appendix .= '<div class="source-appendix paddingup">' . view_ln_content($parent_en['ln_content'], $parent_en['ln_type_source_id'], $input_message) . '</div>';
 
                 }
             }
@@ -1013,14 +1013,14 @@ class READ_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span class="'.$single_word_class.'"><span class="img-block">'.echo_en_icon($ens[0]['en_icon']).'</span>&nbsp;<span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span class="'.$single_word_class.'"><span class="img-block">'.view_en_icon($ens[0]['en_icon']).'</span>&nbsp;<span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<a class="montserrat '.$single_word_class.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></a>', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<a class="montserrat '.$single_word_class.extract_icon_color($ens[0]['en_icon']).'" href="/source/' . $ens[0]['en_id'] . '">'.( !in_array($ens[0]['en_status_source_id'], $this->config->item('en_ids_7357')) ? '<span class="img-block icon-block-xs">'.$en_all_6177[$ens[0]['en_status_source_id']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></a>', $output_body_message);
 
             }
         }

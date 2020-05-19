@@ -165,7 +165,7 @@ class IDEA_model extends CI_Model
                         $ln_type_source_id = 6182; //Idea Deleted
                     }
                     $en_all_4737 = $this->config->item('en_all_4737'); //Idea Status
-                    $ln_content = echo_db_field($key) . ' updated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
+                    $ln_content = view_db_field($key) . ' updated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
                     $ln_profile_source_id = $value;
                     $ln_portfolio_source_id = $before_data[0][$key];
 
@@ -173,14 +173,14 @@ class IDEA_model extends CI_Model
 
                     $ln_type_source_id = 10651; //Idea updated Subtype
                     $en_all_7585 = $this->config->item('en_all_7585'); //Idea Subtypes
-                    $ln_content = echo_db_field($key) . ' updated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
+                    $ln_content = view_db_field($key) . ' updated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
                     $ln_profile_source_id = $value;
                     $ln_portfolio_source_id = $before_data[0][$key];
 
                 } elseif($key=='in_time_seconds') {
 
                     $ln_type_source_id = 10650; //Idea updated Completion Time
-                    $ln_content = echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+                    $ln_content = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
 
@@ -478,7 +478,7 @@ class IDEA_model extends CI_Model
                     )),
             ), true);
 
-            //Fetch and return full data to be properly shown on the UI using the echo_in() function
+            //Fetch and return full data to be properly shown on the UI using the view_in() function
             $new_ins = $this->READ_model->fetch(array(
                 ( $is_parent ? 'ln_next_idea_id' : 'ln_previous_idea_id' ) => $link_to_in_id,
                 ( $is_parent ? 'ln_previous_idea_id' : 'ln_next_idea_id' ) => $in_new['in_id'],
@@ -488,7 +488,7 @@ class IDEA_model extends CI_Model
             ), array(($is_parent ? 'in_previous' : 'in_next')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $child_in_html = echo_in($new_ins[0], $link_to_in_id, $is_parent, true /* Since they added it! */);
+            $child_in_html = view_in($new_ins[0], $link_to_in_id, $is_parent, true /* Since they added it! */);
 
         } else {
 

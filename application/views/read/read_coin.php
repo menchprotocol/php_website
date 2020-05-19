@@ -152,7 +152,7 @@ if ($read_in_home) {
 
 
 //READ TITLE
-echo '<h1 class="block-one" '.( !$recipient_en['en_id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.echo_in_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
+echo '<h1 class="block-one" '.( !$recipient_en['en_id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_in_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_in_title($in) . '</span></h1>';
 
 
 //MESSAGES
@@ -172,7 +172,7 @@ if(!$read_in_home){
         if($chapters){
             //List Children:
             foreach($in__next as $key => $child_in){
-                echo echo_in_cover($child_in, false, in_calc_common_prefix($in__next, 'in_title'));
+                echo view_in_cover($child_in, false, in_calc_common_prefix($in__next, 'in_title'));
             }
         }
         echo '</div>';
@@ -190,7 +190,7 @@ if(!$read_in_home){
         if ($idea_count) {
 
             $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-            echo '<div class="read-topic idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.echo__s($idea_count).( $has_time ? ' IN '.echo_time_range($metadata) : '' ).'</a></div>';
+            echo '<div class="read-topic idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.view__s($idea_count).( $has_time ? ' IN '.view_time_range($metadata) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
@@ -198,7 +198,7 @@ if(!$read_in_home){
                 //List Children:
                 echo '<div class="list-group '.( !$recipient_en['en_id'] ? 'single-color' : '' ).'">';
                 foreach($in__next as $key => $child_in){
-                    echo echo_in_read($child_in, in_calc_common_prefix($in__next, 'in_title'));
+                    echo view_in_read($child_in, in_calc_common_prefix($in__next, 'in_title'));
                 }
                 echo '</div>';
             }
@@ -215,11 +215,11 @@ if(!$read_in_home){
         $source_count = $in__metadata_experts + $in__metadata_content;
         if ($source_count) {
 
-            echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.echo__s($source_count).'</a></div>';
+            echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.view__s($source_count).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             if($idea_count > $chapters){
-                echo '<p class="space-content">The '.$idea_count.' idea'.echo__s($idea_count).' on '.$in['in_title'].' were extracted and synthesized from these '.$source_count.' expert source'.echo__s($source_count).':</p>';
+                echo '<p class="space-content">The '.$idea_count.' idea'.view__s($idea_count).' on '.$in['in_title'].' were extracted and synthesized from these '.$source_count.' expert source'.view__s($source_count).':</p>';
             }
             echo '<div class="list-group single-color">';
 
@@ -233,7 +233,7 @@ if(!$read_in_home){
             }
             usort($experts_content, 'sortByWeight');
             foreach ($experts_content as $en_source) {
-                echo echo_en_basic($en_source);
+                echo view_en_basic($en_source);
             }
 
             echo '</div>';
@@ -261,7 +261,7 @@ if(!$read_in_home){
 
     //Did we have any steps unlocked?
     if(count($unlocked_steps) > 0){
-        echo_in_list($in, $unlocked_steps, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
+        view_in_list($in, $unlocked_steps, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
     }
 
 
@@ -285,12 +285,12 @@ if(!$read_in_home){
         if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
             //List Unlock paths:
-            echo_in_list($in, $unlock_paths, $recipient_en, '<span class="icon-block">&nbsp;</span>SUGGESTED IDEAS:');
+            view_in_list($in, $unlock_paths, $recipient_en, '<span class="icon-block">&nbsp;</span>SUGGESTED IDEAS:');
 
         }
 
         //List Children if any:
-        echo_in_list($in, $in__next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
+        view_in_list($in, $in__next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
     } elseif (in_array($in['in_type_source_id'], $this->config->item('en_ids_7712'))){
@@ -316,7 +316,7 @@ if(!$read_in_home){
 
             }
 
-            echo_in_next_previous($in['in_id'], $recipient_en);
+            view_in_next_previous($in['in_id'], $recipient_en);
             return true;
 
         } else {
@@ -346,11 +346,11 @@ if(!$read_in_home){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                echo_in_list($in, $read_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
+                view_in_list($in, $read_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
 
                 echo '<div class="doclear">&nbsp;</div>';
 
-                echo_in_next_previous($in['in_id'], $recipient_en);
+                view_in_next_previous($in['in_id'], $recipient_en);
 
                 echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
 
@@ -398,7 +398,7 @@ if(!$read_in_home){
                 echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
 
                 echo '<td style="width:100%; padding: 0 !important;">';
-                echo '<b class="montserrat idea-url" style="margin-left:0;">'.echo_in_title($child_in, $common_prefix).'</b>';
+                echo '<b class="montserrat idea-url" style="margin-left:0;">'.view_in_title($child_in, $common_prefix).'</b>';
                 echo '</td>';
 
                 echo '</tr></table>';
@@ -416,7 +416,7 @@ if(!$read_in_home){
 
             echo '<div class="result-update margin-top-down"></div>';
 
-            echo echo_in_previous_read($in['in_id'], $recipient_en);
+            echo view_in_previous_read($in['in_id'], $recipient_en);
 
             //Button to submit selection:
             if(count($read_answers)>0){
@@ -432,7 +432,7 @@ if(!$read_in_home){
     } elseif ($in['in_type_source_id'] == 6677) {
 
         //READ ONLY
-        echo_in_list($in, $in__next, $recipient_en);
+        view_in_list($in, $in__next, $recipient_en);
 
     } elseif ($in['in_type_source_id'] == 6683) {
 
@@ -443,7 +443,7 @@ if(!$read_in_home){
         echo '<div class="text_saving_result margin-top-down"></div>';
 
         //Show Previous Button:
-        echo echo_in_previous_read($in['in_id'], $recipient_en);
+        echo view_in_previous_read($in['in_id'], $recipient_en);
 
         //Save/Upload & Next:
         echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_text_answer()">'.$en_all_11035[12211]['m_icon'].'</a></div>';
@@ -451,7 +451,7 @@ if(!$read_in_home){
 
         if(count($read_completes)){
             //Next Ideas:
-            echo_in_list($in, $in__next, $recipient_en, null,false);
+            view_in_list($in, $in__next, $recipient_en, null,false);
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
@@ -471,12 +471,12 @@ if(!$read_in_home){
 
             //Show Previous Button:
             echo '<div class="file_saving_result">';
-            echo echo_in_previous_read($in['in_id'], $recipient_en);
+            echo view_in_previous_read($in['in_id'], $recipient_en);
             echo '</div>';
 
             //Show next here but keep hidden until file is uploaded:
             echo '<div class="go_next_upload hidden">';
-            echo_in_next_previous($in['in_id'], $recipient_en);
+            view_in_next_previous($in['in_id'], $recipient_en);
             echo '</div>';
 
             echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-read btn-circle inline-block" for="fileType'.$in['in_type_source_id'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
@@ -490,7 +490,7 @@ if(!$read_in_home){
             echo '</div>';
 
             //Any child ideas?
-            echo_in_list($in, $in__next, $recipient_en, null, true, false);
+            view_in_list($in, $in__next, $recipient_en, null, true, false);
 
             echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-read inline-block btn-circle" for="fileType'.$in['in_type_source_id'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 

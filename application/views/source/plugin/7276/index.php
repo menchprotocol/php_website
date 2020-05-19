@@ -15,11 +15,11 @@ $ins = $this->IDEA_model->fetch(array(
 ));
 
 if(count($ins)){
-    return echo_json(array(
+    return view_json(array(
         'results' => $this->IDEA_model->metadata_extra_insights( $ins[0] ),
     ));
 } else {
-    return echo_json(array(
+    return view_json(array(
         'status' => 0,
         'message' => 'Could not find PUBLIC Idea #'.$in_id,
     ));

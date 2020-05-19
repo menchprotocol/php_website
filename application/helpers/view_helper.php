@@ -1,6 +1,6 @@
 <?php
 
-function echo_en_load_more($page, $limit, $en__portfolio_count)
+function view_en_load_more($page, $limit, $en__portfolio_count)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
@@ -17,7 +17,7 @@ function echo_en_load_more($page, $limit, $en__portfolio_count)
     return $ui;
 }
 
-function echo_db_field($field_name){
+function view_db_field($field_name){
 
     //Takes a database field name and returns a human-friendly version
 
@@ -49,7 +49,7 @@ function echo_db_field($field_name){
 }
 
 
-function echo_ln_content($ln_content, $ln_type_source_id, $full_message = null)
+function view_ln_content($ln_content, $ln_type_source_id, $full_message = null)
 {
 
     /*
@@ -65,11 +65,11 @@ function echo_ln_content($ln_content, $ln_type_source_id, $full_message = null)
 
     if ($ln_type_source_id == 4256 /* Generic URL */) {
 
-        return '<div class="block"><a href="' . $ln_content . '" target="_blank"><span class="icon-block-xs inline-block"><i class="far fa-external-link"></i></span><span class="url_truncate">' . echo_url_clean($ln_content) . '</span></a></div>';
+        return '<div class="block"><a href="' . $ln_content . '" target="_blank"><span class="icon-block-xs inline-block"><i class="far fa-external-link"></i></span><span class="url_truncate">' . view_url_clean($ln_content) . '</span></a></div>';
 
     } elseif ($ln_type_source_id == 4257 /* Embed Widget URL? */) {
 
-        return echo_url_embed($ln_content, $full_message);
+        return view_url_embed($ln_content, $full_message);
 
     } elseif ($ln_type_source_id == 4260 /* Image URL */) {
 
@@ -107,7 +107,7 @@ function echo_ln_content($ln_content, $ln_type_source_id, $full_message = null)
 
 
 
-function echo_url_embed($url, $full_message = null, $return_array = false)
+function view_url_embed($url, $full_message = null, $return_array = false)
 {
 
 
@@ -161,11 +161,11 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
                 //Set the Clean URL:
                 $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-                //($end_time ? '<span class="media-info mid-right" title="Clip from '.echo_time_hours($start_time).' to '.echo_time_hours($end_time).'" data-toggle="tooltip" data-placement="top">'.echo_time_hours($end_time - $start_time).'</span>' : '')
+                //($end_time ? '<span class="media-info mid-right" title="Clip from '.view_time_hours($start_time).' to '.view_time_hours($end_time).'" data-toggle="tooltip" data-placement="top">'.view_time_hours($end_time - $start_time).'</span>' : '')
 
                 //Header For Time
                 if($end_time){
-                    $embed_html_code .= '<div class="read-topic" style="padding-bottom: 0;"><span class="img-block icon-block-xs"><i class="fas fa-cut"></i></span>WATCH FROM '.echo_time_hours($start_time, true).' TO '.echo_time_hours($end_time, true).' ONLY:</div>';
+                    $embed_html_code .= '<div class="read-topic" style="padding-bottom: 0;"><span class="img-block icon-block-xs"><i class="fas fa-cut"></i></span>WATCH FROM '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).' ONLY:</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -211,7 +211,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function echo_in_title($in, $common_prefix = null){
+function view_in_title($in, $common_prefix = null){
     if(strlen($common_prefix) > 0){
         $in['in_title'] = trim(substr($in['in_title'], strlen($common_prefix)));
     }
@@ -219,7 +219,7 @@ function echo_in_title($in, $common_prefix = null){
 }
 
 
-function echo_in_notes($ln)
+function view_in_notes($ln)
 {
 
     /*
@@ -302,7 +302,7 @@ function echo_in_notes($ln)
 }
 
 
-function echo_en_icon($en_icon = null)
+function view_en_icon($en_icon = null)
 {
     //A simple function to display the Player Icon OR the default icon if not available:
     if (strlen($en_icon) > 0) {
@@ -318,7 +318,7 @@ function echo_en_icon($en_icon = null)
 }
 
 
-function echo_number($number)
+function view_number($number)
 {
 
     //Round & format numbers
@@ -364,7 +364,7 @@ function echo_number($number)
 }
 
 
-function echo_ln($ln, $is_parent_tr = false)
+function view_ln($ln, $is_parent_tr = false)
 {
 
     $CI =& get_instance();
@@ -402,7 +402,7 @@ function echo_ln($ln, $is_parent_tr = false)
     $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[6186]['m_name'].( strlen($en_all_6186[$ln['ln_status_source_id']]['m_desc']) ? ': '.$en_all_6186[$ln['ln_status_source_id']]['m_desc'] : '' ).'"><span class="icon-block">'.$en_all_6186[$ln['ln_status_source_id']]['m_icon'].'</span>'.$en_all_6186[$ln['ln_status_source_id']]['m_name'].'</span></div>';
 
     //Time
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $en_all_4341[4362]['m_name'].': '.$ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span></div>';
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $en_all_4341[4362]['m_name'].': '.$ln['ln_timestamp'] . ' PST"><span class="icon-block">'.$en_all_4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span></div>';
 
 
 
@@ -441,7 +441,7 @@ function echo_ln($ln, $is_parent_tr = false)
 
         //Order
         if($ln['ln_order'] > 0){
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '"><span class="icon-block">'.$en_all_4341[4370]['m_icon']. '</span>'.echo_ordinal_number($ln['ln_order']).'</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4370]['m_name']. '"><span class="icon-block">'.$en_all_4341[4370]['m_icon']. '</span>'.view_ordinal_number($ln['ln_order']).'</span></div>';
         }
 
 
@@ -458,7 +458,7 @@ function echo_ln($ln, $is_parent_tr = false)
                 'en_id' => $ln['ln_creator_source_id'],
             ));
 
-            $ui .= '<div class="simple-line"><a href="/source/'.$player_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($player_ens[0]['en_icon']).'"><span class="img-block">'.echo_en_icon($player_ens[0]['en_icon']) . '</span> ' . $player_ens[0]['en_name'] . '</span></a></div>';
+            $ui .= '<div class="simple-line"><a href="/source/'.$player_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($player_ens[0]['en_icon']).'"><span class="img-block">'.view_en_icon($player_ens[0]['en_icon']) . '</span> ' . $player_ens[0]['en_name'] . '</span></a></div>';
 
         }
 
@@ -481,21 +481,21 @@ function echo_ln($ln, $is_parent_tr = false)
                 //SOURCE
                 $ens = $CI->SOURCE_model->fetch(array('en_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/source/'.$ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.( $ln[$en_all_6232[$en_id]['m_desc']]==$ln['ln_creator_source_id'] ? $en_all_4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($ens[0]['en_icon']).' img-block">'.echo_en_icon($ens[0]['en_icon']). '&nbsp;'.$ens[0]['en_name'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/source/'.$ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.( $ln[$en_all_6232[$en_id]['m_desc']]==$ln['ln_creator_source_id'] ? $en_all_4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($ens[0]['en_icon']).' img-block">'.view_en_icon($ens[0]['en_icon']). '&nbsp;'.$ens[0]['en_name'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
                 //IDEA
                 $ins = $CI->IDEA_model->fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/idea/go/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. '&nbsp;'.echo_in_title($ins[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/idea/go/'.$ins[0]['in_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[$en_id]['m_icon']. '</span>'.$en_all_2738[4535]['m_icon']. '&nbsp;'.view_in_title($ins[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
                 //PARENT TRANSACTION
                 $lns = $CI->READ_model->fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'">'.$en_all_4341[$en_id]['m_icon']. '</span><div class="transaction-ref">'.echo_ln($lns[0], true).'</div></div>';
+                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'">'.$en_all_4341[$en_id]['m_icon']. '</span><div class="transaction-ref">'.view_ln($lns[0], true).'</div></div>';
 
             }
         }
@@ -508,14 +508,14 @@ function echo_ln($ln, $is_parent_tr = false)
 }
 
 
-function echo_url_clean($url)
+function view_url_clean($url)
 {
     //Returns the watered-down version of the URL for a cleaner UI:
     return rtrim(str_replace('http://', '', str_replace('https://', '', str_replace('www.', '', $url))), '/');
 }
 
 
-function echo_time_difference($t, $second_time = null)
+function view_time_difference($t, $second_time = null)
 {
     if (!$second_time) {
         $second_time = time(); //Now
@@ -553,7 +553,7 @@ function echo_time_difference($t, $second_time = null)
 }
 
 
-function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_placement = 'top')
+function view_en_cache($config_var_name, $en_id, $micro_status = true, $data_placement = 'top')
 {
 
     /*
@@ -585,7 +585,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 
 
 
-function echo_coins_count_read($in_id = 0, $en_id = 0){
+function view_coins_count_read($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
     $read_coins = $CI->READ_model->fetch(array(
@@ -595,14 +595,14 @@ function echo_coins_count_read($in_id = 0, $en_id = 0){
     ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
 
     if($read_coins[0]['totals'] > 0){
-        return '<span class="montserrat read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($read_coins[0]['totals']).'</span>';
+        return '<span class="montserrat read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($read_coins[0]['totals']).'</span>';
     } else {
         return false;
     }
 
 }
 
-function echo_coins_count_source($in_id = 0, $en_id = 0, $number_only = false){
+function view_coins_count_source($in_id = 0, $en_id = 0, $number_only = false){
 
     $CI =& get_instance();
 
@@ -628,15 +628,15 @@ function echo_coins_count_source($in_id = 0, $en_id = 0, $number_only = false){
     if($number_only){
         return $en_coins[0]['totals'];
     } else {
-        return ($en_coins[0]['totals'] > 0 ? '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.echo_number($en_coins[0]['totals']).'</span>' : null);
+        return ($en_coins[0]['totals'] > 0 ? '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($en_coins[0]['totals']).'</span>' : null);
     }
 }
 
-function echo_in_icon($can_click, $completion_percentage){
+function view_in_icon($can_click, $completion_percentage){
     return ( $can_click ? ( $completion_percentage>=100 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-play-circle read"></i>' ) : '<i class="fas fa-circle idea"></i>' );
 }
 
-function echo_in_read($in, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
+function view_in_read($in, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
 {
 
     //See if user is logged-in:
@@ -667,7 +667,7 @@ function echo_in_read($in, $common_prefix = null, $show_editor = false, $complet
 
     //Right Stats:
     if($has_time_estimate || $idea_count){
-        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:136px;' ).'"><span style="width:53px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<span class="grey">'.echo_time_range($metadata).'</span>': '' ).'</div>';
+        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:136px;' ).'"><span style="width:53px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<span class="grey">'.view_time_range($metadata).'</span>': '' ).'</div>';
     }
 
 
@@ -675,9 +675,9 @@ function echo_in_read($in, $common_prefix = null, $show_editor = false, $complet
         $ui .= '<div class="progress-bg-list" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
-    $ui .= '<span class="icon-block">'.echo_in_icon($can_click, $completion_rate['completion_percentage']).'</span>';
+    $ui .= '<span class="icon-block">'.view_in_icon($can_click, $completion_rate['completion_percentage']).'</span>';
 
-    $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.echo_in_title($in, $common_prefix).'</b>';
+    $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.view_in_title($in, $common_prefix).'</b>';
 
     //Search for Idea Image:
     if($show_editor){
@@ -712,7 +712,7 @@ function echo_in_read($in, $common_prefix = null, $show_editor = false, $complet
 }
 
 
-function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $parent_in_type_source_id){
+function view_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $parent_in_type_source_id){
 
     if($depth_levels<=0){
         //End recursion:
@@ -754,9 +754,9 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$en_all_7585[$in_ln['in_type_source_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_source_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$en_all_4737[$in_ln['in_status_source_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_source_id']]['m_icon']. '</span>';
-        $ui .= '<a href="?in_id='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   echo_in_title($in_ln) . '</u></a>';
+        $ui .= '<a href="?in_id='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_in_title($in_ln) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Ideas */ )) || ($in_ln['ln_type_source_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_source_id'] == 4228 && in_array($parent_in_type_source_id , $CI->config->item('en_ids_6193') /* OR Ideas */ )) || ($in_ln['ln_type_source_id'] == 4229) ? view_in_marks($in_ln) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -773,7 +773,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  echo_in_scores_answer($in_ln['in_id'], $depth_levels, $original_depth_levels, $in_ln['in_type_source_id']);
+        $ui .=  view_in_scores_answer($in_ln['in_id'], $depth_levels, $original_depth_levels, $in_ln['in_type_source_id']);
 
     }
 
@@ -781,7 +781,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
     return ($ui ? '<div class="inline-box">' . $ui . '</div>' : false);
 }
 
-function echo_radio_sources($parent_en_id, $child_en_id, $enable_mulitiselect, $show_max = 25){
+function view_radio_sources($parent_en_id, $child_en_id, $enable_mulitiselect, $show_max = 25){
 
     /*
      * Print UI for
@@ -819,7 +819,7 @@ function echo_radio_sources($parent_en_id, $child_en_id, $enable_mulitiselect, $
 }
 
 
-function echo_in_marks($in_ln){
+function view_in_marks($in_ln){
 
     //Validate core inputs:
     if(!isset($in_ln['ln_metadata']) || !isset($in_ln['ln_type_source_id'])){
@@ -835,7 +835,7 @@ function echo_in_marks($in_ln){
 }
 
 
-function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false, $input_message = null, $extra_class = null, $control_enabled = true)
+function view_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false, $input_message = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -888,7 +888,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
             //IDEA TITLE
             if($show_toolbar){
 
-                $ui .= echo_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
+                $ui .= view_input_text(4736, $in['in_title'], $in['in_id'], $is_source, (($in['ln_order']*100)+1));
 
             } else {
 
@@ -899,7 +899,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
                     //Show the drafting status:
                     $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].' @'.$in['in_status_source_id'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span>&nbsp;</span>';
                 }
-                $ui .= echo_in_title($in); //IDEA TITLE
+                $ui .= view_in_title($in); //IDEA TITLE
                 $ui .= '</a>';
 
             }
@@ -910,7 +910,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
 
     //READ
     $ui .= '<td class="MENCHcolumn2 read">';
-    $ui .= echo_coins_count_read($in['in_id']);
+    $ui .= view_coins_count_read($in['in_id']);
     $ui .= '</td>';
 
 
@@ -941,7 +941,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
 
 
     //SOURCE STATS
-    $ui .= echo_coins_count_source($in['in_id'], 0);
+    $ui .= view_coins_count_source($in['in_id'], 0);
 
     $ui .= '</td>';
     $ui .= '</tr></table>';
@@ -962,10 +962,10 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
 
 
         //IDEA TYPE
-        $ui .= '<div class="inline-block">'.echo_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
+        $ui .= '<div class="inline-block">'.view_input_dropdown(7585, $in['in_type_source_id'], null, $is_source, false, $in['in_id']).'</div>';
 
         //IDEA STATUS
-        $ui .= '<div class="inline-block">' . echo_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
+        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $in['in_status_source_id'], null, $is_source, false, $in['in_id']) . ' </div>';
 
 
 
@@ -976,20 +976,20 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
         $ui .= '<span class="' . superpower_active(12700) . '">';
 
         //LINK TYPE
-        $ui .= echo_input_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
+        $ui .= view_input_dropdown(4486, $in['ln_type_source_id'], null, $is_source, false, $in['in_id'], $in['ln_id']);
 
         //LINK MARKS
         $ui .= '<span class="link_marks settings_4228 '.( $in['ln_type_source_id']==4228 ? : 'hidden' ).'">';
-        $ui .= echo_input_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+2 );
+        $ui .= view_input_text(4358, ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+2 );
         $ui .='</span>';
 
 
         //LINK CONDITIONAL RANGE
         $ui .= '<span class="link_marks settings_4229 '.( $in['ln_type_source_id']==4229 ? : 'hidden' ).'">';
         //MIN
-        $ui .= echo_input_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
+        $ui .= view_input_text(4735, ( isset($ln_metadata['tr__conditional_score_min']) ? $ln_metadata['tr__conditional_score_min'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+3);
         //MAX
-        $ui .= echo_input_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
+        $ui .= view_input_text(4739, ( isset($ln_metadata['tr__conditional_score_max']) ? $ln_metadata['tr__conditional_score_max'] : '' ), $in['ln_id'], $is_source, ($in['ln_order']*10)+4);
         $ui .= '</span>';
         $ui .= '</span>';
 
@@ -1044,7 +1044,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
 
 
 
-function echo_caret($en_id, $m, $object_id){
+function view_caret($en_id, $m, $object_id){
     //Display drop down menu:
     $CI =& get_instance();
 
@@ -1054,7 +1054,7 @@ function echo_caret($en_id, $m, $object_id){
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
-        $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $object_id . '"><span class="icon-block">'.echo_en_icon($m2['m_icon']).'</span> '.$m2['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $object_id . '"><span class="icon-block">'.view_en_icon($m2['m_icon']).'</span> '.$m2['m_name'].'</a>';
     }
     $ui .= '</div>';
     $ui .= '</li>';
@@ -1063,11 +1063,11 @@ function echo_caret($en_id, $m, $object_id){
 }
 
 
-function echo_in_list($in, $in__next, $recipient_en, $prefix_statement = null, $show_next = true){
+function view_in_list($in, $in__next, $recipient_en, $prefix_statement = null, $show_next = true){
 
     //If no list just return the next step:
     if(!count($in__next)){
-        return ( $show_next ? echo_in_next_previous($in['in_id'], $recipient_en) : false );
+        return ( $show_next ? view_in_next_previous($in['in_id'], $recipient_en) : false );
     }
 
     $CI =& get_instance();
@@ -1086,31 +1086,31 @@ function echo_in_list($in, $in__next, $recipient_en, $prefix_statement = null, $
 
         echo '<div class="list-group">';
         foreach($in__next as $key => $child_in){
-            echo echo_in_read($child_in, $common_prefix);
+            echo view_in_read($child_in, $common_prefix);
         }
         echo '</div>';
     }
 
     if($show_next){
-        echo_in_next_previous($in['in_id'], $recipient_en);
+        view_in_next_previous($in['in_id'], $recipient_en);
         echo '<div class="doclear">&nbsp;</div>';
     }
 }
 
-function echo_in_next_previous($in_id, $recipient_en){
+function view_in_next_previous($in_id, $recipient_en){
 
     $CI =& get_instance();
     $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
 
     //PREVIOUS:
-    echo echo_in_previous_read($in_id, $recipient_en);
+    echo view_in_previous_read($in_id, $recipient_en);
 
     //NEXT:
     echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="/read/next/'.$in_id.'">'.$en_all_11035[12211]['m_icon'].'</a></div>';
 
 }
 
-function echo_in_previous_read($in_id, $recipient_en){
+function view_in_previous_read($in_id, $recipient_en){
 
     if(!$recipient_en || $recipient_en['en_id'] < 1){
         return null;
@@ -1154,7 +1154,7 @@ function echo_in_previous_read($in_id, $recipient_en){
                     $in_level_up++;
 
                     if ($parent_in_id == $intersect) {
-                        $read_list_ui .= echo_in_read($ins_this[0], null, false, $completion_rate);
+                        $read_list_ui .= view_in_read($ins_this[0], null, false, $completion_rate);
                         break;
                     }
                 }
@@ -1207,14 +1207,14 @@ function echo_in_previous_read($in_id, $recipient_en){
 }
 
 
-function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
+function view_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
 
     $CI =& get_instance();
     $en_all_11018 = $CI->config->item('en_all_11018');
 
     $ui = '<div class="list-group">';
     foreach($in_notes as $en) {
-        $ui .= echo_en($en, false, null, true, $is_source);
+        $ui .= view_en($en, false, null, true, $is_source);
     }
 
     if( $is_source ){
@@ -1234,7 +1234,7 @@ function echo_in_note_source($in_id, $note_type_en_id, $in_notes, $is_source){
     return $ui;
 }
 
-function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
+function view_in_note_mix($note_type_en_id, $in_notes, $is_source){
 
     $CI =& get_instance();
     $en_all_4485 = $CI->config->item('en_all_4485'); //IDEA NOTES
@@ -1247,7 +1247,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     $ui = '<div id="in_notes_list_'.$note_type_en_id.'" class="list-group">';
 
     foreach($in_notes as $in_notes) {
-        $ui .= echo_in_notes($in_notes);
+        $ui .= view_in_notes($in_notes);
     }
 
 
@@ -1299,7 +1299,7 @@ function echo_in_note_mix($note_type_en_id, $in_notes, $is_source){
     return $ui;
 }
 
-function echo_platform_message($en_id){
+function view_platform_message($en_id){
     $CI =& get_instance();
     $en_all_12687 = $CI->config->item('en_all_12687');
     if(!substr_count($en_all_12687[$en_id]['m_desc'], " | ")){
@@ -1312,7 +1312,7 @@ function echo_platform_message($en_id){
     }
 }
 
-function echo_unauthorized_message($superpower_en_id = 0){
+function view_unauthorized_message($superpower_en_id = 0){
 
     $session_en = superpower_assigned($superpower_en_id);
 
@@ -1334,14 +1334,14 @@ function echo_unauthorized_message($superpower_en_id = 0){
 
 }
 
-function echo_time_range($metadata){
+function view_time_range($metadata){
     if(!isset($metadata['in__metadata_min_seconds']) || !isset($metadata['in__metadata_max_seconds'])){
         return null;
     }
-    return '<span title="Estimated Read Time Of '.( $metadata['in__metadata_min_seconds'] < $metadata['in__metadata_max_seconds'] ? echo_time_hours($metadata['in__metadata_min_seconds']).' - ' : '' ).echo_time_hours($metadata['in__metadata_max_seconds']).'">'.echo_time_hours(round(($metadata['in__metadata_min_seconds']+$metadata['in__metadata_max_seconds'])/2)).'</span>';
+    return '<span title="Estimated Read Time Of '.( $metadata['in__metadata_min_seconds'] < $metadata['in__metadata_max_seconds'] ? view_time_hours($metadata['in__metadata_min_seconds']).' - ' : '' ).view_time_hours($metadata['in__metadata_max_seconds']).'">'.view_time_hours(round(($metadata['in__metadata_min_seconds']+$metadata['in__metadata_max_seconds'])/2)).'</span>';
 }
 
-function echo_time_hours($total_seconds, $hide_hour = false){
+function view_time_hours($total_seconds, $hide_hour = false){
 
     if(!$total_seconds){
         return 'START';
@@ -1355,7 +1355,7 @@ function echo_time_hours($total_seconds, $hide_hour = false){
     return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
-function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rate = null){
+function view_in_cover($in, $show_editor, $common_prefix = null, $completion_rate = null){
 
 
     //Search to see if an idea has a thumbnail:
@@ -1396,11 +1396,11 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     $ui .= '<img src="'.in_fetch_cover($in['in_id']).'" />';
 
     if($idea_count && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
-        $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';
+        $ui .= '<span class="media-info top-right">'.view_time_range($metadata).'</span>';
     }
 
     //TOP LEFT
-    $ui .= '<span class="media-info top-left hideIfEmpty">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.echo_number($idea_count).'</span>' : 'COMING SOON' ).'</span>';
+    $ui .= '<span class="media-info top-left hideIfEmpty">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.view_number($idea_count).'</span>' : 'COMING SOON' ).'</span>';
 
     //Search for Idea Image:
     if($show_editor){
@@ -1409,7 +1409,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     }
     $ui .= '</div>';
 
-    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.echo_in_title($in, $common_prefix).'</b>';
+    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.view_in_title($in, $common_prefix).'</b>';
 
     $ui .= '</a>';
 
@@ -1417,17 +1417,17 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
 
 }
 
-function echo_en_basic($en)
+function view_en_basic($en)
 {
     $ui = '<div class="list-group-item no-side-padding">';
-    $ui .= '<span class="icon-block">' . echo_en_icon($en['en_icon']) . '</span>';
+    $ui .= '<span class="icon-block">' . view_en_icon($en['en_icon']) . '</span>';
     $ui .= '<span class="title-block title-no-right">'.$en['en_name'].(strlen($en['ln_content']) > 0 ? ': '.$en['ln_content'] : '').'</span>';
     $ui .= '</div>';
     return $ui;
 }
 
 
-function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled = false, $is_source = false)
+function view_en($en, $is_parent = false, $extra_class = null, $control_enabled = false, $is_source = false)
 {
 
     $CI =& get_instance();
@@ -1500,7 +1500,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
             'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
         if($en__portfolio_count[0]['totals'] > 0){
-            $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.echo_number($en__portfolio_count[0]['totals']).'</span></span>';
+            $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($en__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($en__portfolio_count[0]['totals']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
@@ -1518,13 +1518,13 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
 
     //SOURCE ICON
-    $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="WEIGHT '.$en['en_weight'].' LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span></a>';
+    $ui .= '<a href="/source/'.$en['en_id'] . '" '.( $is_link_source ? ' title="WEIGHT '.$en['en_weight'].' LINK ID '.$en['ln_id'].' '.$en_all_4592[$en['ln_type_source_id']]['m_name'].' @'.$en['ln_type_source_id'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['en_id'] . ' en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . view_en_icon($en['en_icon']) . '</span></a>';
 
 
     //SOURCE TOOLBAR?
     if($show_toolbar){
 
-        $ui .= echo_input_text(6197, $en['en_name'], $en['en_id'], $is_source, 0, false, null, extract_icon_color($en['en_icon']));
+        $ui .= view_input_text(6197, $en['en_name'], $en['en_id'], $is_source, 0, false, null, extract_icon_color($en['en_icon']));
         $ui .= $child_counter;
         $ui .= '<div class="space-content">'.$info_items_list.'</div>';
 
@@ -1546,7 +1546,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 
     //IDEA
     $ui .= '<td class="MENCHcolumn3 source">';
-    $ui .= echo_coins_count_source(0, $en['en_id']);
+    $ui .= view_coins_count_source(0, $en['en_id']);
     $ui .= '</td>';
 
 
@@ -1583,7 +1583,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $ui .= '</div>';
     $ui .= '</div>';
 
-    $ui .= echo_coins_count_read(0, $en['en_id']);
+    $ui .= view_coins_count_read(0, $en['en_id']);
     $ui .= '</td>';
 
 
@@ -1599,7 +1599,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     //PROFILE SOURCES:
     $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block hideIfEmpty">';
     foreach($en__profiles as $en_profile) {
-        $ui .= '<span class="icon-block-img en_child_icon_' . $en_profile['en_id'] . '"><a href="/source/' . $en_profile['en_id'] . '" data-toggle="tooltip" title="' . $en_profile['en_name'] . (strlen($en_profile['ln_content']) > 0 ? ' = ' . $en_profile['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_profile['en_icon']) . '</a></span> ';
+        $ui .= '<span class="icon-block-img en_child_icon_' . $en_profile['en_id'] . '"><a href="/source/' . $en_profile['en_id'] . '" data-toggle="tooltip" title="' . $en_profile['en_name'] . (strlen($en_profile['ln_content']) > 0 ? ' = ' . $en_profile['ln_content'] : '') . '" data-placement="bottom">' . view_en_icon($en_profile['en_icon']) . '</a></span> ';
     }
     $ui .= '</span>';
     $ui .= '</div>';
@@ -1610,7 +1610,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     if ($ln_id > 0) {
         if($is_link_source){
 
-            $ui .= '<span class="message_content paddingup ln_content hideIfEmpty ln_content_' . $ln_id . '">' . echo_ln_content($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
+            $ui .= '<span class="message_content paddingup ln_content hideIfEmpty ln_content_' . $ln_id . '">' . view_ln_content($en['ln_content'] , $en['ln_type_source_id']) . '</span>';
 
             //For JS editing only (HACK):
             $ui .= '<div class="ln_content_val_' . $ln_id . ' hidden overflowhide">' . $en['ln_content'] . '</div>';
@@ -1636,19 +1636,19 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
 }
 
 
-function echo_input_text($cache_en_id, $current_value, $object_id, $is_source, $tabindex = 0, $extra_large = false, $en_icon = null, $append_css = null){
+function view_input_text($cache_en_id, $current_value, $object_id, $is_source, $tabindex = 0, $extra_large = false, $en_icon = null, $append_css = null){
 
     $CI =& get_instance();
     $en_all_12112 = $CI->config->item('en_all_12112');
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
-    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block echo_input_text_update text__'.$cache_en_id.'_'.$object_id.' texttype_'.($extra_large?'_lg':'_sm').' text_en_'.$cache_en_id.' '.$append_css.'" cache_en_id="'.$cache_en_id.'" object_id="'.$object_id.'" ';
+    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block view_input_text_update text__'.$cache_en_id.'_'.$object_id.' texttype_'.($extra_large?'_lg':'_sm').' text_en_'.$cache_en_id.' '.$append_css.'" cache_en_id="'.$cache_en_id.'" object_id="'.$object_id.'" ';
 
     //Also Append Counter to the end?
     if($extra_large){
 
-        $main_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="echo_input_text_count('.$cache_en_id.','.$object_id.')" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        $main_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="view_input_text_count('.$cache_en_id.','.$object_id.')" placeholder="'.$en_all_12112[$cache_en_id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
         $character_counter = '<div class="title_counter title_counter_'.$cache_en_id.'_'.$object_id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_en_id.'_'.$object_id.'">0</span>/'.config_var($cache_en_id).' CHARACTERS</div>';
         $icon = '<span class="icon-block title-icon">'.( $en_icon ? $en_icon : $en_all_12112[4535]['m_icon'] ).'</span>';
 
@@ -1670,7 +1670,7 @@ function echo_input_text($cache_en_id, $current_value, $object_id, $is_source, $
 
 
 
-function echo_input_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source = true, $show_full_name = true, $in_id = 0, $ln_id = 0){
+function view_input_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_source = true, $show_full_name = true, $in_id = 0, $ln_id = 0){
 
     $CI =& get_instance();
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
@@ -1723,7 +1723,7 @@ function echo_input_dropdown($cache_en_id, $selected_en_id, $btn_class, $is_sour
     return $ui;
 }
 
-function echo_json($array)
+function view_json($array)
 {
     header('Content-Type: application/json');
     echo json_encode($array);
@@ -1731,7 +1731,7 @@ function echo_json($array)
 }
 
 
-function echo_ordinal_number($number)
+function view_ordinal_number($number)
 {
     $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
     if (($number % 100) >= 11 && ($number % 100) <= 13) {
@@ -1741,7 +1741,7 @@ function echo_ordinal_number($number)
     }
 }
 
-function echo__s($count, $is_es = 0)
+function view__s($count, $is_es = 0)
 {
     //A cute little function to either display the plural "s" or not based on $count
     return ( intval($count) == 1 ? '' : ($is_es ? 'es' : 's'));

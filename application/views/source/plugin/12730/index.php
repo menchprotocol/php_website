@@ -62,7 +62,7 @@ if($search_for_is_set){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Source Status */, $en['en_status_source_id'], true, 'right').' <a href="/source/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_en_cache('en_all_6177' /* Source Status */, $en['en_status_source_id'], true, 'right').' <a href="/source/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
 
             if($replace_with_is_set){
 

@@ -8,4 +8,4 @@ if(!intval(config_var(12678))){
 }
 
 //Call the update function and passon possible values:
-echo_json(update_algolia($obj, $obj_id));
+view_json(update_algolia($obj, $obj_id));

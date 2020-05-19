@@ -18,7 +18,7 @@ $(document).ready(function () {
     }
 
     //Lookout for textinput updates
-    echo_input_text_update_start();
+    view_input_text_update_start();
 
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
@@ -196,7 +196,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
             templates: {
                 suggestion: function (suggestion) {
                     //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
-                    return echo_search_result(suggestion);
+                    return view_search_result(suggestion);
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
@@ -311,7 +311,7 @@ function en_add_or_link(en_existing_id, is_parent) {
             add_to_list(list_id, '.en-item', data.en_new_echo);
 
             //Allow inline editing if enabled:
-            echo_input_text_update_start();
+            view_input_text_update_start();
 
             en_sort_portfolio_load();
 
@@ -377,7 +377,7 @@ function en_load_next_page(page, load_new_filter) {
             $(data).insertBefore('#new_portfolio');
         }
 
-        echo_input_text_update_start();
+        view_input_text_update_start();
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
@@ -671,7 +671,7 @@ function en_modify_save() {
     };
 
     //Show spinner:
-    $('.save_source_changes').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_echo_platform_message(12695) +  '').hide().fadeIn();
+    $('.save_source_changes').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12695) +  '').hide().fadeIn();
 
 
     $.post("/source/en_modify_save", modify_data, function (data) {
@@ -883,7 +883,7 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
 function account_update_email(){
 
     //Show spinner:
-    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_echo_platform_message(12695)).hide().fadeIn();
+    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/source/account_update_email", {
@@ -914,7 +914,7 @@ function account_update_email(){
 function account_update_password(){
 
     //Show spinner:
-    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_echo_platform_message(12695)).hide().fadeIn();
+    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/source/account_update_password", {
