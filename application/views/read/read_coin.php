@@ -1,8 +1,10 @@
 <script>
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
+<script async src="https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=sticky-share-buttons"></script>
 <script src="/application/views/read/read_coin.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
+
 
 <div class="container">
 <?php
