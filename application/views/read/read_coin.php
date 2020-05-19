@@ -1,6 +1,3 @@
-<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=inline-share-buttons&cms=website' async='async'></script>
-
-
 <script>
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>

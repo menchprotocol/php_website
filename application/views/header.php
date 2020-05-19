@@ -50,6 +50,9 @@ $current_mench = current_mench();
 
     <script src="/application/views/mench.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
+    <?php if($current_mench['x_class']=='read'){ ?>
+    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=inline-share-buttons&cms=website' async='async'></script>
+    <?php } ?>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:800|Rubik&display=swap" rel="stylesheet">
