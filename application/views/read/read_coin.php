@@ -557,6 +557,6 @@ if(!$read_in_home){
 
 ?>
 
-    <div class="sharethis-inline-share-buttons hidden"></div>
+    <div class="sharethis-inline-share-buttons"></div>
 
 </div>
