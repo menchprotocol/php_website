@@ -37,7 +37,7 @@ function load_fullstory(){
         FS.identify(js_pl_id, {
             displayName: js_pl_name,
             uid: js_pl_id,
-            profileURL: 'https://mench.com/source/'+js_pl_id
+            profileURL: base_url+'source/'+js_pl_id
         });
     }
 }

@@ -55,8 +55,8 @@ class Ledger extends CI_Controller
         $message = '';
 
         //Fetch links and total link counts:
-        $lns = $this->TRANSACTION_model->fetch($filters, $join_by, config_var(11064), $query_offset);
-        $lns_count = $this->TRANSACTION_model->fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count');
+        $lns = $this->READ_model->fetch($filters, $join_by, config_var(11064), $query_offset);
+        $lns_count = $this->READ_model->fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count');
         $total_items_loaded = ($query_offset+count($lns));
         $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);
 
@@ -78,7 +78,7 @@ class Ledger extends CI_Controller
 
                     $new_content = str_replace($_POST['ln_content_search'],trim($_POST['ln_content_replace']),$ln['ln_content']);
 
-                    $this->TRANSACTION_model->update($ln['ln_id'], array(
+                    $this->READ_model->update($ln['ln_id'], array(
                         'ln_content' => $new_content,
                     ), $session_en['en_id'], 12360, update_description($ln['ln_content'], $new_content));
 
@@ -268,7 +268,7 @@ class Ledger extends CI_Controller
         } elseif($_POST['cache_en_id']==4358 /* READ MARKS */){
 
             //Fetch/Validate Link:
-            $lns = $this->TRANSACTION_model->fetch(array(
+            $lns = $this->READ_model->fetch(array(
                 'ln_id' => $_POST['object_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
@@ -297,7 +297,7 @@ class Ledger extends CI_Controller
             } else {
 
                 //All good, go ahead and update:
-                $this->TRANSACTION_model->update($_POST['object_id'], array(
+                $this->READ_model->update($_POST['object_id'], array(
                     'ln_metadata' => array_merge($ln_metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
@@ -312,7 +312,7 @@ class Ledger extends CI_Controller
         } elseif($_POST['cache_en_id']==4735 /* UNLOCK MIN SCORE */ || $_POST['cache_en_id']==4739 /* UNLOCK MAX SCORE */){
 
             //Fetch/Validate Link:
-            $lns = $this->TRANSACTION_model->fetch(array(
+            $lns = $this->READ_model->fetch(array(
                 'ln_id' => $_POST['object_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
@@ -339,7 +339,7 @@ class Ledger extends CI_Controller
             } else {
 
                 //All good, go ahead and update:
-                $this->TRANSACTION_model->update($_POST['object_id'], array(
+                $this->READ_model->update($_POST['object_id'], array(
                     'ln_metadata' => array_merge($ln_metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),

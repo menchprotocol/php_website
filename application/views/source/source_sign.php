@@ -37,7 +37,7 @@ if(is_array($current_sign_in_attempts) && count($current_sign_in_attempts) > 0){
 if(count($current_sign_in_attempt) == 0){
 
     //Log link:
-    $current_sign_in_attempt = $this->TRANSACTION_model->create($this_attempt);
+    $current_sign_in_attempt = $this->READ_model->create($this_attempt);
 
     //Grow the array:
     array_push($current_sign_in_attempts, $current_sign_in_attempt);

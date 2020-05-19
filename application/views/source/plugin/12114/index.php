@@ -8,14 +8,14 @@ $last_week_start = date("Y-m-d H:i:s", $last_week_start_timestamp);
 $last_week_end = date("Y-m-d H:i:s", $last_week_end_timestamp);
 
 //IDEA
-$in_coins_new_last_week = $this->TRANSACTION_model->fetch(array(
+$in_coins_new_last_week = $this->READ_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
     'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     'ln_timestamp >=' => $last_week_start,
     'ln_timestamp <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$in_coins_last_week = $this->TRANSACTION_model->fetch(array(
+$in_coins_last_week = $this->READ_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
     'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
@@ -25,13 +25,13 @@ $in_coins_growth_rate = format_percentage(($in_coins_last_week[0]['totals'] / ( 
 
 
 //READ
-$read_coins_new_last_week = $this->TRANSACTION_model->fetch(array(
+$read_coins_new_last_week = $this->READ_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
     'ln_timestamp >=' => $last_week_start,
     'ln_timestamp <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$read_coins_last_week = $this->TRANSACTION_model->fetch(array(
+$read_coins_last_week = $this->READ_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
     'ln_timestamp <=' => $last_week_end,
@@ -41,13 +41,13 @@ $read_coins_growth_rate = format_percentage(( $read_coins_last_week[0]['totals']
 
 
 //SOURCE
-$en_coins_new_last_week = $this->TRANSACTION_model->fetch(array(
+$en_coins_new_last_week = $this->READ_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
     'ln_timestamp >=' => $last_week_start,
     'ln_timestamp <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$en_coins_last_week = $this->TRANSACTION_model->fetch(array(
+$en_coins_last_week = $this->READ_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
     'ln_timestamp <=' => $last_week_end,
@@ -56,11 +56,11 @@ $en_coins_growth_rate = format_percentage( ($en_coins_last_week[0]['totals'] / (
 
 
 //ledger
-$ledger_transactions_new_last_week = $this->TRANSACTION_model->fetch(array(
+$ledger_transactions_new_last_week = $this->READ_model->fetch(array(
     'ln_timestamp >=' => $last_week_start,
     'ln_timestamp <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$ledger_transactions_last_week = $this->TRANSACTION_model->fetch(array(
+$ledger_transactions_last_week = $this->READ_model->fetch(array(
     'ln_timestamp <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 $ledger_transactions_growth_rate = format_percentage(($ledger_transactions_last_week[0]['totals'] / ( $ledger_transactions_last_week[0]['totals'] - $ledger_transactions_new_last_week[0]['totals'] ) * 100)-100);
@@ -75,13 +75,13 @@ $html_message = '<br />';
 $html_message .= '<div>Growth report from '.date("l F jS G:i:s", $last_week_start_timestamp).' to '.date("l F jS G:i:s", $last_week_end_timestamp).' '.config_var(11079).':</div>';
 $html_message .= '<br />';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $in_coins_growth_rate >= 0 ? '+' : '-' ).$in_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($in_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($in_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/idea" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">IDEA &raquo;</a></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🟡</b><b style="min-width:55px; display: inline-block;">'.( $in_coins_growth_rate >= 0 ? '+' : '-' ).$in_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($in_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($in_coins_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'idea" target="_blank" style="color: #ffc500; font-weight:bold; text-decoration:none;">IDEA &raquo;</a></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($read_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($read_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $read_coins_growth_rate >= 0 ? '+' : '-' ).$read_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($read_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($read_coins_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'" target="_blank" style="color: #FC1B44; font-weight:bold; text-decoration:none;">READ &raquo;</a></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $en_coins_growth_rate >= 0 ? '+' : '-' ).$en_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($en_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($en_coins_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCE &raquo;</a></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $en_coins_growth_rate >= 0 ? '+' : '-' ).$en_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($en_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.echo_number($en_coins_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCE &raquo;</a></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($ledger_transactions_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.echo_number($ledger_transactions_last_week[0]['totals']).'</span>)</span><a href="https://mench.com/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">LEDGER &raquo;</a></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($ledger_transactions_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.echo_number($ledger_transactions_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">LEDGER &raquo;</a></div>';
 
 
 $html_message .= '<br />';
@@ -103,9 +103,9 @@ if($is_player_request){
 
 $email_recipients = 0;
 //Send email to all subscribers:
-foreach($this->TRANSACTION_model->fetch($subscriber_filters, array('en_portfolio')) as $subscribed_player){
+foreach($this->READ_model->fetch($subscriber_filters, array('en_portfolio')) as $subscribed_player){
     //Try fetching subscribers email:
-    foreach($this->TRANSACTION_model->fetch(array(
+    foreach($this->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
         'ln_profile_source_id' => 3288, //Mench Email

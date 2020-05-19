@@ -10,7 +10,7 @@ if(!isset($_GET['ln_id']) || !intval($_GET['ln_id'])){
 
 
     //Fetch link metadata and display it:
-    $lns = $this->TRANSACTION_model->fetch(array(
+    $lns = $this->READ_model->fetch(array(
         'ln_id' => $_GET['ln_id'],
     ));
 

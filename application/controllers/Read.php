@@ -22,7 +22,7 @@ class Read extends CI_Controller
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
         //Log home View:
-        $this->TRANSACTION_model->create(array(
+        $this->READ_model->create(array(
             'ln_type_source_id' => 4283, //Opened Reads
             'ln_creator_source_id' => $session_en['en_id'],
         ));
@@ -102,7 +102,7 @@ class Read extends CI_Controller
             if($ins[0]['in_type_source_id']==6677){
 
                 //Mark as read If not previously:
-                $read_completes = $this->TRANSACTION_model->fetch(array(
+                $read_completes = $this->READ_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_creator_source_id' => $session_en['en_id'],
@@ -156,7 +156,7 @@ class Read extends CI_Controller
             'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null, //SELECT IDEA
         )))){
             //FIND NEXT IDEAS
-            foreach($this->TRANSACTION_model->fetch(array(
+            foreach($this->READ_model->fetch(array(
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
@@ -312,13 +312,13 @@ class Read extends CI_Controller
 
 
         //Delete previous answer(s):
-        foreach($this->TRANSACTION_model->fetch(array(
+        foreach($this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
-            $this->TRANSACTION_model->update($read_progress['ln_id'], array(
+            $this->READ_model->update($read_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
             ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
         }
@@ -377,13 +377,13 @@ class Read extends CI_Controller
         }
 
         //Delete previous answer(s):
-        foreach($this->TRANSACTION_model->fetch(array(
+        foreach($this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
-            $this->TRANSACTION_model->update($read_progress['ln_id'], array(
+            $this->READ_model->update($read_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
             ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
         }
@@ -440,7 +440,7 @@ class Read extends CI_Controller
         }
 
         //Fetch their current progress links:
-        $progress_links = $this->TRANSACTION_model->fetch(array(
+        $progress_links = $this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12227')) . ')' => null,
             'ln_creator_source_id' => $en_id,
@@ -452,7 +452,7 @@ class Read extends CI_Controller
             $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your Reads.';
 
             //Log link:
-            $clear_all_link = $this->TRANSACTION_model->create(array(
+            $clear_all_link = $this->READ_model->create(array(
                 'ln_content' => $message,
                 'ln_type_source_id' => 6415, //Reads Reset Reads
                 'ln_creator_source_id' => $en_id,
@@ -460,7 +460,7 @@ class Read extends CI_Controller
 
             //Delete all progressions:
             foreach($progress_links as $progress_link){
-                $this->TRANSACTION_model->update($progress_link['ln_id'], array(
+                $this->READ_model->update($progress_link['ln_id'], array(
                     'ln_status_source_id' => 6173, //Transaction Deleted
                     'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was deleted
                 ), $en_id, 6415 /* User Cleared Reads */);
@@ -513,14 +513,14 @@ class Read extends CI_Controller
 
         //First try to remove:
         $removed = 0;
-        foreach($this->TRANSACTION_model->fetch(array(
+        foreach($this->READ_model->fetch(array(
             'ln_profile_source_id' => $session_en['en_id'],
             'ln_next_idea_id' => $_POST['in_id'],
             'ln_type_source_id' => 12896, //SAVED
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         )) as $remove_saved){
             $removed++;
-            $this->TRANSACTION_model->update($remove_saved['ln_id'], array(
+            $this->READ_model->update($remove_saved['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
             ), $session_en['en_id'], 12906 /* UNSAVED */);
         }
@@ -528,7 +528,7 @@ class Read extends CI_Controller
         //Need to add?
         if(!$removed){
             //Then we must add:
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_profile_source_id' => $session_en['en_id'],
                 'ln_content' => '@'.$session_en['en_id'],
@@ -612,7 +612,7 @@ class Read extends CI_Controller
         foreach($_POST['new_read_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){
                 //Update order of this link:
-                $results[$ln_order] = $this->TRANSACTION_model->update(intval($ln_id), array(
+                $results[$ln_order] = $this->READ_model->update(intval($ln_id), array(
                     'ln_order' => $ln_order,
                 ), $_POST['js_pl_id'], 6132 /* Ideas Ordered by User */);
             }

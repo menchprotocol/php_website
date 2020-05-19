@@ -2,7 +2,7 @@
 $timestamp = time();
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 //Fetch Reads:
-$player_reads = $this->TRANSACTION_model->fetch(array(
+$player_reads = $this->READ_model->fetch(array(
     'ln_creator_source_id' => $session_en['en_id'],
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC

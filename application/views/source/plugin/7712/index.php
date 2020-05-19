@@ -13,14 +13,14 @@ foreach($this->IDEA_model->fetch(array(
 
     echo '<ul>';
     //Fetch all children for this OR:
-    foreach($this->TRANSACTION_model->fetch(array(
+    foreach($this->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'ln_previous_idea_id' => $in['in_id'],
     ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-        $user_steps = $this->TRANSACTION_model->fetch(array(
+        $user_steps = $this->READ_model->fetch(array(
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_previous_idea_id' => $child_or['in_id'],
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC

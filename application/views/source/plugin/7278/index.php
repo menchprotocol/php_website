@@ -48,7 +48,7 @@ foreach($ins as $in){
     ));
 
     //Fetch children:
-    foreach($this->TRANSACTION_model->fetch(array(
+    foreach($this->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
@@ -84,7 +84,7 @@ foreach($ens as $en){
     ));
 
     //Fetch children:
-    foreach($this->TRANSACTION_model->fetch(array(
+    foreach($this->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -104,7 +104,7 @@ foreach($ens as $en){
 }
 
 //Add messages:
-$messages = $this->TRANSACTION_model->fetch(array(
+$messages = $this->READ_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //IDEA NOTES

@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-19 14:37:18 PST
+//Generated 2020-05-19 15:28:53 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589924238;
-$config['cache_count_transaction'] = 1211043;
-$config['cache_count_read'] = 121232;
+$config['cache_timestamp'] = 1589927333;
+$config['cache_count_transaction'] = 1211255;
+$config['cache_count_read'] = 121246;
 $config['cache_count_idea'] = 5628;
 $config['cache_count_source'] = 4867;
 
@@ -26,7 +26,7 @@ $config['en_all_13023'] = array(
         'm_icon' => '<i class="fas fa-envelope-open source" aria-hidden="true"></i>',
         'm_name' => 'EMAIL',
         'm_desc' => 'email',
-        'm_parents' => array(13023,4269,12103,6225,4755),
+        'm_parents' => array(6404,13023,4269,12103,6225,4755),
     ),
     3300 => array(
         'm_icon' => '<i class="fab fa-twitter source" aria-hidden="true"></i>',
@@ -722,7 +722,7 @@ $config['en_all_4269'] = array(
         'm_icon' => '<i class="fas fa-envelope-open source" aria-hidden="true"></i>',
         'm_name' => 'EMAIL',
         'm_desc' => '',
-        'm_parents' => array(13023,4269,12103,6225,4755),
+        'm_parents' => array(6404,13023,4269,12103,6225,4755),
     ),
     13025 => array(
         'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
@@ -2642,7 +2642,7 @@ $config['en_all_11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12678,7274,12904,12176,4485,4356,4736,11064,11065,13014,11063,13005,11060,12156,11079,11066,11057,11056,12331,12427,12088,11986,6197,12232,12565,12568);
+$config['en_ids_6404'] = array(12678,7274,12904,3288,12176,4485,4356,4736,11064,11065,13014,11063,13005,11060,12156,11079,11066,11057,11056,12331,12427,12088,11986,6197,12232,12565,12568);
 $config['en_all_6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -2661,6 +2661,12 @@ $config['en_all_6404'] = array(
         'm_name' => 'DEFAULT BOOK COVER',
         'm_desc' => '//s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg',
         'm_parents' => array(6404,1,7524),
+    ),
+    3288 => array(
+        'm_icon' => '<i class="fas fa-envelope-open source" aria-hidden="true"></i>',
+        'm_name' => 'EMAIL',
+        'm_desc' => 'support@mench.com',
+        'm_parents' => array(6404,13023,4269,12103,6225,4755),
     ),
     12176 => array(
         'm_icon' => '<i class="fad fa-clock idea" aria-hidden="true"></i>',
@@ -3047,7 +3053,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-share-alt"></i>',
         'm_name' => 'MENCH SOCIAL SHARING',
         'm_desc' => '',
-        'm_parents' => array(11035,4527,13024,7305),
+        'm_parents' => array(12994,11035,4527,13024,7305),
     ),
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -4132,7 +4138,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-share-alt"></i>',
         'm_name' => 'MENCH SOCIAL SHARING',
         'm_desc' => '',
-        'm_parents' => array(11035,4527,13024,7305),
+        'm_parents' => array(12994,11035,4527,13024,7305),
     ),
     12112 => array(
         'm_icon' => '<i class="fas fa-text" aria-hidden="true"></i>',
@@ -5757,7 +5763,7 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="fas fa-envelope-open source" aria-hidden="true"></i>',
         'm_name' => 'EMAIL',
         'm_desc' => '',
-        'm_parents' => array(13023,4269,12103,6225,4755),
+        'm_parents' => array(6404,13023,4269,12103,6225,4755),
     ),
     3286 => array(
         'm_icon' => '<i class="fad fa-key source" aria-hidden="true"></i>',
@@ -5944,7 +5950,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-envelope-open source" aria-hidden="true"></i>',
         'm_name' => 'EMAIL',
         'm_desc' => '',
-        'm_parents' => array(13023,4269,12103,6225,4755),
+        'm_parents' => array(6404,13023,4269,12103,6225,4755),
     ),
     12773 => array(
         'm_icon' => '<i class="far fa-plus-circle idea"></i>',

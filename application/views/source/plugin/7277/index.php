@@ -7,15 +7,13 @@
  * all variables that are not indexed
  * as part of Variables Names source @6232
  *
- * https://mench.com/source/6232
- *
  *
  * */
 
 
 //Fetch all valid variable names:
 $valid_variables = array();
-foreach($this->TRANSACTION_model->fetch(array(
+foreach($this->READ_model->fetch(array(
     'ln_profile_source_id' => 6232, //Variables Names
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -81,7 +79,7 @@ $ln_metadata = array(
 
 if(count($invalid_variables) > 0){
     //Did we have anything to delete? Report with system bug:
-    $this->TRANSACTION_model->create(array(
+    $this->READ_model->create(array(
         'ln_content' => 'cron__7277() deleted '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
         'ln_type_source_id' => 4246, //Platform Bug Reports
         'ln_profile_source_id' => 6232, //Variables Names

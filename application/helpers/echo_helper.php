@@ -54,8 +54,7 @@ function echo_ln_content($ln_content, $ln_type_source_id, $full_message = null)
 
     /*
      *
-     * Displays Source Links
-     * https://mench.com/source/4592
+     * Displays Source Links @4592
      *
      * $full_message Would be the entire message
      * in an idea message that would be passed down
@@ -494,7 +493,7 @@ function echo_ln($ln, $is_parent_tr = false)
             } elseif(in_array(4367 , $m['m_parents'])){
 
                 //PARENT TRANSACTION
-                $lns = $CI->TRANSACTION_model->fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
+                $lns = $CI->READ_model->fetch(array('ln_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
 
                 $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[$en_id]['m_name'].'">'.$en_all_4341[$en_id]['m_icon']. '</span><div class="transaction-ref">'.echo_ln($lns[0], true).'</div></div>';
 
@@ -589,7 +588,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 function echo_coins_count_read($in_id = 0, $en_id = 0){
 
     $CI =& get_instance();
-    $read_coins = $CI->TRANSACTION_model->fetch(array(
+    $read_coins = $CI->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null,
         ( $in_id > 0 ? 'ln_previous_idea_id' : 'ln_creator_source_id' ) => ( $in_id > 0 ? $in_id : $en_id ),
@@ -624,7 +623,7 @@ function echo_coins_count_source($in_id = 0, $en_id = 0, $number_only = false){
         );
     }
 
-    $en_coins = $CI->TRANSACTION_model->fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    $en_coins = $CI->READ_model->fetch($coin_filter, array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     if($number_only){
         return $en_coins[0]['totals'];
@@ -732,7 +731,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
 
 
     $ui = null;
-    foreach($CI->TRANSACTION_model->fetch(array(
+    foreach($CI->READ_model->fetch(array(
         'ln_previous_idea_id' => $in_id,
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -742,7 +741,7 @@ function echo_in_scores_answer($in_id, $depth_levels, $original_depth_levels, $p
         //Prep Metadata:
         $metadata = unserialize($in_ln['ln_metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
-        $messages = $CI->TRANSACTION_model->fetch(array(
+        $messages = $CI->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id' => 4231, //IDEA NOTES Messages
             'ln_next_idea_id' => $in_ln['in_id'],
@@ -798,7 +797,7 @@ function echo_radio_sources($parent_en_id, $child_en_id, $enable_mulitiselect, $
     }
 
     foreach($CI->config->item('en_all_'.$parent_en_id) as $en_id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="account_update_radio('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->TRANSACTION_model->fetch(array(
+        $ui .= '<a href="javascript:void(0);" onclick="account_update_radio('.$parent_en_id.','.$en_id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$en_id.' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->READ_model->fetch(array(
                 'ln_profile_source_id' => $en_id,
                 'ln_portfolio_source_id' => $child_en_id,
                 'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -999,7 +998,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
 
 
         //PREVIOUS IDEAS COUNT
-        $next_ins = $CI->TRANSACTION_model->fetch(array(
+        $next_ins = $CI->READ_model->fetch(array(
             'ln_next_idea_id' => $in['in_id'],
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -1009,7 +1008,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
         }
 
         //NEXT IDEAS COUNT
-        $next_ins = $CI->TRANSACTION_model->fetch(array(
+        $next_ins = $CI->READ_model->fetch(array(
             'ln_previous_idea_id' => $in['in_id'],
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -1176,7 +1175,7 @@ function echo_in_previous_read($in_id, $recipient_en){
 
 
         //Is Saved?
-        $is_saveded = count($CI->TRANSACTION_model->fetch(array(
+        $is_saveded = count($CI->READ_model->fetch(array(
             'ln_profile_source_id' => $recipient_en['en_id'],
             'ln_next_idea_id' => $in_id,
             'ln_type_source_id' => 12896, //SAVED
@@ -1371,7 +1370,7 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     $read_count = 0;
     /*
     $all_steps = array_merge(array_flatten($metadata['in__metadata_common_steps']) , array_flatten($metadata['in__metadata_expansion_steps']));
-    $read_coins = $CI->TRANSACTION_model->fetch(array(
+    $read_coins = $CI->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
         'ln_previous_idea_id IN (' . join(',', $all_steps) . ')' => null, //READ COIN
@@ -1445,7 +1444,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $show_toolbar = ($control_enabled && superpower_active(12706, true));
     $has_source_editor = superpower_active(10967, true);
 
-    $en__profiles = $CI->TRANSACTION_model->fetch(array(
+    $en__profiles = $CI->READ_model->fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
         'ln_portfolio_source_id' => $en['en_id'], //This child source
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -1494,7 +1493,7 @@ function echo_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     //PORTFOLIO COUNT (SYNC WITH NEXT IDEA COUNT)
     $child_counter = '';
     if($has_source_editor){
-        $en__portfolio_count = $CI->TRANSACTION_model->fetch(array(
+        $en__portfolio_count = $CI->READ_model->fetch(array(
             'ln_profile_source_id' => $en['en_id'],
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC

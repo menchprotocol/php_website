@@ -9,7 +9,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])) {
     //List this users Reads ideas so they can choose:
     echo '<div>Choose one of your Reads reads to debug:</div><br />';
 
-    $player_reads = $this->TRANSACTION_model->fetch(array(
+    $player_reads = $this->READ_model->fetch(array(
         'ln_creator_source_id' => $_GET['en_id'],
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC

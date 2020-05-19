@@ -30,7 +30,7 @@ class Source extends CI_Controller
 
         //Log View:
         if($session_en){
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_type_source_id' => 12489, //Opened Leaderboard
                 'ln_creator_source_id' => $session_en['en_id'],
             ));
@@ -75,7 +75,7 @@ class Source extends CI_Controller
 
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => 4994, //Player Opened Player
                 'ln_portfolio_source_id' => $en_id,
@@ -134,13 +134,13 @@ class Source extends CI_Controller
 
 
         //All good, reset sort value for all children:
-        foreach($this->TRANSACTION_model->fetch(array(
+        foreach($this->READ_model->fetch(array(
             'ln_profile_source_id' => $_POST['en_id'],
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
         ), array('en_portfolio'), 0, 0, array(), 'ln_id') as $ln) {
-            $this->TRANSACTION_model->update($ln['ln_id'], array(
+            $this->READ_model->update($ln['ln_id'], array(
                 'ln_order' => 0,
             ), $session_en['en_id'], 13007 /* SOURCE SORT RESET */);
         }
@@ -181,7 +181,7 @@ class Source extends CI_Controller
             ));
 
             //Count Portfolio:
-            $en__portfolio_count = $this->TRANSACTION_model->fetch(array(
+            $en__portfolio_count = $this->READ_model->fetch(array(
                 'ln_profile_source_id' => $_POST['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -206,7 +206,7 @@ class Source extends CI_Controller
 
                 //Update them all:
                 foreach($_POST['new_ln_orders'] as $rank => $ln_id) {
-                    $this->TRANSACTION_model->update(intval($ln_id), array(
+                    $this->READ_model->update(intval($ln_id), array(
                         'ln_order' => intval($rank),
                     ), $session_en['en_id'], 13006 /* SOURCE SORT MANUAL */);
                 }
@@ -264,7 +264,7 @@ class Source extends CI_Controller
             $show_max++;
         }
 
-        foreach($this->TRANSACTION_model->fetch($filters_in, array('en_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight') as $count=>$en) {
+        foreach($this->READ_model->fetch($filters_in, array('en_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(ln_id) as totals, en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight', 'en_id, en_name, en_icon, en_metadata, en_status_source_id, en_weight') as $count=>$en) {
 
             if($count==$show_max){
 
@@ -347,7 +347,7 @@ class Source extends CI_Controller
         } elseif (!$detected_ln_type['status'] && isset($detected_ln_type['url_previously_existed']) && $detected_ln_type['url_previously_existed']) {
 
             //See if this is duplicate to either link:
-            $en_lns = $this->TRANSACTION_model->fetch(array(
+            $en_lns = $this->READ_model->fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Player URL Links
             ));
@@ -434,7 +434,7 @@ class Source extends CI_Controller
         );
 
         //Fetch & display next batch of children:
-        $child_sources = $this->TRANSACTION_model->fetch($filters, array('en_portfolio'), $items_per_page, ($page * $items_per_page), array(
+        $child_sources = $this->READ_model->fetch($filters, array('en_portfolio'), $items_per_page, ($page * $items_per_page), array(
             'ln_order' => 'ASC',
             'en_name' => 'ASC'
         ));
@@ -444,7 +444,7 @@ class Source extends CI_Controller
         }
 
         //Count total children:
-        $child_sources_count = $this->TRANSACTION_model->fetch($filters, array('en_portfolio'), 0, 0, array(), 'COUNT(ln_id) as totals');
+        $child_sources_count = $this->READ_model->fetch($filters, array('en_portfolio'), 0, 0, array(), 'COUNT(ln_id) as totals');
 
         //Do we need another load more button?
         if ($child_sources_count[0]['totals'] > (($page * $items_per_page) + count($child_sources))) {
@@ -476,7 +476,7 @@ class Source extends CI_Controller
         }
 
         //Archive Link:
-        $this->TRANSACTION_model->update($_POST['ln_id'], array(
+        $this->READ_model->update($_POST['ln_id'], array(
             'ln_status_source_id' => 6173,
         ), $session_en['en_id'], 10678 /* IDEA NOTES Unpublished */);
 
@@ -547,7 +547,7 @@ class Source extends CI_Controller
             }
 
             //Make sure not alreads linked:
-            if(count($this->TRANSACTION_model->fetch(array(
+            if(count($this->READ_model->fetch(array(
                 'ln_next_idea_id' => $ins[0]['in_id'],
                 'ln_profile_source_id' => $_POST['en_existing_id'],
                 'ln_type_source_id' => $_POST['note_type_id'],
@@ -585,7 +585,7 @@ class Source extends CI_Controller
         }
 
         //Create Note:
-        $new_note = $this->TRANSACTION_model->create(array(
+        $new_note = $this->READ_model->create(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id' => $_POST['note_type_id'],
             'ln_next_idea_id' => $ins[0]['in_id'],
@@ -752,7 +752,7 @@ class Source extends CI_Controller
             }
 
             // Link to new OR existing source:
-            $ur2 = $this->TRANSACTION_model->create(array(
+            $ur2 = $this->READ_model->create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => $ln_type_source_id,
                 'ln_content' => $ln_content,
@@ -792,7 +792,7 @@ class Source extends CI_Controller
         }
 
         //Simply counts the links for a given source:
-        $all_en_links = $this->TRANSACTION_model->fetch(array(
+        $all_en_links = $this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             '(ln_portfolio_source_id = ' . $_POST['en_id'] . ' OR ln_profile_source_id = ' . $_POST['en_id'] . ')' => null,
@@ -851,7 +851,7 @@ class Source extends CI_Controller
 
 
         //Log Link:
-        $this->TRANSACTION_model->create(array(
+        $this->READ_model->create(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id' => 5007, //TOGGLE SUPERPOWER
             'ln_profile_source_id' => $superpower_en_id,
@@ -957,7 +957,7 @@ class Source extends CI_Controller
 
 
             //Count source references in IDEA NOTES:
-            $messages = $this->TRANSACTION_model->fetch(array(
+            $messages = $this->READ_model->fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //IDEA NOTES
@@ -1023,7 +1023,7 @@ class Source extends CI_Controller
             if($_POST['en_id'] == $_POST['en_focus_id']){
 
                 //Fetch parents to redirect to:
-                $en__profiles = $this->TRANSACTION_model->fetch(array(
+                $en__profiles = $this->READ_model->fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_portfolio_source_id' => $_POST['en_id'],
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -1065,7 +1065,7 @@ class Source extends CI_Controller
         if (intval($_POST['ln_id']) > 0) { //DO we have a link to update?
 
             //Yes, first validate source link:
-            $en_lns = $this->TRANSACTION_model->fetch(array(
+            $en_lns = $this->READ_model->fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             ));
@@ -1087,7 +1087,7 @@ class Source extends CI_Controller
                     $ln_status_source_id = 10673; //Player Link Unpublished
                 }
 
-                $this->TRANSACTION_model->update($_POST['ln_id'], array(
+                $this->READ_model->update($_POST['ln_id'], array(
                     'ln_status_source_id' => intval($_POST['ln_status_source_id']),
                 ), $session_en['en_id'], $ln_status_source_id);
             }
@@ -1164,14 +1164,14 @@ class Source extends CI_Controller
                 $js_ln_type_source_id = $detected_ln_type['ln_type_source_id'];
 
 
-                $this->TRANSACTION_model->update($_POST['ln_id'], array(
+                $this->READ_model->update($_POST['ln_id'], array(
                     'ln_content' => $ln_content,
                 ), $session_en['en_id'], 10657 /* Player Link updated Content */);
 
 
                 //Also, did the link type change based on the content change?
                 if($js_ln_type_source_id!=$en_lns[0]['ln_type_source_id']){
-                    $this->TRANSACTION_model->update($_POST['ln_id'], array(
+                    $this->READ_model->update($_POST['ln_id'], array(
                         'ln_type_source_id' => $js_ln_type_source_id,
                     ), $session_en['en_id'], 10659 /* Player Link updated Type */);
                 }
@@ -1206,7 +1206,7 @@ class Source extends CI_Controller
         if (intval($_POST['ln_id']) > 0) {
 
             //Fetch source link:
-            $lns = $this->TRANSACTION_model->fetch(array(
+            $lns = $this->READ_model->fetch(array(
                 'ln_id' => $_POST['ln_id'],
             ), array('en_creator'));
 
@@ -1312,19 +1312,19 @@ class Source extends CI_Controller
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->TRANSACTION_model->fetch($filters, array('en_portfolio'), 0, 0) as $answer_en){
+            foreach($this->READ_model->fetch($filters, array('en_portfolio'), 0, 0) as $answer_en){
                 array_push($possible_answers, $answer_en['en_id']);
             }
 
             //Delete selected options for this player:
-            foreach($this->TRANSACTION_model->fetch(array(
+            foreach($this->READ_model->fetch(array(
                 'ln_profile_source_id IN (' . join(',', $possible_answers) . ')' => null,
                 'ln_portfolio_source_id' => $session_en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             )) as $delete_en){
                 //Should usually delete a single option:
-                $this->TRANSACTION_model->update($delete_en['ln_id'], array(
+                $this->READ_model->update($delete_en['ln_id'], array(
                     'ln_status_source_id' => 6173, //Transaction Deleted
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
             }
@@ -1333,7 +1333,7 @@ class Source extends CI_Controller
 
         //Add new option if not previously there:
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_previously_selected']){
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_profile_source_id' => $_POST['selected_en_id'],
                 'ln_portfolio_source_id' => $session_en['en_id'],
                 'ln_creator_source_id' => $session_en['en_id'],
@@ -1344,7 +1344,7 @@ class Source extends CI_Controller
 
         //Log Account Update link type:
         $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
-        $this->TRANSACTION_model->create(array(
+        $this->READ_model->create(array(
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_type_source_id' => 6224, //My Account updated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
@@ -1449,7 +1449,7 @@ class Source extends CI_Controller
             $_POST['en_email'] = trim(strtolower($_POST['en_email']));
 
             //Check to make sure not duplicate:
-            $duplicates = $this->TRANSACTION_model->fetch(array(
+            $duplicates = $this->READ_model->fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_profile_source_id' => 3288, //Mench Email
@@ -1467,7 +1467,7 @@ class Source extends CI_Controller
 
 
         //Fetch existing email:
-        $user_emails = $this->TRANSACTION_model->fetch(array(
+        $user_emails = $this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_portfolio_source_id' => $session_en['en_id'],
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -1478,7 +1478,7 @@ class Source extends CI_Controller
             if (strlen($_POST['en_email']) == 0) {
 
                 //Delete email:
-                $this->TRANSACTION_model->update($user_emails[0]['ln_id'], array(
+                $this->READ_model->update($user_emails[0]['ln_id'], array(
                     'ln_status_source_id' => 6173, //Transaction Deleted
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
 
@@ -1490,7 +1490,7 @@ class Source extends CI_Controller
             } elseif ($user_emails[0]['ln_content'] != $_POST['en_email']) {
 
                 //Update if not duplicate:
-                $this->TRANSACTION_model->update($user_emails[0]['ln_id'], array(
+                $this->READ_model->update($user_emails[0]['ln_id'], array(
                     'ln_content' => $_POST['en_email'],
                 ), $session_en['en_id'], 6224 /* User Account Updated */);
 
@@ -1511,7 +1511,7 @@ class Source extends CI_Controller
         } elseif (strlen($_POST['en_email']) > 0) {
 
             //Create new link:
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_portfolio_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => en_link_type_id($_POST['en_email']),
@@ -1537,7 +1537,7 @@ class Source extends CI_Controller
         if($return['status']){
             //Log Account Update link type:
             $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => 6224, //My Account updated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
@@ -1571,7 +1571,7 @@ class Source extends CI_Controller
         }
 
         //Fetch existing password:
-        $user_passwords = $this->TRANSACTION_model->fetch(array(
+        $user_passwords = $this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_profile_source_id' => 3286, //Password
@@ -1593,7 +1593,7 @@ class Source extends CI_Controller
             } else {
 
                 //Update password:
-                $this->TRANSACTION_model->update($user_passwords[0]['ln_id'], array(
+                $this->READ_model->update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $hashed_password,
                 ), $session_en['en_id'], 7578 /* User Updated Password  */);
 
@@ -1607,7 +1607,7 @@ class Source extends CI_Controller
         } else {
 
             //Create new link:
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_type_source_id' => en_link_type_id($hashed_password),
                 'ln_profile_source_id' => 3286, //Password
                 'ln_creator_source_id' => $session_en['en_id'],
@@ -1626,7 +1626,7 @@ class Source extends CI_Controller
         //Log Account Update link type:
         if($return['status']){
             $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_type_source_id' => 6224, //My Account Updated
                 'ln_content' => 'My Account '.$return['message'],
@@ -1788,14 +1788,14 @@ class Source extends CI_Controller
 
 
         //Add Player:
-        $this->TRANSACTION_model->create(array(
+        $this->READ_model->create(array(
             'ln_profile_source_id' => 4430, //MENCH PLAYERS
             'ln_type_source_id' => en_link_type_id(),
             'ln_creator_source_id' => $user_en['en']['en_id'],
             'ln_portfolio_source_id' => $user_en['en']['en_id'],
         ));
 
-        $this->TRANSACTION_model->create(array(
+        $this->READ_model->create(array(
             'ln_type_source_id' => en_link_type_id(trim(strtolower($_POST['input_email']))),
             'ln_content' => trim(strtolower($_POST['input_email'])),
             'ln_profile_source_id' => 3288, //Mench Email
@@ -1803,7 +1803,7 @@ class Source extends CI_Controller
             'ln_portfolio_source_id' => $user_en['en']['en_id'],
         ));
         $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id']));
-        $this->TRANSACTION_model->create(array(
+        $this->READ_model->create(array(
             'ln_type_source_id' => en_link_type_id($hash),
             'ln_content' => $hash,
             'ln_profile_source_id' => 3286, //Mench Password
@@ -1851,7 +1851,7 @@ class Source extends CI_Controller
 
 
         //Log User Signin Joined Mench
-        $invite_link = $this->TRANSACTION_model->create(array(
+        $invite_link = $this->READ_model->create(array(
             'ln_type_source_id' => 7562, //User Signin Joined Mench
             'ln_creator_source_id' => $user_en['en']['en_id'],
             'ln_previous_idea_id' => intval($_POST['referrer_in_id']),
@@ -1967,7 +1967,7 @@ class Source extends CI_Controller
 
         //Authenticate password:
         $ens[0]['is_masterpass_login'] = 0;
-        $user_passwords = $this->TRANSACTION_model->fetch(array(
+        $user_passwords = $this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_profile_source_id' => 3286, //Password
@@ -2046,7 +2046,7 @@ class Source extends CI_Controller
         } else {
 
             //Validate READ ID and matching email:
-            $validate_links = $this->TRANSACTION_model->fetch(array(
+            $validate_links = $this->READ_model->fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_content' => $_POST['input_email'],
                 'ln_type_source_id' => 7563, //User Signin Magic Link Email
@@ -2076,7 +2076,7 @@ class Source extends CI_Controller
 
 
             //Fetch their passwords to authenticate login:
-            $user_passwords = $this->TRANSACTION_model->fetch(array(
+            $user_passwords = $this->READ_model->fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_profile_source_id' => 3286, //Mench Sign In Password
@@ -2091,7 +2091,7 @@ class Source extends CI_Controller
                 }
 
                 //Update existing password:
-                $this->TRANSACTION_model->update($user_passwords[0]['ln_id'], array(
+                $this->READ_model->update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $password_hash,
                     'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
                 ), $ens[0]['en_id'], 7578 /* User updated Password */);
@@ -2099,7 +2099,7 @@ class Source extends CI_Controller
             } else {
 
                 //Create new password link:
-                $this->TRANSACTION_model->create(array(
+                $this->READ_model->create(array(
                     'ln_type_source_id' => en_link_type_id($password_hash),
                     'ln_content' => $password_hash,
                     'ln_profile_source_id' => 3286, //Mench Password
@@ -2111,7 +2111,7 @@ class Source extends CI_Controller
 
 
             //Log password reset:
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_creator_source_id' => $ens[0]['en_id'],
                 'ln_type_source_id' => 7578, //User updated Password
                 'ln_content' => $password_hash, //A copy of their password set at this time
@@ -2151,7 +2151,7 @@ class Source extends CI_Controller
 
         //Cleanup/validate email:
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
-        $user_emails = $this->TRANSACTION_model->fetch(array(
+        $user_emails = $this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_content' => $_POST['input_email'],
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -2165,7 +2165,7 @@ class Source extends CI_Controller
         }
 
         //Log email search attempt:
-        $reset_link = $this->TRANSACTION_model->create(array(
+        $reset_link = $this->READ_model->create(array(
             'ln_type_source_id' => 7563, //User Signin Magic Link Email
             'ln_content' => $_POST['input_email'],
             'ln_creator_source_id' => $user_emails[0]['en_id'], //User making request
@@ -2183,7 +2183,7 @@ class Source extends CI_Controller
 
         $magic_link_expiry_hours = (config_var(11065)/3600);
         $html_message .= '<div>Login within the next '.$magic_link_expiry_hours.' hour'.echo__s($magic_link_expiry_hours).':</div>';
-        $magic_url = 'https://mench.com/source/magic/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
+        $magic_url = $this->config->item('base_url').'source/magic/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
@@ -2210,7 +2210,7 @@ class Source extends CI_Controller
         }
 
         //Validate READ ID and matching email:
-        $validate_links = $this->TRANSACTION_model->fetch(array(
+        $validate_links = $this->READ_model->fetch(array(
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],
             'ln_type_source_id' => 7563, //User Signin Magic Link Email
@@ -2270,7 +2270,7 @@ class Source extends CI_Controller
 
 
         //Search for email to see if it exists...
-        $user_emails = $this->TRANSACTION_model->fetch(array(
+        $user_emails = $this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_content' => $_POST['input_email'],
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS

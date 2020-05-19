@@ -13,13 +13,13 @@ foreach($this->SOURCE_model->fetch() as $en) {
 
     $stats['source']++;
 
-    $is_player = count($this->TRANSACTION_model->fetch(array(
+    $is_player = count($this->READ_model->fetch(array(
         'ln_profile_source_id' => 4430, //MENCH PLAYERS
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
         'ln_portfolio_source_id' => $en['en_id'],
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     ), array(), 1));
-    $is_ledger = count($this->TRANSACTION_model->fetch(array(
+    $is_ledger = count($this->READ_model->fetch(array(
         'ln_creator_source_id' => $en['en_id'],
     ), array(), 1));
 
@@ -35,7 +35,7 @@ foreach($this->SOURCE_model->fetch() as $en) {
     }
     if($is_ledger && !$is_player){
         $stats['ledger_not_source_count']++;
-        $this->TRANSACTION_model->create(array(
+        $this->READ_model->create(array(
             'ln_type_source_id' => en_link_type_id(),
             'ln_profile_source_id' => 4430, //MENCH PLAYERS
             'ln_creator_source_id' => $en['en_id'],

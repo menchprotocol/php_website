@@ -18,7 +18,7 @@ foreach($this->IDEA_model->fetch($filters) as $in){
 
 
     //First see if manually updated:
-    if(count($this->TRANSACTION_model->fetch(array(
+    if(count($this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id' => 10650,
             'ln_next_idea_id' => $in_id,
@@ -50,7 +50,7 @@ foreach($this->IDEA_model->fetch($filters) as $in){
 
 
     //Then count the title of next ideas:
-    foreach($this->TRANSACTION_model->fetch(array(
+    foreach($this->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -66,7 +66,7 @@ foreach($this->IDEA_model->fetch($filters) as $in){
 
 
     //Fetch All Messages for this:
-    foreach($this->TRANSACTION_model->fetch(array(
+    foreach($this->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id' => 4231, //IDEA NOTES Messages
         'ln_next_idea_id' => $in['in_id'],
@@ -86,7 +86,7 @@ foreach($this->IDEA_model->fetch($filters) as $in){
 
             //Yes, see
             //Source Profile
-            foreach($this->TRANSACTION_model->fetch(array(
+            foreach($this->READ_model->fetch(array(
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY

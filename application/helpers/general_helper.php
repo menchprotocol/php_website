@@ -34,7 +34,7 @@ function detect_missing_columns($insert_columns, $required_columns, $ln_creator_
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->TRANSACTION_model->create(array(
+            $CI->READ_model->create(array(
                 'ln_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'ln_metadata' => array(
                     'insert_columns' => $insert_columns,
@@ -390,7 +390,7 @@ function in_fetch_cover($in_id){
 
     $CI =& get_instance();
     $in_fetch_cover = null;
-    foreach($CI->TRANSACTION_model->fetch(array( //IDEA SOURCE
+    foreach($CI->READ_model->fetch(array( //IDEA SOURCE
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
         'ln_next_idea_id' => $in_id,
@@ -401,7 +401,7 @@ function in_fetch_cover($in_id){
     )) as $en){
 
         //See if this source has a photo:
-        foreach($CI->TRANSACTION_model->fetch(array(
+        foreach($CI->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id' => 4260, //IMAGES ONLY
             'ln_portfolio_source_id' => $en['ln_profile_source_id'],
@@ -425,13 +425,13 @@ function in_weight_updater($in){
     //TRANSACTIONS
     $CI =& get_instance();
 
-    $count_transactions = $CI->TRANSACTION_model->fetch(array(
+    $count_transactions = $CI->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         '(ln_next_idea_id='.$in['in_id'].' OR ln_previous_idea_id='.$in['in_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //IDEAS
-    $counts = $CI->TRANSACTION_model->fetch(array(
+    $counts = $CI->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
         '(ln_next_idea_id='.$in['in_id'].' OR ln_previous_idea_id='.$in['in_id'].')' => null,
@@ -457,13 +457,13 @@ function en_weight_updater($en){
     //TRANSACTIONS
     $CI =& get_instance();
 
-    $count_transactions = $CI->TRANSACTION_model->fetch(array(
+    $count_transactions = $CI->READ_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         '(ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].' OR ln_creator_source_id='.$en['en_id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
     //IDEAS
-    $counts = $CI->TRANSACTION_model->fetch(array(
+    $counts = $CI->READ_model->fetch(array(
         'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
         'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         '(ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].')' => null,
@@ -684,7 +684,7 @@ function ln_coins_in($ln_type_source_id, $in_id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->TRANSACTION_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('ln_id' => 'DESC') ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
+    $query = $CI->READ_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('ln_id' => 'DESC') ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -763,7 +763,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->TRANSACTION_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
+    $query = $CI->READ_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -991,7 +991,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
 
     //MAKE SURE WE CAN ACCESS AWS:
     if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
-        $CI->TRANSACTION_model->create(array(
+        $CI->READ_model->create(array(
             'ln_type_source_id' => 4246, //Platform Bug Reports
             'ln_creator_source_id' => $ln_creator_source_id,
             'ln_content' => 'upload_to_cdn() Failed to load AWS S3',
@@ -1027,7 +1027,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
 
 
     if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
-        $CI->TRANSACTION_model->create(array(
+        $CI->READ_model->create(array(
             'ln_type_source_id' => 4246, //Platform Bug Reports
             'ln_creator_source_id' => $ln_creator_source_id,
             'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
@@ -1072,7 +1072,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
 
     } else {
 
-        $CI->TRANSACTION_model->create(array(
+        $CI->READ_model->create(array(
             'ln_type_source_id' => 4246, //Platform Bug Reports
             'ln_creator_source_id' => $ln_creator_source_id,
             'ln_content' => 'upload_to_cdn() Failed to create new source from CDN file',
@@ -1278,12 +1278,12 @@ function en_is_source($en_id, $session_en = array()){
     return (
         $en_id==$session_en['en_id'] || //Player is the source
         superpower_active(10967, true) || //Player has Global source editing superpower
-        count($CI->TRANSACTION_model->fetch(array( //Player created the source
+        count($CI->READ_model->fetch(array( //Player created the source
             'ln_creator_source_id' => $session_en['en_id'],
             'ln_portfolio_source_id' => $en_id,
             'ln_type_source_id' => 4251, //New Source Created
         ))) ||
-        count($CI->TRANSACTION_model->fetch(array( //Player has source in their portfolio
+        count($CI->READ_model->fetch(array( //Player has source in their portfolio
             'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
             'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_profile_source_id' => $session_en['en_id'],
@@ -1311,12 +1311,12 @@ function in_is_source($in_id, $session_en = array()){
         (
             superpower_active(10939, true) && //PUBLISHING PEN
                 (
-                count($CI->TRANSACTION_model->fetch(array( //Player created the idea
+                count($CI->READ_model->fetch(array( //Player created the idea
                     'ln_type_source_id' => 4250, //IDEA CREATOR
                     'ln_next_idea_id' => $in_id,
                     'ln_creator_source_id' => $session_en['en_id'],
                 ))) ||
-                count($CI->TRANSACTION_model->fetch(array( //IDEA SOURCE
+                count($CI->READ_model->fetch(array( //IDEA SOURCE
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $in_id,
@@ -1391,7 +1391,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
         if(is_dev_environment()){
             //Do a call on live as this does not work on local due to security limitations:
-            //return json_decode(@file_get_contents("https://mench.com/cron/cron__7279/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+            //return json_decode(@file_get_contents($CI->config->item('base_url')."cron/cron__7279/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
         //Load Algolia Index
@@ -1440,7 +1440,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $limits['ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows['in'] = $CI->TRANSACTION_model->fetch($limits, array('in_next'), 0);
+            $db_rows['in'] = $CI->READ_model->fetch($limits, array('in_next'), 0);
 
         } elseif ($loop_obj == 'en') {
 
@@ -1453,7 +1453,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $limits['ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows['en'] = $CI->TRANSACTION_model->fetch($limits, array('en_portfolio'), 0);
+            $db_rows['en'] = $CI->READ_model->fetch($limits, array('en_portfolio'), 0);
 
         }
 
@@ -1529,7 +1529,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Fetch Profiles:
                 $export_row['alg_obj_keywords'] = '';
-                foreach($CI->TRANSACTION_model->fetch(array(
+                foreach($CI->READ_model->fetch(array(
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_portfolio_source_id' => $db_row['en_id'], //This child source
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -1567,7 +1567,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
-                foreach($CI->TRANSACTION_model->fetch(array(
+                foreach($CI->READ_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //IDEA NOTES
                     'ln_next_idea_id' => $db_row['in_id'],
@@ -1578,7 +1578,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
                 //Is SOURCE for any IDEA?
-                foreach($CI->TRANSACTION_model->fetch(array(
+                foreach($CI->READ_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
                     'ln_next_idea_id' => $db_row['in_id'],
@@ -1747,7 +1747,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
 
     } elseif ($obj_type == 'ln') {
 
-        $db_objects = $CI->TRANSACTION_model->fetch(array(
+        $db_objects = $CI->READ_model->fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
@@ -1793,7 +1793,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
 
     } elseif ($obj_type == 'ln') {
 
-        $affected_rows = $CI->TRANSACTION_model->update($obj_id, array(
+        $affected_rows = $CI->READ_model->update($obj_id, array(
             'ln_metadata' => $metadata,
         ));
 

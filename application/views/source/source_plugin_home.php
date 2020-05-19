@@ -20,7 +20,7 @@ foreach($this->config->item('en_all_6287') as $en_id => $m) {
 
     //PROFILE
     echo '<div class="pull-right inline-block">';
-    foreach($this->TRANSACTION_model->fetch(array(
+    foreach($this->READ_model->fetch(array(
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
         'ln_portfolio_source_id' => $en_id,
         'ln_profile_source_id !=' => 6287,

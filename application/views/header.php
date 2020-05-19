@@ -23,6 +23,7 @@ $current_mench = current_mench();
     echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_en && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( $session_en ? $session_en['en_id'] : 0 ) . '; ';
     echo ' var js_pl_name = \'' . ( $session_en ? $session_en['en_name'] : '' ) . '\'; ';
+    echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
     //JAVASCRIPT PLATFORM MEMORY
     foreach($this->config->item('en_all_11054') as $ln_type_source_id => $m){
@@ -48,7 +49,7 @@ $current_mench = current_mench();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.35.1/algoliasearch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js" type="text/javascript"></script>
 
-    <script src="/application/views/mench.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+    <script src="/application/views/global.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
     <?php if($current_mench['x_class']=='read'){ ?>
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=custom-share-buttons&cms=website' async='async'></script>
@@ -57,7 +58,7 @@ $current_mench = current_mench();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:800|Rubik&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
-    <link href="/application/views/mench.css?v=<?= config_var(11060) ?>" rel="stylesheet"/>
+    <link href="/application/views/global.css?v=<?= config_var(11060) ?>" rel="stylesheet"/>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
     <script type="text/javascript">
@@ -146,7 +147,7 @@ if(!isset($hide_header)){
 
                                 } elseif($m['en_id']==12896){
 
-                                    $highlights = $this->TRANSACTION_model->fetch(array(
+                                    $highlights = $this->READ_model->fetch(array(
                                         'ln_profile_source_id' => $session_en['en_id'],
                                         'ln_type_source_id' => 12896, //SAVED
                                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC

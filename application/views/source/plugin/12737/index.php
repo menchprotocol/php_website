@@ -4,7 +4,7 @@ $scanned = 0;
 $skipped = 0;
 $fixed = 0;
 
-foreach($this->TRANSACTION_model->fetch(array(
+foreach($this->READ_model->fetch(array(
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
 ), array(), 0) as $source_link){
 
@@ -19,7 +19,7 @@ foreach($this->TRANSACTION_model->fetch(array(
     if ($detected_ln_type['status']){
         if(!($detected_ln_type['ln_type_source_id'] == $source_link['ln_type_source_id'])){
             $fixed++;
-            $this->TRANSACTION_model->update($source_link['ln_id'], array(
+            $this->READ_model->update($source_link['ln_id'], array(
                 'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
             ));
         }

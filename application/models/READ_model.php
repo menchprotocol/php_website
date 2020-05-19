@@ -15,6 +15,619 @@ class READ_model extends CI_Model
     }
 
 
+    function create($insert_columns, $external_sync = false)
+    {
+
+        //Set some defaults:
+        if (!isset($insert_columns['ln_creator_source_id']) || intval($insert_columns['ln_creator_source_id']) < 1) {
+            $insert_columns['ln_creator_source_id'] = 0;
+        }
+
+        //Only require link type:
+        if (detect_missing_columns($insert_columns, array('ln_type_source_id'), $insert_columns['ln_creator_source_id'])) {
+            return false;
+        }
+
+        //Clean metadata is provided:
+        if (isset($insert_columns['ln_metadata']) && is_array($insert_columns['ln_metadata'])) {
+            $insert_columns['ln_metadata'] = serialize($insert_columns['ln_metadata']);
+        } else {
+            $insert_columns['ln_metadata'] = null;
+        }
+
+        //Set some defaults:
+        if (!isset($insert_columns['ln_content'])) {
+            $insert_columns['ln_content'] = null;
+        }
+
+
+        if (!isset($insert_columns['ln_timestamp']) || is_null($insert_columns['ln_timestamp'])) {
+            //Time with milliseconds:
+            $t = microtime(true);
+            $micro = sprintf("%06d", ($t - floor($t)) * 1000000);
+            $d = new DateTime(date('Y-m-d H:i:s.' . $micro, $t));
+            $insert_columns['ln_timestamp'] = $d->format("Y-m-d H:i:s.u");
+        }
+
+        if (!isset($insert_columns['ln_status_source_id'])|| is_null($insert_columns['ln_status_source_id'])) {
+            $insert_columns['ln_status_source_id'] = 6176; //Link Published
+        }
+
+        //Set some zero defaults if not set:
+        foreach(array('ln_next_idea_id', 'ln_previous_idea_id', 'ln_portfolio_source_id', 'ln_profile_source_id', 'ln_parent_transaction_id', 'ln_external_id', 'ln_order') as $dz) {
+            if (!isset($insert_columns[$dz])) {
+                $insert_columns[$dz] = 0;
+            }
+        }
+
+        //Lets log:
+        $this->db->insert('mench_ledger', $insert_columns);
+
+
+        //Fetch inserted id:
+        $insert_columns['ln_id'] = $this->db->insert_id();
+
+
+        //All good huh?
+        if ($insert_columns['ln_id'] < 1) {
+
+            //This should not happen:
+            $this->READ_model->create(array(
+                'ln_type_source_id' => 4246, //Platform Bug Reports
+                'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
+                'ln_content' => 'transaction_create() Failed to create',
+                'ln_metadata' => array(
+                    'input' => $insert_columns,
+                ),
+            ));
+
+            return false;
+        }
+
+        //Sync algolia?
+        if ($external_sync) {
+            if ($insert_columns['ln_profile_source_id'] > 0) {
+                update_algolia('en', $insert_columns['ln_profile_source_id']);
+            }
+
+            if ($insert_columns['ln_portfolio_source_id'] > 0) {
+                update_algolia('en', $insert_columns['ln_portfolio_source_id']);
+            }
+
+            if ($insert_columns['ln_previous_idea_id'] > 0) {
+                update_algolia('in', $insert_columns['ln_previous_idea_id']);
+            }
+
+            if ($insert_columns['ln_next_idea_id'] > 0) {
+                update_algolia('in', $insert_columns['ln_next_idea_id']);
+            }
+        }
+
+
+        //SOURCE SYNC Status
+        if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_12401'))){
+            if($insert_columns['ln_portfolio_source_id'] > 0){
+                $en_id = $insert_columns['ln_portfolio_source_id'];
+            } elseif($insert_columns['ln_profile_source_id'] > 0){
+                $en_id = $insert_columns['ln_profile_source_id'];
+            }
+            $this->SOURCE_model->match_ln_status($insert_columns['ln_creator_source_id'], array(
+                'en_id' => $en_id,
+            ));
+        }
+
+        //IDEA SYNC Status
+        if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_12400'))){
+            if($insert_columns['ln_next_idea_id'] > 0){
+                $in_id = $insert_columns['ln_next_idea_id'];
+            } elseif($insert_columns['ln_previous_idea_id'] > 0){
+                $in_id = $insert_columns['ln_previous_idea_id'];
+            }
+            $this->IDEA_model->match_ln_status($insert_columns['ln_creator_source_id'], array(
+                'in_id' => $in_id,
+            ));
+        }
+
+        //Do we need to check for source tagging after read success?
+        if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_source_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_previous_idea_id'] > 0 && $insert_columns['ln_creator_source_id'] > 0){
+
+
+            //AUTO COMPLETES?
+            $in__next_autoscan = array();
+            $ins = $this->IDEA_model->fetch(array(
+                'in_id' => $insert_columns['ln_previous_idea_id'],
+            ));
+
+            if(in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7712'))){
+
+                //IDEA TYPE SELECT NEXT
+                $in__next_autoscan = $this->READ_model->fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //READ ANSWERED
+                    'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
+                    'ln_previous_idea_id' => $ins[0]['in_id'],
+                    'ln_next_idea_id>' => 0, //With an answer
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                    'in_type_source_id IN (' . join(',', $this->config->item('en_ids_12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
+                ), array('in_next'), 0);
+
+            } elseif(in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_13022'))){
+
+                //IDEA TYPE ALL NEXT
+                $in__next_autoscan = $this->READ_model->fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'ln_previous_idea_id' => $ins[0]['in_id'],
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                    'in_type_source_id IN (' . join(',', $this->config->item('en_ids_12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
+                ), array('in_next'), 0);
+
+            }
+
+            foreach($in__next_autoscan as $in_next){
+                //IS IT EMPTY?
+                if(
+                    //No Messages
+                    !count($this->READ_model->fetch(array(
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                        'ln_type_source_id' => 4231, //IDEA NOTES Messages
+                        'ln_next_idea_id' => $in_next['in_id'],
+                    ))) &&
+
+                    //No Next
+                    !count($this->READ_model->fetch(array(
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                        'ln_previous_idea_id' => $in_next['in_id'],
+                    ))) &&
+
+                    //Not Already Completed:
+                    !count($this->READ_model->fetch(array(
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                        'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
+                        'ln_previous_idea_id' => $in_next['in_id'],
+                    )))){
+
+                    //Mark as complete:
+                    $this->READ_model->is_complete($in_next, array(
+                        'ln_type_source_id' => 4559, //READ MESSAGES
+                        'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
+                        'ln_previous_idea_id' => $in_next['in_id'],
+                    ));
+
+                }
+            }
+
+
+
+
+            //SOURCE APPEND?
+            $detected_ln_type = ln_detect_type($insert_columns['ln_content']);
+            if ($detected_ln_type['status']) {
+
+                foreach($this->READ_model->fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id' => 7545, //SOURCE APPEND
+                    'ln_next_idea_id' => $ins[0]['in_id'],
+                    'ln_profile_source_id >' => 0, //Source to be tagged for this Idea
+                )) as $ln_tag){
+
+                    //Generate stats:
+                    $links_added = 0;
+                    $links_edited = 0;
+                    $links_deleted = 0;
+
+
+                    //Assign tag if parent/child link NOT previously assigned:
+                    $existing_links = $this->READ_model->fetch(array(
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                        'ln_profile_source_id' => $ln_tag['ln_profile_source_id'],
+                        'ln_portfolio_source_id' => $insert_columns['ln_creator_source_id'],
+                    ));
+
+                    if(count($existing_links)){
+
+                        //Link previously exists, see if content value is the same:
+                        if($existing_links[0]['ln_content'] == $insert_columns['ln_content'] && $existing_links[0]['ln_type_source_id'] == $detected_ln_type['ln_type_source_id']){
+
+                            //Everything is the same, nothing to do here:
+                            continue;
+
+                        } else {
+
+                            $links_edited++;
+
+                            //Content value has changed, update the link:
+                            $this->READ_model->update($existing_links[0]['ln_id'], array(
+                                'ln_content' => $insert_columns['ln_content'],
+                            ), $insert_columns['ln_creator_source_id'], 10657 /* Player Link Updated Content  */);
+
+                            //Also, did the link type change based on the content change?
+                            if($existing_links[0]['ln_type_source_id'] != $detected_ln_type['ln_type_source_id']){
+                                $this->READ_model->update($existing_links[0]['ln_id'], array(
+                                    'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
+                                ), $insert_columns['ln_creator_source_id'], 10659 /* Player Link Updated Type */);
+                            }
+
+                        }
+
+                    } else {
+
+                        //See if we need to delete single selectable links:
+                        foreach($this->config->item('en_ids_6204') as $single_select_en_id){
+                            $single_selectable = $this->config->item('en_ids_'.$single_select_en_id);
+                            if(is_array($single_selectable) && count($single_selectable) && in_array($ln_tag['ln_profile_source_id'], $single_selectable)){
+                                //Delete other siblings, if any:
+                                foreach($this->READ_model->fetch(array(
+                                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
+                                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                                    'ln_profile_source_id IN (' . join(',', $single_selectable) . ')' => null,
+                                    'ln_profile_source_id !=' => $ln_tag['ln_profile_source_id'],
+                                    'ln_portfolio_source_id' => $insert_columns['ln_creator_source_id'],
+                                )) as $single_selectable_siblings_preset){
+                                    $links_deleted += $this->READ_model->update($single_selectable_siblings_preset['ln_id'], array(
+                                        'ln_status_source_id' => 6173, //Link Deleted
+                                    ), $insert_columns['ln_creator_source_id'], 10673 /* Player Link Unpublished */);
+                                }
+                            }
+                        }
+
+                        //Create link:
+                        $links_added++;
+                        $this->READ_model->create(array(
+                            'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
+                            'ln_content' => $insert_columns['ln_content'],
+                            'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
+                            'ln_profile_source_id' => $ln_tag['ln_profile_source_id'],
+                            'ln_portfolio_source_id' => $insert_columns['ln_creator_source_id'],
+                        ));
+
+                    }
+
+                    //Track Tag:
+                    $this->READ_model->create(array(
+                        'ln_type_source_id' => 12197, //Tag Player
+                        'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
+                        'ln_profile_source_id' => $ln_tag['ln_profile_source_id'],
+                        'ln_portfolio_source_id' => $insert_columns['ln_creator_source_id'],
+                        'ln_previous_idea_id' => $ins[0]['in_id'],
+                        'ln_content' => $links_added.' added, '.$links_edited.' edited & '.$links_deleted.' deleted with new content ['.$insert_columns['ln_content'].']',
+                    ));
+
+                    if($links_added>0 || $links_edited>0 || $links_deleted>0){
+                        //See if Session needs to be updated:
+                        $session_en = superpower_assigned();
+                        if($session_en && $session_en['en_id']==$insert_columns['ln_creator_source_id']){
+                            //Yes, update session:
+                            $this->SOURCE_model->activate_session($session_en, true);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //See if this link type has any subscribers:
+        if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_5967')) && $insert_columns['ln_type_source_id']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
+
+            //Try to fetch subscribers:
+            $en_all_5967 = $this->config->item('en_all_5967'); //Include subscription details
+            $sub_emails = array();
+            $sub_en_ids = array();
+            foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_source_id']]['m_desc'])) as $subscriber_en_id){
+
+                //Do not inform the user who just took the action:
+                if($subscriber_en_id==$insert_columns['ln_creator_source_id']){
+                    continue;
+                }
+
+                //Try fetching subscribers email:
+                foreach($this->READ_model->fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
+                    'ln_profile_source_id' => 3288, //Mench Email
+                    'ln_portfolio_source_id' => $subscriber_en_id,
+                ), array('en_portfolio')) as $en_email){
+                    if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
+                        //All good, add to list:
+                        array_push($sub_en_ids , $en_email['en_id']);
+                        array_push($sub_emails , $en_email['ln_content']);
+                    }
+                }
+            }
+
+
+            //Did we find any subscribers?
+            if(count($sub_en_ids) > 0){
+
+                //yes, start drafting email to be sent to them...
+
+                if($insert_columns['ln_creator_source_id'] > 0){
+
+                    //Fetch player details:
+                    $player_ens = $this->SOURCE_model->fetch(array(
+                        'en_id' => $insert_columns['ln_creator_source_id'],
+                    ));
+
+                    $player_name = $player_ens[0]['en_name'];
+
+                } else {
+
+                    //No player:
+                    $player_name = 'MENCH';
+
+                }
+
+
+                //Email Subject:
+                $subject = 'Notification: '  . $player_name . ' ' . $en_all_5967[$insert_columns['ln_type_source_id']]['m_name'];
+
+                //Compose email body, start with link content:
+                $html_message = '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';
+
+                $en_all_6232 = $this->config->item('en_all_6232'); //PLATFORM VARIABLES
+
+                //Append link object links:
+                foreach($this->config->item('en_all_11081') as $en_id => $m) {
+
+                    if (!intval($insert_columns[$en_all_6232[$en_id]['m_desc']])) {
+                        continue;
+                    }
+
+                    if (in_array(6202 , $m['m_parents'])) {
+
+                        //IDEA
+                        $ins = $this->IDEA_model->fetch(array( 'in_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'idea/go/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_title'].'</a></div>';
+
+                    } elseif (in_array(6160 , $m['m_parents'])) {
+
+                        //SOURCE
+                        $ens = $this->SOURCE_model->fetch(array( 'en_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'source/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
+
+                    } elseif (in_array(4367 , $m['m_parents'])) {
+
+                        //READ
+                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'plugin/12722?ln_id=' . $insert_columns[$en_all_6232[$en_id]['m_desc']] . '" target="_parent">'.$insert_columns[$en_all_6232[$en_id]['m_desc']].'</a></div>';
+
+                    }
+
+                }
+
+                //Finally append READ ID:
+                $html_message .= '<div>TRANSACTION ID: <a href="'.$this->config->item('base_url').'plugin/12722?ln_id=' . $insert_columns['ln_id'] . '">' . $insert_columns['ln_id'] . '</a></div>';
+
+                //Inform how to change settings:
+                $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'source/5967" target="_blank">@5967</a></div>';
+
+                //Send email:
+                $dispatched_email = $this->READ_model->send_email($sub_emails, $subject, $html_message);
+
+                //Log emails sent:
+                foreach($sub_en_ids as $to_en_id){
+                    $this->READ_model->create(array(
+                        'ln_type_source_id' => 5967, //Link Carbon Copy Email
+                        'ln_creator_source_id' => $to_en_id, //Sent to this user
+                        'ln_metadata' => $dispatched_email, //Save a copy of email
+                        'ln_parent_transaction_id' => $insert_columns['ln_id'], //Save link
+
+                        //Import potential Idea/source connections from link:
+                        'ln_next_idea_id' => $insert_columns['ln_next_idea_id'],
+                        'ln_previous_idea_id' => $ins[0]['in_id'],
+                        'ln_portfolio_source_id' => $insert_columns['ln_portfolio_source_id'],
+                        'ln_profile_source_id' => $insert_columns['ln_profile_source_id'],
+                    ));
+                }
+            }
+        }
+
+        //Return:
+        return $insert_columns;
+
+    }
+
+    function fetch($match_columns = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('ln_id' => 'DESC'), $select = '*', $group_by = null)
+    {
+
+        $this->db->select($select);
+        $this->db->from('mench_ledger');
+
+        //Any Idea joins?
+        if (in_array('in_previous', $join_objects)) {
+            $this->db->join('mench_idea', 'ln_previous_idea_id=in_id','left');
+        } elseif (in_array('in_next', $join_objects)) {
+            $this->db->join('mench_idea', 'ln_next_idea_id=in_id','left');
+        }
+
+        //Any source joins?
+        if (in_array('en_profile', $join_objects)) {
+            $this->db->join('mench_source', 'ln_profile_source_id=en_id','left');
+        } elseif (in_array('en_portfolio', $join_objects)) {
+            $this->db->join('mench_source', 'ln_portfolio_source_id=en_id','left');
+        } elseif (in_array('en_type', $join_objects)) {
+            $this->db->join('mench_source', 'ln_type_source_id=en_id','left');
+        } elseif (in_array('en_creator', $join_objects)) {
+            $this->db->join('mench_source', 'ln_creator_source_id=en_id','left');
+        }
+
+        foreach($match_columns as $key => $value) {
+            if (!is_null($value)) {
+                $this->db->where($key, $value);
+            } else {
+                $this->db->where($key);
+            }
+        }
+
+        if ($group_by) {
+            $this->db->group_by($group_by);
+        }
+
+        foreach($order_columns as $key => $value) {
+            $this->db->order_by($key, $value);
+        }
+
+        if ($limit > 0) {
+            $this->db->limit($limit, $limit_offset);
+        }
+        $q = $this->db->get();
+        return $q->result_array();
+    }
+
+    function update($id, $update_columns, $ln_creator_source_id = 0, $ln_type_source_id = 0, $ln_content = '')
+    {
+
+        if (count($update_columns) == 0) {
+            return false;
+        } elseif ($ln_type_source_id>0 && !in_array($ln_type_source_id, $this->config->item('en_ids_4593'))) {
+            return false;
+        }
+
+        if($ln_creator_source_id > 0){
+            //Fetch link before updating:
+            $before_data = $this->READ_model->fetch(array(
+                'ln_id' => $id,
+            ));
+        }
+
+        //Update metadata if needed:
+        if(isset($update_columns['ln_metadata']) && is_array($update_columns['ln_metadata'])){
+            $update_columns['ln_metadata'] = serialize($update_columns['ln_metadata']);
+        }
+
+        //Set content to null if defined as empty:
+        if(isset($update_columns['ln_content']) && !strlen($update_columns['ln_content'])){
+            $update_columns['ln_content'] = null;
+        }
+
+        //Update:
+        $this->db->where('ln_id', $id);
+        $this->db->update('mench_ledger', $update_columns);
+        $affected_rows = $this->db->affected_rows();
+
+        //Log changes if successful:
+        if ($affected_rows > 0 && $ln_creator_source_id > 0 && $ln_type_source_id > 0) {
+
+            if(strlen($ln_content) == 0){
+                if(in_array($ln_type_source_id, $this->config->item('en_ids_10593') /* Statement */)){
+
+                    //Since it's a statement we want to determine the change in content:
+                    if($before_data[0]['ln_content']!=$update_columns['ln_content']){
+                        $ln_content .= update_description($before_data[0]['ln_content'], $update_columns['ln_content']);
+                    }
+
+                } else {
+
+                    //Log modification link for every field changed:
+                    foreach($update_columns as $key => $value) {
+                        if($before_data[0][$key]==$value){
+                            continue;
+                        }
+
+                        //Now determine what type is this:
+                        if($key=='ln_status_source_id'){
+
+                            $en_all_6186 = $this->config->item('en_all_6186'); //Transaction Status
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
+
+                        } elseif($key=='ln_type_source_id'){
+
+                            $en_all_4593 = $this->config->item('en_all_4593'); //Link Types
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
+
+                        } elseif(in_array($key, array('ln_profile_source_id', 'ln_portfolio_source_id'))) {
+
+                            //Fetch new/old source names:
+                            $before_ens = $this->SOURCE_model->fetch(array(
+                                'en_id' => $before_data[0][$key],
+                            ));
+                            $after_ens = $this->SOURCE_model->fetch(array(
+                                'en_id' => $value,
+                            ));
+
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_ens[0]['en_name'] . '] to [' . $after_ens[0]['en_name'] . ']' . "\n";
+
+                        } elseif(in_array($key, array('ln_previous_idea_id', 'ln_next_idea_id'))) {
+
+                            //Fetch new/old Idea outcomes:
+                            $before_ins = $this->IDEA_model->fetch(array(
+                                'in_id' => $before_data[0][$key],
+                            ));
+                            $after_ins = $this->IDEA_model->fetch(array(
+                                'in_id' => $value,
+                            ));
+
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_ins[0]['in_title'] . '] to [' . $after_ins[0]['in_title'] . ']' . "\n";
+
+                        } elseif(in_array($key, array('ln_content', 'ln_order'))){
+
+                            $ln_content .= echo_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
+
+                        } else {
+
+                            //Should not log updates since not specifically programmed:
+                            continue;
+
+                        }
+                    }
+                }
+            }
+
+            //Determine fields that have changed:
+            $fields_changed = array();
+            foreach($update_columns as $key => $value) {
+                if($before_data[0][$key]!=$value){
+                    array_push($fields_changed, array(
+                        'field' => $key,
+                        'before' => $before_data[0][$key],
+                        'after' => $value,
+                    ));
+                }
+            }
+
+            if(strlen($ln_content) > 0 && count($fields_changed) > 0){
+                //Value has changed, log link:
+                $this->READ_model->create(array(
+                    'ln_parent_transaction_id' => $id, //Link Reference
+                    'ln_creator_source_id' => $ln_creator_source_id,
+                    'ln_type_source_id' => $ln_type_source_id,
+                    'ln_content' => $ln_content,
+                    'ln_metadata' => array(
+                        'ln_id' => $id,
+                        'fields_changed' => $fields_changed,
+                    ),
+                    //Copy old values for parent/child idea/SOURCE LINKS:
+                    'ln_profile_source_id' => $before_data[0]['ln_profile_source_id'],
+                    'ln_portfolio_source_id'  => $before_data[0]['ln_portfolio_source_id'],
+                    'ln_previous_idea_id' => $before_data[0]['ln_previous_idea_id'],
+                    'ln_next_idea_id'  => $before_data[0]['ln_next_idea_id'],
+                ));
+            }
+        }
+
+        return $affected_rows;
+    }
+
+    function max_order($match_columns)
+    {
+
+        //Fetches the maximum order value
+        $this->db->select('MAX(ln_order) as largest_order');
+        $this->db->from('mench_ledger');
+        foreach($match_columns as $key => $value) {
+            $this->db->where($key, $value);
+        }
+        $q = $this->db->get();
+        $stats = $q->row_array();
+        return ( count($stats) > 0 ? intval($stats['largest_order']) : 0 );
+
+    }
+
+
+
     function send_email($to_array, $subject, $html_message)
     {
 
@@ -38,7 +651,7 @@ class READ_model extends CI_Model
 
         return $this->CLIENT->sendEmail(array(
             // Source is required
-            'Source' => 'support@mench.com',
+            'Source' => config_var(3288),
             // Destination is required
             'Destination' => array(
                 'ToAddresses' => $to_array,
@@ -67,8 +680,8 @@ class READ_model extends CI_Model
                     ),
                 ),
             ),
-            'ReplyToAddresses' => array('support@mench.com'),
-            'ReturnPath' => 'support@mench.com',
+            'ReplyToAddresses' => array(config_var(3288)),
+            'ReturnPath' => config_var(3288),
         ));
     }
 
@@ -110,7 +723,7 @@ class READ_model extends CI_Model
         if (!$msg_validation['status'] || !isset($msg_validation['output_messages'])) {
 
             //Log Error Link:
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                 'ln_content' => 'send_message_build() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
@@ -341,7 +954,7 @@ class READ_model extends CI_Model
             //Source Profile
             if(!$is_current_source || $string_references['ref_time_found']){
 
-                foreach($this->TRANSACTION_model->fetch(array(
+                foreach($this->READ_model->fetch(array(
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
@@ -441,7 +1054,7 @@ class READ_model extends CI_Model
         }
 
         //Fetch parents:
-        foreach($this->TRANSACTION_model->fetch(array(
+        foreach($this->READ_model->fetch(array(
             'in_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7355' : 'en_ids_7356'))) . ')' => null,
             'ln_status_source_id IN (' . join(',', $this->config->item(($public_only ? 'en_ids_7359' : 'en_ids_7360'))) . ')' => null,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -498,7 +1111,7 @@ class READ_model extends CI_Model
         if(count($in_metadata['in__metadata_expansion_conditional']) > 0){
             $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_conditional']));
         }
-        if(count($check_termination_answers) > 0 && count($this->TRANSACTION_model->fetch(array(
+        if(count($check_termination_answers) > 0 && count($this->READ_model->fetch(array(
                 'ln_type_source_id' => 7492, //TERMINATE
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
@@ -520,7 +1133,7 @@ class READ_model extends CI_Model
 
                 //First fetch all possible answers based on correct order:
                 $found_expansion = 0;
-                foreach($this->TRANSACTION_model->fetch(array(
+                foreach($this->READ_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -528,7 +1141,7 @@ class READ_model extends CI_Model
                 ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
 
                     //See if this answer was selected:
-                    if(count($this->TRANSACTION_model->fetch(array(
+                    if(count($this->READ_model->fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
                         'ln_previous_idea_id' => $common_step_in_id,
@@ -539,7 +1152,7 @@ class READ_model extends CI_Model
                         $found_expansion++;
 
                         //Yes was answered, see if it's completed:
-                        if(!count($this->TRANSACTION_model->fetch(array(
+                        if(!count($this->READ_model->fetch(array(
                             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                             'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                             'ln_creator_source_id' => $en_id, //Belongs to this User
@@ -568,7 +1181,7 @@ class READ_model extends CI_Model
             } elseif($is_condition){
 
                 //See which path they got unlocked, if any:
-                foreach($this->TRANSACTION_model->fetch(array(
+                foreach($this->READ_model->fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                     'ln_creator_source_id' => $en_id, //Belongs to this User
                     'ln_previous_idea_id' => $common_step_in_id,
@@ -585,7 +1198,7 @@ class READ_model extends CI_Model
 
                 }
 
-            } elseif(!count($this->TRANSACTION_model->fetch(array(
+            } elseif(!count($this->READ_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_creator_source_id' => $en_id, //Belongs to this User
@@ -620,7 +1233,7 @@ class READ_model extends CI_Model
          *
          * */
 
-        $player_reads = $this->TRANSACTION_model->fetch(array(
+        $player_reads = $this->READ_model->fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -668,7 +1281,7 @@ class READ_model extends CI_Model
          * */
 
         $top_priority_in = false;
-        foreach($this->TRANSACTION_model->fetch(array(
+        foreach($this->READ_model->fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -720,7 +1333,7 @@ class READ_model extends CI_Model
         }
 
         //Go ahead and delete from Reads:
-        $player_reads = $this->TRANSACTION_model->fetch(array(
+        $player_reads = $this->READ_model->fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -735,7 +1348,7 @@ class READ_model extends CI_Model
 
         //Delete Bookmark:
         foreach($player_reads as $ln){
-            $this->TRANSACTION_model->update($ln['ln_id'], array(
+            $this->READ_model->update($ln['ln_id'], array(
                 'ln_content' => $stop_feedback,
                 'ln_status_source_id' => 6173, //DELETED
             ), $en_id, $stop_method_id);
@@ -761,7 +1374,7 @@ class READ_model extends CI_Model
 
 
         //Make sure not previously added to this User's Reads:
-        if(!count($this->TRANSACTION_model->fetch(array(
+        if(!count($this->READ_model->fetch(array(
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $in_id,
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
@@ -770,7 +1383,7 @@ class READ_model extends CI_Model
 
             //Not added to their Reads so far, let's go ahead and add it:
             $in_rank = 1;
-            $home = $this->TRANSACTION_model->create(array(
+            $home = $this->READ_model->create(array(
                 'ln_type_source_id' => ( $recommender_in_id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id' => $ins[0]['in_id'], //The Idea they are adding
@@ -788,7 +1401,7 @@ class READ_model extends CI_Model
             }
 
             //Move other ideas down in the Reads:
-            foreach($this->TRANSACTION_model->fetch(array(
+            foreach($this->READ_model->fetch(array(
                 'ln_id !=' => $home['ln_id'], //Not the newly added idea
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -799,7 +1412,7 @@ class READ_model extends CI_Model
                 $in_rank++;
 
                 //Update order:
-                $this->TRANSACTION_model->update($current_ins['ln_id'], array(
+                $this->READ_model->update($current_ins['ln_id'], array(
                     'ln_order' => $in_rank,
                 ), $en_id, 10681 /* Ideas Ordered Automatically  */);
             }
@@ -817,9 +1430,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Let's see how many steps get unlocked:
-         *
-         * https://mench.com/source/6410
+         * Let's see how many steps get unlocked @6410
          *
          * */
 
@@ -839,7 +1450,7 @@ class READ_model extends CI_Model
         if(isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0){
 
             //Make sure previous link unlocks have NOT happened before:
-            $existing_expansions = $this->TRANSACTION_model->fetch(array(
+            $existing_expansions = $this->READ_model->fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id' => 6140, //READ UNLOCK LINK
                 'ln_creator_source_id' => $en_id,
@@ -856,7 +1467,7 @@ class READ_model extends CI_Model
                  * if we would ever try to process a conditional step twice? If it
                  * happens, is it an error or not, and should simply be ignored?
                  *
-                $this->TRANSACTION_model->create(array(
+                $this->READ_model->create(array(
                     'ln_previous_idea_id' => $in['in_id'],
                     'ln_next_idea_id' => $existing_expansions[0]['ln_next_idea_id'],
                     'ln_content' => 'completion_recursive_up() detected duplicate Label Expansion entries',
@@ -879,7 +1490,7 @@ class READ_model extends CI_Model
 
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
-            $locked_links = $this->TRANSACTION_model->fetch(array(
+            $locked_links = $this->READ_model->fetch(array(
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12842')) . ')' => null, //IDEA LINKS ONE-WAY
@@ -908,7 +1519,7 @@ class READ_model extends CI_Model
                     $found_match++;
 
                     //Unlock Reads:
-                    $this->TRANSACTION_model->create(array(
+                    $this->READ_model->create(array(
                         'ln_type_source_id' => 6140, //READ UNLOCK LINK
                         'ln_creator_source_id' => $en_id,
                         'ln_previous_idea_id' => $in['in_id'],
@@ -925,7 +1536,7 @@ class READ_model extends CI_Model
 
             //We must have exactly 1 match by now:
             if($found_match != 1){
-                $this->TRANSACTION_model->create(array(
+                $this->READ_model->create(array(
                     'ln_content' => 'completion_recursive_up() found ['.$found_match.'] routing logic matches!',
                     'ln_type_source_id' => 4246, //Platform Bug Reports
                     'ln_creator_source_id' => $en_id,
@@ -1014,7 +1625,7 @@ class READ_model extends CI_Model
         }
 
 
-        $in__next = $this->TRANSACTION_model->fetch(array(
+        $in__next = $this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -1052,7 +1663,7 @@ class READ_model extends CI_Model
             if($count==0){
 
                 //Always add all the first users to the full list:
-                $qualified_completed_users = $this->TRANSACTION_model->fetch(array(
+                $qualified_completed_users = $this->READ_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                     'ln_previous_idea_id' => $child_in['in_id'],
@@ -1069,7 +1680,7 @@ class READ_model extends CI_Model
                 if($requires_all_children){
 
                     //Update list of qualified users:
-                    $qualified_completed_users = $this->TRANSACTION_model->fetch(array(
+                    $qualified_completed_users = $this->READ_model->fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                         'ln_previous_idea_id' => $child_in['in_id'],
@@ -1121,7 +1732,7 @@ class READ_model extends CI_Model
     function is_complete($in, $insert_columns){
 
         //Log completion link:
-        $new_link = $this->TRANSACTION_model->create($insert_columns);
+        $new_link = $this->READ_model->create($insert_columns);
 
         //Process completion automations:
         $this->READ_model->completion_recursive_up($insert_columns['ln_creator_source_id'], $in);
@@ -1138,7 +1749,7 @@ class READ_model extends CI_Model
         if(!isset($in_metadata['in__metadata_common_steps'])){
 
             //Should not happen, log error:
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_content' => 'completion_marks() Detected user Reads without in__metadata_common_steps value!',
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $en_id,
@@ -1185,7 +1796,7 @@ class READ_model extends CI_Model
                 $local_max = null;
 
                 //Calculate min/max points for this based on answers:
-                foreach($this->TRANSACTION_model->fetch(array(
+                foreach($this->READ_model->fetch(array(
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -1220,7 +1831,7 @@ class READ_model extends CI_Model
 
 
             //Now let's check user answers to see what they have done:
-            $total_completion = $this->TRANSACTION_model->fetch(array(
+            $total_completion = $this->READ_model->fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
@@ -1231,7 +1842,7 @@ class READ_model extends CI_Model
             $metadata_this['steps_answered_count'] += $total_completion[0]['total_completions'];
 
             //Go through answers:
-            foreach($this->TRANSACTION_model->fetch(array(
+            foreach($this->READ_model->fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
@@ -1267,7 +1878,7 @@ class READ_model extends CI_Model
                 $local_max = null;
 
                 //Calculate min/max points for this based on answers:
-                foreach($this->TRANSACTION_model->fetch(array(
+                foreach($this->READ_model->fetch(array(
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -1300,7 +1911,7 @@ class READ_model extends CI_Model
 
 
             //Now let's check user answers to see what they have done:
-            $total_completion = $this->TRANSACTION_model->fetch(array(
+            $total_completion = $this->READ_model->fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
@@ -1311,7 +1922,7 @@ class READ_model extends CI_Model
             $metadata_this['steps_answered_count'] += $total_completion[0]['total_completions'];
 
             //Go through answers:
-            foreach($this->TRANSACTION_model->fetch(array(
+            foreach($this->READ_model->fetch(array(
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                 'ln_previous_idea_id IN (' . join(',', $question_in_ids ) . ')' => null,
@@ -1379,7 +1990,7 @@ class READ_model extends CI_Model
 
 
         //Count completed for user:
-        $common_completed = $this->TRANSACTION_model->fetch(array(
+        $common_completed = $this->READ_model->fetch(array(
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
             'ln_creator_source_id' => $en_id, //Belongs to this User
             'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
@@ -1409,7 +2020,7 @@ class READ_model extends CI_Model
         if(count($answer_array)){
 
             //Now let's check user answers to see what they have done:
-            foreach($this->TRANSACTION_model->fetch(array(
+            foreach($this->READ_model->fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
@@ -1434,7 +2045,7 @@ class READ_model extends CI_Model
         if(isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0){
 
             //Now let's check if user has unlocked any Miletones:
-            foreach($this->TRANSACTION_model->fetch(array(
+            foreach($this->READ_model->fetch(array(
                 'ln_type_source_id' => 6140, //READ UNLOCK LINK
                 'ln_creator_source_id' => $en_id, //Belongs to this User
                 'ln_previous_idea_id IN (' . join(',', $flat_common_steps ) . ')' => null,
@@ -1499,7 +2110,7 @@ class READ_model extends CI_Model
     function ids($en_id){
         //Simply returns all the idea IDs for a user's Reads:
         $player_read_ids = array();
-        foreach($this->TRANSACTION_model->fetch(array(
+        foreach($this->READ_model->fetch(array(
             'ln_creator_source_id' => $en_id,
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -1562,13 +2173,13 @@ class READ_model extends CI_Model
         }
 
         //Delete ALL previous answers:
-        foreach($this->TRANSACTION_model->fetch(array(
+        foreach($this->READ_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //READ ANSWERED
             'ln_creator_source_id' => $en_id,
             'ln_previous_idea_id' => $ins[0]['in_id'],
         )) as $read_progress){
-            $this->TRANSACTION_model->update($read_progress['ln_id'], array(
+            $this->READ_model->update($read_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Link Deleted
             ), $en_id, 12129 /* READ ANSWER DELETED */);
         }
@@ -1577,7 +2188,7 @@ class READ_model extends CI_Model
         $answers_newly_added = 0;
         foreach($answer_in_ids as $answer_in_id){
             $answers_newly_added++;
-            $this->TRANSACTION_model->create(array(
+            $this->READ_model->create(array(
                 'ln_type_source_id' => $in_link_type_id,
                 'ln_creator_source_id' => $en_id,
                 'ln_previous_idea_id' => $ins[0]['in_id'],
