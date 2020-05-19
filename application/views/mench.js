@@ -487,13 +487,14 @@ function toggle_search(){
 
 
 function read_toggle_saved(in_id){
-    $('.toggle_saved').toggleClass('hidden');
+    $('.toggle_saved, .sharethis-inline-share-buttons').toggleClass('hidden');
     $.post("/read/read_toggle_saved", {
         in_id:in_id,
     }, function (data) {
         if (!data.status) {
             alert(data.message);
             $('.toggle_saved').toggleClass('hidden');
+
         }
     });
 }
