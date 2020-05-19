@@ -1123,7 +1123,7 @@ function echo_in_previous_read($in_id, $recipient_en){
     $in_level_up = 0;
     $previous_level_id = 0; //The ID of the Idea one level up
     $player_read_ids = $CI->READ_model->read_ids($recipient_en['en_id']);
-    $top_completion_rate = null;
+    $read_list_ui = null;
     $en_all_11035 = $CI->config->item('en_all_11035'); //MENCH NAVIGATION
 
     if(in_array($in_id, $player_read_ids)){
@@ -1155,15 +1155,14 @@ function echo_in_previous_read($in_id, $recipient_en){
                     $in_level_up++;
 
                     if ($parent_in_id == $intersect) {
-                        $top_completion_rate = $completion_rate;
-                        $top_completion_rate['top_in'] = $ins_this[0];
+                        $read_list_ui .= echo_in_read($ins_this[0], null, false, $completion_rate);
                         break;
                     }
                 }
-                break; //Just look into the first intersect for now (Expand later)
+                //break; //Just look into the first intersect for now (Expand later)
             }
-            if($top_completion_rate){
-                break;
+            if($read_list_ui){
+                //break;
             }
         }
     }
@@ -1191,11 +1190,11 @@ function echo_in_previous_read($in_id, $recipient_en){
         $ui .= '<div class="inline-block margin-top-down pull-left edit_select_answer"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_toggle_saved('.$in_id.')"><i class="fas fa-bookmark toggle_saved '.( $is_saveded ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saveded ? 'hidden' : '' ).'"></i></a></div>';
 
         //Main Reads:
-        if($top_completion_rate){
+        if($read_list_ui){
 
             $ui .= '<div class="main_reads_bottom hidden">';
             $ui .= '<div class="list-group">';
-            $ui .= echo_in_read($top_completion_rate['top_in'], null, false, $top_completion_rate);
+            $ui .= $read_list_ui;
             $ui .= '</div>';
             $ui .= '</div>';
 
