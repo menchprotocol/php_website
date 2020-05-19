@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-19 15:28:53 PST
+//Generated 2020-05-19 15:59:35 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589927333;
-$config['cache_count_transaction'] = 1211255;
-$config['cache_count_read'] = 121246;
+$config['cache_timestamp'] = 1589929175;
+$config['cache_count_transaction'] = 1211333;
+$config['cache_count_read'] = 121250;
 $config['cache_count_idea'] = 5628;
 $config['cache_count_source'] = 4867;
 
@@ -270,13 +270,13 @@ $config['en_all_12887'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
-        'm_desc' => '/ledger?any_en_id=',
+        'm_desc' => '/read/ledger?any_en_id=',
         'm_parents' => array(12887,11047,12707,10876,12588,11035,4527,7735),
     ),
     12888 => array(
         'm_icon' => '<i class="fas fa-shield-check source"></i>',
         'm_name' => 'SOURCE EXPLORE EXPERTS',
-        'm_desc' => '/plugin/12888?en_id=',
+        'm_desc' => '/source/plugin/12888?en_id=',
         'm_parents' => array(12741,6287,12887),
     ),
     7267 => array(
@@ -288,13 +288,13 @@ $config['en_all_12887'] = array(
     12712 => array(
         'm_icon' => '<i class="fad fa-lambda source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE REVIEW JSON',
-        'm_desc' => '/plugin/12712?en_id=',
+        'm_desc' => '/source/plugin/12712?en_id=',
         'm_parents' => array(12887,12741,6287),
     ),
     7279 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
-        'm_desc' => '/plugin/7279?obj=en&obj_id=',
+        'm_desc' => '/source/plugin/7279?obj=en&obj_id=',
         'm_parents' => array(6287,12741,12887,11047,3323,7287),
     ),
 );
@@ -980,13 +980,13 @@ $config['en_all_10876'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
-        'm_desc' => 'https://mench.com/ledger',
+        'm_desc' => 'https://mench.com/read/ledger',
         'm_parents' => array(12887,11047,12707,10876,12588,11035,4527,7735),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
         'm_name' => 'PLUGINS',
-        'm_desc' => 'https://mench.com/plugin',
+        'm_desc' => 'https://mench.com/source/plugin',
         'm_parents' => array(6405,6194,12699,12500,10876,11035,4527),
     ),
     6205 => array(
@@ -2653,7 +2653,7 @@ $config['en_all_6404'] = array(
     7274 => array(
         'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
         'm_name' => 'CRON JOBS',
-        'm_desc' => '/usr/bin/php /var/www/platform/index.php plugin plugin_load',
+        'm_desc' => '/usr/bin/php /var/www/platform/index.php source plugin',
         'm_parents' => array(6404,6287,6403,12999),
     ),
     12904 => array(
@@ -2717,15 +2717,15 @@ $config['en_all_6404'] = array(
         'm_parents' => array(6404),
     ),
     13005 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fas fa-bars source"></i>',
         'm_name' => 'MAX SOURCES SORTABLE',
-        'm_desc' => '20',
+        'm_desc' => '34',
         'm_parents' => array(6404),
     ),
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.393',
+        'm_desc' => 'v1.394',
         'm_parents' => array(6404),
     ),
     12156 => array(
@@ -2915,49 +2915,49 @@ $config['en_all_11047'] = array(
     7264 => array(
         'm_icon' => '<i class="fad fa-sitemap idea"></i>',
         'm_name' => 'IDEA BIRDS EYE MARKS',
-        'm_desc' => '/plugin/7264?in_id=',
+        'm_desc' => '/source/plugin/7264?in_id=',
         'm_parents' => array(11047,6287),
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA READ SECONDS',
-        'm_desc' => '/plugin/4356?in_id=',
+        'm_desc' => '/source/plugin/4356?in_id=',
         'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
     11049 => array(
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA REVIEW JSON',
-        'm_desc' => '/plugin/11049?in_id=',
+        'm_desc' => '/source/plugin/11049?in_id=',
         'm_parents' => array(12741,6287,11047),
     ),
     12733 => array(
         'm_icon' => '<i class="fad fa-code read"></i>',
         'm_name' => 'IDEA REVIEW READ',
-        'm_desc' => '/plugin/12733?in_id=',
+        'm_desc' => '/source/plugin/12733?in_id=',
         'm_parents' => array(11047,12741,12701,6287),
     ),
     7275 => array(
         'm_icon' => '<i class="fad fa-sync idea"></i>',
         'm_name' => 'IDEA SYNC COMMON BASE',
-        'm_desc' => '/plugin/7275?in_id=',
+        'm_desc' => '/source/plugin/7275?in_id=',
         'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     7276 => array(
         'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SYNC EXTRA INSIGHTS',
-        'm_desc' => '/plugin/7276?in_id=',
+        'm_desc' => '/source/plugin/7276?in_id=',
         'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
-        'm_desc' => '/ledger?any_in_id=',
+        'm_desc' => '/read/ledger?any_in_id=',
         'm_parents' => array(12887,11047,12707,10876,12588,11035,4527,7735),
     ),
     7279 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
-        'm_desc' => '/plugin/7279?obj=in&obj_id=',
+        'm_desc' => '/source/plugin/7279?obj=in&obj_id=',
         'm_parents' => array(6287,12741,12887,11047,3323,7287),
     ),
 );

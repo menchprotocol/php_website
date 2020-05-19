@@ -747,7 +747,7 @@ function echo_input_text_update(this_handler){
     var handler = '.text__'+modify_data['cache_en_id']+'_'+modify_data['object_id'];
     $(handler).addClass('dynamic_saving');
 
-    $.post("/ledger/echo_input_text_update", modify_data, function (data) {
+    $.post("/read/echo_input_text_update", modify_data, function (data) {
 
         if (!data.status) {
 

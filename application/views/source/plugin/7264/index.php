@@ -33,6 +33,6 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])){
     echo '</form>';
 
     //Load the report via Ajax here on page load:
-    echo '<div id="ajax_7264"></div>';
+    echo '<div id="plugin_7264"></div>';
 
 }

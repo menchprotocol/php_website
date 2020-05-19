@@ -20,7 +20,7 @@ echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br 
 
 echo '/*<br />
  * Keep a cache of certain parts of the idea for faster processing<br />
- * See here for more details: '.$this->config->item('base_url').'source/4527<br />
+ * See source @4527 for more details<br />
  *<br />
  */<br /><br />';
 

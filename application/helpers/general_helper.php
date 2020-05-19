@@ -378,7 +378,7 @@ function en_count_db_references($en_id, $return_html = true){
 
     //Plugin?
     if(in_array($en_id, $CI->config->item('en_ids_6287'))){
-        $en_count_db_references[6287] = ( $return_html ? '<a href="/plugin/'.$en_id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6194[6287]['m_name'].'">'.$en_all_6194[6287]['m_icon'].'</a>' : 1 );
+        $en_count_db_references[6287] = ( $return_html ? '<a href="/source/plugin/'.$en_id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6194[6287]['m_name'].'">'.$en_all_6194[6287]['m_icon'].'</a>' : 1 );
     }
 
     return $en_count_db_references;
@@ -622,7 +622,7 @@ function current_mench($part1 = null){
     }
 
 
-    if($part1=='source' || $part1=='plugin' || $part1=='cron'){
+    if($part1=='source'){
         return array(
             'x_id' => 4536,
             'x_class' => 'source',

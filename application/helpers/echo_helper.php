@@ -395,7 +395,7 @@ function echo_ln($ln, $is_parent_tr = false)
 
 
     //Transaction ID
-    $ui .= '<div class="simple-line"><a href="/ledger?ln_id='.$ln['ln_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4367]['m_icon']. '</span>'.$ln['ln_id'].'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/read/ledger?ln_id='.$ln['ln_id'].'" data-toggle="tooltip" data-placement="top" title="'.$en_all_4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$en_all_4341[4367]['m_icon']. '</span>'.$ln['ln_id'].'</a></div>';
 
 
     //Status
@@ -431,7 +431,7 @@ function echo_ln($ln, $is_parent_tr = false)
 
         //Metadata
         if(strlen($ln['ln_metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="/plugin/12722?ln_id=' . $ln['ln_id'] . '" class="montserrat"><span class="icon-block">'.$en_all_4341[6103]['m_icon']. '</span>'.$en_all_4341[6103]['m_name']. '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/source/plugin/12722?ln_id=' . $ln['ln_id'] . '" class="montserrat"><span class="icon-block">'.$en_all_4341[6103]['m_icon']. '</span>'.$en_all_4341[6103]['m_name']. '</a></div>';
         }
 
         //External ID

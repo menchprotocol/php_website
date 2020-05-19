@@ -10,7 +10,7 @@ echo '<h1 style="padding-top:5px;"><span class="icon-block">'.echo_en_icon($en_a
 echo '<div class="list-group">';
 foreach($this->config->item('en_all_6287') as $en_id => $m) {
 
-    echo '<a href="/plugin/'.$en_id.'" class="list-group-item no-side-padding">';
+    echo '<a href="/source/plugin/'.$en_id.'" class="list-group-item no-side-padding">';
 
     //SOURCE
     echo '<span class="icon-block">' . echo_en_icon($m['m_icon']) . '</span>';
