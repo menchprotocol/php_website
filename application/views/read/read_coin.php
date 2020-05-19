@@ -6,7 +6,10 @@
         type="text/javascript"></script>
 
 <div class="container">
-<?php
+
+    <div class="sharethis-inline-share-buttons"></div>
+
+    <?php
 
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 $metadata = unserialize($in['in_metadata']);
@@ -553,7 +556,4 @@ if(!$read_in_home){
 }
 
 ?>
-
-    <div class="sharethis-inline-share-buttons"></div>
-
 </div>
