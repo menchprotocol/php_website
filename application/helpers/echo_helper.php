@@ -1162,7 +1162,7 @@ function echo_in_previous_read($in_id, $recipient_en){
                 //break; //Just look into the first intersect for now (Expand later)
             }
             if($read_list_ui){
-                //break;
+                break;
             }
         }
     }
