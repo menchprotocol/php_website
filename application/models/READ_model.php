@@ -400,7 +400,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span class="'.$single_word_class.'"><span class="img-block icon-block-xs">'.echo_en_icon($ens[0]['en_icon']).'</span><span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span class="'.$single_word_class.'"><span class="img-block">'.echo_en_icon($ens[0]['en_icon']).'</span>&nbsp;<span class="text__6197_' . $ens[0]['en_id']  . '">' . $ens[0]['en_name']  . '</span></span>', $output_body_message);
 
                 }
 
