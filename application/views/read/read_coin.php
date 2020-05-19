@@ -7,8 +7,6 @@
 
 <div class="container">
 
-    <div class="sharethis-inline-share-buttons"></div>
-
     <?php
 
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
@@ -175,6 +173,8 @@ if ($read_in_home) {
 
 //READ TITLE
 echo '<h1 class="block-one" '.( !$recipient_en['en_id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.echo_in_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . echo_in_title($in) . '</span></h1>';
+
+echo '<div class="sharethis-inline-share-buttons"></div>';
 
 
 //MESSAGES
