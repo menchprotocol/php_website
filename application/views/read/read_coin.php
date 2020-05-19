@@ -516,7 +516,8 @@ if(!$read_in_home){
     }
 }
 
-//Share this button, visible after saving:
+
+//Share this button, only visible after saving:
 echo '<div class="share-this hidden space-content">';
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div style="padding-bottom:13px;">You may also share this idea using:</div>';
@@ -524,5 +525,7 @@ echo '<div class="share-this hidden space-content">';
         echo '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="https://mench.com/'.$in['in_id'].'" data-title="'.$in['in_title'].'" data-image="'.$in_fetch_cover.'" data-description="'.strip_tags($messages_ui).'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
     }
 echo '</div>';
+
+
 ?>
 </div>

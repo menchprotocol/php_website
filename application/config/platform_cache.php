@@ -8,18 +8,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-19 14:28:48 PST
+//Generated 2020-05-19 14:37:18 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589923728;
-$config['cache_count_transaction'] = 1211005;
-$config['cache_count_read'] = 121228;
+$config['cache_timestamp'] = 1589924238;
+$config['cache_count_transaction'] = 1211043;
+$config['cache_count_read'] = 121232;
 $config['cache_count_idea'] = 5628;
 $config['cache_count_source'] = 4867;
 
 
 
-//MENCH SHARE THIS CUSTOM BUTTONS:
+//MENCH SOCIAL SHARING:
 $config['en_ids_13023'] = array(3288,3300,12889,3302,12890,13026,3099);
 $config['en_all_13023'] = array(
     3288 => array(
@@ -2719,7 +2719,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.39122',
+        'm_desc' => 'v1.393',
         'm_parents' => array(6404),
     ),
     12156 => array(
@@ -2957,7 +2957,7 @@ $config['en_all_11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['en_ids_11035'] = array(11068,6225,12749,3000,12899,12707,12991,12211,10573,4535,3084,7291,4341,4430,12205,6287,12750,12969,12896,7256,4269,4536,4997,12275,13007,13008,10957,7540);
+$config['en_ids_11035'] = array(11068,6225,12749,3000,12899,12707,12991,12211,10573,4535,3084,7291,4341,4430,13023,12205,6287,12750,12969,12896,7256,4269,4536,4997,12275,13007,13008,10957,7540);
 $config['en_all_11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3042,6 +3042,12 @@ $config['en_all_11035'] = array(
         'm_name' => 'MENCH PLAYERS',
         'm_desc' => '',
         'm_parents' => array(4983,1278,11035,10573),
+    ),
+    13023 => array(
+        'm_icon' => '<i class="fas fa-share-alt"></i>',
+        'm_name' => 'MENCH SOCIAL SHARING',
+        'm_desc' => '',
+        'm_parents' => array(11035,4527,13024,7305),
     ),
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -4123,10 +4129,10 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,7305),
     ),
     13023 => array(
-        'm_icon' => '<i class="fas fa-share-alt-square"></i>',
-        'm_name' => 'MENCH SHARE THIS CUSTOM BUTTONS',
+        'm_icon' => '<i class="fas fa-share-alt"></i>',
+        'm_name' => 'MENCH SOCIAL SHARING',
         'm_desc' => '',
-        'm_parents' => array(4527,13024,7305),
+        'm_parents' => array(11035,4527,13024,7305),
     ),
     12112 => array(
         'm_icon' => '<i class="fas fa-text" aria-hidden="true"></i>',

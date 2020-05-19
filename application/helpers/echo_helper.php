@@ -1196,6 +1196,11 @@ function echo_in_previous_read($in_id, $recipient_en){
 
         }
 
+    } else {
+
+        //At the main read Page, just allow to share:
+        $ui .= '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.share-this\').toggleClass(\'hidden\');" title="'.$en_all_11035[13023]['m_name'].'">'.$en_all_11035[13023]['m_icon'].'</a></div>';
+
     }
 
     return $ui;
