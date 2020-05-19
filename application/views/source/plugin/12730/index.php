@@ -13,7 +13,7 @@ $replace_with_is_confirmed = false;
 
 if($search_for_is_set){
 
-    $matching_results = $this->SOURCE_model->en_fetch(array(
+    $matching_results = $this->SOURCE_model->fetch(array(
         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
         'LOWER(en_name) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
@@ -54,7 +54,7 @@ if($search_for_is_set){
 
                 if($replace_with_is_confirmed){
                     //Update idea:
-                    $this->SOURCE_model->en_update($en['en_id'], array(
+                    $this->SOURCE_model->update($en['en_id'], array(
                         'en_name' => $new_outcome,
                     ), true, $session_en['en_id']);
                 }

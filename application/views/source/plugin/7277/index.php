@@ -15,7 +15,7 @@
 
 //Fetch all valid variable names:
 $valid_variables = array();
-foreach($this->LEDGER_model->ln_fetch(array(
+foreach($this->TRANSACTION_model->fetch(array(
     'ln_profile_source_id' => 6232, //Variables Names
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -29,7 +29,7 @@ foreach($this->LEDGER_model->ln_fetch(array(
 $invalid_variables = array();
 
 //Idea Metadata
-foreach($this->IDEA_model->in_fetch(array()) as $in){
+foreach($this->IDEA_model->fetch(array()) as $in){
 
     if(strlen($in['in_metadata']) < 1){
         continue;
@@ -52,7 +52,7 @@ foreach($this->IDEA_model->in_fetch(array()) as $in){
 }
 
 //Player Metadata
-foreach($this->SOURCE_model->en_fetch(array()) as $en){
+foreach($this->SOURCE_model->fetch(array()) as $en){
 
     if(strlen($en['en_metadata']) < 1){
         continue;
@@ -81,7 +81,7 @@ $ln_metadata = array(
 
 if(count($invalid_variables) > 0){
     //Did we have anything to delete? Report with system bug:
-    $this->LEDGER_model->ln_create(array(
+    $this->TRANSACTION_model->create(array(
         'ln_content' => 'cron__7277() deleted '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
         'ln_type_source_id' => 4246, //Platform Bug Reports
         'ln_profile_source_id' => 6232, //Variables Names

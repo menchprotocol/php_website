@@ -37,7 +37,7 @@ if(is_array($current_sign_in_attempts) && count($current_sign_in_attempts) > 0){
 if(count($current_sign_in_attempt) == 0){
 
     //Log link:
-    $current_sign_in_attempt = $this->LEDGER_model->ln_create($this_attempt);
+    $current_sign_in_attempt = $this->TRANSACTION_model->create($this_attempt);
 
     //Grow the array:
     array_push($current_sign_in_attempts, $current_sign_in_attempt);
@@ -115,8 +115,8 @@ if(count($current_sign_in_attempt) == 0){
 
             <!-- Full Name -->
             <div class="margin-top-down">
-                <span><?= $en_all_4269[6197]['m_icon'].' '.$en_all_4269[6197]['m_name'] ?>:</span>
-                <div class="form-group is-empty"><input type="text" placeholder="<?= $en_all_4269[6197]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat"></div>
+                <span><?= $en_all_4269[13025]['m_icon'].' '.$en_all_4269[13025]['m_name'] ?>:</span>
+                <div class="form-group is-empty"><input type="text" placeholder="<?= $en_all_4269[13025]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat"></div>
             </div>
 
             <!-- New Password -->

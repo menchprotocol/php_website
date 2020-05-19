@@ -14,8 +14,8 @@ if(isset($_GET['update_user_icons'])){
     }
 
     $updated = 0;
-    foreach($this->LEDGER_model->ln_fetch($base_filters, array('en_portfolio'), 0) as $mench_user){
-        $updated += $this->SOURCE_model->en_update($mench_user['en_id'], array(
+    foreach($this->TRANSACTION_model->fetch($base_filters, array('en_portfolio'), 0) as $mench_user){
+        $updated += $this->SOURCE_model->update($mench_user['en_id'], array(
             'en_icon' => random_player_avatar(),
         ));
     }

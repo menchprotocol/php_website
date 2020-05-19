@@ -2,7 +2,7 @@
 <div class="container">
     <?php
 
-    $player_saved = $this->LEDGER_model->ln_fetch(array(
+    $player_saved = $this->TRANSACTION_model->fetch(array(
         'ln_profile_source_id' => $session_en['en_id'],
         'ln_type_source_id' => 12896, //SAVED
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC

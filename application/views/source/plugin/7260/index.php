@@ -3,7 +3,7 @@
 $en_all_4737 = $this->config->item('en_all_4737'); // Idea Status
 
 
-$orphan_ins = $this->IDEA_model->in_fetch(array(
+$orphan_ins = $this->IDEA_model->fetch(array(
     ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE in_id=ln_next_idea_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* ACTIVE */.')) ' => null,
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     'in_id !=' => config_var(12156), //Not the Starting Idea
@@ -21,10 +21,10 @@ if(count($orphan_ins) > 0){
         if(isset($_GET['take_action']) && $_GET['take_action']=='delete_all'){
 
             //Delete idea links:
-            $links_deleted = $this->IDEA_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
+            $links_deleted = $this->IDEA_model->unlink($orphan_in['in_id'] , $session_en['en_id']);
 
             //Delete idea:
-            $this->IDEA_model->in_update($orphan_in['in_id'], array(
+            $this->IDEA_model->update($orphan_in['in_id'], array(
                 'in_status_source_id' => 6182, /* Idea Deleted */
             ), true, $session_en['en_id']);
 

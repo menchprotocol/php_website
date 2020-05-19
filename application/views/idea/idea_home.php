@@ -6,7 +6,7 @@
 
     //IDEA BOOKMARKS
     echo '<div id="myIdeas" class="list-group">';
-    foreach($this->LEDGER_model->ln_fetch(array(
+    foreach($this->TRANSACTION_model->fetch(array(
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'ln_type_source_id' => 10573, //IDEA NOTES Bookmarks

@@ -14,9 +14,9 @@ if(isset($_GET['in_id'])){
     $filters['in_id'] = intval($_GET['in_id']);
 }
 
-$published_ins = $this->IDEA_model->in_fetch($filters);
+$published_ins = $this->IDEA_model->fetch($filters);
 foreach($published_ins as $published_in){
-    $idea = $this->IDEA_model->in_metadata_common_base($published_in);
+    $idea = $this->IDEA_model->metadata_common_base($published_in);
 }
 
 $total_time = time() - $start_time;

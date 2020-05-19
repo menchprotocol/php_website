@@ -4,7 +4,7 @@ if(!isset($_GET['in_id']) || !intval($_GET['in_id'])){
     echo 'Missing Idea ID (Append ?in_id=IDEA_ID in URL)';
 } else {
     //Fetch Idea:
-    $ins = $this->IDEA_model->in_fetch(array(
+    $ins = $this->IDEA_model->fetch(array(
         'in_id' => intval($_GET['in_id']),
     ));
     if(count($ins) > 0){

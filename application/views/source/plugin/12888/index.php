@@ -7,13 +7,13 @@ if(!isset($_GET['en_id']) || !intval($_GET['en_id'])){
 } else {
 
     //Fetch Source:
-    $ens = $this->SOURCE_model->en_fetch(array(
+    $ens = $this->SOURCE_model->fetch(array(
         'en_id' => intval($_GET['en_id']),
     ));
     if(count($ens) > 0){
 
         //unserialize metadata if needed:
-        echo_json($this->SOURCE_model->en_metadat_experts($ens[0]));
+        echo_json($this->SOURCE_model->metadat_experts($ens[0]));
 
     } else {
         echo 'Source @'.intval($_GET['en_id']).' not found!';

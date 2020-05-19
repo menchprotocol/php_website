@@ -2,7 +2,7 @@
 $timestamp = time();
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 //Fetch Reads:
-$player_reads = $this->LEDGER_model->ln_fetch(array(
+$player_reads = $this->TRANSACTION_model->fetch(array(
     'ln_creator_source_id' => $session_en['en_id'],
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
@@ -40,7 +40,7 @@ if(!count($player_reads)){
 
     echo '<div id="home_reads" class="cover-list" style="padding-top:21px; padding-left:34px;">';
     foreach($player_reads as $in) {
-        $completion_rate = $this->READ_model->read_completion_progress($session_en['en_id'], $in);
+        $completion_rate = $this->READ_model->completion_progress($session_en['en_id'], $in);
         echo echo_in_cover($in, true, null, $completion_rate);
         if($completion_rate['completion_percentage']!=100 && $all_completed){
             $all_completed = false;

@@ -312,7 +312,7 @@ $is_source = en_is_source($en['en_id']);
 
                 } elseif ($acc_en_id == 3288 /* Email */) {
 
-                    $user_emails = $this->LEDGER_model->ln_fetch(array(
+                    $user_emails = $this->TRANSACTION_model->fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_portfolio_source_id' => $session_en['en_id'],
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -347,7 +347,7 @@ $is_source = en_is_source($en['en_id']);
 
             //SOURCE PROFILE
             //FETCH ALL PARENTS
-            $en__profiles = $this->LEDGER_model->ln_fetch(array(
+            $en__profiles = $this->TRANSACTION_model->fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
@@ -379,7 +379,7 @@ $is_source = en_is_source($en['en_id']);
         } elseif($ln_type_source_id==11029){
 
             //SOURCE PORTFOLIO
-            $en__portfolio_count = $this->LEDGER_model->ln_fetch(array(
+            $en__portfolio_count = $this->TRANSACTION_model->fetch(array(
                 'ln_profile_source_id' => $en['en_id'],
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -403,7 +403,7 @@ $is_source = en_is_source($en['en_id']);
                 }
 
                 //Fetch Portfolios
-                $en__portfolios = $this->LEDGER_model->ln_fetch(array(
+                $en__portfolios = $this->TRANSACTION_model->fetch(array(
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
@@ -524,7 +524,7 @@ $is_source = en_is_source($en['en_id']);
 
                 //Anything sorted so far?
                 if(superpower_active(10967, true)){
-                    $en__portfolio_sort_count = $this->LEDGER_model->ln_fetch(array(
+                    $en__portfolio_sort_count = $this->TRANSACTION_model->fetch(array(
                         'ln_order >' => 0, //Sorted
                         'ln_profile_source_id' => $en['en_id'],
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -570,8 +570,8 @@ $is_source = en_is_source($en['en_id']);
                 //Source Status Filters:
                 if(superpower_active(12701, true)){
 
-                    $en_count = $this->SOURCE_model->en_child_count($en['en_id'], $this->config->item('en_ids_7358') /* ACTIVE */);
-                    $child_en_filters = $this->LEDGER_model->ln_fetch(array(
+                    $en_count = $this->SOURCE_model->child_count($en['en_id'], $this->config->item('en_ids_7358') /* ACTIVE */);
+                    $child_en_filters = $this->TRANSACTION_model->fetch(array(
                         'ln_profile_source_id' => $en['en_id'],
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
@@ -642,14 +642,14 @@ $is_source = en_is_source($en['en_id']);
             );
 
             //COUNT ONLY
-            $item_counters = $this->LEDGER_model->ln_fetch($in_notes_filters, array('in_next'), 0, 0, array(), 'COUNT(in_id) as totals');
+            $item_counters = $this->TRANSACTION_model->fetch($in_notes_filters, array('in_next'), 0, 0, array(), 'COUNT(in_id) as totals');
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
             if($has_superpower){
                 if($counter>0){
 
-                    $in_notes_query = $this->LEDGER_model->ln_fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
+                    $in_notes_query = $this->TRANSACTION_model->fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($in_notes_query as $count => $in_notes) {
                         $this_tab .= echo_in($in_notes, 0, false, false, $in_notes['ln_content'], null, false);
@@ -671,12 +671,12 @@ $is_source = en_is_source($en['en_id']);
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             );
-            $player_reads = $this->LEDGER_model->ln_fetch($in_reads_filters, array('in_previous'), 1, 0, array(), 'COUNT(ln_id) as totals');
+            $player_reads = $this->TRANSACTION_model->fetch($in_reads_filters, array('in_previous'), 1, 0, array(), 'COUNT(ln_id) as totals');
             $counter = $player_reads[0]['totals'];
 
             if($has_superpower){
                 if($counter > 0){
-                    $in_reads_query = $this->LEDGER_model->ln_fetch($in_reads_filters, array('in_previous'), config_var(11064), 0, array('ln_order' => 'ASC'));
+                    $in_reads_query = $this->TRANSACTION_model->fetch($in_reads_filters, array('in_previous'), config_var(11064), 0, array('ln_order' => 'ASC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($in_reads_query as $count => $in_notes) {
                         $this_tab .= echo_in($in_notes);

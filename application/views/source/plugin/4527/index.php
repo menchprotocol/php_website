@@ -8,7 +8,7 @@
  * */
 
 //First first all sources that have Cache in PHP Config @4527 as their parent:
-$config_ens = $this->LEDGER_model->ln_fetch(array(
+$config_ens = $this->TRANSACTION_model->fetch(array(
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -28,17 +28,17 @@ echo '/*<br />
 
 //PLATFORM STATS
 $cache_timestamp = time();
-$transactions = $this->LEDGER_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$read_coins = $this->LEDGER_model->ln_fetch(array(
+$transactions = $this->TRANSACTION_model->fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+$read_coins = $this->TRANSACTION_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$in_coins = $this->LEDGER_model->ln_fetch(array(
+$in_coins = $this->TRANSACTION_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
     'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$en_coins = $this->LEDGER_model->ln_fetch(array(
+$en_coins = $this->TRANSACTION_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
 ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -60,7 +60,7 @@ echo '<br /><br />';
 foreach($config_ens as $en){
 
     //Now fetch all its children:
-    $children = $this->LEDGER_model->ln_fetch(array(
+    $children = $this->TRANSACTION_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
         'ln_profile_source_id' => $en['ln_portfolio_source_id'],
@@ -89,7 +89,7 @@ foreach($config_ens as $en){
 
         //Fetch all parents for this child:
         $child_parent_ids = array(); //To be populated soon
-        $child_parents = $this->LEDGER_model->ln_fetch(array(
+        $child_parents = $this->TRANSACTION_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
             'ln_portfolio_source_id' => $child['en_id'],

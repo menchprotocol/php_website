@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class LEDGER_model extends CI_Model
+class TRANSACTION_model extends CI_Model
 {
 
     /*
@@ -15,7 +15,7 @@ class LEDGER_model extends CI_Model
         parent::__construct();
     }
 
-    function ln_create($insert_columns, $external_sync = false)
+    function create($insert_columns, $external_sync = false)
     {
 
         //Set some defaults:
@@ -72,10 +72,10 @@ class LEDGER_model extends CI_Model
         if ($insert_columns['ln_id'] < 1) {
 
             //This should not happen:
-            $this->LEDGER_model->ln_create(array(
+            $this->TRANSACTION_model->create(array(
                 'ln_type_source_id' => 4246, //Platform Bug Reports
                 'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
-                'ln_content' => 'ln_create() Failed to create',
+                'ln_content' => 'transaction_create() Failed to create',
                 'ln_metadata' => array(
                     'input' => $insert_columns,
                 ),
@@ -111,7 +111,7 @@ class LEDGER_model extends CI_Model
             } elseif($insert_columns['ln_profile_source_id'] > 0){
                 $en_id = $insert_columns['ln_profile_source_id'];
             }
-            $this->SOURCE_model->en_match_ln_status($insert_columns['ln_creator_source_id'], array(
+            $this->SOURCE_model->match_ln_status($insert_columns['ln_creator_source_id'], array(
                 'en_id' => $en_id,
             ));
         }
@@ -123,25 +123,94 @@ class LEDGER_model extends CI_Model
             } elseif($insert_columns['ln_previous_idea_id'] > 0){
                 $in_id = $insert_columns['ln_previous_idea_id'];
             }
-            $this->IDEA_model->in_match_ln_status($insert_columns['ln_creator_source_id'], array(
+            $this->IDEA_model->match_ln_status($insert_columns['ln_creator_source_id'], array(
                 'in_id' => $in_id,
             ));
         }
 
-        //Do we need to check for entity tagging after read success?
+        //Do we need to check for source tagging after read success?
         if(in_array($insert_columns['ln_type_source_id'] , $this->config->item('en_ids_6255')) && in_array($insert_columns['ln_status_source_id'] , $this->config->item('en_ids_7359')) && $insert_columns['ln_previous_idea_id'] > 0 && $insert_columns['ln_creator_source_id'] > 0){
 
-            //See what this is:
-            $detected_ln_type = ln_detect_type($insert_columns['ln_content']);
 
+            //AUTO COMPLETES?
+            $in__next_autoscan = array();
+            $ins = $this->IDEA_model->fetch(array(
+                'in_id' => $insert_columns['ln_previous_idea_id'],
+            ));
+
+            if(in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7712'))){
+
+                //IDEA TYPE SELECT NEXT
+                $in__next_autoscan = $this->TRANSACTION_model->fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_7704')) . ')' => null, //READ ANSWERED
+                    'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
+                    'ln_previous_idea_id' => $ins[0]['in_id'],
+                    'ln_next_idea_id>' => 0, //With an answer
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                    'in_type_source_id IN (' . join(',', $this->config->item('en_ids_12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
+                ), array('in_next'), 0);
+
+            } elseif(in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_13022'))){
+
+                //IDEA TYPE ALL NEXT
+                $in__next_autoscan = $this->TRANSACTION_model->fetch(array(
+                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'ln_previous_idea_id' => $ins[0]['in_id'],
+                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+                    'in_type_source_id IN (' . join(',', $this->config->item('en_ids_12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
+                ), array('in_next'), 0);
+
+            }
+
+            foreach($in__next_autoscan as $in_next){
+                //IS IT EMPTY?
+                if(
+                    //No Messages
+                    !count($this->TRANSACTION_model->fetch(array(
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                        'ln_type_source_id' => 4231, //IDEA NOTES Messages
+                        'ln_next_idea_id' => $in_next['in_id'],
+                    ))) &&
+
+                    //No Next
+                    !count($this->TRANSACTION_model->fetch(array(
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                        'ln_previous_idea_id' => $in_next['in_id'],
+                    ))) &&
+
+                    //Not Already Completed:
+                    !count($this->TRANSACTION_model->fetch(array(
+                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
+                        'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
+                        'ln_previous_idea_id' => $in_next['in_id'],
+                    )))){
+
+                        //Mark as complete:
+                        $this->READ_model->is_complete($in_next, array(
+                            'ln_type_source_id' => 4559, //READ MESSAGES
+                            'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
+                            'ln_previous_idea_id' => $in_next['in_id'],
+                        ));
+
+                }
+            }
+
+
+
+
+            //SOURCE APPEND?
+            $detected_ln_type = ln_detect_type($insert_columns['ln_content']);
             if ($detected_ln_type['status']) {
 
-                //Any sources to append to profile?
-                foreach($this->LEDGER_model->ln_fetch(array(
+                foreach($this->TRANSACTION_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id' => 7545, //ENTITY TAGGING
-                    'ln_next_idea_id' => $insert_columns['ln_previous_idea_id'],
-                    'ln_profile_source_id >' => 0, //Entity to be tagged for this Idea
+                    'ln_type_source_id' => 7545, //SOURCE APPEND
+                    'ln_next_idea_id' => $ins[0]['in_id'],
+                    'ln_profile_source_id >' => 0, //Source to be tagged for this Idea
                 )) as $ln_tag){
 
                     //Generate stats:
@@ -151,7 +220,7 @@ class LEDGER_model extends CI_Model
 
 
                     //Assign tag if parent/child link NOT previously assigned:
-                    $existing_links = $this->LEDGER_model->ln_fetch(array(
+                    $existing_links = $this->TRANSACTION_model->fetch(array(
                         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                         'ln_profile_source_id' => $ln_tag['ln_profile_source_id'],
@@ -171,13 +240,13 @@ class LEDGER_model extends CI_Model
                             $links_edited++;
 
                             //Content value has changed, update the link:
-                            $this->LEDGER_model->ln_update($existing_links[0]['ln_id'], array(
+                            $this->TRANSACTION_model->update($existing_links[0]['ln_id'], array(
                                 'ln_content' => $insert_columns['ln_content'],
                             ), $insert_columns['ln_creator_source_id'], 10657 /* Player Link Updated Content  */);
 
                             //Also, did the link type change based on the content change?
                             if($existing_links[0]['ln_type_source_id'] != $detected_ln_type['ln_type_source_id']){
-                                $this->LEDGER_model->ln_update($existing_links[0]['ln_id'], array(
+                                $this->TRANSACTION_model->update($existing_links[0]['ln_id'], array(
                                     'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
                                 ), $insert_columns['ln_creator_source_id'], 10659 /* Player Link Updated Type */);
                             }
@@ -191,14 +260,14 @@ class LEDGER_model extends CI_Model
                             $single_selectable = $this->config->item('en_ids_'.$single_select_en_id);
                             if(is_array($single_selectable) && count($single_selectable) && in_array($ln_tag['ln_profile_source_id'], $single_selectable)){
                                 //Delete other siblings, if any:
-                                foreach($this->LEDGER_model->ln_fetch(array(
+                                foreach($this->TRANSACTION_model->fetch(array(
                                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
                                     'ln_profile_source_id IN (' . join(',', $single_selectable) . ')' => null,
                                     'ln_profile_source_id !=' => $ln_tag['ln_profile_source_id'],
                                     'ln_portfolio_source_id' => $insert_columns['ln_creator_source_id'],
                                 )) as $single_selectable_siblings_preset){
-                                    $links_deleted += $this->LEDGER_model->ln_update($single_selectable_siblings_preset['ln_id'], array(
+                                    $links_deleted += $this->TRANSACTION_model->update($single_selectable_siblings_preset['ln_id'], array(
                                         'ln_status_source_id' => 6173, //Link Deleted
                                     ), $insert_columns['ln_creator_source_id'], 10673 /* Player Link Unpublished */);
                                 }
@@ -207,7 +276,7 @@ class LEDGER_model extends CI_Model
 
                         //Create link:
                         $links_added++;
-                        $this->LEDGER_model->ln_create(array(
+                        $this->TRANSACTION_model->create(array(
                             'ln_type_source_id' => $detected_ln_type['ln_type_source_id'],
                             'ln_content' => $insert_columns['ln_content'],
                             'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
@@ -218,12 +287,12 @@ class LEDGER_model extends CI_Model
                     }
 
                     //Track Tag:
-                    $this->LEDGER_model->ln_create(array(
+                    $this->TRANSACTION_model->create(array(
                         'ln_type_source_id' => 12197, //Tag Player
                         'ln_creator_source_id' => $insert_columns['ln_creator_source_id'],
                         'ln_profile_source_id' => $ln_tag['ln_profile_source_id'],
                         'ln_portfolio_source_id' => $insert_columns['ln_creator_source_id'],
-                        'ln_previous_idea_id' => $insert_columns['ln_previous_idea_id'],
+                        'ln_previous_idea_id' => $ins[0]['in_id'],
                         'ln_content' => $links_added.' added, '.$links_edited.' edited & '.$links_deleted.' deleted with new content ['.$insert_columns['ln_content'].']',
                     ));
 
@@ -232,7 +301,7 @@ class LEDGER_model extends CI_Model
                         $session_en = superpower_assigned();
                         if($session_en && $session_en['en_id']==$insert_columns['ln_creator_source_id']){
                             //Yes, update session:
-                            $this->SOURCE_model->en_activate_session($session_en, true);
+                            $this->SOURCE_model->activate_session($session_en, true);
                         }
                     }
                 }
@@ -255,7 +324,7 @@ class LEDGER_model extends CI_Model
                 }
 
                 //Try fetching subscribers email:
-                foreach($this->LEDGER_model->ln_fetch(array(
+                foreach($this->TRANSACTION_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
@@ -279,7 +348,7 @@ class LEDGER_model extends CI_Model
                 if($insert_columns['ln_creator_source_id'] > 0){
 
                     //Fetch player details:
-                    $player_ens = $this->SOURCE_model->en_fetch(array(
+                    $player_ens = $this->SOURCE_model->fetch(array(
                         'en_id' => $insert_columns['ln_creator_source_id'],
                     ));
 
@@ -311,13 +380,13 @@ class LEDGER_model extends CI_Model
                     if (in_array(6202 , $m['m_parents'])) {
 
                         //IDEA
-                        $ins = $this->IDEA_model->in_fetch(array( 'in_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
+                        $ins = $this->IDEA_model->fetch(array( 'in_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
                         $html_message .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/idea/go/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 
                         //SOURCE
-                        $ens = $this->SOURCE_model->en_fetch(array( 'en_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
+                        $ens = $this->SOURCE_model->fetch(array( 'en_id' => $insert_columns[$en_all_6232[$en_id]['m_desc']] ));
                         $html_message .= '<div>' . $m['m_name'] . ': <a href="https://mench.com/source/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
 
                     } elseif (in_array(4367 , $m['m_parents'])) {
@@ -336,11 +405,11 @@ class LEDGER_model extends CI_Model
                 $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/source/5967" target="_blank">@5967</a></div>';
 
                 //Send email:
-                $dispatched_email = $this->COMMUNICATION_model->send_email($sub_emails, $subject, $html_message);
+                $dispatched_email = $this->READ_model->send_email($sub_emails, $subject, $html_message);
 
                 //Log emails sent:
                 foreach($sub_en_ids as $to_en_id){
-                    $this->LEDGER_model->ln_create(array(
+                    $this->TRANSACTION_model->create(array(
                         'ln_type_source_id' => 5967, //Link Carbon Copy Email
                         'ln_creator_source_id' => $to_en_id, //Sent to this user
                         'ln_metadata' => $dispatched_email, //Save a copy of email
@@ -348,7 +417,7 @@ class LEDGER_model extends CI_Model
 
                         //Import potential Idea/source connections from link:
                         'ln_next_idea_id' => $insert_columns['ln_next_idea_id'],
-                        'ln_previous_idea_id' => $insert_columns['ln_previous_idea_id'],
+                        'ln_previous_idea_id' => $ins[0]['in_id'],
                         'ln_portfolio_source_id' => $insert_columns['ln_portfolio_source_id'],
                         'ln_profile_source_id' => $insert_columns['ln_profile_source_id'],
                     ));
@@ -356,26 +425,12 @@ class LEDGER_model extends CI_Model
             }
         }
 
-
-
-
-
-        //See if this is a Link Idea Subscription Types?
-        $related_ins = array();
-        if($insert_columns['ln_next_idea_id'] > 0){
-            array_push($related_ins, $insert_columns['ln_next_idea_id']);
-        }
-        if($insert_columns['ln_previous_idea_id'] > 0){
-            array_push($related_ins, $insert_columns['ln_previous_idea_id']);
-        }
-
-
         //Return:
         return $insert_columns;
 
     }
 
-    function ln_fetch($match_columns = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('ln_id' => 'DESC'), $select = '*', $group_by = null)
+    function fetch($match_columns = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('ln_id' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
@@ -422,7 +477,7 @@ class LEDGER_model extends CI_Model
         return $q->result_array();
     }
 
-    function ln_update($id, $update_columns, $ln_creator_source_id = 0, $ln_type_source_id = 0, $ln_content = '')
+    function update($id, $update_columns, $ln_creator_source_id = 0, $ln_type_source_id = 0, $ln_content = '')
     {
 
         if (count($update_columns) == 0) {
@@ -433,7 +488,7 @@ class LEDGER_model extends CI_Model
 
         if($ln_creator_source_id > 0){
             //Fetch link before updating:
-            $before_data = $this->LEDGER_model->ln_fetch(array(
+            $before_data = $this->TRANSACTION_model->fetch(array(
                 'ln_id' => $id,
             ));
         }
@@ -486,10 +541,10 @@ class LEDGER_model extends CI_Model
                         } elseif(in_array($key, array('ln_profile_source_id', 'ln_portfolio_source_id'))) {
 
                             //Fetch new/old source names:
-                            $before_ens = $this->SOURCE_model->en_fetch(array(
+                            $before_ens = $this->SOURCE_model->fetch(array(
                                 'en_id' => $before_data[0][$key],
                             ));
-                            $after_ens = $this->SOURCE_model->en_fetch(array(
+                            $after_ens = $this->SOURCE_model->fetch(array(
                                 'en_id' => $value,
                             ));
 
@@ -498,10 +553,10 @@ class LEDGER_model extends CI_Model
                         } elseif(in_array($key, array('ln_previous_idea_id', 'ln_next_idea_id'))) {
 
                             //Fetch new/old Idea outcomes:
-                            $before_ins = $this->IDEA_model->in_fetch(array(
+                            $before_ins = $this->IDEA_model->fetch(array(
                                 'in_id' => $before_data[0][$key],
                             ));
-                            $after_ins = $this->IDEA_model->in_fetch(array(
+                            $after_ins = $this->IDEA_model->fetch(array(
                                 'in_id' => $value,
                             ));
 
@@ -535,7 +590,7 @@ class LEDGER_model extends CI_Model
 
             if(strlen($ln_content) > 0 && count($fields_changed) > 0){
                 //Value has changed, log link:
-                $this->LEDGER_model->ln_create(array(
+                $this->TRANSACTION_model->create(array(
                     'ln_parent_transaction_id' => $id, //Link Reference
                     'ln_creator_source_id' => $ln_creator_source_id,
                     'ln_type_source_id' => $ln_type_source_id,
@@ -556,10 +611,10 @@ class LEDGER_model extends CI_Model
         return $affected_rows;
     }
 
-    function ln_max_order($match_columns)
+    function max_order($match_columns)
     {
 
-        //Counts the current highest order value
+        //Fetches the maximum order value
         $this->db->select('MAX(ln_order) as largest_order');
         $this->db->from('mench_ledger');
         foreach($match_columns as $key => $value) {
@@ -567,12 +622,8 @@ class LEDGER_model extends CI_Model
         }
         $q = $this->db->get();
         $stats = $q->row_array();
-        if (count($stats) > 0) {
-            return intval($stats['largest_order']);
-        } else {
-            //Nothing found:
-            return 0;
-        }
+        return ( count($stats) > 0 ? intval($stats['largest_order']) : 0 );
+
     }
 
 }

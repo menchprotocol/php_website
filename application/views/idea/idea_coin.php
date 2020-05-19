@@ -32,7 +32,7 @@ if(!$is_source){
 
 
 //IDEA PREVIOUS
-$in__previous = $this->LEDGER_model->ln_fetch(array(
+$in__previous = $this->TRANSACTION_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
@@ -68,7 +68,7 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo echo_in_note_mix(4231, $this->LEDGER_model->ln_fetch(array(
+echo echo_in_note_mix(4231, $this->TRANSACTION_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
     'ln_type_source_id' => 4231,
     'ln_next_idea_id' => $in['in_id'],
@@ -121,7 +121,7 @@ foreach($this->config->item('en_all_11018') as $ln_type_source_id => $m){
 
 
         //IDEA NEXT
-        $in__next = $this->LEDGER_model->ln_fetch(array(
+        $in__next = $this->TRANSACTION_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
@@ -156,7 +156,7 @@ foreach($this->config->item('en_all_11018') as $ln_type_source_id => $m){
     } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_7551'))){
 
         //Reference Sources Only:
-        $in_notes = $this->LEDGER_model->ln_fetch(array(
+        $in_notes = $this->TRANSACTION_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id' => $ln_type_source_id,
             'ln_next_idea_id' => $in['in_id'],
@@ -192,7 +192,7 @@ foreach($this->config->item('en_all_11018') as $ln_type_source_id => $m){
     } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_4485'))){
 
         //IDEA NOTES
-        $in_notes = $this->LEDGER_model->ln_fetch(array(
+        $in_notes = $this->TRANSACTION_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id' => $ln_type_source_id,
             'ln_next_idea_id' => $in['in_id'],

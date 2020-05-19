@@ -723,6 +723,9 @@ function echo_input_text_count(cache_en_id, object_id) {
 }
 
 function update_text_name(cache_en_id, en_id, en_name){
+    if(cache_en_id==6197){
+        en_name = en_name.toUpperCase();
+    }
     $(".text__"+cache_en_id+"_" + en_id).val(en_name).text(en_name).attr('old-value', en_name);
 }
 

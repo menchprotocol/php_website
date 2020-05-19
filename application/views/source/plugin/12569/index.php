@@ -16,7 +16,7 @@ $stats = array(
 if(!$obj || $obj=='in'){
 
     //Update the weights for ideas and sources
-    foreach($this->IDEA_model->in_fetch(array(
+    foreach($this->IDEA_model->fetch(array(
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     )) as $in) {
         $stats['in_scanned']++;
@@ -24,14 +24,14 @@ if(!$obj || $obj=='in'){
     }
 
     //Now addup weights starting from primary Idea:
-    $stats['in_total_weights'] = $this->IDEA_model->in_weight(config_var(12156));
+    $stats['in_total_weights'] = $this->IDEA_model->weight(config_var(12156));
 
 }
 
 
 if(!$obj || $obj=='en'){
     //Update the weights for ideas and sources
-    foreach($this->SOURCE_model->en_fetch(array(
+    foreach($this->SOURCE_model->fetch(array(
         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
     )) as $en) {
         $stats['en_scanned']++;

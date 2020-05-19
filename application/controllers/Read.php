@@ -22,7 +22,7 @@ class Read extends CI_Controller
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 
         //Log home View:
-        $this->LEDGER_model->ln_create(array(
+        $this->TRANSACTION_model->create(array(
             'ln_type_source_id' => 4283, //Opened Reads
             'ln_creator_source_id' => $session_en['en_id'],
         ));
@@ -67,9 +67,9 @@ class Read extends CI_Controller
 
         //Add this Idea to their Reads If not already there:
         $success_message = null;
-        $read_in_home = $this->READ_model->read_in_home($in_id, $session_en);
+        $read_in_home = $this->READ_model->in_home($in_id, $session_en);
         if(!$read_in_home){
-            if($this->READ_model->read_start($session_en['en_id'], $in_id)){
+            if($this->READ_model->start($session_en['en_id'], $in_id)){
                 $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Reads</div>';
             } else {
                 //Failed to add to Reads:
@@ -93,20 +93,16 @@ class Read extends CI_Controller
         if($in_id > 0){
 
             //Fetch Idea:
-            $ins = $this->IDEA_model->in_fetch(array(
+            $ins = $this->IDEA_model->fetch(array(
                 'in_id' => $in_id,
             ));
 
 
             //Should we check for auto next redirect if empty? Only if this is a selection:
-            if(in_array($ins[0]['in_type_source_id'], $this->config->item('en_ids_7712'))){
-
-                $append_url .= '&check_if_empty=1';
-
-            } elseif($ins[0]['in_type_source_id']==6677){
+            if($ins[0]['in_type_source_id']==6677){
 
                 //Mark as read If not previously:
-                $read_completes = $this->LEDGER_model->ln_fetch(array(
+                $read_completes = $this->TRANSACTION_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
                     'ln_creator_source_id' => $session_en['en_id'],
@@ -114,7 +110,7 @@ class Read extends CI_Controller
                 ));
 
                 if(!count($read_completes)){
-                    $this->READ_model->read_is_complete($ins[0], array(
+                    $this->READ_model->is_complete($ins[0], array(
                         'ln_type_source_id' => 4559, //READ MESSAGES
                         'ln_creator_source_id' => $session_en['en_id'],
                         'ln_previous_idea_id' => $ins[0]['in_id'],
@@ -125,11 +121,11 @@ class Read extends CI_Controller
 
 
             //Find next Idea based on source's Reads:
-            $next_in_id = $this->READ_model->read_find_next($session_en['en_id'], $ins[0]);
+            $next_in_id = $this->READ_model->find_next($session_en['en_id'], $ins[0]);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
             } else {
-                $next_in_id = $this->READ_model->read_find_next_go($session_en['en_id']);
+                $next_in_id = $this->READ_model->find_next_go($session_en['en_id']);
                 if($next_in_id > 0){
                     return redirect_message('/'.$next_in_id.$append_url);
                 } else {
@@ -140,7 +136,7 @@ class Read extends CI_Controller
         } else {
 
             //Find the next idea in the Reads:
-            $next_in_id = $this->READ_model->read_find_next_go($session_en['en_id']);
+            $next_in_id = $this->READ_model->find_next_go($session_en['en_id']);
             if($next_in_id > 0){
                 return redirect_message('/'.$next_in_id.$append_url);
             } else {
@@ -155,12 +151,12 @@ class Read extends CI_Controller
         $current_in_id = $previous_level_id;
 
         //Make sure not a select idea:
-        if(!count($this->IDEA_model->in_fetch(array(
+        if(!count($this->IDEA_model->fetch(array(
             'in_id' => $current_in_id,
             'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null, //SELECT IDEA
         )))){
             //FIND NEXT IDEAS
-            foreach($this->LEDGER_model->ln_fetch(array(
+            foreach($this->TRANSACTION_model->fetch(array(
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
@@ -202,7 +198,7 @@ class Read extends CI_Controller
         }
 
         //Fetch data:
-        $ins = $this->IDEA_model->in_fetch(array(
+        $ins = $this->IDEA_model->fetch(array(
             'in_id' => $in_id,
         ));
 
@@ -283,7 +279,7 @@ class Read extends CI_Controller
         }
 
         //Validate Idea:
-        $ins = $this->IDEA_model->in_fetch(array(
+        $ins = $this->IDEA_model->fetch(array(
             'in_id' => $_POST['in_id'],
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
@@ -316,20 +312,20 @@ class Read extends CI_Controller
 
 
         //Delete previous answer(s):
-        foreach($this->LEDGER_model->ln_fetch(array(
+        foreach($this->TRANSACTION_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
-            $this->LEDGER_model->ln_update($read_progress['ln_id'], array(
+            $this->TRANSACTION_model->update($read_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
             ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
         }
 
         //Save new answer:
         $new_message = '@'.$cdn_status['cdn_en']['en_id'];
-        $this->READ_model->read_is_complete($ins[0], array(
+        $this->READ_model->is_complete($ins[0], array(
             'ln_type_source_id' => 12117,
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
@@ -340,7 +336,7 @@ class Read extends CI_Controller
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->COMMUNICATION_model->send_message($new_message).'</div>',
+            'message' => '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->send_message($new_message).'</div>',
         ));
 
     }
@@ -369,7 +365,7 @@ class Read extends CI_Controller
         }
 
         //Validate/Fetch idea:
-        $ins = $this->IDEA_model->in_fetch(array(
+        $ins = $this->IDEA_model->fetch(array(
             'in_id' => $_POST['in_id'],
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
@@ -381,19 +377,19 @@ class Read extends CI_Controller
         }
 
         //Delete previous answer(s):
-        foreach($this->LEDGER_model->ln_fetch(array(
+        foreach($this->TRANSACTION_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
         )) as $read_progress){
-            $this->LEDGER_model->ln_update($read_progress['ln_id'], array(
+            $this->TRANSACTION_model->update($read_progress['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
             ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
         }
 
         //Save new answer:
-        $this->READ_model->read_is_complete($ins[0], array(
+        $this->READ_model->is_complete($ins[0], array(
             'ln_type_source_id' => 6144,
             'ln_previous_idea_id' => $ins[0]['in_id'],
             'ln_creator_source_id' => $session_en['en_id'],
@@ -430,7 +426,7 @@ class Read extends CI_Controller
         }
 
         //Save answer:
-        return echo_json($this->READ_model->read_answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
+        return echo_json($this->READ_model->answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
 
     }
 
@@ -444,7 +440,7 @@ class Read extends CI_Controller
         }
 
         //Fetch their current progress links:
-        $progress_links = $this->LEDGER_model->ln_fetch(array(
+        $progress_links = $this->TRANSACTION_model->fetch(array(
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
             'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12227')) . ')' => null,
             'ln_creator_source_id' => $en_id,
@@ -456,7 +452,7 @@ class Read extends CI_Controller
             $message = 'Removed '.count($progress_links).' idea'.echo__s(count($progress_links)).' from your Reads.';
 
             //Log link:
-            $clear_all_link = $this->LEDGER_model->ln_create(array(
+            $clear_all_link = $this->TRANSACTION_model->create(array(
                 'ln_content' => $message,
                 'ln_type_source_id' => 6415, //Reads Reset Reads
                 'ln_creator_source_id' => $en_id,
@@ -464,7 +460,7 @@ class Read extends CI_Controller
 
             //Delete all progressions:
             foreach($progress_links as $progress_link){
-                $this->LEDGER_model->ln_update($progress_link['ln_id'], array(
+                $this->TRANSACTION_model->update($progress_link['ln_id'], array(
                     'ln_status_source_id' => 6173, //Transaction Deleted
                     'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was deleted
                 ), $en_id, 6415 /* User Cleared Reads */);
@@ -504,7 +500,7 @@ class Read extends CI_Controller
 
         }
 
-        $ins = $this->IDEA_model->in_fetch(array(
+        $ins = $this->IDEA_model->fetch(array(
             'in_id' => $_POST['in_id'],
             'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
         ));
@@ -517,14 +513,14 @@ class Read extends CI_Controller
 
         //First try to remove:
         $removed = 0;
-        foreach($this->LEDGER_model->ln_fetch(array(
+        foreach($this->TRANSACTION_model->fetch(array(
             'ln_profile_source_id' => $session_en['en_id'],
             'ln_next_idea_id' => $_POST['in_id'],
             'ln_type_source_id' => 12896, //SAVED
             'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
         )) as $remove_saved){
             $removed++;
-            $this->LEDGER_model->ln_update($remove_saved['ln_id'], array(
+            $this->TRANSACTION_model->update($remove_saved['ln_id'], array(
                 'ln_status_source_id' => 6173, //Transaction Deleted
             ), $session_en['en_id'], 12906 /* UNSAVED */);
         }
@@ -532,7 +528,7 @@ class Read extends CI_Controller
         //Need to add?
         if(!$removed){
             //Then we must add:
-            $this->LEDGER_model->ln_create(array(
+            $this->TRANSACTION_model->create(array(
                 'ln_creator_source_id' => $session_en['en_id'],
                 'ln_profile_source_id' => $session_en['en_id'],
                 'ln_content' => '@'.$session_en['en_id'],
@@ -575,7 +571,7 @@ class Read extends CI_Controller
         }
 
         //Call function to delete form Reads:
-        $delete_result = $this->READ_model->read_delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //REMOVED BOOKMARK
+        $delete_result = $this->READ_model->delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //REMOVED BOOKMARK
 
         if(!$delete_result['status']){
             return echo_json($delete_result);
@@ -616,7 +612,7 @@ class Read extends CI_Controller
         foreach($_POST['new_read_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){
                 //Update order of this link:
-                $results[$ln_order] = $this->LEDGER_model->ln_update(intval($ln_id), array(
+                $results[$ln_order] = $this->TRANSACTION_model->update(intval($ln_id), array(
                     'ln_order' => $ln_order,
                 ), $_POST['js_pl_id'], 6132 /* Ideas Ordered by User */);
             }

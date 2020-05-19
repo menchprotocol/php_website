@@ -16,7 +16,7 @@ $replace_with_is_confirmed = false;
 
 if($search_for_is_set){
 
-    $matching_results = $this->IDEA_model->in_fetch(array(
+    $matching_results = $this->IDEA_model->fetch(array(
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         'LOWER(in_title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
@@ -63,7 +63,7 @@ if($search_for_is_set){
 
             if($replace_with_is_confirmed && $in_title_validation['status']){
                 //Update idea:
-                $this->IDEA_model->in_update($in['in_id'], array(
+                $this->IDEA_model->update($in['in_id'], array(
                     'in_title' => $in_title_validation['in_clean_title'],
                 ), true, $session_en['en_id']);
             }
@@ -83,7 +83,7 @@ if($search_for_is_set){
 
                 //Loop through parents:
                 $en_all_7585 = $this->config->item('en_all_7585'); // Idea Subtypes
-                foreach($this->LEDGER_model->ln_fetch(array(
+                foreach($this->TRANSACTION_model->fetch(array(
                     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS

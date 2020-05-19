@@ -13,7 +13,7 @@ echo '<td colspan="4" style="text-align: left;">'.$en_all_6103[6402]['m_icon'].'
 echo '</tr>';
 $counter = 0;
 $total_count = 0;
-foreach($this->LEDGER_model->ln_fetch(array(
+foreach($this->TRANSACTION_model->fetch(array(
     'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
     'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
     'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12842')) . ')' => null, //IDEA LINKS ONE-WAY
@@ -25,7 +25,7 @@ foreach($this->LEDGER_model->ln_fetch(array(
     if($mark){
 
         //Fetch parent Idea:
-        $parent_ins = $this->IDEA_model->in_fetch(array(
+        $parent_ins = $this->IDEA_model->fetch(array(
             'in_id' => $in_ln['ln_previous_idea_id'],
         ));
 
@@ -46,7 +46,7 @@ foreach($this->LEDGER_model->ln_fetch(array(
         echo '<a href="/idea/go/'.$in_ln['in_id'].'">'.$in_ln['in_title'].' [child]</a>';
         echo '</div>';
 
-        if(count($this->LEDGER_model->ln_fetch(array(
+        if(count($this->TRANSACTION_model->fetch(array(
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
                 'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
                 'in_type_source_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
@@ -61,7 +61,7 @@ foreach($this->LEDGER_model->ln_fetch(array(
         } else {
 
             //Update user progression link type:
-            $user_steps = $this->LEDGER_model->ln_fetch(array(
+            $user_steps = $this->TRANSACTION_model->fetch(array(
                 'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
                 'ln_previous_idea_id' => $in_ln['in_id'],
                 'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
@@ -93,7 +93,7 @@ if(1){
     echo '</tr>';
 
     $counter = 0;
-    foreach($this->LEDGER_model->ln_fetch(array(
+    foreach($this->TRANSACTION_model->fetch(array(
         'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
         'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
         'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -105,7 +105,7 @@ if(1){
         if($tr__assessment_points!=0){
 
             //Fetch parent Idea:
-            $parent_ins = $this->IDEA_model->in_fetch(array(
+            $parent_ins = $this->IDEA_model->fetch(array(
                 'in_id' => $in_ln['ln_previous_idea_id'],
             ));
 

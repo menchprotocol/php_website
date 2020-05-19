@@ -10,7 +10,7 @@ echo '<input type="submit" class="btn btn-idea" value="Search">';
 
 if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
-    $matching_results = $this->SOURCE_model->en_fetch(array(
+    $matching_results = $this->SOURCE_model->fetch(array(
         'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
         'LOWER(en_icon) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
@@ -35,7 +35,7 @@ if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
         foreach($matching_results as $count=>$en){
 
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
-                $replaced += $this->SOURCE_model->en_update($en['en_id'], array(
+                $replaced += $this->SOURCE_model->update($en['en_id'], array(
                     'en_icon' => str_ireplace($_GET['search_for'], $_GET['replace_with'], $en['en_icon']),
                 ), false, $session_en['en_id']);
 

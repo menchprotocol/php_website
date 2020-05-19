@@ -2,7 +2,7 @@
 
 $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
 
-$orphan_ens = $this->SOURCE_model->en_fetch(array(
+$orphan_ens = $this->SOURCE_model->fetch(array(
     ' NOT EXISTS (SELECT 1 FROM mench_ledger WHERE en_id=ln_portfolio_source_id AND ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_source_id IN ('.join(',', $this->config->item('en_ids_7360')) /* ACTIVE */.')) ' => null,
     'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
 ));
@@ -19,10 +19,10 @@ if(count($orphan_ens) > 0){
         if(isset($_GET['take_action']) && $_GET['take_action']=='delete_all'){
 
             //Delete links:
-            $links_deleted = $this->SOURCE_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
+            $links_deleted = $this->SOURCE_model->unlink($orphan_en['en_id'], $session_en['en_id']);
 
             //Delete source:
-            $this->SOURCE_model->en_update($orphan_en['en_id'], array(
+            $this->SOURCE_model->update($orphan_en['en_id'], array(
                 'en_status_source_id' => 6178, /* Player Deleted */
             ), true, $session_en['en_id']);
 
