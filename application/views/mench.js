@@ -487,7 +487,8 @@ function toggle_search(){
 
 
 function read_toggle_saved(in_id){
-    $('.toggle_saved, .sharethis-inline-share-buttons').toggleClass('hidden');
+    $('.share-this').removeClass('hidden');
+    $('.toggle_saved').toggleClass('hidden');
     $.post("/read/read_toggle_saved", {
         in_id:in_id,
     }, function (data) {

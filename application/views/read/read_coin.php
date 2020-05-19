@@ -554,7 +554,7 @@ if(!$read_in_home){
 }
 
 //Share this button
-echo '<div class="sharethis-inline-share-buttons hidden"></div>';
+echo '<div class="hidden share-this"><div class="doclear">&nbsp;</div><div class="sharethis-inline-share-buttons"></div></div>';
 
 ?>
 </div>
