@@ -386,6 +386,39 @@ function en_count_db_references($en_id, $return_html = true){
 }
 
 
+function in_fetch_cover($in_id){
+
+    $CI =& get_instance();
+    $in_fetch_cover = null;
+    foreach($CI->TRANSACTION_model->fetch(array( //IDEA SOURCE
+        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
+        'ln_next_idea_id' => $in_id,
+        'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+    ), array(), 0, 0, array(
+        'ln_type_source_id' => 'ASC', //Messages First, Sources Second
+        'ln_order' => 'ASC', //Sort by message order
+    )) as $en){
+
+        //See if this source has a photo:
+        foreach($CI->TRANSACTION_model->fetch(array(
+            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'ln_type_source_id' => 4260, //IMAGES ONLY
+            'ln_portfolio_source_id' => $en['ln_profile_source_id'],
+        )) as $en_image) {
+            $in_fetch_cover = $en_image['ln_content'];
+            break;
+        }
+        if($in_fetch_cover){
+            break;
+        }
+    }
+
+    //Return something:
+    return ( $in_fetch_cover ? $in_fetch_cover : config_var(12904) );
+
+}
+
 
 function in_weight_updater($in){
 

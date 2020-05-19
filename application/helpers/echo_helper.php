@@ -1358,34 +1358,6 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
     $CI =& get_instance();
 
     //FIND IMAGE
-    $cover_photo = null;
-    foreach($CI->TRANSACTION_model->fetch(array( //IDEA SOURCE
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-        'ln_next_idea_id' => $in['in_id'],
-        'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-    ), array(), 0, 0, array(
-        'ln_type_source_id' => 'ASC', //Messages First, Sources Second
-        'ln_order' => 'ASC', //Sort by message order
-    )) as $en){
-        //See if this source has a photo:
-        foreach($CI->TRANSACTION_model->fetch(array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id' => 4260, //IMAGES ONLY
-            'ln_portfolio_source_id' => $en['ln_profile_source_id'],
-        )) as $en_image) {
-            $cover_photo = '<img src="'.$en_image['ln_content'].'" />';
-            break;
-        }
-        if($cover_photo){
-            break;
-        }
-    }
-    if(!$cover_photo){
-        //DEFAULT IMAGE
-        $cover_photo = '<img src="https://s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg" />';
-    }
-
     $recipient_en = superpower_assigned();
     $metadata = unserialize($in['in_metadata']);
     $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : 0 );
@@ -1416,7 +1388,8 @@ function echo_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
             $ui .= '<div class="progress-bg-image" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
         }
     }
-    $ui .= $cover_photo;
+
+    $ui .= '<img src="'.in_fetch_cover($in['in_id']).'" />';
 
     if($idea_count && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
         $ui .= '<span class="media-info top-right">'.echo_time_range($metadata).'</span>';

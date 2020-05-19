@@ -1459,7 +1459,10 @@ label {
     margin:5px 0;
     color: #000000;
 }
-
+.share-this .icon-block{
+    font-size: 1.3em;
+    cursor: pointer;
+}
 .btn-circle{
     margin:0 10px;
     border-radius: 50% !important;

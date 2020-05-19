@@ -7,8 +7,9 @@
 
 <div class="container">
 
-    <?php
+<?php
 
+$in_fetch_cover = in_fetch_cover($in['in_id']);
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
 $metadata = unserialize($in['in_metadata']);
 $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
@@ -155,12 +156,14 @@ echo '<h1 class="block-one" '.( !$recipient_en['en_id'] ? ' style="padding-top: 
 
 
 //MESSAGES
+$messages_ui = null;
 foreach($in__messages as $message_ln) {
-    echo $this->READ_model->send_message(
+    $messages_ui .= $this->READ_model->send_message(
         $message_ln['ln_content'],
         $recipient_en
     );
 }
+echo $messages_ui;
 
 
 if(!$read_in_home){
@@ -518,7 +521,7 @@ echo '<div class="share-this hidden space-content">';
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div style="padding: 21px 0;">Share This Idea Using:</div>';
     foreach($this->config->item('en_all_13023') as $en_id => $m) {
-        echo '<div class="icon-block" style="font-size: 1.3em;"><div data-network="'.$m['m_desc'].'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
+        echo '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="https://mench.com/'.$in['in_id'].'" data-title="'.$in['in_title'].'" data-image="'.$in_fetch_cover.'" data-description="'.strip_tags($messages_ui).'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
     }
 echo '</div>';
 ?>

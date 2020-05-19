@@ -8,19 +8,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-19 14:02:05 PST
+//Generated 2020-05-19 14:28:48 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589922125;
-$config['cache_count_transaction'] = 1210819;
-$config['cache_count_read'] = 121293;
-$config['cache_count_idea'] = 5629;
-$config['cache_count_source'] = 4868;
+$config['cache_timestamp'] = 1589923728;
+$config['cache_count_transaction'] = 1211005;
+$config['cache_count_read'] = 121228;
+$config['cache_count_idea'] = 5628;
+$config['cache_count_source'] = 4867;
 
 
 
 //MENCH SHARE THIS CUSTOM BUTTONS:
-$config['en_ids_13023'] = array(3288,3300,12889,3099,3302,13026,12890,13027);
+$config['en_ids_13023'] = array(3288,3300,12889,3302,12890,13026,3099);
 $config['en_all_13023'] = array(
     3288 => array(
         'm_icon' => '<i class="fas fa-envelope-open source" aria-hidden="true"></i>',
@@ -40,23 +40,11 @@ $config['en_all_13023'] = array(
         'm_desc' => 'facebook',
         'm_parents' => array(13023,12891),
     ),
-    3099 => array(
-        'm_icon' => '<i class="fab fa-reddit"></i>',
-        'm_name' => 'REDDIT',
-        'm_desc' => 'reddit',
-        'm_parents' => array(12891,13023,1326),
-    ),
     3302 => array(
         'm_icon' => '<i class="fab fa-linkedin source" aria-hidden="true"></i>',
         'm_name' => 'LINKEDIN',
         'm_desc' => 'linkedin',
         'm_parents' => array(13023,12891,1326),
-    ),
-    13026 => array(
-        'm_icon' => '<i class="fab fa-whatsapp-square isgreen"></i>',
-        'm_name' => 'WHATSAPP',
-        'm_desc' => 'whatsapp',
-        'm_parents' => array(12891,13023),
     ),
     12890 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger source" aria-hidden="true"></i>',
@@ -64,11 +52,17 @@ $config['en_all_13023'] = array(
         'm_desc' => 'messenger',
         'm_parents' => array(13023,12889),
     ),
-    13027 => array(
-        'm_icon' => '<i class="fas fa-sms"></i>',
-        'm_name' => 'SMS',
-        'm_desc' => 'sms',
-        'm_parents' => array(13023),
+    13026 => array(
+        'm_icon' => '<i class="fab fa-whatsapp-square isgreen"></i>',
+        'm_name' => 'WHATSAPP',
+        'm_desc' => 'whatsapp',
+        'm_parents' => array(12891,13023),
+    ),
+    3099 => array(
+        'm_icon' => '<i class="fab fa-reddit"></i>',
+        'm_name' => 'REDDIT',
+        'm_desc' => 'reddit',
+        'm_parents' => array(12891,13023,1326),
     ),
 );
 
@@ -2648,7 +2642,7 @@ $config['en_all_11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['en_ids_6404'] = array(12678,7274,12176,4485,4356,4736,11064,11065,13014,11063,13005,11060,12156,11079,11066,11057,11056,12331,12427,12088,11986,6197,12232,12565,12568);
+$config['en_ids_6404'] = array(12678,7274,12904,12176,4485,4356,4736,11064,11065,13014,11063,13005,11060,12156,11079,11066,11057,11056,12331,12427,12088,11986,6197,12232,12565,12568);
 $config['en_all_6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -2661,6 +2655,12 @@ $config['en_all_6404'] = array(
         'm_name' => 'CRON JOBS',
         'm_desc' => '/usr/bin/php /var/www/platform/index.php plugin plugin_load',
         'm_parents' => array(6404,6287,6403,12999),
+    ),
+    12904 => array(
+        'm_icon' => '<i class="fad fa-book" aria-hidden="true"></i>',
+        'm_name' => 'DEFAULT BOOK COVER',
+        'm_desc' => '//s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg',
+        'm_parents' => array(6404,1,7524),
     ),
     12176 => array(
         'm_icon' => '<i class="fad fa-clock idea" aria-hidden="true"></i>',
@@ -2719,7 +2719,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.391',
+        'm_desc' => 'v1.39122',
         'm_parents' => array(6404),
     ),
     12156 => array(
