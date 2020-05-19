@@ -514,11 +514,11 @@ if(!$read_in_home){
 }
 
 //Share this button, visible after saving:
-echo '<div class="share-this hidden">';
+echo '<div class="share-this hidden space-content">';
     echo '<div class="doclear">&nbsp;</div>';
-    echo '<div>You May Also Share Using:</div>';
+    echo '<div style="padding: 21px 0;">Share This Idea Using:</div>';
     foreach($this->config->item('en_all_13023') as $en_id => $m) {
-        echo '<div class="icon-block" style="font-size: 1.3em;"><div class="button share-button '.$m['m_desc'].'-share-button" title="Share Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
+        echo '<div class="icon-block" style="font-size: 1.3em;"><div data-network="'.$m['m_desc'].'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
     }
 echo '</div>';
 ?>
