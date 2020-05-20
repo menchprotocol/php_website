@@ -330,11 +330,11 @@ class READ_model extends CI_Model
                     'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                     'read__up' => 3288, //Mench Email
                     'read__down' => $subscriber_source__id,
-                ), array('source_portfolio')) as $en_email){
-                    if(filter_var($en_email['read__message'], FILTER_VALIDATE_EMAIL)){
+                ), array('source_portfolio')) as $source_email){
+                    if(filter_var($source_email['read__message'], FILTER_VALIDATE_EMAIL)){
                         //All good, add to list:
-                        array_push($sub_source__ids , $en_email['source__id']);
-                        array_push($sub_emails , $en_email['read__message']);
+                        array_push($sub_source__ids , $source_email['source__id']);
+                        array_push($sub_emails , $source_email['read__message']);
                     }
                 }
             }
@@ -448,9 +448,9 @@ class READ_model extends CI_Model
             $this->db->join('mench_source', 'read__up=source__id','left');
         } elseif (in_array('source_portfolio', $join_objects)) {
             $this->db->join('mench_source', 'read__down=source__id','left');
-        } elseif (in_array('en_type', $join_objects)) {
+        } elseif (in_array('source_type', $join_objects)) {
             $this->db->join('mench_source', 'read__type=source__id','left');
-        } elseif (in_array('en_creator', $join_objects)) {
+        } elseif (in_array('source_creator', $join_objects)) {
             $this->db->join('mench_source', 'read__source=source__id','left');
         }
 
@@ -875,14 +875,14 @@ class READ_model extends CI_Model
             $url_source = $this->SOURCE_model->url($string_references['ref_urls'][0], ( isset($recipient_en['source__id']) ? $recipient_en['source__id'] : 0 ));
 
             //Did we have an error?
-            if (!$url_source['status'] || !isset($url_source['en_url']['source__id']) || intval($url_source['en_url']['source__id']) < 1) {
+            if (!$url_source['status'] || !isset($url_source['source_url']['source__id']) || intval($url_source['source_url']['source__id']) < 1) {
                 return $url_source;
             }
 
             //Transform this URL into an source IF it was found/created:
-            if(intval($url_source['en_url']['source__id']) > 0){
+            if(intval($url_source['source_url']['source__id']) > 0){
 
-                $string_references['ref_sources'][0] = intval($url_source['en_url']['source__id']);
+                $string_references['ref_sources'][0] = intval($url_source['source_url']['source__id']);
 
                 //Replace the URL with this new @source in message.
                 //This is the only valid modification we can do to $input_message before storing it in the DB:

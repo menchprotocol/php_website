@@ -132,7 +132,7 @@ class SOURCE_model extends CI_Model
             //Ooopsi, something went wrong!
             $this->READ_model->create(array(
                 'read__up' => $read__source,
-                'read__message' => 'en_create() failed to create a new source',
+                'read__message' => 'create() failed to create a new source',
                 'read__type' => 4246, //Platform Bug Reports
                 'read__source' => $read__source,
                 'read__metadata' => $insert_columns,
@@ -264,7 +264,7 @@ class SOURCE_model extends CI_Model
                 'read__down' => $id,
                 'read__type' => 4246, //Platform Bug Reports
                 'read__source' => $read__source,
-                'read__message' => 'en_update() Failed to update',
+                'read__message' => 'update() Failed to update',
                 'read__metadata' => array(
                     'input' => $update_columns,
                 ),
@@ -276,7 +276,7 @@ class SOURCE_model extends CI_Model
     }
 
 
-    function radio_set($source_profile_bucket_id, $set_en_child_id, $read__source)
+    function radio_set($source_profile_bucket_id, $set_source_child_id, $read__source)
     {
 
         /*
@@ -284,25 +284,25 @@ class SOURCE_model extends CI_Model
          *
          *  $source_profile_bucket_id is the parent of the drop down
          *  $read__source is the user source ID that one of the children of $source_profile_bucket_id should be assigned (like a drop down)
-         *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
+         *  $set_source_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like User communication levels
          *
          * */
 
 
-        //Fetch all the child sources for $source_profile_bucket_id and make sure they match $set_en_child_id
+        //Fetch all the child sources for $source_profile_bucket_id and make sure they match $set_source_child_id
         $children = $this->config->item('sources_id_' . $source_profile_bucket_id);
         if ($source_profile_bucket_id < 1) {
             return false;
         } elseif (!$children) {
             return false;
-        } elseif ($set_en_child_id > 0 && !in_array($set_en_child_id, $children)) {
+        } elseif ($set_source_child_id > 0 && !in_array($set_source_child_id, $children)) {
             return false;
         }
 
         //First delete existing parent/child links for this drop down:
-        $previously_assigned = ($set_en_child_id < 1);
+        $previously_assigned = ($set_source_child_id < 1);
         $updated_read__id = 0;
         foreach($this->READ_model->fetch(array(
             'read__down' => $read__source,
@@ -310,7 +310,7 @@ class SOURCE_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), config_var(11064)) as $ln) {
 
-            if (!$previously_assigned && $ln['read__up'] == $set_en_child_id) {
+            if (!$previously_assigned && $ln['read__up'] == $set_source_child_id) {
                 $previously_assigned = true;
             } else {
                 //Delete assignment:
@@ -325,13 +325,13 @@ class SOURCE_model extends CI_Model
         }
 
 
-        //Make sure $set_en_child_id belongs to parent if set (Could be null which means delete all)
+        //Make sure $set_source_child_id belongs to parent if set (Could be null which means delete all)
         if (!$previously_assigned) {
             //Let's go ahead and add desired source as parent:
             $this->READ_model->create(array(
                 'read__source' => $read__source,
                 'read__down' => $read__source,
-                'read__up' => $set_en_child_id,
+                'read__up' => $set_source_child_id,
                 'read__type' => source_link_type(),
                 'read__reference' => $updated_read__id,
             ));
@@ -447,7 +447,7 @@ class SOURCE_model extends CI_Model
         //Analyze domain:
         $domain_analysis = analyze_domain($url);
         $domaidea_previously_existed = 0; //Assume false
-        $en_domain = false; //Have an empty placeholder:
+        $source_domain = false; //Have an empty placeholder:
 
 
         //Check to see if we have domain linked previously:
@@ -464,20 +464,20 @@ class SOURCE_model extends CI_Model
         if (count($domain_links) > 0) {
 
             $domaidea_previously_existed = 1;
-            $en_domain = $domain_links[0];
+            $source_domain = $domain_links[0];
 
         } elseif ($read__source) {
 
             //Yes, let's add a new source:
             $added_en = $this->SOURCE_model->verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $read__source, 6181, detect_fav_icon($domain_analysis['url_clean_domain']));
-            $en_domain = $added_en['en'];
+            $source_domain = $added_en['en'];
 
             //And link source to the domains source:
             $this->READ_model->create(array(
                 'read__source' => $read__source,
                 'read__type' => 4256, //Generic URL (Domains are always generic)
                 'read__up' => 1326, //Domain Player
-                'read__down' => $en_domain['source__id'],
+                'read__down' => $source_domain['source__id'],
                 'read__message' => $domain_analysis['url_clean_domain'],
             ));
 
@@ -489,7 +489,7 @@ class SOURCE_model extends CI_Model
             'status' => 1,
             'message' => 'Success',
             'domaidea_previously_existed' => $domaidea_previously_existed,
-            'en_domain' => $en_domain,
+            'source_domain' => $source_domain,
         ));
 
     }
@@ -648,7 +648,7 @@ class SOURCE_model extends CI_Model
         $url_previously_existed = 0;
 
         //Start with null and see if we can find/add:
-        $en_url = null;
+        $source_url = null;
 
         //Analyze domain:
         $domain_analysis = analyze_domain($url);
@@ -697,7 +697,7 @@ class SOURCE_model extends CI_Model
                 if(!$detected_extension){
                     //Log error to notify admin:
                     $this->READ_model->create(array(
-                        'read__message' => 'en_url() detected unknown file extension ['.$domain_analysis['url_file_extension'].'] that needs to be added to @11080',
+                        'read__message' => 'source_url() detected unknown file extension ['.$domain_analysis['url_file_extension'].'] that needs to be added to @11080',
                         'read__type' => 4246, //Platform Bug Reports
                         'read__up' => 11080,
                         'read__metadata' => $domain_analysis,
@@ -730,7 +730,7 @@ class SOURCE_model extends CI_Model
         if ($domain_analysis['url_is_root']) {
 
             //URL is the domain in this case:
-            $en_url = $domain_source['en_domain'];
+            $source_url = $domain_source['source_domain'];
 
             //IF the URL exists since the domain existed and the URL is the domain!
             if ($domain_source['domaidea_previously_existed']) {
@@ -752,7 +752,7 @@ class SOURCE_model extends CI_Model
             if (count($url_links) > 0) {
 
                 //Nope, source previously exists:
-                $en_url = $url_links[0];
+                $source_url = $url_links[0];
                 $url_previously_existed = 1;
 
             } elseif($read__source) {
@@ -770,31 +770,31 @@ class SOURCE_model extends CI_Model
                 if($added_en['status']){
 
                     //All good:
-                    $en_url = $added_en['en'];
+                    $source_url = $added_en['en'];
 
                     //Always link URL to its parent domain:
                     $this->READ_model->create(array(
                         'read__source' => $read__source,
                         'read__type' => $read__type,
-                        'read__up' => $domain_source['en_domain']['source__id'],
-                        'read__down' => $en_url['source__id'],
+                        'read__up' => $domain_source['source_domain']['source__id'],
+                        'read__down' => $source_url['source__id'],
                         'read__message' => $url,
                     ));
 
                     //Assign to Player:
-                    $this->SOURCE_model->assign_session_player($en_url['source__id']);
+                    $this->SOURCE_model->assign_session_player($source_url['source__id']);
 
                     //Update Search Index:
-                    update_algolia('en', $en_url['source__id']);
+                    update_algolia('en', $source_url['source__id']);
 
                 } else {
 
                     //Log error:
                     $this->READ_model->create(array(
-                        'read__message' => 'en_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with message: '.$added_en['message'],
+                        'read__message' => 'source_url['.$url.'] FAILED to source_verify_create['.$page_title.'] with message: '.$added_en['message'],
                         'read__type' => 4246, //Platform Bug Reports
                         'read__source' => $read__source,
-                        'read__up' => $domain_source['en_domain']['source__id'],
+                        'read__up' => $domain_source['source_domain']['source__id'],
                         'read__metadata' => array(
                             'url' => $url,
                             'read__source' => $read__source,
@@ -807,7 +807,7 @@ class SOURCE_model extends CI_Model
 
             } else {
                 //URL not found and no player source provided to create the URL:
-                $en_url = array();
+                $source_url = array();
             }
         }
 
@@ -818,7 +818,7 @@ class SOURCE_model extends CI_Model
             $this->READ_model->create(array(
                 'read__source' => $read__source,
                 'read__type' => source_link_type(),
-                'read__up' => $en_url['source__id'],
+                'read__up' => $source_url['source__id'],
                 'read__down' => $add_to_child_source__id,
             ));
         }
@@ -831,13 +831,13 @@ class SOURCE_model extends CI_Model
 
             array(
                 'status' => ($url_previously_existed && !$read__source ? 0 : 1),
-                'message' => ($url_previously_existed && !$read__source ? 'URL already belongs to [' . $en_url['source__title'].'] with source ID @' . $en_url['source__id'] : 'Success'),
+                'message' => ($url_previously_existed && !$read__source ? 'URL already belongs to [' . $source_url['source__title'].'] with source ID @' . $source_url['source__id'] : 'Success'),
                 'url_previously_existed' => $url_previously_existed,
                 'clean_url' => $url,
                 'read__type' => $read__type,
                 'page_title' => html_entity_decode($page_title, ENT_QUOTES),
-                'en_domain' => $domain_source['en_domain'],
-                'en_url' => $en_url,
+                'source_domain' => $domain_source['source_domain'],
+                'source_url' => $source_url,
             )
         );
     }
@@ -872,14 +872,14 @@ class SOURCE_model extends CI_Model
                 'message' => $is_valid_icon['message'],
             );
 
-        } elseif(in_array($action_source__id, array(5981, 5982, 12928, 12930, 11956)) && !is_valid_en_string($action_command1)){
+        } elseif(in_array($action_source__id, array(5981, 5982, 12928, 12930, 11956)) && !is_valid_source_string($action_command1)){
 
             return array(
                 'status' => 0,
                 'message' => 'Unknown Source. Format must be: @123 Source Name',
             );
 
-        } elseif($action_source__id==11956 && !is_valid_en_string($action_command2)){
+        } elseif($action_source__id==11956 && !is_valid_source_string($action_command2)){
 
             return array(
                 'status' => 0,
@@ -908,7 +908,7 @@ class SOURCE_model extends CI_Model
         //Process request:
         foreach($children as $en) {
 
-            //Logic here must match items in en_mass_actions config variable
+            //Logic here must match items in source_mass_actions config variable
 
             //Take command-specific action:
             if ($action_source__id == 4998) { //Add Prefix String
@@ -1072,7 +1072,7 @@ class SOURCE_model extends CI_Model
 
     }
 
-    function child_count($source__id, $en_statuses)
+    function child_count($source__id, $source_statuses)
     {
 
         //Count the active children of source:
@@ -1083,7 +1083,7 @@ class SOURCE_model extends CI_Model
             'read__up' => $source__id,
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-            'source__status IN (' . join(',', $en_statuses) . ')' => null,
+            'source__status IN (' . join(',', $source_statuses) . ')' => null,
         ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
 
         if (count($source__portfolio_count) > 0) {

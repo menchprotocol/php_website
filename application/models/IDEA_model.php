@@ -722,7 +722,7 @@ class IDEA_model extends CI_Model
     function mass_update($idea__id, $action_source__id, $action_command1, $action_command2, $read__source)
     {
 
-        //Alert: Has a twin function called en_mass_update()
+        //Alert: Has a twin function called source_mass_update()
 
         boost_power();
 
@@ -733,7 +733,7 @@ class IDEA_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(!is_valid_en_string($action_command1)){
+        } elseif(!is_valid_source_string($action_command1)){
 
             return array(
                 'status' => 0,
@@ -761,7 +761,7 @@ class IDEA_model extends CI_Model
         //Process request:
         foreach($ideas_next as $in) {
 
-            //Logic here must match items in en_mass_actions config variable
+            //Logic here must match items in source_mass_actions config variable
 
             if(in_array($action_source__id , array(12591, 12592))){
 
@@ -893,17 +893,17 @@ class IDEA_model extends CI_Model
             'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
         ), array('source_profile'), 0) as $en) {
 
-            $en_metadat_experts = $this->SOURCE_model->metadat_experts($en);
+            $source_metadat_experts = $this->SOURCE_model->metadat_experts($en);
 
             //CONTENT CHANNELS
-            foreach($en_metadat_experts['__in__metadata_content'] as $source__id => $source_en) {
+            foreach($source_metadat_experts['__in__metadata_content'] as $source__id => $source_en) {
                 if (!isset($metadata_this['__in__metadata_content'][$source__id])) {
                     $metadata_this['__in__metadata_content'][$source__id] = $source_en;
                 }
             }
 
             //EXPERT PEOPLE/ORGANIZATIONS
-            foreach($en_metadat_experts['__in__metadata_experts'] as $source__id => $expert_en) {
+            foreach($source_metadat_experts['__in__metadata_experts'] as $source__id => $expert_en) {
                 if (!isset($metadata_this['__in__metadata_experts'][$source__id])) {
                     $metadata_this['__in__metadata_experts'][$source__id] = $expert_en;
                 }
