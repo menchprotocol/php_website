@@ -316,7 +316,7 @@ class READ_model extends CI_Model
             $sources__5967 = $this->config->item('sources__5967'); //Include subscription details
             $sub_emails = array();
             $sub_source__ids = array();
-            foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $sources__5967[$insert_columns['read__type']]['m_desc'])) as $subscriber_source__id){
+            foreach(explode(',', $sources__5967[$insert_columns['read__type']]['m_desc']) as $subscriber_source__id){
 
                 //Do not inform the user who just took the action:
                 if($subscriber_source__id==$insert_columns['read__source']){
