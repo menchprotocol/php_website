@@ -249,7 +249,7 @@ class Read extends CI_Controller
                 return view_json(array(
                     'status' => 0,
                     'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' must be a number greater than zero.',
-                    'original_val' => $ins[0]['idea__seconds'],
+                    'original_val' => $ins[0]['idea__duration'],
                 ));
 
             } elseif($_POST['field_value'] > config_var(4356)){
@@ -258,7 +258,7 @@ class Read extends CI_Controller
                 return view_json(array(
                     'status' => 0,
                     'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
-                    'original_val' => $ins[0]['idea__seconds'],
+                    'original_val' => $ins[0]['idea__duration'],
                 ));
 
             } elseif($_POST['field_value'] < config_var(12427)){
@@ -266,14 +266,14 @@ class Read extends CI_Controller
                 return view_json(array(
                     'status' => 0,
                     'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
-                    'original_val' => $ins[0]['idea__seconds'],
+                    'original_val' => $ins[0]['idea__duration'],
                 ));
 
             } else {
 
                 //All good, go ahead and update:
                 $this->IDEA_model->update($_POST['object__id'], array(
-                    'idea__seconds' => $_POST['field_value'],
+                    'idea__duration' => $_POST['field_value'],
                 ), true, $session_en['source__id']);
 
                 return view_json(array(

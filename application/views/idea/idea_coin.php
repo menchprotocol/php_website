@@ -82,7 +82,7 @@ echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_d
 echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $in['idea__status'], 'btn-idea', $is_source, true, $in['idea__id']).'</div>';
 
 //IDEA TIME
-echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $in['idea__seconds'], $in['idea__id'], $is_source && $is_active, 0).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $in['idea__duration'], $in['idea__id'], $is_source && $is_active, 0).'</div>';
 
 //IDEA READ (IF PUBLIC)
 echo '<div class="inline-block pull-right both-margin left-half-margin idea-read '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-read btn-circle" href="/'.$in['idea__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__11035[12750]['m_name'].'">'.$sources__11035[12750]['m_icon'].'</a></div>';

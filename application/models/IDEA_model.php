@@ -23,8 +23,8 @@ class IDEA_model extends CI_Model
             return false;
         }
 
-        if(!isset($insert_columns['idea__seconds']) || $insert_columns['idea__seconds'] < config_var(12427)){
-            $insert_columns['idea__seconds'] = config_var(12176);
+        if(!isset($insert_columns['idea__duration']) || $insert_columns['idea__duration'] < config_var(12427)){
+            $insert_columns['idea__duration'] = config_var(12176);
         }
 
         //Lets now add:
@@ -177,7 +177,7 @@ class IDEA_model extends CI_Model
                     $read__up = $value;
                     $read__down = $before_data[0][$key];
 
-                } elseif($key=='idea__seconds') {
+                } elseif($key=='idea__duration') {
 
                     $read__type = 10650; //Idea updated Completion Time
                     $read__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
@@ -877,8 +877,8 @@ class IDEA_model extends CI_Model
         $metadata_this = array(
             '__in__metadata_min_steps' => 1,
             '__in__metadata_max_steps' => 1,
-            '__in__metadata_min_seconds' => $in['idea__seconds'],
-            '__in__metadata_max_seconds' => $in['idea__seconds'],
+            '__in__metadata_min_seconds' => $in['idea__duration'],
+            '__in__metadata_max_seconds' => $in['idea__duration'],
             '__in__metadata_experts' => array(),
             '__in__metadata_content' => array(),
         );

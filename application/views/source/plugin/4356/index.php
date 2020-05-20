@@ -22,7 +22,7 @@ foreach($this->IDEA_model->fetch($filters) as $in){
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type' => 10650,
             'read__right' => $idea__id,
-        ))) && $in['idea__seconds']!=config_var(12176)){
+        ))) && $in['idea__duration']!=config_var(12176)){
         //Yes, so we ignore:
         if($idea__id){
             //Show details:
@@ -140,9 +140,9 @@ foreach($this->IDEA_model->fetch($filters) as $in){
     }
 
     //Update if necessary:
-    if($estimated_time != $in['idea__seconds']){
+    if($estimated_time != $in['idea__duration']){
         $this->IDEA_model->update($in['idea__id'], array(
-            'idea__seconds' => $estimated_time,
+            'idea__duration' => $estimated_time,
         ));
         $total_updated++;
     }

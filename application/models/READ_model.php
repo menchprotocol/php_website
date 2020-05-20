@@ -1986,7 +1986,7 @@ class READ_model extends CI_Model
         $common_totals = $this->IDEA_model->fetch(array(
             'idea__id IN ('.join(',',$flat_common_steps).')' => null,
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        ), 0, 0, array(), 'COUNT(idea__id) as total_steps, SUM(idea__seconds) as total_seconds');
+        ), 0, 0, array(), 'COUNT(idea__id) as total_steps, SUM(idea__duration) as total_seconds');
 
 
         //Count completed for user:
@@ -1996,7 +1996,7 @@ class READ_model extends CI_Model
             'read__left IN (' . join(',', $flat_common_steps ) . ')' => null,
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        ), array('idea_previous'), 0, 0, array(), 'COUNT(idea__id) as completed_steps, SUM(idea__seconds) as completed_seconds');
+        ), array('idea_previous'), 0, 0, array(), 'COUNT(idea__id) as completed_steps, SUM(idea__duration) as completed_seconds');
 
 
         //Calculate common steps and expansion steps recursively for this user:
