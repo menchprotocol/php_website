@@ -555,8 +555,8 @@ class SOURCE_model extends CI_Model
         //Goes through $max_search_levels of sources to find expert channels, people & organizations
         $max_search_levels = 3;
         $metadata_this = array(
-            '__idea__metadata_experts' => array(),
-            '__idea__metadata_content' => array(),
+            '__idea___experts' => array(),
+            '__idea___content' => array(),
         );
 
         //SOURCE PROFILE
@@ -570,14 +570,14 @@ class SOURCE_model extends CI_Model
             if(in_array($source__profile['source__id'], $this->config->item('sources_id_3000'))){
                 //CONTENT CHANNELS
                 $en['read__message'] = $source__profile['read__message']; //Update Description
-                if (!isset($metadata_this['__idea__metadata_content'][$en['source__id']])) {
-                    $metadata_this['__idea__metadata_content'][$en['source__id']] = $en;
+                if (!isset($metadata_this['__idea___content'][$en['source__id']])) {
+                    $metadata_this['__idea___content'][$en['source__id']] = $en;
                 }
             } elseif(in_array($source__profile['source__id'], $this->config->item('sources_id_12864'))) {
                 //EXPERT PEOPLE/ORGANIZATIONS
                 $en['read__message'] = $source__profile['read__message']; //Update Description
-                if (!isset($metadata_this['__idea__metadata_experts'][$en['source__id']])) {
-                    $metadata_this['__idea__metadata_experts'][$en['source__id']] = $en;
+                if (!isset($metadata_this['__idea___experts'][$en['source__id']])) {
+                    $metadata_this['__idea___experts'][$en['source__id']] = $en;
                 }
             }
 
@@ -587,16 +587,16 @@ class SOURCE_model extends CI_Model
                 $metadata_recursion = $this->SOURCE_model->metadat_experts($source__profile, ($level + 1));
 
                 //CONTENT CHANNELS
-                foreach($metadata_recursion['__idea__metadata_content'] as $source__id => $source_en) {
-                    if (!isset($metadata_this['__idea__metadata_content'][$source__id])) {
-                        $metadata_this['__idea__metadata_content'][$source__id] = $source_en;
+                foreach($metadata_recursion['__idea___content'] as $source__id => $source_en) {
+                    if (!isset($metadata_this['__idea___content'][$source__id])) {
+                        $metadata_this['__idea___content'][$source__id] = $source_en;
                     }
                 }
 
                 //EXPERT PEOPLE/ORGANIZATIONS
-                foreach($metadata_recursion['__idea__metadata_experts'] as $source__id => $expert_en) {
-                    if (!isset($metadata_this['__idea__metadata_experts'][$source__id])) {
-                        $metadata_this['__idea__metadata_experts'][$source__id] = $expert_en;
+                foreach($metadata_recursion['__idea___experts'] as $source__id => $expert_en) {
+                    if (!isset($metadata_this['__idea___experts'][$source__id])) {
+                        $metadata_this['__idea___experts'][$source__id] = $expert_en;
                     }
                 }
             }

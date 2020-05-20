@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-19 19:15:32 PST
+//Generated 2020-05-20 06:46:32 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589940932;
-$config['cache_count_read'] = 1211748;
+$config['cache_timestamp'] = 1589982392;
+$config['cache_count_read'] = 1212188;
 $config['cache_count_read'] = 121261;
 $config['cache_count_idea'] = 5628;
 $config['cache_count_source'] = 4857;
@@ -2356,49 +2356,49 @@ $config['sources__6232'] = array(
     6168 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA COMMON STEPS',
-        'm_desc' => 'idea__metadata_common_steps',
+        'm_desc' => 'idea___common_reads',
         'm_parents' => array(6232,6214,6159),
     ),
     6283 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA EXPANSION CONDITIONAL',
-        'm_desc' => 'idea__metadata_expansion_conditional',
+        'm_desc' => 'idea___expansion_conditional',
         'm_parents' => array(6214,6232,6159),
     ),
     12885 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA EXPANSION SOME',
-        'm_desc' => 'idea__metadata_expansion_some',
+        'm_desc' => 'idea___expansion_some',
         'm_parents' => array(6214,6232,6159),
     ),
     6228 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA EXPANSION STEPS',
-        'm_desc' => 'idea__metadata_expansion_steps',
+        'm_desc' => 'idea___expansion_reads',
         'm_parents' => array(6232,6214,6159),
     ),
     6165 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA EXPERTS',
-        'm_desc' => 'idea__metadata_experts',
+        'm_desc' => 'idea___experts',
         'm_parents' => array(6232,6214,6159),
     ),
     6162 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'IDEA METADATA MAXIMUM SECONDS',
-        'm_desc' => 'idea__metadata_max_seconds',
+        'm_desc' => 'idea___max_seconds',
         'm_parents' => array(4739,6232,6214,4356,6159),
     ),
     6161 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA MINIMUM SECONDS',
-        'm_desc' => 'idea__metadata_min_seconds',
+        'm_desc' => 'idea___min_seconds',
         'm_parents' => array(4735,6232,6214,4356,6159),
     ),
     6167 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA SOURCES',
-        'm_desc' => 'idea__metadata_content',
+        'm_desc' => 'idea___content',
         'm_parents' => array(6232,6214,6159),
     ),
     4737 => array(
@@ -2416,13 +2416,13 @@ $config['sources__6232'] = array(
     6170 => array(
         'm_icon' => '<i class="fas fa-sitemap idea"></i>',
         'm_name' => 'IDEA TREE MAX',
-        'm_desc' => 'idea__metadata_max_steps',
+        'm_desc' => 'idea___max_reads',
         'm_parents' => array(12413,6232,6214,6159),
     ),
     6169 => array(
         'm_icon' => '<i class="fal fa-sitemap idea"></i>',
         'm_name' => 'IDEA TREE MIN',
-        'm_desc' => 'idea__metadata_min_steps',
+        'm_desc' => 'idea___min_reads',
         'm_parents' => array(12413,6232,6214,6159),
     ),
     7585 => array(

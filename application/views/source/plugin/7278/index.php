@@ -41,7 +41,7 @@ foreach($ins as $in){
     $this->db->insert('gephi_nodes', array(
         'id' => $id_prefix['in'].$in['idea__id'],
         'label' => $in['idea__title'],
-        //'size' => ( isset($idea__metadata['idea__metadata_max_seconds']) ? round(($idea__metadata['idea__metadata_max_seconds']/3600),0) : 0 ), //Max time
+        //'size' => ( isset($idea__metadata['idea___max_seconds']) ? round(($idea__metadata['idea___max_seconds']/3600),0) : 0 ), //Max time
         'size' => $node_size['in'],
         'node_type' => 1, //Idea
         'node_status' => $in['idea__status'],

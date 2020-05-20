@@ -623,8 +623,8 @@ function view_idea_read($in, $common_prefix = null, $show_editor = false, $compl
 
     $is_saved = ( isset($in['read__type']) && $in['read__type']==12896 );
     $metadata = unserialize($in['idea__metadata']);
-    $has_time_estimate = ( isset($metadata['idea__metadata_max_seconds']) && $metadata['idea__metadata_max_seconds']>0 );
-    $idea_count = ( isset($metadata['idea__metadata_max_steps']) && $metadata['idea__metadata_max_steps']>=2 ? $metadata['idea__metadata_max_steps']-1 : 0 );
+    $has_time_estimate = ( isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0 );
+    $idea_count = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 );
 
     if(!$completion_rate){
         if($recipient_en){
@@ -993,7 +993,7 @@ function view_idea($in, $idea_linked_id = 0, $is_parent = false, $is_source = fa
             $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[11020]['m_name'].'">'.$sources__12413[11020]['m_icon'].$next_ins[0]['total_ins'].'&nbsp;</div>';
 
             //TREE SIZE
-            $tree_size = ( isset($idea__metadata['idea__metadata_max_steps']) && $idea__metadata['idea__metadata_max_steps']>$next_ins[0]['total_ins'] ? intval($idea__metadata['idea__metadata_max_steps']) : 0 );
+            $tree_size = ( isset($idea__metadata['idea___max_reads']) && $idea__metadata['idea___max_reads']>$next_ins[0]['total_ins'] ? intval($idea__metadata['idea___max_reads']) : 0 );
             if($tree_size){
                 $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[6170]['m_name'].'">'.$sources__12413[6170]['m_icon'].'&nbsp;'.$tree_size.'&nbsp;</div>';
             }
@@ -1311,10 +1311,10 @@ function view_unauthorized_message($superpower_source__id = 0){
 }
 
 function view_time_range($metadata){
-    if(!isset($metadata['idea__metadata_min_seconds']) || !isset($metadata['idea__metadata_max_seconds'])){
+    if(!isset($metadata['idea___min_seconds']) || !isset($metadata['idea___max_seconds'])){
         return null;
     }
-    return '<span title="Estimated Read Time Of '.( $metadata['idea__metadata_min_seconds'] < $metadata['idea__metadata_max_seconds'] ? view_time_hours($metadata['idea__metadata_min_seconds']).' - ' : '' ).view_time_hours($metadata['idea__metadata_max_seconds']).'">'.view_time_hours(round(($metadata['idea__metadata_min_seconds']+$metadata['idea__metadata_max_seconds'])/2)).'</span>';
+    return '<span title="Estimated Read Time Of '.( $metadata['idea___min_seconds'] < $metadata['idea___max_seconds'] ? view_time_hours($metadata['idea___min_seconds']).' - ' : '' ).view_time_hours($metadata['idea___max_seconds']).'">'.view_time_hours(round(($metadata['idea___min_seconds']+$metadata['idea___max_seconds'])/2)).'</span>';
 }
 
 function view_time_hours($total_seconds, $hide_hour = false){
@@ -1340,16 +1340,16 @@ function view_idea_cover($in, $show_editor, $common_prefix = null, $completion_r
     //FIND IMAGE
     $recipient_en = superpower_assigned();
     $metadata = unserialize($in['idea__metadata']);
-    $idea_count = ( isset($metadata['idea__metadata_max_steps']) && $metadata['idea__metadata_max_steps']>=2 ? $metadata['idea__metadata_max_steps']-1 : 0 );
-    $source_count = ( isset($metadata['idea__metadata_experts']) ? count($metadata['idea__metadata_experts']) : 0 ) + ( isset($metadata['idea__metadata_content']) ? count($metadata['idea__metadata_content']) : 0 );
+    $idea_count = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 );
+    $source_count = ( isset($metadata['idea___experts']) ? count($metadata['idea___experts']) : 0 ) + ( isset($metadata['idea___content']) ? count($metadata['idea___content']) : 0 );
 
     $read_count = 0;
     /*
-    $all_steps = array_merge(array_flatten($metadata['idea__metadata_common_steps']) , array_flatten($metadata['idea__metadata_expansion_steps']));
+    $all_reads = array_merge(array_flatten($metadata['idea___common_reads']) , array_flatten($metadata['idea___expansion_reads']));
     $read_coins = $CI->READ_model->fetch(array(
         'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
-        'read__left IN (' . join(',', $all_steps) . ')' => null, //READ COIN
+        'read__left IN (' . join(',', $all_reads) . ')' => null, //READ COIN
     ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
     $read_count = $read_coins[0]['totals'];
     */
@@ -1371,7 +1371,7 @@ function view_idea_cover($in, $show_editor, $common_prefix = null, $completion_r
 
     $ui .= '<img src="'.idea_fetch_cover($in['idea__id']).'" />';
 
-    if($idea_count && isset($metadata['idea__metadata_max_seconds']) && $metadata['idea__metadata_max_seconds']>0){
+    if($idea_count && isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0){
         $ui .= '<span class="media-info top-right">'.view_time_range($metadata).'</span>';
     }
 

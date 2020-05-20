@@ -1102,14 +1102,14 @@ class READ_model extends CI_Model
         //Make sure of no terminations first:
         $check_termination_answers = array();
 
-        if(count($idea__metadata['idea__metadata_expansion_steps']) > 0){
-            $check_termination_answers = array_merge($check_termination_answers , array_flatten($idea__metadata['idea__metadata_expansion_steps']));
+        if(count($idea__metadata['idea___expansion_reads']) > 0){
+            $check_termination_answers = array_merge($check_termination_answers , array_flatten($idea__metadata['idea___expansion_reads']));
         }
-        if(count($idea__metadata['idea__metadata_expansion_some']) > 0){
-            $check_termination_answers = array_merge($check_termination_answers , array_flatten($idea__metadata['idea__metadata_expansion_some']));
+        if(count($idea__metadata['idea___expansion_some']) > 0){
+            $check_termination_answers = array_merge($check_termination_answers , array_flatten($idea__metadata['idea___expansion_some']));
         }
-        if(count($idea__metadata['idea__metadata_expansion_conditional']) > 0){
-            $check_termination_answers = array_merge($check_termination_answers , array_flatten($idea__metadata['idea__metadata_expansion_conditional']));
+        if(count($idea__metadata['idea___expansion_conditional']) > 0){
+            $check_termination_answers = array_merge($check_termination_answers , array_flatten($idea__metadata['idea___expansion_conditional']));
         }
         if(count($check_termination_answers) > 0 && count($this->READ_model->fetch(array(
                 'read__type' => 7492, //TERMINATE
@@ -1122,11 +1122,11 @@ class READ_model extends CI_Model
 
 
 
-        foreach(array_flatten($idea__metadata['idea__metadata_common_steps']) as $common_step_idea__id){
+        foreach(array_flatten($idea__metadata['idea___common_reads']) as $common_read_idea__id){
 
             //Is this an expansion step?
-            $is_expansion = isset($idea__metadata['idea__metadata_expansion_steps'][$common_step_idea__id]) || isset($idea__metadata['idea__metadata_expansion_some'][$common_step_idea__id]);
-            $is_condition = isset($idea__metadata['idea__metadata_expansion_conditional'][$common_step_idea__id]);
+            $is_expansion = isset($idea__metadata['idea___expansion_reads'][$common_read_idea__id]) || isset($idea__metadata['idea___expansion_some'][$common_read_idea__id]);
+            $is_condition = isset($idea__metadata['idea___expansion_conditional'][$common_read_idea__id]);
 
             //Have they completed this?
             if($is_expansion){
@@ -1137,14 +1137,14 @@ class READ_model extends CI_Model
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'read__left' => $common_step_idea__id,
+                    'read__left' => $common_read_idea__id,
                 ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $ln){
 
                     //See if this answer was selected:
                     if(count($this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINK
-                        'read__left' => $common_step_idea__id,
+                        'read__left' => $common_read_idea__id,
                         'read__right' => $ln['idea__id'],
                         'read__source' => $source__id, //Belongs to this User
                     )))){
@@ -1175,7 +1175,7 @@ class READ_model extends CI_Model
                 }
 
                 if(!$found_expansion){
-                    return $common_step_idea__id;
+                    return $common_read_idea__id;
                 }
 
             } elseif($is_condition){
@@ -1184,8 +1184,8 @@ class READ_model extends CI_Model
                 foreach($this->READ_model->fetch(array(
                     'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
                     'read__source' => $source__id, //Belongs to this User
-                    'read__left' => $common_step_idea__id,
-                    'read__right IN (' . join(',', $idea__metadata['idea__metadata_expansion_conditional'][$common_step_idea__id]) . ')' => null,
+                    'read__left' => $common_read_idea__id,
+                    'read__right IN (' . join(',', $idea__metadata['idea___expansion_conditional'][$common_read_idea__id]) . ')' => null,
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 ), array('idea_next')) as $unlocked_condition){
 
@@ -1202,11 +1202,11 @@ class READ_model extends CI_Model
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',' , $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
                     'read__source' => $source__id, //Belongs to this User
-                    'read__left' => $common_step_idea__id,
+                    'read__left' => $common_read_idea__id,
                 )))){
 
                 //Not completed yet, this is the next step:
-                return $common_step_idea__id;
+                return $common_read_idea__id;
 
             }
 
@@ -1447,7 +1447,7 @@ class READ_model extends CI_Model
 
         //Look at Conditional Idea Links ONLY at this level:
         $idea__metadata = unserialize($in['idea__metadata']);
-        if(isset($idea__metadata['idea__metadata_expansion_conditional'][$in['idea__id']]) && count($idea__metadata['idea__metadata_expansion_conditional'][$in['idea__id']]) > 0){
+        if(isset($idea__metadata['idea___expansion_conditional'][$in['idea__id']]) && count($idea__metadata['idea___expansion_conditional'][$in['idea__id']]) > 0){
 
             //Make sure previous link unlocks have NOT happened before:
             $existing_expansions = $this->READ_model->fetch(array(
@@ -1455,7 +1455,7 @@ class READ_model extends CI_Model
                 'read__type' => 6140, //READ UNLOCK LINK
                 'read__source' => $source__id,
                 'read__left' => $in['idea__id'],
-                'read__right IN (' . join(',', $idea__metadata['idea__metadata_expansion_conditional'][$in['idea__id']]) . ')' => null, //Limit to cached answers
+                'read__right IN (' . join(',', $idea__metadata['idea___expansion_conditional'][$in['idea__id']]) . ')' => null, //Limit to cached answers
             ));
             if(count($existing_expansions) > 0){
 
@@ -1495,7 +1495,7 @@ class READ_model extends CI_Model
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
                 'read__left' => $in['idea__id'],
-                'read__right IN (' . join(',', $idea__metadata['idea__metadata_expansion_conditional'][$in['idea__id']]) . ')' => null, //Limit to cached answers
+                'read__right IN (' . join(',', $idea__metadata['idea___expansion_conditional'][$in['idea__id']]) . ')' => null, //Limit to cached answers
             ), array('idea_next'), 0, 0);
 
 
@@ -1746,11 +1746,11 @@ class READ_model extends CI_Model
 
         //Fetch/validate Reads Common Ideas:
         $idea__metadata = unserialize($in['idea__metadata']);
-        if(!isset($idea__metadata['idea__metadata_common_steps'])){
+        if(!isset($idea__metadata['idea___common_reads'])){
 
             //Should not happen, log error:
             $this->READ_model->create(array(
-                'read__message' => 'completion_marks() Detected user Reads without idea__metadata_common_steps value!',
+                'read__message' => 'completion_marks() Detected user Reads without idea___common_reads value!',
                 'read__type' => 4246, //Platform Bug Reports
                 'read__source' => $source__id,
                 'read__left' => $in['idea__id'],
@@ -1760,7 +1760,7 @@ class READ_model extends CI_Model
         }
 
         //Generate flat steps:
-        $flat_common_steps = array_flatten($idea__metadata['idea__metadata_common_steps']);
+        $flat_common_reads = array_flatten($idea__metadata['idea___common_reads']);
 
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
@@ -1779,7 +1779,7 @@ class READ_model extends CI_Model
 
 
         //Process Answer ONE:
-        if(isset($idea__metadata['idea__metadata_expansion_steps']) && count($idea__metadata['idea__metadata_expansion_steps']) > 0){
+        if(isset($idea__metadata['idea___expansion_reads']) && count($idea__metadata['idea___expansion_reads']) > 0){
 
             //We need expansion steps (OR Ideas) to calculate question/answers:
             //To save all the marks for specific answers:
@@ -1787,7 +1787,7 @@ class READ_model extends CI_Model
             $answer_marks_index = array();
 
             //Go through these expansion steps:
-            foreach($idea__metadata['idea__metadata_expansion_steps'] as $question_idea__id => $answers_idea__ids ){
+            foreach($idea__metadata['idea___expansion_reads'] as $question_idea__id => $answers_idea__ids ){
 
                 //Calculate local min/max marks:
                 array_push($question_idea__ids, $question_idea__id);
@@ -1861,7 +1861,7 @@ class READ_model extends CI_Model
 
 
         //Process Answer SOME:
-        if(isset($idea__metadata['idea__metadata_expansion_some']) && count($idea__metadata['idea__metadata_expansion_some']) > 0){
+        if(isset($idea__metadata['idea___expansion_some']) && count($idea__metadata['idea___expansion_some']) > 0){
 
             //We need expansion steps (OR Ideas) to calculate question/answers:
             //To save all the marks for specific answers:
@@ -1869,7 +1869,7 @@ class READ_model extends CI_Model
             $answer_marks_index = array();
 
             //Go through these expansion steps:
-            foreach($idea__metadata['idea__metadata_expansion_some'] as $question_idea__id => $answers_idea__ids ){
+            foreach($idea__metadata['idea___expansion_some'] as $question_idea__id => $answers_idea__ids ){
 
                 //Calculate local min/max marks:
                 array_push($question_idea__ids, $question_idea__id);
@@ -1972,37 +1972,37 @@ class READ_model extends CI_Model
 
         //Fetch/validate Reads Common Ideas:
         $idea__metadata = unserialize($in['idea__metadata']);
-        if(!isset($idea__metadata['idea__metadata_common_steps'])){
+        if(!isset($idea__metadata['idea___common_reads'])){
             //Since it's not there yet we assume the idea it self only!
-            $idea__metadata['idea__metadata_common_steps'] = array($in['idea__id']);
+            $idea__metadata['idea___common_reads'] = array($in['idea__id']);
         }
 
 
         //Generate flat steps:
-        $flat_common_steps = array_flatten($idea__metadata['idea__metadata_common_steps']);
+        $flat_common_reads = array_flatten($idea__metadata['idea___common_reads']);
 
 
         //Count totals:
         $common_totals = $this->IDEA_model->fetch(array(
-            'idea__id IN ('.join(',',$flat_common_steps).')' => null,
+            'idea__id IN ('.join(',',$flat_common_reads).')' => null,
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        ), 0, 0, array(), 'COUNT(idea__id) as total_steps, SUM(idea__duration) as total_seconds');
+        ), 0, 0, array(), 'COUNT(idea__id) as total_reads, SUM(idea__duration) as total_seconds');
 
 
         //Count completed for user:
         $common_completed = $this->READ_model->fetch(array(
             'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
             'read__source' => $source__id, //Belongs to this User
-            'read__left IN (' . join(',', $flat_common_steps ) . ')' => null,
+            'read__left IN (' . join(',', $flat_common_reads ) . ')' => null,
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        ), array('idea_previous'), 0, 0, array(), 'COUNT(idea__id) as completed_steps, SUM(idea__duration) as completed_seconds');
+        ), array('idea_previous'), 0, 0, array(), 'COUNT(idea__id) as completed_reads, SUM(idea__duration) as completed_seconds');
 
 
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
-            'steps_total' => intval($common_totals[0]['total_steps']),
-            'steps_completed' => intval($common_completed[0]['completed_steps']),
+            'steps_total' => intval($common_totals[0]['total_reads']),
+            'steps_completed' => intval($common_completed[0]['completed_reads']),
             'seconds_total' => intval($common_totals[0]['total_seconds']),
             'seconds_completed' => intval($common_completed[0]['completed_seconds']),
         );
@@ -2010,11 +2010,11 @@ class READ_model extends CI_Model
 
         //Expansion Answer ONE
         $answer_array = array();
-        if(isset($idea__metadata['idea__metadata_expansion_steps']) && count($idea__metadata['idea__metadata_expansion_steps']) > 0) {
-            $answer_array = array_merge($answer_array , array_flatten($idea__metadata['idea__metadata_expansion_steps']));
+        if(isset($idea__metadata['idea___expansion_reads']) && count($idea__metadata['idea___expansion_reads']) > 0) {
+            $answer_array = array_merge($answer_array , array_flatten($idea__metadata['idea___expansion_reads']));
         }
-        if(isset($idea__metadata['idea__metadata_expansion_some']) && count($idea__metadata['idea__metadata_expansion_some']) > 0) {
-            $answer_array = array_merge($answer_array , array_flatten($idea__metadata['idea__metadata_expansion_some']));
+        if(isset($idea__metadata['idea___expansion_some']) && count($idea__metadata['idea___expansion_some']) > 0) {
+            $answer_array = array_merge($answer_array , array_flatten($idea__metadata['idea___expansion_some']));
         }
 
         if(count($answer_array)){
@@ -2023,7 +2023,7 @@ class READ_model extends CI_Model
             foreach($this->READ_model->fetch(array(
                 'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
                 'read__source' => $source__id, //Belongs to this User
-                'read__left IN (' . join(',', $flat_common_steps ) . ')' => null,
+                'read__left IN (' . join(',', $flat_common_reads ) . ')' => null,
                 'read__right IN (' . join(',', $answer_array) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
@@ -2042,14 +2042,14 @@ class READ_model extends CI_Model
 
 
         //Expansion steps Recursive
-        if(isset($idea__metadata['idea__metadata_expansion_conditional']) && count($idea__metadata['idea__metadata_expansion_conditional']) > 0){
+        if(isset($idea__metadata['idea___expansion_conditional']) && count($idea__metadata['idea___expansion_conditional']) > 0){
 
             //Now let's check if user has unlocked any Miletones:
             foreach($this->READ_model->fetch(array(
                 'read__type' => 6140, //READ UNLOCK LINK
                 'read__source' => $source__id, //Belongs to this User
-                'read__left IN (' . join(',', $flat_common_steps ) . ')' => null,
-                'read__right IN (' . join(',', array_flatten($idea__metadata['idea__metadata_expansion_conditional'])) . ')' => null,
+                'read__left IN (' . join(',', $flat_common_reads ) . ')' => null,
+                'read__right IN (' . join(',', array_flatten($idea__metadata['idea___expansion_conditional'])) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             ), array('idea_next')) as $expansion_in) {

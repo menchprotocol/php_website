@@ -61,7 +61,7 @@ foreach($this->READ_model->fetch(array(
         } else {
 
             //Update user progression link type:
-            $user_steps = $this->READ_model->fetch(array(
+            $user_reads = $this->READ_model->fetch(array(
                 'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
                 'read__left' => $idea_read['idea__id'],
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -69,8 +69,8 @@ foreach($this->READ_model->fetch(array(
 
             $updated = 0;
 
-            echo '<div>Total Steps: '.count($user_steps).'</div>';
-            $total_count += count($user_steps);
+            echo '<div>Total Steps: '.count($user_reads).'</div>';
+            $total_count += count($user_reads);
 
         }
 

@@ -37,7 +37,7 @@ if(!isset($_GET['idea__id']) || !intval($_GET['idea__id'])) {
         view_json(array(
             'idea_general' => array(
                 'idea_recursive_parents' => $this->IDEA_model->recursive_parents($ins[0]['idea__id']),
-                'idea__metadata_common_base' => $this->IDEA_model->metadata_common_base($ins[0]),
+                'idea___common_base' => $this->IDEA_model->metadata_common_base($ins[0]),
             ),
             'idea_user' => array(
                 'read_find_next' => $this->READ_model->find_next($_GET['source__id'], $ins[0]),

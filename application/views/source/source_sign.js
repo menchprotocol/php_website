@@ -24,10 +24,10 @@ $(document).ready(function () {
     });
 });
 
-function goto_step(this_step_count){
+function goto_step(this_read_count){
 
     //Update read count:
-    step_count = this_step_count;
+    step_count = this_read_count;
 
     $('.signup-steps').addClass('hidden');
     $('#step'+step_count).removeClass('hidden');

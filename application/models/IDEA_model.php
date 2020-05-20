@@ -611,12 +611,12 @@ class IDEA_model extends CI_Model
         $select_some = in_array($focus_in['idea__type'] , $this->config->item('sources_id_12884')); //IDEA TYPE SELECT SOME
         $select_one_children = array(); //To be populated only if $focus_in is select one
         $select_some_children = array(); //To be populated only if $focus_in is select some
-        $conditional_steps = array(); //To be populated only for Conditional Ideas
+        $conditional_reads = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
-            '__idea__metadata_common_steps' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__idea__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an Reads idea by answering OR ideas
-            '__idea__metadata_expansion_some' => array(), //Ideas that allows players to select one or more
-            '__idea__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an Reads idea via Conditional Idea links
+            '__idea___common_reads' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
+            '__idea___expansion_reads' => array(), //Ideas that may exist as a link to expand an Reads idea by answering OR ideas
+            '__idea___expansion_some' => array(), //Ideas that allows players to select one or more
+            '__idea___expansion_conditional' => array(), //Ideas that may exist as a link to expand an Reads idea via Conditional Idea links
         );
 
         //Fetch children:
@@ -631,7 +631,7 @@ class IDEA_model extends CI_Model
             if(in_array($child_in['read__type'], $this->config->item('sources_id_12842'))){
 
                 //Conditional Idea Link:
-                array_push($conditional_steps, intval($child_in['idea__id']));
+                array_push($conditional_reads, intval($child_in['idea__id']));
 
             } elseif($select_one){
 
@@ -646,36 +646,36 @@ class IDEA_model extends CI_Model
             } else {
 
                 //AND parent Idea with Fixed Idea Link:
-                array_push($metadata_this['__idea__metadata_common_steps'], intval($child_in['idea__id']));
+                array_push($metadata_this['__idea___common_reads'], intval($child_in['idea__id']));
 
                 //Go recursively down:
                 $child_recursion = $this->IDEA_model->metadata_common_base($child_in);
 
 
                 //Aggregate recursion data:
-                if(count($child_recursion['__idea__metadata_common_steps']) > 0){
-                    array_push($metadata_this['__idea__metadata_common_steps'], $child_recursion['__idea__metadata_common_steps']);
+                if(count($child_recursion['__idea___common_reads']) > 0){
+                    array_push($metadata_this['__idea___common_reads'], $child_recursion['__idea___common_reads']);
                 }
 
                 //Merge expansion steps:
-                if(count($child_recursion['__idea__metadata_expansion_steps']) > 0){
-                    foreach($child_recursion['__idea__metadata_expansion_steps'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__idea__metadata_expansion_steps'])){
-                            $metadata_this['__idea__metadata_expansion_steps'][$key] = $value;
+                if(count($child_recursion['__idea___expansion_reads']) > 0){
+                    foreach($child_recursion['__idea___expansion_reads'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__idea___expansion_reads'])){
+                            $metadata_this['__idea___expansion_reads'][$key] = $value;
                         }
                     }
                 }
-                if(count($child_recursion['__idea__metadata_expansion_some']) > 0){
-                    foreach($child_recursion['__idea__metadata_expansion_some'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__idea__metadata_expansion_some'])){
-                            $metadata_this['__idea__metadata_expansion_some'][$key] = $value;
+                if(count($child_recursion['__idea___expansion_some']) > 0){
+                    foreach($child_recursion['__idea___expansion_some'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__idea___expansion_some'])){
+                            $metadata_this['__idea___expansion_some'][$key] = $value;
                         }
                     }
                 }
-                if(count($child_recursion['__idea__metadata_expansion_conditional']) > 0){
-                    foreach($child_recursion['__idea__metadata_expansion_conditional'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__idea__metadata_expansion_conditional'])){
-                            $metadata_this['__idea__metadata_expansion_conditional'][$key] = $value;
+                if(count($child_recursion['__idea___expansion_conditional']) > 0){
+                    foreach($child_recursion['__idea___expansion_conditional'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__idea___expansion_conditional'])){
+                            $metadata_this['__idea___expansion_conditional'][$key] = $value;
                         }
                     }
                 }
@@ -685,13 +685,13 @@ class IDEA_model extends CI_Model
 
         //Was this an OR branch that needs it's children added to the array?
         if($select_one && count($select_one_children) > 0){
-            $metadata_this['__idea__metadata_expansion_steps'][$focus_in['idea__id']] = $select_one_children;
+            $metadata_this['__idea___expansion_reads'][$focus_in['idea__id']] = $select_one_children;
         }
         if($select_some && count($select_some_children) > 0){
-            $metadata_this['__idea__metadata_expansion_some'][$focus_in['idea__id']] = $select_some_children;
+            $metadata_this['__idea___expansion_some'][$focus_in['idea__id']] = $select_some_children;
         }
-        if(count($conditional_steps) > 0){
-            $metadata_this['__idea__metadata_expansion_conditional'][$focus_in['idea__id']] = $conditional_steps;
+        if(count($conditional_reads) > 0){
+            $metadata_this['__idea___expansion_conditional'][$focus_in['idea__id']] = $conditional_reads;
         }
 
 
@@ -699,17 +699,17 @@ class IDEA_model extends CI_Model
         if($is_first_in){
 
             //Make sure to add main idea to common idea:
-            if(count($metadata_this['__idea__metadata_common_steps']) > 0){
-                $metadata_this['__idea__metadata_common_steps'] = array_merge( array(intval($focus_in['idea__id'])) , array($metadata_this['__idea__metadata_common_steps']));
+            if(count($metadata_this['__idea___common_reads']) > 0){
+                $metadata_this['__idea___common_reads'] = array_merge( array(intval($focus_in['idea__id'])) , array($metadata_this['__idea___common_reads']));
             } else {
-                $metadata_this['__idea__metadata_common_steps'] = array(intval($focus_in['idea__id']));
+                $metadata_this['__idea___common_reads'] = array(intval($focus_in['idea__id']));
             }
 
             update_metadata('in', $focus_in['idea__id'], array(
-                'idea__metadata_common_steps' => $metadata_this['__idea__metadata_common_steps'],
-                'idea__metadata_expansion_steps' => $metadata_this['__idea__metadata_expansion_steps'],
-                'idea__metadata_expansion_some' => $metadata_this['__idea__metadata_expansion_some'],
-                'idea__metadata_expansion_conditional' => $metadata_this['__idea__metadata_expansion_conditional'],
+                'idea___common_reads' => $metadata_this['__idea___common_reads'],
+                'idea___expansion_reads' => $metadata_this['__idea___expansion_reads'],
+                'idea___expansion_some' => $metadata_this['__idea___expansion_some'],
+                'idea___expansion_conditional' => $metadata_this['__idea___expansion_conditional'],
             ));
 
         }
@@ -875,12 +875,12 @@ class IDEA_model extends CI_Model
          * */
 
         $metadata_this = array(
-            '__idea__metadata_min_steps' => 1,
-            '__idea__metadata_max_steps' => 1,
-            '__idea__metadata_min_seconds' => $in['idea__duration'],
-            '__idea__metadata_max_seconds' => $in['idea__duration'],
-            '__idea__metadata_experts' => array(),
-            '__idea__metadata_content' => array(),
+            '__idea___min_reads' => 1,
+            '__idea___max_reads' => 1,
+            '__idea___min_seconds' => $in['idea__duration'],
+            '__idea___max_seconds' => $in['idea__duration'],
+            '__idea___experts' => array(),
+            '__idea___content' => array(),
         );
 
 
@@ -896,26 +896,26 @@ class IDEA_model extends CI_Model
             $source_metadat_experts = $this->SOURCE_model->metadat_experts($en);
 
             //CONTENT CHANNELS
-            foreach($source_metadat_experts['__idea__metadata_content'] as $source__id => $source_en) {
-                if (!isset($metadata_this['__idea__metadata_content'][$source__id])) {
-                    $metadata_this['__idea__metadata_content'][$source__id] = $source_en;
+            foreach($source_metadat_experts['__idea___content'] as $source__id => $source_en) {
+                if (!isset($metadata_this['__idea___content'][$source__id])) {
+                    $metadata_this['__idea___content'][$source__id] = $source_en;
                 }
             }
 
             //EXPERT PEOPLE/ORGANIZATIONS
-            foreach($source_metadat_experts['__idea__metadata_experts'] as $source__id => $expert_en) {
-                if (!isset($metadata_this['__idea__metadata_experts'][$source__id])) {
-                    $metadata_this['__idea__metadata_experts'][$source__id] = $expert_en;
+            foreach($source_metadat_experts['__idea___experts'] as $source__id => $expert_en) {
+                if (!isset($metadata_this['__idea___experts'][$source__id])) {
+                    $metadata_this['__idea___experts'][$source__id] = $expert_en;
                 }
             }
         }
 
 
         $metadata_local = array(
-            'local__idea__metadata_min_steps'=> null,
-            'local__idea__metadata_max_steps'=> null,
-            'local__idea__metadata_min_seconds'=> null,
-            'local__idea__metadata_max_seconds'=> null,
+            'local__idea___min_reads'=> null,
+            'local__idea___max_reads'=> null,
+            'local__idea___min_seconds'=> null,
+            'local__idea___max_seconds'=> null,
         );
 
         //NEXT IDEAS
@@ -938,19 +938,19 @@ class IDEA_model extends CI_Model
                 //ONE
 
                 //MIN
-                if(is_null($metadata_local['local__idea__metadata_min_steps']) || $metadata_recursion['__idea__metadata_min_steps'] < $metadata_local['local__idea__metadata_min_steps']){
-                    $metadata_local['local__idea__metadata_min_steps'] = $metadata_recursion['__idea__metadata_min_steps'];
+                if(is_null($metadata_local['local__idea___min_reads']) || $metadata_recursion['__idea___min_reads'] < $metadata_local['local__idea___min_reads']){
+                    $metadata_local['local__idea___min_reads'] = $metadata_recursion['__idea___min_reads'];
                 }
-                if(is_null($metadata_local['local__idea__metadata_min_seconds']) || $metadata_recursion['__idea__metadata_min_seconds'] < $metadata_local['local__idea__metadata_min_seconds']){
-                    $metadata_local['local__idea__metadata_min_seconds'] = $metadata_recursion['__idea__metadata_min_seconds'];
+                if(is_null($metadata_local['local__idea___min_seconds']) || $metadata_recursion['__idea___min_seconds'] < $metadata_local['local__idea___min_seconds']){
+                    $metadata_local['local__idea___min_seconds'] = $metadata_recursion['__idea___min_seconds'];
                 }
 
                 //MAX
-                if(is_null($metadata_local['local__idea__metadata_max_steps']) || $metadata_recursion['__idea__metadata_max_steps'] > $metadata_local['local__idea__metadata_max_steps']){
-                    $metadata_local['local__idea__metadata_max_steps'] = $metadata_recursion['__idea__metadata_max_steps'];
+                if(is_null($metadata_local['local__idea___max_reads']) || $metadata_recursion['__idea___max_reads'] > $metadata_local['local__idea___max_reads']){
+                    $metadata_local['local__idea___max_reads'] = $metadata_recursion['__idea___max_reads'];
                 }
-                if(is_null($metadata_local['local__idea__metadata_max_seconds']) || $metadata_recursion['__idea__metadata_max_seconds'] > $metadata_local['local__idea__metadata_max_seconds']){
-                    $metadata_local['local__idea__metadata_max_seconds'] = $metadata_recursion['__idea__metadata_max_seconds'];
+                if(is_null($metadata_local['local__idea___max_seconds']) || $metadata_recursion['__idea___max_seconds'] > $metadata_local['local__idea___max_seconds']){
+                    $metadata_local['local__idea___max_seconds'] = $metadata_recursion['__idea___max_seconds'];
                 }
 
             } elseif(in_array($in['idea__type'], $this->config->item('sources_id_12884'))){
@@ -958,70 +958,70 @@ class IDEA_model extends CI_Model
                 //SOME
 
                 //MIN
-                if(is_null($metadata_local['local__idea__metadata_min_steps']) || $metadata_recursion['__idea__metadata_min_steps'] < $metadata_local['local__idea__metadata_min_steps']){
-                    $metadata_local['local__idea__metadata_min_steps'] = $metadata_recursion['__idea__metadata_min_steps'];
+                if(is_null($metadata_local['local__idea___min_reads']) || $metadata_recursion['__idea___min_reads'] < $metadata_local['local__idea___min_reads']){
+                    $metadata_local['local__idea___min_reads'] = $metadata_recursion['__idea___min_reads'];
                 }
-                if(is_null($metadata_local['local__idea__metadata_min_seconds']) || $metadata_recursion['__idea__metadata_min_seconds'] < $metadata_local['local__idea__metadata_min_seconds']){
-                    $metadata_local['local__idea__metadata_min_seconds'] = $metadata_recursion['__idea__metadata_min_seconds'];
+                if(is_null($metadata_local['local__idea___min_seconds']) || $metadata_recursion['__idea___min_seconds'] < $metadata_local['local__idea___min_seconds']){
+                    $metadata_local['local__idea___min_seconds'] = $metadata_recursion['__idea___min_seconds'];
                 }
 
                 //MAX
-                $metadata_this['__idea__metadata_max_steps'] += intval($metadata_recursion['__idea__metadata_max_steps']);
-                $metadata_this['__idea__metadata_max_seconds'] += intval($metadata_recursion['__idea__metadata_max_seconds']);
+                $metadata_this['__idea___max_reads'] += intval($metadata_recursion['__idea___max_reads']);
+                $metadata_this['__idea___max_seconds'] += intval($metadata_recursion['__idea___max_seconds']);
 
             } else {
 
                 //ALL
 
                 //MIN
-                $metadata_this['__idea__metadata_min_steps'] += intval($metadata_recursion['__idea__metadata_min_steps']);
-                $metadata_this['__idea__metadata_min_seconds'] += intval($metadata_recursion['__idea__metadata_min_seconds']);
+                $metadata_this['__idea___min_reads'] += intval($metadata_recursion['__idea___min_reads']);
+                $metadata_this['__idea___min_seconds'] += intval($metadata_recursion['__idea___min_seconds']);
 
                 //MAX
-                $metadata_this['__idea__metadata_max_steps'] += intval($metadata_recursion['__idea__metadata_max_steps']);
-                $metadata_this['__idea__metadata_max_seconds'] += intval($metadata_recursion['__idea__metadata_max_seconds']);
+                $metadata_this['__idea___max_reads'] += intval($metadata_recursion['__idea___max_reads']);
+                $metadata_this['__idea___max_seconds'] += intval($metadata_recursion['__idea___max_seconds']);
 
             }
 
 
             //EXPERT CONTENT
-            foreach($metadata_recursion['__idea__metadata_content'] as $source__id => $source_en) {
-                if (!isset($metadata_this['__idea__metadata_content'][$source__id])) {
-                    $metadata_this['__idea__metadata_content'][$source__id] = $source_en;
+            foreach($metadata_recursion['__idea___content'] as $source__id => $source_en) {
+                if (!isset($metadata_this['__idea___content'][$source__id])) {
+                    $metadata_this['__idea___content'][$source__id] = $source_en;
                 }
             }
 
             //EXPERT PEOPLE/ORGANIZATIONS
-            foreach($metadata_recursion['__idea__metadata_experts'] as $source__id => $expert_en) {
-                if (!isset($metadata_this['__idea__metadata_experts'][$source__id])) {
-                    $metadata_this['__idea__metadata_experts'][$source__id] = $expert_en;
+            foreach($metadata_recursion['__idea___experts'] as $source__id => $expert_en) {
+                if (!isset($metadata_this['__idea___experts'][$source__id])) {
+                    $metadata_this['__idea___experts'][$source__id] = $expert_en;
                 }
             }
         }
 
 
         //ADD LOCAL MIN/MAX
-        if(!is_null($metadata_local['local__idea__metadata_min_steps'])){
-            $metadata_this['__idea__metadata_min_steps'] += intval($metadata_local['local__idea__metadata_min_steps']);
+        if(!is_null($metadata_local['local__idea___min_reads'])){
+            $metadata_this['__idea___min_reads'] += intval($metadata_local['local__idea___min_reads']);
         }
-        if(!is_null($metadata_local['local__idea__metadata_max_steps'])){
-            $metadata_this['__idea__metadata_max_steps'] += intval($metadata_local['local__idea__metadata_max_steps']);
+        if(!is_null($metadata_local['local__idea___max_reads'])){
+            $metadata_this['__idea___max_reads'] += intval($metadata_local['local__idea___max_reads']);
         }
-        if(!is_null($metadata_local['local__idea__metadata_min_seconds'])){
-            $metadata_this['__idea__metadata_min_seconds'] += intval($metadata_local['local__idea__metadata_min_seconds']);
+        if(!is_null($metadata_local['local__idea___min_seconds'])){
+            $metadata_this['__idea___min_seconds'] += intval($metadata_local['local__idea___min_seconds']);
         }
-        if(!is_null($metadata_local['local__idea__metadata_max_seconds'])){
-            $metadata_this['__idea__metadata_max_seconds'] += intval($metadata_local['local__idea__metadata_max_seconds']);
+        if(!is_null($metadata_local['local__idea___max_seconds'])){
+            $metadata_this['__idea___max_seconds'] += intval($metadata_local['local__idea___max_seconds']);
         }
 
         //Save to DB
         update_metadata('in', $in['idea__id'], array(
-            'idea__metadata_min_steps' => intval($metadata_this['__idea__metadata_min_steps']),
-            'idea__metadata_max_steps' => intval($metadata_this['__idea__metadata_max_steps']),
-            'idea__metadata_min_seconds' => intval($metadata_this['__idea__metadata_min_seconds']),
-            'idea__metadata_max_seconds' => intval($metadata_this['__idea__metadata_max_seconds']),
-            'idea__metadata_experts' => $metadata_this['__idea__metadata_experts'],
-            'idea__metadata_content' => $metadata_this['__idea__metadata_content'],
+            'idea___min_reads' => intval($metadata_this['__idea___min_reads']),
+            'idea___max_reads' => intval($metadata_this['__idea___max_reads']),
+            'idea___min_seconds' => intval($metadata_this['__idea___min_seconds']),
+            'idea___max_seconds' => intval($metadata_this['__idea___max_seconds']),
+            'idea___experts' => $metadata_this['__idea___experts'],
+            'idea___content' => $metadata_this['__idea___content'],
         ));
 
         //Return data:

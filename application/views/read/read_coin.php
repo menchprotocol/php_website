@@ -12,7 +12,7 @@
 $idea_fetch_cover = idea_fetch_cover($in['idea__id']);
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $metadata = unserialize($in['idea__metadata']);
-$has_time_estimate = ( isset($metadata['idea__metadata_max_seconds']) && $metadata['idea__metadata_max_seconds']>0 );
+$has_time_estimate = ( isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0 );
 $idea_type_meet_requirement = in_array($in['idea__type'], $this->config->item('sources_id_7309'));
 $recipient_en = superpower_assigned();
 $is_home_page = $in['idea__id']==config_var(12156);
@@ -185,11 +185,11 @@ if(!$read_idea_home){
 
 
         //IDEA
-        $idea_count = ( isset($metadata['idea__metadata_max_steps']) && $metadata['idea__metadata_max_steps']>=2 ? $metadata['idea__metadata_max_steps']-1 : $chapters );
-        $idea_min = ( $idea_count && isset($metadata['idea__metadata_min_steps']) && $metadata['idea__metadata_min_steps']<$metadata['idea__metadata_max_steps'] ? $metadata['idea__metadata_min_steps']-1 : 0 );
+        $idea_count = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : $chapters );
+        $idea_min = ( $idea_count && isset($metadata['idea___min_reads']) && $metadata['idea___min_reads']<$metadata['idea___max_reads'] ? $metadata['idea___min_reads']-1 : 0 );
         if ($idea_count) {
 
-            $has_time = ( isset($metadata['idea__metadata_max_seconds']) && $metadata['idea__metadata_max_seconds']>0 );
+            $has_time = ( isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0 );
             echo '<div class="read-topic idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.view__s($idea_count).( $has_time ? ' IN '.view_time_range($metadata) : '' ).'</a></div>';
 
             //BODY
@@ -210,9 +210,9 @@ if(!$read_idea_home){
 
 
         //SOURCE
-        $idea__metadata_experts = ( isset($metadata['idea__metadata_experts']) ? count($metadata['idea__metadata_experts']) : 0 );
-        $idea__metadata_content = ( isset($metadata['idea__metadata_content']) ? count($metadata['idea__metadata_content']) : 0 );
-        $source_count = $idea__metadata_experts + $idea__metadata_content;
+        $idea___experts = ( isset($metadata['idea___experts']) ? count($metadata['idea___experts']) : 0 );
+        $idea___content = ( isset($metadata['idea___content']) ? count($metadata['idea___content']) : 0 );
+        $source_count = $idea___experts + $idea___content;
         if ($source_count) {
 
             echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.view__s($source_count).'</a></div>';
@@ -224,12 +224,12 @@ if(!$read_idea_home){
             echo '<div class="list-group single-color">';
 
             //Sort Expert Content
-            if($idea__metadata_experts && $idea__metadata_content){
-                $experts_content = array_merge($metadata['idea__metadata_content'], $metadata['idea__metadata_experts']);
-            } elseif($idea__metadata_content){
-                $experts_content = $metadata['idea__metadata_content'];
+            if($idea___experts && $idea___content){
+                $experts_content = array_merge($metadata['idea___content'], $metadata['idea___experts']);
+            } elseif($idea___content){
+                $experts_content = $metadata['idea___content'];
             } else {
-                $experts_content = $metadata['idea__metadata_experts'];
+                $experts_content = $metadata['idea___experts'];
             }
             usort($experts_content, 'sortByWeight');
             foreach ($experts_content as $source_source) {
@@ -251,7 +251,7 @@ if(!$read_idea_home){
 
 
     //PREVIOUSLY UNLOCKED:
-    $unlocked_steps = $this->READ_model->fetch(array(
+    $unlocked_reads = $this->READ_model->fetch(array(
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'read__type' => 6140, //READ UNLOCK LINK
@@ -260,8 +260,8 @@ if(!$read_idea_home){
     ), array('idea_next'), 0);
 
     //Did we have any steps unlocked?
-    if(count($unlocked_steps) > 0){
-        view_idea_list($in, $unlocked_steps, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
+    if(count($unlocked_reads) > 0){
+        view_idea_list($in, $unlocked_reads, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
     }
 
 
