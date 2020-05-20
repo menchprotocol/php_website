@@ -497,10 +497,10 @@ function filter_cache_group($search_source__id, $cache_source__id){
     return false;
 }
 
-function config_var($config_source__id){
+function config_var($source__id){
     $CI =& get_instance();
     $sources__6404 = $CI->config->item('sources__6404');
-    return $sources__6404[$config_source__id]['m_desc'];
+    return $sources__6404[$source__id]['m_desc'];
 }
 
 function update_description($before_string, $after_string){
