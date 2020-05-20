@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-20 07:39:09 PST
+//Generated 2020-05-20 07:49:57 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589985549;
-$config['cache_count_read'] = 1212219;
+$config['cache_timestamp'] = 1589986197;
+$config['cache_count_read'] = 1212235;
 $config['cache_count_read'] = 121261;
 $config['cache_count_idea'] = 5628;
-$config['cache_count_source'] = 4857;
+$config['cache_count_source'] = 4856;
 
 
 
@@ -390,7 +390,7 @@ $config['sources__12822'] = array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'AUDIO',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4257 => array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
@@ -402,13 +402,13 @@ $config['sources__12822'] = array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'FILE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,4593,4592,4537),
     ),
     4255 => array(
         'm_icon' => '<i class="fad fa-align-left source"></i>',
@@ -426,7 +426,7 @@ $config['sources__12822'] = array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_name' => 'VIDEO',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
 );
 
@@ -877,7 +877,7 @@ $config['sources__12524'] = array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'AUDIO',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4257 => array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
@@ -889,19 +889,19 @@ $config['sources__12524'] = array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'FILE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_name' => 'VIDEO',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
 );
 
@@ -2338,14 +2338,8 @@ $config['sources__11081'] = array(
 );
 
 //MENCH VARIABLE:
-$config['sources_id_6232'] = array(6203,4356,6202,6159,6208,6168,6283,12885,6228,6165,6162,6161,6167,4737,4736,6170,6169,7585,13029,4429,7694,4367,4368,4358,4372,6103,4371,4369,4370,4364,6186,4362,4593,4366,6198,6160,6172,6207,6177,6197,13030,4739,4735);
+$config['sources_id_6232'] = array(4356,6202,6159,6208,6168,6283,12885,6228,6165,6162,6161,6167,4737,4736,6170,6169,7585,13029,4429,7694,4367,4368,4358,4372,6103,4371,4369,4370,4364,6186,4362,4593,4366,6198,6160,6172,6207,6177,6197,13030,4739,4735);
 $config['sources__6232'] = array(
-    6203 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
-        'm_name' => 'FACEBOOK ATTACHMENT ID',
-        'm_desc' => 'fb_att_id',
-        'm_parents' => array(6232,6215,2793,6103),
-    ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
@@ -2607,19 +2601,19 @@ $config['sources__11080'] = array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'AUDIO',
         'm_desc' => 'pcm|wav|aiff|mp3|aac|ogg|wma|flac|alac|m4a|m4b|m4p',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4261 => array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'FILE',
         'm_desc' => 'pdf|pdc|doc|docx|tex|txt|7z|rar|zip|csv|sql|tar|xml|exe',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
         'm_desc' => 'jpeg|jpg|png|gif|tiff|bmp|img|svg|ico|webp',
-        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,4593,4592,4537),
     ),
     4256 => array(
         'm_icon' => '<i class="fad fa-browser source" aria-hidden="true"></i>',
@@ -2631,7 +2625,7 @@ $config['sources__11080'] = array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_name' => 'VIDEO',
         'm_desc' => 'mp4|m4v|m4p|avi|mov|flv|f4v|f4p|f4a|f4b|wmv|webm|mkv|vob|ogv|ogg|3gp|mpg|mpeg|m2v',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
 );
 
@@ -2642,25 +2636,25 @@ $config['sources__11059'] = array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'AUDIO',
         'm_desc' => 'audio',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4261 => array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'FILE',
         'm_desc' => 'file',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
         'm_desc' => 'image',
-        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_name' => 'VIDEO',
         'm_desc' => 'video',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
 );
 
@@ -4652,7 +4646,7 @@ $config['sources__10593'] = array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'SOURCE LINK AUDIO',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     10657 => array(
         'm_icon' => '<i class="fad fa-comment-plus source" aria-hidden="true"></i>',
@@ -4664,13 +4658,13 @@ $config['sources__10593'] = array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK FILE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK IMAGE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,4593,4592,4537),
     ),
     4255 => array(
         'm_icon' => '<i class="fad fa-align-left source"></i>',
@@ -4682,7 +4676,7 @@ $config['sources__10593'] = array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK VIDEO',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     10646 => array(
         'm_icon' => '<i class="fad fa-fingerprint source"></i>',
@@ -4769,19 +4763,13 @@ $config['sources__7751'] = array(
 );
 
 //READ METADATA:
-$config['sources_id_6103'] = array(6402,6203,4358);
+$config['sources_id_6103'] = array(6402,4358);
 $config['sources__6103'] = array(
     6402 => array(
         'm_icon' => '<i class="fas fa-temperature-high idea" aria-hidden="true"></i>',
         'm_name' => 'CONDITION SCORE RANGE',
         'm_desc' => '',
         'm_parents' => array(12700,10664,6103,6410),
-    ),
-    6203 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
-        'm_name' => 'FACEBOOK ATTACHMENT ID',
-        'm_desc' => 'For media files such as videos, audios, images and other files, we cache them with the Facebook Server so we can instantly deliver them to students. This variables in the link metadata is where we store the attachment ID. See the children to better understand which links types support this caching feature.',
-        'm_parents' => array(6232,6215,2793,6103),
     ),
     4358 => array(
         'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
@@ -7130,7 +7118,7 @@ $config['sources__4593'] = array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'SOURCE LINK AUDIO',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     10657 => array(
         'm_icon' => '<i class="fad fa-comment-plus source" aria-hidden="true"></i>',
@@ -7148,13 +7136,13 @@ $config['sources__4593'] = array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK FILE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK IMAGE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,4593,4592,4537),
     ),
     4319 => array(
         'm_icon' => '<i class="fad fa-sort-numeric-down source" aria-hidden="true"></i>',
@@ -7214,7 +7202,7 @@ $config['sources__4593'] = array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK VIDEO',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     12827 => array(
         'm_icon' => '<i class="fad fa-font source"></i>',
@@ -7321,7 +7309,7 @@ $config['sources__4592'] = array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'AUDIO',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4257 => array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
@@ -7333,13 +7321,13 @@ $config['sources__4592'] = array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'FILE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
         'm_desc' => '',
-        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,4593,4592,4537),
     ),
     4319 => array(
         'm_icon' => '<i class="fad fa-sort-numeric-down source" aria-hidden="true"></i>',
@@ -7381,7 +7369,7 @@ $config['sources__4592'] = array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_name' => 'VIDEO',
         'm_desc' => 'Uploaded videos',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     12827 => array(
         'm_icon' => '<i class="fad fa-font source"></i>',
@@ -7462,7 +7450,7 @@ $config['sources__4537'] = array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
         'm_name' => 'AUDIO',
         'm_desc' => 'URL to a raw audio file',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4257 => array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
@@ -7474,13 +7462,13 @@ $config['sources__4537'] = array(
         'm_icon' => '<i class="fad fa-file-pdf source" aria-hidden="true"></i>',
         'm_name' => 'FILE',
         'm_desc' => 'URL to a raw file',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
         'm_name' => 'IMAGE',
         'm_desc' => 'URL to a raw image file',
-        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,4593,4592,4537),
     ),
     4256 => array(
         'm_icon' => '<i class="fad fa-browser source" aria-hidden="true"></i>',
@@ -7492,7 +7480,7 @@ $config['sources__4537'] = array(
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_name' => 'VIDEO',
         'm_desc' => 'URL to a raw video file',
-        'm_parents' => array(12822,12605,12524,11080,11059,10593,6203,4593,4592,4537),
+        'm_parents' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
 );
 
