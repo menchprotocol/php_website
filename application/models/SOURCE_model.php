@@ -1038,7 +1038,7 @@ class SOURCE_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_source__id == 5865 && ($action_command1=='*' || $en['read__status']==$action_command1) && in_array($action_command2, $this->config->item('sources_id_6186') /* Transaction Status */)) { //Update Matching Transaction Status
+            } elseif ($action_source__id == 5865 && ($action_command1=='*' || $en['read__status']==$action_command1) && in_array($action_command2, $this->config->item('sources_id_6186') /* Read Status */)) { //Update Matching Read Status
 
                 $this->READ_model->update($en['read__id'], array(
                     'read__status' => $action_command2,

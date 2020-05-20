@@ -363,7 +363,7 @@ class Idea extends CI_Controller {
 
         //Delete this link:
         $this->READ_model->update($_POST['read__id'], array(
-            'read__status' => 6173, //Transaction Deleted
+            'read__status' => 6173, //Read Deleted
         ), $session_en['source__id'], 10686 /* Idea Link Unpublished */);
 
         return view_json(array(

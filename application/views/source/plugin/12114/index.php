@@ -55,15 +55,15 @@ $en_coins_last_week = $this->READ_model->fetch(array(
 $en_coins_growth_rate = format_percentage( ($en_coins_last_week[0]['totals'] / ( $en_coins_last_week[0]['totals'] - $en_coins_new_last_week[0]['totals'] ) * 100)-100);
 
 
-//ledger
-$ledger_reads_new_last_week = $this->READ_model->fetch(array(
+//interactions
+$interactions_reads_new_last_week = $this->READ_model->fetch(array(
     'read__time >=' => $last_week_start,
     'read__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
-$ledger_reads_last_week = $this->READ_model->fetch(array(
+$interactions_reads_last_week = $this->READ_model->fetch(array(
     'read__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
-$ledger_reads_growth_rate = format_percentage(($ledger_reads_last_week[0]['totals'] / ( $ledger_reads_last_week[0]['totals'] - $ledger_reads_new_last_week[0]['totals'] ) * 100)-100);
+$interactions_reads_growth_rate = format_percentage(($interactions_reads_last_week[0]['totals'] / ( $interactions_reads_last_week[0]['totals'] - $interactions_reads_new_last_week[0]['totals'] ) * 100)-100);
 
 
 
@@ -81,7 +81,7 @@ $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; te
 
 $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $en_coins_growth_rate >= 0 ? '+' : '-' ).$en_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($en_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.view_number($en_coins_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCE &raquo;</a></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_reads_growth_rate >= 0 ? '+' : '-' ).$ledger_reads_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($ledger_reads_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.view_number($ledger_reads_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'read/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">LEDGER &raquo;</a></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $interactions_reads_growth_rate >= 0 ? '+' : '-' ).$interactions_reads_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($interactions_reads_last_week[0]['totals'], 0).' Reads" style="border-bottom:1px dotted #999999;">'.view_number($interactions_reads_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'read/interactions" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">INTERACTIONS &raquo;</a></div>';
 
 
 $html_message .= '<br />';

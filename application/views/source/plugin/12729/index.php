@@ -3,7 +3,7 @@
 echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
 echo '<tr class="panel-title down-border">';
-echo '<td style="text-align: left;">Transaction Type</td>';
+echo '<td style="text-align: left;">Read Type</td>';
 echo '<td style="text-align: left;">Coins</td>';
 echo '</tr>';
 

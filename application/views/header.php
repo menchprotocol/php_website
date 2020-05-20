@@ -268,7 +268,7 @@ if(!isset($hide_header)){
                                 }
 
                                 //MENCH COIN
-                                $page_url = 'href="/read/ledger?read__status='.join(',', $this->config->item('sources_id_7359')).'&read__type='.join(',', $this->config->item('sources_id_'.$read__type)).'&'.$source_field.'='.$session_en['source__id'].'"';
+                                $page_url = 'href="/read/interactions?read__status='.join(',', $this->config->item('sources_id_7359')).'&read__type='.join(',', $this->config->item('sources_id_'.$read__type)).'&'.$source_field.'='.$session_en['source__id'].'"';
 
                                 //APPEND COUNT:
                                 $m['m_name'] = view_number($counts).' '.$m['m_name'];

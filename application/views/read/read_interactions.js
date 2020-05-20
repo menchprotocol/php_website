@@ -11,7 +11,7 @@ $(document).ready(function () {
     });
 
     //Load first page of links:
-    ledger_load(link_filters, link_joined_by, 1);
+    interactions_load(link_filters, link_joined_by, 1);
 
 });
 
@@ -32,13 +32,13 @@ function check_in_source__status(){
 }
 
 
-function ledger_load(link_filters, link_joined_by, page_num){
+function interactions_load(link_filters, link_joined_by, page_num){
 
     //Show spinner:
     $('#link_page_'+page_num).html('<div class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12694) +  '</div>').hide().fadeIn();
 
     //Load report based on input fields:
-    $.post("/read/ledger_load", {
+    $.post("/read/interactions_load", {
         link_filters: link_filters,
         link_joined_by: link_joined_by,
         read__message_search:read__message_search,

@@ -295,10 +295,10 @@ img.no-radius {
     border:0;
 }
 
-.table-striped tbody tr:nth-of-type(even), .ledger-list:nth-of-type(even) {
+.table-striped tbody tr:nth-of-type(even), .read-list:nth-of-type(even) {
     background-color:transparent;
 }
-.table-striped tbody tr:nth-of-type(odd), .ledger-list:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
+.table-striped tbody tr:nth-of-type(odd), .read-list:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
     background-color:#FFFFFF;
 }
 .table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even), .card:nth-of-type(even) .card-header {
@@ -425,7 +425,7 @@ img.no-radius {
     margin-left: 33px;
 }
 
-.ledger-info{
+.read-info{
     background-color: #000000;
     color: #FFFFFF;
     padding: 5px 0;
@@ -449,7 +449,7 @@ img.no-radius {
     margin-left: 24px;
     margin-top: -43px;
 }
-.read-ref .ledger-list{
+.read-ref .read-list{
     background-color:transparent !important;
 }
 .underdot{
@@ -971,18 +971,18 @@ td.MENCHcolumn3  { width: 13%; }
     padding-top: 13px;
     padding-left: 2px;
 }
-.ledger-list {
+.read-list {
     padding:21px 0;
 }
 .simple-line{
     padding: 5px 0;
 }
 
-.ledger-msg{
+.read-msg{
     margin-top: -19px !important;
     margin-bottom: 0;
 }
-.ledger-msg .i_content, .ledger-msg .msg{
+.read-msg .i_content, .read-msg .msg{
     margin-top:0 !important;
     margin-bottom:0 !important;
     padding-top:0 !important;
@@ -992,7 +992,7 @@ td.MENCHcolumn3  { width: 13%; }
     height: 0.1px;
     padding: 0;
 }
-.ledger-msg .padded{
+.read-msg .padded{
     margin-left:0 !important;
     margin-right:0 !important;
 }

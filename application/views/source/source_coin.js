@@ -747,7 +747,7 @@ function en_modify_save() {
                     //Link Icon:
                     $('.read_type_' + modify_data['read__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__4592[data.js_read__type]["m_name"] + ': ' + js_sources__4592[data.js_read__type]["m_desc"] + '">' + js_sources__4592[data.js_read__type]["m_icon"] + '</span>');
 
-                    //Transaction Status:
+                    //Read Status:
                     $(".en___" + modify_data['source__id']).attr('ln-status', modify_data['read__status'])
                     $('.read__status_' + modify_data['read__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__6186[modify_data['read__status']]["m_name"] + ': ' + js_sources__6186[modify_data['read__status']]["m_desc"] + '">' + js_sources__6186[modify_data['read__status']]["m_icon"] + '</span>');
 

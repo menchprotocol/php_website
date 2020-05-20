@@ -38,7 +38,7 @@ class Read extends CI_Controller
     }
 
 
-    function ledger(){
+    function interactions(){
 
         /*
          *
@@ -54,12 +54,12 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => $sources__11035[4341]['m_name'],
         ));
-        $this->load->view('read/read_ledger');
+        $this->load->view('read/read_interactions');
         $this->load->view('footer');
 
     }
 
-    function ledger_load(){
+    function interactions_load(){
 
         /*
          * Loads the list of links based on the
@@ -85,7 +85,7 @@ class Read extends CI_Controller
 
         //Display filter:
         if($total_items_loaded > 0){
-            $message .= '<div class="montserrat ledger-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' READS:</div>';
+            $message .= '<div class="montserrat read-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' READS:</div>';
         }
 
 
@@ -113,7 +113,7 @@ class Read extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="ledger_load(link_filters, link_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="read_load(link_filters, link_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.view__s($lns_count[0]['total_count']).' have been loaded</div>';
@@ -659,7 +659,7 @@ class Read extends CI_Controller
             'read__source' => $session_en['source__id'],
         )) as $read_progress){
             $this->READ_model->update($read_progress['read__id'], array(
-                'read__status' => 6173, //Transaction Deleted
+                'read__status' => 6173, //Read Deleted
             ), $session_en['source__id'], 12129 /* READ ANSWER DELETED */);
         }
 
@@ -724,7 +724,7 @@ class Read extends CI_Controller
             'read__source' => $session_en['source__id'],
         )) as $read_progress){
             $this->READ_model->update($read_progress['read__id'], array(
-                'read__status' => 6173, //Transaction Deleted
+                'read__status' => 6173, //Read Deleted
             ), $session_en['source__id'], 12129 /* READ ANSWER DELETED */);
         }
 
@@ -801,7 +801,7 @@ class Read extends CI_Controller
             //Delete all progressions:
             foreach($progress_links as $progress_link){
                 $this->READ_model->update($progress_link['read__id'], array(
-                    'read__status' => 6173, //Transaction Deleted
+                    'read__status' => 6173, //Read Deleted
                     'read__reference' => $clear_all_link['read__id'], //To indicate when it was deleted
                 ), $source__id, 6415 /* User Cleared Reads */);
             }
@@ -861,7 +861,7 @@ class Read extends CI_Controller
         )) as $remove_saved){
             $removed++;
             $this->READ_model->update($remove_saved['read__id'], array(
-                'read__status' => 6173, //Transaction Deleted
+                'read__status' => 6173, //Read Deleted
             ), $session_en['source__id'], 12906 /* UNSAVED */);
         }
 

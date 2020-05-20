@@ -218,7 +218,7 @@ $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
     var read__message_search = '<?= ( isset($_GET['read__message_search']) && strlen($_GET['read__message_search']) > 0 ? $_GET['read__message_search'] : '' ) ?>';
     var read__message_replace = '<?= ( isset($_GET['read__message_replace']) && strlen($_GET['read__message_replace']) > 0 ? $_GET['read__message_replace'] : '' ) ?>';
 </script>
-<script src="/application/views/read/read_ledger.js?v=<?= config_var(11060) ?>"
+<script src="/application/views/read/read_interactions.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php
@@ -409,7 +409,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
     echo '<input type="submit" class="btn btn-read" value="Apply" />';
 
     if($has_filters){
-        echo ' &nbsp;<a href="/read/ledger" style="font-size: 0.8em;">Remove Filters</a>';
+        echo ' &nbsp;<a href="/read/interactions" style="font-size: 0.8em;">Remove Filters</a>';
     }
 
     echo '</form>';

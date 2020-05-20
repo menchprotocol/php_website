@@ -530,7 +530,7 @@ class READ_model extends CI_Model
                         //Now determine what type is this:
                         if($key=='read__status'){
 
-                            $sources__6186 = $this->config->item('sources__6186'); //Transaction Status
+                            $sources__6186 = $this->config->item('sources__6186'); //Read Status
                             $read__message .= view_db_field($key) . ' updated from [' . $sources__6186[$before_data[0][$key]]['m_name'] . '] to [' . $sources__6186[$value]['m_name'] . ']'."\n";
 
                         } elseif($key=='read__type'){

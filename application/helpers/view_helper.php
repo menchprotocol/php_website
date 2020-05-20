@@ -211,7 +211,7 @@ function view_in_notes($ln)
     $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
 
 
-    //Transaction Status
+    //Read Status
     $sources__6186 = $CI->config->item('sources__6186');
 
 
@@ -347,7 +347,7 @@ function view_ln($ln, $is_parent_tr = false)
     $sources__4593 = $CI->config->item('sources__4593'); //Link Type
     $sources__4341 = $CI->config->item('sources__4341'); //Link Table
     $sources__2738 = $CI->config->item('sources__2738');
-    $sources__6186 = $CI->config->item('sources__6186'); //Transaction Status
+    $sources__6186 = $CI->config->item('sources__6186'); //Read Status
     $session_en = superpower_assigned();
 
 
@@ -367,11 +367,11 @@ function view_ln($ln, $is_parent_tr = false)
 
 
     //Display the item
-    $ui = '<div class="ledger-list">';
+    $ui = '<div class="read-list">';
 
 
-    //Transaction ID
-    $ui .= '<div class="simple-line"><a href="/read/ledger?read__id='.$ln['read__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4367]['m_icon']. '</span>'.$ln['read__id'].'</a></div>';
+    //Read ID
+    $ui .= '<div class="simple-line"><a href="/read/interactions?read__id='.$ln['read__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4367]['m_icon']. '</span>'.$ln['read__id'].'</a></div>';
 
 
     //Status
@@ -393,7 +393,7 @@ function view_ln($ln, $is_parent_tr = false)
         $coin_type = null;
     }
 
-    //Transaction Type & Coins
+    //Read Type & Coins
     $ui .= '<div class="simple-line"><a href="/source/'.$ln['read__type'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4593]['m_name'].( strlen($sources__4593[$ln['read__type']]['m_desc']) ? ': '.$sources__4593[$ln['read__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$sources__4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($sources__4593[$ln['read__type']]['m_icon']).'">'. $sources__4593[$ln['read__type']]['m_icon'] . '&nbsp;' . $sources__4593[$ln['read__type']]['m_name'] . '</span>'.($coin_type ? '&nbsp;<span title="'.$coin_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coin_type.'"></i></span>' : '').'</a></div>';
 
 
@@ -423,7 +423,7 @@ function view_ln($ln, $is_parent_tr = false)
 
         //Message
         if(strlen($ln['read__message']) > 0 && $ln['read__message']!='@'.$ln['read__up']){
-            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4372]['m_name'].'"><span class="icon-block">'.$sources__4341[4372]['m_icon'].'</span><div class="title-block ledger-msg">'.htmlentities($ln['read__message']).'</div></div>';
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4372]['m_name'].'"><span class="icon-block">'.$sources__4341[4372]['m_icon'].'</span><div class="title-block read-msg">'.htmlentities($ln['read__message']).'</div></div>';
         }
 
 
@@ -700,7 +700,7 @@ function view_in_scores_answer($idea__id, $depth_levels, $original_depth_levels,
 
     //Go down recursively:
     $CI =& get_instance();
-    $sources__6186 = $CI->config->item('sources__6186'); //Transaction Status
+    $sources__6186 = $CI->config->item('sources__6186'); //Read Status
     $sources__4486 = $CI->config->item('sources__4486');
     $sources__4737 = $CI->config->item('sources__4737'); // Idea Status
     $sources__7585 = $CI->config->item('sources__7585'); // Idea Subtypes
@@ -726,7 +726,7 @@ function view_in_scores_answer($idea__id, $depth_levels, $original_depth_levels,
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$sources__4486[$in_ln['read__type']]['m_name'].'">'. $sources__4486[$in_ln['read__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Status: '.$sources__6186[$in_ln['read__status']]['m_name'].'">'. $sources__6186[$in_ln['read__status']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Read Status: '.$sources__6186[$in_ln['read__status']]['m_name'].'">'. $sources__6186[$in_ln['read__status']]['m_icon'] . '</span>';
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$sources__7585[$in_ln['idea__type']]['m_name'].'">'. $sources__7585[$in_ln['idea__type']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$in_ln['idea__status']]['m_name'].'">'. $sources__4737[$in_ln['idea__status']]['m_icon']. '</span>';
@@ -1411,7 +1411,7 @@ function view_en($en, $is_parent = false, $extra_class = null, $control_enabled 
     $sources__6177 = $CI->config->item('sources__6177'); //Source Status
     $sources__2738 = $CI->config->item('sources__2738');
     $sources__4592 = $CI->config->item('sources__4592');
-    $sources__6186 = $CI->config->item('sources__6186'); //Transaction Status
+    $sources__6186 = $CI->config->item('sources__6186'); //Read Status
 
     $read__id = (isset($en['read__id']) ? $en['read__id'] : 0);
     $is_link_source = ( $read__id > 0 && in_array($en['read__type'], $CI->config->item('sources_id_4592')));

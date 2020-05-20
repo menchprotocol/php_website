@@ -6,7 +6,7 @@ echo '<p>Below are all the Conditional Step Links:</p>';
 echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
 
 $sources__6103 = $this->config->item('sources__6103'); //Link Metadata
-$sources__6186 = $this->config->item('sources__6186'); //Transaction Status
+$sources__6186 = $this->config->item('sources__6186'); //Read Status
 
 echo '<tr style="font-weight: bold;">';
 echo '<td colspan="4" style="text-align: left;">'.$sources__6103[6402]['m_icon'].' '.$sources__6103[6402]['m_name'].'</td>';

@@ -2,7 +2,7 @@
 
 if(!isset($_GET['read__id']) || !intval($_GET['read__id'])){
 
-    echo 'Missing Transaction ID (Append ?read__id=READ_ID in URL)';
+    echo 'Missing Read ID (Append ?read__id=READ_ID in URL)';
 
 } else {
 
@@ -16,7 +16,7 @@ if(!isset($_GET['read__id']) || !intval($_GET['read__id'])){
 
     if (count($lns) < 1) {
 
-        echo 'Invalid Transaction ID';
+        echo 'Invalid Read ID';
 
     } elseif(!superpower_assigned(12701)) {
 

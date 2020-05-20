@@ -116,7 +116,7 @@ $is_source = en_is_source($en['source__id']);
                             <span class="mini-header"><?= $sources__4341[6186]['m_icon'].' '.$sources__4341[6186]['m_name'] ?></span>
                             <select class="form-control border" id="read__status">
                                 <?php
-                                foreach($this->config->item('sources__6186') /* Transaction Status */ as $read__type => $m){
+                                foreach($this->config->item('sources__6186') /* Read Status */ as $read__type => $m){
                                     echo '<option value="' . $read__type . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                                 }
                                 ?>
@@ -489,12 +489,12 @@ $is_source = en_is_source($en['source__id']);
 
                     } elseif($action_source__id == 5865){
 
-                        //Transaction Status update:
+                        //Read Status update:
 
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_source__id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('sources__6186') /* Transaction Status */ as $read__type3 => $m3){
+                        foreach($this->config->item('sources__6186') /* Read Status */ as $read__type3 => $m3){
                             $input_options .= '<option value="'.$read__type3.'">Update All '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
@@ -502,7 +502,7 @@ $is_source = en_is_source($en['source__id']);
                         //Replace:
                         $input_options .= '<select name="mass_value2_'.$action_source__id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('sources__6186') /* Transaction Status */ as $read__type3 => $m3){
+                        foreach($this->config->item('sources__6186') /* Read Status */ as $read__type3 => $m3){
                             $input_options .= '<option value="'.$read__type3.'">Set to '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';

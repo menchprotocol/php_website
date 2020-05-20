@@ -466,7 +466,7 @@ class Source extends CI_Controller
         } elseif (!isset($_POST['read__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Transaction ID',
+                'message' => 'Invalid Read ID',
             ));
         } elseif (!isset($_POST['idea__id']) || !in_is_source($_POST['idea__id'])) {
             return view_json(array(
@@ -1325,7 +1325,7 @@ class Source extends CI_Controller
             )) as $delete_en){
                 //Should usually delete a single option:
                 $this->READ_model->update($delete_en['read__id'], array(
-                    'read__status' => 6173, //Transaction Deleted
+                    'read__status' => 6173, //Read Deleted
                 ), $session_en['source__id'], 6224 /* User Account Updated */);
             }
 
@@ -1479,7 +1479,7 @@ class Source extends CI_Controller
 
                 //Delete email:
                 $this->READ_model->update($user_emails[0]['read__id'], array(
-                    'read__status' => 6173, //Transaction Deleted
+                    'read__status' => 6173, //Read Deleted
                 ), $session_en['source__id'], 6224 /* User Account Updated */);
 
                 $return = array(

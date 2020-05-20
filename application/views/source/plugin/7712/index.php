@@ -28,7 +28,7 @@ foreach($this->IDEA_model->fetch(array(
         $all_steps += count($user_steps);
 
         $all_children++;
-        echo '<li>'.view_en_cache('sources__6186' /* Transaction Status */, $child_or['read__status']).' '.view_en_cache('sources__4737' /* Idea Status */, $child_or['idea__status']).' '.view_en_cache('sources__7585', $child_or['idea__type']).' <a href="/idea/go/'.$child_or['idea__id'].'">'.view_idea__title($child_or).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+        echo '<li>'.view_en_cache('sources__6186' /* Read Status */, $child_or['read__status']).' '.view_en_cache('sources__4737' /* Idea Status */, $child_or['idea__status']).' '.view_en_cache('sources__7585', $child_or['idea__type']).' <a href="/idea/go/'.$child_or['idea__id'].'">'.view_idea__title($child_or).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
     }
     echo '</ul>';
     echo '<hr />';
