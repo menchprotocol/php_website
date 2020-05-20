@@ -27,17 +27,17 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($insert_columns, $required_columns, $read__source)
+function detect_missing_columns($add_fields, $required_columns, $read__source)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
-        if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
+        if (!isset($add_fields[$req_field]) || strlen($add_fields[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
             $CI->READ_model->create(array(
                 'read__message' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'read__metadata' => array(
-                    'insert_columns' => $insert_columns,
+                    'insert_columns' => $add_fields,
                     'required_columns' => $required_columns,
                 ),
                 'read__type' => 4246, //Platform Bug Reports
@@ -398,13 +398,13 @@ function idea_fetch_cover($idea__id){
     ), array(), 0, 0, array(
         'read__type' => 'ASC', //Messages First, Sources Second
         'read__sort' => 'ASC', //Sort by message order
-    )) as $en){
+    )) as $source){
 
         //See if this source has a photo:
         foreach($CI->READ_model->fetch(array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type' => 4260, //IMAGES ONLY
-            'read__down' => $en['read__up'],
+            'read__down' => $source['read__up'],
         )) as $source_image) {
             $idea_fetch_cover = $source_image['read__message'];
             break;
@@ -420,21 +420,21 @@ function idea_fetch_cover($idea__id){
 }
 
 
-function idea__weight_calculator($in){
+function idea__weight_calculator($idea){
 
     //READS
     $CI =& get_instance();
 
     $count_reads = $CI->READ_model->fetch(array(
         'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        '(read__right='.$in['idea__id'].' OR read__left='.$in['idea__id'].')' => null,
+        '(read__right='.$idea['idea__id'].' OR read__left='.$idea['idea__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     //IDEAS
     $counts = $CI->READ_model->fetch(array(
         'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-        '(read__right='.$in['idea__id'].' OR read__left='.$in['idea__id'].')' => null,
+        '(read__right='.$idea['idea__id'].' OR read__left='.$idea['idea__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     //Returns the weight of a idea:
@@ -442,8 +442,8 @@ function idea__weight_calculator($in){
         + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
-    if($weight != $in['idea__weight']){
-        return $CI->IDEA_model->update($in['idea__id'], array(
+    if($weight != $idea['idea__weight']){
+        return $CI->IDEA_model->update($idea['idea__id'], array(
             'idea__weight' => $weight,
         ));
     } else {
@@ -452,21 +452,21 @@ function idea__weight_calculator($in){
 
 }
 
-function source__weight_calculator($en){
+function source__weight_calculator($source){
 
     //READS
     $CI =& get_instance();
 
     $count_reads = $CI->READ_model->fetch(array(
         'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        '(read__down='.$en['source__id'].' OR read__up='.$en['source__id'].' OR read__source='.$en['source__id'].')' => null,
+        '(read__down='.$source['source__id'].' OR read__up='.$source['source__id'].' OR read__source='.$source['source__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     //IDEAS
     $counts = $CI->READ_model->fetch(array(
         'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
         'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        '(read__down='.$en['source__id'].' OR read__up='.$en['source__id'].')' => null,
+        '(read__down='.$source['source__id'].' OR read__up='.$source['source__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     //Returns the weight of a source:
@@ -474,8 +474,8 @@ function source__weight_calculator($en){
             + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
-    if($weight != $en['source__weight']){
-        return $CI->SOURCE_model->update($en['source__id'], array(
+    if($weight != $source['source__weight']){
+        return $CI->SOURCE_model->update($source['source__id'], array(
             'source__weight' => $weight,
         ));
     } else {
@@ -547,9 +547,9 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 }
 
-function idea_is_unlockable($in){
+function idea_is_unlockable($idea){
     $CI =& get_instance();
-    return in_array($in['idea__status'], $CI->config->item('sources_id_7355') /* PUBLIC */);
+    return in_array($idea['idea__status'], $CI->config->item('sources_id_7355') /* PUBLIC */);
 }
 
 function redirect_message($url, $message = null)
@@ -796,13 +796,13 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
             foreach($query as $count => $item){
 
-                $infobar_details = null;
+                $boxbar_details = null;
                 $string_references['ref_time_found'] = false;
 
                 if(strlen($item['read__message'])){
-                    $infobar_details .= '<div class="message_content">';
-                    $infobar_details .= $CI->READ_model->send_message($item['read__message']);
-                    $infobar_details .= '</div>';
+                    $boxbar_details .= '<div class="message_content">';
+                    $boxbar_details .= $CI->READ_model->send_message($item['read__message']);
+                    $boxbar_details .= '</div>';
                     $string_references = extract_source_references($item['read__message'], true);
                 }
 
@@ -916,7 +916,7 @@ function idea_calc_bold_upto_weight($child_list){
     return $bold_upto_weight;
 }
 
-function idea_calc_common_prefix($child_list, $child_field, $in = null){
+function idea_calc_common_prefix($child_list, $child_field){
 
     $CI =& get_instance();
 
@@ -930,16 +930,16 @@ function idea_calc_common_prefix($child_list, $child_field, $in = null){
 
         //Make sure this is the same word across all ideas:
         $all_the_same = true;
-        $include_colon = false;
+        $add_colon = false;
         foreach($child_list as $child_item){
             $child_words = explode(' ', $child_item[$child_field]);
 
             if(substr($word, 0, 1)==':'){
-                $include_colon = true;
+                $add_colon = true;
                 $word = substr($word, 1);
             }
 
-            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word || $include_colon){
+            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word || $add_colon){
                 //Not the same:
                 $all_the_same = false;
                 break;
@@ -949,7 +949,7 @@ function idea_calc_common_prefix($child_list, $child_field, $in = null){
         if($all_the_same){
             $common_prefix .= $word.' ';
         } else {
-            if($include_colon){
+            if($add_colon){
                 $common_prefix .= ':';
             }
             break;
@@ -1351,7 +1351,7 @@ function objectToArray($object)
 
 
 
-function update_algolia($input_obj_type = null, $object__id = 0, $return_row_only = false)
+function update_algolia($object__type = null, $object__id = 0, $return_row_only = false)
 {
 
     if(!intval(config_var(12678))){
@@ -1366,14 +1366,12 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
      *
      * */
 
-    $valid_objects = array('en','in');
-
-    if($input_obj_type && !in_array($input_obj_type , $valid_objects)){
+    if($object__type && !in_array($object__type , $CI->config->item('sources_id_12761'))){
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif(($input_obj_type && !$object__id) || ($object__id && !$input_obj_type)){
+    } elseif(($object__type && !$object__id) || ($object__id && !$object__type)){
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
@@ -1388,12 +1386,12 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
     $limits = array();
 
 
-    if($input_obj_type=='in'){
-        $input_field_id = 'idea__id';
-        $input_field_status = 'idea__status';
-    } elseif($input_obj_type=='en'){
-        $input_field_id = 'source__id';
-        $input_field_status = 'source__status';
+    if($object__type==4535){
+        $focus_field_id = 'idea__id';
+        $focus_field_status = 'idea__status';
+    } elseif($object__type==4536){
+        $focus_field_id = 'source__id';
+        $focus_field_status = 'source__status';
     }
 
 
@@ -1404,15 +1402,15 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
 
 
     //Which objects are we fetching?
-    if ($input_obj_type) {
+    if ($object__type) {
 
         //We'll only fetch a specific type:
-        $fetch_objects = array($input_obj_type);
+        $fetch_objects = array($object__type);
 
     } else {
 
         //Do both ideas and sources:
-        $fetch_objects = $valid_objects;
+        $fetch_objects = $CI->config->item('sources_id_12761');
 
         if (!$return_row_only) {
 
@@ -1436,7 +1434,7 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
         unset($limits);
 
         //Fetch item(s) for updates including their parents:
-        if ($loop_obj == 'in') {
+        if ($loop_obj == 4535) {
 
             $loop_filed_id = 'idea__id';
             $loop_filed_name = 'idea__metadata';
@@ -1449,9 +1447,9 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
                 $limits['read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows['in'] = $CI->READ_model->fetch($limits, array('idea_next'), 0);
+            $db_rows[$loop_obj] = $CI->READ_model->fetch($limits, array('idea_next'), 0);
 
-        } elseif ($loop_obj == 'en') {
+        } elseif ($loop_obj == 4536) {
 
             $loop_filed_id = 'source__id';
             $loop_filed_name = 'source__metadata';
@@ -1464,7 +1462,7 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
                 $limits['read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows['en'] = $CI->READ_model->fetch($limits, array('source_portfolio'), 0);
+            $db_rows[$loop_obj] = $CI->READ_model->fetch($limits, array('source_portfolio'), 0);
 
         }
 
@@ -1482,16 +1480,16 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
             //Update Weight if single update:
             if($object__id){
                 //Update weight before updating this object:
-                if($input_obj_type=='en'){
+                if($object__type==4536){
                     source__weight_calculator($db_row);
-                } elseif($input_obj_type=='in'){
+                } elseif($object__type==4535){
                     idea__weight_calculator($db_row);
                 }
             }
 
 
             //Attempt to fetch Algolia object ID from object Metadata:
-            if($input_obj_type){
+            if($object__type){
 
                 if (strlen($db_row[$loop_filed_name]) > 0) {
 
@@ -1517,9 +1515,9 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
             $export_row['_tags'] = array();
 
             //Now build object-specific index:
-            if ($loop_obj == 'en') {
+            if ($loop_obj == 4536) {
 
-                $export_row['object__type'] = 4536; //SOURCE
+                $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['source__id']);
                 $export_row['object__url'] = '/source/' . $db_row['source__id'];
                 $export_row['object__status'] = intval($db_row['source__status']);
@@ -1559,12 +1557,12 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
 
                 $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
 
-            } elseif ($loop_obj == 'in') {
+            } elseif ($loop_obj == 4535) {
 
                 //See if this idea has a time-range:
                 $metadata = unserialize($db_row['idea__metadata']);
 
-                $export_row['object__type'] = 4535; //IDEA
+                $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['idea__id']);
                 $export_row['object__url'] = '/idea/go/' . $db_row['idea__id'];
                 $export_row['object__status'] = intval($db_row['idea__status']);
@@ -1624,12 +1622,12 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
     }
 
     //Now let's see what to do with the index (Update, Create or delete)
-    if ($input_obj_type) {
+    if ($object__type) {
 
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be deleted?
-        if (in_array($all_db_rows[0][$input_field_status], array(6178 /* Player Deleted */, 6182 /* Idea Deleted */))) {
+        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* Player Deleted */, 6182 /* Idea Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1639,7 +1637,7 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
                 $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
 
                 //also set its algolia_id to 0 locally:
-                update_metadata($input_obj_type, $all_db_rows[0][$input_field_id], array(
+                update_metadata($object__type, $all_db_rows[0][$focus_field_id], array(
                     'algolia__id' => null, //Since this item has been deleted!
                 ));
 
@@ -1664,7 +1662,7 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
                 //Now update local database with the new objectIDs:
                 if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
                     foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
-                        update_metadata($input_obj_type, $all_db_rows[$key][$input_field_id], array(
+                        update_metadata($object__type, $all_db_rows[$key][$focus_field_id], array(
                             'algolia__id' => $algolia_id, //The newly created algolia object
                         ));
                     }
@@ -1697,7 +1695,7 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
 
             foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                update_metadata(( isset($all_db_rows[$key]['idea__id']) ? 'in' : 'en'), $all_db_rows[$key][( isset($all_db_rows[$key]['idea__id']) ? 'idea__id' : 'source__id')], array(
+                update_metadata(( isset($all_db_rows[$key]['idea__id']) ? 4535 : 4536), $all_db_rows[$key][( isset($all_db_rows[$key]['idea__id']) ? 'idea__id' : 'source__id')], array(
                     'algolia__id' => intval($algolia_id),
                 ));
             }
@@ -1709,8 +1707,6 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
 
 
 
-
-
     //Return results:
     return array(
         'status' => ( $synced_count > 0 ? 1 : 0),
@@ -1719,7 +1715,7 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
 
 }
 
-function update_metadata($obj_type, $object__id, $new_fields, $read__source = 0)
+function update_metadata($object__type, $object__id, $new_fields, $read__source = 0)
 {
 
     $CI =& get_instance();
@@ -1728,7 +1724,7 @@ function update_metadata($obj_type, $object__id, $new_fields, $read__source = 0)
      *
      * Enables the easy manipulation of the text metadata field which holds cache data for developers
      *
-     * $obj_type:               Either in, en or tr
+     * $object__type:           READ, SOURCE OR IDEA
      *
      * $obj:                    The Player, Idea or Link itself.
      *                          We're looking for the $obj ID and METADATA
@@ -1738,12 +1734,12 @@ function update_metadata($obj_type, $object__id, $new_fields, $read__source = 0)
      *
      * */
 
-    if (!in_array($obj_type, array('in', 'en', 'ln')) || $object__id < 1 || count($new_fields) < 1) {
+    if (!in_array($object__type, $CI->config->item('sources_id_2738')) || $object__id < 1 || count($new_fields) < 1) {
         return false;
     }
 
     //Fetch metadata for this object:
-    if ($obj_type == 'in') {
+    if ($object__type == 4535) {
 
         $obj_filed_id = 'idea__id';
         $obj_filed_name = 'idea__metadata';
@@ -1751,7 +1747,7 @@ function update_metadata($obj_type, $object__id, $new_fields, $read__source = 0)
             $obj_filed_id => $object__id,
         ));
 
-    } elseif ($obj_type == 'en') {
+    } elseif ($object__type == 4536) {
 
         $obj_filed_id = 'source__id';
         $obj_filed_name = 'source__metadata';
@@ -1759,7 +1755,7 @@ function update_metadata($obj_type, $object__id, $new_fields, $read__source = 0)
             $obj_filed_id => $object__id,
         ));
 
-    } elseif ($obj_type == 'ln') {
+    } elseif ($object__type == 6205) {
 
         $obj_filed_id = 'read__id';
         $obj_filed_name = 'read__metadata';
@@ -1795,19 +1791,19 @@ function update_metadata($obj_type, $object__id, $new_fields, $read__source = 0)
     }
 
     //Now update DB without logging any links as this is considered a back-end update:
-    if ($obj_type == 'in') {
+    if ($object__type == 4535) {
 
         $affected_rows = $CI->IDEA_model->update($object__id, array(
             'idea__metadata' => $metadata,
         ), false, $read__source);
 
-    } elseif ($obj_type == 'en') {
+    } elseif ($object__type == 4536) {
 
         $affected_rows = $CI->SOURCE_model->update($object__id, array(
             'source__metadata' => $metadata,
         ), false, $read__source);
 
-    } elseif ($obj_type == 'ln') {
+    } elseif ($object__type == 6205) {
 
         $affected_rows = $CI->READ_model->update($object__id, array(
             'read__metadata' => $metadata,

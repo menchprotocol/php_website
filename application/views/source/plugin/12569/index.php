@@ -13,7 +13,7 @@ $stats = array(
     'source_updated' => 0,
 );
 
-if(!$obj || $obj=='in'){
+if(!$obj || $obj==4535){
 
     //Update the weights for ideas and sources
     foreach($this->IDEA_model->fetch(array(
@@ -29,7 +29,7 @@ if(!$obj || $obj=='in'){
 }
 
 
-if(!$obj || $obj=='en'){
+if(!$obj || $obj==4536){
     //Update the weights for ideas and sources
     foreach($this->SOURCE_model->fetch(array(
         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE

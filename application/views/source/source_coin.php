@@ -8,11 +8,11 @@ $sources__6177 = $this->config->item('sources__6177'); //Source Status
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $sources__11089 = $this->config->item('sources__11089'); //SOURCE LAYOUT
 $sources__10957 = $this->config->item('sources__10957'); //SUPERPOWERS
-$is_public = in_array($en['source__status'], $this->config->item('sources_id_7357'));
-$is_active = in_array($en['source__status'], $this->config->item('sources_id_7358'));
+$is_public = in_array($source['source__status'], $this->config->item('sources_id_7357'));
+$is_active = in_array($source['source__status'], $this->config->item('sources_id_7358'));
 $superpower_10967 = superpower_active(10967, true);
 $superpower_any = ( $session_en ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-$is_source = source_is_idea_source($en['source__id']);
+$is_source = source_is_idea_source($source['source__id']);
 
 
 ?>
@@ -20,13 +20,13 @@ $is_source = source_is_idea_source($en['source__id']);
 
 <style>
     /* For a cleaner UI hide the current focused source parent */
-    .source_child_icon_<?= $en['source__id'] ?>{ display:none; }
+    .source_child_icon_<?= $source['source__id'] ?>{ display:none; }
 </style>
 
 <script>
     //Set global variables:
     var source_focus_filter = -1; //No filter, show all
-    var source_focus_id = <?= $en['source__id'] ?>;
+    var source_focus_id = <?= $source['source__id'] ?>;
 </script>
 
 <script src="/application/views/source/source_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -35,7 +35,7 @@ $is_source = source_is_idea_source($en['source__id']);
 
     <?php
     //SOURCE NAME
-    echo '<div class="itemsource">'.view_input_text(6197, $en['source__title'], $en['source__id'], ($is_source && $is_active), 0, true, '<span class="source_ui_icon_'.$en['source__id'].'">'.view_source__icon($en['source__icon']).'</span>', extract_icon_color($en['source__icon'])).'</div>';
+    echo '<div class="itemsource">'.view_input_text(6197, $source['source__title'], $source['source__id'], ($is_source && $is_active), 0, true, '<span class="source_ui_icon_'.$source['source__id'].'">'.view_source__icon($source['source__icon']).'</span>', extract_icon_color($source['source__icon'])).'</div>';
 
     ?>
 
@@ -173,7 +173,7 @@ $is_source = source_is_idea_source($en['source__id']);
 
 
     //FOR EDITING ONLY:
-    echo '<div class="hidden">'.view_source($en).'</div>';
+    echo '<div class="hidden">'.view_source($source).'</div>';
 
 
 
@@ -183,21 +183,21 @@ $is_source = source_is_idea_source($en['source__id']);
 
     //REFERENCES
     if(superpower_active(12701, true)){
-        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',source_count_connections($en['source__id'])).'</div>';
+        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',source_count_connections($source['source__id'])).'</div>';
     }
 
     //SOURCE DRAFTING?
-    echo '<span class="icon-block source__status_' . $en['source__id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$sources__6177[$en['source__status']]['m_name'].': '.$sources__6177[$en['source__status']]['m_desc'].'">' . $sources__6177[$en['source__status']]['m_icon'] . '</span></span>';
+    echo '<span class="icon-block source__status_' . $source['source__id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$sources__6177[$source['source__status']]['m_name'].': '.$sources__6177[$source['source__status']]['m_desc'].'">' . $sources__6177[$source['source__status']]['m_icon'] . '</span></span>';
 
     //Modify
-    echo '<a href="javascript:void(0);" onclick="source_modify_load(' . $en['source__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$sources__11035[12275]['m_name'].'">'.$sources__11035[12275]['m_icon'].'</a>';
+    echo '<a href="javascript:void(0);" onclick="source_modify_load(' . $source['source__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$sources__11035[12275]['m_name'].'">'.$sources__11035[12275]['m_icon'].'</a>';
 
 
     //ADMIN MENU
     if(superpower_assigned(12703)){
         $sources__4527 = $this->config->item('sources__4527'); //Platform Memory
         echo '<ul class="nav nav-tabs nav-sm" style="display: inline-block; border: 0; margin: 0;">';
-        echo view_caret(12887, $sources__4527[12887], $en['source__id']);
+        echo view_caret(12887, $sources__4527[12887], $source['source__id']);
         echo '</ul>';
     }
 
@@ -224,7 +224,7 @@ $is_source = source_is_idea_source($en['source__id']);
         if($read__type==6225){
 
             //Account Setting
-            if(!$session_en || $session_en['source__id']!=$en['source__id']){
+            if(!$session_en || $session_en['source__id']!=$source['source__id']){
                 continue;
             }
 
@@ -351,7 +351,7 @@ $is_source = source_is_idea_source($en['source__id']);
                 'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-                'read__down' => $en['source__id'],
+                'read__down' => $source['source__id'],
             ), array('source_profile'), 0, 0, array('source__weight' => 'DESC'));
 
             $counter = count($source__profiles);
@@ -380,7 +380,7 @@ $is_source = source_is_idea_source($en['source__id']);
 
             //SOURCE PORTFOLIO
             $source__portfolio_count = $this->READ_model->fetch(array(
-                'read__up' => $en['source__id'],
+                'read__up' => $source['source__id'],
                 'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
@@ -407,7 +407,7 @@ $is_source = source_is_idea_source($en['source__id']);
                     'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-                    'read__up' => $en['source__id'],
+                    'read__up' => $source['source__id'],
                 ), array('source_portfolio'), config_var(11064), 0, $order_columns);
 
             }
@@ -526,7 +526,7 @@ $is_source = source_is_idea_source($en['source__id']);
                 if(superpower_active(10967, true)){
                     $source__portfolio_sort_count = $this->READ_model->fetch(array(
                         'read__sort >' => 0, //Sorted
-                        'read__up' => $en['source__id'],
+                        'read__up' => $source['source__id'],
                         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                         'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
@@ -570,9 +570,9 @@ $is_source = source_is_idea_source($en['source__id']);
                 //Source Status Filters:
                 if(superpower_active(12701, true)){
 
-                    $source_count = $this->SOURCE_model->child_count($en['source__id'], $this->config->item('sources_id_7358') /* ACTIVE */);
+                    $source_count = $this->SOURCE_model->child_count($source['source__id'], $this->config->item('sources_id_7358') /* ACTIVE */);
                     $child_source_filters = $this->READ_model->fetch(array(
-                        'read__up' => $en['source__id'],
+                        'read__up' => $source['source__id'],
                         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                         'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
@@ -626,9 +626,9 @@ $is_source = source_is_idea_source($en['source__id']);
 
         } elseif(in_array($read__type, $this->config->item('sources_id_12467'))){
 
-            $counter = read_coins_source($read__type, $en['source__id']);
+            $counter = read_coins_source($read__type, $source['source__id']);
             if($has_superpower){
-                $this_tab = read_coins_source($read__type, $en['source__id'], 1);
+                $this_tab = read_coins_source($read__type, $source['source__id'], 1);
             }
 
         } elseif(in_array($read__type, $this->config->item('sources_id_4485'))){
@@ -638,7 +638,7 @@ $is_source = source_is_idea_source($en['source__id']);
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                 'read__type' => $read__type,
-                '(read__source='.$en['source__id'].' OR read__down='.$en['source__id'].' OR read__up='.$en['source__id'].')' => null,
+                '(read__source='.$source['source__id'].' OR read__down='.$source['source__id'].' OR read__up='.$source['source__id'].')' => null,
             );
 
             //COUNT ONLY
@@ -666,7 +666,7 @@ $is_source = source_is_idea_source($en['source__id']);
         } elseif($read__type == 12969 /* Reads */){
 
             $idea_reads_filters = array(
-                'read__source' => $en['source__id'],
+                'read__source' => $source['source__id'],
                 'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC

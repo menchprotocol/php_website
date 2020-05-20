@@ -15,35 +15,35 @@ class IDEA_model extends CI_Model
     }
 
 
-    function create($insert_columns, $read__source = 0)
+    function create($add_fields, $read__source = 0)
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($insert_columns, array('idea__title', 'idea__type', 'idea__status'), $read__source)) {
+        if (detect_missing_columns($add_fields, array('idea__title', 'idea__type', 'idea__status'), $read__source)) {
             return false;
         }
 
-        if(!isset($insert_columns['idea__duration']) || $insert_columns['idea__duration'] < config_var(12427)){
-            $insert_columns['idea__duration'] = config_var(12176);
+        if(!isset($add_fields['idea__duration']) || $add_fields['idea__duration'] < config_var(12427)){
+            $add_fields['idea__duration'] = config_var(12176);
         }
 
         //Lets now add:
-        $this->db->insert('mench_idea', $insert_columns);
+        $this->db->insert('mench_idea', $add_fields);
 
         //Fetch inserted id:
-        if (!isset($insert_columns['idea__id'])) {
-            $insert_columns['idea__id'] = $this->db->insert_id();
+        if (!isset($add_fields['idea__id'])) {
+            $add_fields['idea__id'] = $this->db->insert_id();
         }
 
-        if ($insert_columns['idea__id'] > 0) {
+        if ($add_fields['idea__id'] > 0) {
 
             if ($read__source > 0) {
 
                 //Log link new Idea:
                 $this->READ_model->create(array(
                     'read__source' => $read__source,
-                    'read__right' => $insert_columns['idea__id'],
-                    'read__message' => $insert_columns['idea__title'],
+                    'read__right' => $add_fields['idea__id'],
+                    'read__message' => $add_fields['idea__title'],
                     'read__type' => 4250, //New Idea Created
                 ));
 
@@ -53,23 +53,23 @@ class IDEA_model extends CI_Model
                     'read__up' => $read__source,
                     'read__type' => 4983, //IDEA COIN
                     'read__message' => '@'.$read__source,
-                    'read__right' => $insert_columns['idea__id'],
+                    'read__right' => $add_fields['idea__id'],
                 ), true);
 
                 //Fetch to return the complete source data:
-                $ins = $this->IDEA_model->fetch(array(
-                    'idea__id' => $insert_columns['idea__id'],
+                $ideas = $this->IDEA_model->fetch(array(
+                    'idea__id' => $add_fields['idea__id'],
                 ));
 
                 //Update Algolia:
-                update_algolia('in', $insert_columns['idea__id']);
+                update_algolia(4535, $add_fields['idea__id']);
 
-                return $ins[0];
+                return $ideas[0];
 
             } else {
 
                 //Return provided inputs plus the new source ID:
-                return $insert_columns;
+                return $add_fields;
 
             }
 
@@ -80,7 +80,7 @@ class IDEA_model extends CI_Model
                 'read__message' => 'idea_create() failed to create a new idea',
                 'read__type' => 4246, //Platform Bug Reports
                 'read__source' => $read__source,
-                'read__metadata' => $insert_columns,
+                'read__metadata' => $add_fields,
             ));
             return false;
 
@@ -210,7 +210,7 @@ class IDEA_model extends CI_Model
 
             if($external_sync){
                 //Sync algolia:
-                update_algolia('in', $id);
+                update_algolia(4535, $id);
             }
 
         } elseif($affected_rows < 1){
@@ -283,14 +283,14 @@ class IDEA_model extends CI_Model
         );
 
 
-        foreach($this->IDEA_model->fetch($query) as $in){
+        foreach($this->IDEA_model->fetch($query) as $idea){
 
             $stats['scanned']++;
 
             //Find creation read:
             $reads = $this->READ_model->fetch(array(
                 'read__type' => $stats['read__type'],
-                'read__right' => $in['idea__id'],
+                'read__right' => $idea['idea__id'],
             ));
 
             if(!count($reads)){
@@ -299,17 +299,17 @@ class IDEA_model extends CI_Model
 
                 $this->READ_model->create(array(
                     'read__source' => $read__source,
-                    'read__right' => $in['idea__id'],
-                    'read__message' => $in['idea__title'],
+                    'read__right' => $idea['idea__id'],
+                    'read__message' => $idea['idea__title'],
                     'read__type' => $stats['read__type'],
-                    'read__status' => $status_converter[$in['idea__status']],
+                    'read__status' => $status_converter[$idea['idea__status']],
                 ));
 
-            } elseif($reads[0]['read__status'] != $status_converter[$in['idea__status']]){
+            } elseif($reads[0]['read__status'] != $status_converter[$idea['idea__status']]){
 
                 $stats['status_sync']++;
                 $this->READ_model->update($reads[0]['read__id'], array(
-                    'read__status' => $status_converter[$in['idea__status']],
+                    'read__status' => $status_converter[$idea['idea__status']],
                 ));
 
             }
@@ -360,14 +360,14 @@ class IDEA_model extends CI_Model
             //We are linking to $link_idea__id, We are NOT creating any new ideas...
 
             //Fetch more details on the child idea we're about to link:
-            $ins = $this->IDEA_model->fetch(array(
+            $ideas = $this->IDEA_model->fetch(array(
                 'idea__id' => $link_idea__id,
             ));
 
             //Determine which is parent Idea, and which is child
             if($is_parent){
 
-                $parent_in = $ins[0];
+                $parent_in = $ideas[0];
                 $child_in = $linked_ins[0];
 
                 /*
@@ -384,7 +384,7 @@ class IDEA_model extends CI_Model
             } else {
 
                 $parent_in = $linked_ins[0];
-                $child_in = $ins[0];
+                $child_in = $ideas[0];
 
                 //Prevent parent duplicate:
                 $recursive_parents = $this->IDEA_model->recursive_parents($parent_in['idea__id']);
@@ -399,12 +399,12 @@ class IDEA_model extends CI_Model
             }
 
 
-            if (count($ins) < 1) {
+            if (count($ideas) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Linked Idea ID',
                 );
-            } elseif (!in_array($ins[0]['idea__status'], $this->config->item('sources_id_7356') /* ACTIVE */)) {
+            } elseif (!in_array($ideas[0]['idea__status'], $this->config->item('sources_id_7356') /* ACTIVE */)) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active ideas. This idea is not active.',
@@ -412,7 +412,7 @@ class IDEA_model extends CI_Model
             }
 
             //All good so far, continue with linking:
-            $idea_new = $ins[0];
+            $idea_new = $ideas[0];
 
             //Make sure this is not a duplicate Idea for its parent:
             $dup_links = $this->READ_model->fetch(array(
@@ -705,7 +705,7 @@ class IDEA_model extends CI_Model
                 $metadata_this['__idea___common_reads'] = array(intval($focus_in['idea__id']));
             }
 
-            update_metadata('in', $focus_in['idea__id'], array(
+            update_metadata(4535, $focus_in['idea__id'], array(
                 'idea___common_reads' => $metadata_this['__idea___common_reads'],
                 'idea___expansion_reads' => $metadata_this['__idea___expansion_reads'],
                 'idea___expansion_some' => $metadata_this['__idea___expansion_some'],
@@ -759,7 +759,7 @@ class IDEA_model extends CI_Model
 
 
         //Process request:
-        foreach($ideas_next as $in) {
+        foreach($ideas_next as $idea) {
 
             //Logic here must match items in source_mass_actions config variable
 
@@ -770,7 +770,7 @@ class IDEA_model extends CI_Model
                 $idea_has_sources = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-                    'read__right' => $in['idea__id'],
+                    'read__right' => $idea['idea__id'],
                     'read__up' => $source__profile_id,
                 ));
 
@@ -782,7 +782,7 @@ class IDEA_model extends CI_Model
                         'read__up' => $source__profile_id,
                         'read__type' => 4983, //IDEA COIN
                         'read__message' => '@'.$source__profile_id,
-                        'read__right' => $in['idea__id'],
+                        'read__right' => $idea['idea__id'],
                     ), true);
 
                     $applied_success++;
@@ -863,7 +863,7 @@ class IDEA_model extends CI_Model
 
 
 
-    function metadata_extra_insights($in)
+    function metadata_extra_insights($idea)
     {
 
         /*
@@ -877,8 +877,8 @@ class IDEA_model extends CI_Model
         $metadata_this = array(
             '__idea___min_reads' => 1,
             '__idea___max_reads' => 1,
-            '__idea___min_seconds' => $in['idea__duration'],
-            '__idea___max_seconds' => $in['idea__duration'],
+            '__idea___min_seconds' => $idea['idea__duration'],
+            '__idea___max_seconds' => $idea['idea__duration'],
             '__idea___experts' => array(),
             '__idea___content' => array(),
         );
@@ -887,13 +887,13 @@ class IDEA_model extends CI_Model
         //AGGREGATE IDEA SOURCES
         foreach($this->READ_model->fetch(array(
             'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-            'read__right' => $in['idea__id'],
+            'read__right' => $idea['idea__id'],
             'read__type IN (' . join(',', $this->config->item('sources_id_12273')).')' => null, //IDEA COIN
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-        ), array('source_profile'), 0) as $en) {
+        ), array('source_profile'), 0) as $source) {
 
-            $source_metadat_experts = $this->SOURCE_model->metadat_experts($en);
+            $source_metadat_experts = $this->SOURCE_model->metadat_experts($source);
 
             //CONTENT CHANNELS
             foreach($source_metadat_experts['__idea___content'] as $source__id => $source_en) {
@@ -923,7 +923,7 @@ class IDEA_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-            'read__left' => $in['idea__id'],
+            'read__left' => $idea['idea__id'],
         ), array('idea_next'), 0) as $ideas_next){
 
             //RECURSION
@@ -933,7 +933,7 @@ class IDEA_model extends CI_Model
             }
 
             //MERGE (3 SCENARIOS)
-            if(in_array($ideas_next['read__type'], $this->config->item('sources_id_12842')) || in_array($in['idea__type'], $this->config->item('sources_id_12883'))){
+            if(in_array($ideas_next['read__type'], $this->config->item('sources_id_12842')) || in_array($idea['idea__type'], $this->config->item('sources_id_12883'))){
 
                 //ONE
 
@@ -953,7 +953,7 @@ class IDEA_model extends CI_Model
                     $metadata_local['local__idea___max_seconds'] = $metadata_recursion['__idea___max_seconds'];
                 }
 
-            } elseif(in_array($in['idea__type'], $this->config->item('sources_id_12884'))){
+            } elseif(in_array($idea['idea__type'], $this->config->item('sources_id_12884'))){
 
                 //SOME
 
@@ -1015,7 +1015,7 @@ class IDEA_model extends CI_Model
         }
 
         //Save to DB
-        update_metadata('in', $in['idea__id'], array(
+        update_metadata(4535, $idea['idea__id'], array(
             'idea___min_reads' => intval($metadata_this['__idea___min_reads']),
             'idea___max_reads' => intval($metadata_this['__idea___max_reads']),
             'idea___min_seconds' => intval($metadata_this['__idea___min_seconds']),
@@ -1031,17 +1031,17 @@ class IDEA_model extends CI_Model
 
 
 
-    function unlock_paths($in)
+    function unlock_paths($idea)
     {
         /*
          *
-         * Finds the pathways, if any, on how to unlock $in
+         * Finds the pathways, if any, on how to unlock $idea
          *
          * */
 
 
         //Validate this locked idea:
-        if(!idea_is_unlockable($in)){
+        if(!idea_is_unlockable($idea)){
             return array();
         }
 
@@ -1053,7 +1053,7 @@ class IDEA_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'read__right' => $in['idea__id'],
+            'read__right' => $idea['idea__id'],
             'idea__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
         ), array('idea_previous'), 0) as $idea_or_parent){
             if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $idea_or_parent['idea__id'])) {
@@ -1067,7 +1067,7 @@ class IDEA_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
-            'read__right' => $in['idea__id'],
+            'read__right' => $idea['idea__id'],
         ), array('idea_previous'), 0) as $idea_locked_parent){
             if(idea_is_unlockable($idea_locked_parent)){
                 //Need to check recursively:
@@ -1094,7 +1094,7 @@ class IDEA_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'read__left' => $in['idea__id'],
+            'read__left' => $idea['idea__id'],
         ), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
         if(count($ideas_next) < 1){
             //No children, no path:

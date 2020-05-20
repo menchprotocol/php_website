@@ -2,20 +2,20 @@
 $sources__2738 = $this->config->item('sources__2738');
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
-$is_source = idea_is_source($in['idea__id']);
-$is_active = in_array($in['idea__status'], $this->config->item('sources_id_7356'));
-$is_public = in_array($in['idea__status'], $this->config->item('sources_id_7355'));
+$is_source = idea_is_source($idea_focus['idea__id']);
+$is_active = in_array($idea_focus['idea__status'], $this->config->item('sources_id_7356'));
+$is_public = in_array($idea_focus['idea__status'], $this->config->item('sources_id_7355'));
 
 ?>
 
 <style>
-    .idea_child_icon_<?= $in['idea__id'] ?> { display:none; }
+    .idea_child_icon_<?= $idea_focus['idea__id'] ?> { display:none; }
     <?= ( !$is_source ? '.note-editor {display:none;}' : '' ) ?>
 </style>
 
 <script>
     //Include some cached sources:
-    var idea_loaded_id = <?= $in['idea__id'] ?>;
+    var idea_loaded_id = <?= $idea_focus['idea__id'] ?>;
 </script>
 <script src="/application/views/idea/idea_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
@@ -26,7 +26,7 @@ $source_focus_found = false; //Used to determine the first tab to be opened
 echo '<div class="container" style="padding-bottom:42px;">';
 
 if(!$is_source){
-    echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/idea_request_invite/'.$in['idea__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/idea_become_source/'.$in['idea__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
+    echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/idea_request_invite/'.$idea_focus['idea__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/idea_become_source/'.$idea_focus['idea__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
 
@@ -36,22 +36,22 @@ $ideas_previous = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-    'read__right' => $in['idea__id'],
+    'read__right' => $idea_focus['idea__id'],
 ), array('idea_previous'), 0);
 
-echo '<div id="list-in-' . $in['idea__id'] . '-1" class="list-group previous_ins">';
+echo '<div id="list-in-' . $idea_focus['idea__id'] . '-1" class="list-group previous_ins">';
 foreach($ideas_previous as $parent_in) {
     echo view_idea($parent_in, 0, true, idea_is_source($parent_in['idea__id']));
 }
-if( $is_source && $is_active && $in['idea__id']!=config_var(12156)){
+if( $is_source && $is_active && $idea_focus['idea__id']!=config_var(12156)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick montserrat add-input algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
-                           idea-id="' . $in['idea__id'] . '"
-                           id="addidea-c-' . $in['idea__id'] . '-1"
+                           idea-id="' . $idea_focus['idea__id'] . '"
+                           id="addidea-c-' . $idea_focus['idea__id'] . '-1"
                            placeholder="PREVIOUS IDEA">
                 </div><div class="algolia_pad_search hidden idea_pad_top"></div></div>';
 }
@@ -63,7 +63,7 @@ echo '</div>';
 
 //IDEA TITLE
 echo '<div class="itemidea">';
-echo view_input_text(4736, $in['idea__title'], $in['idea__id'], ($is_source && $is_active), 0, true);
+echo view_input_text(4736, $idea_focus['idea__title'], $idea_focus['idea__id'], ($is_source && $is_active), 0, true);
 echo '</div>';
 
 
@@ -71,21 +71,21 @@ echo '</div>';
 echo view_idea_note_mix(4231, $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
     'read__type' => 4231,
-    'read__right' => $in['idea__id'],
+    'read__right' => $idea_focus['idea__id'],
 ), array(), 0, 0, array('read__sort' => 'ASC')), ($is_source && $is_active));
 
 
 //IDEA TYPE
-echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_dropdown(7585, $in['idea__type'], 'btn-idea', $is_source && $is_active, true, $in['idea__id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_dropdown(7585, $idea_focus['idea__type'], 'btn-idea', $is_source && $is_active, true, $idea_focus['idea__id']).'</div>';
 
 //IDEA STATUS
-echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $in['idea__status'], 'btn-idea', $is_source, true, $in['idea__id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $idea_focus['idea__status'], 'btn-idea', $is_source, true, $idea_focus['idea__id']).'</div>';
 
 //IDEA TIME
-echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $in['idea__duration'], $in['idea__id'], $is_source && $is_active, 0).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $idea_focus['idea__duration'], $idea_focus['idea__id'], $is_source && $is_active, 0).'</div>';
 
 //IDEA READ (IF PUBLIC)
-echo '<div class="inline-block pull-right both-margin left-half-margin idea-read '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-read btn-circle" href="/'.$in['idea__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__11035[12750]['m_name'].'">'.$sources__11035[12750]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin left-half-margin idea-read '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-read btn-circle" href="/'.$idea_focus['idea__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__11035[12750]['m_name'].'">'.$sources__11035[12750]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
@@ -101,7 +101,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
 
     //Is this a caret menu?
     if(in_array(11040 , $m['m_parents'])){
-        echo view_caret($read__type, $m, $in['idea__id']);
+        echo view_caret($read__type, $m, $idea_focus['idea__id']);
         continue;
     }
 
@@ -125,7 +125,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-            'read__left' => $in['idea__id'],
+            'read__left' => $idea_focus['idea__id'],
         ), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
 
 
@@ -133,9 +133,9 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
         $counter = count($ideas_next);
 
 
-        $this_tab .= '<div id="list-in-' . $in['idea__id'] . '-0" class="list-group next_ins">';
+        $this_tab .= '<div id="list-in-' . $idea_focus['idea__id'] . '-0" class="list-group next_ins">';
         foreach($ideas_next as $child_in) {
-            $this_tab .= view_idea($child_in, $in['idea__id'], false, $is_source);
+            $this_tab .= view_idea($child_in, $idea_focus['idea__id'], false, $is_source);
         }
 
         if($is_source && $is_active){
@@ -145,8 +145,8 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
                     <input type="text"
                            class="form-control ideaadder-level-2-child form-control-thick add-input montserrat algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
-                           idea-id="' . $in['idea__id'] . '"
-                           id="addidea-c-' . $in['idea__id'] . '-0"
+                           idea-id="' . $idea_focus['idea__id'] . '"
+                           id="addidea-c-' . $idea_focus['idea__id'] . '-0"
                            placeholder="NEXT IDEA">
                 </div><div class="algolia_pad_search hidden idea_pad_bottom"></div></div>';
         }
@@ -159,7 +159,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
         $idea_notes = $this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type' => $read__type,
-            'read__right' => $in['idea__id'],
+            'read__right' => $idea_focus['idea__id'],
         ), array('source_profile'), 0, 0, array('read__sort' => 'ASC'));
 
         $counter = count($idea_notes);
@@ -186,8 +186,8 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
     } elseif(in_array($read__type, $this->config->item('sources_id_12467'))){
 
         //MENCH COINS
-        $counter = read_coins_idea($read__type, $in['idea__id']);
-        $this_tab = read_coins_idea($read__type, $in['idea__id'], 1);
+        $counter = read_coins_idea($read__type, $idea_focus['idea__id']);
+        $this_tab = read_coins_idea($read__type, $idea_focus['idea__id'], 1);
 
     } elseif(in_array($read__type, $this->config->item('sources_id_4485'))){
 
@@ -195,7 +195,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
         $idea_notes = $this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type' => $read__type,
-            'read__right' => $in['idea__id'],
+            'read__right' => $idea_focus['idea__id'],
         ), array(), 0, 0, array('read__sort' => 'ASC'));
 
         $counter = count($idea_notes);
@@ -274,7 +274,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
 
     $default_active = in_array($read__type, $this->config->item('sources_id_12675'));
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$in['idea__id'].', 0)" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span>' ).'</a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span>' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$read__type.( $default_active ? '' : ' hidden ' ).'">';

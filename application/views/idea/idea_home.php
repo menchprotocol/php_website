@@ -11,8 +11,8 @@
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type' => 10573, //IDEA NOTES Bookmarks
         'read__up' => $session_en['source__id'], //For this player
-    ), array('idea_next'), 0, 0, array('idea__weight' => 'DESC')) as $bookmark_in){
-        echo view_idea($bookmark_in, 0, false, true);
+    ), array('idea_next'), 0, 0, array('idea__weight' => 'DESC')) as $idea){
+        echo view_idea($idea, 0, false, true);
     }
 
     $sources__2738 = $this->config->item('sources__2738'); //MENCH

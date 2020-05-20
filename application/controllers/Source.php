@@ -85,21 +85,21 @@ class Source extends CI_Controller
         }
 
         //Validate source ID and fetch data:
-        $ens = $this->SOURCE_model->fetch(array(
+        $sources = $this->SOURCE_model->fetch(array(
             'source__id' => $source__id,
         ));
 
-        if (count($ens) < 1) {
+        if (count($sources) < 1) {
             return redirect_message('/source');
         }
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $ens[0]['source__title'],
+            'title' => $sources[0]['source__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('source/source_coin', array(
-            'en' => $ens[0],
+            'source' => $sources[0],
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
@@ -114,7 +114,7 @@ class Source extends CI_Controller
         $session_en = superpower_assigned(10967);
 
         //Validate Source:
-        $ens = $this->SOURCE_model->fetch(array(
+        $sources = $this->SOURCE_model->fetch(array(
             'source__id' => $_POST['source__id'],
             'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         ));
@@ -124,7 +124,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10967),
             ));
-        } elseif (!isset($_POST['source__id']) || intval($_POST['source__id']) < 1 || count($ens) < 1) {
+        } elseif (!isset($_POST['source__id']) || intval($_POST['source__id']) < 1 || count($sources) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Invalid source__id',
@@ -175,7 +175,7 @@ class Source extends CI_Controller
         } else {
 
             //Validate Source:
-            $ens = $this->SOURCE_model->fetch(array(
+            $sources = $this->SOURCE_model->fetch(array(
                 'source__id' => $_POST['source__id'],
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             ));
@@ -188,7 +188,7 @@ class Source extends CI_Controller
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
 
-            if (count($ens) < 1) {
+            if (count($sources) < 1) {
 
                 view_json(array(
                     'status' => 0,
@@ -264,7 +264,7 @@ class Source extends CI_Controller
             $show_max++;
         }
 
-        foreach($this->READ_model->fetch($filters_in, array('source_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$en) {
+        foreach($this->READ_model->fetch($filters_in, array('source_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$source) {
 
             if($count==$show_max){
 
@@ -274,7 +274,7 @@ class Source extends CI_Controller
 
             }
 
-            echo view_source($en, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
+            echo view_source($source, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
 
         }
         echo '</div>';
@@ -350,8 +350,8 @@ class Source extends CI_Controller
             'source__title' => 'ASC'
         ));
 
-        foreach($child_sources as $en) {
-            echo view_source($en,false, null, true, $is_source);
+        foreach($child_sources as $source) {
+            echo view_source($source,false, null, true, $is_source);
         }
 
         //Count total children:
@@ -427,11 +427,11 @@ class Source extends CI_Controller
 
 
         //Validate Idea
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $_POST['idea__id'],
             'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         ));
-        if (count($ins) < 1) {
+        if (count($ideas) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea',
@@ -446,11 +446,11 @@ class Source extends CI_Controller
         if ($_POST['source_existing_id'] > 0) {
 
             //Validate this existing source:
-            $ens = $this->SOURCE_model->fetch(array(
+            $sources = $this->SOURCE_model->fetch(array(
                 'source__id' => $_POST['source_existing_id'],
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             ));
-            if (count($ens) < 1) {
+            if (count($sources) < 1) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid active source',
@@ -459,7 +459,7 @@ class Source extends CI_Controller
 
             //Make sure not alreads linked:
             if(count($this->READ_model->fetch(array(
-                'read__right' => $ins[0]['idea__id'],
+                'read__right' => $ideas[0]['idea__id'],
                 'read__up' => $_POST['source_existing_id'],
                 'read__type' => $_POST['note_type_id'],
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -467,13 +467,13 @@ class Source extends CI_Controller
                 $sources__7551 = $this->config->item('sources__7551');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $ens[0]['source__title'].' is already added as idea '.$sources__7551[$_POST['note_type_id']]['m_name'],
+                    'message' => $sources[0]['source__title'].' is already added as idea '.$sources__7551[$_POST['note_type_id']]['m_name'],
                 ));
             }
 
 
             //All good, assign:
-            $focus_en = $ens[0];
+            $focus_en = $sources[0];
 
         } else {
 
@@ -485,13 +485,13 @@ class Source extends CI_Controller
             }
 
             //Assign new source:
-            $focus_en = $added_en['en'];
+            $focus_en = $added_en['new_source'];
 
             //Assign to Player:
             $this->SOURCE_model->assign_session_player($focus_en['source__id']);
 
             //Update Algolia:
-            update_algolia('en', $focus_en['source__id']);
+            update_algolia(4536, $focus_en['source__id']);
 
         }
 
@@ -499,7 +499,7 @@ class Source extends CI_Controller
         $new_note = $this->READ_model->create(array(
             'read__source' => $session_en['source__id'],
             'read__type' => $_POST['note_type_id'],
-            'read__right' => $ins[0]['idea__id'],
+            'read__right' => $ideas[0]['idea__id'],
 
             'read__up' => $focus_en['source__id'],
             'read__message' => '@'.$focus_en['source__id'],
@@ -563,12 +563,12 @@ class Source extends CI_Controller
         if (intval($_POST['source_existing_id']) > 0) {
 
             //Validate this existing source:
-            $ens = $this->SOURCE_model->fetch(array(
+            $sources = $this->SOURCE_model->fetch(array(
                 'source__id' => $_POST['source_existing_id'],
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             ));
 
-            if (count($ens) < 1) {
+            if (count($sources) < 1) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid active source',
@@ -576,7 +576,7 @@ class Source extends CI_Controller
             }
 
             //All good, assign:
-            $focus_en = $ens[0];
+            $focus_en = $sources[0];
 
         } else {
 
@@ -618,7 +618,7 @@ class Source extends CI_Controller
                     return view_json($added_en);
                 } else {
                     //Assign new source:
-                    $focus_en = $added_en['en'];
+                    $focus_en = $added_en['new_source'];
                 }
 
             }
@@ -673,11 +673,11 @@ class Source extends CI_Controller
         }
 
         //Fetch latest version:
-        $ens_latest = $this->SOURCE_model->fetch(array(
+        $sources_latest = $this->SOURCE_model->fetch(array(
             'source__id' => $focus_en['source__id'],
             'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         ));
-        if(!count($ens_latest)){
+        if(!count($sources_latest)){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Failed to create/fetch new source',
@@ -687,7 +687,7 @@ class Source extends CI_Controller
         //Return newly added or linked source:
         return view_json(array(
             'status' => 1,
-            'source_new_echo' => view_source(array_merge($ens_latest[0], $ur2), $_POST['is_parent'], null, true, true),
+            'source_new_echo' => view_source(array_merge($sources_latest[0], $ur2), $_POST['is_parent'], null, true, true),
         ));
 
     }
@@ -788,7 +788,7 @@ class Source extends CI_Controller
         $is_valid_icon = is_valid_icon($_POST['source__icon']);
 
         //Fetch current data:
-        $ens = $this->SOURCE_model->fetch(array(
+        $sources = $this->SOURCE_model->fetch(array(
             'source__id' => intval($_POST['source__id']),
         ));
 
@@ -803,7 +803,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['source__id']) || intval($_POST['source__id']) < 1 || !(count($ens) == 1)) {
+        } elseif (!isset($_POST['source__id']) || intval($_POST['source__id']) < 1 || !(count($sources) == 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid ID',
@@ -843,7 +843,7 @@ class Source extends CI_Controller
         );
 
         //Is this being deleted?
-        if (!in_array($source_update['source__status'], $this->config->item('sources_id_7358') /* ACTIVE */) && !($source_update['source__status'] == $ens[0]['source__status'])) {
+        if (!in_array($source_update['source__status'], $this->config->item('sources_id_7358') /* ACTIVE */) && !($source_update['source__status'] == $sources[0]['source__status'])) {
 
 
             //Make sure source is not referenced in key DB reference fields:
@@ -1158,7 +1158,7 @@ class Source extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'url_previously_existed' => 1,
-                'algolia_object' => update_algolia('en', $url_source['source_url']['source__id'], 1),
+                'algolia_object' => update_algolia(4536, $url_source['source_url']['source__id'], 1),
             ));
         } else {
             return view_json(array(
@@ -1702,28 +1702,28 @@ class Source extends CI_Controller
         $this->READ_model->create(array(
             'read__up' => 4430, //MENCH PLAYERS
             'read__type' => source_link_type(),
-            'read__source' => $user_en['en']['source__id'],
-            'read__down' => $user_en['en']['source__id'],
+            'read__source' => $user_en['new_source']['source__id'],
+            'read__down' => $user_en['new_source']['source__id'],
         ));
 
         $this->READ_model->create(array(
             'read__type' => source_link_type(trim(strtolower($_POST['input_email']))),
             'read__message' => trim(strtolower($_POST['input_email'])),
             'read__up' => 3288, //Mench Email
-            'read__source' => $user_en['en']['source__id'],
-            'read__down' => $user_en['en']['source__id'],
+            'read__source' => $user_en['new_source']['source__id'],
+            'read__down' => $user_en['new_source']['source__id'],
         ));
-        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['source__id']));
+        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['new_source']['source__id']));
         $this->READ_model->create(array(
             'read__type' => source_link_type($hash),
             'read__message' => $hash,
             'read__up' => 3286, //Mench Password
-            'read__source' => $user_en['en']['source__id'],
-            'read__down' => $user_en['en']['source__id'],
+            'read__source' => $user_en['new_source']['source__id'],
+            'read__down' => $user_en['new_source']['source__id'],
         ));
 
         //Now update Algolia:
-        update_algolia('en',  $user_en['en']['source__id']);
+        update_algolia(4536,  $user_en['new_source']['source__id']);
 
         //Fetch referral Idea, if any:
         if(intval($_POST['referrer_idea__id']) > 0){
@@ -1736,7 +1736,7 @@ class Source extends CI_Controller
 
             if(count($referrer_ins) > 0){
                 //Add this Idea to their Reads:
-                $this->READ_model->start($user_en['en']['source__id'], $_POST['referrer_idea__id']);
+                $this->READ_model->start($user_en['new_source']['source__id'], $_POST['referrer_idea__id']);
             } else {
                 //Cannot be added, likely because its not published:
                 $_POST['referrer_idea__id'] = 0;
@@ -1764,7 +1764,7 @@ class Source extends CI_Controller
         //Log User Signin Joined Mench
         $invite_link = $this->READ_model->create(array(
             'read__type' => 7562, //User Signin Joined Mench
-            'read__source' => $user_en['en']['source__id'],
+            'read__source' => $user_en['new_source']['source__id'],
             'read__left' => intval($_POST['referrer_idea__id']),
             'read__metadata' => array(
                 'email_log' => $email_log,
@@ -1772,7 +1772,7 @@ class Source extends CI_Controller
         ));
 
         //Assign session & log login link:
-        $this->SOURCE_model->activate_session($user_en['en']);
+        $this->SOURCE_model->activate_session($user_en['new_source']);
 
 
         if (strlen($_POST['referrer_url']) > 0) {
@@ -1797,11 +1797,11 @@ class Source extends CI_Controller
 
 
     function search_google($source__id){
-        $ens = $this->SOURCE_model->fetch(array(
+        $sources = $this->SOURCE_model->fetch(array(
             'source__id' => $source__id,
         ));
-        if(count($ens)){
-            return redirect_message('https://www.google.com/search?q='.urlencode($ens[0]['source__title']));
+        if(count($sources)){
+            return redirect_message('https://www.google.com/search?q='.urlencode($sources[0]['source__title']));
         } else {
             return view_json(array(
                 'status' => 0,
@@ -1811,18 +1811,18 @@ class Source extends CI_Controller
     }
 
     function search_icon($source__id){
-        $ens = $this->SOURCE_model->fetch(array(
+        $sources = $this->SOURCE_model->fetch(array(
             'source__id' => $source__id,
         ));
-        if(count($ens)){
+        if(count($sources)){
 
-            if(( substr_count($ens[0]['source__icon'], 'class="') ?  : null )){
+            if(( substr_count($sources[0]['source__icon'], 'class="') ?  : null )){
 
-                return redirect_message('/source/plugin/7267?search_for='.urlencode(one_two_explode('class="','"',$ens[0]['source__icon'])));
+                return redirect_message('/source/plugin/7267?search_for='.urlencode(one_two_explode('class="','"',$sources[0]['source__icon'])));
 
-            } elseif(strlen($ens[0]['source__icon'])) {
+            } elseif(strlen($sources[0]['source__icon'])) {
 
-                return redirect_message('/source/plugin/7267?search_for=' . urlencode($ens[0]['source__icon']));
+                return redirect_message('/source/plugin/7267?search_for=' . urlencode($sources[0]['source__icon']));
 
             } else {
                 return view_json(array(
@@ -1866,10 +1866,10 @@ class Source extends CI_Controller
 
 
         //Validaye user ID
-        $ens = $this->SOURCE_model->fetch(array(
+        $sources = $this->SOURCE_model->fetch(array(
             'source__id' => $_POST['sign_source__id'],
         ));
-        if (!in_array($ens[0]['source__status'], $this->config->item('sources_id_7357') /* PUBLIC */)) {
+        if (!in_array($sources[0]['source__status'], $this->config->item('sources_id_7357') /* PUBLIC */)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Your account source is not public. Contact us to adjust your account.',
@@ -1877,12 +1877,12 @@ class Source extends CI_Controller
         }
 
         //Authenticate password:
-        $ens[0]['is_masterpass_login'] = 0;
+        $sources[0]['is_masterpass_login'] = 0;
         $user_passwords = $this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__up' => 3286, //Password
-            'read__down' => $ens[0]['source__id'],
+            'read__down' => $sources[0]['source__id'],
         ));
         if (count($user_passwords) == 0) {
             //They do not have a password assigned yet!
@@ -1896,12 +1896,12 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Password link is not public. Contact us to adjust your account.',
             ));
-        } elseif ($user_passwords[0]['read__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $ens[0]['source__id'])) {
+        } elseif ($user_passwords[0]['read__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $sources[0]['source__id'])) {
 
             //Is this the master password?
             if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == config_var(13014)){
 
-                $ens[0]['is_masterpass_login'] = 1;
+                $sources[0]['is_masterpass_login'] = 1;
 
             } else {
 
@@ -1916,7 +1916,7 @@ class Source extends CI_Controller
 
 
         //Assign session & log link:
-        $this->SOURCE_model->activate_session($ens[0]);
+        $this->SOURCE_model->activate_session($sources[0]);
 
 
         if (intval($_POST['referrer_idea__id']) > 0) {
@@ -1971,10 +1971,10 @@ class Source extends CI_Controller
             }
 
             //Validate user:
-            $ens = $this->SOURCE_model->fetch(array(
+            $sources = $this->SOURCE_model->fetch(array(
                 'source__id' => $validate_links[0]['read__source'],
             ));
-            if(count($ens) < 1){
+            if(count($sources) < 1){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'User not found',
@@ -1983,7 +1983,7 @@ class Source extends CI_Controller
 
 
             //Generate the password hash:
-            $password_hash = hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']. $ens[0]['source__id'] );
+            $password_hash = hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']. $sources[0]['source__id'] );
 
 
             //Fetch their passwords to authenticate login:
@@ -1991,7 +1991,7 @@ class Source extends CI_Controller
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                 'read__up' => 3286, //Mench Sign In Password
-                'read__down' => $ens[0]['source__id'],
+                'read__down' => $sources[0]['source__id'],
             ));
 
             if (count($user_passwords) > 0) {
@@ -2005,7 +2005,7 @@ class Source extends CI_Controller
                 $this->READ_model->update($user_passwords[0]['read__id'], array(
                     'read__message' => $password_hash,
                     'read__type' => $detected_read_type['read__type'],
-                ), $ens[0]['source__id'], 7578 /* User updated Password */);
+                ), $sources[0]['source__id'], 7578 /* User updated Password */);
 
             } else {
 
@@ -2014,8 +2014,8 @@ class Source extends CI_Controller
                     'read__type' => source_link_type($password_hash),
                     'read__message' => $password_hash,
                     'read__up' => 3286, //Mench Password
-                    'read__source' => $ens[0]['source__id'],
-                    'read__down' => $ens[0]['source__id'],
+                    'read__source' => $sources[0]['source__id'],
+                    'read__down' => $sources[0]['source__id'],
                 ));
 
             }
@@ -2023,14 +2023,14 @@ class Source extends CI_Controller
 
             //Log password reset:
             $this->READ_model->create(array(
-                'read__source' => $ens[0]['source__id'],
+                'read__source' => $sources[0]['source__id'],
                 'read__type' => 7578, //User updated Password
                 'read__message' => $password_hash, //A copy of their password set at this time
             ));
 
 
             //Log them in:
-            $this->SOURCE_model->activate_session($ens[0]);
+            $this->SOURCE_model->activate_session($sources[0]);
 
             //Their next Idea in line:
             return view_json(array(
@@ -2135,15 +2135,15 @@ class Source extends CI_Controller
         }
 
         //Fetch source:
-        $ens = $this->SOURCE_model->fetch(array(
+        $sources = $this->SOURCE_model->fetch(array(
             'source__id' => $validate_links[0]['read__source'],
         ));
-        if(count($ens) < 1){
+        if(count($sources) < 1){
             return redirect_message('/source/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>User not found</div>');
         }
 
         //Log them in:
-        $this->SOURCE_model->activate_session($ens[0]);
+        $this->SOURCE_model->activate_session($sources[0]);
 
         //Take them to READ HOME
         return redirect_message( '/read' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
@@ -2296,11 +2296,11 @@ class Source extends CI_Controller
         }
 
         //Fetch/Validate idea:
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $_POST['idea__id'],
             'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         ));
-        if(count($ins) != 1){
+        if(count($ideas) != 1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Could not find idea #'.$_POST['idea__id'],
@@ -2316,7 +2316,7 @@ class Source extends CI_Controller
         //Return report:
         return view_json(array(
             'status' => 1,
-            'message' => '<h3>'.$sources__7585[$ins[0]['idea__type']]['m_icon'].' '.$sources__4737[$ins[0]['idea__status']]['m_icon'].' '.view_idea__title($ins[0]).'</h3>'.view_idea_scores_answer($_POST['idea__id'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['idea__type']),
+            'message' => '<h3>'.$sources__7585[$ideas[0]['idea__type']]['m_icon'].' '.$sources__4737[$ideas[0]['idea__status']]['m_icon'].' '.view_idea__title($ideas[0]).'</h3>'.view_idea_scores_answer($_POST['idea__id'], $_POST['depth_levels'], $_POST['depth_levels'], $ideas[0]['idea__type']),
         ));
 
 

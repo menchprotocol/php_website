@@ -36,7 +36,7 @@ foreach($this->IDEA_model->fetch(array()) as $in){
     foreach(unserialize($in['idea__metadata']) as $key => $value){
         if(!in_array($key, $valid_variables)){
             //Delete this:
-            update_metadata('in', $in['idea__id'], array(
+            update_metadata(4535, $in['idea__id'], array(
                 $key => null,
             ));
 
@@ -59,7 +59,7 @@ foreach($this->SOURCE_model->fetch(array()) as $en){
     foreach(unserialize($en['source__metadata']) as $key => $value){
         if(!in_array($key, $valid_variables)){
             //Delete this:
-            update_metadata('en', $en['source__id'], array(
+            update_metadata(4536, $en['source__id'], array(
                 $key => null,
             ));
 

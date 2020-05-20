@@ -214,11 +214,11 @@ class Read extends CI_Controller
 
         } elseif($_POST['cache_source__id']==4736 /* IDEA TITLE */){
 
-            $ins = $this->IDEA_model->fetch(array(
+            $ideas = $this->IDEA_model->fetch(array(
                 'idea__id' => $_POST['object__id'],
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             ));
-            if(!count($ins)){
+            if(!count($ideas)){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid Idea ID.',
@@ -231,7 +231,7 @@ class Read extends CI_Controller
             if(!$idea__title_validation['status']){
                 //We had an error, return it:
                 return view_json(array_merge($idea__title_validation, array(
-                    'original_val' => $ins[0]['idea__title'],
+                    'original_val' => $ideas[0]['idea__title'],
                 )));
             }
 
@@ -247,11 +247,11 @@ class Read extends CI_Controller
 
         } elseif($_POST['cache_source__id']==6197 /* SOURCE FULL NAME */){
 
-            $ens = $this->SOURCE_model->fetch(array(
+            $sources = $this->SOURCE_model->fetch(array(
                 'source__id' => $_POST['object__id'],
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             ));
-            if(!count($ens)){
+            if(!count($sources)){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid Source ID.',
@@ -263,20 +263,20 @@ class Read extends CI_Controller
             $source__title_validate = source__title_validate($_POST['field_value']);
             if(!$source__title_validate['status']){
                 return view_json(array_merge($source__title_validate, array(
-                    'original_val' => $ens[0]['source__title'],
+                    'original_val' => $sources[0]['source__title'],
                 )));
             }
 
             //All good, go ahead and update:
-            $this->SOURCE_model->update($ens[0]['source__id'], array(
+            $this->SOURCE_model->update($sources[0]['source__id'], array(
                 'source__title' => $source__title_validate['source__title_clean'],
             ), true, $session_en['source__id']);
 
             //Reset user session data if this data belongs to the logged-in user:
-            if ($ens[0]['source__id'] == $session_en['source__id']) {
+            if ($sources[0]['source__id'] == $session_en['source__id']) {
                 //Re-activate Session with new data:
-                $ens[0]['source__title'] = $source__title_validate['source__title_clean'];
-                $this->SOURCE_model->activate_session($ens[0], true);
+                $sources[0]['source__title'] = $source__title_validate['source__title_clean'];
+                $this->SOURCE_model->activate_session($sources[0], true);
             }
 
             return view_json(array(
@@ -285,12 +285,12 @@ class Read extends CI_Controller
 
         } elseif($_POST['cache_source__id']==4356 /* READ TIME */){
 
-            $ins = $this->IDEA_model->fetch(array(
+            $ideas = $this->IDEA_model->fetch(array(
                 'idea__id' => $_POST['object__id'],
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             ));
 
-            if(!count($ins)){
+            if(!count($ideas)){
 
                 return view_json(array(
                     'status' => 0,
@@ -303,7 +303,7 @@ class Read extends CI_Controller
                 return view_json(array(
                     'status' => 0,
                     'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' must be a number greater than zero.',
-                    'original_val' => $ins[0]['idea__duration'],
+                    'original_val' => $ideas[0]['idea__duration'],
                 ));
 
             } elseif($_POST['field_value'] > config_var(4356)){
@@ -312,7 +312,7 @@ class Read extends CI_Controller
                 return view_json(array(
                     'status' => 0,
                     'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
-                    'original_val' => $ins[0]['idea__duration'],
+                    'original_val' => $ideas[0]['idea__duration'],
                 ));
 
             } elseif($_POST['field_value'] < config_var(12427)){
@@ -320,7 +320,7 @@ class Read extends CI_Controller
                 return view_json(array(
                     'status' => 0,
                     'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
-                    'original_val' => $ins[0]['idea__duration'],
+                    'original_val' => $ideas[0]['idea__duration'],
                 ));
 
             } else {
@@ -487,27 +487,27 @@ class Read extends CI_Controller
         if($idea__id > 0){
 
             //Fetch Idea:
-            $ins = $this->IDEA_model->fetch(array(
+            $ideas = $this->IDEA_model->fetch(array(
                 'idea__id' => $idea__id,
             ));
 
 
             //Should we check for auto next redirect if empty? Only if this is a selection:
-            if($ins[0]['idea__type']==6677){
+            if($ideas[0]['idea__type']==6677){
 
                 //Mark as read If not previously:
                 $read_completes = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
                     'read__source' => $session_en['source__id'],
-                    'read__left' => $ins[0]['idea__id'],
+                    'read__left' => $ideas[0]['idea__id'],
                 ));
 
                 if(!count($read_completes)){
-                    $this->READ_model->is_complete($ins[0], array(
+                    $this->READ_model->is_complete($ideas[0], array(
                         'read__type' => 4559, //READ MESSAGES
                         'read__source' => $session_en['source__id'],
-                        'read__left' => $ins[0]['idea__id'],
+                        'read__left' => $ideas[0]['idea__id'],
                     ));
                 }
 
@@ -515,7 +515,7 @@ class Read extends CI_Controller
 
 
             //Find next Idea based on source's Reads:
-            $next_idea__id = $this->READ_model->find_next($session_en['source__id'], $ins[0]);
+            $next_idea__id = $this->READ_model->find_next($session_en['source__id'], $ideas[0]);
             if($next_idea__id > 0){
                 return redirect_message('/'.$next_idea__id.$append_url);
             } else {
@@ -592,14 +592,14 @@ class Read extends CI_Controller
         }
 
         //Fetch data:
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $idea__id,
         ));
 
         //Make sure we found it:
-        if ( count($ins) < 1) {
+        if ( count($ideas) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Idea #' . $idea__id . ' not found</div>');
-        } elseif(!in_array($ins[0]['idea__status'], $this->config->item('sources_id_7355') /* PUBLIC */)){
+        } elseif(!in_array($ideas[0]['idea__status'], $this->config->item('sources_id_7355') /* PUBLIC */)){
 
             if(superpower_assigned(10939)){
                 //Give them idea access:
@@ -612,13 +612,12 @@ class Read extends CI_Controller
         }
 
         $this->load->view('header', array(
-            'title' => $ins[0]['idea__title'],
-            'in' => $ins[0],
+            'title' => $ideas[0]['idea__title'],
         ));
 
         //Load specific view based on Idea Level:
         $this->load->view('read/read_coin', array(
-            'in' => $ins[0],
+            'idea_focus' => $ideas[0],
             'session_en' => $session_en,
         ));
 
@@ -673,11 +672,11 @@ class Read extends CI_Controller
         }
 
         //Validate Idea:
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $_POST['idea__id'],
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         ));
-        if(count($ins)<1){
+        if(count($ideas)<1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
@@ -698,7 +697,7 @@ class Read extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $session_en['source__id'], $_FILES[$_POST['upload_type']], true, $ins[0]['idea__title']);
+        $cdn_status = upload_to_cdn($temp_local, $session_en['source__id'], $_FILES[$_POST['upload_type']], true, $ideas[0]['idea__title']);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -709,7 +708,7 @@ class Read extends CI_Controller
         foreach($this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
-            'read__left' => $ins[0]['idea__id'],
+            'read__left' => $ideas[0]['idea__id'],
             'read__source' => $session_en['source__id'],
         )) as $read_progress){
             $this->READ_model->update($read_progress['read__id'], array(
@@ -719,9 +718,9 @@ class Read extends CI_Controller
 
         //Save new answer:
         $new_message = '@'.$cdn_status['cdn_en']['source__id'];
-        $this->READ_model->is_complete($ins[0], array(
+        $this->READ_model->is_complete($ideas[0], array(
             'read__type' => 12117,
-            'read__left' => $ins[0]['idea__id'],
+            'read__left' => $ideas[0]['idea__id'],
             'read__source' => $session_en['source__id'],
             'read__message' => $new_message,
             'read__up' => $cdn_status['cdn_en']['source__id'],
@@ -759,11 +758,11 @@ class Read extends CI_Controller
         }
 
         //Validate/Fetch idea:
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $_POST['idea__id'],
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         ));
-        if(count($ins) < 1){
+        if(count($ideas) < 1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Idea not published.',
@@ -774,7 +773,7 @@ class Read extends CI_Controller
         foreach($this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
-            'read__left' => $ins[0]['idea__id'],
+            'read__left' => $ideas[0]['idea__id'],
             'read__source' => $session_en['source__id'],
         )) as $read_progress){
             $this->READ_model->update($read_progress['read__id'], array(
@@ -783,9 +782,9 @@ class Read extends CI_Controller
         }
 
         //Save new answer:
-        $this->READ_model->is_complete($ins[0], array(
+        $this->READ_model->is_complete($ideas[0], array(
             'read__type' => 6144,
-            'read__left' => $ins[0]['idea__id'],
+            'read__left' => $ideas[0]['idea__id'],
             'read__source' => $session_en['source__id'],
             'read__message' => $_POST['read_text_answer'],
         ));
@@ -894,11 +893,11 @@ class Read extends CI_Controller
 
         }
 
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $_POST['idea__id'],
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         ));
-        if (!count($ins)) {
+        if (!count($ideas)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',

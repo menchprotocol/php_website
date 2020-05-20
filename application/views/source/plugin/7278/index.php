@@ -17,32 +17,32 @@ $sources__4593 = $this->config->item('sources__4593');
 
 //To make sure Idea/source IDs are unique:
 $id_prefix = array(
-    'in' => 100,
-    'en' => 200,
+    4535 => 100,
+    4536 => 200,
 );
 
 //Size of nodes:
 $node_size = array(
-    'in' => 3,
-    'en' => 2,
+    4535 => 3,
+    4536 => 2,
     'msg' => 1,
 );
 
 //Add Ideas:
-$ins = $this->IDEA_model->fetch(array(
+$ideas = $this->IDEA_model->fetch(array(
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
 ));
-foreach($ins as $in){
+foreach($ideas as $in){
 
     //Prep metadata:
     $idea__metadata = ( strlen($in['idea__metadata']) > 0 ? unserialize($in['idea__metadata']) : array());
 
     //Add Idea node:
     $this->db->insert('gephi_nodes', array(
-        'id' => $id_prefix['in'].$in['idea__id'],
+        'id' => $id_prefix[4535].$in['idea__id'],
         'label' => $in['idea__title'],
         //'size' => ( isset($idea__metadata['idea___max_seconds']) ? round(($idea__metadata['idea___max_seconds']/3600),0) : 0 ), //Max time
-        'size' => $node_size['in'],
+        'size' => $node_size[4535],
         'node_type' => 1, //Idea
         'node_status' => $in['idea__status'],
     ));
@@ -56,8 +56,8 @@ foreach($ins as $in){
     ), array('idea_next'), 0, 0) as $child_in){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix['in'].$child_in['read__left'],
-            'target' => $id_prefix['in'].$child_in['read__right'],
+            'source' => $id_prefix[4535].$child_in['read__left'],
+            'target' => $id_prefix[4535].$child_in['read__right'],
             'label' => $sources__4593[$child_in['read__type']]['m_name'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $child_in['read__type'],
@@ -69,16 +69,16 @@ foreach($ins as $in){
 
 
 //Add sources:
-$ens = $this->SOURCE_model->fetch(array(
+$sources = $this->SOURCE_model->fetch(array(
     'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
 ));
-foreach($ens as $en){
+foreach($sources as $en){
 
     //Add source node:
     $this->db->insert('gephi_nodes', array(
-        'id' => $id_prefix['en'].$en['source__id'],
+        'id' => $id_prefix[4536].$en['source__id'],
         'label' => $en['source__title'],
-        'size' => $node_size['en'] ,
+        'size' => $node_size[4536] ,
         'node_type' => 2, //Player
         'node_status' => $en['source__status'],
     ));
@@ -92,8 +92,8 @@ foreach($ens as $en){
     ), array('source_portfolio'), 0, 0) as $source_child){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix['en'].$source_child['read__up'],
-            'target' => $id_prefix['en'].$source_child['read__down'],
+            'source' => $id_prefix[4536].$source_child['read__up'],
+            'target' => $id_prefix[4536].$source_child['read__down'],
             'label' => $sources__4593[$source_child['read__type']]['m_name'].': '.$source_child['read__message'],
             'weight' => 1,
             'edge_type' => $source_child['read__type'],
@@ -123,7 +123,7 @@ foreach($messages as $message) {
     //Add child idea link:
     $this->db->insert('gephi_edges', array(
         'source' => $message['read__id'],
-        'target' => $id_prefix['in'].$message['read__right'],
+        'target' => $id_prefix[4535].$message['read__right'],
         'label' => 'Child Idea',
         'weight' => 1,
     ));
@@ -131,7 +131,7 @@ foreach($messages as $message) {
     //Add parent idea link?
     if ($message['read__left'] > 0) {
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix['in'].$message['read__left'],
+            'source' => $id_prefix[4535].$message['read__left'],
             'target' => $message['read__id'],
             'label' => 'Parent Idea',
             'weight' => 1,
@@ -141,7 +141,7 @@ foreach($messages as $message) {
     //Add parent source link?
     if ($message['read__up'] > 0) {
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix['en'].$message['read__up'],
+            'source' => $id_prefix[4536].$message['read__up'],
             'target' => $message['read__id'],
             'label' => 'Parent Source',
             'weight' => 1,
@@ -150,4 +150,4 @@ foreach($messages as $message) {
 
 }
 
-echo count($ins).' ideas & '.count($ens).' sources & '.count($messages).' messages synced.';
+echo count($ideas).' ideas & '.count($sources).' sources & '.count($messages).' messages synced.';

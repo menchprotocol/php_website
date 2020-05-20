@@ -39,9 +39,9 @@ if(!count($player_reads)){
     $all_completed = true;
 
     echo '<div id="home_reads" class="cover-list" style="padding-top:21px; padding-left:34px;">';
-    foreach($player_reads as $in) {
-        $completion_rate = $this->READ_model->completion_progress($session_en['source__id'], $in);
-        echo view_idea_cover($in, true, null, $completion_rate);
+    foreach($player_reads as $idea) {
+        $completion_rate = $this->READ_model->completion_progress($session_en['source__id'], $idea);
+        echo view_idea_cover($idea, true, null, $completion_rate);
         if($completion_rate['completion_percentage']!=100 && $all_completed){
             $all_completed = false;
         }

@@ -43,13 +43,13 @@ class Idea extends CI_Controller {
 
 
         //Create Idea:
-        $in = $this->IDEA_model->link_or_create($idea__title_validation['idea_clean_title'], $session_en['source__id']);
+        $idea = $this->IDEA_model->link_or_create($idea__title_validation['idea_clean_title'], $session_en['source__id']);
 
         //Also add to bookmarks:
         $this->READ_model->create(array(
             'read__type' => 10573, //Idea Bookmarks
             'read__source' => $session_en['source__id'],
-            'read__right' => $in['new_idea__id'],
+            'read__right' => $idea['new_idea__id'],
             'read__up' => $session_en['source__id'],
             'read__message' => '@'.$session_en['source__id'],
         ), true);
@@ -57,7 +57,7 @@ class Idea extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'message' => '<span class="icon-block"><i class="fas fa-check-circle idea"></i></span>Success! Redirecting now...',
-            'idea__id' => $in['new_idea__id'],
+            'idea__id' => $idea['new_idea__id'],
         ));
 
     }
@@ -90,16 +90,16 @@ class Idea extends CI_Controller {
     function idea_coin($idea__id){
 
         //Validate/fetch Idea:
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $idea__id,
         ));
-        if ( count($ins) < 1) {
+        if ( count($ideas) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>IDEA #' . $idea__id . ' Not Found</div>');
         }
 
 
         $session_en = superpower_assigned(10939); //Idea Pen?
-        $is_public = in_array($ins[0]['idea__status'], $this->config->item('sources_id_7355'));
+        $is_public = in_array($ideas[0]['idea__status'], $this->config->item('sources_id_7355'));
 
         if(!$session_en){
             if($is_public){
@@ -138,12 +138,11 @@ class Idea extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $ins[0]['idea__title'],
-            'in' => $ins[0],
+            'title' => $ideas[0]['idea__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('idea/idea_coin', array(
-            'in' => $ins[0],
+            'idea_focus' => $ideas[0],
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
@@ -529,11 +528,11 @@ class Idea extends CI_Controller {
 
 
         //Fetch/Validate the idea:
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => intval($_POST['idea__id']),
             'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         ));
-        if(count($ins)<1){
+        if(count($ideas)<1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea',
@@ -626,10 +625,10 @@ class Idea extends CI_Controller {
         }
 
         //Validate Idea:
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $_POST['idea__id'],
         ));
-        if(count($ins)<1){
+        if(count($ideas)<1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
@@ -764,10 +763,10 @@ class Idea extends CI_Controller {
         }
 
         //Validate Idea:
-        $ins = $this->IDEA_model->fetch(array(
+        $ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $_POST['idea__id'],
         ));
-        if (count($ins) < 1) {
+        if (count($ideas) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Idea Not Found',

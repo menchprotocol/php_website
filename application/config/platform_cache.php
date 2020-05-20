@@ -8,16 +8,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-20 06:46:32 PST
+//Generated 2020-05-20 07:39:09 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1589982392;
-$config['cache_count_read'] = 1212188;
+$config['cache_timestamp'] = 1589985549;
+$config['cache_count_read'] = 1212219;
 $config['cache_count_read'] = 121261;
 $config['cache_count_idea'] = 5628;
 $config['cache_count_source'] = 4857;
 
 
+
+//SEARCH INDEX:
+$config['sources_id_12761'] = array(4535,4536);
+$config['sources__12761'] = array(
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEATE',
+        'm_desc' => '',
+        'm_parents' => array(10939,12893,10876,11035,12761,12112,2738),
+    ),
+    4536 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE',
+        'm_desc' => '',
+        'm_parents' => array(10939,12489,11035,10876,12893,12761,4527,2738),
+    ),
+);
 
 //MENCH SOCIAL SHARING:
 $config['sources_id_13023'] = array(3288,3300,12889,3302,12890,13026,3099);
@@ -294,7 +311,7 @@ $config['sources__12887'] = array(
     7279 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
-        'm_desc' => '/source/plugin/7279?obj=en&object__id=',
+        'm_desc' => '/source/plugin/7279?obj=4536&object__id=',
         'm_parents' => array(6287,12741,12887,11047,3323,7287),
     ),
 );
@@ -2963,7 +2980,7 @@ $config['sources__11047'] = array(
     7279 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
-        'm_desc' => '/source/plugin/7279?obj=in&object__id=',
+        'm_desc' => '/source/plugin/7279?obj=4535&object__id=',
         'm_parents' => array(6287,12741,12887,11047,3323,7287),
     ),
 );
@@ -3820,7 +3837,7 @@ $config['sources__10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['sources_id_4527'] = array(6225,10956,12279,12588,6150,3000,12864,12359,10876,11047,11018,12675,12677,4229,12842,4486,12840,10573,4485,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,6201,12420,12413,7585,13022,12330,7309,7712,12883,12884,12955,7751,10717,2738,12467,6404,12079,12893,4527,11054,12687,11035,4341,13023,12112,6232,12589,12500,12741,6287,12577,4755,11081,7704,5967,12229,12326,12446,12969,6103,12227,6255,7304,6186,7360,7364,7359,4593,10593,12141,12327,4269,6204,4536,12887,6194,11089,13004,12571,12574,11080,12822,4592,12403,11059,4537,12524,4997,4986,7551,12274,6177,7358,12575,7357,12401,6206,10957,12968,12523,12322,12321,10692,6146);
+$config['sources_id_4527'] = array(6225,10956,12279,12588,6150,3000,12864,12359,10876,11047,11018,12675,12677,4229,12842,4486,12840,10573,4485,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,6201,12420,12413,7585,13022,12330,7309,7712,12883,12884,12955,7751,10717,2738,12467,6404,12079,12893,4527,11054,12687,11035,4341,13023,12112,6232,12589,12500,12741,6287,12577,4755,11081,7704,5967,12229,12326,12446,12969,6103,12227,6255,7304,6186,7360,7364,7359,4593,10593,12141,12327,12761,4269,6204,4536,12887,6194,11089,13004,12571,12574,11080,12822,4592,12403,11059,4537,12524,4997,4986,7551,12274,6177,7358,12575,7357,12401,6206,10957,12968,12523,12322,12321,10692,6146);
 $config['sources__4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4301,6 +4318,12 @@ $config['sources__4527'] = array(
         'm_name' => 'READ UNLOCKS',
         'm_desc' => '',
         'm_parents' => array(4527,12228),
+    ),
+    12761 => array(
+        'm_icon' => '<i class="fas fa-search"></i>',
+        'm_name' => 'SEARCH INDEX',
+        'm_desc' => '',
+        'm_parents' => array(4527,3323),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
