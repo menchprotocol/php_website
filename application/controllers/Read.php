@@ -94,7 +94,7 @@ class Read extends CI_Controller
             $message .= '<div class="list-group list-grey">';
             foreach($lns as $ln) {
 
-                $message .= view_ln($ln);
+                $message .= view_interaction($ln);
 
                 if($session_en && strlen($ln['read__message'])>0 && strlen($_POST['read__message_search'])>0 && strlen($_POST['read__message_replace'])>0 && substr_count($ln['read__message'], $_POST['read__message_search'])>0){
 
@@ -135,6 +135,60 @@ class Read extends CI_Controller
 
 
     }
+
+
+
+    function read_preview_type()
+    {
+
+        if (!isset($_POST['read__message']) || !isset($_POST['read__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing inputs',
+            ));
+        }
+
+        //Will Contain every possible Player Link Connector:
+        $sources__4592 = $this->config->item('sources__4592');
+
+        //See what this is:
+        $detected_read_type = read_detect_type($_POST['read__message']);
+
+        if(!$_POST['read__id'] && !in_array($detected_read_type['read__type'], $this->config->item('sources_id_4537'))){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid URL',
+            ));
+
+        } elseif (!$detected_read_type['status'] && isset($detected_read_type['url_previously_existed']) && $detected_read_type['url_previously_existed']) {
+
+            //See if this is duplicate to either link:
+            $en_lns = $this->READ_model->fetch(array(
+                'read__id' => $_POST['read__id'],
+                'read__type IN (' . join(',', $this->config->item('sources_id_4537')) . ')' => null, //Player URL Links
+            ));
+
+            //Are they both different?
+            if (count($en_lns) < 1 || ($en_lns[0]['read__up'] != $detected_read_type['en_url']['source__id'] && $en_lns[0]['read__down'] != $detected_read_type['en_url']['source__id'])) {
+                //return error:
+                return view_json($detected_read_type);
+            }
+
+        }
+
+
+
+        return view_json(array(
+            'status' => 1,
+            'html_ui' => '<b class="montserrat doupper '.extract_icon_color($sources__4592[$detected_read_type['read__type']]['m_icon']).'">' . $sources__4592[$detected_read_type['read__type']]['m_icon'] . ' ' . $sources__4592[$detected_read_type['read__type']]['m_name'] . '</b>',
+            'en_link_preview' => ( in_array($detected_read_type['read__type'], $this->config->item('sources_id_12524')) ? '<span class="paddingup inline-block">'.view_read__message($_POST['read__message'], $detected_read_type['read__type']).'</span>' : ''),
+        ));
+
+    }
+
+
+
 
     function view_input_text_update(){
 
@@ -407,8 +461,8 @@ class Read extends CI_Controller
 
         //Add this Idea to their Reads If not already there:
         $success_message = null;
-        $read_in_home = $this->READ_model->in_home($idea__id, $session_en);
-        if(!$read_in_home){
+        $read_idea_home = $this->READ_model->idea_home($idea__id, $session_en);
+        if(!$read_idea_home){
             if($this->READ_model->start($session_en['source__id'], $idea__id)){
                 $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Reads</div>';
             } else {
@@ -577,7 +631,7 @@ class Read extends CI_Controller
     function read_file_upload()
     {
 
-        //TODO: MERGE WITH FUNCTION in_notes_create_upload()
+        //TODO: MERGE WITH FUNCTION idea_add_note_file()
 
         //Authenticate Player:
         $session_en = superpower_assigned();

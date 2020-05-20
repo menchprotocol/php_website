@@ -13,7 +13,7 @@ class Idea extends CI_Controller {
     }
 
 
-    function in_create(){
+    function idea_create(){
 
         $sources__6201 = $this->config->item('sources__6201'); //Idea Table
         $session_en = superpower_assigned(10939);
@@ -83,11 +83,11 @@ class Idea extends CI_Controller {
          * comes through /idea/ID
          *
          * */
-        return redirect_message((in_is_source($idea__id) ? '/idea/' : '/' ) . $idea__id );
+        return redirect_message((idea_is_source($idea__id) ? '/idea/' : '/' ) . $idea__id );
     }
 
 
-    function in_coin($idea__id){
+    function idea_coin($idea__id){
 
         //Validate/fetch Idea:
         $ins = $this->IDEA_model->fetch(array(
@@ -151,7 +151,7 @@ class Idea extends CI_Controller {
     }
 
 
-    function in_request_invite($idea__id){
+    function idea_request_invite($idea__id){
 
         //Make sure it's a logged in player:
         $session_en = superpower_assigned(null, true);
@@ -178,7 +178,7 @@ class Idea extends CI_Controller {
 
     }
 
-    function in_become_source($idea__id){
+    function idea_become_source($idea__id){
 
         //Make sure it's a logged in player:
         $session_en = superpower_assigned(10984, true);
@@ -199,7 +199,7 @@ class Idea extends CI_Controller {
 
 
 
-    function in_update_dropdown(){
+    function idea_update_dropdown(){
 
         //Maintain a manual index as a hack for the Idea/Source tables for now:
         $sources__6232 = $this->config->item('sources__6232'); //PLATFORM VARIABLES
@@ -340,7 +340,7 @@ class Idea extends CI_Controller {
 
     }
 
-    function in_unlink(){
+    function idea_unlink(){
 
         //Authenticate Player:
         $session_en = superpower_assigned();
@@ -374,7 +374,7 @@ class Idea extends CI_Controller {
     }
 
 
-    function in_link_or_create()
+    function idea_add()
     {
 
         /*
@@ -449,7 +449,7 @@ class Idea extends CI_Controller {
 
     }
 
-    function in_sort_save()
+    function idea_sort_save()
     {
 
         //Authenticate Player:
@@ -498,7 +498,7 @@ class Idea extends CI_Controller {
     }
 
 
-    function in_notes_create_text()
+    function idea_add_note_text()
     {
 
         //Authenticate Player:
@@ -567,14 +567,14 @@ class Idea extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'message' => view_in_notes(array_merge($ln, array(
+            'message' => view_idea_notes(array_merge($ln, array(
                 'read__down' => $session_en['source__id'],
             ))),
         ));
     }
 
 
-    function in_notes_create_upload()
+    function idea_add_note_file()
     {
 
         //TODO: MERGE WITH FUNCTION read_file_upload()
@@ -680,7 +680,7 @@ class Idea extends CI_Controller {
         //Echo message:
         view_json(array(
             'status' => 1,
-            'message' => view_in_notes(array_merge($new_messages[0], array(
+            'message' => view_idea_notes(array_merge($new_messages[0], array(
                 'read__down' => $session_en['source__id'],
             ))),
         ));
@@ -690,7 +690,7 @@ class Idea extends CI_Controller {
 
 
 
-    function in_notes_sort()
+    function idea_note_sort()
     {
 
         //Authenticate Player:
@@ -731,7 +731,7 @@ class Idea extends CI_Controller {
         ));
     }
 
-    function in_notes_modify_save()
+    function idea_note_modify()
     {
 
         //Authenticate Player:

@@ -11,11 +11,11 @@ function in_notes_counter(note_type_id, adjustment_count){
     $('.en-type-counter-'+note_type_id).text(new_count);
 }
 
-function en_source_only_unlink(read__id, note_type_id) {
+function source_only_unlink(read__id, note_type_id) {
 
     var r = confirm("Remove this source?");
     if (r == true) {
-        $.post("/source/en_source_only_unlink", {
+        $.post("/source/source_only_unlink", {
 
             idea__id: in_loaded_id,
             read__id: read__id,
@@ -38,7 +38,7 @@ function en_source_only_unlink(read__id, note_type_id) {
 
 }
 
-function en_source_only_add(en_existing_id, note_type_id) {
+function source_only_add(en_existing_id, note_type_id) {
 
 
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
@@ -60,7 +60,7 @@ function en_source_only_add(en_existing_id, note_type_id) {
 
     //Add via Ajax:
     input.prop('disabled', true);
-    $.post("/source/en_source_only_add", {
+    $.post("/source/source_only_add", {
 
         idea__id: in_loaded_id,
         note_type_id: note_type_id,
@@ -111,7 +111,7 @@ function en_source_only_search(note_type_id) {
     }).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            en_source_only_add(0, note_type_id);
+            source_only_add(0, note_type_id);
             return true;
         }
     });
@@ -128,7 +128,7 @@ function en_source_only_search(note_type_id) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            en_source_only_add(suggestion.object__id, note_type_id);
+            source_only_add(suggestion.object__id, note_type_id);
 
         }).autocomplete({hint: false, minLength: 1}, [{
 
@@ -146,16 +146,16 @@ function en_source_only_search(note_type_id) {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
+                    //If clicked, would trigger the autocomplete:selected above which will trigger the source__add() function
                     return view_search_result(suggestion);
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="en_source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:void(0);" onclick="source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="en_source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -236,7 +236,7 @@ $(document).ready(function () {
         autosize($(this));
 
         //Activate sorting:
-        in_notes_sort_load(note_type_id);
+        idea_note_sort_load(note_type_id);
 
         var showFiles = function (files) {
             if(typeof files[0] !== 'undefined'){
@@ -256,13 +256,13 @@ $(document).ready(function () {
         //Watch for message creation:
         $('#read__message' + note_type_id).keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
-                in_notes_add(note_type_id);
+                idea_add_note_text(note_type_id);
             }
         });
 
         //Watchout for file uplods:
         $('.box' + note_type_id).find('input[type="file"]').change(function () {
-            in_notes_create_upload(droppedFiles, 'file', note_type_id);
+            idea_add_note_file(droppedFiles, 'file', note_type_id);
         });
 
 
@@ -285,7 +285,7 @@ $(document).ready(function () {
                 .on('drop', function (e) {
                     droppedFiles = e.originalEvent.dataTransfer.files;
                     e.preventDefault();
-                    in_notes_create_upload(droppedFiles, 'drop', note_type_id);
+                    idea_add_note_file(droppedFiles, 'drop', note_type_id);
                 });
         }
 
@@ -304,7 +304,7 @@ function read_preview(){
 }
 
 
-function in_unlink(idea__id, read__id, is_parent){
+function idea_unlink(idea__id, read__id, is_parent){
     var idea__title = $('.text__4736_'+idea__id).text();
     if(!idea__title.length){
         idea__title = $('.text__4736_'+idea__id).val();
@@ -313,7 +313,7 @@ function in_unlink(idea__id, read__id, is_parent){
     if (r == true) {
 
         //Fetch Idea Data to load modify widget:
-        $.post("/idea/in_unlink", {
+        $.post("/idea/idea_unlink", {
             idea__id: idea__id,
             read__id: read__id,
         }, function (data) {
@@ -447,7 +447,7 @@ function in_message_inline_en_search(obj) {
 
 
 
-function in_notes_sort_apply(note_type_id) {
+function idea_note_sort_apply(note_type_id) {
 
     var new_read__sorts = [];
     var sort_rank = 0;
@@ -463,7 +463,7 @@ function in_notes_sort_apply(note_type_id) {
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/idea/in_notes_sort", {new_read__sorts: new_read__sorts}, function (data) {
+        $.post("/idea/idea_note_sort", {new_read__sorts: new_read__sorts}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
@@ -473,17 +473,17 @@ function in_notes_sort_apply(note_type_id) {
     }
 }
 
-function in_notes_sort_load(note_type_id) {
+function idea_note_sort_load(note_type_id) {
 
     var inner_content = null;
 
     var sort_msg = Sortable.create( document.getElementById("in_notes_list_" + note_type_id) , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        handle: ".in_notes_sorting", // Restricts sort start click/touch to the specified element
+        handle: ".idea_note_sorting", // Restricts sort start click/touch to the specified element
         draggable: ".note_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            in_notes_sort_apply(note_type_id);
+            idea_note_sort_apply(note_type_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -536,7 +536,7 @@ function in_notes_modify_cancel(read__id) {
     $("#ul-nav-" + read__id + ">div").css('width', 'inherit');
 }
 
-function in_notes_modify_save(read__id, note_type_id) {
+function idea_note_modify(read__id, note_type_id) {
 
     //Show loader:
     $("#ul-nav-" + read__id + " .edit-updates").html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>');
@@ -553,7 +553,7 @@ function in_notes_modify_save(read__id, note_type_id) {
     };
 
     //Update message:
-    $.post("/idea/in_notes_modify_save", modify_data, function (data) {
+    $.post("/idea/idea_note_modify", modify_data, function (data) {
 
         if (data.status) {
 
@@ -576,7 +576,7 @@ function in_notes_modify_save(read__id, note_type_id) {
                         $("#ul-nav-" + read__id).remove();
 
                         //Adjust sort for this message type:
-                        in_notes_sort_apply(note_type_id);
+                        idea_note_sort_apply(note_type_id);
 
                     }, 610);
                 }, 610);
@@ -626,7 +626,7 @@ function in_message_form_lock(note_type_id) {
 function in_message_form_unlock(result, note_type_id) {
 
     //Update UI to unlock:
-    $('.save_notes_' + note_type_id).html('<i class="fas fa-plus"></i>').attr('href', 'javascript:in_notes_add('+note_type_id+');');
+    $('.save_notes_' + note_type_id).html('<i class="fas fa-plus"></i>').attr('href', 'javascript:idea_add_note_text('+note_type_id+');');
     $('.add_notes_' + note_type_id).removeClass('is-working');
     $("#read__message" + note_type_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
@@ -656,7 +656,7 @@ function in_message_form_unlock(result, note_type_id) {
     }
 }
 
-function in_notes_create_upload(droppedFiles, uploadType, note_type_id) {
+function idea_add_note_file(droppedFiles, uploadType, note_type_id) {
 
     //Prevent multiple concurrent uploads:
     if ($('.box' + note_type_id).hasClass('is-uploading')) {
@@ -684,7 +684,7 @@ function in_notes_create_upload(droppedFiles, uploadType, note_type_id) {
         ajaxData.append('note_type_id', note_type_id);
 
         $.ajax({
-            url: '/idea/in_notes_create_upload',
+            url: '/idea/idea_add_note_file',
             type: $('.box' + note_type_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -715,13 +715,13 @@ function in_notes_create_upload(droppedFiles, uploadType, note_type_id) {
     }
 }
 
-function in_notes_add(note_type_id) {
+function idea_add_note_text(note_type_id) {
 
     //Lock message:
     in_message_form_lock(note_type_id);
 
     //Update backend:
-    $.post("/idea/in_notes_create_text", {
+    $.post("/idea/idea_add_note_text", {
 
         idea__id: in_loaded_id, //Synonymous
         read__message: $('#read__message' + note_type_id).val(),
@@ -792,7 +792,7 @@ function prep_search_pad(){
 
 }
 
-function in_sort_save(idea__id) {
+function idea_sort_save(idea__id) {
 
     var new_read__sorts = [];
     var sort_rank = 0;
@@ -811,7 +811,7 @@ function in_sort_save(idea__id) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && idea__id) {
         //Update backend:
-        $.post("/idea/in_sort_save", {idea__id: idea__id, new_read__sorts: new_read__sorts}, function (data) {
+        $.post("/idea/idea_sort_save", {idea__id: idea__id, new_read__sorts: new_read__sorts}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -837,14 +837,14 @@ function in_sort_load(idea__id) {
         draggable: ".ideas_sortable", // Specifies which items inside the element should be sortable
         handle: ".idea-sort-handle", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            in_sort_save(idea__id);
+            idea_sort_save(idea__id);
         }
     });
 }
 
 
 
-function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
+function idea_add(in_linked_id, is_parent, in_link_child_id) {
 
     /*
      *
@@ -887,7 +887,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
 
     //Update backend:
-    $.post("/idea/in_link_or_create", {
+    $.post("/idea/idea_add", {
         in_linked_id: in_linked_id,
         is_parent:is_parent,
         idea__title: idea__title,
@@ -935,7 +935,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
 
 
-function in_update_dropdown(element_id, new_source__id, idea__id, read__id, show_full_name){
+function idea_update_dropdown(element_id, new_source__id, idea__id, read__id, show_full_name){
 
     /*
     *
@@ -998,7 +998,7 @@ function in_update_dropdown(element_id, new_source__id, idea__id, read__id, show
     var data_object = eval('js_sources__'+element_id);
     $('.dropd_'+element_id+'_'+idea__id+'_'+read__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? '<span class="show-max">SAVING...</span>' : '' ) +'</b>');
 
-    $.post("/idea/in_update_dropdown", {
+    $.post("/idea/idea_update_dropdown", {
 
         idea__id: idea__id,
         read__id: read__id,

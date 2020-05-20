@@ -2,7 +2,7 @@
 $sources__2738 = $this->config->item('sources__2738');
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
-$is_source = in_is_source($in['idea__id']);
+$is_source = idea_is_source($in['idea__id']);
 $is_active = in_array($in['idea__status'], $this->config->item('sources_id_7356'));
 $is_public = in_array($in['idea__status'], $this->config->item('sources_id_7355'));
 
@@ -26,7 +26,7 @@ $source_focus_found = false; //Used to determine the first tab to be opened
 echo '<div class="container" style="padding-bottom:42px;">';
 
 if(!$is_source){
-    echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/in_request_invite/'.$in['idea__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/in_become_source/'.$in['idea__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
+    echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/idea_request_invite/'.$in['idea__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/idea_become_source/'.$in['idea__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
 
@@ -41,7 +41,7 @@ $ideas_previous = $this->READ_model->fetch(array(
 
 echo '<div id="list-in-' . $in['idea__id'] . '-1" class="list-group previous_ins">';
 foreach($ideas_previous as $parent_in) {
-    echo view_in($parent_in, 0, true, in_is_source($parent_in['idea__id']));
+    echo view_idea($parent_in, 0, true, idea_is_source($parent_in['idea__id']));
 }
 if( $is_source && $is_active && $in['idea__id']!=config_var(12156)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
@@ -68,7 +68,7 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo view_in_note_mix(4231, $this->READ_model->fetch(array(
+echo view_idea_note_mix(4231, $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
     'read__type' => 4231,
     'read__right' => $in['idea__id'],
@@ -135,7 +135,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
 
         $this_tab .= '<div id="list-in-' . $in['idea__id'] . '-0" class="list-group next_ins">';
         foreach($ideas_next as $child_in) {
-            $this_tab .= view_in($child_in, $in['idea__id'], false, $is_source);
+            $this_tab .= view_idea($child_in, $in['idea__id'], false, $is_source);
         }
 
         if($is_source && $is_active){
@@ -167,7 +167,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
         $this_tab .= '<div id="add-source-' .$read__type . '" class="list-group source-adder">';
 
         foreach($in_notes as $in_note) {
-            $this_tab .= view_en($in_note, 0, null, $is_source && $is_active, $is_source);
+            $this_tab .= view_source($in_note, 0, null, $is_source && $is_active, $is_source);
         }
 
         if($is_source && $is_active) {
@@ -186,8 +186,8 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
     } elseif(in_array($read__type, $this->config->item('sources_id_12467'))){
 
         //MENCH COINS
-        $counter = read_coins_in($read__type, $in['idea__id']);
-        $this_tab = read_coins_in($read__type, $in['idea__id'], 1);
+        $counter = read_coins_idea($read__type, $in['idea__id']);
+        $this_tab = read_coins_idea($read__type, $in['idea__id'], 1);
 
     } elseif(in_array($read__type, $this->config->item('sources_id_4485'))){
 
@@ -199,7 +199,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
         ), array(), 0, 0, array('read__sort' => 'ASC'));
 
         $counter = count($in_notes);
-        $this_tab .= view_in_note_mix($read__type, $in_notes, ($is_source && $is_active));
+        $this_tab .= view_idea_note_mix($read__type, $in_notes, ($is_source && $is_active));
 
     } elseif($read__type==12589){
 

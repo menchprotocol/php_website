@@ -15,7 +15,7 @@ $(document).ready(function () {
 
 
 var saving_idea = false;
-function in_create(){
+function idea_create(){
 
     if(saving_idea){
         alert('Idea already being saved, Be patient...');
@@ -32,7 +32,7 @@ function in_create(){
     add_to_list('myIdeas', '.itemidealist', '<div id="tempLoader" class="list-group-item montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving Idea...</div>');
 
     //Process this:
-    $.post("/idea/in_create", {
+    $.post("/idea/idea_create", {
         newIdeaTitle: $('#newIdeaTitle').val(),
     }, function (data) {
         if (data.status) {

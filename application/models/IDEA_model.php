@@ -77,7 +77,7 @@ class IDEA_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->READ_model->create(array(
-                'read__message' => 'in_create() failed to create a new idea',
+                'read__message' => 'idea_create() failed to create a new idea',
                 'read__type' => 4246, //Platform Bug Reports
                 'read__source' => $read__source,
                 'read__metadata' => $insert_columns,
@@ -331,7 +331,7 @@ class IDEA_model extends CI_Model
          * (IF $link_idea__id>0) OR will create a new idea with outcome $idea__title
          * and link it to $link_to_idea__id (In this case $link_idea__id will be 0)
          *
-         * p.s. Inputs have previously been validated via ideas/in_link_or_create() function
+         * p.s. Inputs have previously been validated via ideas/idea_add() function
          *
          * */
 
@@ -478,7 +478,7 @@ class IDEA_model extends CI_Model
                     )),
             ), true);
 
-            //Fetch and return full data to be properly shown on the UI using the view_in() function
+            //Fetch and return full data to be properly shown on the UI using the view_idea() function
             $new_ins = $this->READ_model->fetch(array(
                 ( $is_parent ? 'read__right' : 'read__left' ) => $link_to_idea__id,
                 ( $is_parent ? 'read__left' : 'read__right' ) => $in_new['idea__id'],
@@ -488,7 +488,7 @@ class IDEA_model extends CI_Model
             ), array(($is_parent ? 'idea_previous' : 'idea_next')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $child_in_html = view_in($new_ins[0], $link_to_idea__id, $is_parent, true /* Since they added it! */);
+            $child_in_html = view_idea($new_ins[0], $link_to_idea__id, $is_parent, true /* Since they added it! */);
 
         } else {
 
@@ -1041,7 +1041,7 @@ class IDEA_model extends CI_Model
 
 
         //Validate this locked idea:
-        if(!in_is_unlockable($in)){
+        if(!idea_is_unlockable($in)){
             return array();
         }
 
@@ -1069,7 +1069,7 @@ class IDEA_model extends CI_Model
             'read__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
             'read__right' => $in['idea__id'],
         ), array('idea_previous'), 0) as $in_locked_parent){
-            if(in_is_unlockable($in_locked_parent)){
+            if(idea_is_unlockable($in_locked_parent)){
                 //Need to check recursively:
                 foreach($this->IDEA_model->unlock_paths($in_locked_parent) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $locked_path['idea__id'])) {
@@ -1103,7 +1103,7 @@ class IDEA_model extends CI_Model
 
         //Go through children to see if any/all can be completed:
         foreach($ideas_next as $child_in){
-            if(in_is_unlockable($child_in)){
+            if(idea_is_unlockable($child_in)){
 
                 //Need to check recursively:
                 foreach($this->IDEA_model->unlock_paths($child_in) as $locked_path){

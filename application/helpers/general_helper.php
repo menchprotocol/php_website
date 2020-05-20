@@ -182,7 +182,7 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     }
 }
 
-function en_link_type_id($string = null){
+function source_link_type($string = null){
     $detected_read_type = read_detect_type($string);
     if ($detected_read_type['status']){
         return $detected_read_type['read__type'];
@@ -348,12 +348,12 @@ function is_valid_icon($string){
 }
 
 
-function en_count_db_references($source__id, $return_html = true){
+function source_count_connections($source__id, $return_html = true){
 
     //NOTE HERE
 
     //Checks where in the database/platform a source might be referenced
-    $en_count_db_references = array(); //Holds return values
+    $source_count_connections = array(); //Holds return values
     $CI =& get_instance();
     $sources__6194 = $CI->config->item('sources__6194');
 
@@ -370,7 +370,7 @@ function en_count_db_references($source__id, $return_html = true){
         foreach($query->result() as $row)
         {
             if($row->totals > 0){
-                $en_count_db_references[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($sources__6194[$en_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$sources__6194[$en_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$sources__6194[$en_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
+                $source_count_connections[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($sources__6194[$en_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$sources__6194[$en_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$sources__6194[$en_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
             }
         }
 
@@ -378,18 +378,18 @@ function en_count_db_references($source__id, $return_html = true){
 
     //Plugin?
     if(in_array($source__id, $CI->config->item('sources_id_6287'))){
-        $en_count_db_references[6287] = ( $return_html ? '<a href="/source/plugin/'.$source__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
+        $source_count_connections[6287] = ( $return_html ? '<a href="/source/plugin/'.$source__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
     }
 
-    return $en_count_db_references;
+    return $source_count_connections;
 
 }
 
 
-function in_fetch_cover($idea__id){
+function idea_fetch_cover($idea__id){
 
     $CI =& get_instance();
-    $in_fetch_cover = null;
+    $idea_fetch_cover = null;
     foreach($CI->READ_model->fetch(array( //IDEA SOURCE
         'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
@@ -406,21 +406,21 @@ function in_fetch_cover($idea__id){
             'read__type' => 4260, //IMAGES ONLY
             'read__down' => $en['read__up'],
         )) as $en_image) {
-            $in_fetch_cover = $en_image['read__message'];
+            $idea_fetch_cover = $en_image['read__message'];
             break;
         }
-        if($in_fetch_cover){
+        if($idea_fetch_cover){
             break;
         }
     }
 
     //Return something:
-    return ( $in_fetch_cover ? $in_fetch_cover : config_var(12904) );
+    return ( $idea_fetch_cover ? $idea_fetch_cover : config_var(12904) );
 
 }
 
 
-function idea__weight_updater($in){
+function idea__weight_calculator($in){
 
     //READS
     $CI =& get_instance();
@@ -452,7 +452,7 @@ function idea__weight_updater($in){
 
 }
 
-function source__weight_updater($en){
+function source__weight_calculator($en){
 
     //READS
     $CI =& get_instance();
@@ -507,7 +507,7 @@ function update_description($before_string, $after_string){
     return 'Updated from ['.$before_string.'] to ['.$after_string.']';
 }
 
-function random_player_avatar(){
+function random_avatar(){
     $CI =& get_instance();
     $sources__10956 = $CI->config->item('sources__10956');
     return $sources__10956[array_rand($sources__10956)]['m_icon'];
@@ -547,7 +547,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 }
 
-function in_is_unlockable($in){
+function idea_is_unlockable($in){
     $CI =& get_instance();
     return in_array($in['idea__status'], $CI->config->item('sources_id_7355') /* PUBLIC */);
 }
@@ -646,7 +646,7 @@ function current_mench($part1 = null){
 
 
 
-function read_coins_in($read__type, $idea__id, $load_page = 0){
+function read_coins_idea($read__type, $idea__id, $load_page = 0){
 
     /*
      * Counts MENCH COINS for ideas
@@ -696,7 +696,7 @@ function read_coins_in($read__type, $idea__id, $load_page = 0){
         //Return UI:
         $ui = '<div class="list-group">';
         foreach($query as $item){
-            $ui .= view_en($item);
+            $ui .= view_source($item);
         }
         $ui .= '</div>';
 
@@ -713,7 +713,7 @@ function read_coins_in($read__type, $idea__id, $load_page = 0){
 
 }
 
-function read_coins_en($read__type, $source__id, $load_page = 0){
+function read_coins_source($read__type, $source__id, $load_page = 0){
 
     /*
      * Counts MENCH COINS for sources
@@ -777,20 +777,20 @@ function read_coins_en($read__type, $source__id, $load_page = 0){
 
             //SOURCE COIN
             foreach($query as $item){
-                $ui .= view_en($item);
+                $ui .= view_source($item);
             }
 
         } elseif($read__type==6255){
 
             //READ COIN
             foreach($query as $item){
-                $ui .= view_in($item);
+                $ui .= view_idea($item);
             }
 
         } elseif($read__type==12273){
 
             $previous_do_hide = true;
-            $bold_upto_weight = in_calc_bold_upto_weight($query);
+            $bold_upto_weight = idea_calc_bold_upto_weight($query);
             $show_max = config_var(11986);
 
 
@@ -813,7 +813,7 @@ function read_coins_en($read__type, $source__id, $load_page = 0){
                     $ui .= '<div class="see_more_sources"></div>';
                 }
 
-                $ui .= view_in($item, 0, false, false, $item['read__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+                $ui .= view_idea($item, 0, false, false, $item['read__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
 
                 $previous_do_hide = $do_hide;
 
@@ -897,7 +897,7 @@ function fetch_cookie_order($cookie_name){
     return $new_order_value;
 }
 
-function in_calc_bold_upto_weight($child_list){
+function idea_calc_bold_upto_weight($child_list){
     $bold_upto_weight = 0;
     $previous_weight = null;
     foreach($child_list as $count => $child_item) {
@@ -916,7 +916,7 @@ function in_calc_bold_upto_weight($child_list){
     return $bold_upto_weight;
 }
 
-function in_calc_common_prefix($child_list, $child_field, $in = null){
+function idea_calc_common_prefix($child_list, $child_field, $in = null){
 
     $CI =& get_instance();
 
@@ -1261,7 +1261,7 @@ function source__title_validate($string, $read__type = 0){
 
 
 
-function en_is_source($source__id, $session_en = array()){
+function source_is_idea_source($source__id, $session_en = array()){
 
 
     if(!$session_en){
@@ -1293,7 +1293,7 @@ function en_is_source($source__id, $session_en = array()){
 
 }
 
-function in_is_source($idea__id, $session_en = array()){
+function idea_is_source($idea__id, $session_en = array()){
 
     if(!$session_en){
         //Fetch from session:
@@ -1483,9 +1483,9 @@ function update_algolia($input_obj_type = null, $object__id = 0, $return_row_onl
             if($object__id){
                 //Update weight before updating this object:
                 if($input_obj_type=='en'){
-                    source__weight_updater($db_row);
+                    source__weight_calculator($db_row);
                 } elseif($input_obj_type=='in'){
-                    idea__weight_updater($db_row);
+                    idea__weight_calculator($db_row);
                 }
             }
 

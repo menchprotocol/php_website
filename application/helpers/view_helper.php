@@ -1,12 +1,12 @@
 <?php
 
-function view_en_load_more($page, $limit, $source__portfolio_count)
+function view_source_load_more($page, $limit, $source__portfolio_count)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
      * */
 
-    $ui = '<div class="load-more montserrat list-group-item itemsource no-left-padding"><a href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
+    $ui = '<div class="load-more montserrat list-group-item itemsource no-left-padding"><a href="javascript:void(0);" onclick="source_load_page(' . $page . ', 0)">';
 
     //Regular section:
     $max_sources = (($page + 1) * $limit);
@@ -195,7 +195,7 @@ function view_idea__title($in, $common_prefix = null){
 }
 
 
-function view_in_notes($ln)
+function view_idea_notes($ln)
 {
 
     /*
@@ -230,7 +230,7 @@ function view_in_notes($ln)
 
         //Sort:
         if(in_array(4603, $sources__4485[$ln['read__type']]['m_parents'])){
-            $ui .= '<span title="SORT"><i class="fas fa-bars '.( in_array(4603, $sources__4485[$ln['read__type']]['m_parents']) ? 'in_notes_sorting' : '' ).'"></i></span>';
+            $ui .= '<span title="SORT"><i class="fas fa-bars '.( in_array(4603, $sources__4485[$ln['read__type']]['m_parents']) ? 'idea_note_sorting' : '' ).'"></i></span>';
         }
 
         //Modify:
@@ -250,7 +250,7 @@ function view_in_notes($ln)
     $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $ln['read__id'] . '"><span id="charEditingNum' . $ln['read__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
 
     //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_notes_modify_save(' . $ln['read__id'] . ',' . $ln['read__type'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_modify(' . $ln['read__id'] . ',' . $ln['read__type'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_notes_modify_cancel(' . $ln['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
@@ -340,7 +340,7 @@ function view_number($number)
 }
 
 
-function view_ln($ln, $is_parent_tr = false)
+function view_interaction($ln, $is_parent_tr = false)
 {
 
     $CI =& get_instance();
@@ -471,7 +471,7 @@ function view_ln($ln, $is_parent_tr = false)
                 //PARENT READ
                 $lns = $CI->READ_model->fetch(array('read__id' => $ln[$sources__6232[$source__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'">'.$sources__4341[$source__id]['m_icon']. '</span><div class="read-ref">'.view_ln($lns[0], true).'</div></div>';
+                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'">'.$sources__4341[$source__id]['m_icon']. '</span><div class="read-ref">'.view_interaction($lns[0], true).'</div></div>';
 
             }
         }
@@ -529,7 +529,7 @@ function view_time_difference($t, $second_time = null)
 }
 
 
-function view_en_cache($config_var_name, $source__id, $micro_status = true, $data_placement = 'top')
+function view_cache($config_var_name, $source__id, $micro_status = true, $data_placement = 'top')
 {
 
     /*
@@ -599,20 +599,20 @@ function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = 
         );
     }
 
-    $en_coins = $CI->READ_model->fetch($coin_filter, array(), 0, 0, array(), 'COUNT(read__id) as totals');
+    $source_coins = $CI->READ_model->fetch($coin_filter, array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     if($number_only){
-        return $en_coins[0]['totals'];
+        return $source_coins[0]['totals'];
     } else {
-        return ($en_coins[0]['totals'] > 0 ? '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($en_coins[0]['totals']).'</span>' : null);
+        return ($source_coins[0]['totals'] > 0 ? '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($source_coins[0]['totals']).'</span>' : null);
     }
 }
 
-function view_in_icon($can_click, $completion_percentage){
+function view_idea_icon($can_click, $completion_percentage){
     return ( $can_click ? ( $completion_percentage>=100 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-play-circle read"></i>' ) : '<i class="fas fa-circle idea"></i>' );
 }
 
-function view_in_read($in, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
+function view_idea_read($in, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
 {
 
     //See if user is logged-in:
@@ -651,7 +651,7 @@ function view_in_read($in, $common_prefix = null, $show_editor = false, $complet
         $ui .= '<div class="progress-bg-list" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
-    $ui .= '<span class="icon-block">'.view_in_icon($can_click, $completion_rate['completion_percentage']).'</span>';
+    $ui .= '<span class="icon-block">'.view_idea_icon($can_click, $completion_rate['completion_percentage']).'</span>';
 
     $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.view_idea__title($in, $common_prefix).'</b>';
 
@@ -688,7 +688,7 @@ function view_in_read($in, $common_prefix = null, $show_editor = false, $complet
 }
 
 
-function view_in_scores_answer($idea__id, $depth_levels, $original_depth_levels, $parent_idea__type){
+function view_idea_scores_answer($idea__id, $depth_levels, $original_depth_levels, $parent_idea__type){
 
     if($depth_levels<=0){
         //End recursion:
@@ -732,7 +732,7 @@ function view_in_scores_answer($idea__id, $depth_levels, $original_depth_levels,
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$in_ln['idea__status']]['m_name'].'">'. $sources__4737[$in_ln['idea__status']]['m_icon']. '</span>';
         $ui .= '<a href="?idea__id='.$in_ln['idea__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_idea__title($in_ln) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['read__type'] == 4228 && in_array($parent_idea__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($in_ln['read__type'] == 4229) ? view_in_marks($in_ln) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['read__type'] == 4228 && in_array($parent_idea__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($in_ln['read__type'] == 4229) ? view_idea_marks($in_ln) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['idea__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -749,7 +749,7 @@ function view_in_scores_answer($idea__id, $depth_levels, $original_depth_levels,
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  view_in_scores_answer($in_ln['idea__id'], $depth_levels, $original_depth_levels, $in_ln['idea__type']);
+        $ui .=  view_idea_scores_answer($in_ln['idea__id'], $depth_levels, $original_depth_levels, $in_ln['idea__type']);
 
     }
 
@@ -795,7 +795,7 @@ function view_radio_sources($parent_source__id, $child_source__id, $enable_mulit
 }
 
 
-function view_in_marks($in_ln){
+function view_idea_marks($in_ln){
 
     //Validate core inputs:
     if(!isset($in_ln['read__metadata']) || !isset($in_ln['read__type'])){
@@ -811,7 +811,7 @@ function view_in_marks($in_ln){
 }
 
 
-function view_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false, $input_message = null, $extra_class = null, $control_enabled = true)
+function view_idea($in, $in_linked_id = 0, $is_parent = false, $is_source = false, $input_message = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -907,7 +907,7 @@ function view_in($in, $in_linked_id = 0, $is_parent = false, $is_source = false,
         }
 
         //Unlink:
-        $ui .= '<span title="UNLINK"><a href="javascript:void(0);" onclick="in_unlink('.$in['idea__id'].', '.$in['read__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
+        $ui .= '<span title="UNLINK"><a href="javascript:void(0);" onclick="idea_unlink('.$in['idea__id'].', '.$in['read__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
@@ -1039,7 +1039,7 @@ function view_caret($source__id, $m, $object__id){
 }
 
 
-function view_in_list($in, $ideas_next, $recipient_en, $prefix_statement = null, $show_next = true){
+function view_idea_list($in, $ideas_next, $recipient_en, $prefix_statement = null, $show_next = true){
 
     //If no list just return the next step:
     if(!count($ideas_next)){
@@ -1051,7 +1051,7 @@ function view_in_list($in, $ideas_next, $recipient_en, $prefix_statement = null,
     if(count($ideas_next)){
 
         //List children so they know what's ahead:
-        $common_prefix = in_calc_common_prefix($ideas_next, 'idea__title', $in);
+        $common_prefix = idea_calc_common_prefix($ideas_next, 'idea__title', $in);
         $has_content = ($prefix_statement || strlen($common_prefix));
 
         if($has_content){
@@ -1062,7 +1062,7 @@ function view_in_list($in, $ideas_next, $recipient_en, $prefix_statement = null,
 
         echo '<div class="list-group">';
         foreach($ideas_next as $key => $child_in){
-            echo view_in_read($child_in, $common_prefix);
+            echo view_idea_read($child_in, $common_prefix);
         }
         echo '</div>';
     }
@@ -1130,7 +1130,7 @@ function view_idea_previous_read($idea__id, $recipient_en){
                     $in_level_up++;
 
                     if ($parent_idea__id == $intersect) {
-                        $read_list_ui .= view_in_read($ins_this[0], null, false, $completion_rate);
+                        $read_list_ui .= view_idea_read($ins_this[0], null, false, $completion_rate);
                         break;
                     }
                 }
@@ -1183,14 +1183,14 @@ function view_idea_previous_read($idea__id, $recipient_en){
 }
 
 
-function view_in_note_source($idea__id, $note_type_source__id, $in_notes, $is_source){
+function view_idea_note_source($idea__id, $note_type_source__id, $in_notes, $is_source){
 
     $CI =& get_instance();
     $sources__11018 = $CI->config->item('sources__11018');
 
     $ui = '<div class="list-group">';
     foreach($in_notes as $en) {
-        $ui .= view_en($en, false, null, true, $is_source);
+        $ui .= view_source($en, false, null, true, $is_source);
     }
 
     if( $is_source ){
@@ -1210,7 +1210,7 @@ function view_in_note_source($idea__id, $note_type_source__id, $in_notes, $is_so
     return $ui;
 }
 
-function view_in_note_mix($note_type_source__id, $in_notes, $is_source){
+function view_idea_note_mix($note_type_source__id, $in_notes, $is_source){
 
     $CI =& get_instance();
     $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
@@ -1223,7 +1223,7 @@ function view_in_note_mix($note_type_source__id, $in_notes, $is_source){
     $ui = '<div id="in_notes_list_'.$note_type_source__id.'" class="list-group">';
 
     foreach($in_notes as $in_notes) {
-        $ui .= view_in_notes($in_notes);
+        $ui .= view_idea_notes($in_notes);
     }
 
 
@@ -1244,7 +1244,7 @@ function view_in_note_mix($note_type_source__id, $in_notes, $is_source){
 
 
     //Save button:
-    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_notes_add('.$note_type_source__id.');" class="btn btn-idea save_notes_'.$note_type_source__id.'"><i class="fas fa-plus"></i></a></td>';
+    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:idea_add_note_text('.$note_type_source__id.');" class="btn btn-idea save_notes_'.$note_type_source__id.'"><i class="fas fa-plus"></i></a></td>';
 
 
     //File counter:
@@ -1331,7 +1331,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
     return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
-function view_in_cover($in, $show_editor, $common_prefix = null, $completion_rate = null){
+function view_idea_cover($in, $show_editor, $common_prefix = null, $completion_rate = null){
 
 
     //Search to see if an idea has a thumbnail:
@@ -1369,7 +1369,7 @@ function view_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
         }
     }
 
-    $ui .= '<img src="'.in_fetch_cover($in['idea__id']).'" />';
+    $ui .= '<img src="'.idea_fetch_cover($in['idea__id']).'" />';
 
     if($idea_count && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
         $ui .= '<span class="media-info top-right">'.view_time_range($metadata).'</span>';
@@ -1393,7 +1393,7 @@ function view_in_cover($in, $show_editor, $common_prefix = null, $completion_rat
 
 }
 
-function view_en_basic($en)
+function view_source_basic($en)
 {
     $ui = '<div class="list-group-item no-side-padding">';
     $ui .= '<span class="icon-block">' . view_source__icon($en['source__icon']) . '</span>';
@@ -1403,7 +1403,7 @@ function view_en_basic($en)
 }
 
 
-function view_en($en, $is_parent = false, $extra_class = null, $control_enabled = false, $is_source = false)
+function view_source($en, $is_parent = false, $extra_class = null, $control_enabled = false, $is_source = false)
 {
 
     $CI =& get_instance();
@@ -1550,7 +1550,7 @@ function view_en($en, $is_parent = false, $extra_class = null, $control_enabled 
         } elseif($is_source_only){
 
             //Allow to remove:
-            $ui .= '<span><a href="javascript:void(0);" onclick="en_source_only_unlink(' . $read__id . ', '.$en['read__type'].')"><i class="fas fa-times black"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" onclick="source_only_unlink(' . $read__id . ', '.$en['read__type'].')"><i class="fas fa-times black"></i></a></span>';
 
         }
     }
@@ -1684,7 +1684,7 @@ function view_input_dropdown($cache_source__id, $selected_source__id, $btn_class
         } else{
 
             //Idea Dropdown updater:
-            $anchor_url = 'href="javascript:void();" new-en-id="'.$source__id.'" onclick="in_update_dropdown('.$cache_source__id.', '.$source__id.', '.$idea__id.', '.$read__id.', '.intval($show_full_name).')"';
+            $anchor_url = 'href="javascript:void();" new-en-id="'.$source__id.'" onclick="idea_update_dropdown('.$cache_source__id.', '.$source__id.', '.$idea__id.', '.$read__id.', '.intval($show_full_name).')"';
 
         }
 

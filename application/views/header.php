@@ -138,7 +138,7 @@ if(!isset($hide_header)){
                                 if($m['source__id']==12749) {
 
                                     $focus_idea__id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? config_var(12156) : 0 ) );
-                                    if( $focus_idea__id>0 && in_is_source($focus_idea__id) ){
+                                    if( $focus_idea__id>0 && idea_is_source($focus_idea__id) ){
                                         //Contribute to Idea
                                         $m['m_desc'] = '/idea/'.$focus_idea__id;
                                     } else {
@@ -246,7 +246,7 @@ if(!isset($hide_header)){
 
                             } elseif(in_array($read__type, $this->config->item('sources_id_12467'))) {
 
-                                $counts = read_coins_en($read__type, $session_en['source__id']);
+                                $counts = read_coins_source($read__type, $session_en['source__id']);
                                 if(!$counts){
                                     continue;
                                 }

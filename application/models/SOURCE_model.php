@@ -332,7 +332,7 @@ class SOURCE_model extends CI_Model
                 'read__source' => $read__source,
                 'read__down' => $read__source,
                 'read__up' => $set_en_child_id,
-                'read__type' => en_link_type_id(),
+                'read__type' => source_link_type(),
                 'read__reference' => $updated_read__id,
             ));
         }
@@ -398,7 +398,7 @@ class SOURCE_model extends CI_Model
 
         //Assign to Creator:
         $this->READ_model->create(array(
-            'read__type' => en_link_type_id(),
+            'read__type' => source_link_type(),
             'read__source' => $session_en['source__id'],
             'read__up' => $session_en['source__id'],
             'read__down' => $source__id,
@@ -409,7 +409,7 @@ class SOURCE_model extends CI_Model
 
             //Add Pending Review:
             $this->READ_model->create(array(
-                'read__type' => en_link_type_id(),
+                'read__type' => source_link_type(),
                 'read__source' => $session_en['source__id'],
                 'read__up' => 12775, //PENDING REVIEW
                 'read__down' => $source__id,
@@ -817,7 +817,7 @@ class SOURCE_model extends CI_Model
             //Link URL to its parent domain?
             $this->READ_model->create(array(
                 'read__source' => $read__source,
-                'read__type' => en_link_type_id(),
+                'read__type' => source_link_type(),
                 'read__up' => $en_url['source__id'],
                 'read__down' => $add_to_child_source__id,
             ));
@@ -945,7 +945,7 @@ class SOURCE_model extends CI_Model
                     //Parent Player Addition
                     $this->READ_model->create(array(
                         'read__source' => $read__source,
-                        'read__type' => en_link_type_id(),
+                        'read__type' => source_link_type(),
                         'read__down' => $en['source__id'], //This child source
                         'read__up' => $parent_source__id,
                     ));
@@ -973,7 +973,7 @@ class SOURCE_model extends CI_Model
                         //Add as a parent because it meets the condition
                         $this->READ_model->create(array(
                             'read__source' => $read__source,
-                            'read__type' => en_link_type_id(),
+                            'read__type' => source_link_type(),
                             'read__down' => $en['source__id'], //This child source
                             'read__up' => $parent_new_source__id,
                         ));

@@ -48,7 +48,7 @@ class Source extends CI_Controller
 
 
     //Lists sources
-    function en_coin($source__id)
+    function source_coin($source__id)
     {
 
         //Make sure not a private read:
@@ -107,7 +107,7 @@ class Source extends CI_Controller
     }
 
 
-    function en_sort_reset()
+    function source_sort_reset()
     {
 
         //Authenticate Player:
@@ -152,7 +152,7 @@ class Source extends CI_Controller
     }
 
 
-    function en_sort_save()
+    function source_sort_save()
     {
 
         //Authenticate Player:
@@ -274,7 +274,7 @@ class Source extends CI_Controller
 
             }
 
-            echo view_en($en, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
+            echo view_source($en, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
 
         }
         echo '</div>';
@@ -282,96 +282,7 @@ class Source extends CI_Controller
     }
 
 
-    function en_add_source_paste_url()
-    {
-
-        /*
-         *
-         * Validates the input URL to be added as a new source source
-         *
-         * */
-
-        $session_en = superpower_assigned();
-        if (!$session_en) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-                'url_source' => array(),
-            ));
-        }
-
-        //All seems good, fetch URL:
-        $url_source = $this->SOURCE_model->url($_POST['input_url']);
-
-        if (!$url_source['status']) {
-            //Oooopsi, we had some error:
-            return view_json(array(
-                'status' => 0,
-                'message' => $url_source['message'],
-            ));
-        }
-
-        //Return results:
-        return view_json(array(
-            'status' => 1,
-            'source_domain_ui' => '<span class="en_mini_ui_icon">' . (isset($url_source['en_domain']['source__icon']) && strlen($url_source['en_domain']['source__icon']) > 0 ? $url_source['en_domain']['source__icon'] : detect_fav_icon($url_source['url_clean_domain'], true)) . '</span> ' . (isset($url_source['en_domain']['source__title']) ? $url_source['en_domain']['source__title'] . ' <a href="/source/' . $url_source['en_domain']['source__id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain source" data-placement="top">@' . $url_source['en_domain']['source__id'] . '</a>' : $url_source['url_domain_name'] . ' [<span data-toggle="tooltip" title="Domain source not yet added" data-placement="top">New</span>]'),
-            'js_url_source' => $url_source,
-        ));
-
-    }
-
-
-    function en_read_type_preview()
-    {
-
-        if (!isset($_POST['read__message']) || !isset($_POST['read__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing inputs',
-            ));
-        }
-
-        //Will Contain every possible Player Link Connector:
-        $sources__4592 = $this->config->item('sources__4592');
-
-        //See what this is:
-        $detected_read_type = read_detect_type($_POST['read__message']);
-
-        if(!$_POST['read__id'] && !in_array($detected_read_type['read__type'], $this->config->item('sources_id_4537'))){
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid URL',
-            ));
-
-        } elseif (!$detected_read_type['status'] && isset($detected_read_type['url_previously_existed']) && $detected_read_type['url_previously_existed']) {
-
-            //See if this is duplicate to either link:
-            $en_lns = $this->READ_model->fetch(array(
-                'read__id' => $_POST['read__id'],
-                'read__type IN (' . join(',', $this->config->item('sources_id_4537')) . ')' => null, //Player URL Links
-            ));
-
-            //Are they both different?
-            if (count($en_lns) < 1 || ($en_lns[0]['read__up'] != $detected_read_type['en_url']['source__id'] && $en_lns[0]['read__down'] != $detected_read_type['en_url']['source__id'])) {
-                //return error:
-                return view_json($detected_read_type);
-            }
-
-        }
-
-
-
-        return view_json(array(
-            'status' => 1,
-            'html_ui' => '<b class="montserrat doupper '.extract_icon_color($sources__4592[$detected_read_type['read__type']]['m_icon']).'">' . $sources__4592[$detected_read_type['read__type']]['m_icon'] . ' ' . $sources__4592[$detected_read_type['read__type']]['m_name'] . '</b>',
-            'en_link_preview' => ( in_array($detected_read_type['read__type'], $this->config->item('sources_id_12524')) ? '<span class="paddingup inline-block">'.view_read__message($_POST['read__message'], $detected_read_type['read__type']).'</span>' : ''),
-        ));
-
-    }
-
-
-    function en_save_file_upload()
+    function source_upload_file()
     {
 
         //Authenticate Player:
@@ -418,13 +329,13 @@ class Source extends CI_Controller
     }
 
 
-    function en_load_next_page()
+    function source_load_page()
     {
 
         $items_per_page = config_var(11064);
         $parent_source__id = intval($_POST['parent_source__id']);
         $en_focus_filter = intval($_POST['en_focus_filter']);
-        $is_source = en_is_source($parent_source__id);
+        $is_source = source_is_idea_source($parent_source__id);
         $page = intval($_POST['page']);
         $filters = array(
             'read__up' => $parent_source__id,
@@ -440,7 +351,7 @@ class Source extends CI_Controller
         ));
 
         foreach($child_sources as $en) {
-            echo view_en($en,false, null, true, $is_source);
+            echo view_source($en,false, null, true, $is_source);
         }
 
         //Count total children:
@@ -448,12 +359,12 @@ class Source extends CI_Controller
 
         //Do we need another load more button?
         if ($child_sources_count[0]['totals'] > (($page * $items_per_page) + count($child_sources))) {
-            echo view_en_load_more(($page + 1), $items_per_page, $child_sources_count[0]['totals']);
+            echo view_source_load_more(($page + 1), $items_per_page, $child_sources_count[0]['totals']);
         }
 
     }
 
-    function en_source_only_unlink(){
+    function source_only_unlink(){
 
         //Auth user and check required variables:
         $session_en = superpower_assigned(10939);
@@ -468,7 +379,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Read ID',
             ));
-        } elseif (!isset($_POST['idea__id']) || !in_is_source($_POST['idea__id'])) {
+        } elseif (!isset($_POST['idea__id']) || !idea_is_source($_POST['idea__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are not the author of this source',
@@ -486,7 +397,7 @@ class Source extends CI_Controller
 
     }
 
-    function en_source_only_add()
+    function source_only_add()
     {
 
         //Auth user and check required variables:
@@ -597,13 +508,13 @@ class Source extends CI_Controller
         //Return newly added or linked source:
         return view_json(array(
             'status' => 1,
-            'en_new_echo' => view_en(array_merge($focus_en, $new_note), 0, null, true, true),
+            'en_new_echo' => view_source(array_merge($focus_en, $new_note), 0, null, true, true),
         ));
 
     }
 
 
-    function en_add_or_link()
+    function source__add()
     {
 
         //Auth user and check required variables:
@@ -776,12 +687,12 @@ class Source extends CI_Controller
         //Return newly added or linked source:
         return view_json(array(
             'status' => 1,
-            'en_new_echo' => view_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent'], null, true, true),
+            'en_new_echo' => view_source(array_merge($ens_latest[0], $ur2), $_POST['is_parent'], null, true, true),
         ));
 
     }
 
-    function en_count_delete_links()
+    function source_count_deletion()
     {
 
         if (!isset($_POST['source__id']) || intval($_POST['source__id']) < 1) {
@@ -868,7 +779,7 @@ class Source extends CI_Controller
 
 
 
-    function en_modify_save()
+    function source_update()
     {
 
         //Auth user and check required variables:
@@ -936,14 +847,14 @@ class Source extends CI_Controller
 
 
             //Make sure source is not referenced in key DB reference fields:
-            $en_count_db_references = en_count_db_references($_POST['source__id'], false);
-            if(count($en_count_db_references) > 0){
+            $source_count_connections = source_count_connections($_POST['source__id'], false);
+            if(count($source_count_connections) > 0){
 
                 $sources__6194 = $this->config->item('sources__6194');
 
                 //Construct the message:
                 $error_message = 'Cannot be deleted because source is referenced as ';
-                foreach($en_count_db_references as $source__id=>$en_count){
+                foreach($source_count_connections as $source__id=>$en_count){
                     $error_message .= $sources__6194[$source__id]['m_name'].' '.view_number($en_count).' times ';
                 }
 
@@ -1222,7 +1133,7 @@ class Source extends CI_Controller
     }
 
 
-    function en_fetch_canonical_url(){
+    function source_fetch_canonical(){
 
         //Auth user and check required variables:
         $session_en = superpower_assigned();
@@ -1337,7 +1248,7 @@ class Source extends CI_Controller
                 'read__up' => $_POST['selected_source__id'],
                 'read__down' => $session_en['source__id'],
                 'read__source' => $session_en['source__id'],
-                'read__type' => en_link_type_id(),
+                'read__type' => source_link_type(),
             ));
         }
 
@@ -1514,7 +1425,7 @@ class Source extends CI_Controller
             $this->READ_model->create(array(
                 'read__source' => $session_en['source__id'],
                 'read__down' => $session_en['source__id'],
-                'read__type' => en_link_type_id($_POST['en_email']),
+                'read__type' => source_link_type($_POST['en_email']),
                 'read__up' => 3288, //Mench Email
                 'read__message' => $_POST['en_email'],
             ), true);
@@ -1608,7 +1519,7 @@ class Source extends CI_Controller
 
             //Create new link:
             $this->READ_model->create(array(
-                'read__type' => en_link_type_id($hashed_password),
+                'read__type' => source_link_type($hashed_password),
                 'read__up' => 3286, //Password
                 'read__source' => $session_en['source__id'],
                 'read__down' => $session_en['source__id'],
@@ -1780,7 +1691,7 @@ class Source extends CI_Controller
 
 
         //All good, create new source:
-        $user_en = $this->SOURCE_model->verify_create(trim($_POST['input_name']), 0, 6181, random_player_avatar());
+        $user_en = $this->SOURCE_model->verify_create(trim($_POST['input_name']), 0, 6181, random_avatar());
         if(!$user_en['status']){
             //We had an error, return it:
             return view_json($user_en);
@@ -1790,13 +1701,13 @@ class Source extends CI_Controller
         //Add Player:
         $this->READ_model->create(array(
             'read__up' => 4430, //MENCH PLAYERS
-            'read__type' => en_link_type_id(),
+            'read__type' => source_link_type(),
             'read__source' => $user_en['en']['source__id'],
             'read__down' => $user_en['en']['source__id'],
         ));
 
         $this->READ_model->create(array(
-            'read__type' => en_link_type_id(trim(strtolower($_POST['input_email']))),
+            'read__type' => source_link_type(trim(strtolower($_POST['input_email']))),
             'read__message' => trim(strtolower($_POST['input_email'])),
             'read__up' => 3288, //Mench Email
             'read__source' => $user_en['en']['source__id'],
@@ -1804,7 +1715,7 @@ class Source extends CI_Controller
         ));
         $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['source__id']));
         $this->READ_model->create(array(
-            'read__type' => en_link_type_id($hash),
+            'read__type' => source_link_type($hash),
             'read__message' => $hash,
             'read__up' => 3286, //Mench Password
             'read__source' => $user_en['en']['source__id'],
@@ -2100,7 +2011,7 @@ class Source extends CI_Controller
 
                 //Create new password link:
                 $this->READ_model->create(array(
-                    'read__type' => en_link_type_id($password_hash),
+                    'read__type' => source_link_type($password_hash),
                     'read__message' => $password_hash,
                     'read__up' => 3286, //Mench Password
                     'read__source' => $ens[0]['source__id'],
@@ -2405,7 +2316,7 @@ class Source extends CI_Controller
         //Return report:
         return view_json(array(
             'status' => 1,
-            'message' => '<h3>'.$sources__7585[$ins[0]['idea__type']]['m_icon'].' '.$sources__4737[$ins[0]['idea__status']]['m_icon'].' '.view_idea__title($ins[0]).'</h3>'.view_in_scores_answer($_POST['idea__id'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['idea__type']),
+            'message' => '<h3>'.$sources__7585[$ins[0]['idea__type']]['m_icon'].' '.$sources__4737[$ins[0]['idea__status']]['m_icon'].' '.view_idea__title($ins[0]).'</h3>'.view_idea_scores_answer($_POST['idea__id'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['idea__type']),
         ));
 
 

@@ -9,7 +9,7 @@
 
 <?php
 
-$in_fetch_cover = in_fetch_cover($in['idea__id']);
+$idea_fetch_cover = idea_fetch_cover($in['idea__id']);
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $metadata = unserialize($in['idea__metadata']);
 $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
@@ -46,16 +46,16 @@ $ideas_next = $this->READ_model->fetch(array(
 ), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
 
 $chapters = count($ideas_next);
-$common_prefix = in_calc_common_prefix($ideas_next, 'idea__title');
+$common_prefix = idea_calc_common_prefix($ideas_next, 'idea__title');
 
 
 
 //ALREADY IN READS?
 $completion_rate['completion_percentage'] = 0;
-$read_in_home = $this->READ_model->in_home($in['idea__id'], $recipient_en);
+$read_idea_home = $this->READ_model->idea_home($in['idea__id'], $recipient_en);
 
 
-if ($read_in_home) {
+if ($read_idea_home) {
 
     // % DONE
     $completion_rate = $this->READ_model->completion_progress($recipient_en['source__id'], $in);
@@ -152,7 +152,7 @@ if ($read_in_home) {
 
 
 //READ TITLE
-echo '<h1 class="block-one" '.( !$recipient_en['source__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_in_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_idea__title($in) . '</span></h1>';
+echo '<h1 class="block-one" '.( !$recipient_en['source__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_idea_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_idea__title($in) . '</span></h1>';
 
 
 //MESSAGES
@@ -164,7 +164,7 @@ foreach($in__messages as $message_ln) {
 }
 
 
-if(!$read_in_home){
+if(!$read_idea_home){
 
     if($is_home_page){
 
@@ -172,7 +172,7 @@ if(!$read_in_home){
         if($chapters){
             //List Children:
             foreach($ideas_next as $key => $child_in){
-                echo view_in_cover($child_in, false, in_calc_common_prefix($ideas_next, 'idea__title'));
+                echo view_idea_cover($child_in, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
             }
         }
         echo '</div>';
@@ -198,7 +198,7 @@ if(!$read_in_home){
                 //List Children:
                 echo '<div class="list-group '.( !$recipient_en['source__id'] ? 'single-color' : '' ).'">';
                 foreach($ideas_next as $key => $child_in){
-                    echo view_in_read($child_in, in_calc_common_prefix($ideas_next, 'idea__title'));
+                    echo view_idea_read($child_in, idea_calc_common_prefix($ideas_next, 'idea__title'));
                 }
                 echo '</div>';
             }
@@ -233,7 +233,7 @@ if(!$read_in_home){
             }
             usort($experts_content, 'sortByWeight');
             foreach ($experts_content as $en_source) {
-                echo view_en_basic($en_source);
+                echo view_source_basic($en_source);
             }
 
             echo '</div>';
@@ -261,7 +261,7 @@ if(!$read_in_home){
 
     //Did we have any steps unlocked?
     if(count($unlocked_steps) > 0){
-        view_in_list($in, $unlocked_steps, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
+        view_idea_list($in, $unlocked_steps, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
     }
 
 
@@ -285,12 +285,12 @@ if(!$read_in_home){
         if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
             //List Unlock paths:
-            view_in_list($in, $unlock_paths, $recipient_en, '<span class="icon-block">&nbsp;</span>SUGGESTED IDEAS:');
+            view_idea_list($in, $unlock_paths, $recipient_en, '<span class="icon-block">&nbsp;</span>SUGGESTED IDEAS:');
 
         }
 
         //List Children if any:
-        view_in_list($in, $ideas_next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
+        view_idea_list($in, $ideas_next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
     } elseif (in_array($in['idea__type'], $this->config->item('sources_id_7712'))){
@@ -346,7 +346,7 @@ if(!$read_in_home){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_in_list($in, $read_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
+                view_idea_list($in, $read_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -432,7 +432,7 @@ if(!$read_in_home){
     } elseif ($in['idea__type'] == 6677) {
 
         //READ ONLY
-        view_in_list($in, $ideas_next, $recipient_en);
+        view_idea_list($in, $ideas_next, $recipient_en);
 
     } elseif ($in['idea__type'] == 6683) {
 
@@ -451,7 +451,7 @@ if(!$read_in_home){
 
         if(count($read_completes)){
             //Next Ideas:
-            view_in_list($in, $ideas_next, $recipient_en, null,false);
+            view_idea_list($in, $ideas_next, $recipient_en, null,false);
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
@@ -490,7 +490,7 @@ if(!$read_in_home){
             echo '</div>';
 
             //Any child ideas?
-            view_in_list($in, $ideas_next, $recipient_en, null, true, false);
+            view_idea_list($in, $ideas_next, $recipient_en, null, true, false);
 
             echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-read inline-block btn-circle" for="fileType'.$in['idea__type'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
@@ -520,7 +520,7 @@ echo '<div class="share-this hidden space-content">';
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div style="padding-bottom:13px;">Share using:</div>';
     foreach($this->config->item('sources__13023') as $source__id => $m) {
-        echo '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="'.$this->config->item('base_url').$in['idea__id'].'" data-title="'.$in['idea__title'].'" data-image="'.$in_fetch_cover.'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
+        echo '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="'.$this->config->item('base_url').$in['idea__id'].'" data-title="'.$in['idea__title'].'" data-image="'.$idea_fetch_cover.'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
     }
 echo '</div>';
 

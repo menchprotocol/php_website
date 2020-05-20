@@ -20,7 +20,7 @@ if(!$obj || $obj=='in'){
         'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     )) as $in) {
         $stats['in_scanned']++;
-        $stats['in_updated'] += idea__weight_updater($in);
+        $stats['in_updated'] += idea__weight_calculator($in);
     }
 
     //Now addup weights starting from primary Idea:
@@ -35,7 +35,7 @@ if(!$obj || $obj=='en'){
         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
     )) as $en) {
         $stats['en_scanned']++;
-        $stats['en_updated'] += source__weight_updater($en);
+        $stats['en_updated'] += source__weight_calculator($en);
     }
 }
 

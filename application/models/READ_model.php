@@ -1617,7 +1617,7 @@ class READ_model extends CI_Model
          *
          * */
 
-        if(!in_is_unlockable($in)){
+        if(!idea_is_unlockable($in)){
             return array(
                 'status' => 0,
                 'message' => 'Not a valid locked idea type and status',
@@ -1701,30 +1701,30 @@ class READ_model extends CI_Model
     }
 
 
-    function in_home($idea__id, $recipient_en){
+    function idea_home($idea__id, $recipient_en){
 
-        $read_in_home = false;
+        $read_idea_home = false;
 
         if($recipient_en['source__id'] > 0){
 
             //Fetch entire Reads:
             $player_read_ids = $this->READ_model->ids($recipient_en['source__id']);
-            $read_in_home = in_array($idea__id, $player_read_ids);
+            $read_idea_home = in_array($idea__id, $player_read_ids);
 
-            if(!$read_in_home){
+            if(!$read_idea_home){
                 //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
                 foreach($this->IDEA_model->recursive_parents($idea__id) as $grand_parent_ids) {
                     //Does this parent and its grandparents have an intersection with the user ideas?
                     if (array_intersect($grand_parent_ids, $player_read_ids)) {
                         //Idea is part of their Reads:
-                        $read_in_home = true;
+                        $read_idea_home = true;
                         break;
                     }
                 }
             }
         }
 
-        return $read_in_home;
+        return $read_idea_home;
 
     }
 

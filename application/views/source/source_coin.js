@@ -82,7 +82,7 @@ $(document).ready(function () {
             $('.source_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total links:
-            $.post("/source/en_count_delete_links", { source__id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
+            $.post("/source/source_count_deletion", { source__id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
 
                 if(data.status){
                     $('.source_delete_stats').html('<b>'+data.en_link_count+'</b>');
@@ -120,7 +120,7 @@ $(document).ready(function () {
 
     //Watchout for file uplods:
     $('.drag-box').find('input[type="file"]').change(function () {
-        en_save_file_upload(droppedFiles, 'file');
+        source_upload_file(droppedFiles, 'file');
     });
 
     //Should we auto start?
@@ -142,11 +142,11 @@ $(document).ready(function () {
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
                 e.preventDefault();
-                en_save_file_upload(droppedFiles, 'drop');
+                source_upload_file(droppedFiles, 'drop');
             });
     }
 
-    en_read_type_preview_load();
+    read_preview_type_load();
 
 });
 
@@ -167,7 +167,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            en_add_or_link(0, is_en_parent);
+            source__add(0, is_en_parent);
             return true;
         }
 
@@ -177,7 +177,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
             $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-                en_add_or_link(suggestion.object__id, is_en_parent);
+                source__add(suggestion.object__id, is_en_parent);
 
             }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 'q' : 'a' )]}, [{
 
@@ -195,16 +195,16 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
+                    //If clicked, would trigger the autocomplete:selected above which will trigger the source__add() function
                     return view_search_result(suggestion);
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:source__add(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:source__add(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -265,7 +265,7 @@ function account_toggle_superpower(superpower_id){
 
 
 //Adds OR links sources to sources
-function en_add_or_link(en_existing_id, is_parent) {
+function source__add(en_existing_id, is_parent) {
 
     //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
     //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
@@ -290,7 +290,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
 
     //Add via Ajax:
-    $.post("/source/en_add_or_link", {
+    $.post("/source/source__add", {
 
         source__id: en_focus_id,
         en_existing_id: en_existing_id,
@@ -333,7 +333,7 @@ function en_filter_status(new_val) {
     //We do have a filter:
     en_focus_filter = parseInt(new_val);
     $('.en-status-' + new_val).addClass('active');
-    en_load_next_page(0, 1);
+    source_load_page(0, 1);
 }
 
 function source__title_word_count() {
@@ -347,7 +347,7 @@ function source__title_word_count() {
 
 
 
-function en_load_next_page(page, load_new_filter) {
+function source_load_page(page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
@@ -359,7 +359,7 @@ function en_load_next_page(page, load_new_filter) {
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     }
 
-    $.post("/source/en_load_next_page", {
+    $.post("/source/source_load_page", {
         page: page,
         parent_source__id: en_focus_id,
         en_focus_filter: en_focus_filter,
@@ -449,7 +449,7 @@ function en_modify_load(source__id, read__id) {
         $('#read__message').val($(".read__message_val_" + read__id + ":first").text());
 
         //Also update type:
-        en_read_type_preview();
+        read_preview_type();
 
     } else {
 
@@ -476,7 +476,7 @@ function source_link_form_unlock(result){
     //Unlock either way:
     $('#read__message').prop("disabled", false).css('background-color','#FFF');
 
-    $('.btn-save').removeClass('grey').attr('href', 'javascript:en_modify_save();').html('Save');
+    $('.btn-save').removeClass('grey').attr('href', 'javascript:source_update();').html('Save');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
@@ -486,7 +486,7 @@ function source_link_form_unlock(result){
 }
 
 
-function en_save_file_upload(droppedFiles, uploadType) {
+function source_upload_file(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
     if ($('.drag-box').hasClass('is-uploading')) {
@@ -522,7 +522,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
         ajaxData.append('upload_type', uploadType);
 
         $.ajax({
-            url: '/source/en_save_file_upload',
+            url: '/source/source_upload_file',
             type: 'post',
             data: ajaxData,
             dataType: 'json',
@@ -540,7 +540,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
                     $('#read__message').val( data.cdn_url );
 
                     //Also update type:
-                    en_read_type_preview();
+                    read_preview_type();
                 }
 
                 //Unlock form:
@@ -560,7 +560,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
 }
 
 
-function en_sort_save() {
+function source_sort_save() {
 
     var new_read__sorts = [];
     var sort_rank = 0;
@@ -579,7 +579,7 @@ function en_sort_save() {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/source/en_sort_save", {source__id: en_focus_id, new_read__sorts: new_read__sorts}, function (data) {
+        $.post("/source/source_sort_save", {source__id: en_focus_id, new_read__sorts: new_read__sorts}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -589,12 +589,12 @@ function en_sort_save() {
     }
 }
 
-function en_sort_reset(){
+function source_sort_reset(){
 
     $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Update via call:
-    $.post("/source/en_sort_reset", {
+    $.post("/source/source_sort_reset", {
         source__id: en_focus_id
     }, function (data) {
 
@@ -630,12 +630,12 @@ function en_sort_portfolio_load() {
         draggable: ".en-item", // Specifies which items inside the element should be sortable
         handle: ".fa-bars", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            en_sort_save();
+            source_sort_save();
         }
     });
 }
 
-function en_modify_save() {
+function source_update() {
 
     //Validate that we have all we need:
     if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('source-id'))) {
@@ -674,7 +674,7 @@ function en_modify_save() {
     $('.save_source_changes').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12695) +  '').hide().fadeIn();
 
 
-    $.post("/source/en_modify_save", modify_data, function (data) {
+    $.post("/source/source_update", modify_data, function (data) {
 
         if (data.status) {
 

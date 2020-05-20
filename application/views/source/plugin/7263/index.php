@@ -21,7 +21,7 @@ foreach($this->READ_model->fetch(array(
 ), array('idea_next'), 0, 0) as $in_ln) {
     //Echo HTML format of this message:
     $metadata = unserialize($in_ln['read__metadata']);
-    $mark = view_in_marks($in_ln);
+    $mark = view_idea_marks($in_ln);
     if($mark){
 
         //Fetch parent Idea:
@@ -32,7 +32,7 @@ foreach($this->READ_model->fetch(array(
         $counter++;
         echo '<tr>';
         echo '<td style="width: 50px;">'.$counter.'</td>';
-        echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_in_marks($in_ln).'</td>';
+        echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_idea_marks($in_ln).'</td>';
         echo '<td>'.$sources__6186[$in_ln['read__status']]['m_icon'].'</td>';
         echo '<td style="text-align: left;">';
 
@@ -112,7 +112,7 @@ if(1){
             $counter++;
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
-            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_in_marks($in_ln).'</td>';
+            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_idea_marks($in_ln).'</td>';
             echo '<td>'.$sources__6186[$in_ln['read__status']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';

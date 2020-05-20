@@ -36,7 +36,7 @@ foreach($this->SOURCE_model->fetch() as $en) {
     if($is_read && !$is_player){
         $stats['read_not_source_count']++;
         $this->READ_model->create(array(
-            'read__type' => en_link_type_id(),
+            'read__type' => source_link_type(),
             'read__up' => 4430, //MENCH PLAYERS
             'read__source' => $en['source__id'],
             'read__down' => $en['source__id'],

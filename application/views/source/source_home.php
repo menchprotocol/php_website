@@ -14,7 +14,7 @@
             'read__source' => $session_en['source__id'],
             'source__id' => $session_en['source__id'],
         ), array('source_portfolio')) as $my_en){
-            echo view_en($my_en);
+            echo view_source($my_en);
         }
         echo '</div>';
     }

@@ -357,7 +357,7 @@ $(document).ready(function () {
                     header: function (data) {
                         if(validURL(data.query)){
 
-                            return en_fetch_canonical_url(data.query, false);
+                            return source_fetch_canonical(data.query, false);
 
                         } else if($("#mench_search").val().charAt(0)=='#' || $("#mench_search").val().charAt(0)=='@'){
 
@@ -372,7 +372,7 @@ $(document).ready(function () {
                     },
                     empty: function (data) {
                         if(validURL(data.query)){
-                            return en_fetch_canonical_url(data.query, true);
+                            return source_fetch_canonical(data.query, true);
                         } else if($("#mench_search").val().charAt(0)=='#'){
                             if(isNaN($("#mench_search").val().substr(1))){
                                 return '<div class="not-found montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No IDEA found</div>';
@@ -393,7 +393,7 @@ $(document).ready(function () {
 
 
 
-function en_read_type_preview_load(){
+function read_preview_type_load(){
 
     //Watchout for content change
     var textInput = document.getElementById('read__message');
@@ -412,7 +412,7 @@ function en_read_type_preview_load(){
         // Make a new timeout set to go off in 800ms
         timeout = setTimeout(function () {
             //update type:
-            en_read_type_preview();
+            read_preview_type();
         }, 610);
     };
 
@@ -421,7 +421,7 @@ function en_read_type_preview_load(){
 
 
 
-function en_read_type_preview() {
+function read_preview_type() {
 
     /*
      * Updates the type of link based on the link content
@@ -430,9 +430,8 @@ function en_read_type_preview() {
 
     $('#read__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-
     //Fetch Idea Data to load modify widget:
-    $.post("/source/en_read_type_preview", {
+    $.post("/read/read_preview_type", {
         read__message: $('#read__message').val(),
         read__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('source-link-id')) : 0 ),
     }, function (data) {
@@ -450,6 +449,7 @@ function en_read_type_preview() {
         $('[data-toggle="tooltip"]').tooltip();
 
     });
+
 }
 
 
@@ -512,10 +512,10 @@ function modify_cancel(){
     }
 }
 
-function en_fetch_canonical_url(query_string, not_found){
+function source_fetch_canonical(query_string, not_found){
 
     //Do a call to PHP to fetch canonical URL and see if that exists:
-    $.post("/source/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
+    $.post("/source/source_fetch_canonical", { search_url:query_string }, function (searchdata) {
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
@@ -613,9 +613,9 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             if(is_add_mode=='link_in') {
-                return in_link_or_create($(this).attr('idea-id'), is_in_parent, 0);
+                return idea_add($(this).attr('idea-id'), is_in_parent, 0);
             } else if(is_add_mode=='link_my_in') {
-                return in_create();
+                return idea_create();
             }
             e.preventDefault();
         }
@@ -630,7 +630,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
     $(element_focus).on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='link_in'){
-            in_link_or_create($(this).attr('idea-id'), is_in_parent, suggestion.object__id);
+            idea_add($(this).attr('idea-id'), is_in_parent, suggestion.object__id);
         } else {
             //Go to idea:
             window.location = suggestion.object__url;
@@ -668,17 +668,17 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             },
             header: function (data) {
                 if (is_add_mode=='link_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='link_my_in'){
-                    return '<a href="javascript:in_create()" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:idea_create()" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
                 if(is_add_mode=='link_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:in_link_or_create(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },

@@ -16,12 +16,12 @@ if(isset($_GET['update_user_icons'])){
     $updated = 0;
     foreach($this->READ_model->fetch($base_filters, array('source_portfolio'), 0) as $mench_user){
         $updated += $this->SOURCE_model->update($mench_user['source__id'], array(
-            'source__icon' => random_player_avatar(),
+            'source__icon' => random_avatar(),
         ));
     }
     echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$updated.' User profiles updated with new random animal icons';
 }
 
 for($i=0;$i<750;$i++){
-    echo '<span class="icon-block">'.random_player_avatar().'</span>';
+    echo '<span class="icon-block">'.random_avatar().'</span>';
 }

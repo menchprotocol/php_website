@@ -12,7 +12,7 @@ $is_public = in_array($en['source__status'], $this->config->item('sources_id_735
 $is_active = in_array($en['source__status'], $this->config->item('sources_id_7358'));
 $superpower_10967 = superpower_active(10967, true);
 $superpower_any = ( $session_en ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-$is_source = en_is_source($en['source__id']);
+$is_source = source_is_idea_source($en['source__id']);
 
 
 ?>
@@ -159,7 +159,7 @@ $is_source = en_is_source($en['source__id']);
 
             <table>
                 <tr>
-                    <td class="save-td"><a href="javascript:en_modify_save();" class="btn btn-source btn-save">Save</a></td>
+                    <td class="save-td"><a href="javascript:source_update();" class="btn btn-source btn-save">Save</a></td>
                     <td class="save-result-td"><span class="save_source_changes"></span></td>
                 </tr>
             </table>
@@ -173,7 +173,7 @@ $is_source = en_is_source($en['source__id']);
 
 
     //FOR EDITING ONLY:
-    echo '<div class="hidden">'.view_en($en).'</div>';
+    echo '<div class="hidden">'.view_source($en).'</div>';
 
 
 
@@ -183,7 +183,7 @@ $is_source = en_is_source($en['source__id']);
 
     //REFERENCES
     if(superpower_active(12701, true)){
-        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($en['source__id'])).'</div>';
+        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',source_count_connections($en['source__id'])).'</div>';
     }
 
     //SOURCE DRAFTING?
@@ -361,7 +361,7 @@ $is_source = en_is_source($en['source__id']);
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach($source__profiles as $source_profile) {
-                $this_tab .= view_en($source_profile,true, null, true, $is_source);
+                $this_tab .= view_source($source_profile,true, null, true, $is_source);
             }
 
             //Input to add new parents:
@@ -533,7 +533,7 @@ $is_source = en_is_source($en['source__id']);
                     ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
                 }
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;">'.( isset($source__portfolio_sort_count) && $source__portfolio_sort_count[0]['totals'] > 0 ? '<span class="sort_reset hidden icon-block" title="'.$sources__11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="en_sort_reset()">'.$sources__11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$sources__11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$sources__11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;">'.( isset($source__portfolio_sort_count) && $source__portfolio_sort_count[0]['totals'] > 0 ? '<span class="sort_reset hidden icon-block" title="'.$sources__11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="source_sort_reset()">'.$sources__11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$sources__11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$sources__11035[4997]['m_icon'].'</a></div>';
                 $this_tab .= '<div class="doclear">&nbsp;</div>';
                 $this_tab .= '<div class="source_editor hidden">';
                 $this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$sources__11035[4997]['m_name'].'</div>';
@@ -606,10 +606,10 @@ $is_source = en_is_source($en['source__id']);
             $this_tab .= '<div id="source__portfolio" class="list-group">';
 
             foreach($source__portfolios as $source_portfolio) {
-                $this_tab .= view_en($source_portfolio,false, null, true, $is_source);
+                $this_tab .= view_source($source_portfolio,false, null, true, $is_source);
             }
             if ($counter > count($source__portfolios)) {
-                $this_tab .= view_en_load_more(1, config_var(11064), $counter);
+                $this_tab .= view_source_load_more(1, config_var(11064), $counter);
             }
 
             //Input to add new child:
@@ -626,9 +626,9 @@ $is_source = en_is_source($en['source__id']);
 
         } elseif(in_array($read__type, $this->config->item('sources_id_12467'))){
 
-            $counter = read_coins_en($read__type, $en['source__id']);
+            $counter = read_coins_source($read__type, $en['source__id']);
             if($has_superpower){
-                $this_tab = read_coins_en($read__type, $en['source__id'], 1);
+                $this_tab = read_coins_source($read__type, $en['source__id'], 1);
             }
 
         } elseif(in_array($read__type, $this->config->item('sources_id_4485'))){
@@ -652,7 +652,7 @@ $is_source = en_is_source($en['source__id']);
                     $in_notes_query = $this->READ_model->fetch($in_notes_filters, array('idea_next'), config_var(11064), 0, array('idea__weight' => 'DESC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($in_notes_query as $count => $in_notes) {
-                        $this_tab .= view_in($in_notes, 0, false, false, $in_notes['read__message'], null, false);
+                        $this_tab .= view_idea($in_notes, 0, false, false, $in_notes['read__message'], null, false);
                     }
                     $this_tab .= '</div>';
 
@@ -679,7 +679,7 @@ $is_source = en_is_source($en['source__id']);
                     $in_reads_query = $this->READ_model->fetch($in_reads_filters, array('idea_previous'), config_var(11064), 0, array('read__sort' => 'ASC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($in_reads_query as $count => $in_notes) {
-                        $this_tab .= view_in($in_notes);
+                        $this_tab .= view_idea($in_notes);
                     }
                     $this_tab .= '</div>';
                 } else {

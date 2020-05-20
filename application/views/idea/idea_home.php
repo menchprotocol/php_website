@@ -12,7 +12,7 @@
         'read__type' => 10573, //IDEA NOTES Bookmarks
         'read__up' => $session_en['source__id'], //For this player
     ), array('idea_next'), 0, 0, array('idea__weight' => 'DESC')) as $bookmark_in){
-        echo view_in($bookmark_in, 0, false, true);
+        echo view_idea($bookmark_in, 0, false, true);
     }
 
     $sources__2738 = $this->config->item('sources__2738'); //MENCH

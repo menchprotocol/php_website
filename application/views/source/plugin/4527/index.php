@@ -33,12 +33,12 @@ $read_coins = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
 ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
-$in_coins = $this->READ_model->fetch(array(
+$idea_coins = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
     'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
 ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
-$en_coins = $this->READ_model->fetch(array(
+$source_coins = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
 ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
@@ -51,8 +51,8 @@ echo '<br />//PLATFORM STATS:<br />';
 echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
 echo '$config[\'cache_count_read\'] = '.$reads[0]['totals'].';<br />';
 echo '$config[\'cache_count_read\'] = '.$read_coins[0]['totals'].';<br />';
-echo '$config[\'cache_count_idea\'] = '.$in_coins[0]['totals'].';<br />';
-echo '$config[\'cache_count_source\'] = '.$en_coins[0]['totals'].';<br />';
+echo '$config[\'cache_count_idea\'] = '.$idea_coins[0]['totals'].';<br />';
+echo '$config[\'cache_count_source\'] = '.$source_coins[0]['totals'].';<br />';
 echo '<br /><br />';
 
 
@@ -69,7 +69,7 @@ foreach($config_ens as $en){
 
 
     //Find common base, if allowed:
-    $common_prefix = ( in_array($en['read__down'], $this->config->item('sources_id_12588')) ? null : in_calc_common_prefix($children, 'source__title') );
+    $common_prefix = ( in_array($en['read__down'], $this->config->item('sources_id_12588')) ? null : idea_calc_common_prefix($children, 'source__title') );
 
     //Generate raw IDs:
     $child_ids = array();
