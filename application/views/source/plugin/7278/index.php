@@ -60,7 +60,7 @@ foreach($ins as $in){
             'target' => $id_prefix['in'].$child_in['read__right'],
             'label' => $sources__4593[$child_in['read__type']]['m_name'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type_source__id' => $child_in['read__type'],
+            'edge_type' => $child_in['read__type'],
             'edge_status' => $child_in['read__status'],
         ));
 
@@ -96,7 +96,7 @@ foreach($ens as $en){
             'target' => $id_prefix['en'].$en_child['read__down'],
             'label' => $sources__4593[$en_child['read__type']]['m_name'].': '.$en_child['read__message'],
             'weight' => 1,
-            'edge_type_source__id' => $en_child['read__type'],
+            'edge_type' => $en_child['read__type'],
             'edge_status' => $en_child['read__status'],
         ));
 
