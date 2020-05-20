@@ -2323,6 +2323,8 @@ class Source extends CI_Controller
             $is_player_request = isset($_SERVER['SERVER_NAME']);
             if($is_player_request){
                 $session_en = superpower_assigned(12699, true);
+            } else {
+                $session_en = false;
             }
 
             //Needs extra superpowers?
