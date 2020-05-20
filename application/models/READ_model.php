@@ -417,7 +417,7 @@ class READ_model extends CI_Model
 
                         //Import potential Idea/source connections from link:
                         'read__right' => $insert_columns['read__right'],
-                        'read__left' => $ins[0]['idea__id'],
+                        'read__left' => $insert_columns['read__left'],
                         'read__down' => $insert_columns['read__down'],
                         'read__up' => $insert_columns['read__up'],
                     ));

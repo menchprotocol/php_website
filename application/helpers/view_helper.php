@@ -417,7 +417,7 @@ function view_ln($ln, $is_parent_tr = false)
 
         //Order
         if($ln['read__sort'] > 0){
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4370]['m_name']. '"><span class="icon-block">'.$sources__4341[4370]['m_icon']. '</span>'.view_ordinal_number($ln['read__sort']).'</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4370]['m_name']. '"><span class="icon-block">'.$sources__4341[4370]['m_icon']. '</span>'.view_ordinal($ln['read__sort']).'</span></div>';
         }
 
 
@@ -1707,7 +1707,7 @@ function view_json($array)
 }
 
 
-function view_ordinal_number($number)
+function view_ordinal($number)
 {
     $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
     if (($number % 100) >= 11 && ($number % 100) <= 13) {
