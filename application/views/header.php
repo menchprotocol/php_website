@@ -102,7 +102,7 @@ if(!isset($hide_header)){
                         <?php
 
                         //MAIN NAVIGATION
-                        echo '<div class="main_nav mench_nav">';
+                        echo '<div class="primary_nav mench_nav">';
                         if(!$session_en){
 
                             //LOGO ONLY
@@ -177,7 +177,7 @@ if(!isset($hide_header)){
                         echo '</div>';
 
                         //Search Bar
-                        echo '<div class="main_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$sources__11035[7256]['m_name'].'"></form></div>';
+                        echo '<div class="primary_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$sources__11035[7256]['m_name'].'"></form></div>';
 
                         ?>
                     </td>

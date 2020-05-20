@@ -14,7 +14,7 @@ $(document).ready(function () {
     //Source Loader:
     var portfolio_count = parseInt($('#new_portfolio').attr('current-count'));
     if(portfolio_count>0 && portfolio_count<parseInt(js_sources__6404[13005]['m_desc'])){
-        en_sort_portfolio_load();
+        source_sort_portfolio_load();
     }
 
     //Lookout for textinput updates
@@ -23,14 +23,14 @@ $(document).ready(function () {
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here
-        var original_val = $('#en_setting_name').val();
-        setTimeout(function() { $('#en_setting_name').focus().val('').val(original_val); }, 144);
+        var original_val = $('#source_setting_name').val();
+        setTimeout(function() { $('#source_setting_name').focus().val('').val(original_val); }, 144);
     });
 
     $('#openEn3288').on('show.bs.collapse', function () {
         //call a service here
-        var original_val = $('#en_email').val();
-        setTimeout(function() { $('#en_email').focus().val('').val(original_val); }, 144);
+        var original_val = $('#source_email').val();
+        setTimeout(function() { $('#source_email').focus().val('').val(original_val); }, 144);
     });
 
     $('#openEn3286').on('show.bs.collapse', function () {
@@ -78,24 +78,24 @@ $(document).ready(function () {
         if (parseInt($('#source__status').find(":selected").val()) == 6178 /* Player Deleted */) {
 
             //Notify Player:
-            $('.notify_en_delete').removeClass('hidden');
+            $('.notify_source_delete').removeClass('hidden');
             $('.source_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total links:
             $.post("/source/source_count_deletion", { source__id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
 
                 if(data.status){
-                    $('.source_delete_stats').html('<b>'+data.en_link_count+'</b>');
-                    $('#en_link_count').val(data.en_link_count); //This would require a confirmation upon saving...
+                    $('.source_delete_stats').html('<b>'+data.source_link_count+'</b>');
+                    $('#source_link_count').val(data.source_link_count); //This would require a confirmation upon saving...
                 }
 
             });
 
         } else {
 
-            $('.notify_en_delete').addClass('hidden');
+            $('.notify_source_delete').addClass('hidden');
             $('.source_delete_stats').html('');
-            $('#en_link_count').val('0');
+            $('#source_link_count').val('0');
 
         }
     });
@@ -114,8 +114,8 @@ $(document).ready(function () {
 
 
     //Loadup various search bars:
-    en_load_search("#new-parent", 1, 'q');
-    en_load_search("#new_portfolio", 0, 'w');
+    source_load_search("#new-parent", 1, 'q');
+    source_load_search("#new_portfolio", 0, 'w');
 
 
     //Watchout for file uplods:
@@ -153,7 +153,7 @@ $(document).ready(function () {
 
 
 
-function en_load_search(element_focus, is_en_parent, shortcut) {
+function source_load_search(element_focus, is_source_parent, shortcut) {
 
     $(element_focus + ' .add-input').focus(function() {
 
@@ -167,7 +167,7 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            source__add(0, is_en_parent);
+            source__add(0, is_source_parent);
             return true;
         }
 
@@ -177,9 +177,9 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
             $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-                source__add(suggestion.object__id, is_en_parent);
+                source__add(suggestion.object__id, is_source_parent);
 
-            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 'q' : 'a' )]}, [{
+            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_source_parent ? 'q' : 'a' )]}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
@@ -200,11 +200,11 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:source__add(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:source__add(0,'+is_source_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:source__add(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:source__add(0,'+is_source_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -265,10 +265,10 @@ function account_toggle_superpower(superpower_id){
 
 
 //Adds OR links sources to sources
-function source__add(en_existing_id, is_parent) {
+function source__add(source_existing_id, is_parent) {
 
-    //if en_existing_id>0 it means we're linking to an existing source, in which case en_new_string should be null
-    //If en_existing_id=0 it means we are creating a new source and then linking it, in which case en_new_string is required
+    //if source_existing_id>0 it means we're linking to an existing source, in which case source_new_string should be null
+    //If source_existing_id=0 it means we are creating a new source and then linking it, in which case source_new_string is required
 
     if (is_parent) {
         var input = $('#new-parent .add-input');
@@ -278,10 +278,10 @@ function source__add(en_existing_id, is_parent) {
         var list_id = 'source__portfolio';
     }
 
-    var en_new_string = null;
-    if (en_existing_id == 0) {
-        en_new_string = input.val();
-        if (en_new_string.length < 1) {
+    var source_new_string = null;
+    if (source_existing_id == 0) {
+        source_new_string = input.val();
+        if (source_new_string.length < 1) {
             alert('Missing source name or URL, try again');
             input.focus();
             return false;
@@ -292,9 +292,9 @@ function source__add(en_existing_id, is_parent) {
     //Add via Ajax:
     $.post("/source/source__add", {
 
-        source__id: en_focus_id,
-        en_existing_id: en_existing_id,
-        en_new_string: en_new_string,
+        source__id: source_focus_id,
+        source_existing_id: source_existing_id,
+        source_new_string: source_new_string,
         is_parent: (is_parent ? 1 : 0),
 
     }, function (data) {
@@ -308,12 +308,12 @@ function source__add(en_existing_id, is_parent) {
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.en-item', data.en_new_echo);
+            add_to_list(list_id, '.en-item', data.source_new_echo);
 
             //Allow inline editing if enabled:
             view_input_text_update_start();
 
-            en_sort_portfolio_load();
+            source_sort_portfolio_load();
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
@@ -327,11 +327,11 @@ function source__add(en_existing_id, is_parent) {
 }
 
 
-function en_filter_status(new_val) {
+function source_filter_status(new_val) {
     //Delete active class:
     $('.en-status-filter').removeClass('active');
     //We do have a filter:
-    en_focus_filter = parseInt(new_val);
+    source_focus_filter = parseInt(new_val);
     $('.en-status-' + new_val).addClass('active');
     source_load_page(0, 1);
 }
@@ -361,8 +361,8 @@ function source_load_page(page, load_new_filter) {
 
     $.post("/source/source_load_page", {
         page: page,
-        parent_source__id: en_focus_id,
-        en_focus_filter: en_focus_filter,
+        parent_source__id: source_focus_id,
+        source_focus_filter: source_focus_filter,
     }, function (data) {
 
         //Appending to existing content:
@@ -371,7 +371,7 @@ function source_load_page(page, load_new_filter) {
         if (load_new_filter) {
             $('#source__portfolio').html(data + '<div id="new_portfolio" class="list-group-item itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            en_load_search("#new_portfolio", 0, 'w');
+            source_load_search("#new_portfolio", 0, 'w');
         } else {
             //Update UI to confirm with user:
             $(data).insertBefore('#new_portfolio');
@@ -391,10 +391,10 @@ function update_demo_icon(){
     $('.icon-demo').html(($('#source__icon').val().length > 0 ? $('#source__icon').val() : js_sources__2738[4536]['m_icon'] ));
 }
 
-function en_modify_load(source__id, read__id) {
+function source_modify_load(source__id, read__id) {
 
     //Make sure inputs are valid:
-    if (!$('.en___' + source__id).length) {
+    if (!$('.source___' + source__id).length) {
         alert('Invalid Source ID');
         return false;
     }
@@ -408,25 +408,25 @@ function en_modify_load(source__id, read__id) {
     $('#modifybox').attr('source-id', source__id);
 
     //Cannot be deleted OR Unpublished as this would not load, so delete them:
-    $('.notify_en_delete, .notify_unlink_en').addClass('hidden');
+    $('.notify_source_delete, .notify_unlink_en').addClass('hidden');
 
     //Set opacity:
     delete_all_saved();
-    $(".saved_en_"+source__id).addClass('en_saved');
+    $(".saved_source_"+source__id).addClass('source_saved');
 
     //Might be in an INPUT or a DIV based on active superpowers:
-    var en_full_name = $(".text__6197_" + source__id + ":first").val();
-    if(!en_full_name.length){
-        en_full_name = $(".text__6197_" + source__id + ":first").text();
+    var source_full_name = $(".text__6197_" + source__id + ":first").val();
+    if(!source_full_name.length){
+        source_full_name = $(".text__6197_" + source__id + ":first").text();
     }
-    $('#source__title').val(en_full_name.toUpperCase()).focus();
-    $('.edit-header').html('<i class="fas fa-pen-square"></i> ' + en_full_name);
-    $('#source__status').val($(".en___" + source__id + ":first").attr('en-status'));
+    $('#source__title').val(source_full_name.toUpperCase()).focus();
+    $('.edit-header').html('<i class="fas fa-pen-square"></i> ' + source_full_name);
+    $('#source__status').val($(".source___" + source__id + ":first").attr('en-status'));
     $('.save_source_changes').html('');
     $('.source_delete_stats').html('');
 
-    if (parseInt($('.en__icon_' + source__id).attr('en-is-set')) > 0) {
-        $('#source__icon').val($('.en__icon_' + source__id).html());
+    if (parseInt($('.source__icon_' + source__id).attr('en-is-set')) > 0) {
+        $('#source__icon').val($('.source__icon_' + source__id).html());
     } else {
         //Clear out input:
         $('#source__icon').val('');
@@ -438,8 +438,8 @@ function en_modify_load(source__id, read__id) {
     //Only show unlink button if not level 1
     if (parseInt(read__id) > 0) {
 
-        $('#read__status').val($(".en___" + source__id + ":first").attr('ln-status'));
-        $('#en_link_count').val('0');
+        $('#read__status').val($(".source___" + source__id + ":first").attr('ln-status'));
+        $('#source_link_count').val('0');
 
 
         //Make the UI link and the ideas in the edit box:
@@ -579,7 +579,7 @@ function source_sort_save() {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/source/source_sort_save", {source__id: en_focus_id, new_read__sorts: new_read__sorts}, function (data) {
+        $.post("/source/source_sort_save", {source__id: source_focus_id, new_read__sorts: new_read__sorts}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -595,7 +595,7 @@ function source_sort_reset(){
 
     //Update via call:
     $.post("/source/source_sort_reset", {
-        source__id: en_focus_id
+        source__id: source_focus_id
     }, function (data) {
 
         if (!data.status) {
@@ -606,14 +606,14 @@ function source_sort_reset(){
         } else {
 
             //Refresh page:
-            window.location = '/source/' + en_focus_id;
+            window.location = '/source/' + source_focus_id;
 
         }
     });
 
 }
 
-function en_sort_portfolio_load() {
+function source_sort_portfolio_load() {
 
     var element_key = null;
     var theobject = document.getElementById("source__portfolio");
@@ -644,10 +644,10 @@ function source_update() {
     }
 
     //Are we about to delete an source with a lot of links?
-    var link_count= parseInt($('#en_link_count').val());
+    var link_count= parseInt($('#source_link_count').val());
     if(link_count >= 3){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("Delete source & "+( $('#en_merge').val().length > 0 ? 'merge' : 'unlink' )+" "+link_count+" links?! Type \"delete\" to confirm.", "");
+        var confirm_removal = prompt("Delete source & "+( $('#source_merge').val().length > 0 ? 'merge' : 'unlink' )+" "+link_count+" links?! Type \"delete\" to confirm.", "");
 
         if (!(confirm_removal == 'delete')) {
             //Abandon process:
@@ -658,12 +658,12 @@ function source_update() {
 
     //Prepare data to be modified for this idea:
     var modify_data = {
-        en_focus_id: en_focus_id, //Determines if we need to change location upon removing...
+        source_focus_id: source_focus_id, //Determines if we need to change location upon removing...
         source__id: parseInt($('#modifybox').attr('source-id')),
         source__title: $('#source__title').val().toUpperCase(),
         source__icon: $('#source__icon').val(),
         source__status: $('#source__status').val(), //The new status (might not have changed too)
-        en_merge: $('#en_merge').val(),
+        source_merge: $('#source_merge').val(),
         //Link data:
         read__id: parseInt($('#modifybox').attr('source-link-id')),
         read__message: $('#read__message').val(),
@@ -716,7 +716,7 @@ function source_update() {
 
 
                 //Player Status:
-                $(".en___" + modify_data['source__id']).attr('en-status', modify_data['source__status']);
+                $(".source___" + modify_data['source__id']).attr('en-status', modify_data['source__status']);
                 $('.source__status_' + modify_data['source__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__6177[modify_data['source__status']]["m_name"] + ': ' + js_sources__6177[modify_data['source__status']]["m_desc"] + '">' + js_sources__6177[modify_data['source__status']]["m_icon"] + '</span>');
 
 
@@ -726,9 +726,9 @@ function source_update() {
                     //Set source default icon:
                     modify_data['source__icon'] = js_sources__2738[4536]['m_icon'];
                 }
-                $('.en__icon_' + modify_data['source__id']).attr('en-is-set' , icon_is_set );
-                $('.en_ui_icon_' + modify_data['source__id']).html(modify_data['source__icon']);
-                $('.en_child_icon_' + modify_data['source__id']).html(modify_data['source__icon']);
+                $('.source__icon_' + modify_data['source__id']).attr('en-is-set' , icon_is_set );
+                $('.source_ui_icon_' + modify_data['source__id']).html(modify_data['source__icon']);
+                $('.source_child_icon_' + modify_data['source__id']).html(modify_data['source__icon']);
 
 
                 //Did we have ideas to update?
@@ -748,7 +748,7 @@ function source_update() {
                     $('.read_type_' + modify_data['read__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__4592[data.js_read__type]["m_name"] + ': ' + js_sources__4592[data.js_read__type]["m_desc"] + '">' + js_sources__4592[data.js_read__type]["m_icon"] + '</span>');
 
                     //Read Status:
-                    $(".en___" + modify_data['source__id']).attr('ln-status', modify_data['read__status'])
+                    $(".source___" + modify_data['source__id']).attr('ln-status', modify_data['read__status'])
                     $('.read__status_' + modify_data['read__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__6186[modify_data['read__status']]["m_name"] + ': ' + js_sources__6186[modify_data['read__status']]["m_desc"] + '">' + js_sources__6186[modify_data['read__status']]["m_icon"] + '</span>');
 
                 }
@@ -805,7 +805,7 @@ function account_update_avatar_icon(type_css, icon_css){
         $('.avatar-item.avatar-name-'+icon_css).addClass('active');
     }
 
-    $('.en_ui_icon_'+js_pl_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.source_ui_icon_'+js_pl_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Update via call:
     $.post("/source/account_update_avatar_icon", {
@@ -821,7 +821,7 @@ function account_update_avatar_icon(type_css, icon_css){
         } else {
 
             //Delete message:
-            $('.en_ui_icon_'+js_pl_id).html(data.new_avatar);
+            $('.source_ui_icon_'+js_pl_id).html(data.new_avatar);
 
         }
     });
@@ -887,7 +887,7 @@ function account_update_email(){
 
     //Save the rest of the content:
     $.post("/source/account_update_email", {
-        en_email: $('#en_email').val(),
+        source_email: $('#source_email').val(),
     }, function (data) {
 
         if (!data.status) {

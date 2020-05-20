@@ -27,7 +27,7 @@ foreach($this->config->item('sources__6287') as $source__id => $m) {
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
     ), array('source_profile')) as $source_profile){
-        echo '<span class="icon-block-img en_child_icon_' . $source_profile['source__id'] . '" data-toggle="tooltip" title="' . $source_profile['source__title'] . (strlen($source_profile['read__message']) > 0 ? ' = ' . $source_profile['read__message'] : '') . '" data-placement="top">' . view_source__icon($source_profile['source__icon']) . '</span>&nbsp;';
+        echo '<span class="icon-block-img source_child_icon_' . $source_profile['source__id'] . '" data-toggle="tooltip" title="' . $source_profile['source__title'] . (strlen($source_profile['read__message']) > 0 ? ' = ' . $source_profile['read__message'] : '') . '" data-placement="top">' . view_source__icon($source_profile['source__icon']) . '</span>&nbsp;';
     }
     echo '</div>';
 

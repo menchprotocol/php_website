@@ -1,5 +1,5 @@
 <script>
-    var in_loaded_id = <?= $in['idea__id'] ?>;
+    var idea_loaded_id = <?= $in['idea__id'] ?>;
 </script>
 
 <script src="/application/views/read/read_coin.js?v=<?= config_var(11060) ?>"
@@ -12,8 +12,8 @@
 $idea_fetch_cover = idea_fetch_cover($in['idea__id']);
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $metadata = unserialize($in['idea__metadata']);
-$has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-$in_type_meet_requirement = in_array($in['idea__type'], $this->config->item('sources_id_7309'));
+$has_time_estimate = ( isset($metadata['idea__metadata_max_seconds']) && $metadata['idea__metadata_max_seconds']>0 );
+$idea_type_meet_requirement = in_array($in['idea__type'], $this->config->item('sources_id_7309'));
 $recipient_en = superpower_assigned();
 $is_home_page = $in['idea__id']==config_var(12156);
 if(!isset($recipient_en['source__id']) ){
@@ -30,7 +30,7 @@ $this->READ_model->create(array(
 
 
 //MESSAGES
-$in__messages = $this->READ_model->fetch(array(
+$idea__messages = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type' => 4231, //IDEA NOTES Messages
     'read__right' => $in['idea__id'],
@@ -69,7 +69,7 @@ if ($read_idea_home) {
     ));
 
 
-    if($in_type_meet_requirement){
+    if($idea_type_meet_requirement){
 
         //Reverse check answers to see if they have previously unlocked a path:
         $unlocked_connections = $this->READ_model->fetch(array(
@@ -138,7 +138,7 @@ if ($read_idea_home) {
 
 
     //READS UI
-    echo '<div class="hideIfEmpty main_reads_top"></div>';
+    echo '<div class="hideIfEmpty focus_reads_top"></div>';
 
     //READ PROGRESS ONLY AT TOP LEVEL
     if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
@@ -156,7 +156,7 @@ echo '<h1 class="block-one" '.( !$recipient_en['source__id'] ? ' style="padding-
 
 
 //MESSAGES
-foreach($in__messages as $message_ln) {
+foreach($idea__messages as $message_ln) {
     echo $this->READ_model->send_message(
         $message_ln['read__message'],
         $recipient_en
@@ -185,11 +185,11 @@ if(!$read_idea_home){
 
 
         //IDEA
-        $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : $chapters );
-        $idea_min = ( $idea_count && isset($metadata['in__metadata_min_steps']) && $metadata['in__metadata_min_steps']<$metadata['in__metadata_max_steps'] ? $metadata['in__metadata_min_steps']-1 : 0 );
+        $idea_count = ( isset($metadata['idea__metadata_max_steps']) && $metadata['idea__metadata_max_steps']>=2 ? $metadata['idea__metadata_max_steps']-1 : $chapters );
+        $idea_min = ( $idea_count && isset($metadata['idea__metadata_min_steps']) && $metadata['idea__metadata_min_steps']<$metadata['idea__metadata_max_steps'] ? $metadata['idea__metadata_min_steps']-1 : 0 );
         if ($idea_count) {
 
-            $has_time = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+            $has_time = ( isset($metadata['idea__metadata_max_seconds']) && $metadata['idea__metadata_max_seconds']>0 );
             echo '<div class="read-topic idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.view__s($idea_count).( $has_time ? ' IN '.view_time_range($metadata) : '' ).'</a></div>';
 
             //BODY
@@ -210,9 +210,9 @@ if(!$read_idea_home){
 
 
         //SOURCE
-        $in__metadata_experts = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
-        $in__metadata_content = ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
-        $source_count = $in__metadata_experts + $in__metadata_content;
+        $idea__metadata_experts = ( isset($metadata['idea__metadata_experts']) ? count($metadata['idea__metadata_experts']) : 0 );
+        $idea__metadata_content = ( isset($metadata['idea__metadata_content']) ? count($metadata['idea__metadata_content']) : 0 );
+        $source_count = $idea__metadata_experts + $idea__metadata_content;
         if ($source_count) {
 
             echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.view__s($source_count).'</a></div>';
@@ -224,16 +224,16 @@ if(!$read_idea_home){
             echo '<div class="list-group single-color">';
 
             //Sort Expert Content
-            if($in__metadata_experts && $in__metadata_content){
-                $experts_content = array_merge($metadata['in__metadata_content'], $metadata['in__metadata_experts']);
-            } elseif($in__metadata_content){
-                $experts_content = $metadata['in__metadata_content'];
+            if($idea__metadata_experts && $idea__metadata_content){
+                $experts_content = array_merge($metadata['idea__metadata_content'], $metadata['idea__metadata_experts']);
+            } elseif($idea__metadata_content){
+                $experts_content = $metadata['idea__metadata_content'];
             } else {
-                $experts_content = $metadata['in__metadata_experts'];
+                $experts_content = $metadata['idea__metadata_experts'];
             }
             usort($experts_content, 'sortByWeight');
-            foreach ($experts_content as $en_source) {
-                echo view_source_basic($en_source);
+            foreach ($experts_content as $source_source) {
+                echo view_source_basic($source_source);
             }
 
             echo '</div>';
@@ -278,7 +278,7 @@ if(!$read_idea_home){
 
 
     //LOCKED
-    if ($in_type_meet_requirement) {
+    if ($idea_type_meet_requirement) {
 
 
         //Requirement lock

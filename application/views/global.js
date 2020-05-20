@@ -62,7 +62,7 @@ function load_editor(){
     });
 
     if(parseInt(js_sources__6404[12678]['m_desc'])){
-        $('.en_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+        $('.source_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('@' + suggestion.object__id + ' ' + suggestion.object__title);
 
@@ -93,7 +93,7 @@ function load_editor(){
             }
         }]);
 
-        $('.in_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+        $('.idea_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('#' + suggestion.object__id + ' ' + suggestion.object__title);
 
@@ -439,10 +439,10 @@ function read_preview_type() {
         //All good, let's load the data into the Modify Widget...
         $('#read__type_preview').html((data.status ? data.html_ui : '<b class="read">' + data.message+'</b>'));
 
-        if(data.status && data.en_link_preview.length > 0){
-            $('#en_link_preview').html(data.en_link_preview);
+        if(data.status && data.source_link_preview.length > 0){
+            $('#source_link_preview').html(data.source_link_preview);
         } else {
-            $('#en_link_preview').html('');
+            $('#source_link_preview').html('');
         }
 
         //Reload Tooltip again:
@@ -465,7 +465,7 @@ var isAdvancedUpload = function () {
 var search_is_on = false;
 function toggle_search(){
 
-    $('.main_nav').addClass('hidden');
+    $('.primary_nav').addClass('hidden');
     $('.search_icon').toggleClass('hidden');
 
     if(search_is_on){
@@ -529,7 +529,7 @@ function source_fetch_canonical(query_string, not_found){
 
 
 function delete_all_saved(){
-    $('.object_saved').removeClass('en_saved');
+    $('.object_saved').removeClass('source_saved');
 }
 
 function validURL(str) {
@@ -606,14 +606,14 @@ function ms_toggle(read__id, new_state) {
 
 
 
-function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
+function idea_load_search(element_focus, is_idea_previous, shortcut, is_add_mode) {
 
     //Idea Search
     $(element_focus).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             if(is_add_mode=='link_in') {
-                return idea_add($(this).attr('idea-id'), is_in_parent, 0);
+                return idea_add($(this).attr('idea-id'), is_idea_previous, 0);
             } else if(is_add_mode=='link_my_in') {
                 return idea_create();
             }
@@ -630,13 +630,13 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
     $(element_focus).on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='link_in'){
-            idea_add($(this).attr('idea-id'), is_in_parent, suggestion.object__id);
+            idea_add($(this).attr('idea-id'), is_idea_previous, suggestion.object__id);
         } else {
             //Go to idea:
             window.location = suggestion.object__url;
             return true;
         }
-    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_in_parent ? 'q' : 'a' )]}, [{
+    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_idea_previous ? 'q' : 'a' )]}, [{
 
         source: function (q, cb) {
 
@@ -668,7 +668,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             },
             header: function (data) {
                 if (is_add_mode=='link_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_idea_previous+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='link_my_in'){
                     return '<a href="javascript:idea_create()" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
@@ -676,9 +676,9 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             empty: function (data) {
                 if(is_add_mode=='link_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_idea_previous+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_idea_previous+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },

@@ -197,7 +197,7 @@ li a {
     text-decoration: underline;
 }
 
-.doupper, .text_en_6197 {
+.doupper, .text_source_6197 {
     text-transform: uppercase !important;
 }
 .add-input{
@@ -231,10 +231,10 @@ a.btn, .btn.dropdown-toggle, label.btn {
     padding:15px;
 }
 
-.main_nav a.btn, .main_nav .btn.dropdown-toggle, .main_nav label.btn{
+.primary_nav a.btn, .primary_nav .btn.dropdown-toggle, .primary_nav label.btn{
     padding:10px;
 }
-.main_nav .btn {
+.primary_nav .btn {
     padding:12px 0 10px 0 !important;
 }
 
@@ -845,7 +845,7 @@ textarea.note-textarea{
 .space-left{
     padding-left: 33px;
 }
-#en_link_preview{
+#source_link_preview{
     max-width: 377px;
 }
 .icon-white-block{
@@ -912,7 +912,7 @@ td.MENCHcolumn3  { width: 13%; }
 
 
 
-.main_nav{
+.primary_nav{
     width: 100% !important;
     max-width: none !important;
 }
@@ -1313,11 +1313,11 @@ label {
     padding: 10px 10px 10px 0;
 }
 
-.in_saved, .in_saved:hover, .in_saved:focus{
+.idea_saved, .idea_saved:hover, .idea_saved:focus{
     background-color:#fff3a9 !important;
 }
 
-.en_saved, .en_saved:hover, .en_saved:focus{
+.source_saved, .source_saved:hover, .source_saved:focus{
     background-color:#c1dffb !important;
 }
 
@@ -1418,7 +1418,7 @@ label {
     width:55px;
     margin-bottom: 5px;
 }
-.text_en_4736, .text_en_6197{
+.text_source_4736, .text_source_6197{
     width:calc(100% - 33px);
     margin-bottom: 0;
 }

@@ -18,22 +18,22 @@ foreach($this->READ_model->fetch(array(
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     'read__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
     'LENGTH(read__metadata) > 0' => null,
-), array('idea_next'), 0, 0) as $in_ln) {
+), array('idea_next'), 0, 0) as $idea_read) {
     //Echo HTML format of this message:
-    $metadata = unserialize($in_ln['read__metadata']);
-    $mark = view_idea_marks($in_ln);
+    $metadata = unserialize($idea_read['read__metadata']);
+    $mark = view_idea_marks($idea_read);
     if($mark){
 
         //Fetch parent Idea:
         $parent_ins = $this->IDEA_model->fetch(array(
-            'idea__id' => $in_ln['read__left'],
+            'idea__id' => $idea_read['read__left'],
         ));
 
         $counter++;
         echo '<tr>';
         echo '<td style="width: 50px;">'.$counter.'</td>';
-        echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_idea_marks($in_ln).'</td>';
-        echo '<td>'.$sources__6186[$in_ln['read__status']]['m_icon'].'</td>';
+        echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_idea_marks($idea_read).'</td>';
+        echo '<td>'.$sources__6186[$idea_read['read__status']]['m_icon'].'</td>';
         echo '<td style="text-align: left;">';
 
         echo '<div>';
@@ -42,8 +42,8 @@ foreach($this->READ_model->fetch(array(
         echo '</div>';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$in_ln['idea__status']]['m_icon'].'</span>';
-        echo '<a href="/idea/go/'.$in_ln['idea__id'].'">'.$in_ln['idea__title'].' [child]</a>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$idea_read['idea__status']]['m_icon'].'</span>';
+        echo '<a href="/idea/go/'.$idea_read['idea__id'].'">'.$idea_read['idea__title'].' [child]</a>';
         echo '</div>';
 
         if(count($this->READ_model->fetch(array(
@@ -51,8 +51,8 @@ foreach($this->READ_model->fetch(array(
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                 'idea__type NOT IN (6907,6914)' => null, //NOT AND/OR Lock
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-                'read__right' => $in_ln['idea__id'],
-            ), array('idea_previous'))) > 1 || $in_ln['idea__type'] != 6677){
+                'read__right' => $idea_read['idea__id'],
+            ), array('idea_previous'))) > 1 || $idea_read['idea__type'] != 6677){
 
             echo '<div>';
             echo 'NOT COOL';
@@ -63,7 +63,7 @@ foreach($this->READ_model->fetch(array(
             //Update user progression link type:
             $user_steps = $this->READ_model->fetch(array(
                 'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
-                'read__left' => $in_ln['idea__id'],
+                'read__left' => $idea_read['idea__id'],
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             ), array(), 0);
 
@@ -98,22 +98,22 @@ if(1){
         'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'LENGTH(read__metadata) > 0' => null,
-    ), array('idea_next'), 0, 0) as $in_ln) {
+    ), array('idea_next'), 0, 0) as $idea_read) {
         //Echo HTML format of this message:
-        $metadata = unserialize($in_ln['read__metadata']);
+        $metadata = unserialize($idea_read['read__metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         if($tr__assessment_points!=0){
 
             //Fetch parent Idea:
             $parent_ins = $this->IDEA_model->fetch(array(
-                'idea__id' => $in_ln['read__left'],
+                'idea__id' => $idea_read['read__left'],
             ));
 
             $counter++;
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
-            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_idea_marks($in_ln).'</td>';
-            echo '<td>'.$sources__6186[$in_ln['read__status']]['m_icon'].'</td>';
+            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_idea_marks($idea_read).'</td>';
+            echo '<td>'.$sources__6186[$idea_read['read__status']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$parent_ins[0]['idea__status']]['m_icon'].'</span>';
@@ -121,8 +121,8 @@ if(1){
             echo '</div>';
 
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$in_ln['idea__status']]['m_icon'].'</span>';
-            echo '<a href="/idea/go/'.$in_ln['idea__id'].'">'.$in_ln['idea__title'].'</a>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$idea_read['idea__status']]['m_icon'].'</span>';
+            echo '<a href="/idea/go/'.$idea_read['idea__id'].'">'.$idea_read['idea__title'].'</a>';
             echo '</div>';
             echo '</td>';
             echo '</tr>';

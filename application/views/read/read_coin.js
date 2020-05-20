@@ -10,7 +10,7 @@ $(document).ready(function () {
     });
 
     //Move main reads, if any:
-    $('.main_reads_top').html($('.main_reads_bottom').html());
+    $('.focus_reads_top').html($('.focus_reads_bottom').html());
 
     //Should we auto start?
     if (isAdvancedUpload) {
@@ -96,7 +96,7 @@ function read_file_upload(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('idea__id', in_loaded_id);
+        ajaxData.append('idea__id', idea_loaded_id);
 
         $.ajax({
             url: '/read/read_file_upload',
@@ -130,14 +130,14 @@ function read_text_answer(){
     //Show Loading:
     $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/read/read_text_answer", {
-        idea__id:in_loaded_id,
+        idea__id:idea_loaded_id,
         read_text_answer:$('#read_text_answer').val(),
     }, function (data) {
         if (data.status) {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/read/next/'+in_loaded_id;
+                window.location = '/read/next/'+idea_loaded_id;
             }, 987);
         } else {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><span class="read montserrat">'+data.message+'</span>');
@@ -158,14 +158,14 @@ function read_answer(){
     //Show Loading:
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/read/read_answer", {
-        in_loaded_id:in_loaded_id,
+        idea_loaded_id:idea_loaded_id,
         answered_ins:answered_ins
     }, function (data) {
         if (data.status) {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/read/next/'+in_loaded_id;
+                window.location = '/read/next/'+idea_loaded_id;
             }, 987);
         } else {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><span class="read montserrat">'+data.message+'</span>');

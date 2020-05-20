@@ -3,11 +3,11 @@
 
 $(document).ready(function () {
 
-    check_in_source__status();
+    check_idea_source__status();
 
     //Watch for Idea status change:
     $("#read__type").change(function () {
-        check_in_source__status();
+        check_idea_source__status();
     });
 
     //Load first page of links:
@@ -16,7 +16,7 @@ $(document).ready(function () {
 });
 
 
-function check_in_source__status(){
+function check_idea_source__status(){
     //Checks to see if the Idea/Player status filter should be visible
     //Would only make visible if Link type is Created Idea/Player
 

@@ -217,7 +217,7 @@ function view_idea_notes($ln)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_en_type_' . $ln['read__type'] . '" id="ul-nav-' . $ln['read__id'] . '" read__id="' . $ln['read__id'] . '">';
+    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_source_type_' . $ln['read__type'] . '" id="ul-nav-' . $ln['read__id'] . '" read__id="' . $ln['read__id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
@@ -234,13 +234,13 @@ function view_idea_notes($ln)
         }
 
         //Modify:
-        $ui .= '<span title="MODIFY"><a href="javascript:in_notes_modify_start(' . $ln['read__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="MODIFY"><a href="javascript:idea_notes_modify_start(' . $ln['read__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
     $ui .= '</span></div>';
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="in_edit_notes_count(' . $ln['read__id'] . ')" name="read__message" id="message_body_' . $ln['read__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($ln['read__message']).'">' . $ln['read__message'] . '</textarea>';
+    $ui .= '<textarea onkeyup="idea_edit_notes_count(' . $ln['read__id'] . ')" name="read__message" id="message_body_' . $ln['read__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($ln['read__message']).'">' . $ln['read__message'] . '</textarea>';
 
 
     //Editing menu:
@@ -253,7 +253,7 @@ function view_idea_notes($ln)
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_modify(' . $ln['read__id'] . ',' . $ln['read__type'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:in_notes_modify_cancel(' . $ln['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_notes_modify_cancel(' . $ln['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
@@ -384,17 +384,17 @@ function view_interaction($ln, $is_parent_tr = false)
 
     //COINS AWARDED?
     if(in_array($ln['read__type'], $CI->config->item('sources_id_6255'))){
-        $coin_type = 'read';
+        $coins_type = 'read';
     } elseif(in_array($ln['read__type'], $CI->config->item('sources_id_12274'))){
-        $coin_type = 'source';
+        $coins_type = 'source';
     } elseif(in_array($ln['read__type'], $CI->config->item('sources_id_12273')) && $ln['read__up']>0){
-        $coin_type = 'idea';
+        $coins_type = 'idea';
     } else {
-        $coin_type = null;
+        $coins_type = null;
     }
 
     //Read Type & Coins
-    $ui .= '<div class="simple-line"><a href="/source/'.$ln['read__type'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4593]['m_name'].( strlen($sources__4593[$ln['read__type']]['m_desc']) ? ': '.$sources__4593[$ln['read__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$sources__4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($sources__4593[$ln['read__type']]['m_icon']).'">'. $sources__4593[$ln['read__type']]['m_icon'] . '&nbsp;' . $sources__4593[$ln['read__type']]['m_name'] . '</span>'.($coin_type ? '&nbsp;<span title="'.$coin_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coin_type.'"></i></span>' : '').'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/source/'.$ln['read__type'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4593]['m_name'].( strlen($sources__4593[$ln['read__type']]['m_desc']) ? ': '.$sources__4593[$ln['read__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$sources__4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($sources__4593[$ln['read__type']]['m_icon']).'">'. $sources__4593[$ln['read__type']]['m_icon'] . '&nbsp;' . $sources__4593[$ln['read__type']]['m_name'] . '</span>'.($coins_type ? '&nbsp;<span title="'.$coins_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coins_type.'"></i></span>' : '').'</a></div>';
 
 
     //Hide Sensitive Details?
@@ -584,7 +584,7 @@ function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = 
 
     if($idea__id){
         $mench = 'source';
-        $coin_filter = array(
+        $coins_filter = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
@@ -592,14 +592,14 @@ function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = 
         );
     } elseif($source__id){
         $mench = 'idea';
-        $coin_filter = array(
+        $coins_filter = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__up' => $source__id,
         );
     }
 
-    $source_coins = $CI->READ_model->fetch($coin_filter, array(), 0, 0, array(), 'COUNT(read__id) as totals');
+    $source_coins = $CI->READ_model->fetch($coins_filter, array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     if($number_only){
         return $source_coins[0]['totals'];
@@ -623,8 +623,8 @@ function view_idea_read($in, $common_prefix = null, $show_editor = false, $compl
 
     $is_saved = ( isset($in['read__type']) && $in['read__type']==12896 );
     $metadata = unserialize($in['idea__metadata']);
-    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-    $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : 0 );
+    $has_time_estimate = ( isset($metadata['idea__metadata_max_seconds']) && $metadata['idea__metadata_max_seconds']>0 );
+    $idea_count = ( isset($metadata['idea__metadata_max_steps']) && $metadata['idea__metadata_max_steps']>=2 ? $metadata['idea__metadata_max_steps']-1 : 0 );
 
     if(!$completion_rate){
         if($recipient_en){
@@ -637,7 +637,7 @@ function view_idea_read($in, $common_prefix = null, $show_editor = false, $compl
     $can_click = ( $completion_rate['completion_percentage']>0 || $show_editor || $is_saved ); //|| $recipient_en['source__id']
 
 
-    $ui  = '<div id="ap_in_'.$in['idea__id'].'" '.( isset($in['read__id']) ? ' sort-link-id="'.$in['read__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemread ' : '' ).'">';
+    $ui  = '<div id="ap_idea_'.$in['idea__id'].'" '.( isset($in['read__id']) ? ' sort-link-id="'.$in['read__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemread ' : '' ).'">';
 
     $ui .= ( $can_click ? '<a href="/'.$in['idea__id'] . '" class="itemread">' : '' );
 
@@ -661,7 +661,7 @@ function view_idea_read($in, $common_prefix = null, $show_editor = false, $compl
 
             $ui .= '<div class="note-editor edit-off">';
             $ui .= '<span class="show-on-hover">';
-            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="read_toggle_saved('.$in['idea__id'].');$(\'#ap_in_'.$in['idea__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="read_toggle_saved('.$in['idea__id'].');$(\'#ap_idea_'.$in['idea__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
             $ui .= '</span>';
             $ui .= '</div>';
 
@@ -712,35 +712,35 @@ function view_idea_scores_answer($idea__id, $depth_levels, $original_depth_level
         'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
         'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         'idea__status IN (' . join(',', $CI->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-    ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $in_ln){
+    ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $idea_read){
 
         //Prep Metadata:
-        $metadata = unserialize($in_ln['read__metadata']);
+        $metadata = unserialize($idea_read['read__metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->READ_model->fetch(array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type' => 4231, //IDEA NOTES Messages
-            'read__right' => $in_ln['idea__id'],
+            'read__right' => $idea_read['idea__id'],
         ), array(), 0, 0, array('read__sort' => 'ASC'));
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$sources__4486[$in_ln['read__type']]['m_name'].'">'. $sources__4486[$in_ln['read__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Read Status: '.$sources__6186[$in_ln['read__status']]['m_name'].'">'. $sources__6186[$in_ln['read__status']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$sources__4486[$idea_read['read__type']]['m_name'].'">'. $sources__4486[$idea_read['read__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Read Status: '.$sources__6186[$idea_read['read__status']]['m_name'].'">'. $sources__6186[$idea_read['read__status']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$sources__7585[$in_ln['idea__type']]['m_name'].'">'. $sources__7585[$in_ln['idea__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$in_ln['idea__status']]['m_name'].'">'. $sources__4737[$in_ln['idea__status']]['m_icon']. '</span>';
-        $ui .= '<a href="?idea__id='.$in_ln['idea__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_idea__title($in_ln) . '</u></a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$sources__7585[$idea_read['idea__type']]['m_name'].'">'. $sources__7585[$idea_read['idea__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$idea_read['idea__status']]['m_name'].'">'. $sources__4737[$idea_read['idea__status']]['m_icon']. '</span>';
+        $ui .= '<a href="?idea__id='.$idea_read['idea__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_idea__title($idea_read) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['read__type'] == 4228 && in_array($parent_idea__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($in_ln['read__type'] == 4229) ? view_idea_marks($in_ln) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($idea_read['read__type'] == 4228 && in_array($parent_idea__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($idea_read['read__type'] == 4229) ? view_idea_marks($idea_read) : '' ).'</span>]';
 
         if(count($messages) > 0){
-            $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['idea__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
+            $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$idea_read['idea__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
         }
         $ui .= '</div>';
 
         //Display Messages:
-        $ui .= '<div class="messages-'.$in_ln['idea__id'].' hidden">';
+        $ui .= '<div class="messages-'.$idea_read['idea__id'].' hidden">';
         foreach($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
             $ui .= $CI->READ_model->send_message($msg['read__message']);
@@ -749,7 +749,7 @@ function view_idea_scores_answer($idea__id, $depth_levels, $original_depth_level
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  view_idea_scores_answer($in_ln['idea__id'], $depth_levels, $original_depth_levels, $in_ln['idea__type']);
+        $ui .=  view_idea_scores_answer($idea_read['idea__id'], $depth_levels, $original_depth_levels, $idea_read['idea__type']);
 
     }
 
@@ -795,23 +795,23 @@ function view_radio_sources($parent_source__id, $child_source__id, $enable_mulit
 }
 
 
-function view_idea_marks($in_ln){
+function view_idea_marks($idea_read){
 
     //Validate core inputs:
-    if(!isset($in_ln['read__metadata']) || !isset($in_ln['read__type'])){
+    if(!isset($idea_read['read__metadata']) || !isset($idea_read['read__type'])){
         return false;
     }
 
     //prep metadata:
-    $read__metadata = unserialize($in_ln['read__metadata']);
+    $read__metadata = unserialize($idea_read['read__metadata']);
 
     //Return mark:
-    return ( $in_ln['read__type'] == 4228 ? ( !isset($read__metadata['tr__assessment_points']) || $read__metadata['tr__assessment_points'] == 0 ? '' : '<span class="score-range">[<span style="'.( $read__metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $read__metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $read__metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $read__metadata['tr__assessment_points'].'</span>]</span>' ) : '<span class="score-range">['.$read__metadata['tr__conditional_score_min'] . ( $read__metadata['tr__conditional_score_min']==$read__metadata['tr__conditional_score_max'] ? '' : '-'.$read__metadata['tr__conditional_score_max'] ).'%]</span>' );
+    return ( $idea_read['read__type'] == 4228 ? ( !isset($read__metadata['tr__assessment_points']) || $read__metadata['tr__assessment_points'] == 0 ? '' : '<span class="score-range">[<span style="'.( $read__metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $read__metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $read__metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $read__metadata['tr__assessment_points'].'</span>]</span>' ) : '<span class="score-range">['.$read__metadata['tr__conditional_score_min'] . ( $read__metadata['tr__conditional_score_min']==$read__metadata['tr__conditional_score_max'] ? '' : '-'.$read__metadata['tr__conditional_score_max'] ).'%]</span>' );
 
 }
 
 
-function view_idea($in, $in_linked_id = 0, $is_parent = false, $is_source = false, $input_message = null, $extra_class = null, $control_enabled = true)
+function view_idea($in, $idea_linked_id = 0, $is_parent = false, $is_source = false, $input_message = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -831,9 +831,9 @@ function view_idea($in, $in_linked_id = 0, $is_parent = false, $is_source = fals
     $session_en = superpower_assigned();
     $is_public = in_array($in['idea__status'], $CI->config->item('sources_id_7355'));
     $is_link_published = in_array($in['read__status'], $CI->config->item('sources_id_7359'));
-    $is_in_link = in_array($in['read__type'], $CI->config->item('sources_id_4486'));
-    $is_source = ( !$is_in_link ? false : $is_source ); //Disable Edits on Idea List Page
-    $show_toolbar = ($control_enabled && $is_in_link && superpower_active(12673, true));
+    $is_idea_link = in_array($in['read__type'], $CI->config->item('sources_id_4486'));
+    $is_source = ( !$is_idea_link ? false : $is_source ); //Disable Edits on Idea List Page
+    $show_toolbar = ($control_enabled && $is_idea_link && superpower_active(12673, true));
 
 
 
@@ -848,7 +848,7 @@ function view_idea($in, $in_linked_id = 0, $is_parent = false, $is_source = fals
 
 
 
-    $ui = '<div read__id="' . $read__id . '" in-tr-type="' . $in['read__type'] . '" idea-id="' . $in['idea__id'] . '" parent-idea-id="' . $in_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_in_'.$in['idea__id'] . ' in_line_' . $in['idea__id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' in__tr_'.$read__id.' '.$extra_class.'" style="padding-left:0;">';
+    $ui = '<div read__id="' . $read__id . '" in-tr-type="' . $in['read__type'] . '" idea-id="' . $in['idea__id'] . '" parent-idea-id="' . $idea_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_idea_'.$in['idea__id'] . ' idea_line_' . $in['idea__id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' idea__tr_'.$read__id.' '.$extra_class.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -895,7 +895,7 @@ function view_idea($in, $in_linked_id = 0, $is_parent = false, $is_source = fals
     $ui .= '<td class="MENCHcolumn3 source">';
 
 
-    if($is_in_link && $control_enabled && $is_source){
+    if($is_idea_link && $control_enabled && $is_source){
 
         //RIGHT EDITING:
         $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
@@ -993,7 +993,7 @@ function view_idea($in, $in_linked_id = 0, $is_parent = false, $is_source = fals
             $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[11020]['m_name'].'">'.$sources__12413[11020]['m_icon'].$next_ins[0]['total_ins'].'&nbsp;</div>';
 
             //TREE SIZE
-            $tree_size = ( isset($idea__metadata['in__metadata_max_steps']) && $idea__metadata['in__metadata_max_steps']>$next_ins[0]['total_ins'] ? intval($idea__metadata['in__metadata_max_steps']) : 0 );
+            $tree_size = ( isset($idea__metadata['idea__metadata_max_steps']) && $idea__metadata['idea__metadata_max_steps']>$next_ins[0]['total_ins'] ? intval($idea__metadata['idea__metadata_max_steps']) : 0 );
             if($tree_size){
                 $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[6170]['m_name'].'">'.$sources__12413[6170]['m_icon'].'&nbsp;'.$tree_size.'&nbsp;</div>';
             }
@@ -1095,7 +1095,7 @@ function view_idea_previous_read($idea__id, $recipient_en){
     //Reads
     $CI =& get_instance();
     $ui = null;
-    $in_level_up = 0;
+    $idea_level_up = 0;
     $previous_level_id = 0; //The ID of the Idea one level up
     $player_read_ids = $CI->READ_model->ids($recipient_en['source__id']);
     $read_list_ui = null;
@@ -1116,7 +1116,7 @@ function view_idea_previous_read($idea__id, $recipient_en){
             foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
                 foreach($grand_parent_ids as $parent_idea__id) {
 
-                    if($in_level_up==0){
+                    if($idea_level_up==0){
                         //Remember the first parent for the back button:
                         $previous_level_id = $parent_idea__id;
                     }
@@ -1127,7 +1127,7 @@ function view_idea_previous_read($idea__id, $recipient_en){
 
                     $completion_rate = $CI->READ_model->completion_progress($recipient_en['source__id'], $ins_this[0]);
 
-                    $in_level_up++;
+                    $idea_level_up++;
 
                     if ($parent_idea__id == $intersect) {
                         $read_list_ui .= view_idea_read($ins_this[0], null, false, $completion_rate);
@@ -1163,7 +1163,7 @@ function view_idea_previous_read($idea__id, $recipient_en){
         //Main Reads:
         if($read_list_ui){
 
-            $ui .= '<div class="main_reads_bottom hidden">';
+            $ui .= '<div class="focus_reads_bottom hidden">';
             $ui .= '<div class="list-group">';
             $ui .= $read_list_ui;
             $ui .= '</div>';
@@ -1183,13 +1183,13 @@ function view_idea_previous_read($idea__id, $recipient_en){
 }
 
 
-function view_idea_note_source($idea__id, $note_type_source__id, $in_notes, $is_source){
+function view_idea_note_source($idea__id, $note_type_source__id, $idea_notes, $is_source){
 
     $CI =& get_instance();
     $sources__11018 = $CI->config->item('sources__11018');
 
     $ui = '<div class="list-group">';
-    foreach($in_notes as $en) {
+    foreach($idea_notes as $en) {
         $ui .= view_source($en, false, null, true, $is_source);
     }
 
@@ -1203,14 +1203,14 @@ function view_idea_note_source($idea__id, $note_type_source__id, $in_notes, $is_
                            idea-id="' . $idea__id . '"
                            id="add-source-idea-' . $idea__id . '"
                            placeholder="'.$sources__11018[$note_type_source__id]['m_name'].'">
-                </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
+                </div><div class="algolia_pad_search hidden idea_pad_top"></div></div>';
     }
     $ui .= '</div>';
 
     return $ui;
 }
 
-function view_idea_note_mix($note_type_source__id, $in_notes, $is_source){
+function view_idea_note_mix($note_type_source__id, $idea_notes, $is_source){
 
     $CI =& get_instance();
     $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
@@ -1220,10 +1220,10 @@ function view_idea_note_mix($note_type_source__id, $in_notes, $is_source){
 
 
     //Show no-Message notifications for each message type:
-    $ui = '<div id="in_notes_list_'.$note_type_source__id.'" class="list-group">';
+    $ui = '<div id="idea_notes_list_'.$note_type_source__id.'" class="list-group">';
 
-    foreach($in_notes as $in_notes) {
-        $ui .= view_idea_notes($in_notes);
+    foreach($idea_notes as $idea_notes) {
+        $ui .= view_idea_notes($idea_notes);
     }
 
 
@@ -1236,7 +1236,7 @@ function view_idea_note_mix($note_type_source__id, $in_notes, $is_source){
 
 
 
-    $ui .= '<textarea onkeyup="in_notes_count_new('.$note_type_source__id.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $note_type_source__id . '" id="read__message' . $note_type_source__id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+    $ui .= '<textarea onkeyup="idea_notes_count_new('.$note_type_source__id.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $note_type_source__id . '" id="read__message' . $note_type_source__id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
@@ -1311,10 +1311,10 @@ function view_unauthorized_message($superpower_source__id = 0){
 }
 
 function view_time_range($metadata){
-    if(!isset($metadata['in__metadata_min_seconds']) || !isset($metadata['in__metadata_max_seconds'])){
+    if(!isset($metadata['idea__metadata_min_seconds']) || !isset($metadata['idea__metadata_max_seconds'])){
         return null;
     }
-    return '<span title="Estimated Read Time Of '.( $metadata['in__metadata_min_seconds'] < $metadata['in__metadata_max_seconds'] ? view_time_hours($metadata['in__metadata_min_seconds']).' - ' : '' ).view_time_hours($metadata['in__metadata_max_seconds']).'">'.view_time_hours(round(($metadata['in__metadata_min_seconds']+$metadata['in__metadata_max_seconds'])/2)).'</span>';
+    return '<span title="Estimated Read Time Of '.( $metadata['idea__metadata_min_seconds'] < $metadata['idea__metadata_max_seconds'] ? view_time_hours($metadata['idea__metadata_min_seconds']).' - ' : '' ).view_time_hours($metadata['idea__metadata_max_seconds']).'">'.view_time_hours(round(($metadata['idea__metadata_min_seconds']+$metadata['idea__metadata_max_seconds'])/2)).'</span>';
 }
 
 function view_time_hours($total_seconds, $hide_hour = false){
@@ -1340,12 +1340,12 @@ function view_idea_cover($in, $show_editor, $common_prefix = null, $completion_r
     //FIND IMAGE
     $recipient_en = superpower_assigned();
     $metadata = unserialize($in['idea__metadata']);
-    $idea_count = ( isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps']>=2 ? $metadata['in__metadata_max_steps']-1 : 0 );
-    $source_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 ) + ( isset($metadata['in__metadata_content']) ? count($metadata['in__metadata_content']) : 0 );
+    $idea_count = ( isset($metadata['idea__metadata_max_steps']) && $metadata['idea__metadata_max_steps']>=2 ? $metadata['idea__metadata_max_steps']-1 : 0 );
+    $source_count = ( isset($metadata['idea__metadata_experts']) ? count($metadata['idea__metadata_experts']) : 0 ) + ( isset($metadata['idea__metadata_content']) ? count($metadata['idea__metadata_content']) : 0 );
 
     $read_count = 0;
     /*
-    $all_steps = array_merge(array_flatten($metadata['in__metadata_common_steps']) , array_flatten($metadata['in__metadata_expansion_steps']));
+    $all_steps = array_merge(array_flatten($metadata['idea__metadata_common_steps']) , array_flatten($metadata['idea__metadata_expansion_steps']));
     $read_coins = $CI->READ_model->fetch(array(
         'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
@@ -1356,7 +1356,7 @@ function view_idea_cover($in, $show_editor, $common_prefix = null, $completion_r
 
 
 
-    $ui  = '<a href="/'.$in['idea__id'] . '" id="ap_in_'.$in['idea__id'].'" '.( isset($in['read__id']) ? ' sort-link-id="'.$in['read__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
+    $ui  = '<a href="/'.$in['idea__id'] . '" id="ap_idea_'.$in['idea__id'].'" '.( isset($in['read__id']) ? ' sort-link-id="'.$in['read__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
 
 
     $ui .= '<div class="cover-image">';
@@ -1371,7 +1371,7 @@ function view_idea_cover($in, $show_editor, $common_prefix = null, $completion_r
 
     $ui .= '<img src="'.idea_fetch_cover($in['idea__id']).'" />';
 
-    if($idea_count && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0){
+    if($idea_count && isset($metadata['idea__metadata_max_seconds']) && $metadata['idea__metadata_max_seconds']>0){
         $ui .= '<span class="media-info top-right">'.view_time_range($metadata).'</span>';
     }
 
@@ -1483,7 +1483,7 @@ function view_source($en, $is_parent = false, $extra_class = null, $control_enab
 
 
     //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_en_'.$en['source__id'].' en___' . $en['source__id'] . ( $read__id > 0 ? ' tr_' . $en['read__id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['source__id'] . '" en-status="' . $en['source__status'] . '" read__id="'.$read__id.'" ln-status="'.( $read__id ? $en['read__status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_source_'.$en['source__id'].' source___' . $en['source__id'] . ( $read__id > 0 ? ' tr_' . $en['read__id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $en['source__id'] . '" en-status="' . $en['source__status'] . '" read__id="'.$read__id.'" ln-status="'.( $read__id ? $en['read__status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1494,7 +1494,7 @@ function view_source($en, $is_parent = false, $extra_class = null, $control_enab
 
 
     //SOURCE ICON
-    $ui .= '<a href="/source/'.$en['source__id'] . '" '.( $is_link_source ? ' title="WEIGHT '.$en['source__weight'].' LINK ID '.$en['read__id'].' '.$sources__4592[$en['read__type']]['m_name'].' @'.$en['read__type'].'" ' : '' ).'><span class="icon-block en_ui_icon_' . $en['source__id'] . ' en__icon_'.$en['source__id'].'" en-is-set="'.( strlen($en['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($en['source__icon']) . '</span></a>';
+    $ui .= '<a href="/source/'.$en['source__id'] . '" '.( $is_link_source ? ' title="WEIGHT '.$en['source__weight'].' LINK ID '.$en['read__id'].' '.$sources__4592[$en['read__type']]['m_name'].' @'.$en['read__type'].'" ' : '' ).'><span class="icon-block source_ui_icon_' . $en['source__id'] . ' source__icon_'.$en['source__id'].'" en-is-set="'.( strlen($en['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($en['source__icon']) . '</span></a>';
 
 
     //SOURCE TOOLBAR?
@@ -1544,7 +1544,7 @@ function view_source($en, $is_parent = false, $extra_class = null, $control_enab
             }
 
             //Manage source link:
-            $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['source__id'] . ',' . $read__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+            $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="source_modify_load(' . $en['source__id'] . ',' . $read__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
 
 
         } elseif($is_source_only){
@@ -1575,7 +1575,7 @@ function view_source($en, $is_parent = false, $extra_class = null, $control_enab
     //PROFILE SOURCES:
     $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block hideIfEmpty">';
     foreach($source__profiles as $source_profile) {
-        $ui .= '<span class="icon-block-img en_child_icon_' . $source_profile['source__id'] . '"><a href="/source/' . $source_profile['source__id'] . '" data-toggle="tooltip" title="' . $source_profile['source__title'] . (strlen($source_profile['read__message']) > 0 ? ' = ' . $source_profile['read__message'] : '') . '" data-placement="bottom">' . view_source__icon($source_profile['source__icon']) . '</a></span> ';
+        $ui .= '<span class="icon-block-img source_child_icon_' . $source_profile['source__id'] . '"><a href="/source/' . $source_profile['source__id'] . '" data-toggle="tooltip" title="' . $source_profile['source__title'] . (strlen($source_profile['read__message']) > 0 ? ' = ' . $source_profile['read__message'] : '') . '" data-placement="bottom">' . view_source__icon($source_profile['source__icon']) . '</a></span> ';
     }
     $ui .= '</span>';
     $ui .= '</div>';
@@ -1619,18 +1619,18 @@ function view_input_text($cache_source__id, $current_value, $object__id, $is_sou
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
-    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block view_input_text_update text__'.$cache_source__id.'_'.$object__id.' texttype_'.($extra_large?'_lg':'_sm').' text_en_'.$cache_source__id.' '.$append_css.'" cache_source__id="'.$cache_source__id.'" object__id="'.$object__id.'" ';
+    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block view_input_text_update text__'.$cache_source__id.'_'.$object__id.' texttype_'.($extra_large?'_lg':'_sm').' text_source_'.$cache_source__id.' '.$append_css.'" cache_source__id="'.$cache_source__id.'" object__id="'.$object__id.'" ';
 
     //Also Append Counter to the end?
     if($extra_large){
 
-        $main_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="view_input_text_count('.$cache_source__id.','.$object__id.')" placeholder="'.$sources__12112[$cache_source__id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        $focus_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="view_input_text_count('.$cache_source__id.','.$object__id.')" placeholder="'.$sources__12112[$cache_source__id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
         $character_counter = '<div class="title_counter title_counter_'.$cache_source__id.'_'.$object__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_source__id.'_'.$object__id.'">0</span>/'.config_var($cache_source__id).' CHARACTERS</div>';
         $icon = '<span class="icon-block title-icon">'.( $source__icon ? $source__icon : $sources__12112[4535]['m_icon'] ).'</span>';
 
     } else {
 
-        $main_element = '<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
+        $focus_element = '<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
         $character_counter = ''; //None
         if(in_array($cache_source__id, $CI->config->item('sources_id_12420'))){ //IDEA TEXT INPUT SHOW ICON
             $icon = '<span class="icon-block">'.( $source__icon ? $source__icon : $sources__12112[$cache_source__id]['m_icon'] ).'</span>';
@@ -1640,7 +1640,7 @@ function view_input_text($cache_source__id, $current_value, $object__id, $is_sou
 
     }
 
-    return '<span class="span__'.$cache_source__id.' '.( !$is_source ? 'edit-locked' : '' ).'" '.( $extra_large ? '' : 'data-toggle="tooltip" data-placement="top" title="'.$sources__12112[$cache_source__id]['m_name'].'"').'>'.$icon.$main_element.'</span>'.$character_counter;
+    return '<span class="span__'.$cache_source__id.' '.( !$is_source ? 'edit-locked' : '' ).'" '.( $extra_large ? '' : 'data-toggle="tooltip" data-placement="top" title="'.$sources__12112[$cache_source__id]['m_name'].'"').'>'.$icon.$focus_element.'</span>'.$character_counter;
 }
 
 

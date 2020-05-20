@@ -164,13 +164,13 @@ class Read extends CI_Controller
         } elseif (!$detected_read_type['status'] && isset($detected_read_type['url_previously_existed']) && $detected_read_type['url_previously_existed']) {
 
             //See if this is duplicate to either link:
-            $en_lns = $this->READ_model->fetch(array(
+            $source_lns = $this->READ_model->fetch(array(
                 'read__id' => $_POST['read__id'],
                 'read__type IN (' . join(',', $this->config->item('sources_id_4537')) . ')' => null, //Player URL Links
             ));
 
             //Are they both different?
-            if (count($en_lns) < 1 || ($en_lns[0]['read__up'] != $detected_read_type['en_url']['source__id'] && $en_lns[0]['read__down'] != $detected_read_type['en_url']['source__id'])) {
+            if (count($source_lns) < 1 || ($source_lns[0]['read__up'] != $detected_read_type['source_url']['source__id'] && $source_lns[0]['read__down'] != $detected_read_type['source_url']['source__id'])) {
                 //return error:
                 return view_json($detected_read_type);
             }
@@ -182,7 +182,7 @@ class Read extends CI_Controller
         return view_json(array(
             'status' => 1,
             'html_ui' => '<b class="montserrat doupper '.extract_icon_color($sources__4592[$detected_read_type['read__type']]['m_icon']).'">' . $sources__4592[$detected_read_type['read__type']]['m_icon'] . ' ' . $sources__4592[$detected_read_type['read__type']]['m_name'] . '</b>',
-            'en_link_preview' => ( in_array($detected_read_type['read__type'], $this->config->item('sources_id_12524')) ? '<span class="paddingup inline-block">'.view_read__message($_POST['read__message'], $detected_read_type['read__type']).'</span>' : ''),
+            'source_link_preview' => ( in_array($detected_read_type['read__type'], $this->config->item('sources_id_12524')) ? '<span class="paddingup inline-block">'.view_read__message($_POST['read__message'], $detected_read_type['read__type']).'</span>' : ''),
         ));
 
     }
@@ -807,7 +807,7 @@ class Read extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['in_loaded_id'])) {
+        } elseif (!isset($_POST['idea_loaded_id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea id.',
@@ -820,7 +820,7 @@ class Read extends CI_Controller
         }
 
         //Save answer:
-        return view_json($this->READ_model->answer($session_en['source__id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
+        return view_json($this->READ_model->answer($session_en['source__id'], $_POST['idea_loaded_id'], $_POST['answered_ins']));
 
     }
 

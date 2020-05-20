@@ -10,40 +10,40 @@ $this_attempt = array(
     'read__left' => $referrer_idea__id,
 );
 
-$current_sign_in_attempt = array(); //Will try to find this...
-$current_sign_in_attempts = $this->session->userdata('sign_in_attempts');
-if(is_array($current_sign_in_attempts) && count($current_sign_in_attempts) > 0){
+$current_sign_idea_attempt = array(); //Will try to find this...
+$current_sign_idea_attempts = $this->session->userdata('sign_idea_attempts');
+if(is_array($current_sign_idea_attempts) && count($current_sign_idea_attempts) > 0){
     //See if any of the current sign-in attempts match this:
-    foreach($current_sign_in_attempts as $sign_in_attempt){
+    foreach($current_sign_idea_attempts as $sign_idea_attempt){
         $all_match = true;
-        foreach(array('read__left') as $sign_in_attempt_field){
-            if(intval($this_attempt[$sign_in_attempt_field]) != intval($sign_in_attempt[$sign_in_attempt_field])){
+        foreach(array('read__left') as $sign_idea_attempt_field){
+            if(intval($this_attempt[$sign_idea_attempt_field]) != intval($sign_idea_attempt[$sign_idea_attempt_field])){
                 $all_match = false;
                 break;
             }
         }
         if($all_match){
             //We found a match!
-            $current_sign_in_attempt = $sign_in_attempt;
+            $current_sign_idea_attempt = $sign_idea_attempt;
             break;
         }
     }
 } else {
-    $current_sign_in_attempts = array();
+    $current_sign_idea_attempts = array();
 }
 
 
 //See what to do based on current matches:
-if(count($current_sign_in_attempt) == 0){
+if(count($current_sign_idea_attempt) == 0){
 
     //Log link:
-    $current_sign_in_attempt = $this->READ_model->create($this_attempt);
+    $current_sign_idea_attempt = $this->READ_model->create($this_attempt);
 
     //Grow the array:
-    array_push($current_sign_in_attempts, $current_sign_in_attempt);
+    array_push($current_sign_idea_attempts, $current_sign_idea_attempt);
 
     //Add this sign-in attempt to session:
-    $this->session->set_userdata(array('sign_in_attempts' => $current_sign_in_attempts));
+    $this->session->set_userdata(array('sign_idea_attempts' => $current_sign_idea_attempts));
 
 }
 ?>
@@ -83,14 +83,14 @@ if(count($current_sign_in_attempt) == 0){
         <div id="step3" class="signup-steps hidden">
 
             <!-- To be updated to >0 IF email was found -->
-            <input type="hidden" id="login_source__id" value="0" />
+            <input type="hidden" id="sign_source__id" value="0" />
 
             <span class="montserrat"><?= $sources__4269[3286]['m_icon'].' '.$sources__4269[3286]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="read margin-top-down hideIfEmpty"></div>
             <span id="step3buttons">
                 <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source transparent btn-raised  btn-circle" title="<?= $sources__11035[12991]['m_name'] ?>"><?= $sources__11035[12991]['m_icon'] ?></a>
-                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle" title="<?= $sources__11035[12211]['m_name'] ?>"><?= $sources__11035[12211]['m_icon'] ?></a>
+                <a href="javascript:void(0)" onclick="sign_check_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle" title="<?= $sources__11035[12211]['m_name'] ?>"><?= $sources__11035[12211]['m_icon'] ?></a>
             </span>
 
             <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="magicemail()" class="dounderline"><?= $sources__11035[11068]['m_name'] ?></a> <?= $sources__11035[11068]['m_icon'] ?></span>

@@ -220,7 +220,7 @@ class IDEA_model extends CI_Model
                 'read__right' => $id,
                 'read__type' => 4246, //Platform Bug Reports
                 'read__source' => $read__source,
-                'read__message' => 'in_update() Failed to update',
+                'read__message' => 'update() Failed to update',
                 'read__metadata' => array(
                     'input' => $update_columns,
                 ),
@@ -248,14 +248,14 @@ class IDEA_model extends CI_Model
 
 
         //REMOVE NOTES:
-        $in_notes = $this->READ_model->fetch(array( //Idea Links
+        $idea_notes = $this->READ_model->fetch(array( //Idea Links
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
             'read__right' => $idea__id,
         ), array(), 0);
-        foreach($in_notes as $in_note){
+        foreach($idea_notes as $idea_note){
             //Delete this link:
-            $links_deleted += $this->READ_model->update($in_note['read__id'], array(
+            $links_deleted += $this->READ_model->update($idea_note['read__id'], array(
                 'read__status' => 6173, //Link Deleted
             ), $read__source, 10686 /* Idea Link Unpublished */);
         }
@@ -319,7 +319,7 @@ class IDEA_model extends CI_Model
         return $stats;
     }
 
-    function link_or_create($idea__title, $read__source, $link_to_idea__id = 0, $is_parent = false, $new_in_status = 6184, $idea__type = 6677 /* Idea Read-Only */, $link_idea__id = 0)
+    function link_or_create($idea__title, $read__source, $link_to_idea__id = 0, $is_parent = false, $new_idea_status = 6184, $idea__type = 6677 /* Idea Read-Only */, $link_idea__id = 0)
     {
 
         /*
@@ -412,7 +412,7 @@ class IDEA_model extends CI_Model
             }
 
             //All good so far, continue with linking:
-            $in_new = $ins[0];
+            $idea_new = $ins[0];
 
             //Make sure this is not a duplicate Idea for its parent:
             $dup_links = $this->READ_model->fetch(array(
@@ -428,7 +428,7 @@ class IDEA_model extends CI_Model
                 //Ooopsi, this is a duplicate!
                 return array(
                     'status' => 0,
-                    'message' => '[' . $in_new['idea__title'] . '] is previously linked here.',
+                    'message' => '[' . $idea_new['idea__title'] . '] is previously linked here.',
                 );
 
             } elseif ($link_to_idea__id > 0 && $link_idea__id == $link_to_idea__id) {
@@ -436,7 +436,7 @@ class IDEA_model extends CI_Model
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $in_new['idea__title'] . '" as its own '.( $is_parent ? 'previous' : 'next' ).' idea.',
+                    'message' => 'You cannot add "' . $idea_new['idea__title'] . '" as its own '.( $is_parent ? 'previous' : 'next' ).' idea.',
                 );
 
             }
@@ -454,10 +454,10 @@ class IDEA_model extends CI_Model
 
 
             //Create new Idea:
-            $in_new = $this->IDEA_model->create(array(
-                'idea__title' => $idea__title_validation['in_clean_title'],
+            $idea_new = $this->IDEA_model->create(array(
+                'idea__title' => $idea__title_validation['idea_clean_title'],
                 'idea__type' => $idea__type,
-                'idea__status' => $new_in_status,
+                'idea__status' => $new_idea_status,
             ), $read__source);
 
         }
@@ -470,37 +470,37 @@ class IDEA_model extends CI_Model
                 'read__source' => $read__source,
                 'read__type' => 4228, //Idea Link Regular Reads
                 ( $is_parent ? 'read__right' : 'read__left' ) => $link_to_idea__id,
-                ( $is_parent ? 'read__left' : 'read__right' ) => $in_new['idea__id'],
+                ( $is_parent ? 'read__left' : 'read__right' ) => $idea_new['idea__id'],
                 'read__sort' => 1 + $this->READ_model->max_order(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                         'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-                        'read__left' => ( $is_parent ? $in_new['idea__id'] : $link_to_idea__id ),
+                        'read__left' => ( $is_parent ? $idea_new['idea__id'] : $link_to_idea__id ),
                     )),
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the view_idea() function
             $new_ins = $this->READ_model->fetch(array(
                 ( $is_parent ? 'read__right' : 'read__left' ) => $link_to_idea__id,
-                ( $is_parent ? 'read__left' : 'read__right' ) => $in_new['idea__id'],
+                ( $is_parent ? 'read__left' : 'read__right' ) => $idea_new['idea__id'],
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             ), array(($is_parent ? 'idea_previous' : 'idea_next')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $child_in_html = view_idea($new_ins[0], $link_to_idea__id, $is_parent, true /* Since they added it! */);
+            $child_idea_html = view_idea($new_ins[0], $link_to_idea__id, $is_parent, true /* Since they added it! */);
 
         } else {
 
-            $child_in_html = null;
+            $child_idea_html = null;
 
         }
 
         //Return result:
         return array(
             'status' => 1,
-            'new_idea__id' => $in_new['idea__id'],
-            'in_child_html' => $child_in_html,
+            'new_idea__id' => $idea_new['idea__id'],
+            'idea_next_html' => $child_idea_html,
         );
 
     }
@@ -518,10 +518,10 @@ class IDEA_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7359' : 'sources_id_7360'))) . ')' => null,
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__right' => $idea__id,
-        ), array('idea_previous')) as $in_parent) {
+        ), array('idea_previous')) as $idea_previous) {
 
             //Prep ID:
-            $p_id = intval($in_parent['idea__id']);
+            $p_id = intval($idea_previous['idea__id']);
 
             //Add to appropriate array:
             if (!$first_level) {
@@ -613,10 +613,10 @@ class IDEA_model extends CI_Model
         $select_some_children = array(); //To be populated only if $focus_in is select some
         $conditional_steps = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
-            '__in__metadata_common_steps' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__in__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an Reads idea by answering OR ideas
-            '__in__metadata_expansion_some' => array(), //Ideas that allows players to select one or more
-            '__in__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an Reads idea via Conditional Idea links
+            '__idea__metadata_common_steps' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
+            '__idea__metadata_expansion_steps' => array(), //Ideas that may exist as a link to expand an Reads idea by answering OR ideas
+            '__idea__metadata_expansion_some' => array(), //Ideas that allows players to select one or more
+            '__idea__metadata_expansion_conditional' => array(), //Ideas that may exist as a link to expand an Reads idea via Conditional Idea links
         );
 
         //Fetch children:
@@ -646,36 +646,36 @@ class IDEA_model extends CI_Model
             } else {
 
                 //AND parent Idea with Fixed Idea Link:
-                array_push($metadata_this['__in__metadata_common_steps'], intval($child_in['idea__id']));
+                array_push($metadata_this['__idea__metadata_common_steps'], intval($child_in['idea__id']));
 
                 //Go recursively down:
                 $child_recursion = $this->IDEA_model->metadata_common_base($child_in);
 
 
                 //Aggregate recursion data:
-                if(count($child_recursion['__in__metadata_common_steps']) > 0){
-                    array_push($metadata_this['__in__metadata_common_steps'], $child_recursion['__in__metadata_common_steps']);
+                if(count($child_recursion['__idea__metadata_common_steps']) > 0){
+                    array_push($metadata_this['__idea__metadata_common_steps'], $child_recursion['__idea__metadata_common_steps']);
                 }
 
                 //Merge expansion steps:
-                if(count($child_recursion['__in__metadata_expansion_steps']) > 0){
-                    foreach($child_recursion['__in__metadata_expansion_steps'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__in__metadata_expansion_steps'])){
-                            $metadata_this['__in__metadata_expansion_steps'][$key] = $value;
+                if(count($child_recursion['__idea__metadata_expansion_steps']) > 0){
+                    foreach($child_recursion['__idea__metadata_expansion_steps'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__idea__metadata_expansion_steps'])){
+                            $metadata_this['__idea__metadata_expansion_steps'][$key] = $value;
                         }
                     }
                 }
-                if(count($child_recursion['__in__metadata_expansion_some']) > 0){
-                    foreach($child_recursion['__in__metadata_expansion_some'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__in__metadata_expansion_some'])){
-                            $metadata_this['__in__metadata_expansion_some'][$key] = $value;
+                if(count($child_recursion['__idea__metadata_expansion_some']) > 0){
+                    foreach($child_recursion['__idea__metadata_expansion_some'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__idea__metadata_expansion_some'])){
+                            $metadata_this['__idea__metadata_expansion_some'][$key] = $value;
                         }
                     }
                 }
-                if(count($child_recursion['__in__metadata_expansion_conditional']) > 0){
-                    foreach($child_recursion['__in__metadata_expansion_conditional'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__in__metadata_expansion_conditional'])){
-                            $metadata_this['__in__metadata_expansion_conditional'][$key] = $value;
+                if(count($child_recursion['__idea__metadata_expansion_conditional']) > 0){
+                    foreach($child_recursion['__idea__metadata_expansion_conditional'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__idea__metadata_expansion_conditional'])){
+                            $metadata_this['__idea__metadata_expansion_conditional'][$key] = $value;
                         }
                     }
                 }
@@ -685,13 +685,13 @@ class IDEA_model extends CI_Model
 
         //Was this an OR branch that needs it's children added to the array?
         if($select_one && count($select_one_children) > 0){
-            $metadata_this['__in__metadata_expansion_steps'][$focus_in['idea__id']] = $select_one_children;
+            $metadata_this['__idea__metadata_expansion_steps'][$focus_in['idea__id']] = $select_one_children;
         }
         if($select_some && count($select_some_children) > 0){
-            $metadata_this['__in__metadata_expansion_some'][$focus_in['idea__id']] = $select_some_children;
+            $metadata_this['__idea__metadata_expansion_some'][$focus_in['idea__id']] = $select_some_children;
         }
         if(count($conditional_steps) > 0){
-            $metadata_this['__in__metadata_expansion_conditional'][$focus_in['idea__id']] = $conditional_steps;
+            $metadata_this['__idea__metadata_expansion_conditional'][$focus_in['idea__id']] = $conditional_steps;
         }
 
 
@@ -699,17 +699,17 @@ class IDEA_model extends CI_Model
         if($is_first_in){
 
             //Make sure to add main idea to common idea:
-            if(count($metadata_this['__in__metadata_common_steps']) > 0){
-                $metadata_this['__in__metadata_common_steps'] = array_merge( array(intval($focus_in['idea__id'])) , array($metadata_this['__in__metadata_common_steps']));
+            if(count($metadata_this['__idea__metadata_common_steps']) > 0){
+                $metadata_this['__idea__metadata_common_steps'] = array_merge( array(intval($focus_in['idea__id'])) , array($metadata_this['__idea__metadata_common_steps']));
             } else {
-                $metadata_this['__in__metadata_common_steps'] = array(intval($focus_in['idea__id']));
+                $metadata_this['__idea__metadata_common_steps'] = array(intval($focus_in['idea__id']));
             }
 
             update_metadata('in', $focus_in['idea__id'], array(
-                'in__metadata_common_steps' => $metadata_this['__in__metadata_common_steps'],
-                'in__metadata_expansion_steps' => $metadata_this['__in__metadata_expansion_steps'],
-                'in__metadata_expansion_some' => $metadata_this['__in__metadata_expansion_some'],
-                'in__metadata_expansion_conditional' => $metadata_this['__in__metadata_expansion_conditional'],
+                'idea__metadata_common_steps' => $metadata_this['__idea__metadata_common_steps'],
+                'idea__metadata_expansion_steps' => $metadata_this['__idea__metadata_expansion_steps'],
+                'idea__metadata_expansion_some' => $metadata_this['__idea__metadata_expansion_some'],
+                'idea__metadata_expansion_conditional' => $metadata_this['__idea__metadata_expansion_conditional'],
             ));
 
         }
@@ -767,14 +767,14 @@ class IDEA_model extends CI_Model
 
                 //Check if it hs this item:
                 $source__profile_id = intval(one_two_explode('@',' ',$action_command1));
-                $in_has_sources = $this->READ_model->fetch(array(
+                $idea_has_sources = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'read__right' => $in['idea__id'],
                     'read__up' => $source__profile_id,
                 ));
 
-                if($action_source__id==12591 && !count($in_has_sources)){
+                if($action_source__id==12591 && !count($idea_has_sources)){
 
                     //Missing & Must be Added:
                     $this->READ_model->create(array(
@@ -787,10 +787,10 @@ class IDEA_model extends CI_Model
 
                     $applied_success++;
 
-                } elseif($action_source__id==12592 && count($in_has_sources)){
+                } elseif($action_source__id==12592 && count($idea_has_sources)){
 
                     //Has and must be deleted:
-                    $this->READ_model->update($in_has_sources[0]['read__id'], array(
+                    $this->READ_model->update($idea_has_sources[0]['read__id'], array(
                         'read__status' => 6173,
                     ), $read__source, 10678 /* IDEA NOTES Unpublished */);
 
@@ -847,8 +847,8 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__left' => $idea__id,
-        ), array('idea_next'), 0, 0, array(), 'idea__id, idea__weight') as $in_child){
-            $total_child_weights += $in_child['idea__weight'] + $this->IDEA_model->weight($in_child['idea__id']);
+        ), array('idea_next'), 0, 0, array(), 'idea__id, idea__weight') as $idea_next){
+            $total_child_weights += $idea_next['idea__weight'] + $this->IDEA_model->weight($idea_next['idea__id']);
         }
 
         //Update This Level:
@@ -875,12 +875,12 @@ class IDEA_model extends CI_Model
          * */
 
         $metadata_this = array(
-            '__in__metadata_min_steps' => 1,
-            '__in__metadata_max_steps' => 1,
-            '__in__metadata_min_seconds' => $in['idea__duration'],
-            '__in__metadata_max_seconds' => $in['idea__duration'],
-            '__in__metadata_experts' => array(),
-            '__in__metadata_content' => array(),
+            '__idea__metadata_min_steps' => 1,
+            '__idea__metadata_max_steps' => 1,
+            '__idea__metadata_min_seconds' => $in['idea__duration'],
+            '__idea__metadata_max_seconds' => $in['idea__duration'],
+            '__idea__metadata_experts' => array(),
+            '__idea__metadata_content' => array(),
         );
 
 
@@ -896,26 +896,26 @@ class IDEA_model extends CI_Model
             $source_metadat_experts = $this->SOURCE_model->metadat_experts($en);
 
             //CONTENT CHANNELS
-            foreach($source_metadat_experts['__in__metadata_content'] as $source__id => $source_en) {
-                if (!isset($metadata_this['__in__metadata_content'][$source__id])) {
-                    $metadata_this['__in__metadata_content'][$source__id] = $source_en;
+            foreach($source_metadat_experts['__idea__metadata_content'] as $source__id => $source_en) {
+                if (!isset($metadata_this['__idea__metadata_content'][$source__id])) {
+                    $metadata_this['__idea__metadata_content'][$source__id] = $source_en;
                 }
             }
 
             //EXPERT PEOPLE/ORGANIZATIONS
-            foreach($source_metadat_experts['__in__metadata_experts'] as $source__id => $expert_en) {
-                if (!isset($metadata_this['__in__metadata_experts'][$source__id])) {
-                    $metadata_this['__in__metadata_experts'][$source__id] = $expert_en;
+            foreach($source_metadat_experts['__idea__metadata_experts'] as $source__id => $expert_en) {
+                if (!isset($metadata_this['__idea__metadata_experts'][$source__id])) {
+                    $metadata_this['__idea__metadata_experts'][$source__id] = $expert_en;
                 }
             }
         }
 
 
         $metadata_local = array(
-            'local__in__metadata_min_steps'=> null,
-            'local__in__metadata_max_steps'=> null,
-            'local__in__metadata_min_seconds'=> null,
-            'local__in__metadata_max_seconds'=> null,
+            'local__idea__metadata_min_steps'=> null,
+            'local__idea__metadata_max_steps'=> null,
+            'local__idea__metadata_min_seconds'=> null,
+            'local__idea__metadata_max_seconds'=> null,
         );
 
         //NEXT IDEAS
@@ -938,19 +938,19 @@ class IDEA_model extends CI_Model
                 //ONE
 
                 //MIN
-                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
-                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
+                if(is_null($metadata_local['local__idea__metadata_min_steps']) || $metadata_recursion['__idea__metadata_min_steps'] < $metadata_local['local__idea__metadata_min_steps']){
+                    $metadata_local['local__idea__metadata_min_steps'] = $metadata_recursion['__idea__metadata_min_steps'];
                 }
-                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
-                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
+                if(is_null($metadata_local['local__idea__metadata_min_seconds']) || $metadata_recursion['__idea__metadata_min_seconds'] < $metadata_local['local__idea__metadata_min_seconds']){
+                    $metadata_local['local__idea__metadata_min_seconds'] = $metadata_recursion['__idea__metadata_min_seconds'];
                 }
 
                 //MAX
-                if(is_null($metadata_local['local__in__metadata_max_steps']) || $metadata_recursion['__in__metadata_max_steps'] > $metadata_local['local__in__metadata_max_steps']){
-                    $metadata_local['local__in__metadata_max_steps'] = $metadata_recursion['__in__metadata_max_steps'];
+                if(is_null($metadata_local['local__idea__metadata_max_steps']) || $metadata_recursion['__idea__metadata_max_steps'] > $metadata_local['local__idea__metadata_max_steps']){
+                    $metadata_local['local__idea__metadata_max_steps'] = $metadata_recursion['__idea__metadata_max_steps'];
                 }
-                if(is_null($metadata_local['local__in__metadata_max_seconds']) || $metadata_recursion['__in__metadata_max_seconds'] > $metadata_local['local__in__metadata_max_seconds']){
-                    $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
+                if(is_null($metadata_local['local__idea__metadata_max_seconds']) || $metadata_recursion['__idea__metadata_max_seconds'] > $metadata_local['local__idea__metadata_max_seconds']){
+                    $metadata_local['local__idea__metadata_max_seconds'] = $metadata_recursion['__idea__metadata_max_seconds'];
                 }
 
             } elseif(in_array($in['idea__type'], $this->config->item('sources_id_12884'))){
@@ -958,70 +958,70 @@ class IDEA_model extends CI_Model
                 //SOME
 
                 //MIN
-                if(is_null($metadata_local['local__in__metadata_min_steps']) || $metadata_recursion['__in__metadata_min_steps'] < $metadata_local['local__in__metadata_min_steps']){
-                    $metadata_local['local__in__metadata_min_steps'] = $metadata_recursion['__in__metadata_min_steps'];
+                if(is_null($metadata_local['local__idea__metadata_min_steps']) || $metadata_recursion['__idea__metadata_min_steps'] < $metadata_local['local__idea__metadata_min_steps']){
+                    $metadata_local['local__idea__metadata_min_steps'] = $metadata_recursion['__idea__metadata_min_steps'];
                 }
-                if(is_null($metadata_local['local__in__metadata_min_seconds']) || $metadata_recursion['__in__metadata_min_seconds'] < $metadata_local['local__in__metadata_min_seconds']){
-                    $metadata_local['local__in__metadata_min_seconds'] = $metadata_recursion['__in__metadata_min_seconds'];
+                if(is_null($metadata_local['local__idea__metadata_min_seconds']) || $metadata_recursion['__idea__metadata_min_seconds'] < $metadata_local['local__idea__metadata_min_seconds']){
+                    $metadata_local['local__idea__metadata_min_seconds'] = $metadata_recursion['__idea__metadata_min_seconds'];
                 }
 
                 //MAX
-                $metadata_this['__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
-                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
+                $metadata_this['__idea__metadata_max_steps'] += intval($metadata_recursion['__idea__metadata_max_steps']);
+                $metadata_this['__idea__metadata_max_seconds'] += intval($metadata_recursion['__idea__metadata_max_seconds']);
 
             } else {
 
                 //ALL
 
                 //MIN
-                $metadata_this['__in__metadata_min_steps'] += intval($metadata_recursion['__in__metadata_min_steps']);
-                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_recursion['__in__metadata_min_seconds']);
+                $metadata_this['__idea__metadata_min_steps'] += intval($metadata_recursion['__idea__metadata_min_steps']);
+                $metadata_this['__idea__metadata_min_seconds'] += intval($metadata_recursion['__idea__metadata_min_seconds']);
 
                 //MAX
-                $metadata_this['__in__metadata_max_steps'] += intval($metadata_recursion['__in__metadata_max_steps']);
-                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_recursion['__in__metadata_max_seconds']);
+                $metadata_this['__idea__metadata_max_steps'] += intval($metadata_recursion['__idea__metadata_max_steps']);
+                $metadata_this['__idea__metadata_max_seconds'] += intval($metadata_recursion['__idea__metadata_max_seconds']);
 
             }
 
 
             //EXPERT CONTENT
-            foreach($metadata_recursion['__in__metadata_content'] as $source__id => $source_en) {
-                if (!isset($metadata_this['__in__metadata_content'][$source__id])) {
-                    $metadata_this['__in__metadata_content'][$source__id] = $source_en;
+            foreach($metadata_recursion['__idea__metadata_content'] as $source__id => $source_en) {
+                if (!isset($metadata_this['__idea__metadata_content'][$source__id])) {
+                    $metadata_this['__idea__metadata_content'][$source__id] = $source_en;
                 }
             }
 
             //EXPERT PEOPLE/ORGANIZATIONS
-            foreach($metadata_recursion['__in__metadata_experts'] as $source__id => $expert_en) {
-                if (!isset($metadata_this['__in__metadata_experts'][$source__id])) {
-                    $metadata_this['__in__metadata_experts'][$source__id] = $expert_en;
+            foreach($metadata_recursion['__idea__metadata_experts'] as $source__id => $expert_en) {
+                if (!isset($metadata_this['__idea__metadata_experts'][$source__id])) {
+                    $metadata_this['__idea__metadata_experts'][$source__id] = $expert_en;
                 }
             }
         }
 
 
         //ADD LOCAL MIN/MAX
-        if(!is_null($metadata_local['local__in__metadata_min_steps'])){
-            $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
+        if(!is_null($metadata_local['local__idea__metadata_min_steps'])){
+            $metadata_this['__idea__metadata_min_steps'] += intval($metadata_local['local__idea__metadata_min_steps']);
         }
-        if(!is_null($metadata_local['local__in__metadata_max_steps'])){
-            $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
+        if(!is_null($metadata_local['local__idea__metadata_max_steps'])){
+            $metadata_this['__idea__metadata_max_steps'] += intval($metadata_local['local__idea__metadata_max_steps']);
         }
-        if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
-            $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
+        if(!is_null($metadata_local['local__idea__metadata_min_seconds'])){
+            $metadata_this['__idea__metadata_min_seconds'] += intval($metadata_local['local__idea__metadata_min_seconds']);
         }
-        if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
-            $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
+        if(!is_null($metadata_local['local__idea__metadata_max_seconds'])){
+            $metadata_this['__idea__metadata_max_seconds'] += intval($metadata_local['local__idea__metadata_max_seconds']);
         }
 
         //Save to DB
         update_metadata('in', $in['idea__id'], array(
-            'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
-            'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
-            'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
-            'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-            'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
-            'in__metadata_content' => $metadata_this['__in__metadata_content'],
+            'idea__metadata_min_steps' => intval($metadata_this['__idea__metadata_min_steps']),
+            'idea__metadata_max_steps' => intval($metadata_this['__idea__metadata_max_steps']),
+            'idea__metadata_min_seconds' => intval($metadata_this['__idea__metadata_min_seconds']),
+            'idea__metadata_max_seconds' => intval($metadata_this['__idea__metadata_max_seconds']),
+            'idea__metadata_experts' => $metadata_this['__idea__metadata_experts'],
+            'idea__metadata_content' => $metadata_this['__idea__metadata_content'],
         ));
 
         //Return data:
@@ -1055,9 +1055,9 @@ class IDEA_model extends CI_Model
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__right' => $in['idea__id'],
             'idea__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
-        ), array('idea_previous'), 0) as $in_or_parent){
-            if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $in_or_parent['idea__id'])) {
-                array_push($child_unlock_paths, $in_or_parent);
+        ), array('idea_previous'), 0) as $idea_or_parent){
+            if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $idea_or_parent['idea__id'])) {
+                array_push($child_unlock_paths, $idea_or_parent);
             }
         }
 
@@ -1068,16 +1068,16 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
             'read__right' => $in['idea__id'],
-        ), array('idea_previous'), 0) as $in_locked_parent){
-            if(idea_is_unlockable($in_locked_parent)){
+        ), array('idea_previous'), 0) as $idea_locked_parent){
+            if(idea_is_unlockable($idea_locked_parent)){
                 //Need to check recursively:
-                foreach($this->IDEA_model->unlock_paths($in_locked_parent) as $locked_path){
+                foreach($this->IDEA_model->unlock_paths($idea_locked_parent) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $locked_path['idea__id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }
                 }
-            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $in_locked_parent['idea__id'])) {
-                array_push($child_unlock_paths, $in_locked_parent);
+            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $idea_locked_parent['idea__id'])) {
+                array_push($child_unlock_paths, $idea_locked_parent);
             }
         }
 

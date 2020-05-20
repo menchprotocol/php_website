@@ -113,10 +113,10 @@ foreach($this->READ_model->fetch($subscriber_filters, array('source_portfolio'))
         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
         'read__up' => 3288, //Mench Email
         'read__down' => $subscribed_player['source__id'],
-    )) as $en_email){
-        if(filter_var($en_email['read__message'], FILTER_VALIDATE_EMAIL)){
+    )) as $source_email){
+        if(filter_var($source_email['read__message'], FILTER_VALIDATE_EMAIL)){
             //Send Email
-            $this->READ_model->send_email(array($en_email['read__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['source__title']).' 👋</div>'.$html_message);
+            $this->READ_model->send_email(array($source_email['read__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['source__title']).' 👋</div>'.$html_message);
             $email_recipients++;
         }
     }

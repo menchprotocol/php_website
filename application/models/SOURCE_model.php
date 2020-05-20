@@ -445,31 +445,31 @@ class SOURCE_model extends CI_Model
 
 
         //Analyze domain:
-        $domain_analysis = analyze_domain($url);
+        $url_analysis = analyze_domain($url);
         $domaidea_previously_existed = 0; //Assume false
         $source_domain = false; //Have an empty placeholder:
 
 
         //Check to see if we have domain linked previously:
-        $domain_links = $this->READ_model->fetch(array(
+        $url_links = $this->READ_model->fetch(array(
             'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
             'read__up' => 1326, //Domain Player
-            'read__message' => $domain_analysis['url_clean_domain'],
+            'read__message' => $url_analysis['url_clean_domain'],
         ), array('source_portfolio'));
 
 
         //Do we need to create an source for this domain?
-        if (count($domain_links) > 0) {
+        if (count($url_links) > 0) {
 
             $domaidea_previously_existed = 1;
-            $source_domain = $domain_links[0];
+            $source_domain = $url_links[0];
 
         } elseif ($read__source) {
 
             //Yes, let's add a new source:
-            $added_en = $this->SOURCE_model->verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $read__source, 6181, detect_fav_icon($domain_analysis['url_clean_domain']));
+            $added_en = $this->SOURCE_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $read__source, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
             $source_domain = $added_en['en'];
 
             //And link source to the domains source:
@@ -478,14 +478,14 @@ class SOURCE_model extends CI_Model
                 'read__type' => 4256, //Generic URL (Domains are always generic)
                 'read__up' => 1326, //Domain Player
                 'read__down' => $source_domain['source__id'],
-                'read__message' => $domain_analysis['url_clean_domain'],
+                'read__message' => $url_analysis['url_clean_domain'],
             ));
 
         }
 
 
         //Return data:
-        return array_merge( $domain_analysis , array(
+        return array_merge( $url_analysis , array(
             'status' => 1,
             'message' => 'Success',
             'domaidea_previously_existed' => $domaidea_previously_existed,
@@ -555,8 +555,8 @@ class SOURCE_model extends CI_Model
         //Goes through $max_search_levels of sources to find expert channels, people & organizations
         $max_search_levels = 3;
         $metadata_this = array(
-            '__in__metadata_experts' => array(),
-            '__in__metadata_content' => array(),
+            '__idea__metadata_experts' => array(),
+            '__idea__metadata_content' => array(),
         );
 
         //SOURCE PROFILE
@@ -570,14 +570,14 @@ class SOURCE_model extends CI_Model
             if(in_array($source__profile['source__id'], $this->config->item('sources_id_3000'))){
                 //CONTENT CHANNELS
                 $en['read__message'] = $source__profile['read__message']; //Update Description
-                if (!isset($metadata_this['__in__metadata_content'][$en['source__id']])) {
-                    $metadata_this['__in__metadata_content'][$en['source__id']] = $en;
+                if (!isset($metadata_this['__idea__metadata_content'][$en['source__id']])) {
+                    $metadata_this['__idea__metadata_content'][$en['source__id']] = $en;
                 }
             } elseif(in_array($source__profile['source__id'], $this->config->item('sources_id_12864'))) {
                 //EXPERT PEOPLE/ORGANIZATIONS
                 $en['read__message'] = $source__profile['read__message']; //Update Description
-                if (!isset($metadata_this['__in__metadata_experts'][$en['source__id']])) {
-                    $metadata_this['__in__metadata_experts'][$en['source__id']] = $en;
+                if (!isset($metadata_this['__idea__metadata_experts'][$en['source__id']])) {
+                    $metadata_this['__idea__metadata_experts'][$en['source__id']] = $en;
                 }
             }
 
@@ -587,16 +587,16 @@ class SOURCE_model extends CI_Model
                 $metadata_recursion = $this->SOURCE_model->metadat_experts($source__profile, ($level + 1));
 
                 //CONTENT CHANNELS
-                foreach($metadata_recursion['__in__metadata_content'] as $source__id => $source_en) {
-                    if (!isset($metadata_this['__in__metadata_content'][$source__id])) {
-                        $metadata_this['__in__metadata_content'][$source__id] = $source_en;
+                foreach($metadata_recursion['__idea__metadata_content'] as $source__id => $source_en) {
+                    if (!isset($metadata_this['__idea__metadata_content'][$source__id])) {
+                        $metadata_this['__idea__metadata_content'][$source__id] = $source_en;
                     }
                 }
 
                 //EXPERT PEOPLE/ORGANIZATIONS
-                foreach($metadata_recursion['__in__metadata_experts'] as $source__id => $expert_en) {
-                    if (!isset($metadata_this['__in__metadata_experts'][$source__id])) {
-                        $metadata_this['__in__metadata_experts'][$source__id] = $expert_en;
+                foreach($metadata_recursion['__idea__metadata_experts'] as $source__id => $expert_en) {
+                    if (!isset($metadata_this['__idea__metadata_experts'][$source__id])) {
+                        $metadata_this['__idea__metadata_experts'][$source__id] = $expert_en;
                     }
                 }
             }
@@ -651,13 +651,13 @@ class SOURCE_model extends CI_Model
         $source_url = null;
 
         //Analyze domain:
-        $domain_analysis = analyze_domain($url);
+        $url_analysis = analyze_domain($url);
 
         //Now let's analyze further based on type:
-        if ($domain_analysis['url_is_root']) {
+        if ($url_analysis['url_is_root']) {
 
             //Update URL to keep synced:
-            $url = $domain_analysis['url_clean_domain'];
+            $url = $url_analysis['url_clean_domain'];
 
         } else {
 
@@ -683,11 +683,11 @@ class SOURCE_model extends CI_Model
                 $read__type = 4257;
                 $url = $embed_code['clean_url'];
 
-            } elseif ($domain_analysis['url_file_extension'] && is_https_url($url)) {
+            } elseif ($url_analysis['url_file_extension'] && is_https_url($url)) {
 
                 $detected_extension = false;
                 foreach($this->config->item('sources__11080') as $source__id => $m){
-                    if(in_array($domain_analysis['url_file_extension'], explode('|' , $m['m_desc']))){
+                    if(in_array($url_analysis['url_file_extension'], explode('|' , $m['m_desc']))){
                         $read__type = $source__id;
                         $detected_extension = true;
                         break;
@@ -697,10 +697,10 @@ class SOURCE_model extends CI_Model
                 if(!$detected_extension){
                     //Log error to notify admin:
                     $this->READ_model->create(array(
-                        'read__message' => 'source_url() detected unknown file extension ['.$domain_analysis['url_file_extension'].'] that needs to be added to @11080',
+                        'read__message' => 'source_url() detected unknown file extension ['.$url_analysis['url_file_extension'].'] that needs to be added to @11080',
                         'read__type' => 4246, //Platform Bug Reports
                         'read__up' => 11080,
-                        'read__metadata' => $domain_analysis,
+                        'read__metadata' => $url_analysis,
                     ));
                 }
             }
@@ -719,21 +719,21 @@ class SOURCE_model extends CI_Model
 
 
         //Fetch/Create domain source:
-        $domain_source = $this->SOURCE_model->domain($url, $read__source, ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
-        if(!$domain_source['status']){
+        $url_source = $this->SOURCE_model->domain($url, $read__source, ( $url_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
+        if(!$url_source['status']){
             //We had an issue:
-            return $domain_source;
+            return $url_source;
         }
 
 
         //Was this not a root domain? If so, also check to see if URL exists:
-        if ($domain_analysis['url_is_root']) {
+        if ($url_analysis['url_is_root']) {
 
             //URL is the domain in this case:
-            $source_url = $domain_source['source_domain'];
+            $source_url = $url_source['source_domain'];
 
             //IF the URL exists since the domain existed and the URL is the domain!
-            if ($domain_source['domaidea_previously_existed']) {
+            if ($url_source['domaidea_previously_existed']) {
                 $url_previously_existed = 1;
             }
 
@@ -776,7 +776,7 @@ class SOURCE_model extends CI_Model
                     $this->READ_model->create(array(
                         'read__source' => $read__source,
                         'read__type' => $read__type,
-                        'read__up' => $domain_source['source_domain']['source__id'],
+                        'read__up' => $url_source['source_domain']['source__id'],
                         'read__down' => $source_url['source__id'],
                         'read__message' => $url,
                     ));
@@ -794,7 +794,7 @@ class SOURCE_model extends CI_Model
                         'read__message' => 'source_url['.$url.'] FAILED to source_verify_create['.$page_title.'] with message: '.$added_en['message'],
                         'read__type' => 4246, //Platform Bug Reports
                         'read__source' => $read__source,
-                        'read__up' => $domain_source['source_domain']['source__id'],
+                        'read__up' => $url_source['source_domain']['source__id'],
                         'read__metadata' => array(
                             'url' => $url,
                             'read__source' => $read__source,
@@ -827,7 +827,7 @@ class SOURCE_model extends CI_Model
         //Return results:
         return array_merge(
 
-            $domain_analysis, //Make domain analysis data available as well...
+            $url_analysis, //Make domain analysis data available as well...
 
             array(
                 'status' => ($url_previously_existed && !$read__source ? 0 : 1),
@@ -836,7 +836,7 @@ class SOURCE_model extends CI_Model
                 'clean_url' => $url,
                 'read__type' => $read__type,
                 'page_title' => html_entity_decode($page_title, ENT_QUOTES),
-                'source_domain' => $domain_source['source_domain'],
+                'source_domain' => $url_source['source_domain'],
                 'source_url' => $source_url,
             )
         );
@@ -845,7 +845,7 @@ class SOURCE_model extends CI_Model
     function mass_update($source__id, $action_source__id, $action_command1, $action_command2, $read__source)
     {
 
-        //Alert: Has a twin function called in_mass_update()
+        //Alert: Has a twin function called idea_mass_update()
 
         boost_power();
 

@@ -41,7 +41,7 @@ foreach($ins as $in){
     $this->db->insert('gephi_nodes', array(
         'id' => $id_prefix['in'].$in['idea__id'],
         'label' => $in['idea__title'],
-        //'size' => ( isset($idea__metadata['in__metadata_max_seconds']) ? round(($idea__metadata['in__metadata_max_seconds']/3600),0) : 0 ), //Max time
+        //'size' => ( isset($idea__metadata['idea__metadata_max_seconds']) ? round(($idea__metadata['idea__metadata_max_seconds']/3600),0) : 0 ), //Max time
         'size' => $node_size['in'],
         'node_type' => 1, //Idea
         'node_status' => $in['idea__status'],
@@ -89,15 +89,15 @@ foreach($ens as $en){
         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
         'read__up' => $en['source__id'],
-    ), array('source_portfolio'), 0, 0) as $en_child){
+    ), array('source_portfolio'), 0, 0) as $source_child){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix['en'].$en_child['read__up'],
-            'target' => $id_prefix['en'].$en_child['read__down'],
-            'label' => $sources__4593[$en_child['read__type']]['m_name'].': '.$en_child['read__message'],
+            'source' => $id_prefix['en'].$source_child['read__up'],
+            'target' => $id_prefix['en'].$source_child['read__down'],
+            'label' => $sources__4593[$source_child['read__type']]['m_name'].': '.$source_child['read__message'],
             'weight' => 1,
-            'edge_type' => $en_child['read__type'],
-            'edge_status' => $en_child['read__status'],
+            'edge_type' => $source_child['read__type'],
+            'edge_status' => $source_child['read__status'],
         ));
 
     }

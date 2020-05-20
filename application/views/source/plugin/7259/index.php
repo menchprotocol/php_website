@@ -64,7 +64,7 @@ if($search_for_is_set){
             if($replace_with_is_confirmed && $idea__title_validation['status']){
                 //Update idea:
                 $this->IDEA_model->update($in['idea__id'], array(
-                    'idea__title' => $idea__title_validation['in_clean_title'],
+                    'idea__title' => $idea__title_validation['idea_clean_title'],
                 ), true, $session_en['source__id']);
             }
 
@@ -88,8 +88,8 @@ if($search_for_is_set){
                     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                     'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                     'read__right' => $in['idea__id'],
-                ), array('idea_previous')) as $in_parent) {
-                    echo '<span class="in_child_icon_' . $in_parent['idea__id'] . '"><a href="/idea/go/' . $in_parent['idea__id'] . '" data-toggle="tooltip" title="' . $in_parent['idea__title'] . '" data-placement="bottom">' . $sources__7585[$in_parent['idea__type']]['m_icon'] . '</a> &nbsp;</span>';
+                ), array('idea_previous')) as $idea_previous) {
+                    echo '<span class="idea_next_icon_' . $idea_previous['idea__id'] . '"><a href="/idea/go/' . $idea_previous['idea__id'] . '" data-toggle="tooltip" title="' . $idea_previous['idea__title'] . '" data-placement="bottom">' . $sources__7585[$idea_previous['idea__type']]['m_icon'] . '</a> &nbsp;</span>';
                 }
 
                 echo '</td>';

@@ -9,13 +9,13 @@ $is_public = in_array($in['idea__status'], $this->config->item('sources_id_7355'
 ?>
 
 <style>
-    .in_child_icon_<?= $in['idea__id'] ?> { display:none; }
+    .idea_child_icon_<?= $in['idea__id'] ?> { display:none; }
     <?= ( !$is_source ? '.note-editor {display:none;}' : '' ) ?>
 </style>
 
 <script>
     //Include some cached sources:
-    var in_loaded_id = <?= $in['idea__id'] ?>;
+    var idea_loaded_id = <?= $in['idea__id'] ?>;
 </script>
 <script src="/application/views/idea/idea_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
@@ -53,7 +53,7 @@ if( $is_source && $is_active && $in['idea__id']!=config_var(12156)){
                            idea-id="' . $in['idea__id'] . '"
                            id="addidea-c-' . $in['idea__id'] . '-1"
                            placeholder="PREVIOUS IDEA">
-                </div><div class="algolia_pad_search hidden in_pad_top"></div></div>';
+                </div><div class="algolia_pad_search hidden idea_pad_top"></div></div>';
 }
 echo '</div>';
 
@@ -148,7 +148,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
                            idea-id="' . $in['idea__id'] . '"
                            id="addidea-c-' . $in['idea__id'] . '-0"
                            placeholder="NEXT IDEA">
-                </div><div class="algolia_pad_search hidden in_pad_bottom"></div></div>';
+                </div><div class="algolia_pad_search hidden idea_pad_bottom"></div></div>';
         }
 
         $this_tab .= '</div>';
@@ -156,18 +156,18 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
     } elseif(in_array($read__type, $this->config->item('sources_id_7551'))){
 
         //Reference Sources Only:
-        $in_notes = $this->READ_model->fetch(array(
+        $idea_notes = $this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type' => $read__type,
             'read__right' => $in['idea__id'],
         ), array('source_profile'), 0, 0, array('read__sort' => 'ASC'));
 
-        $counter = count($in_notes);
+        $counter = count($idea_notes);
 
         $this_tab .= '<div id="add-source-' .$read__type . '" class="list-group source-adder">';
 
-        foreach($in_notes as $in_note) {
-            $this_tab .= view_source($in_note, 0, null, $is_source && $is_active, $is_source);
+        foreach($idea_notes as $idea_note) {
+            $this_tab .= view_source($idea_note, 0, null, $is_source && $is_active, $is_source);
         }
 
         if($is_source && $is_active) {
@@ -192,14 +192,14 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
     } elseif(in_array($read__type, $this->config->item('sources_id_4485'))){
 
         //IDEA NOTES
-        $in_notes = $this->READ_model->fetch(array(
+        $idea_notes = $this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type' => $read__type,
             'read__right' => $in['idea__id'],
         ), array(), 0, 0, array('read__sort' => 'ASC'));
 
-        $counter = count($in_notes);
-        $this_tab .= view_idea_note_mix($read__type, $in_notes, ($is_source && $is_active));
+        $counter = count($idea_notes);
+        $this_tab .= view_idea_note_mix($read__type, $idea_notes, ($is_source && $is_active));
 
     } elseif($read__type==12589){
 
@@ -223,7 +223,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
                 //Source search box:
 
                 //String command:
-                $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'"  placeholder="Search Sources..." class="form-control algolia_search en_text_search border montserrat '.$is_upper.'">';
+                $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'"  placeholder="Search Sources..." class="form-control algolia_search source_text_search border montserrat '.$is_upper.'">';
 
                 //We don't need the second value field here:
                 $input_options .= '<input type="hidden" name="mass_value2_'.$action_source__id.'" value="" />';

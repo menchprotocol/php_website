@@ -250,7 +250,7 @@ function normalize_header_keys(array $headers)
  *
  * @return bool
  */
-function is_host_in_noproxy($host, array $noProxyArray)
+function is_host_idea_noproxy($host, array $noProxyArray)
 {
     if (strlen($host) === 0) {
         throw new \InvalidArgumentException('Empty host provided');

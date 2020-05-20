@@ -265,7 +265,7 @@ function is_https_url($url){
     return substr($url, 0, 8) == 'https://';
 }
 
-function is_valid_en_string($string){
+function is_valid_source_string($string){
     return substr($string, 0, 1) == '@' && is_numeric(one_two_explode('@',' ',$string));
 }
 
@@ -364,13 +364,13 @@ function source_count_connections($source__id, $return_html = true){
         4364 => 'SELECT count(read__id) as totals FROM mench_read WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__source=',
         6186 => 'SELECT count(read__id) as totals FROM mench_read WHERE read__status=',
         4593 => 'SELECT count(read__id) as totals FROM mench_read WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__type=',
-    ) as $en_app_id => $query){
+    ) as $source_app_id => $query){
 
         $query = $CI->db->query( $query . $source__id );
         foreach($query->result() as $row)
         {
             if($row->totals > 0){
-                $source_count_connections[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($sources__6194[$en_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$sources__6194[$en_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$sources__6194[$en_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
+                $source_count_connections[$source_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($sources__6194[$source_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$sources__6194[$source_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$sources__6194[$source_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
             }
         }
 
@@ -405,8 +405,8 @@ function idea_fetch_cover($idea__id){
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type' => 4260, //IMAGES ONLY
             'read__down' => $en['read__up'],
-        )) as $en_image) {
-            $idea_fetch_cover = $en_image['read__message'];
+        )) as $source_image) {
+            $idea_fetch_cover = $source_image['read__message'];
             break;
         }
         if($idea_fetch_cover){
@@ -670,7 +670,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
 
     } elseif($read__type==6255){
 
-        $join_objects = array('en_creator');
+        $join_objects = array('source_creator');
         $match_columns = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
@@ -1061,12 +1061,12 @@ function upload_to_cdn($file_url, $read__source = 0, $read__metadata = null, $is
     //Create and link new source to CDN and uploader:
     $url_source = $CI->SOURCE_model->url($cdn_new_url, $read__source, 0, $page_title);
 
-    if(isset($url_source['en_url']['source__id']) && $url_source['en_url']['source__id'] > 0){
+    if(isset($url_source['source_url']['source__id']) && $url_source['source_url']['source__id'] > 0){
 
         //All good:
         return array(
             'status' => 1,
-            'cdn_en' => $url_source['en_url'],
+            'cdn_en' => $url_source['source_url'],
             'cdn_url' => $cdn_new_url,
         );
 
@@ -1105,7 +1105,7 @@ function analyze_domain($full_url){
     //Parse domain:
     $full_url = str_replace('www.' , '', $full_url);
     $analyze = parse_url($full_url);
-    $domain_parts = explode('.', $analyze['host']);
+    $url_parts = explode('.', $analyze['host']);
 
     if(isset($analyze['path']) && strlen($analyze['path']) > 0){
         $path_parts = explode('.', $analyze['path']);
@@ -1129,20 +1129,20 @@ function analyze_domain($full_url){
 
     //Did we find it? Likely not...
     if(!$tld){
-        $tld = '.'.end($domain_parts);
+        $tld = '.'.end($url_parts);
     }
 
     $no_tld_domain = str_replace($tld, '', $analyze['host']);
-    $no_tld_domain_parts = explode('.', $no_tld_domain);
-    $url_subdomain = trim(rtrim(str_replace(end($no_tld_domain_parts), '', $no_tld_domain), '.'));
+    $no_tld_url_parts = explode('.', $no_tld_domain);
+    $url_subdomain = trim(rtrim(str_replace(end($no_tld_url_parts), '', $no_tld_domain), '.'));
 
     //Return results:
     return array(
         'url_is_root' => ( !$url_subdomain && !isset($analyze['query']) && ( !isset($analyze['path']) || $analyze['path']=='/' ) ? 1 : 0 ),
-        'url_domain_name' => end($no_tld_domain_parts),
-        'url_clean_domain' => 'http://'.end($no_tld_domain_parts).$tld,
+        'url_domain' => end($no_tld_url_parts),
+        'url_clean_domain' => 'http://'.end($no_tld_url_parts).$tld,
         'url_subdomain' => $url_subdomain,
-        'url_tld' => end($no_tld_domain_parts).$tld,
+        'url_tld' => end($no_tld_url_parts).$tld,
         'url_file_extension' => $url_file_extension,
     );
 
@@ -1179,7 +1179,7 @@ function idea__title_validate($string){
     //All good, return success:
     return array(
         'status' => 1,
-        'in_clean_title' => trim($string),
+        'idea_clean_title' => trim($string),
     );
 
 }

@@ -55,12 +55,12 @@ $(document).ready(function () {
                 } else {
 
                     //REMOVE BOOKMARK from UI:
-                    $('#ap_in_'+idea__id).fadeOut();
+                    $('#ap_idea_'+idea__id).fadeOut();
 
                     setTimeout(function () {
 
                         //Delete from body:
-                        $('#ap_in_'+idea__id).remove();
+                        $('#ap_idea_'+idea__id).remove();
 
                         //Re-sort:
                         setTimeout(function () {

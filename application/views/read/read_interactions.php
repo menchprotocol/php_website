@@ -5,7 +5,7 @@ $filters = array();
 $joined_by = array();
 
 //We have a special OR filter when combined with any_source__id & any_idea__id
-$any_in_en_set = ( ( isset($_GET['any_source__id']) && $_GET['any_source__id'] > 0 ) || ( isset($_GET['any_idea__id']) && $_GET['any_idea__id'] > 0 ) );
+$any_idea_source_set = ( ( isset($_GET['any_source__id']) && $_GET['any_source__id'] > 0 ) || ( isset($_GET['any_idea__id']) && $_GET['any_idea__id'] > 0 ) );
 $parent_tr_filter = ( isset($_GET['read__reference']) && $_GET['read__reference'] > 0 ? ' OR read__reference = '.$_GET['read__reference'].' ' : false );
 
 
@@ -116,7 +116,7 @@ if(isset($_GET['read__right']) && strlen($_GET['read__right']) > 0){
     }
 }
 
-if(isset($_GET['read__reference']) && strlen($_GET['read__reference']) > 0 && !$any_in_en_set){
+if(isset($_GET['read__reference']) && strlen($_GET['read__reference']) > 0 && !$any_idea_source_set){
     if (substr_count($_GET['read__reference'], ',') > 0) {
         //This is multiple:
         $filters['( read__reference IN (' . $_GET['read__reference'] . '))'] = null;
@@ -358,7 +358,7 @@ echo '</div></td>';
             //Fetch details for this user:
             $all_link_count = 0;
             $select_ui = '';
-            foreach($this->READ_model->fetch($ini_filter, array('en_type'), 0, 0, array('source__title' => 'ASC'), 'COUNT(read__type) as total_count, source__title, read__type', 'read__type, source__title') as $ln) {
+            foreach($this->READ_model->fetch($ini_filter, array('source_type'), 0, 0, array('source__title' => 'ASC'), 'COUNT(read__type) as total_count, source__title, read__type', 'read__type, source__title') as $ln) {
                 //Echo drop down:
                 $select_ui .= '<option value="' . $ln['read__type'] . '" ' . ((isset($_GET['read__type']) && $_GET['read__type'] == $ln['read__type']) ? 'selected="selected"' : '') . '>' . $ln['source__title'] . ' ('  . number_format($ln['total_count'], 0) . ')</option>';
                 $all_link_count += $ln['total_count'];

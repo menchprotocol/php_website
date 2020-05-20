@@ -16,7 +16,7 @@ $(document).ready(function () {
             if(step_count==2){
                 search_email();
             } else if(step_count==3){
-                singin_check_password();
+                sign_check_password();
             } else if(step_count==4){
                 add_account();
             }
@@ -51,7 +51,7 @@ function search_email(){
     $('#custom_message').html(''); //Delete previous errors, if any
 
     //Check email and validate:
-    $.post("/source/singin_check_email", {
+    $.post("/source/sign_check_email", {
 
         input_email: $('#input_email').val(),
         referrer_idea__id: referrer_idea__id,
@@ -66,7 +66,7 @@ function search_email(){
         if (data.status) {
 
             //Update source id IF existed previously:
-            $('#login_source__id').val(data.login_source__id);
+            $('#sign_source__id').val(data.sign_source__id);
 
             //Update email:
             $('#input_email').val(data.clean_input_email);
@@ -114,7 +114,7 @@ function add_account(){
 
             setTimeout(function () {
                 //Redirect to next reads:
-                window.location = data.login_url;
+                window.location = data.sign_url;
             }, 377);
 
         } else {
@@ -139,7 +139,7 @@ function add_account(){
 }
 
 var password_is_checking = false;
-function singin_check_password(){
+function sign_check_password(){
 
     if(password_is_checking){
         return false;
@@ -151,8 +151,8 @@ function singin_check_password(){
     $('#input_password').prop('disabled', true).css('background-color','#f0f0f0');
 
     //Check email and validate:
-    $.post("/source/singin_check_password", {
-        login_source__id: $('#login_source__id').val(),
+    $.post("/source/sign_check_password", {
+        sign_source__id: $('#sign_source__id').val(),
         input_password: $('#input_password').val(),
         referrer_url: referrer_url,
         referrer_idea__id: referrer_idea__id,
@@ -165,7 +165,7 @@ function singin_check_password(){
             $('#password_errors').html('');
 
             //Redirect
-            window.location = data.login_url;
+            window.location = data.sign_url;
 
         } else {
 
