@@ -1,7 +1,7 @@
 <?php
 
 //Calculates the weekly coins issued:
-$sources__12467 = $CI->config->item('sources__12467'); //MENCH COINS
+$sources__12467 = $this->config->item('sources__12467'); //MENCH COINS
 
 $last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
 $last_week_end_timestamp = mktime(23, 59, 59, date("n"), date("j")-1, date("Y"));
