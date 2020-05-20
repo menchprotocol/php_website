@@ -1,18 +1,18 @@
 
 <?php
 
-$en_all_6206 = $this->config->item('en_all_6206'); //MENCH SOURCE
-$en_all_4341 = $this->config->item('en_all_4341'); //Link Table
-$en_all_2738 = $this->config->item('en_all_2738'); //MENCH
-$en_all_6177 = $this->config->item('en_all_6177'); //Source Status
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
-$en_all_11089 = $this->config->item('en_all_11089'); //SOURCE LAYOUT
-$en_all_10957 = $this->config->item('en_all_10957'); //SUPERPOWERS
-$is_public = in_array($en['en_status_source_id'], $this->config->item('en_ids_7357'));
-$is_active = in_array($en['en_status_source_id'], $this->config->item('en_ids_7358'));
+$sources__6206 = $this->config->item('sources__6206'); //MENCH SOURCE
+$sources__4341 = $this->config->item('sources__4341'); //Link Table
+$sources__2738 = $this->config->item('sources__2738'); //MENCH
+$sources__6177 = $this->config->item('sources__6177'); //Source Status
+$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$sources__11089 = $this->config->item('sources__11089'); //SOURCE LAYOUT
+$sources__10957 = $this->config->item('sources__10957'); //SUPERPOWERS
+$is_public = in_array($en['source__status'], $this->config->item('sources_id_7357'));
+$is_active = in_array($en['source__status'], $this->config->item('sources_id_7358'));
 $superpower_10967 = superpower_active(10967, true);
 $superpower_any = ( $session_en ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-$is_source = en_is_source($en['en_id']);
+$is_source = en_is_source($en['source__id']);
 
 
 ?>
@@ -20,13 +20,13 @@ $is_source = en_is_source($en['en_id']);
 
 <style>
     /* For a cleaner UI hide the current focused source parent */
-    .en_child_icon_<?= $en['en_id'] ?>{ display:none; }
+    .en_child_icon_<?= $en['source__id'] ?>{ display:none; }
 </style>
 
 <script>
     //Set global variables:
     var en_focus_filter = -1; //No filter, show all
-    var en_focus_id = <?= $en['en_id'] ?>;
+    var en_focus_id = <?= $en['source__id'] ?>;
 </script>
 
 <script src="/application/views/source/source_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -35,7 +35,7 @@ $is_source = en_is_source($en['en_id']);
 
     <?php
     //SOURCE NAME
-    echo '<div class="itemsource">'.view_input_text(6197, $en['en_name'], $en['en_id'], ($is_source && $is_active), 0, true, '<span class="en_ui_icon_'.$en['en_id'].'">'.view_en_icon($en['en_icon']).'</span>', extract_icon_color($en['en_icon'])).'</div>';
+    echo '<div class="itemsource">'.view_input_text(6197, $en['source__title'], $en['source__id'], ($is_source && $is_active), 0, true, '<span class="en_ui_icon_'.$en['source__id'].'">'.view_source__icon($en['source__icon']).'</span>', extract_icon_color($en['source__icon'])).'</div>';
 
     ?>
 
@@ -52,11 +52,11 @@ $is_source = en_is_source($en['en_id']);
                     <div class="inline-box">
 
                         <!-- Player Status -->
-                        <span class="mini-header"><?= $en_all_6206[6177]['m_icon'].' '.$en_all_6206[6177]['m_name'] ?></span>
-                        <select class="form-control border" id="en_status_source_id">
+                        <span class="mini-header"><?= $sources__6206[6177]['m_icon'].' '.$sources__6206[6177]['m_name'] ?></span>
+                        <select class="form-control border" id="source__status">
                             <?php
-                            foreach($this->config->item('en_all_6177') /* Source Status */ as $ln_type_source_id => $m){
-                                echo '<option value="' . $ln_type_source_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
+                            foreach($this->config->item('sources__6177') /* Source Status */ as $read__type => $m){
+                                echo '<option value="' . $read__type . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                             }
                             ?>
                         </select>
@@ -73,10 +73,10 @@ $is_source = en_is_source($en['en_id']);
 
 
                         <!-- Player Name -->
-                        <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
+                        <span class="mini-header" style="margin-top:20px;"><?= $sources__6206[6197]['m_icon'].' '.$sources__6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
                         <span class="white-wrapper">
-                                <textarea class="form-control text-edit border montserrat doupper" id="en_name"
-                                          onkeyup="en_name_word_count()" data-lpignore="true"
+                                <textarea class="form-control text-edit border montserrat doupper" id="source__title"
+                                          onkeyup="source__title_word_count()" data-lpignore="true"
                                           style="height:66px; min-height:66px;">
                                 </textarea>
                             </span>
@@ -84,9 +84,9 @@ $is_source = en_is_source($en['en_id']);
 
 
                         <!-- Player Icon -->
-                        <span class="mini-header"><?= $en_all_6206[6198]['m_icon'].' '.$en_all_6206[6198]['m_name'] ?>
+                        <span class="mini-header"><?= $sources__6206[6198]['m_icon'].' '.$sources__6206[6198]['m_name'] ?>
 
-                                <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#en_icon').val($('#en_icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
+                                <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#source__icon').val($('#source__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
 
                                 <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-link"></i></a>
 
@@ -94,7 +94,7 @@ $is_source = en_is_source($en['en_id']);
                         <div class="form-group label-floating is-empty"
                              style="margin:1px 0 10px;">
                             <div class="input-group border">
-                                <input type="text" id="en_icon" value=""
+                                <input type="text" id="source__icon" value=""
                                        maxlength="<?= config_var(6197) ?>" data-lpignore="true" placeholder=""
                                        class="form-control">
                                 <span class="input-group-addon addon-lean addon-grey icon-demo icon-block"></span>
@@ -113,11 +113,11 @@ $is_source = en_is_source($en['en_id']);
                         <div class="inline-box">
 
 
-                            <span class="mini-header"><?= $en_all_4341[6186]['m_icon'].' '.$en_all_4341[6186]['m_name'] ?></span>
-                            <select class="form-control border" id="ln_status_source_id">
+                            <span class="mini-header"><?= $sources__4341[6186]['m_icon'].' '.$sources__4341[6186]['m_name'] ?></span>
+                            <select class="form-control border" id="read__status">
                                 <?php
-                                foreach($this->config->item('en_all_6186') /* Transaction Status */ as $ln_type_source_id => $m){
-                                    echo '<option value="' . $ln_type_source_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
+                                foreach($this->config->item('sources__6186') /* Transaction Status */ as $read__type => $m){
+                                    echo '<option value="' . $read__type . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -130,9 +130,9 @@ $is_source = en_is_source($en['en_id']);
 
 
                             <form class="drag-box" method="post" enctype="multipart/form-data">
-                                <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4372]['m_icon'].' '.$en_all_4341[4372]['m_name'] ?></span>
+                                <span class="mini-header" style="margin-top: 20px;"><?= $sources__4341[4372]['m_icon'].' '.$sources__4341[4372]['m_name'] ?></span>
                                 <span class="white-wrapper">
-                                    <textarea class="form-control text-edit border" id="ln_content"
+                                    <textarea class="form-control text-edit border" id="read__message"
                                               data-lpignore="true"
                                               placeholder="Write, Drop a File or Paste URL"
                                               style="height:126px; min-height:126px;">
@@ -143,8 +143,8 @@ $is_source = en_is_source($en['en_id']);
                             </form>
 
 
-                            <span class="mini-header"><?= $en_all_4341[4593]['m_icon'].' '.$en_all_4341[4593]['m_name'] ?></span>
-                            <span id="en_type_link_id"></span>
+                            <span class="mini-header"><?= $sources__4341[4593]['m_icon'].' '.$sources__4341[4593]['m_name'] ?></span>
+                            <span id="read__type_preview"></span>
                             <p id="en_link_preview" class="hideIfEmpty"></p>
 
 
@@ -183,21 +183,21 @@ $is_source = en_is_source($en['en_id']);
 
     //REFERENCES
     if(superpower_active(12701, true)){
-        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($en['en_id'])).'</div>';
+        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',en_count_db_references($en['source__id'])).'</div>';
     }
 
     //SOURCE DRAFTING?
-    echo '<span class="icon-block en_status_source_id_' . $en['en_id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$en['en_status_source_id']]['m_name'].': '.$en_all_6177[$en['en_status_source_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_source_id']]['m_icon'] . '</span></span>';
+    echo '<span class="icon-block source__status_' . $en['source__id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$sources__6177[$en['source__status']]['m_name'].': '.$sources__6177[$en['source__status']]['m_desc'].'">' . $sources__6177[$en['source__status']]['m_icon'] . '</span></span>';
 
     //Modify
-    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[12275]['m_name'].'">'.$en_all_11035[12275]['m_icon'].'</a>';
+    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $en['source__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$sources__11035[12275]['m_name'].'">'.$sources__11035[12275]['m_icon'].'</a>';
 
 
     //ADMIN MENU
     if(superpower_assigned(12703)){
-        $en_all_4527 = $this->config->item('en_all_4527'); //Platform Memory
+        $sources__4527 = $this->config->item('sources__4527'); //Platform Memory
         echo '<ul class="nav nav-tabs nav-sm" style="display: inline-block; border: 0; margin: 0;">';
-        echo view_caret(12887, $en_all_4527[12887], $en['en_id']);
+        echo view_caret(12887, $sources__4527[12887], $en['source__id']);
         echo '</ul>';
     }
 
@@ -210,45 +210,45 @@ $is_source = en_is_source($en['en_id']);
 
 
     //Print Play Layout
-    foreach($en_all_11089 as $ln_type_source_id => $m){
+    foreach($sources__11089 as $read__type => $m){
 
         //Don't show empty tabs:
-        $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+        $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
         $has_superpower = ( !count($superpower_actives) || superpower_active(end($superpower_actives), true) );
         $this_tab = null;
         $counter = 0;
-        $auto_expand_tab = in_array($ln_type_source_id, $this->config->item('en_ids_12571'));
+        $auto_expand_tab = in_array($read__type, $this->config->item('sources_id_12571'));
 
 
         //SOURCE
-        if($ln_type_source_id==6225){
+        if($read__type==6225){
 
             //Account Setting
-            if(!$session_en || $session_en['en_id']!=$en['en_id']){
+            if(!$session_en || $session_en['source__id']!=$en['source__id']){
                 continue;
             }
 
             $this_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
 
             //Display account fields ordered with their SOURCE LINKS:
-            foreach($this->config->item('en_all_6225') as $acc_en_id => $acc_detail) {
+            foreach($this->config->item('sources__6225') as $acc_source__id => $acc_detail) {
 
                 //Do they have any assigned? Skip this section if not:
-                if($acc_en_id == 10957 /* Superpowers */ && !$superpower_any){
+                if($acc_source__id == 10957 /* Superpowers */ && !$superpower_any){
                     continue;
                 }
 
                 //Print header:
                 $this_tab .= '<div class="card">
-<div class="card-header" id="heading' . $acc_en_id . '">
-<button class="btn btn-block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_en_id . '" aria-expanded="false" aria-controls="openEn' . $acc_en_id . '">
+<div class="card-header" id="heading' . $acc_source__id . '">
+<button class="btn btn-block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_source__id . '" aria-expanded="false" aria-controls="openEn' . $acc_source__id . '">
   <span class="icon-block">' . $acc_detail['m_icon'] . '</span><b class="montserrat source doupper ' . extract_icon_color($acc_detail['m_icon']) . '">' . $acc_detail['m_name'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
 </button>
 </div>
 
 <div class="doclear">&nbsp;</div>
 
-<div id="openEn' . $acc_en_id . '" class="collapse" aria-labelledby="heading' . $acc_en_id . '" data-parent="#MyAccountAccordion">
+<div id="openEn' . $acc_source__id . '" class="collapse" aria-labelledby="heading' . $acc_source__id . '" data-parent="#MyAccountAccordion">
 <div class="card-body">';
 
 
@@ -260,31 +260,31 @@ $is_source = en_is_source($en['en_id']);
                 $is_multi_selectable = in_array(6122, $acc_detail['m_parents']);
                 $is_single_selectable = in_array(6204, $acc_detail['m_parents']);
 
-                if ($acc_en_id == 12289) {
+                if ($acc_source__id == 12289) {
 
-                    $en_icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['en_icon']));
+                    $source__icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['source__icon']));
 
                     $this_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $en_icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fad\')" class="btn btn-fad '.( $en_icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw source"></i></a>
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fas\')" class="btn btn-fas '.( $en_icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw source"></i></a>
+                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $source__icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
+                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fad\')" class="btn btn-fad '.( $source__icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw source"></i></a>
+                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fas\')" class="btn btn-fas '.( $source__icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw source"></i></a>
                 </div><div class="doclear">&nbsp;</div></div>';
 
 
                     //List avatars:
-                    foreach($this->config->item('en_all_12279') as $ln_type_source_id3 => $m3) {
+                    foreach($this->config->item('sources__12279') as $read__type3 => $m3) {
 
                         $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m_icon']));
-                        $avatar_type_match = ($en_icon_parts[0] == $avatar_icon_parts[0]);
-                        $superpower_actives3 = array_intersect($this->config->item('en_ids_10957'), $m3['m_parents']);
+                        $avatar_type_match = ($source__icon_parts[0] == $avatar_icon_parts[0]);
+                        $superpower_actives3 = array_intersect($this->config->item('sources_id_10957'), $m3['m_parents']);
 
                         $this_tab .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
-                        $this_tab .= '<a href="javascript:void(0);" onclick="account_update_avatar_icon(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $en_icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';
+                        $this_tab .= '<a href="javascript:void(0);" onclick="account_update_avatar_icon(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $source__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';
                         $this_tab .= '</span>';
 
                     }
 
-                } elseif ($acc_en_id == 10957 /* Superpowers */) {
+                } elseif ($acc_source__id == 10957 /* Superpowers */) {
 
                     if($superpower_any >= 2){
                         //Mass Toggle Option:
@@ -297,33 +297,33 @@ $is_source = en_is_source($en['en_id']);
 
                     //List avatars:
                     $this_tab .= '<div class="list-group">';
-                    foreach($en_all_10957 as $superpower_en_id => $m3){
+                    foreach($sources__10957 as $superpower_source__id => $m3){
 
                         //What is the superpower requirement?
-                        if(!superpower_assigned($superpower_en_id)){
+                        if(!superpower_assigned($superpower_source__id)){
                             continue;
                         }
 
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
-                        $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_en_id.'" href="javascript:void();" onclick="account_toggle_superpower('.$superpower_en_id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_en_id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                        $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_source__id.' '.( in_array($superpower_source__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_source__id.'" href="javascript:void();" onclick="account_toggle_superpower('.$superpower_source__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_source__id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                     }
                     $this_tab .= '</div>';
 
-                } elseif ($acc_en_id == 3288 /* Email */) {
+                } elseif ($acc_source__id == 3288 /* Email */) {
 
                     $user_emails = $this->READ_model->fetch(array(
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                        'ln_portfolio_source_id' => $session_en['en_id'],
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-                        'ln_profile_source_id' => 3288, //Mench Email
+                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                        'read__down' => $session_en['source__id'],
+                        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                        'read__up' => 3288, //Mench Email
                     ));
 
-                    $this_tab .= '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border dotransparent" value="' . (count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '') . '" placeholder="you@gmail.com" /></span>
+                    $this_tab .= '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border dotransparent" value="' . (count($user_emails) > 0 ? $user_emails[0]['read__message'] : '') . '" placeholder="you@gmail.com" /></span>
                 <a href="javascript:void(0)" onclick="account_update_email()" class="btn btn-source">Save</a>
                 <span class="saving-account save_email"></span>';
 
-                } elseif ($acc_en_id == 3286 /* Password */) {
+                } elseif ($acc_source__id == 3286 /* Password */) {
 
                     $this_tab .= '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
                 <a href="javascript:void(0)" onclick="account_update_password()" class="btn btn-source">Save</a>
@@ -331,7 +331,7 @@ $is_source = en_is_source($en['en_id']);
 
                 } elseif ($is_multi_selectable || $is_single_selectable) {
 
-                    $this_tab .= view_radio_sources($acc_en_id, $session_en['en_id'], ($is_multi_selectable ? 1 : 0));
+                    $this_tab .= view_radio_sources($acc_source__id, $session_en['source__id'], ($is_multi_selectable ? 1 : 0));
 
                 }
 
@@ -343,31 +343,31 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '</div>'; //End of accordion
 
-        } elseif($ln_type_source_id==11030){
+        } elseif($read__type==11030){
 
             //SOURCE PROFILE
             //FETCH ALL PARENTS
-            $en__profiles = $this->READ_model->fetch(array(
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-                'ln_portfolio_source_id' => $en['en_id'],
-            ), array('en_profile'), 0, 0, array('en_weight' => 'DESC'));
+            $source__profiles = $this->READ_model->fetch(array(
+                'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                'read__down' => $en['source__id'],
+            ), array('source_profile'), 0, 0, array('source__weight' => 'DESC'));
 
-            $counter = count($en__profiles);
+            $counter = count($source__profiles);
             if(!$counter && !$superpower_10967){
                 continue;
             }
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
-            foreach($en__profiles as $en_profile) {
-                $this_tab .= view_en($en_profile,true, null, true, $is_source);
+            foreach($source__profiles as $source_profile) {
+                $this_tab .= view_en($source_profile,true, null, true, $is_source);
             }
 
             //Input to add new parents:
             $this_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
@@ -376,17 +376,17 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '</div>';
 
-        } elseif($ln_type_source_id==11029){
+        } elseif($read__type==11029){
 
             //SOURCE PORTFOLIO
-            $en__portfolio_count = $this->READ_model->fetch(array(
-                'ln_profile_source_id' => $en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-            ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
-            $counter = $en__portfolio_count[0]['totals'];
-            $en__portfolios = array(); //Fetch some
+            $source__portfolio_count = $this->READ_model->fetch(array(
+                'read__up' => $en['source__id'],
+                'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+            ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
+            $counter = $source__portfolio_count[0]['totals'];
+            $source__portfolios = array(); //Fetch some
 
 
             if(!$counter && !$superpower_10967){
@@ -397,18 +397,18 @@ $is_source = en_is_source($en['en_id']);
 
                 //Determine how to order:
                 if($counter > config_var(11064)){
-                    $order_columns = array('en_weight' => 'DESC');
+                    $order_columns = array('source__weight' => 'DESC');
                 } else {
-                    $order_columns = array('ln_order' => 'ASC', 'en_name' => 'ASC');
+                    $order_columns = array('read__sort' => 'ASC', 'source__title' => 'ASC');
                 }
 
                 //Fetch Portfolios
-                $en__portfolios = $this->READ_model->fetch(array(
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-                    'ln_profile_source_id' => $en['en_id'],
-                ), array('en_portfolio'), config_var(11064), 0, $order_columns);
+                $source__portfolios = $this->READ_model->fetch(array(
+                    'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                    'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                    'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                    'read__up' => $en['source__id'],
+                ), array('source_portfolio'), config_var(11064), 0, $order_columns);
 
             }
 
@@ -421,89 +421,89 @@ $is_source = en_is_source($en['en_id']);
                 $input_options = '';
                 $editor_counter = 0;
 
-                foreach($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
+                foreach($this->config->item('sources__4997') as $action_source__id => $mass_action_en) {
 
 
                     $editor_counter++;
-                    $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
-                    $is_upper = ( in_array($action_en_id, $this->config->item('en_ids_12577') /* SOURCE UPDATER UPPERCASE */) ? ' montserrat doupper ' : false );
+                    $dropdown_options .= '<option value="' . $action_source__id . '">' .$mass_action_en['m_name'] . '</option>';
+                    $is_upper = ( in_array($action_source__id, $this->config->item('sources_id_12577') /* SOURCE UPDATER UPPERCASE */) ? ' montserrat doupper ' : false );
 
 
                     //Start with the input wrapper:
-                    $input_options .= '<span id="mass_id_'.$action_en_id.'" title="'.$mass_action_en['m_desc'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                    $input_options .= '<span id="mass_id_'.$action_source__id.'" title="'.$mass_action_en['m_desc'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
 
 
 
-                    if(in_array($action_en_id, array(5000, 5001, 10625))){
+                    if(in_array($action_source__id, array(5000, 5001, 10625))){
 
                         //String Find and Replace:
 
                         //Find:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" placeholder="Search" class="form-control border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'" placeholder="Search" class="form-control border '.$is_upper.'">';
 
                         //Replace:
-                        $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value2_'.$action_source__id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
 
 
-                    } elseif(in_array($action_en_id, array(5981, 12928, 12930, 5982))){
+                    } elseif(in_array($action_source__id, array(5981, 12928, 12930, 5982))){
 
                         //Player search box:
 
                         //String command:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="Search sources..." class="form-control algolia_search en_text_search border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'"  placeholder="Search sources..." class="form-control algolia_search en_text_search border '.$is_upper.'">';
 
                         //We don't need the second value field here:
-                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_source__id.'" value="" />';
 
 
-                    } elseif($action_en_id == 11956){
+                    } elseif($action_source__id == 11956){
 
                         //IF HAS THIS
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search en_text_search border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search en_text_search border '.$is_upper.'">';
 
                         //ADD THIS
-                        $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search en_text_search border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value2_'.$action_source__id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search en_text_search border '.$is_upper.'">';
 
 
-                    } elseif($action_en_id == 5003){
+                    } elseif($action_source__id == 5003){
 
                         //Player Status update:
 
                         //Find:
-                        $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
+                        $input_options .= '<select name="mass_value1_'.$action_source__id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('en_all_6177') /* Source Status */ as $ln_type_source_id3 => $m3){
-                            $input_options .= '<option value="'.$ln_type_source_id3.'">Update All '.$m3['m_name'].'</option>';
+                        foreach($this->config->item('sources__6177') /* Source Status */ as $read__type3 => $m3){
+                            $input_options .= '<option value="'.$read__type3.'">Update All '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
 
                         //Replace:
-                        $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
+                        $input_options .= '<select name="mass_value2_'.$action_source__id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('en_all_6177') /* Source Status */ as $ln_type_source_id3 => $m3){
-                            $input_options .= '<option value="'.$ln_type_source_id3.'">Set to '.$m3['m_name'].'</option>';
+                        foreach($this->config->item('sources__6177') /* Source Status */ as $read__type3 => $m3){
+                            $input_options .= '<option value="'.$read__type3.'">Set to '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
 
 
-                    } elseif($action_en_id == 5865){
+                    } elseif($action_source__id == 5865){
 
                         //Transaction Status update:
 
                         //Find:
-                        $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
+                        $input_options .= '<select name="mass_value1_'.$action_source__id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('en_all_6186') /* Transaction Status */ as $ln_type_source_id3 => $m3){
-                            $input_options .= '<option value="'.$ln_type_source_id3.'">Update All '.$m3['m_name'].'</option>';
+                        foreach($this->config->item('sources__6186') /* Transaction Status */ as $read__type3 => $m3){
+                            $input_options .= '<option value="'.$read__type3.'">Update All '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
 
                         //Replace:
-                        $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
+                        $input_options .= '<select name="mass_value2_'.$action_source__id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('en_all_6186') /* Transaction Status */ as $ln_type_source_id3 => $m3){
-                            $input_options .= '<option value="'.$ln_type_source_id3.'">Set to '.$m3['m_name'].'</option>';
+                        foreach($this->config->item('sources__6186') /* Transaction Status */ as $read__type3 => $m3){
+                            $input_options .= '<option value="'.$read__type3.'">Set to '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
 
@@ -511,10 +511,10 @@ $is_source = en_is_source($en['en_id']);
                     } else {
 
                         //String command:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'"  placeholder="String..." class="form-control border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'"  placeholder="String..." class="form-control border '.$is_upper.'">';
 
                         //We don't need the second value field here:
-                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_source__id.'" value="" />';
 
                     }
 
@@ -524,24 +524,24 @@ $is_source = en_is_source($en['en_id']);
 
                 //Anything sorted so far?
                 if(superpower_active(10967, true)){
-                    $en__portfolio_sort_count = $this->READ_model->fetch(array(
-                        'ln_order >' => 0, //Sorted
-                        'ln_profile_source_id' => $en['en_id'],
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-                    ), array('en_portfolio'), 0, 0, array(), 'COUNT(en_id) as totals');
+                    $source__portfolio_sort_count = $this->READ_model->fetch(array(
+                        'read__sort >' => 0, //Sorted
+                        'read__up' => $en['source__id'],
+                        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                        'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                    ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
                 }
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;">'.( isset($en__portfolio_sort_count) && $en__portfolio_sort_count[0]['totals'] > 0 ? '<span class="sort_reset hidden icon-block" title="'.$en_all_11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="en_sort_reset()">'.$en_all_11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$en_all_11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$en_all_11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;">'.( isset($source__portfolio_sort_count) && $source__portfolio_sort_count[0]['totals'] > 0 ? '<span class="sort_reset hidden icon-block" title="'.$sources__11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="en_sort_reset()">'.$sources__11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$sources__11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$sources__11035[4997]['m_icon'].'</a></div>';
                 $this_tab .= '<div class="doclear">&nbsp;</div>';
                 $this_tab .= '<div class="source_editor hidden">';
-                $this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$en_all_11035[4997]['m_name'].'</div>';
+                $this_tab .= '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$sources__11035[4997]['m_name'].'</div>';
                 $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
                 $this_tab .= '<div class="inline-box">';
 
                 //Drop Down
-                $this_tab .= '<select class="form-control border" name="mass_action_en_id" id="set_mass_action">';
+                $this_tab .= '<select class="form-control border" name="mass_action_source__id" id="set_mass_action">';
                 $this_tab .= $dropdown_options;
                 $this_tab .= '</select>';
 
@@ -554,8 +554,8 @@ $is_source = en_is_source($en['en_id']);
 
                 //Also add invisible child IDs for quick copy/pasting:
                 $this_tab .= '<div style="color:transparent;" class="hideIfEmpty">';
-                foreach($en__portfolios as $en_portfolio) {
-                    $this_tab .= $en_portfolio['en_id'].',';
+                foreach($source__portfolios as $source_portfolio) {
+                    $this_tab .= $source_portfolio['source__id'].',';
                 }
                 $this_tab .= '</div>';
 
@@ -570,19 +570,19 @@ $is_source = en_is_source($en['en_id']);
                 //Source Status Filters:
                 if(superpower_active(12701, true)){
 
-                    $en_count = $this->SOURCE_model->child_count($en['en_id'], $this->config->item('en_ids_7358') /* ACTIVE */);
+                    $en_count = $this->SOURCE_model->child_count($en['source__id'], $this->config->item('sources_id_7358') /* ACTIVE */);
                     $child_en_filters = $this->READ_model->fetch(array(
-                        'ln_profile_source_id' => $en['en_id'],
-                        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-                    ), array('en_portfolio'), 0, 0, array('en_status_source_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_source_id', 'en_status_source_id');
+                        'read__up' => $en['source__id'],
+                        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                        'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                    ), array('source_portfolio'), 0, 0, array('source__status' => 'ASC'), 'COUNT(source__id) as totals, source__status', 'source__status');
 
                     //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
                     if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $en_count) {
 
                         //Load status definitions:
-                        $en_all_6177 = $this->config->item('en_all_6177'); //Source Status
+                        $sources__6177 = $this->config->item('sources__6177'); //Source Status
 
                         //Add 2nd Navigation to UI
                         $this_tab .= '<div class="nav nav-pills nav-sm">';
@@ -592,9 +592,9 @@ $is_source = en_is_source($en['en_id']);
 
                         //Show each specific filter based on DB counts:
                         foreach($child_en_filters as $c_c) {
-                            $st = $en_all_6177[$c_c['en_status_source_id']];
+                            $st = $sources__6177[$c_c['source__status']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
-                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['en_status_source_id'] . '" onclick="en_filter_status(' . $c_c['en_status_source_id'] . ')" class="nav-link en-status-filter en-status-' . $c_c['en_status_source_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
+                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['source__status'] . '" onclick="en_filter_status(' . $c_c['source__status'] . ')" class="nav-link en-status-filter en-status-' . $c_c['source__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
                         }
 
                         $this_tab .= '</div>';
@@ -603,19 +603,19 @@ $is_source = en_is_source($en['en_id']);
                 }
             }
 
-            $this_tab .= '<div id="en__portfolio" class="list-group">';
+            $this_tab .= '<div id="source__portfolio" class="list-group">';
 
-            foreach($en__portfolios as $en_portfolio) {
-                $this_tab .= view_en($en_portfolio,false, null, true, $is_source);
+            foreach($source__portfolios as $source_portfolio) {
+                $this_tab .= view_en($source_portfolio,false, null, true, $is_source);
             }
-            if ($counter > count($en__portfolios)) {
+            if ($counter > count($source__portfolios)) {
                 $this_tab .= view_en_load_more(1, config_var(11064), $counter);
             }
 
             //Input to add new child:
             $this_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$en_all_2738[4536]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
@@ -624,72 +624,72 @@ $is_source = en_is_source($en['en_id']);
 
             $this_tab .= '</div>';
 
-        } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_12467'))){
+        } elseif(in_array($read__type, $this->config->item('sources_id_12467'))){
 
-            $counter = ln_coins_en($ln_type_source_id, $en['en_id']);
+            $counter = read_coins_en($read__type, $en['source__id']);
             if($has_superpower){
-                $this_tab = ln_coins_en($ln_type_source_id, $en['en_id'], 1);
+                $this_tab = read_coins_en($read__type, $en['source__id'], 1);
             }
 
-        } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_4485'))){
+        } elseif(in_array($read__type, $this->config->item('sources_id_4485'))){
 
             //IDEA NOTES
             $in_notes_filters = array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-                'ln_type_source_id' => $ln_type_source_id,
-                '(ln_creator_source_id='.$en['en_id'].' OR ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].')' => null,
+                'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+                'read__type' => $read__type,
+                '(read__source='.$en['source__id'].' OR read__down='.$en['source__id'].' OR read__up='.$en['source__id'].')' => null,
             );
 
             //COUNT ONLY
-            $item_counters = $this->READ_model->fetch($in_notes_filters, array('in_next'), 0, 0, array(), 'COUNT(in_id) as totals');
+            $item_counters = $this->READ_model->fetch($in_notes_filters, array('idea_next'), 0, 0, array(), 'COUNT(idea__id) as totals');
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
             if($has_superpower){
                 if($counter>0){
 
-                    $in_notes_query = $this->READ_model->fetch($in_notes_filters, array('in_next'), config_var(11064), 0, array('in_weight' => 'DESC'));
+                    $in_notes_query = $this->READ_model->fetch($in_notes_filters, array('idea_next'), config_var(11064), 0, array('idea__weight' => 'DESC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($in_notes_query as $count => $in_notes) {
-                        $this_tab .= view_in($in_notes, 0, false, false, $in_notes['ln_content'], null, false);
+                        $this_tab .= view_in($in_notes, 0, false, false, $in_notes['read__message'], null, false);
                     }
                     $this_tab .= '</div>';
 
                 } else {
 
-                    $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$en_all_11089[$ln_type_source_id]['m_name'].' yet</div>';
+                    $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$sources__11089[$read__type]['m_name'].' yet</div>';
 
                 }
             }
 
-        } elseif($ln_type_source_id == 12969 /* Reads */){
+        } elseif($read__type == 12969 /* Reads */){
 
             $in_reads_filters = array(
-                'ln_creator_source_id' => $en['en_id'],
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12969')) . ')' => null, //Reads Idea Set
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+                'read__source' => $en['source__id'],
+                'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+                'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             );
-            $player_reads = $this->READ_model->fetch($in_reads_filters, array('in_previous'), 1, 0, array(), 'COUNT(ln_id) as totals');
+            $player_reads = $this->READ_model->fetch($in_reads_filters, array('idea_previous'), 1, 0, array(), 'COUNT(read__id) as totals');
             $counter = $player_reads[0]['totals'];
 
             if($has_superpower){
                 if($counter > 0){
-                    $in_reads_query = $this->READ_model->fetch($in_reads_filters, array('in_previous'), config_var(11064), 0, array('ln_order' => 'ASC'));
+                    $in_reads_query = $this->READ_model->fetch($in_reads_filters, array('idea_previous'), config_var(11064), 0, array('read__sort' => 'ASC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($in_reads_query as $count => $in_notes) {
                         $this_tab .= view_in($in_notes);
                     }
                     $this_tab .= '</div>';
                 } else {
-                    $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$en_all_11089[$ln_type_source_id]['m_name'].' yet</div>';
+                    $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$sources__11089[$read__type]['m_name'].' yet</div>';
                 }
             }
 
         }
 
-        if(!$counter && (!in_array($ln_type_source_id, $this->config->item('en_ids_12574')) || !$session_en)){
+        if(!$counter && (!in_array($read__type, $this->config->item('sources_id_12574')) || !$session_en)){
             continue;
         }
 
@@ -697,14 +697,14 @@ $is_source = en_is_source($en['en_id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$ln_type_source_id.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( !in_array($ln_type_source_id, $this->config->item('en_ids_13004')) && $counter>0 ? view_number($counter).'&nbsp;' : '').$m['m_name'].'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$read__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$read__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$read__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( !in_array($read__type, $this->config->item('sources_id_13004')) && $counter>0 ? view_number($counter).'&nbsp;' : '').$m['m_name'].'</a></div>';
 
         //BODY
-        echo '<div class="contentTab'.$ln_type_source_id.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
+        echo '<div class="contentTab'.$read__type.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
         if($this_tab) {
             echo $this_tab;
         } elseif(!$has_superpower){
-            $superpower = $en_all_10957[end($superpower_actives)];
+            $superpower = $sources__10957[end($superpower_actives)];
             echo '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Missing <span class="'.extract_icon_color($superpower['m_icon']).'">'. $superpower['m_icon'] . '&nbsp;' . $superpower['m_name'] . '</span></div>';
         }
         echo '</div>';

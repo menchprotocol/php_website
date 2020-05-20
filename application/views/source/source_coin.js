@@ -13,7 +13,7 @@ $(document).ready(function () {
 
     //Source Loader:
     var portfolio_count = parseInt($('#new_portfolio').attr('current-count'));
-    if(portfolio_count>0 && portfolio_count<parseInt(js_en_all_6404[13005]['m_desc'])){
+    if(portfolio_count>0 && portfolio_count<parseInt(js_sources__6404[13005]['m_desc'])){
         en_sort_portfolio_load();
     }
 
@@ -59,13 +59,13 @@ $(document).ready(function () {
     load_editor();
 
     //Keep an eye for icon change:
-    $('#en_icon').keyup(function() {
+    $('#source__icon').keyup(function() {
         update_demo_icon();
     });
 
     //Lookout for idea link related changes:
-    $('#ln_status_source_id').change(function () {
-        if (parseInt($('#ln_status_source_id').find(":selected").val()) == 6173 /* Link Deleted */ ) {
+    $('#read__status').change(function () {
+        if (parseInt($('#read__status').find(":selected").val()) == 6173 /* DELETED */ ) {
             //About to delete? Notify them:
             $('.notify_unlink_en').removeClass('hidden');
         } else {
@@ -73,16 +73,16 @@ $(document).ready(function () {
         }
     });
 
-    $('#en_status_source_id').change(function () {
+    $('#source__status').change(function () {
 
-        if (parseInt($('#en_status_source_id').find(":selected").val()) == 6178 /* Player Deleted */) {
+        if (parseInt($('#source__status').find(":selected").val()) == 6178 /* Player Deleted */) {
 
             //Notify Player:
             $('.notify_en_delete').removeClass('hidden');
             $('.source_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total links:
-            $.post("/source/en_count_delete_links", { en_id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
+            $.post("/source/en_count_delete_links", { source__id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
 
                 if(data.status){
                     $('.source_delete_stats').html('<b>'+data.en_link_count+'</b>');
@@ -146,7 +146,7 @@ $(document).ready(function () {
             });
     }
 
-    en_ln_type_preview_load();
+    en_read_type_preview_load();
 
 });
 
@@ -173,17 +173,17 @@ function en_load_search(element_focus, is_en_parent, shortcut) {
 
     });
 
-    if(parseInt(js_en_all_6404[12678]['m_desc'])){
+    if(parseInt(js_sources__6404[12678]['m_desc'])){
 
             $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-                en_add_or_link(suggestion.alg_obj_id, is_en_parent);
+                en_add_or_link(suggestion.object__id, is_en_parent);
 
             }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_en_parent ? 'q' : 'a' )]}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'alg_obj_type_id=4536',
+                    filters: 'object__type=4536',
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {
@@ -275,7 +275,7 @@ function en_add_or_link(en_existing_id, is_parent) {
         var list_id = 'list-parent';
     } else {
         var input = $('#new_portfolio .add-input');
-        var list_id = 'en__portfolio';
+        var list_id = 'source__portfolio';
     }
 
     var en_new_string = null;
@@ -292,7 +292,7 @@ function en_add_or_link(en_existing_id, is_parent) {
     //Add via Ajax:
     $.post("/source/en_add_or_link", {
 
-        en_id: en_focus_id,
+        source__id: en_focus_id,
         en_existing_id: en_existing_id,
         en_new_string: en_new_string,
         is_parent: (is_parent ? 1 : 0),
@@ -336,9 +336,9 @@ function en_filter_status(new_val) {
     en_load_next_page(0, 1);
 }
 
-function en_name_word_count() {
-    var len = $('#en_name').val().length;
-    if (len > js_en_all_6404[6197]['m_desc']) {
+function source__title_word_count() {
+    var len = $('#source__title').val().length;
+    if (len > js_sources__6404[6197]['m_desc']) {
         $('#charEnNum').addClass('overload').text(len);
     } else {
         $('#charEnNum').removeClass('overload').text(len);
@@ -353,7 +353,7 @@ function en_load_next_page(page, load_new_filter) {
         //Replace load more with spinner:
         var append_div = $('#new_portfolio').html();
         //The padding-bottom would delete the scrolling effect on the left side!
-        $('#en__portfolio').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+        $('#source__portfolio').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
@@ -361,7 +361,7 @@ function en_load_next_page(page, load_new_filter) {
 
     $.post("/source/en_load_next_page", {
         page: page,
-        parent_en_id: en_focus_id,
+        parent_source__id: en_focus_id,
         en_focus_filter: en_focus_filter,
     }, function (data) {
 
@@ -369,7 +369,7 @@ function en_load_next_page(page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#en__portfolio').html(data + '<div id="new_portfolio" class="list-group-item itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#source__portfolio').html(data + '<div id="new_portfolio" class="list-group-item itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             en_load_search("#new_portfolio", 0, 'w');
         } else {
@@ -388,13 +388,13 @@ function en_load_next_page(page, load_new_filter) {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#en_icon').val().length > 0 ? $('#en_icon').val() : js_en_all_2738[4536]['m_icon'] ));
+    $('.icon-demo').html(($('#source__icon').val().length > 0 ? $('#source__icon').val() : js_sources__2738[4536]['m_icon'] ));
 }
 
-function en_modify_load(en_id, ln_id) {
+function en_modify_load(source__id, read__id) {
 
     //Make sure inputs are valid:
-    if (!$('.en___' + en_id).length) {
+    if (!$('.en___' + source__id).length) {
         alert('Invalid Source ID');
         return false;
     }
@@ -404,41 +404,41 @@ function en_modify_load(en_id, ln_id) {
     $("#modifybox").removeClass('hidden').hide().fadeIn();
 
     //Update variables:
-    $('#modifybox').attr('source-link-id', ln_id);
-    $('#modifybox').attr('source-id', en_id);
+    $('#modifybox').attr('source-link-id', read__id);
+    $('#modifybox').attr('source-id', source__id);
 
     //Cannot be deleted OR Unpublished as this would not load, so delete them:
     $('.notify_en_delete, .notify_unlink_en').addClass('hidden');
 
     //Set opacity:
     delete_all_saved();
-    $(".saved_en_"+en_id).addClass('en_saved');
+    $(".saved_en_"+source__id).addClass('en_saved');
 
     //Might be in an INPUT or a DIV based on active superpowers:
-    var en_full_name = $(".text__6197_" + en_id + ":first").val();
+    var en_full_name = $(".text__6197_" + source__id + ":first").val();
     if(!en_full_name.length){
-        en_full_name = $(".text__6197_" + en_id + ":first").text();
+        en_full_name = $(".text__6197_" + source__id + ":first").text();
     }
-    $('#en_name').val(en_full_name.toUpperCase()).focus();
+    $('#source__title').val(en_full_name.toUpperCase()).focus();
     $('.edit-header').html('<i class="fas fa-pen-square"></i> ' + en_full_name);
-    $('#en_status_source_id').val($(".en___" + en_id + ":first").attr('en-status'));
+    $('#source__status').val($(".en___" + source__id + ":first").attr('en-status'));
     $('.save_source_changes').html('');
     $('.source_delete_stats').html('');
 
-    if (parseInt($('.en__icon_' + en_id).attr('en-is-set')) > 0) {
-        $('#en_icon').val($('.en__icon_' + en_id).html());
+    if (parseInt($('.en__icon_' + source__id).attr('en-is-set')) > 0) {
+        $('#source__icon').val($('.en__icon_' + source__id).html());
     } else {
         //Clear out input:
-        $('#en_icon').val('');
+        $('#source__icon').val('');
     }
 
-    en_name_word_count();
+    source__title_word_count();
     update_demo_icon();
 
     //Only show unlink button if not level 1
-    if (parseInt(ln_id) > 0) {
+    if (parseInt(read__id) > 0) {
 
-        $('#ln_status_source_id').val($(".en___" + en_id + ":first").attr('ln-status'));
+        $('#read__status').val($(".en___" + source__id + ":first").attr('ln-status'));
         $('#en_link_count').val('0');
 
 
@@ -446,10 +446,10 @@ function en_modify_load(en_id, ln_id) {
         $('.unlink-source, .en-has-tr').removeClass('hidden');
 
         //Assign value:
-        $('#ln_content').val($(".ln_content_val_" + ln_id + ":first").text());
+        $('#read__message').val($(".read__message_val_" + read__id + ":first").text());
 
         //Also update type:
-        en_ln_type_preview();
+        en_read_type_preview();
 
     } else {
 
@@ -460,7 +460,7 @@ function en_modify_load(en_id, ln_id) {
 }
 
 function source_link_form_lock(){
-    $('#ln_content').prop("disabled", true).css('background-color','#999999');
+    $('#read__message').prop("disabled", true).css('background-color','#999999');
 
     $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Uploading');
 
@@ -474,7 +474,7 @@ function source_link_form_unlock(result){
     }
 
     //Unlock either way:
-    $('#ln_content').prop("disabled", false).css('background-color','#FFF');
+    $('#read__message').prop("disabled", false).css('background-color','#FFF');
 
     $('.btn-save').removeClass('grey').attr('href', 'javascript:en_modify_save();').html('Save');
 
@@ -493,7 +493,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
         return false;
     }
 
-    var current_value = $('#ln_content').val();
+    var current_value = $('#read__message').val();
     if(current_value.length > 0){
         //There is something in the input field, notify the user:
         var r = confirm("Current link content [" + current_value + "] will be deleted. Continue?");
@@ -537,10 +537,10 @@ function en_save_file_upload(droppedFiles, uploadType) {
                 if(data.status){
 
                     //Add URL to input:
-                    $('#ln_content').val( data.cdn_url );
+                    $('#read__message').val( data.cdn_url );
 
                     //Also update type:
-                    en_ln_type_preview();
+                    en_read_type_preview();
                 }
 
                 //Unlock form:
@@ -562,24 +562,24 @@ function en_save_file_upload(droppedFiles, uploadType) {
 
 function en_sort_save() {
 
-    var new_ln_orders = [];
+    var new_read__sorts = [];
     var sort_rank = 0;
 
-    $("#en__portfolio .en-item").each(function () {
+    $("#source__portfolio .en-item").each(function () {
         //Fetch variables for this idea:
-        var en_id = parseInt($(this).attr('source-id'));
-        var ln_id = parseInt($(this).attr('ln_id'));
+        var source__id = parseInt($(this).attr('source-id'));
+        var read__id = parseInt($(this).attr('read__id'));
 
         sort_rank++;
 
         //Store in DB:
-        new_ln_orders[sort_rank] = ln_id;
+        new_read__sorts[sort_rank] = read__id;
     });
 
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/source/en_sort_save", {en_id: en_focus_id, new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/source/en_sort_save", {source__id: en_focus_id, new_read__sorts: new_read__sorts}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -595,7 +595,7 @@ function en_sort_reset(){
 
     //Update via call:
     $.post("/source/en_sort_reset", {
-        en_id: en_focus_id
+        source__id: en_focus_id
     }, function (data) {
 
         if (!data.status) {
@@ -616,7 +616,7 @@ function en_sort_reset(){
 function en_sort_portfolio_load() {
 
     var element_key = null;
-    var theobject = document.getElementById("en__portfolio");
+    var theobject = document.getElementById("source__portfolio");
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
         return false;
@@ -659,15 +659,15 @@ function en_modify_save() {
     //Prepare data to be modified for this idea:
     var modify_data = {
         en_focus_id: en_focus_id, //Determines if we need to change location upon removing...
-        en_id: parseInt($('#modifybox').attr('source-id')),
-        en_name: $('#en_name').val().toUpperCase(),
-        en_icon: $('#en_icon').val(),
-        en_status_source_id: $('#en_status_source_id').val(), //The new status (might not have changed too)
+        source__id: parseInt($('#modifybox').attr('source-id')),
+        source__title: $('#source__title').val().toUpperCase(),
+        source__icon: $('#source__icon').val(),
+        source__status: $('#source__status').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
         //Link data:
-        ln_id: parseInt($('#modifybox').attr('source-link-id')),
-        ln_content: $('#ln_content').val(),
-        ln_status_source_id: $('#ln_status_source_id').val(),
+        read__id: parseInt($('#modifybox').attr('source-link-id')),
+        read__message: $('#read__message').val(),
+        read__status: $('#read__status').val(),
     };
 
     //Show spinner:
@@ -693,13 +693,13 @@ function en_modify_save() {
                     delete_all_saved();
 
                     //Delete from UI:
-                    $('.tr_' + modify_data['ln_id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();
+                    $('.tr_' + modify_data['read__id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();
 
                     //Disappear in a while:
                     setTimeout(function () {
 
                         //Hide the editor & saving results:
-                        $('.tr_' + modify_data['ln_id']).remove();
+                        $('.tr_' + modify_data['read__id']).remove();
 
                         //Hide editing box:
                         $('#modifybox').addClass('hidden');
@@ -712,44 +712,44 @@ function en_modify_save() {
 
                 //Reflect changed:
                 //Might be in an INPUT or a DIV based on active superpowers:
-                update_text_name(6197, modify_data['en_id'], modify_data['en_name']);
+                update_text_name(6197, modify_data['source__id'], modify_data['source__title']);
 
 
                 //Player Status:
-                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status_source_id']);
-                $('.en_status_source_id_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6177[modify_data['en_status_source_id']]["m_name"] + ': ' + js_en_all_6177[modify_data['en_status_source_id']]["m_desc"] + '">' + js_en_all_6177[modify_data['en_status_source_id']]["m_icon"] + '</span>');
+                $(".en___" + modify_data['source__id']).attr('en-status', modify_data['source__status']);
+                $('.source__status_' + modify_data['source__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__6177[modify_data['source__status']]["m_name"] + ': ' + js_sources__6177[modify_data['source__status']]["m_desc"] + '">' + js_sources__6177[modify_data['source__status']]["m_icon"] + '</span>');
 
 
                 //Player Icon:
-                var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
+                var icon_is_set = ( modify_data['source__icon'].length > 0 ? 1 : 0 );
                 if(!icon_is_set){
                     //Set source default icon:
-                    modify_data['en_icon'] = js_en_all_2738[4536]['m_icon'];
+                    modify_data['source__icon'] = js_sources__2738[4536]['m_icon'];
                 }
-                $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
-                $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
-                $('.en_child_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
+                $('.en__icon_' + modify_data['source__id']).attr('en-is-set' , icon_is_set );
+                $('.en_ui_icon_' + modify_data['source__id']).html(modify_data['source__icon']);
+                $('.en_child_icon_' + modify_data['source__id']).html(modify_data['source__icon']);
 
 
                 //Did we have ideas to update?
-                if (modify_data['ln_id'] > 0) {
+                if (modify_data['read__id'] > 0) {
 
                     //Yes, update the ideas:
-                    $(".ln_content_" + modify_data['ln_id']).html(data.ln_content);
-                    $(".ln_content_val_" + modify_data['ln_id']).text(data.ln_content_final);
+                    $(".read__message_" + modify_data['read__id']).html(data.read__message);
+                    $(".read__message_val_" + modify_data['read__id']).text(data.read__message_final);
 
                     //Did the content get modified? (Likely for a domain URL):
-                    if(!(data.ln_content_final==modify_data['ln_content'])){
-                        $("#ln_content").val(data.ln_content_final).hide().fadeIn('slow');
+                    if(!(data.read__message_final==modify_data['read__message'])){
+                        $("#read__message").val(data.read__message_final).hide().fadeIn('slow');
                     }
 
 
                     //Link Icon:
-                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_4592[data.js_ln_type_source_id]["m_name"] + ': ' + js_en_all_4592[data.js_ln_type_source_id]["m_desc"] + '">' + js_en_all_4592[data.js_ln_type_source_id]["m_icon"] + '</span>');
+                    $('.read_type_' + modify_data['read__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__4592[data.js_read__type]["m_name"] + ': ' + js_sources__4592[data.js_read__type]["m_desc"] + '">' + js_sources__4592[data.js_read__type]["m_icon"] + '</span>');
 
                     //Transaction Status:
-                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status_source_id'])
-                    $('.ln_status_source_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6186[modify_data['ln_status_source_id']]["m_name"] + ': ' + js_en_all_6186[modify_data['ln_status_source_id']]["m_desc"] + '">' + js_en_all_6186[modify_data['ln_status_source_id']]["m_icon"] + '</span>');
+                    $(".en___" + modify_data['source__id']).attr('ln-status', modify_data['read__status'])
+                    $('.read__status_' + modify_data['read__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__6186[modify_data['read__status']]["m_name"] + ': ' + js_sources__6186[modify_data['read__status']]["m_desc"] + '">' + js_sources__6186[modify_data['read__status']]["m_icon"] + '</span>');
 
                 }
 
@@ -829,9 +829,9 @@ function account_update_avatar_icon(type_css, icon_css){
 }
 
 
-function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect){
+function account_update_radio(parent_source__id, selected_source__id, enable_mulitiselect){
 
-    var was_previously_selected = ( $('.radio-'+parent_en_id+' .item-'+selected_en_id).hasClass('active') ? 1 : 0 );
+    var was_previously_selected = ( $('.radio-'+parent_source__id+' .item-'+selected_source__id).hasClass('active') ? 1 : 0 );
 
     //Save the rest of the content:
     if(!enable_mulitiselect && was_previously_selected){
@@ -840,25 +840,25 @@ function account_update_radio(parent_en_id, selected_en_id, enable_mulitiselect)
     }
 
     //Show spinner on the notification element:
-    var notify_el = '.radio-'+parent_en_id+' .item-'+selected_en_id+' .change-results';
+    var notify_el = '.radio-'+parent_source__id+' .item-'+selected_source__id+' .change-results';
     $(notify_el).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
 
     if(!enable_mulitiselect){
         //Clear all selections:
-        $('.radio-'+parent_en_id+' .list-group-item').removeClass('active');
+        $('.radio-'+parent_source__id+' .list-group-item').removeClass('active');
     }
 
     //Enable currently selected:
     if(enable_mulitiselect && was_previously_selected){
-        $('.radio-'+parent_en_id+' .item-'+selected_en_id).removeClass('active');
+        $('.radio-'+parent_source__id+' .item-'+selected_source__id).removeClass('active');
     } else {
-        $('.radio-'+parent_en_id+' .item-'+selected_en_id).addClass('active');
+        $('.radio-'+parent_source__id+' .item-'+selected_source__id).addClass('active');
     }
 
     $.post("/source/account_update_radio", {
-        parent_en_id: parent_en_id,
-        selected_en_id: selected_en_id,
+        parent_source__id: parent_source__id,
+        selected_source__id: selected_source__id,
         enable_mulitiselect: enable_mulitiselect,
         was_previously_selected: was_previously_selected,
     }, function (data) {

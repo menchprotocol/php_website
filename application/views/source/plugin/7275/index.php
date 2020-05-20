@@ -8,10 +8,10 @@
 
 $start_time = time();
 $filters = array(
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+    'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
 );
-if(isset($_GET['in_id'])){
-    $filters['in_id'] = intval($_GET['in_id']);
+if(isset($_GET['idea__id'])){
+    $filters['idea__id'] = intval($_GET['idea__id']);
 }
 
 $published_ins = $this->IDEA_model->fetch($filters);

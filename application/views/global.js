@@ -61,16 +61,16 @@ function load_editor(){
         mass_action_ui();
     });
 
-    if(parseInt(js_en_all_6404[12678]['m_desc'])){
+    if(parseInt(js_sources__6404[12678]['m_desc'])){
         $('.en_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
+            $(this).val('@' + suggestion.object__id + ' ' + suggestion.object__title);
 
         }).autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'alg_obj_type_id=4536',
+                    filters: 'object__type=4536',
                     hitsPerPage: 5,
                 }, function (error, content) {
                     if (error) {
@@ -81,7 +81,7 @@ function load_editor(){
                 });
             },
             displayKey: function (suggestion) {
-                return '@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name;
+                return '@' + suggestion.object__id + ' ' + suggestion.object__title;
             },
             templates: {
                 suggestion: function (suggestion) {
@@ -95,13 +95,13 @@ function load_editor(){
 
         $('.in_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            $(this).val('#' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
+            $(this).val('#' + suggestion.object__id + ' ' + suggestion.object__title);
 
         }).autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'alg_obj_type_id=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ')',
+                    filters: 'object__type=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ')',
                     hitsPerPage: 5,
                 }, function (error, content) {
                     if (error) {
@@ -112,7 +112,7 @@ function load_editor(){
                 });
             },
             displayKey: function (suggestion) {
-                return '#' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name;
+                return '#' + suggestion.object__id + ' ' + suggestion.object__title;
             },
             templates: {
                 suggestion: function (suggestion) {
@@ -127,36 +127,36 @@ function load_editor(){
 }
 
 
-function js_extract_icon_color(en_icon){
+function js_extract_icon_color(source__icon){
 
     //NOTE: Has a twin PHP function
 
-    if(en_icon.includes('read')){
+    if(source__icon.includes('read')){
         return ' read ';
-    } else if(en_icon.includes( 'idea')){
+    } else if(source__icon.includes( 'idea')){
         return ' idea ';
-    } else if(en_icon.includes('source') || !en_icon.length){
+    } else if(source__icon.includes('source') || !source__icon.length){
         return ' source ';
     } else {
         return '';
     }
 }
 
-function view_search_result(alg_obj){
+function view_search_result(algolia_object){
 
     //Determine object type:
-    var is_idea = (parseInt(alg_obj.alg_obj_type_id)==4535);
-    var is_public = ( parseInt(alg_obj.alg_obj_status) in ( is_idea ? js_en_all_7355 : js_en_all_7357 ));
-    var obj_icon = ( is_idea ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'idea' : 'read' )+'"></i>' : alg_obj.alg_obj_icon );
-    var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
+    var is_idea = (parseInt(algolia_object.object__type)==4535);
+    var is_public = ( parseInt(algolia_object.object__status) in ( is_idea ? js_sources__7355 : js_sources__7357 ));
+    var obj_icon = ( is_idea ? '<i class="fas fa-circle '+( js_session_superpowers_assigned.includes(10939) ? 'idea' : 'read' )+'"></i>' : algolia_object.object__icon );
+    var obj_full_name = ( algolia_object._highlightResult && algolia_object._highlightResult.object__title.value ? algolia_object._highlightResult.object__title.value : algolia_object.object__title );
 
     return '<span class="icon-block-sm">'+ obj_icon +'</span>' + ( is_public ? '' : '<span class="icon-block-sm"><i class="far fa-spinner fa-spin"></i></span>' ) + '<span class="'+ ( !is_idea ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>'; //htmlentitiesjs()
 
 }
 
 
-function js_view_platform_message(en_id){
-    var messages = js_en_all_12687[en_id]['m_desc'].split(" | ");
+function js_view_platform_message(source__id){
+    var messages = js_sources__12687[source__id]['m_desc'].split(" | ");
     if(messages.length == 1){
         //Return message:
         return messages[0];
@@ -167,18 +167,18 @@ function js_view_platform_message(en_id){
 }
 
 
-function loadtab(ln_type_source_id, tab_data_id, note_in_id, owner_en_id){
+function loadtab(read__type, tab_data_id, note_idea__id, owner_source__id){
 
     //Hide all tabs:
-    $('.tab-group-'+ln_type_source_id).addClass('hidden');
-    $('.tab-nav-'+ln_type_source_id).removeClass('active');
+    $('.tab-group-'+read__type).addClass('hidden');
+    $('.tab-nav-'+read__type).removeClass('active');
 
     //Show this tab:
-    $('.tab-group-'+ln_type_source_id+'.tab-data-'+tab_data_id).removeClass('hidden');
-    $('.tab-nav-'+ln_type_source_id+'.tab-head-'+tab_data_id).addClass('active');
+    $('.tab-group-'+read__type+'.tab-data-'+tab_data_id).removeClass('hidden');
+    $('.tab-nav-'+read__type+'.tab-head-'+tab_data_id).addClass('active');
 
     //Focus on potential input field if any:
-    $('#ln_content'+tab_data_id).focus();
+    $('#read__message'+tab_data_id).focus();
 
 }
 
@@ -225,7 +225,7 @@ $(document).ready(function () {
 
     //Load Algolia on Focus:
     $(".algolia_search").focus(function () {
-        if(!algolia_index && parseInt(js_en_all_6404[12678]['m_desc'])){
+        if(!algolia_index && parseInt(js_sources__6404[12678]['m_desc'])){
             //Loadup Algolia once:
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
             algolia_index = client.initIndex('alg_index');
@@ -259,13 +259,13 @@ $(document).ready(function () {
     });
 
 
-    if(parseInt(js_en_all_6404[12678]['m_desc'])){
+    if(parseInt(js_sources__6404[12678]['m_desc'])){
 
         $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#f0f0f0').css('font-size','0.8em');
 
-            window.location = suggestion.alg_obj_url;
+            window.location = suggestion.object__url;
 
         }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
             {
@@ -294,12 +294,12 @@ $(document).ready(function () {
                                 if(search_only_source && js_session_superpowers_assigned.includes(12701)){
 
                                     //Can view ALL Players:
-                                    search_filters += 'alg_obj_type_id=4536 ';
+                                    search_filters += 'object__type=4536 ';
 
                                 } else {
 
                                     //Can view limited sources:
-                                    search_filters += 'alg_obj_type_id='+( search_only_in ? 4535 : 4536 )+' AND ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ') ';
+                                    search_filters += 'object__type='+( search_only_in ? 4535 : 4536 )+' AND ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ') ';
                                 }
 
                             } else {
@@ -323,12 +323,12 @@ $(document).ready(function () {
                             if(search_only_source || search_only_in){
 
                                 //Guest can search sources only with a starting @ sign
-                                search_filters += '(alg_obj_type_id='+( search_only_in ? 4535 : 4536 )+' AND _tags:is_featured)';
+                                search_filters += '(object__type='+( search_only_in ? 4535 : 4536 )+' AND _tags:is_featured)';
 
                             } else {
 
                                 //Guest can search ideas only by default as they start typing;
-                                search_filters += '(alg_obj_type_id=4535 AND _tags:is_featured)';
+                                search_filters += '(object__type=4535 AND _tags:is_featured)';
 
                             }
 
@@ -393,10 +393,10 @@ $(document).ready(function () {
 
 
 
-function en_ln_type_preview_load(){
+function en_read_type_preview_load(){
 
     //Watchout for content change
-    var textInput = document.getElementById('ln_content');
+    var textInput = document.getElementById('read__message');
 
     //Init a timeout variable to be used below
     var timeout = null;
@@ -412,7 +412,7 @@ function en_ln_type_preview_load(){
         // Make a new timeout set to go off in 800ms
         timeout = setTimeout(function () {
             //update type:
-            en_ln_type_preview();
+            en_read_type_preview();
         }, 610);
     };
 
@@ -421,24 +421,24 @@ function en_ln_type_preview_load(){
 
 
 
-function en_ln_type_preview() {
+function en_read_type_preview() {
 
     /*
      * Updates the type of link based on the link content
      *
      * */
 
-    $('#en_type_link_id').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('#read__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
 
     //Fetch Idea Data to load modify widget:
-    $.post("/source/en_ln_type_preview", {
-        ln_content: $('#ln_content').val(),
-        ln_id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('source-link-id')) : 0 ),
+    $.post("/source/en_read_type_preview", {
+        read__message: $('#read__message').val(),
+        read__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('source-link-id')) : 0 ),
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
-        $('#en_type_link_id').html((data.status ? data.html_ui : '<b class="read">' + data.message+'</b>'));
+        $('#read__type_preview').html((data.status ? data.html_ui : '<b class="read">' + data.message+'</b>'));
 
         if(data.status && data.en_link_preview.length > 0){
             $('#en_link_preview').html(data.en_link_preview);
@@ -486,11 +486,11 @@ function toggle_search(){
 
 
 
-function read_toggle_saved(in_id){
+function read_toggle_saved(idea__id){
     $('.share-this').removeClass('hidden');
     $('.toggle_saved').toggleClass('hidden');
     $.post("/read/read_toggle_saved", {
-        in_id:in_id,
+        idea__id:idea__id,
     }, function (data) {
         if (!data.status) {
             alert(data.message);
@@ -519,7 +519,7 @@ function en_fetch_canonical_url(query_string, not_found){
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
-            $('.not-found').html('<a href="/source/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + view_search_result(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/source/'+searchdata.algolia_object.object__id+'" class="suggestion">' + view_search_result(searchdata.algolia_object)+'</a>');
         }
     });
 
@@ -584,21 +584,21 @@ jQuery.fn.extend({
     }
 });
 
-function ms_toggle(ln_id, new_state) {
+function ms_toggle(read__id, new_state) {
 
     if (new_state < 0) {
         //Detect new state:
-        new_state = ($('.link-class--' + ln_id).hasClass('hidden') ? 1 : 0);
+        new_state = ($('.link-class--' + read__id).hasClass('hidden') ? 1 : 0);
     }
 
     if (new_state) {
         //open:
-        $('.link-class--' + ln_id).removeClass('hidden');
-        $('#handle-' + ln_id).removeClass('fa-plus-circle').addClass('fa-minus-circle');
+        $('.link-class--' + read__id).removeClass('hidden');
+        $('#handle-' + read__id).removeClass('fa-plus-circle').addClass('fa-minus-circle');
     } else {
         //Close:
-        $('.link-class--' + ln_id).addClass('hidden');
-        $('#handle-' + ln_id).removeClass('fa-minus-circle').addClass('fa-plus-circle');
+        $('.link-class--' + read__id).addClass('hidden');
+        $('#handle-' + read__id).removeClass('fa-minus-circle').addClass('fa-plus-circle');
     }
 }
 
@@ -621,7 +621,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
         }
     });
 
-    if(!parseInt(js_en_all_6404[12678]['m_desc'])){
+    if(!parseInt(js_sources__6404[12678]['m_desc'])){
         //Previously loaded:
         return false;
     }
@@ -630,10 +630,10 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
     $(element_focus).on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='link_in'){
-            in_link_or_create($(this).attr('idea-id'), is_in_parent, suggestion.alg_obj_id);
+            in_link_or_create($(this).attr('idea-id'), is_in_parent, suggestion.object__id);
         } else {
             //Go to idea:
-            window.location = suggestion.alg_obj_url;
+            window.location = suggestion.object__url;
             return true;
         }
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_in_parent ? 'q' : 'a' )]}, [{
@@ -646,7 +646,7 @@ function in_load_search(element_focus, is_in_parent, shortcut, is_add_mode) {
             } else {
                 algolia_index.search(q, {
 
-                    filters: 'alg_obj_type_id=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ')',
+                    filters: 'object__type=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ')',
                     hitsPerPage:( is_add_mode=='link_in' ? 7 : 10 ),
 
                 }, function (error, content) {
@@ -701,39 +701,39 @@ function view_input_text_update_start(){
     });
 }
 
-function view_input_text_count(cache_en_id, object_id) {
+function view_input_text_count(cache_source__id, object__id) {
 
     //Count text area characters:
 
     //Update count:
-    var len = $('.text__'+cache_en_id+'_'+object_id).val().length;
-    if (len > js_en_all_6404[cache_en_id]['m_desc']) {
-        $('#current_count_'+cache_en_id+'_'+object_id).addClass('overload').text(len);
+    var len = $('.text__'+cache_source__id+'_'+object__id).val().length;
+    if (len > js_sources__6404[cache_source__id]['m_desc']) {
+        $('#current_count_'+cache_source__id+'_'+object__id).addClass('overload').text(len);
     } else {
-        $('#current_count_'+cache_en_id+'_'+object_id).removeClass('overload').text(len);
+        $('#current_count_'+cache_source__id+'_'+object__id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_en_all_6404[cache_en_id]['m_desc'] * js_en_all_6404[12088]['m_desc'] )){
-        $('.title_counter_'+cache_en_id+'_'+object_id).removeClass('hidden');
+    if(len > ( js_sources__6404[cache_source__id]['m_desc'] * js_sources__6404[12088]['m_desc'] )){
+        $('.title_counter_'+cache_source__id+'_'+object__id).removeClass('hidden');
     } else {
-        $('.title_counter_'+cache_en_id+'_'+object_id).addClass('hidden');
+        $('.title_counter_'+cache_source__id+'_'+object__id).addClass('hidden');
     }
 
 }
 
-function update_text_name(cache_en_id, en_id, en_name){
-    if(cache_en_id==6197){
-        en_name = en_name.toUpperCase();
+function update_text_name(cache_source__id, source__id, source__title){
+    if(cache_source__id==6197){
+        source__title = source__title.toUpperCase();
     }
-    $(".text__"+cache_en_id+"_" + en_id).val(en_name).text(en_name).attr('old-value', en_name);
+    $(".text__"+cache_source__id+"_" + source__id).val(source__title).text(source__title).attr('old-value', source__title);
 }
 
 function view_input_text_update(this_handler){
 
     var modify_data = {
-        object_id: parseInt($(this_handler).attr('object_id')),
-        cache_en_id: parseInt($(this_handler).attr('cache_en_id')),
+        object__id: parseInt($(this_handler).attr('object__id')),
+        cache_source__id: parseInt($(this_handler).attr('cache_source__id')),
         field_value: $(this_handler).val().trim()
     };
 
@@ -744,7 +744,7 @@ function view_input_text_update(this_handler){
     }
 
     //Grey background to indicate saving...
-    var handler = '.text__'+modify_data['cache_en_id']+'_'+modify_data['object_id'];
+    var handler = '.text__'+modify_data['cache_source__id']+'_'+modify_data['object__id'];
     $(handler).addClass('dynamic_saving');
 
     $.post("/read/view_input_text_update", modify_data, function (data) {
@@ -760,7 +760,7 @@ function view_input_text_update(this_handler){
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_name(modify_data['cache_en_id'], modify_data['object_id'], modify_data['field_value']);
+            update_text_name(modify_data['cache_source__id'], modify_data['object__id'], modify_data['field_value']);
 
         }
 

@@ -4,21 +4,21 @@
 
 
 //Do a query to detect Ideas with the exact same title:
-$q = $this->db->query('select in1.* from mench_idea in1 where (select count(*) from mench_idea in2 where in2.in_title = in1.in_title AND in2.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_title ASC');
+$q = $this->db->query('select in1.* from mench_idea in1 where (select count(*) from mench_idea in2 where in2.idea__title = in1.idea__title AND in2.idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')) > 1 AND in1.idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ') ORDER BY in1.idea__title ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){
 
     $prev_title = null;
-    $en_all_4737 = $this->config->item('en_all_4737'); //Idea Status
+    $sources__4737 = $this->config->item('sources__4737'); //Idea Status
 
     foreach($duplicates as $in) {
-        if ($prev_title != $in['in_title']) {
+        if ($prev_title != $in['idea__title']) {
             echo '<hr />';
-            $prev_title = $in['in_title'];
+            $prev_title = $in['idea__title'];
         }
 
-        echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_source_id']]['m_name'].': '.$en_all_4737[$in['in_status_source_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_source_id']]['m_icon'] . '</span> <a href="/idea/go/' . $in['in_id'] . '"><b>' . $in['in_title'] . '</b></a> #' . $in['in_id'] . '</div>';
+        echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$in['idea__status']]['m_name'].': '.$sources__4737[$in['idea__status']]['m_desc'].'">' . $sources__4737[$in['idea__status']]['m_icon'] . '</span> <a href="/idea/go/' . $in['idea__id'] . '"><b>' . $in['idea__title'] . '</b></a> #' . $in['idea__id'] . '</div>';
     }
 
 } else {

@@ -3,8 +3,8 @@
 $session_en = superpower_assigned();
 $first_segment = $this->uri->segment(1);
 $second_segment = $this->uri->segment(2);
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
-$en_all_2738 = $this->config->item('en_all_2738');
+$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$sources__2738 = $this->config->item('sources__2738');
 $current_mench = current_mench();
 
 ?><!doctype html>
@@ -21,15 +21,15 @@ $current_mench = current_mench();
     <?php
     //PLAYER VARIABLES
     echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_en && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
-    echo ' var js_pl_id = ' . ( $session_en ? $session_en['en_id'] : 0 ) . '; ';
-    echo ' var js_pl_name = \'' . ( $session_en ? $session_en['en_name'] : '' ) . '\'; ';
+    echo ' var js_pl_id = ' . ( $session_en ? $session_en['source__id'] : 0 ) . '; ';
+    echo ' var js_pl_name = \'' . ( $session_en ? $session_en['source__title'] : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
     //JAVASCRIPT PLATFORM MEMORY
-    foreach($this->config->item('en_all_11054') as $ln_type_source_id => $m){
-        if(count($this->config->item('en_all_'.$ln_type_source_id))){
-            echo ' var js_en_all_'.$ln_type_source_id.' = ' . json_encode($this->config->item('en_all_'.$ln_type_source_id)) . ';';
-            echo ' var js_en_ids_'.$ln_type_source_id.' = ' . json_encode($this->config->item('en_ids_'.$ln_type_source_id)) . ';';
+    foreach($this->config->item('sources__11054') as $read__type => $m){
+        if(count($this->config->item('sources__'.$read__type))){
+            echo ' var js_sources__'.$read__type.' = ' . json_encode($this->config->item('sources__'.$read__type)) . ';';
+            echo ' var js_sources_id_'.$read__type.' = ' . json_encode($this->config->item('sources_id_'.$read__type)) . ';';
         }
     }
     ?>
@@ -111,47 +111,47 @@ if(!isset($hide_header)){
                         } else {
 
                             //RESORT
-                            $en_all_12893_resort = array();
+                            $sources__12893_resort = array();
                             $count = 0;
-                            foreach($this->config->item('en_all_12893') as $ln_type_source_id => $m) {
-                                $m['en_id'] = $ln_type_source_id;
+                            foreach($this->config->item('sources__12893') as $read__type => $m) {
+                                $m['source__id'] = $read__type;
                                 $is_current_mench = (
                                     $_SERVER['REQUEST_URI'] == $m['m_desc'] ||
-                                    ( $ln_type_source_id==6205 /*  READ  */ && is_numeric($first_segment) ) ||
-                                    ( $ln_type_source_id==4535 /* IDEATE */ && is_numeric($second_segment) && $first_segment=='idea' ) ||
-                                    ( $ln_type_source_id==4536 /* SOURCE */ && is_numeric($second_segment) && $first_segment=='source' )
+                                    ( $read__type==6205 /*  READ  */ && is_numeric($first_segment) ) ||
+                                    ( $read__type==4535 /* IDEATE */ && is_numeric($second_segment) && $first_segment=='idea' ) ||
+                                    ( $read__type==4536 /* SOURCE */ && is_numeric($second_segment) && $first_segment=='source' )
                                 );
                                 if($is_current_mench){
-                                    $en_all_12893_resort[0] = $m;
+                                    $sources__12893_resort[0] = $m;
                                 } else {
                                     $count++;
-                                    $en_all_12893_resort[$count] = $m;
+                                    $sources__12893_resort[$count] = $m;
                                 }
                             }
-                            ksort($en_all_12893_resort);
+                            ksort($sources__12893_resort);
 
                             //Show Mench Menu:
-                            foreach($en_all_12893_resort as $count => $m) {
+                            foreach($sources__12893_resort as $count => $m) {
 
                                 $class = extract_icon_color($m['m_icon']);
 
-                                if($m['en_id']==12749) {
+                                if($m['source__id']==12749) {
 
-                                    $focus_in_id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? config_var(12156) : 0 ) );
-                                    if( $focus_in_id>0 && in_is_source($focus_in_id) ){
+                                    $focus_idea__id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? config_var(12156) : 0 ) );
+                                    if( $focus_idea__id>0 && in_is_source($focus_idea__id) ){
                                         //Contribute to Idea
-                                        $m['m_desc'] = '/idea/'.$focus_in_id;
+                                        $m['m_desc'] = '/idea/'.$focus_idea__id;
                                     } else {
                                         continue;
                                     }
 
-                                } elseif($m['en_id']==12896){
+                                } elseif($m['source__id']==12896){
 
                                     $highlights = $this->READ_model->fetch(array(
-                                        'ln_profile_source_id' => $session_en['en_id'],
-                                        'ln_type_source_id' => 12896, //SAVED
-                                        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                                    ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+                                        'read__up' => $session_en['source__id'],
+                                        'read__type' => 12896, //SAVED
+                                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                                    ), array(), 1, 0, array(), 'COUNT(read__id) as totals');
 
                                     if($highlights[0]['totals']){
                                         $m['m_name'] = $highlights[0]['totals'].' '.$m['m_name'];
@@ -162,7 +162,7 @@ if(!isset($hide_header)){
                                 }
 
                                 //Apply superpower to Mench actions only
-                                $superpower_actives = ( in_array($m['en_id'], $this->config->item('en_ids_2738')) ? array_intersect($this->config->item('en_ids_10957'), $m['m_parents']) : array());
+                                $superpower_actives = ( in_array($m['source__id'], $this->config->item('sources_id_2738')) ? array_intersect($this->config->item('sources_id_10957'), $m['m_parents']) : array());
 
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
@@ -177,7 +177,7 @@ if(!isset($hide_header)){
                         echo '</div>';
 
                         //Search Bar
-                        echo '<div class="main_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$en_all_11035[7256]['m_name'].'"></form></div>';
+                        echo '<div class="main_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$sources__11035[7256]['m_name'].'"></form></div>';
 
                         ?>
                     </td>
@@ -189,86 +189,86 @@ if(!isset($hide_header)){
 
                         //Search
                         if(intval(config_var(12678))){
-                            echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$en_all_11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
+                            echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$sources__11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
                         }
 
                         //Player Menu
-                        $en_all_4527 = $this->config->item('en_all_4527'); //Platform Memory
-                        $en_all_10876 = $this->config->item('en_all_10876'); //Mench Website
+                        $sources__4527 = $this->config->item('sources__4527'); //Platform Memory
+                        $sources__10876 = $this->config->item('sources__10876'); //Mench Website
 
                         echo '<td class="block-menu">';
                         echo '<div class="dropdown inline-block">';
                         echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton12500" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                        echo '<span class="icon-block">' .$en_all_4527[12500]['m_icon'].'</span>';
+                        echo '<span class="icon-block">' .$sources__4527[12500]['m_icon'].'</span>';
                         echo '</button>';
 
                         echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
 
 
-                        foreach($this->config->item('en_all_12500') as $ln_type_source_id => $m) {
+                        foreach($this->config->item('sources__12500') as $read__type => $m) {
 
                             //Skip superpowers if not assigned
-                            if($ln_type_source_id==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
+                            if($read__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
                                 continue;
-                            } elseif($ln_type_source_id==6415 && !($first_segment=='read' && !$second_segment)){
+                            } elseif($read__type==6415 && !($first_segment=='read' && !$second_segment)){
                                 //Deleting reads only available on Reads home
                                 continue;
                             }
 
-                            $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+                            $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
                             $extra_class = null;
                             $text_class = null;
 
                             //Fetch URL:
-                            if(in_array($ln_type_source_id, $this->config->item('en_ids_10876'))){
+                            if(in_array($read__type, $this->config->item('sources_id_10876'))){
 
-                                $page_url = 'href="'.$en_all_10876[$ln_type_source_id]['m_desc'].'"';
+                                $page_url = 'href="'.$sources__10876[$read__type]['m_desc'].'"';
 
-                            } elseif($ln_type_source_id==12205) {
+                            } elseif($read__type==12205) {
 
                                 //SET TO PLAYER
-                                $ln_type_source_id = $session_en['en_id'];
-                                $page_url = 'href="/source/'.$ln_type_source_id.'"';
-                                $m['m_name'] = $session_en['en_name'];
-                                $m['m_icon'] = $session_en['en_icon'];
-                                $text_class = 'text__6197_'.$ln_type_source_id;
+                                $read__type = $session_en['source__id'];
+                                $page_url = 'href="/source/'.$read__type.'"';
+                                $m['m_name'] = $session_en['source__title'];
+                                $m['m_icon'] = $session_en['source__icon'];
+                                $text_class = 'text__6197_'.$read__type;
 
-                            } elseif($ln_type_source_id==12899) {
+                            } elseif($read__type==12899) {
 
                                 //FEEDBACK SUPPORT
                                 $page_url = 'href="javascript:void(0);"';
                                 $extra_class = ' icon_12899 ';
 
-                            } elseif($ln_type_source_id==6415) {
+                            } elseif($read__type==6415) {
 
                                 //CLEAR READS
                                 $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')"';
 
-                            } elseif(in_array($ln_type_source_id, $this->config->item('en_ids_12467'))) {
+                            } elseif(in_array($read__type, $this->config->item('sources_id_12467'))) {
 
-                                $counts = ln_coins_en($ln_type_source_id, $session_en['en_id']);
+                                $counts = read_coins_en($read__type, $session_en['source__id']);
                                 if(!$counts){
                                     continue;
                                 }
 
                                 //HACK FOR MENCH COIN MENU
-                                if($ln_type_source_id==12273){
+                                if($read__type==12273){
                                     //IDEA
-                                    $source_field = 'ln_profile_source_id';
-                                } elseif($ln_type_source_id==6255){
+                                    $source_field = 'read__up';
+                                } elseif($read__type==6255){
                                     //READ
-                                    $source_field = 'ln_creator_source_id';
-                                } elseif($ln_type_source_id==12274){
+                                    $source_field = 'read__source';
+                                } elseif($read__type==12274){
                                     //SOURCE
                                     if($counts < 2 && !superpower_active(10939, true)){
                                         //If 1 then only themselves, which is covered with @12205
                                         continue;
                                     }
-                                    $source_field = 'ln_creator_source_id';
+                                    $source_field = 'read__source';
                                 }
 
                                 //MENCH COIN
-                                $page_url = 'href="/read/ledger?ln_status_source_id='.join(',', $this->config->item('en_ids_7359')).'&ln_type_source_id='.join(',', $this->config->item('en_ids_'.$ln_type_source_id)).'&'.$source_field.'='.$session_en['en_id'].'"';
+                                $page_url = 'href="/read/ledger?read__status='.join(',', $this->config->item('sources_id_7359')).'&read__type='.join(',', $this->config->item('sources_id_'.$read__type)).'&'.$source_field.'='.$session_en['source__id'].'"';
 
                                 //APPEND COUNT:
                                 $m['m_name'] = view_number($counts).' '.$m['m_name'];
@@ -291,10 +291,10 @@ if(!isset($hide_header)){
                     } else {
 
                         //FEEDBACK SUPPORT
-                        echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$en_all_11035[12899]['m_name'].'">'.$en_all_11035[12899]['m_icon'].'</a></td>';
+                        echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$sources__11035[12899]['m_name'].'">'.$sources__11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-link"><a href="/source/sign" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-link"><a href="/source/sign" title="'.$sources__11035[4269]['m_name'].'">'.$sources__11035[4269]['m_icon'].'</a></td>';
 
                     }
 

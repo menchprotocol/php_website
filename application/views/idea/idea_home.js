@@ -39,7 +39,7 @@ function in_create(){
 
             //Redirect:
             $('#tempLoader').html(data.message);
-            window.location = '/idea/' + data.in_id;
+            window.location = '/idea/' + data.idea__id;
 
         } else {
 

@@ -9,15 +9,15 @@ echo '</tr>';
 
 
 //Count them all:
-$en_all_12140 = $this->config->item('en_all_12140');
+$sources__12140 = $this->config->item('sources__12140');
 
 $full_coins = $this->READ_model->fetch(array(
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12141')) . ')' => null, //Full
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-), array(), 0, 0, array(), 'COUNT(ln_id) as total_transactions');
+    'read__type IN (' . join(',', $this->config->item('sources_id_12141')) . ')' => null, //Full
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+), array(), 0, 0, array(), 'COUNT(read__id) as total_reads');
 echo '<tr class="panel-title down-border" style="font-weight: bold;">';
-echo '<td style="text-align: left;" class="montserrat doupper">'.$en_all_12140[12141]['m_icon'].' '.$en_all_12140[12141]['m_name'].'</td>';
-echo '<td style="text-align: left;">'.number_format($full_coins[0]['total_transactions'], 0).'</td>';
+echo '<td style="text-align: left;" class="montserrat doupper">'.$sources__12140[12141]['m_icon'].' '.$sources__12140[12141]['m_name'].'</td>';
+echo '<td style="text-align: left;">'.number_format($full_coins[0]['total_reads'], 0).'</td>';
 echo '</tr>';
 
 
@@ -26,16 +26,16 @@ echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan=
 
 //Show each link type:
 foreach($this->READ_model->fetch(array(
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12141')) . ')' => null, //Full
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-), array('en_type'), 0, 0, array('total_transactions' => 'DESC'), 'COUNT(ln_id) as total_transactions, en_name, en_icon, en_id, ln_type_source_id', 'en_id, en_name, en_icon, ln_type_source_id') as $ln) {
+    'read__type IN (' . join(',', $this->config->item('sources_id_12141')) . ')' => null, //Full
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+), array('en_type'), 0, 0, array('total_reads' => 'DESC'), 'COUNT(read__id) as total_reads, source__title, source__icon, source__id, read__type', 'source__id, source__title, source__icon, read__type') as $ln) {
 
     //Determine which weight group this belongs to:
-    $direction = filter_cache_group($ln['en_id'], 2738);
+    $direction = filter_cache_group($ln['source__id'], 2738);
 
     echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span><a href="/source/'.$ln['en_id'].'" class="montserrat doupper">'.$ln['en_name'].'</a></td>';
-    echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($ln['total_transactions'], 0).'</td>';
+    echo '<td style="text-align: left;"><span class="icon-block">'.$ln['source__icon'].'</span><a href="/source/'.$ln['source__id'].'" class="montserrat doupper">'.$ln['source__title'].'</a></td>';
+    echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($ln['total_reads'], 0).'</td>';
     echo '</tr>';
 
 }

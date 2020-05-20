@@ -7,11 +7,11 @@
  *
  * */
 
-$in_id = ( isset($_GET['in_id']) ? intval($_GET['in_id']) : 0 );
-$in_id = ( $in_id>0 ? $in_id : config_var(12156) );
+$idea__id = ( isset($_GET['idea__id']) ? intval($_GET['idea__id']) : 0 );
+$idea__id = ( $idea__id>0 ? $idea__id : config_var(12156) );
 $ins = $this->IDEA_model->fetch(array(
-    'in_id' => $in_id,
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+    'idea__id' => $idea__id,
+    'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
 ));
 
 if(count($ins)){
@@ -21,6 +21,6 @@ if(count($ins)){
 } else {
     return view_json(array(
         'status' => 0,
-        'message' => 'Could not find PUBLIC Idea #'.$in_id,
+        'message' => 'Could not find PUBLIC Idea #'.$idea__id,
     ));
 }

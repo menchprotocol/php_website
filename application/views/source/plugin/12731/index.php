@@ -3,11 +3,11 @@
 //IDEA LIST INVALID TITLES
 
 $active_ins = $this->IDEA_model->fetch(array(
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
+    'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
 ));
 
 //Give an overview:
-echo '<p>When the validation criteria change within the in_title_validate() function, this page lists all the ideas that no longer have a valid outcome.</p>';
+echo '<p>When the validation criteria change within the idea__title_validate() function, this page lists all the ideas that no longer have a valid outcome.</p>';
 
 
 //List the matching search:
@@ -22,16 +22,16 @@ echo '</tr>';
 $invalid_outcomes = 0;
 foreach($active_ins as $count=>$in){
 
-    $in_title_validation = in_title_validate($in['in_title']);
+    $idea__title_validation = idea__title_validate($in['idea__title']);
 
-    if(!$in_title_validation['status']){
+    if(!$idea__title_validation['status']){
 
         $invalid_outcomes++;
 
         //Update idea:
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-        echo '<td style="text-align: left;">'.view_en_cache('en_all_4737' /* Idea Status */, $in['in_status_source_id'], true, 'right').' <a href="/idea/go/'.$in['in_id'].'">'.view_in_title($in).'</a></td>';
+        echo '<td style="text-align: left;">'.view_en_cache('sources__4737' /* Idea Status */, $in['idea__status'], true, 'right').' <a href="/idea/go/'.$in['idea__id'].'">'.view_idea__title($in).'</a></td>';
         echo '</tr>';
 
     }

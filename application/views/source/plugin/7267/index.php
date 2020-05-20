@@ -11,8 +11,8 @@ echo '<input type="submit" class="btn btn-idea" value="Search">';
 if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
     $matching_results = $this->SOURCE_model->fetch(array(
-        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-        'LOWER(en_icon) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
+        'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+        'LOWER(source__icon) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 
     //List the matching search:
@@ -35,15 +35,15 @@ if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
         foreach($matching_results as $count=>$en){
 
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
-                $replaced += $this->SOURCE_model->update($en['en_id'], array(
-                    'en_icon' => str_ireplace($_GET['search_for'], $_GET['replace_with'], $en['en_icon']),
-                ), false, $session_en['en_id']);
+                $replaced += $this->SOURCE_model->update($en['source__id'], array(
+                    'source__icon' => str_ireplace($_GET['search_for'], $_GET['replace_with'], $en['source__icon']),
+                ), false, $session_en['source__id']);
 
             }
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_en_cache('en_all_6177' /* Source Status */, $en['en_status_source_id'], true, 'right').' <span class="icon-block">'.view_en_icon($en['en_icon']).'</span><a href="/source/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_en_cache('sources__6177' /* Source Status */, $en['source__status'], true, 'right').' <span class="icon-block">'.view_source__icon($en['source__icon']).'</span><a href="/source/'.$en['source__id'].'">'.$en['source__title'].'</a></td>';
             echo '</tr>';
 
         }

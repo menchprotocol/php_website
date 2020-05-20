@@ -1,21 +1,21 @@
 <?php
 
-if(!isset($_GET['in_id']) || !intval($_GET['in_id'])){
-    echo 'Missing Idea ID (Append ?in_id=IDEA_ID in URL)';
+if(!isset($_GET['idea__id']) || !intval($_GET['idea__id'])){
+    echo 'Missing Idea ID (Append ?idea__id=IDEA_ID in URL)';
 } else {
     //Fetch Idea:
     $ins = $this->IDEA_model->fetch(array(
-        'in_id' => intval($_GET['in_id']),
+        'idea__id' => intval($_GET['idea__id']),
     ));
     if(count($ins) > 0){
 
         //unserialize metadata if needed:
-        if(strlen($ins[0]['in_metadata']) > 0){
-            $ins[0]['in_metadata'] = unserialize($ins[0]['in_metadata']);
+        if(strlen($ins[0]['idea__metadata']) > 0){
+            $ins[0]['idea__metadata'] = unserialize($ins[0]['idea__metadata']);
         }
         view_json($ins[0]);
 
     } else {
-        echo 'Source @'.intval($_GET['in_id']).' not found!';
+        echo 'Source @'.intval($_GET['idea__id']).' not found!';
     }
 }

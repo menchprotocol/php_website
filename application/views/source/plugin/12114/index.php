@@ -9,61 +9,61 @@ $last_week_end = date("Y-m-d H:i:s", $last_week_end_timestamp);
 
 //IDEA
 $in_coins_new_last_week = $this->READ_model->fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-    'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-    'ln_timestamp >=' => $last_week_start,
-    'ln_timestamp <=' => $last_week_end,
-), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+    'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+    'read__time >=' => $last_week_start,
+    'read__time <=' => $last_week_end,
+), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 $in_coins_last_week = $this->READ_model->fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-    'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-    'ln_timestamp <=' => $last_week_end,
-), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+    'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+    'read__time <=' => $last_week_end,
+), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 $in_coins_growth_rate = format_percentage(($in_coins_last_week[0]['totals'] / ( $in_coins_last_week[0]['totals'] - $in_coins_new_last_week[0]['totals'] ) * 100) - 100);
 
 
 //READ
 $read_coins_new_last_week = $this->READ_model->fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-    'ln_timestamp >=' => $last_week_start,
-    'ln_timestamp <=' => $last_week_end,
-), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
+    'read__time >=' => $last_week_start,
+    'read__time <=' => $last_week_end,
+), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 $read_coins_last_week = $this->READ_model->fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-    'ln_timestamp <=' => $last_week_end,
-), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
+    'read__time <=' => $last_week_end,
+), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 $read_coins_growth_rate = format_percentage(( $read_coins_last_week[0]['totals'] / ( $read_coins_last_week[0]['totals'] - $read_coins_new_last_week[0]['totals'] ) * 100)-100);
 
 
 
 //SOURCE
 $en_coins_new_last_week = $this->READ_model->fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
-    'ln_timestamp >=' => $last_week_start,
-    'ln_timestamp <=' => $last_week_end,
-), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'read__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
+    'read__time >=' => $last_week_start,
+    'read__time <=' => $last_week_end,
+), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 $en_coins_last_week = $this->READ_model->fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
-    'ln_timestamp <=' => $last_week_end,
-), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'read__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
+    'read__time <=' => $last_week_end,
+), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 $en_coins_growth_rate = format_percentage( ($en_coins_last_week[0]['totals'] / ( $en_coins_last_week[0]['totals'] - $en_coins_new_last_week[0]['totals'] ) * 100)-100);
 
 
 //ledger
-$ledger_transactions_new_last_week = $this->READ_model->fetch(array(
-    'ln_timestamp >=' => $last_week_start,
-    'ln_timestamp <=' => $last_week_end,
-), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$ledger_transactions_last_week = $this->READ_model->fetch(array(
-    'ln_timestamp <=' => $last_week_end,
-), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-$ledger_transactions_growth_rate = format_percentage(($ledger_transactions_last_week[0]['totals'] / ( $ledger_transactions_last_week[0]['totals'] - $ledger_transactions_new_last_week[0]['totals'] ) * 100)-100);
+$ledger_reads_new_last_week = $this->READ_model->fetch(array(
+    'read__time >=' => $last_week_start,
+    'read__time <=' => $last_week_end,
+), array(), 0, 0, array(), 'COUNT(read__id) as totals');
+$ledger_reads_last_week = $this->READ_model->fetch(array(
+    'read__time <=' => $last_week_end,
+), array(), 0, 0, array(), 'COUNT(read__id) as totals');
+$ledger_reads_growth_rate = format_percentage(($ledger_reads_last_week[0]['totals'] / ( $ledger_reads_last_week[0]['totals'] - $ledger_reads_new_last_week[0]['totals'] ) * 100)-100);
 
 
 
@@ -81,7 +81,7 @@ $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; te
 
 $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔵</b><b style="min-width:55px; display: inline-block;">'.( $en_coins_growth_rate >= 0 ? '+' : '-' ).$en_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($en_coins_last_week[0]['totals'], 0).' Coins" style="border-bottom:1px dotted #999999;">'.view_number($en_coins_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'source" target="_blank" style="color: #007AFD; font-weight:bold; text-decoration:none;">SOURCE &raquo;</a></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_transactions_growth_rate >= 0 ? '+' : '-' ).$ledger_transactions_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($ledger_transactions_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.view_number($ledger_transactions_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'read/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">LEDGER &raquo;</a></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $ledger_reads_growth_rate >= 0 ? '+' : '-' ).$ledger_reads_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($ledger_reads_last_week[0]['totals'], 0).' Transactions" style="border-bottom:1px dotted #999999;">'.view_number($ledger_reads_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'read/ledger" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">LEDGER &raquo;</a></div>';
 
 
 $html_message .= '<br />';
@@ -89,31 +89,31 @@ $html_message .= '<div>'.view_platform_message(12691).'</div>';
 $html_message .= '<div>MENCH</div>';
 
 $subscriber_filters = array(
-    'ln_profile_source_id' => 12114,
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
+    'read__up' => 12114,
+    'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
 );
 
 //Should we limit the scope?
 if($is_player_request){
-    $subscriber_filters['ln_portfolio_source_id'] = $this->session_en['en_id'];
+    $subscriber_filters['read__down'] = $this->session_en['source__id'];
 }
 
 
 $email_recipients = 0;
 //Send email to all subscribers:
-foreach($this->READ_model->fetch($subscriber_filters, array('en_portfolio')) as $subscribed_player){
+foreach($this->READ_model->fetch($subscriber_filters, array('source_portfolio')) as $subscribed_player){
     //Try fetching subscribers email:
     foreach($this->READ_model->fetch(array(
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-        'ln_profile_source_id' => 3288, //Mench Email
-        'ln_portfolio_source_id' => $subscribed_player['en_id'],
+        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'read__up' => 3288, //Mench Email
+        'read__down' => $subscribed_player['source__id'],
     )) as $en_email){
-        if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
+        if(filter_var($en_email['read__message'], FILTER_VALIDATE_EMAIL)){
             //Send Email
-            $this->READ_model->send_email(array($en_email['ln_content']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['en_name']).' 👋</div>'.$html_message);
+            $this->READ_model->send_email(array($en_email['read__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['source__title']).' 👋</div>'.$html_message);
             $email_recipients++;
         }
     }

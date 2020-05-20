@@ -14,8 +14,8 @@ $replace_with_is_confirmed = false;
 if($search_for_is_set){
 
     $matching_results = $this->SOURCE_model->fetch(array(
-        'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-        'LOWER(en_name) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
+        'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+        'LOWER(source__title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 
     //List the matching search:
@@ -50,19 +50,19 @@ if($search_for_is_set){
             if($replace_with_is_set){
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$en['en_name']).$append_text;
+                $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$en['source__title']).$append_text;
 
                 if($replace_with_is_confirmed){
                     //Update idea:
-                    $this->SOURCE_model->update($en['en_id'], array(
-                        'en_name' => $new_outcome,
-                    ), true, $session_en['en_id']);
+                    $this->SOURCE_model->update($en['source__id'], array(
+                        'source__title' => $new_outcome,
+                    ), true, $session_en['source__id']);
                 }
             }
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_en_cache('en_all_6177' /* Source Status */, $en['en_status_source_id'], true, 'right').' <a href="/source/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_en_cache('sources__6177' /* Source Status */, $en['source__status'], true, 'right').' <a href="/source/'.$en['source__id'].'">'.$en['source__title'].'</a></td>';
 
             if($replace_with_is_set){
 

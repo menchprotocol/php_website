@@ -40,14 +40,14 @@ $(document).ready(function () {
 
 
 
-function select_answer(in_id){
+function select_answer(idea__id){
 
     //Allow answer to be saved/updated:
-    var in_type_source_id = parseInt($('.list-answers').attr('in_type_source_id'));
-    var current_status = parseInt($('.ln_answer_'+in_id).attr('is-selected'));
+    var idea__type = parseInt($('.list-answers').attr('idea__type'));
+    var current_status = parseInt($('.read_answer_'+idea__id).attr('is-selected'));
 
     //Clear all if single selection:
-    if(in_type_source_id == 6684){
+    if(idea__type == 6684){
         //Single Selection, clear all:
         $('.answer-item').attr('is-selected', 0);
         $('.check-icon i').removeClass('fas').addClass('far');
@@ -56,17 +56,17 @@ function select_answer(in_id){
     if(current_status==1){
 
         //Previously Selected, delete selection:
-        if(in_type_source_id == 7231){
+        if(idea__type == 7231){
             //Multi Selection
-            $('.ln_answer_'+in_id).attr('is-selected', 0);
-            $('.ln_answer_'+in_id+' .check-icon i').removeClass('fas').addClass('far');
+            $('.read_answer_'+idea__id).attr('is-selected', 0);
+            $('.read_answer_'+idea__id+' .check-icon i').removeClass('fas').addClass('far');
         }
 
     } else if(current_status==0){
 
         //Previously Selected, delete selection:
-        $('.ln_answer_'+in_id).attr('is-selected', 1);
-        $('.ln_answer_'+in_id+' .check-icon i').removeClass('far').addClass('fas');
+        $('.read_answer_'+idea__id).attr('is-selected', 1);
+        $('.read_answer_'+idea__id+' .check-icon i').removeClass('far').addClass('fas');
 
     }
 
@@ -96,7 +96,7 @@ function read_file_upload(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('in_id', in_loaded_id);
+        ajaxData.append('idea__id', in_loaded_id);
 
         $.ajax({
             url: '/read/read_file_upload',
@@ -130,7 +130,7 @@ function read_text_answer(){
     //Show Loading:
     $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/read/read_text_answer", {
-        in_id:in_loaded_id,
+        idea__id:in_loaded_id,
         read_text_answer:$('#read_text_answer').val(),
     }, function (data) {
         if (data.status) {

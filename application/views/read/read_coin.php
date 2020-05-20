@@ -1,5 +1,5 @@
 <script>
-    var in_loaded_id = <?= $in['in_id'] ?>;
+    var in_loaded_id = <?= $in['idea__id'] ?>;
 </script>
 
 <script src="/application/views/read/read_coin.js?v=<?= config_var(11060) ?>"
@@ -9,63 +9,63 @@
 
 <?php
 
-$in_fetch_cover = in_fetch_cover($in['in_id']);
-$en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
-$metadata = unserialize($in['in_metadata']);
+$in_fetch_cover = in_fetch_cover($in['idea__id']);
+$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$metadata = unserialize($in['idea__metadata']);
 $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-$in_type_meet_requirement = in_array($in['in_type_source_id'], $this->config->item('en_ids_7309'));
+$in_type_meet_requirement = in_array($in['idea__type'], $this->config->item('sources_id_7309'));
 $recipient_en = superpower_assigned();
-$is_home_page = $in['in_id']==config_var(12156);
-if(!isset($recipient_en['en_id']) ){
-    $recipient_en['en_id'] = 0;
+$is_home_page = $in['idea__id']==config_var(12156);
+if(!isset($recipient_en['source__id']) ){
+    $recipient_en['source__id'] = 0;
 }
 
-//VIEW TRANSACTION
+//VIEW READ
 $this->READ_model->create(array(
-    'ln_creator_source_id' => $recipient_en['en_id'],
-    'ln_type_source_id' => 7610, //PLAYER VIEWED IDEA
-    'ln_previous_idea_id' => $in['in_id'],
-    'ln_order' => fetch_cookie_order('7610_'.$in['in_id']),
+    'read__source' => $recipient_en['source__id'],
+    'read__type' => 7610, //PLAYER VIEWED IDEA
+    'read__left' => $in['idea__id'],
+    'read__sort' => fetch_cookie_order('7610_'.$in['idea__id']),
 ));
 
 
 //MESSAGES
 $in__messages = $this->READ_model->fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'ln_type_source_id' => 4231, //IDEA NOTES Messages
-    'ln_next_idea_id' => $in['in_id'],
-), array(), 0, 0, array('ln_order' => 'ASC'));
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'read__type' => 4231, //IDEA NOTES Messages
+    'read__right' => $in['idea__id'],
+), array(), 0, 0, array('read__sort' => 'ASC'));
 
 
 //NEXT IDEAS
-$in__next = $this->READ_model->fetch(array(
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-    'ln_previous_idea_id' => $in['in_id'],
-), array('in_next'), 0, 0, array('ln_order' => 'ASC'));
+$ideas_next = $this->READ_model->fetch(array(
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+    'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+    'read__left' => $in['idea__id'],
+), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
 
-$chapters = count($in__next);
-$common_prefix = in_calc_common_prefix($in__next, 'in_title');
+$chapters = count($ideas_next);
+$common_prefix = in_calc_common_prefix($ideas_next, 'idea__title');
 
 
 
 //ALREADY IN READS?
 $completion_rate['completion_percentage'] = 0;
-$read_in_home = $this->READ_model->in_home($in['in_id'], $recipient_en);
+$read_in_home = $this->READ_model->in_home($in['idea__id'], $recipient_en);
 
 
 if ($read_in_home) {
 
     // % DONE
-    $completion_rate = $this->READ_model->completion_progress($recipient_en['en_id'], $in);
+    $completion_rate = $this->READ_model->completion_progress($recipient_en['source__id'], $in);
 
     //Fetch progress history:
     $read_completes = $this->READ_model->fetch(array(
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
-        'ln_creator_source_id' => $recipient_en['en_id'],
-        'ln_previous_idea_id' => $in['in_id'],
+        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
+        'read__source' => $recipient_en['source__id'],
+        'read__left' => $in['idea__id'],
     ));
 
 
@@ -73,12 +73,12 @@ if ($read_in_home) {
 
         //Reverse check answers to see if they have previously unlocked a path:
         $unlocked_connections = $this->READ_model->fetch(array(
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
-            'ln_next_idea_id' => $in['in_id'],
-            'ln_creator_source_id' => $recipient_en['en_id'],
-        ), array('in_previous'), 1);
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
+            'read__right' => $in['idea__id'],
+            'read__source' => $recipient_en['source__id'],
+        ), array('idea_previous'), 1);
 
         if(count($unlocked_connections) > 0){
 
@@ -86,9 +86,9 @@ if ($read_in_home) {
 
             //Determine READ COIN type based on it's connection type's parents that will hold the appropriate read coin.
             $read_completion_type_id = 0;
-            foreach($this->config->item('en_all_12327') /* READ UNLOCKS */ as $en_id => $m){
-                if(in_array($unlocked_connections[0]['ln_type_source_id'], $m['m_parents'])){
-                    $read_completion_type_id = $en_id;
+            foreach($this->config->item('sources__12327') /* READ UNLOCKS */ as $source__id => $m){
+                if(in_array($unlocked_connections[0]['read__type'], $m['m_parents'])){
+                    $read_completion_type_id = $source__id;
                     break;
                 }
             }
@@ -98,20 +98,20 @@ if ($read_in_home) {
 
                 //Yes, Issue coin:
                 array_push($read_completes, $this->READ_model->is_complete($in, array(
-                    'ln_type_source_id' => $read_completion_type_id,
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_previous_idea_id' => $in['in_id'],
+                    'read__type' => $read_completion_type_id,
+                    'read__source' => $recipient_en['source__id'],
+                    'read__left' => $in['idea__id'],
                 )));
 
             } else {
 
                 //Oooops, we could not find it, report bug:
                 $this->READ_model->create(array(
-                    'ln_type_source_id' => 4246, //Platform Bug Reports
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_content' => 'read_coin() found idea connector ['.$unlocked_connections[0]['ln_type_source_id'].'] without a valid unlock method @12327',
-                    'ln_previous_idea_id' => $in['in_id'],
-                    'ln_parent_transaction_id' => $unlocked_connections[0]['ln_id'],
+                    'read__type' => 4246, //Platform Bug Reports
+                    'read__source' => $recipient_en['source__id'],
+                    'read__message' => 'read_coin() found idea connector ['.$unlocked_connections[0]['read__type'].'] without a valid unlock method @12327',
+                    'read__left' => $in['idea__id'],
+                    'read__reference' => $unlocked_connections[0]['read__id'],
                 ));
 
             }
@@ -126,9 +126,9 @@ if ($read_in_home) {
 
                 //No path found:
                 array_push($read_completes, $this->READ_model->is_complete($in, array(
-                    'ln_type_source_id' => 7492, //TERMINATE
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_previous_idea_id' => $in['in_id'],
+                    'read__type' => 7492, //TERMINATE
+                    'read__source' => $recipient_en['source__id'],
+                    'read__left' => $in['idea__id'],
                 )));
 
 
@@ -152,13 +152,13 @@ if ($read_in_home) {
 
 
 //READ TITLE
-echo '<h1 class="block-one" '.( !$recipient_en['en_id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_in_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_in_title($in) . '</span></h1>';
+echo '<h1 class="block-one" '.( !$recipient_en['source__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_in_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_idea__title($in) . '</span></h1>';
 
 
 //MESSAGES
 foreach($in__messages as $message_ln) {
     echo $this->READ_model->send_message(
-        $message_ln['ln_content'],
+        $message_ln['read__message'],
         $recipient_en
     );
 }
@@ -171,8 +171,8 @@ if(!$read_in_home){
         echo '<div class="cover-list" style="padding: 33px 0 33px 33px;">';
         if($chapters){
             //List Children:
-            foreach($in__next as $key => $child_in){
-                echo view_in_cover($child_in, false, in_calc_common_prefix($in__next, 'in_title'));
+            foreach($ideas_next as $key => $child_in){
+                echo view_in_cover($child_in, false, in_calc_common_prefix($ideas_next, 'idea__title'));
             }
         }
         echo '</div>';
@@ -180,7 +180,7 @@ if(!$read_in_home){
     } else {
 
         //METADATA
-        $metadata = unserialize($in['in_metadata']);
+        $metadata = unserialize($in['idea__metadata']);
 
 
 
@@ -196,9 +196,9 @@ if(!$read_in_home){
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
             if($chapters > 0){
                 //List Children:
-                echo '<div class="list-group '.( !$recipient_en['en_id'] ? 'single-color' : '' ).'">';
-                foreach($in__next as $key => $child_in){
-                    echo view_in_read($child_in, in_calc_common_prefix($in__next, 'in_title'));
+                echo '<div class="list-group '.( !$recipient_en['source__id'] ? 'single-color' : '' ).'">';
+                foreach($ideas_next as $key => $child_in){
+                    echo view_in_read($child_in, in_calc_common_prefix($ideas_next, 'idea__title'));
                 }
                 echo '</div>';
             }
@@ -219,7 +219,7 @@ if(!$read_in_home){
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             if($idea_count > $chapters){
-                echo '<p class="space-content">The '.$idea_count.' idea'.view__s($idea_count).' on '.$in['in_title'].' were extracted and synthesized from these '.$source_count.' expert source'.view__s($source_count).':</p>';
+                echo '<p class="space-content">The '.$idea_count.' idea'.view__s($idea_count).' on '.$in['idea__title'].' were extracted and synthesized from these '.$source_count.' expert source'.view__s($source_count).':</p>';
             }
             echo '<div class="list-group single-color">';
 
@@ -243,7 +243,7 @@ if(!$read_in_home){
 
 
         //GET STARTED
-        echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$in['in_id'].'" title="'.$en_all_11035[13008]['m_name'].'">'.$en_all_11035[13008]['m_icon'].'</a></div>';
+        echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/read/start/'.$in['idea__id'].'" title="'.$sources__11035[13008]['m_name'].'">'.$sources__11035[13008]['m_icon'].'</a></div>';
 
     }
 
@@ -252,12 +252,12 @@ if(!$read_in_home){
 
     //PREVIOUSLY UNLOCKED:
     $unlocked_steps = $this->READ_model->fetch(array(
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-        'ln_type_source_id' => 6140, //READ UNLOCK LINK
-        'ln_creator_source_id' => $recipient_en['en_id'],
-        'ln_previous_idea_id' => $in['in_id'],
-    ), array('in_next'), 0);
+        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+        'read__type' => 6140, //READ UNLOCK LINK
+        'read__source' => $recipient_en['source__id'],
+        'read__left' => $in['idea__id'],
+    ), array('idea_next'), 0);
 
     //Did we have any steps unlocked?
     if(count($unlocked_steps) > 0){
@@ -290,10 +290,10 @@ if(!$read_in_home){
         }
 
         //List Children if any:
-        view_in_list($in, $in__next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
+        view_in_list($in, $ideas_next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
-    } elseif (in_array($in['in_type_source_id'], $this->config->item('en_ids_7712'))){
+    } elseif (in_array($in['idea__type'], $this->config->item('sources_id_7712'))){
 
         //SELECT ANSWER
 
@@ -302,21 +302,21 @@ if(!$read_in_home){
 
             //Mark this as complete since there is no child to choose from:
             if(!count($this->READ_model->fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',' , $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
-                'ln_creator_source_id' => $recipient_en['en_id'],
-                'ln_previous_idea_id' => $in['in_id'],
+                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'read__type IN (' . join(',' , $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
+                'read__source' => $recipient_en['source__id'],
+                'read__left' => $in['idea__id'],
             )))){
 
                 array_push($read_completes, $this->READ_model->is_complete($in, array(
-                    'ln_type_source_id' => 4559, //READ MESSAGES
-                    'ln_creator_source_id' => $recipient_en['en_id'],
-                    'ln_previous_idea_id' => $in['in_id'],
+                    'read__type' => 4559, //READ MESSAGES
+                    'read__source' => $recipient_en['source__id'],
+                    'read__left' => $in['idea__id'],
                 )));
 
             }
 
-            view_in_next_previous($in['in_id'], $recipient_en);
+            view_idea_next_previous($in['idea__id'], $recipient_en);
             return true;
 
         } else {
@@ -324,18 +324,18 @@ if(!$read_in_home){
             //First fetch answers based on correct order:
             $read_answers = array();
             foreach($this->READ_model->fetch(array(
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'ln_previous_idea_id' => $in['in_id'],
-            ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $ln){
+                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+                'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'read__left' => $in['idea__id'],
+            ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $ln){
                 //See if this answer was seleted:
                 if(count($this->READ_model->fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINK
-                    'ln_previous_idea_id' => $in['in_id'],
-                    'ln_next_idea_id' => $ln['in_id'],
-                    'ln_creator_source_id' => $recipient_en['en_id'],
+                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINK
+                    'read__left' => $in['idea__id'],
+                    'read__right' => $ln['idea__id'],
+                    'read__source' => $recipient_en['source__id'],
                 )))){
                     array_push($read_answers, $ln);
                 }
@@ -350,7 +350,7 @@ if(!$read_in_home){
 
                 echo '<div class="doclear">&nbsp;</div>';
 
-                view_in_next_previous($in['in_id'], $recipient_en);
+                view_idea_next_previous($in['idea__id'], $recipient_en);
 
                 echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
 
@@ -363,42 +363,42 @@ if(!$read_in_home){
             echo '<div class="edit_select_answer '.( count($read_answers)>0 ? 'hidden' : '' ).'">';
 
             //HTML:
-            if ($in['in_type_source_id'] == 6684) {
+            if ($in['idea__type'] == 6684) {
 
                 echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
 
-            } elseif ($in['in_type_source_id'] == 7231) {
+            } elseif ($in['idea__type'] == 7231) {
 
                 echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
 
             }
 
             //Open for list to be printed:
-            echo '<div class="list-group list-answers" in_type_source_id="'.$in['in_type_source_id'].'">';
+            echo '<div class="list-group list-answers" idea__type="'.$in['idea__type'].'">';
 
 
 
 
             //List children to choose from:
-            foreach($in__next as $key => $child_in) {
+            foreach($ideas_next as $key => $child_in) {
 
                 //Has this been previously selected?
                 $previously_selected = count($this->READ_model->fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12326')) . ')' => null, //READ IDEA LINKS
-                    'ln_previous_idea_id' => $in['in_id'],
-                    'ln_next_idea_id' => $child_in['in_id'],
-                    'ln_creator_source_id' => $recipient_en['en_id'],
+                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
+                    'read__left' => $in['idea__id'],
+                    'read__right' => $child_in['idea__id'],
+                    'read__source' => $recipient_en['source__id'],
                 )));
 
-                echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['in_id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['in_id'].'" class="ln_answer_'.$child_in['in_id'].' answer-item list-group-item itemread no-left-padding">';
+                echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['idea__id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['idea__id'].'" class="read_answer_'.$child_in['idea__id'].' answer-item list-group-item itemread no-left-padding">';
 
 
                 echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
                 echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
 
                 echo '<td style="width:100%; padding: 0 !important;">';
-                echo '<b class="montserrat idea-url" style="margin-left:0;">'.view_in_title($child_in, $common_prefix).'</b>';
+                echo '<b class="montserrat idea-url" style="margin-left:0;">'.view_idea__title($child_in, $common_prefix).'</b>';
                 echo '</td>';
 
                 echo '</tr></table>';
@@ -416,83 +416,83 @@ if(!$read_in_home){
 
             echo '<div class="result-update margin-top-down"></div>';
 
-            echo view_in_previous_read($in['in_id'], $recipient_en);
+            echo view_idea_previous_read($in['idea__id'], $recipient_en);
 
             //Button to submit selection:
             if(count($read_answers)>0){
                 echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
             }
 
-            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0)" onclick="read_answer()">'.$en_all_11035[12211]['m_icon'].'</a></div>';
+            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0)" onclick="read_answer()">'.$sources__11035[12211]['m_icon'].'</a></div>';
 
             echo '</div>';
 
         }
 
-    } elseif ($in['in_type_source_id'] == 6677) {
+    } elseif ($in['idea__type'] == 6677) {
 
         //READ ONLY
-        view_in_list($in, $in__next, $recipient_en);
+        view_in_list($in, $ideas_next, $recipient_en);
 
-    } elseif ($in['in_type_source_id'] == 6683) {
+    } elseif ($in['idea__type'] == 6683) {
 
         //TEXT RESPONSE
 
-        echo '<textarea class="border i_content padded read_input" placeholder="Write answer here" id="read_text_answer">'.( count($read_completes) ? trim($read_completes[0]['ln_content']) : '' ).'</textarea>';
+        echo '<textarea class="border i_content padded read_input" placeholder="Write answer here" id="read_text_answer">'.( count($read_completes) ? trim($read_completes[0]['read__message']) : '' ).'</textarea>';
 
         echo '<div class="text_saving_result margin-top-down"></div>';
 
         //Show Previous Button:
-        echo view_in_previous_read($in['in_id'], $recipient_en);
+        echo view_idea_previous_read($in['idea__id'], $recipient_en);
 
         //Save/Upload & Next:
-        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_text_answer()">'.$en_all_11035[12211]['m_icon'].'</a></div>';
+        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_text_answer()">'.$sources__11035[12211]['m_icon'].'</a></div>';
 
 
         if(count($read_completes)){
             //Next Ideas:
-            view_in_list($in, $in__next, $recipient_en, null,false);
+            view_in_list($in, $ideas_next, $recipient_en, null,false);
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
 
 
-    } elseif (in_array($in['in_type_source_id'], $this->config->item('en_ids_7751'))) {
+    } elseif (in_array($in['idea__type'], $this->config->item('sources_id_7751'))) {
 
         //FILE UPLOAD
 
         echo '<div class="playerUploader">';
         echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
-        echo '<input class="inputfile" type="file" name="file" id="fileType'.$in['in_type_source_id'].'" />';
+        echo '<input class="inputfile" type="file" name="file" id="fileType'.$in['idea__type'].'" />';
 
 
         if(!count($read_completes)) {
 
             //Show Previous Button:
             echo '<div class="file_saving_result">';
-            echo view_in_previous_read($in['in_id'], $recipient_en);
+            echo view_idea_previous_read($in['idea__id'], $recipient_en);
             echo '</div>';
 
             //Show next here but keep hidden until file is uploaded:
             echo '<div class="go_next_upload hidden">';
-            view_in_next_previous($in['in_id'], $recipient_en);
+            view_idea_next_previous($in['idea__id'], $recipient_en);
             echo '</div>';
 
-            echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-read btn-circle inline-block" for="fileType'.$in['in_type_source_id'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+            echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-read btn-circle inline-block" for="fileType'.$in['idea__type'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
         } else {
 
             echo '<div class="file_saving_result">';
 
-            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->send_message($read_completes[0]['ln_content']).'</div>';
+            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->send_message($read_completes[0]['read__message']).'</div>';
 
             echo '</div>';
 
             //Any child ideas?
-            view_in_list($in, $in__next, $recipient_en, null, true, false);
+            view_in_list($in, $ideas_next, $recipient_en, null, true, false);
 
-            echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-read inline-block btn-circle" for="fileType'.$in['in_type_source_id'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+            echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-read inline-block btn-circle" for="fileType'.$in['idea__type'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
         }
 
@@ -505,10 +505,10 @@ if(!$read_in_home){
 
         //UNKNOWN IDEA TYPE
         $this->READ_model->create(array(
-            'ln_type_source_id' => 4246, //Platform Bug Reports
-            'ln_creator_source_id' => $recipient_en['en_id'],
-            'ln_content' => 'step_echo() unknown idea type source ID ['.$in['in_type_source_id'].'] that could not be rendered',
-            'ln_previous_idea_id' => $in['in_id'],
+            'read__type' => 4246, //Platform Bug Reports
+            'read__source' => $recipient_en['source__id'],
+            'read__message' => 'step_echo() unknown idea type source ID ['.$in['idea__type'].'] that could not be rendered',
+            'read__left' => $in['idea__id'],
         ));
 
     }
@@ -519,8 +519,8 @@ if(!$read_in_home){
 echo '<div class="share-this hidden space-content">';
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div style="padding-bottom:13px;">Share using:</div>';
-    foreach($this->config->item('en_all_13023') as $en_id => $m) {
-        echo '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="'.$this->config->item('base_url').$in['in_id'].'" data-title="'.$in['in_title'].'" data-image="'.$in_fetch_cover.'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
+    foreach($this->config->item('sources__13023') as $source__id => $m) {
+        echo '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="'.$this->config->item('base_url').$in['idea__id'].'" data-title="'.$in['idea__title'].'" data-image="'.$in_fetch_cover.'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
     }
 echo '</div>';
 

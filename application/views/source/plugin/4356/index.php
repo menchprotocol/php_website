@@ -1,17 +1,17 @@
 <?php
 
 //Update Idea Read Time:
-$in_id = ( isset($_GET['in_id']) ? intval($_GET['in_id']) : 0 );
+$idea__id = ( isset($_GET['idea__id']) ? intval($_GET['idea__id']) : 0 );
 $total_time = 0;
 $total_scanned = 0;
 $total_updated = 0;
-$en_all_12822 = $this->config->item('en_all_12822');
-$en_all_12955 = $this->config->item('en_all_12955'); //Idea Type Completion Time
+$sources__12822 = $this->config->item('sources__12822');
+$sources__12955 = $this->config->item('sources__12955'); //Idea Type Completion Time
 $filters = array();
-if($in_id > 0){
-    $filters['in_id'] = $in_id;
+if($idea__id > 0){
+    $filters['idea__id'] = $idea__id;
 } else {
-    $filters['in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')'] = null; //PUBLIC
+    $filters['idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')'] = null; //PUBLIC
 }
 
 foreach($this->IDEA_model->fetch($filters) as $in){
@@ -19,14 +19,14 @@ foreach($this->IDEA_model->fetch($filters) as $in){
 
     //First see if manually updated:
     if(count($this->READ_model->fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id' => 10650,
-            'ln_next_idea_id' => $in_id,
-        ))) && $in['in_time_seconds']!=config_var(12176)){
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type' => 10650,
+            'read__right' => $idea__id,
+        ))) && $in['idea__seconds']!=config_var(12176)){
         //Yes, so we ignore:
-        if($in_id){
+        if($idea__id){
             //Show details:
-            echo $in_id.' Will be ignored since it was manually updated<hr />';
+            echo $idea__id.' Will be ignored since it was manually updated<hr />';
         }
         continue;
     }
@@ -38,65 +38,65 @@ foreach($this->IDEA_model->fetch($filters) as $in){
 
 
     //Idea Type Has Time?
-    if(array_key_exists($in['in_type_source_id'], $en_all_12955)){
+    if(array_key_exists($in['idea__type'], $sources__12955)){
         //Yes, add Extra Time:
-        $extra_time = intval($en_all_12955[$in['in_type_source_id']]['m_desc']);
+        $extra_time = intval($sources__12955[$in['idea__type']]['m_desc']);
         $estimated_time += $extra_time;
-        if($in_id){
+        if($idea__id){
             //Show details:
-            echo $extra_time.' Seconds For being '.$en_all_12955[$in['in_type_source_id']]['m_name'].'<hr />';
+            echo $extra_time.' Seconds For being '.$sources__12955[$in['idea__type']]['m_name'].'<hr />';
         }
     }
 
 
     //Then count the title of next ideas:
     foreach($this->READ_model->fetch(array(
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-        'ln_previous_idea_id' => $in['in_id'],
-    ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in__next){
-        $this_time = words_to_seconds($in__next['in_title']);
+        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+        'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'read__left' => $in['idea__id'],
+    ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $ideas_next){
+        $this_time = words_to_seconds($ideas_next['idea__title']);
         $estimated_time += $this_time;
-        if($in_id){
+        if($idea__id){
             //Show details:
-            echo $this_time.' Seconds NEXT: '.$in__next['in_title'].'<hr />';
+            echo $this_time.' Seconds NEXT: '.$ideas_next['idea__title'].'<hr />';
         }
     }
 
 
     //Fetch All Messages for this:
     foreach($this->READ_model->fetch(array(
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-        'ln_type_source_id' => 4231, //IDEA NOTES Messages
-        'ln_next_idea_id' => $in['in_id'],
-    ), array(), 0, 0, array('ln_order' => 'ASC')) as $message){
+        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'read__type' => 4231, //IDEA NOTES Messages
+        'read__right' => $in['idea__id'],
+    ), array(), 0, 0, array('read__sort' => 'ASC')) as $message){
 
         //Count text in this message:
-        $this_time = words_to_seconds(trim(str_replace('@' . $message['ln_profile_source_id'],'', $message['ln_content'])));
+        $this_time = words_to_seconds(trim(str_replace('@' . $message['read__up'],'', $message['read__message'])));
         $estimated_time += $this_time;
-        if($in_id){
+        if($idea__id){
             //Show details:
-            echo $this_time.' Seconds MESSAGE: '.$message['ln_content'].'<hr />';
+            echo $this_time.' Seconds MESSAGE: '.$message['read__message'].'<hr />';
         }
 
 
         //Any source references?
-        if($message['ln_profile_source_id'] > 0){
+        if($message['read__up'] > 0){
 
             //Yes, see
             //Source Profile
             foreach($this->READ_model->fetch(array(
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
-                'ln_portfolio_source_id' => $message['ln_profile_source_id'],
-            ), array('en_profile'), 0, 0, array('en_id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
+                'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'read__type IN (' . join(',', $this->config->item('sources_id_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
+                'read__down' => $message['read__up'],
+            ), array('source_profile'), 0, 0, array('source__id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
 
-                if($parent_en['ln_type_source_id'] == 4257 /* EMBED */){
+                if($parent_en['read__type'] == 4257 /* EMBED */){
 
                     //See if we have a Start/End time:
-                    $string_references = extract_source_references($message['ln_content'], true);
+                    $string_references = extract_source_references($message['read__message'], true);
                     if($string_references['ref_time_found']){
                         $start_time = $string_references['ref_time_start'];
                         $end_time = $string_references['ref_time_end'];
@@ -105,16 +105,16 @@ foreach($this->IDEA_model->fetch($filters) as $in){
                         $this_time = 90;
                     }
 
-                } elseif($parent_en['ln_type_source_id'] == 4255 /* TEXT */){
+                } elseif($parent_en['read__type'] == 4255 /* TEXT */){
 
                     //Count Words:
-                    $this_time = words_to_seconds($parent_en['ln_content']);
+                    $this_time = words_to_seconds($parent_en['read__message']);
 
-                } elseif($parent_en['ln_type_source_id'] == 4259 /* AUDIO */){
+                } elseif($parent_en['read__type'] == 4259 /* AUDIO */){
 
                     $this_time = 60;
 
-                } elseif($parent_en['ln_type_source_id'] == 4258 /* VIDEO */){
+                } elseif($parent_en['read__type'] == 4258 /* VIDEO */){
 
                     $this_time = 90;
 
@@ -125,24 +125,24 @@ foreach($this->IDEA_model->fetch($filters) as $in){
                 }
 
                 $estimated_time += $this_time;
-                if($in_id){
+                if($idea__id){
                     //Show details:
-                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$en_all_12822[$parent_en['ln_type_source_id']]['m_name'].']: '.$parent_en['ln_content'].'<hr />';
+                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$sources__12822[$parent_en['read__type']]['m_name'].']: '.$parent_en['read__message'].'<hr />';
                 }
             }
         }
     }
 
     $estimated_time = round($estimated_time);
-    if($in_id){
+    if($idea__id){
         //Show details:
         echo $estimated_time.' SECONDS TOTAL<hr />';
     }
 
     //Update if necessary:
-    if($estimated_time != $in['in_time_seconds']){
-        $this->IDEA_model->update($in['in_id'], array(
-            'in_time_seconds' => $estimated_time,
+    if($estimated_time != $in['idea__seconds']){
+        $this->IDEA_model->update($in['idea__id'], array(
+            'idea__seconds' => $estimated_time,
         ));
         $total_updated++;
     }

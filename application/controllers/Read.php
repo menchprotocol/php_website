@@ -19,16 +19,16 @@ class Read extends CI_Controller
 
         //My Reads
         $session_en = superpower_assigned(null, true);
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
         //Log home View:
         $this->READ_model->create(array(
-            'ln_type_source_id' => 4283, //Opened Reads
-            'ln_creator_source_id' => $session_en['en_id'],
+            'read__type' => 4283, //Opened Reads
+            'read__source' => $session_en['source__id'],
         ));
 
         $this->load->view('header', array(
-            'title' => $en_all_11035[12969]['m_name'],
+            'title' => $sources__11035[12969]['m_name'],
         ));
         $this->load->view('read/read_home', array(
             'session_en' => $session_en,
@@ -49,10 +49,10 @@ class Read extends CI_Controller
          * */
 
         //Load header:
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
         $this->load->view('header', array(
-            'title' => $en_all_11035[4341]['m_name'],
+            'title' => $sources__11035[4341]['m_name'],
         ));
         $this->load->view('read/read_ledger');
         $this->load->view('footer');
@@ -68,7 +68,7 @@ class Read extends CI_Controller
          * */
 
         $filters = unserialize($_POST['link_filters']);
-        $join_by = unserialize($_POST['link_join_by']);
+        $joined_by = unserialize($_POST['link_joined_by']);
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
         $query_offset = (($page_num-1)*config_var(11064));
@@ -77,15 +77,15 @@ class Read extends CI_Controller
         $message = '';
 
         //Fetch links and total link counts:
-        $lns = $this->READ_model->fetch($filters, $join_by, config_var(11064), $query_offset);
-        $lns_count = $this->READ_model->fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count');
+        $lns = $this->READ_model->fetch($filters, $joined_by, config_var(11064), $query_offset);
+        $lns_count = $this->READ_model->fetch($filters, $joined_by, 0, 0, array(), 'COUNT(read__id) as total_count');
         $total_items_loaded = ($query_offset+count($lns));
         $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);
 
 
         //Display filter:
         if($total_items_loaded > 0){
-            $message .= '<div class="montserrat ledger-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
+            $message .= '<div class="montserrat ledger-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' READS:</div>';
         }
 
 
@@ -96,15 +96,15 @@ class Read extends CI_Controller
 
                 $message .= view_ln($ln);
 
-                if($session_en && strlen($ln['ln_content'])>0 && strlen($_POST['ln_content_search'])>0 && strlen($_POST['ln_content_replace'])>0 && substr_count($ln['ln_content'], $_POST['ln_content_search'])>0){
+                if($session_en && strlen($ln['read__message'])>0 && strlen($_POST['read__message_search'])>0 && strlen($_POST['read__message_replace'])>0 && substr_count($ln['read__message'], $_POST['read__message_search'])>0){
 
-                    $new_content = str_replace($_POST['ln_content_search'],trim($_POST['ln_content_replace']),$ln['ln_content']);
+                    $new_content = str_replace($_POST['read__message_search'],trim($_POST['read__message_replace']),$ln['read__message']);
 
-                    $this->READ_model->update($ln['ln_id'], array(
-                        'ln_content' => $new_content,
-                    ), $session_en['en_id'], 12360, update_description($ln['ln_content'], $new_content));
+                    $this->READ_model->update($ln['read__id'], array(
+                        'read__message' => $new_content,
+                    ), $session_en['source__id'], 12360, update_description($ln['read__message'], $new_content));
 
-                    $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['ln_content_search'].'] with ['.trim($_POST['ln_content_replace']).']</div>';
+                    $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['read__message_search'].'] with ['.trim($_POST['read__message_replace']).']</div>';
 
                 }
 
@@ -113,7 +113,7 @@ class Read extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="ledger_load(link_filters, link_join_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="ledger_load(link_filters, link_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.view__s($lns_count[0]['total_count']).' have been loaded</div>';
@@ -140,7 +140,7 @@ class Read extends CI_Controller
 
         //Authenticate Player:
         $session_en = superpower_assigned();
-        $en_all_12112 = $this->config->item('en_all_12112');
+        $sources__12112 = $this->config->item('sources__12112');
 
         if (!$session_en) {
 
@@ -150,7 +150,7 @@ class Read extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif(!isset($_POST['object_id']) || !isset($_POST['cache_en_id']) || !isset($_POST['field_value'])){
+        } elseif(!isset($_POST['object__id']) || !isset($_POST['cache_source__id']) || !isset($_POST['field_value'])){
 
             return view_json(array(
                 'status' => 0,
@@ -158,11 +158,11 @@ class Read extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif($_POST['cache_en_id']==4736 /* IDEA TITLE */){
+        } elseif($_POST['cache_source__id']==4736 /* IDEA TITLE */){
 
             $ins = $this->IDEA_model->fetch(array(
-                'in_id' => $_POST['object_id'],
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
+                'idea__id' => $_POST['object__id'],
+                'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             ));
             if(!count($ins)){
                 return view_json(array(
@@ -173,29 +173,29 @@ class Read extends CI_Controller
             }
 
             //Validate Idea Outcome:
-            $in_title_validation = in_title_validate($_POST['field_value']);
-            if(!$in_title_validation['status']){
+            $idea__title_validation = idea__title_validate($_POST['field_value']);
+            if(!$idea__title_validation['status']){
                 //We had an error, return it:
-                return view_json(array_merge($in_title_validation, array(
-                    'original_val' => $ins[0]['in_title'],
+                return view_json(array_merge($idea__title_validation, array(
+                    'original_val' => $ins[0]['idea__title'],
                 )));
             }
 
 
             //All good, go ahead and update:
-            $this->IDEA_model->update($_POST['object_id'], array(
-                'in_title' => trim($_POST['field_value']),
-            ), true, $session_en['en_id']);
+            $this->IDEA_model->update($_POST['object__id'], array(
+                'idea__title' => trim($_POST['field_value']),
+            ), true, $session_en['source__id']);
 
             return view_json(array(
                 'status' => 1,
             ));
 
-        } elseif($_POST['cache_en_id']==6197 /* SOURCE FULL NAME */){
+        } elseif($_POST['cache_source__id']==6197 /* SOURCE FULL NAME */){
 
             $ens = $this->SOURCE_model->fetch(array(
-                'en_id' => $_POST['object_id'],
-                'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //ACTIVE
+                'source__id' => $_POST['object__id'],
+                'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             ));
             if(!count($ens)){
                 return view_json(array(
@@ -206,22 +206,22 @@ class Read extends CI_Controller
             }
 
 
-            $en_name_validate = en_name_validate($_POST['field_value']);
-            if(!$en_name_validate['status']){
-                return view_json(array_merge($en_name_validate, array(
-                    'original_val' => $ens[0]['en_name'],
+            $source__title_validate = source__title_validate($_POST['field_value']);
+            if(!$source__title_validate['status']){
+                return view_json(array_merge($source__title_validate, array(
+                    'original_val' => $ens[0]['source__title'],
                 )));
             }
 
             //All good, go ahead and update:
-            $this->SOURCE_model->update($ens[0]['en_id'], array(
-                'en_name' => $en_name_validate['en_clean_name'],
-            ), true, $session_en['en_id']);
+            $this->SOURCE_model->update($ens[0]['source__id'], array(
+                'source__title' => $source__title_validate['source__title_clean'],
+            ), true, $session_en['source__id']);
 
             //Reset user session data if this data belongs to the logged-in user:
-            if ($ens[0]['en_id'] == $session_en['en_id']) {
+            if ($ens[0]['source__id'] == $session_en['source__id']) {
                 //Re-activate Session with new data:
-                $ens[0]['en_name'] = $en_name_validate['en_clean_name'];
+                $ens[0]['source__title'] = $source__title_validate['source__title_clean'];
                 $this->SOURCE_model->activate_session($ens[0], true);
             }
 
@@ -229,11 +229,11 @@ class Read extends CI_Controller
                 'status' => 1,
             ));
 
-        } elseif($_POST['cache_en_id']==4356 /* READ TIME */){
+        } elseif($_POST['cache_source__id']==4356 /* READ TIME */){
 
             $ins = $this->IDEA_model->fetch(array(
-                'in_id' => $_POST['object_id'],
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
+                'idea__id' => $_POST['object__id'],
+                'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             ));
 
             if(!count($ins)){
@@ -248,8 +248,8 @@ class Read extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be a number greater than zero.',
-                    'original_val' => $ins[0]['in_time_seconds'],
+                    'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' must be a number greater than zero.',
+                    'original_val' => $ins[0]['idea__seconds'],
                 ));
 
             } elseif($_POST['field_value'] > config_var(4356)){
@@ -257,24 +257,24 @@ class Read extends CI_Controller
                 $hours = rtrim(number_format((config_var(4356)/3600), 1), '.0');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
-                    'original_val' => $ins[0]['in_time_seconds'],
+                    'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
+                    'original_val' => $ins[0]['idea__seconds'],
                 ));
 
             } elseif($_POST['field_value'] < config_var(12427)){
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
-                    'original_val' => $ins[0]['in_time_seconds'],
+                    'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
+                    'original_val' => $ins[0]['idea__seconds'],
                 ));
 
             } else {
 
                 //All good, go ahead and update:
-                $this->IDEA_model->update($_POST['object_id'], array(
-                    'in_time_seconds' => $_POST['field_value'],
-                ), true, $session_en['en_id']);
+                $this->IDEA_model->update($_POST['object__id'], array(
+                    'idea__seconds' => $_POST['field_value'],
+                ), true, $session_en['source__id']);
 
                 return view_json(array(
                     'status' => 1,
@@ -282,17 +282,17 @@ class Read extends CI_Controller
 
             }
 
-        } elseif($_POST['cache_en_id']==4358 /* READ MARKS */){
+        } elseif($_POST['cache_source__id']==4358 /* READ MARKS */){
 
             //Fetch/Validate Link:
             $lns = $this->READ_model->fetch(array(
-                'ln_id' => $_POST['object_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
+                'read__id' => $_POST['object__id'],
+                'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             ));
-            $ln_metadata = unserialize($lns[0]['ln_metadata']);
-            if(!$ln_metadata){
-                $ln_metadata = array();
+            $read__metadata = unserialize($lns[0]['read__metadata']);
+            if(!$read__metadata){
+                $read__metadata = array();
             }
 
             if(!count($lns)){
@@ -307,18 +307,18 @@ class Read extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
-                    'original_val' => ( isset($ln_metadata['tr__assessment_points']) ? $ln_metadata['tr__assessment_points'] : 0 ),
+                    'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
+                    'original_val' => ( isset($read__metadata['tr__assessment_points']) ? $read__metadata['tr__assessment_points'] : 0 ),
                 ));
 
             } else {
 
                 //All good, go ahead and update:
-                $this->READ_model->update($_POST['object_id'], array(
-                    'ln_metadata' => array_merge($ln_metadata, array(
+                $this->READ_model->update($_POST['object__id'], array(
+                    'read__metadata' => array_merge($read__metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $session_en['en_id'], 10663 /* Idea Link updated Marks */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' updated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $session_en['source__id'], 10663 /* Idea Link updated Marks */, $sources__12112[$_POST['cache_source__id']]['m_name'].' updated'.( isset($read__metadata['tr__assessment_points']) ? ' from [' . $read__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return view_json(array(
                     'status' => 1,
@@ -326,16 +326,16 @@ class Read extends CI_Controller
 
             }
 
-        } elseif($_POST['cache_en_id']==4735 /* UNLOCK MIN SCORE */ || $_POST['cache_en_id']==4739 /* UNLOCK MAX SCORE */){
+        } elseif($_POST['cache_source__id']==4735 /* UNLOCK MIN SCORE */ || $_POST['cache_source__id']==4739 /* UNLOCK MAX SCORE */){
 
             //Fetch/Validate Link:
             $lns = $this->READ_model->fetch(array(
-                'ln_id' => $_POST['object_id'],
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
+                'read__id' => $_POST['object__id'],
+                'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             ));
-            $ln_metadata = unserialize($lns[0]['ln_metadata']);
-            $field_name = ( $_POST['cache_en_id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
+            $read__metadata = unserialize($lns[0]['read__metadata']);
+            $field_name = ( $_POST['cache_source__id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
 
             if(!count($lns)){
 
@@ -349,18 +349,18 @@ class Read extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $en_all_12112[$_POST['cache_en_id']]['m_name'].' must be an integer between 0 and 100.',
-                    'original_val' => ( isset($ln_metadata[$field_name]) ? $ln_metadata[$field_name] : '' ),
+                    'message' => $sources__12112[$_POST['cache_source__id']]['m_name'].' must be an integer between 0 and 100.',
+                    'original_val' => ( isset($read__metadata[$field_name]) ? $read__metadata[$field_name] : '' ),
                 ));
 
             } else {
 
                 //All good, go ahead and update:
-                $this->READ_model->update($_POST['object_id'], array(
-                    'ln_metadata' => array_merge($ln_metadata, array(
+                $this->READ_model->update($_POST['object__id'], array(
+                    'read__metadata' => array_merge($read__metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $session_en['en_id'], 10664 /* Idea Link updated Score */, $en_all_12112[$_POST['cache_en_id']]['m_name'].' updated'.( isset($ln_metadata[$field_name]) ? ' from [' . $ln_metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $session_en['source__id'], 10664 /* Idea Link updated Score */, $sources__12112[$_POST['cache_source__id']]['m_name'].' updated'.( isset($read__metadata[$field_name]) ? ' from [' . $read__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return view_json(array(
                     'status' => 1,
@@ -372,7 +372,7 @@ class Read extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Unknown Update Type ['.$_POST['cache_en_id'].']',
+                'message' => 'Unknown Update Type ['.$_POST['cache_source__id'].']',
                 'original_val' => '',
             ));
 
@@ -382,9 +382,9 @@ class Read extends CI_Controller
     function saved(){
 
         $session_en = superpower_assigned(null, true);
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH NAVIGATION
+        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
-            'title' => $en_all_11035[12896]['m_name'],
+            'title' => $sources__11035[12896]['m_name'],
         ));
         $this->load->view('read/read_saved', array(
             'session_en' => $session_en,
@@ -394,7 +394,7 @@ class Read extends CI_Controller
     }
 
 
-    function start($in_id){
+    function start($idea__id){
 
         //Adds Idea to the Players Reads
 
@@ -402,14 +402,14 @@ class Read extends CI_Controller
 
         //Check to see if added to Reads for logged-in users:
         if(!$session_en){
-            return redirect_message('/source/sign/'.$in_id);
+            return redirect_message('/source/sign/'.$idea__id);
         }
 
         //Add this Idea to their Reads If not already there:
         $success_message = null;
-        $read_in_home = $this->READ_model->in_home($in_id, $session_en);
+        $read_in_home = $this->READ_model->in_home($idea__id, $session_en);
         if(!$read_in_home){
-            if($this->READ_model->start($session_en['en_id'], $in_id)){
+            if($this->READ_model->start($session_en['source__id'], $idea__id)){
                 $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Reads</div>';
             } else {
                 //Failed to add to Reads:
@@ -418,42 +418,42 @@ class Read extends CI_Controller
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$in_id, $success_message);
+        return redirect_message('/'.$idea__id, $success_message);
 
     }
 
-    function next($in_id = 0){
+    function next($idea__id = 0){
 
-        $append_url = '?previous_read='.( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $in_id );
+        $append_url = '?previous_read='.( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $idea__id );
         $session_en = superpower_assigned();
         if(!$session_en){
             return redirect_message('/source/sign');
         }
 
-        if($in_id > 0){
+        if($idea__id > 0){
 
             //Fetch Idea:
             $ins = $this->IDEA_model->fetch(array(
-                'in_id' => $in_id,
+                'idea__id' => $idea__id,
             ));
 
 
             //Should we check for auto next redirect if empty? Only if this is a selection:
-            if($ins[0]['in_type_source_id']==6677){
+            if($ins[0]['idea__type']==6677){
 
                 //Mark as read If not previously:
                 $read_completes = $this->READ_model->fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12229')) . ')' => null, //READ COMPLETE
-                    'ln_creator_source_id' => $session_en['en_id'],
-                    'ln_previous_idea_id' => $ins[0]['in_id'],
+                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
+                    'read__source' => $session_en['source__id'],
+                    'read__left' => $ins[0]['idea__id'],
                 ));
 
                 if(!count($read_completes)){
                     $this->READ_model->is_complete($ins[0], array(
-                        'ln_type_source_id' => 4559, //READ MESSAGES
-                        'ln_creator_source_id' => $session_en['en_id'],
-                        'ln_previous_idea_id' => $ins[0]['in_id'],
+                        'read__type' => 4559, //READ MESSAGES
+                        'read__source' => $session_en['source__id'],
+                        'read__left' => $ins[0]['idea__id'],
                     ));
                 }
 
@@ -461,13 +461,13 @@ class Read extends CI_Controller
 
 
             //Find next Idea based on source's Reads:
-            $next_in_id = $this->READ_model->find_next($session_en['en_id'], $ins[0]);
-            if($next_in_id > 0){
-                return redirect_message('/'.$next_in_id.$append_url);
+            $next_idea__id = $this->READ_model->find_next($session_en['source__id'], $ins[0]);
+            if($next_idea__id > 0){
+                return redirect_message('/'.$next_idea__id.$append_url);
             } else {
-                $next_in_id = $this->READ_model->find_next_go($session_en['en_id']);
-                if($next_in_id > 0){
-                    return redirect_message('/'.$next_in_id.$append_url);
+                $next_idea__id = $this->READ_model->find_next_go($session_en['source__id']);
+                if($next_idea__id > 0){
+                    return redirect_message('/'.$next_idea__id.$append_url);
                 } else {
                     return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully readed your entire list.</div></div>');
                 }
@@ -476,9 +476,9 @@ class Read extends CI_Controller
         } else {
 
             //Find the next idea in the Reads:
-            $next_in_id = $this->READ_model->find_next_go($session_en['en_id']);
-            if($next_in_id > 0){
-                return redirect_message('/'.$next_in_id.$append_url);
+            $next_idea__id = $this->READ_model->find_next_go($session_en['source__id']);
+            if($next_idea__id > 0){
+                return redirect_message('/'.$next_idea__id.$append_url);
             } else {
                 return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully readed your entire list.</div></div>');
             }
@@ -486,37 +486,37 @@ class Read extends CI_Controller
         }
     }
 
-    function previous($previous_level_id, $in_id){
+    function previous($previous_level_id, $idea__id){
 
-        $current_in_id = $previous_level_id;
+        $current_idea__id = $previous_level_id;
 
         //Make sure not a select idea:
         if(!count($this->IDEA_model->fetch(array(
-            'in_id' => $current_in_id,
-            'in_type_source_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null, //SELECT IDEA
+            'idea__id' => $current_idea__id,
+            'idea__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null, //SELECT IDEA
         )))){
             //FIND NEXT IDEAS
             foreach($this->READ_model->fetch(array(
-                'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
-                'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
-                'ln_previous_idea_id' => $previous_level_id,
-            ), array('in_next'), 0, 0, array('ln_order' => 'ASC')) as $in_next){
-                if($in_next['in_id']==$in_id){
+                'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                'read__left' => $previous_level_id,
+            ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $idea_next){
+                if($idea_next['idea__id']==$idea__id){
                     break;
                 } else {
-                    $current_in_id = $in_next['in_id'];
+                    $current_idea__id = $idea_next['idea__id'];
                 }
             }
         }
 
-        return redirect_message('/'.$current_in_id);
+        return redirect_message('/'.$current_idea__id);
 
     }
 
 
 
-    function read_coin($in_id = 0)
+    function read_coin($idea__id = 0)
     {
 
         /*
@@ -528,28 +528,28 @@ class Read extends CI_Controller
 
         //Fetch user session:
         $session_en = superpower_assigned();
-        $primary_in_id = config_var(12156);
+        $primary_idea__id = config_var(12156);
 
-        if($in_id > 0 && $in_id==$primary_in_id){
+        if($idea__id > 0 && $idea__id==$primary_idea__id){
             return redirect_message('/');
-        } elseif(!$in_id){
+        } elseif(!$idea__id){
             //Load the Starting Idea:
-            $in_id = $primary_in_id;
+            $idea__id = $primary_idea__id;
         }
 
         //Fetch data:
         $ins = $this->IDEA_model->fetch(array(
-            'in_id' => $in_id,
+            'idea__id' => $idea__id,
         ));
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Idea #' . $in_id . ' not found</div>');
-        } elseif(!in_array($ins[0]['in_status_source_id'], $this->config->item('en_ids_7355') /* PUBLIC */)){
+            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Idea #' . $idea__id . ' not found</div>');
+        } elseif(!in_array($ins[0]['idea__status'], $this->config->item('sources_id_7355') /* PUBLIC */)){
 
             if(superpower_assigned(10939)){
                 //Give them idea access:
-                return redirect_message('/idea/' . $in_id);
+                return redirect_message('/idea/' . $idea__id);
             } else {
                 //Inform them not published:
                 return redirect_message('/', '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Cannot read this idea because it\'s not published yet.</div>');
@@ -558,7 +558,7 @@ class Read extends CI_Controller
         }
 
         $this->load->view('header', array(
-            'title' => $ins[0]['in_title'],
+            'title' => $ins[0]['idea__title'],
             'in' => $ins[0],
         ));
 
@@ -588,7 +588,7 @@ class Read extends CI_Controller
                 'message' => view_unauthorized_message(),
             ));
 
-        } elseif (!isset($_POST['in_id'])) {
+        } elseif (!isset($_POST['idea__id'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -620,8 +620,8 @@ class Read extends CI_Controller
 
         //Validate Idea:
         $ins = $this->IDEA_model->fetch(array(
-            'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+            'idea__id' => $_POST['idea__id'],
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         ));
         if(count($ins)<1){
             return view_json(array(
@@ -644,7 +644,7 @@ class Read extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $session_en['en_id'], $_FILES[$_POST['upload_type']], true, $ins[0]['in_title']);
+        $cdn_status = upload_to_cdn($temp_local, $session_en['source__id'], $_FILES[$_POST['upload_type']], true, $ins[0]['idea__title']);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -653,24 +653,24 @@ class Read extends CI_Controller
 
         //Delete previous answer(s):
         foreach($this->READ_model->fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_previous_idea_id' => $ins[0]['in_id'],
-            'ln_creator_source_id' => $session_en['en_id'],
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
+            'read__left' => $ins[0]['idea__id'],
+            'read__source' => $session_en['source__id'],
         )) as $read_progress){
-            $this->READ_model->update($read_progress['ln_id'], array(
-                'ln_status_source_id' => 6173, //Transaction Deleted
-            ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
+            $this->READ_model->update($read_progress['read__id'], array(
+                'read__status' => 6173, //Transaction Deleted
+            ), $session_en['source__id'], 12129 /* READ ANSWER DELETED */);
         }
 
         //Save new answer:
-        $new_message = '@'.$cdn_status['cdn_en']['en_id'];
+        $new_message = '@'.$cdn_status['cdn_en']['source__id'];
         $this->READ_model->is_complete($ins[0], array(
-            'ln_type_source_id' => 12117,
-            'ln_previous_idea_id' => $ins[0]['in_id'],
-            'ln_creator_source_id' => $session_en['en_id'],
-            'ln_content' => $new_message,
-            'ln_profile_source_id' => $cdn_status['cdn_en']['en_id'],
+            'read__type' => 12117,
+            'read__left' => $ins[0]['idea__id'],
+            'read__source' => $session_en['source__id'],
+            'read__message' => $new_message,
+            'read__up' => $cdn_status['cdn_en']['source__id'],
         ));
 
         //All good:
@@ -692,7 +692,7 @@ class Read extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['in_id']) || !intval($_POST['in_id'])) {
+        } elseif (!isset($_POST['idea__id']) || !intval($_POST['idea__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea ID.',
@@ -706,8 +706,8 @@ class Read extends CI_Controller
 
         //Validate/Fetch idea:
         $ins = $this->IDEA_model->fetch(array(
-            'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+            'idea__id' => $_POST['idea__id'],
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         ));
         if(count($ins) < 1){
             return view_json(array(
@@ -718,22 +718,22 @@ class Read extends CI_Controller
 
         //Delete previous answer(s):
         foreach($this->READ_model->fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_previous_idea_id' => $ins[0]['in_id'],
-            'ln_creator_source_id' => $session_en['en_id'],
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
+            'read__left' => $ins[0]['idea__id'],
+            'read__source' => $session_en['source__id'],
         )) as $read_progress){
-            $this->READ_model->update($read_progress['ln_id'], array(
-                'ln_status_source_id' => 6173, //Transaction Deleted
-            ), $session_en['en_id'], 12129 /* READ ANSWER DELETED */);
+            $this->READ_model->update($read_progress['read__id'], array(
+                'read__status' => 6173, //Transaction Deleted
+            ), $session_en['source__id'], 12129 /* READ ANSWER DELETED */);
         }
 
         //Save new answer:
         $this->READ_model->is_complete($ins[0], array(
-            'ln_type_source_id' => 6144,
-            'ln_previous_idea_id' => $ins[0]['in_id'],
-            'ln_creator_source_id' => $session_en['en_id'],
-            'ln_content' => $_POST['read_text_answer'],
+            'read__type' => 6144,
+            'read__left' => $ins[0]['idea__id'],
+            'read__source' => $session_en['source__id'],
+            'read__message' => $_POST['read_text_answer'],
         ));
 
         //All good:
@@ -766,24 +766,24 @@ class Read extends CI_Controller
         }
 
         //Save answer:
-        return view_json($this->READ_model->answer($session_en['en_id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
+        return view_json($this->READ_model->answer($session_en['source__id'], $_POST['in_loaded_id'], $_POST['answered_ins']));
 
     }
 
 
 
 
-    function read_coins_remove_all($en_id, $timestamp, $secret_key){
+    function read_coins_remove_all($source__id, $timestamp, $secret_key){
 
-        if($secret_key != md5($en_id . $this->config->item('cred_password_salt') . $timestamp)){
+        if($secret_key != md5($source__id . $this->config->item('cred_password_salt') . $timestamp)){
             die('Invalid Secret Key');
         }
 
         //Fetch their current progress links:
         $progress_links = $this->READ_model->fetch(array(
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-            'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_12227')) . ')' => null,
-            'ln_creator_source_id' => $en_id,
+            'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+            'read__type IN (' . join(',', $this->config->item('sources_id_12227')) . ')' => null,
+            'read__source' => $source__id,
         ), array(), 0);
 
         if(count($progress_links) > 0){
@@ -793,17 +793,17 @@ class Read extends CI_Controller
 
             //Log link:
             $clear_all_link = $this->READ_model->create(array(
-                'ln_content' => $message,
-                'ln_type_source_id' => 6415, //Reads Reset Reads
-                'ln_creator_source_id' => $en_id,
+                'read__message' => $message,
+                'read__type' => 6415, //Reads Reset Reads
+                'read__source' => $source__id,
             ));
 
             //Delete all progressions:
             foreach($progress_links as $progress_link){
-                $this->READ_model->update($progress_link['ln_id'], array(
-                    'ln_status_source_id' => 6173, //Transaction Deleted
-                    'ln_parent_transaction_id' => $clear_all_link['ln_id'], //To indicate when it was deleted
-                ), $en_id, 6415 /* User Cleared Reads */);
+                $this->READ_model->update($progress_link['read__id'], array(
+                    'read__status' => 6173, //Transaction Deleted
+                    'read__reference' => $clear_all_link['read__id'], //To indicate when it was deleted
+                ), $source__id, 6415 /* User Cleared Reads */);
             }
 
         } else {
@@ -831,7 +831,7 @@ class Read extends CI_Controller
                 'message' => view_unauthorized_message(),
             ));
 
-        } elseif (!isset($_POST['in_id'])) {
+        } elseif (!isset($_POST['idea__id'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -841,8 +841,8 @@ class Read extends CI_Controller
         }
 
         $ins = $this->IDEA_model->fetch(array(
-            'in_id' => $_POST['in_id'],
-            'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //PUBLIC
+            'idea__id' => $_POST['idea__id'],
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         ));
         if (!count($ins)) {
             return view_json(array(
@@ -854,26 +854,26 @@ class Read extends CI_Controller
         //First try to remove:
         $removed = 0;
         foreach($this->READ_model->fetch(array(
-            'ln_profile_source_id' => $session_en['en_id'],
-            'ln_next_idea_id' => $_POST['in_id'],
-            'ln_type_source_id' => 12896, //SAVED
-            'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
+            'read__up' => $session_en['source__id'],
+            'read__right' => $_POST['idea__id'],
+            'read__type' => 12896, //SAVED
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         )) as $remove_saved){
             $removed++;
-            $this->READ_model->update($remove_saved['ln_id'], array(
-                'ln_status_source_id' => 6173, //Transaction Deleted
-            ), $session_en['en_id'], 12906 /* UNSAVED */);
+            $this->READ_model->update($remove_saved['read__id'], array(
+                'read__status' => 6173, //Transaction Deleted
+            ), $session_en['source__id'], 12906 /* UNSAVED */);
         }
 
         //Need to add?
         if(!$removed){
             //Then we must add:
             $this->READ_model->create(array(
-                'ln_creator_source_id' => $session_en['en_id'],
-                'ln_profile_source_id' => $session_en['en_id'],
-                'ln_content' => '@'.$session_en['en_id'],
-                'ln_next_idea_id' => $_POST['in_id'],
-                'ln_type_source_id' => 12896, //SAVED
+                'read__source' => $session_en['source__id'],
+                'read__up' => $session_en['source__id'],
+                'read__message' => '@'.$session_en['source__id'],
+                'read__right' => $_POST['idea__id'],
+                'read__type' => 12896, //SAVED
             ));
         }
 
@@ -903,7 +903,7 @@ class Read extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid player ID',
             ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
+        } elseif (!isset($_POST['idea__id']) || intval($_POST['idea__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea ID',
@@ -911,7 +911,7 @@ class Read extends CI_Controller
         }
 
         //Call function to delete form Reads:
-        $delete_result = $this->READ_model->delete($_POST['js_pl_id'], $_POST['in_id'], 6155); //REMOVED BOOKMARK
+        $delete_result = $this->READ_model->delete($_POST['js_pl_id'], $_POST['idea__id'], 6155); //REMOVED BOOKMARK
 
         if(!$delete_result['status']){
             return view_json($delete_result);
@@ -949,11 +949,11 @@ class Read extends CI_Controller
 
         //Update the order of their Reads:
         $results = array();
-        foreach($_POST['new_read_order'] as $ln_order => $ln_id){
-            if(intval($ln_id) > 0 && intval($ln_order) > 0){
+        foreach($_POST['new_read_order'] as $read__sort => $read__id){
+            if(intval($read__id) > 0 && intval($read__sort) > 0){
                 //Update order of this link:
-                $results[$ln_order] = $this->READ_model->update(intval($ln_id), array(
-                    'ln_order' => $ln_order,
+                $results[$read__sort] = $this->READ_model->update(intval($read__id), array(
+                    'read__sort' => $read__sort,
                 ), $_POST['js_pl_id'], 6132 /* Ideas Ordered by User */);
             }
         }

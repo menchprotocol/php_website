@@ -14,13 +14,13 @@
 //Fetch all valid variable names:
 $valid_variables = array();
 foreach($this->READ_model->fetch(array(
-    'ln_profile_source_id' => 6232, //Variables Names
-    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-    'en_status_source_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //PUBLIC
-    'LENGTH(ln_content) > 0' => null,
-), array('en_portfolio'), 0) as $var_name){
-    array_push($valid_variables, $var_name['ln_content']);
+    'read__up' => 6232, //Variables Names
+    'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+    'LENGTH(read__message) > 0' => null,
+), array('source_portfolio'), 0) as $var_name){
+    array_push($valid_variables, $var_name['read__message']);
 }
 
 //Now let's start the cleanup process...
@@ -29,14 +29,14 @@ $invalid_variables = array();
 //Idea Metadata
 foreach($this->IDEA_model->fetch(array()) as $in){
 
-    if(strlen($in['in_metadata']) < 1){
+    if(strlen($in['idea__metadata']) < 1){
         continue;
     }
 
-    foreach(unserialize($in['in_metadata']) as $key => $value){
+    foreach(unserialize($in['idea__metadata']) as $key => $value){
         if(!in_array($key, $valid_variables)){
             //Delete this:
-            update_metadata('in', $in['in_id'], array(
+            update_metadata('in', $in['idea__id'], array(
                 $key => null,
             ));
 
@@ -52,14 +52,14 @@ foreach($this->IDEA_model->fetch(array()) as $in){
 //Player Metadata
 foreach($this->SOURCE_model->fetch(array()) as $en){
 
-    if(strlen($en['en_metadata']) < 1){
+    if(strlen($en['source__metadata']) < 1){
         continue;
     }
 
-    foreach(unserialize($en['en_metadata']) as $key => $value){
+    foreach(unserialize($en['source__metadata']) as $key => $value){
         if(!in_array($key, $valid_variables)){
             //Delete this:
-            update_metadata('en', $en['en_id'], array(
+            update_metadata('en', $en['source__id'], array(
                 $key => null,
             ));
 
@@ -72,7 +72,7 @@ foreach($this->SOURCE_model->fetch(array()) as $en){
 
 }
 
-$ln_metadata = array(
+$read__metadata = array(
     'invalid' => $invalid_variables,
     'valid' => $valid_variables,
 );
@@ -80,11 +80,11 @@ $ln_metadata = array(
 if(count($invalid_variables) > 0){
     //Did we have anything to delete? Report with system bug:
     $this->READ_model->create(array(
-        'ln_content' => 'cron__7277() deleted '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
-        'ln_type_source_id' => 4246, //Platform Bug Reports
-        'ln_profile_source_id' => 6232, //Variables Names
-        'ln_metadata' => $ln_metadata,
+        'read__message' => 'cron__7277() deleted '.count($invalid_variables).' unknown variables from idea/source metadatas. To prevent this from happening, register the variables via Variables Names @6232',
+        'read__type' => 4246, //Platform Bug Reports
+        'read__up' => 6232, //Variables Names
+        'read__metadata' => $read__metadata,
     ));
 }
 
-view_json($ln_metadata);
+view_json($read__metadata);

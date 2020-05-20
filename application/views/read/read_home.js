@@ -41,11 +41,11 @@ $(document).ready(function () {
     //Watch for Reads removal click:
     $('.read_remove_item').on('click', function(e) {
 
-        var in_id = $(this).attr('in-id');
-        var r = confirm("Remove ["+$('.text__4736_'+in_id).text()+"] from your Reads?");
+        var idea__id = $(this).attr('idea__id');
+        var r = confirm("Remove ["+$('.text__4736_'+idea__id).text()+"] from your Reads?");
         if (r == true) {
             //Save changes:
-            $.post("/read/read_remove_item", { js_pl_id:js_pl_id ,in_id:in_id }, function (data) {
+            $.post("/read/read_remove_item", { js_pl_id:js_pl_id ,idea__id:idea__id }, function (data) {
                 //Update UI to confirm with user:
                 if (!data.status) {
 
@@ -55,12 +55,12 @@ $(document).ready(function () {
                 } else {
 
                     //REMOVE BOOKMARK from UI:
-                    $('#ap_in_'+in_id).fadeOut();
+                    $('#ap_in_'+idea__id).fadeOut();
 
                     setTimeout(function () {
 
                         //Delete from body:
-                        $('#ap_in_'+in_id).remove();
+                        $('#ap_in_'+idea__id).remove();
 
                         //Re-sort:
                         setTimeout(function () {

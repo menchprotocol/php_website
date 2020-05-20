@@ -1,8 +1,8 @@
 <?php
 
-if(!isset($_GET['ln_id']) || !intval($_GET['ln_id'])){
+if(!isset($_GET['read__id']) || !intval($_GET['read__id'])){
 
-    echo 'Missing Transaction ID (Append ?ln_id=TRANSACTION_ID in URL)';
+    echo 'Missing Transaction ID (Append ?read__id=READ_ID in URL)';
 
 } else {
 
@@ -11,7 +11,7 @@ if(!isset($_GET['ln_id']) || !intval($_GET['ln_id'])){
 
     //Fetch link metadata and display it:
     $lns = $this->READ_model->fetch(array(
-        'ln_id' => $_GET['ln_id'],
+        'read__id' => $_GET['read__id'],
     ));
 
     if (count($lns) < 1) {
@@ -25,8 +25,8 @@ if(!isset($_GET['ln_id']) || !intval($_GET['ln_id'])){
     } else {
 
         //unserialize metadata if needed:
-        if(strlen($lns[0]['ln_metadata']) > 0){
-            $lns[0]['ln_metadata'] = unserialize($lns[0]['ln_metadata']);
+        if(strlen($lns[0]['read__metadata']) > 0){
+            $lns[0]['read__metadata'] = unserialize($lns[0]['read__metadata']);
         }
 
         //Print on scree:

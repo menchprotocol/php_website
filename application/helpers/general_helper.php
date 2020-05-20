@@ -27,7 +27,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($insert_columns, $required_columns, $ln_creator_source_id)
+function detect_missing_columns($insert_columns, $required_columns, $read__source)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
@@ -35,13 +35,13 @@ function detect_missing_columns($insert_columns, $required_columns, $ln_creator_
             //Ooops, we're missing this required field:
             $CI =& get_instance();
             $CI->READ_model->create(array(
-                'ln_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
-                'ln_metadata' => array(
+                'read__message' => 'Missing required field [' . $req_field . '] for inserting new DB row',
+                'read__metadata' => array(
                     'insert_columns' => $insert_columns,
                     'required_columns' => $required_columns,
                 ),
-                'ln_type_source_id' => 4246, //Platform Bug Reports
-                'ln_creator_source_id' => $ln_creator_source_id,
+                'read__type' => 4246, //Platform Bug Reports
+                'read__source' => $read__source,
             ));
 
             return true; //We have an issue
@@ -76,14 +76,14 @@ function array_flatten($hierarchical_array){
 }
 
 
-function extract_source_references($ln_content, $look_for_slice = false)
+function extract_source_references($read__message, $look_for_slice = false)
 {
 
     //Analyzes a message text to extract Source References (Like @123) and URLs
     $CI =& get_instance();
 
     //Replace non-ascii characters with space:
-    $ln_content = preg_replace('/[[:^print:]]/', ' ', $ln_content);
+    $read__message = preg_replace('/[[:^print:]]/', ' ', $read__message);
 
     //Analyze the message to find referencing URLs and Players in the message text:
     $string_references = array(
@@ -95,7 +95,7 @@ function extract_source_references($ln_content, $look_for_slice = false)
     );
 
     //See what we can find:
-    foreach(preg_split('/\s+/', $ln_content) as $word) {
+    foreach(preg_split('/\s+/', $read__message) as $word) {
         if (filter_var($word, FILTER_VALIDATE_URL)) {
 
             if(substr_count($word,':')==3){
@@ -113,13 +113,13 @@ function extract_source_references($ln_content, $look_for_slice = false)
 
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
 
-            $en_id = intval(substr($word, 1));
-            array_push($string_references['ref_sources'], $en_id);
+            $source__id = intval(substr($word, 1));
+            array_push($string_references['ref_sources'], $source__id);
 
             if($look_for_slice && substr_count($word,':')==2){
                 //See if this is it:
                 $times = explode(':',$word);
-                if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$en_id.':'.$times[1].':'.$times[2]){
+                if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$source__id.':'.$times[1].':'.$times[2]){
                     $string_references['ref_time_found'] = true;
                     $string_references['ref_time_start'] = intval($times[1]);
                     $string_references['ref_time_end'] = intval($times[2]);
@@ -178,19 +178,19 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     if (@file_get_contents($fav_icon)) {
         return '<img src="'.$fav_icon.'">';
     } else {
-        return ( $return_icon ? view_en_icon() : null );
+        return ( $return_icon ? view_source__icon() : null );
     }
 }
 
 function en_link_type_id($string = null){
-    $detected_ln_type = ln_detect_type($string);
-    if ($detected_ln_type['status']){
-        return $detected_ln_type['ln_type_source_id'];
+    $detected_read_type = read_detect_type($string);
+    if ($detected_read_type['status']){
+        return $detected_read_type['read__type'];
     }
     return 0;
 }
 
-function ln_detect_type($string)
+function read_detect_type($string)
 {
 
     /*
@@ -205,14 +205,14 @@ function ln_detect_type($string)
 
         return array(
             'status' => 1,
-            'ln_type_source_id' => 4230, //Raw
+            'read__type' => 4230, //Raw
         );
 
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(
             'status' => 1,
-            'ln_type_source_id' => 4319, //Number
+            'read__type' => 4319, //Number
         );
 
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
@@ -226,7 +226,7 @@ function ln_detect_type($string)
         //Date/time:
         return array(
             'status' => 1,
-            'ln_type_source_id' => 4318,
+            'read__type' => 4318,
         );
 
     } elseif (substr($string, -1)=='%' && is_numeric(substr($string, 0, (strlen($string)-1)))) {
@@ -234,7 +234,7 @@ function ln_detect_type($string)
         //Percent:
         return array(
             'status' => 1,
-            'ln_type_source_id' => 7657,
+            'read__type' => 7657,
         );
 
     } elseif (!substr_count($string, ' ')) {
@@ -242,7 +242,7 @@ function ln_detect_type($string)
         //Single Word:
         return array(
             'status' => 1,
-            'ln_type_source_id' => 12827,
+            'read__type' => 12827,
         );
 
     } else {
@@ -250,7 +250,7 @@ function ln_detect_type($string)
         //Regular text link:
         return array(
             'status' => 1,
-            'ln_type_source_id' => 4255, //Text Link
+            'read__type' => 4255, //Text Link
         );
 
     }
@@ -348,37 +348,37 @@ function is_valid_icon($string){
 }
 
 
-function en_count_db_references($en_id, $return_html = true){
+function en_count_db_references($source__id, $return_html = true){
 
     //NOTE HERE
 
     //Checks where in the database/platform a source might be referenced
     $en_count_db_references = array(); //Holds return values
     $CI =& get_instance();
-    $en_all_6194 = $CI->config->item('en_all_6194');
+    $sources__6194 = $CI->config->item('sources__6194');
 
     foreach(array(
-        4737 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id=',
-        7585 => 'SELECT count(in_id) as totals FROM mench_idea WHERE in_status_source_id IN ('.join(',', $CI->config->item('en_ids_7355')).') AND in_type_source_id=',
-        6177 => 'SELECT count(en_id) as totals FROM mench_source WHERE en_status_source_id=',
-        4364 => 'SELECT count(ln_id) as totals FROM mench_read WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_creator_source_id=',
-        6186 => 'SELECT count(ln_id) as totals FROM mench_read WHERE ln_status_source_id=',
-        4593 => 'SELECT count(ln_id) as totals FROM mench_read WHERE ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ') AND ln_type_source_id=',
+        4737 => 'SELECT count(idea__id) as totals FROM mench_idea WHERE idea__status=',
+        7585 => 'SELECT count(idea__id) as totals FROM mench_idea WHERE idea__status IN ('.join(',', $CI->config->item('sources_id_7355')).') AND idea__type=',
+        6177 => 'SELECT count(source__id) as totals FROM mench_source WHERE source__status=',
+        4364 => 'SELECT count(read__id) as totals FROM mench_read WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__source=',
+        6186 => 'SELECT count(read__id) as totals FROM mench_read WHERE read__status=',
+        4593 => 'SELECT count(read__id) as totals FROM mench_read WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__type=',
     ) as $en_app_id => $query){
 
-        $query = $CI->db->query( $query . $en_id );
+        $query = $CI->db->query( $query . $source__id );
         foreach($query->result() as $row)
         {
             if($row->totals > 0){
-                $en_count_db_references[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($en_all_6194[$en_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$en_all_6194[$en_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
+                $en_count_db_references[$en_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($sources__6194[$en_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$sources__6194[$en_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$sources__6194[$en_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
             }
         }
 
     }
 
     //Plugin?
-    if(in_array($en_id, $CI->config->item('en_ids_6287'))){
-        $en_count_db_references[6287] = ( $return_html ? '<a href="/source/plugin/'.$en_id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6194[6287]['m_name'].'">'.$en_all_6194[6287]['m_icon'].'</a>' : 1 );
+    if(in_array($source__id, $CI->config->item('sources_id_6287'))){
+        $en_count_db_references[6287] = ( $return_html ? '<a href="/source/plugin/'.$source__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
     }
 
     return $en_count_db_references;
@@ -386,27 +386,27 @@ function en_count_db_references($en_id, $return_html = true){
 }
 
 
-function in_fetch_cover($in_id){
+function in_fetch_cover($idea__id){
 
     $CI =& get_instance();
     $in_fetch_cover = null;
     foreach($CI->READ_model->fetch(array( //IDEA SOURCE
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-        'ln_next_idea_id' => $in_id,
-        'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+        'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+        'read__right' => $idea__id,
+        'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     ), array(), 0, 0, array(
-        'ln_type_source_id' => 'ASC', //Messages First, Sources Second
-        'ln_order' => 'ASC', //Sort by message order
+        'read__type' => 'ASC', //Messages First, Sources Second
+        'read__sort' => 'ASC', //Sort by message order
     )) as $en){
 
         //See if this source has a photo:
         foreach($CI->READ_model->fetch(array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id' => 4260, //IMAGES ONLY
-            'ln_portfolio_source_id' => $en['ln_profile_source_id'],
+            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type' => 4260, //IMAGES ONLY
+            'read__down' => $en['read__up'],
         )) as $en_image) {
-            $in_fetch_cover = $en_image['ln_content'];
+            $in_fetch_cover = $en_image['read__message'];
             break;
         }
         if($in_fetch_cover){
@@ -420,31 +420,31 @@ function in_fetch_cover($in_id){
 }
 
 
-function in_weight_updater($in){
+function idea__weight_updater($in){
 
-    //TRANSACTIONS
+    //READS
     $CI =& get_instance();
 
-    $count_transactions = $CI->READ_model->fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        '(ln_next_idea_id='.$in['in_id'].' OR ln_previous_idea_id='.$in['in_id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    $count_reads = $CI->READ_model->fetch(array(
+        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        '(read__right='.$in['idea__id'].' OR read__left='.$in['idea__id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     //IDEAS
     $counts = $CI->READ_model->fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
-        '(ln_next_idea_id='.$in['in_id'].' OR ln_previous_idea_id='.$in['in_id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+        '(read__right='.$in['idea__id'].' OR read__left='.$in['idea__id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     //Returns the weight of a idea:
-    $weight = ( $count_transactions[0]['totals'] * config_var(12568) )
+    $weight = ( $count_reads[0]['totals'] * config_var(12568) )
         + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
-    if($weight != $in['in_weight']){
-        return $CI->IDEA_model->update($in['in_id'], array(
-            'in_weight' => $weight,
+    if($weight != $in['idea__weight']){
+        return $CI->IDEA_model->update($in['idea__id'], array(
+            'idea__weight' => $weight,
         ));
     } else {
         return 0;
@@ -452,31 +452,31 @@ function in_weight_updater($in){
 
 }
 
-function en_weight_updater($en){
+function source__weight_updater($en){
 
-    //TRANSACTIONS
+    //READS
     $CI =& get_instance();
 
-    $count_transactions = $CI->READ_model->fetch(array(
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        '(ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].' OR ln_creator_source_id='.$en['en_id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    $count_reads = $CI->READ_model->fetch(array(
+        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        '(read__down='.$en['source__id'].' OR read__up='.$en['source__id'].' OR read__source='.$en['source__id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     //IDEAS
     $counts = $CI->READ_model->fetch(array(
-        'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-        'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-        '(ln_portfolio_source_id='.$en['en_id'].' OR ln_profile_source_id='.$en['en_id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+        'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        '(read__down='.$en['source__id'].' OR read__up='.$en['source__id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     //Returns the weight of a source:
-    $weight = ( $count_transactions[0]['totals'] * config_var(12568) )
+    $weight = ( $count_reads[0]['totals'] * config_var(12568) )
             + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
-    if($weight != $en['en_weight']){
-        return $CI->SOURCE_model->update($en['en_id'], array(
-            'en_weight' => $weight,
+    if($weight != $en['source__weight']){
+        return $CI->SOURCE_model->update($en['source__id'], array(
+            'source__weight' => $weight,
         ));
     } else {
         return 0;
@@ -484,23 +484,23 @@ function en_weight_updater($en){
 
 }
 
-function filter_cache_group($search_en_id, $cache_en_id){
+function filter_cache_group($search_source__id, $cache_source__id){
 
     //Determines which category an source belongs to
 
     $CI =& get_instance();
-    foreach($CI->config->item('en_all_'.$cache_en_id) as $en_id => $m) {
-        if(in_array($search_en_id, $CI->config->item('en_ids_'.$en_id))){
+    foreach($CI->config->item('sources__'.$cache_source__id) as $source__id => $m) {
+        if(in_array($search_source__id, $CI->config->item('sources_id_'.$source__id))){
             return $m;
         }
     }
     return false;
 }
 
-function config_var($config_en_id){
+function config_var($config_source__id){
     $CI =& get_instance();
-    $en_all_6404 = $CI->config->item('en_all_6404');
-    return $en_all_6404[$config_en_id]['m_desc'];
+    $sources__6404 = $CI->config->item('sources__6404');
+    return $sources__6404[$config_source__id]['m_desc'];
 }
 
 function update_description($before_string, $after_string){
@@ -509,8 +509,8 @@ function update_description($before_string, $after_string){
 
 function random_player_avatar(){
     $CI =& get_instance();
-    $en_all_10956 = $CI->config->item('en_all_10956');
-    return $en_all_10956[array_rand($en_all_10956)]['m_icon'];
+    $sources__10956 = $CI->config->item('sources__10956');
+    return $sources__10956[array_rand($sources__10956)]['m_icon'];
 }
 
 function format_percentage($percent){
@@ -549,7 +549,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function in_is_unlockable($in){
     $CI =& get_instance();
-    return in_array($in['in_status_source_id'], $CI->config->item('en_ids_7355') /* PUBLIC */);
+    return in_array($in['idea__status'], $CI->config->item('sources_id_7355') /* PUBLIC */);
 }
 
 function redirect_message($url, $message = null)
@@ -572,22 +572,22 @@ function redirect_message($url, $message = null)
 }
 
 function sortByWeight($a, $b) {
-    if(isset($a['en_weight']) && isset($b['en_weight'])){
-        return $b['en_weight'] - $a['en_weight'];
+    if(isset($a['source__weight']) && isset($b['source__weight'])){
+        return $b['source__weight'] - $a['source__weight'];
     }
 }
 
-function superpower_active($superpower_en_id, $boolean_only = false){
+function superpower_active($superpower_source__id, $boolean_only = false){
 
-    if( intval($superpower_en_id)>0 ){
+    if( intval($superpower_source__id)>0 ){
 
         $CI =& get_instance();
-        $is_match = (superpower_assigned() ? in_array(intval($superpower_en_id), $CI->session->userdata('session_superpowers_activated')) : false);
+        $is_match = (superpower_assigned() ? in_array(intval($superpower_source__id), $CI->session->userdata('session_superpowers_activated')) : false);
 
         if($boolean_only){
             return $is_match;
         } else {
-            return ' superpower-'.$superpower_en_id . ' ' . ( $is_match ? '' : ' hidden ' );
+            return ' superpower-'.$superpower_source__id . ' ' . ( $is_match ? '' : ' hidden ' );
         }
 
     } else {
@@ -598,15 +598,15 @@ function superpower_active($superpower_en_id, $boolean_only = false){
     }
 }
 
-function extract_icon_color($en_icon){
+function extract_icon_color($source__icon){
 
     //NOTE: Has a twin JS function
 
-    if(substr_count($en_icon, 'read')>0){
+    if(substr_count($source__icon, 'read')>0){
         return ' read ';
-    } elseif(substr_count($en_icon, 'idea')>0){
+    } elseif(substr_count($source__icon, 'idea')>0){
         return ' idea ';
-    } elseif(substr_count($en_icon, 'source')>0 || !$en_icon){
+    } elseif(substr_count($source__icon, 'source')>0 || !$source__icon){
         return ' source ';
     } else {
         return '';
@@ -646,7 +646,7 @@ function current_mench($part1 = null){
 
 
 
-function ln_coins_in($ln_type_source_id, $in_id, $load_page = 0){
+function read_coins_in($read__type, $idea__id, $load_page = 0){
 
     /*
      * Counts MENCH COINS for ideas
@@ -659,22 +659,22 @@ function ln_coins_in($ln_type_source_id, $in_id, $load_page = 0){
     $CI =& get_instance();
 
     //We need to count this:
-    if($ln_type_source_id==12273){
+    if($read__type==12273){
 
-        $join_objects = array('en_profile');
+        $join_objects = array('source_profile');
         $match_columns = array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-            'ln_next_idea_id' => $in_id,
+            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+            'read__right' => $idea__id,
         );
 
-    } elseif($ln_type_source_id==6255){
+    } elseif($read__type==6255){
 
         $join_objects = array('en_creator');
         $match_columns = array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_previous_idea_id' => $in_id,
+            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
+            'read__left' => $idea__id,
         );
 
     } else {
@@ -684,7 +684,7 @@ function ln_coins_in($ln_type_source_id, $in_id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->READ_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('ln_id' => 'DESC') ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
+    $query = $CI->READ_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('read__id' => 'DESC') ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -703,8 +703,8 @@ function ln_coins_in($ln_type_source_id, $in_id, $load_page = 0){
     } else {
 
         //No Results:
-        $en_all_12467 = $CI->config->item('en_all_12467'); //MENCH COINS
-        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$en_all_12467[$ln_type_source_id]['m_name'].' yet</div>';
+        $sources__12467 = $CI->config->item('sources__12467'); //MENCH COINS
+        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$sources__12467[$read__type]['m_name'].' yet</div>';
 
     }
 
@@ -713,7 +713,7 @@ function ln_coins_in($ln_type_source_id, $in_id, $load_page = 0){
 
 }
 
-function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
+function read_coins_en($read__type, $source__id, $load_page = 0){
 
     /*
      * Counts MENCH COINS for sources
@@ -726,34 +726,34 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
     $CI =& get_instance();
 
     //We need to count this:
-    if($ln_type_source_id==12274){
+    if($read__type==12274){
 
-        $order_columns = array('en_weight' => 'DESC'); //BEST SOURCES
-        $join_objects = array('en_portfolio');
+        $order_columns = array('source__weight' => 'DESC'); //BEST SOURCES
+        $join_objects = array('source_portfolio');
         $match_columns = array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12274')) . ')' => null, //SOURCE COIN
-            'ln_creator_source_id' => $en_id,
+            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type IN (' . join(',', $CI->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
+            'read__source' => $source__id,
         );
 
-    } elseif($ln_type_source_id==12273){
+    } elseif($read__type==12273){
 
-        $order_columns = array('in_weight' => 'DESC'); //BEST IDEAS
-        $join_objects = array('in_next');
+        $order_columns = array('idea__weight' => 'DESC'); //BEST IDEAS
+        $join_objects = array('idea_next');
         $match_columns = array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-            'ln_profile_source_id' => $en_id,
+            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+            'read__up' => $source__id,
         );
 
-    } elseif($ln_type_source_id==6255){
+    } elseif($read__type==6255){
 
-        $order_columns = array('ln_id' => 'DESC'); //LATEST READS
-        $join_objects = array('in_previous');
+        $order_columns = array('read__id' => 'DESC'); //LATEST READS
+        $join_objects = array('idea_previous');
         $match_columns = array(
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //READ COIN
-            'ln_creator_source_id' => $en_id,
+            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
+            'read__source' => $source__id,
         );
 
     } else {
@@ -763,7 +763,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->READ_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(ln_id) as totals' : '*' ));
+    $query = $CI->READ_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -773,21 +773,21 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 
         //Return UI:
         $ui = '<div class="list-group">';
-        if($ln_type_source_id==12274){
+        if($read__type==12274){
 
             //SOURCE COIN
             foreach($query as $item){
                 $ui .= view_en($item);
             }
 
-        } elseif($ln_type_source_id==6255){
+        } elseif($read__type==6255){
 
             //READ COIN
             foreach($query as $item){
                 $ui .= view_in($item);
             }
 
-        } elseif($ln_type_source_id==12273){
+        } elseif($read__type==12273){
 
             $previous_do_hide = true;
             $bold_upto_weight = in_calc_bold_upto_weight($query);
@@ -799,21 +799,21 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
                 $infobar_details = null;
                 $string_references['ref_time_found'] = false;
 
-                if(strlen($item['ln_content'])){
+                if(strlen($item['read__message'])){
                     $infobar_details .= '<div class="message_content">';
-                    $infobar_details .= $CI->READ_model->send_message($item['ln_content']);
+                    $infobar_details .= $CI->READ_model->send_message($item['read__message']);
                     $infobar_details .= '</div>';
-                    $string_references = extract_source_references($item['ln_content'], true);
+                    $string_references = extract_source_references($item['read__message'], true);
                 }
 
-                $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['in_weight']) || ($count >= $show_max)));
+                $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['idea__weight']) || ($count >= $show_max)));
 
                 if(!$previous_do_hide && $do_hide){
                     $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
                     $ui .= '<div class="see_more_sources"></div>';
                 }
 
-                $ui .= view_in($item, 0, false, false, $item['ln_content'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+                $ui .= view_in($item, 0, false, false, $item['read__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
 
                 $previous_do_hide = $do_hide;
 
@@ -825,8 +825,8 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
     } else {
 
         //No Results:
-        $en_all_12467 = $CI->config->item('en_all_12467'); //MENCH COINS
-        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$en_all_12467[$ln_type_source_id]['m_name'].' yet</div>';
+        $sources__12467 = $CI->config->item('sources__12467'); //MENCH COINS
+        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$sources__12467[$read__type]['m_name'].' yet</div>';
 
     }
 
@@ -835,7 +835,7 @@ function ln_coins_en($ln_type_source_id, $en_id, $load_page = 0){
 
 }
 
-function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
+function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
 {
 
     //Authenticates logged-in users with their session information
@@ -844,12 +844,12 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
     $has_session = ( is_array($session_en) && count($session_en) > 0 && $session_en );
 
     //Let's start checking various ways we can give user access:
-    if ($has_session && !$superpower_en_id) {
+    if ($has_session && !$superpower_source__id) {
 
         //No minimum level required, grant access IF user is logged in:
         return $session_en;
 
-    } elseif ($has_session && in_array($superpower_en_id, $CI->session->userdata('session_superpowers_assigned'))) {
+    } elseif ($has_session && in_array($superpower_source__id, $CI->session->userdata('session_superpowers_assigned'))) {
 
         //They are part of one of the levels assigned to them:
         return $session_en;
@@ -866,13 +866,13 @@ function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/source/'.$session_en['en_id'];
+            $goto_url = '/source/'.$session_en['source__id'];
         } else {
             $goto_url = '/source/sign?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.view_unauthorized_message($superpower_en_id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.view_unauthorized_message($superpower_source__id).'</div>');
     }
 
 }
@@ -905,13 +905,13 @@ function in_calc_bold_upto_weight($child_list){
         if(!is_null($previous_weight)){
             if($previous_weight<1000){
                 break;
-            } elseif($previous_weight/$child_item['in_weight'] >= 2){
-                $bold_upto_weight = $child_item['in_weight'];
+            } elseif($previous_weight/$child_item['idea__weight'] >= 2){
+                $bold_upto_weight = $child_item['idea__weight'];
                 break;
             }
         }
 
-        $previous_weight = $child_item['in_weight'];
+        $previous_weight = $child_item['idea__weight'];
     }
     return $bold_upto_weight;
 }
@@ -959,7 +959,7 @@ function in_calc_common_prefix($child_list, $child_field, $in = null){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $read__source = 0, $read__metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -992,12 +992,12 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
     //MAKE SURE WE CAN ACCESS AWS:
     if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
         $CI->READ_model->create(array(
-            'ln_type_source_id' => 4246, //Platform Bug Reports
-            'ln_creator_source_id' => $ln_creator_source_id,
-            'ln_content' => 'upload_to_cdn() Failed to load AWS S3',
-            'ln_metadata' => array(
+            'read__type' => 4246, //Platform Bug Reports
+            'read__source' => $read__source,
+            'read__message' => 'upload_to_cdn() Failed to load AWS S3',
+            'read__metadata' => array(
                 'file_url' => $file_url,
-                'ln_metadata' => $ln_metadata,
+                'read__metadata' => $read__metadata,
                 'is_local' => ( $is_local ? 1 : 0 ),
             ),
         ));
@@ -1028,12 +1028,12 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
 
     if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
         $CI->READ_model->create(array(
-            'ln_type_source_id' => 4246, //Platform Bug Reports
-            'ln_creator_source_id' => $ln_creator_source_id,
-            'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
-            'ln_metadata' => array(
+            'read__type' => 4246, //Platform Bug Reports
+            'read__source' => $read__source,
+            'read__message' => 'upload_to_cdn() Failed to upload file to Mench CDN',
+            'read__metadata' => array(
                 'file_url' => $file_url,
-                'ln_metadata' => $ln_metadata,
+                'read__metadata' => $read__metadata,
                 'is_local' => ( $is_local ? 1 : 0 ),
             ),
         ));
@@ -1050,7 +1050,7 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
     //Define new URL:
     $cdn_new_url = trim($result['ObjectURL']);
 
-    if($ln_creator_source_id < 1){
+    if($read__source < 1){
         //Just return URL:
         return array(
             'status' => 1,
@@ -1059,9 +1059,9 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
     }
 
     //Create and link new source to CDN and uploader:
-    $url_source = $CI->SOURCE_model->url($cdn_new_url, $ln_creator_source_id, 0, $page_title);
+    $url_source = $CI->SOURCE_model->url($cdn_new_url, $read__source, 0, $page_title);
 
-    if(isset($url_source['en_url']['en_id']) && $url_source['en_url']['en_id'] > 0){
+    if(isset($url_source['en_url']['source__id']) && $url_source['en_url']['source__id'] > 0){
 
         //All good:
         return array(
@@ -1073,12 +1073,12 @@ function upload_to_cdn($file_url, $ln_creator_source_id = 0, $ln_metadata = null
     } else {
 
         $CI->READ_model->create(array(
-            'ln_type_source_id' => 4246, //Platform Bug Reports
-            'ln_creator_source_id' => $ln_creator_source_id,
-            'ln_content' => 'upload_to_cdn() Failed to create new source from CDN file',
-            'ln_metadata' => array(
+            'read__type' => 4246, //Platform Bug Reports
+            'read__source' => $read__source,
+            'read__message' => 'upload_to_cdn() Failed to create new source from CDN file',
+            'read__metadata' => array(
                 'file_url' => $file_url,
-                'ln_metadata' => $ln_metadata,
+                'read__metadata' => $read__metadata,
                 'is_local' => ( $is_local ? 1 : 0 ),
             ),
         ));
@@ -1150,7 +1150,7 @@ function analyze_domain($full_url){
 
 
 
-function in_title_validate($string){
+function idea__title_validate($string){
 
     //Validate:
     if(!strlen(trim($string))){
@@ -1184,18 +1184,18 @@ function in_title_validate($string){
 
 }
 
-function en_name_validate($string, $ln_type_source_id = 0){
+function source__title_validate($string, $read__type = 0){
 
     //Validate:
     $CI =& get_instance();
-    $en_all_4592 = $CI->config->item('en_all_4592');
+    $sources__4592 = $CI->config->item('sources__4592');
     $errors = false;
-    $en_clean_name = trim($string);
+    $source__title_clean = trim($string);
 
     if(!strlen(trim($string))){
 
-        if($ln_type_source_id){
-            $en_clean_name = $en_all_4592[$ln_type_source_id]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+        if($read__type){
+            $source__title_clean = $sources__4592[$read__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1205,8 +1205,8 @@ function en_name_validate($string, $ln_type_source_id = 0){
 
     } elseif(strlen(trim($string)) < config_var(12232)){
 
-        if($ln_type_source_id){
-            $en_clean_name = $en_all_4592[$ln_type_source_id]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+        if($read__type){
+            $source__title_clean = $sources__4592[$read__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1216,8 +1216,8 @@ function en_name_validate($string, $ln_type_source_id = 0){
 
     } elseif(substr_count($string , '  ') > 0){
 
-        if($ln_type_source_id){
-            $en_clean_name = str_replace('  ',' ',str_replace('  ',' ',str_replace('  ',' ',$string)));
+        if($read__type){
+            $source__title_clean = str_replace('  ',' ',str_replace('  ',' ',str_replace('  ',' ',$string)));
         }
 
         $errors = array(
@@ -1227,8 +1227,8 @@ function en_name_validate($string, $ln_type_source_id = 0){
 
     } elseif (strlen($string) > config_var(6197)) {
 
-        if($ln_type_source_id){
-            $en_clean_name = substr($string, 0, config_var(6197));
+        if($read__type){
+            $source__title_clean = substr($string, 0, config_var(6197));
         }
 
         $errors = array(
@@ -1238,11 +1238,11 @@ function en_name_validate($string, $ln_type_source_id = 0){
 
     }
 
-    $en_clean_name = strtoupper(trim($en_clean_name));
+    $source__title_clean = strtoupper(trim($source__title_clean));
 
     //Just the clean name?
-    if($ln_type_source_id){
-        return $en_clean_name;
+    if($read__type){
+        return $source__title_clean;
     }
 
 
@@ -1254,14 +1254,14 @@ function en_name_validate($string, $ln_type_source_id = 0){
         //All good, return success:
         return array(
             'status' => 1,
-            'en_clean_name' => $en_clean_name,
+            'source__title_clean' => $source__title_clean,
         );
     }
 }
 
 
 
-function en_is_source($en_id, $session_en = array()){
+function en_is_source($source__id, $session_en = array()){
 
 
     if(!$session_en){
@@ -1269,38 +1269,38 @@ function en_is_source($en_id, $session_en = array()){
         $session_en = superpower_assigned();
     }
 
-    if(!$session_en || $en_id < 1){
+    if(!$session_en || $source__id < 1){
         return false;
     }
 
     //Ways a player can modify a source:
     $CI =& get_instance();
     return (
-        $en_id==$session_en['en_id'] || //Player is the source
+        $source__id==$session_en['source__id'] || //Player is the source
         superpower_active(10967, true) || //Player has Global source editing superpower
         count($CI->READ_model->fetch(array( //Player created the source
-            'ln_creator_source_id' => $session_en['en_id'],
-            'ln_portfolio_source_id' => $en_id,
-            'ln_type_source_id' => 4251, //New Source Created
+            'read__source' => $session_en['source__id'],
+            'read__down' => $source__id,
+            'read__type' => 4251, //New Source Created
         ))) ||
         count($CI->READ_model->fetch(array( //Player has source in their portfolio
-            'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-            'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-            'ln_profile_source_id' => $session_en['en_id'],
-            'ln_portfolio_source_id' => $en_id,
+            'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__up' => $session_en['source__id'],
+            'read__down' => $source__id,
         )))
     );
 
 }
 
-function in_is_source($in_id, $session_en = array()){
+function in_is_source($idea__id, $session_en = array()){
 
     if(!$session_en){
         //Fetch from session:
         $session_en = superpower_assigned();
     }
 
-    if(!$session_en || $in_id < 1){
+    if(!$session_en || $idea__id < 1){
         return false;
     }
 
@@ -1312,15 +1312,15 @@ function in_is_source($in_id, $session_en = array()){
             superpower_active(10939, true) && //PUBLISHING PEN
                 (
                 count($CI->READ_model->fetch(array( //Player created the idea
-                    'ln_type_source_id' => 4250, //IDEA CREATOR
-                    'ln_next_idea_id' => $in_id,
-                    'ln_creator_source_id' => $session_en['en_id'],
+                    'read__type' => 4250, //IDEA CREATOR
+                    'read__right' => $idea__id,
+                    'read__source' => $session_en['source__id'],
                 ))) ||
                 count($CI->READ_model->fetch(array( //IDEA SOURCE
-                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-                    'ln_next_idea_id' => $in_id,
-                    'ln_profile_source_id' => $session_en['en_id'],
+                    'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                    'read__right' => $idea__id,
+                    'read__up' => $session_en['source__id'],
                 )))
             )
         )
@@ -1351,7 +1351,7 @@ function objectToArray($object)
 
 
 
-function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_only = false)
+function update_algolia($input_obj_type = null, $object__id = 0, $return_row_only = false)
 {
 
     if(!intval(config_var(12678))){
@@ -1373,27 +1373,31 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif(($input_obj_type && !$input_obj_id) || ($input_obj_id && !$input_obj_type)){
+    } elseif(($input_obj_type && !$object__id) || ($object__id && !$input_obj_type)){
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
         );
     }
 
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Idea Subtypes
+
+    $sources__7585 = $CI->config->item('sources__7585'); // Idea Subtypes
 
     //Define the support objects indexed on algolia:
-    $input_obj_id = intval($input_obj_id);
+    $object__id = intval($object__id);
     $limits = array();
 
 
+    if($input_obj_type=='in'){
+        $input_field_id = 'idea__id';
+        $input_field_status = 'idea__status';
+    } elseif($input_obj_type=='en'){
+        $input_field_id = 'source__id';
+        $input_field_status = 'source__status';
+    }
+
+
     if (!$return_row_only) {
-
-        if(is_dev_environment()){
-            //Do a call on live as this does not work on local due to security limitations:
-            //return json_decode(@file_get_contents($CI->config->item('base_url')."cron/cron__7279/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
-        }
-
         //Load Algolia Index
         $search_index = load_algolia('alg_index');
     }
@@ -1411,6 +1415,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         $fetch_objects = $valid_objects;
 
         if (!$return_row_only) {
+
             //We need to update the entire index, so let's truncate it first:
             $search_index->clearIndex();
 
@@ -1423,6 +1428,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
     $all_export_rows = array();
     $all_db_rows = array();
     $synced_count = 0;
+    $loop_filed_name = '';
+
     foreach($fetch_objects as $loop_obj){
 
         //Reset limits:
@@ -1431,29 +1438,33 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //Fetch item(s) for updates including their parents:
         if ($loop_obj == 'in') {
 
-            $limits['ln_type_source_id'] = 4250;
+            $loop_filed_id = 'idea__id';
+            $loop_filed_name = 'idea__metadata';
+            $limits['read__type'] = 4250;
 
-            if($input_obj_id){
-                $limits['ln_next_idea_id'] = $input_obj_id;
+            if($object__id){
+                $limits['read__right'] = $object__id;
             } else {
-                $limits['in_status_source_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //ACTIVE
-                $limits['ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')'] = null; //ACTIVE
+                $limits['idea__status IN (' . join(',', $CI->config->item('sources_id_7356')) . ')'] = null; //ACTIVE
+                $limits['read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows['in'] = $CI->READ_model->fetch($limits, array('in_next'), 0);
+            $db_rows['in'] = $CI->READ_model->fetch($limits, array('idea_next'), 0);
 
         } elseif ($loop_obj == 'en') {
 
-            $limits['ln_type_source_id'] = 4251;
+            $loop_filed_id = 'source__id';
+            $loop_filed_name = 'source__metadata';
+            $limits['read__type'] = 4251;
 
-            if($input_obj_id){
-                $limits['ln_portfolio_source_id'] = $input_obj_id;
+            if($object__id){
+                $limits['read__down'] = $object__id;
             } else {
-                $limits['en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //ACTIVE
-                $limits['ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')'] = null; //ACTIVE
+                $limits['source__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')'] = null; //ACTIVE
+                $limits['read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows['en'] = $CI->READ_model->fetch($limits, array('en_portfolio'), 0);
+            $db_rows['en'] = $CI->READ_model->fetch($limits, array('source_portfolio'), 0);
 
         }
 
@@ -1469,12 +1480,12 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
             //Update Weight if single update:
-            if($input_obj_id){
+            if($object__id){
                 //Update weight before updating this object:
                 if($input_obj_type=='en'){
-                    en_weight_updater($db_row);
+                    source__weight_updater($db_row);
                 } elseif($input_obj_type=='in'){
-                    in_weight_updater($db_row);
+                    idea__weight_updater($db_row);
                 }
             }
 
@@ -1482,13 +1493,13 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             //Attempt to fetch Algolia object ID from object Metadata:
             if($input_obj_type){
 
-                if (strlen($db_row[$loop_obj . '_metadata']) > 0) {
+                if (strlen($db_row[$loop_filed_name]) > 0) {
 
                     //We have a metadata, so we might have the Algolia ID stored. Let's check:
-                    $metadata = unserialize($db_row[$loop_obj . '_metadata']);
-                    if (isset($metadata[$loop_obj . '__algolia_id']) && intval($metadata[$loop_obj . '__algolia_id']) > 0) {
+                    $metadata = unserialize($db_row[$loop_filed_name]);
+                    if (isset($metadata['algolia__id']) && intval($metadata['algolia__id']) > 0) {
                         //We found it! Let's just update existing algolia record
-                        $export_row['objectID'] = intval($metadata[$loop_obj . '__algolia_id']);
+                        $export_row['objectID'] = intval($metadata['algolia__id']);
                     }
 
                 }
@@ -1496,8 +1507,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             } else {
 
                 //Clear possible metadata algolia ID's that have been cached:
-                update_metadata($loop_obj, $db_row[$loop_obj.'_id'], array(
-                    $loop_obj . '__algolia_id' => null, //Since all objects have been mass deleted!
+                update_metadata($loop_obj, $db_row[$loop_filed_id], array(
+                    'algolia__id' => null, //Since all objects have been mass deleted!
                 ));
 
             }
@@ -1508,83 +1519,83 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             //Now build object-specific index:
             if ($loop_obj == 'en') {
 
-                $export_row['alg_obj_type_id'] = 4536; //SOURCE
-                $export_row['alg_obj_id'] = intval($db_row['en_id']);
-                $export_row['alg_obj_url'] = '/source/' . $db_row['en_id'];
-                $export_row['alg_obj_status'] = intval($db_row['en_status_source_id']);
-                $export_row['alg_obj_icon'] = view_en_icon($db_row['en_icon']);
-                $export_row['alg_obj_name'] = $db_row['en_name'];
-                $export_row['alg_obj_weight'] = intval($db_row['en_weight']);
+                $export_row['object__type'] = 4536; //SOURCE
+                $export_row['object__id'] = intval($db_row['source__id']);
+                $export_row['object__url'] = '/source/' . $db_row['source__id'];
+                $export_row['object__status'] = intval($db_row['source__status']);
+                $export_row['object__icon'] = view_source__icon($db_row['source__icon']);
+                $export_row['object__title'] = $db_row['source__title'];
+                $export_row['object__weight'] = intval($db_row['source__weight']);
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_source_' . $db_row['ln_creator_source_id']);
-                if($db_row['ln_creator_source_id']!=$db_row['en_id']){
+                array_push($export_row['_tags'], 'alg_source_' . $db_row['read__source']);
+                if($db_row['read__source']!=$db_row['source__id']){
                     //Also give access to source themselves, in case they can login:
-                    array_push($export_row['_tags'], 'alg_source_' . $db_row['en_id']);
+                    array_push($export_row['_tags'], 'alg_source_' . $db_row['source__id']);
                 }
 
-                if(in_array($db_row['en_status_source_id'], $CI->config->item('en_ids_12575'))){
+                if(in_array($db_row['source__status'], $CI->config->item('sources_id_12575'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
                 //Fetch Profiles:
-                $export_row['alg_obj_keywords'] = '';
+                $export_row['object__keywords'] = '';
                 foreach($CI->READ_model->fetch(array(
-                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //SOURCE LINKS
-                    'ln_portfolio_source_id' => $db_row['en_id'], //This child source
-                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                    'en_status_source_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //ACTIVE
-                ), array('en_profile'), 0, 0, array('en_weight' => 'DESC')) as $ln) {
+                    'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                    'read__down' => $db_row['source__id'], //This child source
+                    'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                    'source__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                ), array('source_profile'), 0, 0, array('source__weight' => 'DESC')) as $ln) {
 
                     //Always add to tags:
-                    array_push($export_row['_tags'], 'alg_source_' . $ln['en_id']);
+                    array_push($export_row['_tags'], 'alg_source_' . $ln['source__id']);
 
                     //Add content to keywords if any:
-                    if (strlen($ln['ln_content']) > 0) {
-                        $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
+                    if (strlen($ln['read__message']) > 0) {
+                        $export_row['object__keywords'] .= $ln['read__message'] . ' ';
                     }
 
                 }
 
-                $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
+                $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
 
             } elseif ($loop_obj == 'in') {
 
                 //See if this idea has a time-range:
-                $metadata = unserialize($db_row['in_metadata']);
+                $metadata = unserialize($db_row['idea__metadata']);
 
-                $export_row['alg_obj_type_id'] = 4535; //IDEA
-                $export_row['alg_obj_id'] = intval($db_row['in_id']);
-                $export_row['alg_obj_url'] = '/idea/go/' . $db_row['in_id'];
-                $export_row['alg_obj_status'] = intval($db_row['in_status_source_id']);
-                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_source_id']]['m_icon']; //Player type icon
-                $export_row['alg_obj_name'] = $db_row['in_title'];
-                $export_row['alg_obj_weight'] = intval($db_row['in_weight']);
+                $export_row['object__type'] = 4535; //IDEA
+                $export_row['object__id'] = intval($db_row['idea__id']);
+                $export_row['object__url'] = '/idea/go/' . $db_row['idea__id'];
+                $export_row['object__status'] = intval($db_row['idea__status']);
+                $export_row['object__icon'] = $sources__7585[$db_row['idea__type']]['m_icon']; //Player type icon
+                $export_row['object__title'] = $db_row['idea__title'];
+                $export_row['object__weight'] = intval($db_row['idea__weight']);
 
-                if(in_array($db_row['in_status_source_id'], $CI->config->item('en_ids_12138'))){
+                if(in_array($db_row['idea__status'], $CI->config->item('sources_id_12138'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
                 //Add keywords:
-                $export_row['alg_obj_keywords'] = '';
+                $export_row['object__keywords'] = '';
                 foreach($CI->READ_model->fetch(array(
-                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //IDEA NOTES
-                    'ln_next_idea_id' => $db_row['in_id'],
-                ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
-                    $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
+                    'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                    'read__type IN (' . join(',', $CI->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
+                    'read__right' => $db_row['idea__id'],
+                ), array(), 0, 0, array('read__sort' => 'ASC')) as $ln) {
+                    $export_row['object__keywords'] .= $ln['read__message'] . ' ';
                 }
-                $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
+                $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
 
 
                 //Is SOURCE for any IDEA?
                 foreach($CI->READ_model->fetch(array(
-                    'ln_status_source_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //PUBLIC
-                    'ln_type_source_id IN (' . join(',', $CI->config->item('en_ids_12273')) . ')' => null, //IDEA COIN
-                    'ln_next_idea_id' => $db_row['in_id'],
-                    'ln_profile_source_id >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                    'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                    'read__right' => $db_row['idea__id'],
+                    'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array(), 0) as $source){
-                    array_push($export_row['_tags'], 'alg_source_' . $source['ln_profile_source_id']);
+                    array_push($export_row['_tags'], 'alg_source_' . $source['read__up']);
                 }
 
             }
@@ -1603,7 +1614,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     } elseif($return_row_only){
 
-        if($input_obj_id > 0){
+        if($object__id > 0){
             //We  have a specific item we're looking for...
             return $all_export_rows[0];
         } else {
@@ -1618,7 +1629,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be deleted?
-        if (in_array($all_db_rows[0][$input_obj_type . '_status_source_id'], array(6178 /* Player Deleted */, 6182 /* Idea Deleted */))) {
+        if (in_array($all_db_rows[0][$input_field_status], array(6178 /* Player Deleted */, 6182 /* Idea Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1628,8 +1639,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
 
                 //also set its algolia_id to 0 locally:
-                update_metadata($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
-                    $input_obj_type . '__algolia_id' => null, //Since this item has been deleted!
+                update_metadata($input_obj_type, $all_db_rows[0][$input_field_id], array(
+                    'algolia__id' => null, //Since this item has been deleted!
                 ));
 
                 $synced_count += 1;
@@ -1653,8 +1664,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 //Now update local database with the new objectIDs:
                 if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
                     foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
-                        update_metadata($input_obj_type, $all_db_rows[$key][$input_obj_type.'_id'], array(
-                            $input_obj_type . '__algolia_id' => $algolia_id, //The newly created algolia object
+                        update_metadata($input_obj_type, $all_db_rows[$key][$input_field_id], array(
+                            'algolia__id' => $algolia_id, //The newly created algolia object
                         ));
                     }
                 }
@@ -1686,9 +1697,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
             foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                $object_this = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
-                update_metadata($object_this, $all_db_rows[$key][$object_this.'_id'], array(
-                    $object_this . '__algolia_id' => intval($algolia_id),
+                update_metadata(( isset($all_db_rows[$key]['idea__id']) ? 'in' : 'en'), $all_db_rows[$key][( isset($all_db_rows[$key]['idea__id']) ? 'idea__id' : 'source__id')], array(
+                    'algolia__id' => intval($algolia_id),
                 ));
             }
         }
@@ -1709,7 +1719,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 }
 
-function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id = 0)
+function update_metadata($obj_type, $object__id, $new_fields, $read__source = 0)
 {
 
     $CI =& get_instance();
@@ -1728,27 +1738,33 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
      *
      * */
 
-    if (!in_array($obj_type, array('in', 'en', 'ln')) || $obj_id < 1 || count($new_fields) < 1) {
+    if (!in_array($obj_type, array('in', 'en', 'ln')) || $object__id < 1 || count($new_fields) < 1) {
         return false;
     }
 
     //Fetch metadata for this object:
     if ($obj_type == 'in') {
 
+        $obj_filed_id = 'idea__id';
+        $obj_filed_name = 'idea__metadata';
         $db_objects = $CI->IDEA_model->fetch(array(
-            $obj_type . '_id' => $obj_id,
+            $obj_filed_id => $object__id,
         ));
 
     } elseif ($obj_type == 'en') {
 
+        $obj_filed_id = 'source__id';
+        $obj_filed_name = 'source__metadata';
         $db_objects = $CI->SOURCE_model->fetch(array(
-            $obj_type . '_id' => $obj_id,
+            $obj_filed_id => $object__id,
         ));
 
     } elseif ($obj_type == 'ln') {
 
+        $obj_filed_id = 'read__id';
+        $obj_filed_name = 'read__metadata';
         $db_objects = $CI->READ_model->fetch(array(
-            $obj_type . '_id' => $obj_id,
+            $obj_filed_id => $object__id,
         ));
 
     }
@@ -1759,7 +1775,7 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
 
 
     //Prepare newly fetched metadata:
-    $metadata = (strlen($db_objects[0][$obj_type . '_metadata']) > 0 ? unserialize($db_objects[0][$obj_type . '_metadata']) : array() );
+    $metadata = (strlen($db_objects[0][$obj_filed_name]) > 0 ? unserialize($db_objects[0][$obj_filed_name]) : array() );
 
     //Go through all the new fields and see if they differ from current metadata fields:
     foreach($new_fields as $metadata_key => $metadata_value) {
@@ -1781,20 +1797,20 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_source_id 
     //Now update DB without logging any links as this is considered a back-end update:
     if ($obj_type == 'in') {
 
-        $affected_rows = $CI->IDEA_model->update($obj_id, array(
-            'in_metadata' => $metadata,
-        ), false, $ln_creator_source_id);
+        $affected_rows = $CI->IDEA_model->update($object__id, array(
+            'idea__metadata' => $metadata,
+        ), false, $read__source);
 
     } elseif ($obj_type == 'en') {
 
-        $affected_rows = $CI->SOURCE_model->update($obj_id, array(
-            'en_metadata' => $metadata,
-        ), false, $ln_creator_source_id);
+        $affected_rows = $CI->SOURCE_model->update($object__id, array(
+            'source__metadata' => $metadata,
+        ), false, $read__source);
 
     } elseif ($obj_type == 'ln') {
 
-        $affected_rows = $CI->READ_model->update($obj_id, array(
-            'ln_metadata' => $metadata,
+        $affected_rows = $CI->READ_model->update($object__id, array(
+            'read__metadata' => $metadata,
         ));
 
     }

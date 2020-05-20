@@ -54,7 +54,7 @@ function search_email(){
     $.post("/source/singin_check_email", {
 
         input_email: $('#input_email').val(),
-        referrer_in_id: referrer_in_id,
+        referrer_idea__id: referrer_idea__id,
 
     }, function (data) {
 
@@ -66,7 +66,7 @@ function search_email(){
         if (data.status) {
 
             //Update source id IF existed previously:
-            $('#login_en_id').val(data.login_en_id);
+            $('#login_source__id').val(data.login_source__id);
 
             //Update email:
             $('#input_email').val(data.clean_input_email);
@@ -103,7 +103,7 @@ function add_account(){
         input_name: $('#input_name').val(),
         new_password: $('#new_password').val(),
         referrer_url: referrer_url,
-        referrer_in_id: referrer_in_id,
+        referrer_idea__id: referrer_idea__id,
     }, function (data) {
 
         if (data.status) {
@@ -152,10 +152,10 @@ function singin_check_password(){
 
     //Check email and validate:
     $.post("/source/singin_check_password", {
-        login_en_id: $('#login_en_id').val(),
+        login_source__id: $('#login_source__id').val(),
         input_password: $('#input_password').val(),
         referrer_url: referrer_url,
-        referrer_in_id: referrer_in_id,
+        referrer_idea__id: referrer_idea__id,
     }, function (data) {
 
         if (data.status) {
@@ -193,7 +193,7 @@ function magicemail(){
         //Check email and validate:
         $.post("/source/magicemail", {
             input_email: $('#input_email').val(),
-            referrer_in_id: referrer_in_id,
+            referrer_idea__id: referrer_idea__id,
         }, function (data) {
             if (data.status) {
                 //All good, they can close window:

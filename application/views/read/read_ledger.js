@@ -3,20 +3,20 @@
 
 $(document).ready(function () {
 
-    check_in_en_status_source_id();
+    check_in_source__status();
 
     //Watch for Idea status change:
-    $("#ln_type_source_id").change(function () {
-        check_in_en_status_source_id();
+    $("#read__type").change(function () {
+        check_in_source__status();
     });
 
     //Load first page of links:
-    ledger_load(link_filters, link_join_by, 1);
+    ledger_load(link_filters, link_joined_by, 1);
 
 });
 
 
-function check_in_en_status_source_id(){
+function check_in_source__status(){
     //Checks to see if the Idea/Player status filter should be visible
     //Would only make visible if Link type is Created Idea/Player
 
@@ -24,15 +24,15 @@ function check_in_en_status_source_id(){
     $(".filter-statuses").addClass('hidden');
 
     //Show only if creating new in/en Link type:
-    if($("#ln_type_source_id").val()==4250){
+    if($("#read__type").val()==4250){
         $(".filter-in-status").removeClass('hidden');
-    } else if($("#ln_type_source_id").val()==4251){
+    } else if($("#read__type").val()==4251){
         $(".filter-en-status").removeClass('hidden');
     }
 }
 
 
-function ledger_load(link_filters, link_join_by, page_num){
+function ledger_load(link_filters, link_joined_by, page_num){
 
     //Show spinner:
     $('#link_page_'+page_num).html('<div class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12694) +  '</div>').hide().fadeIn();
@@ -40,9 +40,9 @@ function ledger_load(link_filters, link_join_by, page_num){
     //Load report based on input fields:
     $.post("/read/ledger_load", {
         link_filters: link_filters,
-        link_join_by: link_join_by,
-        ln_content_search:ln_content_search,
-        ln_content_replace:ln_content_replace,
+        link_joined_by: link_joined_by,
+        read__message_search:read__message_search,
+        read__message_replace:read__message_replace,
         page_num: page_num,
     }, function (data) {
         if (!data.status) {

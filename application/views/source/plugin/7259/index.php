@@ -17,8 +17,8 @@ $replace_with_is_confirmed = false;
 if($search_for_is_set){
 
     $matching_results = $this->IDEA_model->fetch(array(
-        'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-        'LOWER(in_title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
+        'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+        'LOWER(idea__title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 
     //List the matching search:
@@ -53,43 +53,43 @@ if($search_for_is_set){
             if($replace_with_is_set){
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_title']).$append_text;
-                $in_title_validation = in_title_validate($new_outcome);
+                $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['idea__title']).$append_text;
+                $idea__title_validation = idea__title_validate($new_outcome);
 
-                if($in_title_validation['status']){
+                if($idea__title_validation['status']){
                     $qualifying_replacements++;
                 }
             }
 
-            if($replace_with_is_confirmed && $in_title_validation['status']){
+            if($replace_with_is_confirmed && $idea__title_validation['status']){
                 //Update idea:
-                $this->IDEA_model->update($in['in_id'], array(
-                    'in_title' => $in_title_validation['in_clean_title'],
-                ), true, $session_en['en_id']);
+                $this->IDEA_model->update($in['idea__id'], array(
+                    'idea__title' => $idea__title_validation['in_clean_title'],
+                ), true, $session_en['source__id']);
             }
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_en_cache('en_all_4737' /* Idea Status */, $in['in_status_source_id'], true, 'right').' <a href="/idea/go/'.$in['in_id'].'">'.$in['in_title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_en_cache('sources__4737' /* Idea Status */, $in['idea__status'], true, 'right').' <a href="/idea/go/'.$in['idea__id'].'">'.$in['idea__title'].'</a></td>';
 
             if($replace_with_is_set){
 
                 echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                echo '<td style="text-align: left;">'.( !$in_title_validation['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$in_title_validation['message'] : ( $replace_with_is_confirmed && $in_title_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                echo '<td style="text-align: left;">'.( !$idea__title_validation['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$idea__title_validation['message'] : ( $replace_with_is_confirmed && $idea__title_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
             } else {
                 //Show parents now:
                 echo '<td style="text-align: left;">';
 
 
                 //Loop through parents:
-                $en_all_7585 = $this->config->item('en_all_7585'); // Idea Subtypes
+                $sources__7585 = $this->config->item('sources__7585'); // Idea Subtypes
                 foreach($this->READ_model->fetch(array(
-                    'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //ACTIVE
-                    'in_status_source_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //ACTIVE
-                    'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //IDEA LINKS
-                    'ln_next_idea_id' => $in['in_id'],
-                ), array('in_previous')) as $in_parent) {
-                    echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/idea/go/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_title'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_source_id']]['m_icon'] . '</a> &nbsp;</span>';
+                    'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                    'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+                    'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                    'read__right' => $in['idea__id'],
+                ), array('idea_previous')) as $in_parent) {
+                    echo '<span class="in_child_icon_' . $in_parent['idea__id'] . '"><a href="/idea/go/' . $in_parent['idea__id'] . '" data-toggle="tooltip" title="' . $in_parent['idea__title'] . '" data-placement="bottom">' . $sources__7585[$in_parent['idea__type']]['m_icon'] . '</a> &nbsp;</span>';
                 }
 
                 echo '</td>';
