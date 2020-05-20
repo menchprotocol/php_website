@@ -2299,23 +2299,23 @@ class Source extends CI_Controller
     }
 
 
-    function plugin($plug_source__id = 0){
+    function plugin($plugin_source__id = 0){
 
-        if($plug_source__id < 1){
+        if($plugin_source__id < 1){
 
             //List Plugins to choose from:
             $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
             $this->load->view('header', array(
                 'title' => $sources__11035[6287]['m_name'],
             ));
-            $this->load->view('source/source_plug_home');
+            $this->load->view('source/source_plugin_home');
             $this->load->view('footer');
 
         } else {
 
             //Load a specific plugin:
             //Valud Plugin?
-            if(!in_array($plug_source__id, $this->config->item('sources_id_6287'))){
+            if(!in_array($plugin_source__id, $this->config->item('sources_id_6287'))){
                 die('Invalid Plugin ID');
             }
 
@@ -2328,39 +2328,39 @@ class Source extends CI_Controller
             //Needs extra superpowers?
             boost_power();
             $sources__6287 = $this->config->item('sources__6287'); //MENCH PLUGIN
-            $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $sources__6287[$plug_source__id]['m_parents']);
+            $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $sources__6287[$plugin_source__id]['m_parents']);
             if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
             }
 
 
-            //This is also duplicated in source_plug_frame to pass-on to plugin file:
+            //This is also duplicated in source_plugin_frame to pass-on to plugin file:
             $view_data = array(
-                'plug_source__id' => $plug_source__id,
+                'plugin_source__id' => $plugin_source__id,
                 'session_en' => $session_en,
                 'is_player_request' => $is_player_request,
             );
 
-            if(in_array($plug_source__id, $this->config->item('sources_id_12741'))){
+            if(in_array($plugin_source__id, $this->config->item('sources_id_12741'))){
 
                 //Raw UI:
-                $this->load->view('source/plugin/'.$plug_source__id.'/index', $view_data);
+                $this->load->view('source/plugin/'.$plugin_source__id.'/index', $view_data);
 
             } else {
 
                 //Regular UI:
                 //Load Plugin:
                 $this->load->view('header', array(
-                    'title' => strip_tags($sources__6287[$plug_source__id]['m_icon']).$sources__6287[$plug_source__id]['m_name'].' | PLUGIN',
+                    'title' => strip_tags($sources__6287[$plugin_source__id]['m_icon']).$sources__6287[$plugin_source__id]['m_name'].' | PLUGIN',
                 ));
-                $this->load->view('source/source_plug_frame', $view_data);
+                $this->load->view('source/source_plugin_frame', $view_data);
                 $this->load->view('footer');
 
             }
         }
     }
 
-    function plug_7264(){
+    function plugin_7264(){
 
         //Authenticate Player:
         $session_en = superpower_assigned(12700);
