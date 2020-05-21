@@ -150,7 +150,7 @@ function view_search_result(algolia_object){
     var obj_icon = ( is_idea ? '<i class="fas fa-circle idea"></i>' : algolia_object.object__icon );
     var obj_full_name = ( algolia_object._highlightResult && algolia_object._highlightResult.object__title.value ? algolia_object._highlightResult.object__title.value : algolia_object.object__title );
 
-    return '<span class="icon-block-sm">'+ obj_icon +'</span>' + ( is_public ? '' : '<span class="icon-block-sm"><i class="far fa-spinner fa-spin"></i></span>' ) + '<span class="montserrat '+ ( !is_idea ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>'; //htmlentitiesjs()
+    return '<span class="icon-block">'+ obj_icon +'</span><span class="montserrat '+ ( !is_idea ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>' + ( is_public ? '' : '<span class="icon-block"><i class="far fa-spinner fa-spin"></i></span>' ); //htmlentitiesjs()
 
 }
 
