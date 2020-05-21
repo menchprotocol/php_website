@@ -766,7 +766,7 @@ function view_radio_sources($parent_source__id, $child_source__id, $enable_mulit
     $CI =& get_instance();
     $count = 0;
 
-    $ui = '<div class="list-group radio-'.$parent_source__id.'">';
+    $ui = '<div class="list-group list-radio-select radio-'.$parent_source__id.'">';
 
     if(!count($CI->config->item('sources_id_'.$parent_source__id))){
         return false;
