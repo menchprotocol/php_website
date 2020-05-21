@@ -516,7 +516,7 @@ class IDEA_model extends CI_Model
         foreach($this->READ_model->fetch(array(
             'idea__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7355' : 'sources_id_7356'))) . ')' => null,
             'read__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7359' : 'sources_id_7360'))) . ')' => null,
-            'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__right' => $idea__id,
         ), array('read__left')) as $idea_previous) {
 
