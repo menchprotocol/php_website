@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-21 07:30:36 PST
+//Generated 2020-05-21 08:23:17 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590071436;
-$config['cache_count_read'] = 1214677;
-$config['cache_count_read'] = 121271;
+$config['cache_timestamp'] = 1590074597;
+$config['cache_count_read'] = 1215264;
+$config['cache_count_read'] = 121394;
 $config['cache_count_idea'] = 5725;
 $config['cache_count_source'] = 4710;
 
@@ -2897,7 +2897,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.395',
+        'm_desc' => 'v1.396',
         'm_parents' => array(6404),
     ),
     12156 => array(
