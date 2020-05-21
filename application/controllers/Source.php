@@ -139,7 +139,7 @@ class Source extends CI_Controller
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-        ), array('source_portfolio'), 0, 0, array(), 'read__id') as $ln) {
+        ), array('read__down'), 0, 0, array(), 'read__id') as $ln) {
             $this->READ_model->update($ln['read__id'], array(
                 'read__sort' => 0,
             ), $session_source['source__id'], 13007 /* SOURCE SORT RESET */);
@@ -186,7 +186,7 @@ class Source extends CI_Controller
                 'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-            ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
+            ), array('read__down'), 0, 0, array(), 'COUNT(source__id) as totals');
 
             if (count($sources) < 1) {
 
@@ -264,7 +264,7 @@ class Source extends CI_Controller
             $show_max++;
         }
 
-        foreach($this->READ_model->fetch($filters_idea, array('source_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$source) {
+        foreach($this->READ_model->fetch($filters_idea, array('read__up'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$source) {
 
             if($count==$show_max){
 
@@ -345,7 +345,7 @@ class Source extends CI_Controller
         );
 
         //Fetch & display next batch of children:
-        $child_sources = $this->READ_model->fetch($filters, array('source_portfolio'), $items_per_page, ($page * $items_per_page), array(
+        $child_sources = $this->READ_model->fetch($filters, array('read__down'), $items_per_page, ($page * $items_per_page), array(
             'read__sort' => 'ASC',
             'source__title' => 'ASC'
         ));
@@ -355,7 +355,7 @@ class Source extends CI_Controller
         }
 
         //Count total children:
-        $child_sources_count = $this->READ_model->fetch($filters, array('source_portfolio'), 0, 0, array(), 'COUNT(read__id) as totals');
+        $child_sources_count = $this->READ_model->fetch($filters, array('read__down'), 0, 0, array(), 'COUNT(read__id) as totals');
 
         //Do we need another load more button?
         if ($child_sources_count[0]['totals'] > (($page * $items_per_page) + count($child_sources))) {
@@ -892,7 +892,7 @@ class Source extends CI_Controller
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                 'read__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
                 'read__up' => $_POST['source__id'],
-            ), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
+            ), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
 
             //Assume no merge:
             $merged_sources = array();
@@ -958,7 +958,7 @@ class Source extends CI_Controller
                     'read__down' => $_POST['source__id'],
                     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-                ), array('source_profile'), 1);
+                ), array('read__up'), 1);
 
             }
 
@@ -1138,7 +1138,7 @@ class Source extends CI_Controller
             //Fetch source link:
             $lns = $this->READ_model->fetch(array(
                 'read__id' => $_POST['read__id'],
-            ), array('source_creator'));
+            ), array('read__source'));
 
             //Prep last updated:
             $return_array['read__message'] = view_read__message($read__message, $js_read__type);
@@ -1242,7 +1242,7 @@ class Source extends CI_Controller
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->READ_model->fetch($filters, array('source_portfolio'), 0, 0) as $answer_source){
+            foreach($this->READ_model->fetch($filters, array('read__down'), 0, 0) as $answer_source){
                 array_push($possible_answers, $answer_source['source__id']);
             }
 
@@ -2086,7 +2086,7 @@ class Source extends CI_Controller
             'read__message' => $_POST['input_email'],
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__up' => 3288, //Mench Email
-        ), array('source_portfolio'));
+        ), array('read__down'));
         if(count($user_emails) < 1){
             return view_json(array(
                 'status' => 0,
@@ -2205,7 +2205,7 @@ class Source extends CI_Controller
             'read__message' => $_POST['input_email'],
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__up' => 3288, //Mench Email
-        ), array('source_portfolio'));
+        ), array('read__down'));
 
         if(count($user_emails) > 0){
 

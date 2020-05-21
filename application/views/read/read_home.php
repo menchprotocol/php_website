@@ -7,7 +7,7 @@ $player_reads = $this->READ_model->fetch(array(
     'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
     'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-), array('idea_previous'), 0, 0, array('read__sort' => 'ASC'));
+), array('read__left'), 0, 0, array('read__sort' => 'ASC'));
 ?>
 
 <style>

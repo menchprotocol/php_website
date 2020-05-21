@@ -7,7 +7,7 @@
         'read__type' => 12896, //SAVED
         'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-    ), array('idea_next'), 0, 0, array('read__id' => 'DESC'));
+    ), array('read__right'), 0, 0, array('read__id' => 'DESC'));
 
     if(!count($player_saved)){
 

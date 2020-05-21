@@ -14,7 +14,7 @@ if(!isset($_GET['idea__id']) || !intval($_GET['idea__id'])) {
         'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-    ), array('idea_previous'), 0, 0, array('read__sort' => 'ASC'));
+    ), array('read__left'), 0, 0, array('read__sort' => 'ASC'));
 
     foreach($player_reads as $priority => $ln) {
         echo '<div>' . ($priority + 1) . ') <a href="?idea__id=' . $ln['idea__id'] . '&source__id=' . $_GET['source__id'] . '">' . view_idea__title($ln) . '</a></div>';

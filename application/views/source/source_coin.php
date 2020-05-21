@@ -352,7 +352,7 @@ $is_source = source_is_idea_source($source['source__id']);
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
                 'read__down' => $source['source__id'],
-            ), array('source_profile'), 0, 0, array('source__weight' => 'DESC'));
+            ), array('read__up'), 0, 0, array('source__weight' => 'DESC'));
 
             $counter = count($source__profiles);
             if(!$counter && !$superpower_10967){
@@ -384,7 +384,7 @@ $is_source = source_is_idea_source($source['source__id']);
                 'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-            ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
+            ), array('read__down'), 0, 0, array(), 'COUNT(source__id) as totals');
             $counter = $source__portfolio_count[0]['totals'];
             $source__portfolios = array(); //Fetch some
 
@@ -408,7 +408,7 @@ $is_source = source_is_idea_source($source['source__id']);
                     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
                     'read__up' => $source['source__id'],
-                ), array('source_portfolio'), config_var(11064), 0, $order_columns);
+                ), array('read__down'), config_var(11064), 0, $order_columns);
 
             }
 
@@ -565,7 +565,7 @@ $is_source = source_is_idea_source($source['source__id']);
                         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                         'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-                    ), array('source_portfolio'), 0, 0, array('source__status' => 'ASC'), 'COUNT(source__id) as totals, source__status', 'source__status');
+                    ), array('read__down'), 0, 0, array('source__status' => 'ASC'), 'COUNT(source__id) as totals, source__status', 'source__status');
 
                     //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
                     if (count($child_source_filters) > 0 && $child_source_filters[0]['totals'] < $source_count) {
@@ -631,14 +631,14 @@ $is_source = source_is_idea_source($source['source__id']);
             );
 
             //COUNT ONLY
-            $item_counters = $this->READ_model->fetch($idea_notes_filters, array('idea_next'), 0, 0, array(), 'COUNT(idea__id) as totals');
+            $item_counters = $this->READ_model->fetch($idea_notes_filters, array('read__right'), 0, 0, array(), 'COUNT(idea__id) as totals');
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
             if($has_superpower){
                 if($counter>0){
 
-                    $idea_notes_query = $this->READ_model->fetch($idea_notes_filters, array('idea_next'), config_var(11064), 0, array('idea__weight' => 'DESC'));
+                    $idea_notes_query = $this->READ_model->fetch($idea_notes_filters, array('read__right'), config_var(11064), 0, array('idea__weight' => 'DESC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($idea_notes_query as $count => $idea_notes) {
                         $this_tab .= view_idea($idea_notes, 0, false, false, $idea_notes['read__message'], null, false);
@@ -660,12 +660,12 @@ $is_source = source_is_idea_source($source['source__id']);
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             );
-            $player_reads = $this->READ_model->fetch($idea_reads_filters, array('idea_previous'), 1, 0, array(), 'COUNT(read__id) as totals');
+            $player_reads = $this->READ_model->fetch($idea_reads_filters, array('read__left'), 1, 0, array(), 'COUNT(read__id) as totals');
             $counter = $player_reads[0]['totals'];
 
             if($has_superpower){
                 if($counter > 0){
-                    $idea_reads_query = $this->READ_model->fetch($idea_reads_filters, array('idea_previous'), config_var(11064), 0, array('read__sort' => 'ASC'));
+                    $idea_reads_query = $this->READ_model->fetch($idea_reads_filters, array('read__left'), config_var(11064), 0, array('read__sort' => 'ASC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($idea_reads_query as $count => $idea_notes) {
                         $this_tab .= view_idea($idea_notes);

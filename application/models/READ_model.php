@@ -138,7 +138,11 @@ class READ_model extends CI_Model
                 'idea__id' => $add_fields['read__left'],
             ));
 
+            $log = '';
+
             if(in_array($ideas[0]['idea__type'], $this->config->item('sources_id_7712'))){
+
+                $log .= '1';
 
                 //IDEA TYPE SELECT NEXT
                 $ideas_next_autoscan = $this->READ_model->fetch(array(
@@ -149,10 +153,11 @@ class READ_model extends CI_Model
                     'read__right>' => 0, //With an answer
                     'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                     'idea__type IN (' . join(',', $this->config->item('sources_id_12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
-                ), array('idea_next'), 0);
+                ), array('read__right'), 0);
 
             } elseif(in_array($ideas[0]['idea__type'], $this->config->item('sources_id_13022'))){
 
+                $log .= '2';
                 //IDEA TYPE ALL NEXT
                 $ideas_next_autoscan = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -160,11 +165,26 @@ class READ_model extends CI_Model
                     'read__left' => $ideas[0]['idea__id'],
                     'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                     'idea__type IN (' . join(',', $this->config->item('sources_id_12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
-                ), array('idea_next'), 0);
+                ), array('read__right'), 0);
 
             }
 
             foreach($ideas_next_autoscan as $idea_next){
+
+                $log .= ' ['.$idea_next['idea__id'].' - '.count($this->READ_model->fetch(array(
+                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                        'read__type' => 4231, //IDEA NOTES Messages
+                        'read__right' => $idea_next['idea__id'],
+                    ))).' - '.count($this->READ_model->fetch(array(
+                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                        'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                        'read__left' => $idea_next['idea__id'],
+                    ))).' - '.count($this->READ_model->fetch(array(
+                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                        'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
+                        'read__source' => $add_fields['read__source'],
+                        'read__left' => $idea_next['idea__id'],
+                    ))).']';
                 //IS IT EMPTY?
                 if(
                     //No Messages
@@ -200,6 +220,7 @@ class READ_model extends CI_Model
             }
 
 
+            die($log);
 
 
             //SOURCE APPEND?
@@ -330,7 +351,7 @@ class READ_model extends CI_Model
                     'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                     'read__up' => 3288, //Mench Email
                     'read__down' => $subscriber_source__id,
-                ), array('source_portfolio')) as $source_email){
+                ), array('read__down')) as $source_email){
                     if(filter_var($source_email['read__message'], FILTER_VALIDATE_EMAIL)){
                         //All good, add to list:
                         array_push($sub_source__ids , $source_email['source__id']);
@@ -436,21 +457,21 @@ class READ_model extends CI_Model
         $this->db->select($select);
         $this->db->from('mench_read');
 
-        //Any Idea joins?
-        if (in_array('idea_previous', $join_objects)) {
+        //IDA JOIN?
+        if (in_array('read__left', $join_objects)) {
             $this->db->join('mench_idea', 'read__left=idea__id','left');
-        } elseif (in_array('idea_next', $join_objects)) {
+        } elseif (in_array('read__right', $join_objects)) {
             $this->db->join('mench_idea', 'read__right=idea__id','left');
         }
 
-        //Any source joins?
-        if (in_array('source_profile', $join_objects)) {
+        //SOURCE JOIN?
+        if (in_array('read__up', $join_objects)) {
             $this->db->join('mench_source', 'read__up=source__id','left');
-        } elseif (in_array('source_portfolio', $join_objects)) {
+        } elseif (in_array('read__down', $join_objects)) {
             $this->db->join('mench_source', 'read__down=source__id','left');
-        } elseif (in_array('source_type', $join_objects)) {
+        } elseif (in_array('read__type', $join_objects)) {
             $this->db->join('mench_source', 'read__type=source__id','left');
-        } elseif (in_array('source_creator', $join_objects)) {
+        } elseif (in_array('read__source', $join_objects)) {
             $this->db->join('mench_source', 'read__source=source__id','left');
         }
 
@@ -959,7 +980,7 @@ class READ_model extends CI_Model
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'read__down' => $string_references['ref_sources'][0],
-                ), array('source_profile'), 0, 0, array('source__id' => 'ASC' /* Hack to get Text first */)) as $source_profile) {
+                ), array('read__up'), 0, 0, array('source__id' => 'ASC' /* Hack to get Text first */)) as $source_profile) {
 
                     $message_any++;
 
@@ -1059,7 +1080,7 @@ class READ_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7359' : 'sources_id_7360'))) . ')' => null,
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__right' => $idea__id,
-        ), array('idea_previous'), 0, 0, array(), 'idea__id') as $idea_previous) {
+        ), array('read__left'), 0, 0, array(), 'idea__id') as $idea_previous) {
 
             $recursive_parents = $this->READ_model->find_previous(0, $idea_previous['idea__id']);
 
@@ -1138,7 +1159,7 @@ class READ_model extends CI_Model
                     'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'read__left' => $common_read_idea__id,
-                ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $ln){
+                ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $ln){
 
                     //See if this answer was selected:
                     if(count($this->READ_model->fetch(array(
@@ -1187,7 +1208,7 @@ class READ_model extends CI_Model
                     'read__left' => $common_read_idea__id,
                     'read__right IN (' . join(',', $idea__metadata['idea___expansion_conditional'][$common_read_idea__id]) . ')' => null,
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                ), array('idea_next')) as $unlocked_condition){
+                ), array('read__right')) as $unlocked_condition){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
                     $found_idea__id = $this->READ_model->find_next($source__id, $unlocked_condition, false);
@@ -1238,7 +1259,7 @@ class READ_model extends CI_Model
             'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        ), array('idea_previous'), 0, 0, array('read__sort' => 'ASC'));
+        ), array('read__left'), 0, 0, array('read__sort' => 'ASC'));
 
         if(!count($player_reads)){
             return 0;
@@ -1456,7 +1477,7 @@ class READ_model extends CI_Model
                 'read__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
                 'read__left' => $idea['idea__id'],
                 'read__right IN (' . join(',', $idea__metadata['idea___expansion_conditional'][$idea['idea__id']]) . ')' => null, //Limit to cached answers
-            ), array('idea_next'), 0, 0);
+            ), array('read__right'), 0, 0);
 
 
             foreach($locked_links as $locked_link) {
@@ -1590,7 +1611,7 @@ class READ_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__left' => $idea['idea__id'],
-        ), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
+        ), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
         if(count($ideas_next) < 1){
             return array(
                 'status' => 0,
@@ -1762,7 +1783,7 @@ class READ_model extends CI_Model
                     'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'read__left' => $question_idea__id,
                     'read__right IN (' . join(',', $answers_idea__ids) . ')' => null, //Limit to cached answers
-                ), array('idea_next')) as $idea_answer){
+                ), array('read__right')) as $idea_answer){
 
                     //Extract Link Metadata:
                     $possible_answer_metadata = unserialize($idea_answer['read__metadata']);
@@ -1808,7 +1829,7 @@ class READ_model extends CI_Model
                 'read__left IN (' . join(',', $question_idea__ids ) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            ), array('idea_next'), 500) as $answer_in) {
+            ), array('read__right'), 500) as $answer_in) {
 
                 //Fetch recursively:
                 $recursive_stats = $this->READ_model->completion_marks($source__id, $answer_in, false);
@@ -1844,7 +1865,7 @@ class READ_model extends CI_Model
                     'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'read__left' => $question_idea__id,
                     'read__right IN (' . join(',', $answers_idea__ids) . ')' => null, //Limit to cached answers
-                ), array('idea_next')) as $idea_answer){
+                ), array('read__right')) as $idea_answer){
 
                     //Extract Link Metadata:
                     $possible_answer_metadata = unserialize($idea_answer['read__metadata']);
@@ -1888,7 +1909,7 @@ class READ_model extends CI_Model
                 'read__left IN (' . join(',', $question_idea__ids ) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            ), array('idea_next'), 500) as $answer_in) {
+            ), array('read__right'), 500) as $answer_in) {
 
                 //Fetch recursively:
                 $recursive_stats = $this->READ_model->completion_marks($source__id, $answer_in, false);
@@ -1956,7 +1977,7 @@ class READ_model extends CI_Model
             'read__left IN (' . join(',', $flat_common_reads ) . ')' => null,
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        ), array('idea_previous'), 0, 0, array(), 'COUNT(idea__id) as completed_reads, SUM(idea__duration) as completed_seconds');
+        ), array('read__left'), 0, 0, array(), 'COUNT(idea__id) as completed_reads, SUM(idea__duration) as completed_seconds');
 
 
         //Calculate common steps and expansion steps recursively for this user:
@@ -1987,7 +2008,7 @@ class READ_model extends CI_Model
                 'read__right IN (' . join(',', $answer_array) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            ), array('idea_next')) as $expansion_in) {
+            ), array('read__right')) as $expansion_in) {
 
                 //Fetch recursive:
                 $recursive_stats = $this->READ_model->completion_progress($source__id, $expansion_in, false);
@@ -2012,7 +2033,7 @@ class READ_model extends CI_Model
                 'read__right IN (' . join(',', array_flatten($idea__metadata['idea___expansion_conditional'])) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            ), array('idea_next')) as $expansion_in) {
+            ), array('read__right')) as $expansion_in) {
 
                 //Fetch recursive:
                 $recursive_stats = $this->READ_model->completion_progress($source__id, $expansion_in, false);
@@ -2075,7 +2096,7 @@ class READ_model extends CI_Model
             'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        ), array('idea_previous'), 0) as $user_in){
+        ), array('read__left'), 0) as $user_in){
             array_push($player_read_ids, intval($user_in['idea__id']));
         }
         return $player_read_ids;

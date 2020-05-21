@@ -43,7 +43,7 @@ $ideas_next = $this->READ_model->fetch(array(
     'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'read__left' => $idea_focus['idea__id'],
-), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
+), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
 
 $chapters = count($ideas_next);
 $common_prefix = idea_calc_common_prefix($ideas_next, 'idea__title');
@@ -78,7 +78,7 @@ if ($read_idea_home) {
             'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
             'read__right' => $idea_focus['idea__id'],
             'read__source' => $recipient_source['source__id'],
-        ), array('idea_previous'), 1);
+        ), array('read__left'), 1);
 
         if(count($unlocked_connections) > 0){
 
@@ -257,7 +257,7 @@ if(!$read_idea_home){
         'read__type' => 6140, //READ UNLOCK LINK
         'read__source' => $recipient_source['source__id'],
         'read__left' => $idea_focus['idea__id'],
-    ), array('idea_next'), 0);
+    ), array('read__right'), 0);
 
     //Did we have any steps unlocked?
     if(count($unlocked_reads) > 0){
@@ -328,7 +328,7 @@ if(!$read_idea_home){
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'read__left' => $idea_focus['idea__id'],
-            ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $ln){
+            ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $ln){
                 //See if this answer was seleted:
                 if(count($this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC

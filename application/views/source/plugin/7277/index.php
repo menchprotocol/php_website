@@ -19,7 +19,7 @@ foreach($this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
     'LENGTH(read__message) > 0' => null,
-), array('source_portfolio'), 0) as $var_name){
+), array('read__down'), 0) as $var_name){
     array_push($valid_variables, $var_name['read__message']);
 }
 

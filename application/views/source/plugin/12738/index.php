@@ -14,7 +14,7 @@ if(isset($_GET['update_user_icons'])){
     }
 
     $updated = 0;
-    foreach($this->READ_model->fetch($base_filters, array('source_portfolio'), 0) as $mench_user){
+    foreach($this->READ_model->fetch($base_filters, array('read__down'), 0) as $mench_user){
         $updated += $this->SOURCE_model->update($mench_user['source__id'], array(
             'source__icon' => random_avatar(),
         ));

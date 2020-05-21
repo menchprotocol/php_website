@@ -28,7 +28,7 @@ echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan=
 foreach($this->READ_model->fetch(array(
     'read__type IN (' . join(',', $this->config->item('sources_id_12141')) . ')' => null, //Full
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-), array('source_type'), 0, 0, array('total_reads' => 'DESC'), 'COUNT(read__id) as total_reads, source__title, source__icon, source__id, read__type', 'source__id, source__title, source__icon, read__type') as $ln) {
+), array('read__type'), 0, 0, array('total_reads' => 'DESC'), 'COUNT(read__id) as total_reads, source__title, source__icon, source__id, read__type', 'source__id, source__title, source__icon, read__type') as $ln) {
 
     //Determine which weight group this belongs to:
     $direction = filter_cache_group($ln['source__id'], 2738);

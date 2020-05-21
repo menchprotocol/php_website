@@ -46,7 +46,7 @@ class SOURCE_model extends CI_Model
             'read__down' => $source['source__id'], //This child source
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-        ), array('source_profile')) as $source_profile){
+        ), array('read__up')) as $source_profile){
 
             //Push to parent IDs:
             array_push($session_data['session_parent_ids'], intval($source_profile['source__id']));
@@ -350,7 +350,7 @@ class SOURCE_model extends CI_Model
                         'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                         'read__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
                         'read__up' => $source__id,
-                    ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')),
+                    ), array('read__right'), 0, 0, array('read__sort' => 'ASC')),
                     //Player links:
                     $this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -457,7 +457,7 @@ class SOURCE_model extends CI_Model
             'read__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
             'read__up' => 1326, //Domain Player
             'read__message' => $url_analysis['url_clean_domain'],
-        ), array('source_portfolio'));
+        ), array('read__down'));
 
 
         //Do we need to create an source for this domain?
@@ -565,7 +565,7 @@ class SOURCE_model extends CI_Model
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')).')' => null, //SOURCE LINKS
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-        ), array('source_profile'), 0) as $source__profile){
+        ), array('read__up'), 0) as $source__profile){
 
             if(in_array($source__profile['source__id'], $this->config->item('sources_id_3000'))){
                 //CONTENT CHANNELS
@@ -745,7 +745,7 @@ class SOURCE_model extends CI_Model
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'read__type IN (' . join(',', $this->config->item('sources_id_4537')) . ')' => null, //Player URL Links
                 'read__message' => $url,
-            ), array('source_portfolio'));
+            ), array('read__down'));
 
 
             //Do we need to create an source for this URL?
@@ -902,7 +902,7 @@ class SOURCE_model extends CI_Model
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-        ), array('source_portfolio'), 0);
+        ), array('read__down'), 0);
 
 
         //Process request:
@@ -1084,7 +1084,7 @@ class SOURCE_model extends CI_Model
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'source__status IN (' . join(',', $source_statuses) . ')' => null,
-        ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
+        ), array('read__down'), 0, 0, array(), 'COUNT(source__id) as totals');
 
         if (count($source__portfolio_count) > 0) {
             $source__portfolio_count = intval($source__portfolio_count[0]['totals']);

@@ -55,7 +55,7 @@ foreach($this->IDEA_model->fetch($filters) as $in){
         'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'read__left' => $in['idea__id'],
-    ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $ideas_next){
+    ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $ideas_next){
         $this_time = words_to_seconds($ideas_next['idea__title']);
         $estimated_time += $this_time;
         if($idea__id){
@@ -91,7 +91,7 @@ foreach($this->IDEA_model->fetch($filters) as $in){
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                 'read__down' => $message['read__up'],
-            ), array('source_profile'), 0, 0, array('source__id' => 'ASC' /* Hack to get Text first */)) as $source_profile) {
+            ), array('read__up'), 0, 0, array('source__id' => 'ASC' /* Hack to get Text first */)) as $source_profile) {
 
                 if($source_profile['read__type'] == 4257 /* EMBED */){
 

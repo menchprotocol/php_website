@@ -18,7 +18,7 @@ foreach($this->READ_model->fetch(array(
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     'read__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
     'LENGTH(read__metadata) > 0' => null,
-), array('idea_next'), 0, 0) as $idea_read) {
+), array('read__right'), 0, 0) as $idea_read) {
     //Echo HTML format of this message:
     $metadata = unserialize($idea_read['read__metadata']);
     $mark = view_idea_marks($idea_read);
@@ -52,7 +52,7 @@ foreach($this->READ_model->fetch(array(
                 'idea__type NOT IN (6907,6914)' => null, //NOT AND/OR Lock
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                 'read__right' => $idea_read['idea__id'],
-            ), array('idea_previous'))) > 1 || $idea_read['idea__type'] != 6677){
+            ), array('read__left'))) > 1 || $idea_read['idea__type'] != 6677){
 
             echo '<div>';
             echo 'NOT COOL';
@@ -98,7 +98,7 @@ if(1){
         'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'LENGTH(read__metadata) > 0' => null,
-    ), array('idea_next'), 0, 0) as $idea_read) {
+    ), array('read__right'), 0, 0) as $idea_read) {
         //Echo HTML format of this message:
         $metadata = unserialize($idea_read['read__metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );

@@ -18,7 +18,7 @@ foreach($this->IDEA_model->fetch(array(
         'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'read__left' => $in['idea__id'],
-    ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $child_or){
+    ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $child_or){
 
         $user_reads = $this->READ_model->fetch(array(
             'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN

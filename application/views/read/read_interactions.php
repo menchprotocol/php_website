@@ -14,7 +14,7 @@ $parent_tr_filter = ( isset($_GET['read__reference']) && $_GET['read__reference'
 if(isset($_GET['idea__status']) && strlen($_GET['idea__status']) > 0){
     if(isset($_GET['read__type']) && $_GET['read__type']==4250){ //IDEA created
         //Filter idea status based on
-        $joined_by = array('idea_next');
+        $joined_by = array('read__right');
 
         if (substr_count($_GET['idea__status'], ',') > 0) {
             //This is multiple:
@@ -32,7 +32,7 @@ if(isset($_GET['idea__status']) && strlen($_GET['idea__status']) > 0){
 if(isset($_GET['idea__type']) && strlen($_GET['idea__type']) > 0){
     if(isset($_GET['read__type']) && $_GET['read__type']==4250){ //IDEA created
         //Filter idea status based on
-        $joined_by = array('idea_next');
+        $joined_by = array('read__right');
         if (substr_count($_GET['idea__type'], ',') > 0) {
             //This is multiple:
             $filters['( idea__type IN (' . $_GET['idea__type'] . '))'] = null;
@@ -48,7 +48,7 @@ if(isset($_GET['source__status']) && strlen($_GET['source__status']) > 0){
     if(isset($_GET['read__type']) && $_GET['read__type']==4251){ //SOURCE Created
 
         //Filter idea status based on
-        $joined_by = array('source_portfolio');
+        $joined_by = array('read__down');
 
         if (substr_count($_GET['source__status'], ',') > 0) {
             //This is multiple:
@@ -358,7 +358,7 @@ echo '</div></td>';
             //Fetch details for this user:
             $all_link_count = 0;
             $select_ui = '';
-            foreach($this->READ_model->fetch($ini_filter, array('source_type'), 0, 0, array('source__title' => 'ASC'), 'COUNT(read__type) as total_count, source__title, read__type', 'read__type, source__title') as $ln) {
+            foreach($this->READ_model->fetch($ini_filter, array('read__type'), 0, 0, array('source__title' => 'ASC'), 'COUNT(read__type) as total_count, source__title, read__type', 'read__type, source__title') as $ln) {
                 //Echo drop down:
                 $select_ui .= '<option value="' . $ln['read__type'] . '" ' . ((isset($_GET['read__type']) && $_GET['read__type'] == $ln['read__type']) ? 'selected="selected"' : '') . '>' . $ln['source__title'] . ' ('  . number_format($ln['total_count'], 0) . ')</option>';
                 $all_link_count += $ln['total_count'];

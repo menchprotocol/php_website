@@ -485,7 +485,7 @@ class IDEA_model extends CI_Model
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-            ), array(($is_parent ? 'idea_previous' : 'idea_next')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
+            ), array(($is_parent ? 'read__left' : 'read__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
             $next_idea_html = view_idea($new_ideas[0], $link_to_idea__id, $is_parent, true /* Since they added it! */);
@@ -518,7 +518,7 @@ class IDEA_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7359' : 'sources_id_7360'))) . ')' => null,
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__right' => $idea__id,
-        ), array('idea_previous')) as $idea_previous) {
+        ), array('read__left')) as $idea_previous) {
 
             //Prep ID:
             $p_id = intval($idea_previous['idea__id']);
@@ -581,7 +581,7 @@ class IDEA_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__left' => $idea__id,
-        ), array('idea_next')) as $next_idea){
+        ), array('read__right')) as $next_idea){
 
             array_push($child_ids, intval($next_idea['idea__id']));
 
@@ -625,7 +625,7 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__left' => $focus_in['idea__id'],
-        ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $next_idea){
+        ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $next_idea){
 
             //Determine action based on parent idea type:
             if(in_array($next_idea['read__type'], $this->config->item('sources_id_12842'))){
@@ -755,7 +755,7 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__left' => $idea__id,
-        ), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
+        ), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
 
 
         //Process request:
@@ -847,7 +847,7 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__left' => $idea__id,
-        ), array('idea_next'), 0, 0, array(), 'idea__id, idea__weight') as $idea_next){
+        ), array('read__right'), 0, 0, array(), 'idea__id, idea__weight') as $idea_next){
             $total_child_weights += $idea_next['idea__weight'] + $this->IDEA_model->weight($idea_next['idea__id']);
         }
 
@@ -891,7 +891,7 @@ class IDEA_model extends CI_Model
             'read__type IN (' . join(',', $this->config->item('sources_id_12273')).')' => null, //IDEA COIN
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-        ), array('source_profile'), 0) as $source) {
+        ), array('read__up'), 0) as $source) {
 
             $source_metadat_experts = $this->SOURCE_model->metadat_experts($source);
 
@@ -924,7 +924,7 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__left' => $idea['idea__id'],
-        ), array('idea_next'), 0) as $ideas_next){
+        ), array('read__right'), 0) as $ideas_next){
 
             //RECURSION
             $metadata_recursion = $this->IDEA_model->metadata_extra_insights($ideas_next);
@@ -1055,7 +1055,7 @@ class IDEA_model extends CI_Model
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__right' => $idea['idea__id'],
             'idea__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
-        ), array('idea_previous'), 0) as $idea_or_parent){
+        ), array('read__left'), 0) as $idea_or_parent){
             if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $idea_or_parent['idea__id'])) {
                 array_push($child_unlock_paths, $idea_or_parent);
             }
@@ -1068,7 +1068,7 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
             'read__right' => $idea['idea__id'],
-        ), array('idea_previous'), 0) as $idea_locked_parent){
+        ), array('read__left'), 0) as $idea_locked_parent){
             if(idea_is_unlockable($idea_locked_parent)){
                 //Need to check recursively:
                 foreach($this->IDEA_model->unlock_paths($idea_locked_parent) as $locked_path){
@@ -1095,7 +1095,7 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__left' => $idea['idea__id'],
-        ), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
+        ), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
         if(count($ideas_next) < 1){
             //No children, no path:
             return array();

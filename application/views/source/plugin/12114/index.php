@@ -106,7 +106,7 @@ if($is_player_request){
 
 $email_recipients = 0;
 //Send email to all subscribers:
-foreach($this->READ_model->fetch($subscriber_filters, array('source_portfolio')) as $subscribed_player){
+foreach($this->READ_model->fetch($subscriber_filters, array('read__down')) as $subscribed_player){
     //Try fetching subscribers email:
     foreach($this->READ_model->fetch(array(
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC

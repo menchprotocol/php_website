@@ -53,7 +53,7 @@ foreach($ideas as $in){
         'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
         'read__left' => $in['idea__id'],
-    ), array('idea_next'), 0, 0) as $next_idea){
+    ), array('read__right'), 0, 0) as $next_idea){
 
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[4535].$next_idea['read__left'],
@@ -89,7 +89,7 @@ foreach($sources as $en){
         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
         'read__up' => $en['source__id'],
-    ), array('source_portfolio'), 0, 0) as $source_child){
+    ), array('read__down'), 0, 0) as $source_child){
 
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[4536].$source_child['read__up'],
@@ -108,7 +108,7 @@ $messages = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     'read__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
-), array('idea_next'), 0, 0);
+), array('read__right'), 0, 0);
 foreach($messages as $message) {
 
     //Add message node:

@@ -8,7 +8,7 @@ $cron_jobs = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
     'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
     'read__up' => 7274,
-), array('source_portfolio'), config_var(11064), 0, array('read__message' => 'ASC'));
+), array('read__down'), config_var(11064), 0, array('read__message' => 'ASC'));
 foreach($cron_jobs as $cron_job){
     if(strlen($cron_job['read__message']) > $longest_time){
         $longest_time = strlen($cron_job['read__message']);

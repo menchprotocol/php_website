@@ -17,7 +17,7 @@ foreach($this->config->item('sources__12523') as $source__id => $m) {
         'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         '(LENGTH(source__icon) < 1 OR source__icon IS NULL)' => null, //Missing Icon
-    ), array('source_portfolio'), 0) as $en) {
+    ), array('read__down'), 0) as $en) {
         $updated++;
         $this->SOURCE_model->update($en['source__id'], array(
             'source__icon' => $m['m_icon'],
@@ -40,7 +40,7 @@ foreach($this->config->item('sources__12968') as $source__id => $m) {
         'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         'source__icon !=' => $m['m_icon'], //Different Icon
-    ), array('source_portfolio'), 0) as $en) {
+    ), array('read__down'), 0) as $en) {
         $updated++;
         $this->SOURCE_model->update($en['source__id'], array(
             'source__icon' => $m['m_icon'],

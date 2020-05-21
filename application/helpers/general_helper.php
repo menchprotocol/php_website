@@ -662,7 +662,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
     //We need to count this:
     if($read__type==12273){
 
-        $join_objects = array('source_profile');
+        $join_objects = array('read__up');
         $match_columns = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
@@ -671,7 +671,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
 
     } elseif($read__type==6255){
 
-        $join_objects = array('source_creator');
+        $join_objects = array('read__source');
         $match_columns = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
@@ -730,7 +730,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
     if($read__type==12274){
 
         $order_columns = array('source__weight' => 'DESC'); //BEST SOURCES
-        $join_objects = array('source_portfolio');
+        $join_objects = array('read__down');
         $match_columns = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
@@ -740,7 +740,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
     } elseif($read__type==12273){
 
         $order_columns = array('idea__weight' => 'DESC'); //BEST IDEAS
-        $join_objects = array('idea_next');
+        $join_objects = array('read__right');
         $match_columns = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
@@ -750,7 +750,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
     } elseif($read__type==6255){
 
         $order_columns = array('read__id' => 'DESC'); //LATEST READS
-        $join_objects = array('idea_previous');
+        $join_objects = array('read__left');
         $match_columns = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
@@ -1456,7 +1456,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $limits['read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->READ_model->fetch($limits, array('idea_next'), 0);
+            $db_rows[$loop_obj] = $CI->READ_model->fetch($limits, array('read__right'), 0);
 
         } elseif ($loop_obj == 4536) {
 
@@ -1471,7 +1471,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $limits['read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->READ_model->fetch($limits, array('source_portfolio'), 0);
+            $db_rows[$loop_obj] = $CI->READ_model->fetch($limits, array('read__down'), 0);
 
         }
 
@@ -1554,7 +1554,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     'read__down' => $db_row['source__id'], //This child source
                     'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'source__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-                ), array('source_profile'), 0, 0, array('source__weight' => 'DESC')) as $ln) {
+                ), array('read__up'), 0, 0, array('source__weight' => 'DESC')) as $ln) {
 
                     //Always add to tags:
                     array_push($export_row['_tags'], 'alg_source_' . $ln['source__id']);

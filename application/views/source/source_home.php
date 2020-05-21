@@ -13,7 +13,7 @@
             'read__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
             'read__source' => $session_source['source__id'],
             'source__id' => $session_source['source__id'],
-        ), array('source_portfolio')) as $my_source){
+        ), array('read__down')) as $my_source){
             echo view_source($my_source);
         }
         echo '</div>';

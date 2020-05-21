@@ -712,7 +712,7 @@ function view_idea_scores_answer($idea__id, $depth_levels, $original_depth_level
         'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
         'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         'idea__status IN (' . join(',', $CI->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-    ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $idea_read){
+    ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $idea_read){
 
         //Prep Metadata:
         $metadata = unserialize($idea_read['read__metadata']);
@@ -1425,7 +1425,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
         'read__down' => $source['source__id'], //This child source
         'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         'source__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-    ), array('source_profile'), 0, 0, array('source__weight' => 'DESC'));
+    ), array('read__up'), 0, 0, array('source__weight' => 'DESC'));
 
     $is_public = in_array($source['source__status'], $CI->config->item('sources_id_7357'));
     $is_link_published = ( !$read__id || in_array($source['read__status'], $CI->config->item('sources_id_7359')));
@@ -1474,7 +1474,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
             'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'source__status IN (' . join(',', $CI->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-        ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
+        ), array('read__down'), 0, 0, array(), 'COUNT(source__id) as totals');
         if($source__portfolio_count[0]['totals'] > 0){
             $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($source__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($source__portfolio_count[0]['totals']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';

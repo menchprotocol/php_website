@@ -13,7 +13,7 @@ $config_sources = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
     'read__up' => 4527,
-), array('source_portfolio'), 0);
+), array('read__down'), 0);
 
 echo htmlentities('<?php').'<br /><br />';
 echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br /><br />';
@@ -65,7 +65,7 @@ foreach($config_sources as $en){
         'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
         'read__up' => $en['read__down'],
         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-    ), array('source_portfolio'), 0, 0, array('read__sort' => 'ASC', 'source__title' => 'ASC'));
+    ), array('read__down'), 0, 0, array('read__sort' => 'ASC', 'source__title' => 'ASC'));
 
 
     //Find common base, if allowed:
@@ -94,7 +94,7 @@ foreach($config_sources as $en){
             'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
             'read__down' => $child['source__id'],
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-        ), array('source_profile'), 0);
+        ), array('read__up'), 0);
         foreach($child_parents as $cp_en){
             array_push($child_parent_ids, intval($cp_en['source__id']));
         }

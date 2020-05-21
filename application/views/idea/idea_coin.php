@@ -37,7 +37,7 @@ $ideas_previous = $this->READ_model->fetch(array(
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
     'read__right' => $idea_focus['idea__id'],
-), array('idea_previous'), 0);
+), array('read__left'), 0);
 
 echo '<div id="list-in-' . $idea_focus['idea__id'] . '-1" class="list-group previous_ideas">';
 foreach($ideas_previous as $previous_idea) {
@@ -126,7 +126,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
             'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__left' => $idea_focus['idea__id'],
-        ), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
+        ), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
 
 
         //CHILD IDEAS
@@ -160,7 +160,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type' => $read__type,
             'read__right' => $idea_focus['idea__id'],
-        ), array('source_profile'), 0, 0, array('read__sort' => 'ASC'));
+        ), array('read__up'), 0, 0, array('read__sort' => 'ASC'));
 
         $counter = count($idea_notes);
 

@@ -11,7 +11,7 @@
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type' => 10573, //IDEA NOTES Bookmarks
         'read__up' => $session_source['source__id'], //For this player
-    ), array('idea_next'), 0, 0, array('idea__weight' => 'DESC')) as $idea){
+    ), array('read__right'), 0, 0, array('idea__weight' => 'DESC')) as $idea){
         echo view_idea($idea, 0, false, true);
     }
 

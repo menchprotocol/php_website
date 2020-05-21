@@ -555,7 +555,7 @@ class Read extends CI_Controller
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                 'read__left' => $previous_level_id,
-            ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $idea_next){
+            ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $idea_next){
                 if($idea_next['idea__id']==$idea__id){
                     break;
                 } else {
