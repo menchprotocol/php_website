@@ -620,6 +620,44 @@ $is_source = source_is_idea_source($source['source__id']);
                 $this_tab = read_coins_source($read__type, $source['source__id'], 1);
             }
 
+        } elseif($read__type==13046){
+
+            //Fetch Ideas First:
+            $counter = 0; //Unless we find some:
+            $idea__ids = array();
+            foreach($CI->READ_model->fetch(array(
+                'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                'read__up' => $source['source__id'],
+            ), array(), config_var(11064), 0, array('idea__weight' => 'DESC'), 'read__right') as $item) {
+                array_push($idea__ids, $item['read__right']);
+            }
+
+            //Also Show Related Sources:
+            if(count($idea__ids) > 0){
+
+                $already_included = array($source['source__id']);
+                foreach ($CI->READ_model->fetch(array(
+                    'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                    'read__right IN (' . join(',', $idea__ids) . ')' => null,
+                    'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                ), array('read__up'), 0, 0, array('source__weight' => 'DESC')) as $related_source){
+                    if(in_array($related_source['source__id'], $already_included)){
+                        continue;
+                    }
+                    $counter++;
+                    array_push($already_included, $related_source['source__id']);
+                    $this_tab .= view_source($related_source);
+                }
+
+                if($counter > 0){
+                    //Wrap list:
+                    $this_tab = '<div class="list-group">' . $this_tab . '</div>';
+                }
+
+            }
+
         } elseif(in_array($read__type, $this->config->item('sources_id_4485'))){
 
             //IDEA NOTES
