@@ -1351,14 +1351,13 @@ function objectToArray($object)
 }
 
 function sources_currently_sorted($source__id){
-    $source__portfolio_sort_count = $this->READ_model->fetch(array(
+    $CI =& get_instance();
+    return count( $CI->READ_model->fetch(array(
         'read__sort >' => 0, //Sorted
         'read__up' => $source__id,
-        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-    ), array('source_portfolio'), 0, 0, array(), 'COUNT(source__id) as totals');
-    return ( $source__portfolio_sort_count[0]['totals'] > 0 );
+        'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+    ), array(), 1) );
 }
 
 function update_algolia($object__type = null, $object__id = 0, $return_row_only = false)
