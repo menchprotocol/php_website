@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-21 09:35:09 PST
+//Generated 2020-05-21 09:40:03 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590078909;
-$config['cache_count_read'] = 1215371;
+$config['cache_timestamp'] = 1590079203;
+$config['cache_count_read'] = 1215383;
 $config['cache_count_read'] = 121396;
 $config['cache_count_idea'] = 5724;
 $config['cache_count_source'] = 4710;
@@ -1008,7 +1008,7 @@ $config['sources__12575'] = array(
 );
 
 //SOURCE LAYOUT OPEN BY DEFAULT:
-$config['sources_id_12571'] = array(12273,11029,11030);
+$config['sources_id_12571'] = array(12273,11029,11030,13046);
 $config['sources__12571'] = array(
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -1027,6 +1027,12 @@ $config['sources__12571'] = array(
         'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(13004,12571,12574,11089,11028),
+    ),
+    13046 => array(
+        'm_icon' => '<i class="fas fa-exchange rotate source"></i>',
+        'm_name' => 'RELATED SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(12571,11089),
     ),
 );
 
@@ -2435,7 +2441,7 @@ $config['sources__11089'] = array(
         'm_icon' => '<i class="fas fa-exchange rotate source"></i>',
         'm_name' => 'RELATED SOURCES',
         'm_desc' => '',
-        'm_parents' => array(11089),
+        'm_parents' => array(12571,11089),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
