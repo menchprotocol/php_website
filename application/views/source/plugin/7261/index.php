@@ -4,7 +4,7 @@
 
 
 //Do a query to detect Ideas with the exact same title:
-$q = $this->db->query('select in1.* from mench_idea in1 where (select count(*) from mench_idea in2 where in2.idea__title = in1.idea__title AND in2.idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')) > 1 AND in1.idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ') ORDER BY in1.idea__title ASC');
+$q = $this->db->query('select in1.* from mench_ideas in1 where (select count(*) from mench_ideas in2 where in2.idea__title = in1.idea__title AND in2.idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')) > 1 AND in1.idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ') ORDER BY in1.idea__title ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){

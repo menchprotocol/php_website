@@ -3,7 +3,7 @@
 $sources__6177 = $this->config->item('sources__6177'); //Source Status
 
 $source_orphans = $this->SOURCE_model->fetch(array(
-    ' NOT EXISTS (SELECT 1 FROM mench_read WHERE source__id=read__down AND read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
+    ' NOT EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
     'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
 ));
 

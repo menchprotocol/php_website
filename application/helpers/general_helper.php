@@ -358,12 +358,12 @@ function source_count_connections($source__id, $return_html = true){
     $sources__6194 = $CI->config->item('sources__6194');
 
     foreach(array(
-        4737 => 'SELECT count(idea__id) as totals FROM mench_idea WHERE idea__status=',
-        7585 => 'SELECT count(idea__id) as totals FROM mench_idea WHERE idea__status IN ('.join(',', $CI->config->item('sources_id_7355')).') AND idea__type=',
-        6177 => 'SELECT count(source__id) as totals FROM mench_source WHERE source__status=',
-        4364 => 'SELECT count(read__id) as totals FROM mench_read WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__source=',
-        6186 => 'SELECT count(read__id) as totals FROM mench_read WHERE read__status=',
-        4593 => 'SELECT count(read__id) as totals FROM mench_read WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__type=',
+        4737 => 'SELECT count(idea__id) as totals FROM mench_ideas WHERE idea__status=',
+        7585 => 'SELECT count(idea__id) as totals FROM mench_ideas WHERE idea__status IN ('.join(',', $CI->config->item('sources_id_7355')).') AND idea__type=',
+        6177 => 'SELECT count(source__id) as totals FROM mench_sources WHERE source__status=',
+        4364 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__source=',
+        6186 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status=',
+        4593 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__type=',
     ) as $source_app_id => $query){
 
         $query = $CI->db->query( $query . $source__id );

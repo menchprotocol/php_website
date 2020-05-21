@@ -61,7 +61,7 @@ class READ_model extends CI_Model
         }
 
         //Lets log:
-        $this->db->insert('mench_read', $add_fields);
+        $this->db->insert('mench_interactions', $add_fields);
 
 
         //Fetch inserted id:
@@ -434,24 +434,24 @@ class READ_model extends CI_Model
     {
 
         $this->db->select($select);
-        $this->db->from('mench_read');
+        $this->db->from('mench_interactions');
 
         //IDA JOIN?
         if (in_array('read__left', $join_objects)) {
-            $this->db->join('mench_idea', 'read__left=idea__id','left');
+            $this->db->join('mench_ideas', 'read__left=idea__id','left');
         } elseif (in_array('read__right', $join_objects)) {
-            $this->db->join('mench_idea', 'read__right=idea__id','left');
+            $this->db->join('mench_ideas', 'read__right=idea__id','left');
         }
 
         //SOURCE JOIN?
         if (in_array('read__up', $join_objects)) {
-            $this->db->join('mench_source', 'read__up=source__id','left');
+            $this->db->join('mench_sources', 'read__up=source__id','left');
         } elseif (in_array('read__down', $join_objects)) {
-            $this->db->join('mench_source', 'read__down=source__id','left');
+            $this->db->join('mench_sources', 'read__down=source__id','left');
         } elseif (in_array('read__type', $join_objects)) {
-            $this->db->join('mench_source', 'read__type=source__id','left');
+            $this->db->join('mench_sources', 'read__type=source__id','left');
         } elseif (in_array('read__source', $join_objects)) {
-            $this->db->join('mench_source', 'read__source=source__id','left');
+            $this->db->join('mench_sources', 'read__source=source__id','left');
         }
 
         foreach($match_columns as $key => $value) {
@@ -505,7 +505,7 @@ class READ_model extends CI_Model
 
         //Update:
         $this->db->where('read__id', $id);
-        $this->db->update('mench_read', $update_columns);
+        $this->db->update('mench_interactions', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
@@ -616,7 +616,7 @@ class READ_model extends CI_Model
 
         //Fetches the maximum order value
         $this->db->select('MAX(read__sort) as largest_order');
-        $this->db->from('mench_read');
+        $this->db->from('mench_interactions');
         foreach($match_columns as $key => $value) {
             $this->db->where($key, $value);
         }

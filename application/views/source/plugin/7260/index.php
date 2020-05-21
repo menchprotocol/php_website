@@ -4,7 +4,7 @@ $sources__4737 = $this->config->item('sources__4737'); // Idea Status
 
 
 $orphan_ideas = $this->IDEA_model->fetch(array(
-    ' NOT EXISTS (SELECT 1 FROM mench_read WHERE idea__id=read__right AND read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
+    ' NOT EXISTS (SELECT 1 FROM mench_interactions WHERE idea__id=read__right AND read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     'idea__id !=' => config_var(12156), //Not the Starting Idea
 ));

@@ -28,7 +28,7 @@ class IDEA_model extends CI_Model
         }
 
         //Lets now add:
-        $this->db->insert('mench_idea', $add_fields);
+        $this->db->insert('mench_ideas', $add_fields);
 
         //Fetch inserted id:
         if (!isset($add_fields['idea__id'])) {
@@ -92,7 +92,7 @@ class IDEA_model extends CI_Model
 
         //The basic fetcher for Ideas
         $this->db->select($select);
-        $this->db->from('mench_idea');
+        $this->db->from('mench_ideas');
 
         foreach($match_columns as $key => $value) {
             $this->db->where($key, $value);
@@ -132,7 +132,7 @@ class IDEA_model extends CI_Model
 
         //Update:
         $this->db->where('idea__id', $id);
-        $this->db->update('mench_idea', $update_columns);
+        $this->db->update('mench_ideas', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
@@ -853,7 +853,7 @@ class IDEA_model extends CI_Model
 
         //Update This Level:
         if($total_child_weights > 0){
-            $this->db->query("UPDATE mench_idea SET idea__weight=idea__weight+".$total_child_weights." WHERE idea__id=".$idea__id.";");
+            $this->db->query("UPDATE mench_ideas SET idea__weight=idea__weight+".$total_child_weights." WHERE idea__id=".$idea__id.";");
         }
 
         //Return data:

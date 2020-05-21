@@ -50,7 +50,7 @@ foreach($this->IDEA_model->fetch() as $in) {
                 continue; //Keep first one
             } else {
                 $stats['creator_extra']++;
-                $this->db->query("DELETE FROM mench_read WHERE read__id=".$idea_source_tr['read__id']);
+                $this->db->query("DELETE FROM mench_interactions WHERE read__id=".$idea_source_tr['read__id']);
             }
         }
     }
