@@ -671,7 +671,7 @@ img.no-radius {
 }
 
 .msg{
-    line-height: 110%;
+    line-height: 134%;
 }
 
 .msg-nav {
@@ -761,13 +761,13 @@ textarea.note-textarea{
     box-shadow: none;
     color: #000000;
     padding: 0 33px 5px 0;
-    line-height: 110% !important;
+    line-height: 134% !important;
 }
 
 .note-textarea.edit-on {
     margin-left: 33px;
     padding: 5px 33px 10px 0;
-    line-height: 110% !important;
+    line-height: 134% !important;
 }
 
 .text_message{
