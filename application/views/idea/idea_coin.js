@@ -435,10 +435,10 @@ function idea_message_inline_source_search(obj) {
                 },
                 template: function (hit) {
                     // Returns the highlighted version of the name attribute
-                    return '<span class="inline34">@' + hit.object__id + '</span> ' + hit._highlightResult.object__title.value;
+                    return '<span class="inline34">@' + hit.object__id + '</span> ' + hit.object__title;
                 },
                 replace: function (hit) {
-                    return ' @' + hit.object__id + ' ';
+                    return '@' + hit.object__id + ' ';
                 }
             },
         ]);
