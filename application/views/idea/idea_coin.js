@@ -435,7 +435,6 @@ function idea_message_inline_source_search(obj) {
                 },
                 template: function (suggestion) {
                     // Returns the highlighted version of the name attribute
-                    //return '<span class="inline34">@' + suggestion.object__id + '</span> ' + suggestion.object__title;
                     return view_search_result(suggestion);
                 },
                 replace: function (suggestion) {
