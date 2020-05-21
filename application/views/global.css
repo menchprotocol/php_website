@@ -1488,6 +1488,16 @@ label {
 .show-min{display:none;}
 .btn-five{ margin-left:5px; }
 .list-group-item.active {color:#000000;}
+
+.radio-10869 .list-group-item {
+    color:#999999 !important;
+}
+
+.radio-10869 .list-group-item.active {
+    color:#FFFFFF !important;
+    background-color:#000000 !important;
+}
+
 /* RESPONSIVE */
 @media (max-width:767px) {
     .mini-hidden{
