@@ -91,9 +91,9 @@ foreach($this->IDEA_model->fetch($filters) as $in){
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                 'read__down' => $message['read__up'],
-            ), array('source_profile'), 0, 0, array('source__id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
+            ), array('source_profile'), 0, 0, array('source__id' => 'ASC' /* Hack to get Text first */)) as $source_profile) {
 
-                if($parent_en['read__type'] == 4257 /* EMBED */){
+                if($source_profile['read__type'] == 4257 /* EMBED */){
 
                     //See if we have a Start/End time:
                     $string_references = extract_source_references($message['read__message'], true);
@@ -105,16 +105,16 @@ foreach($this->IDEA_model->fetch($filters) as $in){
                         $this_time = 90;
                     }
 
-                } elseif($parent_en['read__type'] == 4255 /* TEXT */){
+                } elseif($source_profile['read__type'] == 4255 /* TEXT */){
 
                     //Count Words:
-                    $this_time = words_to_seconds($parent_en['read__message']);
+                    $this_time = words_to_seconds($source_profile['read__message']);
 
-                } elseif($parent_en['read__type'] == 4259 /* AUDIO */){
+                } elseif($source_profile['read__type'] == 4259 /* AUDIO */){
 
                     $this_time = 60;
 
-                } elseif($parent_en['read__type'] == 4258 /* VIDEO */){
+                } elseif($source_profile['read__type'] == 4258 /* VIDEO */){
 
                     $this_time = 90;
 
@@ -127,7 +127,7 @@ foreach($this->IDEA_model->fetch($filters) as $in){
                 $estimated_time += $this_time;
                 if($idea__id){
                     //Show details:
-                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$sources__12822[$parent_en['read__type']]['m_name'].']: '.$parent_en['read__message'].'<hr />';
+                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$sources__12822[$source_profile['read__type']]['m_name'].']: '.$source_profile['read__message'].'<hr />';
                 }
             }
         }

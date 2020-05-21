@@ -1,7 +1,7 @@
 <?php
 
 if(!isset($_GET['source__id']) || !intval($_GET['source__id'])){
-    $_GET['source__id'] = $session_en['source__id'];
+    $_GET['source__id'] = $session_source['source__id'];
 }
 
 if(!isset($_GET['idea__id']) || !intval($_GET['idea__id'])) {

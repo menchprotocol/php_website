@@ -65,7 +65,7 @@ if($search_for_is_set){
                 //Update idea:
                 $this->IDEA_model->update($in['idea__id'], array(
                     'idea__title' => $idea__title_validation['idea_clean_title'],
-                ), true, $session_en['source__id']);
+                ), true, $session_source['source__id']);
             }
 
             echo '<tr class="panel-title down-border">';

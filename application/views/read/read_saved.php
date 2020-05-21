@@ -3,7 +3,7 @@
     <?php
 
     $player_saved = $this->READ_model->fetch(array(
-        'read__up' => $session_en['source__id'],
+        'read__up' => $session_source['source__id'],
         'read__type' => 12896, //SAVED
         'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC

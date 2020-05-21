@@ -14,15 +14,15 @@ $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $metadata = unserialize($idea_focus['idea__metadata']);
 $has_time_estimate = ( isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0 );
 $idea_type_meet_requirement = in_array($idea_focus['idea__type'], $this->config->item('sources_id_7309'));
-$recipient_en = superpower_assigned();
+$recipient_source = superpower_assigned();
 $is_home_page = $idea_focus['idea__id']==config_var(12156);
-if(!isset($recipient_en['source__id']) ){
-    $recipient_en['source__id'] = 0;
+if(!isset($recipient_source['source__id']) ){
+    $recipient_source['source__id'] = 0;
 }
 
 //VIEW READ
 $this->READ_model->create(array(
-    'read__source' => $recipient_en['source__id'],
+    'read__source' => $recipient_source['source__id'],
     'read__type' => 7610, //PLAYER VIEWED IDEA
     'read__left' => $idea_focus['idea__id'],
     'read__sort' => fetch_cookie_order('7610_'.$idea_focus['idea__id']),
@@ -52,19 +52,19 @@ $common_prefix = idea_calc_common_prefix($ideas_next, 'idea__title');
 
 //ALREADY IN READS?
 $completion_rate['completion_percentage'] = 0;
-$read_idea_home = $this->READ_model->idea_home($idea_focus['idea__id'], $recipient_en);
+$read_idea_home = $this->READ_model->idea_home($idea_focus['idea__id'], $recipient_source);
 
 
 if ($read_idea_home) {
 
     // % DONE
-    $completion_rate = $this->READ_model->completion_progress($recipient_en['source__id'], $idea_focus);
+    $completion_rate = $this->READ_model->completion_progress($recipient_source['source__id'], $idea_focus);
 
     //Fetch progress history:
     $read_completes = $this->READ_model->fetch(array(
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-        'read__source' => $recipient_en['source__id'],
+        'read__source' => $recipient_source['source__id'],
         'read__left' => $idea_focus['idea__id'],
     ));
 
@@ -77,7 +77,7 @@ if ($read_idea_home) {
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
             'read__right' => $idea_focus['idea__id'],
-            'read__source' => $recipient_en['source__id'],
+            'read__source' => $recipient_source['source__id'],
         ), array('idea_previous'), 1);
 
         if(count($unlocked_connections) > 0){
@@ -99,7 +99,7 @@ if ($read_idea_home) {
                 //Yes, Issue coin:
                 array_push($read_completes, $this->READ_model->is_complete($idea_focus, array(
                     'read__type' => $read_completion_type_id,
-                    'read__source' => $recipient_en['source__id'],
+                    'read__source' => $recipient_source['source__id'],
                     'read__left' => $idea_focus['idea__id'],
                 )));
 
@@ -108,7 +108,7 @@ if ($read_idea_home) {
                 //Oooops, we could not find it, report bug:
                 $this->READ_model->create(array(
                     'read__type' => 4246, //Platform Bug Reports
-                    'read__source' => $recipient_en['source__id'],
+                    'read__source' => $recipient_source['source__id'],
                     'read__message' => 'read_coin() found idea connector ['.$unlocked_connections[0]['read__type'].'] without a valid unlock method @12327',
                     'read__left' => $idea_focus['idea__id'],
                     'read__reference' => $unlocked_connections[0]['read__id'],
@@ -127,7 +127,7 @@ if ($read_idea_home) {
                 //No path found:
                 array_push($read_completes, $this->READ_model->is_complete($idea_focus, array(
                     'read__type' => 7492, //TERMINATE
-                    'read__source' => $recipient_en['source__id'],
+                    'read__source' => $recipient_source['source__id'],
                     'read__left' => $idea_focus['idea__id'],
                 )));
 
@@ -152,14 +152,14 @@ if ($read_idea_home) {
 
 
 //READ TITLE
-echo '<h1 class="block-one" '.( !$recipient_en['source__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_idea_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_idea__title($idea_focus) . '</span></h1>';
+echo '<h1 class="block-one" '.( !$recipient_source['source__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_idea_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_idea__title($idea_focus) . '</span></h1>';
 
 
 //MESSAGES
 foreach($idea__messages as $message_ln) {
     echo $this->READ_model->send_message(
         $message_ln['read__message'],
-        $recipient_en
+        $recipient_source
     );
 }
 
@@ -171,8 +171,8 @@ if(!$read_idea_home){
         echo '<div class="cover-list" style="padding: 33px 0 33px 33px;">';
         if($chapters){
             //List Children:
-            foreach($ideas_next as $key => $child_in){
-                echo view_idea_cover($child_in, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
+            foreach($ideas_next as $key => $next_idea){
+                echo view_idea_cover($next_idea, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
             }
         }
         echo '</div>';
@@ -196,9 +196,9 @@ if(!$read_idea_home){
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
             if($chapters > 0){
                 //List Children:
-                echo '<div class="list-group '.( !$recipient_en['source__id'] ? 'single-color' : '' ).'">';
-                foreach($ideas_next as $key => $child_in){
-                    echo view_idea_read($child_in, idea_calc_common_prefix($ideas_next, 'idea__title'));
+                echo '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'">';
+                foreach($ideas_next as $key => $next_idea){
+                    echo view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'idea__title'));
                 }
                 echo '</div>';
             }
@@ -255,13 +255,13 @@ if(!$read_idea_home){
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'read__type' => 6140, //READ UNLOCK LINK
-        'read__source' => $recipient_en['source__id'],
+        'read__source' => $recipient_source['source__id'],
         'read__left' => $idea_focus['idea__id'],
     ), array('idea_next'), 0);
 
     //Did we have any steps unlocked?
     if(count($unlocked_reads) > 0){
-        view_idea_list($idea_focus, $unlocked_reads, $recipient_en, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
+        view_idea_list($idea_focus, $unlocked_reads, $recipient_source, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
     }
 
 
@@ -285,12 +285,12 @@ if(!$read_idea_home){
         if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
             //List Unlock paths:
-            view_idea_list($idea_focus, $unlock_paths, $recipient_en, '<span class="icon-block">&nbsp;</span>SUGGESTED IDEAS:');
+            view_idea_list($idea_focus, $unlock_paths, $recipient_source, '<span class="icon-block">&nbsp;</span>SUGGESTED IDEAS:');
 
         }
 
         //List Children if any:
-        view_idea_list($idea_focus, $ideas_next, $recipient_en, null, ( $completion_rate['completion_percentage'] < 100 ));
+        view_idea_list($idea_focus, $ideas_next, $recipient_source, null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
     } elseif (in_array($idea_focus['idea__type'], $this->config->item('sources_id_7712'))){
@@ -304,19 +304,19 @@ if(!$read_idea_home){
             if(!count($this->READ_model->fetch(array(
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',' , $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-                'read__source' => $recipient_en['source__id'],
+                'read__source' => $recipient_source['source__id'],
                 'read__left' => $idea_focus['idea__id'],
             )))){
 
                 array_push($read_completes, $this->READ_model->is_complete($idea_focus, array(
                     'read__type' => 4559, //READ MESSAGES
-                    'read__source' => $recipient_en['source__id'],
+                    'read__source' => $recipient_source['source__id'],
                     'read__left' => $idea_focus['idea__id'],
                 )));
 
             }
 
-            view_idea_next_previous($idea_focus['idea__id'], $recipient_en);
+            view_idea_next_previous($idea_focus['idea__id'], $recipient_source);
             return true;
 
         } else {
@@ -335,7 +335,7 @@ if(!$read_idea_home){
                     'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINK
                     'read__left' => $idea_focus['idea__id'],
                     'read__right' => $ln['idea__id'],
-                    'read__source' => $recipient_en['source__id'],
+                    'read__source' => $recipient_source['source__id'],
                 )))){
                     array_push($read_answers, $ln);
                 }
@@ -346,11 +346,11 @@ if(!$read_idea_home){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_idea_list($idea_focus, $read_answers, $recipient_en, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
+                view_idea_list($idea_focus, $read_answers, $recipient_source, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
 
                 echo '<div class="doclear">&nbsp;</div>';
 
-                view_idea_next_previous($idea_focus['idea__id'], $recipient_en);
+                view_idea_next_previous($idea_focus['idea__id'], $recipient_source);
 
                 echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
 
@@ -380,25 +380,25 @@ if(!$read_idea_home){
 
 
             //List children to choose from:
-            foreach($ideas_next as $key => $child_in) {
+            foreach($ideas_next as $key => $next_idea) {
 
                 //Has this been previously selected?
                 $previously_selected = count($this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
                     'read__left' => $idea_focus['idea__id'],
-                    'read__right' => $child_in['idea__id'],
-                    'read__source' => $recipient_en['source__id'],
+                    'read__right' => $next_idea['idea__id'],
+                    'read__source' => $recipient_source['source__id'],
                 )));
 
-                echo '<a href="javascript:void(0);" onclick="select_answer('.$child_in['idea__id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ins="'.$child_in['idea__id'].'" class="read_answer_'.$child_in['idea__id'].' answer-item list-group-item itemread no-left-padding">';
+                echo '<a href="javascript:void(0);" onclick="select_answer('.$next_idea['idea__id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ideas="'.$next_idea['idea__id'].'" class="read_answer_'.$next_idea['idea__id'].' answer-item list-group-item itemread no-left-padding">';
 
 
                 echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
                 echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
 
                 echo '<td style="width:100%; padding: 0 !important;">';
-                echo '<b class="montserrat idea-url" style="margin-left:0;">'.view_idea__title($child_in, $common_prefix).'</b>';
+                echo '<b class="montserrat idea-url" style="margin-left:0;">'.view_idea__title($next_idea, $common_prefix).'</b>';
                 echo '</td>';
 
                 echo '</tr></table>';
@@ -416,7 +416,7 @@ if(!$read_idea_home){
 
             echo '<div class="result-update margin-top-down"></div>';
 
-            echo view_idea_previous_read($idea_focus['idea__id'], $recipient_en);
+            echo view_idea_previous_read($idea_focus['idea__id'], $recipient_source);
 
             //Button to submit selection:
             if(count($read_answers)>0){
@@ -432,7 +432,7 @@ if(!$read_idea_home){
     } elseif ($idea_focus['idea__type'] == 6677) {
 
         //READ ONLY
-        view_idea_list($idea_focus, $ideas_next, $recipient_en);
+        view_idea_list($idea_focus, $ideas_next, $recipient_source);
 
     } elseif ($idea_focus['idea__type'] == 6683) {
 
@@ -443,7 +443,7 @@ if(!$read_idea_home){
         echo '<div class="text_saving_result margin-top-down"></div>';
 
         //Show Previous Button:
-        echo view_idea_previous_read($idea_focus['idea__id'], $recipient_en);
+        echo view_idea_previous_read($idea_focus['idea__id'], $recipient_source);
 
         //Save/Upload & Next:
         echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="read_text_answer()">'.$sources__11035[12211]['m_icon'].'</a></div>';
@@ -451,7 +451,7 @@ if(!$read_idea_home){
 
         if(count($read_completes)){
             //Next Ideas:
-            view_idea_list($idea_focus, $ideas_next, $recipient_en, null,false);
+            view_idea_list($idea_focus, $ideas_next, $recipient_source, null,false);
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#read_text_answer\')); $(\'#read_text_answer\').focus(); }); </script>';
@@ -471,12 +471,12 @@ if(!$read_idea_home){
 
             //Show Previous Button:
             echo '<div class="file_saving_result">';
-            echo view_idea_previous_read($idea_focus['idea__id'], $recipient_en);
+            echo view_idea_previous_read($idea_focus['idea__id'], $recipient_source);
             echo '</div>';
 
             //Show next here but keep hidden until file is uploaded:
             echo '<div class="go_next_upload hidden">';
-            view_idea_next_previous($idea_focus['idea__id'], $recipient_en);
+            view_idea_next_previous($idea_focus['idea__id'], $recipient_source);
             echo '</div>';
 
             echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-read btn-circle inline-block" for="fileType'.$idea_focus['idea__type'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
@@ -490,7 +490,7 @@ if(!$read_idea_home){
             echo '</div>';
 
             //Any child ideas?
-            view_idea_list($idea_focus, $ideas_next, $recipient_en, null, true, false);
+            view_idea_list($idea_focus, $ideas_next, $recipient_source, null, true, false);
 
             echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-read inline-block btn-circle" for="fileType'.$idea_focus['idea__type'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
@@ -505,7 +505,7 @@ if(!$read_idea_home){
         //UNKNOWN IDEA TYPE
         $this->READ_model->create(array(
             'read__type' => 4246, //Platform Bug Reports
-            'read__source' => $recipient_en['source__id'],
+            'read__source' => $recipient_source['source__id'],
             'read__message' => 'step_echo() unknown idea type source ID ['.$idea_focus['idea__type'].'] that could not be rendered',
             'read__left' => $idea_focus['idea__id'],
         ));

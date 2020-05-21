@@ -67,9 +67,9 @@ $(document).ready(function () {
     $('#read__status').change(function () {
         if (parseInt($('#read__status').find(":selected").val()) == 6173 /* DELETED */ ) {
             //About to delete? Notify them:
-            $('.notify_unlink_en').removeClass('hidden');
+            $('.notify_unlink_source').removeClass('hidden');
         } else {
-            $('.notify_unlink_en').addClass('hidden');
+            $('.notify_unlink_source').addClass('hidden');
         }
     });
 
@@ -408,7 +408,7 @@ function source_modify_load(source__id, read__id) {
     $('#modifybox').attr('source-id', source__id);
 
     //Cannot be deleted OR Unpublished as this would not load, so delete them:
-    $('.notify_source_delete, .notify_unlink_en').addClass('hidden');
+    $('.notify_source_delete, .notify_unlink_source').addClass('hidden');
 
     //Set opacity:
     delete_all_saved();

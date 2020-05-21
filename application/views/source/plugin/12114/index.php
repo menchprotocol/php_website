@@ -99,8 +99,8 @@ $subscriber_filters = array(
 
 //Should we limit the scope?
 if($is_player_request){
-    $session_en = superpower_assigned();
-    $subscriber_filters['read__down'] = $session_en['source__id'];
+    $session_source = superpower_assigned();
+    $subscriber_filters['read__down'] = $session_source['source__id'];
 }
 
 

@@ -148,10 +148,10 @@ function read_text_answer(){
 function read_answer(){
 
     //Check
-    var answered_ins = [];
+    var answered_ideas = [];
     $(".answer-item").each(function () {
         if ($(this).attr('is-selected')=='1') {
-            answered_ins.push(parseInt($(this).attr('answered_ins')));
+            answered_ideas.push(parseInt($(this).attr('answered_ideas')));
         }
     });
 
@@ -159,7 +159,7 @@ function read_answer(){
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/read/read_answer", {
         idea_loaded_id:idea_loaded_id,
-        answered_ins:answered_ins
+        answered_ideas:answered_ideas
     }, function (data) {
         if (data.status) {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');

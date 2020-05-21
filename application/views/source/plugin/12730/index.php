@@ -56,7 +56,7 @@ if($search_for_is_set){
                     //Update idea:
                     $this->SOURCE_model->update($en['source__id'], array(
                         'source__title' => $new_outcome,
-                    ), true, $session_en['source__id']);
+                    ), true, $session_source['source__id']);
                 }
             }
 

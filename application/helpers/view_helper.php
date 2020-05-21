@@ -207,7 +207,7 @@ function view_idea_notes($ln)
      * */
 
     $CI =& get_instance();
-    $session_en = superpower_assigned();
+    $session_source = superpower_assigned();
     $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
 
 
@@ -222,7 +222,7 @@ function view_idea_notes($ln)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $ln['read__id'] . '">';
-    $ui .= $CI->READ_model->send_message($ln['read__message'], $session_en, $ln['read__right']);
+    $ui .= $CI->READ_model->send_message($ln['read__message'], $session_source, $ln['read__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -348,7 +348,7 @@ function view_interaction($ln, $is_parent_tr = false)
     $sources__4341 = $CI->config->item('sources__4341'); //Link Table
     $sources__2738 = $CI->config->item('sources__2738');
     $sources__6186 = $CI->config->item('sources__6186'); //Read Status
-    $session_en = superpower_assigned();
+    $session_source = superpower_assigned();
 
 
 
@@ -398,7 +398,7 @@ function view_interaction($ln, $is_parent_tr = false)
 
 
     //Hide Sensitive Details?
-    if(in_array($ln['read__type'] , $CI->config->item('sources_id_4755')) && (!$session_en || $ln['read__source']!=$session_en['source__id']) && !superpower_active(12701, true)){
+    if(in_array($ln['read__type'] , $CI->config->item('sources_id_4755')) && (!$session_source || $ln['read__source']!=$session_source['source__id']) && !superpower_active(12701, true)){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -430,11 +430,11 @@ function view_interaction($ln, $is_parent_tr = false)
         //Creator (Do not repeat)
         if($ln['read__source'] > 0 && $ln['read__source']!=$ln['read__up'] && $ln['read__source']!=$ln['read__down']){
 
-            $player_ens = $CI->SOURCE_model->fetch(array(
+            $player_sources = $CI->SOURCE_model->fetch(array(
                 'source__id' => $ln['read__source'],
             ));
 
-            $ui .= '<div class="simple-line"><a href="/source/'.$player_ens[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($player_ens[0]['source__icon']).'"><span class="img-block">'.view_source__icon($player_ens[0]['source__icon']) . '</span> ' . $player_ens[0]['source__title'] . '</span></a></div>';
+            $ui .= '<div class="simple-line"><a href="/source/'.$player_sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($player_sources[0]['source__icon']).'"><span class="img-block">'.view_source__icon($player_sources[0]['source__icon']) . '</span> ' . $player_sources[0]['source__title'] . '</span></a></div>';
 
         }
 
@@ -540,8 +540,8 @@ function view_cache($config_var_name, $source__id, $micro_status = true, $data_p
 
     $CI =& get_instance();
     $config_array = $CI->config->item($config_var_name);
-    $cache_en = $config_array[$source__id];
-    if (!$cache_en) {
+    $cache_source = $config_array[$source__id];
+    if (!$cache_source) {
         //Could not find matching item
         return false;
     }
@@ -550,12 +550,12 @@ function view_cache($config_var_name, $source__id, $micro_status = true, $data_p
     //We have two skins for displaying Status:
     if (is_null($data_placement)) {
         if($micro_status){
-            return $cache_en['m_icon'].' ';
+            return $cache_source['m_icon'].' ';
         } else {
-            return $cache_en['m_icon'].' '.$cache_en['m_name'].' ';
+            return $cache_source['m_icon'].' '.$cache_source['m_name'].' ';
         }
     } else {
-        return '<span class="status-label" ' . ( $micro_status && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="' . $data_placement . '" title="' . ($micro_status ? $cache_en['m_name'] : '') . (strlen($cache_en['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache_en['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache_en['m_icon'] . ' ' . ($micro_status ? '' : $cache_en['m_name']) . '</span>';
+        return '<span class="status-label" ' . ( $micro_status && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="' . $data_placement . '" title="' . ($micro_status ? $cache_source['m_name'] : '') . (strlen($cache_source['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache_source['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache_source['m_icon'] . ' ' . ($micro_status ? '' : $cache_source['m_name']) . '</span>';
     }
 }
 
@@ -612,13 +612,13 @@ function view_idea_icon($can_click, $completion_percentage){
     return ( $can_click ? ( $completion_percentage>=100 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-play-circle read"></i>' ) : '<i class="fas fa-circle idea"></i>' );
 }
 
-function view_idea_read($idea, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_en = false)
+function view_idea_read($idea, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_source = false)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
-    if(!$recipient_en){
-        $recipient_en = superpower_assigned();
+    if(!$recipient_source){
+        $recipient_source = superpower_assigned();
     }
 
     $is_saved = ( isset($idea['read__type']) && $idea['read__type']==12896 );
@@ -627,14 +627,14 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
     $idea_count = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 );
 
     if(!$completion_rate){
-        if($recipient_en){
-            $completion_rate = $CI->READ_model->completion_progress($recipient_en['source__id'], $idea);
+        if($recipient_source){
+            $completion_rate = $CI->READ_model->completion_progress($recipient_source['source__id'], $idea);
         } else {
             $completion_rate['completion_percentage'] = 0;
         }
     }
 
-    $can_click = ( $completion_rate['completion_percentage']>0 || $show_editor || $is_saved ); //|| $recipient_en['source__id']
+    $can_click = ( $completion_rate['completion_percentage']>0 || $show_editor || $is_saved ); //|| $recipient_source['source__id']
 
 
     $ui  = '<div id="ap_idea_'.$idea['idea__id'].'" '.( isset($idea['read__id']) ? ' sort-link-id="'.$idea['read__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemread ' : '' ).'">';
@@ -688,7 +688,7 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
 }
 
 
-function view_idea_scores_answer($idea__id, $depth_levels, $original_depth_levels, $parent_idea__type){
+function view_idea_scores_answer($idea__id, $depth_levels, $original_depth_levels, $previous_idea__type){
 
     if($depth_levels<=0){
         //End recursion:
@@ -732,7 +732,7 @@ function view_idea_scores_answer($idea__id, $depth_levels, $original_depth_level
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$idea_read['idea__status']]['m_name'].'">'. $sources__4737[$idea_read['idea__status']]['m_icon']. '</span>';
         $ui .= '<a href="?idea__id='.$idea_read['idea__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_idea__title($idea_read) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($idea_read['read__type'] == 4228 && in_array($parent_idea__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($idea_read['read__type'] == 4229) ? view_idea_marks($idea_read) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($idea_read['read__type'] == 4228 && in_array($previous_idea__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($idea_read['read__type'] == 4229) ? view_idea_marks($idea_read) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$idea_read['idea__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -828,7 +828,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     $read__metadata = unserialize($idea['read__metadata']);
     $idea__metadata = unserialize($idea['idea__metadata']);
 
-    $session_en = superpower_assigned();
+    $session_source = superpower_assigned();
     $is_public = in_array($idea['idea__status'], $CI->config->item('sources_id_7355'));
     $is_link_published = in_array($idea['read__status'], $CI->config->item('sources_id_7359'));
     $is_idea_link = in_array($idea['read__type'], $CI->config->item('sources_id_4486'));
@@ -925,7 +925,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
     if($message_input){
-        $ui .= '<div class="idea-footer hideIfEmpty">' . $CI->READ_model->send_message($message_input, $session_en) . '</div>';
+        $ui .= '<div class="idea-footer hideIfEmpty">' . $CI->READ_model->send_message($message_input, $session_source) . '</div>';
     }
 
 
@@ -974,26 +974,26 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
         //PREVIOUS IDEAS COUNT
-        $next_ins = $CI->READ_model->fetch(array(
+        $next_ideas = $CI->READ_model->fetch(array(
             'read__right' => $idea['idea__id'],
             'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        ), array(), 0, 0, array(), 'COUNT(read__id) as total_ins');
-        if($next_ins[0]['total_ins'] > 1){
-            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[11019]['m_name'].'">'.$next_ins[0]['total_ins'].$sources__12413[11019]['m_icon'].'&nbsp;</div>';
+        ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
+        if($next_ideas[0]['total_ideas'] > 1){
+            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[11019]['m_name'].'">'.$next_ideas[0]['total_ideas'].$sources__12413[11019]['m_icon'].'&nbsp;</div>';
         }
 
         //NEXT IDEAS COUNT
-        $next_ins = $CI->READ_model->fetch(array(
+        $next_ideas = $CI->READ_model->fetch(array(
             'read__left' => $idea['idea__id'],
             'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        ), array(), 0, 0, array(), 'COUNT(read__id) as total_ins');
-        if($next_ins[0]['total_ins'] > 0){
-            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[11020]['m_name'].'">'.$sources__12413[11020]['m_icon'].$next_ins[0]['total_ins'].'&nbsp;</div>';
+        ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
+        if($next_ideas[0]['total_ideas'] > 0){
+            $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[11020]['m_name'].'">'.$sources__12413[11020]['m_icon'].$next_ideas[0]['total_ideas'].'&nbsp;</div>';
 
             //TREE SIZE
-            $tree_size = ( isset($idea__metadata['idea___max_reads']) && $idea__metadata['idea___max_reads']>$next_ins[0]['total_ins'] ? intval($idea__metadata['idea___max_reads']) : 0 );
+            $tree_size = ( isset($idea__metadata['idea___max_reads']) && $idea__metadata['idea___max_reads']>$next_ideas[0]['total_ideas'] ? intval($idea__metadata['idea___max_reads']) : 0 );
             if($tree_size){
                 $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[6170]['m_name'].'">'.$sources__12413[6170]['m_icon'].'&nbsp;'.$tree_size.'&nbsp;</div>';
             }
@@ -1039,11 +1039,11 @@ function view_caret($source__id, $m, $object__id){
 }
 
 
-function view_idea_list($idea, $ideas_next, $recipient_en, $prefix_statement = null, $show_next = true){
+function view_idea_list($idea, $ideas_next, $recipient_source, $prefix_statement = null, $show_next = true){
 
     //If no list just return the next step:
     if(!count($ideas_next)){
-        return ( $show_next ? view_idea_next_previous($idea['idea__id'], $recipient_en) : false );
+        return ( $show_next ? view_idea_next_previous($idea['idea__id'], $recipient_source) : false );
     }
 
     $CI =& get_instance();
@@ -1061,34 +1061,34 @@ function view_idea_list($idea, $ideas_next, $recipient_en, $prefix_statement = n
         }
 
         echo '<div class="list-group">';
-        foreach($ideas_next as $key => $child_in){
-            echo view_idea_read($child_in, $common_prefix);
+        foreach($ideas_next as $key => $next_idea){
+            echo view_idea_read($next_idea, $common_prefix);
         }
         echo '</div>';
     }
 
     if($show_next){
-        view_idea_next_previous($idea['idea__id'], $recipient_en);
+        view_idea_next_previous($idea['idea__id'], $recipient_source);
         echo '<div class="doclear">&nbsp;</div>';
     }
 }
 
-function view_idea_next_previous($idea__id, $recipient_en){
+function view_idea_next_previous($idea__id, $recipient_source){
 
     $CI =& get_instance();
     $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION
 
     //PREVIOUS:
-    echo view_idea_previous_read($idea__id, $recipient_en);
+    echo view_idea_previous_read($idea__id, $recipient_source);
 
     //NEXT:
     echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="/read/next/'.$idea__id.'">'.$sources__11035[12211]['m_icon'].'</a></div>';
 
 }
 
-function view_idea_previous_read($idea__id, $recipient_en){
+function view_idea_previous_read($idea__id, $recipient_source){
 
-    if(!$recipient_en || $recipient_en['source__id'] < 1){
+    if(!$recipient_source || $recipient_source['source__id'] < 1){
         return null;
     }
 
@@ -1097,7 +1097,7 @@ function view_idea_previous_read($idea__id, $recipient_en){
     $ui = null;
     $idea_level_up = 0;
     $previous_level_id = 0; //The ID of the Idea one level up
-    $player_read_ids = $CI->READ_model->ids($recipient_en['source__id']);
+    $player_read_ids = $CI->READ_model->ids($recipient_source['source__id']);
     $read_list_ui = null;
     $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION
 
@@ -1114,22 +1114,22 @@ function view_idea_previous_read($idea__id, $recipient_en){
         $recursive_parents = $CI->IDEA_model->recursive_parents($idea__id, true, true);
         foreach($recursive_parents as $grand_parent_ids) {
             foreach(array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
-                foreach($grand_parent_ids as $parent_idea__id) {
+                foreach($grand_parent_ids as $previous_idea__id) {
 
                     if($idea_level_up==0){
                         //Remember the first parent for the back button:
-                        $previous_level_id = $parent_idea__id;
+                        $previous_level_id = $previous_idea__id;
                     }
 
                     $ideas_this = $CI->IDEA_model->fetch(array(
-                        'idea__id' => $parent_idea__id,
+                        'idea__id' => $previous_idea__id,
                     ));
 
-                    $completion_rate = $CI->READ_model->completion_progress($recipient_en['source__id'], $ideas_this[0]);
+                    $completion_rate = $CI->READ_model->completion_progress($recipient_source['source__id'], $ideas_this[0]);
 
                     $idea_level_up++;
 
-                    if ($parent_idea__id == $intersect) {
+                    if ($previous_idea__id == $intersect) {
                         $read_list_ui .= view_idea_read($ideas_this[0], null, false, $completion_rate);
                         break;
                     }
@@ -1152,7 +1152,7 @@ function view_idea_previous_read($idea__id, $recipient_en){
 
         //Is Saved?
         $is_saveded = count($CI->READ_model->fetch(array(
-            'read__up' => $recipient_en['source__id'],
+            'read__up' => $recipient_source['source__id'],
             'read__right' => $idea__id,
             'read__type' => 12896, //SAVED
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1290,9 +1290,9 @@ function view_platform_message($source__id){
 
 function view_unauthorized_message($superpower_source__id = 0){
 
-    $session_en = superpower_assigned($superpower_source__id);
+    $session_source = superpower_assigned($superpower_source__id);
 
-    if(!$session_en){
+    if(!$session_source){
 
         //Missing Session
         return 'Login to continue.';
@@ -1338,7 +1338,7 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
     $CI =& get_instance();
 
     //FIND IMAGE
-    $recipient_en = superpower_assigned();
+    $recipient_source = superpower_assigned();
     $metadata = unserialize($idea['idea__metadata']);
     $idea_count = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 );
     $source_count = ( isset($metadata['idea___experts']) ? count($metadata['idea___experts']) : 0 ) + ( isset($metadata['idea___content']) ? count($metadata['idea___content']) : 0 );
@@ -1360,16 +1360,16 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
 
 
     $ui .= '<div class="cover-image">';
-    if($recipient_en){
+    if($recipient_source){
         if(!$completion_rate){
-            $completion_rate = $CI->READ_model->completion_progress($recipient_en['source__id'], $idea);
+            $completion_rate = $CI->READ_model->completion_progress($recipient_source['source__id'], $idea);
         }
         if($completion_rate['completion_percentage']>0){
             $ui .= '<div class="progress-bg-image" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
         }
     }
 
-    $ui .= '<img src="'.idea_fetch_cover($idea['idea__id']).'" />';
+    $ui .= idea_fetch_cover($idea['idea__id'], true);
 
     if($idea_count && isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0){
         $ui .= '<span class="media-info top-right">'.view_time_range($metadata).'</span>';
@@ -1407,7 +1407,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 {
 
     $CI =& get_instance();
-    $session_en = superpower_assigned();
+    $session_source = superpower_assigned();
     $sources__6177 = $CI->config->item('sources__6177'); //Source Status
     $sources__2738 = $CI->config->item('sources__2738');
     $sources__4592 = $CI->config->item('sources__4592');
@@ -1431,7 +1431,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     $is_link_published = ( !$read__id || in_array($source['read__status'], $CI->config->item('sources_id_7359')));
     $is_hidden = filter_array($source__profiles, 'source__id', '4755') || in_array($source['source__id'], $CI->config->item('sources_id_4755'));
 
-    if(!$session_en && (!$is_public || !$is_link_published)){
+    if(!$session_source && (!$is_public || !$is_link_published)){
         //Not logged in, so should only see published:
         return false;
     } elseif($is_hidden && !superpower_assigned(12701)){
@@ -1494,7 +1494,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //SOURCE ICON
-    $ui .= '<a href="/source/'.$source['source__id'] . '" '.( $is_link_source ? ' title="WEIGHT '.$source['source__weight'].' LINK ID '.$source['read__id'].' '.$sources__4592[$source['read__type']]['m_name'].' @'.$source['read__type'].'" ' : '' ).'><span class="icon-block source_ui_icon_' . $source['source__id'] . ' source__icon_'.$source['source__id'].'" en-is-set="'.( strlen($source['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($source['source__icon']) . '</span></a>';
+    $ui .= '<a href="/source/'.$source['source__id'] . '" '.( $is_link_source ? ' title="READ ID '.$source['read__id'].' TYPE @'.$source['read__type'].' SORT '.$source['read__sort'].' WEIGHT '.$source['source__weight'].'" ' : '' ).'><span class="icon-block source_ui_icon_' . $source['source__id'] . ' source__icon_'.$source['source__id'].'" en-is-set="'.( strlen($source['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($source['source__icon']) . '</span></a>';
 
 
     //SOURCE TOOLBAR?

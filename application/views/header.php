@@ -1,6 +1,6 @@
 <?php
 
-$session_en = superpower_assigned();
+$session_source = superpower_assigned();
 $first_segment = $this->uri->segment(1);
 $second_segment = $this->uri->segment(2);
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
@@ -20,9 +20,9 @@ $current_mench = current_mench();
     <script type="text/javascript">
     <?php
     //PLAYER VARIABLES
-    echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_en && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
-    echo ' var js_pl_id = ' . ( $session_en ? $session_en['source__id'] : 0 ) . '; ';
-    echo ' var js_pl_name = \'' . ( $session_en ? $session_en['source__title'] : '' ) . '\'; ';
+    echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_source && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
+    echo ' var js_pl_id = ' . ( $session_source ? $session_source['source__id'] : 0 ) . '; ';
+    echo ' var js_pl_name = \'' . ( $session_source ? $session_source['source__title'] : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
     //JAVASCRIPT PLATFORM MEMORY
@@ -103,7 +103,7 @@ if(!isset($hide_header)){
 
                         //MAIN NAVIGATION
                         echo '<div class="primary_nav mench_nav">';
-                        if(!$session_en){
+                        if(!$session_source){
 
                             //LOGO ONLY
                             echo '<a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a>';
@@ -148,7 +148,7 @@ if(!isset($hide_header)){
                                 } elseif($m['source__id']==12896){
 
                                     $highlights = $this->READ_model->fetch(array(
-                                        'read__up' => $session_en['source__id'],
+                                        'read__up' => $session_source['source__id'],
                                         'read__type' => 12896, //SAVED
                                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                                     ), array(), 1, 0, array(), 'COUNT(read__id) as totals');
@@ -185,7 +185,7 @@ if(!isset($hide_header)){
                     <?php
 
                     //Account
-                    if ($session_en) {
+                    if ($session_source) {
 
                         //Search
                         if(intval(config_var(12678))){
@@ -227,10 +227,10 @@ if(!isset($hide_header)){
                             } elseif($read__type==12205) {
 
                                 //SET TO PLAYER
-                                $read__type = $session_en['source__id'];
+                                $read__type = $session_source['source__id'];
                                 $page_url = 'href="/source/'.$read__type.'"';
-                                $m['m_name'] = $session_en['source__title'];
-                                $m['m_icon'] = $session_en['source__icon'];
+                                $m['m_name'] = $session_source['source__title'];
+                                $m['m_icon'] = $session_source['source__icon'];
                                 $text_class = 'text__6197_'.$read__type;
 
                             } elseif($read__type==12899) {
@@ -246,7 +246,7 @@ if(!isset($hide_header)){
 
                             } elseif(in_array($read__type, $this->config->item('sources_id_12467'))) {
 
-                                $counts = read_coins_source($read__type, $session_en['source__id']);
+                                $counts = read_coins_source($read__type, $session_source['source__id']);
                                 if(!$counts){
                                     continue;
                                 }
@@ -268,7 +268,7 @@ if(!isset($hide_header)){
                                 }
 
                                 //MENCH COIN
-                                $page_url = 'href="/read/interactions?read__status='.join(',', $this->config->item('sources_id_7359')).'&read__type='.join(',', $this->config->item('sources_id_'.$read__type)).'&'.$source_field.'='.$session_en['source__id'].'"';
+                                $page_url = 'href="/read/interactions?read__status='.join(',', $this->config->item('sources_id_7359')).'&read__type='.join(',', $this->config->item('sources_id_'.$read__type)).'&'.$source_field.'='.$session_source['source__id'].'"';
 
                                 //APPEND COUNT:
                                 $m['m_name'] = view_number($counts).' '.$m['m_name'];

@@ -298,10 +298,10 @@ class READ_model extends CI_Model
 
                     if($links_added>0 || $links_edited>0 || $links_deleted>0){
                         //See if Session needs to be updated:
-                        $session_en = superpower_assigned();
-                        if($session_en && $session_en['source__id']==$add_fields['read__source']){
+                        $session_source = superpower_assigned();
+                        if($session_source && $session_source['source__id']==$add_fields['read__source']){
                             //Yes, update session:
-                            $this->SOURCE_model->activate_session($session_en, true);
+                            $this->SOURCE_model->activate_session($session_source, true);
                         }
                     }
                 }
@@ -348,11 +348,11 @@ class READ_model extends CI_Model
                 if($add_fields['read__source'] > 0){
 
                     //Fetch player details:
-                    $player_ens = $this->SOURCE_model->fetch(array(
+                    $player_sources = $this->SOURCE_model->fetch(array(
                         'source__id' => $add_fields['read__source'],
                     ));
 
-                    $player_name = $player_ens[0]['source__title'];
+                    $player_name = $player_sources[0]['source__title'];
 
                 } else {
 
@@ -541,26 +541,26 @@ class READ_model extends CI_Model
                         } elseif(in_array($key, array('read__up', 'read__down'))) {
 
                             //Fetch new/old source names:
-                            $before_ens = $this->SOURCE_model->fetch(array(
+                            $before_sources = $this->SOURCE_model->fetch(array(
                                 'source__id' => $before_data[0][$key],
                             ));
-                            $after_ens = $this->SOURCE_model->fetch(array(
+                            $after_sources = $this->SOURCE_model->fetch(array(
                                 'source__id' => $value,
                             ));
 
-                            $read__message .= view_db_field($key) . ' updated from [' . $before_ens[0]['source__title'] . '] to [' . $after_ens[0]['source__title'] . ']' . "\n";
+                            $read__message .= view_db_field($key) . ' updated from [' . $before_sources[0]['source__title'] . '] to [' . $after_sources[0]['source__title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('read__left', 'read__right'))) {
 
                             //Fetch new/old Idea outcomes:
-                            $before_ins = $this->IDEA_model->fetch(array(
+                            $before_ideas = $this->IDEA_model->fetch(array(
                                 'idea__id' => $before_data[0][$key],
                             ));
-                            $after_ins = $this->IDEA_model->fetch(array(
+                            $after_ideas = $this->IDEA_model->fetch(array(
                                 'idea__id' => $value,
                             ));
 
-                            $read__message .= view_db_field($key) . ' updated from [' . $before_ins[0]['idea__title'] . '] to [' . $after_ins[0]['idea__title'] . ']' . "\n";
+                            $read__message .= view_db_field($key) . ' updated from [' . $before_ideas[0]['idea__title'] . '] to [' . $after_ideas[0]['idea__title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('read__message', 'read__sort'))){
 
@@ -686,7 +686,7 @@ class READ_model extends CI_Model
     }
 
 
-    function send_message($message_input, $recipient_en = array(), $message_idea__id = 0)
+    function send_message($message_input, $recipient_source = array(), $message_idea__id = 0)
     {
 
         /*
@@ -700,7 +700,7 @@ class READ_model extends CI_Model
          *                          source and then referenced within a message.
          *
          *
-         * - $recipient_en:         The source object that this message is supposed
+         * - $recipient_source:         The source object that this message is supposed
          *                          to be delivered to. May be an empty array for
          *                          when we want to show these messages to guests,
          *                          and it may contain the full source object or it
@@ -716,7 +716,7 @@ class READ_model extends CI_Model
         }
 
         //Validate message:
-        $msg_validation = $this->READ_model->send_message_build($message_input, $recipient_en, 0, $message_idea__id, false);
+        $msg_validation = $this->READ_model->send_message_build($message_input, $recipient_source, 0, $message_idea__id, false);
 
 
         //Did we have ane error in message validation?
@@ -725,11 +725,11 @@ class READ_model extends CI_Model
             //Log Error Link:
             $this->READ_model->create(array(
                 'read__type' => 4246, //Platform Bug Reports
-                'read__source' => (isset($recipient_en['source__id']) ? $recipient_en['source__id'] : 0),
+                'read__source' => (isset($recipient_source['source__id']) ? $recipient_source['source__id'] : 0),
                 'read__message' => 'send_message_build() returned error [' . $msg_validation['message'] . '] for input message [' . $message_input . ']',
                 'read__metadata' => array(
                     'input_message' => $message_input,
-                    'recipient_en' => $recipient_en,
+                    'recipient_source' => $recipient_source,
                     'message_idea__id' => $message_idea__id
                 ),
             ));
@@ -747,7 +747,7 @@ class READ_model extends CI_Model
     }
 
 
-    function send_message_build($message_input, $recipient_en = array(), $message_type_source__id = 0, $message_idea__id = 0, $strict_validation = true)
+    function send_message_build($message_input, $recipient_source = array(), $message_type_source__id = 0, $message_idea__id = 0, $strict_validation = true)
     {
 
         /*
@@ -760,8 +760,8 @@ class READ_model extends CI_Model
 
 
         //Try to fetch session if recipient not provided:
-        if(!isset($recipient_en['source__id'])){
-            $recipient_en = superpower_assigned();
+        if(!isset($recipient_source['source__id'])){
+            $recipient_source = superpower_assigned();
         }
 
         $is_being_modified = ( $message_type_source__id > 0 ); //IF $message_type_source__id > 0 means we're adding/editing and need to do extra checks
@@ -872,7 +872,7 @@ class READ_model extends CI_Model
         if ($strict_validation && count($string_references['ref_urls']) > 0) {
 
             //No source linked, but we have a URL that we should turn into an source if not previously:
-            $url_source = $this->SOURCE_model->url($string_references['ref_urls'][0], ( isset($recipient_en['source__id']) ? $recipient_en['source__id'] : 0 ));
+            $url_source = $this->SOURCE_model->url($string_references['ref_urls'][0], ( isset($recipient_source['source__id']) ? $recipient_source['source__id'] : 0 ));
 
             //Did we have an error?
             if (!$url_source['status'] || !isset($url_source['source_url']['source__id']) || intval($url_source['source_url']['source__id']) < 1) {
@@ -959,22 +959,22 @@ class READ_model extends CI_Model
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'read__down' => $string_references['ref_sources'][0],
-                ), array('source_profile'), 0, 0, array('source__id' => 'ASC' /* Hack to get Text first */)) as $parent_en) {
+                ), array('source_profile'), 0, 0, array('source__id' => 'ASC' /* Hack to get Text first */)) as $source_profile) {
 
                     $message_any++;
 
-                    if (in_array($parent_en['read__type'], $this->config->item('sources_id_12524'))) {
+                    if (in_array($source_profile['read__type'], $this->config->item('sources_id_12524'))) {
 
                         //SOURCE LINK VISUAL
                         $message_visual_media++;
 
-                    } elseif($parent_en['read__type'] == 4256 /* URL */){
+                    } elseif($source_profile['read__type'] == 4256 /* URL */){
 
-                        array_push($valid_url, $parent_en['read__message']);
+                        array_push($valid_url, $source_profile['read__message']);
 
-                    } elseif($parent_en['read__type'] == 4255 /* TEXT */){
+                    } elseif($source_profile['read__type'] == 4255 /* TEXT */){
 
-                        $source_appendix .= '<div class="source-appendix paddingup">*' . $parent_en['read__message'] . '</div>';
+                        $source_appendix .= '<div class="source-appendix paddingup">*' . $source_profile['read__message'] . '</div>';
                         continue;
 
                     } else {
@@ -984,7 +984,7 @@ class READ_model extends CI_Model
 
                     }
 
-                    $source_appendix .= '<div class="source-appendix paddingup">' . view_read__message($parent_en['read__message'], $parent_en['read__type'], $message_input) . '</div>';
+                    $source_appendix .= '<div class="source-appendix paddingup">' . view_read__message($source_profile['read__message'], $source_profile['read__type'], $message_input) . '</div>';
 
                 }
             }
@@ -1366,13 +1366,13 @@ class READ_model extends CI_Model
                 'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__source' => $source__id, //Belongs to this User
-            ), array(''), 0, 0, array('read__sort' => 'ASC')) as $current_ins){
+            ), array(''), 0, 0, array('read__sort' => 'ASC')) as $current_ideas){
 
                 //Increase rank:
                 $idea_rank++;
 
                 //Update order:
-                $this->READ_model->update($current_ins['read__id'], array(
+                $this->READ_model->update($current_ideas['read__id'], array(
                     'read__sort' => $idea_rank,
                 ), $source__id, 10681 /* Ideas Ordered Automatically  */);
             }
@@ -1541,16 +1541,16 @@ class READ_model extends CI_Model
                     array_push($parents_checked, $p_id);
 
                     //Fetch parent idea:
-                    $parent_ins = $this->IDEA_model->fetch(array(
+                    $previous_ideas = $this->IDEA_model->fetch(array(
                         'idea__id' => $p_id,
                         'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                     ));
 
                     //Now see if this child completion resulted in a full parent completion:
-                    if(count($parent_ins) > 0){
+                    if(count($previous_ideas) > 0){
 
                         //Fetch parent completion:
-                        $this->READ_model->completion_recursive_up($source__id, $parent_ins[0], false);
+                        $this->READ_model->completion_recursive_up($source__id, $previous_ideas[0], false);
 
                     }
 
@@ -1617,7 +1617,7 @@ class READ_model extends CI_Model
         $qualified_completed_users = array();
 
         //Go through children and see how many completed:
-        foreach($ideas_next as $count => $child_in){
+        foreach($ideas_next as $count => $next_idea){
 
             //Fetch users who completed this:
             if($count==0){
@@ -1626,7 +1626,7 @@ class READ_model extends CI_Model
                 $qualified_completed_users = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
-                    'read__left' => $child_in['idea__id'],
+                    'read__left' => $next_idea['idea__id'],
                 ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
                 if($requires_all_children && count($qualified_completed_users)==0){
@@ -1643,7 +1643,7 @@ class READ_model extends CI_Model
                     $qualified_completed_users = $this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
-                        'read__left' => $child_in['idea__id'],
+                        'read__left' => $next_idea['idea__id'],
                     ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
                 }
@@ -1661,14 +1661,14 @@ class READ_model extends CI_Model
     }
 
 
-    function idea_home($idea__id, $recipient_en){
+    function idea_home($idea__id, $recipient_source){
 
         $read_idea_home = false;
 
-        if($recipient_en['source__id'] > 0){
+        if($recipient_source['source__id'] > 0){
 
             //Fetch entire Reads:
-            $player_read_ids = $this->READ_model->ids($recipient_en['source__id']);
+            $player_read_ids = $this->READ_model->ids($recipient_source['source__id']);
             $read_idea_home = in_array($idea__id, $player_read_ids);
 
             if(!$read_idea_home){

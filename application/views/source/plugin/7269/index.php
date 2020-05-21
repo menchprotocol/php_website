@@ -2,29 +2,29 @@
 
 $sources__6177 = $this->config->item('sources__6177'); //Source Status
 
-$orphan_ens = $this->SOURCE_model->fetch(array(
+$source_orphans = $this->SOURCE_model->fetch(array(
     ' NOT EXISTS (SELECT 1 FROM mench_read WHERE source__id=read__down AND read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
     'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
 ));
 
-if(count($orphan_ens) > 0){
+if(count($source_orphans) > 0){
 
     //List orphans:
-    foreach($orphan_ens  as $count => $orphan_en) {
+    foreach($source_orphans  as $count => $source_orphan) {
 
         //Show source:
-        echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$orphan_en['source__status']]['m_name'].': '.$sources__6177[$orphan_en['source__status']]['m_desc'].'">' . $sources__6177[$orphan_en['source__status']]['m_icon'] . '</span> <a href="/source/'.$orphan_en['source__id'].'"><b>'.$orphan_en['source__title'].'</b></a>';
+        echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$source_orphan['source__status']]['m_name'].': '.$sources__6177[$source_orphan['source__status']]['m_desc'].'">' . $sources__6177[$source_orphan['source__status']]['m_icon'] . '</span> <a href="/source/'.$source_orphan['source__id'].'"><b>'.$source_orphan['source__title'].'</b></a>';
 
         //Do we need to delete?
         if(isset($_GET['take_action']) && $_GET['take_action']=='delete_all'){
 
             //Delete links:
-            $links_deleted = $this->SOURCE_model->unlink($orphan_en['source__id'], $session_en['source__id']);
+            $links_deleted = $this->SOURCE_model->unlink($source_orphan['source__id'], $session_source['source__id']);
 
             //Delete source:
-            $this->SOURCE_model->update($orphan_en['source__id'], array(
+            $this->SOURCE_model->update($source_orphan['source__id'], array(
                 'source__status' => 6178, /* Player Deleted */
-            ), true, $session_en['source__id']);
+            ), true, $session_source['source__id']);
 
             //Show confirmation:
             echo ' [Source + '.$links_deleted.' links Deleted]';

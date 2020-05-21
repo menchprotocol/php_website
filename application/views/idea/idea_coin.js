@@ -183,8 +183,8 @@ $(document).ready(function () {
 
     autosize($('.text__4736_'+idea_loaded_id));
 
-    $('#expand_ins .expand_all').click(function (e) {
-        $(".next_ins .ideas_sortable").each(function () {
+    $('#expand_ideas .expand_all').click(function (e) {
+        $(".next_ideas .ideas_sortable").each(function () {
             ms_toggle($(this).attr('read__id'), 1);
         });
     });
@@ -206,13 +206,13 @@ $(document).ready(function () {
     idea_sort_load(idea_loaded_id);
 
     //Watch the expand/close all buttons:
-    $('#expand_ins .expand_all').click(function (e) {
-        $(".next_ins .ideas_sortable").each(function () {
+    $('#expand_ideas .expand_all').click(function (e) {
+        $(".next_ideas .ideas_sortable").each(function () {
             ms_toggle($(this).attr('read__id'), 1);
         });
     });
-    $('#expand_ins .close_all').click(function (e) {
-        $(".next_ins .ideas_sortable").each(function () {
+    $('#expand_ideas .close_all').click(function (e) {
+        $(".next_ideas .ideas_sortable").each(function () {
             ms_toggle($(this).attr('read__id'), 0);
         });
     });
@@ -330,7 +330,7 @@ function idea_unlink(idea__id, read__id, is_parent){
 function idea_ui_delete(idea__id,read__id){
 
     //Fetch parent idea before removing element from DOM:
-    var parent_idea__id = parseInt($('.idea_line_' + idea__id).attr('parent-idea-id'));
+    var previous_idea__id = parseInt($('.idea_line_' + idea__id).attr('parent-idea-id'));
 
     //Delete from UI:
     $('.idea__tr_' + read__id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');

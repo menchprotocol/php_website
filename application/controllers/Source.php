@@ -26,13 +26,13 @@ class Source extends CI_Controller
     function index()
     {
         //Leaderboard:
-        $session_en = superpower_assigned(null);
+        $session_source = superpower_assigned(null);
 
         //Log View:
-        if($session_en){
+        if($session_source){
             $this->READ_model->create(array(
                 'read__type' => 12489, //Opened Leaderboard
-                'read__source' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
             ));
         }
 
@@ -41,7 +41,7 @@ class Source extends CI_Controller
             'title' => $sources__2738[4536]['m_name'],
         ));
         $this->load->view('source/source_home', array(
-            'session_en' => $session_en,
+            'session_source' => $session_source,
         ));
         $this->load->view('footer');
     }
@@ -53,16 +53,16 @@ class Source extends CI_Controller
 
         //Make sure not a private read:
         if(in_array($source__id, $this->config->item('sources_id_4755'))){
-            $session_en = superpower_assigned(12701, true);
+            $session_source = superpower_assigned(12701, true);
         } else {
-            $session_en = superpower_assigned();
+            $session_source = superpower_assigned();
         }
 
         //Do we have any mass action to process here?
         if (superpower_assigned(12703) && isset($_POST['mass_action_source__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_source__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_source__id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->SOURCE_model->mass_update($source__id, intval($_POST['mass_action_source__id']), $_POST['mass_value1_'.$_POST['mass_action_source__id']], $_POST['mass_value2_'.$_POST['mass_action_source__id']], $session_en['source__id']);
+            $process_mass_action = $this->SOURCE_model->mass_update($source__id, intval($_POST['mass_action_source__id']), $_POST['mass_value1_'.$_POST['mass_action_source__id']], $_POST['mass_value2_'.$_POST['mass_action_source__id']], $session_source['source__id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>';
@@ -76,7 +76,7 @@ class Source extends CI_Controller
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->create(array(
-                'read__source' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
                 'read__type' => 4994, //Player Opened Player
                 'read__down' => $source__id,
                 'read__sort' => $new_order,
@@ -100,7 +100,7 @@ class Source extends CI_Controller
         ));
         $this->load->view('source/source_coin', array(
             'source' => $sources[0],
-            'session_en' => $session_en,
+            'session_source' => $session_source,
         ));
         $this->load->view('footer');
 
@@ -111,7 +111,7 @@ class Source extends CI_Controller
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10967);
+        $session_source = superpower_assigned(10967);
 
         //Validate Source:
         $sources = $this->SOURCE_model->fetch(array(
@@ -119,7 +119,7 @@ class Source extends CI_Controller
             'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         ));
 
-        if (!$session_en) {
+        if (!$session_source) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10967),
@@ -142,7 +142,7 @@ class Source extends CI_Controller
         ), array('source_portfolio'), 0, 0, array(), 'read__id') as $ln) {
             $this->READ_model->update($ln['read__id'], array(
                 'read__sort' => 0,
-            ), $session_en['source__id'], 13007 /* SOURCE SORT RESET */);
+            ), $session_source['source__id'], 13007 /* SOURCE SORT RESET */);
         }
 
         //Display message:
@@ -156,8 +156,8 @@ class Source extends CI_Controller
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10967);
-        if (!$session_en) {
+        $session_source = superpower_assigned(10967);
+        if (!$session_source) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10967),
@@ -208,7 +208,7 @@ class Source extends CI_Controller
                 foreach($_POST['new_read__sorts'] as $rank => $read__id) {
                     $this->READ_model->update(intval($read__id), array(
                         'read__sort' => intval($rank),
-                    ), $session_en['source__id'], 13006 /* SOURCE SORT MANUAL */);
+                    ), $session_source['source__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
                 //Display message:
@@ -225,19 +225,19 @@ class Source extends CI_Controller
     function load_leaderboard(){
 
         //Fetch top sources
-        $session_en = superpower_assigned();
+        $session_source = superpower_assigned();
         $load_max = config_var(11064);
         $show_max = config_var(11986);
         $start_date = null; //All-Time
-        $filters_in = array(
+        $filters_idea = array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
 
-        if($session_en){
+        if($session_source){
             //This source is already listed at the top of the page, skip:
-            $filters_in['source__id !='] = $session_en['source__id'];
+            $filters_idea['source__id !='] = $session_source['source__id'];
         }
 
         /*
@@ -250,21 +250,21 @@ class Source extends CI_Controller
             } else {
                 $start_date = date("Y-m-d", strtotime('previous monday'));
             }
-            $filters_in['read__time >='] = $start_date.' 00:00:00'; //From beginning of the day
+            $filters_idea['read__time >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
         */
 
         //Start with top Players:
         echo '<div class="list-group">';
 
-        if($session_en){
+        if($session_source){
             //Make it even for the user row:
             echo '<div class="list-group-item no-height"></div>';
         } else {
             $show_max++;
         }
 
-        foreach($this->READ_model->fetch($filters_in, array('source_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$source) {
+        foreach($this->READ_model->fetch($filters_idea, array('source_profile'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$source) {
 
             if($count==$show_max){
 
@@ -286,8 +286,8 @@ class Source extends CI_Controller
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10939);
-        if (!$session_en) {
+        $session_source = superpower_assigned(10939);
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -367,9 +367,9 @@ class Source extends CI_Controller
     function source_only_unlink(){
 
         //Auth user and check required variables:
-        $session_en = superpower_assigned(10939);
+        $session_source = superpower_assigned(10939);
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -389,7 +389,7 @@ class Source extends CI_Controller
         //Archive Link:
         $this->READ_model->update($_POST['read__id'], array(
             'read__status' => 6173,
-        ), $session_en['source__id'], 10678 /* IDEA NOTES Unpublished */);
+        ), $session_source['source__id'], 10678 /* IDEA NOTES Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -401,9 +401,9 @@ class Source extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_en = superpower_assigned(10939);
+        $session_source = superpower_assigned(10939);
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -473,42 +473,42 @@ class Source extends CI_Controller
 
 
             //All good, assign:
-            $focus_en = $sources[0];
+            $focus_source = $sources[0];
 
         } else {
 
             //Create source:
-            $added_en = $this->SOURCE_model->verify_create($_POST['source_new_string'], $session_en['source__id']);
-            if(!$added_en['status']){
+            $added_source = $this->SOURCE_model->verify_create($_POST['source_new_string'], $session_source['source__id']);
+            if(!$added_source['status']){
                 //We had an error, return it:
-                return view_json($added_en);
+                return view_json($added_source);
             }
 
             //Assign new source:
-            $focus_en = $added_en['new_source'];
+            $focus_source = $added_source['new_source'];
 
             //Assign to Player:
-            $this->SOURCE_model->assign_session_player($focus_en['source__id']);
+            $this->SOURCE_model->assign_session_player($focus_source['source__id']);
 
             //Update Algolia:
-            update_algolia(4536, $focus_en['source__id']);
+            update_algolia(4536, $focus_source['source__id']);
 
         }
 
         //Create Note:
         $new_note = $this->READ_model->create(array(
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__type' => $_POST['note_type_id'],
             'read__right' => $ideas[0]['idea__id'],
 
-            'read__up' => $focus_en['source__id'],
-            'read__message' => '@'.$focus_en['source__id'],
+            'read__up' => $focus_source['source__id'],
+            'read__message' => '@'.$focus_source['source__id'],
         ));
 
         //Return newly added or linked source:
         return view_json(array(
             'status' => 1,
-            'source_new_echo' => view_source(array_merge($focus_en, $new_note), 0, null, true, true),
+            'source_new_echo' => view_source(array_merge($focus_source, $new_note), 0, null, true, true),
         ));
 
     }
@@ -518,9 +518,9 @@ class Source extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_en = superpower_assigned(10939);
+        $session_source = superpower_assigned(10939);
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -543,10 +543,10 @@ class Source extends CI_Controller
         }
 
         //Validate parent source:
-        $current_en = $this->SOURCE_model->fetch(array(
+        $focus_source = $this->SOURCE_model->fetch(array(
             'source__id' => $_POST['source__id'],
         ));
-        if (count($current_en) < 1) {
+        if (count($focus_source) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid parent source ID',
@@ -576,7 +576,7 @@ class Source extends CI_Controller
             }
 
             //All good, assign:
-            $focus_en = $sources[0];
+            $focus_source = $sources[0];
 
         } else {
 
@@ -595,7 +595,7 @@ class Source extends CI_Controller
                 if($url_source['url_is_root']){
 
                     //Link to domains parent:
-                    $focus_en = array('source__id' => 1326);
+                    $focus_source = array('source__id' => 1326);
 
                     //Update domain to stay synced:
                     $_POST['source_new_string'] = $url_source['url_clean_domain'];
@@ -603,22 +603,22 @@ class Source extends CI_Controller
                 } else {
 
                     //Let's first find/add the domain:
-                    $url_source = $this->SOURCE_model->domain($_POST['source_new_string'], $session_en['source__id']);
+                    $url_source = $this->SOURCE_model->domain($_POST['source_new_string'], $session_source['source__id']);
 
                     //Link to this source:
-                    $focus_en = $url_source['source_domain'];
+                    $focus_source = $url_source['source_domain'];
                 }
 
             } else {
 
                 //Create source:
-                $added_en = $this->SOURCE_model->verify_create($_POST['source_new_string'], $session_en['source__id']);
-                if(!$added_en['status']){
+                $added_source = $this->SOURCE_model->verify_create($_POST['source_new_string'], $session_source['source__id']);
+                if(!$added_source['status']){
                     //We had an error, return it:
-                    return view_json($added_en);
+                    return view_json($added_source);
                 } else {
                     //Assign new source:
-                    $focus_en = $added_en['new_source'];
+                    $focus_source = $added_source['new_source'];
                 }
 
             }
@@ -634,13 +634,19 @@ class Source extends CI_Controller
             //Add links only if not previously added by the URL function:
             if ($_POST['is_parent']) {
 
-                $read__down = $current_en[0]['source__id'];
-                $read__up = $focus_en['source__id'];
+                $read__down = $focus_source[0]['source__id'];
+                $read__up = $focus_source['source__id'];
+                $read__sort = 0;
 
             } else {
 
-                $read__down = $focus_en['source__id'];
-                $read__up = $current_en[0]['source__id'];
+                $read__down = $focus_source['source__id'];
+                $read__up = $focus_source[0]['source__id'];
+                $read__sort = 1 + $this->READ_model->max_order(array(
+                        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                        'read__up' => $read__up,
+                    ));
 
             }
 
@@ -664,17 +670,18 @@ class Source extends CI_Controller
 
             // Link to new OR existing source:
             $ur2 = $this->READ_model->create(array(
-                'read__source' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
                 'read__type' => $read__type,
                 'read__message' => $read__message,
                 'read__down' => $read__down,
                 'read__up' => $read__up,
+                'read__sort' => $read__sort,
             ));
         }
 
         //Fetch latest version:
         $sources_latest = $this->SOURCE_model->fetch(array(
-            'source__id' => $focus_en['source__id'],
+            'source__id' => $focus_source['source__id'],
             'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         ));
         if(!count($sources_latest)){
@@ -722,11 +729,11 @@ class Source extends CI_Controller
     function account_toggle_superpower($superpower_source__id){
 
         //Toggles the advance session variable for the player on/off for logged-in players:
-        $session_en = superpower_assigned(10939);
+        $session_source = superpower_assigned(10939);
         $superpower_source__id = intval($superpower_source__id);
         $sources__10957 = $this->config->item('sources__10957');
 
-        if(!$session_en){
+        if(!$session_source){
 
             return view_json(array(
                 'status' => 0,
@@ -763,7 +770,7 @@ class Source extends CI_Controller
 
         //Log Link:
         $this->READ_model->create(array(
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__type' => 5007, //TOGGLE SUPERPOWER
             'read__up' => $superpower_source__id,
             'read__message' => 'SUPERPOWER '.$toggled_setting, //To be used when player logs in again
@@ -783,7 +790,7 @@ class Source extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_en = superpower_assigned(10939);
+        $session_source = superpower_assigned(10939);
         $success_message = 'Saved'; //Default, might change based on what we do...
         $is_valid_icon = is_valid_icon($_POST['source__icon']);
 
@@ -798,7 +805,7 @@ class Source extends CI_Controller
             return view_json($source__title_validate);
         }
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -876,7 +883,7 @@ class Source extends CI_Controller
             ), array('idea_next'), 0, 0, array('read__sort' => 'ASC'));
 
             //Assume no merge:
-            $merged_ens = array();
+            $merged_sources = array();
 
             //See if we have merger source:
             if (strlen($_POST['source_merge']) > 0) {
@@ -907,11 +914,11 @@ class Source extends CI_Controller
                 } else {
 
                     //Finally validate merger source:
-                    $merged_ens = $this->SOURCE_model->fetch(array(
+                    $merged_sources = $this->SOURCE_model->fetch(array(
                         'source__id' => $merger_source__id,
                         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
                     ));
-                    if (count($merged_ens) == 0) {
+                    if (count($merged_sources) == 0) {
                         return view_json(array(
                             'status' => 0,
                             'message' => 'Could not find source @' . $merger_source__id,
@@ -946,15 +953,15 @@ class Source extends CI_Controller
 
             $_POST['read__id'] = 0; //Do not consider the link as the source is being Deleted
             $delete_from_ui = 1; //Removing source
-            $merger_source__id = (count($merged_ens) > 0 ? $merged_ens[0]['source__id'] : 0);
-            $links_adjusted = $this->SOURCE_model->unlink($_POST['source__id'], $session_en['source__id'], $merger_source__id);
+            $merger_source__id = (count($merged_sources) > 0 ? $merged_sources[0]['source__id'] : 0);
+            $links_adjusted = $this->SOURCE_model->unlink($_POST['source__id'], $session_source['source__id'], $merger_source__id);
 
             //Show appropriate message based on action:
             if ($merger_source__id > 0) {
 
-                if($_POST['source__id'] == $_POST['source_focus_id'] || $merged_ens[0]['source__id'] == $_POST['source_focus_id']){
+                if($_POST['source__id'] == $_POST['source_focus_id'] || $merged_sources[0]['source__id'] == $_POST['source_focus_id']){
                     //Player is being Deleted and merged into another source:
-                    $delete_redirect_url = '/source/' . $merged_ens[0]['source__id'];
+                    $delete_redirect_url = '/source/' . $merged_sources[0]['source__id'];
                 }
 
                 $success_message = 'Source deleted & merged its ' . $links_adjusted . ' links here';
@@ -962,7 +969,7 @@ class Source extends CI_Controller
             } else {
 
                 if($_POST['source__id'] == $_POST['source_focus_id']){
-                    $delete_redirect_url = '/source/' . ( count($source__profiles) ? $source__profiles[0]['source__id'] : $session_en['source__id'] );
+                    $delete_redirect_url = '/source/' . ( count($source__profiles) ? $source__profiles[0]['source__id'] : $session_source['source__id'] );
                 }
 
                 //Display proper message:
@@ -1000,7 +1007,7 @@ class Source extends CI_Controller
 
                 $this->READ_model->update($_POST['read__id'], array(
                     'read__status' => intval($_POST['read__status']),
-                ), $session_en['source__id'], $read__status);
+                ), $session_source['source__id'], $read__status);
             }
 
 
@@ -1077,26 +1084,26 @@ class Source extends CI_Controller
 
                 $this->READ_model->update($_POST['read__id'], array(
                     'read__message' => $read__message,
-                ), $session_en['source__id'], 10657 /* Player Link updated Content */);
+                ), $session_source['source__id'], 10657 /* Player Link updated Content */);
 
 
                 //Also, did the link type change based on the content change?
                 if($js_read__type!=$source_lns[0]['read__type']){
                     $this->READ_model->update($_POST['read__id'], array(
                         'read__type' => $js_read__type,
-                    ), $session_en['source__id'], 10659 /* Player Link updated Type */);
+                    ), $session_source['source__id'], 10659 /* Player Link updated Type */);
                 }
             }
         }
 
         //Now update the DB:
-        $this->SOURCE_model->update(intval($_POST['source__id']), $source_update, true, $session_en['source__id']);
+        $this->SOURCE_model->update(intval($_POST['source__id']), $source_update, true, $session_source['source__id']);
 
 
         //Reset user session data if this data belongs to the logged-in user:
-        if ($_POST['source__id'] == $session_en['source__id']) {
+        if ($_POST['source__id'] == $session_source['source__id']) {
             //Re-activate Session with new data:
-            $this->SOURCE_model->activate_session($session_en, true);
+            $this->SOURCE_model->activate_session($session_source, true);
         }
 
 
@@ -1136,9 +1143,9 @@ class Source extends CI_Controller
     function source_fetch_canonical(){
 
         //Auth user and check required variables:
-        $session_en = superpower_assigned();
+        $session_source = superpower_assigned();
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1180,9 +1187,9 @@ class Source extends CI_Controller
          *
          * */
 
-        $session_en = superpower_assigned();
+        $session_source = superpower_assigned();
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1223,21 +1230,21 @@ class Source extends CI_Controller
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->READ_model->fetch($filters, array('source_portfolio'), 0, 0) as $answer_en){
-                array_push($possible_answers, $answer_en['source__id']);
+            foreach($this->READ_model->fetch($filters, array('source_portfolio'), 0, 0) as $answer_source){
+                array_push($possible_answers, $answer_source['source__id']);
             }
 
             //Delete selected options for this player:
             foreach($this->READ_model->fetch(array(
                 'read__up IN (' . join(',', $possible_answers) . ')' => null,
-                'read__down' => $session_en['source__id'],
+                'read__down' => $session_source['source__id'],
                 'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            )) as $delete_en){
+            )) as $delete_source){
                 //Should usually delete a single option:
-                $this->READ_model->update($delete_en['read__id'], array(
+                $this->READ_model->update($delete_source['read__id'], array(
                     'read__status' => 6173, //Read Deleted
-                ), $session_en['source__id'], 6224 /* User Account Updated */);
+                ), $session_source['source__id'], 6224 /* User Account Updated */);
             }
 
         }
@@ -1246,8 +1253,8 @@ class Source extends CI_Controller
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_previously_selected']){
             $this->READ_model->create(array(
                 'read__up' => $_POST['selected_source__id'],
-                'read__down' => $session_en['source__id'],
-                'read__source' => $session_en['source__id'],
+                'read__down' => $session_source['source__id'],
+                'read__source' => $session_source['source__id'],
                 'read__type' => source_link_type(),
             ));
         }
@@ -1256,7 +1263,7 @@ class Source extends CI_Controller
         //Log Account Update link type:
         $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->create(array(
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__type' => 6224, //My Account updated
             'read__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
             'read__metadata' => $_POST,
@@ -1279,9 +1286,9 @@ class Source extends CI_Controller
     function account_update_avatar_icon()
     {
 
-        $session_en = superpower_assigned();
+        $session_source = superpower_assigned();
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1317,14 +1324,14 @@ class Source extends CI_Controller
 
         //Update icon:
         $new_avatar = '<i class="'.$icon_new_css.'"></i>';
-        $this->SOURCE_model->update($session_en['source__id'], array(
+        $this->SOURCE_model->update($session_source['source__id'], array(
             'source__icon' => $new_avatar,
-        ), true, $session_en['source__id']);
+        ), true, $session_source['source__id']);
 
 
         //Update Session:
-        $session_en['source__icon'] = $new_avatar;
-        $this->SOURCE_model->activate_session($session_en, true);
+        $session_source['source__icon'] = $new_avatar;
+        $this->SOURCE_model->activate_session($session_source, true);
 
 
         return view_json(array(
@@ -1339,9 +1346,9 @@ class Source extends CI_Controller
     function account_update_email()
     {
 
-        $session_en = superpower_assigned();
+        $session_source = superpower_assigned();
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1364,7 +1371,7 @@ class Source extends CI_Controller
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                 'read__up' => 3288, //Mench Email
-                'read__down !=' => $session_en['source__id'],
+                'read__down !=' => $session_source['source__id'],
                 'LOWER(read__message)' => $_POST['source_email'],
             ));
             if (count($duplicates) > 0) {
@@ -1380,7 +1387,7 @@ class Source extends CI_Controller
         //Fetch existing email:
         $user_emails = $this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__down' => $session_en['source__id'],
+            'read__down' => $session_source['source__id'],
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__up' => 3288, //Mench Email
         ));
@@ -1391,7 +1398,7 @@ class Source extends CI_Controller
                 //Delete email:
                 $this->READ_model->update($user_emails[0]['read__id'], array(
                     'read__status' => 6173, //Read Deleted
-                ), $session_en['source__id'], 6224 /* User Account Updated */);
+                ), $session_source['source__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1403,7 +1410,7 @@ class Source extends CI_Controller
                 //Update if not duplicate:
                 $this->READ_model->update($user_emails[0]['read__id'], array(
                     'read__message' => $_POST['source_email'],
-                ), $session_en['source__id'], 6224 /* User Account Updated */);
+                ), $session_source['source__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1423,8 +1430,8 @@ class Source extends CI_Controller
 
             //Create new link:
             $this->READ_model->create(array(
-                'read__source' => $session_en['source__id'],
-                'read__down' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
+                'read__down' => $session_source['source__id'],
                 'read__type' => source_link_type($_POST['source_email']),
                 'read__up' => 3288, //Mench Email
                 'read__message' => $_POST['source_email'],
@@ -1449,7 +1456,7 @@ class Source extends CI_Controller
             //Log Account Update link type:
             $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->create(array(
-                'read__source' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
                 'read__type' => 6224, //My Account updated
                 'read__message' => 'My Account '.$return['message']. ( strlen($_POST['source_email']) > 0 ? ': '.$_POST['source_email'] : ''),
                 'read__metadata' => $_POST,
@@ -1467,9 +1474,9 @@ class Source extends CI_Controller
     function account_update_password()
     {
 
-        $session_en = superpower_assigned();
+        $session_source = superpower_assigned();
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1486,10 +1493,10 @@ class Source extends CI_Controller
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__up' => 3286, //Password
-            'read__down' => $session_en['source__id'],
+            'read__down' => $session_source['source__id'],
         ));
 
-        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_en['source__id']));
+        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_source['source__id']));
 
 
         if (count($user_passwords) > 0) {
@@ -1506,7 +1513,7 @@ class Source extends CI_Controller
                 //Update password:
                 $this->READ_model->update($user_passwords[0]['read__id'], array(
                     'read__message' => $hashed_password,
-                ), $session_en['source__id'], 7578 /* User Updated Password  */);
+                ), $session_source['source__id'], 7578 /* User Updated Password  */);
 
                 $return = array(
                     'status' => 1,
@@ -1521,8 +1528,8 @@ class Source extends CI_Controller
             $this->READ_model->create(array(
                 'read__type' => source_link_type($hashed_password),
                 'read__up' => 3286, //Password
-                'read__source' => $session_en['source__id'],
-                'read__down' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
+                'read__down' => $session_source['source__id'],
                 'read__message' => $hashed_password,
             ), true);
 
@@ -1538,7 +1545,7 @@ class Source extends CI_Controller
         if($return['status']){
             $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->create(array(
-                'read__source' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
                 'read__type' => 6224, //My Account Updated
                 'read__message' => 'My Account '.$return['message'],
                 'read__metadata' => $_POST,
@@ -1574,8 +1581,8 @@ class Source extends CI_Controller
     function sign($idea__id = 0){
 
         //Check to see if they are previously logged in?
-        $session_en = superpower_assigned();
-        if ($session_en) {
+        $session_source = superpower_assigned();
+        if ($session_source) {
             //Lead player and above, go to console:
             if($idea__id > 0){
                 return redirect_message('/idea/go/' . $idea__id);
@@ -1691,10 +1698,10 @@ class Source extends CI_Controller
 
 
         //All good, create new source:
-        $user_en = $this->SOURCE_model->verify_create(trim($_POST['input_name']), 0, 6181, random_avatar());
-        if(!$user_en['status']){
+        $player_source = $this->SOURCE_model->verify_create(trim($_POST['input_name']), 0, 6181, random_avatar());
+        if(!$player_source['status']){
             //We had an error, return it:
-            return view_json($user_en);
+            return view_json($player_source);
         }
 
 
@@ -1702,48 +1709,48 @@ class Source extends CI_Controller
         $this->READ_model->create(array(
             'read__up' => 4430, //MENCH PLAYERS
             'read__type' => source_link_type(),
-            'read__source' => $user_en['new_source']['source__id'],
-            'read__down' => $user_en['new_source']['source__id'],
+            'read__source' => $player_source['new_source']['source__id'],
+            'read__down' => $player_source['new_source']['source__id'],
         ));
 
         $this->READ_model->create(array(
             'read__type' => source_link_type(trim(strtolower($_POST['input_email']))),
             'read__message' => trim(strtolower($_POST['input_email'])),
             'read__up' => 3288, //Mench Email
-            'read__source' => $user_en['new_source']['source__id'],
-            'read__down' => $user_en['new_source']['source__id'],
+            'read__source' => $player_source['new_source']['source__id'],
+            'read__down' => $player_source['new_source']['source__id'],
         ));
-        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['new_source']['source__id']));
+        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $player_source['new_source']['source__id']));
         $this->READ_model->create(array(
             'read__type' => source_link_type($hash),
             'read__message' => $hash,
             'read__up' => 3286, //Mench Password
-            'read__source' => $user_en['new_source']['source__id'],
-            'read__down' => $user_en['new_source']['source__id'],
+            'read__source' => $player_source['new_source']['source__id'],
+            'read__down' => $player_source['new_source']['source__id'],
         ));
 
         //Now update Algolia:
-        update_algolia(4536,  $user_en['new_source']['source__id']);
+        update_algolia(4536,  $player_source['new_source']['source__id']);
 
         //Fetch referral Idea, if any:
         if(intval($_POST['referrer_idea__id']) > 0){
 
             //Fetch the Idea:
-            $referrer_ins = $this->IDEA_model->fetch(array(
+            $referrer_ideas = $this->IDEA_model->fetch(array(
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'idea__id' => $_POST['referrer_idea__id'],
             ));
 
-            if(count($referrer_ins) > 0){
+            if(count($referrer_ideas) > 0){
                 //Add this Idea to their Reads:
-                $this->READ_model->start($user_en['new_source']['source__id'], $_POST['referrer_idea__id']);
+                $this->READ_model->start($player_source['new_source']['source__id'], $_POST['referrer_idea__id']);
             } else {
                 //Cannot be added, likely because its not published:
                 $_POST['referrer_idea__id'] = 0;
             }
 
         } else {
-            $referrer_ins = array();
+            $referrer_ideas = array();
         }
 
 
@@ -1764,7 +1771,7 @@ class Source extends CI_Controller
         //Log User Signin Joined Mench
         $invite_link = $this->READ_model->create(array(
             'read__type' => 7562, //User Signin Joined Mench
-            'read__source' => $user_en['new_source']['source__id'],
+            'read__source' => $player_source['new_source']['source__id'],
             'read__left' => intval($_POST['referrer_idea__id']),
             'read__metadata' => array(
                 'email_log' => $email_log,
@@ -1772,7 +1779,7 @@ class Source extends CI_Controller
         ));
 
         //Assign session & log login link:
-        $this->SOURCE_model->activate_session($user_en['new_source']);
+        $this->SOURCE_model->activate_session($player_source['new_source']);
 
 
         if (strlen($_POST['referrer_url']) > 0) {
@@ -2171,12 +2178,12 @@ class Source extends CI_Controller
 
         if(intval($_POST['referrer_idea__id']) > 0){
             //Fetch the idea:
-            $referrer_ins = $this->IDEA_model->fetch(array(
+            $referrer_ideas = $this->IDEA_model->fetch(array(
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'idea__id' => $_POST['referrer_idea__id'],
             ));
         } else {
-            $referrer_ins = array();
+            $referrer_ideas = array();
         }
 
 
@@ -2233,9 +2240,9 @@ class Source extends CI_Controller
             //Running from browser? If so, authenticate:
             $is_player_request = isset($_SERVER['SERVER_NAME']);
             if($is_player_request){
-                $session_en = superpower_assigned(12699, true);
+                $session_source = superpower_assigned(12699, true);
             } else {
-                $session_en = false;
+                $session_source = false;
             }
 
             //Needs extra superpowers?
@@ -2250,7 +2257,7 @@ class Source extends CI_Controller
             //This is also duplicated in source_plugin_frame to pass-on to plugin file:
             $view_data = array(
                 'plugin_source__id' => $plugin_source__id,
-                'session_en' => $session_en,
+                'session_source' => $session_source,
                 'is_player_request' => $is_player_request,
             );
 
@@ -2276,9 +2283,9 @@ class Source extends CI_Controller
     function plugin_7264(){
 
         //Authenticate Player:
-        $session_en = superpower_assigned(12700);
+        $session_source = superpower_assigned(12700);
 
-        if (!$session_en) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(12700),

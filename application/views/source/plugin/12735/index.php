@@ -38,7 +38,7 @@ foreach($this->IDEA_model->fetch() as $in) {
     if(!count($idea_sources)) {
         $stats['creator_missing']++;
         $this->READ_model->create(array(
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__right' => $in['idea__id'],
             'read__message' => $in['idea__title'],
             'read__type' => 4250, //New Idea Created
@@ -61,7 +61,7 @@ foreach($this->IDEA_model->fetch() as $in) {
         //Missing SOURCE
 
         $stats['source_missing']++;
-        $creator_id = ( count($idea_sources) ? $idea_sources[0]['read__source'] : $session_en['source__id'] );
+        $creator_id = ( count($idea_sources) ? $idea_sources[0]['read__source'] : $session_source['source__id'] );
         $this->READ_model->create(array(
             'read__type' => 4983, //IDEA COIN
             'read__source' => $creator_id,
@@ -77,7 +77,7 @@ foreach($this->IDEA_model->fetch() as $in) {
             //Delete this link:
             $stats['note_deleted'] += $this->READ_model->update($idea_note['read__id'], array(
                 'read__status' => 6173, //Link Deleted
-            ), $session_en['source__id'], 10686 /* Idea Link Unpublished */);
+            ), $session_source['source__id'], 10686 /* Idea Link Unpublished */);
         }
 
     } elseif(count($idea_sources) >= 2){

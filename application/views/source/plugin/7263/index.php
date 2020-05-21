@@ -25,7 +25,7 @@ foreach($this->READ_model->fetch(array(
     if($mark){
 
         //Fetch parent Idea:
-        $parent_ins = $this->IDEA_model->fetch(array(
+        $previous_ideas = $this->IDEA_model->fetch(array(
             'idea__id' => $idea_read['read__left'],
         ));
 
@@ -37,8 +37,8 @@ foreach($this->READ_model->fetch(array(
         echo '<td style="text-align: left;">';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$parent_ins[0]['idea__status']]['m_icon'].'</span>';
-        echo '<a href="/idea/go/'.$parent_ins[0]['idea__id'].'">'.$parent_ins[0]['idea__title'].'</a>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$previous_ideas[0]['idea__status']]['m_icon'].'</span>';
+        echo '<a href="/idea/go/'.$previous_ideas[0]['idea__id'].'">'.$previous_ideas[0]['idea__title'].'</a>';
         echo '</div>';
 
         echo '<div>';
@@ -105,7 +105,7 @@ if(1){
         if($tr__assessment_points!=0){
 
             //Fetch parent Idea:
-            $parent_ins = $this->IDEA_model->fetch(array(
+            $previous_ideas = $this->IDEA_model->fetch(array(
                 'idea__id' => $idea_read['read__left'],
             ));
 
@@ -116,8 +116,8 @@ if(1){
             echo '<td>'.$sources__6186[$idea_read['read__status']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$parent_ins[0]['idea__status']]['m_icon'].'</span>';
-            echo '<a href="/idea/go/'.$parent_ins[0]['idea__id'].'">'.$parent_ins[0]['idea__title'].'</a>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$previous_ideas[0]['idea__status']]['m_icon'].'</span>';
+            echo '<a href="/idea/go/'.$previous_ideas[0]['idea__id'].'">'.$previous_ideas[0]['idea__title'].'</a>';
             echo '</div>';
 
             echo '<div>';

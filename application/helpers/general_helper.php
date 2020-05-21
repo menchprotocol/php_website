@@ -386,7 +386,7 @@ function source_count_connections($source__id, $return_html = true){
 }
 
 
-function idea_fetch_cover($idea__id){
+function idea_fetch_cover($idea__id, $html_format = false){
 
     $CI =& get_instance();
     $idea_fetch_cover = null;
@@ -415,7 +415,8 @@ function idea_fetch_cover($idea__id){
     }
 
     //Return something:
-    return ( $idea_fetch_cover ? $idea_fetch_cover : config_var(12904) );
+    $image_url = ( $idea_fetch_cover ? $idea_fetch_cover : config_var(12904) );
+    return ( $html_format ? '<img src="'.$image_url.'" />' : $image_url );
 
 }
 
@@ -840,19 +841,19 @@ function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
 
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
-    $session_en = $CI->session->userdata('session_profile');
-    $has_session = ( is_array($session_en) && count($session_en) > 0 && $session_en );
+    $session_source = $CI->session->userdata('session_profile');
+    $has_session = ( is_array($session_source) && count($session_source) > 0 && $session_source );
 
     //Let's start checking various ways we can give user access:
     if ($has_session && !$superpower_source__id) {
 
         //No minimum level required, grant access IF user is logged in:
-        return $session_en;
+        return $session_source;
 
     } elseif ($has_session && in_array($superpower_source__id, $CI->session->userdata('session_superpowers_assigned'))) {
 
         //They are part of one of the levels assigned to them:
-        return $session_en;
+        return $session_source;
 
     }
 
@@ -866,7 +867,7 @@ function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/source/'.$session_en['source__id'];
+            $goto_url = '/source/'.$session_source['source__id'];
         } else {
             $goto_url = '/source/sign?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
@@ -1066,7 +1067,7 @@ function upload_to_cdn($file_url, $read__source = 0, $read__metadata = null, $is
         //All good:
         return array(
             'status' => 1,
-            'cdn_en' => $url_source['source_url'],
+            'cdn_source' => $url_source['source_url'],
             'cdn_url' => $cdn_new_url,
         );
 
@@ -1261,46 +1262,46 @@ function source__title_validate($string, $read__type = 0){
 
 
 
-function source_is_idea_source($source__id, $session_en = array()){
+function source_is_idea_source($source__id, $session_source = array()){
 
 
-    if(!$session_en){
+    if(!$session_source){
         //Fetch from session:
-        $session_en = superpower_assigned();
+        $session_source = superpower_assigned();
     }
 
-    if(!$session_en || $source__id < 1){
+    if(!$session_source || $source__id < 1){
         return false;
     }
 
     //Ways a player can modify a source:
     $CI =& get_instance();
     return (
-        $source__id==$session_en['source__id'] || //Player is the source
+        $source__id==$session_source['source__id'] || //Player is the source
         superpower_active(10967, true) || //Player has Global source editing superpower
         count($CI->READ_model->fetch(array( //Player created the source
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__down' => $source__id,
             'read__type' => 4251, //New Source Created
         ))) ||
         count($CI->READ_model->fetch(array( //Player has source in their portfolio
             'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__up' => $session_en['source__id'],
+            'read__up' => $session_source['source__id'],
             'read__down' => $source__id,
         )))
     );
 
 }
 
-function idea_is_source($idea__id, $session_en = array()){
+function idea_is_source($idea__id, $session_source = array()){
 
-    if(!$session_en){
+    if(!$session_source){
         //Fetch from session:
-        $session_en = superpower_assigned();
+        $session_source = superpower_assigned();
     }
 
-    if(!$session_en || $idea__id < 1){
+    if(!$session_source || $idea__id < 1){
         return false;
     }
 
@@ -1314,13 +1315,13 @@ function idea_is_source($idea__id, $session_en = array()){
                 count($CI->READ_model->fetch(array( //Player created the idea
                     'read__type' => 4250, //IDEA CREATOR
                     'read__right' => $idea__id,
-                    'read__source' => $session_en['source__id'],
+                    'read__source' => $session_source['source__id'],
                 ))) ||
                 count($CI->READ_model->fetch(array( //IDEA SOURCE
                     'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'read__right' => $idea__id,
-                    'read__up' => $session_en['source__id'],
+                    'read__up' => $session_source['source__id'],
                 )))
             )
         )
@@ -1524,6 +1525,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__icon'] = view_source__icon($db_row['source__icon']);
                 $export_row['object__title'] = $db_row['source__title'];
                 $export_row['object__weight'] = intval($db_row['source__weight']);
+                $export_row['object__ideas'] = read_coins_source(12273, $db_row['source__id']);
+                $export_row['object__duration'] = null;
 
                 //Add source as their own author:
                 array_push($export_row['_tags'], 'alg_source_' . $db_row['read__source']);
@@ -1566,9 +1569,11 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__id'] = intval($db_row['idea__id']);
                 $export_row['object__url'] = '/idea/go/' . $db_row['idea__id'];
                 $export_row['object__status'] = intval($db_row['idea__status']);
-                $export_row['object__icon'] = $sources__7585[$db_row['idea__type']]['m_icon']; //Player type icon
+                $export_row['object__icon'] = idea_fetch_cover($db_row['idea__id']);
                 $export_row['object__title'] = $db_row['idea__title'];
                 $export_row['object__weight'] = intval($db_row['idea__weight']);
+                $export_row['object__ideas'] = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 );
+                $export_row['object__duration'] = view_time_range($metadata);
 
                 if(in_array($db_row['idea__status'], $CI->config->item('sources_id_12138'))){
                     array_push($export_row['_tags'], 'is_featured');

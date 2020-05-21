@@ -37,7 +37,7 @@ if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
                 $replaced += $this->SOURCE_model->update($en['source__id'], array(
                     'source__icon' => str_ireplace($_GET['search_for'], $_GET['replace_with'], $en['source__icon']),
-                ), false, $session_en['source__id']);
+                ), false, $session_source['source__id']);
 
             }
 

@@ -2,7 +2,7 @@
 
 //IDEA LIST INVALID TITLES
 
-$active_ins = $this->IDEA_model->fetch(array(
+$active_ideas = $this->IDEA_model->fetch(array(
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
 ));
 
@@ -20,7 +20,7 @@ echo '<td style="text-align: left;">Invalid Outcome</td>';
 echo '</tr>';
 
 $invalid_outcomes = 0;
-foreach($active_ins as $count=>$in){
+foreach($active_ideas as $count=>$in){
 
     $idea__title_validation = idea__title_validate($in['idea__title']);
 

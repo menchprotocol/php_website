@@ -16,8 +16,8 @@ class Idea extends CI_Controller {
     function idea_create(){
 
         $sources__6201 = $this->config->item('sources__6201'); //Idea Table
-        $session_en = superpower_assigned(10939);
-        if (!$session_en) {
+        $session_source = superpower_assigned(10939);
+        if (!$session_source) {
 
             return view_json(array(
                 'status' => 0,
@@ -43,15 +43,15 @@ class Idea extends CI_Controller {
 
 
         //Create Idea:
-        $idea = $this->IDEA_model->link_or_create($idea__title_validation['idea_clean_title'], $session_en['source__id']);
+        $idea = $this->IDEA_model->link_or_create($idea__title_validation['idea_clean_title'], $session_source['source__id']);
 
         //Also add to bookmarks:
         $this->READ_model->create(array(
             'read__type' => 10573, //Idea Bookmarks
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__right' => $idea['new_idea__id'],
-            'read__up' => $session_en['source__id'],
-            'read__message' => '@'.$session_en['source__id'],
+            'read__up' => $session_source['source__id'],
+            'read__message' => '@'.$session_source['source__id'],
         ), true);
 
         return view_json(array(
@@ -64,11 +64,11 @@ class Idea extends CI_Controller {
 
     function index(){
         //Idea Bookmarks
-        $session_en = superpower_assigned(10939, true);
+        $session_source = superpower_assigned(10939, true);
         $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
             'title' => $sources__11035[4535]['m_name'],
-            'session_en' => $session_en,
+            'session_source' => $session_source,
         ));
         $this->load->view('idea/idea_home');
         $this->load->view('footer');
@@ -98,10 +98,10 @@ class Idea extends CI_Controller {
         }
 
 
-        $session_en = superpower_assigned(10939); //Idea Pen?
+        $session_source = superpower_assigned(10939); //Idea Pen?
         $is_public = in_array($ideas[0]['idea__status'], $this->config->item('sources_id_7355'));
 
-        if(!$session_en){
+        if(!$session_source){
             if($is_public){
                 return redirect_message('/'.$idea__id);
             } else {
@@ -114,7 +114,7 @@ class Idea extends CI_Controller {
         if (superpower_active(12702, true) && isset($_POST['mass_action_source__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_source__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_source__id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->IDEA_model->mass_update($idea__id, intval($_POST['mass_action_source__id']), $_POST['mass_value1_'.$_POST['mass_action_source__id']], $_POST['mass_value2_'.$_POST['mass_action_source__id']], $session_en['source__id']);
+            $process_mass_action = $this->IDEA_model->mass_update($idea__id, intval($_POST['mass_action_source__id']), $_POST['mass_value1_'.$_POST['mass_action_source__id']], $_POST['mass_value2_'.$_POST['mass_action_source__id']], $session_source['source__id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>';
@@ -126,7 +126,7 @@ class Idea extends CI_Controller {
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->create(array(
-                'read__source' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
                 'read__type' => 4993, //Player Opened Idea
                 'read__right' => $idea__id,
                 'read__sort' => $new_order,
@@ -143,7 +143,7 @@ class Idea extends CI_Controller {
         ));
         $this->load->view('idea/idea_coin', array(
             'idea_focus' => $ideas[0],
-            'session_en' => $session_en,
+            'session_source' => $session_source,
         ));
         $this->load->view('footer');
 
@@ -153,12 +153,12 @@ class Idea extends CI_Controller {
     function idea_request_invite($idea__id){
 
         //Make sure it's a logged in player:
-        $session_en = superpower_assigned(null, true);
+        $session_source = superpower_assigned(null, true);
 
         if(count($this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type' => 12450,
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__right' => $idea__id,
         )))){
             return redirect_message('/idea/'.$idea__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
@@ -168,7 +168,7 @@ class Idea extends CI_Controller {
         //Inform moderators:
         $this->READ_model->create(array(
             'read__type' => 12450,
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__right' => $idea__id,
         ));
 
@@ -180,14 +180,14 @@ class Idea extends CI_Controller {
     function idea_become_source($idea__id){
 
         //Make sure it's a logged in player:
-        $session_en = superpower_assigned(10984, true);
+        $session_source = superpower_assigned(10984, true);
 
         //Idea Source:
         $this->READ_model->create(array(
             'read__type' => 4983, //IDEA COIN
-            'read__source' => $session_en['source__id'],
-            'read__up' => $session_en['source__id'],
-            'read__message' => '@'.$session_en['source__id'],
+            'read__source' => $session_source['source__id'],
+            'read__up' => $session_source['source__id'],
+            'read__message' => '@'.$session_source['source__id'],
             'read__right' => $idea__id,
         ));
 
@@ -206,8 +206,8 @@ class Idea extends CI_Controller {
         $delete_element = null;
 
         //Authenticate Player:
-        $session_en = superpower_assigned();
-        if (!$session_en) {
+        $session_source = superpower_assigned();
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -262,7 +262,7 @@ class Idea extends CI_Controller {
             //All good, Update Link:
             $this->READ_model->update($_POST['read__id'], array(
                 $sources__6232[$_POST['element_id']]['m_desc'] => $_POST['new_source__id'],
-            ), $session_en['source__id'], end($link_update_types));
+            ), $session_source['source__id'], end($link_update_types));
 
         } else {
 
@@ -278,8 +278,8 @@ class Idea extends CI_Controller {
 
                         //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
                         foreach($this->IDEA_model->recursive_parents($_POST['idea__id'], true, false) as $grand_parent_ids) {
-                            foreach($grand_parent_ids as $parent_idea__id) {
-                                $deletion_redirect = '/idea/'.$parent_idea__id; //First parent in first branch of parents
+                            foreach($grand_parent_ids as $previous_idea__id) {
+                                $deletion_redirect = '/idea/'.$previous_idea__id; //First parent in first branch of parents
                                 break;
                             }
                         }
@@ -303,19 +303,19 @@ class Idea extends CI_Controller {
                     }
 
                     //Delete all links:
-                    $this->IDEA_model->unlink($_POST['idea__id'] , $session_en['source__id']);
+                    $this->IDEA_model->unlink($_POST['idea__id'] , $session_source['source__id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
                 } elseif(in_array($_POST['new_source__id'], $this->config->item('sources_id_12138')) && !superpower_assigned(10984) && !count($this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type' => 12453, //Idea Feature Request
-                        'read__source' => $session_en['source__id'],
+                        'read__source' => $session_source['source__id'],
                         'read__right' => $_POST['idea__id'],
                     )))){
 
                     $this->READ_model->create(array(
                         'read__type' => 12453, //Idea Feature Request
-                        'read__source' => $session_en['source__id'],
+                        'read__source' => $session_source['source__id'],
                         'read__right' => $_POST['idea__id'],
                     ));
 
@@ -326,7 +326,7 @@ class Idea extends CI_Controller {
             //Update Idea:
             $this->IDEA_model->update($_POST['idea__id'], array(
                 $sources__6232[$_POST['element_id']]['m_desc'] => $_POST['new_source__id'],
-            ), true, $session_en['source__id']);
+            ), true, $session_source['source__id']);
 
         }
 
@@ -342,8 +342,8 @@ class Idea extends CI_Controller {
     function idea_unlink(){
 
         //Authenticate Player:
-        $session_en = superpower_assigned();
-        if (!$session_en) {
+        $session_source = superpower_assigned();
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -363,7 +363,7 @@ class Idea extends CI_Controller {
         //Delete this link:
         $this->READ_model->update($_POST['read__id'], array(
             'read__status' => 6173, //Read Deleted
-        ), $session_en['source__id'], 10686 /* Idea Link Unpublished */);
+        ), $session_source['source__id'], 10686 /* Idea Link Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -385,8 +385,8 @@ class Idea extends CI_Controller {
          * */
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10939);
-        if (!$session_en) {
+        $session_source = superpower_assigned(10939);
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -420,17 +420,17 @@ class Idea extends CI_Controller {
 
 
         $new_idea_type = 6677; //Idea Read & Next
-        $linked_ins = array();
+        $linked_ideas = array();
 
         if($_POST['idea_link_child_id'] > 0){
 
             //Fetch link idea to determine idea type:
-            $linked_ins = $this->IDEA_model->fetch(array(
+            $linked_ideas = $this->IDEA_model->fetch(array(
                 'idea__id' => intval($_POST['idea_link_child_id']),
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             ));
 
-            if(count($linked_ins)==0){
+            if(count($linked_ideas)==0){
                 //validate linked Idea:
                 return view_json(array(
                     'status' => 0,
@@ -438,13 +438,13 @@ class Idea extends CI_Controller {
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($linked_ins[0]['idea__type'], $this->config->item('sources_id_7712'))){
+            if(!intval($_POST['is_parent']) && in_array($linked_ideas[0]['idea__type'], $this->config->item('sources_id_7712'))){
                 $new_idea_type = 6914; //Require All
             }
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->IDEA_model->link_or_create(trim($_POST['idea__title']), $session_en['source__id'], $_POST['idea_linked_id'], intval($_POST['is_parent']), 6184, $new_idea_type, $_POST['idea_link_child_id']));
+        return view_json($this->IDEA_model->link_or_create(trim($_POST['idea__title']), $session_source['source__id'], $_POST['idea_linked_id'], intval($_POST['is_parent']), 6184, $new_idea_type, $_POST['idea_link_child_id']));
 
     }
 
@@ -452,8 +452,8 @@ class Idea extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10939);
-        if (!$session_en) {
+        $session_source = superpower_assigned(10939);
+        if (!$session_source) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -471,10 +471,10 @@ class Idea extends CI_Controller {
         } else {
 
             //Validate Parent Idea:
-            $parent_ins = $this->IDEA_model->fetch(array(
+            $previous_ideas = $this->IDEA_model->fetch(array(
                 'idea__id' => intval($_POST['idea__id']),
             ));
-            if (count($parent_ins) < 1) {
+            if (count($previous_ideas) < 1) {
                 view_json(array(
                     'status' => 0,
                     'message' => 'Invalid idea__id',
@@ -485,7 +485,7 @@ class Idea extends CI_Controller {
                 foreach($_POST['new_read__sorts'] as $rank => $read__id) {
                     $this->READ_model->update(intval($read__id), array(
                         'read__sort' => intval($rank),
-                    ), $session_en['source__id'], 10675 /* Ideas Ordered by Player */);
+                    ), $session_source['source__id'], 10675 /* Ideas Ordered by Player */);
                 }
 
                 //Display message:
@@ -501,9 +501,9 @@ class Idea extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10939);
+        $session_source = superpower_assigned(10939);
 
-        if (!$session_en) {
+        if (!$session_source) {
 
             return view_json(array(
                 'status' => 0,
@@ -540,7 +540,7 @@ class Idea extends CI_Controller {
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->READ_model->send_message_build($_POST['read__message'], $session_en, $_POST['note_type_id'], $_POST['idea__id']);
+        $msg_validation = $this->READ_model->send_message_build($_POST['read__message'], $session_source, $_POST['note_type_id'], $_POST['idea__id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -549,7 +549,7 @@ class Idea extends CI_Controller {
 
         //Create Message:
         $ln = $this->READ_model->create(array(
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__sort' => 1 + $this->READ_model->max_order(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'read__type' => intval($_POST['note_type_id']),
@@ -567,7 +567,7 @@ class Idea extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'message' => view_idea_notes(array_merge($ln, array(
-                'read__down' => $session_en['source__id'],
+                'read__down' => $session_source['source__id'],
             ))),
         ));
     }
@@ -579,8 +579,8 @@ class Idea extends CI_Controller {
         //TODO: MERGE WITH FUNCTION read_file_upload()
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10939);
-        if (!$session_en) {
+        $session_source = superpower_assigned(10939);
+        if (!$session_source) {
 
             return view_json(array(
                 'status' => 0,
@@ -649,7 +649,7 @@ class Idea extends CI_Controller {
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $session_en['source__id'], $_FILES[$_POST['upload_type']], true);
+        $cdn_status = upload_to_cdn($temp_local, $session_source['source__id'], $_FILES[$_POST['upload_type']], true);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -658,11 +658,11 @@ class Idea extends CI_Controller {
 
         //Create message:
         $ln = $this->READ_model->create(array(
-            'read__source' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
             'read__type' => $_POST['note_type_id'],
-            'read__up' => $cdn_status['cdn_en']['source__id'],
+            'read__up' => $cdn_status['cdn_source']['source__id'],
             'read__right' => intval($_POST['idea__id']),
-            'read__message' => '@' . $cdn_status['cdn_en']['source__id'],
+            'read__message' => '@' . $cdn_status['cdn_source']['source__id'],
             'read__sort' => 1 + $this->READ_model->max_order(array(
                     'read__type' => $_POST['note_type_id'],
                     'read__right' => $_POST['idea__id'],
@@ -680,7 +680,7 @@ class Idea extends CI_Controller {
         view_json(array(
             'status' => 1,
             'message' => view_idea_notes(array_merge($new_messages[0], array(
-                'read__down' => $session_en['source__id'],
+                'read__down' => $session_source['source__id'],
             ))),
         ));
 
@@ -693,8 +693,8 @@ class Idea extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10939);
-        if (!$session_en) {
+        $session_source = superpower_assigned(10939);
+        if (!$session_source) {
 
             return view_json(array(
                 'status' => 0,
@@ -719,7 +719,7 @@ class Idea extends CI_Controller {
                 //Log update and give credit to the session Player:
                 $this->READ_model->update($read__id, array(
                     'read__sort' => intval($read__sort),
-                ), $session_en['source__id'], 10676 /* IDEA NOTES Ordered */);
+                ), $session_source['source__id'], 10676 /* IDEA NOTES Ordered */);
             }
         }
 
@@ -734,8 +734,8 @@ class Idea extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_en = superpower_assigned(10939);
-        if (!$session_en) {
+        $session_source = superpower_assigned(10939);
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -786,7 +786,7 @@ class Idea extends CI_Controller {
         }
 
         //Validate new message:
-        $msg_validation = $this->READ_model->send_message_build($_POST['read__message'], $session_en, $messages[0]['read__type'], $_POST['idea__id']);
+        $msg_validation = $this->READ_model->send_message_build($_POST['read__message'], $session_source, $messages[0]['read__type'], $_POST['idea__id']);
         if (!$msg_validation['status']) {
 
             //There was some sort of an error:
@@ -798,7 +798,7 @@ class Idea extends CI_Controller {
             $this->READ_model->update(intval($_POST['read__id']), array(
                 'read__message' => $msg_validation['input_message'],
                 'read__up' => $msg_validation['read__up'],
-            ), $session_en['source__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['read__message'], $msg_validation['input_message']));
+            ), $session_source['source__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['read__message'], $msg_validation['input_message']));
 
         }
 
@@ -818,11 +818,11 @@ class Idea extends CI_Controller {
                     if (count($string_references['ref_sources']) > 0) {
 
                         //We do have an source reference, what's its status?
-                        $ref_ens = $this->SOURCE_model->fetch(array(
+                        $ref_sources = $this->SOURCE_model->fetch(array(
                             'source__id' => $string_references['ref_sources'][0],
                         ));
 
-                        if(count($ref_ens)>0 && !in_array($ref_ens[0]['source__status'], $this->config->item('sources_id_7357') /* PUBLIC */)){
+                        if(count($ref_sources)>0 && !in_array($ref_sources[0]['source__status'], $this->config->item('sources_id_7357') /* PUBLIC */)){
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'You cannot published this message because its referenced source is not yet public',
@@ -834,14 +834,14 @@ class Idea extends CI_Controller {
                 //yes, do so and return results:
                 $affected_rows = $this->READ_model->update(intval($_POST['read__id']), array(
                     'read__status' => $_POST['message_read__status'],
-                ), $session_en['source__id'], 10677 /* IDEA NOTES updated Status */);
+                ), $session_source['source__id'], 10677 /* IDEA NOTES updated Status */);
 
             } else {
 
                 //New status is no longer active, so delete the IDEA NOTES:
                 $affected_rows = $this->READ_model->update(intval($_POST['read__id']), array(
                     'read__status' => $_POST['message_read__status'],
-                ), $session_en['source__id'], 10678 /* IDEA NOTES Unpublished */);
+                ), $session_source['source__id'], 10678 /* IDEA NOTES Unpublished */);
 
                 //Return success:
                 if($affected_rows > 0){
@@ -866,7 +866,7 @@ class Idea extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'delete_from_ui' => 0,
-            'message' => $this->READ_model->send_message($msg_validation['input_message'], $session_en, $_POST['idea__id']),
+            'message' => $this->READ_model->send_message($msg_validation['input_message'], $session_source, $_POST['idea__id']),
             'message_new_status_icon' => '<span title="' . $sources__6186[$_POST['message_read__status']]['m_name'] . ': ' . $sources__6186[$_POST['message_read__status']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $sources__6186[$_POST['message_read__status']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check-circle"></i> Saved</span>',
         ));

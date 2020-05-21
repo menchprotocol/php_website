@@ -39,9 +39,9 @@ $ideas_previous = $this->READ_model->fetch(array(
     'read__right' => $idea_focus['idea__id'],
 ), array('idea_previous'), 0);
 
-echo '<div id="list-in-' . $idea_focus['idea__id'] . '-1" class="list-group previous_ins">';
-foreach($ideas_previous as $parent_in) {
-    echo view_idea($parent_in, 0, true, idea_is_source($parent_in['idea__id']));
+echo '<div id="list-in-' . $idea_focus['idea__id'] . '-1" class="list-group previous_ideas">';
+foreach($ideas_previous as $previous_idea) {
+    echo view_idea($previous_idea, 0, true, idea_is_source($previous_idea['idea__id']));
 }
 if( $is_source && $is_active && $idea_focus['idea__id']!=config_var(12156)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
@@ -133,9 +133,9 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
         $counter = count($ideas_next);
 
 
-        $this_tab .= '<div id="list-in-' . $idea_focus['idea__id'] . '-0" class="list-group next_ins">';
-        foreach($ideas_next as $child_in) {
-            $this_tab .= view_idea($child_in, $idea_focus['idea__id'], false, $is_source);
+        $this_tab .= '<div id="list-in-' . $idea_focus['idea__id'] . '-0" class="list-group next_ideas">';
+        foreach($ideas_next as $next_idea) {
+            $this_tab .= view_idea($next_idea, $idea_focus['idea__id'], false, $is_source);
         }
 
         if($is_source && $is_active){
@@ -208,15 +208,15 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
         $input_options = '';
         $counter = 0;
 
-        foreach($this->config->item('sources__12589') as $action_source__id => $mass_action_en) {
+        foreach($this->config->item('sources__12589') as $action_source__id => $source_list_action) {
 
             $counter++;
-            $dropdown_options .= '<option value="' . $action_source__id . '">' .$mass_action_en['m_name'] . '</option>';
+            $dropdown_options .= '<option value="' . $action_source__id . '">' .$source_list_action['m_name'] . '</option>';
             $is_upper = false;
 
 
             //Start with the input wrapper:
-            $input_options .= '<span id="mass_id_'.$action_source__id.'" title="'.$mass_action_en['m_desc'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+            $input_options .= '<span id="mass_id_'.$action_source__id.'" title="'.$source_list_action['m_desc'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
             if(in_array($action_source__id, array(12591, 12592))){
 

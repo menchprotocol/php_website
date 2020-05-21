@@ -3,16 +3,16 @@
 $sources__4737 = $this->config->item('sources__4737'); // Idea Status
 
 
-$orphan_ins = $this->IDEA_model->fetch(array(
+$orphan_ideas = $this->IDEA_model->fetch(array(
     ' NOT EXISTS (SELECT 1 FROM mench_read WHERE idea__id=read__right AND read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     'idea__id !=' => config_var(12156), //Not the Starting Idea
 ));
 
-if(count($orphan_ins) > 0){
+if(count($orphan_ideas) > 0){
 
     //List orphans:
-    foreach($orphan_ins as $count => $orphan_in) {
+    foreach($orphan_ideas as $count => $orphan_in) {
 
         //Show idea:
         echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$orphan_in['idea__status']]['m_name'].': '.$sources__4737[$orphan_in['idea__status']]['m_desc'].'">' . $sources__4737[$orphan_in['idea__status']]['m_icon'] . '</span> <a href="/idea/go/'.$orphan_in['idea__id'].'"><b>'.$orphan_in['idea__title'].'</b></a>';
@@ -21,12 +21,12 @@ if(count($orphan_ins) > 0){
         if(isset($_GET['take_action']) && $_GET['take_action']=='delete_all'){
 
             //Delete idea links:
-            $links_deleted = $this->IDEA_model->unlink($orphan_in['idea__id'] , $session_en['source__id']);
+            $links_deleted = $this->IDEA_model->unlink($orphan_in['idea__id'] , $session_source['source__id']);
 
             //Delete idea:
             $this->IDEA_model->update($orphan_in['idea__id'], array(
                 'idea__status' => 6182, /* Idea Deleted */
-            ), true, $session_en['source__id']);
+            ), true, $session_source['source__id']);
 
             //Show confirmation:
             echo ' [Idea + '.$links_deleted.' links Deleted]';

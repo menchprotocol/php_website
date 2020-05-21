@@ -391,16 +391,16 @@ class SOURCE_model extends CI_Model
 
     function assign_session_player($source__id){
 
-        $session_en = superpower_assigned();
-        if(!$session_en){
+        $session_source = superpower_assigned();
+        if(!$session_source){
             return false;
         }
 
         //Assign to Creator:
         $this->READ_model->create(array(
             'read__type' => source_link_type(),
-            'read__source' => $session_en['source__id'],
-            'read__up' => $session_en['source__id'],
+            'read__source' => $session_source['source__id'],
+            'read__up' => $session_source['source__id'],
             'read__down' => $source__id,
         ));
 
@@ -410,7 +410,7 @@ class SOURCE_model extends CI_Model
             //Add Pending Review:
             $this->READ_model->create(array(
                 'read__type' => source_link_type(),
-                'read__source' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
                 'read__up' => 12775, //PENDING REVIEW
                 'read__down' => $source__id,
             ));
@@ -418,7 +418,7 @@ class SOURCE_model extends CI_Model
             //SOURCE PENDING MODERATION TYPE:
             $this->READ_model->create(array(
                 'read__type' => 7504, //SOURCE PENDING MODERATION
-                'read__source' => $session_en['source__id'],
+                'read__source' => $session_source['source__id'],
                 'read__up' => 12775, //PENDING REVIEW
                 'read__down' => $source__id,
             ));
@@ -469,8 +469,8 @@ class SOURCE_model extends CI_Model
         } elseif ($read__source) {
 
             //Yes, let's add a new source:
-            $added_en = $this->SOURCE_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $read__source, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
-            $source_domain = $added_en['new_source'];
+            $added_source = $this->SOURCE_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $read__source, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
+            $source_domain = $added_source['new_source'];
 
             //And link source to the domains source:
             $this->READ_model->create(array(
@@ -587,16 +587,16 @@ class SOURCE_model extends CI_Model
                 $metadata_recursion = $this->SOURCE_model->metadat_experts($source__profile, ($level + 1));
 
                 //CONTENT CHANNELS
-                foreach($metadata_recursion['__idea___content'] as $source__id => $source_en) {
+                foreach($metadata_recursion['__idea___content'] as $source__id => $source_content) {
                     if (!isset($metadata_this['__idea___content'][$source__id])) {
-                        $metadata_this['__idea___content'][$source__id] = $source_en;
+                        $metadata_this['__idea___content'][$source__id] = $source_content;
                     }
                 }
 
                 //EXPERT PEOPLE/ORGANIZATIONS
-                foreach($metadata_recursion['__idea___experts'] as $source__id => $expert_en) {
+                foreach($metadata_recursion['__idea___experts'] as $source__id => $source_expert) {
                     if (!isset($metadata_this['__idea___experts'][$source__id])) {
-                        $metadata_this['__idea___experts'][$source__id] = $expert_en;
+                        $metadata_this['__idea___experts'][$source__id] = $source_expert;
                     }
                 }
             }
@@ -766,11 +766,11 @@ class SOURCE_model extends CI_Model
                 $page_title = $page_title;
 
                 //Create a new source for this URL ONLY If player source is provided...
-                $added_en = $this->SOURCE_model->verify_create($page_title, $read__source, 6181, $sources__4592[$read__type]['m_icon']);
-                if($added_en['status']){
+                $added_source = $this->SOURCE_model->verify_create($page_title, $read__source, 6181, $sources__4592[$read__type]['m_icon']);
+                if($added_source['status']){
 
                     //All good:
-                    $source_url = $added_en['new_source'];
+                    $source_url = $added_source['new_source'];
 
                     //Always link URL to its parent domain:
                     $this->READ_model->create(array(
@@ -791,7 +791,7 @@ class SOURCE_model extends CI_Model
 
                     //Log error:
                     $this->READ_model->create(array(
-                        'read__message' => 'source_url['.$url.'] FAILED to source_verify_create['.$page_title.'] with message: '.$added_en['message'],
+                        'read__message' => 'source_url['.$url.'] FAILED to source_verify_create['.$page_title.'] with message: '.$added_source['message'],
                         'read__type' => 4246, //Platform Bug Reports
                         'read__source' => $read__source,
                         'read__up' => $url_source['source_domain']['source__id'],
@@ -933,14 +933,14 @@ class SOURCE_model extends CI_Model
                 $parent_source__id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
-                $child_parent_ens = $this->READ_model->fetch(array(
+                $child_parent_sources = $this->READ_model->fetch(array(
                     'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                     'read__down' => $source['source__id'], //This child source
                     'read__up' => $parent_source__id,
                     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 ));
 
-                if(($action_source__id==5981 && count($child_parent_ens)==0) || ($action_source__id==12928 && view_coins_count_source(0,$source['source__id'],true) > 0) || ($action_source__id==12930 && !view_coins_count_source(0,$source['source__id'],true))){
+                if(($action_source__id==5981 && count($child_parent_sources)==0) || ($action_source__id==12928 && view_coins_count_source(0,$source['source__id'],true) > 0) || ($action_source__id==12930 && !view_coins_count_source(0,$source['source__id'],true))){
 
                     //Parent Player Addition
                     $this->READ_model->create(array(
@@ -952,12 +952,12 @@ class SOURCE_model extends CI_Model
 
                     $applied_success++;
 
-                } elseif(in_array($action_source__id, array(5982, 11956)) && count($child_parent_ens) > 0){
+                } elseif(in_array($action_source__id, array(5982, 11956)) && count($child_parent_sources) > 0){
 
                     if($action_source__id==5982){
 
                         //Parent Player Removal
-                        foreach($child_parent_ens as $delete_tr){
+                        foreach($child_parent_sources as $delete_tr){
 
                             $this->READ_model->update($delete_tr['read__id'], array(
                                 'read__status' => 6173, //Link Deleted
@@ -1115,14 +1115,14 @@ class SOURCE_model extends CI_Model
 
 
         //Check to make sure name is not duplicate:
-        $duplicate_ens = $this->SOURCE_model->fetch(array(
+        $duplicate_sources = $this->SOURCE_model->fetch(array(
             'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             'LOWER(source__title)' => strtolower(trim($source__title)),
         ));
 
 
         //Create source
-        $focus_en = $this->SOURCE_model->create(array(
+        $focus_source = $this->SOURCE_model->create(array(
             'source__title' => trim($source__title),
             'source__icon' => $source__icon,
             'source__status' => $source__status,
@@ -1132,7 +1132,7 @@ class SOURCE_model extends CI_Model
         //Return success:
         return array(
             'status' => 1,
-            'new_source' => $focus_en,
+            'new_source' => $focus_source,
         );
 
     }

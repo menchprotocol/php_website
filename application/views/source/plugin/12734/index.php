@@ -1,10 +1,10 @@
 <?php
 
-$active_ins = $this->IDEA_model->fetch(array(
+$active_ideas = $this->IDEA_model->fetch(array(
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
 ), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ));
 $found = 0;
-foreach($active_ins as $count=>$in){
+foreach($active_ideas as $count=>$in){
 
     $recursive_children = $this->IDEA_model->recursive_child_ids($in['idea__id'], false);
     if(count($recursive_children) > 0){

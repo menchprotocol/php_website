@@ -11,7 +11,7 @@ $sources__10957 = $this->config->item('sources__10957'); //SUPERPOWERS
 $is_public = in_array($source['source__status'], $this->config->item('sources_id_7357'));
 $is_active = in_array($source['source__status'], $this->config->item('sources_id_7358'));
 $superpower_10967 = superpower_active(10967, true);
-$superpower_any = ( $session_en ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
+$superpower_any = ( $session_source ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
 $is_source = source_is_idea_source($source['source__id']);
 
 
@@ -122,7 +122,7 @@ $is_source = source_is_idea_source($source['source__id']);
                                 ?>
                             </select>
 
-                            <div class="notify_unlink_en hidden">
+                            <div class="notify_unlink_source hidden">
                                 <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Saving will unlink source</div>
                             </div>
 
@@ -224,7 +224,7 @@ $is_source = source_is_idea_source($source['source__id']);
         if($read__type==6225){
 
             //Account Setting
-            if(!$session_en || $session_en['source__id']!=$source['source__id']){
+            if(!$session_source || $session_source['source__id']!=$source['source__id']){
                 continue;
             }
 
@@ -262,7 +262,7 @@ $is_source = source_is_idea_source($source['source__id']);
 
                 if ($acc_source__id == 12289) {
 
-                    $source__icon_parts = explode(' ',one_two_explode('class="', '"', $session_en['source__icon']));
+                    $source__icon_parts = explode(' ',one_two_explode('class="', '"', $session_source['source__icon']));
 
                     $this_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $source__icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
@@ -314,7 +314,7 @@ $is_source = source_is_idea_source($source['source__id']);
 
                     $user_emails = $this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                        'read__down' => $session_en['source__id'],
+                        'read__down' => $session_source['source__id'],
                         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                         'read__up' => 3288, //Mench Email
                     ));
@@ -331,7 +331,7 @@ $is_source = source_is_idea_source($source['source__id']);
 
                 } elseif ($is_multi_selectable || $is_single_selectable) {
 
-                    $this_tab .= view_radio_sources($acc_source__id, $session_en['source__id'], ($is_multi_selectable ? 1 : 0));
+                    $this_tab .= view_radio_sources($acc_source__id, $session_source['source__id'], ($is_multi_selectable ? 1 : 0));
 
                 }
 
@@ -421,16 +421,16 @@ $is_source = source_is_idea_source($source['source__id']);
                 $input_options = '';
                 $editor_counter = 0;
 
-                foreach($this->config->item('sources__4997') as $action_source__id => $mass_action_en) {
+                foreach($this->config->item('sources__4997') as $action_source__id => $source_list_action) {
 
 
                     $editor_counter++;
-                    $dropdown_options .= '<option value="' . $action_source__id . '">' .$mass_action_en['m_name'] . '</option>';
+                    $dropdown_options .= '<option value="' . $action_source__id . '">' .$source_list_action['m_name'] . '</option>';
                     $is_upper = ( in_array($action_source__id, $this->config->item('sources_id_12577') /* SOURCE UPDATER UPPERCASE */) ? ' montserrat doupper ' : false );
 
 
                     //Start with the input wrapper:
-                    $input_options .= '<span id="mass_id_'.$action_source__id.'" title="'.$mass_action_en['m_desc'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                    $input_options .= '<span id="mass_id_'.$action_source__id.'" title="'.$source_list_action['m_desc'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
 
 
@@ -689,7 +689,7 @@ $is_source = source_is_idea_source($source['source__id']);
 
         }
 
-        if(!$counter && (!in_array($read__type, $this->config->item('sources_id_12574')) || !$session_en)){
+        if(!$counter && (!in_array($read__type, $this->config->item('sources_id_12574')) || !$session_source)){
             continue;
         }
 
@@ -697,7 +697,7 @@ $is_source = source_is_idea_source($source['source__id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$read__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$read__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$read__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( !in_array($read__type, $this->config->item('sources_id_13004')) && $counter>0 ? view_number($counter).'&nbsp;' : '').$m['m_name'].'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$read__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$read__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$read__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="counter_'.$read__type.( in_array($read__type, $this->config->item('sources_id_13004')) ? superpower_active(10967) : '' ).'" title="'.number_format($counter, 0).'">'.view_number($counter).'</span>&nbsp;' : '' ).$m['m_name'].'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$read__type.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';

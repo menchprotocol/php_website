@@ -53,15 +53,15 @@ foreach($ideas as $in){
         'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
         'read__left' => $in['idea__id'],
-    ), array('idea_next'), 0, 0) as $child_in){
+    ), array('idea_next'), 0, 0) as $next_idea){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4535].$child_in['read__left'],
-            'target' => $id_prefix[4535].$child_in['read__right'],
-            'label' => $sources__4593[$child_in['read__type']]['m_name'], //TODO maybe give visibility to condition here?
+            'source' => $id_prefix[4535].$next_idea['read__left'],
+            'target' => $id_prefix[4535].$next_idea['read__right'],
+            'label' => $sources__4593[$next_idea['read__type']]['m_name'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type' => $child_in['read__type'],
-            'edge_status' => $child_in['read__status'],
+            'edge_type' => $next_idea['read__type'],
+            'edge_status' => $next_idea['read__status'],
         ));
 
     }

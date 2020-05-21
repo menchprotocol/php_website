@@ -8,7 +8,7 @@
  * */
 
 //First first all sources that have Cache in PHP Config @4527 as their parent:
-$config_ens = $this->READ_model->fetch(array(
+$config_sources = $this->READ_model->fetch(array(
     'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
@@ -57,7 +57,7 @@ echo '<br /><br />';
 
 
 //CONFIG VARS
-foreach($config_ens as $en){
+foreach($config_sources as $en){
 
     //Now fetch all its children:
     $children = $this->READ_model->fetch(array(

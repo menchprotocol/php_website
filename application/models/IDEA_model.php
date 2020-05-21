@@ -337,16 +337,16 @@ class IDEA_model extends CI_Model
 
         //Validate Original idea:
         if($link_to_idea__id > 0){
-            $linked_ins = $this->IDEA_model->fetch(array(
+            $linked_ideas = $this->IDEA_model->fetch(array(
                 'idea__id' => intval($link_to_idea__id),
             ));
 
-            if (count($linked_ins) < 1) {
+            if (count($linked_ideas) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Idea ID',
                 );
-            } elseif (!in_array($linked_ins[0]['idea__status'], $this->config->item('sources_id_7356')) /* ACTIVE */) {
+            } elseif (!in_array($linked_ideas[0]['idea__status'], $this->config->item('sources_id_7356')) /* ACTIVE */) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active ideas. This idea is not active.',
@@ -367,13 +367,13 @@ class IDEA_model extends CI_Model
             //Determine which is parent Idea, and which is child
             if($is_parent){
 
-                $parent_in = $ideas[0];
-                $child_in = $linked_ins[0];
+                $previous_idea = $ideas[0];
+                $next_idea = $linked_ideas[0];
 
                 /*
                 //Prevent child duplicates:
-                $recursive_children = $this->IDEA_model->recursive_child_ids($child_in['idea__id'], false);
-                if (in_array($parent_in['idea__id'], $recursive_children)) {
+                $recursive_children = $this->IDEA_model->recursive_child_ids($next_idea['idea__id'], false);
+                if (in_array($previous_idea['idea__id'], $recursive_children)) {
                     return array(
                         'status' => 0,
                         'message' => 'Idea previously set as child, so it cannot be added as parent',
@@ -383,13 +383,13 @@ class IDEA_model extends CI_Model
 
             } else {
 
-                $parent_in = $linked_ins[0];
-                $child_in = $ideas[0];
+                $previous_idea = $linked_ideas[0];
+                $next_idea = $ideas[0];
 
                 //Prevent parent duplicate:
-                $recursive_parents = $this->IDEA_model->recursive_parents($parent_in['idea__id']);
+                $recursive_parents = $this->IDEA_model->recursive_parents($previous_idea['idea__id']);
                 foreach($recursive_parents as $grand_parent_ids) {
-                    if (in_array($child_in['idea__id'], $grand_parent_ids)) {
+                    if (in_array($next_idea['idea__id'], $grand_parent_ids)) {
                         return array(
                             'status' => 0,
                             'message' => 'Idea previously set as parent, so it cannot be added as child',
@@ -416,8 +416,8 @@ class IDEA_model extends CI_Model
 
             //Make sure this is not a duplicate Idea for its parent:
             $dup_links = $this->READ_model->fetch(array(
-                'read__left' => $parent_in['idea__id'],
-                'read__right' => $child_in['idea__id'],
+                'read__left' => $previous_idea['idea__id'],
+                'read__right' => $next_idea['idea__id'],
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             ));
@@ -479,7 +479,7 @@ class IDEA_model extends CI_Model
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the view_idea() function
-            $new_ins = $this->READ_model->fetch(array(
+            $new_ideas = $this->READ_model->fetch(array(
                 ( $is_parent ? 'read__right' : 'read__left' ) => $link_to_idea__id,
                 ( $is_parent ? 'read__left' : 'read__right' ) => $idea_new['idea__id'],
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
@@ -488,11 +488,11 @@ class IDEA_model extends CI_Model
             ), array(($is_parent ? 'idea_previous' : 'idea_next')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $child_idea_html = view_idea($new_ins[0], $link_to_idea__id, $is_parent, true /* Since they added it! */);
+            $next_idea_html = view_idea($new_ideas[0], $link_to_idea__id, $is_parent, true /* Since they added it! */);
 
         } else {
 
-            $child_idea_html = null;
+            $next_idea_html = null;
 
         }
 
@@ -500,7 +500,7 @@ class IDEA_model extends CI_Model
         return array(
             'status' => 1,
             'new_idea__id' => $idea_new['idea__id'],
-            'idea_next_html' => $child_idea_html,
+            'idea_next_html' => $next_idea_html,
         );
 
     }
@@ -581,12 +581,12 @@ class IDEA_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__left' => $idea__id,
-        ), array('idea_next')) as $child_in){
+        ), array('idea_next')) as $next_idea){
 
-            array_push($child_ids, intval($child_in['idea__id']));
+            array_push($child_ids, intval($next_idea['idea__id']));
 
             //Fetch parents of parents:
-            $recursive_children = $this->IDEA_model->recursive_child_ids($child_in['idea__id'], false);
+            $recursive_children = $this->IDEA_model->recursive_child_ids($next_idea['idea__id'], false);
 
             //Add to current array if we found anything:
             if(count($recursive_children) > 0){
@@ -625,31 +625,31 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__left' => $focus_in['idea__id'],
-        ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $child_in){
+        ), array('idea_next'), 0, 0, array('read__sort' => 'ASC')) as $next_idea){
 
             //Determine action based on parent idea type:
-            if(in_array($child_in['read__type'], $this->config->item('sources_id_12842'))){
+            if(in_array($next_idea['read__type'], $this->config->item('sources_id_12842'))){
 
                 //Conditional Idea Link:
-                array_push($conditional_reads, intval($child_in['idea__id']));
+                array_push($conditional_reads, intval($next_idea['idea__id']));
 
             } elseif($select_one){
 
                 //OR parent Idea with Fixed Idea Link:
-                array_push($select_one_children, intval($child_in['idea__id']));
+                array_push($select_one_children, intval($next_idea['idea__id']));
 
             } elseif($select_some){
 
                 //OR parent Idea with Fixed Idea Link:
-                array_push($select_some_children, intval($child_in['idea__id']));
+                array_push($select_some_children, intval($next_idea['idea__id']));
 
             } else {
 
                 //AND parent Idea with Fixed Idea Link:
-                array_push($metadata_this['__idea___common_reads'], intval($child_in['idea__id']));
+                array_push($metadata_this['__idea___common_reads'], intval($next_idea['idea__id']));
 
                 //Go recursively down:
-                $child_recursion = $this->IDEA_model->metadata_common_base($child_in);
+                $child_recursion = $this->IDEA_model->metadata_common_base($next_idea);
 
 
                 //Aggregate recursion data:
@@ -896,16 +896,16 @@ class IDEA_model extends CI_Model
             $source_metadat_experts = $this->SOURCE_model->metadat_experts($source);
 
             //CONTENT CHANNELS
-            foreach($source_metadat_experts['__idea___content'] as $source__id => $source_en) {
+            foreach($source_metadat_experts['__idea___content'] as $source__id => $source_content) {
                 if (!isset($metadata_this['__idea___content'][$source__id])) {
-                    $metadata_this['__idea___content'][$source__id] = $source_en;
+                    $metadata_this['__idea___content'][$source__id] = $source_content;
                 }
             }
 
             //EXPERT PEOPLE/ORGANIZATIONS
-            foreach($source_metadat_experts['__idea___experts'] as $source__id => $expert_en) {
+            foreach($source_metadat_experts['__idea___experts'] as $source__id => $source_expert) {
                 if (!isset($metadata_this['__idea___experts'][$source__id])) {
-                    $metadata_this['__idea___experts'][$source__id] = $expert_en;
+                    $metadata_this['__idea___experts'][$source__id] = $source_expert;
                 }
             }
         }
@@ -985,16 +985,16 @@ class IDEA_model extends CI_Model
 
 
             //EXPERT CONTENT
-            foreach($metadata_recursion['__idea___content'] as $source__id => $source_en) {
+            foreach($metadata_recursion['__idea___content'] as $source__id => $source_content) {
                 if (!isset($metadata_this['__idea___content'][$source__id])) {
-                    $metadata_this['__idea___content'][$source__id] = $source_en;
+                    $metadata_this['__idea___content'][$source__id] = $source_content;
                 }
             }
 
             //EXPERT PEOPLE/ORGANIZATIONS
-            foreach($metadata_recursion['__idea___experts'] as $source__id => $expert_en) {
+            foreach($metadata_recursion['__idea___experts'] as $source__id => $source_expert) {
                 if (!isset($metadata_this['__idea___experts'][$source__id])) {
-                    $metadata_this['__idea___experts'][$source__id] = $expert_en;
+                    $metadata_this['__idea___experts'][$source__id] = $source_expert;
                 }
             }
         }
@@ -1102,20 +1102,20 @@ class IDEA_model extends CI_Model
         }
 
         //Go through children to see if any/all can be completed:
-        foreach($ideas_next as $child_in){
-            if(idea_is_unlockable($child_in)){
+        foreach($ideas_next as $next_idea){
+            if(idea_is_unlockable($next_idea)){
 
                 //Need to check recursively:
-                foreach($this->IDEA_model->unlock_paths($child_in) as $locked_path){
+                foreach($this->IDEA_model->unlock_paths($next_idea) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $locked_path['idea__id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }
                 }
 
-            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $child_in['idea__id'])) {
+            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'idea__id', $next_idea['idea__id'])) {
 
                 //Not locked, so this can be completed:
-                array_push($child_unlock_paths, $child_in);
+                array_push($child_unlock_paths, $next_idea);
 
             }
         }
