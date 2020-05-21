@@ -138,11 +138,8 @@ class READ_model extends CI_Model
                 'idea__id' => $add_fields['read__left'],
             ));
 
-            $log = '';
 
             if(in_array($ideas[0]['idea__type'], $this->config->item('sources_id_7712'))){
-
-                $log .= '1';
 
                 //IDEA TYPE SELECT NEXT
                 $ideas_next_autoscan = $this->READ_model->fetch(array(
@@ -157,7 +154,6 @@ class READ_model extends CI_Model
 
             } elseif(in_array($ideas[0]['idea__type'], $this->config->item('sources_id_13022'))){
 
-                $log .= '2';
                 //IDEA TYPE ALL NEXT
                 $ideas_next_autoscan = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -171,20 +167,6 @@ class READ_model extends CI_Model
 
             foreach($ideas_next_autoscan as $idea_next){
 
-                $log .= ' ['.$idea_next['idea__id'].' - '.count($this->READ_model->fetch(array(
-                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                        'read__type' => 4231, //IDEA NOTES Messages
-                        'read__right' => $idea_next['idea__id'],
-                    ))).' - '.count($this->READ_model->fetch(array(
-                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                        'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                        'read__left' => $idea_next['idea__id'],
-                    ))).' - '.count($this->READ_model->fetch(array(
-                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                        'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-                        'read__source' => $add_fields['read__source'],
-                        'read__left' => $idea_next['idea__id'],
-                    ))).']';
                 //IS IT EMPTY?
                 if(
                     //No Messages
@@ -218,9 +200,6 @@ class READ_model extends CI_Model
 
                 }
             }
-
-
-            die($log);
 
 
             //SOURCE APPEND?
