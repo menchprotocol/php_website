@@ -184,13 +184,13 @@ if(!isset($hide_header)){
 
                     <?php
 
+                    //Search
+                    if(intval(config_var(12678))){
+                        echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$sources__11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
+                    }
+
                     //Account
                     if ($session_source) {
-
-                        //Search
-                        if(intval(config_var(12678))){
-                            echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$sources__11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
-                        }
 
                         //Player Menu
                         $sources__4527 = $this->config->item('sources__4527'); //Platform Memory

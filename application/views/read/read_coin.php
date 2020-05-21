@@ -194,6 +194,11 @@ if(!$read_idea_home){
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
+
+            if($metadata['idea___min_reads']<$metadata['idea___max_reads'] && $metadata['idea___min_seconds']<$metadata['idea___max_seconds']){
+                echo '<p class="space-content">The '.number_format($metadata['idea___min_reads']-1, 0).' - '.number_format($metadata['idea___min_reads']-1, 0).' idea'.view__s($idea_count).' take '.view_time_hours($metadata['idea___min_seconds']).' - '.view_time_hours($metadata['idea___max_seconds']).' to read based on your selections along the way:</p>';
+            }
+
             if($chapters > 0){
                 //List Children:
                 echo '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'">';
