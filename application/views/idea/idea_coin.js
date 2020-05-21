@@ -433,12 +433,13 @@ function idea_message_inline_source_search(obj) {
                             console.error(err);
                         });
                 },
-                template: function (hit) {
+                template: function (suggestion) {
                     // Returns the highlighted version of the name attribute
-                    return '<span class="inline34">@' + hit.object__id + '</span> ' + hit.object__title;
+                    //return '<span class="inline34">@' + suggestion.object__id + '</span> ' + suggestion.object__title;
+                    return view_search_result(suggestion);
                 },
-                replace: function (hit) {
-                    return '@' + hit.object__id + ' ';
+                replace: function (suggestion) {
+                    return '@' + suggestion.object__id + ' ';
                 }
             },
         ]);
