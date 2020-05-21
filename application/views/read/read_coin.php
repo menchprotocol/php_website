@@ -11,8 +11,6 @@
 
 $idea_fetch_cover = idea_fetch_cover($idea_focus['idea__id']);
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
-$metadata = unserialize($idea_focus['idea__metadata']);
-$has_time_estimate = ( isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0 );
 $idea_type_meet_requirement = in_array($idea_focus['idea__type'], $this->config->item('sources_id_7309'));
 $recipient_source = superpower_assigned();
 $is_home_page = $idea_focus['idea__id']==config_var(12156);
@@ -179,26 +177,20 @@ if(!$read_idea_home){
 
     } else {
 
-        //METADATA
-        $metadata = unserialize($idea_focus['idea__metadata']);
+        //Generate the Idea Stats
+        $idea_stats = idea_stats($idea_focus['idea__metadata']);
 
+        if ($idea_stats['ideas_average']) {
 
-
-        //IDEA
-        $idea_count = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : $chapters );
-        $idea_min = ( $idea_count && isset($metadata['idea___min_reads']) && $metadata['idea___min_reads']<$metadata['idea___max_reads'] ? $metadata['idea___min_reads']-1 : 0 );
-        if ($idea_count) {
-
-            $has_time = ( isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0 );
-            echo '<div class="read-topic idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.number_format($idea_count, 0).' Idea'.view__s($idea_count).( $has_time ? ' IN '.view_time_range($metadata) : '' ).'</a></div>';
+            echo '<div class="read-topic idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.number_format($idea_stats['ideas_average'], 0).' Idea'.view__s($idea_stats['ideas_average']).( $idea_stats['duration_average'] ? ' IN '.view_time_hours($idea_stats['duration_average']) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
 
-            $diff_idea = $metadata['idea___min_reads']!=$metadata['idea___max_reads'];
-            $diff_time = $metadata['idea___min_seconds']!=$metadata['idea___max_seconds'];
+            $diff_idea = $idea_stats['ideas_min']!=$idea_stats['ideas_max'];
+            $diff_time = $idea_stats['duration_min']!=$idea_stats['duration_max'];
             if($diff_idea || $diff_time){
-                echo '<p class="space-content">The '.( $diff_idea ? number_format($metadata['idea___min_reads']-1, 0).' - ' : '' ).number_format($metadata['idea___max_reads']-1, 0).' idea'.view__s($metadata['idea___max_reads']-1).' take '.( $diff_time ? view_time_hours($metadata['idea___min_seconds']).' - ' : '' ).view_time_hours($metadata['idea___max_seconds']).' to read based on your selections along the way:</p>';
+                echo '<p class="space-content">It takes '.( $diff_time ? view_time_hours($idea_stats['duration_min']).' - ' : '' ).view_time_hours($idea_stats['duration_max']).' to read '.( $diff_idea ? number_format($idea_stats['ideas_min'], 0).' - ' : '' ).number_format($idea_stats['ideas_max'], 0).' key idea'.view__s($idea_stats['ideas_max']).' based on your choices along the way:</p>';
             }
 
             if($chapters > 0){
@@ -209,6 +201,7 @@ if(!$read_idea_home){
                 }
                 echo '</div>';
             }
+
             echo '</div>';
 
         }
@@ -217,32 +210,18 @@ if(!$read_idea_home){
 
 
         //SOURCE
-        $idea___experts = ( isset($metadata['idea___experts']) ? count($metadata['idea___experts']) : 0 );
-        $idea___content = ( isset($metadata['idea___content']) ? count($metadata['idea___content']) : 0 );
-        $source_count = $idea___experts + $idea___content;
-        if ($source_count) {
+        if ($idea_stats['sources_count']) {
 
-            echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$source_count.' Expert Source'.view__s($source_count).'</a></div>';
+            echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$idea_stats['sources_count'].' Expert Source'.view__s($idea_stats['sources_count']).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
-            if($idea_count > $chapters){
-                echo '<p class="space-content">The '.number_format($idea_count, 0).' idea'.view__s($idea_count).' on '.$idea_focus['idea__title'].' were extracted and synthesized from these '.$source_count.' expert source'.view__s($source_count).':</p>';
+            if($idea_stats['ideas_average']>0 && $idea_stats['ideas_average'] > $chapters){
+                echo '<p class="space-content">The ideas on '.$idea_focus['idea__title'].' were indexed & synthesized from the following '.$idea_stats['sources_count'].' expert source'.view__s($idea_stats['sources_count']).':</p>';
             }
             echo '<div class="list-group single-color">';
-
-            //Sort Expert Content
-            if($idea___experts && $idea___content){
-                $experts_content = array_merge($metadata['idea___content'], $metadata['idea___experts']);
-            } elseif($idea___content){
-                $experts_content = $metadata['idea___content'];
-            } else {
-                $experts_content = $metadata['idea___experts'];
-            }
-            usort($experts_content, 'sortByWeight');
-            foreach ($experts_content as $source_source) {
+            foreach ($idea_stats['sources_array'] as $source_source) {
                 echo view_source_basic($source_source);
             }
-
             echo '</div>';
             echo '</div>';
 

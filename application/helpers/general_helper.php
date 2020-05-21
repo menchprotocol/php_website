@@ -836,6 +836,25 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
 }
 
+function idea_stats($idea__metadata){
+    //Calculates average based on metadata:
+    $metadata = unserialize($idea__metadata);
+    $sources_array = array_merge(( isset($metadata['idea___experts']) ? $metadata['idea___experts'] : array() ), ( isset($metadata['idea___content']) ? $metadata['idea___content'] : array() ));
+    usort($sources_array, 'sortByWeight');
+
+    //Return stats:
+    return array(
+        'ideas_min' => ( isset($metadata['idea___min_reads']) && $metadata['idea___min_reads']>=2 ? $metadata['idea___min_reads']-1 : 0 ),
+        'ideas_max' => ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 ),
+        'ideas_average' => ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? round(( ($metadata['idea___min_reads']-1) + ($metadata['idea___max_reads']-1) ) / 2) : 0 ),
+        'duration_min' => ( isset($metadata['idea___min_seconds']) ? $metadata['idea___min_seconds'] : 0 ),
+        'duration_max' => ( isset($metadata['idea___max_seconds']) ? $metadata['idea___max_seconds'] : 0 ),
+        'duration_average' => ( isset($metadata['idea___max_seconds']) ? round(($metadata['idea___min_seconds']+$metadata['idea___max_seconds'])/2) : 0 ),
+        'sources_count' => count($sources_array),
+        'sources_array' => $sources_array,
+    );
+
+}
 function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
 {
 
@@ -1571,8 +1590,6 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             } elseif ($loop_obj == 4535) {
 
                 //See if this idea has a time-range:
-                $metadata = unserialize($db_row['idea__metadata']);
-
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['idea__id']);
                 $export_row['object__url'] = '/idea/go/' . $db_row['idea__id'];
@@ -1580,8 +1597,11 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__icon'] = idea_fetch_cover($db_row['idea__id']);
                 $export_row['object__title'] = $db_row['idea__title'];
                 $export_row['object__weight'] = intval($db_row['idea__weight']);
-                $export_row['object__ideas'] = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 );
-                $export_row['object__duration'] = view_time_range($metadata);
+
+                //Idea Stats:
+                $idea_stats = idea_stats($db_row['idea__metadata']);
+                $export_row['object__ideas'] = $idea_stats['ideas_average'];
+                $export_row['object__duration'] = view_time_hours($idea_stats['duration_average']);
 
                 if(in_array($db_row['idea__status'], $CI->config->item('sources_id_12138'))){
                     array_push($export_row['_tags'], 'is_featured');
@@ -1593,8 +1613,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'read__type IN (' . join(',', $CI->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
                     'read__right' => $db_row['idea__id'],
-                ), array(), 0, 0, array('read__sort' => 'ASC')) as $ln) {
-                    $export_row['object__keywords'] .= $ln['read__message'] . ' ';
+                ), array(), 0, 0, array('read__sort' => 'ASC')) as $keyword) {
+                    $export_row['object__keywords'] .= $keyword['read__message'] . ' ';
                 }
                 $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
 

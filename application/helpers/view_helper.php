@@ -616,10 +616,6 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
         $recipient_source = superpower_assigned();
     }
 
-    $is_saved = ( isset($idea['read__type']) && $idea['read__type']==12896 );
-    $metadata = unserialize($idea['idea__metadata']);
-    $has_time_estimate = ( isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0 );
-    $idea_count = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 );
 
     if(!$completion_rate){
         if($recipient_source){
@@ -629,16 +625,19 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
         }
     }
 
+    $idea_stats = idea_stats($idea['idea__metadata']);
+    $is_saved = ( isset($idea['read__type']) && $idea['read__type']==12896 );
     $can_click = ( $completion_rate['completion_percentage']>0 || $show_editor || $is_saved ); //|| $recipient_source['source__id']
 
 
+    //Build View:
     $ui  = '<div id="ap_idea_'.$idea['idea__id'].'" '.( isset($idea['read__id']) ? ' sort-link-id="'.$idea['read__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemread ' : '' ).'">';
 
     $ui .= ( $can_click ? '<a href="/'.$idea['idea__id'] . '" class="itemread">' : '' );
 
     //Right Stats:
-    if($has_time_estimate || $idea_count){
-        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:136px;' ).'"><span style="width:53px; display: inline-block;">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_count.'</span>' : '' ).'</span>'.( $has_time_estimate ? '<span class="grey">'.view_time_range($metadata).'</span>': '' ).'</div>';
+    if($idea_stats['duration_average'] || $idea_stats['ideas_average']){
+        $ui .= '<div class="pull-right montserrat" style="padding-top:3px; '.( $show_editor ? 'width:155px;' : 'width:136px;' ).'"><span style="width:53px; display: inline-block;">'.( $idea_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_stats['ideas_average'].'</span>' : '' ).'</span>'.( $idea_stats['duration_average'] ? '<span class="grey">'.view_time_hours($idea_stats['duration_average']).'</span>': '' ).'</div>';
     }
 
 
@@ -1305,13 +1304,6 @@ function view_unauthorized_message($superpower_source__id = 0){
 
 }
 
-function view_time_range($metadata){
-    if(!isset($metadata['idea___min_seconds']) || !isset($metadata['idea___max_seconds'])){
-        return null;
-    }
-    return '<span title="Estimated Read Time Of '.( $metadata['idea___min_seconds'] < $metadata['idea___max_seconds'] ? view_time_hours($metadata['idea___min_seconds']).' - ' : '' ).view_time_hours($metadata['idea___max_seconds']).'">'.view_time_hours(round(($metadata['idea___min_seconds']+$metadata['idea___max_seconds'])/2)).'</span>';
-}
-
 function view_time_hours($total_seconds, $hide_hour = false){
 
     if(!$total_seconds){
@@ -1331,28 +1323,10 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
-
-    //FIND IMAGE
     $recipient_source = superpower_assigned();
-    $metadata = unserialize($idea['idea__metadata']);
-    $idea_count = ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 );
-    $source_count = ( isset($metadata['idea___experts']) ? count($metadata['idea___experts']) : 0 ) + ( isset($metadata['idea___content']) ? count($metadata['idea___content']) : 0 );
-
-    $read_count = 0;
-    /*
-    $all_reads = array_merge(array_flatten($metadata['idea___common_reads']) , array_flatten($metadata['idea___expansion_reads']));
-    $read_coins = $CI->READ_model->fetch(array(
-        'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
-        'read__left IN (' . join(',', $all_reads) . ')' => null, //READ COIN
-    ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
-    $read_count = $read_coins[0]['totals'];
-    */
-
-
+    $idea_stats = idea_stats($idea['idea__metadata']);
 
     $ui  = '<a href="/'.$idea['idea__id'] . '" id="ap_idea_'.$idea['idea__id'].'" '.( isset($idea['read__id']) ? ' sort-link-id="'.$idea['read__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
-
 
     $ui .= '<div class="cover-image">';
     if($recipient_source){
@@ -1366,12 +1340,13 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
 
     $ui .= idea_fetch_cover($idea['idea__id'], true);
 
-    if($idea_count && isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0){
-        $ui .= '<span class="media-info top-right">'.view_time_range($metadata).'</span>';
-    }
-
     //TOP LEFT
-    $ui .= '<span class="media-info top-left hideIfEmpty">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.number_format($idea_count, 0).'</span>' : 'COMING SOON' ).'</span>';
+    $ui .= '<span class="media-info top-left hideIfEmpty">'.( $idea_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.number_format($idea_stats['ideas_average'], 0).'</span>' : 'COMING SOON' ).'</span>';
+
+    //TOP RIGHT
+    if($idea_stats['ideas_average'] && $idea_stats['duration_average']){
+        $ui .= '<span class="media-info top-right">'.view_time_hours($idea_stats['duration_average']).'</span>';
+    }
 
     //Search for Idea Image:
     if($show_editor){
