@@ -421,7 +421,7 @@ function idea_message_inline_source_search(obj) {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
                 search: function (query, callback) {
                     algolia_index.search(query, {
-                        hitsPerPage: 5,
+                        hitsPerPage: 7,
                         filters: 'object__type=4536',
                     })
                         .then(function searchSuccess(content) {
@@ -435,7 +435,7 @@ function idea_message_inline_source_search(obj) {
                 },
                 template: function (suggestion) {
                     // Returns the highlighted version of the name attribute
-                    return view_search_result(suggestion);
+                    return '<div style="padding: 3px 0;">' + view_search_result(suggestion) + '</div>';
                 },
                 replace: function (suggestion) {
                     return '@' + suggestion.object__id + ' ';
