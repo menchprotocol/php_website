@@ -629,7 +629,7 @@ $is_source = source_is_idea_source($source['source__id']);
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                 'read__up' => $source['source__id'],
-            ), array(), config_var(11064), 0, array('idea__weight' => 'DESC'), 'read__right') as $item) {
+            ), array(), config_var(11064), 0, array(), 'read__right') as $item) {
                 array_push($idea__ids, $item['read__right']);
             }
 
