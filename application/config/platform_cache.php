@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-20 22:41:47 PST
+//Generated 2020-05-21 07:30:36 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590039707;
-$config['cache_count_read'] = 1214260;
-$config['cache_count_read'] = 121261;
-$config['cache_count_idea'] = 5640;
-$config['cache_count_source'] = 4709;
+$config['cache_timestamp'] = 1590071436;
+$config['cache_count_read'] = 1214677;
+$config['cache_count_read'] = 121271;
+$config['cache_count_idea'] = 5725;
+$config['cache_count_source'] = 4710;
 
 
 
@@ -203,13 +203,19 @@ $config['sources__12761'] = array(
 );
 
 //MENCH SOCIAL SHARING:
-$config['sources_id_13023'] = array(3288,3300,12889,3302,12890,13026,3099);
+$config['sources_id_13023'] = array(12889,12890,3300,3302,3288,13026,3099);
 $config['sources__13023'] = array(
-    3288 => array(
-        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_name' => 'EMAIL',
-        'm_desc' => 'email',
-        'm_parents' => array(6404,13023,4269,12103,6225,4755),
+    12889 => array(
+        'm_icon' => '<i class="fab fa-facebook source"></i>',
+        'm_name' => 'FACEBOOK',
+        'm_desc' => 'facebook',
+        'm_parents' => array(13023,12891),
+    ),
+    12890 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger source" aria-hidden="true"></i>',
+        'm_name' => 'MESSENGER',
+        'm_desc' => 'messenger',
+        'm_parents' => array(13023,12889),
     ),
     3300 => array(
         'm_icon' => '<i class="fab fa-twitter source" aria-hidden="true"></i>',
@@ -217,23 +223,17 @@ $config['sources__13023'] = array(
         'm_desc' => 'twitter',
         'm_parents' => array(13023,12891,1326),
     ),
-    12889 => array(
-        'm_icon' => '<i class="fab fa-facebook source"></i>',
-        'm_name' => 'FACEBOOK',
-        'm_desc' => 'facebook',
-        'm_parents' => array(13023,12891),
-    ),
     3302 => array(
         'm_icon' => '<i class="fab fa-linkedin source" aria-hidden="true"></i>',
         'm_name' => 'LINKEDIN',
         'm_desc' => 'linkedin',
         'm_parents' => array(13023,12891,1326),
     ),
-    12890 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger source" aria-hidden="true"></i>',
-        'm_name' => 'MESSENGER',
-        'm_desc' => 'messenger',
-        'm_parents' => array(13023,12889),
+    3288 => array(
+        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
+        'm_name' => 'EMAIL',
+        'm_desc' => 'email',
+        'm_parents' => array(6404,13023,4269,12103,6225,4755),
     ),
     13026 => array(
         'm_icon' => '<i class="fab fa-whatsapp-square isgreen"></i>',
@@ -483,7 +483,7 @@ $config['sources__12883'] = array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
         'm_desc' => '',
-        'm_parents' => array(12883,12700,7486,7485,6140,7585,7309,6997,6193),
+        'm_parents' => array(12330,12883,12700,7486,7485,6140,7585,7309,6997,6193),
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
@@ -1297,13 +1297,25 @@ $config['sources__4536'] = array(
 );
 
 //IDEA TYPE COMPLETE IF EMPTY:
-$config['sources_id_12330'] = array(6677);
+$config['sources_id_12330'] = array(6677,6914,6907);
 $config['sources__12330'] = array(
     6677 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA READ & NEXT',
+        'm_name' => 'READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(13022,12330,7585,4559,6192),
+    ),
+    6914 => array(
+        'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ALL',
+        'm_desc' => '',
+        'm_parents' => array(12330,12700,7486,7485,6140,6192,7585,7309,6997),
+    ),
+    6907 => array(
+        'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
+        'm_name' => 'REQUIRE ANY',
+        'm_desc' => '',
+        'm_parents' => array(12330,12883,12700,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 
@@ -5240,7 +5252,7 @@ $config['sources__6193'] = array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
         'm_desc' => '',
-        'm_parents' => array(12883,12700,7486,7485,6140,7585,7309,6997,6193),
+        'm_parents' => array(12330,12883,12700,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 
@@ -5269,13 +5281,13 @@ $config['sources__7585'] = array(
         'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ALL',
         'm_desc' => 'Complete by reading all next ideas',
-        'm_parents' => array(12700,7486,7485,6140,6192,7585,7309,6997),
+        'm_parents' => array(12330,12700,7486,7485,6140,6192,7585,7309,6997),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
         'm_name' => 'REQUIRE ANY',
         'm_desc' => 'Complete by reading one of the next ideas',
-        'm_parents' => array(12883,12700,7486,7485,6140,7585,7309,6997,6193),
+        'm_parents' => array(12330,12883,12700,7486,7485,6140,7585,7309,6997,6193),
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
@@ -5386,13 +5398,13 @@ $config['sources__7309'] = array(
         'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
         'm_name' => 'ALL',
         'm_desc' => '',
-        'm_parents' => array(12700,7486,7485,6140,6192,7585,7309,6997),
+        'm_parents' => array(12330,12700,7486,7485,6140,6192,7585,7309,6997),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube idea" aria-hidden="true"></i>',
         'm_name' => 'ANY',
         'm_desc' => '',
-        'm_parents' => array(12883,12700,7486,7485,6140,7585,7309,6997,6193),
+        'm_parents' => array(12330,12883,12700,7486,7485,6140,7585,7309,6997,6193),
     ),
 );
 
