@@ -190,7 +190,7 @@ if(!$read_idea_home){
             $diff_idea = $idea_stats['ideas_min']!=$idea_stats['ideas_max'];
             $diff_time = $idea_stats['duration_min']!=$idea_stats['duration_max'];
             if($diff_idea || $diff_time){
-                echo '<p class="space-content">Depending on your choices it would take '.( $diff_time ? view_time_hours($idea_stats['duration_min']).' - ' : '' ).view_time_hours($idea_stats['duration_max']).' to read <span class="inline-block">'.( $diff_idea ? number_format($idea_stats['ideas_min'], 0).' - ' : '' ).number_format($idea_stats['ideas_max'], 0).'</span> idea'.view__s($idea_stats['ideas_max']).':</p>';
+                echo '<p class="space-content">'.( $diff_time ? 'Depending on your choices along the way it would take '.view_time_hours($idea_stats['duration_min']).' - ' : 'It would take ' ).view_time_hours($idea_stats['duration_max']).' to interactively read <span class="inline-block">'.( $diff_idea ? number_format($idea_stats['ideas_min'], 0).' - ' : '' ).number_format($idea_stats['ideas_max'], 0).'</span> idea'.view__s($idea_stats['ideas_max']).':</p>';
             }
 
             if($chapters > 0){
