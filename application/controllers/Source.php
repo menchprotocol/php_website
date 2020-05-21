@@ -543,10 +543,10 @@ class Source extends CI_Controller
         }
 
         //Validate parent source:
-        $focus_source = $this->SOURCE_model->fetch(array(
+        $fetch_sources = $this->SOURCE_model->fetch(array(
             'source__id' => $_POST['source__id'],
         ));
-        if (count($focus_source) < 1) {
+        if (count($fetch_sources) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid parent source ID',
@@ -635,14 +635,14 @@ class Source extends CI_Controller
             if ($_POST['is_parent']) {
 
                 //Profile
-                $read__down = $focus_source[0]['source__id'];
+                $read__down = $fetch_sources[0]['source__id'];
                 $read__up = $focus_source['source__id'];
                 $read__sort = 0; //Never sort profiles, only sort portfolios
 
             } else {
 
                 //Portfolio
-                $read__up = $focus_source[0]['source__id'];
+                $read__up = $fetch_sources[0]['source__id'];
                 $read__down = $focus_source['source__id'];
 
                 if(sources_currently_sorted($read__up)){
