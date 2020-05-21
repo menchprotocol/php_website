@@ -1376,7 +1376,7 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
     }
 
     //TOP LEFT
-    $ui .= '<span class="media-info top-left hideIfEmpty">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.view_number($idea_count).'</span>' : 'COMING SOON' ).'</span>';
+    $ui .= '<span class="media-info top-left hideIfEmpty">'.( $idea_count ? '<i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.number_format($idea_count, 0).'</span>' : 'COMING SOON' ).'</span>';
 
     //Search for Idea Image:
     if($show_editor){

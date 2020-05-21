@@ -190,7 +190,7 @@ if(!$read_idea_home){
         if ($idea_count) {
 
             $has_time = ( isset($metadata['idea___max_seconds']) && $metadata['idea___max_seconds']>0 );
-            echo '<div class="read-topic idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.$idea_count.' Idea'.view__s($idea_count).( $has_time ? ' IN '.view_time_range($metadata) : '' ).'</a></div>';
+            echo '<div class="read-topic idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.number_format($idea_count, 0).' Idea'.view__s($idea_count).( $has_time ? ' IN '.view_time_range($metadata) : '' ).'</a></div>';
 
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
@@ -219,7 +219,7 @@ if(!$read_idea_home){
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             if($idea_count > $chapters){
-                echo '<p class="space-content">The '.$idea_count.' idea'.view__s($idea_count).' on '.$idea_focus['idea__title'].' were extracted and synthesized from these '.$source_count.' expert source'.view__s($source_count).':</p>';
+                echo '<p class="space-content">The '.number_format($idea_count, 0).' idea'.view__s($idea_count).' on '.$idea_focus['idea__title'].' were extracted and synthesized from these '.$source_count.' expert source'.view__s($source_count).':</p>';
             }
             echo '<div class="list-group single-color">';
 
