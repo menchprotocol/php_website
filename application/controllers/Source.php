@@ -634,19 +634,31 @@ class Source extends CI_Controller
             //Add links only if not previously added by the URL function:
             if ($_POST['is_parent']) {
 
+                //Profile
                 $read__down = $focus_source[0]['source__id'];
                 $read__up = $focus_source['source__id'];
-                $read__sort = 0;
+                $read__sort = 0; //Never sort profiles, only sort portfolios
 
             } else {
 
-                $read__down = $focus_source['source__id'];
+                //Portfolio
                 $read__up = $focus_source[0]['source__id'];
-                $read__sort = 1 + $this->READ_model->max_order(array(
-                        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                        'read__up' => $read__up,
-                    ));
+                $read__down = $focus_source['source__id'];
+
+                if(sources_currently_sorted($read__up)){
+
+                    $read__sort = 1 + $this->READ_model->max_order(array(
+                            'read__up' => $read__up,
+                            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                            'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                        ));
+
+                } else {
+
+                    //Don't sort since currently not sorted:
+                    $read__sort = 0;
+
+                }
 
             }
 
