@@ -686,7 +686,7 @@ $is_source = source_is_idea_source($source['source__id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$read__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$read__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$read__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="counter_'.$read__type.( in_array($read__type, $this->config->item('sources_id_13004')) ? superpower_active(10967) : '' ).'" title="'.number_format($counter, 0).'">'.view_number($counter).'</span>&nbsp;' : '' ).$m['m_name'].'</a></div>';
+        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$read__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$read__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$read__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($read__type, $this->config->item('sources_id_13004')) ? superpower_active(10967) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$read__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$read__type.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
