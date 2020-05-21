@@ -790,15 +790,17 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
         } elseif($read__type==12273){
 
+            //IDEA COIN
             $previous_do_hide = true;
             $bold_upto_weight = idea_calc_bold_upto_weight($query);
             $show_max = config_var(11986);
-
+            $idea__ids = array();
 
             foreach($query as $count => $item){
 
                 $boxbar_details = null;
                 $string_references['ref_time_found'] = false;
+                array_push($idea__ids, $item['idea__id']);
 
                 if(strlen($item['read__message'])){
                     $boxbar_details .= '<div class="message_content">';
@@ -819,6 +821,25 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
                 $previous_do_hide = $do_hide;
 
             }
+
+            //Also Show Related Sources:
+            if(count($idea__ids) > 0){
+                $already_included = array($source__id);
+                foreach ($this->READ_model->fetch(array(
+                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                    'read__right IN (' . join(',', $idea__ids) . ')' => null,
+                    'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                ), array('read__up'), 0) as $related_source){
+                    if(in_array($related_source['source__id'], $already_included)){
+                        continue;
+                    }
+                    array_push($already_included, $related_source['source__id']);
+                    $ui .= view_source($related_source);
+                }
+            }
+
+
 
         }
         $ui .= '</div>';

@@ -54,7 +54,7 @@ class READ_model extends CI_Model
         }
 
         //Set some zero defaults if not set:
-        foreach(array('read__right', 'read__left', 'read__down', 'read__up', 'read__reference', 'read__external', 'read__sort') as $dz) {
+        foreach(array('read__right', 'read__left', 'read__down', 'read__up', 'read__reference', 'read__sort') as $dz) {
             if (!isset($add_fields[$dz])) {
                 $add_fields[$dz] = 0;
             }

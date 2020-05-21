@@ -410,11 +410,6 @@ function view_interaction($ln, $is_parent_tr = false)
             $ui .= '<div class="simple-line"><a href="/source/plugin/12722?read__id=' . $ln['read__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
         }
 
-        //External ID
-        if($ln['read__external'] > 0){
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[7694]['m_name'].'"><span class="icon-block">'.$sources__4341[7694]['m_icon']. '</span>'.$ln['read__external'].'</span></div>';
-        }
-
         //Order
         if($ln['read__sort'] > 0){
             $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4370]['m_name']. '"><span class="icon-block">'.$sources__4341[4370]['m_icon']. '</span>'.view_ordinal($ln['read__sort']).'</span></div>';
@@ -1453,14 +1448,8 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
     //READ STATUS
     if($read__id){
-
         if(!$is_link_published){
             $box_items_list .= '<span class="inline-block read__status_' . $read__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$sources__6186[$source['read__status']]['m_name'].' @'.$source['read__status'].'">' . $sources__6186[$source['read__status']]['m_icon'] . '</span>&nbsp;</span>';
-        }
-
-        //External ID
-        if($is_link_source && $source['read__external'] > 0){
-            $box_items_list .= '<span class="inline-block '.superpower_active(12701).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$source['read__external'].'">&nbsp;<i class="fas fa-project-diagram"></i></span>';
         }
     }
 
