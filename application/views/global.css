@@ -192,6 +192,7 @@ li a {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-decoration: none;
+    margin-left: 0 !important;
 }
 .source-appendix a, .source-appendix a .url_truncate {
     text-decoration: underline;
