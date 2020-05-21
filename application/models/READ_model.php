@@ -220,7 +220,7 @@ class READ_model extends CI_Model
             }
 
 
-            //die($log);
+            die($log);
 
 
             //SOURCE APPEND?
