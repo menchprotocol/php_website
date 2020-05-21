@@ -825,9 +825,9 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
             //Also Show Related Sources:
             if(count($idea__ids) > 0){
                 $already_included = array($source__id);
-                foreach ($this->READ_model->fetch(array(
-                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                foreach ($CI->READ_model->fetch(array(
+                    'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'read__right IN (' . join(',', $idea__ids) . ')' => null,
                     'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array('read__up'), 0) as $related_source){
