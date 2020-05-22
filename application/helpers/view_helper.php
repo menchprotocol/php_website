@@ -970,7 +970,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
         //PREVIOUS IDEAS COUNT
-        $ui .= '<span class="inline-block montserrat idea hideIfEmpty" title="'.$sources__12413[11019]['m_name'].'" style="width:42px; margin-left:5px;">';
+        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11019]['m_name'].'" style="width:42px; margin-left:5px;">';
         $previous_ideas = $CI->READ_model->fetch(array(
             'read__right' => $idea['idea__id'],
             'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
