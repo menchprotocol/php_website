@@ -764,7 +764,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->READ_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
+    $query = $CI->READ_model->fetch($match_columns, $join_objects, config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
