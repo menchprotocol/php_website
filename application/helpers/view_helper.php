@@ -978,7 +978,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
             'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
         if($next_ideas[0]['total_ideas'] > 1){
-            $ui .= '<span class="montserrat idea" title="'.$sources__12413[11019]['m_name'].'">'.$next_ideas[0]['total_ideas'].$sources__12413[11019]['m_icon'].'&nbsp;</span>';
+            $ui .= '<span class="montserrat idea" title="'.$sources__12413[11019]['m_name'].'">&nbsp;&nbsp;'.$next_ideas[0]['total_ideas'].$sources__12413[11019]['m_icon'].'&nbsp;&nbsp;</span>';
         }
 
         //NEXT IDEAS COUNT
@@ -989,11 +989,11 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
         ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
         if($next_ideas[0]['total_ideas'] > 0){
 
-            $ui .= '<span class="montserrat idea" title="'.$sources__12413[11020]['m_name'].'">'.$sources__12413[11020]['m_icon'].$next_ideas[0]['total_ideas'].'&nbsp;</span>';
+            $ui .= '<span class="montserrat idea" title="'.$sources__12413[11020]['m_name'].'">'.$sources__12413[11020]['m_icon'].$next_ideas[0]['total_ideas'].'&nbsp;&nbsp;</span>';
 
             //TREE SIZE
             if($idea_stats['ideas_average'] > 0){
-                $ui .= '<span class="montserrat idea" title="'.$sources__12413[13177]['m_name'].': '.$idea_stats['ideas_min'].' - '.$idea_stats['ideas_max'].'" data-toggle="tooltip" data-placement="top">'.$sources__12413[13177]['m_icon'].'&nbsp;'.number_format($idea_stats['ideas_average'], 0).'&nbsp;</span>';
+                $ui .= '<span class="montserrat idea" title="'.$sources__12413[13177]['m_name'].': '.$idea_stats['ideas_min'].' - '.$idea_stats['ideas_max'].'" data-toggle="tooltip" data-placement="top">'.$sources__12413[13177]['m_icon'].'&nbsp;'.number_format($idea_stats['ideas_average'], 0).'</span>';
             }
 
         }
