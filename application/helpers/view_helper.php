@@ -989,7 +989,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
             //TREE SIZE
             if($idea_stats['ideas_average'] > 0){
-                $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$idea_stats['ideas_min'].' - '.$idea_stats['ideas_max'].' Ideas in '.$sources__12413[6170]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$sources__12413[6170]['m_icon'].'&nbsp;'.number_format($idea_stats['ideas_average'], 0).'&nbsp;</div>';
+                $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[13177]['m_name'].': '.$idea_stats['ideas_min'].' - '.$idea_stats['ideas_max'].'" data-toggle="tooltip" data-placement="top">'.$sources__12413[13177]['m_icon'].'&nbsp;'.number_format($idea_stats['ideas_average'], 0).'&nbsp;</div>';
             }
 
         }
