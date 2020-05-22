@@ -34,7 +34,7 @@ foreach($this->READ_model->fetch(array(
     $direction = filter_cache_group($ln['source__id'], 2738);
 
     echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;"><span class="icon-block">'.$ln['source__icon'].'</span><a href="/source/'.$ln['source__id'].'" class="montserrat doupper">'.$ln['source__title'].'</a></td>';
+    echo '<td style="text-align: left;"><span class="icon-block">'.$ln['source__icon'].'</span><a href="/@'.$ln['source__id'].'" class="montserrat doupper">'.$ln['source__title'].'</a></td>';
     echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($ln['total_reads'], 0).'</td>';
     echo '</tr>';
 

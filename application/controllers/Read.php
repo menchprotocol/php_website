@@ -456,7 +456,7 @@ class Read extends CI_Controller
 
         //Check to see if added to Reads for logged-in users:
         if(!$session_source){
-            return redirect_message('/source/sign/'.$idea__id);
+            return redirect_message('@s'.$idea__id);
         }
 
         //Add this Idea to their Reads If not already there:
@@ -467,7 +467,7 @@ class Read extends CI_Controller
                 $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Reads</div>';
             } else {
                 //Failed to add to Reads:
-                return redirect_message('/read', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your Reads.</div>');
+                return redirect_message('/r', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your Reads.</div>');
             }
         }
 
@@ -481,7 +481,7 @@ class Read extends CI_Controller
         $append_url = '?previous_read='.( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $idea__id );
         $session_source = superpower_assigned();
         if(!$session_source){
-            return redirect_message('/source/sign');
+            return redirect_message('@s');
         }
 
         if($idea__id > 0){
@@ -603,7 +603,7 @@ class Read extends CI_Controller
 
             if(superpower_assigned(10939)){
                 //Give them idea access:
-                return redirect_message('/idea/' . $idea__id);
+                return redirect_message('/i' . $idea__id);
             } else {
                 //Inform them not published:
                 return redirect_message('/', '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Cannot read this idea because it\'s not published yet.</div>');
@@ -867,7 +867,7 @@ class Read extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message('/read', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+        return redirect_message('/r', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
 
     }
 

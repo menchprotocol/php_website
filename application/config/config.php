@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  |
  */
 
-$config['base_url']                 = 'https://mench.com/';
+$config['base_url']                 = 'https://mench.com';
 
 
 /*

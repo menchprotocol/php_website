@@ -12,7 +12,7 @@ $current_mench = current_mench();
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['x_class'] ) ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['x_name'] ) ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : '' ) ?></title>
 
@@ -51,7 +51,7 @@ $current_mench = current_mench();
 
     <script src="/application/views/global.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
-    <?php if($current_mench['x_class']=='read'){ ?>
+    <?php if($current_mench['x_name']=='read'){ ?>
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=custom-share-buttons&cms=website' async='async'></script>
     <?php } ?>
 
@@ -70,7 +70,7 @@ $current_mench = current_mench();
 
 </head>
 
-<body class="<?= 'to'.$current_mench['x_class'] ?>">
+<body class="<?= 'to'.$current_mench['x_name'] ?>">
 
 <?php
 //Any message we need to show here?
@@ -140,7 +140,7 @@ if(!isset($hide_header)){
                                     $focus_idea__id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? config_var(12156) : 0 ) );
                                     if( $focus_idea__id>0 && idea_is_source($focus_idea__id) ){
                                         //Contribute to Idea
-                                        $m['m_desc'] = '/idea/'.$focus_idea__id;
+                                        $m['m_desc'] = '/i'.$focus_idea__id;
                                     } else {
                                         continue;
                                     }
@@ -228,7 +228,7 @@ if(!isset($hide_header)){
 
                                 //SET TO PLAYER
                                 $read__type = $session_source['source__id'];
-                                $page_url = 'href="/source/'.$read__type.'"';
+                                $page_url = 'href="/@'.$read__type.'"';
                                 $m['m_name'] = $session_source['source__title'];
                                 $m['m_icon'] = $session_source['source__icon'];
                                 $text_class = 'text__6197_'.$read__type;
@@ -268,7 +268,7 @@ if(!isset($hide_header)){
                                 }
 
                                 //MENCH COIN
-                                $page_url = 'href="/read/interactions?read__status='.join(',', $this->config->item('sources_id_7359')).'&read__type='.join(',', $this->config->item('sources_id_'.$read__type)).'&'.$source_field.'='.$session_source['source__id'].'"';
+                                $page_url = 'href="/x?read__status='.join(',', $this->config->item('sources_id_7359')).'&read__type='.join(',', $this->config->item('sources_id_'.$read__type)).'&'.$source_field.'='.$session_source['source__id'].'"';
 
                                 //APPEND COUNT:
                                 $m['m_name'] = view_number($counts).' '.$m['m_name'];
@@ -294,7 +294,7 @@ if(!isset($hide_header)){
                         echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$sources__11035[12899]['m_name'].'">'.$sources__11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-link"><a href="/source/sign" title="'.$sources__11035[4269]['m_name'].'">'.$sources__11035[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-link"><a href="@s" title="'.$sources__11035[4269]['m_name'].'">'.$sources__11035[4269]['m_icon'].'</a></td>';
 
                     }
 

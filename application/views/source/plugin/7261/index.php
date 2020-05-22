@@ -18,7 +18,7 @@ if(count($duplicates) > 0){
             $prev_title = $in['idea__title'];
         }
 
-        echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$in['idea__status']]['m_name'].': '.$sources__4737[$in['idea__status']]['m_desc'].'">' . $sources__4737[$in['idea__status']]['m_icon'] . '</span> <a href="/idea/go/' . $in['idea__id'] . '"><b>' . $in['idea__title'] . '</b></a> #' . $in['idea__id'] . '</div>';
+        echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$in['idea__status']]['m_name'].': '.$sources__4737[$in['idea__status']]['m_desc'].'">' . $sources__4737[$in['idea__status']]['m_icon'] . '</span> <a href="/g' . $in['idea__id'] . '"><b>' . $in['idea__title'] . '</b></a> #' . $in['idea__id'] . '</div>';
     }
 
 } else {

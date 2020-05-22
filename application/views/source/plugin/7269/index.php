@@ -13,7 +13,7 @@ if(count($source_orphans) > 0){
     foreach($source_orphans  as $count => $source_orphan) {
 
         //Show source:
-        echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$source_orphan['source__status']]['m_name'].': '.$sources__6177[$source_orphan['source__status']]['m_desc'].'">' . $sources__6177[$source_orphan['source__status']]['m_icon'] . '</span> <a href="/source/'.$source_orphan['source__id'].'"><b>'.$source_orphan['source__title'].'</b></a>';
+        echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$source_orphan['source__status']]['m_name'].': '.$sources__6177[$source_orphan['source__status']]['m_desc'].'">' . $sources__6177[$source_orphan['source__status']]['m_icon'] . '</span> <a href="/@'.$source_orphan['source__id'].'"><b>'.$source_orphan['source__title'].'</b></a>';
 
         //Do we need to delete?
         if(isset($_GET['take_action']) && $_GET['take_action']=='delete_all'){

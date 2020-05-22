@@ -195,7 +195,7 @@ function read_detect_type($string)
 
     /*
      * Detect what type of Source URL type should we create
-     * based on options listed in this idea: /source/4227
+     * based on options listed in this idea: @4227
      * */
 
     $string = trim($string);
@@ -378,7 +378,7 @@ function source_count_connections($source__id, $return_html = true){
 
     //Plugin?
     if(in_array($source__id, $CI->config->item('sources_id_6287'))){
-        $source_count_connections[6287] = ( $return_html ? '<a href="/source/plugin/'.$source__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
+        $source_count_connections[6287] = ( $return_html ? '<a href="@p'.$source__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
     }
 
     return $source_count_connections;
@@ -614,33 +614,41 @@ function extract_icon_color($source__icon){
     }
 }
 
-function current_mench($part1 = null){
+function current_mench(){
+
+    /*
+     *
+     * Detects which of the Mench
+     * coins are in play based on
+     * the URL which reflects the
+     * logic in route.php
+     *
+     * */
 
     $CI =& get_instance();
+    $first_letter = substr($CI->uri->segment(1), 0, 1);
 
-    if(!$part1){
-        $part1 = $CI->uri->segment(1);
-    }
+    if($first_letter=='@'){
 
-
-    if($part1=='source'){
         return array(
             'x_id' => 4536,
-            'x_class' => 'source',
             'x_name' => 'source',
         );
-    } elseif($part1=='idea'){
+
+    } elseif(in_array($first_letter, array('i','g'))){
+
         return array(
             'x_id' => 4535,
-            'x_class' => 'idea',
             'x_name' => 'idea',
         );
+
     } else {
+
         return array(
             'x_id' => 6205,
-            'x_class' => 'read',
             'x_name' => 'read',
         );
+
     }
 
 }
@@ -886,9 +894,9 @@ function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/source/'.$session_source['source__id'];
+            $goto_url = '@'.$session_source['source__id'];
         } else {
-            $goto_url = '/source/sign?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '@s?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:
@@ -1547,7 +1555,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['source__id']);
-                $export_row['object__url'] = '/source/' . $db_row['source__id'];
+                $export_row['object__url'] = '/@' . $db_row['source__id'];
                 $export_row['object__status'] = intval($db_row['source__status']);
                 $export_row['object__icon'] = view_source__icon($db_row['source__icon']);
                 $export_row['object__title'] = $db_row['source__title'];
@@ -1592,7 +1600,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 //See if this idea has a time-range:
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['idea__id']);
-                $export_row['object__url'] = '/idea/go/' . $db_row['idea__id'];
+                $export_row['object__url'] = '/g' . $db_row['idea__id'];
                 $export_row['object__status'] = intval($db_row['idea__status']);
                 $export_row['object__icon'] = idea_fetch_cover($db_row['idea__id']);
                 $export_row['object__title'] = $db_row['idea__title'];

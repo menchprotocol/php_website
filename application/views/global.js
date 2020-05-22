@@ -37,7 +37,7 @@ function load_fullstory(){
         FS.identify(js_pl_id, {
             displayName: js_pl_name,
             uid: js_pl_id,
-            profileURL: base_url+'source/'+js_pl_id
+            profileURL: base_url+'/@'+js_pl_id
         });
     }
 }
@@ -365,7 +365,7 @@ $(document).ready(function () {
                             var search_body = $("#mench_search").val().substr(1);
                             if(!isNaN(search_body)){
                                 //Valid Integer, Give option to go there:
-                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/idea/go/' : '/source/' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
+                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/g' : '/@' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
                             }
 
                         }
@@ -519,7 +519,7 @@ function source_fetch_canonical(query_string, not_found){
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
-            $('.not-found').html('<a href="/source/'+searchdata.algolia_object.object__id+'" class="suggestion">' + view_search_result(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/@'+searchdata.algolia_object.object__id+'" class="suggestion">' + view_search_result(searchdata.algolia_object)+'</a>');
         }
     });
 

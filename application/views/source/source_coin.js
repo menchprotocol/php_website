@@ -606,7 +606,7 @@ function source_sort_reset(){
         } else {
 
             //Refresh page:
-            window.location = '/source/' + source_focus_id;
+            window.location = '/@' + source_focus_id;
 
         }
     });

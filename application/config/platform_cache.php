@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-21 18:38:56 PST
+//Generated 2020-05-21 20:21:42 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590111536;
-$config['cache_count_read'] = 1217088;
+$config['cache_timestamp'] = 1590117702;
+$config['cache_count_read'] = 1217376;
 $config['cache_count_read'] = 121403;
-$config['cache_count_idea'] = 5732;
-$config['cache_count_source'] = 4835;
+$config['cache_count_idea'] = 5746;
+$config['cache_count_source'] = 4836;
 
 
 
@@ -406,25 +406,25 @@ $config['sources__12893'] = array(
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
-        'm_desc' => '/read/saved',
+        'm_desc' => '/s',
         'm_parents' => array(4485,12994,10876,12701,12321,7551,11089,11018,11035,4755,4593,12893),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ',
-        'm_desc' => '/read',
+        'm_desc' => '/r',
         'm_parents' => array(12893,10876,2738),
     ),
     4536 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
-        'm_desc' => '/source',
+        'm_desc' => '/@',
         'm_parents' => array(10939,12489,11035,10876,12893,12761,4527,2738),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEATE',
-        'm_desc' => '/idea',
+        'm_desc' => '/i',
         'm_parents' => array(10939,12893,10876,11035,12761,12112,2738),
     ),
     12749 => array(
@@ -447,13 +447,13 @@ $config['sources__12887'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas read" aria-hidden="true"></i>',
         'm_name' => 'MENCH INTERACTIONS',
-        'm_desc' => '/read/interactions?any_source__id=',
+        'm_desc' => '/x?any_source__id=',
         'm_parents' => array(12887,11047,12707,10876,12588,11035,4527,7735),
     ),
     12888 => array(
         'm_icon' => '<i class="fas fa-shield-check source"></i>',
         'm_name' => 'SOURCE EXPLORE EXPERTS',
-        'm_desc' => '/source/plugin/12888?source__id=',
+        'm_desc' => '/@p12888?source__id=',
         'm_parents' => array(12741,6287,12887),
     ),
     7267 => array(
@@ -465,13 +465,13 @@ $config['sources__12887'] = array(
     12712 => array(
         'm_icon' => '<i class="fad fa-lambda source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE REVIEW JSON',
-        'm_desc' => '/source/plugin/12712?source__id=',
+        'm_desc' => '/@p12712?source__id=',
         'm_parents' => array(12887,12741,6287),
     ),
     7279 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
-        'm_desc' => '/source/plugin/7279?obj=4536&object__id=',
+        'm_desc' => '/@p7279?obj=4536&object__id=',
         'm_parents' => array(6287,12741,12887,11047,3323,7287),
     ),
 );
@@ -1157,49 +1157,49 @@ $config['sources__10876'] = array(
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEATE',
-        'm_desc' => 'https://mench.com/idea',
+        'm_desc' => 'https://mench.com/i',
         'm_parents' => array(10939,12893,10876,11035,12761,12112,2738),
     ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
-        'm_desc' => 'https://mench.com/source/signout',
+        'm_desc' => 'https://mench.com/@o',
         'm_parents' => array(12500,10876,11035),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas read" aria-hidden="true"></i>',
         'm_name' => 'MENCH INTERACTIONS',
-        'm_desc' => 'https://mench.com/read/interactions',
+        'm_desc' => 'https://mench.com/x',
         'm_parents' => array(12887,11047,12707,10876,12588,11035,4527,7735),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
         'm_name' => 'PLUGINS',
-        'm_desc' => 'https://mench.com/source/plugin',
+        'm_desc' => 'https://mench.com/p',
         'm_parents' => array(6405,6194,12699,12500,10876,11035,4527),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ',
-        'm_desc' => 'https://mench.com/read',
+        'm_desc' => 'https://mench.com/r',
         'm_parents' => array(12893,10876,2738),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
-        'm_desc' => 'https://mench.com/read/saved',
+        'm_desc' => 'https://mench.com/s',
         'm_parents' => array(4485,12994,10876,12701,12321,7551,11089,11018,11035,4755,4593,12893),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
-        'm_desc' => 'https://mench.com/sign',
+        'm_desc' => 'https://mench.com/@s',
         'm_parents' => array(10876,4527,11035),
     ),
     4536 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
-        'm_desc' => 'https://mench.com/source',
+        'm_desc' => 'https://mench.com/@',
         'm_parents' => array(10939,12489,11035,10876,12893,12761,4527,2738),
     ),
     10869 => array(
@@ -2826,7 +2826,7 @@ $config['sources__11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['sources_id_6404'] = array(12678,7274,12904,3288,12176,4356,4485,4736,11064,11065,13014,11063,13005,11060,12156,11079,11066,11057,11056,12331,12427,12088,11986,12232,6197,12568,12565);
+$config['sources_id_6404'] = array(12678,7274,12904,3288,12176,4356,4485,4736,11064,11065,13014,11063,13005,11060,11079,12156,11066,11057,11056,12331,12427,12088,11986,12232,6197,12568,12565);
 $config['sources__6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -2909,19 +2909,19 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.40',
-        'm_parents' => array(6404),
-    ),
-    12156 => array(
-        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
-        'm_name' => 'MENCH PRIMARY IDEA',
-        'm_desc' => '7766',
+        'm_desc' => 'v1.401',
         'm_parents' => array(6404),
     ),
     11079 => array(
         'm_icon' => '',
         'm_name' => 'MENCH TIMEZONE',
         'm_desc' => 'America/Los_Angeles',
+        'm_parents' => array(6404),
+    ),
+    12156 => array(
+        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_name' => 'MOTHER IDEA',
+        'm_desc' => '7766',
         'm_parents' => array(6404),
     ),
     11066 => array(
@@ -3099,49 +3099,49 @@ $config['sources__11047'] = array(
     7264 => array(
         'm_icon' => '<i class="fad fa-sitemap idea"></i>',
         'm_name' => 'IDEA BIRDS EYE MARKS',
-        'm_desc' => '/source/plugin/7264?idea__id=',
+        'm_desc' => '/@p7264?idea__id=',
         'm_parents' => array(11047,6287),
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
-        'm_desc' => '/source/plugin/4356?idea__id=',
+        'm_desc' => '/@p4356?idea__id=',
         'm_parents' => array(6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
     11049 => array(
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA REVIEW JSON',
-        'm_desc' => '/source/plugin/11049?idea__id=',
+        'm_desc' => '/@p11049?idea__id=',
         'm_parents' => array(12741,6287,11047),
     ),
     12733 => array(
         'm_icon' => '<i class="fad fa-code read"></i>',
         'm_name' => 'IDEA REVIEW READ',
-        'm_desc' => '/source/plugin/12733?idea__id=',
+        'm_desc' => '/@p12733?idea__id=',
         'm_parents' => array(11047,12741,12701,6287),
     ),
     7275 => array(
         'm_icon' => '<i class="fad fa-sync idea"></i>',
         'm_name' => 'IDEA SYNC COMMON BASE',
-        'm_desc' => '/source/plugin/7275?idea__id=',
+        'm_desc' => '/@p7275?idea__id=',
         'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     7276 => array(
         'm_icon' => '<i class="fad fa-sync idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA SYNC EXTRA INSIGHTS',
-        'm_desc' => '/source/plugin/7276?idea__id=',
+        'm_desc' => '/@p7276?idea__id=',
         'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas read" aria-hidden="true"></i>',
         'm_name' => 'MENCH INTERACTIONS',
-        'm_desc' => '/read/interactions?any_idea__id=',
+        'm_desc' => '/x?any_idea__id=',
         'm_parents' => array(12887,11047,12707,10876,12588,11035,4527,7735),
     ),
     7279 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
-        'm_desc' => '/source/plugin/7279?obj=4535&object__id=',
+        'm_desc' => '/@p7279?obj=4535&object__id=',
         'm_parents' => array(6287,12741,12887,11047,3323,7287),
     ),
 );

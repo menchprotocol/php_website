@@ -381,28 +381,28 @@ class READ_model extends CI_Model
 
                         //IDEA
                         $ideas = $this->IDEA_model->fetch(array( 'idea__id' => $add_fields[$sources__6232[$source__id]['m_desc']] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'idea/go/' . $ideas[0]['idea__id'] . '" target="_parent">#'.$ideas[0]['idea__id'].' '.$ideas[0]['idea__title'].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/g' . $ideas[0]['idea__id'] . '" target="_parent">#'.$ideas[0]['idea__id'].' '.$ideas[0]['idea__title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 
                         //SOURCE
                         $sources = $this->SOURCE_model->fetch(array( 'source__id' => $add_fields[$sources__6232[$source__id]['m_desc']] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'source/' . $sources[0]['source__id'] . '" target="_parent">@'.$sources[0]['source__id'].' '.$sources[0]['source__title'].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/@' . $sources[0]['source__id'] . '" target="_parent">@'.$sources[0]['source__id'].' '.$sources[0]['source__title'].'</a></div>';
 
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
                         //READ
-                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'source/plugin/12722?read__id=' . $add_fields[$sources__6232[$source__id]['m_desc']] . '" target="_parent">'.$add_fields[$sources__6232[$source__id]['m_desc']].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'/@p12722?read__id=' . $add_fields[$sources__6232[$source__id]['m_desc']] . '" target="_parent">'.$add_fields[$sources__6232[$source__id]['m_desc']].'</a></div>';
 
                     }
 
                 }
 
                 //Finally append READ ID:
-                $html_message .= '<div>READ ID: <a href="'.$this->config->item('base_url').'source/plugin/12722?read__id=' . $add_fields['read__id'] . '">' . $add_fields['read__id'] . '</a></div>';
+                $html_message .= '<div>READ ID: <a href="'.$this->config->item('base_url').'/@p12722?read__id=' . $add_fields['read__id'] . '">' . $add_fields['read__id'] . '</a></div>';
 
                 //Inform how to change settings:
-                $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'source/5967" target="_blank">@5967</a></div>';
+                $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'/@5967" target="_blank">@5967</a></div>';
 
                 //Send email:
                 $dispatched_email = $this->READ_model->send_email($sub_emails, $subject, $html_message);
@@ -1021,7 +1021,7 @@ class READ_model extends CI_Model
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<a class="montserrat '.$single_word_class.extract_icon_color($sources[0]['source__icon']).'" href="/source/' . $sources[0]['source__id'] . '">'.( !in_array($sources[0]['source__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['source__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></a>', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<a class="montserrat '.$single_word_class.extract_icon_color($sources[0]['source__icon']).'" href="/@' . $sources[0]['source__id'] . '">'.( !in_array($sources[0]['source__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['source__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></a>', $output_body_message);
 
             }
         }

@@ -371,7 +371,7 @@ function view_interaction($ln, $is_parent_tr = false)
 
 
     //Read ID
-    $ui .= '<div class="simple-line"><a href="/read/interactions?read__id='.$ln['read__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4367]['m_icon']. '</span>'.$ln['read__id'].'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/x?read__id='.$ln['read__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4367]['m_icon']. '</span>'.$ln['read__id'].'</a></div>';
 
 
     //Status
@@ -394,7 +394,7 @@ function view_interaction($ln, $is_parent_tr = false)
     }
 
     //Read Type & Coins
-    $ui .= '<div class="simple-line"><a href="/source/'.$ln['read__type'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4593]['m_name'].( strlen($sources__4593[$ln['read__type']]['m_desc']) ? ': '.$sources__4593[$ln['read__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$sources__4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($sources__4593[$ln['read__type']]['m_icon']).'">'. $sources__4593[$ln['read__type']]['m_icon'] . '&nbsp;' . $sources__4593[$ln['read__type']]['m_name'] . '</span>'.($coins_type ? '&nbsp;<span title="'.$coins_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coins_type.'"></i></span>' : '').'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$ln['read__type'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4593]['m_name'].( strlen($sources__4593[$ln['read__type']]['m_desc']) ? ': '.$sources__4593[$ln['read__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$sources__4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($sources__4593[$ln['read__type']]['m_icon']).'">'. $sources__4593[$ln['read__type']]['m_icon'] . '&nbsp;' . $sources__4593[$ln['read__type']]['m_name'] . '</span>'.($coins_type ? '&nbsp;<span title="'.$coins_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coins_type.'"></i></span>' : '').'</a></div>';
 
 
     //Hide Sensitive Details?
@@ -407,7 +407,7 @@ function view_interaction($ln, $is_parent_tr = false)
 
         //Metadata
         if(strlen($ln['read__metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="/source/plugin/12722?read__id=' . $ln['read__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
+            $ui .= '<div class="simple-line"><a href="@p12722?read__id=' . $ln['read__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
         }
 
         //Order
@@ -429,7 +429,7 @@ function view_interaction($ln, $is_parent_tr = false)
                 'source__id' => $ln['read__source'],
             ));
 
-            $ui .= '<div class="simple-line"><a href="/source/'.$player_sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($player_sources[0]['source__icon']).'"><span class="img-block">'.view_source__icon($player_sources[0]['source__icon']) . '</span> ' . $player_sources[0]['source__title'] . '</span></a></div>';
+            $ui .= '<div class="simple-line"><a href="/@'.$player_sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($player_sources[0]['source__icon']).'"><span class="img-block">'.view_source__icon($player_sources[0]['source__icon']) . '</span> ' . $player_sources[0]['source__title'] . '</span></a></div>';
 
         }
 
@@ -452,14 +452,14 @@ function view_interaction($ln, $is_parent_tr = false)
                 //SOURCE
                 $sources = $CI->SOURCE_model->fetch(array('source__id' => $ln[$sources__6232[$source__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/source/'.$sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.( $ln[$sources__6232[$source__id]['m_desc']]==$ln['read__source'] ? $sources__4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['source__icon']).' img-block">'.view_source__icon($sources[0]['source__icon']). '&nbsp;'.$sources[0]['source__title'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.( $ln[$sources__6232[$source__id]['m_desc']]==$ln['read__source'] ? $sources__4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['source__icon']).' img-block">'.view_source__icon($sources[0]['source__icon']). '&nbsp;'.$sources[0]['source__title'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
                 //IDEA
                 $ideas = $CI->IDEA_model->fetch(array('idea__id' => $ln[$sources__6232[$source__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/idea/go/'.$ideas[0]['idea__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.$sources__2738[4535]['m_icon']. '&nbsp;'.view_idea__title($ideas[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/g'.$ideas[0]['idea__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.$sources__2738[4535]['m_icon']. '&nbsp;'.view_idea__title($ideas[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
@@ -852,7 +852,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="/idea/go/'.$idea['idea__id'].'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
+            $ui .= '<span class="icon-block"><a href="/g'.$idea['idea__id'].'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
 
 
             //IDEA TITLE
@@ -862,7 +862,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
             } else {
 
-                $ui .= '<a href="/idea/go/'.$idea['idea__id'].'" class="title-block montserrat">';
+                $ui .= '<a href="/g'.$idea['idea__id'].'" class="title-block montserrat">';
                 $ui .= $box_items_list;
                 //IDEA STATUS
                 if(!$is_public){
@@ -1459,7 +1459,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //SOURCE ICON
-    $ui .= '<a href="/source/'.$source['source__id'] . '" '.( $is_link_source ? ' title="READ ID '.$source['read__id'].' TYPE @'.$source['read__type'].' SORT '.$source['read__sort'].' WEIGHT '.$source['source__weight'].'" ' : '' ).'><span class="icon-block source_ui_icon_' . $source['source__id'] . ' source__icon_'.$source['source__id'].'" en-is-set="'.( strlen($source['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($source['source__icon']) . '</span></a>';
+    $ui .= '<a href="/@'.$source['source__id'] . '" '.( $is_link_source ? ' title="READ ID '.$source['read__id'].' TYPE @'.$source['read__type'].' SORT '.$source['read__sort'].' WEIGHT '.$source['source__weight'].'" ' : '' ).'><span class="icon-block source_ui_icon_' . $source['source__id'] . ' source__icon_'.$source['source__id'].'" en-is-set="'.( strlen($source['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($source['source__icon']) . '</span></a>';
 
 
     //SOURCE TOOLBAR?
@@ -1472,7 +1472,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     } else {
 
         //SOURCE NAME
-        $ui .= '<a href="/source/'.$source['source__id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($source['source__icon']).'">';
+        $ui .= '<a href="/@'.$source['source__id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($source['source__icon']).'">';
         $ui .= $box_items_list;
         $ui .= '<span class="text__6197_' . $source['source__id'] . '">'.$source['source__title'].'</span>';
         $ui .= $child_counter;
@@ -1540,7 +1540,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     //PROFILE SOURCES:
     $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block hideIfEmpty">';
     foreach($source__profiles as $source_profile) {
-        $ui .= '<span class="icon-block-img source_child_icon_' . $source_profile['source__id'] . '"><a href="/source/' . $source_profile['source__id'] . '" data-toggle="tooltip" title="' . $source_profile['source__title'] . (strlen($source_profile['read__message']) > 0 ? ' = ' . $source_profile['read__message'] : '') . '" data-placement="bottom">' . view_source__icon($source_profile['source__icon']) . '</a></span> ';
+        $ui .= '<span class="icon-block-img source_child_icon_' . $source_profile['source__id'] . '"><a href="/@' . $source_profile['source__id'] . '" data-toggle="tooltip" title="' . $source_profile['source__title'] . (strlen($source_profile['read__message']) > 0 ? ' = ' . $source_profile['read__message'] : '') . '" data-placement="bottom">' . view_source__icon($source_profile['source__icon']) . '</a></span> ';
     }
     $ui .= '</span>';
     $ui .= '</div>';

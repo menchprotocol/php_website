@@ -17,7 +17,7 @@ if(count($duplicates) > 0){
             $prev_title = $en['source__title'];
         }
 
-        echo '<span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$en['source__status']]['m_name'].': '.$sources__6177[$en['source__status']]['m_desc'].'">' . $sources__6177[$en['source__status']]['m_icon'] . '</span> <a href="/source/' . $en['source__id'] . '"><b>' . $en['source__title'] . '</b></a> @' . $en['source__id'] . '<br />';
+        echo '<span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$en['source__status']]['m_name'].': '.$sources__6177[$en['source__status']]['m_desc'].'">' . $sources__6177[$en['source__status']]['m_icon'] . '</span> <a href="/@' . $en['source__id'] . '"><b>' . $en['source__title'] . '</b></a> @' . $en['source__id'] . '<br />';
     }
 
 } else {
