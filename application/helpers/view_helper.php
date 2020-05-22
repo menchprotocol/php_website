@@ -820,7 +820,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     //Prep link metadata to be analyzed later:
     $read__id = $idea['read__id'];
     $read__metadata = unserialize($idea['read__metadata']);
-    $idea__metadata = unserialize($idea['idea__metadata']);
+    $idea_stats = idea_stats($idea['idea__metadata']);
 
     $session_source = superpower_assigned();
     $is_public = in_array($idea['idea__status'], $CI->config->item('sources_id_7355'));
@@ -984,13 +984,14 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
             'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
         if($next_ideas[0]['total_ideas'] > 0){
+
             $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[11020]['m_name'].'">'.$sources__12413[11020]['m_icon'].$next_ideas[0]['total_ideas'].'&nbsp;</div>';
 
             //TREE SIZE
-            $tree_size = ( isset($idea__metadata['idea___max_reads']) && $idea__metadata['idea___max_reads']>$next_ideas[0]['total_ideas'] ? intval($idea__metadata['idea___max_reads']) : 0 );
-            if($tree_size){
-                $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$sources__12413[6170]['m_name'].'">'.$sources__12413[6170]['m_icon'].'&nbsp;'.$tree_size.'&nbsp;</div>';
+            if($idea_stats['ideas_average'] > 0){
+                $ui .= '<div class="inline-block montserrat idea" style="padding:15px 0 5px 0;" title="'.$idea_stats['ideas_min'].' - '.$idea_stats['ideas_max'].' Ideas in '.$sources__12413[6170]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$sources__12413[6170]['m_icon'].'&nbsp;'.number_format($idea_stats['ideas_average'], 0).'&nbsp;</div>';
             }
+
         }
 
 
