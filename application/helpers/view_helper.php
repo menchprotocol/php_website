@@ -970,14 +970,16 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
         //PREVIOUS IDEAS COUNT
-        $next_ideas = $CI->READ_model->fetch(array(
+        $ui .= '<span class="inline-block montserrat idea hideIfEmpty" title="'.$sources__12413[11019]['m_name'].'" style="width:42px; margin-left:5px;">';
+        $previous_ideas = $CI->READ_model->fetch(array(
             'read__right' => $idea['idea__id'],
             'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
-        if($next_ideas[0]['total_ideas'] > 1){
-            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11019]['m_name'].'" style="width:34px; margin-left:8px;">'.$next_ideas[0]['total_ideas'].$sources__12413[11019]['m_icon'].'</span>';
+        if($previous_ideas[0]['total_ideas'] > 1){
+            $ui .= $previous_ideas[0]['total_ideas'].$sources__12413[11019]['m_icon'];
         }
+        $ui .= '</span>';
 
 
         //NEXT IDEAS COUNT
@@ -988,7 +990,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
         ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
         if($next_ideas[0]['total_ideas'] > 0){
 
-            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:34px;">'.$sources__12413[11020]['m_icon'].$next_ideas[0]['total_ideas'].'</span>';
+            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:42px;">'.$sources__12413[11020]['m_icon'].$next_ideas[0]['total_ideas'].'</span>';
 
             //TREE SIZE
             if($idea_stats['ideas_average'] > 0){
