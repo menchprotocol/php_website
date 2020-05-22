@@ -29,7 +29,7 @@ $route['@o']                        = "source/signout"; //Signout
 $route['@p(:num)']                  = "source/plugin/$1"; //Specific Plugin
 $route['@p']                        = "source/plugin"; //Plugin Home
 $route['@(:num)']                   = "source/source_coin/$1"; //Specific source
-$route['@']                         = "source/source_coin"; //Source Home
+$route['@']                         = "source/index"; //Source Home
 
 
 //IDEATE
