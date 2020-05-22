@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-21 13:30:20 PST
+//Generated 2020-05-21 18:38:56 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590093020;
-$config['cache_count_read'] = 1215620;
-$config['cache_count_read'] = 121397;
-$config['cache_count_idea'] = 5724;
-$config['cache_count_source'] = 4710;
+$config['cache_timestamp'] = 1590111536;
+$config['cache_count_read'] = 1217088;
+$config['cache_count_read'] = 121403;
+$config['cache_count_idea'] = 5732;
+$config['cache_count_source'] = 4835;
 
 
 
@@ -1117,7 +1117,7 @@ $config['sources__12420'] = array(
 );
 
 //IDEA TREE:
-$config['sources_id_12413'] = array(6170,6169,11020,11019);
+$config['sources_id_12413'] = array(6170,6169,13177,11020,11019);
 $config['sources__12413'] = array(
     6170 => array(
         'm_icon' => '<i class="fas fa-sitemap idea"></i>',
@@ -1130,6 +1130,12 @@ $config['sources__12413'] = array(
         'm_name' => 'IDEA TREE MIN',
         'm_desc' => '',
         'm_parents' => array(12413,6232,6214,6159),
+    ),
+    13177 => array(
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
+        'm_name' => 'IDEA TREE RANGE',
+        'm_desc' => '',
+        'm_parents' => array(12413),
     ),
     11020 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
@@ -5112,7 +5118,7 @@ $config['sources__6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['sources_id_6204'] = array(13037,4737,7585,10602,6186,4593,3290,6177);
+$config['sources_id_6204'] = array(13037,4737,7585,10602,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,6186,4593,3290,6177);
 $config['sources__6204'] = array(
     13037 => array(
         'm_icon' => '<i class="fas fa-hand-holding-heart"></i>',
@@ -5137,6 +5143,144 @@ $config['sources__6204'] = array(
         'm_name' => 'IDEA TYPE GROUPS',
         'm_desc' => '',
         'm_parents' => array(10893,6204),
+    ),
+    13158 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE ANGULAR',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13172 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE AWS',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13167 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE C#',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13166 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE C++',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13153 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE CSS',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13174 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE DOCKER',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13171 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE GIT',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13152 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE HTML',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13162 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE JAVA',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13156 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE JAVASCRIPT',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13157 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE JQUERY',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13155 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE JSON',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13173 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE LINUX',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13170 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE MONGODB',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13164 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE MYSQL',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13160 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE NODE.JS',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13168 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE PHP',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13165 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE POSTGRESQL',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13169 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE PYTHON',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13159 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE REACT',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13163 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE SQL',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13161 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE TYPESCRIPT',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
+    ),
+    13154 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'RATE VUE.JS',
+        'm_desc' => '',
+        'm_parents' => array(6204,13151),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
