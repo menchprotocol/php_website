@@ -818,7 +818,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     $sources__12413 = $CI->config->item('sources__12413');
 
     //Prep link metadata to be analyzed later:
-    $read__id = $idea['read__id'];
+    $read__id = ( isset($idea['read__id']) ? $idea['read__id'] : 0 );
     $read__metadata = unserialize($idea['read__metadata']);
     $idea_stats = idea_stats($idea['idea__metadata']);
 
