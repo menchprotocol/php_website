@@ -947,7 +947,7 @@ class READ_model extends CI_Model
 
             //SOURCE IDENTIFIER
             $string_references = extract_source_references($message_input, true);
-            $is_current_source = $current_mench['x_name']=='source' && $this->uri->segment(2)==$string_references['ref_sources'][0];
+            $is_current_source = $current_mench['x_name']=='source' && substr($this->uri->segment(1), 1)==$string_references['ref_sources'][0];
 
 
             //Determine what type of Media this reference has:
@@ -974,7 +974,7 @@ class READ_model extends CI_Model
 
                     } elseif($source_profile['read__type'] == 4255 /* TEXT */){
 
-                        $source_appendix .= '<div class="source-appendix paddingup">*' . $source_profile['read__message'] . '</div>';
+                        $source_appendix .= '<div class="source-appendix paddingup"><i class="far fa-info-circle"></i> ' . $source_profile['read__message'] . '</div>';
                         continue;
 
                     } else {

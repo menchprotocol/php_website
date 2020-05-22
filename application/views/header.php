@@ -2,7 +2,6 @@
 
 $session_source = superpower_assigned();
 $first_segment = $this->uri->segment(1);
-$second_segment = $this->uri->segment(2);
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $sources__2738 = $this->config->item('sources__2738');
 $current_mench = current_mench();
@@ -117,9 +116,9 @@ if(!isset($hide_header)){
                                 $m['source__id'] = $read__type;
                                 $is_current_mench = (
                                     $_SERVER['REQUEST_URI'] == $m['m_desc'] ||
-                                    ( $read__type==6205 /*  READ  */ && is_numeric($first_segment) ) ||
-                                    ( $read__type==4535 /* IDEATE */ && is_numeric($second_segment) && $first_segment=='idea' ) ||
-                                    ( $read__type==4536 /* SOURCE */ && is_numeric($second_segment) && $first_segment=='source' )
+                                    ( $read__type==6205 /*  READ  */ && $current_mench['x_name']=='read' ) ||
+                                    ( $read__type==4535 /* IDEATE */ && $current_mench['x_name']=='idea' ) ||
+                                    ( $read__type==4536 /* SOURCE */ && $current_mench['x_name']=='source' )
                                 );
                                 if($is_current_mench){
                                     $sources__12893_resort[0] = $m;
@@ -210,7 +209,7 @@ if(!isset($hide_header)){
                             //Skip superpowers if not assigned
                             if($read__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
                                 continue;
-                            } elseif($read__type==6415 && !($first_segment=='read' && !$second_segment)){
+                            } elseif($read__type==6415 && !($first_segment=='r')){
                                 //Deleting reads only available on Reads home
                                 continue;
                             }
