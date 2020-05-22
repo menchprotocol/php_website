@@ -981,7 +981,7 @@ class Source extends CI_Controller
             } else {
 
                 if($_POST['source__id'] == $_POST['source_focus_id']){
-                    $delete_redirect_url = '/@' . ( count($source__profiles) ? $source__profiles[0]['source__id'] : $session_source['source__id'] );
+                    $delete_redirect_url = '/@' . ( count($source__profiles) ? $source__profiles[0]['source__id'] : '' );
                 }
 
                 //Display proper message:

@@ -991,7 +991,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
         ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
         if($next_ideas[0]['total_ideas'] > 0){
 
-            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:42px;">'.$sources__12413[11020]['m_icon'].$next_ideas[0]['total_ideas'].'</span>';
+            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:45px;">'.$sources__12413[11020]['m_icon'].$next_ideas[0]['total_ideas'].'</span>';
 
             //TREE SIZE
             if($idea_stats['ideas_average'] > 0){
