@@ -859,7 +859,10 @@ textarea.note-textarea{
     display: block;
 }
 .space-content .btn{
-    margin:-2px 0 0 0;
+    margin:-9px 0 0 0;
+}
+.space-content .btn.edit-locked{
+    margin:-3px 0 0 0;
 }
 .title-block{
     display: block;
