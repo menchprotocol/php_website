@@ -54,7 +54,7 @@ function search_email(){
     $.post("/source/sign_check_email", {
 
         input_email: $('#input_email').val(),
-        referrer_idea__id: referrer_idea__id,
+        sign_idea__id: sign_idea__id,
 
     }, function (data) {
 
@@ -103,7 +103,7 @@ function add_account(){
         input_name: $('#input_name').val(),
         new_password: $('#new_password').val(),
         referrer_url: referrer_url,
-        referrer_idea__id: referrer_idea__id,
+        sign_idea__id: sign_idea__id,
     }, function (data) {
 
         if (data.status) {
@@ -155,7 +155,7 @@ function sign_check_password(){
         sign_source__id: $('#sign_source__id').val(),
         input_password: $('#input_password').val(),
         referrer_url: referrer_url,
-        referrer_idea__id: referrer_idea__id,
+        sign_idea__id: sign_idea__id,
     }, function (data) {
 
         if (data.status) {
@@ -193,7 +193,7 @@ function magicemail(){
         //Check email and validate:
         $.post("/source/magicemail", {
             input_email: $('#input_email').val(),
-            referrer_idea__id: referrer_idea__id,
+            sign_idea__id: sign_idea__id,
         }, function (data) {
             if (data.status) {
                 //All good, they can close window:

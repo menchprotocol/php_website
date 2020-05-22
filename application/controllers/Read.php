@@ -448,7 +448,7 @@ class Read extends CI_Controller
     }
 
 
-    function join($idea__id){
+    function start_reading($idea__id){
 
         //Adds Idea to the Players Reads
 

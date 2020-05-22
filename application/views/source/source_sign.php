@@ -2,12 +2,9 @@
 $sources__4269 = $this->config->item('sources__4269');
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
-//See if we have a session assigned:
-$referrer_idea__id = intval($this->session->userdata('sign_idea__id'));
-
 $this_attempt = array(
-    'read__type' => ( $referrer_idea__id > 0 ? 7560 /* User Signin Idea Channel Choose */ : 7561 /* User Signin on Website */ ),
-    'read__left' => $referrer_idea__id,
+    'read__type' => ( $sign_idea__id > 0 ? 7560 /* User Signin Idea Channel Choose */ : 7561 /* User Signin on Website */ ),
+    'read__left' => $sign_idea__id,
 );
 
 $current_sign_idea_attempt = array(); //Will try to find this...
@@ -50,7 +47,7 @@ if(count($current_sign_idea_attempt) == 0){
 
 <script>
     var go_next_icon = '<?= $sources__11035[12211]['m_icon'] ?>';
-    var referrer_idea__id = <?= intval($referrer_idea__id) ?>;
+    var sign_idea__id = <?= intval($sign_idea__id) ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
 </script>
 <script src="/application/views/source/source_sign.js?v=<?= config_var(11060) ?>"

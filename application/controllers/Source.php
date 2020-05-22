@@ -1593,34 +1593,23 @@ class Source extends CI_Controller
     function sign($idea__id = 0){
 
         //Check to see if they are previously logged in?
-        $session_source = superpower_assigned();
-        if ($session_source) {
+        if(superpower_assigned()) {
             //Lead player and above, go to console:
             if($idea__id > 0){
-                return redirect_message('/g' . $idea__id);
+                return redirect_message(( superpower_assigned(10939) ? '/g' : '/' ) . $idea__id);
             } else {
                 return redirect_message('/r');
             }
         }
-
-        //Update focus idea session:
-        if($idea__id > 0){
-            //Set in session:
-            $this->session->set_userdata(array(
-                'sign_idea__id' => $idea__id,
-            ));
-
-            //Redirect to basic login URL (So Facebook OAuth can validate)
-            return redirect_message('/@s');
-        }
-
 
         $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
             'hide_header' => 1,
             'title' => $sources__11035[4269]['m_name'],
         ));
-        $this->load->view('source/source_sign');
+        $this->load->view('source/source_sign', array(
+            'sign_idea__id' => $idea__id,
+        ));
         $this->load->view('footer');
 
     }
@@ -1637,7 +1626,7 @@ class Source extends CI_Controller
 
     function sign_create_account(){
 
-        if (!isset($_POST['referrer_idea__id']) || !isset($_POST['referrer_url'])) {
+        if (!isset($_POST['sign_idea__id']) || !isset($_POST['referrer_url'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -1745,20 +1734,20 @@ class Source extends CI_Controller
         update_algolia(4536,  $player_source['new_source']['source__id']);
 
         //Fetch referral Idea, if any:
-        if(intval($_POST['referrer_idea__id']) > 0){
+        if(intval($_POST['sign_idea__id']) > 0){
 
             //Fetch the Idea:
             $referrer_ideas = $this->IDEA_model->fetch(array(
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-                'idea__id' => $_POST['referrer_idea__id'],
+                'idea__id' => $_POST['sign_idea__id'],
             ));
 
             if(count($referrer_ideas) > 0){
                 //Add this Idea to their Reads:
-                $this->READ_model->start($player_source['new_source']['source__id'], $_POST['referrer_idea__id']);
+                $this->READ_model->start($player_source['new_source']['source__id'], $_POST['sign_idea__id']);
             } else {
                 //Cannot be added, likely because its not published:
-                $_POST['referrer_idea__id'] = 0;
+                $_POST['sign_idea__id'] = 0;
             }
 
         } else {
@@ -1784,7 +1773,7 @@ class Source extends CI_Controller
         $invite_link = $this->READ_model->create(array(
             'read__type' => 7562, //User Signin Joined Mench
             'read__source' => $player_source['new_source']['source__id'],
-            'read__left' => intval($_POST['referrer_idea__id']),
+            'read__left' => intval($_POST['sign_idea__id']),
             'read__metadata' => array(
                 'email_log' => $email_log,
             ),
@@ -1796,8 +1785,8 @@ class Source extends CI_Controller
 
         if (strlen($_POST['referrer_url']) > 0) {
             $sign_url = urldecode($_POST['referrer_url']);
-        } elseif(intval($_POST['referrer_idea__id']) > 0) {
-            $sign_url = '/g'.$_POST['referrer_idea__id'];
+        } elseif(intval($_POST['sign_idea__id']) > 0) {
+            $sign_url = '/g'.$_POST['sign_idea__id'];
         } else {
             //Go to home page and let them continue from there:
             $sign_url = '/';
@@ -1875,7 +1864,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing referrer URL',
             ));
-        } elseif (!isset($_POST['referrer_idea__id'])) {
+        } elseif (!isset($_POST['sign_idea__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea referrer',
@@ -1938,9 +1927,9 @@ class Source extends CI_Controller
         $this->SOURCE_model->activate_session($sources[0]);
 
 
-        if (intval($_POST['referrer_idea__id']) > 0) {
+        if (intval($_POST['sign_idea__id']) > 0) {
 
-            $sign_url = '/j'.$_POST['referrer_idea__id'];
+            $sign_url = '/j'.$_POST['sign_idea__id'];
 
         } elseif (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
 
@@ -2072,7 +2061,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Email',
             ));
-        } elseif (!isset($_POST['referrer_idea__id'])) {
+        } elseif (!isset($_POST['sign_idea__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -2099,7 +2088,7 @@ class Source extends CI_Controller
             'read__type' => 7563, //User Signin Magic Link Email
             'read__message' => $_POST['input_email'],
             'read__source' => $user_emails[0]['source__id'], //User making request
-            'read__left' => intval($_POST['referrer_idea__id']),
+            'read__left' => intval($_POST['sign_idea__id']),
         ));
 
         //This is a new email, send invitation to join:
@@ -2176,7 +2165,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Email',
             ));
-        } elseif (!isset($_POST['referrer_idea__id'])) {
+        } elseif (!isset($_POST['sign_idea__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -2188,11 +2177,11 @@ class Source extends CI_Controller
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
 
 
-        if(intval($_POST['referrer_idea__id']) > 0){
+        if(intval($_POST['sign_idea__id']) > 0){
             //Fetch the idea:
             $referrer_ideas = $this->IDEA_model->fetch(array(
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-                'idea__id' => $_POST['referrer_idea__id'],
+                'idea__id' => $_POST['sign_idea__id'],
             ));
         } else {
             $referrer_ideas = array();
