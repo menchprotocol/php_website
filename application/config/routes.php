@@ -6,4 +6,5 @@ $route['404_override']              = 'source/source_404';
 $route['default_controller']        = "read/read_coin";
 $route['(:num)']                    = "read/read_coin/$1";
 $route['source/(:num)']             = "source/source_coin/$1";
+$route['@(:num)']                   = "source/source_coin/$1";
 $route['idea/(:num)']               = "idea/idea_coin/$1";
