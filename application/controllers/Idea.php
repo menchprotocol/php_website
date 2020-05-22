@@ -230,7 +230,7 @@ class Idea extends CI_Controller {
         } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $sources__6232) || strlen($sources__6232[$_POST['element_id']]['m_desc'])<5 || !count($this->config->item('sources_id_'.$_POST['element_id']))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Element ID / Missing from @6232',
+                'message' => 'Invalid Element ID ['.$_POST['element_id'].'] Missing from @6232',
             ));
         } elseif (!isset($_POST['new_source__id']) || intval($_POST['new_source__id']) < 1 || !in_array($_POST['new_source__id'], $this->config->item('sources_id_'.$_POST['element_id']))) {
             return view_json(array(
