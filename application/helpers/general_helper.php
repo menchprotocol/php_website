@@ -894,9 +894,9 @@ function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '@'.$session_source['source__id'];
+            $goto_url = '/@'.$session_source['source__id'];
         } else {
-            $goto_url = '@s?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '/@s?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:

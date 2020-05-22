@@ -18,6 +18,7 @@ $route['default_controller']        = "read/read_coin"; //Home pate
 $route['(:num)']                    = "read/read_coin/$1"; //Read Idea
 $route['r']                         = "read/index"; //Read Home
 $route['s']                         = "read/saved"; //Read Saved Ideas
+$route['j(:num)']                   = "read/join"; //Join & start on Idea
 $route['x']                         = "read/interactions"; //Read Interactions history
 $route['404_override']              = 'source/source_404'; //Page not found, etc...
 

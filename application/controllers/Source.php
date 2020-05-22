@@ -1611,7 +1611,7 @@ class Source extends CI_Controller
             ));
 
             //Redirect to basic login URL (So Facebook OAuth can validate)
-            return redirect_message('@s');
+            return redirect_message('/@s');
         }
 
 
@@ -1837,11 +1837,11 @@ class Source extends CI_Controller
 
             if(( substr_count($sources[0]['source__icon'], 'class="') ?  : null )){
 
-                return redirect_message('@p7267?search_for='.urlencode(one_two_explode('class="','"',$sources[0]['source__icon'])));
+                return redirect_message('/@p7267?search_for='.urlencode(one_two_explode('class="','"',$sources[0]['source__icon'])));
 
             } elseif(strlen($sources[0]['source__icon'])) {
 
-                return redirect_message('@p7267?search_for=' . urlencode($sources[0]['source__icon']));
+                return redirect_message('/@p7267?search_for=' . urlencode($sources[0]['source__icon']));
 
             } else {
                 return view_json(array(
@@ -1940,7 +1940,7 @@ class Source extends CI_Controller
 
         if (intval($_POST['referrer_idea__id']) > 0) {
 
-            $sign_url = '/read/start/'.$_POST['referrer_idea__id'];
+            $sign_url = '/j'.$_POST['referrer_idea__id'];
 
         } elseif (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
 
@@ -2136,7 +2136,7 @@ class Source extends CI_Controller
             return redirect_message('/');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('@s', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Missing Email</div>');
+            return redirect_message('/@s', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Missing Email</div>');
         }
 
         //Validate READ ID and matching email:
@@ -2147,10 +2147,10 @@ class Source extends CI_Controller
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Invalid data source</div>');
+            return redirect_message('/@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['read__time']) + config_var(11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Magic link has expired. Try again.</div>');
+            return redirect_message('/@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Magic link has expired. Try again.</div>');
         }
 
         //Fetch source:
@@ -2158,7 +2158,7 @@ class Source extends CI_Controller
             'source__id' => $validate_links[0]['read__source'],
         ));
         if(count($sources) < 1){
-            return redirect_message('@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>User not found</div>');
+            return redirect_message('/@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>User not found</div>');
         }
 
         //Log them in:

@@ -448,7 +448,7 @@ class Read extends CI_Controller
     }
 
 
-    function start($idea__id){
+    function join($idea__id){
 
         //Adds Idea to the Players Reads
 
@@ -456,7 +456,7 @@ class Read extends CI_Controller
 
         //Check to see if added to Reads for logged-in users:
         if(!$session_source){
-            return redirect_message('@s'.$idea__id);
+            return redirect_message('/@s'.$idea__id);
         }
 
         //Add this Idea to their Reads If not already there:
@@ -481,7 +481,7 @@ class Read extends CI_Controller
         $append_url = '?previous_read='.( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $idea__id );
         $session_source = superpower_assigned();
         if(!$session_source){
-            return redirect_message('@s');
+            return redirect_message('/@s');
         }
 
         if($idea__id > 0){
