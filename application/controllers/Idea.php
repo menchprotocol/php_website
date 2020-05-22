@@ -286,9 +286,7 @@ class Idea extends CI_Controller {
 
                         //Go to main page if no parent found:
                         if(!$deletion_redirect){
-
-                            $deletion_redirect = '/i';
-
+                            $deletion_redirect = ( intval($this->session->userdata('session_time_7260')) ? '/@p7260' : '/i' );
                         }
 
                     } else {

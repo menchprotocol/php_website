@@ -981,7 +981,12 @@ class Source extends CI_Controller
             } else {
 
                 if($_POST['source__id'] == $_POST['source_focus_id']){
-                    $delete_redirect_url = '/@' . ( count($source__profiles) ? $source__profiles[0]['source__id'] : '' );
+                    if(count($source__profiles)){
+                        $delete_redirect_url = '/@' . $source__profiles[0]['source__id'];
+                    } else {
+                        //Is the plugin activated?
+                        $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/@p7269' : '/@' );
+                    }
                 }
 
                 //Display proper message:
