@@ -862,11 +862,13 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
                 $ui .= '<a href="/g'.$idea['idea__id'].'" class="title-block montserrat">';
                 $ui .= $box_items_list;
+
                 //IDEA STATUS
-                if(!$is_public){
+                if(!$is_public && $is_idea_link){
                     //Show the drafting status:
                     $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$idea['idea__status']]['m_name'].' @'.$idea['idea__status'].'">' . $sources__4737[$idea['idea__status']]['m_icon'] . '</span>&nbsp;</span>';
                 }
+
                 $ui .= view_idea__title($idea); //IDEA TITLE
                 $ui .= '</a>';
 
@@ -927,7 +929,6 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
         $ui .= '<div class="space-content ' . superpower_active(12673) . '" style="padding-left:25px; padding-top:13px;">';
 
         $ui .= $box_items_list;
-
 
         //IDEA TYPE
         $ui .= '<div class="inline-block">'.view_input_dropdown(7585, $idea['idea__type'], null, $is_source, false, $idea['idea__id']).'</div>';
