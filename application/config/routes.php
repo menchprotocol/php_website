@@ -18,7 +18,7 @@ $route['default_controller']        = "read/read_coin"; //Home pate
 $route['(:num)']                    = "read/read_coin/$1"; //Read Idea
 $route['r']                         = "read/index"; //Read Home
 $route['s']                         = "read/saved"; //Read Saved Ideas
-$route['x']                         = "read/interactions/$1"; //Read Interactions history
+$route['x']                         = "read/interactions"; //Read Interactions history
 $route['404_override']              = 'source/source_404'; //Page not found, etc...
 
 
@@ -29,7 +29,7 @@ $route['@o']                        = "source/signout"; //Signout
 $route['@p(:num)']                  = "source/plugin/$1"; //Specific Plugin
 $route['@p']                        = "source/plugin"; //Plugin Home
 $route['@(:num)']                   = "source/source_coin/$1"; //Specific source
-$route['@']                         = "source/source_coin/$1"; //Source Home
+$route['@']                         = "source/source_coin"; //Source Home
 
 
 //IDEATE

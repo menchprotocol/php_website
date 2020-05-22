@@ -621,7 +621,7 @@ function current_mench(){
      * Detects which of the Mench
      * coins are in play based on
      * the URL which reflects the
-     * logic in route.php
+     * logic in routes.php
      *
      * */
 
