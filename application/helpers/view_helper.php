@@ -809,7 +809,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 {
 
     $CI =& get_instance();
-
+    $session_source = superpower_assigned();
     $sources__6186 = $CI->config->item('sources__6186');
     $sources__4737 = $CI->config->item('sources__4737'); //IDEA STATUS
     $sources__7585 = $CI->config->item('sources__7585');
@@ -817,15 +817,13 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     $sources__2738 = $CI->config->item('sources__2738');
     $sources__12413 = $CI->config->item('sources__12413');
 
-    //Prep link metadata to be analyzed later:
+    //READ
     $read__id = ( isset($idea['read__id']) ? $idea['read__id'] : 0 );
-    $read__metadata = unserialize($idea['read__metadata']);
-    $idea_stats = idea_stats($idea['idea__metadata']);
+    $is_idea_link = ($read__id && in_array($idea['read__type'], $CI->config->item('sources_id_4486')));
 
-    $session_source = superpower_assigned();
+    //IDEA
+    $idea_stats = idea_stats($idea['idea__metadata']);
     $is_public = in_array($idea['idea__status'], $CI->config->item('sources_id_7355'));
-    $is_link_published = in_array($idea['read__status'], $CI->config->item('sources_id_7359'));
-    $is_idea_link = in_array($idea['read__type'], $CI->config->item('sources_id_4486'));
     $is_source = ( !$is_idea_link ? false : $is_source ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && $is_idea_link && superpower_active(12673, true));
 
@@ -835,7 +833,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     //IDAE INFO BAR
     $box_items_list = '';
     //READ STATUS
-    if($read__id && !$is_link_published){
+    if($read__id && !in_array($idea['read__status'], $CI->config->item('sources_id_7359'))){
         $box_items_list .= '<span class="inline-block read__status_' . $read__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$sources__6186[$idea['read__status']]['m_name'].' @'.$idea['read__status'].'">' . $sources__6186[$idea['read__status']]['m_icon'] . '</span>&nbsp;</span>';
     }
 
@@ -941,27 +939,31 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
 
+        if($read__id){
+            $read__metadata = unserialize($idea['read__metadata']);
 
-        //IDEA LINK BAR
-        $ui .= '<span class="' . superpower_active(12700) . '">';
+            //IDEA LINK BAR
+            $ui .= '<span class="' . superpower_active(12700) . '">';
 
-        //LINK TYPE
-        $ui .= view_input_dropdown(4486, $idea['read__type'], null, $is_source, false, $idea['idea__id'], $idea['read__id']);
+            //LINK TYPE
+            $ui .= view_input_dropdown(4486, $idea['read__type'], null, $is_source, false, $idea['idea__id'], $idea['read__id']);
 
-        //LINK MARKS
-        $ui .= '<span class="link_marks settings_4228 '.( $idea['read__type']==4228 ? : 'hidden' ).'">';
-        $ui .= view_input_text(4358, ( isset($read__metadata['tr__assessment_points']) ? $read__metadata['tr__assessment_points'] : '' ), $idea['read__id'], $is_source, ($idea['read__sort']*10)+2 );
-        $ui .='</span>';
+            //LINK MARKS
+            $ui .= '<span class="link_marks settings_4228 '.( $idea['read__type']==4228 ? : 'hidden' ).'">';
+            $ui .= view_input_text(4358, ( isset($read__metadata['tr__assessment_points']) ? $read__metadata['tr__assessment_points'] : '' ), $idea['read__id'], $is_source, ($idea['read__sort']*10)+2 );
+            $ui .='</span>';
 
 
-        //LINK CONDITIONAL RANGE
-        $ui .= '<span class="link_marks settings_4229 '.( $idea['read__type']==4229 ? : 'hidden' ).'">';
-        //MIN
-        $ui .= view_input_text(4735, ( isset($read__metadata['tr__conditional_score_min']) ? $read__metadata['tr__conditional_score_min'] : '' ), $idea['read__id'], $is_source, ($idea['read__sort']*10)+3);
-        //MAX
-        $ui .= view_input_text(4739, ( isset($read__metadata['tr__conditional_score_max']) ? $read__metadata['tr__conditional_score_max'] : '' ), $idea['read__id'], $is_source, ($idea['read__sort']*10)+4);
-        $ui .= '</span>';
-        $ui .= '</span>';
+            //LINK CONDITIONAL RANGE
+            $ui .= '<span class="link_marks settings_4229 '.( $idea['read__type']==4229 ? : 'hidden' ).'">';
+            //MIN
+            $ui .= view_input_text(4735, ( isset($read__metadata['tr__conditional_score_min']) ? $read__metadata['tr__conditional_score_min'] : '' ), $idea['read__id'], $is_source, ($idea['read__sort']*10)+3);
+            //MAX
+            $ui .= view_input_text(4739, ( isset($read__metadata['tr__conditional_score_max']) ? $read__metadata['tr__conditional_score_max'] : '' ), $idea['read__id'], $is_source, ($idea['read__sort']*10)+4);
+            $ui .= '</span>';
+            $ui .= '</span>';
+        }
+
 
 
 
