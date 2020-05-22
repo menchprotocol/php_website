@@ -924,7 +924,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     if($show_toolbar && superpower_active(12673, true)){
 
         //Idea Toolbar
-        $ui .= '<div class="space-content ' . superpower_active(12673) . '" style="padding-left:25px;">';
+        $ui .= '<div class="space-content ' . superpower_active(12673) . '" style="padding-left:25px; padding-top:13px;">';
 
         $ui .= $box_items_list;
 
