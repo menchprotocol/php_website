@@ -825,7 +825,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     $idea_stats = idea_stats($idea['idea__metadata']);
     $is_public = in_array($idea['idea__status'], $CI->config->item('sources_id_7355'));
     $is_source = ( !$is_idea_link ? false : $is_source ); //Disable Edits on Idea List Page
-    $show_toolbar = ($control_enabled && ( $is_idea_link || !$read__id ) && superpower_active(12673, true));
+    $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
 
 
@@ -854,7 +854,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
             //IDEA TITLE
-            if($show_toolbar){
+            if($show_toolbar && $is_idea_link){
 
                 $ui .= view_input_text(4736, $idea['idea__title'], $idea['idea__id'], $is_source, (($idea['read__sort']*100)+1));
 
