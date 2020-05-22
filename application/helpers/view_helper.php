@@ -1053,10 +1053,10 @@ function view_idea_list($idea, $ideas_next, $recipient_source, $prefix_statement
 
         //List children so they know what's ahead:
         $common_prefix = idea_calc_common_prefix($ideas_next, 'idea__title');
-        $has_content = ($prefix_statement || strlen($common_prefix));
+        $prefix_statement = ( $prefix_statement ? $prefix_statement : $common_prefix );
 
-        if($has_content){
-            echo '<div class="read-topic">'.trim($prefix_statement).'</div>';
+        if(strlen($prefix_statement)){
+            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.trim($prefix_statement).'</div>';
         } else {
             echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>UP NEXT:</div>';
         }
