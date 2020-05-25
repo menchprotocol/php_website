@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-25 00:35:19 PST
+//Generated 2020-05-25 15:41:40 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590392119;
-$config['cache_count_read'] = 1219665;
-$config['cache_count_read'] = 121440;
-$config['cache_count_idea'] = 5634;
-$config['cache_count_source'] = 4841;
+$config['cache_timestamp'] = 1590446500;
+$config['cache_count_read'] = 1220175;
+$config['cache_count_read'] = 121446;
+$config['cache_count_idea'] = 5667;
+$config['cache_count_source'] = 4842;
 
 
 
@@ -4154,7 +4154,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fad fa-search idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA STATUS FEATURED',
         'm_desc' => '',
-        'm_parents' => array(4527,10891),
+        'm_parents' => array(6287,4527,10891),
     ),
     7355 => array(
         'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
@@ -5553,7 +5553,7 @@ $config['sources__7309'] = array(
 );
 
 //PLUGINS:
-$config['sources_id_6287'] = array(7274,7264,4356,7261,12731,12734,7260,7263,11049,12733,7259,7275,7276,12735,7712,4527,12114,7277,12710,12709,12729,12739,12722,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12569);
+$config['sources_id_6287'] = array(7274,7264,4356,7261,12731,12734,7260,7263,11049,12733,7259,12138,7275,7276,12735,7712,4527,12114,7277,12710,12709,12729,12739,12722,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12569);
 $config['sources__6287'] = array(
     7274 => array(
         'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
@@ -5620,6 +5620,12 @@ $config['sources__6287'] = array(
         'm_name' => 'IDEA SEARCH & REPLACE',
         'm_desc' => '',
         'm_parents' => array(6287),
+    ),
+    12138 => array(
+        'm_icon' => '<i class="fad fa-search idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA STATUS FEATURED',
+        'm_desc' => '',
+        'm_parents' => array(6287,4527,10891),
     ),
     7275 => array(
         'm_icon' => '<i class="fad fa-sync idea"></i>',
