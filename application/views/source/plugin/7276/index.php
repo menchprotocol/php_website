@@ -7,12 +7,11 @@
  *
  * */
 
-
 if(isset($_GET['idea__id'])){
     $match_columns = array(
         'idea__id' => intval($_GET['idea__id']),
     );
-} else {
+} elseif(isset($_GET['all'])){
     //All Featured:
     $match_columns = array(
         'idea__status IN (' . join(',', $this->config->item('sources_id_12138')) . ')' => null, //FEATURED
