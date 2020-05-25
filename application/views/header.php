@@ -129,6 +129,8 @@ if(!isset($hide_header)){
                             }
                             ksort($sources__12893_resort);
 
+                            print_r($sources__12893_resort);
+
                             //Show Mench Menu:
                             foreach($sources__12893_resort as $count => $m) {
 
