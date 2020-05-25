@@ -2255,7 +2255,7 @@ class Source extends CI_Controller
             boost_power();
             $sources__6287 = $this->config->item('sources__6287'); //MENCH PLUGIN
             $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $sources__6287[$plugin_source__id]['m_parents']);
-            if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+            if($is_player_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
             }
 
