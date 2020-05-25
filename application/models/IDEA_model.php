@@ -881,6 +881,7 @@ class IDEA_model extends CI_Model
             '__idea___max_seconds' => $idea['idea__duration'],
             '__idea___experts' => array(),
             '__idea___content' => array(),
+            '__idea___ids' => array($idea['idea__id']), //Keeps Track of the IDs scanned here
         );
 
 
@@ -928,9 +929,7 @@ class IDEA_model extends CI_Model
 
             //RECURSION
             $metadata_recursion = $this->IDEA_model->metadata_extra_insights($ideas_next);
-            if(!$metadata_recursion){
-                continue;
-            }
+
 
             //MERGE (3 SCENARIOS)
             if(in_array($ideas_next['read__type'], $this->config->item('sources_id_12842')) || in_array($idea['idea__type'], $this->config->item('sources_id_12883'))){
@@ -995,6 +994,13 @@ class IDEA_model extends CI_Model
             foreach($metadata_recursion['__idea___experts'] as $source__id => $source_expert) {
                 if (!isset($metadata_this['__idea___experts'][$source__id])) {
                     $metadata_this['__idea___experts'][$source__id] = $source_expert;
+                }
+            }
+
+            //AGGREGATE IDS
+            foreach($metadata_recursion['__idea___ids'] as $idea__id) {
+                if (!in_array($idea__id, $metadata_this['__idea___ids'])) {
+                    array_push($metadata_this['__idea___ids'], $idea__id);
                 }
             }
         }
