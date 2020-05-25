@@ -977,7 +977,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
             'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
-        if($previous_ideas[0]['total_ideas'] > 1){
+        if($previous_ideas[0]['total_ideas'] > 0){
             $ui .= $previous_ideas[0]['total_ideas'].( $is_parent ? '<a href="/idea/navigate/'.$idea['idea__id'].'/'.$idea_linked_id.'/previous">'.$sources__12413[11019]['m_icon'].'</a>' : $sources__12413[11019]['m_icon'] );
         }
         $ui .= '</span>';
