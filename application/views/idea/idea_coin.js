@@ -329,9 +329,6 @@ function idea_unlink(idea__id, read__id, is_parent){
 
 function idea_ui_delete(idea__id,read__id){
 
-    //Fetch parent idea before removing element from DOM:
-    var previous_idea__id = parseInt($('.idea_line_' + idea__id).attr('parent-idea-id'));
-
     //Delete from UI:
     $('.idea__tr_' + read__id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
 

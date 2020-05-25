@@ -197,6 +197,47 @@ class Idea extends CI_Controller {
     }
 
 
+    function navigate($previous_idea__id, $current_idea__id, $action){
+
+        $trigger_next = false;
+        $track_previous = 0;
+
+        foreach($this->READ_model->fetch(array(
+            'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+            'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+            'read__left' => $previous_idea__id,
+        ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $idea){
+            if($action=='next'){
+                if($trigger_next){
+                    return redirect_message('/i' . $idea['idea__id'] );
+                }
+                if($idea['idea__id']==$current_idea__id){
+                    $trigger_next = true;
+                }
+            } elseif($action=='previous'){
+                if($idea['idea__id']==$current_idea__id){
+                    if($track_previous > 0){
+                        return redirect_message('/i' . $track_previous );
+                    } else {
+                        //First item:
+                        break;
+                    }
+                } else {
+                    $track_previous = $idea['idea__id'];
+                }
+            }
+        }
+
+        if($previous_idea__id > 0){
+            return redirect_message('/i' .$previous_idea__id );
+        } else {
+            die('Could not find matching idea');
+        }
+
+    }
+
+
 
     function idea_update_dropdown(){
 

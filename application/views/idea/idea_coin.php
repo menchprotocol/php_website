@@ -41,7 +41,7 @@ $ideas_previous = $this->READ_model->fetch(array(
 
 echo '<div id="list-in-' . $idea_focus['idea__id'] . '-1" class="list-group previous_ideas">';
 foreach($ideas_previous as $previous_idea) {
-    echo view_idea($previous_idea, 0, true, idea_is_source($previous_idea['idea__id']));
+    echo view_idea($previous_idea, $idea_focus['idea__id'], true, idea_is_source($previous_idea['idea__id']));
 }
 if( $is_source && $is_active && $idea_focus['idea__id']!=config_var(12156)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">

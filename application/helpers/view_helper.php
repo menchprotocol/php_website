@@ -840,7 +840,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
 
-    $ui = '<div read__id="' . $read__id . '" idea-id="' . $idea['idea__id'] . '" parent-idea-id="' . $idea_linked_id . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_idea_'.$idea['idea__id'] . ' idea_line_' . $idea['idea__id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' idea__tr_'.$read__id.' '.$extra_class.'" style="padding-left:0;">';
+    $ui = '<div read__id="' . $read__id . '" idea-id="' . $idea['idea__id'] . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_idea_'.$idea['idea__id'] . ' idea_line_' . $idea['idea__id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' idea__tr_'.$read__id.' '.$extra_class.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
