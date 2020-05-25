@@ -10,7 +10,7 @@
 
 if(isset($_GET['idea__id'])){
     $match_columns = array(
-        'idea__id' => $idea__id,
+        'idea__id' => intval($_GET['idea__id']),
     );
 } else {
     //All Featured:
