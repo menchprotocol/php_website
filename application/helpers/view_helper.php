@@ -978,7 +978,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
             'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
         if($previous_ideas[0]['total_ideas'] > 1){
-            $ui .= $previous_ideas[0]['total_ideas'].$sources__12413[11019]['m_icon'];
+            $ui .= $previous_ideas[0]['total_ideas'].( $is_parent ? '<a href="/idea/navigate/'.$idea['idea__id'].'/'.$idea_linked_id.'/previous">'.$sources__12413[11019]['m_icon'].'</a>' : $sources__12413[11019]['m_icon'] );
         }
         $ui .= '</span>';
 
@@ -991,7 +991,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
         ), array(), 0, 0, array(), 'COUNT(read__id) as total_ideas');
         if($next_ideas[0]['total_ideas'] > 0){
 
-            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:45px;">'.$sources__12413[11020]['m_icon'].$next_ideas[0]['total_ideas'].'</span>';
+            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:45px;">'.( $is_parent ? '<a href="/idea/navigate/'.$idea['idea__id'].'/'.$idea_linked_id.'/next">'.$sources__12413[11020]['m_icon'].'</a>' : $sources__12413[11020]['m_icon'] ).$next_ideas[0]['total_ideas'].'</span>';
 
             //TREE SIZE
             if($idea_stats['ideas_average'] > 0){
