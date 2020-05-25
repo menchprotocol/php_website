@@ -13,7 +13,7 @@ if(!isset($_GET['source__id']) || !intval($_GET['source__id'])){
     if(count($sources) > 0){
 
         //unserialize metadata if needed:
-        view_json($this->SOURCE_model->metadat_experts($sources[0]));
+        view_json($this->SOURCE_model->metadata_experts($sources[0]));
 
     } else {
         echo 'Source @'.intval($_GET['source__id']).' not found!';

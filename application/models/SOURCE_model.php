@@ -550,7 +550,7 @@ class SOURCE_model extends CI_Model
 
 
 
-    function metadat_experts($source, $level = 1){
+    function metadata_experts($source, $level = 1){
 
         //Goes through $max_search_levels of sources to find expert channels, people & organizations
         $max_search_levels = 3;
@@ -584,7 +584,7 @@ class SOURCE_model extends CI_Model
             //Go another level?
             if($level < $max_search_levels){
 
-                $metadata_recursion = $this->SOURCE_model->metadat_experts($source__profile, ($level + 1));
+                $metadata_recursion = $this->SOURCE_model->metadata_experts($source__profile, ($level + 1));
 
                 //CONTENT CHANNELS
                 foreach($metadata_recursion['__idea___content'] as $source__id => $source_content) {

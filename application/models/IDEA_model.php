@@ -894,17 +894,17 @@ class IDEA_model extends CI_Model
             'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
         ), array('read__up'), 0) as $source) {
 
-            $source_metadat_experts = $this->SOURCE_model->metadat_experts($source);
+            $source_metadata_experts = $this->SOURCE_model->metadata_experts($source);
 
             //CONTENT CHANNELS
-            foreach($source_metadat_experts['__idea___content'] as $source__id => $source_content) {
+            foreach($source_metadata_experts['__idea___content'] as $source__id => $source_content) {
                 if (!isset($metadata_this['__idea___content'][$source__id])) {
                     $metadata_this['__idea___content'][$source__id] = $source_content;
                 }
             }
 
             //EXPERT PEOPLE/ORGANIZATIONS
-            foreach($source_metadat_experts['__idea___experts'] as $source__id => $source_expert) {
+            foreach($source_metadata_experts['__idea___experts'] as $source__id => $source_expert) {
                 if (!isset($metadata_this['__idea___experts'][$source__id])) {
                     $metadata_this['__idea___experts'][$source__id] = $source_expert;
                 }

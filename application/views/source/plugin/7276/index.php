@@ -37,8 +37,6 @@ foreach($this->IDEA_model->fetch($match_columns, 0, 0, array('idea__weight' => '
     $stats['featured_scanned']++;
     $stats['idea_scanned'] += count($results['__idea___ids']);
 
-    break;
-
 }
 
 $stats['end_time'] = time();
