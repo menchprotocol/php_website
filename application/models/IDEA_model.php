@@ -999,8 +999,8 @@ class IDEA_model extends CI_Model
 
             //AGGREGATE IDS
             foreach($metadata_recursion['__idea___ids'] as $idea__id) {
-                if (!in_array($idea__id, $metadata_this['__idea___ids'])) {
-                    array_push($metadata_this['__idea___ids'], $idea__id);
+                if (!in_array(intval($idea__id), $metadata_this['__idea___ids'])) {
+                    array_push($metadata_this['__idea___ids'], intval($idea__id));
                 }
             }
         }
