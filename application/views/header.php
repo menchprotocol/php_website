@@ -114,13 +114,12 @@ if(!isset($hide_header)){
                             $count = 0;
                             foreach($this->config->item('sources__12893') as $read__type => $m) {
                                 $m['source__id'] = $read__type;
-                                $is_current_mench = (
+                                if((!isset($sources__12893_resort[0])) && (
                                     $_SERVER['REQUEST_URI'] == $m['m_desc'] ||
                                     ( $read__type==6205 /*  READ  */ && $current_mench['x_name']=='read' ) ||
                                     ( $read__type==4535 /* IDEATE */ && $current_mench['x_name']=='idea' ) ||
                                     ( $read__type==4536 /* SOURCE */ && $current_mench['x_name']=='source' )
-                                );
-                                if($is_current_mench){
+                                )){
                                     $sources__12893_resort[0] = $m;
                                 } else {
                                     $count++;
@@ -129,7 +128,6 @@ if(!isset($hide_header)){
                             }
                             ksort($sources__12893_resort);
 
-                            print_r($sources__12893_resort);
 
                             //Show Mench Menu:
                             foreach($sources__12893_resort as $count => $m) {
