@@ -2,7 +2,7 @@
 
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $sources__12467 = $this->config->item('sources__12467'); //MENCH COINS
-$load_max = config_var(11064);
+$load_max = config_var(13206);
 $top_ideators = array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN

@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-25 19:57:06 PST
+//Generated 2020-05-25 20:27:02 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590461826;
-$config['cache_count_interaction'] = 1220333;
+$config['cache_timestamp'] = 1590463622;
+$config['cache_count_interaction'] = 1220366;
 $config['cache_count_read'] = 121446;
-$config['cache_count_idea'] = 4108;
-$config['cache_count_source'] = 4846;
+$config['cache_count_idea'] = 4100;
+$config['cache_count_source'] = 4847;
 
 
 
@@ -2850,7 +2850,7 @@ $config['sources__11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['sources_id_6404'] = array(12678,7274,12904,3288,12176,4356,4485,4736,11064,11065,13014,11063,13005,11060,11079,12156,11066,11057,11056,12331,12427,12088,11986,12232,6197,12568,12565);
+$config['sources_id_6404'] = array(12678,7274,12904,3288,12176,4356,4485,4736,11064,11065,13014,11063,13005,11060,11079,12156,11066,11057,11056,12331,12427,12088,13206,11986,12232,6197,12568,12565);
 $config['sources__6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -2984,10 +2984,16 @@ $config['sources__6404'] = array(
         'm_desc' => '0.8',
         'm_parents' => array(6404),
     ),
+    13206 => array(
+        'm_icon' => '',
+        'm_name' => 'SOURCE LIST MAX',
+        'm_desc' => '20',
+        'm_parents' => array(6404),
+    ),
     11986 => array(
         'm_icon' => '',
         'm_name' => 'SOURCE LIST VISIBLE',
-        'm_desc' => '9',
+        'm_desc' => '5',
         'm_parents' => array(6404),
     ),
     12232 => array(
