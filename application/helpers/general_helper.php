@@ -616,7 +616,7 @@ function extract_icon_color($source__icon){
 
 function ideator_filter(){
     $CI =& get_instance();
-    return ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=10939 AND read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $CI->config->item('sources_id_7359')) /* PUBLIC */.')) ';
+    return ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=4430 AND read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $CI->config->item('sources_id_7359')) /* PUBLIC */.')) ';
 }
 
 function current_mench(){
