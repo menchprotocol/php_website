@@ -24,7 +24,7 @@ foreach($this->IDEA_model->fetch() as $in) {
         'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
         'read__right' => $in['idea__id'],
         'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-        player_filter() => null,
+        ideator_filter() => null,
     ), array('read__up'));
     $idea_sources = $this->READ_model->fetch(array(
         'read__type' => 4250, //New Idea Created

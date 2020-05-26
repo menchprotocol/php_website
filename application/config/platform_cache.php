@@ -8,14 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-25 19:36:00 PST
+//Generated 2020-05-25 19:56:09 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590460560;
-$config['cache_count_interaction'] = 1220307;
+$config['cache_timestamp'] = 1590461769;
+$config['cache_count_interaction'] = 1220328;
 $config['cache_count_read'] = 121446;
 $config['cache_count_idea'] = 4100;
-$config['cache_count_source'] = 4844;
+$config['cache_count_source'] = 4846;
 
 
 
@@ -1262,7 +1262,7 @@ $config['sources__12400'] = array(
 );
 
 //SOURCE:
-$config['sources_id_4536'] = array(12274,6206,11089,12897,4758,4600,13203,13202);
+$config['sources_id_4536'] = array(12274,6206,11089,12897,4758,4600,13203,13205,13202,13204);
 $config['sources__4536'] = array(
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -1306,11 +1306,23 @@ $config['sources__4536'] = array(
         'm_desc' => '',
         'm_parents' => array(4536,11035),
     ),
+    13205 => array(
+        'm_icon' => '<i class="fas fa-user-astronaut source"></i>',
+        'm_name' => 'TOP EXPERTS',
+        'm_desc' => '',
+        'm_parents' => array(4536),
+    ),
     13202 => array(
-        'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_name' => 'TOP PLAYERS',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_name' => 'TOP IDEATORS',
         'm_desc' => '',
         'm_parents' => array(4536,11035),
+    ),
+    13204 => array(
+        'm_icon' => '<i class="fas fa-book-reader source"></i>',
+        'm_name' => 'TOP READERS',
+        'm_desc' => '',
+        'm_parents' => array(4536),
     ),
 );
 
@@ -3342,8 +3354,8 @@ $config['sources__11035'] = array(
         'm_parents' => array(4536,11035),
     ),
     13202 => array(
-        'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_name' => 'TOP PLAYERS',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_name' => 'TOP IDEATORS',
         'm_desc' => '',
         'm_parents' => array(4536,11035),
     ),

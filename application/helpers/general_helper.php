@@ -614,9 +614,19 @@ function extract_icon_color($source__icon){
     }
 }
 
+function ideator_filter(){
+    $CI =& get_instance();
+    return ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=10939 AND read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $CI->config->item('sources_id_7359')) /* PUBLIC */.')) ';
+}
+
 function player_filter(){
     $CI =& get_instance();
     return ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=4430 AND read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $CI->config->item('sources_id_7359')) /* PUBLIC */.')) ';
+}
+
+function expert_filter(){
+    $CI =& get_instance();
+    return ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up IN (' . join(',', $CI->config->item('sources_id_12864')) . ') AND read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $CI->config->item('sources_id_7359')) /* PUBLIC */.')) ';
 }
 
 function content_filter(){
@@ -685,7 +695,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__right' => $idea__id,
-            player_filter() => null,
+            ideator_filter() => null,
         );
 
     } elseif($read__type==6255){
