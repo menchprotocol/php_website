@@ -27,7 +27,8 @@ $player_reads = $this->READ_model->fetch(array(
 <div class="container">
 <?php
 
-//List Reads:
+//MY READS
+echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[12696]['m_icon'].'</span>'.$sources__11035[12696]['m_name'].'</div>';
 if(!count($player_reads)){
 
     echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>No books yet. <a href="/" class="underline">Get Started &raquo;</a></div>';

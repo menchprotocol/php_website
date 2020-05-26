@@ -4,7 +4,11 @@
 <div class="container">
     <?php
 
-    //IDEA BOOKMARKS
+    $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+
+    //MY IDEAS
+    echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
+
     echo '<div id="myIdeas" class="list-group">';
     foreach($this->READ_model->fetch(array(
         'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE

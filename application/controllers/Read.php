@@ -19,7 +19,7 @@ class Read extends CI_Controller
 
         //My Reads
         $session_source = superpower_assigned(null, true);
-        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+        $sources__2738 = $this->config->item('sources__2738');
 
         //Log home View:
         $this->READ_model->create(array(
@@ -28,7 +28,7 @@ class Read extends CI_Controller
         ));
 
         $this->load->view('header', array(
-            'title' => $sources__11035[12969]['m_name'],
+            'title' => $sources__2738[6205]['m_name'],
         ));
         $this->load->view('read/read_home', array(
             'session_source' => $session_source,
