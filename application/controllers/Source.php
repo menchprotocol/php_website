@@ -225,7 +225,6 @@ class Source extends CI_Controller
     function load_leaderboard(){
 
         //Fetch top sources
-        $session_source = superpower_assigned();
         $load_max = config_var(11064);
         $show_max = config_var(11986);
         $start_date = null; //All-Time
@@ -235,10 +234,6 @@ class Source extends CI_Controller
             'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
 
-        if($session_source){
-            //This source is already listed at the top of the page, skip:
-            //$filters_idea['source__id !='] = $session_source['source__id'];
-        }
 
         /*
         if(1){ //Weekly
@@ -257,12 +252,6 @@ class Source extends CI_Controller
         //Start with top Players:
         echo '<div class="list-group">';
 
-        if($session_source){
-            //Make it even for the user row:
-            echo '<div class="list-group-item no-height"></div>';
-        } else {
-            $show_max++;
-        }
 
         foreach($this->READ_model->fetch($filters_idea, array('read__up'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$source) {
 
