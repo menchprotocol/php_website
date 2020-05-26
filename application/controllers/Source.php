@@ -222,56 +222,6 @@ class Source extends CI_Controller
 
 
 
-    function load_leaderboard(){
-
-        //Fetch top sources
-        $load_max = config_var(11064);
-        $show_max = config_var(11986);
-        $start_date = null; //All-Time
-        $filters_idea = array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-            'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-            player_filter() => null,
-        );
-
-
-        /*
-        if(1){ //Weekly
-
-            //Week always starts on Monday:
-            if(date('D') === 'Mon'){
-                //Today is Monday:
-                $start_date = date("Y-m-d");
-            } else {
-                $start_date = date("Y-m-d", strtotime('previous monday'));
-            }
-            $filters_idea['read__time >='] = $start_date.' 00:00:00'; //From beginning of the day
-        }
-        */
-
-        //Start with top Players:
-        echo '<div class="list-group">';
-
-
-        foreach($this->READ_model->fetch($filters_idea, array('read__up'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$source) {
-
-            if($count==$show_max){
-
-                echo '<div class="list-group-item see_more_who no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
-
-                echo '<div class="list-group-item see_more_who no-height"></div>';
-
-            }
-
-            echo view_source($source, false, ( $count<$show_max ? '' : 'see_more_who hidden'));
-
-        }
-        echo '</div>';
-
-    }
-
-
     function source_upload_file()
     {
 
