@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-25 17:41:40 PST
+//Generated 2020-05-25 18:06:26 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590453700;
-$config['cache_count_read'] = 1220223;
+$config['cache_timestamp'] = 1590455186;
+$config['cache_count_read'] = 1220250;
 $config['cache_count_read'] = 121446;
 $config['cache_count_idea'] = 5667;
 $config['cache_count_source'] = 4843;
@@ -1302,7 +1302,7 @@ $config['sources__4536'] = array(
     ),
     13202 => array(
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_name' => 'TOP SOURCES',
+        'm_name' => 'TOP PLAYERS',
         'm_desc' => '',
         'm_parents' => array(4536,11035),
     ),
@@ -3331,7 +3331,7 @@ $config['sources__11035'] = array(
     ),
     13202 => array(
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_name' => 'TOP SOURCES',
+        'm_name' => 'TOP PLAYERS',
         'm_desc' => '',
         'm_parents' => array(4536,11035),
     ),
