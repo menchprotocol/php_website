@@ -237,7 +237,7 @@ class Source extends CI_Controller
 
         if($session_source){
             //This source is already listed at the top of the page, skip:
-            $filters_idea['source__id !='] = $session_source['source__id'];
+            //$filters_idea['source__id !='] = $session_source['source__id'];
         }
 
         /*
