@@ -12,9 +12,9 @@ $show_max = config_var(11986);
     //My Sources:
     if($session_source){
 
-        echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[12205]['m_icon'].'</span>'.$sources__11035[12205]['m_name'].'</div>';
+        echo '<div class="read-topic" style="margin-top:21px;"><span class="icon-block">'.$sources__11035[12205]['m_icon'].'</span>'.$sources__11035[12205]['m_name'].'</div>';
 
-        echo '<div class="list-group" style="margin-bottom:34px;">';
+        echo '<div class="list-group">';
         foreach($this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
@@ -31,7 +31,7 @@ $show_max = config_var(11986);
 
     foreach($this->config->item('sources__13207') as $source__id => $m) {
 
-        echo '<table class="table table-sm table-striped">';
+        echo '<table class="table table-sm table-striped" style="margin-top:34px;">';
         echo '<tr></tr>'; //Skip white
         echo '<tr>';
         echo '<td class="MENCHcolumn1 montserrat"><div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div></td>';
@@ -40,7 +40,7 @@ $show_max = config_var(11986);
         echo '</tr>';
         echo '</table>';
 
-        echo '<div class="list-group" style="margin-bottom:34px;">';
+        echo '<div class="list-group">';
         foreach($this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
