@@ -676,7 +676,6 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__right' => $idea__id,
             ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=4430 AND read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $CI->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
-
         );
 
     } elseif($read__type==6255){
