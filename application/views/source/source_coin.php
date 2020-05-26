@@ -14,7 +14,6 @@ $superpower_10967 = superpower_active(10967, true);
 $superpower_any = ( $session_source ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
 $is_source = source_is_idea_source($source['source__id']);
 
-
 ?>
 
 
@@ -664,7 +663,7 @@ $is_source = source_is_idea_source($source['source__id']);
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                 'read__type' => $read__type,
-                '(read__source='.$source['source__id'].' OR read__down='.$source['source__id'].' OR read__up='.$source['source__id'].')' => null,
+                'read__up' => $source['source__id'],
             );
 
             //COUNT ONLY
