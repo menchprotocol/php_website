@@ -31,6 +31,7 @@
 
 
     //MENCH COINS
+    /*
     $sources__12467 = $this->config->item('sources__12467'); //MENCH COINS
     echo '<table id="leaderboard" class="table table-sm table-striped tablepadded" style="margin-bottom: 0;">';
     echo '<tr></tr>'; //Skip white
@@ -40,7 +41,7 @@
     echo '<td class="MENCHcolumn3 read montserrat" title="'.number_format($this->config->item('cache_count_read'), 0).'"><span class="icon-block">'.$sources__12467[6255]['m_icon'].'</span>'.view_number($this->config->item('cache_count_read')).'<span class="coin-type">'.str_replace(' ','<br />',$sources__12467[6255]['m_name']).'</span></td>';
     echo '</tr>';
     echo '</table>';
-
+    */
 
     ?>
 </div>
