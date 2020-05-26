@@ -31,8 +31,8 @@
     echo '<tr></tr>'; //Skip white
     echo '<tr>';
     echo '<td class="MENCHcolumn1 montserrat"><div class="read-topic"><span class="icon-block">'.$sources__11035[13202]['m_icon'].'</span>'.$sources__11035[13202]['m_name'].'</div></td>';
-    echo '<td class="MENCHcolumn2 idea montserrat"><span class="icon-block">'.$sources__12467[12273]['m_icon'].'</span><span class="coin-type">'.$sources__12467[12273]['m_name'].'</span></td>';
-    echo '<td class="MENCHcolumn3 read montserrat"><span class="icon-block">'.$sources__12467[6255]['m_icon'].'</span><span class="coin-type">'.$sources__12467[6255]['m_name'].'</span></td>';
+    echo '<td class="MENCHcolumn2 idea montserrat"><span class="icon-block">'.$sources__12467[12273]['m_icon'].'</span><span>'.$sources__12467[12273]['m_name'].'</span></td>';
+    echo '<td class="MENCHcolumn3 read montserrat"><span class="icon-block">'.$sources__12467[6255]['m_icon'].'</span><span>'.$sources__12467[6255]['m_name'].'</span></td>';
     echo '</tr>';
     echo '</table>';
 
