@@ -579,16 +579,17 @@ function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = 
 
     if($idea__id){
         $mench = 'source';
+        $join_objects = array('read__up');
         $coins_filter = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             'read__right' => $idea__id,
             ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=4430 AND read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $CI->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
-
         );
     } elseif($source__id){
         $mench = 'idea';
+        $join_objects = array();
         $coins_filter = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
@@ -596,7 +597,7 @@ function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = 
         );
     }
 
-    $source_coins = $CI->READ_model->fetch($coins_filter, array(), 0, 0, array(), 'COUNT(read__id) as totals');
+    $source_coins = $CI->READ_model->fetch($coins_filter, $join_objects, 0, 0, array(), 'COUNT(read__id) as totals');
 
     if($number_only){
         return $source_coins[0]['totals'];

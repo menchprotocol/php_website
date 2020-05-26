@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-25 18:06:26 PST
+//Generated 2020-05-25 18:54:04 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590455186;
-$config['cache_count_read'] = 1220250;
+$config['cache_timestamp'] = 1590458044;
+$config['cache_count_interaction'] = 1220274;
 $config['cache_count_read'] = 121446;
-$config['cache_count_idea'] = 5667;
+$config['cache_count_idea'] = 4100;
 $config['cache_count_source'] = 4843;
 
 
