@@ -585,7 +585,7 @@ function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = 
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             'read__right' => $idea__id,
-            ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=4430 AND read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $CI->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
+            player_filter() => null,
         );
     } elseif($source__id){
         $mench = 'idea';
