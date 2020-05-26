@@ -31,7 +31,8 @@ $show_max = config_var(11986);
 
     foreach($this->config->item('sources__13207') as $source__id => $m) {
 
-        echo '<table class="table table-sm table-striped" style="margin-top:34px;">';
+        echo '<div style="padding-top:34px;">';
+        echo '<table class="table table-sm table-striped">';
         echo '<tr></tr>'; //Skip white
         echo '<tr>';
         echo '<td class="MENCHcolumn1 montserrat"><div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div></td>';
@@ -54,6 +55,7 @@ $show_max = config_var(11986);
             echo view_source($source, false, ( $count<$show_max ? '' : 'see_more_who'.$source__id.' hidden'));
 
         }
+        echo '</div>';
         echo '</div>';
     }
 
