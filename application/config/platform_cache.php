@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-25 19:56:09 PST
+//Generated 2020-05-25 19:57:06 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590461769;
-$config['cache_count_interaction'] = 1220328;
+$config['cache_timestamp'] = 1590461826;
+$config['cache_count_interaction'] = 1220333;
 $config['cache_count_read'] = 121446;
-$config['cache_count_idea'] = 4100;
+$config['cache_count_idea'] = 4108;
 $config['cache_count_source'] = 4846;
 
 
@@ -1310,7 +1310,7 @@ $config['sources__4536'] = array(
         'm_icon' => '<i class="fas fa-user-astronaut source"></i>',
         'm_name' => 'TOP EXPERTS',
         'm_desc' => '',
-        'm_parents' => array(4536),
+        'm_parents' => array(11035,4536),
     ),
     13202 => array(
         'm_icon' => '<i class="fas fa-user-edit source"></i>',
@@ -1322,7 +1322,7 @@ $config['sources__4536'] = array(
         'm_icon' => '<i class="fas fa-book-reader source"></i>',
         'm_name' => 'TOP READERS',
         'm_desc' => '',
-        'm_parents' => array(4536),
+        'm_parents' => array(11035,4536),
     ),
 );
 
@@ -3171,7 +3171,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(11068,6225,12749,12899,12707,12991,12211,4535,3084,7291,4341,4430,13023,12205,10573,12969,3000,6287,12750,12896,7256,4269,4536,4997,12275,13007,13008,10957,7540,13203,13202);
+$config['sources_id_11035'] = array(11068,6225,12749,12899,12707,12991,12211,4535,3084,7291,4341,4430,13023,12205,10573,12969,3000,6287,12750,12896,7256,4269,4536,4997,12275,13007,13008,10957,7540,13203,13205,13202,13204);
 $config['sources__11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3353,11 +3353,23 @@ $config['sources__11035'] = array(
         'm_desc' => '',
         'm_parents' => array(4536,11035),
     ),
+    13205 => array(
+        'm_icon' => '<i class="fas fa-user-astronaut source"></i>',
+        'm_name' => 'TOP EXPERTS',
+        'm_desc' => '',
+        'm_parents' => array(11035,4536),
+    ),
     13202 => array(
         'm_icon' => '<i class="fas fa-user-edit source"></i>',
         'm_name' => 'TOP IDEATORS',
         'm_desc' => '',
         'm_parents' => array(4536,11035),
+    ),
+    13204 => array(
+        'm_icon' => '<i class="fas fa-book-reader source"></i>',
+        'm_name' => 'TOP READERS',
+        'm_desc' => '',
+        'm_parents' => array(11035,4536),
     ),
 );
 
