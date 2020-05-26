@@ -993,7 +993,7 @@ td.MENCHcolumn3  { width: 13%; }
     padding-bottom:0 !important;
 }
 .no-height{
-    height: 0.1px;
+    height: 0px;
     padding: 0;
 }
 .read-msg .padded{
