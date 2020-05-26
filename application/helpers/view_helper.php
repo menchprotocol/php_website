@@ -573,38 +573,6 @@ function view_coins_count_read($idea__id = 0, $source__id = 0){
 
 }
 
-function view_source_list($subject_id, $query){
-
-    $CI =& get_instance();
-    $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION
-    $sources__12467 = $CI->config->item('sources__12467'); //MENCH COINS
-    $show_max = config_var(11986);
-
-
-    $ui = '<table class="table table-sm table-striped">';
-    $ui .= '<tr></tr>'; //Skip white
-    $ui .= '<tr>';
-    $ui .= '<td class="MENCHcolumn1 montserrat"><div class="read-topic"><span class="icon-block">'.$sources__11035[$subject_id]['m_icon'].'</span>'.$sources__11035[$subject_id]['m_name'].'</div></td>';
-    $ui .= '<td class="MENCHcolumn2 idea montserrat"><span style="padding-left: 9px;">'.$sources__12467[12273]['m_name'].'</span></td>';
-    $ui .= '<td class="MENCHcolumn3 read montserrat"><span style="padding-left: 9px;">'.$sources__12467[6255]['m_name'].'</span></td>';
-    $ui .= '</tr>';
-    $ui .= '</table>';
-
-    $ui .= '<div class="list-group" style="margin-bottom:34px;">';
-    foreach($query as $count=>$source) {
-
-        if($count==$show_max){
-            $ui .= '<div class="list-group-item see_more_who'.$subject_id.' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$subject_id.'\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
-            $ui .= '<div class="list-group-item see_more_who'.$subject_id.' no-height"></div>';
-        }
-        $ui .= view_source($source, false, ( $count<$show_max ? '' : 'see_more_who'.$subject_id.' hidden'));
-
-    }
-    $ui .= '</div>';
-
-    return $ui;
-
-}
 
 function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = false){
 

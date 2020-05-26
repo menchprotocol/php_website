@@ -8,16 +8,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-05-25 20:27:02 PST
+//Generated 2020-05-26 02:46:12 PST
 
 //PLATFORM STATS:
-$config['cache_timestamp'] = 1590463622;
-$config['cache_count_interaction'] = 1220366;
+$config['cache_timestamp'] = 1590486372;
+$config['cache_count_interaction'] = 1220581;
 $config['cache_count_read'] = 121446;
 $config['cache_count_idea'] = 4100;
-$config['cache_count_source'] = 4847;
+$config['cache_count_source'] = 4845;
 
 
+
+//TOP PLAYERS:
+$config['sources_id_13202'] = array(4430);
+$config['sources__13202'] = array(
+    4430 => array(
+        'm_icon' => '<i class="fas fa-user-crown source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(13202,4536,4983,1278,11035,10573),
+    ),
+);
+
+//SOURCE HOME:
+$config['sources_id_13207'] = array(13202,12864,3000);
+$config['sources__13207'] = array(
+    13202 => array(
+        'm_icon' => '<i class="fas fa-horse-head source" aria-hidden="true"></i>',
+        'm_name' => 'TOP PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(4527,13207),
+    ),
+    12864 => array(
+        'm_icon' => '<i class="fas fa-satellite source"></i>',
+        'm_name' => 'EXPERTS',
+        'm_desc' => '',
+        'm_parents' => array(13207,4600,4527,4758),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(13207,11054,4600,4527),
+    ),
+);
 
 //DONATE:
 $config['sources_id_13037'] = array(13038,13039,13040,13041,13042);
@@ -307,19 +341,19 @@ $config['sources__12969'] = array(
 );
 
 //SYNC ICONS IF DIFFERENT:
-$config['sources_id_12968'] = array(2750,3084,2997,4446,3005,3147,4763,3192,2998);
+$config['sources_id_12968'] = array(3084,2750,2997,4446,3005,3147,4763,3192,2998);
 $config['sources__12968'] = array(
+    3084 => array(
+        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
+        'm_name' => 'EXPERT PERSON',
+        'm_desc' => '',
+        'm_parents' => array(12968,12864,4983,11035,1278),
+    ),
     2750 => array(
         'm_icon' => '<i class="fas fa-space-shuttle source rotate270"></i>',
         'm_name' => 'EXPERT PUBLICATION',
         'm_desc' => '',
         'm_parents' => array(12968,12864),
-    ),
-    3084 => array(
-        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
-        'm_name' => 'INDUSTRY EXPERT',
-        'm_desc' => '',
-        'm_parents' => array(12968,12864,4983,11035,1278),
     ),
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
@@ -504,20 +538,20 @@ $config['sources__12884'] = array(
     ),
 );
 
-//EXPERT SOURCES:
-$config['sources_id_12864'] = array(2750,3084);
+//EXPERTS:
+$config['sources_id_12864'] = array(3084,2750);
 $config['sources__12864'] = array(
-    2750 => array(
-        'm_icon' => '<i class="fas fa-space-shuttle source rotate270"></i>',
-        'm_name' => 'EXPERT PUBLICATION',
-        'm_desc' => '',
-        'm_parents' => array(12968,12864),
-    ),
     3084 => array(
         'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
-        'm_name' => 'INDUSTRY EXPERT',
+        'm_name' => 'PERSON',
         'm_desc' => '',
         'm_parents' => array(12968,12864,4983,11035,1278),
+    ),
+    2750 => array(
+        'm_icon' => '<i class="fas fa-space-shuttle source rotate270"></i>',
+        'm_name' => 'PUBLICATION',
+        'm_desc' => '',
+        'm_parents' => array(12968,12864),
     ),
 );
 
@@ -594,10 +628,10 @@ $config['sources__12822'] = array(
 $config['sources_id_10573'] = array(4430);
 $config['sources__10573'] = array(
     4430 => array(
-        'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-crown source" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(4983,1278,11035,10573),
+        'm_parents' => array(13202,4536,4983,1278,11035,10573),
     ),
 );
 
@@ -1262,7 +1296,7 @@ $config['sources__12400'] = array(
 );
 
 //SOURCE:
-$config['sources_id_4536'] = array(12274,6206,11089,12897,4758,4600,13203,13205,13202,13204);
+$config['sources_id_4536'] = array(12274,4430,6206,13207,11089,12897,4758,4600);
 $config['sources__4536'] = array(
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -1270,11 +1304,23 @@ $config['sources__4536'] = array(
         'm_desc' => '',
         'm_parents' => array(10939,11089,4536,12500,12467,12228,4527),
     ),
+    4430 => array(
+        'm_icon' => '<i class="fas fa-user-crown source" aria-hidden="true"></i>',
+        'm_name' => 'MENCH PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(13202,4536,4983,1278,11035,10573),
+    ),
     6206 => array(
         'm_icon' => '<i class="fas fa-table source" aria-hidden="true"></i>',
         'm_name' => 'MENCH SOURCES',
         'm_desc' => '',
         'm_parents' => array(4527,7735,4536),
+    ),
+    13207 => array(
+        'm_icon' => '<i class="fas fa-home source"></i>',
+        'm_name' => 'SOURCE HOME',
+        'm_desc' => '',
+        'm_parents' => array(4527,4536),
     ),
     11089 => array(
         'm_icon' => '<i class="fad fa-crop-alt source" aria-hidden="true"></i>',
@@ -1299,30 +1345,6 @@ $config['sources__4536'] = array(
         'm_name' => 'SOURCE TYPES',
         'm_desc' => '',
         'm_parents' => array(4536),
-    ),
-    13203 => array(
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
-        'm_name' => 'TOP CONTENT',
-        'm_desc' => '',
-        'm_parents' => array(4536,11035),
-    ),
-    13205 => array(
-        'm_icon' => '<i class="fas fa-user-astronaut source"></i>',
-        'm_name' => 'TOP EXPERTS',
-        'm_desc' => '',
-        'm_parents' => array(11035,4536),
-    ),
-    13202 => array(
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
-        'm_name' => 'TOP IDEATORS',
-        'm_desc' => '',
-        'm_parents' => array(4536,11035),
-    ),
-    13204 => array(
-        'm_icon' => '<i class="fas fa-book-reader source"></i>',
-        'm_name' => 'TOP READERS',
-        'm_desc' => '',
-        'm_parents' => array(11035,4536),
     ),
 );
 
@@ -3023,8 +3045,14 @@ $config['sources__6404'] = array(
 );
 
 //MENCH MEMORY JAVASCRIPT:
-$config['sources_id_11054'] = array(4486,4983,4737,7356,7355,7585,2738,6404,6201,12687,10573,3000,6186,4592,6177,7357);
+$config['sources_id_11054'] = array(3000,4486,4983,4737,7356,7355,7585,2738,6404,6201,12687,10573,6186,4592,6177,7357);
 $config['sources__11054'] = array(
+    3000 => array(
+        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(13207,11054,4600,4527),
+    ),
     4486 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LINKS',
@@ -3090,12 +3118,6 @@ $config['sources__11054'] = array(
         'm_name' => 'MY IDEAS',
         'm_desc' => '',
         'm_parents' => array(4535,11054,4527,10984,11018,11035,11089,12321,4593,7551,4485),
-    ),
-    3000 => array(
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
-        'm_name' => 'NONFICTION CONTENT',
-        'm_desc' => '',
-        'm_parents' => array(11054,11035,4600,4527),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
@@ -3177,7 +3199,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(11068,6225,12749,12899,12707,12991,12211,4535,3084,7291,4341,4430,13023,12205,10573,12969,3000,6287,12750,12896,7256,4269,4536,4997,12275,13007,13008,10957,7540,13203,13205,13202,13204);
+$config['sources_id_11035'] = array(11068,6225,12749,3084,12899,12707,12991,12211,4535,7291,4341,4430,13023,12205,10573,12969,6287,12750,12896,7256,4269,4536,4997,12275,13007,13008,10957,7540);
 $config['sources__11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3196,6 +3218,12 @@ $config['sources__11035'] = array(
         'm_name' => 'EDIT',
         'm_desc' => '',
         'm_parents' => array(10984,12893,11035),
+    ),
+    3084 => array(
+        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
+        'm_name' => 'EXPERT PERSON',
+        'm_desc' => '',
+        'm_parents' => array(12968,12864,4983,11035,1278),
     ),
     12899 => array(
         'm_icon' => '<i class="fas fa-headset"></i>',
@@ -3227,12 +3255,6 @@ $config['sources__11035'] = array(
         'm_desc' => '',
         'm_parents' => array(10939,12893,10876,11035,12761,12112,2738),
     ),
-    3084 => array(
-        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
-        'm_name' => 'INDUSTRY EXPERT',
-        'm_desc' => '',
-        'm_parents' => array(12968,12864,4983,11035,1278),
-    ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
@@ -3246,10 +3268,10 @@ $config['sources__11035'] = array(
         'm_parents' => array(12887,11047,12707,10876,12588,11035,4527,7735),
     ),
     4430 => array(
-        'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-crown source" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(4983,1278,11035,10573),
+        'm_parents' => array(13202,4536,4983,1278,11035,10573),
     ),
     13023 => array(
         'm_icon' => '<i class="fas fa-share-alt"></i>',
@@ -3274,12 +3296,6 @@ $config['sources__11035'] = array(
         'm_name' => 'MY READS',
         'm_desc' => '',
         'm_parents' => array(12228,11035,11018,12677,12701,4527,11089,6205),
-    ),
-    3000 => array(
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
-        'm_name' => 'NONFICTION CONTENT',
-        'm_desc' => '',
-        'm_parents' => array(11054,11035,4600,4527),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
@@ -3352,30 +3368,6 @@ $config['sources__11035'] = array(
         'm_name' => 'TERMS OF SERVICE',
         'm_desc' => '',
         'm_parents' => array(11035),
-    ),
-    13203 => array(
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
-        'm_name' => 'TOP CONTENT',
-        'm_desc' => '',
-        'm_parents' => array(4536,11035),
-    ),
-    13205 => array(
-        'm_icon' => '<i class="fas fa-user-astronaut source"></i>',
-        'm_name' => 'TOP EXPERTS',
-        'm_desc' => '',
-        'm_parents' => array(11035,4536),
-    ),
-    13202 => array(
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
-        'm_name' => 'TOP IDEATORS',
-        'm_desc' => '',
-        'm_parents' => array(4536,11035),
-    ),
-    13204 => array(
-        'm_icon' => '<i class="fas fa-book-reader source"></i>',
-        'm_name' => 'TOP READERS',
-        'm_desc' => '',
-        'm_parents' => array(11035,4536),
     ),
 );
 
@@ -4052,7 +4044,7 @@ $config['sources__10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['sources_id_4527'] = array(6225,10956,12279,12588,6150,13037,12864,12359,10876,11047,11018,12675,12677,4229,12842,4486,12840,4485,12012,6193,10990,4983,4737,7356,12138,7355,12400,12420,12413,7585,13022,12330,7309,7712,12883,12884,12955,7751,12273,6255,12274,2738,12467,6404,12079,6201,4341,12893,4527,11054,12687,11035,13023,6206,12112,6232,10573,12969,12589,3000,12500,12741,6287,12577,4755,11081,7704,5967,12229,12326,12446,6103,12227,7304,6186,7360,7364,7359,4593,10593,12141,12327,12761,4269,6204,4536,12887,6194,11089,12571,13004,12574,11080,12822,4592,12403,11059,4537,12524,4997,4986,7551,6177,7358,12575,7357,12401,10957,12968,12523,12322,12321,10692,10869,6146);
+$config['sources_id_4527'] = array(6225,10956,12279,12588,6150,3000,13037,12864,12359,10876,11047,11018,12675,12677,4229,12842,4486,12840,4485,12012,6193,10990,4983,4737,7356,12138,7355,12400,12420,12413,7585,13022,12330,7309,7712,12883,12884,12955,7751,12273,6255,12274,2738,12467,6404,12079,6201,4341,12893,4527,11054,12687,11035,13023,6206,12112,6232,10573,12969,12589,12500,12741,6287,12577,4755,11081,7704,5967,12229,12326,12446,6103,12227,7304,6186,7360,7364,7359,4593,10593,12141,12327,12761,4269,6204,4536,12887,6194,13207,11089,12571,13004,12574,11080,12822,4592,12403,11059,4537,12524,4997,4986,7551,6177,7358,12575,7357,12401,10957,12968,12523,12322,12321,10692,10869,13202,6146);
 $config['sources__4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4084,6 +4076,12 @@ $config['sources__4527'] = array(
         'm_desc' => '',
         'm_parents' => array(6771,4527),
     ),
+    3000 => array(
+        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_name' => 'CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(13207,11054,4600,4527),
+    ),
     13037 => array(
         'm_icon' => '<i class="fas fa-hand-holding-heart"></i>',
         'm_name' => 'DONATE',
@@ -4092,9 +4090,9 @@ $config['sources__4527'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-satellite source"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERTS',
         'm_desc' => '',
-        'm_parents' => array(4600,4527,4758),
+        'm_parents' => array(13207,4600,4527,4758),
     ),
     12359 => array(
         'm_icon' => '<i class="fad fa-file-check idea"></i>',
@@ -4408,12 +4406,6 @@ $config['sources__4527'] = array(
         'm_desc' => '',
         'm_parents' => array(12702,11018,4527,12590),
     ),
-    3000 => array(
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
-        'm_name' => 'NONFICTION CONTENT',
-        'm_desc' => '',
-        'm_parents' => array(11054,11035,4600,4527),
-    ),
     12500 => array(
         'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MENU',
@@ -4582,6 +4574,12 @@ $config['sources__4527'] = array(
         'm_desc' => '',
         'm_parents' => array(12701,4758,4527),
     ),
+    13207 => array(
+        'm_icon' => '<i class="fas fa-home source"></i>',
+        'm_name' => 'SOURCE HOME',
+        'm_desc' => '',
+        'm_parents' => array(4527,4536),
+    ),
     11089 => array(
         'm_icon' => '<i class="fad fa-crop-alt source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LAYOUT',
@@ -4737,6 +4735,12 @@ $config['sources__4527'] = array(
         'm_name' => 'TOPICS',
         'm_desc' => '',
         'm_parents' => array(12079,6225,6122,7305,4527),
+    ),
+    13202 => array(
+        'm_icon' => '<i class="fas fa-horse-head source" aria-hidden="true"></i>',
+        'm_name' => 'TOP PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(4527,13207),
     ),
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
@@ -4918,15 +4922,15 @@ $config['sources_id_4983'] = array(3084,4430,2997,4446,3005,3147,4763,3192,2998)
 $config['sources__4983'] = array(
     3084 => array(
         'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
-        'm_name' => 'INDUSTRY EXPERT',
+        'm_name' => 'EXPERT PERSON',
         'm_desc' => '',
         'm_parents' => array(12968,12864,4983,11035,1278),
     ),
     4430 => array(
-        'm_icon' => '<i class="far fa-alicorn source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-crown source" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLAYERS',
         'm_desc' => '',
-        'm_parents' => array(4983,1278,11035,10573),
+        'm_parents' => array(13202,4536,4983,1278,11035,10573),
     ),
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
@@ -7867,7 +7871,7 @@ $config['sources__4537'] = array(
     ),
 );
 
-//NONFICTION CONTENT:
+//CONTENT:
 $config['sources_id_3000'] = array(3005,2998,2997,3147,4446,3192,4763);
 $config['sources__3000'] = array(
     3005 => array(
