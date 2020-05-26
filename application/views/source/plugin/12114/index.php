@@ -14,6 +14,7 @@ $idea_coins_new_last_week = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
     'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+    ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=4430 AND read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
     'read__time >=' => $last_week_start,
     'read__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
@@ -21,6 +22,7 @@ $idea_coins_last_week = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
     'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+    ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=4430 AND read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
     'read__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 $idea_coins_growth_rate = format_percentage(($idea_coins_last_week[0]['totals'] / ( $idea_coins_last_week[0]['totals'] - $idea_coins_new_last_week[0]['totals'] ) * 100) - 100);

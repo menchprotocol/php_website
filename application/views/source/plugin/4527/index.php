@@ -37,6 +37,7 @@ $idea_coins = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
     'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+    ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up=4430 AND read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
 ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 $source_coins = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -49,7 +50,7 @@ echo '//Generated '.date("Y-m-d H:i:s", $cache_timestamp).' PST<br />';
 //Append more data:
 echo '<br />//PLATFORM STATS:<br />';
 echo '$config[\'cache_timestamp\'] = '.$cache_timestamp.';<br />';
-echo '$config[\'cache_count_read\'] = '.$reads[0]['totals'].';<br />';
+echo '$config[\'cache_count_interaction\'] = '.$reads[0]['totals'].';<br />';
 echo '$config[\'cache_count_read\'] = '.$read_coins[0]['totals'].';<br />';
 echo '$config[\'cache_count_idea\'] = '.$idea_coins[0]['totals'].';<br />';
 echo '$config[\'cache_count_source\'] = '.$source_coins[0]['totals'].';<br />';
