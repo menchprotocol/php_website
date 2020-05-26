@@ -9,8 +9,10 @@
 
     //My Sources:
     if($session_source){
-        echo '<div class="list-group">';
+
         echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[12205]['m_icon'].'</span>'.$sources__11035[12205]['m_name'].'</div>';
+
+        echo '<div class="list-group" style="margin-bottom:34px;">';
         foreach($this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN

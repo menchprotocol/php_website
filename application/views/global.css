@@ -1448,9 +1448,10 @@ label {
 .pull-middle a, .pull-middle span{
     color: #999999;
 }
-.read-topic{
-    padding:5px 0 10px;
+.source-ui .read-topic{
+    padding:0 0 13px;
 }
+
 .read-topic, .read-topic a, .read-topic i {
     color: #999999 !important;
     text-transform: uppercase;

@@ -31,7 +31,7 @@ $is_source = source_is_idea_source($source['source__id']);
 
 <script src="/application/views/source/source_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
-<div class="container">
+<div class="container source-ui">
 
     <?php
     //SOURCE NAME
