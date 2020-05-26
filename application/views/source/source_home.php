@@ -63,7 +63,6 @@ if(1){ //Weekly
     }
 
 
-
     //Top Ideators
     echo view_source_list(13202, $this->READ_model->fetch($top_ideators, array('read__up'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight'));
 

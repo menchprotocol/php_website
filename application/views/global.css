@@ -838,9 +838,10 @@ textarea.note-textarea{
 }
 
 /* HEADER */
-#leaderboard{
+.table{
     width: 100%;
     background-color: #FFFFFF;
+    margin-bottom: 0;
 }
 
 .space-left{

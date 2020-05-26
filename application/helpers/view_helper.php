@@ -581,7 +581,7 @@ function view_source_list($subject_id, $query){
     $show_max = config_var(11986);
 
 
-    $ui = '<table id="leaderboard" class="table table-sm table-striped">';
+    $ui = '<table class="table table-sm table-striped">';
     $ui .= '<tr></tr>'; //Skip white
     $ui .= '<tr>';
     $ui .= '<td class="MENCHcolumn1 montserrat"><div class="read-topic"><span class="icon-block">'.$sources__11035[$subject_id]['m_icon'].'</span>'.$sources__11035[$subject_id]['m_name'].'</div></td>';
