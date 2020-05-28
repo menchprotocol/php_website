@@ -192,9 +192,9 @@ if(!$read_idea_home){
             if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
                 echo '<p class="space-content">';
                 echo 'Completion time depends on your choices as you read interactively:<br />';
-                echo '<span class="reading-paths">Shortest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.number_format($idea_stats['ideas_min'], 0).'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />';
-                echo '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.number_format($idea_stats['ideas_average'], 0).'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_average']).'<br />';
-                echo '<span class="reading-paths">Longest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.number_format($idea_stats['ideas_max'], 0).'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_max']);
+                echo '<span class="reading-paths">Shortest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_min'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />';
+                echo '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_average'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_average']).'<br />';
+                echo '<span class="reading-paths">Longest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_max'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_max']);
                 echo '</p>';
             }
 
