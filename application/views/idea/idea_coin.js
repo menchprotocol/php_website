@@ -435,7 +435,7 @@ function idea_message_inline_source_search(obj) {
                     return '<div style="padding: 3px 0;">' + view_search_result(suggestion) + '</div>';
                 },
                 replace: function (suggestion) {
-                    return '@' + suggestion.object__id + ' ';
+                    return ( obj.val().substr(0, 1)=='@' ? '' : ' ' ) + '@' + suggestion.object__id + ' ';
                 }
             },
         ]);
