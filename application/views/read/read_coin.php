@@ -191,7 +191,7 @@ if(!$read_idea_home){
             $diff_idea = $idea_stats['ideas_min']!=$idea_stats['ideas_max'];
             $diff_time = $idea_stats['duration_min']!=$idea_stats['duration_max'];
             if($diff_idea || $diff_time){
-                echo '<p class="space-content">'.( $diff_time ? 'Completion time depends on your choices as you read interactively:<br />Shortest Reading Path: '.$sources__12467[12273]['m_icon'].' '.number_format($idea_stats['ideas_min'], 0).' '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />Longest Reading Path:' : 'Reading Path:' ).$sources__12467[12273]['m_icon'].' '.number_format($idea_stats['duration_max'], 0).' '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_max']).'</p>';
+                echo '<p class="space-content">'.( $diff_time ? 'Completion time depends on your choices as you read interactively:<br />Shortest Reading Path: '.$sources__12467[12273]['m_icon'].' '.number_format($idea_stats['ideas_min'], 0).' '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />Longest Reading Path:' : 'Reading Path:' ).$sources__12467[12273]['m_icon'].' '.number_format($idea_stats['ideas_max'], 0).' '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_max']).'</p>';
             }
 
             if($chapters > 0){

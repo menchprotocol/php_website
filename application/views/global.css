@@ -857,6 +857,7 @@ textarea.note-textarea{
     padding-left:33px;
     padding-right:33px;
     display: block;
+    line-height: 134%;
 }
 .space-content .btn{
     margin:-10px 0 0 0;
