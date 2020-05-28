@@ -11,7 +11,7 @@
 
 $idea_fetch_cover = idea_fetch_cover($idea_focus['idea__id']);
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
-$sources__2738 = $this->config->item('sources__2738'); //MENCH
+$sources__12467 = $this->config->item('sources__12467'); //MENCH COINS
 $idea_type_meet_requirement = in_array($idea_focus['idea__type'], $this->config->item('sources_id_7309'));
 $recipient_source = superpower_assigned();
 $is_home_page = $idea_focus['idea__id']==config_var(12156);
@@ -191,7 +191,7 @@ if(!$read_idea_home){
             $diff_idea = $idea_stats['ideas_min']!=$idea_stats['ideas_max'];
             $diff_time = $idea_stats['duration_min']!=$idea_stats['duration_max'];
             if($diff_idea || $diff_time){
-                echo '<p class="space-content">'.( $diff_time ? 'Based on your choices it would take '.view_time_hours($idea_stats['duration_min']).' - ' : 'It would take ' ).view_time_hours($idea_stats['duration_max']).' to interactively read <span class="inline-block">'.$sources__2738[4535]['m_icon'].' '.( $diff_idea ? number_format($idea_stats['ideas_min'], 0).' - ' : '' ).number_format($idea_stats['ideas_max'], 0).'</span> IDEA'.strtoupper(view__s($idea_stats['ideas_max'])).':</p>';
+                echo '<p class="space-content">'.( $diff_time ? 'Based on your choices it would take '.view_time_hours($idea_stats['duration_min']).' - ' : 'It would take ' ).view_time_hours($idea_stats['duration_max']).' to interactively read <span class="inline-block">'.$sources__12467[12273]['m_icon'].' '.( $diff_idea ? number_format($idea_stats['ideas_min'], 0).' - ' : '' ).number_format($idea_stats['ideas_max'], 0).'</span> '.$sources__12467[12273]['m_name'].':</p>';
             }
 
             if($chapters > 0){
