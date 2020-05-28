@@ -188,9 +188,8 @@ if(!$read_idea_home){
             //BODY
             echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
 
-            $diff_idea = $idea_stats['ideas_min']!=$idea_stats['ideas_max'];
-            $diff_time = $idea_stats['duration_min']!=$idea_stats['duration_max'];
-            if($diff_idea || $diff_time){
+            //IDEA or TIME difference?
+            if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
                 echo '<p class="space-content">';
                 echo 'Completion time depends on your choices as you read interactively:<br />';
                 echo '<span class="reading-paths">Shortest:</span>'.$sources__12467[12273]['m_icon'].' '.number_format($idea_stats['ideas_min'], 0).' '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />';
@@ -199,6 +198,7 @@ if(!$read_idea_home){
                 echo '</p>';
             }
 
+            //We have Next Ideas?
             if($chapters > 0){
                 //List Children:
                 echo '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'">';
