@@ -11,6 +11,7 @@
 
 $idea_fetch_cover = idea_fetch_cover($idea_focus['idea__id']);
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$sources__2738 = $this->config->item('sources__2738'); //MENCH
 $idea_type_meet_requirement = in_array($idea_focus['idea__type'], $this->config->item('sources_id_7309'));
 $recipient_source = superpower_assigned();
 $is_home_page = $idea_focus['idea__id']==config_var(12156);
@@ -190,7 +191,7 @@ if(!$read_idea_home){
             $diff_idea = $idea_stats['ideas_min']!=$idea_stats['ideas_max'];
             $diff_time = $idea_stats['duration_min']!=$idea_stats['duration_max'];
             if($diff_idea || $diff_time){
-                echo '<p class="space-content">'.( $diff_time ? 'Based on your choices it would take '.view_time_hours($idea_stats['duration_min']).' - ' : 'It would take ' ).view_time_hours($idea_stats['duration_max']).' to interactively read <span class="inline-block">'.( $diff_idea ? number_format($idea_stats['ideas_min'], 0).' - ' : '' ).number_format($idea_stats['ideas_max'], 0).'</span> idea'.view__s($idea_stats['ideas_max']).':</p>';
+                echo '<p class="space-content">'.( $diff_time ? 'Based on your choices it would take '.view_time_hours($idea_stats['duration_min']).' - ' : 'It would take ' ).view_time_hours($idea_stats['duration_max']).' to interactively read <span class="inline-block">'.$sources__2738[4535]['m_icon'].' '.( $diff_idea ? number_format($idea_stats['ideas_min'], 0).' - ' : '' ).number_format($idea_stats['ideas_max'], 0).'</span> IDEA'.strtoupper(view__s($idea_stats['ideas_max'])).':</p>';
             }
 
             if($chapters > 0){
@@ -212,11 +213,11 @@ if(!$read_idea_home){
         //SOURCE
         if ($idea_stats['sources_count']) {
 
-            echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$idea_stats['sources_count'].' Expert Source'.view__s($idea_stats['sources_count']).'</a></div>';
+            echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$idea_stats['sources_count'].' Expert Reference'.view__s($idea_stats['sources_count']).'</a></div>';
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             if($idea_stats['ideas_average']>0 && $idea_stats['ideas_average'] > $chapters){
-                echo '<p class="space-content">Ideas collaboratively summarized & synthesized from '.$idea_stats['sources_count'].' expert source'.view__s($idea_stats['sources_count']).':</p>';
+                echo '<p class="space-content">Ideas have been collaboratively mapped & summarized from '.$idea_stats['sources_count'].' expert source'.view__s($idea_stats['sources_count']).':</p>';
             }
             echo '<div class="list-group single-color">';
             foreach ($idea_stats['sources_array'] as $source_source) {
