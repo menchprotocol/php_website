@@ -857,6 +857,10 @@ textarea.note-textarea{
     width:75px;
     display: inline-block;
 }
+.reading-count{
+    min-width:34px;
+    display: inline-block;
+}
 .space-content{
     padding-left:33px;
     padding-right:33px;
