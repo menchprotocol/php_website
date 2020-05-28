@@ -1455,10 +1455,7 @@ label {
 }
 
 .read-topic{
-    padding:0 0 8px;
-}
-.source-ui .read-topic{
-    padding:8px 0 8px;
+    padding:5px 0 8px;
 }
 
 .read-topic, .read-topic a, .read-topic i {
