@@ -858,9 +858,9 @@ function idea_stats($idea__metadata){
 
     //Return stats:
     return array(
-        'ideas_min' => ( isset($metadata['idea___min_reads']) && $metadata['idea___min_reads']>=2 ? $metadata['idea___min_reads']-1 : 0 ),
-        'ideas_max' => ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 ),
-        'ideas_average' => ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? round(( ($metadata['idea___min_reads']-1) + ($metadata['idea___max_reads']-1) ) / 2) : 0 ),
+        'ideas_min' => ( isset($metadata['idea___min_reads']) ? $metadata['idea___min_reads'] : 0 ),
+        'ideas_max' => ( isset($metadata['idea___max_reads']) ? $metadata['idea___max_reads'] : 0 ),
+        'ideas_average' => ( isset($metadata['idea___max_reads']) ? round(( $metadata['idea___min_reads'] + $metadata['idea___max_reads'] ) / 2) : 0 ),
         'duration_min' => ( isset($metadata['idea___min_seconds']) ? $metadata['idea___min_seconds'] : 0 ),
         'duration_max' => ( isset($metadata['idea___max_seconds']) ? $metadata['idea___max_seconds'] : 0 ),
         'duration_average' => ( isset($metadata['idea___max_seconds']) ? round(($metadata['idea___min_seconds']+$metadata['idea___max_seconds'])/2) : 0 ),
