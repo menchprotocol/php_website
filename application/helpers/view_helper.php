@@ -1350,7 +1350,7 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
     $ui .= '<span class="media-info top-left hideIfEmpty"><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span></span>';
 
     //TOP RIGHT
-    if($idea_stats['ideas_average'] && $idea_stats['duration_average']){
+    if($idea_stats['duration_average']){
         $ui .= '<span class="media-info top-right">'.view_time_hours($idea_stats['duration_average']).'</span>';
     }
 
