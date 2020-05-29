@@ -167,9 +167,11 @@ if(!$read_idea_home){
 
     if($is_home_page){
 
-        echo '<div class="cover-list" style="padding: 33px 0 33px 33px;">';
+
+        echo '<div class="cover-list" style="padding: 34px 0 34px 34px;">';
         if($chapters){
-            //List Children:
+            echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].':</div>';
+            //List Featured Ideas:
             foreach($ideas_next as $key => $next_idea){
                 echo view_idea_cover($next_idea, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
             }
