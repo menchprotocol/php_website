@@ -1610,7 +1610,7 @@ function view_input_text($cache_source__id, $current_value, $object__id, $is_sou
 
     }
 
-    return '<span class="span__'.$cache_source__id.' '.( !$is_source ? 'edit-locked' : '' ).'" '.( $extra_large ? '' : 'data-toggle="tooltip" data-placement="top" title="'.$sources__12112[$cache_source__id]['m_name'].'"').'>'.$icon.$focus_element.'</span>'.$character_counter;
+    return '<span class="span__'.$cache_source__id.' '.( !$is_source ? 'edit-locked' : '' ).'">'.$icon.$focus_element.'</span>'.$character_counter;
 }
 
 

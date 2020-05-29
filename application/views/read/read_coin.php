@@ -168,7 +168,7 @@ if(!$read_idea_home){
     if($is_home_page){
 
         if($chapters){
-            echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].':</div>';
+            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$sources__11035[13216]['m_name'].':</div>';
             echo '<div class="cover-list" style="padding:21px 0 33px 33px;">';
                 //List Featured Ideas:
                 foreach($ideas_next as $key => $next_idea){
