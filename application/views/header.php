@@ -136,7 +136,7 @@ if(!isset($hide_header)){
 
                                 if($m['source__id']==12749) {
 
-                                    $focus_idea__id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? config_var(12156) : 0 ) );
+                                    $focus_idea__id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? $this->config->item('featured_idea__id') : 0 ) );
                                     if( $focus_idea__id>0 && idea_is_source($focus_idea__id) ){
                                         //Contribute to Idea
                                         $m['m_desc'] = '/i'.$focus_idea__id;

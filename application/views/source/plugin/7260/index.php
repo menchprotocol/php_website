@@ -6,7 +6,7 @@ $this->session->set_userdata('session_time_7260', time());
 $orphan_ideas = $this->IDEA_model->fetch(array(
     ' NOT EXISTS (SELECT 1 FROM mench_interactions WHERE idea__id=read__right AND read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-    'idea__id !=' => config_var(12156), //Not the Starting Idea
+    'idea__id NOT IN (' . join(',', array($this->config->item('featured_idea__id'), $this->config->item('starting_idea__id'))) . ')' => null, //ACTIVE
 ));
 
 if(count($orphan_ideas) > 0){

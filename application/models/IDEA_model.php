@@ -549,7 +549,7 @@ class IDEA_model extends CI_Model
 
             //Now we must break down the array:
             $recursive_parents = array();
-            $start_idea__id = config_var(12156);
+            $start_idea__id = $this->config->item('featured_idea__id');
             $index = 0;
             foreach($grand_parents as $grand_parent_ids) {
                 foreach($grand_parent_ids as $grand_parent_id) {

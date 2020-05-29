@@ -24,7 +24,7 @@ if(!$obj || $obj==4535){
     }
 
     //Now addup weights starting from primary Idea:
-    $stats['idea_total_weights'] = $this->IDEA_model->weight(config_var(12156));
+    $stats['idea_total_weights'] = $this->IDEA_model->weight($this->config->item('featured_idea__id'));
 
 }
 

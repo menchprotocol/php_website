@@ -1330,9 +1330,8 @@ class READ_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         ));
         if (count($ideas) != 1) {
-            return false;
+            return 0;
         }
-
 
         //Make sure not previously added to this User's Reads:
         if(!count($this->READ_model->fetch(array(
@@ -1352,22 +1351,13 @@ class READ_model extends CI_Model
                 'read__sort' => $idea_rank, //Always place at the top of their Reads
             ));
 
-            //Mark as readed if possible:
-            if($ideas[0]['idea__type']==6677){
-                $this->READ_model->is_complete($ideas[0], array(
-                    'read__type' => 4559, //READ MESSAGES
-                    'read__source' => $source__id,
-                    'read__left' => $ideas[0]['idea__id'],
-                ));
-            }
-
             //Move other ideas down in the Reads:
             foreach($this->READ_model->fetch(array(
                 'read__id !=' => $home['read__id'], //Not the newly added idea
                 'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__source' => $source__id, //Belongs to this User
-            ), array(''), 0, 0, array('read__sort' => 'ASC')) as $current_ideas){
+            ), array(), 0, 0, array('read__sort' => 'ASC')) as $current_ideas){
 
                 //Increase rank:
                 $idea_rank++;
@@ -1376,11 +1366,38 @@ class READ_model extends CI_Model
                 $this->READ_model->update($current_ideas['read__id'], array(
                     'read__sort' => $idea_rank,
                 ), $source__id, 10681 /* Ideas Ordered Automatically  */);
+
+            }
+
+            //Was this their first idea?
+            if(!count($this->READ_model->fetch(array(
+                'read__source' => $source__id,
+                'read__left !=' => $idea__id,
+                'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            )))){
+
+                //YES! Also add the starting idea:
+                $this->READ_model->start($source__id, $this->config->item('starting_idea__id'), $idea__id);
+
+                return $this->config->item('starting_idea__id');
+
+            } elseif($idea__id != $this->config->item('starting_idea__id')) {
+
+                //Mark as readed if possible:
+                if($ideas[0]['idea__type']==6677){
+                    $this->READ_model->is_complete($ideas[0], array(
+                        'read__type' => 4559, //READ MESSAGES
+                        'read__source' => $source__id,
+                        'read__left' => $ideas[0]['idea__id'],
+                    ));
+                }
+
             }
 
         }
 
-        return true;
+        return $idea__id;
 
     }
 

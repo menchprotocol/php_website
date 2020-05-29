@@ -460,10 +460,13 @@ class Read extends CI_Controller
         }
 
         //Add this Idea to their Reads If not already there:
+        $idea__id_added = $idea__id;
         $success_message = null;
         $read_idea_home = $this->READ_model->idea_home($idea__id, $session_source);
+
         if(!$read_idea_home){
-            if($this->READ_model->start($session_source['source__id'], $idea__id)){
+            $idea__id_added = $this->READ_model->start($session_source['source__id'], $idea__id);
+            if($idea__id_added && $idea__id_added == $idea__id){
                 $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Reads. You can now continue below.</div>';
             } else {
                 //Failed to add to Reads:
@@ -472,7 +475,7 @@ class Read extends CI_Controller
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$idea__id, $success_message);
+        return redirect_message('/'.$idea__id_added, $success_message);
 
     }
 
@@ -582,7 +585,7 @@ class Read extends CI_Controller
 
         //Fetch user session:
         $session_source = superpower_assigned();
-        $primary_idea__id = config_var(12156);
+        $primary_idea__id = $this->config->item('featured_idea__id');
 
         if($idea__id > 0 && $idea__id==$primary_idea__id){
             return redirect_message('/');

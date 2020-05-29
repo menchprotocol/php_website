@@ -43,7 +43,7 @@ echo '<div id="list-in-' . $idea_focus['idea__id'] . '-1" class="list-group prev
 foreach($ideas_previous as $previous_idea) {
     echo view_idea($previous_idea, $idea_focus['idea__id'], true, idea_is_source($previous_idea['idea__id']));
 }
-if( $is_source && $is_active && $idea_focus['idea__id']!=config_var(12156)){
+if( $is_source && $is_active && $idea_focus['idea__id']!=$this->config->item('featured_idea__id')){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
