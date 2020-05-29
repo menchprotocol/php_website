@@ -1347,7 +1347,7 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
     $ui .= idea_fetch_cover($idea['idea__id'], true);
 
     //TOP LEFT
-    $ui .= '<span class="media-info top-left hideIfEmpty">'.( $idea_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.number_format($idea_stats['ideas_average'], 0).'</span>' : 'COMING SOON' ).'</span>';
+    $ui .= '<span class="media-info top-left hideIfEmpty"><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span></span>';
 
     //TOP RIGHT
     if($idea_stats['ideas_average'] && $idea_stats['duration_average']){
