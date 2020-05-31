@@ -10,9 +10,9 @@ foreach($this->IDEA_model->fetch(array(
     'idea__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
 ), 0, 0, array('idea__id' => 'DESC')) as $count => $in) {
 
-    echo '<div>'.($count+1).') '.view_cache('sources__4737' /* Idea Status */, $in['idea__status']).' '.view_cache('sources__6193' /* OR Ideas */, $in['idea__type']).' <b><a href="/g'.$in['idea__id'].'">'.view_idea__title($in).'</a></b></div>';
+    echo '<div>'.($count+1).')<span class="icon-block">'.view_cache('sources__6193' /* OR Ideas */, $in['idea__type']).'</span><a href="/g'.$in['idea__id'].'">'.view_idea__title($in).'</a></div>';
 
-    echo '<ul>';
+    echo '<ul style="list-style: decimal;">';
     //Fetch all children for this OR:
     foreach($this->READ_model->fetch(array(
         'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -31,9 +31,9 @@ foreach($this->IDEA_model->fetch(array(
         $all_children++;
 
         echo '<li>';
-
-        echo view_cache('sources__6186' /* Read Status */, $child_or['read__status']).' '.view_cache('sources__4737' /* Idea Status */, $child_or['idea__status']).' '.view_cache('sources__7585', $child_or['idea__type']).' <a href="/g'.$child_or['idea__id'].'">'.view_idea__title($child_or).'</a>'.( $read_coins[0]['totals'] > 0 ? ' <span class="read montserrat"><i class="fas fa-circle read"></i> '.$read_coins[0]['totals'].'</span>' : '' );
-
+        echo '<span class="icon-block">'.view_cache('sources__7585', $child_or['idea__type']).'</span>';
+        echo '<a href="/g'.$child_or['idea__id'].'">'.view_idea__title($child_or).'</a>';
+        echo ( $read_coins[0]['totals'] > 0 ? ' <span class="read montserrat"><i class="fas fa-circle read"></i> '.$read_coins[0]['totals'].'</span>' : '' );
         echo '</li>';
 
     }
