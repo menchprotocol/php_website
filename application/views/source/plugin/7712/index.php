@@ -3,6 +3,7 @@
 $all_reads = 0;
 $all_children = 0;
 $updated = 0;
+$session_source = superpower_assigned();
 
 foreach($this->IDEA_model->fetch(array(
     'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
@@ -42,7 +43,7 @@ foreach($this->IDEA_model->fetch(array(
         foreach($idea__messages as $message_ln) {
             echo $this->READ_model->send_message(
                 $message_ln['read__message'],
-                $recipient_source
+                $session_source
             );
         }
 
