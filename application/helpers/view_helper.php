@@ -141,7 +141,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
                 //Header For Time
                 if($end_time){
-                    $embed_html_code .= '<div class="read-topic" style="padding-bottom: 0;"><span class="img-block icon-block-xs"><i class="fas fa-cut"></i></span>WATCH CLIP '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).'</div>';
+                    $embed_html_code .= '<div class="read-topic" style="padding-bottom: 0;"><span class="img-block icon-block-xs"><i class="fas fa-cut"></i></span>WATCH FROM '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).'</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -191,7 +191,7 @@ function view_idea__title($idea, $common_prefix = null){
     if(strlen($common_prefix) > 0){
         $idea['idea__title'] = trim(substr($idea['idea__title'], strlen($common_prefix)));
     }
-    return '<span class="text__4736_'.$idea['idea__id'].'">'.htmlentities(trim($idea['idea__title'])).'</span>';
+    return '<span class="monserrat text__4736_'.$idea['idea__id'].'">'.htmlentities(trim($idea['idea__title'])).'</span>';
 }
 
 
