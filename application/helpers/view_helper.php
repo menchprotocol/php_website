@@ -191,7 +191,7 @@ function view_idea__title($idea, $common_prefix = null){
     if(strlen($common_prefix) > 0){
         $idea['idea__title'] = trim(substr($idea['idea__title'], strlen($common_prefix)));
     }
-    return '<span class="monserrat text__4736_'.$idea['idea__id'].'">'.htmlentities(trim($idea['idea__title'])).'</span>';
+    return '<span class="montserrat text__4736_'.$idea['idea__id'].'">'.htmlentities(trim($idea['idea__title'])).'</span>';
 }
 
 
