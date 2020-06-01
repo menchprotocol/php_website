@@ -1240,7 +1240,7 @@ function view_idea_note_mix($note_type_source__id, $idea_notes, $is_source){
 
 
 
-    $ui .= '<table class="table table-condensed hidden" id="note_control_'.$note_type_source__id.'"><tr>';
+    $ui .= '<table class="table table-condensed"><tr>';
 
 
     //Save button:

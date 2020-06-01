@@ -226,13 +226,6 @@ $(document).ready(function () {
         //Initiate @ search for all idea text areas:
         idea_message_inline_source_search($(this));
 
-        //Watch for focus:
-        $(this).focus(function() {
-            $( '#note_control_'+note_type_id ).removeClass('hidden');
-        }).keyup(function() {
-            $( '#note_control_'+note_type_id ).removeClass('hidden');
-        });
-
         autosize($(this));
 
         //Activate sorting:
@@ -627,7 +620,6 @@ function idea_message_form_unlock(result, note_type_id) {
     $('.add_notes_' + note_type_id).removeClass('is-working');
     $("#read__message" + note_type_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
-    $( '#note_control_'+note_type_id ).addClass('hidden');
 
     //What was the result?
     if (result.status) {
