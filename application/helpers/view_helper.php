@@ -1059,7 +1059,7 @@ function view_idea_list($idea, $ideas_next, $recipient_source, $prefix_statement
         $common_prefix = idea_calc_common_prefix($ideas_next, 'idea__title');
         $prefix_statement = ( $prefix_statement ? $prefix_statement : $common_prefix );
 
-        echo '<div class="read-topic">'.(strlen($prefix_statement) ? trim($prefix_statement).':' : '<span class="icon-block">&nbsp;</span>UP NEXT:').'</div>';
+        echo '<div class="read-topic">'.(strlen($prefix_statement) ? trim($prefix_statement) : '<span class="icon-block">&nbsp;</span>UP NEXT:').'</div>';
         echo '<div class="list-group">';
         foreach($ideas_next as $key => $next_idea){
             echo view_idea_read($next_idea, $common_prefix);
