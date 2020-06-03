@@ -733,11 +733,18 @@ class IDEA_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(!is_valid_source_string($action_command1)){
+        } elseif(in_array($action_source__id , array(12591, 12592)) && !is_valid_source_string($action_command1)){
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Source. Format must be: @123 Source Name',
+                'message' => 'Unknown Source. Format must be: @123 Source Title',
+            );
+
+        } elseif(in_array($action_source__id , array(12611, 12612)) && !is_valid_idea_string($action_command1)){
+
+            return array(
+                'status' => 0,
+                'message' => 'Unknown Idea. Format must be: #123 Idea Title',
             );
 
         }
