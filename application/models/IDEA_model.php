@@ -829,7 +829,7 @@ class IDEA_model extends CI_Model
                     //See how to adjust:
                     if($action_source__id==12611 && !count($is_previous_already)){
 
-                        $this->IDEA_model->link_or_create('', $read__source, $adjust_idea__id, true, 6184, 6677, $idea_next['idea__id']);
+                        $this->IDEA_model->link_or_create('', $read__source, $adjust_idea__id, false, 6184, 6677, $idea_next['idea__id']);
 
                         //Add Source since not there:
                         $applied_success++;
