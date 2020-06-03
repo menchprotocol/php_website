@@ -766,7 +766,7 @@ class IDEA_model extends CI_Model
 
 
         //Process request:
-        foreach($ideas_next as $idea) {
+        foreach($ideas_next as $idea_next) {
 
             //Logic here must match items in source_mass_actions config variable
 
@@ -777,7 +777,7 @@ class IDEA_model extends CI_Model
                 $idea_has_sources = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-                    'read__right' => $idea['idea__id'],
+                    'read__right' => $idea_next['idea__id'],
                     'read__up' => $source__profile_id,
                 ));
 
@@ -789,7 +789,7 @@ class IDEA_model extends CI_Model
                         'read__up' => $source__profile_id,
                         'read__type' => 4983, //IDEA COIN
                         'read__message' => '@'.$source__profile_id,
-                        'read__right' => $idea['idea__id'],
+                        'read__right' => $idea_next['idea__id'],
                     ), true);
 
                     $applied_success++;
@@ -810,42 +810,34 @@ class IDEA_model extends CI_Model
                 //Check if it hs this item:
                 $adjust_idea__id = intval(one_two_explode('#',' ',$action_command1));
 
-                //Add or Remove Parent from the Children
-                $ideas_next = $this->READ_model->fetch(array(
-                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-                    'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'read__left' => $idea__id,
-                ), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
-                foreach($ideas_next as $idea_next){
+                $is_previous_already = $this->READ_model->fetch(array(
+                    'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                    'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                    'read__left' => $adjust_idea__id,
+                    'read__right' => $idea_next['idea__id'],
+                ), array(), 0);
 
-                    $is_previous_already = $this->READ_model->fetch(array(
-                        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                        'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-                        'read__left' => $adjust_idea__id,
-                        'read__right' => $idea_next['idea__id'],
-                    ), array(), 0);
+                //See how to adjust:
+                if($action_source__id==12611 && !count($is_previous_already)){
 
-                    //See how to adjust:
-                    if($action_source__id==12611 && !count($is_previous_already)){
+                    $this->IDEA_model->link_or_create('', $read__source, $adjust_idea__id, false, 6184, 6677, $idea_next['idea__id']);
 
-                        $this->IDEA_model->link_or_create('', $read__source, $adjust_idea__id, false, 6184, 6677, $idea_next['idea__id']);
+                    //Add Source since not there:
+                    $applied_success++;
 
-                        //Add Source since not there:
-                        $applied_success++;
+                } elseif($action_source__id==12612 && count($is_previous_already)){
 
-                    } elseif($action_source__id==12612 && count($is_previous_already)){
+                    //Remove Source:
+                    $this->READ_model->update($is_previous_already[0]['read__id'], array(
+                        'read__status' => 6173,
+                    ), $read__source, 10686 /* IDEA NOTES Unpublished */);
 
-                        //Remove Source:
-                        $this->READ_model->update($is_previous_already[0]['read__id'], array(
-                            'read__status' => 6173,
-                        ), $read__source, 10686 /* IDEA NOTES Unpublished */);
+                    $applied_success++;
 
-                        $applied_success++;
-
-                    }
                 }
+
             }
+
         }
 
 
