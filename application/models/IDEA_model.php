@@ -821,7 +821,6 @@ class IDEA_model extends CI_Model
 
                     $is_previous_already = $this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                        'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                         'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                         'read__left' => $adjust_idea__id,
                         'read__right' => $idea_next['idea__id'],
