@@ -229,8 +229,6 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
 
             } elseif(in_array($action_source__id, array(12611, 12612))){
 
-                $input_options .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Ideas will be deleted.</div>';
-
                 //String command:
                 $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'"  placeholder="Search Ideas..." class="form-control algolia_search idea_text_search border montserrat">';
 
