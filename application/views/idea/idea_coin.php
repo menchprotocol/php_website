@@ -212,7 +212,6 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
 
             $counter++;
             $dropdown_options .= '<option value="' . $action_source__id . '">' .$source_list_action['m_name'] . '</option>';
-            $is_upper = false;
 
 
             //Start with the input wrapper:
@@ -223,7 +222,7 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
                 //Source search box:
 
                 //String command:
-                $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'"  placeholder="Search Sources..." class="form-control algolia_search source_text_search border montserrat '.$is_upper.'">';
+                $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'"  placeholder="Search Sources..." class="form-control algolia_search source_text_search border montserrat">';
 
                 //We don't need the second value field here:
                 $input_options .= '<input type="hidden" name="mass_value2_'.$action_source__id.'" value="" />';
@@ -232,8 +231,10 @@ foreach($this->config->item('sources__11018') as $read__type => $m){
 
                 $input_options .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Ideas will be deleted.</div>';
 
-                //No values for this:
-                $input_options .= '<input type="hidden" name="mass_value1_'.$action_source__id.'" value="" />';
+                //String command:
+                $input_options .= '<input type="text" name="mass_value1_'.$action_source__id.'"  placeholder="Search Ideas..." class="form-control algolia_search idea_text_search border montserrat">';
+
+                //We don't need the second value field here:
                 $input_options .= '<input type="hidden" name="mass_value2_'.$action_source__id.'" value="" />';
 
             }

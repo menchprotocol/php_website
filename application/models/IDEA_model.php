@@ -319,7 +319,7 @@ class IDEA_model extends CI_Model
         return $stats;
     }
 
-    function link_or_create($idea__title, $read__source, $link_to_idea__id = 0, $is_parent = false, $new_idea_status = 6184, $idea__type = 6677 /* Idea Read-Only */, $link_idea__id = 0)
+    function link_or_create($idea__title, $read__source, $link_to_idea__id = 0, $is_parent = false, $new_idea_status = 6184, $idea__type = 6677, $link_idea__id = 0)
     {
 
         /*
@@ -800,10 +800,46 @@ class IDEA_model extends CI_Model
 
             } elseif(in_array($action_source__id , array(12611, 12612))){
 
-                //TODO here
+                //Check if it hs this item:
+                $adjust_idea__id = intval(one_two_explode('#',' ',$action_command1));
 
+                //Add or Remove Parent from the Children
+                $ideas_next = $this->READ_model->fetch(array(
+                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'read__left' => $idea__id,
+                ), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
+                foreach($ideas_next as $idea_next){
+
+                    $is_previous_already = $this->READ_model->fetch(array(
+                        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                        'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+                        'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                        'read__left' => $adjust_idea__id,
+                        'read__right' => $idea_next['idea__id'],
+                    ), array(), 0);
+
+                    //See how to adjust:
+                    if($action_source__id==12611 && !count($is_previous_already)){
+
+                        $this->IDEA_model->link_or_create('', $read__source, $adjust_idea__id, true, 6184, 6677, $idea_next['idea__id']);
+
+                        //Add Source since not there:
+                        $applied_success++;
+
+                    } elseif($action_source__id==12612 && count($is_previous_already)){
+
+                        //Remove Source:
+                        $this->READ_model->update($is_previous_already[0]['read__id'], array(
+                            'read__status' => 6173,
+                        ), $read__source, 10686 /* IDEA NOTES Unpublished */);
+
+                        $applied_success++;
+
+                    }
+                }
             }
-
         }
 
 

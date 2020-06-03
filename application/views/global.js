@@ -93,6 +93,37 @@ function load_editor(){
             }
         }]);
 
+        $('.idea_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+            $(this).val('#' + suggestion.object__id + ' ' + suggestion.object__title);
+
+        }).autocomplete({hint: false, minLength: 2}, [{
+
+            source: function (q, cb) {
+                algolia_index.search(q, {
+                    filters: 'object__type=4535',
+                    hitsPerPage: 5,
+                }, function (error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: function (suggestion) {
+                return '#' + suggestion.object__id + ' ' + suggestion.object__title;
+            },
+            templates: {
+                suggestion: function (suggestion) {
+                    return view_search_result(suggestion);
+                },
+                empty: function (data) {
+                    return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
+                },
+            }
+        }]);
+
         $('.idea_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('#' + suggestion.object__id + ' ' + suggestion.object__title);
