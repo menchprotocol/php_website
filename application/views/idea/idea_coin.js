@@ -439,9 +439,9 @@ function idea_message_inline_source_search(obj) {
                             console.log('Caret at: ', e.target.selectionStart)
                         });
                         var source_title_parts = obj.val().toUpperCase().split("@");
-
-                        return_suggestion += '<a href="javascript:void(0);" onclick="create_expert_source(\'' + source_title_parts[1] + '\')"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + source_title_parts[1] + '</span></a><br />';
-
+                        if(source_title_parts[1].length >= 2){
+                            return_suggestion += '<a href="javascript:void(0);" onclick="create_expert_source(\'' + source_title_parts[1] + '\')" class="add-new"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + source_title_parts[1] + '</span></a><br />';
+                        }
                     }
                     return_suggestion += view_search_result(suggestion) + '</div>';
                     return return_suggestion;
