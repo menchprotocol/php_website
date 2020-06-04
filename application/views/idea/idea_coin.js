@@ -428,18 +428,24 @@ function idea_message_inline_source_search(obj) {
                             console.error(err);
                         });
                 },
-                header: function (data) {
-                    // Returns the highlighted version of the name attribute
-                    console.log(obj.attr('id'));
-                    document.getElementById(obj.attr('id')).addEventListener('keyup', e => {
-                        console.log('Caret at: ', e.target.selectionStart)
-                    });
-                    var source_title_parts = obj.val().toUpperCase().split("@");
-                    return '<div style="padding: 3px 0;"><a href="javascript:void(0);" onclick="create_expert_source(\'' + source_title_parts[1] + '\')"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + source_title_parts[1] + '</span></a></div>';
-                },
                 template: function (suggestion) {
+
                     // Returns the highlighted version of the name attribute
-                    return '<div style="padding: 3px 0;">' + view_search_result(suggestion) + '</div>';
+                    var return_suggestion = '<div style="padding: 3px 0;">';
+                    if(!$('.dropdown-menu .textcomplete-item .add-new').length){
+
+                        console.log(obj.attr('id'));
+                        document.getElementById(obj.attr('id')).addEventListener('keyup', e => {
+                            console.log('Caret at: ', e.target.selectionStart)
+                        });
+                        var source_title_parts = obj.val().toUpperCase().split("@");
+
+                        return_suggestion += '<a href="javascript:void(0);" onclick="create_expert_source(\'' + source_title_parts[1] + '\')"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + source_title_parts[1] + '</span></a><br />';
+
+                    }
+                    return_suggestion += view_search_result(suggestion) + '</div>';
+                    return return_suggestion;
+
                 },
                 replace: function (suggestion) {
                     return ( obj.val().substr(0, 1)=='@' ? '' : ' ' ) + '@' + suggestion.object__id + ' ';
