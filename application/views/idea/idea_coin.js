@@ -403,6 +403,11 @@ function idea_edit_notes_count(read__id) {
 }
 
 
+function create_expert_source(source_title){
+    alert('Title: '+source_title);
+}
+
+
 function idea_message_inline_source_search(obj) {
 
     if(parseInt(js_sources__6404[12678]['m_desc'])){
@@ -425,7 +430,10 @@ function idea_message_inline_source_search(obj) {
                 },
                 template: function (suggestion) {
                     // Returns the highlighted version of the name attribute
-                    return '<div style="padding: 3px 0;">' + view_search_result(suggestion) + '</div>';
+                    return '<div style="padding: 3px 0;">'
+                        + '<a href="javascript:void(0);" onclick="create_expert_source(\'' + query + '\')"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + query + '</span></a>'
+                        + view_search_result(suggestion)
+                    + '</div>';
                 },
                 replace: function (suggestion) {
                     return ( obj.val().substr(0, 1)=='@' ? '' : ' ' ) + '@' + suggestion.object__id + ' ';
