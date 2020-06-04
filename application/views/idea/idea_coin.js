@@ -430,9 +430,13 @@ function idea_message_inline_source_search(obj) {
                 },
                 template: function (suggestion) {
                     // Returns the highlighted version of the name attribute
-                    console.log(suggestion);
+                    console.log(obj.attr('id'));
+                    document.getElementById(obj.attr('id')).addEventListener('keyup', e => {
+                        console.log('Caret at: ', e.target.selectionStart)
+                    });
+                    var source_title_parts = obj.val().split("@");
                     return '<div style="padding: 3px 0;">'
-                        + '<a href="javascript:void(0);" onclick="create_expert_source(\'' + query + '\')"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + query + '</span></a>'
+                        + '<a href="javascript:void(0);" onclick="create_expert_source(\'' + source_title_parts[1] + '\')"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + source_title_parts[1] + '</span></a>'
                         + view_search_result(suggestion)
                     + '</div>';
                 },
