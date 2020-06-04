@@ -431,8 +431,9 @@ function idea_message_inline_source_search(obj) {
                 template: function (suggestion) {
 
                     // Returns the highlighted version of the name attribute
-                    var return_suggestion = '<div style="padding: 3px 0;">';
-                    if(!$('.dropdown-menu .textcomplete-item .add-new').length){
+                    var return_suggestion = '';
+
+                    if($('.dropdown-menu .add-new').length < 1){
 
                         console.log(obj.attr('id'));
                         document.getElementById(obj.attr('id')).addEventListener('keyup', e => {
@@ -440,10 +441,11 @@ function idea_message_inline_source_search(obj) {
                         });
                         var source_title_parts = obj.val().toUpperCase().split("@");
                         if(source_title_parts[1].length >= 2){
-                            return_suggestion += '<a href="javascript:void(0);" onclick="create_expert_source(\'' + source_title_parts[1] + '\')" class="add-new"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + source_title_parts[1] + '</span></a><br />';
+                            return_suggestion += '<div style="padding: 3px 0;"><a href="javascript:void(0);" onclick="create_expert_source(\'' + source_title_parts[1] + '\')" class="add-new"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + source_title_parts[1] + '</span></a></div>';
                         }
+
                     }
-                    return_suggestion += view_search_result(suggestion) + '</div>';
+                    return_suggestion += '<div style="padding: 3px 0;">' + view_search_result(suggestion) + '</div>';
                     return return_suggestion;
 
                 },
