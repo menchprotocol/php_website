@@ -1094,9 +1094,8 @@ class SOURCE_model extends CI_Model
     }
 
 
-    function verify_create($source__title, $read__source = 0, $source__status = 6181 /* SOURCE PUBLISHED */, $source__icon = null){
+    function verify_create($source__title, $read__source = 0, $source__status = 6181, $source__icon = null){
 
-        //If PSID exists, make sure it's not a duplicate:
         if(!in_array($source__status, $this->config->item('sources_id_6177'))){
             //Invalid Status ID
             return array(
@@ -1117,7 +1116,6 @@ class SOURCE_model extends CI_Model
             'source__icon' => $source__icon,
             'source__status' => $source__status,
         ), true, $read__source);
-
 
         //Return success:
         return array(
