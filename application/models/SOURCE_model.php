@@ -791,7 +791,7 @@ class SOURCE_model extends CI_Model
 
                     //Log error:
                     $this->READ_model->create(array(
-                        'read__message' => 'source_url['.$url.'] FAILED to source_verify_create['.$page_title.'] with message: '.$added_source['message'],
+                        'read__message' => 'source_url['.$url.'] FAILED to create ['.$page_title.'] with message: '.$added_source['message'],
                         'read__type' => 4246, //Platform Bug Reports
                         'read__source' => $read__source,
                         'read__up' => $url_source['source_domain']['source__id'],
@@ -1105,25 +1105,15 @@ class SOURCE_model extends CI_Model
             );
         }
 
-        //Not found, so we need to create, and need a name by now:
-        if(strlen($source__title)<2){
-            return array(
-                'status' => 0,
-                'message' => 'Source name must be at-least 2 characters long',
-            );
+        //Validate Title
+        $source__title_validate = source__title_validate($source__title);
+        if(!$source__title_validate['status']){
+            return $source__title_validate;
         }
-
-
-        //Check to make sure name is not duplicate:
-        $duplicate_sources = $this->SOURCE_model->fetch(array(
-            'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-            'LOWER(source__title)' => strtolower(trim($source__title)),
-        ));
-
 
         //Create source
         $focus_source = $this->SOURCE_model->create(array(
-            'source__title' => trim($source__title),
+            'source__title' => $source__title_validate['source__title_clean'],
             'source__icon' => $source__icon,
             'source__status' => $source__status,
         ), true, $read__source);

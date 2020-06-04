@@ -425,11 +425,11 @@ function view_interaction($ln, $is_parent_tr = false)
         //Creator (Do not repeat)
         if($ln['read__source'] > 0 && $ln['read__source']!=$ln['read__up'] && $ln['read__source']!=$ln['read__down']){
 
-            $player_sources = $CI->SOURCE_model->fetch(array(
+            $added_sources = $CI->SOURCE_model->fetch(array(
                 'source__id' => $ln['read__source'],
             ));
 
-            $ui .= '<div class="simple-line"><a href="/@'.$player_sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($player_sources[0]['source__icon']).'"><span class="img-block">'.view_source__icon($player_sources[0]['source__icon']) . '</span> ' . $player_sources[0]['source__title'] . '</span></a></div>';
+            $ui .= '<div class="simple-line"><a href="/@'.$added_sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($added_sources[0]['source__icon']).'"><span class="img-block">'.view_source__icon($added_sources[0]['source__icon']) . '</span> ' . $added_sources[0]['source__title'] . '</span></a></div>';
 
         }
 

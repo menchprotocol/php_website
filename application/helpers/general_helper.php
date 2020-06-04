@@ -94,6 +94,20 @@ function extract_source_references($read__message, $look_for_slice = false)
         'ref_time_end' => 0,
     );
 
+
+    //Do we need to create a source?
+    if(substr_count($read__message, '@')==1 && substr_count($read__message, '|')==1){
+        //We Seem to have a creation mode:
+        $session_source = superpower_assigned();
+        $source__title = one_two_explode('@','|',$read__message);
+        $added_source = $CI->SOURCE_model->verify_create($source__title, $session_source['source__id']);
+        if($added_source['status']){
+            //New source added, replace text:
+            $read__message = str_replace($source__title.'|', $added_source['new_source']['source__id'], $read__message);
+        }
+    }
+
+
     //See what we can find:
     foreach(preg_split('/\s+/', $read__message) as $word) {
         if (filter_var($word, FILTER_VALIDATE_URL)) {

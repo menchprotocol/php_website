@@ -1644,10 +1644,10 @@ class Source extends CI_Controller
 
 
         //All good, create new source:
-        $player_source = $this->SOURCE_model->verify_create(trim($_POST['input_name']), 0, 6181, random_avatar());
-        if(!$player_source['status']){
+        $added_source = $this->SOURCE_model->verify_create(trim($_POST['input_name']), 0, 6181, random_avatar());
+        if(!$added_source['status']){
             //We had an error, return it:
-            return view_json($player_source);
+            return view_json($added_source);
         }
 
 
@@ -1655,28 +1655,28 @@ class Source extends CI_Controller
         $this->READ_model->create(array(
             'read__up' => 4430, //MENCH PLAYERS
             'read__type' => source_link_type(),
-            'read__source' => $player_source['new_source']['source__id'],
-            'read__down' => $player_source['new_source']['source__id'],
+            'read__source' => $added_source['new_source']['source__id'],
+            'read__down' => $added_source['new_source']['source__id'],
         ));
 
         $this->READ_model->create(array(
             'read__type' => source_link_type(trim(strtolower($_POST['input_email']))),
             'read__message' => trim(strtolower($_POST['input_email'])),
             'read__up' => 3288, //Mench Email
-            'read__source' => $player_source['new_source']['source__id'],
-            'read__down' => $player_source['new_source']['source__id'],
+            'read__source' => $added_source['new_source']['source__id'],
+            'read__down' => $added_source['new_source']['source__id'],
         ));
-        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $player_source['new_source']['source__id']));
+        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_source['new_source']['source__id']));
         $this->READ_model->create(array(
             'read__type' => source_link_type($hash),
             'read__message' => $hash,
             'read__up' => 3286, //Mench Password
-            'read__source' => $player_source['new_source']['source__id'],
-            'read__down' => $player_source['new_source']['source__id'],
+            'read__source' => $added_source['new_source']['source__id'],
+            'read__down' => $added_source['new_source']['source__id'],
         ));
 
         //Now update Algolia:
-        update_algolia(4536,  $player_source['new_source']['source__id']);
+        update_algolia(4536,  $added_source['new_source']['source__id']);
 
         //Fetch referral Idea, if any:
         if(intval($_POST['sign_idea__id']) > 0){
@@ -1689,7 +1689,7 @@ class Source extends CI_Controller
 
             if(count($referrer_ideas) > 0){
                 //Add this Idea to their Reads:
-                $this->READ_model->start($player_source['new_source']['source__id'], $_POST['sign_idea__id']);
+                $this->READ_model->start($added_source['new_source']['source__id'], $_POST['sign_idea__id']);
             } else {
                 //Cannot be added, likely because its not published:
                 $_POST['sign_idea__id'] = 0;
@@ -1717,7 +1717,7 @@ class Source extends CI_Controller
         //Log User Signin Joined Mench
         $invite_link = $this->READ_model->create(array(
             'read__type' => 7562, //User Signin Joined Mench
-            'read__source' => $player_source['new_source']['source__id'],
+            'read__source' => $added_source['new_source']['source__id'],
             'read__left' => intval($_POST['sign_idea__id']),
             'read__metadata' => array(
                 'email_log' => $email_log,
@@ -1725,7 +1725,7 @@ class Source extends CI_Controller
         ));
 
         //Assign session & log login link:
-        $this->SOURCE_model->activate_session($player_source['new_source']);
+        $this->SOURCE_model->activate_session($added_source['new_source']);
 
 
         if (strlen($_POST['referrer_url']) > 0) {
