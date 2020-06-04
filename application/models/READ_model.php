@@ -348,11 +348,11 @@ class READ_model extends CI_Model
                 if($add_fields['read__source'] > 0){
 
                     //Fetch player details:
-                    $added_sources = $this->SOURCE_model->fetch(array(
+                    $add_sources = $this->SOURCE_model->fetch(array(
                         'source__id' => $add_fields['read__source'],
                     ));
 
-                    $player_name = $added_sources[0]['source__title'];
+                    $player_name = $add_sources[0]['source__title'];
 
                 } else {
 
