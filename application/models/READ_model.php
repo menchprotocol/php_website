@@ -1015,7 +1015,7 @@ class READ_model extends CI_Model
             $short_name_class = ( strlen($sources[0]['source__title']) <= 21 ? ' inline-block ' : '' );
             $output_body_message .= $source_appendix;
             if($string_references['ref_time_found']){
-                $identifier_string = '@' . $string_references['ref_sources'][0].':'.$string_references['ref_time_start'].':'.$string_references['ref_time_end'];
+                $identifier_string = '@' . $string_references['ref_sources'][0].one_two_explode('@' . $string_references['ref_sources'][0],' ',$message_input);
             } else {
                 $identifier_string = '@' . $string_references['ref_sources'][0];
             }
