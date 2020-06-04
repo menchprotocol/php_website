@@ -430,6 +430,7 @@ function idea_message_inline_source_search(obj) {
                 },
                 template: function (suggestion) {
                     // Returns the highlighted version of the name attribute
+                    console.log(algolia_object);
                     return '<div style="padding: 3px 0;">'
                         + '<a href="javascript:void(0);" onclick="create_expert_source(\'' + query + '\')"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><span class="montserrat source">' + query + '</span></a>'
                         + view_search_result(suggestion)
