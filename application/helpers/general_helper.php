@@ -82,12 +82,13 @@ function extract_source_references($read__message, $look_for_slice = false)
     //Analyzes a message text to extract Source References (Like @123) and URLs
     $CI =& get_instance();
     $session_source = superpower_assigned();
-    $source__title = one_two_explode('@','|',$read__message);
-    die($source__title.':::'.$session_source['source__id']);
+
+    echo '{{'.one_two_explode('@','|',$read__message).'/'.$session_source['source__id'].'}}';
 
     //Do we need to create a source?
-    if(substr_count($read__message, '@')==1 && substr_count($read__message, '|')==1 && $session_source['source__id']>0){
+    if(substr_count($read__message, '@')==1 && substr_count($read__message, '|')==1 && $session_source){
         //We Seem to have a creation mode:
+        $source__title = one_two_explode('@','|',$read__message);
         $added_source = $CI->SOURCE_model->verify_create($source__title, $session_source['source__id']);
         if($added_source['status']){
             //New source added, replace text:
