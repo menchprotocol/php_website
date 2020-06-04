@@ -428,7 +428,7 @@ function idea_message_inline_source_search(obj) {
                             console.error(err);
                         });
                 },
-                header: function (suggestion) {
+                header: function (data) {
                     // Returns the highlighted version of the name attribute
                     console.log(obj.attr('id'));
                     document.getElementById(obj.attr('id')).addEventListener('keyup', e => {
