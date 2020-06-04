@@ -794,6 +794,26 @@ class READ_model extends CI_Model
         }
 
 
+
+        /*
+         *
+         * Source Creation within Message?
+         *
+         * */
+        if($strict_validation && substr_count($message_input, '@')==1 && substr_count($message_input, '|')==1){
+            //We Seem to have a creation mode:
+            $source__title = one_two_explode('@','|',$message_input);
+            $added_source = $this->SOURCE_model->verify_create($source__title, $recipient_source['source__id']);
+            if(!$added_source['status']){
+                return $added_source;
+            } else {
+                //New source added, replace text:
+                $message_input = str_replace($source__title.'|', $added_source['new_source']['source__id'], $message_input);
+            }
+        }
+
+
+
         /*
          *
          * Let's do a generic message reference validation

@@ -83,23 +83,6 @@ function extract_source_references($read__message, $look_for_slice = false)
     $CI =& get_instance();
     $session_source = superpower_assigned();
 
-    echo '{{'.one_two_explode('@','|',$read__message).'/'.$session_source['source__id'].'}}';
-
-    //Do we need to create a source?
-    if(substr_count($read__message, '@') && substr_count($read__message, '|') && $session_source){
-        //We Seem to have a creation mode:
-        $source__title = one_two_explode('@','|',$read__message);
-        $added_source = $CI->SOURCE_model->verify_create($source__title, $session_source['source__id']);
-
-        echo '(('.$added_source['status'].'))';
-
-        if($added_source['status']){
-            //New source added, replace text:
-            $read__message = str_replace($source__title.'|', $added_source['new_source']['source__id'], $read__message);
-        }
-    }
-
-
     //Replace non-ascii characters with space:
     $read__message = preg_replace('/[[:^print:]]/', ' ', $read__message);
 
