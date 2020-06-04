@@ -117,15 +117,15 @@ function extract_source_references($read__message, $look_for_slice = false)
             $source__id = intval(substr($word, 1));
             array_push($string_references['ref_sources'], $source__id);
 
-            if($look_for_slice && substr_count($word,':')==2){
-                //See if this is it:
-                $times = explode(':',$word);
-                if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$source__id.':'.$times[1].':'.$times[2]){
-                    $string_references['ref_time_found'] = true;
-                    $string_references['ref_time_start'] = intval($times[1]);
-                    $string_references['ref_time_end'] = intval($times[2]);
-                }
+        if($look_for_slice && substr_count($word,':')==2){
+            //See if this is it:
+            $times = explode(':',$word);
+            if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$source__id.':'.$times[1].':'.$times[2]){
+                $string_references['ref_time_found'] = true;
+                $string_references['ref_time_start'] = second_calc($times[1]);
+                $string_references['ref_time_end'] = second_calc($times[2]);
             }
+        }
 
         } elseif ($look_for_slice && substr($word, 0, 1) == ':' && substr_count($word,':')==2) {
 
@@ -133,14 +133,23 @@ function extract_source_references($read__message, $look_for_slice = false)
             $times = explode(':',$word);
             if(is_numeric($times[1]) && is_numeric($times[2]) && $word==':'.$times[1].':'.$times[2]){
                 $string_references['ref_time_found'] = true;
-                $string_references['ref_time_start'] = intval($times[1]);
-                $string_references['ref_time_end'] = intval($times[2]);
+                $string_references['ref_time_start'] = second_calc($times[1]);
+                $string_references['ref_time_end'] = second_calc($times[2]);
             }
 
         }
     }
 
     return $string_references;
+}
+
+function second_calc($string){
+    if(substr_count($string, '.')==1){
+        $parts = explode('.',$string,2);
+        return (intval($parts[0]) * 60) + intval($parts[1]);
+    } else {
+        return intval($string);
+    }
 }
 
 
