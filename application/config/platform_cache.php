@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-05 16:39:05 PST
+//Generated 2020-06-05 16:47:18 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12413);
@@ -40,7 +40,7 @@ $config['sources__13300'] = array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(13300,13294,13291,7524,12273,10939,12359,12322,10593,4986,4603,4593,4485),
+        'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
 );
 
@@ -51,7 +51,7 @@ $config['sources__13291'] = array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(13300,13294,13291,7524,12273,10939,12359,12322,10593,4986,4603,4593,4485),
+        'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
     12413 => array(
         'm_icon' => '<i class="fas fa-sitemap idea" aria-hidden="true"></i>',
@@ -1040,7 +1040,7 @@ $config['sources__12359'] = array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(13300,13294,13291,7524,12273,10939,12359,12322,10593,4986,4603,4593,4485),
+        'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
 );
 
@@ -1520,7 +1520,7 @@ $config['sources__12322'] = array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(13300,13294,13291,7524,12273,10939,12359,12322,10593,4986,4603,4593,4485),
+        'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
 );
 
@@ -2182,7 +2182,7 @@ $config['sources__12273'] = array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(13300,13294,13291,7524,12273,10939,12359,12322,10593,4986,4603,4593,4485),
+        'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
 );
 
@@ -3039,7 +3039,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.411',
+        'm_desc' => 'v1.412',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -4895,7 +4895,7 @@ $config['sources__10593'] = array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(13300,13294,13291,7524,12273,10939,12359,12322,10593,4986,4603,4593,4485),
+        'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
     4554 => array(
         'm_icon' => '<i class="read fad fa-volume-up"></i>',
@@ -6258,7 +6258,7 @@ $config['sources__4986'] = array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(13300,13294,13291,7524,12273,10939,12359,12322,10593,4986,4603,4593,4485),
+        'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
 );
 
@@ -7151,7 +7151,7 @@ $config['sources__4593'] = array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(13300,13294,13291,7524,12273,10939,12359,12322,10593,4986,4603,4593,4485),
+        'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
@@ -7917,7 +7917,7 @@ $config['sources__4485'] = array(
         'm_icon' => '<i class="fas fa-comment idea" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
-        'm_parents' => array(13300,13294,13291,7524,12273,10939,12359,12322,10593,4986,4603,4593,4485),
+        'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
