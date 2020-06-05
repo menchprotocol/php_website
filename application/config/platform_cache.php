@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-05 11:10:59 PST
+//Generated 2020-06-05 13:37:27 PST
 
 //IDEATORS:
 $config['sources_id_13202'] = array(4430);
@@ -569,7 +569,7 @@ $config['sources__12840'] = array(
 );
 
 //SOURCE LINK MESSAGE DISPLAY:
-$config['sources_id_12822'] = array(4259,4257,4261,4260,4255,4256,4258);
+$config['sources_id_12822'] = array(4259,4257,4261,4260,7657,4255,4256,4258);
 $config['sources__12822'] = array(
     4259 => array(
         'm_icon' => '<i class="fad fa-volume-up source"></i>',
@@ -594,6 +594,12 @@ $config['sources__12822'] = array(
         'm_name' => 'IMAGE',
         'm_desc' => '',
         'm_parents' => array(12822,12605,12524,6198,11080,11059,10593,4593,4592,4537),
+    ),
+    7657 => array(
+        'm_icon' => '<i class="fas fa-divide source" aria-hidden="true"></i>',
+        'm_name' => 'PERCENT',
+        'm_desc' => '',
+        'm_parents' => array(12822,4593,4592),
     ),
     4255 => array(
         'm_icon' => '<i class="fad fa-align-left source"></i>',
@@ -4713,7 +4719,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-sync source fa-spin" aria-hidden="true"></i>',
         'm_name' => 'SYNC ICONS IF DIFFERENT',
         'm_desc' => '',
-        'm_parents' => array(4527,12967),
+        'm_parents' => array(6204,4527,12967),
     ),
     12523 => array(
         'm_icon' => '<i class="fad fa-sync source fa-spin" aria-hidden="true"></i>',
@@ -5179,7 +5185,7 @@ $config['sources__6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['sources_id_6204'] = array(13037,4737,7585,10602,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,6186,4593,3290,6177);
+$config['sources_id_6204'] = array(13037,4737,7585,10602,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,6186,4593,3290,6177,12968);
 $config['sources__6204'] = array(
     13037 => array(
         'm_icon' => '<i class="fas fa-hand-holding-heart"></i>',
@@ -5366,6 +5372,12 @@ $config['sources__6204'] = array(
         'm_name' => 'SOURCE STATUS',
         'm_desc' => '',
         'm_parents' => array(12766,11054,6204,5003,6160,6232,6194,6206,4527),
+    ),
+    12968 => array(
+        'm_icon' => '<i class="fas fa-sync source fa-spin" aria-hidden="true"></i>',
+        'm_name' => 'SYNC ICONS IF DIFFERENT',
+        'm_desc' => '',
+        'm_parents' => array(6204,4527,12967),
     ),
 );
 
@@ -7556,7 +7568,7 @@ $config['sources__4593'] = array(
         'm_icon' => '<i class="fas fa-divide source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINK PERCENT',
         'm_desc' => '',
-        'm_parents' => array(4593,4592),
+        'm_parents' => array(12822,4593,4592),
     ),
     4230 => array(
         'm_icon' => '<i class="fad fa-link rotate90 source"></i>',
@@ -7741,7 +7753,7 @@ $config['sources__4592'] = array(
         'm_icon' => '<i class="fas fa-divide source" aria-hidden="true"></i>',
         'm_name' => 'PERCENT',
         'm_desc' => '',
-        'm_parents' => array(4593,4592),
+        'm_parents' => array(12822,4593,4592),
     ),
     4230 => array(
         'm_icon' => '<i class="fad fa-link rotate90 source"></i>',

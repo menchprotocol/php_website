@@ -995,9 +995,9 @@ class READ_model extends CI_Model
 
                         array_push($valid_url, $source_profile['read__message']);
 
-                    } elseif($source_profile['read__type'] == 4255 /* TEXT */){
+                    } elseif($source_profile['read__type'] == 4255 /* TEXT */ || $source_profile['read__type'] == 7657 /* PERCENTAGE */){
 
-                        $source_appendix .= '<div class="source-appendix paddingup"><span class="icon-block-xs">'.view_source__icon($source_profile['source__icon']).'</span>' . $source_profile['read__message'] . '</div>';
+                        $source_appendix .= '<div class="source-appendix paddingup" title="'.$source_profile['source__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-xs">'.view_source__icon($source_profile['source__icon']).'</span>' . $source_profile['read__message'] . '</div>';
                         continue;
 
                     } else {
