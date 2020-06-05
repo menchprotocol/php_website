@@ -296,7 +296,7 @@ echo $tab_content;
 
 if(!$read_idea_home){
 
-    if(!$is_home_page){
+    if($is_home_page){
 
         //FEATURED
         echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$sources__11035[13216]['m_name'].':</div>';
