@@ -283,7 +283,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 }
 $tab_pills .= '</ul>';
 
-if($is_home_page){
+if(!$is_home_page){
     echo $tab_pills;
 }
 
