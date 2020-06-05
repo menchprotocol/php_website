@@ -979,7 +979,10 @@ class READ_model extends CI_Model
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'read__down' => $string_references['ref_sources'][0],
-                ), array('read__up'), 0, 0, array('read__type' => 'ASC' /* Hack to get Text first */)) as $source_profile) {
+                ), array('read__up'), 0, 0, array(
+                    'read__type' => 'ASC', /* Text first */
+                    'source__weight' => 'DESC',
+                )) as $source_profile) {
 
                     $message_any++;
 
