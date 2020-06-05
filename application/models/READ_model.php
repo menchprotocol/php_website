@@ -994,7 +994,7 @@ class READ_model extends CI_Model
 
                     } elseif($source_profile['read__type'] == 4255 /* TEXT */){
 
-                        $source_appendix .= '<div class="source-appendix paddingup"><i class="far fa-info-circle"></i> ' . $source_profile['read__message'] . '</div>';
+                        $source_appendix .= '<div class="source-appendix paddingup">'.view_source__icon($source_profile['source__icon']).'&nbsp;' . $source_profile['read__message'] . '</div>';
                         continue;
 
                     } else {
