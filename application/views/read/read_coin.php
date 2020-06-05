@@ -223,7 +223,7 @@ if(!$read_idea_home){
 
             echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
             if($idea_stats['ideas_average']>0 && $idea_stats['ideas_average'] > $chapters){
-                echo '<p class="space-content">Ideas mapped & summarized from '.$idea_stats['sources_count'].' expert source reference'.view__s($idea_stats['sources_count']).':</p>';
+                echo '<p class="space-content">Ideas have been mapped & summarized from these '.$idea_stats['sources_count'].' expert source'.view__s($idea_stats['sources_count']).':</p>';
             }
             echo '<div class="list-group single-color">';
             foreach ($idea_stats['sources_array'] as $source_source) {
