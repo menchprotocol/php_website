@@ -994,7 +994,7 @@ class READ_model extends CI_Model
 
                     } elseif($source_profile['read__type'] == 4255 /* TEXT */){
 
-                        $source_appendix .= '<div class="source-appendix paddingup">'.view_source__icon($source_profile['source__icon']).'&nbsp;' . $source_profile['read__message'] . '</div>';
+                        $source_appendix .= '<div class="source-appendix paddingup"><span class="icon-block-xs">'.view_source__icon($source_profile['source__icon']).'</span>' . $source_profile['read__message'] . '</div>';
                         continue;
 
                     } else {
@@ -1034,7 +1034,7 @@ class READ_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span class="'.$short_name_class.'"><span class="img-block">'.view_source__icon($sources[0]['source__icon']).'</span>&nbsp;<span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></span>', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span class="'.$short_name_class.'"><span class="icon-block-xs img-block">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></span>', $output_body_message);
 
                 }
 
