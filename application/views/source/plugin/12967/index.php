@@ -42,7 +42,7 @@ foreach($this->config->item('sources__12968') as $source__id => $m) {
         '(LENGTH(source__icon) < 1 OR source__icon IS NULL OR source__icon != \''.$m['m_icon'].'\')' => null, //Missing Icon
     ), array('read__down'), 0) as $en) {
         $updated++;
-        echo 'Different @'.$en['source__id'].' ['.$en['source__icon'].'] to ['.$m['m_icon'].']<br />';
+        echo 'Different @'.$en['source__id'].' ['.htmlentities($en['source__icon']).'] to ['.htmlentities($m['m_icon']).']<br />';
         $this->SOURCE_model->update($en['source__id'], array(
             'source__icon' => $m['m_icon'],
         ), true);
