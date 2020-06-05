@@ -152,8 +152,9 @@ echo '<h1 class="block-one" '.( !$recipient_source['source__id'] ? ' style="padd
 //IDEA LAYOUT
 $idea_stats = idea_stats($idea_focus['idea__metadata']);
 $tab_group = 13291;
+$tab_pills = '<ul class="nav nav-pills nav-sm">';
 $tab_content = '';
-echo '<ul class="nav nav-pills nav-sm">';
+
 foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
 
@@ -190,7 +191,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             );
         }
 
-    } elseif($read__type==12413){
+    } elseif($read__type==12413 && !$is_home_page){
 
         //IDEA TREE
         $counter = ( $idea_stats['ideas_average']>$chapters ? $idea_stats['ideas_average'] : $chapters );
@@ -235,7 +236,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
         }
 
-    } elseif($read__type==12864){
+    } elseif($read__type==12864 && !$is_home_page){
 
         //EXPERTS
         $counter = $idea_stats['sources_count'];
@@ -273,14 +274,18 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
     $default_active = in_array($read__type, $this->config->item('sources_id_13300'));
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span> ' ).$m['m_name'].'</a></li>';
+    $tab_pills .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span> ' ).$m['m_name'].'</a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$read__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $this_tab;
     $tab_content .= '</div>';
 
 }
-echo '</ul>';
+$tab_pills .= '</ul>';
+
+if($is_home_page){
+    echo $tab_pills;
+}
 
 //Show All Tab Content:
 echo $tab_content;
