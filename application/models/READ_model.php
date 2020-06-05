@@ -1026,7 +1026,7 @@ class READ_model extends CI_Model
                 //NO LINK so we can maintain focus...
 
                 //if( ($message_any==1 && $message_visual_media==1)){
-                if((!$has_text && $is_current_source) || ($current_mench['x_name']=='read' && $message_any==1 && ($message_visual_media==1 || count($valid_url)==1))){
+                if((!$has_text && $is_current_source) || ($current_mench['x_name']=='read' && (!$has_text || ($message_any==1 && ($message_visual_media==1 || count($valid_url)==1))))){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, '', $output_body_message);
