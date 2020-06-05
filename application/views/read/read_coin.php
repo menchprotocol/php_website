@@ -285,6 +285,14 @@ $tab_pills .= '</ul>';
 
 if(!$is_home_page){
     echo $tab_pills;
+} else {
+    echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$sources__11035[13216]['m_name'].':</div>';
+    echo '<div class="cover-list" style="padding:21px 0 33px 33px;">';
+    //List Featured Ideas:
+    foreach($ideas_next as $key => $next_idea){
+        echo view_idea_cover($next_idea, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
+    }
+    echo '</div>';
 }
 
 //Show All Tab Content:
@@ -294,36 +302,14 @@ echo $tab_content;
 
 
 
-
-
-
-
-
-
-
 if(!$read_idea_home){
 
-    if($is_home_page){
-
-        if($chapters){
-            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$sources__11035[13216]['m_name'].':</div>';
-            echo '<div class="cover-list" style="padding:21px 0 33px 33px;">';
-                //List Featured Ideas:
-                foreach($ideas_next as $key => $next_idea){
-                    echo view_idea_cover($next_idea, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
-                }
-            echo '</div>';
-        }
-
-    } else {
-
+    if(!$is_home_page){
         //GET STARTED
         echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/j'.$idea_focus['idea__id'].'" title="'.$sources__11035[13008]['m_name'].'">'.$sources__11035[13008]['m_icon'].'</a></div>';
-
     }
 
 } else {
-
 
     //PREVIOUSLY UNLOCKED:
     $unlocked_reads = $this->READ_model->fetch(array(
