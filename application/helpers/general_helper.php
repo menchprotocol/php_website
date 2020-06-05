@@ -694,7 +694,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__right' => $idea__id,
-            ideator_filter() => null,
+            //ideator_filter() => null,
         );
 
     } elseif($read__type==6255){
