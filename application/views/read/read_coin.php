@@ -28,14 +28,6 @@ $this->READ_model->create(array(
 ));
 
 
-//MESSAGES
-$idea__messages = $this->READ_model->fetch(array(
-    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-    'read__type' => 4231, //IDEA NOTES Messages
-    'read__right' => $idea_focus['idea__id'],
-), array(), 0, 0, array('read__sort' => 'ASC'));
-
-
 //NEXT IDEAS
 $ideas_next = $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -154,13 +146,154 @@ if ($read_idea_home) {
 echo '<h1 class="block-one" '.( !$recipient_source['source__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_idea_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_idea__title($idea_focus) . '</span></h1>';
 
 
-//MESSAGES
-foreach($idea__messages as $message_ln) {
-    echo $this->READ_model->send_message(
-        $message_ln['read__message'],
-        $recipient_source
-    );
+
+
+
+//IDEA LAYOUT
+$idea_stats = idea_stats($idea_focus['idea__metadata']);
+$tab_group = 13291;
+$tab_content = '';
+echo '<ul class="nav nav-pills nav-sm">';
+foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
+
+
+    //Is this a caret menu?
+    if(in_array(11040 , $m['m_parents'])){
+        echo view_caret($read__type, $m, $idea_focus['idea__id']);
+        continue;
+    }
+
+    //Have Needed Superpowers?
+    $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
+    if(count($superpower_actives) && !superpower_assigned(end($superpower_actives))){
+        continue;
+    }
+
+
+
+    $counter = null; //Assume no counters
+    $this_tab = '';
+
+    if($read__type==4231){
+
+        //MESSAGES
+        $counter = 0;
+        foreach($this->READ_model->fetch(array(
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'read__type' => 4231, //IDEA NOTES Messages
+            'read__right' => $idea_focus['idea__id'],
+        ), array(), 0, 0, array('read__sort' => 'ASC')) as $message_ln) {
+            $counter++;
+            $this_tab .= $this->READ_model->send_message(
+                $message_ln['read__message'],
+                $recipient_source
+            );
+        }
+
+    } elseif($read__type==12413){
+
+        //IDEA TREE
+        $counter = ( $idea_stats['ideas_average']>$chapters ? $idea_stats['ideas_average'] : $chapters );
+
+        if ($counter) {
+
+            //IDEA or TIME difference?
+            if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
+                $this_tab .= '<p class="space-content">';
+                $this_tab .= 'Completion time depends on your choices as you read interactively:<br />';
+                $this_tab .= '<span class="reading-paths">Shortest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_min'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />';
+                $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_average'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_average']).'<br />';
+                $this_tab .= '<span class="reading-paths">Longest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_max'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_max']);
+                $this_tab .= '</p>';
+            }
+
+            //NEXT IDEAS
+            if($chapters){
+                $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'">';
+                foreach($ideas_next as $key => $next_idea){
+                    $this_tab .= view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'idea__title'));
+                }
+                $this_tab .= '</div>';
+            }
+
+            //IDEA PREVIOUS
+            $ideas_previous = $this->READ_model->fetch(array(
+                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+                'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                'read__right' => $idea_focus['idea__id'],
+                'read__left !=' => $this->config->item('featured_idea__id'),
+            ), array('read__left'), 0);
+            if(count($ideas_previous)){
+                $this_tab .= '<p class="space-content" style="margin-top:34px;">'.view_idea__title($idea_focus).' Helps you:</p>';
+                $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'">';
+                foreach($ideas_next as $key => $next_idea){
+                    $this_tab .= view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'idea__title'));
+                }
+                $this_tab .= '</div>';
+            }
+
+        }
+
+    } elseif($read__type==12864){
+
+        //EXPERTS
+        $counter = $idea_stats['sources_count'];
+        if ($counter) {
+
+            if($idea_stats['ideas_average']>0 && $idea_stats['ideas_average'] > $chapters){
+                $this_tab .= '<p class="space-content">Ideas mapped from these '.$idea_stats['sources_count'].' expert source'.view__s($idea_stats['sources_count']).':</p>';
+            }
+            $this_tab .= '<div class="list-group single-color">';
+            foreach ($idea_stats['sources_array'] as $source_source) {
+                $this_tab .= view_source_basic($source_source);
+            }
+
+        }
+
+    } elseif($read__type==7545){
+
+        //CERTIFICATES
+        $counter = 0;
+        $this_tab = 'Under Development';
+
+    } else {
+
+        //Not supported via here:
+        continue;
+
+    }
+
+
+
+    if(!$counter && in_array($read__type, $this->config->item('sources_id_13298'))){
+        //Hide since Zero:
+        continue;
+    }
+
+    $default_active = in_array($read__type, $this->config->item('sources_id_13300'));
+
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span> ' ).$m['m_name'].'</a></li>';
+
+    $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$read__type.( $default_active ? '' : ' hidden ' ).'">';
+    $tab_content .= $this_tab;
+    $tab_content .= '</div>';
+
 }
+echo '</ul>';
+
+//Show All Tab Content:
+echo $tab_content;
+
+
+
+
+
+
+
+
+
+
 
 
 if(!$read_idea_home){
@@ -178,62 +311,6 @@ if(!$read_idea_home){
         }
 
     } else {
-
-        //Generate the Idea Stats
-        $idea_stats = idea_stats($idea_focus['idea__metadata']);
-
-        if ($idea_stats['ideas_average']) {
-
-            echo '<div class="read-topic idea"><a href="javascript:void(0);" onclick="$(\'.contentTabIdeas\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabIdeas"></i><i class="fas fa-minus-circle contentTabIdeas hidden"></i></span>'.number_format($idea_stats['ideas_average'], 0).' Idea'.view__s($idea_stats['ideas_average']).( $idea_stats['duration_average'] ? ' IN '.view_time_hours($idea_stats['duration_average']) : '' ).'</a></div>';
-
-            //BODY
-            echo '<div class="contentTabIdeas hidden" style="padding-bottom:21px;">';
-
-            //IDEA or TIME difference?
-            if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
-                echo '<p class="space-content">';
-                echo 'Completion time depends on your choices as you read interactively:<br />';
-                echo '<span class="reading-paths">Shortest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_min'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />';
-                echo '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_average'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_average']).'<br />';
-                echo '<span class="reading-paths">Longest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_max'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_max']);
-                echo '</p>';
-            }
-
-            //We have Next Ideas?
-            if($chapters > 0){
-                //List Children:
-                echo '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'">';
-                foreach($ideas_next as $key => $next_idea){
-                    echo view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'idea__title'));
-                }
-                echo '</div>';
-            }
-
-            echo '</div>';
-
-        }
-
-
-
-
-        //SOURCE
-        if ($idea_stats['sources_count']) {
-
-            echo '<div class="read-topic source"><a href="javascript:void(0);" onclick="$(\'.contentTabExperts\').toggleClass(\'hidden\')" class="doupper"><span class="icon-block"><i class="fas fa-plus-circle contentTabExperts"></i><i class="fas fa-minus-circle contentTabExperts hidden"></i></span>'.$idea_stats['sources_count'].' Expert Reference'.view__s($idea_stats['sources_count']).'</a></div>';
-
-            echo '<div class="contentTabExperts hidden" style="padding-bottom:21px;">';
-            if($idea_stats['ideas_average']>0 && $idea_stats['ideas_average'] > $chapters){
-                echo '<p class="space-content">Ideas mapped from these '.$idea_stats['sources_count'].' expert source'.view__s($idea_stats['sources_count']).':</p>';
-            }
-            echo '<div class="list-group single-color">';
-            foreach ($idea_stats['sources_array'] as $source_source) {
-                echo view_source_basic($source_source);
-            }
-            echo '</div>';
-            echo '</div>';
-
-        }
-
 
         //GET STARTED
         echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/j'.$idea_focus['idea__id'].'" title="'.$sources__11035[13008]['m_name'].'">'.$sources__11035[13008]['m_icon'].'</a></div>';

@@ -195,7 +195,7 @@ $is_source = source_is_idea_source($source['source__id']);
     //ADMIN MENU
     if(superpower_assigned(12703)){
         $sources__4527 = $this->config->item('sources__4527'); //Platform Memory
-        echo '<ul class="nav nav-tabs nav-sm" style="display: inline-block; border: 0; margin: 0;">';
+        echo '<ul class="nav nav-pills nav-sm" style="display: inline-block; border: 0; margin: 0;">';
         echo view_caret(12887, $sources__4527[12887], $source['source__id']);
         echo '</ul>';
     }

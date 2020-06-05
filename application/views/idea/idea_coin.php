@@ -93,10 +93,10 @@ echo '<div class="doclear">&nbsp;</div>';
 
 
 //IDEA LAYOUT
-$tab_group = 1;
+$tab_group = 11018;
 $tab_content = '';
-echo '<ul class="nav nav-tabs nav-sm">';
-foreach($this->config->item('sources__11018') as $read__type => $m){
+echo '<ul class="nav nav-pills nav-sm">';
+foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
 
     //Is this a caret menu?
