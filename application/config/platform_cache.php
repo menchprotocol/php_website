@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-05 11:03:19 PST
+//Generated 2020-06-05 11:10:59 PST
 
 //IDEATORS:
 $config['sources_id_13202'] = array(4430);
@@ -2958,7 +2958,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.41',
+        'm_desc' => 'v1.411',
         'm_parents' => array(6404),
     ),
     11079 => array(
