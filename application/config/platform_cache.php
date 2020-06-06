@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-06 13:54:14 PST
+//Generated 2020-06-06 14:17:35 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
@@ -21,7 +21,7 @@ $config['sources__13298'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERTS',
+        'm_name' => 'EXPERT SOURCES',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
@@ -61,7 +61,7 @@ $config['sources__13291'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERTS',
+        'm_name' => 'EXPERT SOURCES',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
@@ -95,7 +95,7 @@ $config['sources__13207'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERTS',
+        'm_name' => 'EXPERT SOURCES',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
@@ -592,7 +592,7 @@ $config['sources__12884'] = array(
     ),
 );
 
-//EXPERTS:
+//EXPERT SOURCES:
 $config['sources_id_12864'] = array(3084,2750);
 $config['sources__12864'] = array(
     3084 => array(
@@ -4168,7 +4168,7 @@ $config['sources__4527'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERTS',
+        'm_name' => 'EXPERT SOURCES',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
@@ -5054,7 +5054,7 @@ $config['sources__4983'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERTS',
+        'm_name' => 'EXPERT SOURCES',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
