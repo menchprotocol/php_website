@@ -175,10 +175,6 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
     $counter = null; //Assume no counters
     $this_tab = '';
 
-    if(strlen($m['m_desc'])){
-        $this_tab .= '<p class="space-content">'.$m['m_desc'].'</p>';
-    }
-
     if($read__type==4231){
 
         //MESSAGES
@@ -209,7 +205,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
             //IDEA or TIME difference?
             if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
-                $this_tab .= '<p class="space-content" style="padding-top:21px;">';
+                $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
                 $this_tab .= '<span class="reading-paths">Shortest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_min'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />';
                 $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_average'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_average']).'<br />';
                 $this_tab .= '<span class="reading-paths">Longest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_max'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_max']);
@@ -258,7 +254,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
         }
 
-    } elseif($read__type==7545){
+    } elseif($read__type==7545 && !$is_home_page){
 
         //CERTIFICATES
         $counter = $idea_stats['certificate_count'];
@@ -292,6 +288,9 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
     $tab_pills .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span>' ).'<span class="show-active-max">&nbsp;'.$m['m_name'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$read__type.( $default_active ? '' : ' hidden ' ).'">';
+    if(strlen($m['m_desc'])){
+        $tab_content .= '<p class="space-content">'.$m['m_desc'].'</p>';
+    }
     $tab_content .= $this_tab;
     $tab_content .= '</div>';
 
