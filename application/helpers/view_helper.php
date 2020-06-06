@@ -1350,12 +1350,6 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
     //TOP LEFT
     $ui .= '<span class="media-info top-left">';
     $ui .= '<span class="icon-block-xs">'.$sources__13291[12413]['m_icon'].'</span>'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span>';
-    if($idea_stats['sources_count'] > 0){
-        $ui .= '<br /><span class="icon-block-xs">'.$sources__13291[12864]['m_icon'].'</span>'.$idea_stats['sources_count'].'</span>';
-    }
-    if($idea_stats['certificate_count'] > 0){
-        $ui .= '<br /><span class="icon-block-xs">'.$sources__13291[7545]['m_icon'].'</span>'.$idea_stats['certificate_count'].'</span>';
-    }
     $ui .= '</span>';
 
     //TOP RIGHT
