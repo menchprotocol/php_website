@@ -262,6 +262,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             $this_tab .= '<p class="space-content">Completing may issue the following certificates:</p>';
             $this_tab .= '<div class="list-group single-color">';
             foreach ($idea_stats['certificate_array'] as $source_source) {
+                $source_source['read__message'] = ''; //Remove for this
                 $this_tab .= view_source_basic($source_source);
             }
             $this_tab .= '</div>';
