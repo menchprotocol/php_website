@@ -209,7 +209,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             }
 
             //NEXT IDEAS
-            if($chapters){
+            if(!$in_my_reads && $chapters){
                 $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'" style="margin-bottom:34px;">';
                 foreach($ideas_next as $key => $next_idea){
                     $this_tab .= view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'idea__title'));
