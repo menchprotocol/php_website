@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-06 13:53:04 PST
+//Generated 2020-06-06 13:54:14 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
@@ -382,7 +382,7 @@ $config['sources_id_12969'] = array(4235,7495);
 $config['sources__12969'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'GET STARTED [FREE]',
+        'm_name' => 'GET STARTED',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
@@ -2244,7 +2244,7 @@ $config['sources_id_12227'] = array(4235,12336,12334,7495,6143,7492,6140,6157,74
 $config['sources__12227'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'GET STARTED [FREE]',
+        'm_name' => 'GET STARTED',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
@@ -3317,7 +3317,7 @@ $config['sources__11035'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'GET STARTED [FREE]',
+        'm_name' => 'GET STARTED',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
@@ -5624,7 +5624,7 @@ $config['sources__5967'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'GET STARTED [FREE]',
+        'm_name' => 'GET STARTED',
         'm_desc' => '1',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
@@ -6478,7 +6478,7 @@ $config['sources__4755'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'GET STARTED [FREE]',
+        'm_name' => 'GET STARTED',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
@@ -6969,7 +6969,7 @@ $config['sources__4593'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'GET STARTED [FREE]',
+        'm_name' => 'GET STARTED',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
