@@ -462,9 +462,9 @@ class Read extends CI_Controller
         //Add this Idea to their Reads If not already there:
         $idea__id_added = $idea__id;
         $success_message = null;
-        $read_idea_home = $this->READ_model->idea_home($idea__id, $session_source);
+        $in_my_reads = $this->READ_model->idea_home($idea__id, $session_source);
 
-        if(!$read_idea_home){
+        if(!$in_my_reads){
             $idea__id_added = $this->READ_model->start($session_source['source__id'], $idea__id);
             if($idea__id_added){
                 if($idea__id_added == $idea__id){

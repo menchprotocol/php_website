@@ -1700,28 +1700,28 @@ class READ_model extends CI_Model
 
     function idea_home($idea__id, $recipient_source){
 
-        $read_idea_home = false;
+        $in_my_reads = false;
 
         if($recipient_source['source__id'] > 0){
 
             //Fetch entire Reads:
             $player_read_ids = $this->READ_model->ids($recipient_source['source__id']);
-            $read_idea_home = in_array($idea__id, $player_read_ids);
+            $in_my_reads = in_array($idea__id, $player_read_ids);
 
-            if(!$read_idea_home){
+            if(!$in_my_reads){
                 //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
                 foreach($this->IDEA_model->recursive_parents($idea__id) as $grand_parent_ids) {
                     //Does this parent and its grandparents have an intersection with the user ideas?
                     if (array_intersect($grand_parent_ids, $player_read_ids)) {
                         //Idea is part of their Reads:
-                        $read_idea_home = true;
+                        $in_my_reads = true;
                         break;
                     }
                 }
             }
         }
 
-        return $read_idea_home;
+        return $in_my_reads;
 
     }
 

@@ -43,10 +43,10 @@ $common_prefix = idea_calc_common_prefix($ideas_next, 'idea__title');
 
 //ALREADY IN READS?
 $completion_rate['completion_percentage'] = 0;
-$read_idea_home = $this->READ_model->idea_home($idea_focus['idea__id'], $recipient_source);
+$in_my_reads = ( $recipient_source ? $this->READ_model->idea_home($idea_focus['idea__id'], $recipient_source) : false );
 
 
-if ($read_idea_home) {
+if ($in_my_reads) {
 
     // % DONE
     $completion_rate = $this->READ_model->completion_progress($recipient_source['source__id'], $idea_focus);
@@ -294,7 +294,7 @@ echo $tab_content;
 
 
 
-if(!$read_idea_home){
+if(!$in_my_reads){
 
     if($is_home_page){
 
