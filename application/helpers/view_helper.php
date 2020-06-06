@@ -1329,6 +1329,7 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
+    $sources__13291 = $CI->config->item('sources__13291');
     $recipient_source = superpower_assigned();
     $idea_stats = idea_stats($idea['idea__metadata']);
 
@@ -1347,7 +1348,15 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
     $ui .= idea_fetch_cover($idea['idea__id'], true);
 
     //TOP LEFT
-    $ui .= '<span class="media-info top-left hideIfEmpty"><i class="fas fa-circle idea"></i><span style="padding-left: 2px;">'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span></span>';
+    $ui .= '<span class="media-info top-left hideIfEmpty">';
+    $ui .= '<span class="icon-block-sm">'.$sources__13291[12413]['m_icon'].'</span>'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span>';
+    if($idea_stats['sources_count'] > 0){
+        $ui .= '<span class="icon-block-sm">'.$sources__13291[12864]['m_icon'].'</span>'.$idea_stats['sources_count'].'</span>';
+    }
+    if($idea_stats['certificate_count'] > 0){
+        $ui .= '<span class="icon-block-sm">'.$sources__13291[7545]['m_icon'].'</span>'.$idea_stats['certificate_count'].'</span>';
+    }
+    $ui .= '</span>';
 
     //TOP RIGHT
     if($idea_stats['duration_average']){
