@@ -206,7 +206,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             //IDEA or TIME difference?
             if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
                 $this_tab .= '<p class="space-content">';
-                $this_tab .= 'The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:';
+                $this_tab .= 'The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:<br />';
                 $this_tab .= '<span class="reading-paths" style="padding-top:21px;">Shortest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_min'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />';
                 $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_average'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_average']).'<br />';
                 $this_tab .= '<span class="reading-paths">Longest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_max'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_max']);
