@@ -191,9 +191,9 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             );
         }
 
-    } elseif($read__type==12413 && !$is_home_page){
+    } elseif($read__type==12273 && !$is_home_page){
 
-        //IDEA TREE
+        //IDEAS
         $counter = ( $idea_stats['ideas_average']>$chapters ? $idea_stats['ideas_average'] : $chapters );
 
         if ($counter) {
@@ -256,8 +256,17 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
     } elseif($read__type==7545){
 
         //CERTIFICATES
-        $counter = 0;
-        $this_tab = 'Under Development';
+        $counter = $idea_stats['certificate_count'];
+        if ($counter) {
+
+            $this_tab .= '<p class="space-content">Completing may issue the following certificates:</p>';
+            $this_tab .= '<div class="list-group single-color">';
+            foreach ($idea_stats['certificate_array'] as $source_source) {
+                $this_tab .= view_source_basic($source_source);
+            }
+            $this_tab .= '</div>';
+
+        }
 
     } else {
 

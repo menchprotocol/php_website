@@ -868,6 +868,7 @@ function idea_stats($idea__metadata){
     //Calculates average based on metadata:
     $metadata = unserialize($idea__metadata);
     $sources_array = array_merge(( isset($metadata['idea___experts']) ? $metadata['idea___experts'] : array() ), ( isset($metadata['idea___content']) ? $metadata['idea___content'] : array() ));
+    $certificate_array = ( isset($metadata['idea___certificates']) ? $metadata['idea___certificates'] : array() );
     usort($sources_array, 'sortByWeight');
 
     //Return stats:
@@ -880,6 +881,8 @@ function idea_stats($idea__metadata){
         'duration_average' => ( isset($metadata['idea___max_seconds']) ? round(($metadata['idea___min_seconds']+$metadata['idea___max_seconds'])/2) : 0 ),
         'sources_count' => count($sources_array),
         'sources_array' => $sources_array,
+        'certificate_count' => count($certificate_array),
+        'certificate_array' => $certificate_array,
     );
 
 }

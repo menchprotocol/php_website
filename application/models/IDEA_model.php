@@ -915,6 +915,7 @@ class IDEA_model extends CI_Model
             '__idea___max_seconds' => $idea['idea__duration'],
             '__idea___experts' => array(),
             '__idea___content' => array(),
+            '__idea___certificates' => array(),
             '__idea___ids' => array($idea['idea__id']), //Keeps Track of the IDs scanned here
         );
 
@@ -942,6 +943,19 @@ class IDEA_model extends CI_Model
                 if (!isset($metadata_this['__idea___experts'][$source__id])) {
                     $metadata_this['__idea___experts'][$source__id] = $source_expert;
                 }
+            }
+        }
+
+
+        //AGGREGATE CERTIFICATES
+        foreach($this->READ_model->fetch(array(
+            'read__right' => $idea['idea__id'],
+            'read__type' => 7545, //CERTIFICATES
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+        ), array('read__up'), 0) as $source) {
+            if (!isset($metadata_this['__idea___certificates'][$source['source__id']])) {
+                $metadata_this['__idea___certificates'][$source['source__id']] = $source;
             }
         }
 
@@ -1024,10 +1038,17 @@ class IDEA_model extends CI_Model
                 }
             }
 
-            //EXPERT PEOPLE/ORGANIZATIONS
+            //EXPERT SOURCES
             foreach($metadata_recursion['__idea___experts'] as $source__id => $source_expert) {
                 if (!isset($metadata_this['__idea___experts'][$source__id])) {
                     $metadata_this['__idea___experts'][$source__id] = $source_expert;
+                }
+            }
+
+            //CERTIFICATES
+            foreach($metadata_recursion['__idea___certificates'] as $source__id => $source_certificate) {
+                if (!isset($metadata_this['__idea___certificates'][$source__id])) {
+                    $metadata_this['__idea___certificates'][$source__id] = $source_certificate;
                 }
             }
 
@@ -1062,6 +1083,7 @@ class IDEA_model extends CI_Model
             'idea___max_seconds' => intval($metadata_this['__idea___max_seconds']),
             'idea___experts' => $metadata_this['__idea___experts'],
             'idea___content' => $metadata_this['__idea___content'],
+            'idea___certificates' => $metadata_this['__idea___certificates'],
         ));
 
         //Return data:
