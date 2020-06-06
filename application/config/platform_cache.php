@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-06 14:33:28 PST
+//Generated 2020-06-06 14:49:03 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
@@ -54,7 +54,7 @@ $config['sources__13291'] = array(
         'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
     12413 => array(
-        'm_icon' => '<i class="fas fa-sitemap idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TREE',
         'm_desc' => 'The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way: ',
         'm_parents' => array(13291,4527),
@@ -4317,7 +4317,7 @@ $config['sources__4527'] = array(
         'm_parents' => array(4527,13207),
     ),
     12413 => array(
-        'm_icon' => '<i class="fas fa-sitemap idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
         'm_parents' => array(13291,4527),
