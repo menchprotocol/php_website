@@ -188,7 +188,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea has no messages</div>';
         }
 
-    } elseif($read__type==12273 && !$is_home_page){
+    } elseif($read__type==12413 && !$is_home_page){
 
         //IDEAS
         $counter = ( $idea_stats['ideas_average']>$chapters ? $idea_stats['ideas_average'] : $chapters );

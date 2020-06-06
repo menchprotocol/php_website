@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-06 14:24:50 PST
+//Generated 2020-06-06 14:33:28 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
@@ -29,7 +29,7 @@ $config['sources__13298'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
+        'm_parents' => array(13298,4535,12500,12571,12467,12321,11089,12228,4527),
     ),
 );
 
@@ -45,7 +45,7 @@ $config['sources__13300'] = array(
 );
 
 //READ TABS:
-$config['sources_id_13291'] = array(4231,12273,12864,7545);
+$config['sources_id_13291'] = array(4231,12413,12864,7545);
 $config['sources__13291'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
@@ -53,11 +53,11 @@ $config['sources__13291'] = array(
         'm_desc' => '',
         'm_parents' => array(13300,13294,13291,7524,12273,12359,12322,10593,4986,4603,4593,4485),
     ),
-    12273 => array(
-        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEAS',
-        'm_desc' => 'The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:',
-        'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
+    12413 => array(
+        'm_icon' => '<i class="fas fa-sitemap idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA TREE',
+        'm_desc' => 'The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way: ',
+        'm_parents' => array(13291,4527),
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
@@ -884,7 +884,7 @@ $config['sources__12500'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
+        'm_parents' => array(13298,4535,12500,12571,12467,12321,11089,12228,4527),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
@@ -948,7 +948,7 @@ $config['sources__12467'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
+        'm_parents' => array(13298,4535,12500,12571,12467,12321,11089,12228,4527),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
@@ -1120,7 +1120,7 @@ $config['sources__12571'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
+        'm_parents' => array(13298,4535,12500,12571,12467,12321,11089,12228,4527),
     ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
@@ -1223,7 +1223,7 @@ $config['sources__12420'] = array(
 );
 
 //IDEA TREE:
-$config['sources_id_12413'] = array(6170,6169,11020,11019,13177);
+$config['sources_id_12413'] = array(6170,6169,13177,11020,11019);
 $config['sources__12413'] = array(
     6170 => array(
         'm_icon' => '<i class="fas fa-sitemap idea"></i>',
@@ -1237,6 +1237,12 @@ $config['sources__12413'] = array(
         'm_desc' => '',
         'm_parents' => array(12413,6232,6214,6159),
     ),
+    13177 => array(
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
+        'm_name' => 'IDEA TREE RANGE',
+        'm_desc' => '',
+        'm_parents' => array(12413),
+    ),
     11020 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'NEXT IDEAS',
@@ -1248,12 +1254,6 @@ $config['sources__12413'] = array(
         'm_name' => 'PREVIOUS IDEAS',
         'm_desc' => '',
         'm_parents' => array(13294,12413,10990),
-    ),
-    13177 => array(
-        'm_icon' => '<i class="fas fa-weight idea"></i>',
-        'm_name' => 'TREE RANGE',
-        'm_desc' => '',
-        'm_parents' => array(12413),
     ),
 );
 
@@ -1525,7 +1525,7 @@ $config['sources__12321'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
+        'm_parents' => array(13298,4535,12500,12571,12467,12321,11089,12228,4527),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
@@ -2529,7 +2529,7 @@ $config['sources__11089'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
+        'm_parents' => array(13298,4535,12500,12571,12467,12321,11089,12228,4527),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
@@ -4248,7 +4248,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
+        'm_parents' => array(13298,4535,12500,12571,12467,12321,11089,12228,4527),
     ),
     4983 => array(
         'm_icon' => '<i class="fas fa-user-edit source" aria-hidden="true"></i>',
@@ -4320,7 +4320,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-sitemap idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
-        'm_parents' => array(4527),
+        'm_parents' => array(13291,4527),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-shapes idea" aria-hidden="true"></i>',
