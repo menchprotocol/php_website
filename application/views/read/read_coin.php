@@ -228,8 +228,8 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             if(count($ideas_previous)){
                 $this_tab .= '<p class="space-content" style="margin-top:34px;">'.view_idea__title($idea_focus).' Helps you:</p>';
                 $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'">';
-                foreach($ideas_next as $key => $next_idea){
-                    $this_tab .= view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'idea__title'));
+                foreach($ideas_previous as $key => $previous_idea){
+                    $this_tab .= view_idea_read($previous_idea);
                 }
                 $this_tab .= '</div>';
             }
