@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-05 17:22:57 PST
+//Generated 2020-06-05 17:36:53 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
@@ -20,7 +20,7 @@ $config['sources__13298'] = array(
         'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,12321,7551,4593,4485),
     ),
     12864 => array(
-        'm_icon' => '<i class="fas fa-star-shooting source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
@@ -60,7 +60,7 @@ $config['sources__13291'] = array(
         'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
     ),
     12864 => array(
-        'm_icon' => '<i class="fas fa-star-shooting source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
@@ -94,7 +94,7 @@ $config['sources__13207'] = array(
         'm_parents' => array(4527,13207),
     ),
     12864 => array(
-        'm_icon' => '<i class="fas fa-star-shooting source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
@@ -103,7 +103,7 @@ $config['sources__13207'] = array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
-        'm_parents' => array(12864,13207,11054,4600,4527),
+        'm_parents' => array(13207,11054,4600,4527),
     ),
 );
 
@@ -593,14 +593,8 @@ $config['sources__12884'] = array(
 );
 
 //EXPERTS:
-$config['sources_id_12864'] = array(3000,3084,2750);
+$config['sources_id_12864'] = array(3084,2750);
 $config['sources__12864'] = array(
-    3000 => array(
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
-        'm_name' => 'CONTENT',
-        'm_desc' => '',
-        'm_parents' => array(12864,13207,11054,4600,4527),
-    ),
     3084 => array(
         'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
         'm_name' => 'PERSON',
@@ -3129,7 +3123,7 @@ $config['sources__11054'] = array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
-        'm_parents' => array(12864,13207,11054,4600,4527),
+        'm_parents' => array(13207,11054,4600,4527),
     ),
     4486 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
@@ -4170,10 +4164,10 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
-        'm_parents' => array(12864,13207,11054,4600,4527),
+        'm_parents' => array(13207,11054,4600,4527),
     ),
     12864 => array(
-        'm_icon' => '<i class="fas fa-star-shooting source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
@@ -5059,7 +5053,7 @@ $config['sources__4983'] = array(
         'm_parents' => array(12968,12864,4983,11035,1278),
     ),
     12864 => array(
-        'm_icon' => '<i class="fas fa-star-shooting source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
