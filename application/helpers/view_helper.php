@@ -1349,7 +1349,7 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
 
     //TOP LEFT
     $ui .= '<span class="media-info top-left">';
-    $ui .= '<span class="icon-block-xs">'.$sources__13291[12413]['m_icon'].'</span>'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span>';
+    $ui .= $sources__13291[12413]['m_icon'].'<span style="padding-left: 2px;">'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span>';
     $ui .= '</span>';
 
     //TOP RIGHT
