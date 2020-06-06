@@ -249,6 +249,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             foreach ($idea_stats['sources_array'] as $source_source) {
                 $this_tab .= view_source_basic($source_source);
             }
+            $this_tab .= '</div>';
 
         }
 
@@ -309,7 +310,6 @@ if(!$in_my_reads){
     } else {
 
         //GET STARTED
-        echo '<div class="doclear">&nbsp;</div>';
         echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/j'.$idea_focus['idea__id'].'" title="'.$sources__11035[13008]['m_name'].'">'.$sources__11035[13008]['m_icon'].'</a></div>';
 
     }
