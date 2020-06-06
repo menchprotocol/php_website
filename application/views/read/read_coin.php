@@ -309,6 +309,7 @@ if(!$read_idea_home){
     } else {
 
         //GET STARTED
+        echo '<div class="doclear">&nbsp;</div>';
         echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/j'.$idea_focus['idea__id'].'" title="'.$sources__11035[13008]['m_name'].'">'.$sources__11035[13008]['m_icon'].'</a></div>';
 
     }
