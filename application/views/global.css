@@ -1547,8 +1547,11 @@ label {
     }
 
     .show-max{display: none !important;}
+    .show-active-max {display: none !important;}
+    .active .show-active-max {display: inline-block !important;}
     .show-min{display: block !important;}
 }
+
 
 .itemidea.list-group-item {
     padding:10px 0;

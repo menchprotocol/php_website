@@ -290,7 +290,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
     $default_active = in_array($read__type, $this->config->item('sources_id_13300'));
 
-    $tab_pills .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span>' ).'&nbsp;'.$m['m_name'].'</a></li>';
+    $tab_pills .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span>' ).'<span class="show-active-max">&nbsp;'.$m['m_name'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$read__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $this_tab;
