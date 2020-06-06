@@ -142,7 +142,7 @@ if ($in_my_reads) {
 
 
 
-//READ TITLE
+//IDEA TITLE
 echo '<h1 class="block-one" '.( !$recipient_source['source__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_idea_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_idea__title($idea_focus) . '</span></h1>';
 
 
@@ -325,7 +325,7 @@ if(!$in_my_reads){
     } else {
 
         //GET STARTED
-        echo '<div class="inline-block margin-top-down read-add pull-right"><a class="btn btn-read btn-circle" href="/j'.$idea_focus['idea__id'].'" title="'.$sources__11035[13008]['m_name'].'">'.$sources__11035[13008]['m_icon'].'</a></div>';
+        echo '<div class="margin-top-down read-add"><a class="btn btn-read" href="/j'.$idea_focus['idea__id'].'">'.$sources__11035[13008]['m_icon'].' '.$sources__11035[13008]['m_name'].'</a></div>';
 
     }
 
