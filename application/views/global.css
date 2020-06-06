@@ -472,7 +472,7 @@ img.no-radius {
 .btn-source i, .btn-read i, .btn-idea i, .btn-circle i { color: #000000 !important; }
 
 .en-status-filter.active .source, .en-status-filter.active .read, .en-status-filter.active .idea {
-    color: #000000 !important;
+    color: #FFFFFF !important;
 }
 
 .table-condense{

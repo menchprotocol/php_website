@@ -325,7 +325,7 @@ if(!$in_my_reads){
     } else {
 
         //GET STARTED
-        echo '<div class="margin-top-down read-add"><a class="btn btn-read" href="/j'.$idea_focus['idea__id'].'">'.$sources__11035[13008]['m_icon'].' '.$sources__11035[13008]['m_name'].'</a></div>';
+        echo '<div class="margin-top-down read-add"><a class="btn btn-read" href="/j'.$idea_focus['idea__id'].'">'.$sources__11035[4235]['m_icon'].' '.$sources__11035[4235]['m_name'].'</a></div>';
 
     }
 

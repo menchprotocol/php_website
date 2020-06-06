@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-05 17:36:53 PST
+//Generated 2020-06-06 13:53:04 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
@@ -378,19 +378,19 @@ $config['sources__13004'] = array(
 );
 
 //MY READS:
-$config['sources_id_12969'] = array(7495,4235);
+$config['sources_id_12969'] = array(4235,7495);
 $config['sources__12969'] = array(
+    4235 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'GET STARTED [FREE]',
+        'm_desc' => '',
+        'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
+    ),
     7495 => array(
         'm_icon' => '<i class="fad fa-megaphone read" aria-hidden="true"></i>',
-        'm_name' => 'RECOMMEND',
+        'm_name' => 'READ RECOMMEND',
         'm_desc' => '',
         'm_parents' => array(12969,12227,4755,4593),
-    ),
-    4235 => array(
-        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
-        'm_name' => 'START',
-        'm_desc' => '',
-        'm_parents' => array(12969,12227,5967,4755,4593),
     ),
 );
 
@@ -2240,8 +2240,14 @@ $config['sources__12229'] = array(
 );
 
 //READ PROGRESS:
-$config['sources_id_12227'] = array(12336,12334,7495,6143,4235,7492,6140,6157,7489,12117,4559,6144,7485,7486,6997);
+$config['sources_id_12227'] = array(4235,12336,12334,7495,6143,7492,6140,6157,7489,12117,4559,6144,7485,7486,6997);
 $config['sources__12227'] = array(
+    4235 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'GET STARTED [FREE]',
+        'm_desc' => '',
+        'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
+    ),
     12336 => array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
         'm_name' => 'READ ANSWER ONE LINK',
@@ -2265,12 +2271,6 @@ $config['sources__12227'] = array(
         'm_name' => 'READ SKIPPED',
         'm_desc' => '',
         'm_parents' => array(12229,12227,6146,4755,4593),
-    ),
-    4235 => array(
-        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ START',
-        'm_desc' => '',
-        'm_parents' => array(12969,12227,5967,4755,4593),
     ),
     7492 => array(
         'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
@@ -3033,7 +3033,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.4121',
+        'm_desc' => 'v1.413',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -3271,7 +3271,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(11068,6225,12749,3084,13216,12899,12707,12991,12211,4535,7291,4341,4430,13023,12205,10573,12969,6287,12750,12896,7256,4269,4536,4997,12275,13007,13008,10957,7540);
+$config['sources_id_11035'] = array(11068,6225,12749,3084,13216,12899,12707,4235,12991,12211,4535,7291,4341,4430,13023,12205,10573,12969,6287,12750,12896,7256,4269,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3314,6 +3314,12 @@ $config['sources__11035'] = array(
         'm_name' => 'FILTER INTERACTIONS',
         'm_desc' => '',
         'm_parents' => array(11035,12701),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'GET STARTED [FREE]',
+        'm_desc' => '',
+        'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
     12991 => array(
         'm_icon' => '<i class="fas fa-step-backward read" aria-hidden="true"></i>',
@@ -3428,12 +3434,6 @@ $config['sources__11035'] = array(
         'm_name' => 'SOURCE SORT RESET TO ALPHABETICAL',
         'm_desc' => '',
         'm_parents' => array(11035,4593),
-    ),
-    13008 => array(
-        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
-        'm_name' => 'START READING',
-        'm_desc' => '',
-        'm_parents' => array(13289,11035),
     ),
     10957 => array(
         'm_icon' => '<i class="fas fa-bolt" aria-hidden="true"></i>',
@@ -5614,13 +5614,19 @@ $config['sources__7585'] = array(
 );
 
 //READ CARBON COPY:
-$config['sources_id_5967'] = array(12419,12773,4250,12453,12450,4235,6224,4246,7504);
+$config['sources_id_5967'] = array(12419,4235,12773,4250,12453,12450,6224,4246,7504);
 $config['sources__5967'] = array(
     12419 => array(
         'm_icon' => '<i class="fas fa-comments-alt idea" aria-hidden="true"></i>',
         'm_name' => 'COMMENTS',
         'm_desc' => '1',
         'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,11089,4593,4485),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'GET STARTED [FREE]',
+        'm_desc' => '1',
+        'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
     12773 => array(
         'm_icon' => '<i class="far fa-plus-circle idea"></i>',
@@ -5645,12 +5651,6 @@ $config['sources__5967'] = array(
         'm_name' => 'IDEA SOURCE REQUEST',
         'm_desc' => '1',
         'm_parents' => array(4593,4755,5967),
-    ),
-    4235 => array(
-        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ START',
-        'm_desc' => '1',
-        'm_parents' => array(12969,12227,5967,4755,4593),
     ),
     6224 => array(
         'm_icon' => '<i class="fad fa-sync read"></i>',
@@ -6462,7 +6462,7 @@ $config['sources__4997'] = array(
 );
 
 //PRIVATE READ:
-$config['sources_id_4755'] = array(6415,3288,12773,12453,10681,12450,4527,11054,6232,3286,4783,4755,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,4235,7492,4552,6140,6224,12328,7578,4553,7562,12896,7563,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,12489,12906);
+$config['sources_id_4755'] = array(6415,3288,4235,12773,12453,10681,12450,4527,11054,6232,3286,4783,4755,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,6224,12328,7578,4553,7562,12896,7563,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,12489,12906);
 $config['sources__4755'] = array(
     6415 => array(
         'm_icon' => '<i class="fas fa-trash-alt read" aria-hidden="true"></i>',
@@ -6475,6 +6475,12 @@ $config['sources__4755'] = array(
         'm_name' => 'EMAIL',
         'm_desc' => '',
         'm_parents' => array(6404,13023,4269,12103,6225,4755),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'GET STARTED [FREE]',
+        'm_desc' => '',
+        'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
     12773 => array(
         'm_icon' => '<i class="far fa-plus-circle idea"></i>',
@@ -6806,12 +6812,6 @@ $config['sources__4755'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,6146,4755,4593),
     ),
-    4235 => array(
-        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ START',
-        'm_desc' => '',
-        'm_parents' => array(12969,12227,5967,4755,4593),
-    ),
     7492 => array(
         'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
         'm_name' => 'READ TERMINATE',
@@ -6947,7 +6947,7 @@ $config['sources__4755'] = array(
 );
 
 //READ TYPE:
-$config['sources_id_4593'] = array(7545,6415,12419,12773,4250,6182,12453,4229,4228,10686,10663,10664,12612,12611,12592,12591,6226,10676,10678,10679,10677,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,10573,5001,10625,5943,12318,5865,4999,4998,5000,5982,5981,11956,5003,12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,4235,7492,4552,6140,6224,12328,7578,4553,7562,12896,7563,4251,6157,7489,4246,6178,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,4559,13006,13007,10654,6144,5007,7485,7486,6997,12489,4994,12906);
+$config['sources_id_4593'] = array(7545,6415,12419,4235,12773,4250,6182,12453,4229,4228,10686,10663,10664,12612,12611,12592,12591,6226,10676,10678,10679,10677,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,10573,5001,10625,5943,12318,5865,4999,4998,5000,5982,5981,11956,5003,12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,6224,12328,7578,4553,7562,12896,7563,4251,6157,7489,4246,6178,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,4559,13006,13007,10654,6144,5007,7485,7486,6997,12489,4994,12906);
 $config['sources__4593'] = array(
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
@@ -6966,6 +6966,12 @@ $config['sources__4593'] = array(
         'm_name' => 'COMMENTS',
         'm_desc' => '',
         'm_parents' => array(10984,11018,12359,5967,10593,12322,4986,11089,4593,4485),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fas fa-play read" aria-hidden="true"></i>',
+        'm_name' => 'GET STARTED [FREE]',
+        'm_desc' => '',
+        'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
     12773 => array(
         'm_icon' => '<i class="far fa-plus-circle idea"></i>',
@@ -7512,12 +7518,6 @@ $config['sources__4593'] = array(
         'm_name' => 'READ SKIPPED',
         'm_desc' => 'Logged every time a student consciously skips an intent and it\'s recursive children.',
         'm_parents' => array(12229,12227,6146,4755,4593),
-    ),
-    4235 => array(
-        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ START',
-        'm_desc' => '',
-        'm_parents' => array(12969,12227,5967,4755,4593),
     ),
     7492 => array(
         'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
