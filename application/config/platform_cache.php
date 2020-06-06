@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-06 14:17:35 PST
+//Generated 2020-06-06 14:24:50 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
@@ -56,19 +56,19 @@ $config['sources__13291'] = array(
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
-        'm_desc' => '',
+        'm_desc' => 'The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:',
         'm_parents' => array(13298,13291,4535,12500,12571,12467,12321,11089,12228,4527),
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT SOURCES',
-        'm_desc' => '',
+        'm_desc' => 'Ideas mapped from these expert sources:',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
-        'm_desc' => '',
+        'm_desc' => 'Completion may earn you any of the following certificates:',
         'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,12321,7551,4593,4485),
     ),
 );

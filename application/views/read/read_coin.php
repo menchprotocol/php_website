@@ -175,6 +175,10 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
     $counter = null; //Assume no counters
     $this_tab = '';
 
+    if(strlen($m['m_desc'])){
+        $this_tab .= '<p class="space-content">'.$m['m_desc'].'</p>';
+    }
+
     if($read__type==4231){
 
         //MESSAGES
@@ -205,9 +209,8 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
             //IDEA or TIME difference?
             if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
-                $this_tab .= '<p class="space-content">';
-                $this_tab .= 'The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:<br />';
-                $this_tab .= '<span class="reading-paths" style="padding-top:21px;">Shortest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_min'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />';
+                $this_tab .= '<p class="space-content" style="padding-top:21px;">';
+                $this_tab .= '<span class="reading-paths">Shortest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_min'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_min']).'<br />';
                 $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_average'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_average']).'<br />';
                 $this_tab .= '<span class="reading-paths">Longest:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_max'].'</span> '.$sources__12467[12273]['m_name'].' in '.view_time_hours($idea_stats['duration_max']);
                 $this_tab .= '</p>';
@@ -247,9 +250,6 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         $counter = $idea_stats['sources_count'];
         if ($counter) {
 
-            if($idea_stats['ideas_average']>0 && $idea_stats['ideas_average'] > $chapters){
-                $this_tab .= '<p class="space-content">Ideas mapped from these '.$idea_stats['sources_count'].' expert source'.view__s($idea_stats['sources_count']).':</p>';
-            }
             $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
             foreach ($idea_stats['sources_array'] as $source_source) {
                 $this_tab .= view_source_basic($source_source);
@@ -264,7 +264,6 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         $counter = $idea_stats['certificate_count'];
         if ($counter) {
 
-            $this_tab .= '<p class="space-content">Completing may issue the following certificates:</p>';
             $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
             foreach ($idea_stats['certificate_array'] as $source_source) {
                 $source_source['read__message'] = ''; //Remove for this
