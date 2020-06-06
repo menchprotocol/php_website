@@ -210,7 +210,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
             //NEXT IDEAS
             if($chapters){
-                $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'">';
+                $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'" style="margin-bottom:34px;">';
                 foreach($ideas_next as $key => $next_idea){
                     $this_tab .= view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'idea__title'));
                 }
@@ -226,8 +226,8 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
                 'read__left !=' => $this->config->item('featured_idea__id'),
             ), array('read__left'), 0);
             if(count($ideas_previous)){
-                $this_tab .= '<p class="space-content" style="margin-top:34px;">'.view_idea__title($idea_focus).' Helps you:</p>';
-                $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'">';
+                $this_tab .= '<p class="space-content">'.view_idea__title($idea_focus).' Helps you:</p>';
+                $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'" style="margin-bottom:34px;">';
                 foreach($ideas_previous as $key => $previous_idea){
                     $this_tab .= view_idea_read($previous_idea);
                 }
@@ -245,7 +245,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             if($idea_stats['ideas_average']>0 && $idea_stats['ideas_average'] > $chapters){
                 $this_tab .= '<p class="space-content">Ideas mapped from these '.$idea_stats['sources_count'].' expert source'.view__s($idea_stats['sources_count']).':</p>';
             }
-            $this_tab .= '<div class="list-group single-color">';
+            $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
             foreach ($idea_stats['sources_array'] as $source_source) {
                 $this_tab .= view_source_basic($source_source);
             }
@@ -260,7 +260,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         if ($counter) {
 
             $this_tab .= '<p class="space-content">Completing may issue the following certificates:</p>';
-            $this_tab .= '<div class="list-group single-color">';
+            $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
             foreach ($idea_stats['certificate_array'] as $source_source) {
                 $source_source['read__message'] = ''; //Remove for this
                 $this_tab .= view_source_basic($source_source);
