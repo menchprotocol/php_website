@@ -178,17 +178,22 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
     if($read__type==4231){
 
         //MESSAGES
-        $counter = 0;
-        foreach($this->READ_model->fetch(array(
+        $messages = $this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type' => 4231, //IDEA NOTES Messages
             'read__right' => $idea_focus['idea__id'],
-        ), array(), 0, 0, array('read__sort' => 'ASC')) as $message_ln) {
-            $counter++;
-            $this_tab .= $this->READ_model->send_message(
-                $message_ln['read__message'],
-                $recipient_source
-            );
+        ), array(), 0, 0, array('read__sort' => 'ASC'));
+        $counter = count($messages);
+        if($counter){
+            foreach($messages as $message_ln) {
+                $counter++;
+                $this_tab .= $this->READ_model->send_message(
+                    $message_ln['read__message'],
+                    $recipient_source
+                );
+            }
+        } else {
+            $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea has no messages</div>';
         }
 
     } elseif($read__type==12273 && !$is_home_page){
