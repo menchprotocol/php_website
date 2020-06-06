@@ -315,8 +315,8 @@ if(!$in_my_reads){
     if($is_home_page){
 
         //FEATURED
-        echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>'.$sources__11035[13216]['m_name'].':</div>';
-        echo '<div class="cover-list" style="padding:21px 0 33px 33px;">';
+        echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].'</div>';
+        echo '<div class="cover-list" style="padding:13px 0 33px 33px;">';
         foreach($ideas_next as $key => $next_idea){
             echo view_idea_cover($next_idea, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
         }
