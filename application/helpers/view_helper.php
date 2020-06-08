@@ -1376,7 +1376,7 @@ function view_source_basic($source)
 {
     $ui = '<div class="list-group-item no-side-padding">';
     $ui .= '<span class="icon-block">' . view_source__icon($source['source__icon']) . '</span>';
-    $ui .= '<span class="title-block title-no-right"><span '.( strlen($source['read__message']) > 0 ? ' class="underdot" title="'.$source['read__message'].'" data-toggle="tooltip" data-placement="top" ' : '' ).'>'.$source['source__title'].'</span></span>';
+    $ui .= '<span class="title-block title-no-right"><span '.( strlen($source['read__message']) > 0 ? ' class="underdot" title="'.$source['read__message'].'" data-toggle="tooltip" data-placement="right" ' : '' ).'>'.$source['source__title'].'</span></span>';
     $ui .= '</div>';
     return $ui;
 }
