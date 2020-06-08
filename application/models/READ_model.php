@@ -962,6 +962,7 @@ class READ_model extends CI_Model
             $message_visual_media = 0;
             $message_any = 0;
             $source_appendix = null;
+            $text_tooltip = null;
             $current_mench = current_mench();
             $has_text = substr_count($message_input, ' ');
 
@@ -990,27 +991,26 @@ class READ_model extends CI_Model
 
                         //SOURCE LINK VISUAL
                         $message_visual_media++;
+                        $source_appendix .= '<div class="source-appendix paddingup">' . view_read__message($source_profile['read__message'], $source_profile['read__type'], $message_input) . '</div>';
 
                     } elseif($source_profile['read__type'] == 4256 /* URL */){
 
                         array_push($valid_url, $source_profile['read__message']);
+                        $source_appendix .= '<div class="source-appendix paddingup">' . view_read__message($source_profile['read__message'], $source_profile['read__type'], $message_input) . '</div>';
 
                     } else {
 
                         //Text and Percentage, etc...
-                        $source_appendix .= '<div class="source-appendix paddingup"><span class="icon-block-xs">'.view_source__icon($source_profile['source__icon']).'</span>'.$source_profile['source__title'].': ' . $source_profile['read__message'] . '</div>';
-                        continue;
+                        $text_tooltip .= $source_profile['source__title'].': ' . $source_profile['read__message'] . "\n";
 
                     }
-
-                    $source_appendix .= '<div class="source-appendix paddingup">' . view_read__message($source_profile['read__message'], $source_profile['read__type'], $message_input) . '</div>';
-
                 }
             }
 
 
 
             //Append any appendix generated:
+            $text_tooltip = ( strlen($text_tooltip) ? ' class="underline" title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
             $short_name_class = ( strlen($sources[0]['source__title']) <= 21 ? ' inline-block ' : '' );
             $output_body_message .= $source_appendix;
             if($string_references['ref_time_found']){
@@ -1033,14 +1033,14 @@ class READ_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span class="'.$short_name_class.'"><span class="icon-block-xs img-block">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></span>', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="'.$short_name_class.'"><span class="icon-block-xs img-block">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></span></span>', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<a class="montserrat '.$short_name_class.extract_icon_color($sources[0]['source__icon']).'" href="/@' . $sources[0]['source__id'] . '">'.( !in_array($sources[0]['source__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['source__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></a>', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat '.$short_name_class.extract_icon_color($sources[0]['source__icon']).'" href="/@' . $sources[0]['source__id'] . '">'.( !in_array($sources[0]['source__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['source__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></a></span>', $output_body_message);
 
             }
         }
