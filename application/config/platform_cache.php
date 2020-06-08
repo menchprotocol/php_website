@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-08 09:26:46 PST
+//Generated 2020-06-08 10:20:01 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
@@ -56,19 +56,19 @@ $config['sources__13291'] = array(
     12413 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'AVERAGE IDEAS',
-        'm_desc' => 'The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way: ',
+        'm_desc' => '',
         'm_parents' => array(13291,4527),
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT SOURCES',
-        'm_desc' => 'Ideas mapped from these expert sources:',
+        'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
-        'm_desc' => 'Completion may earn you any of the following certificates:',
+        'm_desc' => '',
         'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,12321,7551,4593,4485),
     ),
 );
@@ -3027,7 +3027,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.4131',
+        'm_desc' => 'v1.413',
         'm_parents' => array(6404),
     ),
     11079 => array(

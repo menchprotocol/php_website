@@ -197,6 +197,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
             //IDEA or TIME difference?
             if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
+                $this_tab .= '<p class="space-content">The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:</p>';
                 $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
                 $this_tab .= '<span class="reading-paths">Minimum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
                 $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
@@ -238,6 +239,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         $counter = $idea_stats['sources_count'];
         if ($counter) {
 
+            $this_tab .= '<p class="space-content">Ideas mapped from these expert sources:</p>';
             $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
             foreach ($idea_stats['sources_array'] as $source_source) {
                 $this_tab .= view_source_basic($source_source);
@@ -252,6 +254,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         $counter = $idea_stats['certificate_count'];
         if ($counter) {
 
+            $this_tab .= '<p class="space-content">Completion may earn you some of the following certificates:</p>';
             $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
             foreach ($idea_stats['certificate_array'] as $source_source) {
                 $source_source['read__message'] = ''; //Remove for this
@@ -280,9 +283,6 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
     $tab_pills .= '<li class="nav-item"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span>' ).'<span class="show-active-max">&nbsp;'.$m['m_name'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$read__type.( $default_active ? '' : ' hidden ' ).'">';
-    if(strlen($m['m_desc'])){
-        $tab_content .= '<p class="space-content">'.$m['m_desc'].'</p>';
-    }
     $tab_content .= $this_tab;
     $tab_content .= '</div>';
 
