@@ -1349,12 +1349,12 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
 
     //TOP LEFT
     $ui .= '<span class="media-info top-left">';
-    $ui .= $sources__13291[12413]['m_icon'].'<span style="padding-left: 2px;">'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span>';
+    $ui .= $sources__13291[12413]['m_icon'].'<span style="padding-left: 2px;" class="idea">'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span>';
     $ui .= '</span>';
 
     //TOP RIGHT
     if($idea_stats['duration_average']){
-        $ui .= '<span class="media-info top-right mono-space">'.view_time_hours($idea_stats['duration_average']).'</span>';
+        $ui .= '<span class="media-info top-right">'.view_time_hours($idea_stats['duration_average']).'</span>';
     }
 
     //Search for Idea Image:
