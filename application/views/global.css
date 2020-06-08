@@ -477,6 +477,7 @@ img.no-radius {
 .mono-space{
     font-family: monospace;
     font-size: 1.3em;
+    font-weight: normal !important;
 }
 
 .cover-list{
