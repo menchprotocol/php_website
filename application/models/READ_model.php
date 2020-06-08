@@ -1001,7 +1001,10 @@ class READ_model extends CI_Model
                     } else {
 
                         //Text and Percentage, etc...
-                        $text_tooltip .= $source_profile['source__title'].': ' . $source_profile['read__message'] . "\n";
+                        if(strlen($text_tooltip)){
+                            $text_tooltip .= ' | ';
+                        }
+                        $text_tooltip .= $source_profile['source__title'].': ' . $source_profile['read__message'];
 
                     }
                 }
@@ -1010,7 +1013,7 @@ class READ_model extends CI_Model
 
 
             //Append any appendix generated:
-            $text_tooltip = ( strlen($text_tooltip) ? ' class="underline" title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
+            $text_tooltip = ( strlen($text_tooltip) ? ' class="underdot" title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
             $short_name_class = ( strlen($sources[0]['source__title']) <= 21 ? ' inline-block ' : '' );
             $output_body_message .= $source_appendix;
             if($string_references['ref_time_found']){
