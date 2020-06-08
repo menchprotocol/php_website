@@ -1273,6 +1273,7 @@ function view_idea_note_mix($note_type_source__id, $idea_notes, $is_source){
     $ui .= '</div>';
 
     return $ui;
+
 }
 
 function view_platform_message($source__id){

@@ -273,36 +273,13 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             'read__right' => $idea_focus['idea__id'],
         ), array(), 0, 0, array('read__sort' => 'ASC'));
         $counter = count($comments);
-        if($counter){
-            foreach($comments as $message_ln) {
-                $counter++;
-                $this_tab .= $this->READ_model->send_message(
-                    $message_ln['read__message'],
-                    $recipient_source
-                );
-            }
-        } else {
 
-            if($recipient_source['source__id'] > 0){
-                $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea has no messages</div>';
-            } else {
-                //Since no comment and not logged-in to post a comment:
-                continue;
-            }
-
-
+        if(!$counter && !$recipient_source['source__id']){
+            //Since no comment and not logged-in to post a comment:
+            continue;
         }
 
-        //Post Comment?
-        if($recipient_source['source__id'] > 0){
-            $this_tab .= '<p class="space-content">Completion may earn you some of the following certificates:</p>';
-            $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
-            foreach ($idea_stats['certificate_array'] as $source_source) {
-                $source_source['read__message'] = ''; //Remove for this
-                $this_tab .= view_source_basic($source_source);
-            }
-            $this_tab .= '</div>';
-        }
+        $this_tab .= view_idea_note_mix($read__type, $comments, ($recipient_source['source__id'] > 0));
 
     } else {
 
