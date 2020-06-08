@@ -475,7 +475,7 @@ img.no-radius {
     margin-bottom: 5px;
 }
 .mono-space{
-    font-family: monospace;
+    font-family: monospace !important;
     font-size: 1.2em;
     font-weight: normal !important;
 }

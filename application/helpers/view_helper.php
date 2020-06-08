@@ -1354,7 +1354,7 @@ function view_idea_cover($idea, $show_editor, $common_prefix = null, $completion
 
     //TOP RIGHT
     if($idea_stats['duration_average']){
-        $ui .= '<span class="media-info top-right">'.view_time_hours($idea_stats['duration_average']).'</span>';
+        $ui .= '<span class="media-info top-right mono-space">'.view_time_hours($idea_stats['duration_average']).'</span>';
     }
 
     //Search for Idea Image:
