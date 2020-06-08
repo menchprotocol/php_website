@@ -474,6 +474,9 @@ img.no-radius {
 .table-condense{
     margin-bottom: 5px;
 }
+.mono-space{
+    font-family: monospace;
+}
 
 .cover-list{
     display: block;
