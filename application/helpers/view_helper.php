@@ -641,7 +641,7 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
 
     //Right Stats:
     if($idea_stats['duration_average'] || $idea_stats['ideas_average']){
-        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:136px;' ).'"><span style="width:53px; display: inline-block;">'.( $idea_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_stats['ideas_average'].'</span>' : '' ).'</span>'.( $idea_stats['duration_average'] ? '<span class="grey">'.view_time_hours($idea_stats['duration_average']).'</span>': '' ).'</div>';
+        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:136px;' ).'"><span style="width:53px; display: inline-block;">'.( $idea_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_stats['ideas_average'].'</span>' : '' ).'</span>'.( $idea_stats['duration_average'] ? '<span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span>': '' ).'</div>';
     }
 
 

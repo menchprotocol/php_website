@@ -198,9 +198,9 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             //IDEA or TIME difference?
             if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
                 $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-                $this_tab .= '<span class="reading-paths">Minimum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_min'].'</span> <i class="far fa-clock"></i> <span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
-                $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_average'].'</span> <i class="far fa-clock"></i> <span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
-                $this_tab .= '<span class="reading-paths">Maximum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count">'.$idea_stats['ideas_max'].'</span> <i class="far fa-clock"></i> <span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
+                $this_tab .= '<span class="reading-paths">Minimum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_min'].'</span> <i class="far fa-clock"></i> <span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
+                $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_average'].'</span> <i class="far fa-clock"></i> <span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
+                $this_tab .= '<span class="reading-paths">Maximum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_max'].'</span> <i class="far fa-clock"></i> <span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
                 $this_tab .= '</p>';
             }
 
