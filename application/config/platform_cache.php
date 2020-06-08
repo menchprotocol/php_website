@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-06 14:53:23 PST
+//Generated 2020-06-08 09:26:46 PST
 
 //READ TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
@@ -55,7 +55,7 @@ $config['sources__13291'] = array(
     ),
     12413 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEAS AVERAGE',
+        'm_name' => 'AVERAGE IDEAS',
         'm_desc' => 'The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way: ',
         'm_parents' => array(13291,4527),
     ),
@@ -866,7 +866,7 @@ $config['sources__12677'] = array(
 );
 
 //PLAYER MENU:
-$config['sources_id_12500'] = array(12205,12274,12273,6255,6415,12899,6287,7291);
+$config['sources_id_12500'] = array(12205,12274,12273,6255,6415,6287,7291);
 $config['sources__12500'] = array(
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -897,12 +897,6 @@ $config['sources__12500'] = array(
         'm_name' => 'CLEAR ALL READS',
         'm_desc' => '',
         'm_parents' => array(12500,4755,4593),
-    ),
-    12899 => array(
-        'm_icon' => '<i class="fas fa-headset"></i>',
-        'm_name' => 'FEEDBACK/SUPPORT',
-        'm_desc' => '',
-        'm_parents' => array(12500,11035),
     ),
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
@@ -1222,7 +1216,7 @@ $config['sources__12420'] = array(
     ),
 );
 
-//IDEAS AVERAGE:
+//AVERAGE IDEAS:
 $config['sources_id_12413'] = array(6170,6169,13177,11020,11019);
 $config['sources__12413'] = array(
     6170 => array(
@@ -3271,7 +3265,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(11068,6225,12749,3084,13216,12899,12707,4235,12991,12211,4535,7291,4341,4430,13023,12205,10573,12969,6287,12750,12896,7256,4269,4536,4997,12275,13007,10957,7540);
+$config['sources_id_11035'] = array(11068,6225,12749,3084,13216,12707,4235,12991,12211,4535,7291,4341,4430,13023,12205,10573,12969,6287,12750,12896,7256,4269,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
     11068 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3302,12 +3296,6 @@ $config['sources__11035'] = array(
         'm_name' => 'FEATURED',
         'm_desc' => '',
         'm_parents' => array(11035),
-    ),
-    12899 => array(
-        'm_icon' => '<i class="fas fa-headset"></i>',
-        'm_name' => 'FEEDBACK/SUPPORT',
-        'm_desc' => '',
-        'm_parents' => array(12500,11035),
     ),
     12707 => array(
         'm_icon' => '<i class="far fa-filter" aria-hidden="true"></i>',
@@ -4122,7 +4110,7 @@ $config['sources__10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['sources_id_4527'] = array(6225,10956,12279,12588,6150,13037,3000,12864,12359,10876,4229,12842,4486,12840,12589,11047,4485,12012,6193,10990,12273,12413,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13202,7585,13022,12330,7309,7712,12883,12884,12955,7751,2738,12467,6404,12079,6201,4341,12893,4527,11054,12687,11035,13023,6206,12112,6232,10573,12969,12500,12741,6287,12577,4755,11081,7704,5967,12229,12326,12446,6103,12227,6255,7304,6186,7360,7364,7359,13291,13300,13298,4593,10593,12141,12327,12761,4269,6204,4536,13207,12571,13004,12574,11080,12822,4592,12403,11059,4537,12524,4997,12887,4986,7551,6194,12274,6177,7358,12575,7357,12401,11089,10957,12968,12523,12322,12321,10692,10869,6146);
+$config['sources_id_4527'] = array(6225,10956,12279,12413,12588,6150,13037,3000,12864,12359,10876,4229,12842,4486,12840,12589,11047,4485,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13202,7585,13022,12330,7309,7712,12883,12884,12955,7751,2738,12467,6404,12079,6201,4341,12893,4527,11054,12687,11035,13023,6206,12112,6232,10573,12969,12500,12741,6287,12577,4755,11081,7704,5967,12229,12326,12446,6103,12227,6255,7304,6186,7360,7364,7359,13291,13300,13298,4593,10593,12141,12327,12761,4269,6204,4536,13207,12571,13004,12574,11080,12822,4592,12403,11059,4537,12524,4997,12887,4986,7551,6194,12274,6177,7358,12575,7357,12401,11089,10957,12968,12523,12322,12321,10692,10869,6146);
 $config['sources__4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4141,6 +4129,12 @@ $config['sources__4527'] = array(
         'm_name' => 'AVATARS SUPER',
         'm_desc' => '',
         'm_parents' => array(12289,4527),
+    ),
+    12413 => array(
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_name' => 'AVERAGE IDEAS',
+        'm_desc' => '',
+        'm_parents' => array(13291,4527),
     ),
     12588 => array(
         'm_icon' => '<i class="fad fa-text"></i>',
@@ -4249,12 +4243,6 @@ $config['sources__4527'] = array(
         'm_name' => 'IDEAS',
         'm_desc' => '',
         'm_parents' => array(13298,4535,12500,12571,12467,12321,11089,12228,4527),
-    ),
-    12413 => array(
-        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEAS AVERAGE',
-        'm_desc' => '',
-        'm_parents' => array(13291,4527),
     ),
     4983 => array(
         'm_icon' => '<i class="fas fa-user-edit source" aria-hidden="true"></i>',

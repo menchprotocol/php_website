@@ -231,7 +231,7 @@ $(document).ready(function () {
     });
 
     lazy_load();
-    load_intercom();
+    //load_intercom();
 
     if(js_pl_id > 1){
         //For any logged in player except shervin:
