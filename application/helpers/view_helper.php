@@ -1300,7 +1300,7 @@ function view_unauthorized_message($superpower_source__id = 0){
     if(!$session_source){
 
         //Missing Session
-        return 'Login to continue.';
+        return 'You must login to continue.';
 
     } elseif($superpower_source__id>0) {
 

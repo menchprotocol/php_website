@@ -2,6 +2,8 @@
 
 $(document).ready(function () {
 
+    idea_note_activate();
+
     autosize($('#read_text_answer'));
 
     //Watchout for file uplods:

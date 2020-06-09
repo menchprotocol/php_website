@@ -10,6 +10,8 @@ var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
+    idea_note_activate();
+
     //Load search for mass update function:
     load_editor();
 
@@ -23,14 +25,7 @@ $(document).ready(function () {
 
     autosize($('.text__4736_'+idea_loaded_id));
 
-    $('#expand_ideas .expand_all').click(function (e) {
-        $(".next_ideas .ideas_sortable").each(function () {
-            ms_toggle($(this).attr('read__id'), 1);
-        });
-    });
-
     //Activate Source-Only Inputs:
-
     $(".source-mapper").each(function () {
         source_source_only_search($(this).attr('note_type_id'));
     });
@@ -44,85 +39,6 @@ $(document).ready(function () {
 
     //Load Sortable:
     idea_sort_load(idea_loaded_id);
-
-    //Watch the expand/close all buttons:
-    $('#expand_ideas .expand_all').click(function (e) {
-        $(".next_ideas .ideas_sortable").each(function () {
-            ms_toggle($(this).attr('read__id'), 1);
-        });
-    });
-    $('#expand_ideas .close_all').click(function (e) {
-        $(".next_ideas .ideas_sortable").each(function () {
-            ms_toggle($(this).attr('read__id'), 0);
-        });
-    });
-
-
-    //Loop through all new idea inboxes:
-    $(".new-note").each(function () {
-
-        var note_type_id = parseInt($(this).attr('note-type-id'));
-
-        //Initiate @ search for all idea text areas:
-        idea_note_source_search($(this));
-
-        autosize($(this));
-
-        //Activate sorting:
-        idea_note_sort_load(note_type_id);
-
-        var showFiles = function (files) {
-            if(typeof files[0] !== 'undefined'){
-                $('.box' + note_type_id).find('label').text(files.length > 1 ? ($('.box' + note_type_id).find('input[type="file"]').attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
-            }
-        };
-
-        $('.box' + note_type_id).find('input[type="file"]').on('drop', function (e) {
-            droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
-            showFiles(droppedFiles);
-        });
-
-        $('.box' + note_type_id).find('input[type="file"]').on('change', function (e) {
-            showFiles(e.target.files);
-        });
-
-        //Watch for message creation:
-        $('#read__message' + note_type_id).keydown(function (e) {
-            if (e.ctrlKey && e.keyCode == 13) {
-                idea_note_add_text(note_type_id);
-            }
-        });
-
-        //Watchout for file uplods:
-        $('.box' + note_type_id).find('input[type="file"]').change(function () {
-            idea_note_add_file(droppedFiles, 'file', note_type_id);
-        });
-
-
-        //Should we auto start?
-        if (isAdvancedUpload) {
-
-            $('.box' + note_type_id).addClass('has-advanced-upload');
-            var droppedFiles = false;
-
-            $('.box' + note_type_id).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            })
-                .on('dragover dragenter', function () {
-                    $('.add_notes_' + note_type_id).addClass('is-working');
-                })
-                .on('dragleave dragend drop', function () {
-                    $('.add_notes_' + note_type_id).removeClass('is-working');
-                })
-                .on('drop', function (e) {
-                    droppedFiles = e.originalEvent.dataTransfer.files;
-                    e.preventDefault();
-                    idea_note_add_file(droppedFiles, 'drop', note_type_id);
-                });
-        }
-
-    });
 
 });
 
