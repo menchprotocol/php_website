@@ -605,7 +605,7 @@ class Idea extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'message' => view_idea_notes(array_merge($read, array(
+            'message' => view_idea_notes(array_merge($session_source, $read, array(
                 'read__down' => $session_source['source__id'],
             )), true),
         ));
@@ -718,7 +718,7 @@ class Idea extends CI_Controller {
         //Echo message:
         view_json(array(
             'status' => 1,
-            'message' => view_idea_notes(array_merge($new_messages[0], array(
+            'message' => view_idea_notes(array_merge($session_source, $new_messages[0], array(
                 'read__down' => $session_source['source__id'],
             )), true),
         ));
