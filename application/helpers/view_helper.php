@@ -216,7 +216,7 @@ function view_idea_notes($read, $is_source = false)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_source_type_' . $read['read__type'] . '" id="ul-nav-' . $read['read__id'] . '" read__id="' . $read['read__id'] . '" title="'.$read['source__title'].' Posted On '.$read['read__time'].'" data-toggle="tooltip" data-placement="top">';
+    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_source_type_' . $read['read__type'] . '" id="ul-nav-' . $read['read__id'] . '" read__id="' . $read['read__id'] . '" title="'.$read['source__title'].' Posted On '.substr($read['read__time'], 0, 19).'" data-toggle="tooltip" data-placement="top">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
