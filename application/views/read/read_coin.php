@@ -223,7 +223,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
                 'read__left !=' => $this->config->item('featured_idea__id'),
             ), array('read__left'), 0);
             if(count($ideas_previous)){
-                $this_tab .= '<p class="space-content">'.view_idea__title($idea_focus).' Helps you:</p>';
+                $this_tab .= '<p class="space-content montserrat">'.view_idea__title($idea_focus).' Helps you:</p>';
                 $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'" style="margin-bottom:34px;">';
                 foreach($ideas_previous as $key => $previous_idea){
                     $this_tab .= view_idea_read($previous_idea);
