@@ -188,49 +188,45 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea has no messages</div>';
         }
 
-    } elseif($read__type==12273 && !$is_home_page){
+    } elseif($read__type==12273 && !$is_home_page && $idea_stats['ideas_average']>$chapters){
 
         //IDEAS
-        $counter = ( $idea_stats['ideas_average']>$chapters ? $idea_stats['ideas_average'] : $chapters );
+        $counter = $idea_stats['ideas_average'];
 
-        if ($counter) {
+        //IDEA or TIME difference?
+        if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
+            $this_tab .= '<p class="space-content">The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:</p>';
+            $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
+            $this_tab .= '<span class="reading-paths">Minimum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
+            $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
+            $this_tab .= '<span class="reading-paths">Maximum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
+            $this_tab .= '</p>';
+        }
 
-            //IDEA or TIME difference?
-            if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
-                $this_tab .= '<p class="space-content">The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:</p>';
-                $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-                $this_tab .= '<span class="reading-paths">Minimum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
-                $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
-                $this_tab .= '<span class="reading-paths">Maximum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
-                $this_tab .= '</p>';
+        //NEXT IDEAS
+        if(!$in_my_reads && $chapters){
+            $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'" style="margin-bottom:34px;">';
+            foreach($ideas_next as $key => $next_idea){
+                $this_tab .= view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'idea__title'));
             }
+            $this_tab .= '</div>';
+        }
 
-            //NEXT IDEAS
-            if(!$in_my_reads && $chapters){
-                $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'" style="margin-bottom:34px;">';
-                foreach($ideas_next as $key => $next_idea){
-                    $this_tab .= view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'idea__title'));
-                }
-                $this_tab .= '</div>';
+        //IDEA PREVIOUS
+        $ideas_previous = $this->READ_model->fetch(array(
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+            'read__right' => $idea_focus['idea__id'],
+            'read__left !=' => $this->config->item('featured_idea__id'),
+        ), array('read__left'), 0);
+        if(count($ideas_previous)){
+            $this_tab .= '<p class="space-content montserrat">'.view_idea__title($idea_focus).' Helps you:</p>';
+            $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'" style="margin-bottom:34px;">';
+            foreach($ideas_previous as $key => $previous_idea){
+                $this_tab .= view_idea_read($previous_idea);
             }
-
-            //IDEA PREVIOUS
-            $ideas_previous = $this->READ_model->fetch(array(
-                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-                'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-                'read__right' => $idea_focus['idea__id'],
-                'read__left !=' => $this->config->item('featured_idea__id'),
-            ), array('read__left'), 0);
-            if(count($ideas_previous)){
-                $this_tab .= '<p class="space-content montserrat">'.view_idea__title($idea_focus).' Helps you:</p>';
-                $this_tab .= '<div class="list-group '.( !$recipient_source['source__id'] ? 'single-color' : '' ).'" style="margin-bottom:34px;">';
-                foreach($ideas_previous as $key => $previous_idea){
-                    $this_tab .= view_idea_read($previous_idea);
-                }
-                $this_tab .= '</div>';
-            }
-
+            $this_tab .= '</div>';
         }
 
     } elseif($read__type==12864 && !$is_home_page && $idea_stats['sources_count']){
