@@ -276,9 +276,9 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         $this_url = $this->config->item('base_url').'/'.$idea_focus['idea__id'];
 
         $this_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
-        $this_tab .= '<div style="padding-bottom:13px;">Share Idea URL:</div>';
-        $this_tab .= '<input type="url" value="' .$this_url . '" class="form-control border">';
-        $this_tab .= '<div style="padding-bottom:13px;">Or you can share using:</div>';
+        $this_tab .= '<div style="padding-bottom:13px;">Share URL:</div>';
+        $this_tab .= '<input style="padding-bottom:13px;" type="url" value="' .$this_url . '" class="form-control border">';
+        $this_tab .= '<div style="padding-bottom:13px;">Or share using:</div>';
         foreach($this->config->item('sources__13023') as $m2) {
             $this_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$idea_focus['idea__title'].'" data-image="'.$idea_fetch_cover.'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
         }

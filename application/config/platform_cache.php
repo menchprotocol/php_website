@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-09 15:18:09 PST
+//Generated 2020-06-09 15:26:30 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -38,7 +38,7 @@ $config['sources__13298'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
@@ -84,7 +84,7 @@ $config['sources__13291'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
@@ -124,7 +124,7 @@ $config['sources__13207'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
@@ -457,13 +457,13 @@ $config['sources__12968'] = array(
         'm_parents' => array(12968,4983,3000),
     ),
     3084 => array(
-        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'PERSON',
         'm_desc' => '',
         'm_parents' => array(12968,12864,4983,11035,1278),
     ),
     2750 => array(
-        'm_icon' => '<i class="fas fa-space-shuttle source rotate270"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'PUBLICATION',
         'm_desc' => '',
         'm_parents' => array(12968,12864),
@@ -621,17 +621,17 @@ $config['sources__12884'] = array(
     ),
 );
 
-//EXPERT SOURCES:
+//EXPERTS:
 $config['sources_id_12864'] = array(3084,2750);
 $config['sources__12864'] = array(
     3084 => array(
-        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'PERSON',
         'm_desc' => '',
         'm_parents' => array(12968,12864,4983,11035,1278),
     ),
     2750 => array(
-        'm_icon' => '<i class="fas fa-space-shuttle source rotate270"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'PUBLICATION',
         'm_desc' => '',
         'm_parents' => array(12968,12864),
@@ -3315,7 +3315,7 @@ $config['sources__11035'] = array(
         'm_parents' => array(10984,12893,11035),
     ),
     3084 => array(
-        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT PERSON',
         'm_desc' => '',
         'm_parents' => array(12968,12864,4983,11035,1278),
@@ -4185,7 +4185,7 @@ $config['sources__4527'] = array(
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
@@ -5070,14 +5070,14 @@ $config['sources__4983'] = array(
         'm_parents' => array(12968,4983,3000),
     ),
     3084 => array(
-        'm_icon' => '<i class="fad fa-user-astronaut source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT PERSON',
         'm_desc' => '',
         'm_parents' => array(12968,12864,4983,11035,1278),
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERT SOURCES',
+        'm_name' => 'EXPERTS',
         'm_desc' => '',
         'm_parents' => array(13298,4983,13291,13207,4600,4527,4758),
     ),
