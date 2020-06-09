@@ -1227,8 +1227,8 @@ function view_idea_note_mix($note_type_source__id, $idea_notes, $is_source){
             $ui .= view_idea_notes($idea_notes);
         }
     } else {
-        $ui .= '<div class="space-left no_notes_' . $note_type_source__id .'">';
-        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$sources__4485[$note_type_source__id]['m_icon'].'</span>No '.ucwords($sources__4485[$note_type_source__id]['m_name']).' yet, Be the first to post one!</div>';
+        $ui .= '<div class="no_notes_' . $note_type_source__id .'" style="margin-bottom:21px;">';
+        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$sources__4485[$note_type_source__id]['m_icon'].'</span>No '.ucwords(strtolower($sources__4485[$note_type_source__id]['m_name'])).' yet, Be the first to post one!</div>';
         $ui .= '</div>';
     }
 
