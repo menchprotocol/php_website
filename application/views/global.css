@@ -474,8 +474,9 @@ img.no-radius {
 .table-condense{
     margin-bottom: 5px;
 }
+
 .mono-space{
-    font-family: monospace !important;
+    font-family: 'Roboto Mono', monospace !important;
     font-size: 1.2em !important;
     font-weight: normal !important;
 }
@@ -484,6 +485,7 @@ img.no-radius {
     display: block;
     width: 100%;
 }
+
 .cover-block{
     display: block;
     width: 146px;
@@ -492,6 +494,7 @@ img.no-radius {
     float: left;
     margin-right:34px;
 }
+
 .cover-image{
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;

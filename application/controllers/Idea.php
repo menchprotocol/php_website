@@ -536,7 +536,7 @@ class Idea extends CI_Controller {
     }
 
 
-    function idea_add_note_text()
+    function idea_note_add_text()
     {
 
         //Authenticate Player:
@@ -612,7 +612,7 @@ class Idea extends CI_Controller {
     }
 
 
-    function idea_add_note_file()
+    function idea_note_add_file()
     {
 
         //TODO: MERGE WITH FUNCTION read_file_upload()

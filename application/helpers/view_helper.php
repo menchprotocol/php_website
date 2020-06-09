@@ -234,13 +234,13 @@ function view_idea_notes($ln)
         }
 
         //Modify:
-        $ui .= '<span title="MODIFY"><a href="javascript:idea_notes_modify_start(' . $ln['read__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="MODIFY"><a href="javascript:idea_note_edit_start(' . $ln['read__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
     $ui .= '</span></div>';
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="idea_edit_notes_count(' . $ln['read__id'] . ')" name="read__message" id="message_body_' . $ln['read__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($ln['read__message']).'">' . $ln['read__message'] . '</textarea>';
+    $ui .= '<textarea onkeyup="idea_note_edit_count(' . $ln['read__id'] . ')" name="read__message" id="message_body_' . $ln['read__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($ln['read__message']).'">' . $ln['read__message'] . '</textarea>';
 
 
     //Editing menu:
@@ -253,7 +253,7 @@ function view_idea_notes($ln)
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_modify(' . $ln['read__id'] . ',' . $ln['read__type'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_notes_modify_cancel(' . $ln['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_edit_cancel(' . $ln['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
@@ -1222,21 +1222,25 @@ function view_idea_note_mix($note_type_source__id, $idea_notes, $is_source){
     //Show no-Message notifications for each message type:
     $ui = '<div id="idea_notes_list_'.$note_type_source__id.'" class="list-group">';
 
-    foreach($idea_notes as $idea_notes) {
-        $ui .= view_idea_notes($idea_notes);
+    if(count($idea_notes)){
+        foreach($idea_notes as $idea_notes) {
+            $ui .= view_idea_notes($idea_notes);
+        }
+    } else {
+        $ui .= '<div class="list-group-item space-left no_notes_' . $note_type_source__id .'">';
+        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$sources__4485[$note_type_source__id]['m_icon'].'</span>No '.ucwords($sources__4485[$note_type_source__id]['m_name']).' yet, Be the first to post one!</div>';
+        $ui .= '</div>';
     }
 
 
-
-
-    //ADD NEW Alert:
+    //ADD NEW:
     $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $note_type_source__id . ( $is_source ? '' : ' hidden ' ).'">';
     $ui .= '<div class="add_notes_form">';
     $ui .= '<form class="box box' . $note_type_source__id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 
 
 
-    $ui .= '<textarea onkeyup="idea_notes_count_new('.$note_type_source__id.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $note_type_source__id . '" id="read__message' . $note_type_source__id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+    $ui .= '<textarea onkeyup="idea_note_count_new('.$note_type_source__id.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $note_type_source__id . '" id="read__message' . $note_type_source__id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
@@ -1244,7 +1248,7 @@ function view_idea_note_mix($note_type_source__id, $idea_notes, $is_source){
 
 
     //Save button:
-    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:idea_add_note_text('.$note_type_source__id.');" class="btn btn-idea save_notes_'.$note_type_source__id.'"><i class="fas fa-plus"></i></a></td>';
+    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:idea_note_add_text('.$note_type_source__id.');" class="btn btn-idea save_notes_'.$note_type_source__id.'"><i class="fas fa-plus"></i></a></td>';
 
 
     //File counter:

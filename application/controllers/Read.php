@@ -635,7 +635,7 @@ class Read extends CI_Controller
     function read_file_upload()
     {
 
-        //TODO: MERGE WITH FUNCTION idea_add_note_file()
+        //TODO: MERGE WITH FUNCTION idea_note_add_file()
 
         //Authenticate Player:
         $session_source = superpower_assigned();
