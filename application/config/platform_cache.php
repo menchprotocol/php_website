@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-09 15:26:30 PST
+//Generated 2020-06-09 15:34:26 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -20,7 +20,7 @@ $config['sources__13304'] = array(
         'm_parents' => array(13304,13291,11018,12359,5967,10593,12322,4986,11089,4593,4485),
     ),
     13023 => array(
-        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_icon' => '<i class="fas fa-share source"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
         'm_parents' => array(13304,13291,12896,11035,4527,13024,7305),
@@ -95,7 +95,7 @@ $config['sources__13291'] = array(
         'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,12321,7551,4593,4485),
     ),
     13023 => array(
-        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_icon' => '<i class="fas fa-share source"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
         'm_parents' => array(13304,13291,12896,11035,4527,13024,7305),
@@ -3417,7 +3417,7 @@ $config['sources__11035'] = array(
         'm_parents' => array(12701,12497,11035,3323),
     ),
     13023 => array(
-        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_icon' => '<i class="fas fa-share source"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
         'm_parents' => array(13304,13291,12896,11035,4527,13024,7305),
@@ -4658,7 +4658,7 @@ $config['sources__4527'] = array(
         'm_parents' => array(4527,3323),
     ),
     13023 => array(
-        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_icon' => '<i class="fas fa-share source"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
         'm_parents' => array(13304,13291,12896,11035,4527,13024,7305),
