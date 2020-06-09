@@ -587,7 +587,7 @@ class Idea extends CI_Controller {
         }
 
         //Create Message:
-        $ln = $this->READ_model->create(array(
+        $read = $this->READ_model->create(array(
             'read__source' => $session_source['source__id'],
             'read__sort' => 1 + $this->READ_model->max_order(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -605,7 +605,7 @@ class Idea extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'message' => view_idea_notes(array_merge($ln, array(
+            'message' => view_idea_notes(array_merge($read, array(
                 'read__down' => $session_source['source__id'],
             )), true),
         ));
@@ -696,7 +696,7 @@ class Idea extends CI_Controller {
 
 
         //Create message:
-        $ln = $this->READ_model->create(array(
+        $read = $this->READ_model->create(array(
             'read__source' => $session_source['source__id'],
             'read__type' => $_POST['note_type_id'],
             'read__up' => $cdn_status['cdn_source']['source__id'],
@@ -712,7 +712,7 @@ class Idea extends CI_Controller {
 
         //Fetch full message for proper UI display:
         $new_messages = $this->READ_model->fetch(array(
-            'read__id' => $ln['read__id'],
+            'read__id' => $read['read__id'],
         ));
 
         //Echo message:

@@ -308,16 +308,16 @@ class SOURCE_model extends CI_Model
             'read__down' => $read__source,
             'read__up IN (' . join(',', $children) . ')' => null, //Current children
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        ), array(), config_var(11064)) as $ln) {
+        ), array(), config_var(11064)) as $read) {
 
-            if (!$previously_assigned && $ln['read__up'] == $set_source_child_id) {
+            if (!$previously_assigned && $read['read__up'] == $set_source_child_id) {
                 $previously_assigned = true;
             } else {
                 //Delete assignment:
-                $updated_read__id = $ln['read__id'];
+                $updated_read__id = $read['read__id'];
 
                 //Do not log update link here as we would log it further below:
-                $this->READ_model->update($ln['read__id'], array(
+                $this->READ_model->update($read['read__id'], array(
                     'read__status' => 6173, //Link Deleted
                 ), $read__source, 6224 /* User Account Updated */);
             }

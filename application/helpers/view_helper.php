@@ -195,7 +195,7 @@ function view_idea__title($idea, $common_prefix = null){
 }
 
 
-function view_idea_notes($ln, $is_source = false)
+function view_idea_notes($read, $is_source = false)
 {
 
     /*
@@ -216,12 +216,12 @@ function view_idea_notes($ln, $is_source = false)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_source_type_' . $ln['read__type'] . '" id="ul-nav-' . $ln['read__id'] . '" read__id="' . $ln['read__id'] . '">';
+    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_source_type_' . $read['read__type'] . '" id="ul-nav-' . $read['read__id'] . '" read__id="' . $read['read__id'] . '" title="'.$read['source__title'].' Posted On '.$read['read__time'].'" data-toggle="tooltip" data-placement="top">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
-    $ui .= '<div class="text_message edit-off" id="msgbody_' . $ln['read__id'] . '">';
-    $ui .= $CI->READ_model->send_message($ln['read__message'], $session_source, $ln['read__right']);
+    $ui .= '<div class="text_message edit-off" id="msgbody_' . $read['read__id'] . '">';
+    $ui .= $CI->READ_model->send_message($read['read__message'], $session_source, $read['read__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -229,37 +229,37 @@ function view_idea_notes($ln, $is_source = false)
         $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
         //Sort:
-        if(in_array(4603, $sources__4485[$ln['read__type']]['m_parents'])){
-            $ui .= '<span title="SORT"><i class="fas fa-bars '.( in_array(4603, $sources__4485[$ln['read__type']]['m_parents']) ? 'idea_note_sorting' : '' ).'"></i></span>';
+        if(in_array(4603, $sources__4485[$read['read__type']]['m_parents'])){
+            $ui .= '<span title="SORT"><i class="fas fa-bars '.( in_array(4603, $sources__4485[$read['read__type']]['m_parents']) ? 'idea_note_sorting' : '' ).'"></i></span>';
         }
 
         //Modify:
-        $ui .= '<span title="MODIFY"><a href="javascript:idea_note_edit_start(' . $ln['read__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="MODIFY"><a href="javascript:idea_note_edit_start(' . $read['read__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
         $ui .= '</span></div>';
 
 
         //Text editing:
-        $ui .= '<textarea onkeyup="idea_note_edit_count(' . $ln['read__id'] . ')" name="read__message" id="message_body_' . $ln['read__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($ln['read__message']).'">' . $ln['read__message'] . '</textarea>';
+        $ui .= '<textarea onkeyup="idea_note_edit_count(' . $read['read__id'] . ')" name="read__message" id="message_body_' . $read['read__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($read['read__message']).'">' . $read['read__message'] . '</textarea>';
 
 
         //Editing menu:
         $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
         //Counter:
-        $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $ln['read__id'] . '"><span id="charEditingNum' . $ln['read__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
+        $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $read['read__id'] . '"><span id="charEditingNum' . $read['read__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
 
         //Save Edit:
-        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_modify(' . $ln['read__id'] . ',' . $ln['read__type'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
+        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_modify(' . $read['read__id'] . ',' . $read['read__type'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
         //Cancel Edit:
-        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_edit_cancel(' . $ln['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
+        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_edit_cancel(' . $read['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
 
         //Show drop down for message link status:
         $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
-        $ui .= '<select id="message_status_' . $ln['read__id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
+        $ui .= '<select id="message_status_' . $read['read__id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
         foreach($CI->config->item('sources__12012') as $source__id => $m){
-            $ui .= '<option value="' . $source__id . '" '.( $source__id==$ln['read__status'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
+            $ui .= '<option value="' . $source__id . '" '.( $source__id==$read['read__status'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
         }
         $ui .= '</select>';
         $ui .= '</span></li>';
@@ -339,7 +339,7 @@ function view_number($number)
 }
 
 
-function view_interaction($ln, $is_parent_tr = false)
+function view_interaction($read, $is_parent_tr = false)
 {
 
     $CI =& get_instance();
@@ -351,9 +351,9 @@ function view_interaction($ln, $is_parent_tr = false)
 
 
 
-    if(!isset($sources__4593[$ln['read__type']])){
+    if(!isset($sources__4593[$read['read__type']])){
         //We've probably have not yet updated php cache, set error:
-        $sources__4593[$ln['read__type']] = array(
+        $sources__4593[$read['read__type']] = array(
             'm_icon' => '<i class="fas fa-exclamation-circle"></i>',
             'm_name' => 'Link Type Not Synced in PHP Cache',
             'm_desc' => '',
@@ -370,34 +370,34 @@ function view_interaction($ln, $is_parent_tr = false)
 
 
     //Read ID
-    $ui .= '<div class="simple-line"><a href="/x?read__id='.$ln['read__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4367]['m_icon']. '</span>'.$ln['read__id'].'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/x?read__id='.$read['read__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4367]['m_icon']. '</span>'.$read['read__id'].'</a></div>';
 
 
     //Status
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[6186]['m_name'].( strlen($sources__6186[$ln['read__status']]['m_desc']) ? ': '.$sources__6186[$ln['read__status']]['m_desc'] : '' ).'"><span class="icon-block">'.$sources__6186[$ln['read__status']]['m_icon'].'</span>'.$sources__6186[$ln['read__status']]['m_name'].'</span></div>';
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[6186]['m_name'].( strlen($sources__6186[$read['read__status']]['m_desc']) ? ': '.$sources__6186[$read['read__status']]['m_desc'] : '' ).'"><span class="icon-block">'.$sources__6186[$read['read__status']]['m_icon'].'</span>'.$sources__6186[$read['read__status']]['m_name'].'</span></div>';
 
     //Time
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $sources__4341[4362]['m_name'].': '.$ln['read__time'] . ' PST"><span class="icon-block">'.$sources__4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($ln['read__time'])) . ' ago</span></div>';
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $sources__4341[4362]['m_name'].': '.$read['read__time'] . ' PST"><span class="icon-block">'.$sources__4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($read['read__time'])) . ' ago</span></div>';
 
 
 
     //COINS AWARDED?
-    if(in_array($ln['read__type'], $CI->config->item('sources_id_6255'))){
+    if(in_array($read['read__type'], $CI->config->item('sources_id_6255'))){
         $coins_type = 'read';
-    } elseif(in_array($ln['read__type'], $CI->config->item('sources_id_12274'))){
+    } elseif(in_array($read['read__type'], $CI->config->item('sources_id_12274'))){
         $coins_type = 'source';
-    } elseif(in_array($ln['read__type'], $CI->config->item('sources_id_12273')) && $ln['read__up']>0){
+    } elseif(in_array($read['read__type'], $CI->config->item('sources_id_12273')) && $read['read__up']>0){
         $coins_type = 'idea';
     } else {
         $coins_type = null;
     }
 
     //Read Type & Coins
-    $ui .= '<div class="simple-line"><a href="/@'.$ln['read__type'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4593]['m_name'].( strlen($sources__4593[$ln['read__type']]['m_desc']) ? ': '.$sources__4593[$ln['read__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$sources__4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($sources__4593[$ln['read__type']]['m_icon']).'">'. $sources__4593[$ln['read__type']]['m_icon'] . '&nbsp;' . $sources__4593[$ln['read__type']]['m_name'] . '</span>'.($coins_type ? '&nbsp;<span title="'.$coins_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coins_type.'"></i></span>' : '').'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$read['read__type'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4593]['m_name'].( strlen($sources__4593[$read['read__type']]['m_desc']) ? ': '.$sources__4593[$read['read__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$sources__4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($sources__4593[$read['read__type']]['m_icon']).'">'. $sources__4593[$read['read__type']]['m_icon'] . '&nbsp;' . $sources__4593[$read['read__type']]['m_name'] . '</span>'.($coins_type ? '&nbsp;<span title="'.$coins_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coins_type.'"></i></span>' : '').'</a></div>';
 
 
     //Hide Sensitive Details?
-    if(in_array($ln['read__type'] , $CI->config->item('sources_id_4755')) && (!$session_source || $ln['read__source']!=$session_source['source__id']) && !superpower_active(12701, true)){
+    if(in_array($read['read__type'] , $CI->config->item('sources_id_4755')) && (!$session_source || $read['read__source']!=$session_source['source__id']) && !superpower_active(12701, true)){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -405,27 +405,27 @@ function view_interaction($ln, $is_parent_tr = false)
     } else {
 
         //Metadata
-        if(strlen($ln['read__metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="@p12722?read__id=' . $ln['read__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
+        if(strlen($read['read__metadata']) > 0){
+            $ui .= '<div class="simple-line"><a href="@p12722?read__id=' . $read['read__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
         }
 
         //Order
-        if($ln['read__sort'] > 0){
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4370]['m_name']. '"><span class="icon-block">'.$sources__4341[4370]['m_icon']. '</span>'.view_ordinal($ln['read__sort']).'</span></div>';
+        if($read['read__sort'] > 0){
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4370]['m_name']. '"><span class="icon-block">'.$sources__4341[4370]['m_icon']. '</span>'.view_ordinal($read['read__sort']).'</span></div>';
         }
 
 
         //Message
-        if(strlen($ln['read__message']) > 0 && $ln['read__message']!='@'.$ln['read__up']){
-            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4372]['m_name'].'"><span class="icon-block">'.$sources__4341[4372]['m_icon'].'</span><div class="title-block read-msg">'.htmlentities($ln['read__message']).'</div></div>';
+        if(strlen($read['read__message']) > 0 && $read['read__message']!='@'.$read['read__up']){
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4372]['m_name'].'"><span class="icon-block">'.$sources__4341[4372]['m_icon'].'</span><div class="title-block read-msg">'.htmlentities($read['read__message']).'</div></div>';
         }
 
 
         //Creator (Do not repeat)
-        if($ln['read__source'] > 0 && $ln['read__source']!=$ln['read__up'] && $ln['read__source']!=$ln['read__down']){
+        if($read['read__source'] > 0 && $read['read__source']!=$read['read__up'] && $read['read__source']!=$read['read__down']){
 
             $add_sources = $CI->SOURCE_model->fetch(array(
-                'source__id' => $ln['read__source'],
+                'source__id' => $read['read__source'],
             ));
 
             $ui .= '<div class="simple-line"><a href="/@'.$add_sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($add_sources[0]['source__icon']).'"><span class="img-block">'.view_source__icon($add_sources[0]['source__icon']) . '</span> ' . $add_sources[0]['source__title'] . '</span></a></div>';
@@ -442,30 +442,30 @@ function view_interaction($ln, $is_parent_tr = false)
         foreach($CI->config->item('sources__10692') as $source__id => $m) {
 
             //Do we have this set?
-            if(!intval($ln[$sources__6232[$source__id]['m_desc']])){
+            if(!intval($read[$sources__6232[$source__id]['m_desc']])){
                 continue;
             }
 
             if(in_array(6160 , $m['m_parents'])){
 
                 //SOURCE
-                $sources = $CI->SOURCE_model->fetch(array('source__id' => $ln[$sources__6232[$source__id]['m_desc']]));
+                $sources = $CI->SOURCE_model->fetch(array('source__id' => $read[$sources__6232[$source__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.( $ln[$sources__6232[$source__id]['m_desc']]==$ln['read__source'] ? $sources__4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['source__icon']).' img-block">'.view_source__icon($sources[0]['source__icon']). '&nbsp;'.$sources[0]['source__title'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.( $read[$sources__6232[$source__id]['m_desc']]==$read['read__source'] ? $sources__4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['source__icon']).' img-block">'.view_source__icon($sources[0]['source__icon']). '&nbsp;'.$sources[0]['source__title'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
                 //IDEA
-                $ideas = $CI->IDEA_model->fetch(array('idea__id' => $ln[$sources__6232[$source__id]['m_desc']]));
+                $ideas = $CI->IDEA_model->fetch(array('idea__id' => $read[$sources__6232[$source__id]['m_desc']]));
 
                 $ui .= '<div class="simple-line"><a href="/g'.$ideas[0]['idea__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.$sources__2738[4535]['m_icon']. '&nbsp;'.view_idea__title($ideas[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
                 //PARENT READ
-                $lns = $CI->READ_model->fetch(array('read__id' => $ln[$sources__6232[$source__id]['m_desc']]));
+                $reads = $CI->READ_model->fetch(array('read__id' => $read[$sources__6232[$source__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'">'.$sources__4341[$source__id]['m_icon']. '</span><div class="read-ref">'.view_interaction($lns[0], true).'</div></div>';
+                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'">'.$sources__4341[$source__id]['m_icon']. '</span><div class="read-ref">'.view_interaction($reads[0], true).'</div></div>';
 
             }
         }
@@ -1461,7 +1461,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_source_'.$source['source__id'].' source___' . $source['source__id'] . ( $read__id > 0 ? ' tr_' . $source['read__id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $source['source__id'] . '" en-status="' . $source['source__status'] . '" read__id="'.$read__id.'" ln-status="'.( $read__id ? $source['read__status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_source_'.$source['source__id'].' source___' . $source['source__id'] . ( $read__id > 0 ? ' tr_' . $source['read__id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $source['source__id'] . '" en-status="' . $source['source__status'] . '" read__id="'.$read__id.'" read-status="'.( $read__id ? $source['read__status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';

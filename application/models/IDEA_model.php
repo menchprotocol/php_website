@@ -239,9 +239,9 @@ class IDEA_model extends CI_Model
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             '(read__right = '.$idea__id.' OR read__left = '.$idea__id.')' => null,
-        ), array(), 0) as $ln){
+        ), array(), 0) as $read){
             //Delete this link:
-            $links_deleted += $this->READ_model->update($ln['read__id'], array(
+            $links_deleted += $this->READ_model->update($read['read__id'], array(
                 'read__status' => 6173, //Link Deleted
             ), $read__source, 10686 /* Idea Link Unpublished */);
         }

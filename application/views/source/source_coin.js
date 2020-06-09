@@ -438,7 +438,7 @@ function source_modify_load(source__id, read__id) {
     //Only show unlink button if not level 1
     if (parseInt(read__id) > 0) {
 
-        $('#read__status').val($(".source___" + source__id + ":first").attr('ln-status'));
+        $('#read__status').val($(".source___" + source__id + ":first").attr('read-status'));
         $('#source_link_count').val('0');
 
 
@@ -748,7 +748,7 @@ function source_update() {
                     $('.read_type_' + modify_data['read__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__4592[data.js_read__type]["m_name"] + ': ' + js_sources__4592[data.js_read__type]["m_desc"] + '">' + js_sources__4592[data.js_read__type]["m_icon"] + '</span>');
 
                     //Read Status:
-                    $(".source___" + modify_data['source__id']).attr('ln-status', modify_data['read__status'])
+                    $(".source___" + modify_data['source__id']).attr('read-status', modify_data['read__status'])
                     $('.read__status_' + modify_data['read__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__6186[modify_data['read__status']]["m_name"] + ': ' + js_sources__6186[modify_data['read__status']]["m_desc"] + '">' + js_sources__6186[modify_data['read__status']]["m_icon"] + '</span>');
 
                 }

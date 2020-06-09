@@ -77,32 +77,32 @@ class Read extends CI_Controller
         $message = '';
 
         //Fetch links and total link counts:
-        $lns = $this->READ_model->fetch($filters, $joined_by, config_var(11064), $query_offset);
-        $lns_count = $this->READ_model->fetch($filters, $joined_by, 0, 0, array(), 'COUNT(read__id) as total_count');
-        $total_items_loaded = ($query_offset+count($lns));
-        $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);
+        $reads = $this->READ_model->fetch($filters, $joined_by, config_var(11064), $query_offset);
+        $reads_count = $this->READ_model->fetch($filters, $joined_by, 0, 0, array(), 'COUNT(read__id) as total_count');
+        $total_items_loaded = ($query_offset+count($reads));
+        $has_more_links = ($reads_count[0]['total_count'] > 0 && $total_items_loaded < $reads_count[0]['total_count']);
 
 
         //Display filter:
         if($total_items_loaded > 0){
-            $message .= '<div class="montserrat read-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' READS:</div>';
+            $message .= '<div class="montserrat read-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($reads_count[0]['total_count'] , 0) .' READS:</div>';
         }
 
 
-        if(count($lns)>0){
+        if(count($reads)>0){
 
             $message .= '<div class="list-group list-grey">';
-            foreach($lns as $ln) {
+            foreach($reads as $read) {
 
-                $message .= view_interaction($ln);
+                $message .= view_interaction($read);
 
-                if($session_source && strlen($ln['read__message'])>0 && strlen($_POST['read__message_search'])>0 && strlen($_POST['read__message_replace'])>0 && substr_count($ln['read__message'], $_POST['read__message_search'])>0){
+                if($session_source && strlen($read['read__message'])>0 && strlen($_POST['read__message_search'])>0 && strlen($_POST['read__message_replace'])>0 && substr_count($read['read__message'], $_POST['read__message_search'])>0){
 
-                    $new_content = str_replace($_POST['read__message_search'],trim($_POST['read__message_replace']),$ln['read__message']);
+                    $new_content = str_replace($_POST['read__message_search'],trim($_POST['read__message_replace']),$read['read__message']);
 
-                    $this->READ_model->update($ln['read__id'], array(
+                    $this->READ_model->update($read['read__id'], array(
                         'read__message' => $new_content,
-                    ), $session_source['source__id'], 12360, update_description($ln['read__message'], $new_content));
+                    ), $session_source['source__id'], 12360, update_description($read['read__message'], $new_content));
 
                     $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['read__message_search'].'] with ['.trim($_POST['read__message_replace']).']</div>';
 
@@ -116,7 +116,7 @@ class Read extends CI_Controller
                 $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="read_load(link_filters, link_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.view__s($lns_count[0]['total_count']).' have been loaded</div>';
+                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$reads_count[0]['total_count'].' link'.view__s($reads_count[0]['total_count']).' have been loaded</div>';
 
             }
 
@@ -164,13 +164,13 @@ class Read extends CI_Controller
         } elseif (!$detected_read_type['status'] && isset($detected_read_type['url_previously_existed']) && $detected_read_type['url_previously_existed']) {
 
             //See if this is duplicate to either link:
-            $source_lns = $this->READ_model->fetch(array(
+            $source_reads = $this->READ_model->fetch(array(
                 'read__id' => $_POST['read__id'],
                 'read__type IN (' . join(',', $this->config->item('sources_id_4537')) . ')' => null, //Player URL Links
             ));
 
             //Are they both different?
-            if (count($source_lns) < 1 || ($source_lns[0]['read__up'] != $detected_read_type['source_url']['source__id'] && $source_lns[0]['read__down'] != $detected_read_type['source_url']['source__id'])) {
+            if (count($source_reads) < 1 || ($source_reads[0]['read__up'] != $detected_read_type['source_url']['source__id'] && $source_reads[0]['read__down'] != $detected_read_type['source_url']['source__id'])) {
                 //return error:
                 return view_json($detected_read_type);
             }
@@ -339,17 +339,17 @@ class Read extends CI_Controller
         } elseif($_POST['cache_source__id']==4358 /* READ MARKS */){
 
             //Fetch/Validate Link:
-            $lns = $this->READ_model->fetch(array(
+            $reads = $this->READ_model->fetch(array(
                 'read__id' => $_POST['object__id'],
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             ));
-            $read__metadata = unserialize($lns[0]['read__metadata']);
+            $read__metadata = unserialize($reads[0]['read__metadata']);
             if(!$read__metadata){
                 $read__metadata = array();
             }
 
-            if(!count($lns)){
+            if(!count($reads)){
 
                 return view_json(array(
                     'status' => 0,
@@ -383,15 +383,15 @@ class Read extends CI_Controller
         } elseif($_POST['cache_source__id']==4735 /* UNLOCK MIN SCORE */ || $_POST['cache_source__id']==4739 /* UNLOCK MAX SCORE */){
 
             //Fetch/Validate Link:
-            $lns = $this->READ_model->fetch(array(
+            $reads = $this->READ_model->fetch(array(
                 'read__id' => $_POST['object__id'],
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             ));
-            $read__metadata = unserialize($lns[0]['read__metadata']);
+            $read__metadata = unserialize($reads[0]['read__metadata']);
             $field_name = ( $_POST['cache_source__id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
 
-            if(!count($lns)){
+            if(!count($reads)){
 
                 return view_json(array(
                     'status' => 0,

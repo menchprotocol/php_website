@@ -10,11 +10,11 @@ if(!isset($_GET['read__id']) || !intval($_GET['read__id'])){
 
 
     //Fetch link metadata and display it:
-    $lns = $this->READ_model->fetch(array(
+    $reads = $this->READ_model->fetch(array(
         'read__id' => $_GET['read__id'],
     ));
 
-    if (count($lns) < 1) {
+    if (count($reads) < 1) {
 
         echo 'Invalid Read ID';
 
@@ -25,12 +25,12 @@ if(!isset($_GET['read__id']) || !intval($_GET['read__id'])){
     } else {
 
         //unserialize metadata if needed:
-        if(strlen($lns[0]['read__metadata']) > 0){
-            $lns[0]['read__metadata'] = unserialize($lns[0]['read__metadata']);
+        if(strlen($reads[0]['read__metadata']) > 0){
+            $reads[0]['read__metadata'] = unserialize($reads[0]['read__metadata']);
         }
 
         //Print on scree:
-        view_json($lns[0]);
+        view_json($reads[0]);
 
     }
 

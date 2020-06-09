@@ -139,8 +139,8 @@ class Source extends CI_Controller
             'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-        ), array('read__down'), 0, 0, array(), 'read__id') as $ln) {
-            $this->READ_model->update($ln['read__id'], array(
+        ), array('read__down'), 0, 0, array(), 'read__id') as $read) {
+            $this->READ_model->update($read['read__id'], array(
                 'read__sort' => 0,
             ), $session_source['source__id'], 13007 /* SOURCE SORT RESET */);
         }
@@ -940,11 +940,11 @@ class Source extends CI_Controller
         if (intval($_POST['read__id']) > 0) { //DO we have a link to update?
 
             //Yes, first validate source link:
-            $source_lns = $this->READ_model->fetch(array(
+            $source_reads = $this->READ_model->fetch(array(
                 'read__id' => $_POST['read__id'],
                 'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             ));
-            if (count($source_lns) < 1) {
+            if (count($source_reads) < 1) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'INVALID READ ID',
@@ -953,7 +953,7 @@ class Source extends CI_Controller
 
 
             //Status change?
-            if($source_lns[0]['read__status']!=$_POST['read__status']){
+            if($source_reads[0]['read__status']!=$_POST['read__status']){
 
                 if (in_array($_POST['read__status'], $this->config->item('sources_id_7360') /* ACTIVE */)) {
                     $read__status = 10656; //Player Link updated Status
@@ -969,11 +969,11 @@ class Source extends CI_Controller
 
 
             //Link content change?
-            if ($source_lns[0]['read__message'] == $_POST['read__message']) {
+            if ($source_reads[0]['read__message'] == $_POST['read__message']) {
 
                 //Link content has not changed:
-                $js_read__type = $source_lns[0]['read__type'];
-                $read__message = $source_lns[0]['read__message'];
+                $js_read__type = $source_reads[0]['read__type'];
+                $read__message = $source_reads[0]['read__message'];
 
             } else {
 
@@ -990,7 +990,7 @@ class Source extends CI_Controller
 
                     if ($detected_read_type['url_is_root']) {
 
-                        if ($source_lns[0]['read__up'] == 1326) {
+                        if ($source_reads[0]['read__up'] == 1326) {
 
                             //Override with the clean domain for consistency:
                             $_POST['read__message'] = $detected_read_type['url_clean_domain'];
@@ -1007,7 +1007,7 @@ class Source extends CI_Controller
 
                     } else {
 
-                        if ($source_lns[0]['read__up'] == 1326) {
+                        if ($source_reads[0]['read__up'] == 1326) {
 
                             return view_json(array(
                                 'status' => 0,
@@ -1016,7 +1016,7 @@ class Source extends CI_Controller
 
                         } elseif ($detected_read_type['source_domain']) {
                             //We do have the domain mapped! Is this connected to the domain source as its parent?
-                            if ($detected_read_type['source_domain']['source__id'] != $source_lns[0]['read__up']) {
+                            if ($detected_read_type['source_domain']['source__id'] != $source_reads[0]['read__up']) {
                                 return view_json(array(
                                     'status' => 0,
                                     'message' => 'Must link to <b>@' . $detected_read_type['source_domain']['source__id'] . ' ' . $detected_read_type['source_domain']['source__title'] . '</b> as source profile',
@@ -1045,7 +1045,7 @@ class Source extends CI_Controller
 
 
                 //Also, did the link type change based on the content change?
-                if($js_read__type!=$source_lns[0]['read__type']){
+                if($js_read__type!=$source_reads[0]['read__type']){
                     $this->READ_model->update($_POST['read__id'], array(
                         'read__type' => $js_read__type,
                     ), $session_source['source__id'], 10659 /* Player Link updated Type */);
@@ -1081,7 +1081,7 @@ class Source extends CI_Controller
         if (intval($_POST['read__id']) > 0) {
 
             //Fetch source link:
-            $lns = $this->READ_model->fetch(array(
+            $reads = $this->READ_model->fetch(array(
                 'read__id' => $_POST['read__id'],
             ), array('read__source'));
 

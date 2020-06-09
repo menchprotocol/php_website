@@ -1161,14 +1161,14 @@ class READ_model extends CI_Model
                     'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'read__left' => $common_read_idea__id,
-                ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $ln){
+                ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $read){
 
                     //See if this answer was selected:
                     if(count($this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINK
                         'read__left' => $common_read_idea__id,
-                        'read__right' => $ln['idea__id'],
+                        'read__right' => $read['idea__id'],
                         'read__source' => $source__id, //Belongs to this User
                     )))){
 
@@ -1179,16 +1179,16 @@ class READ_model extends CI_Model
                             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                             'read__type IN (' . join(',' , $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
                             'read__source' => $source__id, //Belongs to this User
-                            'read__left' => $ln['idea__id'],
+                            'read__left' => $read['idea__id'],
                         )))){
 
                             //Answer is not completed, go there:
-                            return $ln['idea__id'];
+                            return $read['idea__id'];
 
                         } else {
 
                             //Answer previously completed, see if there is anyting else:
-                            $found_idea__id = $this->READ_model->find_next($source__id, $ln, false);
+                            $found_idea__id = $this->READ_model->find_next($source__id, $read, false);
                             if($found_idea__id != 0){
                                 return $found_idea__id;
                             }
@@ -1330,8 +1330,8 @@ class READ_model extends CI_Model
         }
 
         //Delete Bookmark:
-        foreach($player_reads as $ln){
-            $this->READ_model->update($ln['read__id'], array(
+        foreach($player_reads as $read){
+            $this->READ_model->update($read['read__id'], array(
                 'read__message' => $stop_feedback,
                 'read__status' => 6173, //DELETED
             ), $source__id, $stop_method_id);

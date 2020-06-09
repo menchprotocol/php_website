@@ -1604,14 +1604,14 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     'read__down' => $db_row['source__id'], //This child source
                     'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'source__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-                ), array('read__up'), 0, 0, array('source__weight' => 'DESC')) as $ln) {
+                ), array('read__up'), 0, 0, array('source__weight' => 'DESC')) as $read) {
 
                     //Always add to tags:
-                    array_push($export_row['_tags'], 'alg_source_' . $ln['source__id']);
+                    array_push($export_row['_tags'], 'alg_source_' . $read['source__id']);
 
                     //Add content to keywords if any:
-                    if (strlen($ln['read__message']) > 0) {
-                        $export_row['object__keywords'] .= $ln['read__message'] . ' ';
+                    if (strlen($read['read__message']) > 0) {
+                        $export_row['object__keywords'] .= $read['read__message'] . ' ';
                     }
 
                 }

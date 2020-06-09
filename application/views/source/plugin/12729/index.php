@@ -28,14 +28,14 @@ echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan=
 foreach($this->READ_model->fetch(array(
     'read__type IN (' . join(',', $this->config->item('sources_id_12141')) . ')' => null, //Full
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-), array('read__type'), 0, 0, array('total_reads' => 'DESC'), 'COUNT(read__id) as total_reads, source__title, source__icon, source__id, read__type', 'source__id, source__title, source__icon, read__type') as $ln) {
+), array('read__type'), 0, 0, array('total_reads' => 'DESC'), 'COUNT(read__id) as total_reads, source__title, source__icon, source__id, read__type', 'source__id, source__title, source__icon, read__type') as $read) {
 
     //Determine which weight group this belongs to:
-    $direction = filter_cache_group($ln['source__id'], 2738);
+    $direction = filter_cache_group($read['source__id'], 2738);
 
     echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;"><span class="icon-block">'.$ln['source__icon'].'</span><a href="/@'.$ln['source__id'].'" class="montserrat doupper">'.$ln['source__title'].'</a></td>';
-    echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($ln['total_reads'], 0).'</td>';
+    echo '<td style="text-align: left;"><span class="icon-block">'.$read['source__icon'].'</span><a href="/@'.$read['source__id'].'" class="montserrat doupper">'.$read['source__title'].'</a></td>';
+    echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($read['total_reads'], 0).'</td>';
     echo '</tr>';
 
 }

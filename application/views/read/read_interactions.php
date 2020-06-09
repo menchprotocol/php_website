@@ -358,10 +358,10 @@ echo '</div></td>';
             //Fetch details for this user:
             $all_link_count = 0;
             $select_ui = '';
-            foreach($this->READ_model->fetch($ini_filter, array('read__type'), 0, 0, array('source__title' => 'ASC'), 'COUNT(read__type) as total_count, source__title, read__type', 'read__type, source__title') as $ln) {
+            foreach($this->READ_model->fetch($ini_filter, array('read__type'), 0, 0, array('source__title' => 'ASC'), 'COUNT(read__type) as total_count, source__title, read__type', 'read__type, source__title') as $read) {
                 //Echo drop down:
-                $select_ui .= '<option value="' . $ln['read__type'] . '" ' . ((isset($_GET['read__type']) && $_GET['read__type'] == $ln['read__type']) ? 'selected="selected"' : '') . '>' . $ln['source__title'] . ' ('  . number_format($ln['total_count'], 0) . ')</option>';
-                $all_link_count += $ln['total_count'];
+                $select_ui .= '<option value="' . $read['read__type'] . '" ' . ((isset($_GET['read__type']) && $_GET['read__type'] == $read['read__type']) ? 'selected="selected"' : '') . '>' . $read['source__title'] . ' ('  . number_format($read['total_count'], 0) . ')</option>';
+                $all_link_count += $read['total_count'];
             }
 
             //Now that we know the total show:

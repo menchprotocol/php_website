@@ -177,10 +177,10 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         ), array(), 0, 0, array('read__sort' => 'ASC'));
         $counter = count($messages);
         if($counter){
-            foreach($messages as $message_ln) {
+            foreach($messages as $message_read) {
                 $counter++;
                 $this_tab .= $this->READ_model->send_message(
-                    $message_ln['read__message'],
+                    $message_read['read__message'],
                     $recipient_source
                 );
             }
@@ -271,7 +271,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type' => 12419, //COMMENTS
             'read__right' => $idea_focus['idea__id'],
-        ), array(), 0, 0, array('read__sort' => 'ASC'));
+        ), array('read__source'), 0, 0, array('read__sort' => 'ASC'));
         $counter = count($comments);
 
         if(!$counter && !$recipient_source['source__id']){
@@ -419,16 +419,16 @@ if(!$in_my_reads){
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'read__left' => $idea_focus['idea__id'],
-            ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $ln){
+            ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $read){
                 //See if this answer was seleted:
                 if(count($this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINK
                     'read__left' => $idea_focus['idea__id'],
-                    'read__right' => $ln['idea__id'],
+                    'read__right' => $read['idea__id'],
                     'read__source' => $recipient_source['source__id'],
                 )))){
-                    array_push($read_answers, $ln);
+                    array_push($read_answers, $read);
                 }
             }
 
