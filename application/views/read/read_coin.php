@@ -279,7 +279,9 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             continue;
         }
 
-        $this_tab .= view_idea_note_mix($read__type, $comments, ($recipient_source['source__id'] > 0));
+        $this_tab .= '<div style="margin-bottom:34px;">';
+        $this_tab .= view_idea_note_mix($read__type, $comments);
+        $this_tab .= '</div>';
 
     } else {
 

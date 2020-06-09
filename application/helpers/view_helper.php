@@ -195,7 +195,7 @@ function view_idea__title($idea, $common_prefix = null){
 }
 
 
-function view_idea_notes($ln)
+function view_idea_notes($ln, $is_source = false)
 {
 
     /*
@@ -206,13 +206,12 @@ function view_idea_notes($ln)
      *
      * */
 
+
     $CI =& get_instance();
     $session_source = superpower_assigned();
     $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
-
-
-    //Read Status
-    $sources__6186 = $CI->config->item('sources__6186');
+    $sources__6186 = $CI->config->item('sources__6186'); //Read Status
+    $is_source = ( $is_source || superpower_active(10984, true) );
 
 
     //Build the HTML UI:
@@ -226,7 +225,8 @@ function view_idea_notes($ln)
     $ui .= '</div>';
 
     //Editing menu:
-    $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
+    if($is_source){
+        $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
 
         //Sort:
         if(in_array(4603, $sources__4485[$ln['read__type']]['m_parents'])){
@@ -236,40 +236,39 @@ function view_idea_notes($ln)
         //Modify:
         $ui .= '<span title="MODIFY"><a href="javascript:idea_note_edit_start(' . $ln['read__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
-    $ui .= '</span></div>';
+        $ui .= '</span></div>';
 
 
-    //Text editing:
-    $ui .= '<textarea onkeyup="idea_note_edit_count(' . $ln['read__id'] . ')" name="read__message" id="message_body_' . $ln['read__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($ln['read__message']).'">' . $ln['read__message'] . '</textarea>';
+        //Text editing:
+        $ui .= '<textarea onkeyup="idea_note_edit_count(' . $ln['read__id'] . ')" name="read__message" id="message_body_' . $ln['read__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($ln['read__message']).'">' . $ln['read__message'] . '</textarea>';
 
 
-    //Editing menu:
-    $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
+        //Editing menu:
+        $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
-    //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $ln['read__id'] . '"><span id="charEditingNum' . $ln['read__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
+        //Counter:
+        $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $ln['read__id'] . '"><span id="charEditingNum' . $ln['read__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
 
-    //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_modify(' . $ln['read__id'] . ',' . $ln['read__type'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
+        //Save Edit:
+        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_modify(' . $ln['read__id'] . ',' . $ln['read__type'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
-    //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_edit_cancel(' . $ln['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
+        //Cancel Edit:
+        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_edit_cancel(' . $ln['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
 
-    //Show drop down for message link status:
-    $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
-    $ui .= '<select id="message_status_' . $ln['read__id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
-    foreach($CI->config->item('sources__12012') as $source__id => $m){
-        $ui .= '<option value="' . $source__id . '" '.( $source__id==$ln['read__status'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
+        //Show drop down for message link status:
+        $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
+        $ui .= '<select id="message_status_' . $ln['read__id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
+        foreach($CI->config->item('sources__12012') as $source__id => $m){
+            $ui .= '<option value="' . $source__id . '" '.( $source__id==$ln['read__status'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
+        }
+        $ui .= '</select>';
+        $ui .= '</span></li>';
+
+        //Update result:
+        $ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
+
+        $ui .= '</ul>';
     }
-    $ui .= '</select>';
-    $ui .= '</span></li>';
-
-    //Update result:
-    $ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
-
-
-
-    $ui .= '</ul>';
 
     $ui .= '</div>';
     $ui .= '</div>';
@@ -1210,12 +1209,13 @@ function view_idea_note_source($idea__id, $note_type_source__id, $idea_notes, $i
     return $ui;
 }
 
-function view_idea_note_mix($note_type_source__id, $idea_notes, $is_source){
+function view_idea_note_mix($note_type_source__id, $idea_notes){
 
     $CI =& get_instance();
     $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
     $handles_uploads = (in_array($note_type_source__id, $CI->config->item('sources_id_12359')));
     $handles_url = (in_array($note_type_source__id, $CI->config->item('sources_id_7551')) || in_array($note_type_source__id, $CI->config->item('sources_id_4986')));
+    $session_source = superpower_assigned();
 
 
 
@@ -1224,7 +1224,7 @@ function view_idea_note_mix($note_type_source__id, $idea_notes, $is_source){
 
     if(count($idea_notes)){
         foreach($idea_notes as $idea_notes) {
-            $ui .= view_idea_notes($idea_notes);
+            $ui .= view_idea_notes($idea_notes, ($idea_notes['read__source']==$session_source['source__id']));
         }
     } else {
         $ui .= '<div class="no_notes_' . $note_type_source__id .'" style="margin-bottom:21px;">';
@@ -1234,7 +1234,7 @@ function view_idea_note_mix($note_type_source__id, $idea_notes, $is_source){
 
 
     //ADD NEW:
-    $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $note_type_source__id . ( $is_source ? '' : ' hidden ' ).'">';
+    $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $note_type_source__id .'">';
     $ui .= '<div class="add_notes_form">';
     $ui .= '<form class="box box' . $note_type_source__id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
 

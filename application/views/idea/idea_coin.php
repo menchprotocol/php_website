@@ -72,7 +72,7 @@ echo view_idea_note_mix(4231, $this->READ_model->fetch(array(
     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
     'read__type' => 4231,
     'read__right' => $idea_focus['idea__id'],
-), array(), 0, 0, array('read__sort' => 'ASC')), ($is_source && $is_active));
+), array(), 0, 0, array('read__sort' => 'ASC')));
 
 
 //IDEA TYPE
@@ -199,7 +199,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         ), array(), 0, 0, array('read__sort' => 'ASC'));
 
         $counter = count($idea_notes);
-        $this_tab .= view_idea_note_mix($read__type, $idea_notes, ($is_source && $is_active));
+        $this_tab .= view_idea_note_mix($read__type, $idea_notes);
 
     } elseif($read__type==12589){
 

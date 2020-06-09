@@ -1059,7 +1059,7 @@ function idea_note_modify(read__id, note_type_id) {
 function idea_note_start_adding(note_type_id) {
     $('.save_notes_' + note_type_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
     $('.add_notes_' + note_type_id).addClass('is-working');
-    $('.no_notes_' + note_type_id).addClass('hidden');
+    $('.no_notes_' + note_type_id).remove();
     $('#read__message' + note_type_id).prop("disabled", true);
     $('.remove_loading').hide();
 }

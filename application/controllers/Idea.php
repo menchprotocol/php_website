@@ -607,7 +607,7 @@ class Idea extends CI_Controller {
             'status' => 1,
             'message' => view_idea_notes(array_merge($ln, array(
                 'read__down' => $session_source['source__id'],
-            ))),
+            )), true),
         ));
     }
 
@@ -720,7 +720,7 @@ class Idea extends CI_Controller {
             'status' => 1,
             'message' => view_idea_notes(array_merge($new_messages[0], array(
                 'read__down' => $session_source['source__id'],
-            ))),
+            )), true),
         ));
 
     }
