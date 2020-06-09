@@ -518,7 +518,6 @@ function toggle_search(){
 
 
 function read_toggle_saved(idea__id){
-    $('.share-this').removeClass('hidden');
     $('.toggle_saved').toggleClass('hidden');
     $.post("/read/read_toggle_saved", {
         idea__id:idea__id,

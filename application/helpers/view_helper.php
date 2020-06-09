@@ -1170,11 +1170,6 @@ function view_idea_previous_read($idea__id, $recipient_source){
 
         }
 
-    } else {
-
-        //At the main read Page, just allow to share:
-        //$ui .= '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.share-this\').toggleClass(\'hidden\');" title="'.$sources__11035[13023]['m_name'].'">'.$sources__11035[13023]['m_icon'].'</a></div>';
-
     }
 
     return $ui;

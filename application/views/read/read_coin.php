@@ -233,36 +233,28 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
         }
 
-    } elseif($read__type==12864 && !$is_home_page){
+    } elseif($read__type==12864 && !$is_home_page && $idea_stats['sources_count']){
 
         //EXPERTS
         $counter = $idea_stats['sources_count'];
-        if ($counter) {
-
-            $this_tab .= '<p class="space-content">Ideas mapped from these expert sources:</p>';
-            $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
-            foreach ($idea_stats['sources_array'] as $source_source) {
-                $this_tab .= view_source_basic($source_source);
-            }
-            $this_tab .= '</div>';
-
+        $this_tab .= '<p class="space-content">Ideas mapped from these expert sources:</p>';
+        $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
+        foreach ($idea_stats['sources_array'] as $source_source) {
+            $this_tab .= view_source_basic($source_source);
         }
+        $this_tab .= '</div>';
 
-    } elseif($read__type==7545 && !$is_home_page){
+    } elseif($read__type==7545 && !$is_home_page && $idea_stats['certificate_count']){
 
         //CERTIFICATES
         $counter = $idea_stats['certificate_count'];
-        if ($counter) {
-
-            $this_tab .= '<p class="space-content">Completion may earn you some of the following certificates:</p>';
-            $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
-            foreach ($idea_stats['certificate_array'] as $source_source) {
-                $source_source['read__message'] = ''; //Remove for this
-                $this_tab .= view_source_basic($source_source);
-            }
-            $this_tab .= '</div>';
-
+        $this_tab .= '<p class="space-content">Completion may earn you some of the following certificates:</p>';
+        $this_tab .= '<div class="list-group single-color" style="margin-bottom:34px;">';
+        foreach ($idea_stats['certificate_array'] as $source_source) {
+            $source_source['read__message'] = ''; //Remove for this
+            $this_tab .= view_source_basic($source_source);
         }
+        $this_tab .= '</div>';
 
     } elseif($read__type==12419 && !$is_home_page){
 
@@ -274,13 +266,22 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         ), array('read__source'), 0, 0, array('read__sort' => 'ASC'));
         $counter = count($comments);
 
-        if(!$counter && !$recipient_source['source__id']){
-            //Since no comment and not logged-in to post a comment:
-            continue;
-        }
-
         $this_tab .= '<div style="margin-bottom:34px;">';
         $this_tab .= view_idea_note_mix($read__type, $comments);
+        $this_tab .= '</div>';
+
+    } elseif($read__type==13023 && !$is_home_page){
+
+        //SHARE
+        $this_url = $this->config->item('base_url').'/'.$idea_focus['idea__id'];
+
+        $this_tab .= '<div class="share-this hidden space-content" style="margin-bottom:34px;">';
+        $this_tab .= '<div style="padding-bottom:13px;">Share Idea URL:</div>';
+        $this_tab .= '<input type="url" value="' .$this_url . '" class="form-control border">';
+        $this_tab .= '<div style="padding-bottom:13px;">Or you can share using:</div>';
+        foreach($this->config->item('sources__13023') as $source__id => $m) {
+            $this_tab .= '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="'.$this_url.'" data-title="'.$idea_focus['idea__title'].'" data-image="'.$idea_fetch_cover.'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
+        }
         $this_tab .= '</div>';
 
     } else {
@@ -292,9 +293,13 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
 
 
-
     if(!$counter && in_array($read__type, $this->config->item('sources_id_13298'))){
-        //Hide since Zero:
+        //Hide since Zero count:
+        continue;
+    }
+
+    if(!$recipient_source['source__id'] && in_array($read__type, $this->config->item('sources_id_13304'))){
+        //Hide since Not logged in:
         continue;
     }
 
@@ -603,17 +608,6 @@ if(!$in_my_reads){
 
     }
 }
-
-
-//Share this button, only visible after saving:
-echo '<div class="share-this hidden space-content">';
-    echo '<div class="doclear">&nbsp;</div>';
-    echo '<div style="padding-bottom:13px;">Share using:</div>';
-    foreach($this->config->item('sources__13023') as $source__id => $m) {
-        echo '<div class="icon-block"><div data-network="'.$m['m_desc'].'" data-url="'.$this->config->item('base_url').'/'.$idea_focus['idea__id'].'" data-title="'.$idea_focus['idea__title'].'" data-image="'.$idea_fetch_cover.'" class="st-custom-button" title="Share This Idea Using '.$m['m_name'].'">'.$m['m_icon'].'</div></div>';
-    }
-echo '</div>';
-
 
 ?>
 </div>
