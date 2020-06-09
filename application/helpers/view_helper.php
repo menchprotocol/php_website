@@ -1211,22 +1211,24 @@ function view_idea_note_mix($note_type_source__id, $idea_notes){
     $handles_uploads = (in_array($note_type_source__id, $CI->config->item('sources_id_12359')));
     $handles_url = (in_array($note_type_source__id, $CI->config->item('sources_id_7551')) || in_array($note_type_source__id, $CI->config->item('sources_id_4986')));
     $session_source = superpower_assigned();
+    $ui = '';
 
 
 
-    //Show no-Message notifications for each message type:
-    $ui = '<div id="idea_notes_list_'.$note_type_source__id.'" class="list-group">';
-
-    if(count($idea_notes)){
-        foreach($idea_notes as $idea_notes) {
-            $ui .= view_idea_notes($idea_notes, ($idea_notes['read__source']==$session_source['source__id']));
-        }
-    } else {
-        $ui .= '<div class="no_notes_' . $note_type_source__id .'" style="margin-bottom:21px;">';
+    if(!count($idea_notes)){
+        $ui .= '<div class="no_notes_' . $note_type_source__id .'" style="margin-bottom:13px;">';
         $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$sources__4485[$note_type_source__id]['m_icon'].'</span>No '.ucwords(strtolower($sources__4485[$note_type_source__id]['m_name'])).' yet, Be the first to post one!</div>';
         $ui .= '</div>';
     }
 
+
+    //Show no-Message notifications for each message type:
+    $ui .= '<div id="idea_notes_list_'.$note_type_source__id.'" class="list-group">';
+
+    //List current notes:
+    foreach($idea_notes as $idea_notes) {
+        $ui .= view_idea_notes($idea_notes, ($idea_notes['read__source']==$session_source['source__id']));
+    }
 
     //ADD NEW:
     $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $note_type_source__id .'">';
