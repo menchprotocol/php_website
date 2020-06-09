@@ -275,7 +275,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         //SHARE
         $this_url = $this->config->item('base_url').'/'.$idea_focus['idea__id'];
 
-        $this_tab .= '<div class="share-this hidden space-content" style="margin-bottom:34px;">';
+        $this_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
         $this_tab .= '<div style="padding-bottom:13px;">Share Idea URL:</div>';
         $this_tab .= '<input type="url" value="' .$this_url . '" class="form-control border">';
         $this_tab .= '<div style="padding-bottom:13px;">Or you can share using:</div>';
