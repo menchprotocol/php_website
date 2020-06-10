@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-10 09:50:25 PST
+//Generated 2020-06-10 13:06:23 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -3467,12 +3467,12 @@ $config['sources__11035'] = array(
 );
 
 //IDEA TABS:
-$config['sources_id_11018'] = array(11020,4601,12419,4983,7545,12969,6255,12896,6146,10573,12589,11047);
+$config['sources_id_11018'] = array(11020,4601,12419,10573,12589,4983,7545,12969,6255,12896,6146,11047);
 $config['sources__11018'] = array(
     11020 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'NEXT IDEAS',
-        'm_desc' => 'Defines what needs to be read next',
+        'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
     ),
     4601 => array(
@@ -3487,10 +3487,22 @@ $config['sources__11018'] = array(
         'm_desc' => '',
         'm_parents' => array(13304,13291,11018,12359,5967,10593,12322,4986,11089,4593,4485),
     ),
+    10573 => array(
+        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_name' => 'MY IDEAS',
+        'm_desc' => '',
+        'm_parents' => array(13211,11054,4527,10984,11018,11035,11089,12321,4593,7551,4485),
+    ),
+    12589 => array(
+        'm_icon' => '<i class="fad fa-edit idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LIST EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(12702,11018,4527,12590),
+    ),
     4983 => array(
         'm_icon' => '<i class="fas fa-user-edit source" aria-hidden="true"></i>',
         'm_name' => 'IDEA SOURCES',
-        'm_desc' => 'People & Content referencing this idea',
+        'm_desc' => '',
         'm_parents' => array(11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
     ),
     7545 => array(
@@ -3522,18 +3534,6 @@ $config['sources__11018'] = array(
         'm_name' => 'UNFINISHED',
         'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
-    ),
-    10573 => array(
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
-        'm_desc' => '',
-        'm_parents' => array(13211,11054,4527,10984,11018,11035,11089,12321,4593,7551,4485),
-    ),
-    12589 => array(
-        'm_icon' => '<i class="fad fa-edit idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA LIST EDITOR',
-        'm_desc' => '',
-        'm_parents' => array(12702,11018,4527,12590),
     ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down idea" aria-hidden="true"></i>',
