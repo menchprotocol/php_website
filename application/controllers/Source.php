@@ -543,10 +543,10 @@ class Source extends CI_Controller
                 } else {
 
                     //Let's first find/add the domain:
-                    $url_source = $this->SOURCE_model->domain($_POST['source_new_string'], $session_source['source__id']);
+                    $url_domain = $this->SOURCE_model->domain($_POST['source_new_string'], $session_source['source__id']);
 
                     //Link to this source:
-                    $focus_source = $url_source['source_domain'];
+                    $focus_source = $url_domain['source_domain'];
                 }
 
             } else {
@@ -605,18 +605,18 @@ class Source extends CI_Controller
 
             if (isset($url_source['url_is_root']) && $url_source['url_is_root']) {
 
+                $read__message = $url_source['clean_url'];
                 $read__type = 4256; //Generic URL (Domains always are generic)
+
+            } elseif (isset($url_source['source_domain']) && $url_source['source_domain']) {
+
                 $read__message = $url_source['clean_url'];
-
-            } elseif (isset($url_source['source_domain'])) {
-
                 $read__type = $url_source['read__type'];
-                $read__message = $url_source['clean_url'];
 
             } else {
 
-                $read__type = 4230; //Raw
                 $read__message = null;
+                $read__type = 4230; //Raw
 
             }
 
