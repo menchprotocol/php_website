@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-09 16:03:49 PST
+//Generated 2020-06-10 09:50:25 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -3056,7 +3056,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.413',
+        'm_desc' => 'v1.42',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -3472,19 +3472,19 @@ $config['sources__11018'] = array(
     11020 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
         'm_name' => 'NEXT IDEAS',
-        'm_desc' => 'Define reading flow',
+        'm_desc' => 'Defines what needs to be read next',
         'm_parents' => array(12675,12413,11018),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-tags idea" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
-        'm_desc' => 'Improve idea search',
+        'm_desc' => '',
         'm_parents' => array(10984,11018,12322,10593,4593,4485),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments idea" aria-hidden="true"></i>',
         'm_name' => 'COMMENTS',
-        'm_desc' => 'Contributor-only chats',
+        'm_desc' => '',
         'm_parents' => array(13304,13291,11018,12359,5967,10593,12322,4986,11089,4593,4485),
     ),
     4983 => array(
@@ -3496,7 +3496,7 @@ $config['sources__11018'] = array(
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
-        'm_desc' => 'Profile(s) enhancements once idea is read',
+        'm_desc' => '',
         'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,12321,7551,4593,4485),
     ),
     12969 => array(
@@ -3520,19 +3520,19 @@ $config['sources__11018'] = array(
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
         'm_name' => 'UNFINISHED',
-        'm_desc' => 'Players who failed to complete read',
+        'm_desc' => '',
         'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEAS',
-        'm_desc' => 'Active contributors',
+        'm_desc' => '',
         'm_parents' => array(13211,11054,4527,10984,11018,11035,11089,12321,4593,7551,4485),
     ),
     12589 => array(
         'm_icon' => '<i class="fad fa-edit idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LIST EDITOR',
-        'm_desc' => 'Mass modify next ideas',
+        'm_desc' => '',
         'm_parents' => array(12702,11018,4527,12590),
     ),
     11047 => array(

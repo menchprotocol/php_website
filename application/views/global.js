@@ -124,36 +124,6 @@ function load_editor(){
             }
         }]);
 
-        $('.idea_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-            $(this).val('#' + suggestion.object__id + ' ' + suggestion.object__title);
-
-        }).autocomplete({hint: false, minLength: 2}, [{
-
-            source: function (q, cb) {
-                algolia_index.search(q, {
-                    filters: 'object__type=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ')',
-                    hitsPerPage: 5,
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            },
-            displayKey: function (suggestion) {
-                return '#' + suggestion.object__id + ' ' + suggestion.object__title;
-            },
-            templates: {
-                suggestion: function (suggestion) {
-                    return view_search_result(suggestion);
-                },
-                empty: function (data) {
-                    return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
-                },
-            }
-        }]);
     }
 }
 
@@ -317,51 +287,22 @@ $(document).ready(function () {
                         //Now determine the filters we need to apply:
                         var search_filters = '';
 
+                        if(search_only_source || search_only_in){
+                            search_filters += ' object__type='+( search_only_in ? 4535 : 4536 );
+                        }
+
                         if(js_pl_id > 0){
 
                             //For Players:
-                            if(search_only_source || search_only_in){
-
-                                if(search_only_source && js_session_superpowers_assigned.includes(12701)){
-
-                                    //Can view ALL Players:
-                                    search_filters += 'object__type=4536 ';
-
-                                } else {
-
-                                    //Can view limited sources:
-                                    search_filters += 'object__type='+( search_only_in ? 4535 : 4536 )+' AND ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ') ';
-                                }
-
-                            } else {
-
-                                if(js_session_superpowers_assigned.includes(12701)){
-
-                                    //no filter
-
-                                } else {
-
-                                    //Can view limited sources:
-                                    search_filters += ' ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ' ) ';
-
-                                }
-
+                            if(!js_session_superpowers_assigned.includes(12701)){
+                                //Can view limited sources:
+                                search_filters += ' AND ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ' ) ';
                             }
 
                         } else {
 
-                            //For Guests:
-                            if(search_only_source || search_only_in){
-
-                                //Guest can search sources only with a starting @ sign
-                                search_filters += '(object__type='+( search_only_in ? 4535 : 4536 )+' AND _tags:is_featured)';
-
-                            } else {
-
-                                //Guest can search ideas only by default as they start typing;
-                                search_filters += '(object__type=4535 AND _tags:is_featured)';
-
-                            }
+                            //Guest can search ideas only by default as they start typing;
+                            search_filters += ' AND _tags:is_featured ';
 
                         }
 
@@ -657,7 +598,7 @@ function idea_load_search(element_focus, is_idea_previous, shortcut, is_add_mode
             } else {
                 algolia_index.search(q, {
 
-                    filters: 'object__type=4535 AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ')',
+                    filters: ' object__type=4535 ' + ( js_session_superpowers_assigned.includes(12701) ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ') ' ),
                     hitsPerPage:( is_add_mode=='link_in' ? 7 : 10 ),
 
                 }, function (error, content) {
