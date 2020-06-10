@@ -391,7 +391,7 @@ function source_count_connections($source__id, $return_html = true){
     }
 
     //Plugin?
-    if(in_array($source__id, $CI->config->item('sources_id_6287'))){
+    if(superpower_active(12699, true) && in_array($source__id, $CI->config->item('sources_id_6287'))){
         $source_count_connections[6287] = ( $return_html ? '<a href="@p'.$source__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
     }
 
