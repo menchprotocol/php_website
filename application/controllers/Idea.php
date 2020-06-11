@@ -541,13 +541,13 @@ class Idea extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_source = superpower_assigned(10939);
+        $session_source = superpower_assigned();
 
         if (!$session_source) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => view_unauthorized_message(),
             ));
 
         } elseif (!isset($_POST['idea__id']) || intval($_POST['idea__id']) < 1) {

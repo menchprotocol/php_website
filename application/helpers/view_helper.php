@@ -1290,18 +1290,21 @@ function view_unauthorized_message($superpower_source__id = 0){
     $session_source = superpower_assigned($superpower_source__id);
 
     if(!$session_source){
+        if(!$superpower_source__id){
 
-        //Missing Session
-        return 'You must login to continue.';
+            //Missing Session
+            return 'You must login to continue.';
 
-    } elseif($superpower_source__id>0) {
+        } else {
 
-        //Missing Superpower:
-        $CI =& get_instance();
-        $sources__10957 = $CI->config->item('sources__10957');
-        return 'You are missing the required superpower of '.$sources__10957[$superpower_source__id]['m_name'];
+            //Missing Superpower:
+            $CI =& get_instance();
+            $sources__10957 = $CI->config->item('sources__10957');
+            return 'You are missing the required superpower of '.$sources__10957[$superpower_source__id]['m_name'];
 
+        }
     }
+
 
     return null;
 
