@@ -226,7 +226,7 @@ function view_idea_notes($read, $is_source = false)
 
     //Editing menu:
     if($is_source){
-        $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'"><span class="show-on-hover">';
+        $ui .= '<div class="note-editor edit-off"><span class="show-on-hover">';
 
         //Sort:
         if(in_array(4603, $sources__4485[$read['read__type']]['m_parents'])){
@@ -244,7 +244,7 @@ function view_idea_notes($read, $is_source = false)
 
 
         //Editing menu:
-        $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
+        $ui .= '<ul class="msg-nav">';
 
         //Counter:
         $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $read['read__id'] . '"><span id="charEditingNum' . $read['read__id'] . '">0</span>/' . config_var(4485) . '</span></li>';

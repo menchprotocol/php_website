@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-11 08:19:22 PST
+//Generated 2020-06-11 08:30:06 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -171,7 +171,7 @@ $config['sources__13037'] = array(
     ),
 );
 
-//TOPICS:
+//TOPICS OF INTEREST:
 $config['sources_id_10869'] = array(10712,13033,10735,10739,10809,10719,13031,10711,10781,10774,10782,10775,10769,10721,10737,13034,10738,11125,10773,7325,13036);
 $config['sources__10869'] = array(
     10712 => array(
@@ -2515,7 +2515,7 @@ $config['sources__12079'] = array(
     ),
     10869 => array(
         'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
-        'm_name' => 'TOPICS',
+        'm_name' => 'TOPICS OF INTEREST',
         'm_desc' => '',
         'm_parents' => array(12079,6225,6122,7305,4527),
     ),
@@ -4857,7 +4857,7 @@ $config['sources__4527'] = array(
     ),
     10869 => array(
         'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
-        'm_name' => 'TOPICS',
+        'm_name' => 'TOPICS OF INTEREST',
         'm_desc' => '',
         'm_parents' => array(12079,6225,6122,7305,4527),
     ),
@@ -6290,7 +6290,7 @@ $config['sources__6225'] = array(
     ),
     10869 => array(
         'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
-        'm_name' => 'TOPICS',
+        'm_name' => 'TOPICS OF INTEREST',
         'm_desc' => '',
         'm_parents' => array(12079,6225,6122,7305,4527),
     ),
