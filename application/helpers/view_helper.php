@@ -858,7 +858,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="/g'.$idea['idea__id'].'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
+            $ui .= '<span class="icon-block"><a href="/g'.$idea['idea__id'].( isset($_GET['read__source']) ? 'read__source?='.intval($_GET['read__source']) : '' ).'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
 
 
             //IDEA TITLE
