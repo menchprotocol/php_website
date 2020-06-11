@@ -296,13 +296,19 @@ $(document).ready(function () {
                             //For Players:
                             if(!js_session_superpowers_assigned.includes(12701)){
                                 //Can view limited sources:
-                                search_filters += ' AND ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ' ) ';
+                                if(search_filters.length>0){
+                                    search_filters += ' AND ';
+                                }
+                                search_filters += ' ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ' ) ';
                             }
 
                         } else {
 
                             //Guest can search ideas only by default as they start typing;
-                            search_filters += ' AND _tags:is_featured ';
+                            if(search_filters.length>0){
+                                search_filters += ' AND ';
+                            }
+                            search_filters += ' _tags:is_featured ';
 
                         }
 
