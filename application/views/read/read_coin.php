@@ -177,6 +177,8 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             'read__right' => $idea_focus['idea__id'],
         ), array(), 0, 0, array('read__sort' => 'ASC'));
         $counter = count($messages);
+
+        $this_tab .= '<div style="margin-bottom:34px;">';
         if($counter){
             foreach($messages as $message_read) {
                 $counter++;
@@ -188,6 +190,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         } else {
             $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea has no messages</div>';
         }
+        $this_tab .= '</div>';
 
     } elseif($read__type==12273 && !$is_home_page && $idea_stats['ideas_average']>$chapters){
 
@@ -532,6 +535,8 @@ if(!$in_my_reads){
 
         //TEXT RESPONSE
 
+        echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR RESPONSE:</div>';
+
         echo '<textarea class="border i_content padded read_input" placeholder="Write answer here" id="read_text_answer">'.( count($read_completes) ? trim($read_completes[0]['read__message']) : '' ).'</textarea>';
 
         echo '<div class="text_saving_result margin-top-down"></div>';
@@ -579,7 +584,9 @@ if(!$in_my_reads){
 
             echo '<div class="file_saving_result">';
 
-            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->send_message($read_completes[0]['read__message']).'</div>';
+            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div>';
+
+            echo '<div class="previous_answer">'.$this->READ_model->send_message($read_completes[0]['read__message']).'</div>';
 
             echo '</div>';
 
