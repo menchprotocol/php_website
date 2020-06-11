@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-11 08:12:29 PST
+//Generated 2020-06-11 08:19:22 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -1577,19 +1577,19 @@ $config['sources__12279'] = array(
         'm_icon' => '<i class="fas fa-alicorn source"></i>',
         'm_name' => 'ALICORN BOLD',
         'm_desc' => '',
-        'm_parents' => array(12279),
+        'm_parents' => array(10984,12279),
     ),
     12281 => array(
         'm_icon' => '<i class="far fa-alicorn source"></i>',
         'm_name' => 'ALICORN LIGHT',
         'm_desc' => '',
-        'm_parents' => array(12279),
+        'm_parents' => array(10984,12279),
     ),
     12282 => array(
         'm_icon' => '<i class="fad fa-alicorn source"></i>',
         'm_name' => 'ALICORN MIX',
         'm_desc' => '',
-        'm_parents' => array(12279),
+        'm_parents' => array(10984,12279),
     ),
     12286 => array(
         'm_icon' => '<i class="fas fa-bat source" aria-hidden="true"></i>',
@@ -1937,19 +1937,19 @@ $config['sources__12279'] = array(
         'm_icon' => '<i class="fas fa-pegasus source"></i>',
         'm_name' => 'PEGASUS BOLD',
         'm_desc' => '',
-        'm_parents' => array(12279),
+        'm_parents' => array(12700,12279),
     ),
     12307 => array(
         'm_icon' => '<i class="far fa-pegasus source"></i>',
         'm_name' => 'PEGASUS LIGHT',
         'm_desc' => '',
-        'm_parents' => array(12279),
+        'm_parents' => array(12700,12279),
     ),
     12305 => array(
         'm_icon' => '<i class="fad fa-pegasus source" aria-hidden="true"></i>',
         'm_name' => 'PEGASUS MIX',
         'm_desc' => '',
-        'm_parents' => array(12279),
+        'm_parents' => array(12700,12279),
     ),
     12257 => array(
         'm_icon' => '<i class="fas fa-pig source" aria-hidden="true"></i>',
