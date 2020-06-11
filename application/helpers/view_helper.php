@@ -1458,7 +1458,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     //SOURCE
     $ui .= '<td class="MENCHcolumn1">';
 
-    $source_url = ( $is_read_progress ? '/'.$this->uri->segment(1).'?read__source='.$source['source__id'] : '/@'.$source['source__id'] );
+    $source_url = ( $is_read_progress ? '/'.$CI->uri->segment(1).'?read__source='.$source['source__id'] : '/@'.$source['source__id'] );
 
     //SOURCE ICON
     $ui .= '<a href="'.$source_url.'" '.( $is_link_source ? ' title="READ ID '.$source['read__id'].' TYPE @'.$source['read__type'].' SORT '.$source['read__sort'].' WEIGHT '.$source['source__weight'].'" ' : '' ).'><span class="icon-block source_ui_icon_' . $source['source__id'] . ' source__icon_'.$source['source__id'].'" en-is-set="'.( strlen($source['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($source['source__icon']) . '</span></a>';
