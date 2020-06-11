@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-10 17:16:12 PST
+//Generated 2020-06-11 08:12:29 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -1109,7 +1109,7 @@ $config['sources__12574'] = array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => '',
-        'm_parents' => array(12574,11089,12205,11035,4527),
+        'm_parents' => array(12571,12574,11089,12205,11035,4527),
     ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
@@ -1137,8 +1137,14 @@ $config['sources__12575'] = array(
 );
 
 //SOURCE LAYOUT OPEN BY DEFAULT:
-$config['sources_id_12571'] = array(12273,11029,11030,13046);
+$config['sources_id_12571'] = array(6225,12273,11029,11030,13046);
 $config['sources__12571'] = array(
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'ACCOUNT SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(12571,12574,11089,12205,11035,4527),
+    ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
@@ -2522,7 +2528,7 @@ $config['sources__11089'] = array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => '',
-        'm_parents' => array(12574,11089,12205,11035,4527),
+        'm_parents' => array(12571,12574,11089,12205,11035,4527),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-user-circle idea" aria-hidden="true"></i>',
@@ -3306,7 +3312,7 @@ $config['sources__11035'] = array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
-        'm_parents' => array(12574,11089,12205,11035,4527),
+        'm_parents' => array(12571,12574,11089,12205,11035,4527),
     ),
     12749 => array(
         'm_icon' => '<i class="fas fa-pen-square idea"></i>',
@@ -4139,7 +4145,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => '',
-        'm_parents' => array(12574,11089,12205,11035,4527),
+        'm_parents' => array(12571,12574,11089,12205,11035,4527),
     ),
     10956 => array(
         'm_icon' => '<i class="fad fa-paw-alt source" aria-hidden="true"></i>',
