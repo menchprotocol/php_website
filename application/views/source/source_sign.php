@@ -101,11 +101,9 @@ if(count($current_sign_idea_attempt) == 0){
         <!-- Step 4: Create New Account -->
         <div id="step4" class="signup-steps hidden">
 
-            <div class="read-topic montserrat"><span class="icon-block-sm"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT</div>
-
             <!-- pre-set Email -->
             <div class="margin-top-down">
-                <span class="montserrat"><?= $sources__4269[3288]['m_icon'].' '.$sources__4269[3288]['m_name'] ?>:</span>
+                <span class="montserrat"><i class="fas fa-user-plus"></i> NEW ACCOUNT:</span>
                 <div><span class="focus_email"></span></div>
             </div>
 
