@@ -670,6 +670,10 @@ img.no-radius {
     border-radius: 10px;
 }
 
+.black.active {
+    color: #fff !important;
+}
+
 .tab-content{
     padding:0;
 }
