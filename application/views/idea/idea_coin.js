@@ -167,7 +167,7 @@ function source_source_only_search(note_type_id) {
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 'object__type=4536' + extra_filters,
-                    hitsPerPage: 7,
+                    hitsPerPage: 10,
                 }, function (error, content) {
                     if (error) {
                         cb([]);

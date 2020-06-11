@@ -184,7 +184,7 @@ function source_load_search(element_focus, is_source_parent, shortcut) {
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 'object__type=4536',
-                    hitsPerPage: 7,
+                    hitsPerPage: 10,
                 }, function (error, content) {
                     if (error) {
                         cb([]);
