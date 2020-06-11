@@ -1169,9 +1169,10 @@ function idea_note_add_text(note_type_id) {
 
             //Reset input field:
             $("#read__message" + note_type_id).val("");
+            autosize.update($("#read__message" + note_type_id));
+
             idea_note_count_new(note_type_id);
             idea_note_counter(note_type_id, +1);
-            autosize.update($('.text__'+note_type_id+'_'+idea_loaded_id));
 
         }
 
