@@ -206,11 +206,9 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         //NEXT EDITOR
         $dropdown_options = '';
         $input_options = '';
-        $counter = 0;
 
         foreach($this->config->item('sources__12589') as $action_source__id => $source_list_action) {
 
-            $counter++;
             $dropdown_options .= '<option value="' . $action_source__id . '">' .$source_list_action['m_name'] . '</option>';
 
 

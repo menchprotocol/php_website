@@ -835,12 +835,11 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
     //IDAE INFO BAR
     $box_items_list = '';
+
     //READ STATUS
     if($read__id && !in_array($idea['read__status'], $CI->config->item('sources_id_7359'))){
-        $box_items_list .= '<span class="inline-block read__status_' . $read__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$sources__6186[$idea['read__status']]['m_name'].' @'.$idea['read__status'].'">' . $sources__6186[$idea['read__status']]['m_icon'] . '</span>&nbsp;</span>';
+        $box_items_list .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$sources__6186[$idea['read__status']]['m_name'].' @'.$idea['read__status'].'">' . $sources__6186[$idea['read__status']]['m_icon'] . '</span>&nbsp;</span>';
     }
-
-
 
 
     $ui = '<div read__id="' . $read__id . '" idea-id="' . $idea['idea__id'] . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_idea_'.$idea['idea__id'] . ' idea_line_' . $idea['idea__id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' idea__tr_'.$read__id.' '.$extra_class.'" style="padding-left:0;">';
@@ -857,23 +856,15 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
             //IDEA TITLE
-            if($show_toolbar && $is_idea_link){
+            $ui .= view_input_text(4736, $idea['idea__title'], $idea['idea__id'], $is_source, (($idea['read__sort']*100)+1));
 
-                $ui .= view_input_text(4736, $idea['idea__title'], $idea['idea__id'], $is_source, (($idea['read__sort']*100)+1));
+            if(!$show_toolbar){
 
-            } else {
-
-                $ui .= '<a href="/g'.$idea['idea__id'].'" class="title-block montserrat">';
                 $ui .= $box_items_list;
 
-                //IDEA STATUS
-                if(!$is_public && $is_idea_link){
-                    //Show the drafting status:
+                if($is_idea_link && !$is_public){
                     $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$idea['idea__status']]['m_name'].' @'.$idea['idea__status'].'">' . $sources__4737[$idea['idea__status']]['m_icon'] . '</span>&nbsp;</span>';
                 }
-
-                $ui .= view_idea__title($idea); //IDEA TITLE
-                $ui .= '</a>';
 
             }
 
@@ -1473,21 +1464,12 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //SOURCE TOOLBAR?
-    if($show_toolbar){
+    $ui .= view_input_text(6197, $source['source__title'], $source['source__id'], $is_source, 0, false, null, extract_icon_color($source['source__icon']));
+    $ui .= $child_counter;
+    $ui .= '<div class="space-content">'.$box_items_list.'</div>';
 
-        $ui .= view_input_text(6197, $source['source__title'], $source['source__id'], $is_source, 0, false, null, extract_icon_color($source['source__icon']));
-        $ui .= $child_counter;
-        $ui .= '<div class="space-content">'.$box_items_list.'</div>';
-
-    } else {
-
-        //SOURCE NAME
-        $ui .= '<a href="/@'.$source['source__id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($source['source__icon']).'">';
+    if(!$show_toolbar){
         $ui .= $box_items_list;
-        $ui .= '<span class="text__6197_' . $source['source__id'] . '">'.$source['source__title'].'</span>';
-        $ui .= $child_counter;
-        $ui .= '</a>';
-
     }
 
     $ui .= '</td>';

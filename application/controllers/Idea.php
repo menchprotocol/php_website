@@ -111,7 +111,7 @@ class Idea extends CI_Controller {
 
 
         //Mass Editing?
-        if (superpower_active(12702, true) && isset($_POST['mass_action_source__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_source__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_source__id']])) {
+        if (isset($_POST['mass_action_source__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_source__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_source__id']])) {
 
             //Process mass action:
             $process_mass_action = $this->IDEA_model->mass_update($idea__id, intval($_POST['mass_action_source__id']), $_POST['mass_value1_'.$_POST['mass_action_source__id']], $_POST['mass_value2_'.$_POST['mass_action_source__id']], $session_source['source__id']);

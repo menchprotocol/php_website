@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-10 13:06:23 PST
+//Generated 2020-06-10 17:06:20 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -986,25 +986,25 @@ $config['sources_id_12589'] = array(12591,12592,12611,12612);
 $config['sources__12589'] = array(
     12591 => array(
         'm_icon' => '<i class="fas fa-plus-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE+',
+        'm_name' => 'SOURCE ADD',
         'm_desc' => '',
         'm_parents' => array(4593,12589),
     ),
     12592 => array(
         'm_icon' => '<i class="fas fa-minus-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE-',
+        'm_name' => 'SOURCE REMOVE',
         'm_desc' => '',
         'm_parents' => array(4593,12589),
     ),
     12611 => array(
         'm_icon' => '<i class="fad fa-layer-plus idea" aria-hidden="true"></i>',
-        'm_name' => 'PREVIOUS+',
+        'm_name' => 'PREVIOUS IDEA ADD',
         'm_desc' => '',
         'm_parents' => array(4593,12589),
     ),
     12612 => array(
         'm_icon' => '<i class="fad fa-layer-minus idea" aria-hidden="true"></i>',
-        'm_name' => 'PREVIOUS-',
+        'm_name' => 'PREVIOUS IDEA REMOVE',
         'm_desc' => '',
         'm_parents' => array(4593,12589),
     ),
@@ -3494,10 +3494,10 @@ $config['sources__11018'] = array(
         'm_parents' => array(13211,11054,4527,10984,11018,11035,11089,12321,4593,7551,4485),
     ),
     12589 => array(
-        'm_icon' => '<i class="fad fa-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-list idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LIST EDITOR',
         'm_desc' => '',
-        'm_parents' => array(12702,11018,4527,12590),
+        'm_parents' => array(11018,4527,12590),
     ),
     4983 => array(
         'm_icon' => '<i class="fas fa-user-edit source" aria-hidden="true"></i>',
@@ -3567,18 +3567,12 @@ $config['sources__10990'] = array(
 );
 
 //SUPERPOWERS:
-$config['sources_id_10957'] = array(12700,12702,10986,10939,12673,10984,12701,12705,10967,12703,12699,12706);
+$config['sources_id_10957'] = array(12700,10986,10939,12673,10984,12701,12705,10967,12703,12699,12706);
 $config['sources__10957'] = array(
     12700 => array(
         'm_icon' => '<i class="fad fa-link idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA CHAIN',
         'm_desc' => 'Advance Idea Linking',
-        'm_parents' => array(10957),
-    ),
-    12702 => array(
-        'm_icon' => '<i class="fad fa-list idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA LIST EDIT',
-        'm_desc' => 'Mass Edit Ideas',
         'm_parents' => array(10957),
     ),
     10986 => array(
@@ -4226,10 +4220,10 @@ $config['sources__4527'] = array(
         'm_parents' => array(4527,12841),
     ),
     12589 => array(
-        'm_icon' => '<i class="fad fa-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-list idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LIST EDITOR',
         'm_desc' => '',
-        'm_parents' => array(12702,11018,4527,12590),
+        'm_parents' => array(11018,4527,12590),
     ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down idea" aria-hidden="true"></i>',
@@ -6970,7 +6964,7 @@ $config['sources__4755'] = array(
 );
 
 //READ TYPE:
-$config['sources_id_4593'] = array(7545,6415,12419,4235,12773,4250,6182,12453,4229,4228,10686,10663,10664,12612,12611,12592,12591,6226,10676,10678,10679,10677,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,10573,5001,10625,5943,12318,5865,4999,4998,5000,5982,5981,11956,5003,12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,6224,12328,7578,4553,7562,12896,7563,4251,6157,7489,4246,6178,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,4559,13006,13007,10654,6144,5007,7485,7486,6997,12489,4994,12906);
+$config['sources_id_4593'] = array(7545,6415,12419,4235,12773,4250,6182,12453,4229,4228,10686,10663,10664,12611,12612,12591,12592,6226,10676,10678,10679,10677,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,10573,5001,10625,5943,12318,5865,4999,4998,5000,5982,5981,11956,5003,12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,6143,7492,4552,6140,6224,12328,7578,4553,7562,12896,7563,4251,6157,7489,4246,6178,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,4559,13006,13007,10654,6144,5007,7485,7486,6997,12489,4994,12906);
 $config['sources__4593'] = array(
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
@@ -7050,27 +7044,27 @@ $config['sources__4593'] = array(
         'm_desc' => '',
         'm_parents' => array(4593,4229),
     ),
-    12612 => array(
-        'm_icon' => '<i class="fad fa-layer-minus idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA LIST EDITOR PREVIOUS-',
-        'm_desc' => '',
-        'm_parents' => array(4593,12589),
-    ),
     12611 => array(
         'm_icon' => '<i class="fad fa-layer-plus idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA LIST EDITOR PREVIOUS+',
+        'm_name' => 'IDEA LIST EDITOR PREVIOUS IDEA ADD',
         'm_desc' => '',
         'm_parents' => array(4593,12589),
     ),
-    12592 => array(
-        'm_icon' => '<i class="fas fa-minus-circle source" aria-hidden="true"></i>',
-        'm_name' => 'IDEA LIST EDITOR SOURCE-',
+    12612 => array(
+        'm_icon' => '<i class="fad fa-layer-minus idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LIST EDITOR PREVIOUS IDEA REMOVE',
         'm_desc' => '',
         'm_parents' => array(4593,12589),
     ),
     12591 => array(
         'm_icon' => '<i class="fas fa-plus-circle source" aria-hidden="true"></i>',
-        'm_name' => 'IDEA LIST EDITOR SOURCE+',
+        'm_name' => 'IDEA LIST EDITOR SOURCE ADD',
+        'm_desc' => '',
+        'm_parents' => array(4593,12589),
+    ),
+    12592 => array(
+        'm_icon' => '<i class="fas fa-minus-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LIST EDITOR SOURCE REMOVE',
         'm_desc' => '',
         'm_parents' => array(4593,12589),
     ),
