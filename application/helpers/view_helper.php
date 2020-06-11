@@ -250,13 +250,13 @@ function view_idea_notes($read, $is_source = false)
         $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $read['read__id'] . '"><span id="charEditingNum' . $read['read__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
 
         //Save Edit:
-        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_modify(' . $read['read__id'] . ',' . $read['read__type'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
+        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_modify(' . $read['read__id'] . ',' . $read['read__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
         //Cancel Edit:
-        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_edit_cancel(' . $read['read__id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
+        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_edit_cancel(' . $read['read__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
         //Show drop down for message link status:
-        $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
+        $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 5px 0 0; display: block;">';
         $ui .= '<select id="message_status_' . $read['read__id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
         foreach($CI->config->item('sources__12012') as $source__id => $m){
             $ui .= '<option value="' . $source__id . '" '.( $source__id==$read['read__status'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
