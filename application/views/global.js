@@ -1171,7 +1171,7 @@ function idea_note_add_text(note_type_id) {
             $("#read__message" + note_type_id).val("");
             idea_note_count_new(note_type_id);
             idea_note_counter(note_type_id, +1);
-            autosize($('.text__'+note_type_id+'_'+idea_loaded_id));
+            autosize.update($('.text__'+note_type_id+'_'+idea_loaded_id));
 
         }
 
