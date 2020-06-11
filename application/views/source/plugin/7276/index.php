@@ -8,12 +8,12 @@
  * */
 
 if(isset($_GET['idea__id'])){
-    $match_columns = array(
+    $query_filters = array(
         'idea__id' => intval($_GET['idea__id']),
     );
 } else {
     //All Featured:
-    $match_columns = array(
+    $query_filters = array(
         'idea__status IN (' . join(',', $this->config->item('sources_id_12138')) . ')' => null, //FEATURED
     );
 }
@@ -25,7 +25,7 @@ $stats = array(
 );
 
 $already_scanned = array(); //Keeps track of those
-foreach($this->IDEA_model->fetch($match_columns, 0, 0, array('idea__weight' => 'DESC')) as $idea){
+foreach($this->IDEA_model->fetch($query_filters, 0, 0, array('idea__weight' => 'DESC')) as $idea){
 
     if(in_array($idea['idea__id'], $already_scanned)){
         continue;

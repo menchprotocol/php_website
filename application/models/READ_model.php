@@ -430,7 +430,7 @@ class READ_model extends CI_Model
 
     }
 
-    function fetch($match_columns = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('read__id' => 'DESC'), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('read__id' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
@@ -454,7 +454,7 @@ class READ_model extends CI_Model
             $this->db->join('mench_sources', 'read__source=source__id','left');
         }
 
-        foreach($match_columns as $key => $value) {
+        foreach($query_filters as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
             } else {
@@ -611,13 +611,13 @@ class READ_model extends CI_Model
         return $affected_rows;
     }
 
-    function max_order($match_columns)
+    function max_order($query_filters)
     {
 
         //Fetches the maximum order value
         $this->db->select('MAX(read__sort) as largest_order');
         $this->db->from('mench_interactions');
-        foreach($match_columns as $key => $value) {
+        foreach($query_filters as $key => $value) {
             $this->db->where($key, $value);
         }
         $q = $this->db->get();

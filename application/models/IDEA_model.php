@@ -87,14 +87,14 @@ class IDEA_model extends CI_Model
         }
     }
 
-    function fetch($match_columns = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
     {
 
         //The basic fetcher for Ideas
         $this->db->select($select);
         $this->db->from('mench_ideas');
 
-        foreach($match_columns as $key => $value) {
+        foreach($query_filters as $key => $value) {
             $this->db->where($key, $value);
         }
 

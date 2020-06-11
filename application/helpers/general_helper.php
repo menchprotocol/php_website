@@ -690,7 +690,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
     if($read__type==12273){
 
         $join_objects = array('read__up');
-        $match_columns = array(
+        $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__right' => $idea__id,
@@ -700,7 +700,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
     } elseif($read__type==6255){
 
         $join_objects = array('read__source');
-        $match_columns = array(
+        $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
             'read__left' => $idea__id,
@@ -713,7 +713,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->READ_model->fetch($match_columns, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('read__id' => 'DESC') ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
+    $query = $CI->READ_model->fetch($query_filters, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('read__id' => 'DESC') ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -759,7 +759,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
         $order_columns = array('source__weight' => 'DESC'); //BEST SOURCES
         $join_objects = array('read__down');
-        $match_columns = array(
+        $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
             'read__source' => $source__id,
@@ -769,7 +769,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
         $order_columns = array('idea__weight' => 'DESC'); //BEST IDEAS
         $join_objects = array('read__right');
-        $match_columns = array(
+        $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__up' => $source__id,
@@ -779,7 +779,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
         $order_columns = array('read__id' => 'DESC'); //LATEST READS
         $join_objects = array('read__left');
-        $match_columns = array(
+        $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
             'read__source' => $source__id,
@@ -792,7 +792,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->READ_model->fetch($match_columns, $join_objects, config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
+    $query = $CI->READ_model->fetch($query_filters, $join_objects, config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];

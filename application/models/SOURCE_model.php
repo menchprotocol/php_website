@@ -142,13 +142,13 @@ class SOURCE_model extends CI_Model
         }
     }
 
-    function fetch($match_columns = array(), $limit = 0, $limit_offset = 0, $order_columns = array('source__title' => 'ASC'), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array('source__title' => 'ASC'), $select = '*', $group_by = null)
     {
 
         //Fetch the target sources:
         $this->db->select($select);
         $this->db->from('mench_sources');
-        foreach($match_columns as $key => $value) {
+        foreach($query_filters as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
             } else {

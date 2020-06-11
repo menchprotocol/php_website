@@ -558,11 +558,17 @@ function view_cache($config_var_name, $source__id, $micro_status = true, $data_p
 function view_coins_count_read($idea__id = 0, $source__id = 0){
 
     $CI =& get_instance();
-    $read_coins = $CI->READ_model->fetch(array(
+    $query_filters = array(
         'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null,
         ( $idea__id > 0 ? 'read__left' : 'read__source' ) => ( $idea__id > 0 ? $idea__id : $source__id ),
-    ), array(), 1, 0, array(), 'COUNT(read__id) as totals');
+    );
+
+    if(isset($_GET['read__source'])){
+        $query_filters['read__source'] = intval($_GET['read__source']);
+    }
+
+    $read_coins = $CI->READ_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(read__id) as totals');
 
     if($read_coins[0]['totals'] > 0){
         return '<span class="montserrat read"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($read_coins[0]['totals']).'</span>';
