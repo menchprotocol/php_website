@@ -83,7 +83,8 @@ class Idea extends CI_Controller {
          * comes through /iID
          *
          * */
-        return redirect_message((idea_is_source($idea__id) ? '/i' : '/' ) . $idea__id . ( isset($_GET['read__source']) ? '?read__source='.$_GET['read__source'] : '' ) );
+        $idea_is_source = idea_is_source($idea__id);
+        return redirect_message(( $idea_is_source ? '/i' : '/' ) . $idea__id . ( $idea_is_source && isset($_GET['read__source']) ? '?read__source='.$_GET['read__source'] : '' ) );
     }
 
 
