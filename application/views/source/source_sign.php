@@ -103,20 +103,20 @@ if(count($current_sign_idea_attempt) == 0){
 
             <!-- pre-set Email -->
             <div class="margin-top-down">
-                <span class="montserrat"><i class="fas fa-user-plus"></i> NEW ACCOUNT:</span>
+                <span class="montserrat"><span class="icon-block"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT:</span>
                 <div><span class="focus_email"></span></div>
             </div>
 
 
             <!-- Full Name -->
             <div class="margin-top-down">
-                <span class="montserrat"><?= str_replace(' source','',$sources__4269[13025]['m_icon']).' '.$sources__4269[13025]['m_name'] ?>:</span>
+                <span class="montserrat"><?= '<span class="icon-block">'.str_replace(' source','',$sources__4269[13025]['m_icon']).'</span>'.$sources__4269[13025]['m_name'] ?>:</span>
                 <div class="form-group is-empty"><input type="text" placeholder="<?= $sources__4269[13025]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat"></div>
             </div>
 
             <!-- New Password -->
             <div class="margin-top-down">
-                <span class="montserrat"><?= $sources__4269[3286]['m_icon'] ?> NEW PASSWORD:</span>
+                <span class="montserrat"><span class="icon-block"><?= $sources__4269[3286]['m_icon'] ?></span>NEW PASSWORD:</span>
                 <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
             </div>
 
