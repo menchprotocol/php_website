@@ -670,7 +670,7 @@ img.no-radius {
     border-radius: 10px;
 }
 
-.black.active, .black.active i {
+.black.active, .black.active i, .grey.active, .grey.active i {
     color: #fff !important;
 }
 
