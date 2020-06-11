@@ -29,14 +29,14 @@ if(!$is_source){
     echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/idea/idea_request_invite/'.$idea_focus['idea__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/idea/idea_become_source/'.$idea_focus['idea__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
-if(isset($_GET['read__source'])){
+if(isset($_GET['focus__source'])){
     //Filtered Specific Source:
     $source_filters = $this->SOURCE_model->fetch(array(
-        'source__id' => $_GET['read__source'],
+        'source__id' => intval($_GET['focus__source']),
         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
     ));
     if(count($source_filters)){
-        echo '<div class="alert alert-danger no-margin"><span class="icon-block"><i class="fas fa-filter read"></i></span>Reads Filtered to <a href="/@'.$source_filters[0]['source__id'].'" class="'.extract_icon_color($source_filters[0]['source__icon']).'">' . view_source__icon($source_filters[0]['source__icon']) . '&nbsp;' . $source_filters[0]['source__title'].'</a> (<a href="/'.$this->uri->segment(1).'">Remove Filter</a>)</div>';
+        echo '<div class="alert alert-danger no-margin"><span class="icon-block"><i class="fas fa-filter read"></i></span>Showing Reads of <a href="/@'.$source_filters[0]['source__id'].'" class="'.extract_icon_color($source_filters[0]['source__icon']).'">' . view_source__icon($source_filters[0]['source__icon']) . '&nbsp;' . $source_filters[0]['source__title'].'</a> Only (<a href="/'.$this->uri->segment(1).'">Remove Filter</a>)</div>';
     }
 }
 

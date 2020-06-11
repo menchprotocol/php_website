@@ -564,8 +564,8 @@ function view_coins_count_read($idea__id = 0, $source__id = 0){
         ( $idea__id > 0 ? 'read__left' : 'read__source' ) => ( $idea__id > 0 ? $idea__id : $source__id ),
     );
 
-    if(isset($_GET['read__source'])){
-        $query_filters['read__source'] = intval($_GET['read__source']);
+    if(isset($_GET['focus__source'])){
+        $query_filters['read__source'] = intval($_GET['focus__source']);
     }
 
     $read_coins = $CI->READ_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(read__id) as totals');
@@ -856,10 +856,8 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     $ui .= '<td class="MENCHcolumn1">';
         $ui .= '<div class="block">';
 
-
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="/g'.$idea['idea__id'].( isset($_GET['read__source']) ? '?read__source='.intval($_GET['read__source']) : '' ).'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
-
+            $ui .= '<span class="icon-block"><a href="/g'.$idea['idea__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' ).'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
 
             //IDEA TITLE
             $ui .= view_input_text(4736, $idea['idea__title'], $idea['idea__id'], $is_source, (($idea['read__sort']*100)+1));
@@ -1464,7 +1462,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     //SOURCE
     $ui .= '<td class="MENCHcolumn1">';
 
-    $source_url = ( $is_read_progress ? '/'.$CI->uri->segment(1).'?read__source='.$source['source__id'] : '/@'.$source['source__id'] );
+    $source_url = ( $is_read_progress ? '/'.$CI->uri->segment(1).'?focus__source='.$source['source__id'] : '/@'.$source['source__id'] );
 
     //SOURCE ICON
     $ui .= '<a href="'.$source_url.'" '.( $is_link_source ? ' title="READ ID '.$source['read__id'].' TYPE @'.$source['read__type'].' SORT '.$source['read__sort'].' WEIGHT '.$source['source__weight'].'" ' : '' ).'><span class="icon-block source_ui_icon_' . $source['source__id'] . ' source__icon_'.$source['source__id'].'" en-is-set="'.( strlen($source['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($source['source__icon']) . '</span></a>';
