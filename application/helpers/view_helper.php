@@ -1464,12 +1464,21 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //SOURCE TOOLBAR?
-    $ui .= view_input_text(6197, $source['source__title'], $source['source__id'], $is_source, 0, false, null, extract_icon_color($source['source__icon']));
-    $ui .= $child_counter;
-    $ui .= '<div class="space-content">'.$box_items_list.'</div>';
+    if($show_toolbar){
 
-    if(!$show_toolbar){
+        $ui .= view_input_text(6197, $source['source__title'], $source['source__id'], $is_source, 0, false, null, extract_icon_color($source['source__icon']));
+        $ui .= $child_counter;
+        $ui .= '<div class="space-content">'.$box_items_list.'</div>';
+
+    } else {
+
+        //SOURCE NAME
+        $ui .= '<a href="/@'.$source['source__id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($source['source__icon']).'">';
         $ui .= $box_items_list;
+        $ui .= '<span class="text__6197_' . $source['source__id'] . '">'.$source['source__title'].'</span>';
+        $ui .= $child_counter;
+        $ui .= '</a>';
+
     }
 
     $ui .= '</td>';
