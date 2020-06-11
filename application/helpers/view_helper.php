@@ -856,19 +856,30 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     $ui .= '<td class="MENCHcolumn1">';
         $ui .= '<div class="block">';
 
+            //IDAE Link:
+            $idea_link = '/g'.$idea['idea__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
+
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="/g'.$idea['idea__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' ).'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
+            $ui .= '<span class="icon-block"><a href="'.$idea_link.'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
 
             //IDEA TITLE
-            $ui .= view_input_text(4736, $idea['idea__title'], $idea['idea__id'], $is_source, (($idea['read__sort']*100)+1));
+            if($show_toolbar && $is_idea_link){
 
-            if(!$show_toolbar){
+                $ui .= view_input_text(4736, $idea['idea__title'], $idea['idea__id'], $is_source, (($idea['read__sort']*100)+1));
 
+            } else {
+
+                $ui .= '<a href="'.$idea_link.'" class="title-block montserrat">';
                 $ui .= $box_items_list;
 
-                if($is_idea_link && !$is_public){
+                //IDEA STATUS
+                if(!$is_public && $is_idea_link){
+                    //Show the drafting status:
                     $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$idea['idea__status']]['m_name'].' @'.$idea['idea__status'].'">' . $sources__4737[$idea['idea__status']]['m_icon'] . '</span>&nbsp;</span>';
                 }
+
+                $ui .= view_idea__title($idea); //IDEA TITLE
+                $ui .= '</a>';
 
             }
 
