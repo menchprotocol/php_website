@@ -104,7 +104,7 @@ if(count($current_sign_idea_attempt) == 0){
             <!-- pre-set Email -->
             <div class="margin-top-down">
                 <span class="montserrat" style="padding-bottom: 3px;"><span class="icon-block"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT:</span>
-                <div><span class="focus_email"></span></div>
+                <div><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
             </div>
 
 
