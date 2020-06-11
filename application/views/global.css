@@ -861,11 +861,11 @@ textarea.note-textarea{
     padding: 8px 0 7px;
 }
 .reading-paths{
-    width:85px;
+    width:89px;
     display: inline-block;
 }
 .reading-count{
-    min-width:39px;
+    min-width:43px;
     display: inline-block;
 }
 .space-content{
