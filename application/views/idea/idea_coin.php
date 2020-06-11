@@ -36,7 +36,7 @@ if(isset($_GET['read__source'])){
         'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
     ));
     if(count($source_filters)){
-        echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-filter source"></i></span>Read stats filtered to <a href="/@'.$source_filters[0]['source__id'].'" class="montserrat">'.$source_filters[0]['source__title'].'</a></div>';
+        echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-filter source"></i></span>Reads Filtered to <a href="/@'.$source_filters[0]['source__id'].'" class="'.extract_icon_color($source_filters[0]['source__icon']).'"><span class="icon-block">' . view_source__icon($source_filters[0]['source__icon']) . '</span>'.$source_filters[0]['source__title'].'</a> (<a href="/'.$CI->uri->segment(1).'">Reset</a>)</div>';
     }
 }
 
