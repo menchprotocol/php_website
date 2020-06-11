@@ -619,12 +619,12 @@ class Idea extends CI_Controller {
         //TODO: MERGE WITH FUNCTION read_file_upload()
 
         //Authenticate Player:
-        $session_source = superpower_assigned(10939);
+        $session_source = superpower_assigned();
         if (!$session_source) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => view_unauthorized_message(),
             ));
 
         } elseif (!isset($_POST['idea__id'])) {
