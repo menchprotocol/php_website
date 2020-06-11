@@ -1062,14 +1062,15 @@ function view_idea_list($idea, $ideas_next, $recipient_source, $prefix_statement
 
         //List children so they know what's ahead:
         $common_prefix = idea_calc_common_prefix($ideas_next, 'idea__title');
-        $prefix_statement = ( $prefix_statement ? $prefix_statement : $common_prefix );
 
-        echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>UP NEXT:'.(strlen($prefix_statement) ? ' '.trim($prefix_statement) : '').'</div>';
+        echo '<div class="read-topic">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
+
         echo '<div class="list-group">';
         foreach($ideas_next as $key => $next_idea){
             echo view_idea_read($next_idea, $common_prefix);
         }
         echo '</div>';
+
     }
 
     if($show_next){

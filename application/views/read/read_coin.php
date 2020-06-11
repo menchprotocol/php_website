@@ -358,7 +358,7 @@ if(!$in_my_reads){
 
     //Did we have any steps unlocked?
     if(count($unlocked_reads) > 0){
-        view_idea_list($idea_focus, $unlocked_reads, $recipient_source, '<span class="icon-block"><i class="fas fa-lock-open"></i></span>UNLOCKED:', false);
+        view_idea_list($idea_focus, $unlocked_reads, $recipient_source, 'UNLOCKED:', false);
     }
 
 
@@ -382,7 +382,7 @@ if(!$in_my_reads){
         if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
             //List Unlock paths:
-            view_idea_list($idea_focus, $unlock_paths, $recipient_source, '<span class="icon-block">&nbsp;</span>SUGGESTED IDEAS:');
+            view_idea_list($idea_focus, $unlock_paths, $recipient_source, 'SUGGESTED IDEAS:');
 
         }
 
@@ -443,7 +443,7 @@ if(!$in_my_reads){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_idea_list($idea_focus, $read_answers, $recipient_source, '<span class="icon-block">&nbsp;</span>YOU ANSWERED:', false);
+                view_idea_list($idea_focus, $read_answers, $recipient_source, 'YOU ANSWERED:', false);
 
                 echo '<div class="doclear">&nbsp;</div>';
 
