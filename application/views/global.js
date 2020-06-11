@@ -179,7 +179,7 @@ function loadtab(read__type, tab_data_id, note_idea__id, owner_source__id){
     $('.tab-nav-'+read__type+'.tab-head-'+tab_data_id).addClass('active');
 
     //Focus on potential input field if any:
-    $('#read__message'+tab_data_id).focus();
+    $('.input_note_'+tab_data_id).focus();
 
 }
 

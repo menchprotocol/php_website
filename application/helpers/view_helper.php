@@ -1243,7 +1243,7 @@ function view_idea_note_mix($note_type_source__id, $idea_notes){
 
 
 
-    $ui .= '<textarea onkeyup="idea_note_count_new('.$note_type_source__id.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $note_type_source__id . '" id="read__message' . $note_type_source__id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+    $ui .= '<textarea onkeyup="idea_note_count_new('.$note_type_source__id.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$note_type_source__id.'" note-type-id="' . $note_type_source__id . '" id="read__message' . $note_type_source__id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
