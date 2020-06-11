@@ -257,7 +257,7 @@ function view_idea_notes($read, $is_source = false)
 
         //Show drop down for message link status:
         $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 5px 0 0; display: block;">';
-        $ui .= '<select id="message_status_' . $read['read__id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
+        $ui .= '<select id="message_status_' . $read['read__id'] . '"  class="form-control border" style="margin-bottom:0;">';
         foreach($CI->config->item('sources__12012') as $source__id => $m){
             $ui .= '<option value="' . $source__id . '" '.( $source__id==$read['read__status'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
         }
