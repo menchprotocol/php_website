@@ -1458,9 +1458,10 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     //SOURCE
     $ui .= '<td class="MENCHcolumn1">';
 
+    $source_url = ( $is_read_progress ? '/'.$this->uri->segment(1).'?read__source='.$source['source__id'] : '/@'.$source['source__id'] );
 
     //SOURCE ICON
-    $ui .= '<a href="/@'.$source['source__id'] . '" '.( $is_link_source ? ' title="READ ID '.$source['read__id'].' TYPE @'.$source['read__type'].' SORT '.$source['read__sort'].' WEIGHT '.$source['source__weight'].'" ' : '' ).'><span class="icon-block source_ui_icon_' . $source['source__id'] . ' source__icon_'.$source['source__id'].'" en-is-set="'.( strlen($source['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($source['source__icon']) . '</span></a>';
+    $ui .= '<a href="'.$source_url.'" '.( $is_link_source ? ' title="READ ID '.$source['read__id'].' TYPE @'.$source['read__type'].' SORT '.$source['read__sort'].' WEIGHT '.$source['source__weight'].'" ' : '' ).'><span class="icon-block source_ui_icon_' . $source['source__id'] . ' source__icon_'.$source['source__id'].'" en-is-set="'.( strlen($source['source__icon']) > 0 ? 1 : 0 ).'">' . view_source__icon($source['source__icon']) . '</span></a>';
 
 
     //SOURCE TOOLBAR?
@@ -1473,7 +1474,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     } else {
 
         //SOURCE NAME
-        $ui .= '<a href="/@'.$source['source__id'] . '" class="title-block title-no-right montserrat '.extract_icon_color($source['source__icon']).'">';
+        $ui .= '<a href="'.$source_url.'" class="title-block title-no-right montserrat '.extract_icon_color($source['source__icon']).'">';
         $ui .= $box_items_list;
         $ui .= '<span class="text__6197_' . $source['source__id'] . '">'.$source['source__title'].'</span>';
         $ui .= $child_counter;
