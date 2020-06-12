@@ -521,6 +521,7 @@ class Read extends CI_Controller
                 //Find next Idea based on source's Reads:
                 $next_idea__id = $this->READ_model->find_next($session_source['source__id'], $ideas[0]);
                 if($next_idea__id > 0){
+                    die('Found: '.$next_idea__id);
                     return redirect_message('/'.$next_idea__id.$append_url);
                 } else {
                     $next_idea__id = $this->READ_model->find_next_go($session_source['source__id']);
@@ -548,6 +549,9 @@ class Read extends CI_Controller
         return redirect_message('/'.$next_idea__id.$append_url);
 
     }
+
+
+
 
     function previous($previous_level_id, $idea__id){
 
