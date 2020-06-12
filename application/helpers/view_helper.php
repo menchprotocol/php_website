@@ -617,7 +617,7 @@ function view_read_icon_legend($can_click, $completion_percentage){
     $CI =& get_instance();
     $sources__12446 = $CI->config->item('sources__12446'); //READ ICON LEGEND
 
-    if(!$can_click){
+    if(!$can_click || $completion_percentage==0){
         //READ NOT STARTED
         $read_legend = 12448;
     } elseif($completion_percentage<100){
@@ -652,7 +652,7 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
 
     $idea_stats = idea_stats($idea['idea__metadata']);
     $is_saved = ( isset($idea['read__type']) && $idea['read__type']==12896 );
-    $can_click = ( $completion_rate['completion_percentage']>0 || $show_editor || $is_saved ); //|| $recipient_source['source__id']
+    $can_click = ( $completion_rate['completion_percentage']>0 || $show_editor || $is_saved || $recipient_source['source__id'] );
 
 
     //Build View:
@@ -672,7 +672,7 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
 
     $ui .= '<span class="icon-block">'.view_read_icon_legend($can_click, $completion_rate['completion_percentage']).'</span>';
 
-    $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.view_idea__title($idea, $common_prefix).'</b>';
+    $ui .= '<b class="'.( $completion_rate['completion_percentage']>0 ? 'montserrat' : '' ).' idea-url title-block">'.view_idea__title($idea, $common_prefix).'</b>';
 
     //Search for Idea Image:
     if($show_editor){
