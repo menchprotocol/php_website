@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-12 11:38:12 PST
+//Generated 2020-06-12 12:00:47 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -1221,20 +1221,20 @@ $config['sources__12523'] = array(
 $config['sources_id_12446'] = array(12448,12447,13338);
 $config['sources__12446'] = array(
     12448 => array(
-        'm_icon' => '<i class="fas fa-circle read"></i>',
-        'm_name' => 'NOT STARTED',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
+        'm_name' => 'IDEA NOT READ',
         'm_desc' => '',
         'm_parents' => array(12446),
     ),
     12447 => array(
         'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
-        'm_name' => 'IN PROGRESS',
+        'm_name' => 'READ IN PROGRESS',
         'm_desc' => '',
         'm_parents' => array(12446),
     ),
     13338 => array(
         'm_icon' => '<i class="fas fa-check-circle read"></i>',
-        'm_name' => 'COMPLETED',
+        'm_name' => 'READ COMPLETED',
         'm_desc' => '',
         'm_parents' => array(12446),
     ),
