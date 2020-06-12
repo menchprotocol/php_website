@@ -14,7 +14,7 @@ $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $sources__12467 = $this->config->item('sources__12467'); //MENCH COINS
 $idea_type_meet_requirement = in_array($idea_focus['idea__type'], $this->config->item('sources_id_7309'));
 $recipient_source = superpower_assigned();
-$is_home_page = $idea_focus['idea__id']==$this->config->item('featured_idea__id');
+$is_home_page = $idea_focus['idea__id']==$this->config->item('featured_idea__id') || $idea_focus['idea__id']==$this->config->item('starting_idea__id');
 if(!isset($recipient_source['source__id']) ){
     $recipient_source['source__id'] = 0;
 }
