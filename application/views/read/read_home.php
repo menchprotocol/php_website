@@ -31,7 +31,7 @@ $player_reads = $this->READ_model->fetch(array(
 echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>'.$sources__11035[12969]['m_name'].'</div>';
 if(!count($player_reads)){
 
-    echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Nothing added to your '.$sources__11035[12969]['m_name'].' yet. <a href="/" class="underline">Browse &raquo;</a></div>';
+    echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Nothing added yet. <a href="/" class="underline">Browse &raquo;</a></div>';
 
 } else {
 

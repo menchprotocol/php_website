@@ -468,9 +468,7 @@ class Read extends CI_Controller
         if(!$in_my_reads){
             $idea__id_added = $this->READ_model->start($session_source['source__id'], $idea__id);
             if($idea__id_added){
-                if($idea__id_added == $idea__id){
-                    $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>Successfully added to your '.$sources__11035[12969]['m_name'].'. Continue below.</div>';
-                }
+                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>Successfully added to your '.$sources__11035[12969]['m_name'].'. Continue below.</div>';
             } else {
                 //Failed to add to Reads:
                 return redirect_message('/r', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>FAILED to add to your '.$sources__11035[12969]['m_name'].'.</div>');
