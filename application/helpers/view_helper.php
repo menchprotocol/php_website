@@ -623,7 +623,7 @@ function view_read_icon_legend($can_click, $completion_percentage){
     } elseif($completion_percentage<100){
         //READ IN PROGRESS
         $read_legend = 12447;
-    } elseif($completion_percentage<100){
+    } else {
         //READ COMPLETED
         $read_legend = 13338;
     }
