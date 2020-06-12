@@ -453,6 +453,7 @@ class Read extends CI_Controller
         //Adds Idea to the Players Reads
 
         $session_source = superpower_assigned();
+        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
         //Check to see if added to Reads for logged-in users:
         if(!$session_source){
@@ -468,11 +469,11 @@ class Read extends CI_Controller
             $idea__id_added = $this->READ_model->start($session_source['source__id'], $idea__id);
             if($idea__id_added){
                 if($idea__id_added == $idea__id){
-                    $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your Reads. You can now continue below.</div>';
+                    $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added to your '.$sources__11035[12969]['m_icon'].' '.$sources__11035[12969]['m_name'].'. Continue below.</div>';
                 }
             } else {
                 //Failed to add to Reads:
-                return redirect_message('/r', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add idea to your Reads.</div>');
+                return redirect_message('/r', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Failed to add to your '.$sources__11035[12969]['m_icon'].' '.$sources__11035[12969]['m_name'].'.</div>');
             }
         }
 
