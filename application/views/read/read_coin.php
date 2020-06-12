@@ -143,7 +143,7 @@ if ($in_my_reads) {
 
 
 //IDEA TITLE
-echo '<h1 class="block-one" '.( !$recipient_source['source__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_idea_icon( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_idea__title($idea_focus) . '</span></h1>';
+echo '<h1 class="block-one" '.( !$recipient_source['source__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_read_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_idea__title($idea_focus) . '</span></h1>';
 
 
 

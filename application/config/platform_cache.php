@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-12 11:12:38 PST
+//Generated 2020-06-12 11:38:12 PST
 
 //READ TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
@@ -890,7 +890,7 @@ $config['sources__12677'] = array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
         'm_name' => 'UNFINISHED',
         'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+        'm_parents' => array(12701,12677,11018,11089,12228,4527),
     ),
 );
 
@@ -1217,26 +1217,26 @@ $config['sources__12523'] = array(
     ),
 );
 
-//READ ICONS:
-$config['sources_id_12446'] = array(12447,12448,6146);
+//READ ICON LEGEND:
+$config['sources_id_12446'] = array(12448,12447,13338);
 $config['sources__12446'] = array(
-    12447 => array(
-        'm_icon' => '<i class="fad fa-spinner-third read fa-spin" aria-hidden="true"></i>',
-        'm_name' => 'READ IN PROGRESS',
-        'm_desc' => '',
-        'm_parents' => array(12446),
-    ),
     12448 => array(
-        'm_icon' => '<i class="far fa-circle read"></i>',
-        'm_name' => 'READ NOT STARTED',
+        'm_icon' => '<i class="fas fa-circle read"></i>',
+        'm_name' => 'NOT STARTED',
         'm_desc' => '',
         'm_parents' => array(12446),
     ),
-    6146 => array(
-        'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
-        'm_name' => 'UNFINISHED',
+    12447 => array(
+        'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
+        'm_name' => 'IN PROGRESS',
         'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+        'm_parents' => array(12446),
+    ),
+    13338 => array(
+        'm_icon' => '<i class="fas fa-check-circle read"></i>',
+        'm_name' => 'COMPLETED',
+        'm_desc' => '',
+        'm_parents' => array(12446),
     ),
 );
 
@@ -2570,7 +2570,7 @@ $config['sources__11089'] = array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
         'm_name' => 'UNFINISHED',
         'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+        'm_parents' => array(12701,12677,11018,11089,12228,4527),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -3539,7 +3539,7 @@ $config['sources__11018'] = array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
         'm_name' => 'UNFINISHED',
         'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+        'm_parents' => array(12701,12677,11018,11089,12228,4527),
     ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down idea" aria-hidden="true"></i>',
@@ -4545,7 +4545,7 @@ $config['sources__4527'] = array(
     ),
     12446 => array(
         'm_icon' => '<i class="fad fa-question-circle read"></i>',
-        'm_name' => 'READ ICONS',
+        'm_name' => 'READ ICON LEGEND',
         'm_desc' => '',
         'm_parents' => array(4527,6771),
     ),
@@ -4865,7 +4865,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
         'm_name' => 'UNFINISHED',
         'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,12446,11089,12228,4527),
+        'm_parents' => array(12701,12677,11018,11089,12228,4527),
     ),
 );
 

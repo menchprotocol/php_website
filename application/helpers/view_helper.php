@@ -612,8 +612,24 @@ function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = 
     }
 }
 
-function view_idea_icon($can_click, $completion_percentage){
-    return ( $can_click ? ( $completion_percentage>=100 ? '<i class="fas fa-circle read"></i>' : '<i class="fas fa-play-circle read"></i>' ) : '<i class="fas fa-circle idea"></i>' );
+function view_read_icon_legend($can_click, $completion_percentage){
+
+    $CI =& get_instance();
+    $sources__12446 = $CI->config->item('sources__12446'); //READ ICON LEGEND
+
+    if(!$can_click){
+        //READ NOT STARTED
+        $read_legend = 12448;
+    } elseif($completion_percentage<100){
+        //READ IN PROGRESS
+        $read_legend = 12447;
+    } elseif($completion_percentage<100){
+        //READ COMPLETED
+        $read_legend = 13338;
+    }
+
+    return '<span title="'.$sources__12446[$read_legend]['m_name'].'">'.$sources__12446[$read_legend]['m_icon'].'</span>';
+
 }
 
 function view_idea_read($idea, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_source = false)
@@ -654,7 +670,7 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
         $ui .= '<div class="progress-bg-list" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
-    $ui .= '<span class="icon-block">'.view_idea_icon($can_click, $completion_rate['completion_percentage']).'</span>';
+    $ui .= '<span class="icon-block">'.view_read_icon_legend($can_click, $completion_rate['completion_percentage']).'</span>';
 
     $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.view_idea__title($idea, $common_prefix).'</b>';
 
