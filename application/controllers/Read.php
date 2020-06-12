@@ -482,9 +482,9 @@ class Read extends CI_Controller
 
     }
 
-    function next($idea__id = 0){
+    function next($idea__id = 0, $next_idea__id = 0){
 
-        $append_url = '?previous_read='.( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $idea__id );
+        $append_url = '?previous_read='.( !$next_idea__id && isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $idea__id );
         $session_source = superpower_assigned();
         if(!$session_source){
             return redirect_message('/@s');
@@ -519,21 +519,22 @@ class Read extends CI_Controller
 
             }
 
-
-            //Find next Idea based on source's Reads:
-            $next_idea__id = $this->READ_model->find_next($session_source['source__id'], $ideas[0]);
-            if($next_idea__id > 0){
-                return redirect_message('/'.$next_idea__id.$append_url);
-            } else {
-                $next_idea__id = $this->READ_model->find_next_go($session_source['source__id']);
+            if(!$next_idea__id){
+                //Find next Idea based on source's Reads:
+                $next_idea__id = $this->READ_model->find_next($session_source['source__id'], $ideas[0]);
                 if($next_idea__id > 0){
                     return redirect_message('/'.$next_idea__id.$append_url);
                 } else {
-                    return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully readed your entire list.</div></div>');
+                    $next_idea__id = $this->READ_model->find_next_go($session_source['source__id']);
+                    if($next_idea__id > 0){
+                        return redirect_message('/'.$next_idea__id.$append_url);
+                    } else {
+                        return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully readed your entire list.</div></div>');
+                    }
                 }
             }
 
-        } else {
+        } elseif(!$next_idea__id){
 
             //Find the next idea in the Reads:
             $next_idea__id = $this->READ_model->find_next_go($session_source['source__id']);
@@ -544,6 +545,10 @@ class Read extends CI_Controller
             }
 
         }
+
+        //Go to Next Idea:
+        return redirect_message('/'.$next_idea__id.$append_url);
+
     }
 
     function previous($previous_level_id, $idea__id){

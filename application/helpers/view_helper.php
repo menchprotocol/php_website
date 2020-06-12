@@ -652,13 +652,13 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
 
     $idea_stats = idea_stats($idea['idea__metadata']);
     $is_saved = ( isset($idea['read__type']) && $idea['read__type']==12896 );
-    $can_click = ( $completion_rate['completion_percentage']>0 || $show_editor || $is_saved || $recipient_source['source__id'] );
-
+    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $recipient_source );
+    $first_segment = $this->uri->segment(1);
 
     //Build View:
     $ui  = '<div id="ap_idea_'.$idea['idea__id'].'" '.( isset($idea['read__id']) ? ' sort-link-id="'.$idea['read__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemread ' : '' ).'">';
 
-    $ui .= ( $can_click ? '<a href="/'.$idea['idea__id'] . '" class="itemread">' : '' );
+    $ui .= ( $can_click ? '<a href="'. ( $recipient_source && is_numeric($first_segment) ? '/read/next/'.$first_segment.'/'.$idea['idea__id'] : '/'.$idea['idea__id'] ) .'" class="itemread">' : '' );
 
     //Right Stats:
     if($idea_stats['duration_average'] || $idea_stats['ideas_average']){
