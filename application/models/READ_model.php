@@ -1044,7 +1044,6 @@ class READ_model extends CI_Model
     {
 
         //CHECK DOWN/NEXT
-        $completed_first_levels = array();
         $first_incomplete = null;
         $found_trigger = false;
         foreach ($this->READ_model->fetch(array(
@@ -1090,20 +1089,15 @@ class READ_model extends CI_Model
 
             } elseif ($is_complete) {
 
-                array_push($completed_first_levels, $next_idea);
+                //This is complete, but maybe there is a child that's not:
+                $found_next = $this->READ_model->find_next($source__id, $next_idea, 0, false);
+                if ($found_next) {
+                    return $found_next;
+                }
 
             }
         }
 
-
-        //Still here? All first levels are completed:
-        foreach ($completed_first_levels as $next_idea) {
-            //This is complete, but maybe there is a child that's not:
-            $found_next = $this->READ_model->find_next($source__id, $next_idea, 0, false);
-            if ($found_next) {
-                return $found_next;
-            }
-        }
 
 
         if ($search_up) {
