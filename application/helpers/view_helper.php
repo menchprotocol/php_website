@@ -229,7 +229,7 @@ function view_idea_notes($read, $is_source = false)
         $ui .= '<div class="note-editor edit-off"><span class="show-on-hover">';
 
         //Sorting allowed?
-        if(in_array($read['read__type'], $this->config->item('sources_id_4603'))){
+        if(in_array($read['read__type'], $CI->config->item('sources_id_4603'))){
             $ui .= '<span title="SORT"><i class="fas fa-bars idea_note_sorting"></i></span>';
         }
 
