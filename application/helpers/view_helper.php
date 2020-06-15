@@ -386,7 +386,7 @@ function view_interaction($read, $is_parent_tr = false)
         $coins_type = 'read';
     } elseif(in_array($read['read__type'], $CI->config->item('sources_id_12274'))){
         $coins_type = 'source';
-    } elseif(in_array($read['read__type'], $CI->config->item('sources_id_12273')) && $read['read__up']>0){
+    } elseif(in_array($read['read__type'], $CI->config->item('sources_id_12273')) && ($read['read__up']>0 || $read['read__down']>0 || $read['read__left']>0)){
         $coins_type = 'idea';
     } else {
         $coins_type = null;
@@ -585,25 +585,22 @@ function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = 
 
     if($idea__id){
         $mench = 'source';
-        $join_objects = array('read__up');
         $coins_filter = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-            'read__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             'read__right' => $idea__id,
-            //ideator_filter() => null,
+            '(read__up > 0 OR read__down > 0 OR read__left > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
     } elseif($source__id){
         $mench = 'idea';
-        $join_objects = array();
         $coins_filter = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-            'read__up' => $source__id,
+            '(read__up = '.$source__id.' OR read__down = '.$source__id.' OR read__left = '.$source__id.')' => null,
         );
     }
 
-    $source_coins = $CI->READ_model->fetch($coins_filter, $join_objects, 0, 0, array(), 'COUNT(read__id) as totals');
+    $source_coins = $CI->READ_model->fetch($coins_filter, array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     if($number_only){
         return $source_coins[0]['totals'];

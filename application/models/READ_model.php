@@ -208,9 +208,8 @@ class READ_model extends CI_Model
 
                 foreach($this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'read__type' => 7545, //SOURCE APPEND
+                    'read__type' => 7545, //CERTIFICATES
                     'read__right' => $ideas[0]['idea__id'],
-                    'read__up >' => 0, //Source to be tagged for this Idea
                 )) as $read_tag){
 
                     //Generate stats:
@@ -223,7 +222,7 @@ class READ_model extends CI_Model
                     $existing_links = $this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                        'read__up' => $read_tag['read__up'],
+                        'read__up' => $read_tag['read__up'], //CERTIFICATES saved here
                         'read__down' => $add_fields['read__source'],
                     ));
 

@@ -42,10 +42,14 @@ $show_max = config_var(11986);
         echo '</table>';
 
         echo '<div class="list-group">';
+
+        //TODO: Expand to include read__down and read__left for IDEA COINS (Currently only counts read__up)
         foreach($this->READ_model->fetch(array(
+
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up IN (' . join(',', $this->config->item('sources_id_'.$source__id)) . ') AND read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
+
         ), array('read__up'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$source) {
 
             if($count==$show_max){
