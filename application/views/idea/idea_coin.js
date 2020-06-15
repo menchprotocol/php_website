@@ -376,7 +376,7 @@ function idea_add(idea_linked_id, is_parent, idea_link_child_id) {
 
 
             //Add new
-            add_to_list(sort_list_id, sort_handler, data.idea_next_html);
+            add_to_list(sort_list_id, sort_handler, data.next_idea_html);
 
             //Reload sorting to enable sorting for the newly added idea:
             idea_sort_load(idea_linked_id);

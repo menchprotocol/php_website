@@ -243,35 +243,6 @@ if(!isset($hide_header)){
                                 //CLEAR READS
                                 $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')"';
 
-                            } elseif(in_array($read__type, $this->config->item('sources_id_12467'))) {
-
-                                $counts = read_coins_source($read__type, $session_source['source__id']);
-                                if(!$counts){
-                                    continue;
-                                }
-
-                                //HACK FOR MENCH COIN MENU
-                                if($read__type==12273){
-                                    //IDEA
-                                    $source_field = 'read__up';
-                                } elseif($read__type==6255){
-                                    //READ
-                                    $source_field = 'read__source';
-                                } elseif($read__type==12274){
-                                    //SOURCE
-                                    if($counts < 2 && !superpower_active(10939, true)){
-                                        //If 1 then only themselves, which is covered with @12205
-                                        continue;
-                                    }
-                                    $source_field = 'read__source';
-                                }
-
-                                //MENCH COIN
-                                $page_url = 'href="/x?read__status='.join(',', $this->config->item('sources_id_7359')).'&read__type='.join(',', $this->config->item('sources_id_'.$read__type)).'&'.$source_field.'='.$session_source['source__id'].'"';
-
-                                //APPEND COUNT:
-                                $m['m_name'] = view_number($counts).' '.$m['m_name'];
-
                             } else {
 
                                 continue;

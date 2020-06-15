@@ -557,7 +557,7 @@ class Idea extends CI_Controller {
                 'message' => 'Invalid Idea ID',
             ));
 
-        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('sources_id_12322'))) {
+        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('sources_id_4485'))) {
 
             return view_json(array(
                 'status' => 0,
@@ -597,9 +597,12 @@ class Idea extends CI_Controller {
                 )),
             //Referencing attributes:
             'read__type' => intval($_POST['note_type_id']),
-            'read__up' => $msg_validation['read__up'],
             'read__right' => intval($_POST['idea__id']),
             'read__message' => $msg_validation['input_message'],
+            //Source References:
+            'read__up' => $msg_validation['read__up'],
+            'read__down' => $msg_validation['read__down'],
+            'read__left' => $msg_validation['read__left'],
         ), true);
 
 
@@ -634,7 +637,7 @@ class Idea extends CI_Controller {
                 'message' => 'Missing IDEA',
             ));
 
-        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('sources_id_12322'))) {
+        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('sources_id_12359'))) {
 
             return view_json(array(
                 'status' => 0,
@@ -837,7 +840,6 @@ class Idea extends CI_Controller {
             //Now update the DB:
             $this->READ_model->update(intval($_POST['read__id']), array(
                 'read__message' => $msg_validation['input_message'],
-                'read__up' => $msg_validation['read__up'],
             ), $session_source['source__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['read__message'], $msg_validation['input_message']));
 
         }

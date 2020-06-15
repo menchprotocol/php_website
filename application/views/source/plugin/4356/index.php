@@ -96,7 +96,7 @@ foreach($this->IDEA_model->fetch($filters) as $in){
                 if($source_profile['read__type'] == 4257 /* EMBED */){
 
                     //See if we have a Start/End time:
-                    $string_references = extract_source_references($message['read__message'], true);
+                    $string_references = extract_source_references($message['read__message']);
                     if($string_references['ref_time_found']){
                         $start_time = $string_references['ref_time_start'];
                         $end_time = $string_references['ref_time_end'];

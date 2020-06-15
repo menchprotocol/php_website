@@ -76,7 +76,7 @@ function array_flatten($hierarchical_array){
 }
 
 
-function extract_source_references($read__message, $look_for_slice = false)
+function extract_source_references($read__message)
 {
 
     //Analyzes a message text to extract Source References (Like @123) and URLs
@@ -117,17 +117,17 @@ function extract_source_references($read__message, $look_for_slice = false)
             $source__id = intval(substr($word, 1));
             array_push($string_references['ref_sources'], $source__id);
 
-        if($look_for_slice && substr_count($word,':')==2){
-            //See if this is it:
-            $times = explode(':',$word);
-            if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$source__id.':'.$times[1].':'.$times[2]){
-                $string_references['ref_time_found'] = true;
-                $string_references['ref_time_start'] = second_calc($times[1]);
-                $string_references['ref_time_end'] = second_calc($times[2]);
+            if(substr_count($word,':')==2){
+                //See if this is it:
+                $times = explode(':',$word);
+                if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$source__id.':'.$times[1].':'.$times[2]){
+                    $string_references['ref_time_found'] = true;
+                    $string_references['ref_time_start'] = second_calc($times[1]);
+                    $string_references['ref_time_end'] = second_calc($times[2]);
+                }
             }
-        }
 
-        } elseif ($look_for_slice && substr($word, 0, 1) == ':' && substr_count($word,':')==2) {
+        } elseif (substr($word, 0, 1) == ':' && substr_count($word,':')==2) {
 
             //See if this is it:
             $times = explode(':',$word);
@@ -136,9 +136,18 @@ function extract_source_references($read__message, $look_for_slice = false)
                 $string_references['ref_time_start'] = second_calc($times[1]);
                 $string_references['ref_time_end'] = second_calc($times[2]);
             }
-
         }
     }
+
+
+    //Slicing only supported with a single reference:
+    $total_references = count($string_references['ref_sources']) + count($string_references['ref_urls']);
+    if($total_references > 1){
+        $string_references['ref_time_found'] = false;
+        $string_references['ref_time_start'] = 0;
+        $string_references['ref_time_end'] = 0;
+    }
+
 
     return $string_references;
 }
@@ -832,7 +841,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
                     $boxbar_details .= '<div class="message_content">';
                     $boxbar_details .= $CI->READ_model->send_message($item['read__message']);
                     $boxbar_details .= '</div>';
-                    $string_references = extract_source_references($item['read__message'], true);
+                    $string_references = extract_source_references($item['read__message']);
                 }
 
                 $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['idea__weight']) || ($count >= $show_max)));

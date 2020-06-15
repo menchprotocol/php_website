@@ -165,7 +165,7 @@ class READ_model extends CI_Model
 
             }
 
-            foreach($ideas_next_autoscan as $idea_next){
+            foreach($ideas_next_autoscan as $next_idea){
 
                 //IS IT EMPTY?
                 if(
@@ -173,14 +173,14 @@ class READ_model extends CI_Model
                     !count($this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type' => 4231, //IDEA NOTES Messages
-                        'read__right' => $idea_next['idea__id'],
+                        'read__right' => $next_idea['idea__id'],
                     ))) &&
 
                     //No Next
                     !count($this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                        'read__left' => $idea_next['idea__id'],
+                        'read__left' => $next_idea['idea__id'],
                     ))) &&
 
                     //Not Already Completed:
@@ -188,14 +188,14 @@ class READ_model extends CI_Model
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
                         'read__source' => $add_fields['read__source'],
-                        'read__left' => $idea_next['idea__id'],
+                        'read__left' => $next_idea['idea__id'],
                     )))){
 
                     //Mark as complete:
-                    $this->READ_model->is_complete($idea_next, array(
+                    $this->READ_model->mark_complete($next_idea, array(
                         'read__type' => 4559, //READ MESSAGES
                         'read__source' => $add_fields['read__source'],
-                        'read__left' => $idea_next['idea__id'],
+                        'read__left' => $next_idea['idea__id'],
                     ));
 
                 }
@@ -764,6 +764,8 @@ class READ_model extends CI_Model
             $recipient_source = superpower_assigned();
         }
 
+        $sources__6177 = $this->config->item('sources__6177');
+        $sources__4485 = $this->config->item('sources__4485');
         $is_being_modified = ( $message_type_source__id > 0 ); //IF $message_type_source__id > 0 means we're adding/editing and need to do extra checks
 
         //Cleanup:
@@ -822,63 +824,42 @@ class READ_model extends CI_Model
          * */
         $string_references = extract_source_references($message_input);
 
-        if($strict_validation){
-            //Check only in strict mode:
-            if (count($string_references['ref_urls']) > 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'You can reference a maximum of 1 URL per message',
-                );
-
-            } elseif (count($string_references['ref_sources']) > 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Message can include a maximum of 1 source reference',
-                );
-
-            } elseif (count($string_references['ref_sources']) > 0 && count($string_references['ref_urls']) > 0) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'You can either reference an source OR a URL, as URLs are transformed to sources',
-                );
-
-            }
-        }
-
-
-
-        /*
-         *
-         * $message_type_source__id Validation
-         * only in strict mode!
-         *
-         * */
         if($strict_validation && $message_type_source__id > 0){
 
-            //See if this message type has specific input requirements:
-            $sources__4485 = $this->config->item('sources__4485');
+            /*
+             *
+             * $message_type_source__id Validation
+             * only in strict mode!
+             *
+             * */
 
-            //Now check for source referencing settings:
-            if(!in_array(4986 , $sources__4485[$message_type_source__id]['m_parents']) && !in_array(7551 , $sources__4485[$message_type_source__id]['m_parents']) && count($string_references['ref_sources']) > 0){
-
-                return array(
-                    'status' => 0,
-                    'message' => $sources__4485[$message_type_source__id]['m_name'].' do not support source referencing.',
-                );
-
-            } elseif(in_array(7551 , $sources__4485[$message_type_source__id]['m_parents']) && count($string_references['ref_sources']) != 1 && count($string_references['ref_urls']) != 1){
-
-                return array(
-                    'status' => 0,
-                    'message' => $sources__4485[$message_type_source__id]['m_name'].' require an source reference.',
-                );
-
+            if(in_array($message_type_source__id, $this->config->item('sources_id_4986'))){
+                //IDEA NOTES 3X SOURCE REFERENCES ALLOWED
+                $min_source = 0;
+                $max_source = 3;
+            } elseif(in_array($message_type_source__id, $this->config->item('sources_id_7551'))){
+                //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
+                $min_source = 1;
+                $max_source = 1;
+            } else {
+                $min_source = 0;
+                $max_source = 0;
             }
 
+            //URLs are the same as a source:
+            $total_references = count($string_references['ref_sources']) + count($string_references['ref_urls']);
+
+            if($total_references<$min_source || $total_references>$max_source){
+                return array(
+                    'status' => 0,
+                    'message' => $sources__4485[$message_type_source__id]['m_name'].' must have '.$min_source.( $max_source!=$min_source ? '-'.$max_source : '' ).' source references (you have referenced '.$total_references.' sources)',
+                );
+            }
         }
+
+
+
+
 
 
 
@@ -886,116 +867,111 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Transform URLs into Player + Links
+         * Transform URLs into Source
          *
          * */
         if ($strict_validation && count($string_references['ref_urls']) > 0) {
 
-            //No source linked, but we have a URL that we should turn into an source if not previously:
-            $url_source = $this->SOURCE_model->url($string_references['ref_urls'][0], ( isset($recipient_source['source__id']) ? $recipient_source['source__id'] : 0 ));
+            foreach($string_references['ref_urls'] as $url_key => $input_url){
 
-            //Did we have an error?
-            if (!$url_source['status'] || !isset($url_source['source_url']['source__id']) || intval($url_source['source_url']['source__id']) < 1) {
-                return $url_source;
+                //No source linked, but we have a URL that we should turn into an source if not previously:
+                $url_source = $this->SOURCE_model->url($input_url, ( isset($recipient_source['source__id']) ? $recipient_source['source__id'] : 0 ));
+
+                //Did we have an error?
+                if (!$url_source['status'] || !isset($url_source['source_url']['source__id']) || intval($url_source['source_url']['source__id']) < 1) {
+                    return $url_source;
+                }
+
+                //Transform URL into a source:
+                if(intval($url_source['source_url']['source__id']) > 0){
+
+                    array_push($string_references['ref_sources'], intval($url_source['source_url']['source__id']));
+
+                    //Replace the URL with this new @source in message.
+                    //This is the only valid modification we can do to $message_input before storing it in the DB:
+                    $message_input = str_replace($input_url, '@' . $url_source['source_url']['source__id'], $message_input);
+
+                    //Remove URL:
+                    unset($string_references['ref_urls'][$url_key]);
+
+                }
             }
-
-            //Transform this URL into an source IF it was found/created:
-            if(intval($url_source['source_url']['source__id']) > 0){
-
-                $string_references['ref_sources'][0] = intval($url_source['source_url']['source__id']);
-
-                //Replace the URL with this new @source in message.
-                //This is the only valid modification we can do to $message_input before storing it in the DB:
-                $message_input = str_replace($string_references['ref_urls'][0], '@' . $string_references['ref_sources'][0], $message_input);
-
-                //Delete URL:
-                unset($string_references['ref_urls'][0]);
-
-            }
-
         }
 
 
         /*
          *
-         * Process Commands
+         * Referenced Sources
          *
          * */
 
         //Start building the Output message body based on format:
         $output_body_message = htmlentities($message_input);
+        $string_references = extract_source_references($message_input); //Do it again since it may be updated
+        $has_text = substr_count($message_input, ' ');
+        $current_mench = current_mench();
+        $referenced_key = 0;
+        $source_reference_keys = array(
+            0 => 'read__up',
+            1 => 'read__down',
+            2 => 'read__left'
+        );
+        $source_reference_fields = array(
+            'read__up'   => 0,
+            'read__down' => 0,
+            'read__left' => 0
+        );
 
-
-
-        /*
-         *
-         * Referenced Player
-         *
-         * */
-
-        //Will contain media from referenced source:
-        $fb_media_attachments = array();
-
-        //We assume this message has text, unless its only content is an source reference like "@123"
-        $has_text = true;
-
-        if (count($string_references['ref_sources']) > 0) {
+        foreach($string_references['ref_sources'] as $referenced_source){
 
             //We have a reference within this message, let's fetch it to better understand it:
             $sources = $this->SOURCE_model->fetch(array(
-                'source__id' => $string_references['ref_sources'][0], //Alert: We will only have a single reference per message
+                'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                'source__id' => $referenced_source, //Alert: We will only have a single reference per message
             ));
-
             if (count($sources) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'The referenced source @' . $string_references['ref_sources'][0] . ' not found',
+                    'message' => 'The referenced source @' . $referenced_source . ' not found',
                 );
             }
 
-            //Direct Media URLs supported:
-            $sources__6177 = $this->config->item('sources__6177');
-
+            //Set as source reference:
+            $source_reference_fields[$source_reference_keys[$referenced_key]] = intval($referenced_source);
 
             //See if this source has any parent links to be shown in this appendix
-            $valid_url = array();
-            $message_visual_media = 0;
-            $message_any = 0;
+            $source_urls = array();
+            $source_media_count = 0;
+            $source_count = 0;
             $source_appendix = null;
             $text_tooltip = null;
-            $current_mench = current_mench();
-            $has_text = substr_count($message_input, ' ');
-
-            //SOURCE IDENTIFIER
-            $string_references = extract_source_references($message_input, true);
-            $is_current_source = $current_mench['x_name']=='source' && substr($this->uri->segment(1), 1)==$string_references['ref_sources'][0];
+            $is_current_source = $current_mench['x_name']=='source' && substr($this->uri->segment(1), 1)==$referenced_source;
 
 
             //Determine what type of Media this reference has:
-            //Source Profile
             if(!$is_current_source || $string_references['ref_time_found']){
 
                 foreach($this->READ_model->fetch(array(
                     'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
-                    'read__down' => $string_references['ref_sources'][0],
+                    'read__down' => $referenced_source,
                 ), array('read__up'), 0, 0, array(
                     'read__type' => 'ASC', /* Text first */
                     'source__weight' => 'DESC',
                 )) as $source_profile) {
 
-                    $message_any++;
+                    $source_count++;
 
                     if (in_array($source_profile['read__type'], $this->config->item('sources_id_12524'))) {
 
                         //SOURCE LINK VISUAL
-                        $message_visual_media++;
+                        $source_media_count++;
                         $source_appendix .= '<div class="source-appendix paddingup">' . view_read__message($source_profile['read__message'], $source_profile['read__type'], $message_input) . '</div>';
 
-                    } elseif($source_profile['read__type'] == 4256 /* URL */){
+                    } elseif($source_profile['read__type'] == 4256 /* URL */) {
 
-                        array_push($valid_url, $source_profile['read__message']);
+                        array_push($source_urls, $source_profile['read__message']);
                         $source_appendix .= '<div class="source-appendix paddingup">' . view_read__message($source_profile['read__message'], $source_profile['read__type'], $message_input) . '</div>';
 
                     } else {
@@ -1016,19 +992,13 @@ class READ_model extends CI_Model
             $text_tooltip = ( strlen($text_tooltip) ? ' class="underdot" title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
             $short_name_class = ( strlen($sources[0]['source__title']) <= 21 ? ' inline-block ' : '' );
             $output_body_message .= $source_appendix;
-            if($string_references['ref_time_found']){
-                $identifier_string = '@' . $string_references['ref_sources'][0].one_two_explode('@' . $string_references['ref_sources'][0],' ',$message_input);
-            } else {
-                $identifier_string = '@' . $string_references['ref_sources'][0];
-            }
+            $identifier_string = '@' . $referenced_source.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_source,' ',$message_input) : '' );
 
             //PLAYER REFERENCE
             if(($current_mench['x_name']=='read' && !superpower_active(10967, true)) || $is_current_source){
 
                 //NO LINK so we can maintain focus...
-
-                //if( ($message_any==1 && $message_visual_media==1)){
-                if((!$has_text && $is_current_source) || ($current_mench['x_name']=='read' && $message_any==1 && ($message_visual_media==1 || count($valid_url)==1))){
+                if((!$has_text && $is_current_source) || ($current_mench['x_name']=='read' && $source_count==1 && ($source_media_count==1 || count($source_urls)==1))){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, '', $output_body_message);
@@ -1046,6 +1016,8 @@ class READ_model extends CI_Model
                 $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat '.$short_name_class.extract_icon_color($sources[0]['source__icon']).'" href="/@' . $sources[0]['source__id'] . '">'.( !in_array($sources[0]['source__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['source__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></a></span>', $output_body_message);
 
             }
+
+            $referenced_key++;
         }
 
 
@@ -1059,239 +1031,118 @@ class READ_model extends CI_Model
                     'message_body' => ( strlen($output_body_message) ? '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>' : null ),
                 ),
             ),
-            'read__up' => (count($string_references['ref_sources']) > 0 ? $string_references['ref_sources'][0] : 0),
+            //Source References:
+            'read__up' => $source_reference_fields['read__up'],
+            'read__down' => $source_reference_fields['read__down'],
+            'read__left' => $source_reference_fields['read__left'],
         );
     }
 
 
-    function find_previous($source__id, $idea__id, $public_only = true)
+
+    function find_next($source__id, $idea, $find_after_idea__id = 0, $search_up = true)
     {
 
-        if($source__id){
-            $player_read_ids = $this->READ_model->ids($source__id);
-            if(!count($player_read_ids)){
-                return 0;
-            }
-        } else {
-            $grand_parents = array();
-        }
+        //CHECK DOWN/NEXT
+        $found_trigger = false;
+        foreach ($this->READ_model->fetch(array(
+            'read__left' => $idea['idea__id'],
+            'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+        ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $next_idea) {
 
-        //Fetch parents:
-        foreach($this->READ_model->fetch(array(
-            'idea__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7355' : 'sources_id_7356'))) . ')' => null,
-            'read__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7359' : 'sources_id_7360'))) . ')' => null,
-            'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'read__right' => $idea__id,
-        ), array('read__left'), 0, 0, array(), 'idea__id') as $idea_previous) {
-
-            $recursive_parents = $this->READ_model->find_previous(0, $idea_previous['idea__id']);
-
-            if($source__id){
-                $top_read_ids = array_intersect($player_read_ids, array_flatten($recursive_parents));
-                if(count($top_read_ids)){
-
-                    $ideas = $this->IDEA_model->fetch(array(
-                        'idea__id' => end($top_read_ids),
-                    ));
-
-                    //Find the next idea from the top read:
-                    return $this->READ_model->find_next($source__id, $ideas[0], false);
-
+            if ($find_after_idea__id && !$found_trigger) {
+                if ($next_idea['idea__id'] == $find_after_idea__id) {
+                    $found_trigger = true;
                 }
-            } else {
-                if(count($recursive_parents)){
-                    array_push($grand_parents, array_merge(array(intval($idea_previous['idea__id'])), $recursive_parents));
-                } else {
-                    array_push($grand_parents, array(intval($idea_previous['idea__id'])));
-                }
+                continue;
             }
 
-        }
 
-        return ( $source__id ? 0 /* We could not find it */ : $grand_parents );
-    }
-
-    function find_next($source__id, $idea, $first_step = true){
-
-        /*
-         *
-         * Searches within a user Reads to find
-         * first incomplete step.
-         *
-         * */
-
-        $idea__metadata = unserialize($idea['idea__metadata']);
-
-        //Make sure of no terminations first:
-        $check_termination_answers = array();
-
-        if(count($idea__metadata['idea___expansion_reads']) > 0){
-            $check_termination_answers = array_merge($check_termination_answers , array_flatten($idea__metadata['idea___expansion_reads']));
-        }
-        if(count($idea__metadata['idea___expansion_some']) > 0){
-            $check_termination_answers = array_merge($check_termination_answers , array_flatten($idea__metadata['idea___expansion_some']));
-        }
-        if(count($idea__metadata['idea___expansion_conditional']) > 0){
-            $check_termination_answers = array_merge($check_termination_answers , array_flatten($idea__metadata['idea___expansion_conditional']));
-        }
-        if(count($check_termination_answers) > 0 && count($this->READ_model->fetch(array(
-                'read__type' => 7492, //TERMINATE
-                'read__source' => $source__id, //Belongs to this User
-                'read__left IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
+            $is_or_idea = in_array($idea['idea__type'], $this->config->item('sources_id_6193'));
+            $is_fixed_link = in_array($next_idea['read__type'], $this->config->item('sources_id_12840'));
+            $is_complete = count($this->READ_model->fetch(array(
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            ))) > 0){
-            return -1;
+                'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
+                'read__source' => $source__id,
+                'read__left' => $next_idea['idea__id'],
+            )));
+
+            if($is_or_idea){
+                //OR IDEAS - Must be Selected
+                $is_selected = count($this->READ_model->fetch(array(
+                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
+                    'read__left' => $idea['idea__id'],
+                    'read__right' => $next_idea['idea__id'],
+                    'read__source' => $source__id,
+                )));
+            }
+
+
+            if (!$is_complete && $is_fixed_link && ( !$is_or_idea || $is_selected )) {
+
+                //FIXED LINK, or Selected OR IDEA, that is NOT COMPLETE, It's This:
+                return intval($next_idea['idea__id']);
+
+            } elseif ($is_complete) {
+
+                //This is complete, but maybe there is a child that's not:
+                $found_next = $this->READ_model->find_next($source__id, $next_idea, 0, false);
+                if ($found_next) {
+                    return $found_next;
+                }
+
+            }
         }
 
 
 
-        foreach(array_flatten($idea__metadata['idea___common_reads']) as $common_read_idea__id){
+        if ($search_up) {
 
-            //Is this an expansion step?
-            $is_expansion = isset($idea__metadata['idea___expansion_reads'][$common_read_idea__id]) || isset($idea__metadata['idea___expansion_some'][$common_read_idea__id]);
-            $is_condition = isset($idea__metadata['idea___expansion_conditional'][$common_read_idea__id]);
+            //Check Previous/Up
+            $current_previous = $idea['idea__id'];
+            $player_read_ids = $this->READ_model->ids($source__id);
+            $recursive_parents = $this->IDEA_model->recursive_parents($idea['idea__id'], true, true);
+            foreach ($recursive_parents as $grand_parent_ids) {
+                foreach (array_intersect($grand_parent_ids, $player_read_ids) as $intersect) {
+                    foreach ($grand_parent_ids as $previous_idea__id) {
 
-            //Have they completed this?
-            if($is_expansion){
-
-                //First fetch all possible answers based on correct order:
-                $found_expansion = 0;
-                foreach($this->READ_model->fetch(array(
-                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-                    'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'read__left' => $common_read_idea__id,
-                ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $read){
-
-                    //See if this answer was selected:
-                    if(count($this->READ_model->fetch(array(
-                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                        'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINK
-                        'read__left' => $common_read_idea__id,
-                        'read__right' => $read['idea__id'],
-                        'read__source' => $source__id, //Belongs to this User
-                    )))){
-
-                        $found_expansion++;
-
-                        //Yes was answered, see if it's completed:
-                        if(!count($this->READ_model->fetch(array(
-                            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                            'read__type IN (' . join(',' , $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-                            'read__source' => $source__id, //Belongs to this User
-                            'read__left' => $read['idea__id'],
-                        )))){
-
-                            //Answer is not completed, go there:
-                            return $read['idea__id'];
-
-                        } else {
-
-                            //Answer previously completed, see if there is anyting else:
-                            $found_idea__id = $this->READ_model->find_next($source__id, $read, false);
-                            if($found_idea__id != 0){
-                                return $found_idea__id;
-                            }
-
+                        //Find the next siblings:
+                        $ideas_this = $this->IDEA_model->fetch(array(
+                            'idea__id' => $previous_idea__id,
+                        ));
+                        $found_next = $this->READ_model->find_next($source__id, $ideas_this[0], $current_previous, false);
+                        if ($found_next) {
+                            return $found_next;
                         }
+                        $current_previous = $previous_idea__id;
+
                     }
                 }
+            }
 
-                if(!$found_expansion){
-                    return $common_read_idea__id;
+            //Still Here? as a Last option go through READ LIST:
+            foreach ($this->READ_model->fetch(array(
+                'read__source' => $source__id,
+                'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            ), array('read__left'), 0, 0, array('read__sort' => 'ASC')) as $read_list_idea) {
+                $found_next = $this->READ_model->find_next($source__id, $read_list_idea, $find_after_idea__id, false);
+                if ($found_next) {
+                    return $found_next;
                 }
-
-            } elseif($is_condition){
-
-                //See which path they got unlocked, if any:
-                foreach($this->READ_model->fetch(array(
-                    'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
-                    'read__source' => $source__id, //Belongs to this User
-                    'read__left' => $common_read_idea__id,
-                    'read__right IN (' . join(',', $idea__metadata['idea___expansion_conditional'][$common_read_idea__id]) . ')' => null,
-                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                ), array('read__right')) as $unlocked_condition){
-
-                    //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_idea__id = $this->READ_model->find_next($source__id, $unlocked_condition, false);
-
-                    if($found_idea__id != 0){
-                        return $found_idea__id;
-                    }
-
-                }
-
-            } elseif(!count($this->READ_model->fetch(array(
-                    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'read__type IN (' . join(',' , $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-                    'read__source' => $source__id, //Belongs to this User
-                    'read__left' => $common_read_idea__id,
-                )))){
-
-                //Not completed yet, this is the next step:
-                return $common_read_idea__id;
-
             }
 
         }
 
 
-        //If not part of the Reads, go to reads idea
-        if($first_step){
-            return $this->READ_model->find_previous($source__id, $idea['idea__id']);
-        }
-
-
-        //Really not found:
+        //Nothing found:
         return 0;
 
     }
-
-    function find_next_go($source__id)
-    {
-
-        /*
-         *
-         * Searches for the next Reads step
-         *
-         * */
-
-        $player_reads = $this->READ_model->fetch(array(
-            'read__source' => $source__id,
-            'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        ), array('read__left'), 0, 0, array('read__sort' => 'ASC'));
-
-        if(!count($player_reads)){
-            return 0;
-        }
-
-        //Loop through Reads Ideas and see what's next:
-        foreach($player_reads as $user_in){
-
-            //Find first incomplete step for this Reads Idea:
-            $next_idea__id = $this->READ_model->find_next($source__id, $user_in);
-
-            if($next_idea__id < 0){
-
-                //We need to terminate this:
-                $this->READ_model->delete($source__id, $user_in['idea__id'], 7757); //MENCH REMOVED BOOKMARK
-                break;
-
-            } elseif($next_idea__id > 0){
-
-                //We found the next incomplete step, return:
-                break;
-
-            }
-        }
-
-        //Return next step Idea or false:
-        return intval($next_idea__id);
-
-    }
-
 
 
     function delete($source__id, $idea__id, $stop_method_id, $stop_feedback = null){
@@ -1408,7 +1259,7 @@ class READ_model extends CI_Model
 
                 //Mark as readed if possible:
                 if($ideas[0]['idea__type']==6677){
-                    $this->READ_model->is_complete($ideas[0], array(
+                    $this->READ_model->mark_complete($ideas[0], array(
                         'read__type' => 4559, //READ MESSAGES
                         'read__source' => $source__id,
                         'read__left' => $ideas[0]['idea__id'],
@@ -1729,7 +1580,7 @@ class READ_model extends CI_Model
     }
 
 
-    function is_complete($idea, $add_fields){
+    function mark_complete($idea, $add_fields){
 
         //Log completion link:
         $new_link = $this->READ_model->create($add_fields);
@@ -2206,7 +2057,7 @@ class READ_model extends CI_Model
         }
 
         //Issue READ/IDEA COIN:
-        $this->READ_model->is_complete($ideas[0], array(
+        $this->READ_model->mark_complete($ideas[0], array(
             'read__type' => $read__type,
             'read__source' => $source__id,
             'read__left' => $ideas[0]['idea__id'],

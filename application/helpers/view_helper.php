@@ -117,7 +117,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
             if ($video_id) {
 
-                $string_references = extract_source_references($full_message, true);
+                $string_references = extract_source_references($full_message);
 
                 if($string_references['ref_time_found']){
 
@@ -228,9 +228,9 @@ function view_idea_notes($read, $is_source = false)
     if($is_source){
         $ui .= '<div class="note-editor edit-off"><span class="show-on-hover">';
 
-        //Sort:
-        if(in_array(4603, $sources__4485[$read['read__type']]['m_parents'])){
-            $ui .= '<span title="SORT"><i class="fas fa-bars '.( in_array(4603, $sources__4485[$read['read__type']]['m_parents']) ? 'idea_note_sorting' : '' ).'"></i></span>';
+        //Sorting allowed?
+        if(in_array($read['read__type'], $this->config->item('sources_id_4603'))){
+            $ui .= '<span title="SORT"><i class="fas fa-bars idea_note_sorting"></i></span>';
         }
 
         //Modify:
@@ -672,7 +672,7 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
 
     $ui .= '<span class="icon-block">'.view_read_icon_legend($can_click, $completion_rate['completion_percentage']).'</span>';
 
-    $ui .= '<b class="'.( $completion_rate['completion_percentage']>0 ? 'montserrat' : '' ).' idea-url title-block">'.view_idea__title($idea, $common_prefix).'</b>';
+    $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.view_idea__title($idea, $common_prefix).'</b>';
 
     //Search for Idea Image:
     if($show_editor){
@@ -1069,7 +1069,7 @@ function view_idea_list($idea, $ideas_next, $recipient_source, $prefix_statement
 
     //If no list just return the next step:
     if(!count($ideas_next)){
-        return ( $show_next ? view_idea_next_previous($idea['idea__id'], $recipient_source) : false );
+        return ( $show_next ? view_next_idea_previous($idea['idea__id'], $recipient_source) : false );
     }
 
     $CI =& get_instance();
@@ -1090,12 +1090,12 @@ function view_idea_list($idea, $ideas_next, $recipient_source, $prefix_statement
     }
 
     if($show_next){
-        view_idea_next_previous($idea['idea__id'], $recipient_source);
+        view_next_idea_previous($idea['idea__id'], $recipient_source);
         echo '<div class="doclear">&nbsp;</div>';
     }
 }
 
-function view_idea_next_previous($idea__id, $recipient_source){
+function view_next_idea_previous($idea__id, $recipient_source){
 
     $CI =& get_instance();
     $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION

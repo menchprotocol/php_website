@@ -500,7 +500,7 @@ class IDEA_model extends CI_Model
         return array(
             'status' => 1,
             'new_idea__id' => $idea_new['idea__id'],
-            'idea_next_html' => $next_idea_html,
+            'next_idea_html' => $next_idea_html,
         );
 
     }
@@ -766,7 +766,7 @@ class IDEA_model extends CI_Model
 
 
         //Process request:
-        foreach($ideas_next as $idea_next) {
+        foreach($ideas_next as $next_idea) {
 
             //Logic here must match items in source_mass_actions config variable
 
@@ -777,7 +777,7 @@ class IDEA_model extends CI_Model
                 $idea_has_sources = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-                    'read__right' => $idea_next['idea__id'],
+                    'read__right' => $next_idea['idea__id'],
                     'read__up' => $source__profile_id,
                 ));
 
@@ -789,7 +789,7 @@ class IDEA_model extends CI_Model
                         'read__up' => $source__profile_id,
                         'read__type' => 4983, //IDEA COIN
                         'read__message' => '@'.$source__profile_id,
-                        'read__right' => $idea_next['idea__id'],
+                        'read__right' => $next_idea['idea__id'],
                     ), true);
 
                     $applied_success++;
@@ -814,13 +814,13 @@ class IDEA_model extends CI_Model
                     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                     'read__left' => $adjust_idea__id,
-                    'read__right' => $idea_next['idea__id'],
+                    'read__right' => $next_idea['idea__id'],
                 ), array(), 0);
 
                 //See how to adjust:
                 if($action_source__id==12611 && !count($is_previous_already)){
 
-                    $this->IDEA_model->link_or_create('', $read__source, $adjust_idea__id, false, 6184, 6677, $idea_next['idea__id']);
+                    $this->IDEA_model->link_or_create('', $read__source, $adjust_idea__id, false, 6184, 6677, $next_idea['idea__id']);
 
                     //Add Source since not there:
                     $applied_success++;
@@ -881,8 +881,8 @@ class IDEA_model extends CI_Model
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'read__left' => $idea__id,
-        ), array('read__right'), 0, 0, array(), 'idea__id, idea__weight') as $idea_next){
-            $total_child_weights += $idea_next['idea__weight'] + $this->IDEA_model->weight($idea_next['idea__id']);
+        ), array('read__right'), 0, 0, array(), 'idea__id, idea__weight') as $next_idea){
+            $total_child_weights += $next_idea['idea__weight'] + $this->IDEA_model->weight($next_idea['idea__id']);
         }
 
         //Update This Level:

@@ -88,7 +88,7 @@ if ($in_my_reads) {
             if($read_completion_type_id > 0){
 
                 //Yes, Issue coin:
-                array_push($read_completes, $this->READ_model->is_complete($idea_focus, array(
+                array_push($read_completes, $this->READ_model->mark_complete($idea_focus, array(
                     'read__type' => $read_completion_type_id,
                     'read__source' => $recipient_source['source__id'],
                     'read__left' => $idea_focus['idea__id'],
@@ -116,7 +116,7 @@ if ($in_my_reads) {
             if(!count($unlock_paths)){
 
                 //No path found:
-                array_push($read_completes, $this->READ_model->is_complete($idea_focus, array(
+                array_push($read_completes, $this->READ_model->mark_complete($idea_focus, array(
                     'read__type' => 7492, //TERMINATE
                     'read__source' => $recipient_source['source__id'],
                     'read__left' => $idea_focus['idea__id'],
@@ -405,7 +405,7 @@ if(!$in_my_reads){
                 'read__left' => $idea_focus['idea__id'],
             )))){
 
-                array_push($read_completes, $this->READ_model->is_complete($idea_focus, array(
+                array_push($read_completes, $this->READ_model->mark_complete($idea_focus, array(
                     'read__type' => 4559, //READ MESSAGES
                     'read__source' => $recipient_source['source__id'],
                     'read__left' => $idea_focus['idea__id'],
@@ -413,7 +413,7 @@ if(!$in_my_reads){
 
             }
 
-            view_idea_next_previous($idea_focus['idea__id'], $recipient_source);
+            view_next_idea_previous($idea_focus['idea__id'], $recipient_source);
             return true;
 
         } else {
@@ -447,7 +447,7 @@ if(!$in_my_reads){
 
                 echo '<div class="doclear">&nbsp;</div>';
 
-                view_idea_next_previous($idea_focus['idea__id'], $recipient_source);
+                view_next_idea_previous($idea_focus['idea__id'], $recipient_source);
 
                 echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
 
@@ -575,7 +575,7 @@ if(!$in_my_reads){
 
             //Show next here but keep hidden until file is uploaded:
             echo '<div class="go_next_upload hidden">';
-            view_idea_next_previous($idea_focus['idea__id'], $recipient_source);
+            view_next_idea_previous($idea_focus['idea__id'], $recipient_source);
             echo '</div>';
 
             echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-read btn-circle inline-block" for="fileType'.$idea_focus['idea__type'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';

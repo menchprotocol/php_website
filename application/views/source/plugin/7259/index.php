@@ -89,7 +89,7 @@ if($search_for_is_set){
                     'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                     'read__right' => $in['idea__id'],
                 ), array('read__left')) as $idea_previous) {
-                    echo '<span class="idea_next_icon_' . $idea_previous['idea__id'] . '"><a href="/g' . $idea_previous['idea__id'] . '" data-toggle="tooltip" title="' . $idea_previous['idea__title'] . '" data-placement="bottom">' . $sources__7585[$idea_previous['idea__type']]['m_icon'] . '</a> &nbsp;</span>';
+                    echo '<span class="next_idea_icon_' . $idea_previous['idea__id'] . '"><a href="/g' . $idea_previous['idea__id'] . '" data-toggle="tooltip" title="' . $idea_previous['idea__title'] . '" data-placement="bottom">' . $sources__7585[$idea_previous['idea__type']]['m_icon'] . '</a> &nbsp;</span>';
                 }
 
                 echo '</td>';

@@ -482,7 +482,6 @@ class Read extends CI_Controller
 
     function next($idea__id = 0, $next_idea__id = 0){
 
-        $append_url = '?previous_read='.( !$next_idea__id && isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $idea__id );
         $session_source = superpower_assigned();
         if(!$session_source){
             return redirect_message('/@s');
@@ -508,44 +507,29 @@ class Read extends CI_Controller
                 ));
 
                 if(!count($read_completes)){
-                    $this->READ_model->is_complete($ideas[0], array(
+                    $this->READ_model->mark_complete($ideas[0], array(
                         'read__type' => 4559, //READ MESSAGES
                         'read__source' => $session_source['source__id'],
                         'read__left' => $ideas[0]['idea__id'],
                     ));
                 }
-
             }
-
-            if(!$next_idea__id){
-                //Find next Idea based on source's Reads:
-                $next_idea__id = $this->READ_model->find_next($session_source['source__id'], $ideas[0]);
-                if($next_idea__id > 0){
-                    return redirect_message('/'.$next_idea__id.$append_url);
-                } else {
-                    $next_idea__id = $this->READ_model->find_next_go($session_source['source__id']);
-                    if($next_idea__id > 0){
-                        return redirect_message('/'.$next_idea__id.$append_url);
-                    } else {
-                        return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully readed your entire list.</div></div>');
-                    }
-                }
-            }
-
-        } elseif(!$next_idea__id){
-
-            //Find the next idea in the Reads:
-            $next_idea__id = $this->READ_model->find_next_go($session_source['source__id']);
-            if($next_idea__id > 0){
-                return redirect_message('/'.$next_idea__id.$append_url);
-            } else {
-                return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully readed your entire list.</div></div>');
-            }
-
         }
 
+
+        $append_url = '?previous_read='.( !$next_idea__id && isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $idea__id );
+        if(!$next_idea__id){
+            //Find next Idea based on source's Reads:
+            $next_idea__id = $this->READ_model->find_next($session_source['source__id'], $ideas[0]);
+        }
+
+
         //Go to Next Idea:
-        return redirect_message('/'.$next_idea__id.$append_url);
+        if($next_idea__id > 0){
+            return redirect_message('/'.$next_idea__id.$append_url);
+        } else {
+            return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully read your entire READ LIST.</div></div>');
+        }
 
     }
 
@@ -567,11 +551,11 @@ class Read extends CI_Controller
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                 'read__left' => $previous_level_id,
-            ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $idea_next){
-                if($idea_next['idea__id']==$idea__id){
+            ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $next_idea){
+                if($next_idea['idea__id']==$idea__id){
                     break;
                 } else {
-                    $current_idea__id = $idea_next['idea__id'];
+                    $current_idea__id = $next_idea['idea__id'];
                 }
             }
         }
@@ -730,7 +714,7 @@ class Read extends CI_Controller
 
         //Save new answer:
         $new_message = '@'.$cdn_status['cdn_source']['source__id'];
-        $this->READ_model->is_complete($ideas[0], array(
+        $this->READ_model->mark_complete($ideas[0], array(
             'read__type' => 12117,
             'read__left' => $ideas[0]['idea__id'],
             'read__source' => $session_source['source__id'],
@@ -794,7 +778,7 @@ class Read extends CI_Controller
         }
 
         //Save new answer:
-        $this->READ_model->is_complete($ideas[0], array(
+        $this->READ_model->mark_complete($ideas[0], array(
             'read__type' => 6144,
             'read__left' => $ideas[0]['idea__id'],
             'read__source' => $session_source['source__id'],
