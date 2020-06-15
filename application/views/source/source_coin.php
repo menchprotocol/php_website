@@ -640,7 +640,7 @@ $is_source = source_is_idea_source($source['source__id']);
                     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'read__right IN (' . join(',', $idea__ids) . ')' => null,
                     '(read__up > 0 OR read__down > 0 OR read__left > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-                ), array(), 0, 0, array('read__weight' => 'DESC')) as $fetched_source){
+                ), array(), 0) as $fetched_source){
 
                     foreach(array('read__up','read__down','read__left') as $source_ref_field) {
                         if($fetched_source[$source_ref_field] > 0){

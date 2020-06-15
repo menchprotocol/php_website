@@ -870,7 +870,7 @@ class READ_model extends CI_Model
          * */
         if ($strict_validation && count($string_references['ref_urls']) > 0) {
 
-            foreach($string_references['ref_urls'] as $url_key => $input_url){
+            foreach($string_references['ref_urls'] as $url_key => $input_url) {
 
                 //No source linked, but we have a URL that we should turn into an source if not previously:
                 $url_source = $this->SOURCE_model->url($input_url, ( isset($recipient_source['source__id']) ? $recipient_source['source__id'] : 0 ));
