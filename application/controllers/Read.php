@@ -480,7 +480,7 @@ class Read extends CI_Controller
 
     }
 
-    function next($idea__id = 0, $next_idea__id = 0){
+    function next($idea__id = 0){
 
         $session_source = superpower_assigned();
         if(!$session_source){
@@ -516,17 +516,10 @@ class Read extends CI_Controller
             }
         }
 
-
-        $append_url = '?previous_read='.( !$next_idea__id && isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $idea__id );
-        if(!$next_idea__id){
-            //Find next Idea based on source's Reads:
-            $next_idea__id = $this->READ_model->find_next($session_source['source__id'], $ideas[0]);
-        }
-
-
         //Go to Next Idea:
+        $next_idea__id = $this->READ_model->find_next($session_source['source__id'], $ideas[0]);
         if($next_idea__id > 0){
-            return redirect_message('/'.$next_idea__id.$append_url);
+            return redirect_message('/'.$next_idea__id.'?previous_read='.( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $idea__id ));
         } else {
             return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully read your entire READ LIST.</div></div>');
         }

@@ -658,7 +658,6 @@ function view_idea_read($idea, $common_prefix = null, $show_editor = false, $com
     //Build View:
     $ui  = '<div id="ap_idea_'.$idea['idea__id'].'" '.( isset($idea['read__id']) ? ' sort-link-id="'.$idea['read__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemread ' : '' ).'">';
 
-    //( $recipient_source && is_numeric($first_segment) ? '/read/next/'.$first_segment.'/'.$idea['idea__id'] : '/'.$idea['idea__id'] )
     $ui .= ( $can_click ? '<a href="/'. $idea['idea__id'] .'" class="itemread">' : '' );
 
     //Right Stats:
