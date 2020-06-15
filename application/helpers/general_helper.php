@@ -839,7 +839,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
                 if(strlen($item['read__message'])){
                     $boxbar_details .= '<div class="message_content">';
-                    $boxbar_details .= $CI->READ_model->send_message($item['read__message']);
+                    $boxbar_details .= $CI->READ_model->message_send($item['read__message']);
                     $boxbar_details .= '</div>';
                     $string_references = extract_source_references($item['read__message']);
                 }

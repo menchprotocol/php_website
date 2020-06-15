@@ -718,7 +718,7 @@ class Read extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->send_message($new_message).'</div>',
+            'message' => '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->READ_model->message_send($new_message).'</div>',
         ));
 
     }

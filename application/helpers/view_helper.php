@@ -221,7 +221,7 @@ function view_idea_notes($read, $is_source = false)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $read['read__id'] . '">';
-    $ui .= $CI->READ_model->send_message($read['read__message'], $session_source, $read['read__right']);
+    $ui .= $CI->READ_model->message_send($read['read__message'], $session_source, $read['read__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -762,7 +762,7 @@ function view_idea_scores_answer($idea__id, $depth_levels, $original_depth_level
         $ui .= '<div class="messages-'.$idea_read['idea__id'].' hidden">';
         foreach($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
-            $ui .= $CI->READ_model->send_message($msg['read__message']);
+            $ui .= $CI->READ_model->message_send($msg['read__message']);
             $ui .= '</div>';
         }
         $ui .= '</div>';
@@ -944,7 +944,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
 
     if($message_input){
-        $ui .= '<div class="idea-footer hideIfEmpty">' . $CI->READ_model->send_message($message_input, $session_source) . '</div>';
+        $ui .= '<div class="idea-footer hideIfEmpty">' . $CI->READ_model->message_send($message_input, $session_source) . '</div>';
     }
 
 
@@ -1597,7 +1597,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
             //READ PROGRESS
             $ui .= '<div class="message_content paddingup">';
-            $ui .= $CI->READ_model->send_message($source['read__message']);
+            $ui .= $CI->READ_model->message_send($source['read__message']);
             $ui .= '</div>';
 
         }

@@ -580,7 +580,7 @@ class Idea extends CI_Controller {
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->READ_model->send_message_build($_POST['read__message'], $session_source, $_POST['note_type_id'], $_POST['idea__id']);
+        $msg_validation = $this->READ_model->message_compile($_POST['read__message'], $session_source, $_POST['note_type_id'], $_POST['idea__id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -829,7 +829,7 @@ class Idea extends CI_Controller {
         }
 
         //Validate new message:
-        $msg_validation = $this->READ_model->send_message_build($_POST['read__message'], $session_source, $messages[0]['read__type'], $_POST['idea__id']);
+        $msg_validation = $this->READ_model->message_compile($_POST['read__message'], $session_source, $messages[0]['read__type'], $_POST['idea__id']);
         if (!$msg_validation['status']) {
 
             //There was some sort of an error:
@@ -908,7 +908,7 @@ class Idea extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'delete_from_ui' => 0,
-            'message' => $this->READ_model->send_message($msg_validation['input_message'], $session_source, $_POST['idea__id']),
+            'message' => $this->READ_model->message_send($msg_validation['input_message'], $session_source, $_POST['idea__id']),
             'message_new_status_icon' => '<span title="' . $sources__6186[$_POST['message_read__status']]['m_name'] . ': ' . $sources__6186[$_POST['message_read__status']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $sources__6186[$_POST['message_read__status']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check-circle"></i> Saved</span>',
         ));

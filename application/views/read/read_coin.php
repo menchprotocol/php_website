@@ -182,7 +182,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         if($counter){
             foreach($messages as $message_read) {
                 $counter++;
-                $this_tab .= $this->READ_model->send_message(
+                $this_tab .= $this->READ_model->message_send(
                     $message_read['read__message'],
                     $recipient_source
                 );
@@ -586,7 +586,7 @@ if(!$in_my_reads){
 
             echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div>';
 
-            echo '<div class="previous_answer">'.$this->READ_model->send_message($read_completes[0]['read__message']).'</div>';
+            echo '<div class="previous_answer">'.$this->READ_model->message_send($read_completes[0]['read__message']).'</div>';
 
             echo '</div>';
 

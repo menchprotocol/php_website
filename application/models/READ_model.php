@@ -686,7 +686,7 @@ class READ_model extends CI_Model
     }
 
 
-    function send_message($message_input, $recipient_source = array(), $message_idea__id = 0)
+    function message_send($message_input, $recipient_source = array(), $message_idea__id = 0)
     {
 
         /*
@@ -716,7 +716,7 @@ class READ_model extends CI_Model
         }
 
         //Validate message:
-        $msg_validation = $this->READ_model->send_message_build($message_input, $recipient_source, 0, $message_idea__id, false);
+        $msg_validation = $this->READ_model->message_compile($message_input, $recipient_source, 0, $message_idea__id, false);
 
 
         //Did we have ane error in message validation?
@@ -726,7 +726,7 @@ class READ_model extends CI_Model
             $this->READ_model->create(array(
                 'read__type' => 4246, //Platform Bug Reports
                 'read__source' => (isset($recipient_source['source__id']) ? $recipient_source['source__id'] : 0),
-                'read__message' => 'send_message_build() returned error [' . $msg_validation['message'] . '] for input message [' . $message_input . ']',
+                'read__message' => 'message_compile() returned error [' . $msg_validation['message'] . '] for input message [' . $message_input . ']',
                 'read__metadata' => array(
                     'input_message' => $message_input,
                     'recipient_source' => $recipient_source,
@@ -747,14 +747,14 @@ class READ_model extends CI_Model
     }
 
 
-    function send_message_build($message_input, $recipient_source = array(), $message_type_source__id = 0, $message_idea__id = 0, $strict_validation = true)
+    function message_compile($message_input, $recipient_source = array(), $message_type_source__id = 0, $message_idea__id = 0, $strict_validation = true)
     {
 
         /*
          *
          * This function is used to validate IDEA NOTES.
          *
-         * See send_message() for more information on input variables.
+         * See message_send() for more information on input variables.
          *
          * */
 
@@ -766,7 +766,6 @@ class READ_model extends CI_Model
 
         $sources__6177 = $this->config->item('sources__6177');
         $sources__4485 = $this->config->item('sources__4485');
-        $is_being_modified = ( $message_type_source__id > 0 ); //IF $message_type_source__id > 0 means we're adding/editing and need to do extra checks
 
         //Cleanup:
         $message_input = trim($message_input);
@@ -906,9 +905,10 @@ class READ_model extends CI_Model
          * */
 
         //Start building the Output message body based on format:
+        $has_text = substr_count($message_input, ' ');
+        $message_input .= ' ';//Helps with accurate source reference replacement
         $output_body_message = htmlentities($message_input);
         $string_references = extract_source_references($message_input); //Do it again since it may be updated
-        $has_text = substr_count($message_input, ' ');
         $current_mench = current_mench();
         $referenced_key = 0;
         $source_reference_keys = array(
@@ -992,7 +992,7 @@ class READ_model extends CI_Model
             $text_tooltip = ( strlen($text_tooltip) ? ' class="underdot" title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
             $short_name_class = ( strlen($sources[0]['source__title']) <= 21 ? ' inline-block ' : '' );
             $output_body_message .= $source_appendix;
-            $identifier_string = '@' . $referenced_source.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_source,' ',$message_input) : '' );
+            $identifier_string = '@' . $referenced_source.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_source,' ',$message_input) : '' ).' ';
 
             //PLAYER REFERENCE
             if(($current_mench['x_name']=='read' && !superpower_active(10967, true)) || $is_current_source){
