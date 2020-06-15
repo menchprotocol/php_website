@@ -1001,19 +1001,19 @@ class READ_model extends CI_Model
                 if((!$has_text && $is_current_source) || ($current_mench['x_name']=='read' && $source_count==1 && ($source_media_count==1 || count($source_urls)==1))){
 
                     //HIDE
-                    $output_body_message = str_replace($identifier_string, '', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, ' ', $output_body_message);
 
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="'.$short_name_class.'"><span class="icon-block-xs img-block">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></span></span>', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="'.$short_name_class.'"><span class="icon-block-xs img-block">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></span></span>'.' ', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat '.$short_name_class.extract_icon_color($sources[0]['source__icon']).'" href="/@' . $sources[0]['source__id'] . '">'.( !in_array($sources[0]['source__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['source__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></a></span>', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat '.$short_name_class.extract_icon_color($sources[0]['source__icon']).'" href="/@' . $sources[0]['source__id'] . '">'.( !in_array($sources[0]['source__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['source__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_source__icon($sources[0]['source__icon']).'</span><span class="text__6197_' . $sources[0]['source__id']  . '">' . $sources[0]['source__title']  . '</span></a></span>'.' ', $output_body_message);
 
             }
 
