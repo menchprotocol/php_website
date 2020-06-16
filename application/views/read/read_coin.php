@@ -225,7 +225,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             'read__left !=' => $this->config->item('featured_idea__id'),
         ), array('read__left'), 0);
         if(count($ideas_previous)){
-            $this_tab .= '<p class="space-content montserrat">'.view_idea__title($idea_focus).' Helps you:</p>';
+            $this_tab .= '<p class="space-content">'.view_idea__title($idea_focus).' Helps you:</p>';
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($ideas_previous as $key => $previous_idea){
                 $this_tab .= view_idea_read($previous_idea);
@@ -306,7 +306,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
     $default_active = in_array($read__type, $this->config->item('sources_id_13300'));
     $tab_pill_count++;
 
-    $tab_pills .= '<li class="nav-item"><a class="nav-link black tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span>' ).'<span class="show-active-max">&nbsp;'.$m['m_name'].'</span></a></li>';
+    $tab_pills .= '<li class="nav-item"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$read__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$read__type.', '.$idea_focus['idea__id'].', 0)">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$read__type.'">'.view_number($counter).'</span>' ).'<span class="show-active-max">&nbsp;'.$m['m_name'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$read__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $this_tab;
