@@ -31,7 +31,7 @@ foreach($this->IDEA_model->fetch($query_filters, 0, 0, array('idea__weight' => '
         continue;
     }
 
-    $results = $this->IDEA_model->metadata_extra_insights($idea);
+    $results = $this->IDEA_model->metadata_source_insights($idea);
     $already_scanned = array_merge($already_scanned, $results['__idea___ids']);
 
     $stats['featured_scanned']++;

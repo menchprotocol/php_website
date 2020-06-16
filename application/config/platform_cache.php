@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-16 11:23:16 PST
+//Generated 2020-06-16 11:28:17 PST
 
 //EXPERT AUTHORS:
 $config['sources_id_13339'] = array(3084,2750);
@@ -736,7 +736,7 @@ $config['sources__10573'] = array(
 );
 
 //PLUGIN RETURN CODE ONLY:
-$config['sources_id_12741'] = array(4356,11049,12733,7275,7276,4527,12114,7277,12710,12709,12722,12888,12732,12712,7278,12967,7279,12569);
+$config['sources_id_12741'] = array(4356,11049,7275,7276,4527,12114,7277,12710,12709,12733,12722,12888,12732,12712,7278,12967,7279,12569);
 $config['sources__12741'] = array(
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
@@ -750,21 +750,15 @@ $config['sources__12741'] = array(
         'm_desc' => '',
         'm_parents' => array(12741,6287,11047),
     ),
-    12733 => array(
-        'm_icon' => '<i class="fad fa-code read"></i>',
-        'm_name' => 'IDEA REVIEW READ',
-        'm_desc' => '',
-        'm_parents' => array(11047,12741,12701,6287),
-    ),
     7275 => array(
         'm_icon' => '<i class="fad fa-sync idea mench-spin"></i>',
         'm_name' => 'IDEA SYNC COMMON BASE',
         'm_desc' => '',
-        'm_parents' => array(6287,12741,11047,7286,7274),
+        'm_parents' => array(6287,12741,7286,7274),
     ),
     7276 => array(
         'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
-        'm_name' => 'IDEA SYNC EXTRA INSIGHTS',
+        'm_name' => 'IDEA SYNC SOURCE INSIGHTS',
         'm_desc' => '',
         'm_parents' => array(6287,12741,11047,7286,7274),
     ),
@@ -797,6 +791,12 @@ $config['sources__12741'] = array(
         'm_name' => 'PHP INFO',
         'm_desc' => '',
         'm_parents' => array(12741,6287),
+    ),
+    12733 => array(
+        'm_icon' => '<i class="fad fa-code read"></i>',
+        'm_name' => 'READ REVIEW JSON',
+        'm_desc' => '',
+        'm_parents' => array(11047,12741,12701,6287),
     ),
     12722 => array(
         'm_icon' => '',
@@ -3200,19 +3200,25 @@ $config['sources__11054'] = array(
 );
 
 //IDEA MENU:
-$config['sources_id_11047'] = array(7264,4356,11049,12733,7275,7276,4341,7279);
+$config['sources_id_11047'] = array(4356,7276,7264,11049,12733,4341,7279);
 $config['sources__11047'] = array(
-    7264 => array(
-        'm_icon' => '<i class="fad fa-sitemap idea"></i>',
-        'm_name' => 'IDEA BIRDS EYE MARKS',
-        'm_desc' => '/@p7264?idea__id=',
-        'm_parents' => array(11047,6287),
-    ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
         'm_desc' => '/@p4356?idea__id=',
         'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+    ),
+    7276 => array(
+        'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SYNC SOURCE INSIGHTS',
+        'm_desc' => '/@p7276?idea__id=',
+        'm_parents' => array(6287,12741,11047,7286,7274),
+    ),
+    7264 => array(
+        'm_icon' => '<i class="fad fa-sitemap idea"></i>',
+        'm_name' => 'IDEA BIRDS EYE MARKS',
+        'm_desc' => '/@p7264?idea__id=',
+        'm_parents' => array(11047,6287),
     ),
     11049 => array(
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
@@ -3222,21 +3228,9 @@ $config['sources__11047'] = array(
     ),
     12733 => array(
         'm_icon' => '<i class="fad fa-code read"></i>',
-        'm_name' => 'IDEA REVIEW READ',
+        'm_name' => 'READ REVIEW JSON',
         'm_desc' => '/@p12733?idea__id=',
         'm_parents' => array(11047,12741,12701,6287),
-    ),
-    7275 => array(
-        'm_icon' => '<i class="fad fa-sync idea mench-spin"></i>',
-        'm_name' => 'IDEA SYNC COMMON BASE',
-        'm_desc' => '/@p7275?idea__id=',
-        'm_parents' => array(6287,12741,11047,7286,7274),
-    ),
-    7276 => array(
-        'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
-        'm_name' => 'IDEA SYNC EXTRA INSIGHTS',
-        'm_desc' => '/@p7276?idea__id=',
-        'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas read" aria-hidden="true"></i>',
@@ -5689,7 +5683,7 @@ $config['sources__7309'] = array(
 );
 
 //PLUGINS:
-$config['sources_id_6287'] = array(7274,7264,4356,7261,12731,12734,7260,7263,11049,12733,7259,12138,7275,7276,12735,7712,4527,12114,7277,12710,12709,12729,12739,12722,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12569);
+$config['sources_id_6287'] = array(7274,7264,4356,7261,12731,12734,7260,7263,11049,7259,12138,7275,12735,7276,7712,4527,12114,7277,12710,12709,12729,12739,12733,12722,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12569);
 $config['sources__6287'] = array(
     7274 => array(
         'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
@@ -5745,12 +5739,6 @@ $config['sources__6287'] = array(
         'm_desc' => '',
         'm_parents' => array(12741,6287,11047),
     ),
-    12733 => array(
-        'm_icon' => '<i class="fad fa-code read"></i>',
-        'm_name' => 'IDEA REVIEW READ',
-        'm_desc' => '',
-        'm_parents' => array(11047,12741,12701,6287),
-    ),
     7259 => array(
         'm_icon' => '',
         'm_name' => 'IDEA SEARCH & REPLACE',
@@ -5767,19 +5755,19 @@ $config['sources__6287'] = array(
         'm_icon' => '<i class="fad fa-sync idea mench-spin"></i>',
         'm_name' => 'IDEA SYNC COMMON BASE',
         'm_desc' => '',
-        'm_parents' => array(6287,12741,11047,7286,7274),
-    ),
-    7276 => array(
-        'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
-        'm_name' => 'IDEA SYNC EXTRA INSIGHTS',
-        'm_desc' => '',
-        'm_parents' => array(6287,12741,11047,7286,7274),
+        'm_parents' => array(6287,12741,7286,7274),
     ),
     12735 => array(
         'm_icon' => '',
         'm_name' => 'IDEA SYNC/FIX SOURCES',
         'm_desc' => '',
         'm_parents' => array(6287),
+    ),
+    7276 => array(
+        'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SYNC SOURCE INSIGHTS',
+        'm_desc' => '',
+        'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     7712 => array(
         'm_icon' => '<i class="far fa-question-circle idea"></i>',
@@ -5828,6 +5816,12 @@ $config['sources__6287'] = array(
         'm_name' => 'READ ANALYZE URLS',
         'm_desc' => '',
         'm_parents' => array(6287),
+    ),
+    12733 => array(
+        'm_icon' => '<i class="fad fa-code read"></i>',
+        'm_name' => 'READ REVIEW JSON',
+        'm_desc' => '',
+        'm_parents' => array(11047,12741,12701,6287),
     ),
     12722 => array(
         'm_icon' => '',

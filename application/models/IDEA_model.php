@@ -897,7 +897,7 @@ class IDEA_model extends CI_Model
 
 
 
-    function metadata_extra_insights($idea)
+    function metadata_source_insights($idea)
     {
 
         /*
@@ -984,7 +984,7 @@ class IDEA_model extends CI_Model
         ), array('read__right'), 0) as $ideas_next){
 
             //RECURSION
-            $metadata_recursion = $this->IDEA_model->metadata_extra_insights($ideas_next);
+            $metadata_recursion = $this->IDEA_model->metadata_source_insights($ideas_next);
 
 
             //MERGE (3 SCENARIOS)

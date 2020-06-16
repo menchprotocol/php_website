@@ -155,7 +155,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control ideaadder-level-2-child input_note_'.$read__type.' form-control-thick add-input montserrat algolia_search dotransparent"
+                           class="form-control ideaadder-level-2-child form-control-thick add-input montserrat algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
                            idea-id="' . $idea_focus['idea__id'] . '"
                            id="addidea-c-' . $idea_focus['idea__id'] . '-0"
