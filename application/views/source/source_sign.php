@@ -58,9 +58,12 @@ if(count($current_sign_idea_attempt) == 0){
 
     <div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>
 
-    <h1 class="text-center"><?= $sources__11035[4269]['m_name'] ?> [FREE]</h1>
+    
+    <h1 class="text-center"><?= $sources__11035[4269]['m_name'] ?></h1>
+    <p style="margin-top:13px;"><?= $sources__11035[4269]['m_desc'] ?></p>
 
-    <div class="login-content" style="margin-top:50px;">
+
+    <div class="login-content" style="margin-top:34px;">
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">

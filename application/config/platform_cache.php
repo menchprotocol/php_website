@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-16 11:30:51 PST
+//Generated 2020-06-16 12:50:45 PST
 
 //EXPERT AUTHORS:
 $config['sources_id_13339'] = array(3084,2750);
@@ -3378,7 +3378,7 @@ $config['sources__11035'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
-        'm_desc' => '',
+        'm_desc' => 'Mench is a non-profit & open-source platform on a mission to expand human potential by spreading ideas that matter. We will never spam you or share your email with a third party.',
         'm_parents' => array(10876,4527,11035),
     ),
     4536 => array(

@@ -369,7 +369,7 @@ function source_load_page(page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#source__portfolio').html(data + '<div id="new_portfolio" class="list-group-item itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#source__portfolio').html(data + '<div id="new_portfolio" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             source_load_search("#new_portfolio", 0, 'w');
         } else {
