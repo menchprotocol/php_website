@@ -1197,7 +1197,7 @@ function view_idea_previous_read($idea__id, $recipient_source){
 }
 
 
-function view_idea_note_source($idea__id, $note_type_source__id, $idea_notes, $is_source){
+function view_idea_note_source($idea__id, $read__type, $idea_notes, $is_source){
 
     $CI =& get_instance();
     $sources__11018 = $CI->config->item('sources__11018');
@@ -1210,13 +1210,13 @@ function view_idea_note_source($idea__id, $note_type_source__id, $idea_notes, $i
     if( $is_source ){
         $ui .= '<div class="list-group-item itemsource '.superpower_active(10939).'" style="padding:5px 0;">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__11018[$note_type_source__id]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__11018[$read__type]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick doupper add-input montserrat algolia_search dotransparent"
                            maxlength="' . config_var(6197) . '"
                            idea-id="' . $idea__id . '"
                            id="add-source-idea-' . $idea__id . '"
-                           placeholder="'.$sources__11018[$note_type_source__id]['m_name'].'">
+                           placeholder="'.$sources__11018[$read__type]['m_name'].'">
                 </div><div class="algolia_pad_search hidden idea_pad_top"></div></div>';
     }
     $ui .= '</div>';
@@ -1224,26 +1224,25 @@ function view_idea_note_source($idea__id, $note_type_source__id, $idea_notes, $i
     return $ui;
 }
 
-function view_idea_note_mix($note_type_source__id, $idea_notes){
+function view_idea_note_mix($read__type, $idea_notes){
 
     $CI =& get_instance();
     $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
-    $handles_uploads = (in_array($note_type_source__id, $CI->config->item('sources_id_12359')));
-    $handles_url = (in_array($note_type_source__id, $CI->config->item('sources_id_7551')) || in_array($note_type_source__id, $CI->config->item('sources_id_4986')));
+    $handles_uploads = (in_array($read__type, $CI->config->item('sources_id_12359')));
+    $handles_url = (in_array($read__type, $CI->config->item('sources_id_7551')) || in_array($read__type, $CI->config->item('sources_id_4986')));
     $session_source = superpower_assigned();
     $ui = '';
 
 
-
     if(!count($idea_notes)){
-        $ui .= '<div class="no_notes_' . $note_type_source__id .'" style="margin-bottom:13px;">';
-        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$sources__4485[$note_type_source__id]['m_icon'].'</span>No '.ucwords(strtolower($sources__4485[$note_type_source__id]['m_name'])).' yet, Be the first to post one!</div>';
+        $ui .= '<div class="no_notes_' . $read__type .'" style="margin-bottom:13px;">';
+        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$sources__4485[$read__type]['m_icon'].'</span>No '.ucwords(strtolower($sources__4485[$read__type]['m_name'])).' yet, Be the first to post one!</div>';
         $ui .= '</div>';
     }
 
 
     //Show no-Message notifications for each message type:
-    $ui .= '<div id="idea_notes_list_'.$note_type_source__id.'" class="list-group">';
+    $ui .= '<div id="idea_notes_list_'.$read__type.'" class="list-group">';
 
     //List current notes:
     foreach($idea_notes as $idea_notes) {
@@ -1251,46 +1250,50 @@ function view_idea_note_mix($note_type_source__id, $idea_notes){
     }
 
     //ADD NEW:
-    $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $note_type_source__id .'">';
-    $ui .= '<div class="add_notes_form">';
-    $ui .= '<form class="box box' . $note_type_source__id . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">'; //Used for dropping files
+    if(!in_array($read__type, $CI->config->item('sources_id_12677'))){
+        $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $read__type .'">';
+        $ui .= '<div class="add_notes_form">';
+        $ui .= '<form class="box box' . $read__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';      //Used for dropping files
 
 
 
-    $ui .= '<textarea onkeyup="idea_note_count_new('.$note_type_source__id.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$note_type_source__id.'" note-type-id="' . $note_type_source__id . '" id="read__message' . $note_type_source__id . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+        $ui .= '<textarea onkeyup="idea_note_count_new('.$read__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$read__type.'" note-type-id="' . $read__type . '" id="read__message' . $read__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
-    $ui .= '<table class="table table-condensed"><tr>';
+        $ui .= '<table class="table table-condensed"><tr>';
 
 
-    //Save button:
-    $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:idea_note_add_text('.$note_type_source__id.');" class="btn btn-idea save_notes_'.$note_type_source__id.'"><i class="fas fa-plus"></i></a></td>';
+        //Save button:
+        $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:idea_note_add_text('.$read__type.');" class="btn btn-idea save_notes_'.$read__type.'"><i class="fas fa-plus"></i></a></td>';
 
 
-    //File counter:
-    $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $note_type_source__id . '" class="hidden"><span id="charNum' . $note_type_source__id . '">0</span>/' . config_var(4485).'</span></td>';
+        //File counter:
+        $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $read__type . '" class="hidden"><span id="charNum' . $read__type . '">0</span>/' . config_var(4485).'</span></td>';
 
 
-    //Upload File:
-    if($handles_uploads){
-        $ui .= '<td style="width:42px; padding: 10px 0 0 0;">';
-        $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$note_type_source__id.'" />';
-        $ui .= '<label class="file_label_'.$note_type_source__id.'" for="fileIdeaType'.$note_type_source__id.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB, or upload elsewhere & paste URL here" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
-        $ui .= '</td>';
+        //Upload File:
+        if($handles_uploads){
+            $ui .= '<td style="width:42px; padding: 10px 0 0 0;">';
+            $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$read__type.'" />';
+            $ui .= '<label class="file_label_'.$read__type.'" for="fileIdeaType'.$read__type.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB, or upload elsewhere & paste URL here" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
+            $ui .= '</td>';
+        }
+
+
+        $ui .= '</tr></table>';
+
+
+        //Response result:
+        $ui .= '<div class="note_error_'.$read__type.'"></div>';
+
+
+        $ui .= '</form>';
+        $ui .= '</div>';
+        $ui .= '</div>';
     }
 
 
-    $ui .= '</tr></table>';
-
-
-    //Response result:
-    $ui .= '<div class="note_error_'.$note_type_source__id.'"></div>';
-
-
-    $ui .= '</form>';
-    $ui .= '</div>';
-    $ui .= '</div>';
     $ui .= '</div>';
 
     return $ui;

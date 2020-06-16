@@ -124,6 +124,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
 
 
 
+    $disable_manual_add = in_array($read__type, $this->config->item('sources_id_12677'));
     $counter = null; //Assume no counters
     $this_tab = '';
 
@@ -181,7 +182,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             $this_tab .= view_source($idea_note, 0, null, $is_source && $is_active, $is_source);
         }
 
-        if($is_source && $is_active) {
+        if($is_source && $is_active && !$disable_manual_add) {
             $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-' . $read__type . '" note_type_id="' . $read__type . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $sources__2738[4536]['m_icon'] . '</span></span>
@@ -276,8 +277,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
     }
 
 
-
-    if(!$counter && in_array($read__type, $this->config->item('sources_id_12677'))){
+    if(!$counter && $disable_manual_add){
         //Hide since Zero:
         continue;
     }
