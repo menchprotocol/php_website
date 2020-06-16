@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-16 12:50:45 PST
+//Generated 2020-06-16 12:55:25 PST
 
 //EXPERT AUTHORS:
 $config['sources_id_13339'] = array(3084,2750);
@@ -3247,14 +3247,8 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(11068,6225,4235,12749,3084,13216,12707,12991,12211,10573,4535,7291,4341,4430,12205,6287,12750,12969,12896,7256,13023,4269,4536,4997,12275,13007,10957,7540);
+$config['sources_id_11035'] = array(6225,4235,12749,3084,13216,12707,12991,12211,10573,4535,7291,11068,4341,4430,12205,6287,12750,12969,12896,7256,13023,4269,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
-    11068 => array(
-        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_name' => '1-CLICK LOGIN',
-        'm_desc' => '',
-        'm_parents' => array(11035,11065),
-    ),
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
@@ -3320,6 +3314,12 @@ $config['sources__11035'] = array(
         'm_name' => 'LOGOUT',
         'm_desc' => '',
         'm_parents' => array(12500,10876,11035),
+    ),
+    11068 => array(
+        'm_icon' => '<i class="far fa-envelope-open" aria-hidden="true"></i>',
+        'm_name' => 'MAGIC LOGIN',
+        'm_desc' => '',
+        'm_parents' => array(11035,11065),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas read" aria-hidden="true"></i>',
