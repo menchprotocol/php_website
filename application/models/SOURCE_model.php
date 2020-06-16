@@ -568,13 +568,13 @@ class SOURCE_model extends CI_Model
         ), array('read__up'), 0) as $source__profile){
 
             if(in_array($source__profile['source__id'], $this->config->item('sources_id_3000'))){
-                //CONTENT CHANNELS
+                //EXPERT CONTENT
                 $source['read__message'] = $source__profile['read__message']; //Update Description
                 if (!isset($metadata_this['__idea___content'][$source['source__id']])) {
                     $metadata_this['__idea___content'][$source['source__id']] = $source;
                 }
-            } elseif(in_array($source__profile['source__id'], $this->config->item('sources_id_12864'))) {
-                //EXPERT PEOPLE/ORGANIZATIONS
+            } elseif(in_array($source__profile['source__id'], $this->config->item('sources_id_13339'))) {
+                //EXPERT AUTHORS
                 $source['read__message'] = $source__profile['read__message']; //Update Description
                 if (!isset($metadata_this['__idea___experts'][$source['source__id']])) {
                     $metadata_this['__idea___experts'][$source['source__id']] = $source;
