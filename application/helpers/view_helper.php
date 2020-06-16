@@ -1236,7 +1236,7 @@ function view_idea_note_mix($read__type, $idea_notes){
 
     if(!count($idea_notes)){
         $ui .= '<div class="no_notes_' . $read__type .'" style="margin-bottom:13px;">';
-        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$sources__4485[$read__type]['m_icon'].'</span>No '.ucwords(strtolower($sources__4485[$read__type]['m_name'])).' yet, Be the first to post one!</div>';
+        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($sources__4485[$read__type]['m_name'])).'. Be the first to post one 😊</div>';
         $ui .= '</div>';
     }
 
