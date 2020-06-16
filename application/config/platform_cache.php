@@ -3027,7 +3027,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.432',
+        'm_desc' => 'v1.433',
         'm_parents' => array(6404),
     ),
     11079 => array(
