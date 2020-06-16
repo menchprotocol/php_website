@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-16 12:55:25 PST
+//Generated 2020-06-16 13:44:41 PST
 
 //EXPERT AUTHORS:
 $config['sources_id_13339'] = array(3084,2750);
@@ -452,7 +452,7 @@ $config['sources__12969'] = array(
 );
 
 //SYNC ICONS IF DIFFERENT:
-$config['sources_id_12968'] = array(2997,4446,3005,3147,4763,3084,2750,3192,2998);
+$config['sources_id_12968'] = array(2997,4446,3005,3147,4763,3084,2750,13350,3192,2998);
 $config['sources__12968'] = array(
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
@@ -495,6 +495,12 @@ $config['sources__12968'] = array(
         'm_name' => 'PUBLICATION',
         'm_desc' => '',
         'm_parents' => array(4983,13339,12968),
+    ),
+    13350 => array(
+        'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
+        'm_name' => 'REPORT',
+        'm_desc' => '',
+        'm_parents' => array(12968,4983,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
@@ -4978,7 +4984,7 @@ $config['sources__10593'] = array(
 );
 
 //IDEA SOURCES:
-$config['sources_id_4983'] = array(2997,4446,3005,3147,4763,3084,2750,3192,2998,4430);
+$config['sources_id_4983'] = array(2997,4446,3005,3147,4763,3084,2750,13350,3192,2998,4430);
 $config['sources__4983'] = array(
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
@@ -5021,6 +5027,12 @@ $config['sources__4983'] = array(
         'm_name' => 'EXPERT PUBLICATION',
         'm_desc' => '',
         'm_parents' => array(4983,13339,12968),
+    ),
+    13350 => array(
+        'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
+        'm_name' => 'EXPERT REPORT',
+        'm_desc' => '',
+        'm_parents' => array(12968,4983,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
@@ -7938,7 +7950,7 @@ $config['sources__4537'] = array(
 );
 
 //EXPERT CONTENT:
-$config['sources_id_3000'] = array(3005,2998,2997,13218,3147,4446,3192,4763);
+$config['sources_id_3000'] = array(3005,2998,2997,13218,3147,4446,13350,3192,4763);
 $config['sources__3000'] = array(
     3005 => array(
         'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
@@ -7973,6 +7985,12 @@ $config['sources__3000'] = array(
     4446 => array(
         'm_icon' => '<i class="fas fa-tachometer source" aria-hidden="true"></i>',
         'm_name' => 'ASSESSMENT',
+        'm_desc' => '',
+        'm_parents' => array(12968,4983,3000),
+    ),
+    13350 => array(
+        'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
+        'm_name' => 'REPORT',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
