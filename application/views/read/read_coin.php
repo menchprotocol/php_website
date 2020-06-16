@@ -187,8 +187,6 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
                     $recipient_source
                 );
             }
-        } else {
-            $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea has no messages</div>';
         }
         $this_tab .= '</div>';
 
