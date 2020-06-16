@@ -850,7 +850,7 @@ class READ_model extends CI_Model
             if($total_references<$min_source || $total_references>$max_source){
                 return array(
                     'status' => 0,
-                    'message' => $sources__4485[$message_type_source__id]['m_name'].' must have '.$min_source.( $max_source!=$min_source ? '-'.$max_source : '' ).' source references (you have referenced '.$total_references.' sources)',
+                    'message' => 'You referenced '.$total_references.' sources where you must have '.$min_source.( $max_source!=$min_source ? '-'.$max_source : '' ).' references.',
                 );
             }
         }
