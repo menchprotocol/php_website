@@ -192,7 +192,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
         }
         $this_tab .= '</div>';
 
-    } elseif($read__type==12273 && !$is_home_page && $idea_stats['ideas_average']>$chapters){
+    } elseif($read__type==12273 && !$is_home_page && ( $idea_stats['ideas_average']>$chapters || (!$recipient_source['source__id'] && ($idea_stats['ideas_average']>0 || $chapters>0)))){
 
         //IDEAS
         $counter = $idea_stats['ideas_average'];
