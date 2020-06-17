@@ -401,7 +401,7 @@ if($is_home_page){
     echo '<div class="read-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].'</div>';
     echo '<div class="cover-list" style="padding:13px 0 33px 33px;">';
     foreach($ideas_next as $key => $next_idea){
-        if(in_array($ideas_next['idea__id'], $player_read_ids)){
+        if(in_array($next_idea['idea__id'], $player_read_ids)){
             continue;
         }
         echo view_idea_cover($next_idea, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
