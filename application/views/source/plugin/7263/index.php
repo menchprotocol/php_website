@@ -38,12 +38,12 @@ foreach($this->READ_model->fetch(array(
 
         echo '<div>';
         echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$previous_ideas[0]['idea__status']]['m_icon'].'</span>';
-        echo '<a href="/g'.$previous_ideas[0]['idea__id'].'">'.$previous_ideas[0]['idea__title'].'</a>';
+        echo '<a href="/!'.$previous_ideas[0]['idea__id'].'">'.$previous_ideas[0]['idea__title'].'</a>';
         echo '</div>';
 
         echo '<div>';
         echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$idea_read['idea__status']]['m_icon'].'</span>';
-        echo '<a href="/g'.$idea_read['idea__id'].'">'.$idea_read['idea__title'].' [child]</a>';
+        echo '<a href="/!'.$idea_read['idea__id'].'">'.$idea_read['idea__title'].' [child]</a>';
         echo '</div>';
 
         if(count($this->READ_model->fetch(array(
@@ -117,12 +117,12 @@ if(1){
             echo '<td style="text-align: left;">';
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$previous_ideas[0]['idea__status']]['m_icon'].'</span>';
-            echo '<a href="/g'.$previous_ideas[0]['idea__id'].'">'.$previous_ideas[0]['idea__title'].'</a>';
+            echo '<a href="/!'.$previous_ideas[0]['idea__id'].'">'.$previous_ideas[0]['idea__title'].'</a>';
             echo '</div>';
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$idea_read['idea__status']]['m_icon'].'</span>';
-            echo '<a href="/g'.$idea_read['idea__id'].'">'.$idea_read['idea__title'].'</a>';
+            echo '<a href="/!'.$idea_read['idea__id'].'">'.$idea_read['idea__title'].'</a>';
             echo '</div>';
             echo '</td>';
             echo '</tr>';

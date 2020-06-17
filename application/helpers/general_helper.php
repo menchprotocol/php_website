@@ -1631,7 +1631,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 //See if this idea has a time-range:
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['idea__id']);
-                $export_row['object__url'] = '/g' . $db_row['idea__id'];
+                $export_row['object__url'] = '/!' . $db_row['idea__id'];
                 $export_row['object__status'] = intval($db_row['idea__status']);
                 $export_row['object__icon'] = idea_fetch_cover($db_row['idea__id']);
                 $export_row['object__title'] = $db_row['idea__title'];

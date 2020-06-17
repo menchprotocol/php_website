@@ -380,7 +380,7 @@ class READ_model extends CI_Model
 
                         //IDEA
                         $ideas = $this->IDEA_model->fetch(array( 'idea__id' => $add_fields[$sources__6232[$source__id]['m_desc']] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/g' . $ideas[0]['idea__id'] . '" target="_parent">#'.$ideas[0]['idea__id'].' '.$ideas[0]['idea__title'].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/!' . $ideas[0]['idea__id'] . '" target="_parent">#'.$ideas[0]['idea__id'].' '.$ideas[0]['idea__title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 

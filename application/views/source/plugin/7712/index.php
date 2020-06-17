@@ -10,7 +10,7 @@ foreach($this->IDEA_model->fetch(array(
     'idea__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
 ), 0, 0, array('idea__id' => 'DESC')) as $count => $in) {
 
-    echo '<div>'.($count+1).')<span class="icon-block">'.view_cache('sources__6193' /* OR Ideas */, $in['idea__type']).'</span><a href="/g'.$in['idea__id'].'">'.view_idea__title($in).'</a></div>';
+    echo '<div>'.($count+1).')<span class="icon-block">'.view_cache('sources__6193' /* OR Ideas */, $in['idea__type']).'</span><a href="/!'.$in['idea__id'].'">'.view_idea__title($in).'</a></div>';
 
     echo '<ul style="list-style: decimal;">';
     //Fetch all children for this OR:
@@ -32,7 +32,7 @@ foreach($this->IDEA_model->fetch(array(
 
         echo '<li>';
         echo '<span class="icon-block">'.view_cache('sources__7585', $child_or['idea__type']).'</span>';
-        echo '<a href="/g'.$child_or['idea__id'].'">'.view_idea__title($child_or).'</a>';
+        echo '<a href="/!'.$child_or['idea__id'].'">'.view_idea__title($child_or).'</a>';
         echo ( $read_coins[0]['totals'] > 0 ? ' <span class="read montserrat"><i class="fas fa-circle read"></i> '.$read_coins[0]['totals'].'</span>' : '' );
         echo '</li>';
 

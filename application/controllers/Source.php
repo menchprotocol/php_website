@@ -1541,7 +1541,7 @@ class Source extends CI_Controller
         if(superpower_assigned()) {
             //Lead player and above, go to console:
             if($idea__id > 0){
-                return redirect_message(( superpower_assigned(10939) ? '/g' : '/' ) . $idea__id);
+                return redirect_message(( superpower_assigned(10939) ? '/!' : '/' ) . $idea__id);
             } else {
                 return redirect_message('/');
             }
@@ -1731,7 +1731,7 @@ class Source extends CI_Controller
         if (strlen($_POST['referrer_url']) > 0) {
             $sign_url = urldecode($_POST['referrer_url']);
         } elseif(intval($_POST['sign_idea__id']) > 0) {
-            $sign_url = '/g'.$_POST['sign_idea__id'];
+            $sign_url = '/!'.$_POST['sign_idea__id'];
         } else {
             //Go to home page and let them continue from there:
             $sign_url = '/';
