@@ -866,7 +866,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="MENCHcolumn1">';
+    $ui .= '<td class="MENCHcolumn12">';
         $ui .= '<div class="block">';
 
             //IDAE Link:
@@ -898,13 +898,6 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
 
         $ui .= '</div>';
     $ui .= '</td>';
-
-
-    //READ
-    $ui .= '<td class="MENCHcolumn2 read">';
-    $ui .= view_coins_count_read($idea['idea__id']);
-    $ui .= '</td>';
-
 
 
     //SOURCE
@@ -1492,7 +1485,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //SOURCE
-    $ui .= '<td class="'.( $is_source_home ? 'MENCHcolumn12' : 'MENCHcolumn1' ).'">';
+    $ui .= '<td class="MENCHcolumn12">';
 
     $source_url = ( $is_read_progress ? '/'.$CI->uri->segment(1).'?focus__source='.$source['source__id'] : '/@'.$source['source__id'] );
 
@@ -1525,52 +1518,42 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
     //IDEA
     $ui .= '<td class="MENCHcolumn3 source">';
+
+    //RIGHT EDITING:
+    $ui .= '<div class="pull-right inline-block">';
+    $ui .= '<div class="note-editor edit-off">';
+    $ui .= '<span class="show-on-hover">';
+
+    if($control_enabled && $is_source){
+        if($is_link_source){
+
+            //Sort
+            if(!$is_parent && $has_source_editor){
+                $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
+            }
+
+            //Manage source link:
+            $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="source_modify_load(' . $source['source__id'] . ',' . $read__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+
+
+        } elseif($is_source_only){
+
+            //Allow to remove:
+            $ui .= '<span><a href="javascript:void(0);" onclick="source_only_unlink(' . $read__id . ', '.$source['read__type'].')"><i class="fas fa-times black"></i></a></span>';
+
+        }
+    }
+
+    $ui .= '</span>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+
     $ui .= view_coins_count_source(0, $source['source__id']);
     $ui .= '</td>';
 
 
-
-    //READ
-    if(!$is_source_home){
-
-        $ui .= '<td class="MENCHcolumn2 read">';
-
-        //RIGHT EDITING:
-        $ui .= '<div class="pull-right inline-block">';
-        $ui .= '<div class="note-editor edit-off">';
-        $ui .= '<span class="show-on-hover">';
-
-        if($control_enabled && $is_source){
-            if($is_link_source){
-
-                //Sort
-                if(!$is_parent && $has_source_editor){
-                    $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
-                }
-
-                //Manage source link:
-                $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="source_modify_load(' . $source['source__id'] . ',' . $read__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
-
-
-            } elseif($is_source_only){
-
-                //Allow to remove:
-                $ui .= '<span><a href="javascript:void(0);" onclick="source_only_unlink(' . $read__id . ', '.$source['read__type'].')"><i class="fas fa-times black"></i></a></span>';
-
-            }
-        }
-
-        $ui .= '</span>';
-        $ui .= '</div>';
-        $ui .= '</div>';
-
-        $ui .= view_coins_count_read(0, $source['source__id']);
-        $ui .= '</td>';
-
-    }
-
     $ui .= '</tr></table>';
-
 
 
     //PROFILE
