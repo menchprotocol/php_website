@@ -134,75 +134,71 @@ if($recipient_source['source__id']){
             echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
         }
 
-    }
+    } elseif($is_home_page){
+
+        //MY READS
+        $player_reads = $this->READ_model->fetch(array(
+            'read__player' => $session_source['source__id'],
+            'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        ), array('read__left'), 0, 0, array('read__sort' => 'ASC'));
+
+        echo ( count($player_reads) > 1 ? '<script> $(document).ready(function () {read_sort_load()}); </script>' : '<style> .read-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+
+        if(count($player_reads)){
+
+            echo '<div class="read-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>'.$sources__11035[12969]['m_name'].'</div>';
 
 
-
-
-
-
-
-    //MY READS
-    $player_reads = $this->READ_model->fetch(array(
-        'read__player' => $session_source['source__id'],
-        'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
-        'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-    ), array('read__left'), 0, 0, array('read__sort' => 'ASC'));
-
-    echo ( count($player_reads) > 1 ? '<script> $(document).ready(function () {read_sort_load()}); </script>' : '<style> .read-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
-
-    if(count($player_reads)){
-
-        echo '<div class="read-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>'.$sources__11035[12969]['m_name'].'</div>';
-
-
-        echo '<div class="clear-reads-list">';
+            echo '<div class="clear-reads-list">';
             echo '<div id="home_reads" class="cover-list" style="padding-top:21px; padding-left:34px;">';
             foreach($player_reads as $idea) {
                 echo view_idea_cover($idea, true);
             }
             echo '</div>';
-        echo '</div>';
+            echo '</div>';
 
-        echo '<div class="doclear">&nbsp;</div>';
-
-
-        //READ DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-        echo '<div class="clear-reads-list hidden margin-top-down">';
-        echo '<div class="alert alert-danger" role="alert">';
-        echo '<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><b class="read montserrat">DELETE ALL READS?</b>';
-        echo '<br /><span class="icon-block">&nbsp;</span>Action cannot be undone.';
-        echo '</div>';
-        echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="read_clear_all()" class="btn btn-read"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
-        echo '</div>';
-
-        echo '<div class="doclear">&nbsp;</div>';
+            echo '<div class="doclear">&nbsp;</div>';
 
 
-    }
+            //READ DELETE ALL (ACCESSIBLE VIA MAIN MENU)
+            echo '<div class="clear-reads-list hidden margin-top-down">';
+            echo '<div class="alert alert-danger" role="alert">';
+            echo '<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><b class="read montserrat">DELETE ALL READS?</b>';
+            echo '<br /><span class="icon-block">&nbsp;</span>Action cannot be undone.';
+            echo '</div>';
+            echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="read_clear_all()" class="btn btn-read"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
+            echo '</div>';
+
+            echo '<div class="doclear">&nbsp;</div>';
 
 
-
-
-
-    //Saved
-    $player_saved = $this->READ_model->fetch(array(
-        'read__up' => $session_source['source__id'],
-        'read__type' => 12896, //SAVED
-        'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-    ), array('read__right'), 0, 0, array('read__id' => 'DESC'));
-
-    if(count($player_saved)){
-
-        echo '<div class="read-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[12896]['m_icon'].'</span>'.$sources__11035[12896]['m_name'].'</div>';
-
-        echo '<div class="list-group no-side-padding">';
-        foreach($player_saved as $priority => $idea) {
-            echo view_idea_read($idea, null, true);
         }
-        echo '</div>';
+
+
+
+
+
+        //Saved
+        $player_saved = $this->READ_model->fetch(array(
+            'read__up' => $session_source['source__id'],
+            'read__type' => 12896, //SAVED
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        ), array('read__right'), 0, 0, array('read__id' => 'DESC'));
+
+        if(count($player_saved)){
+
+            echo '<div class="read-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[12896]['m_icon'].'</span>'.$sources__11035[12896]['m_name'].'</div>';
+
+            echo '<div class="list-group no-side-padding">';
+            foreach($player_saved as $priority => $idea) {
+                echo view_idea_read($idea, null, true);
+            }
+            echo '</div>';
+
+        }
 
     }
 
