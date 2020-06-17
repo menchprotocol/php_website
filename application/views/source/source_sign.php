@@ -47,7 +47,7 @@ if(count($current_sign_idea_attempt) == 0){
 
 <script>
     var go_next_icon = '<?= $sources__11035[12211]['m_icon'] ?>';
-    var sign_idea__id = <?= intval($sign_idea__id) ?>;
+    var sign_idea__id = <?= $sign_idea__id ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
 </script>
 <script src="/application/views/source/source_sign.js?v=<?= config_var(11060) ?>"
@@ -58,9 +58,24 @@ if(count($current_sign_idea_attempt) == 0){
 
     <div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>
 
-    
+
     <h1 class="text-center"><?= $sources__11035[4269]['m_name'] ?></h1>
-    <p style="margin-top:13px;"><?= $sources__11035[4269]['m_desc'] ?></p>
+
+    <?php
+    if($sign_idea__id > 0){
+
+        $sign_ideas = $this->IDEA_model->fetch(array(
+            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            'idea__id' => $sign_idea__id,
+        ));
+
+        if(count($sign_ideas)){
+            echo '<p style="margin-top:13px;">To Read <a href="/'.$sign_idea__id.'" class="montserrat">'.$sign_ideas[0]['idea__title'].'</a>.</p>';
+            echo '<p style="margin-top:13px;">'.$sources__11035[4269]['m_desc'].'</p>';
+        }
+
+    }
+    ?>
 
 
     <div class="login-content" style="margin-top:34px;">
