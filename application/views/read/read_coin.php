@@ -28,6 +28,7 @@ $ideas_next = $this->READ_model->fetch(array(
     'read__left' => $idea_focus['idea__id'],
 ), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
 
+$player_read_ids = array();
 $chapters = count($ideas_next);
 $common_prefix = idea_calc_common_prefix($ideas_next, 'idea__title');
 $completion_rate['completion_percentage'] = 0;
@@ -154,6 +155,7 @@ if($recipient_source['source__id']){
             echo '<div class="clear-reads-list">';
             echo '<div id="home_reads" class="cover-list" style="padding-top:21px; padding-left:34px;">';
             foreach($player_reads as $idea) {
+                array_push($player_read_ids, $idea['idea__id']);
                 echo view_idea_cover($idea, true);
             }
             echo '</div>';
@@ -399,6 +401,9 @@ if($is_home_page){
     echo '<div class="read-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].'</div>';
     echo '<div class="cover-list" style="padding:13px 0 33px 33px;">';
     foreach($ideas_next as $key => $next_idea){
+        if(in_array($ideas_next['idea__id'], $player_read_ids)){
+            continue;
+        }
         echo view_idea_cover($next_idea, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
     }
     echo '</div>';
