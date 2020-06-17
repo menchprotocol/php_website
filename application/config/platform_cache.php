@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-17 13:27:01 PST
+//Generated 2020-06-17 13:30:27 PST
 
 //EXPERT AUTHORS:
 $config['sources_id_13339'] = array(3084,2750);
@@ -563,7 +563,7 @@ $config['sources__12893'] = array(
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'MAP',
-        'm_desc' => '/i',
+        'm_desc' => '/~',
         'm_parents' => array(10939,12893,10876,11035,12761,12112,2738),
     ),
     12749 => array(
@@ -592,7 +592,7 @@ $config['sources__12887'] = array(
     12888 => array(
         'm_icon' => '<i class="fas fa-shield-check source"></i>',
         'm_name' => 'SOURCE EXPLORE EXPERTS',
-        'm_desc' => '/@p12888?source__id=',
+        'm_desc' => '/source/plugin/12888?source__id=',
         'm_parents' => array(12741,6287,12887),
     ),
     7267 => array(
@@ -604,13 +604,13 @@ $config['sources__12887'] = array(
     12712 => array(
         'm_icon' => '<i class="fad fa-lambda source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE REVIEW JSON',
-        'm_desc' => '/@p12712?source__id=',
+        'm_desc' => '/source/plugin/12712?source__id=',
         'm_parents' => array(12887,12741,6287),
     ),
     7279 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
-        'm_desc' => '/@p7279?obj=4536&object__id=',
+        'm_desc' => '/source/plugin/7279?obj=4536&object__id=',
         'm_parents' => array(6287,12741,12887,11047,3323,7287),
     ),
 );
@@ -3187,31 +3187,31 @@ $config['sources__11047'] = array(
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
-        'm_desc' => '/@p4356?idea__id=',
+        'm_desc' => '/source/plugin/4356?idea__id=',
         'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
     ),
     7276 => array(
         'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
         'm_name' => 'IDEA SYNC SOURCE INSIGHTS',
-        'm_desc' => '/@p7276?idea__id=',
+        'm_desc' => '/source/plugin/7276?idea__id=',
         'm_parents' => array(6287,12741,11047,7286,7274),
     ),
     7264 => array(
         'm_icon' => '<i class="fad fa-sitemap idea"></i>',
         'm_name' => 'IDEA BIRDS EYE MARKS',
-        'm_desc' => '/@p7264?idea__id=',
+        'm_desc' => '/source/plugin/7264?idea__id=',
         'm_parents' => array(11047,6287),
     ),
     11049 => array(
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA REVIEW JSON',
-        'm_desc' => '/@p11049?idea__id=',
+        'm_desc' => '/source/plugin/11049?idea__id=',
         'm_parents' => array(12741,6287,11047),
     ),
     12733 => array(
         'm_icon' => '<i class="fad fa-code read"></i>',
         'm_name' => 'DISCOVER REVIEW JSON',
-        'm_desc' => '/@p12733?idea__id=',
+        'm_desc' => '/source/plugin/12733?idea__id=',
         'm_parents' => array(11047,12741,12701,6287),
     ),
     4341 => array(
@@ -3223,7 +3223,7 @@ $config['sources__11047'] = array(
     7279 => array(
         'm_icon' => '<i class="fad fa-search"></i>',
         'm_name' => 'SYNC SEARCH INDEX',
-        'm_desc' => '/@p7279?obj=4535&object__id=',
+        'm_desc' => '/source/plugin/7279?obj=4535&object__id=',
         'm_parents' => array(6287,12741,12887,11047,3323,7287),
     ),
 );
