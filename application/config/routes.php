@@ -18,14 +18,15 @@ $route['default_controller']        = "read/read_coin"; //Home pate
 $route['(:num)']                    = "read/read_coin/$1"; //Read Idea
 $route['j(:num)']                   = "read/start_reading/$1"; //Join & start on Idea
 $route['x']                         = "read/interactions"; //Read Interactions history
-$route['*']                         = "read/interactions"; //Read Interactions history
+$route['.']                         = "read/interactions"; //Read Interactions history
+$route[':']                         = "read/interactions"; //Read Interactions history
+$route['-']                         = "read/interactions"; //Read Interactions history
 $route['404_override']              = 'source/source_404'; //Page not found, etc...
 
 
 //SOURCE
 $route['@s(:num)']                  = "source/sign/$1"; //Sign & go to idea
 $route['@s']                        = "source/sign"; //Signin
-$route['>']                         = "source/sign"; //Read Interactions history
 $route['@p(:num)']                  = "source/plugin/$1"; //Specific Plugin
 $route['@p']                        = "source/plugin"; //Plugin Home
 $route['@(:num)']                   = "source/source_coin/$1"; //Specific source
