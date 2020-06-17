@@ -778,7 +778,7 @@ class IDEA_model extends CI_Model
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'read__right' => $next_idea['idea__id'],
-                    '(read__up = '.$source__profile_id.' OR read__down = '.$source__profile_id.' OR read__left = '.$source__profile_id.')' => null,
+                    '(read__up = '.$source__profile_id.' OR read__down = '.$source__profile_id.')' => null,
                 ));
 
                 if($action_source__id==12591 && !count($idea_has_sources)){
@@ -922,13 +922,13 @@ class IDEA_model extends CI_Model
 
         //AGGREGATE IDEA SOURCES
         foreach($this->READ_model->fetch(array(
-            '(read__up > 0 OR read__down > 0 OR read__left > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+            '(read__up > 0 OR read__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             'read__right' => $idea['idea__id'],
             'read__type IN (' . join(',', $this->config->item('sources_id_12273')).')' => null, //IDEA COIN
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $fetched_source) {
 
-            foreach(array('read__up','read__down','read__left') as $source_ref_field){
+            foreach(array('read__up','read__down') as $source_ref_field){
                 if($fetched_source[$source_ref_field] > 0){
 
                     $ref_sources = $this->SOURCE_model->fetch(array(

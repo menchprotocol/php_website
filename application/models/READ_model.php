@@ -822,6 +822,19 @@ class READ_model extends CI_Model
          * */
         $string_references = extract_source_references($message_input);
 
+        if(in_array($message_type_source__id, $this->config->item('sources_id_4986'))){
+            //IDEA NOTES 2X SOURCE REFERENCES ALLOWED
+            $min_source = 0;
+            $max_source = 2;
+        } elseif(in_array($message_type_source__id, $this->config->item('sources_id_7551'))){
+            //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
+            $min_source = 1;
+            $max_source = 1;
+        } else {
+            $min_source = 0;
+            $max_source = 0;
+        }
+
         if($strict_validation && $message_type_source__id > 0){
 
             /*
@@ -830,19 +843,6 @@ class READ_model extends CI_Model
              * only in strict mode!
              *
              * */
-
-            if(in_array($message_type_source__id, $this->config->item('sources_id_4986'))){
-                //IDEA NOTES 2X SOURCE REFERENCES ALLOWED
-                $min_source = 0;
-                $max_source = 2;
-            } elseif(in_array($message_type_source__id, $this->config->item('sources_id_7551'))){
-                //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
-                $min_source = 1;
-                $max_source = 1;
-            } else {
-                $min_source = 0;
-                $max_source = 0;
-            }
 
             //URLs are the same as a source:
             $total_references = count($string_references['ref_sources']) + count($string_references['ref_urls']);
@@ -920,6 +920,10 @@ class READ_model extends CI_Model
         );
 
         foreach($string_references['ref_sources'] as $referenced_source){
+
+            if($referenced_key==$max_source){
+                break;
+            }
 
             //We have a reference within this message, let's fetch it to better understand it:
             $sources = $this->SOURCE_model->fetch(array(

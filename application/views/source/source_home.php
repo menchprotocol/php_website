@@ -42,7 +42,7 @@ $show_max = config_var(11986);
 
         echo '<div class="list-group">';
 
-        //TODO: Expand to include read__down and read__left for IDEA COINS (Currently only counts read__up)
+        //TODO: Expand to include read__down for IDEA COINS (Currently only counts read__up)
         foreach($this->READ_model->fetch(array(
 
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC

@@ -417,13 +417,13 @@ function idea_fetch_cover($idea__id, $html_format = false){
         'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
         'read__right' => $idea__id,
-        '(read__up > 0 OR read__down > 0 OR read__left > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+        '(read__up > 0 OR read__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     ), array(), 0, 0, array(
         'read__type' => 'ASC', //Messages First, Sources Second
         'read__sort' => 'ASC', //Sort by message order
     )) as $fetched_source){
 
-        foreach(array('read__up','read__down','read__left') as $source_ref_field) {
+        foreach(array('read__up','read__down') as $source_ref_field) {
             if($fetched_source[$source_ref_field] > 0){
                 //See if this source has a photo:
                 foreach($CI->READ_model->fetch(array(
@@ -780,7 +780,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
         $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-            '(read__up = '.$source__id.' OR read__down = '.$source__id.' OR read__left = '.$source__id.')' => null,
+            '(read__up = '.$source__id.' OR read__down = '.$source__id.')' => null,
         );
 
     } elseif($read__type==6255){
@@ -1379,7 +1379,7 @@ function idea_is_source($idea__id, $session_source = array()){
                     'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'read__right' => $idea__id,
-                    '(read__up = '.$session_source['source__id'].' OR read__down = '.$session_source['source__id'].' OR read__left = '.$session_source['source__id'].')' => null,
+                    '(read__up = '.$session_source['source__id'].' OR read__down = '.$session_source['source__id'].')' => null,
                 )))
             )
         )
@@ -1663,7 +1663,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'read__right' => $db_row['idea__id'],
-                    '(read__up > 0 OR read__down > 0 OR read__left > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                    '(read__up > 0 OR read__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array(), 0) as $source){
 
                     if($source['read__up']>0){
@@ -1671,9 +1671,6 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     }
                     if($source['read__down']>0){
                         array_push($export_row['_tags'], 'alg_source_' . $source['read__down']);
-                    }
-                    if($source['read__left']>0){
-                        array_push($export_row['_tags'], 'alg_source_' . $source['read__left']);
                     }
 
                 }

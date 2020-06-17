@@ -386,7 +386,7 @@ function view_interaction($read, $is_parent_tr = false)
         $coins_type = 'read';
     } elseif(in_array($read['read__type'], $CI->config->item('sources_id_12274'))){
         $coins_type = 'source';
-    } elseif(in_array($read['read__type'], $CI->config->item('sources_id_12273')) && ($read['read__up']>0 || $read['read__down']>0 || $read['read__left']>0)){
+    } elseif(in_array($read['read__type'], $CI->config->item('sources_id_12273')) && ($read['read__up']>0 || $read['read__down']>0)){
         $coins_type = 'idea';
     } else {
         $coins_type = null;
@@ -589,14 +589,14 @@ function view_coins_count_source($idea__id = 0, $source__id = 0, $number_only = 
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
             'read__right' => $idea__id,
-            '(read__up > 0 OR read__down > 0 OR read__left > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+            '(read__up > 0 OR read__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
     } elseif($source__id){
         $mench = 'idea';
         $coins_filter = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-            '(read__up = '.$source__id.' OR read__down = '.$source__id.' OR read__left = '.$source__id.')' => null,
+            '(read__up = '.$source__id.' OR read__down = '.$source__id.')' => null,
         );
     }
 
