@@ -906,6 +906,7 @@ textarea.note-textarea{
 
 
 td.MENCHcolumn1  { width: 74%; }
+td.MENCHcolumn12  { width: 87%; }
 td.MENCHcolumn2  { width: 13%; }
 td.MENCHcolumn3  { width: 13%; }
 
@@ -1546,6 +1547,7 @@ label {
     .avatar-item .avatar-icon { font-size: 2.4em; }
 
     td.MENCHcolumn1  { width: 60%; }
+    td.MENCHcolumn12  { width: 80%; }
     td.MENCHcolumn2  { width: 20%; }
     td.MENCHcolumn3  { width: 20%; }
 

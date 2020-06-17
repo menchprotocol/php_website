@@ -35,9 +35,8 @@ $show_max = config_var(11986);
         echo '<table class="table table-sm table-striped">';
         echo '<tr></tr>'; //Skip white
         echo '<tr>';
-        echo '<td class="MENCHcolumn1 montserrat"><div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div></td>';
-        echo '<td class="MENCHcolumn2 idea montserrat"><span style="padding-left: 9px;">'.$sources__12467[12273]['m_name'].'</span></td>';
-        echo '<td class="MENCHcolumn3 read montserrat"><span style="padding-left: 9px;">'.$sources__12467[6255]['m_name'].'</span></td>';
+        echo '<td class="MENCHcolumn12 montserrat"><div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div></td>';
+        echo '<td class="MENCHcolumn3 idea montserrat"><span style="padding-left: 9px;">'.$sources__12467[12273]['m_name'].'</span></td>';
         echo '</tr>';
         echo '</table>';
 

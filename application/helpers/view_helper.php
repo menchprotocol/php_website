@@ -1426,6 +1426,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     $is_source_only = ( $read__id > 0 && in_array($source['read__type'], $CI->config->item('sources_id_7551')));
     $show_toolbar = ($control_enabled && superpower_active(12706, true));
     $has_source_editor = superpower_active(10967, true);
+    $is_source_home = $CI->uri->segment(1) == '@';
 
     $source__profiles = $CI->READ_model->fetch(array(
         'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
@@ -1491,7 +1492,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //SOURCE
-    $ui .= '<td class="MENCHcolumn1">';
+    $ui .= '<td class="'.( $is_source_home ? 'MENCHcolumn12' : 'MENCHcolumn1' ).'">';
 
     $source_url = ( $is_read_progress ? '/'.$CI->uri->segment(1).'?focus__source='.$source['source__id'] : '/@'.$source['source__id'] );
 
@@ -1530,43 +1531,43 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //READ
-    $ui .= '<td class="MENCHcolumn2 read">';
+    if(!$is_source_home){
 
-    //RIGHT EDITING:
-    $ui .= '<div class="pull-right inline-block">';
-    $ui .= '<div class="note-editor edit-off">';
-    $ui .= '<span class="show-on-hover">';
+        $ui .= '<td class="MENCHcolumn2 read">';
 
-    if($control_enabled && $is_source){
-        if($is_link_source){
+        //RIGHT EDITING:
+        $ui .= '<div class="pull-right inline-block">';
+        $ui .= '<div class="note-editor edit-off">';
+        $ui .= '<span class="show-on-hover">';
 
-            //Sort
-            if(!$is_parent && $has_source_editor){
-                $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
+        if($control_enabled && $is_source){
+            if($is_link_source){
+
+                //Sort
+                if(!$is_parent && $has_source_editor){
+                    $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
+                }
+
+                //Manage source link:
+                $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="source_modify_load(' . $source['source__id'] . ',' . $read__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+
+
+            } elseif($is_source_only){
+
+                //Allow to remove:
+                $ui .= '<span><a href="javascript:void(0);" onclick="source_only_unlink(' . $read__id . ', '.$source['read__type'].')"><i class="fas fa-times black"></i></a></span>';
+
             }
-
-            //Manage source link:
-            $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="source_modify_load(' . $source['source__id'] . ',' . $read__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
-
-
-        } elseif($is_source_only){
-
-            //Allow to remove:
-            $ui .= '<span><a href="javascript:void(0);" onclick="source_only_unlink(' . $read__id . ', '.$source['read__type'].')"><i class="fas fa-times black"></i></a></span>';
-
         }
+
+        $ui .= '</span>';
+        $ui .= '</div>';
+        $ui .= '</div>';
+
+        $ui .= view_coins_count_read(0, $source['source__id']);
+        $ui .= '</td>';
+
     }
-
-    $ui .= '</span>';
-    $ui .= '</div>';
-    $ui .= '</div>';
-
-    $ui .= view_coins_count_read(0, $source['source__id']);
-    $ui .= '</td>';
-
-
-
-
 
     $ui .= '</tr></table>';
 
