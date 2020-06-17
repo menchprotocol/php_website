@@ -876,7 +876,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
             $ui .= '<span class="icon-block"><a href="'.$idea_link.'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
 
             //IDEA TITLE
-            if($show_toolbar && $is_idea_link){
+            if($is_idea_link && superpower_active(13354, true)){
 
                 $ui .= view_input_text(4736, $idea['idea__title'], $idea['idea__id'], $is_source, (($idea['read__sort']*100)+1));
 
@@ -938,7 +938,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
     }
 
 
-    if($show_toolbar && superpower_active(12673, true)){
+    if($show_toolbar){
 
         //Idea Toolbar
         $ui .= '<div class="space-content ' . superpower_active(12673) . '" style="padding-left:25px; padding-top:13px;">';
@@ -1494,7 +1494,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //SOURCE TOOLBAR?
-    if($show_toolbar){
+    if($control_enabled && superpower_active(13354, true)){
 
         $ui .= view_input_text(6197, $source['source__title'], $source['source__id'], $is_source, 0, false, null, extract_icon_color($source['source__icon']));
         $ui .= $child_counter;

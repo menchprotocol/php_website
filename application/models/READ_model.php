@@ -832,9 +832,9 @@ class READ_model extends CI_Model
              * */
 
             if(in_array($message_type_source__id, $this->config->item('sources_id_4986'))){
-                //IDEA NOTES 3X SOURCE REFERENCES ALLOWED
+                //IDEA NOTES 2X SOURCE REFERENCES ALLOWED
                 $min_source = 0;
-                $max_source = 3;
+                $max_source = 2;
             } elseif(in_array($message_type_source__id, $this->config->item('sources_id_7551'))){
                 //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
                 $min_source = 1;
@@ -913,12 +913,10 @@ class READ_model extends CI_Model
         $source_reference_keys = array(
             0 => 'read__up',
             1 => 'read__down',
-            2 => 'read__left'
         );
         $source_reference_fields = array(
             'read__up'   => 0,
             'read__down' => 0,
-            'read__left' => 0
         );
 
         foreach($string_references['ref_sources'] as $referenced_source){
@@ -1033,7 +1031,6 @@ class READ_model extends CI_Model
             //Source References:
             'read__up' => $source_reference_fields['read__up'],
             'read__down' => $source_reference_fields['read__down'],
-            'read__left' => $source_reference_fields['read__left'],
         );
     }
 
