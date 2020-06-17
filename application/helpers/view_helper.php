@@ -1417,7 +1417,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     $is_link_source = ( $read__id > 0 && in_array($source['read__type'], $CI->config->item('sources_id_4592')));
     $is_read_progress = ( $read__id > 0 && in_array($source['read__type'], $CI->config->item('sources_id_12227')));
     $is_source_only = ( $read__id > 0 && in_array($source['read__type'], $CI->config->item('sources_id_7551')));
-    $show_toolbar = ($control_enabled && superpower_active(12706, true));
+    $inline_editing = $control_enabled && superpower_active(13354, true);
     $has_source_editor = superpower_active(10967, true);
     $is_source_home = $CI->uri->segment(1) == '@';
 
@@ -1471,7 +1471,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
             'source__status IN (' . join(',', $CI->config->item('sources_id_7357')) . ')' => null, //PUBLIC
         ), array('read__down'), 0, 0, array(), 'COUNT(source__id) as totals');
         if($source__portfolio_count[0]['totals'] > 0){
-            $child_counter .= '<span class="pull-right" '.( $show_toolbar ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($source__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($source__portfolio_count[0]['totals']).'</span></span>';
+            $child_counter .= '<span class="pull-right" '.( $inline_editing ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($source__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($source__portfolio_count[0]['totals']).'</span></span>';
             $child_counter .= '<div class="doclear">&nbsp;</div>';
         }
     }
@@ -1494,7 +1494,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //SOURCE TOOLBAR?
-    if($control_enabled && superpower_active(13354, true)){
+    if($inline_editing){
 
         $ui .= view_input_text(6197, $source['source__title'], $source['source__id'], $is_source, 0, false, null, extract_icon_color($source['source__icon']));
         $ui .= $child_counter;
