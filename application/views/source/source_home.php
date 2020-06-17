@@ -55,6 +55,7 @@ $show_max = config_var(11986);
                 echo '<div class="list-group-item see_more_who'.$source__id.' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$source__id.'\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
                 echo '<div class="list-group-item see_more_who'.$source__id.' no-height"></div>';
             }
+
             echo view_source($source, false, ( $count<$show_max ? '' : 'see_more_who'.$source__id.' hidden'));
 
         }
