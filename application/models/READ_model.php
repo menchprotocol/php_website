@@ -989,7 +989,7 @@ class READ_model extends CI_Model
 
             //Append any appendix generated:
             $text_tooltip = ( strlen($text_tooltip) ? ' class="underdot" title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
-            $short_name_class = ( strlen($sources[0]['source__title']) <= 21 ? ' inline-block ' : '' );
+            $short_name_class = ( strlen($sources[0]['source__title']) <= 13 ? ' inline-block ' : '' );
             $output_body_message .= $source_appendix;
             $identifier_string = '@' . $referenced_source.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_source,' ',$message_input) : '' ).' ';
 
