@@ -264,7 +264,7 @@ if(!isset($hide_header)){
                         //echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$sources__11035[12899]['m_name'].'">'.$sources__11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-link"><a href="@s" title="'.$sources__11035[4269]['m_name'].'">'.$sources__11035[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-link"><a href="@s">'.$sources__11035[4269]['m_name'].' '.$sources__11035[4269]['m_icon'].'</a></td>';
 
                     }
 
