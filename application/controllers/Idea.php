@@ -602,7 +602,6 @@ class Idea extends CI_Controller {
             //Source References:
             'read__up' => $msg_validation['read__up'],
             'read__down' => $msg_validation['read__down'],
-            'read__left' => $msg_validation['read__left'],
         ), true);
 
 
@@ -845,7 +844,6 @@ class Idea extends CI_Controller {
                 //Source References:
                 'read__up' => $msg_validation['read__up'],
                 'read__down' => $msg_validation['read__down'],
-                'read__left' => $msg_validation['read__left'],
 
             ), $session_source['source__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['read__message'], $msg_validation['input_message']));
 
