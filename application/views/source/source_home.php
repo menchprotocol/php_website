@@ -36,7 +36,7 @@ $show_max = config_var(11986);
         echo '<tr></tr>'; //Skip white
         echo '<tr>';
         echo '<td class="MENCHcolumn12 montserrat"><div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div></td>';
-        echo '<td class="MENCHcolumn3 idea montserrat"><span style="padding-left: 9px;">'.$sources__12467[12273]['m_name'].'</span></td>';
+        echo '<td class="MENCHcolumn3 idea montserrat hidden"><span style="padding-left: 9px;">'.$sources__12467[12273]['m_name'].'</span></td>';
         echo '</tr>';
         echo '</table>';
 
