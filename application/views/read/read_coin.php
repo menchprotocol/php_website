@@ -165,6 +165,8 @@ if($recipient_source['source__id']){
             echo '</div>';
         echo '</div>';
 
+        echo '<div class="doclear">&nbsp;</div>';
+
 
         //READ DELETE ALL (ACCESSIBLE VIA MAIN MENU)
         echo '<div class="clear-reads-list hidden margin-top-down">';
@@ -174,6 +176,9 @@ if($recipient_source['source__id']){
         echo '</div>';
         echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="read_clear_all()" class="btn btn-read"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
         echo '</div>';
+
+        echo '<div class="doclear">&nbsp;</div>';
+
 
     }
 
