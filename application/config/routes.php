@@ -33,6 +33,5 @@ $route['@']                         = "source/index"; //Source Home
 
 //IDEATE
 $route['i']                         = "idea/index"; //Idea Home page
-$route['|']                         = "idea/index"; //Idea Home page
 $route['g(:num)']                   = "idea/go/$1"; //Smart logic to redirect to either IDEATE or READ mode
 $route['i(:num)']                   = "idea/idea_coin/$1"; //Load idea in ideate mode
