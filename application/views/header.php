@@ -144,20 +144,6 @@ if(!isset($hide_header)){
                                         continue;
                                     }
 
-                                } elseif($m['source__id']==12896){
-
-                                    $highlights = $this->READ_model->fetch(array(
-                                        'read__up' => $session_source['source__id'],
-                                        'read__type' => 12896, //SAVED
-                                        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                                    ), array(), 1, 0, array(), 'COUNT(read__id) as totals');
-
-                                    if($highlights[0]['totals']){
-                                        $m['m_name'] = $highlights[0]['totals'].' '.$m['m_name'];
-                                    } else {
-                                        continue;
-                                    }
-
                                 }
 
                                 //Apply superpower to Mench actions only
