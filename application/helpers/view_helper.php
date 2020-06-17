@@ -1419,6 +1419,7 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     $is_source_only = ( $read__id > 0 && in_array($source['read__type'], $CI->config->item('sources_id_7551')));
     $inline_editing = $control_enabled && superpower_active(13354, true);
     $has_source_editor = superpower_active(10967, true);
+    $show_toolbar = superpower_active(12706, true);
 
     $source__profiles = $CI->READ_model->fetch(array(
         'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
@@ -1461,17 +1462,19 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
 
 
     //PORTFOLIO COUNT (SYNC WITH NEXT IDEA COUNT)
-    $child_counter = '';
-    if($has_source_editor){
-        $source__portfolio_count = $CI->READ_model->fetch(array(
-            'read__up' => $source['source__id'],
-            'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'source__status IN (' . join(',', $CI->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-        ), array('read__down'), 0, 0, array(), 'COUNT(source__id) as totals');
-        if($source__portfolio_count[0]['totals'] > 0){
-            $child_counter .= '<span class="pull-right" '.( $inline_editing ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($source__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($source__portfolio_count[0]['totals']).'</span></span>';
-            $child_counter .= '<div class="doclear">&nbsp;</div>';
+    if($show_toolbar){
+        $child_counter = '';
+        if($has_source_editor){
+            $source__portfolio_count = $CI->READ_model->fetch(array(
+                'read__up' => $source['source__id'],
+                'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'source__status IN (' . join(',', $CI->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+            ), array('read__down'), 0, 0, array(), 'COUNT(source__id) as totals');
+            if($source__portfolio_count[0]['totals'] > 0){
+                $child_counter .= '<span class="pull-right" '.( $inline_editing ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($source__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($source__portfolio_count[0]['totals']).'</span></span>';
+                $child_counter .= '<div class="doclear">&nbsp;</div>';
+            }
         }
     }
 
@@ -1496,8 +1499,11 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     if($inline_editing){
 
         $ui .= view_input_text(6197, $source['source__title'], $source['source__id'], $is_source, 0, false, null, extract_icon_color($source['source__icon']));
-        $ui .= $child_counter;
-        $ui .= '<div class="space-content">'.$box_items_list.'</div>';
+
+        if($show_toolbar){
+            $ui .= $child_counter;
+            $ui .= '<div class="space-content">'.$box_items_list.'</div>';
+        }
 
     } else {
 
@@ -1505,7 +1511,9 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
         $ui .= '<a href="'.$source_url.'" class="title-block title-no-right montserrat '.extract_icon_color($source['source__icon']).'">';
         $ui .= $box_items_list;
         $ui .= '<span class="text__6197_' . $source['source__id'] . '">'.$source['source__title'].'</span>';
-        $ui .= $child_counter;
+        if($show_toolbar){
+            $ui .= $child_counter;
+        }
         $ui .= '</a>';
 
     }
@@ -1555,15 +1563,18 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     $ui .= '</tr></table>';
 
 
-    //PROFILE
-    $ui .= '<div class="space-content hideIfEmpty">';
-    //PROFILE SOURCES:
-    $ui .= '<span class="'. superpower_active(12706) .' paddingup inline-block hideIfEmpty">';
-    foreach($source__profiles as $source_profile) {
-        $ui .= '<span class="icon-block-img source_child_icon_' . $source_profile['source__id'] . '"><a href="/@' . $source_profile['source__id'] . '" data-toggle="tooltip" title="' . $source_profile['source__title'] . (strlen($source_profile['read__message']) > 0 ? ' = ' . $source_profile['read__message'] : '') . '" data-placement="bottom">' . view_source__icon($source_profile['source__icon']) . '</a></span> ';
+
+    if($show_toolbar){
+        //PROFILE
+        $ui .= '<div class="space-content hideIfEmpty">';
+        //PROFILE SOURCES:
+        $ui .= '<span class="paddingup inline-block hideIfEmpty">';
+        foreach($source__profiles as $source_profile) {
+            $ui .= '<span class="icon-block-img source_child_icon_' . $source_profile['source__id'] . '"><a href="/@' . $source_profile['source__id'] . '" data-toggle="tooltip" title="' . $source_profile['source__title'] . (strlen($source_profile['read__message']) > 0 ? ' = ' . $source_profile['read__message'] : '') . '" data-placement="bottom">' . view_source__icon($source_profile['source__icon']) . '</a></span> ';
+        }
+        $ui .= '</span>';
+        $ui .= '</div>';
     }
-    $ui .= '</span>';
-    $ui .= '</div>';
 
 
 
