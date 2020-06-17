@@ -1543,7 +1543,7 @@ class Source extends CI_Controller
             if($idea__id > 0){
                 return redirect_message(( superpower_assigned(10939) ? '/g' : '/' ) . $idea__id);
             } else {
-                return redirect_message('/r');
+                return redirect_message('/');
             }
         }
 
@@ -2099,7 +2099,7 @@ class Source extends CI_Controller
         $this->SOURCE_model->activate_session($sources[0]);
 
         //Take them to READ HOME
-        return redirect_message( '/r' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
+        return redirect_message( '/' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
 
     }
 

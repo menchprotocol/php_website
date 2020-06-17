@@ -15,29 +15,6 @@ class Read extends CI_Controller
     }
 
 
-    function index(){
-
-        //My Reads
-        $session_source = superpower_assigned(null, true);
-        $sources__2738 = $this->config->item('sources__2738');
-
-        //Log home View:
-        $this->READ_model->create(array(
-            'read__type' => 4283, //Opened Reads
-            'read__player' => $session_source['source__id'],
-        ));
-
-        $this->load->view('header', array(
-            'title' => $sources__2738[6205]['m_name'],
-        ));
-        $this->load->view('read/read_home', array(
-            'session_source' => $session_source,
-        ));
-        $this->load->view('footer');
-
-    }
-
-
     function interactions(){
 
         /*
@@ -433,19 +410,7 @@ class Read extends CI_Controller
         }
     }
 
-    function saved(){
 
-        $session_source = superpower_assigned(null, true);
-        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
-        $this->load->view('header', array(
-            'title' => $sources__11035[12896]['m_name'],
-        ));
-        $this->load->view('read/read_saved', array(
-            'session_source' => $session_source,
-        ));
-        $this->load->view('footer');
-
-    }
 
 
     function start_reading($idea__id){
@@ -471,7 +436,7 @@ class Read extends CI_Controller
                 $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>Successfully added to your '.$sources__11035[12969]['m_name'].'. Continue below.</div>';
             } else {
                 //Failed to add to Reads:
-                return redirect_message('/r', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>FAILED to add to your '.$sources__11035[12969]['m_name'].'.</div>');
+                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>FAILED to add to your '.$sources__11035[12969]['m_name'].'.</div>');
             }
         }
 
@@ -815,17 +780,15 @@ class Read extends CI_Controller
 
 
 
-    function read_coins_remove_all($source__id, $timestamp, $secret_key){
+    function read_coins_remove_all(){
 
-        if($secret_key != md5($source__id . $this->config->item('cred_password_salt') . $timestamp)){
-            die('Invalid Secret Key');
-        }
+        $session_source = superpower_assigned(null, true);
 
         //Fetch their current progress links:
         $progress_links = $this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type IN (' . join(',', $this->config->item('sources_id_12227')) . ')' => null,
-            'read__player' => $source__id,
+            'read__player' => $session_source['source__id'],
         ), array(), 0);
 
         if(count($progress_links) > 0){
@@ -837,7 +800,7 @@ class Read extends CI_Controller
             $clear_all_link = $this->READ_model->create(array(
                 'read__message' => $message,
                 'read__type' => 6415, //Reads Reset Reads
-                'read__player' => $source__id,
+                'read__player' => $session_source['source__id'],
             ));
 
             //Delete all progressions:
@@ -845,7 +808,7 @@ class Read extends CI_Controller
                 $this->READ_model->update($progress_link['read__id'], array(
                     'read__status' => 6173, //Read Deleted
                     'read__reference' => $clear_all_link['read__id'], //To indicate when it was deleted
-                ), $source__id, 6415 /* User Cleared Reads */);
+                ), $session_source['source__id'], 6415 /* User Cleared Reads */);
             }
 
         } else {
@@ -856,7 +819,7 @@ class Read extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message('/r', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+        return redirect_message('/', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
 
     }
 

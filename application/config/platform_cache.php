@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-16 23:30:29 PST
+//Generated 2020-06-17 00:27:23 PST
 
 //EXPERT AUTHORS:
 $config['sources_id_13339'] = array(3084,2750);
@@ -38,7 +38,7 @@ $config['sources__4603'] = array(
     ),
 );
 
-//READ TABS SHOW IF LOGGED-IN:
+//DISCOVER TABS SHOW IF LOGGED-IN:
 $config['sources_id_13304'] = array(12419,13023);
 $config['sources__13304'] = array(
     12419 => array(
@@ -55,7 +55,7 @@ $config['sources__13304'] = array(
     ),
 );
 
-//READ TABS HIDE IF ZERO:
+//DISCOVER TABS HIDE IF ZERO:
 $config['sources_id_13298'] = array(7545,12864,12273);
 $config['sources__13298'] = array(
     7545 => array(
@@ -78,7 +78,7 @@ $config['sources__13298'] = array(
     ),
 );
 
-//READ TABS DEFAULT SELECTED:
+//DISCOVER TABS DEFAULT SELECTED:
 $config['sources_id_13300'] = array(4231);
 $config['sources__13300'] = array(
     4231 => array(
@@ -89,7 +89,7 @@ $config['sources__13300'] = array(
     ),
 );
 
-//READ TABS:
+//DISCOVER TABS:
 $config['sources_id_13291'] = array(4231,12419,12273,12864,7545,13023);
 $config['sources__13291'] = array(
     4231 => array(
@@ -399,7 +399,7 @@ $config['sources_id_13022'] = array(6677,6683,7637);
 $config['sources__13022'] = array(
     6677 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
-        'm_name' => 'READ & NEXT',
+        'm_name' => 'DISCOVER & NEXT',
         'm_desc' => '',
         'm_parents' => array(13022,12330,7585,4559,6192),
     ),
@@ -434,18 +434,18 @@ $config['sources__13004'] = array(
     ),
 );
 
-//READ LIST:
+//DISCOVERY LIST:
 $config['sources_id_12969'] = array(4235,7495);
 $config['sources__12969'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-plus read" aria-hidden="true"></i>',
-        'm_name' => 'ADD TO READ LIST',
+        'm_name' => 'ADD TO DISCOVER LIST',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
     7495 => array(
         'm_icon' => '<i class="fad fa-megaphone read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECOMMEND',
+        'm_name' => 'DISCOVER RECOMMEND',
         'm_desc' => '',
         'm_parents' => array(12969,12227,4755,4593),
     ),
@@ -546,25 +546,13 @@ $config['sources__12955'] = array(
 );
 
 //MENCH MAIN MENU:
-$config['sources_id_12893'] = array(10876,12896,6205,4536,4535,12749);
+$config['sources_id_12893'] = array(6205,4536,4535,12749);
 $config['sources__12893'] = array(
-    10876 => array(
-        'm_icon' => '<i class="fas fa-home read" aria-hidden="true"></i>',
-        'm_name' => 'HOME',
-        'm_desc' => '/',
-        'm_parents' => array(12893,4527,1326),
-    ),
-    12896 => array(
-        'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
-        'm_desc' => '/s',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
-    ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER',
-        'm_desc' => '/r',
-        'm_parents' => array(12893,10876,2738),
+        'm_desc' => '/',
+        'm_parents' => array(12893,2738),
     ),
     4536 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -742,8 +730,20 @@ $config['sources__10573'] = array(
 );
 
 //PLUGIN RETURN CODE ONLY:
-$config['sources_id_12741'] = array(4356,11049,7275,7276,4527,12114,7277,12710,12709,12733,12722,12888,12732,12712,7278,12967,7279,12569);
+$config['sources_id_12741'] = array(12733,12722,4356,11049,7275,7276,4527,12114,7277,12710,12709,12888,12732,12712,7278,12967,7279,12569);
 $config['sources__12741'] = array(
+    12733 => array(
+        'm_icon' => '<i class="fad fa-code read"></i>',
+        'm_name' => 'DISCOVER REVIEW JSON',
+        'm_desc' => '',
+        'm_parents' => array(11047,12741,12701,6287),
+    ),
+    12722 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER REVIEW JSON',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
+    ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
@@ -795,18 +795,6 @@ $config['sources__12741'] = array(
     12709 => array(
         'm_icon' => 'ℹ️',
         'm_name' => 'PHP INFO',
-        'm_desc' => '',
-        'm_parents' => array(12741,6287),
-    ),
-    12733 => array(
-        'm_icon' => '<i class="fad fa-code read"></i>',
-        'm_name' => 'READ REVIEW JSON',
-        'm_desc' => '',
-        'm_parents' => array(11047,12741,12701,6287),
-    ),
-    12722 => array(
-        'm_icon' => '',
-        'm_name' => 'READ REVIEW JSON',
         'm_desc' => '',
         'm_parents' => array(12741,6287),
     ),
@@ -889,7 +877,7 @@ $config['sources__12675'] = array(
 );
 
 //IDEA TABS NO MANUAL ADD / HIDE IF ZERO:
-$config['sources_id_12677'] = array(6255,10573,12969,12896,6146);
+$config['sources_id_12677'] = array(6255,12969,10573,12896,6146);
 $config['sources__12677'] = array(
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
@@ -897,23 +885,23 @@ $config['sources__12677'] = array(
         'm_desc' => '',
         'm_parents' => array(6205,12677,10939,11018,12467,11089,12228,4527),
     ),
+    12969 => array(
+        'm_icon' => '<i class="fas fa-user-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY LIST',
+        'm_desc' => '',
+        'm_parents' => array(13210,12228,11035,11018,12677,12701,4527,11089),
+    ),
     10573 => array(
         'm_icon' => '<i class="fas fa-user-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LIST',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
-    12969 => array(
-        'm_icon' => '<i class="fas fa-user-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ LIST',
-        'm_desc' => '',
-        'm_parents' => array(13210,12228,11035,11018,12677,12701,4527,11089),
-    ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
         'm_desc' => '',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
+        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
@@ -1228,7 +1216,7 @@ $config['sources__12523'] = array(
     ),
 );
 
-//READ ICON LEGEND:
+//DISCOVER ICON LEGEND:
 $config['sources_id_12446'] = array(12448,12447,13338);
 $config['sources__12446'] = array(
     12448 => array(
@@ -1239,13 +1227,13 @@ $config['sources__12446'] = array(
     ),
     12447 => array(
         'm_icon' => '<i class="fas fa-play-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ IN PROGRESS',
+        'm_name' => 'DISCOVER IN PROGRESS',
         'm_desc' => '',
         'm_parents' => array(12446),
     ),
     13338 => array(
         'm_icon' => '<i class="fas fa-check-circle read"></i>',
-        'm_name' => 'READ COMPLETED',
+        'm_name' => 'DISCOVER COMPLETED',
         'm_desc' => '',
         'm_parents' => array(12446),
     ),
@@ -1297,15 +1285,9 @@ $config['sources__12413'] = array(
     ),
 );
 
-//HOME:
-$config['sources_id_10876'] = array(6205,7291,4535,4341,6287,12896,4269,4536);
+//MENCH WEBSITE:
+$config['sources_id_10876'] = array(7291,4535,4341,6287,4269,4536);
 $config['sources__10876'] = array(
-    6205 => array(
-        'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVER',
-        'm_desc' => 'https://mench.com/r',
-        'm_parents' => array(12893,10876,2738),
-    ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
         'm_name' => 'LOGOUT',
@@ -1329,12 +1311,6 @@ $config['sources__10876'] = array(
         'm_name' => 'PLUGINS',
         'm_desc' => 'https://mench.com/@p',
         'm_parents' => array(13297,6405,6194,12699,12500,10876,11035,4527),
-    ),
-    12896 => array(
-        'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
-        'm_desc' => 'https://mench.com/s',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
@@ -1483,7 +1459,7 @@ $config['sources_id_12330'] = array(6677,6914,6907);
 $config['sources__12330'] = array(
     6677 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
-        'm_name' => 'READ & NEXT',
+        'm_name' => 'DISCOVER & NEXT',
         'm_desc' => '',
         'm_parents' => array(13022,12330,7585,4559,6192),
     ),
@@ -1501,7 +1477,7 @@ $config['sources__12330'] = array(
     ),
 );
 
-//READ UNLOCKS:
+//DISCOVER UNLOCKS:
 $config['sources_id_12327'] = array(7485,7486,6997);
 $config['sources__12327'] = array(
     7485 => array(
@@ -1524,7 +1500,7 @@ $config['sources__12327'] = array(
     ),
 );
 
-//READ EXPANSIONS:
+//DISCOVER EXPANSIONS:
 $config['sources_id_12326'] = array(12336,12334,6140);
 $config['sources__12326'] = array(
     12336 => array(
@@ -2180,12 +2156,12 @@ $config['sources__12273'] = array(
     ),
 );
 
-//READ COMPLETION:
-$config['sources_id_12229'] = array(7492,6157,7489,12117,4559,6144,7485,7486,6997);
+//DISCOVER COMPLETION:
+$config['sources_id_12229'] = array(7492,6157,7489,4559,12117,6144,7485,7486,6997);
 $config['sources__12229'] = array(
     7492 => array(
         'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
-        'm_name' => 'READ TERMINATE',
+        'm_name' => 'DISCOVER TERMINATE',
         'm_desc' => '',
         'm_parents' => array(12229,12227,4755,4593,6146),
     ),
@@ -2201,17 +2177,17 @@ $config['sources__12229'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,7704,4755,6255,4593),
     ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye read"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,6255,4755,4593),
+    ),
     12117 => array(
         'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
-    ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye read"></i>',
-        'm_name' => 'SOURCE READ MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
@@ -2239,42 +2215,42 @@ $config['sources__12229'] = array(
     ),
 );
 
-//READ PROGRESS:
-$config['sources_id_12227'] = array(4235,12336,12334,7495,7492,6140,6157,7489,12117,4559,6144,7485,7486,6997);
+//DISCOVER PROGRESS:
+$config['sources_id_12227'] = array(4235,12336,12334,7495,7492,6140,6157,7489,4559,12117,6144,7485,7486,6997);
 $config['sources__12227'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-plus read" aria-hidden="true"></i>',
-        'm_name' => 'ADD TO READ LIST',
+        'm_name' => 'ADD TO DISCOVER LIST',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
     12336 => array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER ONE LINK',
+        'm_name' => 'DISCOVER ANSWER ONE LINK',
         'm_desc' => '',
         'm_parents' => array(7704,4755,4593,12326,12227),
     ),
     12334 => array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER SOME LINK',
+        'm_name' => 'DISCOVER ANSWER SOME LINK',
         'm_desc' => '',
         'm_parents' => array(7704,4755,4593,12326,12227),
     ),
     7495 => array(
         'm_icon' => '<i class="fad fa-megaphone read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECOMMEND',
+        'm_name' => 'DISCOVER RECOMMEND',
         'm_desc' => '',
         'm_parents' => array(12969,12227,4755,4593),
     ),
     7492 => array(
         'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
-        'm_name' => 'READ TERMINATE',
+        'm_name' => 'DISCOVER TERMINATE',
         'm_desc' => '',
         'm_parents' => array(12229,12227,4755,4593,6146),
     ),
     6140 => array(
         'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ UNLOCK CONDITION LINK',
+        'm_name' => 'DISCOVER UNLOCK CONDITION LINK',
         'm_desc' => '',
         'm_parents' => array(12326,12227,6410,4229,4755,4593),
     ),
@@ -2290,17 +2266,17 @@ $config['sources__12227'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,7704,4755,6255,4593),
     ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye read"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,6255,4755,4593),
+    ),
     12117 => array(
         'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
-    ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye read"></i>',
-        'm_name' => 'SOURCE READ MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
@@ -2328,8 +2304,8 @@ $config['sources__12227'] = array(
     ),
 );
 
-//READ TYPE COIN AWARD:
-$config['sources_id_12141'] = array(4983,4251,6157,7489,12117,4559,6144,7485,7486,6997);
+//DISCOVER TYPE COIN AWARD:
+$config['sources_id_12141'] = array(4983,4251,6157,7489,4559,12117,6144,7485,7486,6997);
 $config['sources__12141'] = array(
     4983 => array(
         'm_icon' => '<i class="fas fa-user-edit source" aria-hidden="true"></i>',
@@ -2355,17 +2331,17 @@ $config['sources__12141'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,7704,4755,6255,4593),
     ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye read"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,6255,4755,4593),
+    ),
     12117 => array(
         'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
-    ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye read"></i>',
-        'm_name' => 'SOURCE READ MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
@@ -2405,8 +2381,14 @@ $config['sources__12138'] = array(
 );
 
 //MENCH TEXT INPUTS:
-$config['sources_id_12112'] = array(4356,4736,4535,4358,6197,4739,4735);
+$config['sources_id_12112'] = array(4358,4356,4736,4535,6197,4739,4735);
 $config['sources__12112'] = array(
+    4358 => array(
+        'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER MARKS',
+        'm_desc' => '',
+        'm_parents' => array(12700,12112,10663,6103,6410,6232),
+    ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
@@ -2424,12 +2406,6 @@ $config['sources__12112'] = array(
         'm_name' => 'MAP',
         'm_desc' => '',
         'm_parents' => array(10939,12893,10876,11035,12761,12112,2738),
-    ),
-    4358 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
-        'm_name' => 'READ MARKS',
-        'm_desc' => '',
-        'm_parents' => array(12700,12112,10663,6103,6410,6232),
     ),
     6197 => array(
         'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
@@ -2503,7 +2479,7 @@ $config['sources__11089'] = array(
     ),
     12969 => array(
         'm_icon' => '<i class="fas fa-user-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ LIST',
+        'm_name' => 'DISCOVERY LIST',
         'm_desc' => '',
         'm_parents' => array(13210,12228,11035,11018,12677,12701,4527,11089),
     ),
@@ -2511,7 +2487,7 @@ $config['sources__11089'] = array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
         'm_desc' => '',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
+        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -2569,7 +2545,7 @@ $config['sources__11089'] = array(
     ),
 );
 
-//READ ALL CONNECTIONS:
+//DISCOVER ALL CONNECTIONS:
 $config['sources_id_11081'] = array(4429,4368,4364,4371,4369,4593,4366);
 $config['sources__11081'] = array(
     4429 => array(
@@ -2617,8 +2593,92 @@ $config['sources__11081'] = array(
 );
 
 //MENCH VARIABLE:
-$config['sources_id_6232'] = array(4356,6202,4486,6159,6208,13301,6168,6283,12885,6228,6165,6162,6161,6167,4737,4736,6170,6169,7585,13029,4429,4367,4368,4358,4372,6103,4364,4371,4369,4370,6186,4362,4593,4366,6198,6160,6172,6207,6177,6197,13030,4739,4735);
+$config['sources_id_6232'] = array(4429,4367,4368,4358,4372,6103,4364,4371,4369,4370,6186,4362,4593,4366,4356,6202,4486,6159,6208,13301,6168,6283,12885,6228,6165,6162,6161,6167,4737,4736,6170,6169,7585,13029,6198,6160,6172,6207,6177,6197,13030,4739,4735);
 $config['sources__6232'] = array(
+    4429 => array(
+        'm_icon' => '<i class="fas fa-triangle rotate180" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER DOWN',
+        'm_desc' => 'read__down',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
+    4367 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ID',
+        'm_desc' => 'read__id',
+        'm_parents' => array(6232,6215,4341),
+    ),
+    4368 => array(
+        'm_icon' => '<i class="fas fa-triangle rotate270" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER LEFT',
+        'm_desc' => 'read__left',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4358 => array(
+        'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER MARKS',
+        'm_desc' => 'tr__assessment_points',
+        'm_parents' => array(12700,12112,10663,6103,6410,6232),
+    ),
+    4372 => array(
+        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER MESSAGE',
+        'm_desc' => 'read__message',
+        'm_parents' => array(7578,10679,10657,5001,6232,4341),
+    ),
+    6103 => array(
+        'm_icon' => '<i class="fas fa-lambda"></i>',
+        'm_name' => 'DISCOVER METADATA',
+        'm_desc' => 'read__metadata',
+        'm_parents' => array(4527,6232,6195,4341),
+    ),
+    4364 => array(
+        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER PLAYER',
+        'm_desc' => 'read__player',
+        'm_parents' => array(11081,6160,6232,6194,4341),
+    ),
+    4371 => array(
+        'm_icon' => '<i class="fas fa-link" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER REFERENCE',
+        'm_desc' => 'read__reference',
+        'm_parents' => array(11081,10692,4367,6232,4341),
+    ),
+    4369 => array(
+        'm_icon' => '<i class="fas fa-triangle rotate90" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RIGHT',
+        'm_desc' => 'read__right',
+        'm_parents' => array(11081,10692,6202,6232,4341),
+    ),
+    4370 => array(
+        'm_icon' => '<i class="fas fa-bars" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SORT',
+        'm_desc' => 'read__sort',
+        'm_parents' => array(13007,13006,10676,10675,6232,4341),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS',
+        'm_desc' => 'read__status',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    4362 => array(
+        'm_icon' => '<i class="fas fa-clock" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TIME',
+        'm_desc' => 'read__time',
+        'm_parents' => array(6232,4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TYPE',
+        'm_desc' => 'read__type',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
+    4366 => array(
+        'm_icon' => '<i class="fas fa-triangle" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER UP',
+        'm_desc' => 'read__up',
+        'm_parents' => array(11081,10692,6160,6232,4341),
+    ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
@@ -2738,90 +2798,6 @@ $config['sources__6232'] = array(
         'm_name' => 'IDEA WEIGHT',
         'm_desc' => 'idea__weight',
         'm_parents' => array(6214,6232,6201),
-    ),
-    4429 => array(
-        'm_icon' => '<i class="fas fa-triangle rotate180" aria-hidden="true"></i>',
-        'm_name' => 'READ DOWN',
-        'm_desc' => 'read__down',
-        'm_parents' => array(11081,10692,6160,6232,4341),
-    ),
-    4367 => array(
-        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_name' => 'READ ID',
-        'm_desc' => 'read__id',
-        'm_parents' => array(6232,6215,4341),
-    ),
-    4368 => array(
-        'm_icon' => '<i class="fas fa-triangle rotate270" aria-hidden="true"></i>',
-        'm_name' => 'READ LEFT',
-        'm_desc' => 'read__left',
-        'm_parents' => array(11081,10692,6202,6232,4341),
-    ),
-    4358 => array(
-        'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
-        'm_name' => 'READ MARKS',
-        'm_desc' => 'tr__assessment_points',
-        'm_parents' => array(12700,12112,10663,6103,6410,6232),
-    ),
-    4372 => array(
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_name' => 'READ MESSAGE',
-        'm_desc' => 'read__message',
-        'm_parents' => array(7578,10679,10657,5001,6232,4341),
-    ),
-    6103 => array(
-        'm_icon' => '<i class="fas fa-lambda"></i>',
-        'm_name' => 'READ METADATA',
-        'm_desc' => 'read__metadata',
-        'm_parents' => array(4527,6232,6195,4341),
-    ),
-    4364 => array(
-        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
-        'm_name' => 'READ PLAYER',
-        'm_desc' => 'read__player',
-        'm_parents' => array(11081,6160,6232,6194,4341),
-    ),
-    4371 => array(
-        'm_icon' => '<i class="fas fa-link" aria-hidden="true"></i>',
-        'm_name' => 'READ REFERENCE',
-        'm_desc' => 'read__reference',
-        'm_parents' => array(11081,10692,4367,6232,4341),
-    ),
-    4369 => array(
-        'm_icon' => '<i class="fas fa-triangle rotate90" aria-hidden="true"></i>',
-        'm_name' => 'READ RIGHT',
-        'm_desc' => 'read__right',
-        'm_parents' => array(11081,10692,6202,6232,4341),
-    ),
-    4370 => array(
-        'm_icon' => '<i class="fas fa-bars" aria-hidden="true"></i>',
-        'm_name' => 'READ SORT',
-        'm_desc' => 'read__sort',
-        'm_parents' => array(13007,13006,10676,10675,6232,4341),
-    ),
-    6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS',
-        'm_desc' => 'read__status',
-        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
-    ),
-    4362 => array(
-        'm_icon' => '<i class="fas fa-clock" aria-hidden="true"></i>',
-        'm_name' => 'READ TIME',
-        'm_desc' => 'read__time',
-        'm_parents' => array(6232,4341),
-    ),
-    4593 => array(
-        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_name' => 'READ TYPE',
-        'm_desc' => 'read__type',
-        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
-    ),
-    4366 => array(
-        'm_icon' => '<i class="fas fa-triangle" aria-hidden="true"></i>',
-        'm_name' => 'READ UP',
-        'm_desc' => 'read__up',
-        'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     6198 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -2944,7 +2920,7 @@ $config['sources__11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['sources_id_6404'] = array(12678,7274,12904,3288,12176,4356,4485,4736,11064,11065,13014,11063,13005,11060,11079,11066,11057,11056,12331,12427,12088,13206,11986,12232,6197,12568,12565);
+$config['sources_id_6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,4485,4736,11064,11065,13014,11063,13005,11060,11079,11066,12088,13206,11986,12232,6197,12568,12565);
 $config['sources__6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -2963,6 +2939,30 @@ $config['sources__6404'] = array(
         'm_name' => 'DEFAULT BOOK COVER',
         'm_desc' => '//s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg',
         'm_parents' => array(6404,1,7524),
+    ),
+    11057 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER MARKS MAX',
+        'm_desc' => '89',
+        'm_parents' => array(6404,4358),
+    ),
+    11056 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER MARKS MIN',
+        'm_desc' => '-89',
+        'm_parents' => array(6404,4358),
+    ),
+    12331 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER MIN TIME SHOW',
+        'm_desc' => '120',
+        'm_parents' => array(6404),
+    ),
+    12427 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER TIME MINIMUM SECONDS',
+        'm_desc' => '3',
+        'm_parents' => array(6404,4356),
     ),
     3288 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -3027,7 +3027,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.434',
+        'm_desc' => 'v1.435',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -3041,30 +3041,6 @@ $config['sources__6404'] = array(
         'm_name' => 'PASSWORD MIN CHARACTERS',
         'm_desc' => '6',
         'm_parents' => array(6404),
-    ),
-    11057 => array(
-        'm_icon' => '',
-        'm_name' => 'READ MARKS MAX',
-        'm_desc' => '89',
-        'm_parents' => array(6404,4358),
-    ),
-    11056 => array(
-        'm_icon' => '',
-        'm_name' => 'READ MARKS MIN',
-        'm_desc' => '-89',
-        'm_parents' => array(6404,4358),
-    ),
-    12331 => array(
-        'm_icon' => '',
-        'm_name' => 'READ MIN TIME SHOW',
-        'm_desc' => '120',
-        'm_parents' => array(6404),
-    ),
-    12427 => array(
-        'm_icon' => '',
-        'm_name' => 'READ TIME MINIMUM SECONDS',
-        'm_desc' => '3',
-        'm_parents' => array(6404,4356),
     ),
     12088 => array(
         'm_icon' => '',
@@ -3111,8 +3087,14 @@ $config['sources__6404'] = array(
 );
 
 //MENCH MEMORY JAVASCRIPT:
-$config['sources_id_11054'] = array(4486,10573,4983,4737,7356,7355,7585,2738,6404,6201,12687,6186,4592,6177,7357);
+$config['sources_id_11054'] = array(6186,4486,10573,4983,4737,7356,7355,7585,2738,6404,6201,12687,4592,6177,7357);
 $config['sources__11054'] = array(
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
     4486 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LINKS',
@@ -3179,12 +3161,6 @@ $config['sources__11054'] = array(
         'm_desc' => '',
         'm_parents' => array(6403,11054,4527),
     ),
-    6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS',
-        'm_desc' => '',
-        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
-    ),
     4592 => array(
         'm_icon' => '<i class="fas fa-link source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LINKS',
@@ -3234,7 +3210,7 @@ $config['sources__11047'] = array(
     ),
     12733 => array(
         'm_icon' => '<i class="fad fa-code read"></i>',
-        'm_name' => 'READ REVIEW JSON',
+        'm_name' => 'DISCOVER REVIEW JSON',
         'm_desc' => '/@p12733?idea__id=',
         'm_parents' => array(11047,12741,12701,6287),
     ),
@@ -3253,7 +3229,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(6225,4235,12749,3084,13216,12707,12991,12211,10573,7291,11068,4535,4341,4430,12205,6287,12750,12969,12896,7256,13023,4269,4536,4997,12275,13007,10957,7540);
+$config['sources_id_11035'] = array(6225,4235,12969,12749,3084,13216,12707,12991,12211,10573,7291,11068,4535,4341,4430,12205,6287,12750,12896,7256,13023,4269,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3263,9 +3239,15 @@ $config['sources__11035'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-plus read" aria-hidden="true"></i>',
-        'm_name' => 'ADD TO READ LIST',
+        'm_name' => 'ADD TO DISCOVER LIST',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
+    ),
+    12969 => array(
+        'm_icon' => '<i class="fas fa-user-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY LIST',
+        'm_desc' => '',
+        'm_parents' => array(13210,12228,11035,11018,12677,12701,4527,11089),
     ),
     12749 => array(
         'm_icon' => '<i class="fas fa-pen-square idea"></i>',
@@ -3283,7 +3265,7 @@ $config['sources__11035'] = array(
         'm_icon' => '<i class="fas fa-star idea"></i>',
         'm_name' => 'FEATURED',
         'm_desc' => '',
-        'm_parents' => array(11035),
+        'm_parents' => array(13210,11035),
     ),
     12707 => array(
         'm_icon' => '<i class="far fa-filter" aria-hidden="true"></i>',
@@ -3357,17 +3339,11 @@ $config['sources__11035'] = array(
         'm_desc' => '',
         'm_parents' => array(13295,11035),
     ),
-    12969 => array(
-        'm_icon' => '<i class="fas fa-user-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ LIST',
-        'm_desc' => '',
-        'm_parents' => array(13210,12228,11035,11018,12677,12701,4527,11089),
-    ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
         'm_desc' => '',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
+        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
     7256 => array(
         'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
@@ -3472,7 +3448,7 @@ $config['sources__11018'] = array(
     ),
     12969 => array(
         'm_icon' => '<i class="fas fa-user-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ LIST',
+        'm_name' => 'DISCOVERY LIST',
         'm_desc' => '',
         'm_parents' => array(13210,12228,11035,11018,12677,12701,4527,11089),
     ),
@@ -3486,7 +3462,7 @@ $config['sources__11018'] = array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
         'm_desc' => '',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
+        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
     6146 => array(
         'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
@@ -3526,8 +3502,20 @@ $config['sources__10990'] = array(
 );
 
 //SUPERPOWERS:
-$config['sources_id_10957'] = array(12700,10986,10939,12673,10984,12701,12705,10967,12703,12699,12706);
+$config['sources_id_10957'] = array(12701,12705,12700,10986,10939,12673,10984,10967,12703,12699,12706);
 $config['sources__10957'] = array(
+    12701 => array(
+        'm_icon' => '<i class="fad fa-glasses read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER GLASSES',
+        'm_desc' => 'Read info from all players',
+        'm_parents' => array(10957),
+    ),
+    12705 => array(
+        'm_icon' => '<i class="fad fa-list read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER LIST EDIT',
+        'm_desc' => 'Mass Edit Reads',
+        'm_parents' => array(10957),
+    ),
     12700 => array(
         'm_icon' => '<i class="fad fa-link idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA CHAIN',
@@ -3556,18 +3544,6 @@ $config['sources__10957'] = array(
         'm_icon' => '<i class="fas fa-walkie-talkie idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA WALKIE TALKIE',
         'm_desc' => 'Collaborative Publishing Powers',
-        'm_parents' => array(10957),
-    ),
-    12701 => array(
-        'm_icon' => '<i class="fad fa-glasses read" aria-hidden="true"></i>',
-        'm_name' => 'READ GLASSES',
-        'm_desc' => 'Read info from all players',
-        'm_parents' => array(10957),
-    ),
-    12705 => array(
-        'm_icon' => '<i class="fad fa-list read" aria-hidden="true"></i>',
-        'm_name' => 'READ LIST EDIT',
-        'm_desc' => 'Mass Edit Reads',
         'm_parents' => array(10957),
     ),
     10967 => array(
@@ -4052,7 +4028,7 @@ $config['sources__2738'] = array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'DISCOVER',
         'm_desc' => '',
-        'm_parents' => array(12893,10876,2738),
+        'm_parents' => array(12893,2738),
     ),
 );
 
@@ -4092,7 +4068,7 @@ $config['sources__10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['sources_id_4527'] = array(6225,10956,12279,12588,6150,6255,13037,13339,3000,10876,4229,12842,4486,12840,10573,12589,11047,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,12413,7585,13022,12330,7309,7712,12883,12884,12955,7751,2738,12467,6404,12079,6201,13202,4341,12893,4527,11054,12687,11035,6206,12112,6232,12500,12741,6287,12577,4755,11081,7704,5967,12229,12326,12446,12969,6103,12227,7304,6186,7360,7364,7359,13291,13300,13298,13304,4593,10593,12141,12327,12761,13023,4269,6204,4536,13207,12571,13004,12574,11080,12822,4592,12403,11059,4537,12524,4997,12887,6194,12274,6177,7358,12575,7357,12401,11089,10957,12968,12523,10692,10869,6146);
+$config['sources_id_4527'] = array(6225,10956,12279,12588,6150,11081,7704,5967,12229,12326,12446,6103,12227,6255,7304,6186,7360,7364,7359,13291,13300,13298,13304,4593,10593,12141,12327,12969,13037,13339,3000,4229,12842,4486,12840,10573,12589,11047,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,12413,7585,13022,12330,7309,7712,12883,12884,12955,7751,2738,12467,6404,12079,6201,13202,4341,12893,4527,11054,12687,11035,6206,12112,6232,10876,12500,12741,6287,12577,4755,12761,13023,4269,6204,4536,13207,12571,13004,12574,11080,12822,4592,12403,11059,4537,12524,4997,12887,6194,12274,6177,7358,12575,7357,12401,11089,10957,12968,12523,10692,10869,6146);
 $config['sources__4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4124,11 +4100,143 @@ $config['sources__4527'] = array(
         'm_desc' => '',
         'm_parents' => array(6771,4527),
     ),
+    11081 => array(
+        'm_icon' => '<i class="far fa-bezier-curve read"></i>',
+        'm_name' => 'DISCOVER ALL CONNECTIONS',
+        'm_desc' => '',
+        'm_parents' => array(4527,6771),
+    ),
+    7704 => array(
+        'm_icon' => '<i class="far fa-check-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER',
+        'm_desc' => '',
+        'm_parents' => array(13028,12228,4527),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER CARBON COPY',
+        'm_desc' => '',
+        'm_parents' => array(4527,7569,4755,4593),
+    ),
+    12229 => array(
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COMPLETION',
+        'm_desc' => '',
+        'm_parents' => array(4527,12228),
+    ),
+    12326 => array(
+        'm_icon' => '<i class="fad fa-expand read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER EXPANSIONS',
+        'm_desc' => '',
+        'm_parents' => array(4527,12228),
+    ),
+    12446 => array(
+        'm_icon' => '<i class="fad fa-question-circle read"></i>',
+        'm_name' => 'DISCOVER ICON LEGEND',
+        'm_desc' => '',
+        'm_parents' => array(4527,6771),
+    ),
+    6103 => array(
+        'm_icon' => '<i class="fas fa-lambda"></i>',
+        'm_name' => 'DISCOVER METADATA',
+        'm_desc' => '',
+        'm_parents' => array(4527,6232,6195,4341),
+    ),
+    12227 => array(
+        'm_icon' => '<i class="fas fa-walking read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER PROGRESS',
+        'm_desc' => '',
+        'm_parents' => array(12228,4527),
+    ),
     6255 => array(
         'm_icon' => '<i class="fas fa-circle read" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERS',
         'm_desc' => '',
         'm_parents' => array(6205,12677,10939,11018,12467,11089,12228,4527),
+    ),
+    7304 => array(
+        'm_icon' => '<i class="far fa-chart-bar read"></i>',
+        'm_name' => 'DISCOVER STATS',
+        'm_desc' => '',
+        'm_parents' => array(6771,10888,4527),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    7360 => array(
+        'm_icon' => '<i class="far fa-check-circle" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS ACTIVE',
+        'm_desc' => '',
+        'm_parents' => array(10624,4527),
+    ),
+    7364 => array(
+        'm_icon' => '<i class="far fa-spinner fa-spin" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS INCOMPLETE',
+        'm_desc' => '',
+        'm_parents' => array(10624,4527),
+    ),
+    7359 => array(
+        'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS PUBLIC',
+        'm_desc' => '',
+        'm_parents' => array(10624,4527),
+    ),
+    13291 => array(
+        'm_icon' => '<i class="fas fa-bars read"></i>',
+        'm_name' => 'DISCOVER TABS',
+        'm_desc' => '',
+        'm_parents' => array(13299,4527,12994),
+    ),
+    13300 => array(
+        'm_icon' => '<i class="fas fa-badge-check read"></i>',
+        'm_name' => 'DISCOVER TABS DEFAULT SELECTED',
+        'm_desc' => '',
+        'm_parents' => array(4527,13299),
+    ),
+    13298 => array(
+        'm_icon' => '<i class="fad fa-eye-slash read"></i>',
+        'm_name' => 'DISCOVER TABS HIDE IF ZERO',
+        'm_desc' => '',
+        'm_parents' => array(4527,13299),
+    ),
+    13304 => array(
+        'm_icon' => '<i class="fas fa-user-check read"></i>',
+        'm_name' => 'DISCOVER TABS SHOW IF LOGGED-IN',
+        'm_desc' => '',
+        'm_parents' => array(4527,13299),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TYPE',
+        'm_desc' => '',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
+    10593 => array(
+        'm_icon' => '<i class="fas fa-file-alt" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TYPE ADD CONTENT',
+        'm_desc' => '',
+        'm_parents' => array(12144,4527),
+    ),
+    12141 => array(
+        'm_icon' => '<i class="fad fa-coin" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TYPE COIN AWARD',
+        'm_desc' => '',
+        'm_parents' => array(12144,4527),
+    ),
+    12327 => array(
+        'm_icon' => '<i class="fas fa-lock-open read"></i>',
+        'm_name' => 'DISCOVER UNLOCKS',
+        'm_desc' => '',
+        'm_parents' => array(4527,12228),
+    ),
+    12969 => array(
+        'm_icon' => '<i class="fas fa-user-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY LIST',
+        'm_desc' => '',
+        'm_parents' => array(13210,12228,11035,11018,12677,12701,4527,11089),
     ),
     13037 => array(
         'm_icon' => '<i class="fas fa-hand-holding-heart"></i>',
@@ -4147,12 +4255,6 @@ $config['sources__4527'] = array(
         'm_name' => 'EXPERT PRODUCTS',
         'm_desc' => '',
         'm_parents' => array(12864,13207,4527),
-    ),
-    10876 => array(
-        'm_icon' => '<i class="fas fa-home read" aria-hidden="true"></i>',
-        'm_name' => 'HOME',
-        'm_desc' => '',
-        'm_parents' => array(12893,4527,1326),
     ),
     4229 => array(
         'm_icon' => '<i class="fad fa-question-circle idea" aria-hidden="true"></i>',
@@ -4460,6 +4562,12 @@ $config['sources__4527'] = array(
         'm_desc' => '',
         'm_parents' => array(6403,4755,4527,6212),
     ),
+    10876 => array(
+        'm_icon' => '<i class="fas fa-browser"></i>',
+        'm_name' => 'MENCH WEBSITE',
+        'm_desc' => '',
+        'm_parents' => array(7305,4527,1326),
+    ),
     12500 => array(
         'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MENU',
@@ -4489,138 +4597,6 @@ $config['sources__4527'] = array(
         'm_name' => 'PRIVATE READ',
         'm_desc' => '',
         'm_parents' => array(12701,4755,6771,4527),
-    ),
-    11081 => array(
-        'm_icon' => '<i class="far fa-bezier-curve read"></i>',
-        'm_name' => 'READ ALL CONNECTIONS',
-        'm_desc' => '',
-        'm_parents' => array(4527,6771),
-    ),
-    7704 => array(
-        'm_icon' => '<i class="far fa-check-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER',
-        'm_desc' => '',
-        'm_parents' => array(13028,12228,4527),
-    ),
-    5967 => array(
-        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ CARBON COPY',
-        'm_desc' => '',
-        'm_parents' => array(4527,7569,4755,4593),
-    ),
-    12229 => array(
-        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ COMPLETION',
-        'm_desc' => '',
-        'm_parents' => array(4527,12228),
-    ),
-    12326 => array(
-        'm_icon' => '<i class="fad fa-expand read" aria-hidden="true"></i>',
-        'm_name' => 'READ EXPANSIONS',
-        'm_desc' => '',
-        'm_parents' => array(4527,12228),
-    ),
-    12446 => array(
-        'm_icon' => '<i class="fad fa-question-circle read"></i>',
-        'm_name' => 'READ ICON LEGEND',
-        'm_desc' => '',
-        'm_parents' => array(4527,6771),
-    ),
-    12969 => array(
-        'm_icon' => '<i class="fas fa-user-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ LIST',
-        'm_desc' => '',
-        'm_parents' => array(13210,12228,11035,11018,12677,12701,4527,11089),
-    ),
-    6103 => array(
-        'm_icon' => '<i class="fas fa-lambda"></i>',
-        'm_name' => 'READ METADATA',
-        'm_desc' => '',
-        'm_parents' => array(4527,6232,6195,4341),
-    ),
-    12227 => array(
-        'm_icon' => '<i class="fas fa-walking read" aria-hidden="true"></i>',
-        'm_name' => 'READ PROGRESS',
-        'm_desc' => '',
-        'm_parents' => array(12228,4527),
-    ),
-    7304 => array(
-        'm_icon' => '<i class="far fa-chart-bar read"></i>',
-        'm_name' => 'READ STATS',
-        'm_desc' => '',
-        'm_parents' => array(6771,10888,4527),
-    ),
-    6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS',
-        'm_desc' => '',
-        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
-    ),
-    7360 => array(
-        'm_icon' => '<i class="far fa-check-circle" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS ACTIVE',
-        'm_desc' => '',
-        'm_parents' => array(10624,4527),
-    ),
-    7364 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS INCOMPLETE',
-        'm_desc' => '',
-        'm_parents' => array(10624,4527),
-    ),
-    7359 => array(
-        'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS PUBLIC',
-        'm_desc' => '',
-        'm_parents' => array(10624,4527),
-    ),
-    13291 => array(
-        'm_icon' => '<i class="fas fa-bars read"></i>',
-        'm_name' => 'READ TABS',
-        'm_desc' => '',
-        'm_parents' => array(13299,4527,12994),
-    ),
-    13300 => array(
-        'm_icon' => '<i class="fas fa-badge-check read"></i>',
-        'm_name' => 'READ TABS DEFAULT SELECTED',
-        'm_desc' => '',
-        'm_parents' => array(4527,13299),
-    ),
-    13298 => array(
-        'm_icon' => '<i class="fad fa-eye-slash read"></i>',
-        'm_name' => 'READ TABS HIDE IF ZERO',
-        'm_desc' => '',
-        'm_parents' => array(4527,13299),
-    ),
-    13304 => array(
-        'm_icon' => '<i class="fas fa-user-check read"></i>',
-        'm_name' => 'READ TABS SHOW IF LOGGED-IN',
-        'm_desc' => '',
-        'm_parents' => array(4527,13299),
-    ),
-    4593 => array(
-        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_name' => 'READ TYPE',
-        'm_desc' => '',
-        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
-    ),
-    10593 => array(
-        'm_icon' => '<i class="fas fa-file-alt" aria-hidden="true"></i>',
-        'm_name' => 'READ TYPE ADD CONTENT',
-        'm_desc' => '',
-        'm_parents' => array(12144,4527),
-    ),
-    12141 => array(
-        'm_icon' => '<i class="fad fa-coin" aria-hidden="true"></i>',
-        'm_name' => 'READ TYPE COIN AWARD',
-        'm_desc' => '',
-        'm_parents' => array(12144,4527),
-    ),
-    12327 => array(
-        'm_icon' => '<i class="fas fa-lock-open read"></i>',
-        'm_name' => 'READ UNLOCKS',
-        'm_desc' => '',
-        'm_parents' => array(4527,12228),
     ),
     12761 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
@@ -4816,14 +4792,86 @@ $config['sources__4527'] = array(
     ),
 );
 
-//READ TYPE ADD CONTENT:
-$config['sources_id_10593'] = array(12419,4250,10679,4983,10644,4601,4231,4554,4556,4555,6563,4570,7702,4549,4551,4550,4548,4552,4553,4251,4259,10657,4261,4260,4255,4258,10646);
+//DISCOVER TYPE ADD CONTENT:
+$config['sources_id_10593'] = array(12419,4554,4556,4555,6563,4570,7702,4549,4551,4550,4548,4552,4553,4250,10679,4983,10644,4601,4231,4251,4259,10657,4261,4260,4255,4258,10646);
 $config['sources__10593'] = array(
     12419 => array(
         'm_icon' => '<i class="fas fa-comments idea" aria-hidden="true"></i>',
         'm_name' => 'COMMENTS',
         'm_desc' => '',
         'm_parents' => array(13304,13291,11018,12359,5967,10593,4986,11089,4593,4485),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="read fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER FILE',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="read fad fa-image"></i>',
+        'm_name' => 'DISCOVER IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="read fad fa-check"></i>',
+        'm_name' => 'DISCOVER QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(10593,4593,4755,4280),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(10683,10593,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED IDEA',
+        'm_desc' => '',
+        'm_parents' => array(10593,4593,4755,7569),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="read fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER SENT AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER SENT FILE',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="read fad fa-image"></i>',
+        'm_name' => 'DISCOVER SENT IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="read fad fa-video"></i>',
+        'm_name' => 'DISCOVER SENT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="read fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER TEXT',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="read fad fa-video"></i>',
+        'm_name' => 'DISCOVER VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -4860,78 +4908,6 @@ $config['sources__10593'] = array(
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(13300,13294,13291,7524,12273,12359,10593,4986,4603,4593,4485),
-    ),
-    4554 => array(
-        'm_icon' => '<i class="read fad fa-volume-up"></i>',
-        'm_name' => 'READ AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    4556 => array(
-        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
-        'm_name' => 'READ FILE',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    4555 => array(
-        'm_icon' => '<i class="read fad fa-image"></i>',
-        'm_name' => 'READ IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    6563 => array(
-        'm_icon' => '<i class="read fad fa-check"></i>',
-        'm_name' => 'READ QUICK REPLY',
-        'm_desc' => '',
-        'm_parents' => array(10593,4593,4755,4280),
-    ),
-    4570 => array(
-        'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECEIVED',
-        'm_desc' => '',
-        'm_parents' => array(10683,10593,7569,4755,4593),
-    ),
-    7702 => array(
-        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECEIVED IDEA',
-        'm_desc' => '',
-        'm_parents' => array(10593,4593,4755,7569),
-    ),
-    4549 => array(
-        'm_icon' => '<i class="read fad fa-volume-up"></i>',
-        'm_name' => 'READ SENT AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4551 => array(
-        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
-        'm_name' => 'READ SENT FILE',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4550 => array(
-        'm_icon' => '<i class="read fad fa-image"></i>',
-        'm_name' => 'READ SENT IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4548 => array(
-        'm_icon' => '<i class="read fad fa-video"></i>',
-        'm_name' => 'READ SENT VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4552 => array(
-        'm_icon' => '<i class="read fad fa-align-left"></i>',
-        'm_name' => 'READ TEXT',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    4553 => array(
-        'm_icon' => '<i class="read fad fa-video"></i>',
-        'm_name' => 'READ VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-plus-circle source" aria-hidden="true"></i>',
@@ -5065,7 +5041,7 @@ $config['sources__7751'] = array(
     ),
 );
 
-//READ METADATA:
+//DISCOVER METADATA:
 $config['sources_id_6103'] = array(6402,4358);
 $config['sources__6103'] = array(
     6402 => array(
@@ -5076,7 +5052,7 @@ $config['sources__6103'] = array(
     ),
     4358 => array(
         'm_icon' => '<i class="fas fa-comment-alt-check idea" aria-hidden="true"></i>',
-        'm_name' => 'READ MARKS',
+        'm_name' => 'DISCOVER MARKS',
         'm_desc' => '',
         'm_parents' => array(12700,12112,10663,6103,6410,6232),
     ),
@@ -5087,79 +5063,79 @@ $config['sources_id_4341'] = array(4367,6186,4362,4593,4364,4372,4366,4429,4368,
 $config['sources__4341'] = array(
     4367 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_name' => 'READ ID',
+        'm_name' => 'DISCOVER ID',
         'm_desc' => '',
         'm_parents' => array(6232,6215,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS',
+        'm_name' => 'DISCOVER STATUS',
         'm_desc' => '',
         'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
     ),
     4362 => array(
         'm_icon' => '<i class="fas fa-clock" aria-hidden="true"></i>',
-        'm_name' => 'READ TIME',
+        'm_name' => 'DISCOVER TIME',
         'm_desc' => '',
         'm_parents' => array(6232,4341),
     ),
     4593 => array(
         'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_name' => 'READ TYPE',
+        'm_name' => 'DISCOVER TYPE',
         'm_desc' => '',
         'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
     ),
     4364 => array(
         'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
-        'm_name' => 'READ PLAYER',
+        'm_name' => 'DISCOVER PLAYER',
         'm_desc' => '',
         'm_parents' => array(11081,6160,6232,6194,4341),
     ),
     4372 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_name' => 'READ MESSAGE',
+        'm_name' => 'DISCOVER MESSAGE',
         'm_desc' => '',
         'm_parents' => array(7578,10679,10657,5001,6232,4341),
     ),
     4366 => array(
         'm_icon' => '<i class="fas fa-triangle" aria-hidden="true"></i>',
-        'm_name' => 'READ UP',
+        'm_name' => 'DISCOVER UP',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4429 => array(
         'm_icon' => '<i class="fas fa-triangle rotate180" aria-hidden="true"></i>',
-        'm_name' => 'READ DOWN',
+        'm_name' => 'DISCOVER DOWN',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6160,6232,4341),
     ),
     4368 => array(
         'm_icon' => '<i class="fas fa-triangle rotate270" aria-hidden="true"></i>',
-        'm_name' => 'READ LEFT',
+        'm_name' => 'DISCOVER LEFT',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
     ),
     4369 => array(
         'm_icon' => '<i class="fas fa-triangle rotate90" aria-hidden="true"></i>',
-        'm_name' => 'READ RIGHT',
+        'm_name' => 'DISCOVER RIGHT',
         'm_desc' => '',
         'm_parents' => array(11081,10692,6202,6232,4341),
     ),
     4371 => array(
         'm_icon' => '<i class="fas fa-link" aria-hidden="true"></i>',
-        'm_name' => 'READ REFERENCE',
+        'm_name' => 'DISCOVER REFERENCE',
         'm_desc' => '',
         'm_parents' => array(11081,10692,4367,6232,4341),
     ),
     4370 => array(
         'm_icon' => '<i class="fas fa-bars" aria-hidden="true"></i>',
-        'm_name' => 'READ SORT',
+        'm_name' => 'DISCOVER SORT',
         'm_desc' => '',
         'm_parents' => array(13007,13006,10676,10675,6232,4341),
     ),
     6103 => array(
         'm_icon' => '<i class="fas fa-lambda"></i>',
-        'm_name' => 'READ METADATA',
+        'm_name' => 'DISCOVER METADATA',
         'm_desc' => '',
         'm_parents' => array(4527,6232,6195,4341),
     ),
@@ -5254,8 +5230,20 @@ $config['sources__6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['sources_id_6204'] = array(13037,4737,7585,10602,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,6186,4593,3290,6177,12968);
+$config['sources_id_6204'] = array(6186,4593,13037,4737,7585,10602,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,12968);
 $config['sources__6204'] = array(
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TYPE',
+        'm_desc' => '',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
     13037 => array(
         'm_icon' => '<i class="fas fa-hand-holding-heart"></i>',
         'm_name' => 'DONATE',
@@ -5418,18 +5406,6 @@ $config['sources__6204'] = array(
         'm_desc' => '',
         'm_parents' => array(6204,13151),
     ),
-    6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS',
-        'm_desc' => '',
-        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
-    ),
-    4593 => array(
-        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_name' => 'READ TYPE',
-        'm_desc' => '',
-        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
-    ),
     3290 => array(
         'm_icon' => '<i class="far fa-transgender source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE GENDER',
@@ -5467,18 +5443,18 @@ $config['sources__7712'] = array(
     ),
 );
 
-//READ ANSWER:
+//DISCOVER ANSWER:
 $config['sources_id_7704'] = array(12336,12334,6157,7489);
 $config['sources__7704'] = array(
     12336 => array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER ONE LINK',
+        'm_name' => 'DISCOVER ANSWER ONE LINK',
         'm_desc' => '',
         'm_parents' => array(7704,4755,4593,12326,12227),
     ),
     12334 => array(
         'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER SOME LINK',
+        'm_name' => 'DISCOVER ANSWER SOME LINK',
         'm_desc' => '',
         'm_parents' => array(7704,4755,4593,12326,12227),
     ),
@@ -5497,19 +5473,19 @@ $config['sources__7704'] = array(
 );
 
 //IDEA LINK CONDITIONAL:
-$config['sources_id_4229'] = array(10664,6140,6997);
+$config['sources_id_4229'] = array(6140,10664,6997);
 $config['sources__4229'] = array(
+    6140 => array(
+        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER UNLOCK CONDITION LINK',
+        'm_desc' => 'A step that has become available because of the score generated from student answers',
+        'm_parents' => array(12326,12227,6410,4229,4755,4593),
+    ),
     10664 => array(
         'm_icon' => '<i class="fad fa-bolt idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LINK UPDATE SCORE',
         'm_desc' => '',
         'm_parents' => array(4593,4229),
-    ),
-    6140 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ UNLOCK CONDITION LINK',
-        'm_desc' => 'A step that has become available because of the score generated from student answers',
-        'm_parents' => array(12326,12227,6410,4229,4755,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-clipboard-check read" aria-hidden="true"></i>',
@@ -5547,7 +5523,7 @@ $config['sources_id_7585'] = array(6677,6683,7637,6914,6907,6684,7231);
 $config['sources__7585'] = array(
     6677 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
-        'm_name' => 'READ & NEXT',
+        'm_name' => 'DISCOVER & NEXT',
         'm_desc' => 'Read messages & go next',
         'm_parents' => array(13022,12330,7585,4559,6192),
     ),
@@ -5589,12 +5565,12 @@ $config['sources__7585'] = array(
     ),
 );
 
-//READ CARBON COPY:
-$config['sources_id_5967'] = array(4235,12419,12773,4250,12453,12450,6224,4246,7504);
+//DISCOVER CARBON COPY:
+$config['sources_id_5967'] = array(4235,12419,6224,12773,4250,12453,12450,4246,7504);
 $config['sources__5967'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-plus read" aria-hidden="true"></i>',
-        'm_name' => 'ADD TO READ LIST',
+        'm_name' => 'ADD TO DISCOVER LIST',
         'm_desc' => '1',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
@@ -5603,6 +5579,12 @@ $config['sources__5967'] = array(
         'm_name' => 'COMMENTS',
         'm_desc' => '1',
         'm_parents' => array(13304,13291,11018,12359,5967,10593,4986,11089,4593,4485),
+    ),
+    6224 => array(
+        'm_icon' => '<i class="fad fa-sync read"></i>',
+        'm_name' => 'DISCOVER UPDATE ACCOUNT',
+        'm_desc' => '1',
+        'm_parents' => array(5967,4755,4593),
     ),
     12773 => array(
         'm_icon' => '<i class="far fa-plus-circle idea"></i>',
@@ -5627,12 +5609,6 @@ $config['sources__5967'] = array(
         'm_name' => 'IDEA SOURCE REQUEST',
         'm_desc' => '1',
         'm_parents' => array(4593,4755,5967),
-    ),
-    6224 => array(
-        'm_icon' => '<i class="fad fa-sync read"></i>',
-        'm_name' => 'READ UPDATE ACCOUNT',
-        'm_desc' => '1',
-        'm_parents' => array(5967,4755,4593),
     ),
     4246 => array(
         'm_icon' => '<i class="fad fa-bug source" aria-hidden="true"></i>',
@@ -5673,7 +5649,7 @@ $config['sources__7551'] = array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
         'm_desc' => '',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
+        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
 );
 
@@ -5695,13 +5671,31 @@ $config['sources__7309'] = array(
 );
 
 //PLUGINS:
-$config['sources_id_6287'] = array(7274,7264,4356,7261,12731,12734,7260,7263,11049,7259,12138,7275,12735,7276,7712,4527,12114,7277,12710,12709,12729,12739,12733,12722,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12569);
+$config['sources_id_6287'] = array(7274,12739,12733,12722,7264,4356,7261,12731,12734,7260,7263,11049,7259,12138,7275,12735,7276,7712,4527,12114,7277,12710,12709,12729,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12569);
 $config['sources__6287'] = array(
     7274 => array(
         'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
         'm_name' => 'CRON JOBS',
         'm_desc' => '',
         'm_parents' => array(6404,6287,6403,12999),
+    ),
+    12739 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER ANALYZE URLS',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    12733 => array(
+        'm_icon' => '<i class="fad fa-code read"></i>',
+        'm_name' => 'DISCOVER REVIEW JSON',
+        'm_desc' => '',
+        'm_parents' => array(11047,12741,12701,6287),
+    ),
+    12722 => array(
+        'm_icon' => '',
+        'm_name' => 'DISCOVER REVIEW JSON',
+        'm_desc' => '',
+        'm_parents' => array(12741,6287),
     ),
     7264 => array(
         'm_icon' => '<i class="fad fa-sitemap idea"></i>',
@@ -5823,24 +5817,6 @@ $config['sources__6287'] = array(
         'm_desc' => '',
         'm_parents' => array(6287),
     ),
-    12739 => array(
-        'm_icon' => '',
-        'm_name' => 'READ ANALYZE URLS',
-        'm_desc' => '',
-        'm_parents' => array(6287),
-    ),
-    12733 => array(
-        'm_icon' => '<i class="fad fa-code read"></i>',
-        'm_name' => 'READ REVIEW JSON',
-        'm_desc' => '',
-        'm_parents' => array(11047,12741,12701,6287),
-    ),
-    12722 => array(
-        'm_icon' => '',
-        'm_name' => 'READ REVIEW JSON',
-        'm_desc' => '',
-        'm_parents' => array(12741,6287),
-    ),
     12888 => array(
         'm_icon' => '<i class="fas fa-shield-check source"></i>',
         'm_name' => 'SOURCE EXPLORE EXPERTS',
@@ -5927,18 +5903,18 @@ $config['sources__6287'] = array(
     ),
 );
 
-//READ STATUS INCOMPLETE:
+//DISCOVER STATUS INCOMPLETE:
 $config['sources_id_7364'] = array(6175);
 $config['sources__7364'] = array(
     6175 => array(
         'm_icon' => '<i class="fas fa-spinner-third fa-spin" aria-hidden="true"></i>',
-        'm_name' => 'READ DRAFTING',
+        'm_name' => 'DISCOVER DRAFTING',
         'm_desc' => '',
         'm_parents' => array(7364,7360,6186),
     ),
 );
 
-//READ STATUS ACTIVE:
+//DISCOVER STATUS ACTIVE:
 $config['sources_id_7360'] = array(6175,12399,6176);
 $config['sources__7360'] = array(
     6175 => array(
@@ -5961,7 +5937,7 @@ $config['sources__7360'] = array(
     ),
 );
 
-//READ STATUS PUBLIC:
+//DISCOVER STATUS PUBLIC:
 $config['sources_id_7359'] = array(12399,6176);
 $config['sources__7359'] = array(
     12399 => array(
@@ -6058,18 +6034,18 @@ $config['sources__7355'] = array(
     ),
 );
 
-//READ STATS:
+//DISCOVER STATS:
 $config['sources_id_7304'] = array(6186);
 $config['sources__7304'] = array(
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS',
+        'm_name' => 'DISCOVER STATUS',
         'm_desc' => '',
         'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
     ),
 );
 
-//READ STATUS:
+//DISCOVER STATUS:
 $config['sources_id_6186'] = array(12399,6176,6175,6173);
 $config['sources__6186'] = array(
     12399 => array(
@@ -6099,8 +6075,26 @@ $config['sources__6186'] = array(
 );
 
 //SOURCE REFERENCES:
-$config['sources_id_6194'] = array(4737,7585,6287,4364,6186,4593,6177);
+$config['sources_id_6194'] = array(4364,6186,4593,4737,7585,6287,6177);
 $config['sources__6194'] = array(
+    4364 => array(
+        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER PLAYER',
+        'm_desc' => '',
+        'm_parents' => array(11081,6160,6232,6194,4341),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER STATUS',
+        'm_desc' => '',
+        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TYPE',
+        'm_desc' => '',
+        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
+    ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA STATUS',
@@ -6119,24 +6113,6 @@ $config['sources__6194'] = array(
         'm_desc' => '',
         'm_parents' => array(13297,6405,6194,12699,12500,10876,11035,4527),
     ),
-    4364 => array(
-        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
-        'm_name' => 'READ PLAYER',
-        'm_desc' => '',
-        'm_parents' => array(11081,6160,6232,6194,4341),
-    ),
-    6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'READ STATUS',
-        'm_desc' => '',
-        'm_parents' => array(11054,10677,10656,6204,5865,6160,6232,7304,4527,6194,4341),
-    ),
-    4593 => array(
-        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_name' => 'READ TYPE',
-        'm_desc' => '',
-        'm_parents' => array(6204,11081,10659,6160,6232,6194,4527,4341),
-    ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE STATUS',
@@ -6146,7 +6122,7 @@ $config['sources__6194'] = array(
 );
 
 //DISCOVERS:
-$config['sources_id_6255'] = array(6157,7489,12117,4559,6144,7485,7486,6997);
+$config['sources_id_6255'] = array(6157,7489,4559,12117,6144,7485,7486,6997);
 $config['sources__6255'] = array(
     6157 => array(
         'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
@@ -6160,17 +6136,17 @@ $config['sources__6255'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,7704,4755,6255,4593),
     ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye read"></i>',
+        'm_name' => 'DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,6255,4755,4593),
+    ),
     12117 => array(
         'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
-    ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye read"></i>',
-        'm_name' => 'READ MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
@@ -6336,7 +6312,7 @@ $config['sources_id_6146'] = array(7492);
 $config['sources__6146'] = array(
     7492 => array(
         'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
-        'm_name' => 'READ TERMINATE',
+        'm_name' => 'DISCOVER TERMINATE',
         'm_desc' => 'Logged when users arrive at a locked intent that has no public OR parents or no children, which means there is no way to unlock it.',
         'm_parents' => array(12229,12227,4755,4593,6146),
     ),
@@ -6432,11 +6408,11 @@ $config['sources__4997'] = array(
 );
 
 //PRIVATE READ:
-$config['sources_id_4755'] = array(4235,6415,3288,12773,12453,10681,12450,4527,11054,6232,3286,4783,4755,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,12896,7563,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,12489,12906);
+$config['sources_id_4755'] = array(4235,6415,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,3288,12773,12453,10681,12450,4527,11054,6232,3286,4783,4755,12896,7563,6157,7489,4246,4559,12117,7504,6144,7485,7486,6997,12489,12906);
 $config['sources__4755'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-plus read" aria-hidden="true"></i>',
-        'm_name' => 'ADD TO READ LIST',
+        'm_name' => 'ADD TO DISCOVER LIST',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
@@ -6445,6 +6421,318 @@ $config['sources__4755'] = array(
         'm_name' => 'CLEAR ALL READS',
         'm_desc' => '',
         'm_parents' => array(12500,4755,4593),
+    ),
+    12336 => array(
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER ONE LINK',
+        'm_desc' => '',
+        'm_parents' => array(7704,4755,4593,12326,12227),
+    ),
+    12334 => array(
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER SOME LINK',
+        'm_desc' => '',
+        'm_parents' => array(7704,4755,4593,12326,12227),
+    ),
+    12197 => array(
+        'm_icon' => '<i class="fad fa-user-plus read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="read fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    7757 => array(
+        'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED AUTO',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6150),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED MANUAL',
+        'm_desc' => '',
+        'm_parents' => array(10888,6150,4593,4755),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER CARBON COPY',
+        'm_desc' => '',
+        'm_parents' => array(4527,7569,4755,4593),
+    ),
+    6559 => array(
+        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED NEXT',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6554),
+    ),
+    6560 => array(
+        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED SKIP',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6554),
+    ),
+    6556 => array(
+        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STATS',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6554),
+    ),
+    6578 => array(
+        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STOP',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6554),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER FILE',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    6149 => array(
+        'm_icon' => '<i class="fad fa-search-plus read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA CONSIDERED',
+        'm_desc' => '',
+        'm_parents' => array(6153,4755,4593),
+    ),
+    4283 => array(
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA LISTED',
+        'm_desc' => '',
+        'm_parents' => array(6153,4755,4593),
+    ),
+    6969 => array(
+        'm_icon' => '<i class="read fad fa-megaphone"></i>',
+        'm_name' => 'DISCOVER IDEA RECOMMENDED',
+        'm_desc' => '',
+        'm_parents' => array(4593,4755,6153),
+    ),
+    4275 => array(
+        'm_icon' => '<i class="read fad fa-search"></i>',
+        'm_name' => 'DISCOVER IDEA SEARCH',
+        'm_desc' => '',
+        'm_parents' => array(6554,4755,4593),
+    ),
+    7610 => array(
+        'm_icon' => '<i class="fad fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA VIEW',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="read fad fa-image"></i>',
+        'm_name' => 'DISCOVER IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    6132 => array(
+        'm_icon' => '<i class="fad fa-bars read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER LIST SORTED',
+        'm_desc' => '',
+        'm_parents' => array(6153,4755,4593),
+    ),
+    12360 => array(
+        'm_icon' => '<i class="fad fa-pen read"></i>',
+        'm_name' => 'DISCOVER MASS CONTENT UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(6771,4593,4755),
+    ),
+    4266 => array(
+        'm_icon' => '<i class="read fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER OPT-IN',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593),
+    ),
+    4267 => array(
+        'm_icon' => '<i class="read fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER REFERRAL',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593),
+    ),
+    4282 => array(
+        'm_icon' => '<i class="read fad fa-eye"></i>',
+        'm_name' => 'DISCOVER OPENED PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="read fad fa-check"></i>',
+        'm_name' => 'DISCOVER QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(10593,4593,4755,4280),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(10683,10593,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED IDEA',
+        'm_desc' => '',
+        'm_parents' => array(10593,4593,4755,7569),
+    ),
+    7495 => array(
+        'm_icon' => '<i class="fad fa-megaphone read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECOMMEND',
+        'm_desc' => '',
+        'm_parents' => array(12969,12227,4755,4593),
+    ),
+    4577 => array(
+        'm_icon' => '<i class="read fad fa-user-plus"></i>',
+        'm_name' => 'DISCOVER SENT ACCESS',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="read fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER SENT AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER SENT FILE',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="read fad fa-image"></i>',
+        'm_name' => 'DISCOVER SENT IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4557 => array(
+        'm_icon' => '<i class="read fad fa-location-circle"></i>',
+        'm_name' => 'DISCOVER SENT LOCATION',
+        'm_desc' => '',
+        'm_parents' => array(7653,4755,4593),
+    ),
+    4278 => array(
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4279 => array(
+        'm_icon' => '<i class="read fad fa-cloud-download"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4268 => array(
+        'm_icon' => '<i class="read fad fa-user-tag"></i>',
+        'm_name' => 'DISCOVER SENT POSTBACK',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4460 => array(
+        'm_icon' => '<i class="read fad fa-check"></i>',
+        'm_name' => 'DISCOVER SENT QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(7653,4755,4593),
+    ),
+    4547 => array(
+        'm_icon' => '<i class="read fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER SENT TEXT',
+        'm_desc' => '',
+        'm_parents' => array(7653,4755,4593),
+    ),
+    4287 => array(
+        'm_icon' => '<i class="read fad fa-comment-exclamation"></i>',
+        'm_name' => 'DISCOVER SENT UNKNOWN MESSAGE',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="read fad fa-video"></i>',
+        'm_name' => 'DISCOVER SENT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    7560 => array(
+        'm_icon' => '<i class="fad fa-sign-in read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SIGNIN FROM IDEA',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7561 => array(
+        'm_icon' => '<i class="fad fa-sign-in read"></i>',
+        'm_name' => 'DISCOVER SIGNIN GENERALLY',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7564 => array(
+        'm_icon' => '<i class="fad fa-sign-in read"></i>',
+        'm_name' => 'DISCOVER SIGNIN SUCCESS',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7559 => array(
+        'm_icon' => '<i class="fad fa-sign-in read"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7558 => array(
+        'm_icon' => '<i class="fad fa-sign-in read"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7492 => array(
+        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TERMINATE',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,4755,4593,6146),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="read fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER TEXT',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER UNLOCK CONDITION LINK',
+        'm_desc' => '',
+        'm_parents' => array(12326,12227,6410,4229,4755,4593),
+    ),
+    6224 => array(
+        'm_icon' => '<i class="fad fa-sync read"></i>',
+        'm_name' => 'DISCOVER UPDATE ACCOUNT',
+        'm_desc' => '',
+        'm_parents' => array(5967,4755,4593),
+    ),
+    12328 => array(
+        'm_icon' => '<i class="fad fa-sync read"></i>',
+        'm_name' => 'DISCOVER UPDATE COMPLETION',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6153),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="read fad fa-key"></i>',
+        'm_name' => 'DISCOVER UPDATE PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(6153,4755,4593),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="read fad fa-video"></i>',
+        'm_name' => 'DISCOVER VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    7562 => array(
+        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
+        'm_name' => 'DISCOVER WELCOME',
+        'm_desc' => '',
+        'm_parents' => array(4755,7569,4593),
     ),
     3288 => array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
@@ -6512,323 +6800,11 @@ $config['sources__4755'] = array(
         'm_desc' => '',
         'm_parents' => array(12701,4755,6771,4527),
     ),
-    12336 => array(
-        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER ONE LINK',
-        'm_desc' => '',
-        'm_parents' => array(7704,4755,4593,12326,12227),
-    ),
-    12334 => array(
-        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER SOME LINK',
-        'm_desc' => '',
-        'm_parents' => array(7704,4755,4593,12326,12227),
-    ),
-    12197 => array(
-        'm_icon' => '<i class="fad fa-user-plus read" aria-hidden="true"></i>',
-        'm_name' => 'READ APPEND PROFILE',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593),
-    ),
-    4554 => array(
-        'm_icon' => '<i class="read fad fa-volume-up"></i>',
-        'm_name' => 'READ AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    7757 => array(
-        'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
-        'm_name' => 'READ BOOKMARK REMOVED AUTO',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6150),
-    ),
-    6155 => array(
-        'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
-        'm_name' => 'READ BOOKMARK REMOVED MANUAL',
-        'm_desc' => '',
-        'm_parents' => array(10888,6150,4593,4755),
-    ),
-    5967 => array(
-        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ CARBON COPY',
-        'm_desc' => '',
-        'm_parents' => array(4527,7569,4755,4593),
-    ),
-    6559 => array(
-        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
-        'm_name' => 'READ COMMANDED NEXT',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6554),
-    ),
-    6560 => array(
-        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
-        'm_name' => 'READ COMMANDED SKIP',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6554),
-    ),
-    6556 => array(
-        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
-        'm_name' => 'READ COMMANDED STATS',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6554),
-    ),
-    6578 => array(
-        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
-        'm_name' => 'READ COMMANDED STOP',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6554),
-    ),
-    4556 => array(
-        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
-        'm_name' => 'READ FILE',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    6149 => array(
-        'm_icon' => '<i class="fad fa-search-plus read" aria-hidden="true"></i>',
-        'm_name' => 'READ IDEA CONSIDERED',
-        'm_desc' => '',
-        'm_parents' => array(6153,4755,4593),
-    ),
-    4283 => array(
-        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
-        'm_name' => 'READ IDEA LISTED',
-        'm_desc' => '',
-        'm_parents' => array(6153,4755,4593),
-    ),
-    6969 => array(
-        'm_icon' => '<i class="read fad fa-megaphone"></i>',
-        'm_name' => 'READ IDEA RECOMMENDED',
-        'm_desc' => '',
-        'm_parents' => array(4593,4755,6153),
-    ),
-    4275 => array(
-        'm_icon' => '<i class="read fad fa-search"></i>',
-        'm_name' => 'READ IDEA SEARCH',
-        'm_desc' => '',
-        'm_parents' => array(6554,4755,4593),
-    ),
-    7610 => array(
-        'm_icon' => '<i class="fad fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ IDEA VIEW',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593),
-    ),
-    4555 => array(
-        'm_icon' => '<i class="read fad fa-image"></i>',
-        'm_name' => 'READ IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    6132 => array(
-        'm_icon' => '<i class="fad fa-bars read" aria-hidden="true"></i>',
-        'm_name' => 'READ LIST SORTED',
-        'm_desc' => '',
-        'm_parents' => array(6153,4755,4593),
-    ),
-    12360 => array(
-        'm_icon' => '<i class="fad fa-pen read"></i>',
-        'm_name' => 'READ MASS CONTENT UPDATE',
-        'm_desc' => '',
-        'm_parents' => array(6771,4593,4755),
-    ),
-    4266 => array(
-        'm_icon' => '<i class="read fab fa-facebook-messenger"></i>',
-        'm_name' => 'READ MESSENGER OPT-IN',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593),
-    ),
-    4267 => array(
-        'm_icon' => '<i class="read fab fa-facebook-messenger"></i>',
-        'm_name' => 'READ MESSENGER REFERRAL',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593),
-    ),
-    4282 => array(
-        'm_icon' => '<i class="read fad fa-eye"></i>',
-        'm_name' => 'READ OPENED PROFILE',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593),
-    ),
-    6563 => array(
-        'm_icon' => '<i class="read fad fa-check"></i>',
-        'm_name' => 'READ QUICK REPLY',
-        'm_desc' => '',
-        'm_parents' => array(10593,4593,4755,4280),
-    ),
-    4570 => array(
-        'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECEIVED',
-        'm_desc' => '',
-        'm_parents' => array(10683,10593,7569,4755,4593),
-    ),
-    7702 => array(
-        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECEIVED IDEA',
-        'm_desc' => '',
-        'm_parents' => array(10593,4593,4755,7569),
-    ),
-    7495 => array(
-        'm_icon' => '<i class="fad fa-megaphone read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECOMMEND',
-        'm_desc' => '',
-        'm_parents' => array(12969,12227,4755,4593),
-    ),
-    4577 => array(
-        'm_icon' => '<i class="read fad fa-user-plus"></i>',
-        'm_name' => 'READ SENT ACCESS',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4549 => array(
-        'm_icon' => '<i class="read fad fa-volume-up"></i>',
-        'm_name' => 'READ SENT AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4551 => array(
-        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
-        'm_name' => 'READ SENT FILE',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4550 => array(
-        'm_icon' => '<i class="read fad fa-image"></i>',
-        'm_name' => 'READ SENT IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4557 => array(
-        'm_icon' => '<i class="read fad fa-location-circle"></i>',
-        'm_name' => 'READ SENT LOCATION',
-        'm_desc' => '',
-        'm_parents' => array(7653,4755,4593),
-    ),
-    4278 => array(
-        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
-        'm_name' => 'READ SENT MESSENGER',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4279 => array(
-        'm_icon' => '<i class="read fad fa-cloud-download"></i>',
-        'm_name' => 'READ SENT MESSENGER RECEIVED',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4268 => array(
-        'm_icon' => '<i class="read fad fa-user-tag"></i>',
-        'm_name' => 'READ SENT POSTBACK',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4460 => array(
-        'm_icon' => '<i class="read fad fa-check"></i>',
-        'm_name' => 'READ SENT QUICK REPLY',
-        'm_desc' => '',
-        'm_parents' => array(7653,4755,4593),
-    ),
-    4547 => array(
-        'm_icon' => '<i class="read fad fa-align-left"></i>',
-        'm_name' => 'READ SENT TEXT',
-        'm_desc' => '',
-        'm_parents' => array(7653,4755,4593),
-    ),
-    4287 => array(
-        'm_icon' => '<i class="read fad fa-comment-exclamation"></i>',
-        'm_name' => 'READ SENT UNKNOWN MESSAGE',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4548 => array(
-        'm_icon' => '<i class="read fad fa-video"></i>',
-        'm_name' => 'READ SENT VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    7560 => array(
-        'm_icon' => '<i class="fad fa-sign-in read" aria-hidden="true"></i>',
-        'm_name' => 'READ SIGNIN FROM IDEA',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7561 => array(
-        'm_icon' => '<i class="fad fa-sign-in read"></i>',
-        'm_name' => 'READ SIGNIN GENERALLY',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7564 => array(
-        'm_icon' => '<i class="fad fa-sign-in read"></i>',
-        'm_name' => 'READ SIGNIN SUCCESS',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7559 => array(
-        'm_icon' => '<i class="fad fa-sign-in read"></i>',
-        'm_name' => 'READ SIGNIN WITH EMAIL',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7558 => array(
-        'm_icon' => '<i class="fad fa-sign-in read"></i>',
-        'm_name' => 'READ SIGNIN WITH MESSENGER',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7492 => array(
-        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
-        'm_name' => 'READ TERMINATE',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,4755,4593,6146),
-    ),
-    4552 => array(
-        'm_icon' => '<i class="read fad fa-align-left"></i>',
-        'm_name' => 'READ TEXT',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    6140 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ UNLOCK CONDITION LINK',
-        'm_desc' => '',
-        'm_parents' => array(12326,12227,6410,4229,4755,4593),
-    ),
-    6224 => array(
-        'm_icon' => '<i class="fad fa-sync read"></i>',
-        'm_name' => 'READ UPDATE ACCOUNT',
-        'm_desc' => '',
-        'm_parents' => array(5967,4755,4593),
-    ),
-    12328 => array(
-        'm_icon' => '<i class="fad fa-sync read"></i>',
-        'm_name' => 'READ UPDATE COMPLETION',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6153),
-    ),
-    7578 => array(
-        'm_icon' => '<i class="read fad fa-key"></i>',
-        'm_name' => 'READ UPDATE PASSWORD',
-        'm_desc' => '',
-        'm_parents' => array(6153,4755,4593),
-    ),
-    4553 => array(
-        'm_icon' => '<i class="read fad fa-video"></i>',
-        'm_name' => 'READ VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    7562 => array(
-        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ WELCOME',
-        'm_desc' => '',
-        'm_parents' => array(4755,7569,4593),
-    ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
         'm_desc' => '',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
+        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
     7563 => array(
         'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
@@ -6854,6 +6830,12 @@ $config['sources__4755'] = array(
         'm_desc' => '',
         'm_parents' => array(5967,4755,4593),
     ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye read"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,6255,4755,4593),
+    ),
     12117 => array(
         'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
@@ -6865,12 +6847,6 @@ $config['sources__4755'] = array(
         'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => '',
         'm_parents' => array(5967,4755,4593),
-    ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye read"></i>',
-        'm_name' => 'SOURCE READ MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard read" aria-hidden="true"></i>',
@@ -6910,12 +6886,12 @@ $config['sources__4755'] = array(
     ),
 );
 
-//READ TYPE:
-$config['sources_id_4593'] = array(4235,7545,6415,12419,12773,4250,6182,12453,4229,4228,10686,10663,10664,10573,12611,12612,12591,12592,6226,10676,10678,10679,10677,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,5001,10625,5943,12318,5865,4999,4998,5000,5982,5981,11956,5003,12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,12896,7563,4251,6157,7489,4246,6178,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,4559,13006,13007,10654,6144,5007,7485,7486,6997,12489,4994,12906);
+//DISCOVER TYPE:
+$config['sources_id_4593'] = array(4235,7545,6415,12419,12129,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,6132,12360,10690,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,12773,4250,6182,12453,4229,4228,10686,10663,10664,10573,12611,12612,12591,12592,6226,10676,10678,10679,10677,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,5001,10625,5943,12318,5865,4999,4998,5000,5982,5981,11956,5003,12896,7563,4251,6157,7489,4246,6178,4559,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,13006,13007,10654,6144,5007,7485,7486,6997,12489,4994,12906);
 $config['sources__4593'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-plus read" aria-hidden="true"></i>',
-        'm_name' => 'ADD TO READ LIST',
+        'm_name' => 'ADD TO DISCOVER LIST',
         'm_desc' => '',
         'm_parents' => array(13289,11035,12969,12227,5967,4755,4593),
     ),
@@ -6936,6 +6912,336 @@ $config['sources__4593'] = array(
         'm_name' => 'COMMENTS',
         'm_desc' => '',
         'm_parents' => array(13304,13291,11018,12359,5967,10593,4986,11089,4593,4485),
+    ),
+    12129 => array(
+        'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER DELETED',
+        'm_desc' => '',
+        'm_parents' => array(6153,4593),
+    ),
+    12336 => array(
+        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER ONE LINK',
+        'm_desc' => '',
+        'm_parents' => array(7704,4755,4593,12326,12227),
+    ),
+    12334 => array(
+        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER ANSWER SOME LINK',
+        'm_desc' => '',
+        'm_parents' => array(7704,4755,4593,12326,12227),
+    ),
+    12197 => array(
+        'm_icon' => '<i class="fad fa-user-plus read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER APPEND PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="read fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    7757 => array(
+        'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED AUTO',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6150),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER BOOKMARK REMOVED MANUAL',
+        'm_desc' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
+        'm_parents' => array(10888,6150,4593,4755),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER CARBON COPY',
+        'm_desc' => '',
+        'm_parents' => array(4527,7569,4755,4593),
+    ),
+    6559 => array(
+        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED NEXT',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6554),
+    ),
+    6560 => array(
+        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED SKIP',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6554),
+    ),
+    6556 => array(
+        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STATS',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6554),
+    ),
+    6578 => array(
+        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
+        'm_name' => 'DISCOVER COMMANDED STOP',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6554),
+    ),
+    10683 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(6153,4593,7654),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER FILE',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    6149 => array(
+        'm_icon' => '<i class="fad fa-search-plus read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA CONSIDERED',
+        'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
+        'm_parents' => array(6153,4755,4593),
+    ),
+    4283 => array(
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA LISTED',
+        'm_desc' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its intentions.',
+        'm_parents' => array(6153,4755,4593),
+    ),
+    6969 => array(
+        'm_icon' => '<i class="read fad fa-megaphone"></i>',
+        'm_name' => 'DISCOVER IDEA RECOMMENDED',
+        'm_desc' => 'Logged every time an intention is recommended to a user by Mench',
+        'm_parents' => array(4593,4755,6153),
+    ),
+    4275 => array(
+        'm_icon' => '<i class="read fad fa-search"></i>',
+        'm_name' => 'DISCOVER IDEA SEARCH',
+        'm_desc' => 'When students invokes the [I want to] command and search for a new intention that they would like to add to their Action Plan.',
+        'm_parents' => array(6554,4755,4593),
+    ),
+    7610 => array(
+        'm_icon' => '<i class="fad fa-circle read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER IDEA VIEW',
+        'm_desc' => 'When a user viewes the public intent landing page.',
+        'm_parents' => array(4755,4593),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="read fad fa-image"></i>',
+        'm_name' => 'DISCOVER IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    6132 => array(
+        'm_icon' => '<i class="fad fa-bars read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER LIST SORTED',
+        'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
+        'm_parents' => array(6153,4755,4593),
+    ),
+    12360 => array(
+        'm_icon' => '<i class="fad fa-pen read"></i>',
+        'm_name' => 'DISCOVER MASS CONTENT UPDATE',
+        'm_desc' => '',
+        'm_parents' => array(6771,4593,4755),
+    ),
+    10690 => array(
+        'm_icon' => '<i class="read fad fa-upload"></i>',
+        'm_name' => 'DISCOVER MEDIA UPLOADED',
+        'm_desc' => 'When a file added by the user is synced to the CDN',
+        'm_parents' => array(6153,4593),
+    ),
+    4266 => array(
+        'm_icon' => '<i class="read fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER OPT-IN',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593),
+    ),
+    4267 => array(
+        'm_icon' => '<i class="read fab fa-facebook-messenger"></i>',
+        'm_name' => 'DISCOVER MESSENGER REFERRAL',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593),
+    ),
+    4282 => array(
+        'm_icon' => '<i class="read fad fa-eye"></i>',
+        'm_name' => 'DISCOVER OPENED PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="read fad fa-check"></i>',
+        'm_name' => 'DISCOVER QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(10593,4593,4755,4280),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(10683,10593,7569,4755,4593),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECEIVED IDEA',
+        'm_desc' => 'Emails sent to intent subscribers who are looking for updates on an intent.',
+        'm_parents' => array(10593,4593,4755,7569),
+    ),
+    7495 => array(
+        'm_icon' => '<i class="fad fa-megaphone read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER RECOMMEND',
+        'm_desc' => 'Intention recommended by Mench and added to Action Plan to enable the user to complete their intention',
+        'm_parents' => array(12969,12227,4755,4593),
+    ),
+    4577 => array(
+        'm_icon' => '<i class="read fad fa-user-plus"></i>',
+        'm_name' => 'DISCOVER SENT ACCESS',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="read fad fa-volume-up"></i>',
+        'm_name' => 'DISCOVER SENT AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
+        'm_name' => 'DISCOVER SENT FILE',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="read fad fa-image"></i>',
+        'm_name' => 'DISCOVER SENT IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    4557 => array(
+        'm_icon' => '<i class="read fad fa-location-circle"></i>',
+        'm_name' => 'DISCOVER SENT LOCATION',
+        'm_desc' => '',
+        'm_parents' => array(7653,4755,4593),
+    ),
+    4278 => array(
+        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4279 => array(
+        'm_icon' => '<i class="read fad fa-cloud-download"></i>',
+        'm_name' => 'DISCOVER SENT MESSENGER RECEIVED',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4268 => array(
+        'm_icon' => '<i class="read fad fa-user-tag"></i>',
+        'm_name' => 'DISCOVER SENT POSTBACK',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4460 => array(
+        'm_icon' => '<i class="read fad fa-check"></i>',
+        'm_name' => 'DISCOVER SENT QUICK REPLY',
+        'm_desc' => '',
+        'm_parents' => array(7653,4755,4593),
+    ),
+    4547 => array(
+        'm_icon' => '<i class="read fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER SENT TEXT',
+        'm_desc' => '',
+        'm_parents' => array(7653,4755,4593),
+    ),
+    4287 => array(
+        'm_icon' => '<i class="read fad fa-comment-exclamation"></i>',
+        'm_name' => 'DISCOVER SENT UNKNOWN MESSAGE',
+        'm_desc' => '',
+        'm_parents' => array(7654,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="read fad fa-video"></i>',
+        'm_name' => 'DISCOVER SENT VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(10593,7653,4755,4593),
+    ),
+    7560 => array(
+        'm_icon' => '<i class="fad fa-sign-in read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER SIGNIN FROM IDEA',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7561 => array(
+        'm_icon' => '<i class="fad fa-sign-in read"></i>',
+        'm_name' => 'DISCOVER SIGNIN GENERALLY',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7564 => array(
+        'm_icon' => '<i class="fad fa-sign-in read"></i>',
+        'm_name' => 'DISCOVER SIGNIN SUCCESS',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7559 => array(
+        'm_icon' => '<i class="fad fa-sign-in read"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH EMAIL',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7558 => array(
+        'm_icon' => '<i class="fad fa-sign-in read"></i>',
+        'm_name' => 'DISCOVER SIGNIN WITH MESSENGER',
+        'm_desc' => '',
+        'm_parents' => array(12351,4755,4593),
+    ),
+    7492 => array(
+        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER TERMINATE',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,4755,4593,6146),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="read fad fa-align-left"></i>',
+        'm_name' => 'DISCOVER TEXT',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER UNLOCK CONDITION LINK',
+        'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
+        'm_parents' => array(12326,12227,6410,4229,4755,4593),
+    ),
+    6224 => array(
+        'm_icon' => '<i class="fad fa-sync read"></i>',
+        'm_name' => 'DISCOVER UPDATE ACCOUNT',
+        'm_desc' => '',
+        'm_parents' => array(5967,4755,4593),
+    ),
+    12328 => array(
+        'm_icon' => '<i class="fad fa-sync read"></i>',
+        'm_name' => 'DISCOVER UPDATE COMPLETION',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,6153),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="read fad fa-key"></i>',
+        'm_name' => 'DISCOVER UPDATE PASSWORD',
+        'm_desc' => '',
+        'm_parents' => array(6153,4755,4593),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="read fad fa-video"></i>',
+        'm_name' => 'DISCOVER VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(10593,4755,4593,4280),
+    ),
+    7562 => array(
+        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
+        'm_name' => 'DISCOVER WELCOME',
+        'm_desc' => '',
+        'm_parents' => array(4755,7569,4593),
     ),
     12773 => array(
         'm_icon' => '<i class="far fa-plus-circle idea"></i>',
@@ -7195,341 +7501,11 @@ $config['sources__4593'] = array(
         'm_desc' => '',
         'm_parents' => array(4593,4997),
     ),
-    12129 => array(
-        'm_icon' => '<i class="fas fa-times-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER DELETED',
-        'm_desc' => '',
-        'm_parents' => array(6153,4593),
-    ),
-    12336 => array(
-        'm_icon' => '<i class="fas fa-check-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER ONE LINK',
-        'm_desc' => '',
-        'm_parents' => array(7704,4755,4593,12326,12227),
-    ),
-    12334 => array(
-        'm_icon' => '<i class="fas fa-check-square read" aria-hidden="true"></i>',
-        'm_name' => 'READ ANSWER SOME LINK',
-        'm_desc' => '',
-        'm_parents' => array(7704,4755,4593,12326,12227),
-    ),
-    12197 => array(
-        'm_icon' => '<i class="fad fa-user-plus read" aria-hidden="true"></i>',
-        'm_name' => 'READ APPEND PROFILE',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593),
-    ),
-    4554 => array(
-        'm_icon' => '<i class="read fad fa-volume-up"></i>',
-        'm_name' => 'READ AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    7757 => array(
-        'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
-        'm_name' => 'READ BOOKMARK REMOVED AUTO',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6150),
-    ),
-    6155 => array(
-        'm_icon' => '<i class="read fad fa-bookmark read" aria-hidden="true"></i>',
-        'm_name' => 'READ BOOKMARK REMOVED MANUAL',
-        'm_desc' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
-        'm_parents' => array(10888,6150,4593,4755),
-    ),
-    5967 => array(
-        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ CARBON COPY',
-        'm_desc' => '',
-        'm_parents' => array(4527,7569,4755,4593),
-    ),
-    6559 => array(
-        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
-        'm_name' => 'READ COMMANDED NEXT',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6554),
-    ),
-    6560 => array(
-        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
-        'm_name' => 'READ COMMANDED SKIP',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6554),
-    ),
-    6556 => array(
-        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
-        'm_name' => 'READ COMMANDED STATS',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6554),
-    ),
-    6578 => array(
-        'm_icon' => '<i class="read fad fa-wand-magic"></i>',
-        'm_name' => 'READ COMMANDED STOP',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6554),
-    ),
-    10683 => array(
-        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ EMAIL',
-        'm_desc' => '',
-        'm_parents' => array(6153,4593,7654),
-    ),
-    4556 => array(
-        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
-        'm_name' => 'READ FILE',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    6149 => array(
-        'm_icon' => '<i class="fad fa-search-plus read" aria-hidden="true"></i>',
-        'm_name' => 'READ IDEA CONSIDERED',
-        'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
-        'm_parents' => array(6153,4755,4593),
-    ),
-    4283 => array(
-        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
-        'm_name' => 'READ IDEA LISTED',
-        'm_desc' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its intentions.',
-        'm_parents' => array(6153,4755,4593),
-    ),
-    6969 => array(
-        'm_icon' => '<i class="read fad fa-megaphone"></i>',
-        'm_name' => 'READ IDEA RECOMMENDED',
-        'm_desc' => 'Logged every time an intention is recommended to a user by Mench',
-        'm_parents' => array(4593,4755,6153),
-    ),
-    4275 => array(
-        'm_icon' => '<i class="read fad fa-search"></i>',
-        'm_name' => 'READ IDEA SEARCH',
-        'm_desc' => 'When students invokes the [I want to] command and search for a new intention that they would like to add to their Action Plan.',
-        'm_parents' => array(6554,4755,4593),
-    ),
-    7610 => array(
-        'm_icon' => '<i class="fad fa-circle read" aria-hidden="true"></i>',
-        'm_name' => 'READ IDEA VIEW',
-        'm_desc' => 'When a user viewes the public intent landing page.',
-        'm_parents' => array(4755,4593),
-    ),
-    4555 => array(
-        'm_icon' => '<i class="read fad fa-image"></i>',
-        'm_name' => 'READ IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    6132 => array(
-        'm_icon' => '<i class="fad fa-bars read" aria-hidden="true"></i>',
-        'm_name' => 'READ LIST SORTED',
-        'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
-        'm_parents' => array(6153,4755,4593),
-    ),
-    12360 => array(
-        'm_icon' => '<i class="fad fa-pen read"></i>',
-        'm_name' => 'READ MASS CONTENT UPDATE',
-        'm_desc' => '',
-        'm_parents' => array(6771,4593,4755),
-    ),
-    10690 => array(
-        'm_icon' => '<i class="read fad fa-upload"></i>',
-        'm_name' => 'READ MEDIA UPLOADED',
-        'm_desc' => 'When a file added by the user is synced to the CDN',
-        'm_parents' => array(6153,4593),
-    ),
-    4266 => array(
-        'm_icon' => '<i class="read fab fa-facebook-messenger"></i>',
-        'm_name' => 'READ MESSENGER OPT-IN',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593),
-    ),
-    4267 => array(
-        'm_icon' => '<i class="read fab fa-facebook-messenger"></i>',
-        'm_name' => 'READ MESSENGER REFERRAL',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593),
-    ),
-    4282 => array(
-        'm_icon' => '<i class="read fad fa-eye"></i>',
-        'm_name' => 'READ OPENED PROFILE',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593),
-    ),
-    6563 => array(
-        'm_icon' => '<i class="read fad fa-check"></i>',
-        'm_name' => 'READ QUICK REPLY',
-        'm_desc' => '',
-        'm_parents' => array(10593,4593,4755,4280),
-    ),
-    4570 => array(
-        'm_icon' => '<i class="read fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECEIVED',
-        'm_desc' => '',
-        'm_parents' => array(10683,10593,7569,4755,4593),
-    ),
-    7702 => array(
-        'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECEIVED IDEA',
-        'm_desc' => 'Emails sent to intent subscribers who are looking for updates on an intent.',
-        'm_parents' => array(10593,4593,4755,7569),
-    ),
-    7495 => array(
-        'm_icon' => '<i class="fad fa-megaphone read" aria-hidden="true"></i>',
-        'm_name' => 'READ RECOMMEND',
-        'm_desc' => 'Intention recommended by Mench and added to Action Plan to enable the user to complete their intention',
-        'm_parents' => array(12969,12227,4755,4593),
-    ),
-    4577 => array(
-        'm_icon' => '<i class="read fad fa-user-plus"></i>',
-        'm_name' => 'READ SENT ACCESS',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4549 => array(
-        'm_icon' => '<i class="read fad fa-volume-up"></i>',
-        'm_name' => 'READ SENT AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4551 => array(
-        'm_icon' => '<i class="read fad fa-file-pdf"></i>',
-        'm_name' => 'READ SENT FILE',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4550 => array(
-        'm_icon' => '<i class="read fad fa-image"></i>',
-        'm_name' => 'READ SENT IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    4557 => array(
-        'm_icon' => '<i class="read fad fa-location-circle"></i>',
-        'm_name' => 'READ SENT LOCATION',
-        'm_desc' => '',
-        'm_parents' => array(7653,4755,4593),
-    ),
-    4278 => array(
-        'm_icon' => '<i class="fad fa-eye read" aria-hidden="true"></i>',
-        'm_name' => 'READ SENT MESSENGER',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4279 => array(
-        'm_icon' => '<i class="read fad fa-cloud-download"></i>',
-        'm_name' => 'READ SENT MESSENGER RECEIVED',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4268 => array(
-        'm_icon' => '<i class="read fad fa-user-tag"></i>',
-        'm_name' => 'READ SENT POSTBACK',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4460 => array(
-        'm_icon' => '<i class="read fad fa-check"></i>',
-        'm_name' => 'READ SENT QUICK REPLY',
-        'm_desc' => '',
-        'm_parents' => array(7653,4755,4593),
-    ),
-    4547 => array(
-        'm_icon' => '<i class="read fad fa-align-left"></i>',
-        'm_name' => 'READ SENT TEXT',
-        'm_desc' => '',
-        'm_parents' => array(7653,4755,4593),
-    ),
-    4287 => array(
-        'm_icon' => '<i class="read fad fa-comment-exclamation"></i>',
-        'm_name' => 'READ SENT UNKNOWN MESSAGE',
-        'm_desc' => '',
-        'm_parents' => array(7654,4755,4593),
-    ),
-    4548 => array(
-        'm_icon' => '<i class="read fad fa-video"></i>',
-        'm_name' => 'READ SENT VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(10593,7653,4755,4593),
-    ),
-    7560 => array(
-        'm_icon' => '<i class="fad fa-sign-in read" aria-hidden="true"></i>',
-        'm_name' => 'READ SIGNIN FROM IDEA',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7561 => array(
-        'm_icon' => '<i class="fad fa-sign-in read"></i>',
-        'm_name' => 'READ SIGNIN GENERALLY',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7564 => array(
-        'm_icon' => '<i class="fad fa-sign-in read"></i>',
-        'm_name' => 'READ SIGNIN SUCCESS',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7559 => array(
-        'm_icon' => '<i class="fad fa-sign-in read"></i>',
-        'm_name' => 'READ SIGNIN WITH EMAIL',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7558 => array(
-        'm_icon' => '<i class="fad fa-sign-in read"></i>',
-        'm_name' => 'READ SIGNIN WITH MESSENGER',
-        'm_desc' => '',
-        'm_parents' => array(12351,4755,4593),
-    ),
-    7492 => array(
-        'm_icon' => '<i class="fas fa-times-octagon read" aria-hidden="true"></i>',
-        'm_name' => 'READ TERMINATE',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,4755,4593,6146),
-    ),
-    4552 => array(
-        'm_icon' => '<i class="read fad fa-align-left"></i>',
-        'm_name' => 'READ TEXT',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    6140 => array(
-        'm_icon' => '<i class="fad fa-lock-open read" aria-hidden="true"></i>',
-        'm_name' => 'READ UNLOCK CONDITION LINK',
-        'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
-        'm_parents' => array(12326,12227,6410,4229,4755,4593),
-    ),
-    6224 => array(
-        'm_icon' => '<i class="fad fa-sync read"></i>',
-        'm_name' => 'READ UPDATE ACCOUNT',
-        'm_desc' => '',
-        'm_parents' => array(5967,4755,4593),
-    ),
-    12328 => array(
-        'm_icon' => '<i class="fad fa-sync read"></i>',
-        'm_name' => 'READ UPDATE COMPLETION',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,6153),
-    ),
-    7578 => array(
-        'm_icon' => '<i class="read fad fa-key"></i>',
-        'm_name' => 'READ UPDATE PASSWORD',
-        'm_desc' => '',
-        'm_parents' => array(6153,4755,4593),
-    ),
-    4553 => array(
-        'm_icon' => '<i class="read fad fa-video"></i>',
-        'm_name' => 'READ VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(10593,4755,4593,4280),
-    ),
-    7562 => array(
-        'm_icon' => '<i class="read fad fa-envelope-open"></i>',
-        'm_name' => 'READ WELCOME',
-        'm_desc' => '',
-        'm_parents' => array(4755,7569,4593),
-    ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
         'm_desc' => '',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
+        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
     7563 => array(
         'm_icon' => '<i class="fad fa-envelope-open read" aria-hidden="true"></i>',
@@ -7566,6 +7542,12 @@ $config['sources__4593'] = array(
         'm_name' => 'SOURCE DELETED',
         'm_desc' => '',
         'm_parents' => array(4593,12401,6177),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye read"></i>',
+        'm_name' => 'SOURCE DISCOVER MESSAGES',
+        'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
+        'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     12117 => array(
         'm_icon' => '<i class="far fa-paperclip read" aria-hidden="true"></i>',
@@ -7692,12 +7674,6 @@ $config['sources__4593'] = array(
         'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => 'Certain links that match an unknown behavior would require an admin to review and ensure it\'s all good',
         'm_parents' => array(5967,4755,4593),
-    ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye read"></i>',
-        'm_name' => 'SOURCE READ MESSAGES',
-        'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     13006 => array(
         'm_icon' => '<i class="fad fa-bars source" aria-hidden="true"></i>',
@@ -7887,7 +7863,7 @@ $config['sources__4485'] = array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
         'm_name' => 'SAVED',
         'm_desc' => '',
-        'm_parents' => array(12677,13289,4485,10876,12701,7551,11089,11018,11035,4755,4593,12893),
+        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
 );
 
