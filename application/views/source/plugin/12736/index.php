@@ -20,7 +20,7 @@ foreach($this->SOURCE_model->fetch() as $en) {
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     ), array(), 1));
     $is_read = count($this->READ_model->fetch(array(
-        'read__source' => $en['source__id'],
+        'read__player' => $en['source__id'],
     ), array(), 1));
 
     if($is_player){
@@ -38,7 +38,7 @@ foreach($this->SOURCE_model->fetch() as $en) {
         $this->READ_model->create(array(
             'read__type' => source_link_type(),
             'read__up' => 4430, //MENCH PLAYERS
-            'read__source' => $en['source__id'],
+            'read__player' => $en['source__id'],
             'read__down' => $en['source__id'],
         ));
     }

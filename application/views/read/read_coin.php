@@ -22,7 +22,7 @@ if(!isset($recipient_source['source__id']) ){
 
 //VIEW READ
 $this->READ_model->create(array(
-    'read__source' => $recipient_source['source__id'],
+    'read__player' => $recipient_source['source__id'],
     'read__type' => 7610, //PLAYER VIEWED IDEA
     'read__left' => $idea_focus['idea__id'],
     'read__sort' => fetch_cookie_order('7610_'.$idea_focus['idea__id']),
@@ -56,7 +56,7 @@ if ($in_my_reads) {
     $read_completes = $this->READ_model->fetch(array(
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-        'read__source' => $recipient_source['source__id'],
+        'read__player' => $recipient_source['source__id'],
         'read__left' => $idea_focus['idea__id'],
     ));
 
@@ -69,7 +69,7 @@ if ($in_my_reads) {
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
             'read__right' => $idea_focus['idea__id'],
-            'read__source' => $recipient_source['source__id'],
+            'read__player' => $recipient_source['source__id'],
         ), array('read__left'), 1);
 
         if(count($unlocked_connections) > 0){
@@ -91,7 +91,7 @@ if ($in_my_reads) {
                 //Yes, Issue coin:
                 array_push($read_completes, $this->READ_model->mark_complete($idea_focus, array(
                     'read__type' => $read_completion_type_id,
-                    'read__source' => $recipient_source['source__id'],
+                    'read__player' => $recipient_source['source__id'],
                     'read__left' => $idea_focus['idea__id'],
                 )));
 
@@ -100,7 +100,7 @@ if ($in_my_reads) {
                 //Oooops, we could not find it, report bug:
                 $this->READ_model->create(array(
                     'read__type' => 4246, //Platform Bug Reports
-                    'read__source' => $recipient_source['source__id'],
+                    'read__player' => $recipient_source['source__id'],
                     'read__message' => 'read_coin() found idea connector ['.$unlocked_connections[0]['read__type'].'] without a valid unlock method @12327',
                     'read__left' => $idea_focus['idea__id'],
                     'read__reference' => $unlocked_connections[0]['read__id'],
@@ -119,7 +119,7 @@ if ($in_my_reads) {
                 //No path found:
                 array_push($read_completes, $this->READ_model->mark_complete($idea_focus, array(
                     'read__type' => 7492, //TERMINATE
-                    'read__source' => $recipient_source['source__id'],
+                    'read__player' => $recipient_source['source__id'],
                     'read__left' => $idea_focus['idea__id'],
                 )));
 
@@ -262,7 +262,7 @@ foreach($this->config->item('sources__'.$tab_group) as $read__type => $m){
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type' => 12419, //COMMENTS
             'read__right' => $idea_focus['idea__id'],
-        ), array('read__source'), 0, 0, array('read__sort' => 'ASC'));
+        ), array('read__player'), 0, 0, array('read__sort' => 'ASC'));
         $counter = count($comments);
 
         $this_tab .= '<div style="margin-bottom:34px;">';
@@ -351,7 +351,7 @@ if(!$in_my_reads){
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'read__type' => 6140, //READ UNLOCK LINK
-        'read__source' => $recipient_source['source__id'],
+        'read__player' => $recipient_source['source__id'],
         'read__left' => $idea_focus['idea__id'],
     ), array('read__right'), 0);
 
@@ -400,13 +400,13 @@ if(!$in_my_reads){
             if(!count($this->READ_model->fetch(array(
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',' , $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-                'read__source' => $recipient_source['source__id'],
+                'read__player' => $recipient_source['source__id'],
                 'read__left' => $idea_focus['idea__id'],
             )))){
 
                 array_push($read_completes, $this->READ_model->mark_complete($idea_focus, array(
                     'read__type' => 4559, //READ MESSAGES
-                    'read__source' => $recipient_source['source__id'],
+                    'read__player' => $recipient_source['source__id'],
                     'read__left' => $idea_focus['idea__id'],
                 )));
 
@@ -431,7 +431,7 @@ if(!$in_my_reads){
                     'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINK
                     'read__left' => $idea_focus['idea__id'],
                     'read__right' => $read['idea__id'],
-                    'read__source' => $recipient_source['source__id'],
+                    'read__player' => $recipient_source['source__id'],
                 )))){
                     array_push($read_answers, $read);
                 }
@@ -484,7 +484,7 @@ if(!$in_my_reads){
                     'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
                     'read__left' => $idea_focus['idea__id'],
                     'read__right' => $next_idea['idea__id'],
-                    'read__source' => $recipient_source['source__id'],
+                    'read__player' => $recipient_source['source__id'],
                 )));
 
                 echo '<a href="javascript:void(0);" onclick="select_answer('.$next_idea['idea__id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ideas="'.$next_idea['idea__id'].'" class="read_answer_'.$next_idea['idea__id'].' answer-item list-group-item itemread no-left-padding">';
@@ -605,7 +605,7 @@ if(!$in_my_reads){
         //UNKNOWN IDEA TYPE
         $this->READ_model->create(array(
             'read__type' => 4246, //Platform Bug Reports
-            'read__source' => $recipient_source['source__id'],
+            'read__player' => $recipient_source['source__id'],
             'read__message' => 'step_echo() unknown idea type source ID ['.$idea_focus['idea__type'].'] that could not be rendered',
             'read__left' => $idea_focus['idea__id'],
         ));

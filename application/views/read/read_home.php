@@ -3,7 +3,7 @@ $timestamp = time();
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 //Fetch Reads:
 $player_reads = $this->READ_model->fetch(array(
-    'read__source' => $session_source['source__id'],
+    'read__player' => $session_source['source__id'],
     'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
     'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC

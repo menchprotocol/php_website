@@ -15,11 +15,11 @@ class IDEA_model extends CI_Model
     }
 
 
-    function create($add_fields, $read__source = 0)
+    function create($add_fields, $read__player = 0)
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('idea__title', 'idea__type', 'idea__status'), $read__source)) {
+        if (detect_missing_columns($add_fields, array('idea__title', 'idea__type', 'idea__status'), $read__player)) {
             return false;
         }
 
@@ -37,11 +37,11 @@ class IDEA_model extends CI_Model
 
         if ($add_fields['idea__id'] > 0) {
 
-            if ($read__source > 0) {
+            if ($read__player > 0) {
 
                 //Log link new Idea:
                 $this->READ_model->create(array(
-                    'read__source' => $read__source,
+                    'read__player' => $read__player,
                     'read__right' => $add_fields['idea__id'],
                     'read__message' => $add_fields['idea__title'],
                     'read__type' => 4250, //New Idea Created
@@ -49,10 +49,10 @@ class IDEA_model extends CI_Model
 
                 //Also add as source:
                 $this->READ_model->create(array(
-                    'read__source' => $read__source,
-                    'read__up' => $read__source,
+                    'read__player' => $read__player,
+                    'read__up' => $read__player,
                     'read__type' => 4983, //IDEA COIN
-                    'read__message' => '@'.$read__source,
+                    'read__message' => '@'.$read__player,
                     'read__right' => $add_fields['idea__id'],
                 ), true);
 
@@ -79,7 +79,7 @@ class IDEA_model extends CI_Model
             $this->READ_model->create(array(
                 'read__message' => 'idea_create() failed to create a new idea',
                 'read__type' => 4246, //Platform Bug Reports
-                'read__source' => $read__source,
+                'read__player' => $read__player,
                 'read__metadata' => $add_fields,
             ));
             return false;
@@ -113,7 +113,7 @@ class IDEA_model extends CI_Model
         return $q->result_array();
     }
 
-    function update($id, $update_columns, $external_sync = false, $read__source = 0)
+    function update($id, $update_columns, $external_sync = false, $read__player = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -121,7 +121,7 @@ class IDEA_model extends CI_Model
         }
 
         //Fetch current Idea filed values so we can compare later on after we've updated it:
-        if($read__source > 0){
+        if($read__player > 0){
             $before_data = $this->IDEA_model->fetch(array('idea__id' => $id));
         }
 
@@ -136,7 +136,7 @@ class IDEA_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $read__source > 0) {
+        if ($affected_rows > 0 && $read__player > 0) {
 
             //Unlike source modification, we require a player source ID to log the modification link:
             //Log modification link for every field changed:
@@ -192,7 +192,7 @@ class IDEA_model extends CI_Model
 
                 //Value has changed, log link:
                 $this->READ_model->create(array(
-                    'read__source' => $read__source,
+                    'read__player' => $read__player,
                     'read__type' => $read__type,
                     'read__right' => $id,
                     'read__down' => $read__down,
@@ -219,7 +219,7 @@ class IDEA_model extends CI_Model
             $this->READ_model->create(array(
                 'read__right' => $id,
                 'read__type' => 4246, //Platform Bug Reports
-                'read__source' => $read__source,
+                'read__player' => $read__player,
                 'read__message' => 'update() Failed to update',
                 'read__metadata' => array(
                     'input' => $update_columns,
@@ -231,7 +231,7 @@ class IDEA_model extends CI_Model
         return $affected_rows;
     }
 
-    function unlink($idea__id, $read__source = 0){
+    function unlink($idea__id, $read__player = 0){
 
         //REMOVE IDEA LINKS
         $links_deleted = 0;
@@ -243,7 +243,7 @@ class IDEA_model extends CI_Model
             //Delete this link:
             $links_deleted += $this->READ_model->update($read['read__id'], array(
                 'read__status' => 6173, //Link Deleted
-            ), $read__source, 10686 /* Idea Link Unpublished */);
+            ), $read__player, 10686 /* Idea Link Unpublished */);
         }
 
 
@@ -257,7 +257,7 @@ class IDEA_model extends CI_Model
             //Delete this link:
             $links_deleted += $this->READ_model->update($idea_note['read__id'], array(
                 'read__status' => 6173, //Link Deleted
-            ), $read__source, 10686 /* Idea Link Unpublished */);
+            ), $read__player, 10686 /* Idea Link Unpublished */);
         }
 
 
@@ -265,7 +265,7 @@ class IDEA_model extends CI_Model
         return $links_deleted;
     }
 
-    function match_read_status($read__source, $query = array()){
+    function match_read_status($read__player, $query = array()){
 
         //STATS
         $stats = array(
@@ -298,7 +298,7 @@ class IDEA_model extends CI_Model
                 $stats['missing_creation_fix']++;
 
                 $this->READ_model->create(array(
-                    'read__source' => $read__source,
+                    'read__player' => $read__player,
                     'read__right' => $idea['idea__id'],
                     'read__message' => $idea['idea__title'],
                     'read__type' => $stats['read__type'],
@@ -319,7 +319,7 @@ class IDEA_model extends CI_Model
         return $stats;
     }
 
-    function link_or_create($idea__title, $read__source, $link_to_idea__id = 0, $is_parent = false, $new_idea_status = 6184, $idea__type = 6677, $link_idea__id = 0)
+    function link_or_create($idea__title, $read__player, $link_to_idea__id = 0, $is_parent = false, $new_idea_status = 6184, $idea__type = 6677, $link_idea__id = 0)
     {
 
         /*
@@ -458,7 +458,7 @@ class IDEA_model extends CI_Model
                 'idea__title' => $idea__title_validation['idea_clean_title'],
                 'idea__type' => $idea__type,
                 'idea__status' => $new_idea_status,
-            ), $read__source);
+            ), $read__player);
 
         }
 
@@ -467,7 +467,7 @@ class IDEA_model extends CI_Model
         if($link_to_idea__id > 0){
 
             $relation = $this->READ_model->create(array(
-                'read__source' => $read__source,
+                'read__player' => $read__player,
                 'read__type' => 4228, //Idea Link Regular Reads
                 ( $is_parent ? 'read__right' : 'read__left' ) => $link_to_idea__id,
                 ( $is_parent ? 'read__left' : 'read__right' ) => $idea_new['idea__id'],
@@ -719,7 +719,7 @@ class IDEA_model extends CI_Model
 
     }
 
-    function mass_update($idea__id, $action_source__id, $action_command1, $action_command2, $read__source)
+    function mass_update($idea__id, $action_source__id, $action_command1, $action_command2, $read__player)
     {
 
         //Alert: Has a twin function called source_mass_update()
@@ -785,7 +785,7 @@ class IDEA_model extends CI_Model
 
                     //Missing & Must be Added:
                     $this->READ_model->create(array(
-                        'read__source' => $read__source,
+                        'read__player' => $read__player,
                         'read__up' => $source__profile_id,
                         'read__type' => 4983, //IDEA COIN
                         'read__message' => '@'.$source__profile_id,
@@ -799,7 +799,7 @@ class IDEA_model extends CI_Model
                     //Has and must be deleted:
                     $this->READ_model->update($idea_has_sources[0]['read__id'], array(
                         'read__status' => 6173,
-                    ), $read__source, 10678 /* IDEA NOTES Unpublished */);
+                    ), $read__player, 10678 /* IDEA NOTES Unpublished */);
 
                     $applied_success++;
 
@@ -820,7 +820,7 @@ class IDEA_model extends CI_Model
                 //See how to adjust:
                 if($action_source__id==12611 && !count($is_previous_already)){
 
-                    $this->IDEA_model->link_or_create('', $read__source, $adjust_idea__id, false, 6184, 6677, $next_idea['idea__id']);
+                    $this->IDEA_model->link_or_create('', $read__player, $adjust_idea__id, false, 6184, 6677, $next_idea['idea__id']);
 
                     //Add Source since not there:
                     $applied_success++;
@@ -830,7 +830,7 @@ class IDEA_model extends CI_Model
                     //Remove Source:
                     $this->READ_model->update($is_previous_already[0]['read__id'], array(
                         'read__status' => 6173,
-                    ), $read__source, 10686 /* IDEA NOTES Unpublished */);
+                    ), $read__player, 10686 /* IDEA NOTES Unpublished */);
 
                     $applied_success++;
 
@@ -843,7 +843,7 @@ class IDEA_model extends CI_Model
 
         //Log mass source edit link:
         $this->READ_model->create(array(
-            'read__source' => $read__source,
+            'read__player' => $read__player,
             'read__type' => $action_source__id,
             'read__right' => $idea__id,
             'read__metadata' => array(

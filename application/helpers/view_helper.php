@@ -397,7 +397,7 @@ function view_interaction($read, $is_parent_tr = false)
 
 
     //Hide Sensitive Details?
-    if(in_array($read['read__type'] , $CI->config->item('sources_id_4755')) && (!$session_source || $read['read__source']!=$session_source['source__id']) && !superpower_active(12701, true)){
+    if(in_array($read['read__type'] , $CI->config->item('sources_id_4755')) && (!$session_source || $read['read__player']!=$session_source['source__id']) && !superpower_active(12701, true)){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -422,10 +422,10 @@ function view_interaction($read, $is_parent_tr = false)
 
 
         //Creator (Do not repeat)
-        if($read['read__source'] > 0 && $read['read__source']!=$read['read__up'] && $read['read__source']!=$read['read__down']){
+        if($read['read__player'] > 0 && $read['read__player']!=$read['read__up'] && $read['read__player']!=$read['read__down']){
 
             $add_sources = $CI->SOURCE_model->fetch(array(
-                'source__id' => $read['read__source'],
+                'source__id' => $read['read__player'],
             ));
 
             $ui .= '<div class="simple-line"><a href="/@'.$add_sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($add_sources[0]['source__icon']).'"><span class="img-block">'.view_source__icon($add_sources[0]['source__icon']) . '</span> ' . $add_sources[0]['source__title'] . '</span></a></div>';
@@ -451,7 +451,7 @@ function view_interaction($read, $is_parent_tr = false)
                 //SOURCE
                 $sources = $CI->SOURCE_model->fetch(array('source__id' => $read[$sources__6232[$source__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.( $read[$sources__6232[$source__id]['m_desc']]==$read['read__source'] ? $sources__4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['source__icon']).' img-block">'.view_source__icon($sources[0]['source__icon']). '&nbsp;'.$sources[0]['source__title'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['source__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.( $read[$sources__6232[$source__id]['m_desc']]==$read['read__player'] ? $sources__4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['source__icon']).' img-block">'.view_source__icon($sources[0]['source__icon']). '&nbsp;'.$sources[0]['source__title'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
@@ -561,11 +561,11 @@ function view_coins_count_read($idea__id = 0, $source__id = 0){
     $query_filters = array(
         'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null,
-        ( $idea__id > 0 ? 'read__left' : 'read__source' ) => ( $idea__id > 0 ? $idea__id : $source__id ),
+        ( $idea__id > 0 ? 'read__left' : 'read__player' ) => ( $idea__id > 0 ? $idea__id : $source__id ),
     );
 
     if(isset($_GET['focus__source'])){
-        $query_filters['read__source'] = intval($_GET['focus__source']);
+        $query_filters['read__player'] = intval($_GET['focus__source']);
     }
 
     $read_coins = $CI->READ_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(read__id) as totals');
@@ -1246,7 +1246,7 @@ function view_idea_note_mix($read__type, $idea_notes){
 
     //List current notes:
     foreach($idea_notes as $idea_notes) {
-        $ui .= view_idea_notes($idea_notes, ($idea_notes['read__source']==$session_source['source__id']));
+        $ui .= view_idea_notes($idea_notes, ($idea_notes['read__player']==$session_source['source__id']));
     }
 
     //ADD NEW:

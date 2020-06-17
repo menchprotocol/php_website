@@ -40,7 +40,7 @@ foreach($this->IDEA_model->fetch() as $in) {
     if(!count($idea_creators)) {
         $stats['creator_missing']++;
         $this->READ_model->create(array(
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__right' => $in['idea__id'],
             'read__message' => $in['idea__title'],
             'read__type' => 4250, //New Idea Created
@@ -62,10 +62,10 @@ foreach($this->IDEA_model->fetch() as $in) {
 
         //Missing SOURCE
         $stats['source_missing']++;
-        $creator_id = ( count($idea_sources) ? $idea_sources[0]['read__source'] : $session_source['read__up'] );
+        $creator_id = ( count($idea_sources) ? $idea_sources[0]['read__player'] : $session_source['read__up'] );
         $this->READ_model->create(array(
             'read__type' => 4983, //IDEA COIN
-            'read__source' => $creator_id,
+            'read__player' => $creator_id,
             'read__up' => $creator_id,
             'read__message' => '@'.$creator_id,
             'read__right' => $in['idea__id'],

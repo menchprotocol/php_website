@@ -10,7 +10,7 @@ if(!isset($_GET['idea__id']) || !intval($_GET['idea__id'])) {
     echo '<div>Choose one of your Reads reads to debug:</div><br />';
 
     $player_reads = $this->READ_model->fetch(array(
-        'read__source' => $_GET['source__id'],
+        'read__player' => $_GET['source__id'],
         'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC

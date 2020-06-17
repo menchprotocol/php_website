@@ -704,7 +704,7 @@ $is_source = source_is_idea_source($source['source__id']);
         } elseif($read__type == 12969 /* Reads */){
 
             $idea_reads_filters = array(
-                'read__source' => $source['source__id'],
+                'read__player' => $source['source__id'],
                 'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC

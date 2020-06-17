@@ -48,7 +48,7 @@ class Idea extends CI_Controller {
         //Also add to bookmarks:
         $this->READ_model->create(array(
             'read__type' => 10573, //Idea Bookmarks
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__right' => $idea['new_idea__id'],
             'read__up' => $session_source['source__id'],
             'read__message' => '@'.$session_source['source__id'],
@@ -127,7 +127,7 @@ class Idea extends CI_Controller {
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->create(array(
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__type' => 4993, //Player Opened Idea
                 'read__right' => $idea__id,
                 'read__sort' => $new_order,
@@ -159,7 +159,7 @@ class Idea extends CI_Controller {
         if(count($this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type' => 12450,
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__right' => $idea__id,
         )))){
             return redirect_message('/i'.$idea__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
@@ -169,7 +169,7 @@ class Idea extends CI_Controller {
         //Inform moderators:
         $this->READ_model->create(array(
             'read__type' => 12450,
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__right' => $idea__id,
         ));
 
@@ -186,7 +186,7 @@ class Idea extends CI_Controller {
         //Idea Source:
         $this->READ_model->create(array(
             'read__type' => 4983, //IDEA COIN
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__up' => $session_source['source__id'],
             'read__message' => '@'.$session_source['source__id'],
             'read__right' => $idea__id,
@@ -349,13 +349,13 @@ class Idea extends CI_Controller {
                 } elseif(in_array($_POST['new_source__id'], $this->config->item('sources_id_12138')) && !superpower_assigned(10984) && !count($this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type' => 12453, //Idea Feature Request
-                        'read__source' => $session_source['source__id'],
+                        'read__player' => $session_source['source__id'],
                         'read__right' => $_POST['idea__id'],
                     )))){
 
                     $this->READ_model->create(array(
                         'read__type' => 12453, //Idea Feature Request
-                        'read__source' => $session_source['source__id'],
+                        'read__player' => $session_source['source__id'],
                         'read__right' => $_POST['idea__id'],
                     ));
 
@@ -589,7 +589,7 @@ class Idea extends CI_Controller {
 
         //Create Message:
         $read = $this->READ_model->create(array(
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__sort' => 1 + $this->READ_model->max_order(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'read__type' => intval($_POST['note_type_id']),
@@ -701,7 +701,7 @@ class Idea extends CI_Controller {
 
         //Create message:
         $read = $this->READ_model->create(array(
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__type' => $_POST['note_type_id'],
             'read__up' => $cdn_status['cdn_source']['source__id'],
             'read__right' => intval($_POST['idea__id']),

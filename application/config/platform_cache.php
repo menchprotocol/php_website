@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-16 22:30:30 PST
+//Generated 2020-06-16 23:13:54 PST
 
 //EXPERT AUTHORS:
 $config['sources_id_13339'] = array(3084,2750);
@@ -2796,7 +2796,7 @@ $config['sources__6232'] = array(
     4364 => array(
         'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
         'm_name' => 'READ SOURCE',
-        'm_desc' => 'read__source',
+        'm_desc' => 'read__player',
         'm_parents' => array(11081,6160,6232,6194,4341),
     ),
     6186 => array(

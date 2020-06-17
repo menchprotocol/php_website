@@ -34,7 +34,7 @@ class SOURCE_model extends CI_Model
             $session_data['session_page_count'] = 0;
 
             $this->READ_model->create(array(
-                'read__source' => $source['source__id'],
+                'read__player' => $source['source__id'],
                 'read__type' => 7564, //PLAYER SIGN
                 'read__metadata' => $source,
             ));
@@ -58,7 +58,7 @@ class SOURCE_model extends CI_Model
 
                 //Was the latest toggle to de-activate? If not, assume active:
                 $last_advance_settings = $this->READ_model->fetch(array(
-                    'read__source' => $source['source__id'],
+                    'read__player' => $source['source__id'],
                     'read__type' => 5007, //TOGGLE SUPERPOWER
                     'read__up' => $source_profile['source__id'],
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -80,11 +80,11 @@ class SOURCE_model extends CI_Model
 
 
 
-    function create($add_fields, $external_sync = false, $read__source = 0)
+    function create($add_fields, $external_sync = false, $read__player = 0)
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('source__status', 'source__title'), $read__source)) {
+        if (detect_missing_columns($add_fields, array('source__status', 'source__title'), $read__player)) {
             return false;
         }
 
@@ -109,7 +109,7 @@ class SOURCE_model extends CI_Model
 
             //Log link new source:
             $this->READ_model->create(array(
-                'read__source' => ($read__source > 0 ? $read__source : $add_fields['source__id']),
+                'read__player' => ($read__player > 0 ? $read__player : $add_fields['source__id']),
                 'read__down' => $add_fields['source__id'],
                 'read__type' => 4251, //New Source Created
                 'read__message' => $add_fields['source__title'],
@@ -131,10 +131,10 @@ class SOURCE_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->READ_model->create(array(
-                'read__up' => $read__source,
+                'read__up' => $read__player,
                 'read__message' => 'create() failed to create a new source',
                 'read__type' => 4246, //Platform Bug Reports
-                'read__source' => $read__source,
+                'read__player' => $read__player,
                 'read__metadata' => $add_fields,
             ));
             return false;
@@ -169,7 +169,7 @@ class SOURCE_model extends CI_Model
         return $q->result_array();
     }
 
-    function update($id, $update_columns, $external_sync = false, $read__source = 0)
+    function update($id, $update_columns, $external_sync = false, $read__player = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -177,7 +177,7 @@ class SOURCE_model extends CI_Model
         }
 
         //Fetch current source filed values so we can compare later on after we've updated it:
-        if($read__source > 0){
+        if($read__player > 0){
             $before_data = $this->SOURCE_model->fetch(array('source__id' => $id));
         }
 
@@ -197,7 +197,7 @@ class SOURCE_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $read__source > 0) {
+        if ($affected_rows > 0 && $read__player > 0) {
 
             if($external_sync){
                 //Sync algolia:
@@ -243,7 +243,7 @@ class SOURCE_model extends CI_Model
 
                 //Value has changed, log link:
                 $this->READ_model->create(array(
-                    'read__source' => ($read__source > 0 ? $read__source : $id),
+                    'read__player' => ($read__player > 0 ? $read__player : $id),
                     'read__type' => $read__type,
                     'read__down' => $id,
                     'read__message' => $read__message,
@@ -263,7 +263,7 @@ class SOURCE_model extends CI_Model
             $this->READ_model->create(array(
                 'read__down' => $id,
                 'read__type' => 4246, //Platform Bug Reports
-                'read__source' => $read__source,
+                'read__player' => $read__player,
                 'read__message' => 'update() Failed to update',
                 'read__metadata' => array(
                     'input' => $update_columns,
@@ -276,14 +276,14 @@ class SOURCE_model extends CI_Model
     }
 
 
-    function radio_set($source_profile_bucket_id, $set_source_child_id, $read__source)
+    function radio_set($source_profile_bucket_id, $set_source_child_id, $read__player)
     {
 
         /*
          * Treats an source child group as a drop down menu where:
          *
          *  $source_profile_bucket_id is the parent of the drop down
-         *  $read__source is the user source ID that one of the children of $source_profile_bucket_id should be assigned (like a drop down)
+         *  $read__player is the user source ID that one of the children of $source_profile_bucket_id should be assigned (like a drop down)
          *  $set_source_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like User communication levels
@@ -305,7 +305,7 @@ class SOURCE_model extends CI_Model
         $previously_assigned = ($set_source_child_id < 1);
         $updated_read__id = 0;
         foreach($this->READ_model->fetch(array(
-            'read__down' => $read__source,
+            'read__down' => $read__player,
             'read__up IN (' . join(',', $children) . ')' => null, //Current children
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), config_var(11064)) as $read) {
@@ -319,7 +319,7 @@ class SOURCE_model extends CI_Model
                 //Do not log update link here as we would log it further below:
                 $this->READ_model->update($read['read__id'], array(
                     'read__status' => 6173, //Link Deleted
-                ), $read__source, 6224 /* User Account Updated */);
+                ), $read__player, 6224 /* User Account Updated */);
             }
 
         }
@@ -329,8 +329,8 @@ class SOURCE_model extends CI_Model
         if (!$previously_assigned) {
             //Let's go ahead and add desired source as parent:
             $this->READ_model->create(array(
-                'read__source' => $read__source,
-                'read__down' => $read__source,
+                'read__player' => $read__player,
+                'read__down' => $read__player,
                 'read__up' => $set_source_child_id,
                 'read__type' => source_link_type(),
                 'read__reference' => $updated_read__id,
@@ -339,7 +339,7 @@ class SOURCE_model extends CI_Model
 
     }
 
-    function unlink($source__id, $read__source = 0, $merger_source__id = 0){
+    function unlink($source__id, $read__player = 0, $merger_source__id = 0){
 
         //Fetch all SOURCE LINKS:
         $adjusted_count = 0;
@@ -374,14 +374,14 @@ class SOURCE_model extends CI_Model
                 }
 
                 //Update Link:
-                $adjusted_count += $this->READ_model->update($adjust_tr['read__id'], $updating_fields, $read__source, 10689 /* Player Link Merged */);
+                $adjusted_count += $this->READ_model->update($adjust_tr['read__id'], $updating_fields, $read__player, 10689 /* Player Link Merged */);
 
             } else {
 
                 //Delete this link:
                 $adjusted_count += $this->READ_model->update($adjust_tr['read__id'], array(
                     'read__status' => 6173, //Link Deleted
-                ), $read__source, 10673 /* Player Link Unpublished */);
+                ), $read__player, 10673 /* Player Link Unpublished */);
 
             }
         }
@@ -399,7 +399,7 @@ class SOURCE_model extends CI_Model
         //Assign to Creator:
         $this->READ_model->create(array(
             'read__type' => source_link_type(),
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__up' => $session_source['source__id'],
             'read__down' => $source__id,
         ));
@@ -410,7 +410,7 @@ class SOURCE_model extends CI_Model
             //Add Pending Review:
             $this->READ_model->create(array(
                 'read__type' => source_link_type(),
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__up' => 12775, //PENDING REVIEW
                 'read__down' => $source__id,
             ));
@@ -418,7 +418,7 @@ class SOURCE_model extends CI_Model
             //SOURCE PENDING MODERATION TYPE:
             $this->READ_model->create(array(
                 'read__type' => 7504, //SOURCE PENDING MODERATION
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__up' => 12775, //PENDING REVIEW
                 'read__down' => $source__id,
             ));
@@ -427,12 +427,12 @@ class SOURCE_model extends CI_Model
 
     }
 
-    function domain($url, $read__source = 0, $page_title = null)
+    function domain($url, $read__player = 0, $page_title = null)
     {
         /*
          *
          * Either finds/returns existing domains or adds it
-         * to the Domains source if $read__source > 0
+         * to the Domains source if $read__player > 0
          *
          * */
 
@@ -466,15 +466,15 @@ class SOURCE_model extends CI_Model
             $domaidea_previously_existed = 1;
             $source_domain = $url_links[0];
 
-        } elseif ($read__source) {
+        } elseif ($read__player) {
 
             //Yes, let's add a new source:
-            $added_source = $this->SOURCE_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $read__source, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
+            $added_source = $this->SOURCE_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $read__player, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
             $source_domain = $added_source['new_source'];
 
             //And link source to the domains source:
             $this->READ_model->create(array(
-                'read__source' => $read__source,
+                'read__player' => $read__player,
                 'read__type' => 4256, //Generic URL (Domains are always generic)
                 'read__up' => 1326, //Domain Player
                 'read__down' => $source_domain['source__id'],
@@ -494,7 +494,7 @@ class SOURCE_model extends CI_Model
 
     }
 
-    function match_read_status($read__source, $query= array()){
+    function match_read_status($read__player, $query= array()){
 
         //STATS
         $stats = array(
@@ -526,7 +526,7 @@ class SOURCE_model extends CI_Model
                 $stats['missing_creation_fix']++;
 
                 $this->READ_model->create(array(
-                    'read__source' => $read__source,
+                    'read__player' => $read__player,
                     'read__down' => $source['source__id'],
                     'read__message' => $source['source__title'],
                     'read__type' => $stats['read__type'],
@@ -607,7 +607,7 @@ class SOURCE_model extends CI_Model
 
 
 
-    function url($url, $read__source = 0, $add_to_child_source__id = 0, $page_title = null)
+    function url($url, $read__player = 0, $add_to_child_source__id = 0, $page_title = null)
     {
 
         /*
@@ -616,7 +616,7 @@ class SOURCE_model extends CI_Model
          * Input legend:
          *
          * - $url:                  Input URL
-         * - $read__source:       IF > 0 will save URL (if not previously there) and give credit to this source as the player
+         * - $read__player:       IF > 0 will save URL (if not previously there) and give credit to this source as the player
          * - $add_to_child_source__id:   IF > 0 Will also add URL to this child if present
          * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable players to edit auto generated title)
          *
@@ -629,7 +629,7 @@ class SOURCE_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid URL',
             );
-        } elseif ($add_to_child_source__id > 0 && $read__source < 1) {
+        } elseif ($add_to_child_source__id > 0 && $read__player < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Parent source is required to add a parent URL',
@@ -719,7 +719,7 @@ class SOURCE_model extends CI_Model
 
 
         //Fetch/Create domain source:
-        $url_source = $this->SOURCE_model->domain($url, $read__source, ( $url_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
+        $url_source = $this->SOURCE_model->domain($url, $read__player, ( $url_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
         if(!$url_source['status']){
             //We had an issue:
             return $url_source;
@@ -755,7 +755,7 @@ class SOURCE_model extends CI_Model
                 $source_url = $url_links[0];
                 $url_previously_existed = 1;
 
-            } elseif($read__source) {
+            } elseif($read__player) {
 
                 if(!$page_title){
                     //Assign a generic source name:
@@ -766,7 +766,7 @@ class SOURCE_model extends CI_Model
                 $page_title = $page_title;
 
                 //Create a new source for this URL ONLY If player source is provided...
-                $added_source = $this->SOURCE_model->verify_create($page_title, $read__source, 6181, $sources__4592[$read__type]['m_icon']);
+                $added_source = $this->SOURCE_model->verify_create($page_title, $read__player, 6181, $sources__4592[$read__type]['m_icon']);
                 if($added_source['status']){
 
                     //All good:
@@ -774,7 +774,7 @@ class SOURCE_model extends CI_Model
 
                     //Always link URL to its parent domain:
                     $this->READ_model->create(array(
-                        'read__source' => $read__source,
+                        'read__player' => $read__player,
                         'read__type' => $read__type,
                         'read__up' => $url_source['source_domain']['source__id'],
                         'read__down' => $source_url['source__id'],
@@ -793,11 +793,11 @@ class SOURCE_model extends CI_Model
                     $this->READ_model->create(array(
                         'read__message' => 'source_url['.$url.'] FAILED to create ['.$page_title.'] with message: '.$added_source['message'],
                         'read__type' => 4246, //Platform Bug Reports
-                        'read__source' => $read__source,
+                        'read__player' => $read__player,
                         'read__up' => $url_source['source_domain']['source__id'],
                         'read__metadata' => array(
                             'url' => $url,
-                            'read__source' => $read__source,
+                            'read__player' => $read__player,
                             'add_to_child_source__id' => $add_to_child_source__id,
                             'page_title' => $page_title,
                         ),
@@ -816,7 +816,7 @@ class SOURCE_model extends CI_Model
         if(!$url_previously_existed && $add_to_child_source__id){
             //Link URL to its parent domain?
             $this->READ_model->create(array(
-                'read__source' => $read__source,
+                'read__player' => $read__player,
                 'read__type' => source_link_type(),
                 'read__up' => $source_url['source__id'],
                 'read__down' => $add_to_child_source__id,
@@ -830,8 +830,8 @@ class SOURCE_model extends CI_Model
             $url_analysis, //Make domain analysis data available as well...
 
             array(
-                'status' => ($url_previously_existed && !$read__source ? 0 : 1),
-                'message' => ($url_previously_existed && !$read__source ? 'URL already belongs to [' . $source_url['source__title'].'] with source ID @' . $source_url['source__id'] : 'Success'),
+                'status' => ($url_previously_existed && !$read__player ? 0 : 1),
+                'message' => ($url_previously_existed && !$read__player ? 'URL already belongs to [' . $source_url['source__title'].'] with source ID @' . $source_url['source__id'] : 'Success'),
                 'url_previously_existed' => $url_previously_existed,
                 'clean_url' => $url,
                 'read__type' => $read__type,
@@ -842,7 +842,7 @@ class SOURCE_model extends CI_Model
         );
     }
 
-    function mass_update($source__id, $action_source__id, $action_command1, $action_command2, $read__source)
+    function mass_update($source__id, $action_source__id, $action_command1, $action_command2, $read__player)
     {
 
         //Alert: Has a twin function called idea_mass_update()
@@ -915,7 +915,7 @@ class SOURCE_model extends CI_Model
 
                 $this->SOURCE_model->update($source['source__id'], array(
                     'source__title' => $action_command1 . $source['source__title'],
-                ), true, $read__source);
+                ), true, $read__player);
 
                 $applied_success++;
 
@@ -923,7 +923,7 @@ class SOURCE_model extends CI_Model
 
                 $this->SOURCE_model->update($source['source__id'], array(
                     'source__title' => $source['source__title'] . $action_command1,
-                ), true, $read__source);
+                ), true, $read__player);
 
                 $applied_success++;
 
@@ -944,7 +944,7 @@ class SOURCE_model extends CI_Model
 
                     //Parent Player Addition
                     $this->READ_model->create(array(
-                        'read__source' => $read__source,
+                        'read__player' => $read__player,
                         'read__type' => source_link_type(),
                         'read__down' => $source['source__id'], //This child source
                         'read__up' => $parent_source__id,
@@ -961,7 +961,7 @@ class SOURCE_model extends CI_Model
 
                             $this->READ_model->update($delete_tr['read__id'], array(
                                 'read__status' => 6173, //Link Deleted
-                            ), $read__source, 10673 /* Player Link Unpublished  */);
+                            ), $read__player, 10673 /* Player Link Unpublished  */);
 
                             $applied_success++;
                         }
@@ -972,7 +972,7 @@ class SOURCE_model extends CI_Model
 
                         //Add as a parent because it meets the condition
                         $this->READ_model->create(array(
-                            'read__source' => $read__source,
+                            'read__player' => $read__player,
                             'read__type' => source_link_type(),
                             'read__down' => $source['source__id'], //This child source
                             'read__up' => $parent_new_source__id,
@@ -988,7 +988,7 @@ class SOURCE_model extends CI_Model
 
                 $this->SOURCE_model->update($source['source__id'], array(
                     'source__icon' => $action_command1,
-                ), true, $read__source);
+                ), true, $read__player);
 
                 $applied_success++;
 
@@ -996,7 +996,7 @@ class SOURCE_model extends CI_Model
 
                 $this->SOURCE_model->update($source['source__id'], array(
                     'source__icon' => $action_command1,
-                ), true, $read__source);
+                ), true, $read__player);
 
                 $applied_success++;
 
@@ -1004,7 +1004,7 @@ class SOURCE_model extends CI_Model
 
                 $this->SOURCE_model->update($source['source__id'], array(
                     'source__title' => str_replace(strtoupper($action_command1), strtoupper($action_command2), $source['source__title']),
-                ), true, $read__source);
+                ), true, $read__player);
 
                 $applied_success++;
 
@@ -1012,7 +1012,7 @@ class SOURCE_model extends CI_Model
 
                 $this->SOURCE_model->update($source['source__id'], array(
                     'source__icon' => str_replace($action_command1, $action_command2, $source['source__icon']),
-                ), true, $read__source);
+                ), true, $read__player);
 
                 $applied_success++;
 
@@ -1020,7 +1020,7 @@ class SOURCE_model extends CI_Model
 
                 $this->READ_model->update($source['read__id'], array(
                     'read__message' => str_replace($action_command1, $action_command2, $source['read__message']),
-                ), $read__source, 10657 /* Player Link Updated Content  */);
+                ), $read__player, 10657 /* Player Link Updated Content  */);
 
                 $applied_success++;
 
@@ -1028,13 +1028,13 @@ class SOURCE_model extends CI_Model
 
                 //Being deleted? Unlink as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('sources_id_7358'))){
-                    $this->SOURCE_model->unlink($source['source__id'], $read__source);
+                    $this->SOURCE_model->unlink($source['source__id'], $read__player);
                 }
 
                 //Update Matching Player Status:
                 $this->SOURCE_model->update($source['source__id'], array(
                     'source__status' => $action_command2,
-                ), true, $read__source);
+                ), true, $read__player);
 
                 $applied_success++;
 
@@ -1042,7 +1042,7 @@ class SOURCE_model extends CI_Model
 
                 $this->READ_model->update($source['read__id'], array(
                     'read__status' => $action_command2,
-                ), $read__source, ( in_array($action_command2, $this->config->item('sources_id_7360') /* ACTIVE */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unpublished */ ));
+                ), $read__player, ( in_array($action_command2, $this->config->item('sources_id_7360') /* ACTIVE */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unpublished */ ));
 
                 $applied_success++;
 
@@ -1052,7 +1052,7 @@ class SOURCE_model extends CI_Model
 
         //Log mass source edit link:
         $this->READ_model->create(array(
-            'read__source' => $read__source,
+            'read__player' => $read__player,
             'read__type' => $action_source__id,
             'read__down' => $source__id,
             'read__metadata' => array(
@@ -1094,7 +1094,7 @@ class SOURCE_model extends CI_Model
     }
 
 
-    function verify_create($source__title, $read__source = 0, $source__status = 6181, $source__icon = null){
+    function verify_create($source__title, $read__player = 0, $source__status = 6181, $source__icon = null){
 
         if(!in_array($source__status, $this->config->item('sources_id_6177'))){
             //Invalid Status ID
@@ -1115,7 +1115,7 @@ class SOURCE_model extends CI_Model
             'source__title' => $source__title_validate['source__title_clean'],
             'source__icon' => $source__icon,
             'source__status' => $source__status,
-        ), true, $read__source);
+        ), true, $read__player);
 
         //Return success:
         return array(

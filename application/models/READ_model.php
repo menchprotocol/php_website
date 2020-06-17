@@ -19,12 +19,12 @@ class READ_model extends CI_Model
     {
 
         //Set some defaults:
-        if (!isset($add_fields['read__source']) || intval($add_fields['read__source']) < 1) {
-            $add_fields['read__source'] = 0;
+        if (!isset($add_fields['read__player']) || intval($add_fields['read__player']) < 1) {
+            $add_fields['read__player'] = 0;
         }
 
         //Only require link type:
-        if (detect_missing_columns($add_fields, array('read__type'), $add_fields['read__source'])) {
+        if (detect_missing_columns($add_fields, array('read__type'), $add_fields['read__player'])) {
             return false;
         }
 
@@ -74,7 +74,7 @@ class READ_model extends CI_Model
             //This should not happen:
             $this->READ_model->create(array(
                 'read__type' => 4246, //Platform Bug Reports
-                'read__source' => $add_fields['read__source'],
+                'read__player' => $add_fields['read__player'],
                 'read__message' => 'create() Failed to create',
                 'read__metadata' => array(
                     'input' => $add_fields,
@@ -111,7 +111,7 @@ class READ_model extends CI_Model
             } elseif($add_fields['read__up'] > 0){
                 $source__id = $add_fields['read__up'];
             }
-            $this->SOURCE_model->match_read_status($add_fields['read__source'], array(
+            $this->SOURCE_model->match_read_status($add_fields['read__player'], array(
                 'source__id' => $source__id,
             ));
         }
@@ -123,13 +123,13 @@ class READ_model extends CI_Model
             } elseif($add_fields['read__left'] > 0){
                 $idea__id = $add_fields['read__left'];
             }
-            $this->IDEA_model->match_read_status($add_fields['read__source'], array(
+            $this->IDEA_model->match_read_status($add_fields['read__player'], array(
                 'idea__id' => $idea__id,
             ));
         }
 
         //Do we need to check for source tagging after read success?
-        if(in_array($add_fields['read__type'] , $this->config->item('sources_id_6255')) && in_array($add_fields['read__status'] , $this->config->item('sources_id_7359')) && $add_fields['read__left'] > 0 && $add_fields['read__source'] > 0){
+        if(in_array($add_fields['read__type'] , $this->config->item('sources_id_6255')) && in_array($add_fields['read__status'] , $this->config->item('sources_id_7359')) && $add_fields['read__left'] > 0 && $add_fields['read__player'] > 0){
 
 
             //AUTO COMPLETES?
@@ -145,7 +145,7 @@ class READ_model extends CI_Model
                 $ideas_next_autoscan = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_7704')) . ')' => null, //READ ANSWERED
-                    'read__source' => $add_fields['read__source'],
+                    'read__player' => $add_fields['read__player'],
                     'read__left' => $ideas[0]['idea__id'],
                     'read__right>' => 0, //With an answer
                     'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
@@ -187,14 +187,14 @@ class READ_model extends CI_Model
                     !count($this->READ_model->fetch(array(
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-                        'read__source' => $add_fields['read__source'],
+                        'read__player' => $add_fields['read__player'],
                         'read__left' => $next_idea['idea__id'],
                     )))){
 
                     //Mark as complete:
                     $this->READ_model->mark_complete($next_idea, array(
                         'read__type' => 4559, //READ MESSAGES
-                        'read__source' => $add_fields['read__source'],
+                        'read__player' => $add_fields['read__player'],
                         'read__left' => $next_idea['idea__id'],
                     ));
 
@@ -223,7 +223,7 @@ class READ_model extends CI_Model
                         'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                         'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                         'read__up' => $read_tag['read__up'], //CERTIFICATES saved here
-                        'read__down' => $add_fields['read__source'],
+                        'read__down' => $add_fields['read__player'],
                     ));
 
                     if(count($existing_links)){
@@ -241,13 +241,13 @@ class READ_model extends CI_Model
                             //Content value has changed, update the link:
                             $this->READ_model->update($existing_links[0]['read__id'], array(
                                 'read__message' => $add_fields['read__message'],
-                            ), $add_fields['read__source'], 10657 /* Player Link Updated Content  */);
+                            ), $add_fields['read__player'], 10657 /* Player Link Updated Content  */);
 
                             //Also, did the link type change based on the content change?
                             if($existing_links[0]['read__type'] != $detected_read_type['read__type']){
                                 $this->READ_model->update($existing_links[0]['read__id'], array(
                                     'read__type' => $detected_read_type['read__type'],
-                                ), $add_fields['read__source'], 10659 /* Player Link Updated Type */);
+                                ), $add_fields['read__player'], 10659 /* Player Link Updated Type */);
                             }
 
                         }
@@ -264,11 +264,11 @@ class READ_model extends CI_Model
                                     'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                                     'read__up IN (' . join(',', $single_selectable) . ')' => null,
                                     'read__up !=' => $read_tag['read__up'],
-                                    'read__down' => $add_fields['read__source'],
+                                    'read__down' => $add_fields['read__player'],
                                 )) as $single_selectable_siblings_preset){
                                     $links_deleted += $this->READ_model->update($single_selectable_siblings_preset['read__id'], array(
                                         'read__status' => 6173, //Link Deleted
-                                    ), $add_fields['read__source'], 10673 /* Player Link Unpublished */);
+                                    ), $add_fields['read__player'], 10673 /* Player Link Unpublished */);
                                 }
                             }
                         }
@@ -278,9 +278,9 @@ class READ_model extends CI_Model
                         $this->READ_model->create(array(
                             'read__type' => $detected_read_type['read__type'],
                             'read__message' => $add_fields['read__message'],
-                            'read__source' => $add_fields['read__source'],
+                            'read__player' => $add_fields['read__player'],
                             'read__up' => $read_tag['read__up'],
-                            'read__down' => $add_fields['read__source'],
+                            'read__down' => $add_fields['read__player'],
                         ));
 
                     }
@@ -288,9 +288,9 @@ class READ_model extends CI_Model
                     //Track Tag:
                     $this->READ_model->create(array(
                         'read__type' => 12197, //Tag Player
-                        'read__source' => $add_fields['read__source'],
+                        'read__player' => $add_fields['read__player'],
                         'read__up' => $read_tag['read__up'],
-                        'read__down' => $add_fields['read__source'],
+                        'read__down' => $add_fields['read__player'],
                         'read__left' => $ideas[0]['idea__id'],
                         'read__message' => $links_added.' added, '.$links_edited.' edited & '.$links_deleted.' deleted with new content ['.$add_fields['read__message'].']',
                     ));
@@ -298,7 +298,7 @@ class READ_model extends CI_Model
                     if($links_added>0 || $links_edited>0 || $links_deleted>0){
                         //See if Session needs to be updated:
                         $session_source = superpower_assigned();
-                        if($session_source && $session_source['source__id']==$add_fields['read__source']){
+                        if($session_source && $session_source['source__id']==$add_fields['read__player']){
                             //Yes, update session:
                             $this->SOURCE_model->activate_session($session_source, true);
                         }
@@ -318,7 +318,7 @@ class READ_model extends CI_Model
             foreach(explode(',', $sources__5967[$add_fields['read__type']]['m_desc']) as $subscriber_source__id){
 
                 //Do not inform the user who just took the action:
-                if($subscriber_source__id==$add_fields['read__source']){
+                if($subscriber_source__id==$add_fields['read__player']){
                     continue;
                 }
 
@@ -344,11 +344,11 @@ class READ_model extends CI_Model
 
                 //yes, start drafting email to be sent to them...
 
-                if($add_fields['read__source'] > 0){
+                if($add_fields['read__player'] > 0){
 
                     //Fetch player details:
                     $add_sources = $this->SOURCE_model->fetch(array(
-                        'source__id' => $add_fields['read__source'],
+                        'source__id' => $add_fields['read__player'],
                     ));
 
                     $player_name = $add_sources[0]['source__title'];
@@ -410,7 +410,7 @@ class READ_model extends CI_Model
                 foreach($sub_source__ids as $to_source__id){
                     $this->READ_model->create(array(
                         'read__type' => 5967, //Link Carbon Copy Email
-                        'read__source' => $to_source__id, //Sent to this user
+                        'read__player' => $to_source__id, //Sent to this user
                         'read__metadata' => $dispatched_email, //Save a copy of email
                         'read__reference' => $add_fields['read__id'], //Save link
 
@@ -449,8 +449,8 @@ class READ_model extends CI_Model
             $this->db->join('mench_sources', 'read__down=source__id','left');
         } elseif (in_array('read__type', $join_objects)) {
             $this->db->join('mench_sources', 'read__type=source__id','left');
-        } elseif (in_array('read__source', $join_objects)) {
-            $this->db->join('mench_sources', 'read__source=source__id','left');
+        } elseif (in_array('read__player', $join_objects)) {
+            $this->db->join('mench_sources', 'read__player=source__id','left');
         }
 
         foreach($query_filters as $key => $value) {
@@ -476,7 +476,7 @@ class READ_model extends CI_Model
         return $q->result_array();
     }
 
-    function update($id, $update_columns, $read__source = 0, $read__type = 0, $read__message = '')
+    function update($id, $update_columns, $read__player = 0, $read__type = 0, $read__message = '')
     {
 
         if (count($update_columns) == 0) {
@@ -485,7 +485,7 @@ class READ_model extends CI_Model
             return false;
         }
 
-        if($read__source > 0){
+        if($read__player > 0){
             //Fetch link before updating:
             $before_data = $this->READ_model->fetch(array(
                 'read__id' => $id,
@@ -508,7 +508,7 @@ class READ_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
-        if ($affected_rows > 0 && $read__source > 0 && $read__type > 0) {
+        if ($affected_rows > 0 && $read__player > 0 && $read__type > 0) {
 
             if(strlen($read__message) == 0){
                 if(in_array($read__type, $this->config->item('sources_id_10593') /* Statement */)){
@@ -591,7 +591,7 @@ class READ_model extends CI_Model
                 //Value has changed, log link:
                 $this->READ_model->create(array(
                     'read__reference' => $id, //Link Reference
-                    'read__source' => $read__source,
+                    'read__player' => $read__player,
                     'read__type' => $read__type,
                     'read__message' => $read__message,
                     'read__metadata' => array(
@@ -724,7 +724,7 @@ class READ_model extends CI_Model
             //Log Error Link:
             $this->READ_model->create(array(
                 'read__type' => 4246, //Platform Bug Reports
-                'read__source' => (isset($recipient_source['source__id']) ? $recipient_source['source__id'] : 0),
+                'read__player' => (isset($recipient_source['source__id']) ? $recipient_source['source__id'] : 0),
                 'read__message' => 'message_compile() returned error [' . $msg_validation['message'] . '] for input message [' . $message_input . ']',
                 'read__metadata' => array(
                     'input_message' => $message_input,
@@ -1065,7 +1065,7 @@ class READ_model extends CI_Model
             $is_complete = count($this->READ_model->fetch(array(
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-                'read__source' => $source__id,
+                'read__player' => $source__id,
                 'read__left' => $next_idea['idea__id'],
             )));
 
@@ -1076,7 +1076,7 @@ class READ_model extends CI_Model
                     'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
                     'read__left' => $idea['idea__id'],
                     'read__right' => $next_idea['idea__id'],
-                    'read__source' => $source__id,
+                    'read__player' => $source__id,
                 )));
             }
 
@@ -1125,7 +1125,7 @@ class READ_model extends CI_Model
 
             //Still Here? as a Last option go through READ LIST:
             foreach ($this->READ_model->fetch(array(
-                'read__source' => $source__id,
+                'read__player' => $source__id,
                 'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
@@ -1168,7 +1168,7 @@ class READ_model extends CI_Model
 
         //Go ahead and delete from Reads:
         $player_reads = $this->READ_model->fetch(array(
-            'read__source' => $source__id,
+            'read__player' => $source__id,
             'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__left' => $idea__id,
@@ -1208,7 +1208,7 @@ class READ_model extends CI_Model
 
         //Make sure not previously added to this User's Reads:
         if(!count($this->READ_model->fetch(array(
-                'read__source' => $source__id,
+                'read__player' => $source__id,
                 'read__left' => $idea__id,
                 'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1218,7 +1218,7 @@ class READ_model extends CI_Model
             $idea_rank = 1;
             $home = $this->READ_model->create(array(
                 'read__type' => ( $recommender_idea__id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
-                'read__source' => $source__id, //Belongs to this User
+                'read__player' => $source__id, //Belongs to this User
                 'read__left' => $ideas[0]['idea__id'], //The Idea they are adding
                 'read__right' => $recommender_idea__id, //Store the recommended idea
                 'read__sort' => $idea_rank, //Always place at the top of their Reads
@@ -1229,7 +1229,7 @@ class READ_model extends CI_Model
                 'read__id !=' => $home['read__id'], //Not the newly added idea
                 'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                'read__source' => $source__id, //Belongs to this User
+                'read__player' => $source__id, //Belongs to this User
             ), array(), 0, 0, array('read__sort' => 'ASC')) as $current_ideas){
 
                 //Increase rank:
@@ -1244,7 +1244,7 @@ class READ_model extends CI_Model
 
             //Was this their first idea?
             if(!count($this->READ_model->fetch(array(
-                'read__source' => $source__id,
+                'read__player' => $source__id,
                 'read__left !=' => $idea__id,
                 'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1261,7 +1261,7 @@ class READ_model extends CI_Model
                 if($ideas[0]['idea__type']==6677){
                     $this->READ_model->mark_complete($ideas[0], array(
                         'read__type' => 4559, //READ MESSAGES
-                        'read__source' => $source__id,
+                        'read__player' => $source__id,
                         'read__left' => $ideas[0]['idea__id'],
                     ));
                 }
@@ -1304,7 +1304,7 @@ class READ_model extends CI_Model
             $existing_expansions = $this->READ_model->fetch(array(
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'read__type' => 6140, //READ UNLOCK LINK
-                'read__source' => $source__id,
+                'read__player' => $source__id,
                 'read__left' => $idea['idea__id'],
                 'read__right IN (' . join(',', $idea__metadata['idea___expansion_conditional'][$idea['idea__id']]) . ')' => null, //Limit to cached answers
             ));
@@ -1323,7 +1323,7 @@ class READ_model extends CI_Model
                     'read__right' => $existing_expansions[0]['read__right'],
                     'read__message' => 'completion_recursive_up() detected duplicate Label Expansion entries',
                     'read__type' => 4246, //Platform Bug Reports
-                    'read__source' => $source__id,
+                    'read__player' => $source__id,
                 ));
                 */
 
@@ -1372,7 +1372,7 @@ class READ_model extends CI_Model
                     //Unlock Reads:
                     $this->READ_model->create(array(
                         'read__type' => 6140, //READ UNLOCK LINK
-                        'read__source' => $source__id,
+                        'read__player' => $source__id,
                         'read__left' => $idea['idea__id'],
                         'read__right' => $locked_link['idea__id'],
                         'read__metadata' => array(
@@ -1390,7 +1390,7 @@ class READ_model extends CI_Model
                 $this->READ_model->create(array(
                     'read__message' => 'completion_recursive_up() found ['.$found_match.'] routing logic matches!',
                     'read__type' => 4246, //Platform Bug Reports
-                    'read__source' => $source__id,
+                    'read__player' => $source__id,
                     'read__left' => $idea['idea__id'],
                     'read__metadata' => array(
                         'completion_rate' => $completion_rate,
@@ -1586,7 +1586,7 @@ class READ_model extends CI_Model
         $new_link = $this->READ_model->create($add_fields);
 
         //Process completion automations:
-        $this->READ_model->completion_recursive_up($add_fields['read__source'], $idea);
+        $this->READ_model->completion_recursive_up($add_fields['read__player'], $idea);
 
         return $new_link;
 
@@ -1603,7 +1603,7 @@ class READ_model extends CI_Model
             $this->READ_model->create(array(
                 'read__message' => 'completion_marks() Detected user Reads without idea___common_reads value!',
                 'read__type' => 4246, //Platform Bug Reports
-                'read__source' => $source__id,
+                'read__player' => $source__id,
                 'read__left' => $idea['idea__id'],
             ));
 
@@ -1683,7 +1683,7 @@ class READ_model extends CI_Model
 
             //Now let's check user answers to see what they have done:
             $total_completion = $this->READ_model->fetch(array(
-                'read__source' => $source__id, //Belongs to this User
+                'read__player' => $source__id, //Belongs to this User
                 'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
                 'read__left IN (' . join(',', $question_idea__ids ) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1694,7 +1694,7 @@ class READ_model extends CI_Model
 
             //Go through answers:
             foreach($this->READ_model->fetch(array(
-                'read__source' => $source__id, //Belongs to this User
+                'read__player' => $source__id, //Belongs to this User
                 'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
                 'read__left IN (' . join(',', $question_idea__ids ) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1763,7 +1763,7 @@ class READ_model extends CI_Model
 
             //Now let's check user answers to see what they have done:
             $total_completion = $this->READ_model->fetch(array(
-                'read__source' => $source__id, //Belongs to this User
+                'read__player' => $source__id, //Belongs to this User
                 'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
                 'read__left IN (' . join(',', $question_idea__ids ) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1774,7 +1774,7 @@ class READ_model extends CI_Model
 
             //Go through answers:
             foreach($this->READ_model->fetch(array(
-                'read__source' => $source__id, //Belongs to this User
+                'read__player' => $source__id, //Belongs to this User
                 'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
                 'read__left IN (' . join(',', $question_idea__ids ) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1843,7 +1843,7 @@ class READ_model extends CI_Model
         //Count completed for user:
         $common_completed = $this->READ_model->fetch(array(
             'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-            'read__source' => $source__id, //Belongs to this User
+            'read__player' => $source__id, //Belongs to this User
             'read__left IN (' . join(',', $flat_common_reads ) . ')' => null,
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
@@ -1873,7 +1873,7 @@ class READ_model extends CI_Model
             //Now let's check user answers to see what they have done:
             foreach($this->READ_model->fetch(array(
                 'read__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //READ IDEA LINKS
-                'read__source' => $source__id, //Belongs to this User
+                'read__player' => $source__id, //Belongs to this User
                 'read__left IN (' . join(',', $flat_common_reads ) . ')' => null,
                 'read__right IN (' . join(',', $answer_array) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1898,7 +1898,7 @@ class READ_model extends CI_Model
             //Now let's check if user has unlocked any Miletones:
             foreach($this->READ_model->fetch(array(
                 'read__type' => 6140, //READ UNLOCK LINK
-                'read__source' => $source__id, //Belongs to this User
+                'read__player' => $source__id, //Belongs to this User
                 'read__left IN (' . join(',', $flat_common_reads ) . ')' => null,
                 'read__right IN (' . join(',', array_flatten($idea__metadata['idea___expansion_conditional'])) . ')' => null,
                 'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1962,7 +1962,7 @@ class READ_model extends CI_Model
         //Simply returns all the idea IDs for a user's Reads:
         $player_read_ids = array();
         foreach($this->READ_model->fetch(array(
-            'read__source' => $source__id,
+            'read__player' => $source__id,
             'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
@@ -2027,7 +2027,7 @@ class READ_model extends CI_Model
         foreach($this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_7704')) . ')' => null, //READ ANSWERED
-            'read__source' => $source__id,
+            'read__player' => $source__id,
             'read__left' => $ideas[0]['idea__id'],
         )) as $read_progress){
             $this->READ_model->update($read_progress['read__id'], array(
@@ -2041,7 +2041,7 @@ class READ_model extends CI_Model
             $answers_newly_added++;
             $this->READ_model->create(array(
                 'read__type' => $idea_link_type_id,
-                'read__source' => $source__id,
+                'read__player' => $source__id,
                 'read__left' => $ideas[0]['idea__id'],
                 'read__right' => $answer_idea__id,
             ));
@@ -2059,7 +2059,7 @@ class READ_model extends CI_Model
         //Issue READ/IDEA COIN:
         $this->READ_model->mark_complete($ideas[0], array(
             'read__type' => $read__type,
-            'read__source' => $source__id,
+            'read__player' => $source__id,
             'read__left' => $ideas[0]['idea__id'],
         ));
 

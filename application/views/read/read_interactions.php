@@ -70,12 +70,12 @@ if(isset($_GET['read__status']) && strlen($_GET['read__status']) > 0){
     }
 }
 
-if(isset($_GET['read__source']) && strlen($_GET['read__source']) > 0){
-    if (substr_count($_GET['read__source'], ',') > 0) {
+if(isset($_GET['read__player']) && strlen($_GET['read__player']) > 0){
+    if (substr_count($_GET['read__player'], ',') > 0) {
         //This is multiple:
-        $filters['( read__source IN (' . $_GET['read__source'] . '))'] = null;
-    } elseif (intval($_GET['read__source']) > 0) {
-        $filters['read__source'] = $_GET['read__source'];
+        $filters['( read__player IN (' . $_GET['read__player'] . '))'] = null;
+    } elseif (intval($_GET['read__player']) > 0) {
+        $filters['read__player'] = $_GET['read__player'];
     }
 }
 
@@ -138,9 +138,9 @@ if(isset($_GET['any_source__id']) && strlen($_GET['any_source__id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_source__id'], ',') > 0) {
         //This is multiple:
-        $filters['( read__down IN (' . $_GET['any_source__id'] . ') OR read__up IN (' . $_GET['any_source__id'] . ') OR read__source IN (' . $_GET['any_source__id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( read__down IN (' . $_GET['any_source__id'] . ') OR read__up IN (' . $_GET['any_source__id'] . ') OR read__player IN (' . $_GET['any_source__id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_source__id']) > 0) {
-        $filters['( read__down = ' . $_GET['any_source__id'] . ' OR read__up = ' . $_GET['any_source__id'] . ' OR read__source = ' . $_GET['any_source__id'] . $parent_tr_filter . ' )'] = null;
+        $filters['( read__down = ' . $_GET['any_source__id'] . ' OR read__up = ' . $_GET['any_source__id'] . ' OR read__player = ' . $_GET['any_source__id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -267,7 +267,7 @@ echo '<div class="container">';
     echo '<input type="text" name="any_source__id" value="' . ((isset($_GET['any_source__id'])) ? $_GET['any_source__id'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="read__source" value="' . ((isset($_GET['read__source'])) ? $_GET['read__source'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="read__player" value="' . ((isset($_GET['read__player'])) ? $_GET['read__player'] : '') . '" class="form-control border"></td>';
 
     echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="read__up" value="' . ((isset($_GET['read__up'])) ? $_GET['read__up'] : '') . '" class="form-control border"></td>';
 
@@ -353,7 +353,7 @@ echo '</div></td>';
 
         echo '<select class="form-control border" name="read__type" id="read__type" class="border" style="width: 100% !important;">';
 
-        if(isset($_GET['read__source'])) {
+        if(isset($_GET['read__player'])) {
 
             //Fetch details for this user:
             $all_link_count = 0;

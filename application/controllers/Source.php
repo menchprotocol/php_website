@@ -32,7 +32,7 @@ class Source extends CI_Controller
         if($session_source){
             $this->READ_model->create(array(
                 'read__type' => 12489, //Opened Leaderboard
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
             ));
         }
 
@@ -76,7 +76,7 @@ class Source extends CI_Controller
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->READ_model->create(array(
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__type' => 4994, //Player Opened Player
                 'read__down' => $source__id,
                 'read__sort' => $new_order,
@@ -437,7 +437,7 @@ class Source extends CI_Controller
 
         //Create Note:
         $new_note = $this->READ_model->create(array(
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__type' => $_POST['note_type_id'],
             'read__right' => $ideas[0]['idea__id'],
 
@@ -622,7 +622,7 @@ class Source extends CI_Controller
 
             // Link to new OR existing source:
             $ur2 = $this->READ_model->create(array(
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__type' => $read__type,
                 'read__message' => $read__message,
                 'read__down' => $read__down,
@@ -722,7 +722,7 @@ class Source extends CI_Controller
 
         //Log Link:
         $this->READ_model->create(array(
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__type' => 5007, //TOGGLE SUPERPOWER
             'read__up' => $superpower_source__id,
             'read__message' => 'SUPERPOWER '.$toggled_setting, //To be used when player logs in again
@@ -1083,7 +1083,7 @@ class Source extends CI_Controller
             //Fetch source link:
             $reads = $this->READ_model->fetch(array(
                 'read__id' => $_POST['read__id'],
-            ), array('read__source'));
+            ), array('read__player'));
 
             //Prep last updated:
             $return_array['read__message'] = view_read__message($read__message, $js_read__type);
@@ -1211,7 +1211,7 @@ class Source extends CI_Controller
             $this->READ_model->create(array(
                 'read__up' => $_POST['selected_source__id'],
                 'read__down' => $session_source['source__id'],
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__type' => source_link_type(),
             ));
         }
@@ -1220,7 +1220,7 @@ class Source extends CI_Controller
         //Log Account Update link type:
         $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
         $this->READ_model->create(array(
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__type' => 6224, //My Account updated
             'read__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
             'read__metadata' => $_POST,
@@ -1387,7 +1387,7 @@ class Source extends CI_Controller
 
             //Create new link:
             $this->READ_model->create(array(
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__down' => $session_source['source__id'],
                 'read__type' => source_link_type($_POST['source_email']),
                 'read__up' => 3288, //Mench Email
@@ -1413,7 +1413,7 @@ class Source extends CI_Controller
             //Log Account Update link type:
             $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->create(array(
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__type' => 6224, //My Account updated
                 'read__message' => 'My Account '.$return['message']. ( strlen($_POST['source_email']) > 0 ? ': '.$_POST['source_email'] : ''),
                 'read__metadata' => $_POST,
@@ -1485,7 +1485,7 @@ class Source extends CI_Controller
             $this->READ_model->create(array(
                 'read__type' => source_link_type($hashed_password),
                 'read__up' => 3286, //Password
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__down' => $session_source['source__id'],
                 'read__message' => $hashed_password,
             ), true);
@@ -1502,7 +1502,7 @@ class Source extends CI_Controller
         if($return['status']){
             $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
             $this->READ_model->create(array(
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__type' => 6224, //My Account Updated
                 'read__message' => 'My Account '.$return['message'],
                 'read__metadata' => $_POST,
@@ -1655,7 +1655,7 @@ class Source extends CI_Controller
         $this->READ_model->create(array(
             'read__up' => 4430, //MENCH PLAYERS
             'read__type' => source_link_type(),
-            'read__source' => $added_source['new_source']['source__id'],
+            'read__player' => $added_source['new_source']['source__id'],
             'read__down' => $added_source['new_source']['source__id'],
         ));
 
@@ -1663,7 +1663,7 @@ class Source extends CI_Controller
             'read__type' => source_link_type(trim(strtolower($_POST['input_email']))),
             'read__message' => trim(strtolower($_POST['input_email'])),
             'read__up' => 3288, //Mench Email
-            'read__source' => $added_source['new_source']['source__id'],
+            'read__player' => $added_source['new_source']['source__id'],
             'read__down' => $added_source['new_source']['source__id'],
         ));
         $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_source['new_source']['source__id']));
@@ -1671,7 +1671,7 @@ class Source extends CI_Controller
             'read__type' => source_link_type($hash),
             'read__message' => $hash,
             'read__up' => 3286, //Mench Password
-            'read__source' => $added_source['new_source']['source__id'],
+            'read__player' => $added_source['new_source']['source__id'],
             'read__down' => $added_source['new_source']['source__id'],
         ));
 
@@ -1717,7 +1717,7 @@ class Source extends CI_Controller
         //Log User Signin Joined Mench
         $invite_link = $this->READ_model->create(array(
             'read__type' => 7562, //User Signin Joined Mench
-            'read__source' => $added_source['new_source']['source__id'],
+            'read__player' => $added_source['new_source']['source__id'],
             'read__left' => intval($_POST['sign_idea__id']),
             'read__metadata' => array(
                 'email_log' => $email_log,
@@ -1925,7 +1925,7 @@ class Source extends CI_Controller
 
             //Validate user:
             $sources = $this->SOURCE_model->fetch(array(
-                'source__id' => $validate_links[0]['read__source'],
+                'source__id' => $validate_links[0]['read__player'],
             ));
             if(count($sources) < 1){
                 return view_json(array(
@@ -1967,7 +1967,7 @@ class Source extends CI_Controller
                     'read__type' => source_link_type($password_hash),
                     'read__message' => $password_hash,
                     'read__up' => 3286, //Mench Password
-                    'read__source' => $sources[0]['source__id'],
+                    'read__player' => $sources[0]['source__id'],
                     'read__down' => $sources[0]['source__id'],
                 ));
 
@@ -1976,7 +1976,7 @@ class Source extends CI_Controller
 
             //Log password reset:
             $this->READ_model->create(array(
-                'read__source' => $sources[0]['source__id'],
+                'read__player' => $sources[0]['source__id'],
                 'read__type' => 7578, //User updated Password
                 'read__message' => $password_hash, //A copy of their password set at this time
             ));
@@ -2032,7 +2032,7 @@ class Source extends CI_Controller
         $reset_link = $this->READ_model->create(array(
             'read__type' => 7563, //User Signin Magic Link Email
             'read__message' => $_POST['input_email'],
-            'read__source' => $user_emails[0]['source__id'], //User making request
+            'read__player' => $user_emails[0]['source__id'], //User making request
             'read__left' => intval($_POST['sign_idea__id']),
         ));
 
@@ -2089,7 +2089,7 @@ class Source extends CI_Controller
 
         //Fetch source:
         $sources = $this->SOURCE_model->fetch(array(
-            'source__id' => $validate_links[0]['read__source'],
+            'source__id' => $validate_links[0]['read__player'],
         ));
         if(count($sources) < 1){
             return redirect_message('/@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>User not found</div>');

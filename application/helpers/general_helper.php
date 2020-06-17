@@ -27,7 +27,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($add_fields, $required_columns, $read__source)
+function detect_missing_columns($add_fields, $required_columns, $read__player)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
@@ -41,7 +41,7 @@ function detect_missing_columns($add_fields, $required_columns, $read__source)
                     'required_columns' => $required_columns,
                 ),
                 'read__type' => 4246, //Platform Bug Reports
-                'read__source' => $read__source,
+                'read__player' => $read__player,
             ));
 
             return true; //We have an issue
@@ -384,7 +384,7 @@ function source_count_connections($source__id, $return_html = true){
         4737 => 'SELECT count(idea__id) as totals FROM mench_ideas WHERE idea__status=',
         7585 => 'SELECT count(idea__id) as totals FROM mench_ideas WHERE idea__status IN ('.join(',', $CI->config->item('sources_id_7355')).') AND idea__type=',
         6177 => 'SELECT count(source__id) as totals FROM mench_sources WHERE source__status=',
-        4364 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__source=',
+        4364 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__player=',
         6186 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status=',
         4593 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__type=',
     ) as $source_app_id => $query){
@@ -488,7 +488,7 @@ function source__weight_calculator($source){
 
     $count_reads = $CI->READ_model->fetch(array(
         'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        '(read__down='.$source['source__id'].' OR read__up='.$source['source__id'].' OR read__source='.$source['source__id'].')' => null,
+        '(read__down='.$source['source__id'].' OR read__up='.$source['source__id'].' OR read__player='.$source['source__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
 
     //IDEAS
@@ -707,7 +707,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
 
     } elseif($read__type==6255){
 
-        $join_objects = array('read__source');
+        $join_objects = array('read__player');
         $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
@@ -770,7 +770,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
         $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
-            'read__source' => $source__id,
+            'read__player' => $source__id,
         );
 
     } elseif($read__type==12273){
@@ -790,7 +790,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
         $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
-            'read__source' => $source__id,
+            'read__player' => $source__id,
         );
 
     } else {
@@ -1018,7 +1018,7 @@ function idea_calc_common_prefix($child_list, $child_field){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $read__source = 0, $read__metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $read__player = 0, $read__metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -1052,7 +1052,7 @@ function upload_to_cdn($file_url, $read__source = 0, $read__metadata = null, $is
     if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
         $CI->READ_model->create(array(
             'read__type' => 4246, //Platform Bug Reports
-            'read__source' => $read__source,
+            'read__player' => $read__player,
             'read__message' => 'upload_to_cdn() Failed to load AWS S3',
             'read__metadata' => array(
                 'file_url' => $file_url,
@@ -1088,7 +1088,7 @@ function upload_to_cdn($file_url, $read__source = 0, $read__metadata = null, $is
     if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
         $CI->READ_model->create(array(
             'read__type' => 4246, //Platform Bug Reports
-            'read__source' => $read__source,
+            'read__player' => $read__player,
             'read__message' => 'upload_to_cdn() Failed to upload file to Mench CDN',
             'read__metadata' => array(
                 'file_url' => $file_url,
@@ -1109,7 +1109,7 @@ function upload_to_cdn($file_url, $read__source = 0, $read__metadata = null, $is
     //Define new URL:
     $cdn_new_url = trim($result['ObjectURL']);
 
-    if($read__source < 1){
+    if($read__player < 1){
         //Just return URL:
         return array(
             'status' => 1,
@@ -1118,7 +1118,7 @@ function upload_to_cdn($file_url, $read__source = 0, $read__metadata = null, $is
     }
 
     //Create and link new source to CDN and uploader:
-    $url_source = $CI->SOURCE_model->url($cdn_new_url, $read__source, 0, $page_title);
+    $url_source = $CI->SOURCE_model->url($cdn_new_url, $read__player, 0, $page_title);
 
     if(isset($url_source['source_url']['source__id']) && $url_source['source_url']['source__id'] > 0){
 
@@ -1133,7 +1133,7 @@ function upload_to_cdn($file_url, $read__source = 0, $read__metadata = null, $is
 
         $CI->READ_model->create(array(
             'read__type' => 4246, //Platform Bug Reports
-            'read__source' => $read__source,
+            'read__player' => $read__player,
             'read__message' => 'upload_to_cdn() Failed to create new source from CDN file',
             'read__metadata' => array(
                 'file_url' => $file_url,
@@ -1338,7 +1338,7 @@ function source_is_idea_source($source__id, $session_source = array()){
         $source__id==$session_source['source__id'] || //Player is the source
         superpower_active(10967, true) || //Player has Global source editing superpower
         count($CI->READ_model->fetch(array( //Player created the source
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__down' => $source__id,
             'read__type' => 4251, //New Source Created
         ))) ||
@@ -1373,7 +1373,7 @@ function idea_is_source($idea__id, $session_source = array()){
                 count($CI->READ_model->fetch(array( //Player created the idea
                     'read__type' => 4250, //IDEA CREATOR
                     'read__right' => $idea__id,
-                    'read__source' => $session_source['source__id'],
+                    'read__player' => $session_source['source__id'],
                 ))) ||
                 count($CI->READ_model->fetch(array( //IDEA SOURCE
                     'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1595,8 +1595,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__duration'] = null;
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_source_' . $db_row['read__source']);
-                if($db_row['read__source']!=$db_row['source__id']){
+                array_push($export_row['_tags'], 'alg_source_' . $db_row['read__player']);
+                if($db_row['read__player']!=$db_row['source__id']){
                     //Also give access to source themselves, in case they can login:
                     array_push($export_row['_tags'], 'alg_source_' . $db_row['source__id']);
                 }
@@ -1797,7 +1797,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 }
 
-function update_metadata($object__type, $object__id, $new_fields, $read__source = 0)
+function update_metadata($object__type, $object__id, $new_fields, $read__player = 0)
 {
 
     $CI =& get_instance();
@@ -1877,13 +1877,13 @@ function update_metadata($object__type, $object__id, $new_fields, $read__source 
 
         $affected_rows = $CI->IDEA_model->update($object__id, array(
             'idea__metadata' => $metadata,
-        ), false, $read__source);
+        ), false, $read__player);
 
     } elseif ($object__type == 4536) {
 
         $affected_rows = $CI->SOURCE_model->update($object__id, array(
             'source__metadata' => $metadata,
-        ), false, $read__source);
+        ), false, $read__player);
 
     } elseif ($object__type == 6205) {
 

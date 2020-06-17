@@ -24,7 +24,7 @@ class Read extends CI_Controller
         //Log home View:
         $this->READ_model->create(array(
             'read__type' => 4283, //Opened Reads
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
         ));
 
         $this->load->view('header', array(
@@ -502,14 +502,14 @@ class Read extends CI_Controller
                 $read_completes = $this->READ_model->fetch(array(
                     'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'read__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //READ COMPLETE
-                    'read__source' => $session_source['source__id'],
+                    'read__player' => $session_source['source__id'],
                     'read__left' => $ideas[0]['idea__id'],
                 ));
 
                 if(!count($read_completes)){
                     $this->READ_model->mark_complete($ideas[0], array(
                         'read__type' => 4559, //READ MESSAGES
-                        'read__source' => $session_source['source__id'],
+                        'read__player' => $session_source['source__id'],
                         'read__left' => $ideas[0]['idea__id'],
                     ));
                 }
@@ -698,7 +698,7 @@ class Read extends CI_Controller
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
             'read__left' => $ideas[0]['idea__id'],
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
         )) as $read_progress){
             $this->READ_model->update($read_progress['read__id'], array(
                 'read__status' => 6173, //Read Deleted
@@ -710,7 +710,7 @@ class Read extends CI_Controller
         $this->READ_model->mark_complete($ideas[0], array(
             'read__type' => 12117,
             'read__left' => $ideas[0]['idea__id'],
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__message' => $new_message,
             'read__up' => $cdn_status['cdn_source']['source__id'],
         ));
@@ -763,7 +763,7 @@ class Read extends CI_Controller
             'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //READ COIN
             'read__left' => $ideas[0]['idea__id'],
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
         )) as $read_progress){
             $this->READ_model->update($read_progress['read__id'], array(
                 'read__status' => 6173, //Read Deleted
@@ -774,7 +774,7 @@ class Read extends CI_Controller
         $this->READ_model->mark_complete($ideas[0], array(
             'read__type' => 6144,
             'read__left' => $ideas[0]['idea__id'],
-            'read__source' => $session_source['source__id'],
+            'read__player' => $session_source['source__id'],
             'read__message' => $_POST['read_text_answer'],
         ));
 
@@ -825,7 +825,7 @@ class Read extends CI_Controller
         $progress_links = $this->READ_model->fetch(array(
             'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'read__type IN (' . join(',', $this->config->item('sources_id_12227')) . ')' => null,
-            'read__source' => $source__id,
+            'read__player' => $source__id,
         ), array(), 0);
 
         if(count($progress_links) > 0){
@@ -837,7 +837,7 @@ class Read extends CI_Controller
             $clear_all_link = $this->READ_model->create(array(
                 'read__message' => $message,
                 'read__type' => 6415, //Reads Reset Reads
-                'read__source' => $source__id,
+                'read__player' => $source__id,
             ));
 
             //Delete all progressions:
@@ -911,7 +911,7 @@ class Read extends CI_Controller
         if(!$removed){
             //Then we must add:
             $this->READ_model->create(array(
-                'read__source' => $session_source['source__id'],
+                'read__player' => $session_source['source__id'],
                 'read__up' => $session_source['source__id'],
                 'read__message' => '@'.$session_source['source__id'],
                 'read__right' => $_POST['idea__id'],
