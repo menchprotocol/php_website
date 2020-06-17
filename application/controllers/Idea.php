@@ -70,7 +70,7 @@ class Idea extends CI_Controller {
             'title' => $sources__11035[4535]['m_name'],
             'session_source' => $session_source,
         ));
-        $this->load->view('idea/idea_home');
+        $this->load->view('idea/home');
         $this->load->view('footer');
     }
 
@@ -142,7 +142,7 @@ class Idea extends CI_Controller {
             'title' => $ideas[0]['idea__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('idea/idea_coin', array(
+        $this->load->view('idea/coin', array(
             'idea_focus' => $ideas[0],
             'session_source' => $session_source,
         ));

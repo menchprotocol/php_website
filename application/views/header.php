@@ -226,7 +226,7 @@ if(!isset($hide_header)){
 
                             } elseif($read__type==6415) {
 
-                                //CLEAR READS
+                                //CLEAR DISCOVERIES
                                 $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')"';
 
                             } else {

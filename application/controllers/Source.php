@@ -18,7 +18,7 @@ class Source extends CI_Controller
         $this->load->view('header', array(
             'title' => 'Page Not Found',
         ));
-        $this->load->view('source/source_404');
+        $this->load->view('source/404');
         $this->load->view('footer');
     }
 
@@ -40,7 +40,7 @@ class Source extends CI_Controller
         $this->load->view('header', array(
             'title' => $sources__2738[4536]['m_name'],
         ));
-        $this->load->view('source/source_home', array(
+        $this->load->view('source/home', array(
             'session_source' => $session_source,
         ));
         $this->load->view('footer');
@@ -98,7 +98,7 @@ class Source extends CI_Controller
             'title' => $sources[0]['source__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('source/source_coin', array(
+        $this->load->view('source/coin', array(
             'source' => $sources[0],
             'session_source' => $session_source,
         ));
@@ -1552,7 +1552,7 @@ class Source extends CI_Controller
             'hide_header' => 1,
             'title' => $sources__11035[4269]['m_name'],
         ));
-        $this->load->view('source/source_signin', array(
+        $this->load->view('source/signin', array(
             'sign_idea__id' => $idea__id,
         ));
         $this->load->view('footer');
@@ -2172,7 +2172,7 @@ class Source extends CI_Controller
             $this->load->view('header', array(
                 'title' => $sources__11035[6287]['m_name'],
             ));
-            $this->load->view('source/source_plugin_home');
+            $this->load->view('source/plugin_home');
             $this->load->view('footer');
 
         } else {
@@ -2200,7 +2200,7 @@ class Source extends CI_Controller
             }
 
 
-            //This is also duplicated in source_plugin_frame to pass-on to plugin file:
+            //This is also duplicated in plugin_frame to pass-on to plugin file:
             $view_data = array(
                 'plugin_source__id' => $plugin_source__id,
                 'session_source' => $session_source,
@@ -2219,7 +2219,7 @@ class Source extends CI_Controller
                 $this->load->view('header', array(
                     'title' => strip_tags($sources__6287[$plugin_source__id]['m_icon']).$sources__6287[$plugin_source__id]['m_name'].' | PLUGIN',
                 ));
-                $this->load->view('source/source_plugin_frame', $view_data);
+                $this->load->view('source/plugin_frame', $view_data);
                 $this->load->view('footer');
 
             }

@@ -31,7 +31,7 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => $sources__11035[4341]['m_name'],
         ));
-        $this->load->view('read/read_interactions');
+        $this->load->view('read/x');
         $this->load->view('footer');
 
     }
@@ -62,7 +62,7 @@ class Read extends CI_Controller
 
         //Display filter:
         if($total_items_loaded > 0){
-            $message .= '<div class="montserrat read-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($reads_count[0]['total_count'] , 0) .' READS:</div>';
+            $message .= '<div class="montserrat read-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($reads_count[0]['total_count'] , 0) .' INTERACTIONS:</div>';
         }
 
 
@@ -570,7 +570,7 @@ class Read extends CI_Controller
         ));
 
         //Load specific view based on Idea Level:
-        $this->load->view('read/read_coin', array(
+        $this->load->view('read/coin', array(
             'idea_focus' => $ideas[0],
             'session_source' => $session_source,
         ));

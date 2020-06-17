@@ -50,7 +50,7 @@ if(count($current_sign_idea_attempt) == 0){
     var sign_idea__id = <?= $sign_idea__id ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
 </script>
-<script src="/application/views/source/source_signin.js?v=<?= config_var(11060) ?>"
+<script src="/application/views/source/signin.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 

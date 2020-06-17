@@ -1,5 +1,5 @@
 
-<script src="/application/views/idea/idea_home.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/read/home.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
     <?php

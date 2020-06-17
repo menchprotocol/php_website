@@ -218,7 +218,7 @@ $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
     var read__message_search = '<?= ( isset($_GET['read__message_search']) && strlen($_GET['read__message_search']) > 0 ? $_GET['read__message_search'] : '' ) ?>';
     var read__message_replace = '<?= ( isset($_GET['read__message_replace']) && strlen($_GET['read__message_replace']) > 0 ? $_GET['read__message_replace'] : '' ) ?>';
 </script>
-<script src="/application/views/read/read_interactions.js?v=<?= config_var(11060) ?>"
+<script src="/application/views/read/x.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php

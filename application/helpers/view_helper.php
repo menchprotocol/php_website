@@ -1419,7 +1419,6 @@ function view_source($source, $is_parent = false, $extra_class = null, $control_
     $is_source_only = ( $read__id > 0 && in_array($source['read__type'], $CI->config->item('sources_id_7551')));
     $inline_editing = $control_enabled && superpower_active(13354, true);
     $has_source_editor = superpower_active(10967, true);
-    $is_source_home = $CI->uri->segment(1) == '@';
 
     $source__profiles = $CI->READ_model->fetch(array(
         'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS

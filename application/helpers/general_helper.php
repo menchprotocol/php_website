@@ -451,7 +451,7 @@ function idea_fetch_cover($idea__id, $html_format = false){
 
 function idea__weight_calculator($idea){
 
-    //READS
+    //DISCOVERIES
     $CI =& get_instance();
 
     $count_reads = $CI->READ_model->fetch(array(
@@ -483,7 +483,7 @@ function idea__weight_calculator($idea){
 
 function source__weight_calculator($source){
 
-    //READS
+    //DISCOVERIES
     $CI =& get_instance();
 
     $count_reads = $CI->READ_model->fetch(array(
@@ -654,16 +654,17 @@ function current_mench(){
      * */
 
     $CI =& get_instance();
-    $first_letter = substr($CI->uri->segment(1), 0, 1);
+    $first_segment = $CI->uri->segment(1);
+    $first_letter = substr($first_segment, 0, 1);
 
-    if($first_letter=='@'){
+    if($first_letter=='@' || $first_segment=='source'){
 
         return array(
             'x_id' => 4536,
             'x_name' => 'source',
         );
 
-    } elseif(in_array($first_letter, array('i','g'))){
+    } elseif($first_letter=='~' || $first_segment=='idea'){
 
         return array(
             'x_id' => 4535,
@@ -785,7 +786,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
     } elseif($read__type==6255){
 
-        $order_columns = array('read__id' => 'DESC'); //LATEST READS
+        $order_columns = array('read__id' => 'DESC'); //LATEST DISCOVERIES
         $join_objects = array('read__left');
         $query_filters = array(
             'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC

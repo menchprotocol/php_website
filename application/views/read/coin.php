@@ -2,7 +2,7 @@
     var idea_loaded_id = <?= $idea_focus['idea__id'] ?>;
 </script>
 
-<script src="/application/views/read/read_coin.js?v=<?= config_var(11060) ?>"
+<script src="/application/views/read/coin.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <div class="container">
@@ -127,7 +127,7 @@ if($recipient_source['source__id']){
         }
 
 
-        //READS UI
+        //DISCOVERIES UI
         echo '<div class="hideIfEmpty focus_reads_top"></div>';
 
         //READ PROGRESS ONLY AT TOP LEVEL
@@ -137,7 +137,7 @@ if($recipient_source['source__id']){
 
     } elseif($is_home_page){
 
-        //MY READS
+        //MY DISCOVERIES
         $player_reads = $this->READ_model->fetch(array(
             'read__player' => $session_source['source__id'],
             'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
@@ -167,7 +167,7 @@ if($recipient_source['source__id']){
             //READ DELETE ALL (ACCESSIBLE VIA MAIN MENU)
             echo '<div class="clear-reads-list hidden margin-top-down">';
             echo '<div class="alert alert-danger" role="alert">';
-            echo '<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><b class="read montserrat">DELETE ALL READS?</b>';
+            echo '<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><b class="read montserrat">DELETE ALL DISCOVERIES?</b>';
             echo '<br /><span class="icon-block">&nbsp;</span>Action cannot be undone.';
             echo '</div>';
             echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="read_clear_all()" class="btn btn-read"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';

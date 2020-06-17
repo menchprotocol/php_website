@@ -17,7 +17,7 @@ $is_public = in_array($idea_focus['idea__status'], $this->config->item('sources_
     //Include some cached sources:
     var idea_loaded_id = <?= $idea_focus['idea__id'] ?>;
 </script>
-<script src="/application/views/idea/idea_coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/idea/coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <?php
 
