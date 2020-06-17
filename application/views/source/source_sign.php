@@ -71,10 +71,11 @@ if(count($current_sign_idea_attempt) == 0){
 
         if(count($sign_ideas)){
             echo '<p style="margin-top:13px;">To Read <a href="/'.$sign_idea__id.'" class="montserrat">'.$sign_ideas[0]['idea__title'].'</a>.</p>';
-            echo '<p style="margin-top:13px;">'.$sources__11035[4269]['m_desc'].'</p>';
         }
 
     }
+
+    echo '<p style="margin-top:13px;">'.$sources__11035[4269]['m_desc'].'</p>';
     ?>
 
 
