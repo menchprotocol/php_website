@@ -960,6 +960,9 @@ td.MENCHcolumn3  { width: 13%; }
     line-height: 100% !important;
     text-align: center;
 }
+.block-sign-link{
+    width:90px;
+}
 .block-menu:hover{
     background-color: #FFFFFF;
 }
@@ -1556,6 +1559,11 @@ label {
     .show-active-max {display: none !important;}
     .active .show-active-max {display: inline-block !important;}
     .show-min{display: block !important;}
+
+    .block-sign-link{
+        width:40px;
+    }
+
 }
 
 
