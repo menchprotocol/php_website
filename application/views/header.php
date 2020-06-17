@@ -139,7 +139,7 @@ if(!isset($hide_header)){
                                     $focus_idea__id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? $this->config->item('featured_idea__id') : 0 ) );
                                     if( $focus_idea__id>0 && idea_is_source($focus_idea__id) ){
                                         //Contribute to Idea
-                                        $m['m_desc'] = '/i'.$focus_idea__id;
+                                        $m['m_desc'] = '/~'.$focus_idea__id;
                                     } else {
                                         continue;
                                     }
@@ -250,7 +250,7 @@ if(!isset($hide_header)){
                         //echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$sources__11035[12899]['m_name'].'">'.$sources__11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-link block-sign-link"><a href="@s" class="montserrat"><span class="show-max">'.$sources__11035[4269]['m_name'].'&nbsp;</span>'.$sources__11035[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-link block-sign-link"><a href="/source/signin" class="montserrat"><span class="show-max">'.$sources__11035[4269]['m_name'].'&nbsp;</span>'.$sources__11035[4269]['m_icon'].'</a></td>';
 
                     }
 

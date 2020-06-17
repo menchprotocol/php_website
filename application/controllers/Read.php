@@ -413,7 +413,7 @@ class Read extends CI_Controller
 
 
 
-    function start_reading($idea__id){
+    function start($idea__id){
 
         //Adds Idea to the Players Reads
 
@@ -422,7 +422,7 @@ class Read extends CI_Controller
 
         //Check to see if added to Reads for logged-in users:
         if(!$session_source){
-            return redirect_message('/@s'.$idea__id);
+            return redirect_message('/source/signin/'.$idea__id);
         }
 
         //Add this Idea to their Reads If not already there:
@@ -449,7 +449,7 @@ class Read extends CI_Controller
 
         $session_source = superpower_assigned();
         if(!$session_source){
-            return redirect_message('/@s');
+            return redirect_message('/source/signin/');
         }
 
         if($idea__id > 0){
@@ -557,7 +557,7 @@ class Read extends CI_Controller
 
             if(superpower_assigned(10939)){
                 //Give them idea access:
-                return redirect_message('/i' . $idea__id);
+                return redirect_message('/~' . $idea__id);
             } else {
                 //Inform them not published:
                 return redirect_message('/', '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Cannot read this idea because it\'s not published yet.</div>');

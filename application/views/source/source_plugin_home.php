@@ -10,7 +10,7 @@ echo '<h1 style="padding-top:5px;"><span class="icon-block">'.view_source__icon(
 echo '<div class="list-group">';
 foreach($this->config->item('sources__6287') as $source__id => $m) {
 
-    echo '<a href="@p'.$source__id.'" class="list-group-item no-side-padding">';
+    echo '<a href="/source/plugin/'.$source__id.'" class="list-group-item no-side-padding">';
 
     //SOURCE
     echo '<span class="icon-block">' . view_source__icon($m['m_icon']) . '</span>';

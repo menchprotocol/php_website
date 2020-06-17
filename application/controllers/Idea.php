@@ -84,7 +84,7 @@ class Idea extends CI_Controller {
          *
          * */
         $idea_is_source = idea_is_source($idea__id);
-        return redirect_message(( $idea_is_source ? '/i' : '/' ) . $idea__id . ( $idea_is_source && isset($_GET['focus__source']) ? '?focus__source='.$_GET['focus__source'] : '' ) );
+        return redirect_message(( $idea_is_source ? '/~' : '/' ) . $idea__id . ( $idea_is_source && isset($_GET['focus__source']) ? '?focus__source='.$_GET['focus__source'] : '' ) );
     }
 
 
@@ -162,7 +162,7 @@ class Idea extends CI_Controller {
             'read__player' => $session_source['source__id'],
             'read__right' => $idea__id,
         )))){
-            return redirect_message('/i'.$idea__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
+            return redirect_message('/~'.$idea__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
 
         }
 
@@ -174,7 +174,7 @@ class Idea extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/i'.$idea__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>Successfully submitted your request to become a source for this idea. You will receive a confirmation once your request has been reviewed.</div>');
+        return redirect_message('/~'.$idea__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>Successfully submitted your request to become a source for this idea. You will receive a confirmation once your request has been reviewed.</div>');
 
     }
 
@@ -193,7 +193,7 @@ class Idea extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/i'.$idea__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY JOINED</div>');
+        return redirect_message('/~'.$idea__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY JOINED</div>');
 
     }
 
@@ -211,7 +211,7 @@ class Idea extends CI_Controller {
         ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $idea){
             if($action=='next'){
                 if($trigger_next){
-                    return redirect_message('/i' . $idea['idea__id'] );
+                    return redirect_message('/~' . $idea['idea__id'] );
                 }
                 if($idea['idea__id']==$current_idea__id){
                     $trigger_next = true;
@@ -219,7 +219,7 @@ class Idea extends CI_Controller {
             } elseif($action=='previous'){
                 if($idea['idea__id']==$current_idea__id){
                     if($track_previous > 0){
-                        return redirect_message('/i' . $track_previous );
+                        return redirect_message('/~' . $track_previous );
                     } else {
                         //First item:
                         break;
@@ -231,7 +231,7 @@ class Idea extends CI_Controller {
         }
 
         if($previous_idea__id > 0){
-            return redirect_message('/i' .$previous_idea__id );
+            return redirect_message('/~' .$previous_idea__id );
         } else {
             die('Could not find matching idea');
         }
@@ -321,14 +321,14 @@ class Idea extends CI_Controller {
                         //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
                         foreach($this->IDEA_model->recursive_parents($_POST['idea__id'], true, false) as $grand_parent_ids) {
                             foreach($grand_parent_ids as $previous_idea__id) {
-                                $deletion_redirect = '/i'.$previous_idea__id; //First parent in first branch of parents
+                                $deletion_redirect = '/~'.$previous_idea__id; //First parent in first branch of parents
                                 break;
                             }
                         }
 
                         //Go to main page if no parent found:
                         if(!$deletion_redirect){
-                            $deletion_redirect = ( intval($this->session->userdata('session_time_7260')) ? '/@p7260' : '/i' );
+                            $deletion_redirect = ( intval($this->session->userdata('session_time_7260')) ? '/source/plugin/7260' : '/~' );
                         }
 
                     } else {

@@ -406,7 +406,7 @@ function view_interaction($read, $is_parent_tr = false)
 
         //Metadata
         if(strlen($read['read__metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="@p12722?read__id=' . $read['read__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/source/plugin/12722?read__id=' . $read['read__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
         }
 
         //Order
@@ -458,7 +458,7 @@ function view_interaction($read, $is_parent_tr = false)
                 //IDEA
                 $ideas = $CI->IDEA_model->fetch(array('idea__id' => $read[$sources__6232[$source__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/!'.$ideas[0]['idea__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.$sources__2738[4535]['m_icon']. '&nbsp;'.view_idea__title($ideas[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/idea/go/'.$ideas[0]['idea__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$source__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$source__id]['m_icon']. '</span>'.$sources__2738[4535]['m_icon']. '&nbsp;'.view_idea__title($ideas[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
@@ -870,7 +870,7 @@ function view_idea($idea, $idea_linked_id = 0, $is_parent = false, $is_source = 
         $ui .= '<div class="block">';
 
             //IDAE Link:
-            $idea_link = '/!'.$idea['idea__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
+            $idea_link = '/idea/go/'.$idea['idea__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
 
             //IDEA ICON:
             $ui .= '<span class="icon-block"><a href="'.$idea_link.'" title="Idea Weight: '.number_format($idea['idea__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';

@@ -380,7 +380,7 @@ class READ_model extends CI_Model
 
                         //IDEA
                         $ideas = $this->IDEA_model->fetch(array( 'idea__id' => $add_fields[$sources__6232[$source__id]['m_desc']] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/!' . $ideas[0]['idea__id'] . '" target="_parent">#'.$ideas[0]['idea__id'].' '.$ideas[0]['idea__title'].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/idea/go/' . $ideas[0]['idea__id'] . '" target="_parent">#'.$ideas[0]['idea__id'].' '.$ideas[0]['idea__title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 
@@ -391,14 +391,14 @@ class READ_model extends CI_Model
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
                         //READ
-                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'/@p12722?read__id=' . $add_fields[$sources__6232[$source__id]['m_desc']] . '" target="_parent">'.$add_fields[$sources__6232[$source__id]['m_desc']].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'/source/plugin/12722?read__id=' . $add_fields[$sources__6232[$source__id]['m_desc']] . '" target="_parent">'.$add_fields[$sources__6232[$source__id]['m_desc']].'</a></div>';
 
                     }
 
                 }
 
                 //Finally append READ ID:
-                $html_message .= '<div>READ ID: <a href="'.$this->config->item('base_url').'/@p12722?read__id=' . $add_fields['read__id'] . '">' . $add_fields['read__id'] . '</a></div>';
+                $html_message .= '<div>READ ID: <a href="'.$this->config->item('base_url').'/source/plugin/12722?read__id=' . $add_fields['read__id'] . '">' . $add_fields['read__id'] . '</a></div>';
 
                 //Inform how to change settings:
                 $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'/@5967" target="_blank">@5967</a></div>';
@@ -822,20 +822,20 @@ class READ_model extends CI_Model
          * */
         $string_references = extract_source_references($message_input);
 
-        if(in_array($message_type_source__id, $this->config->item('sources_id_4986'))){
-            //IDEA NOTES 2X SOURCE REFERENCES ALLOWED
-            $min_source = 0;
-            $max_source = 2;
-        } elseif(in_array($message_type_source__id, $this->config->item('sources_id_7551'))){
-            //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
-            $min_source = 1;
-            $max_source = 1;
-        } else {
-            $min_source = 0;
-            $max_source = 0;
-        }
-
         if($strict_validation && $message_type_source__id > 0){
+
+            if(in_array($message_type_source__id, $this->config->item('sources_id_4986'))){
+                //IDEA NOTES 2X SOURCE REFERENCES ALLOWED
+                $min_source = 0;
+                $max_source = 2;
+            } elseif(in_array($message_type_source__id, $this->config->item('sources_id_7551'))){
+                //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
+                $min_source = 1;
+                $max_source = 1;
+            } else {
+                $min_source = 0;
+                $max_source = 0;
+            }
 
             /*
              *
@@ -920,10 +920,6 @@ class READ_model extends CI_Model
         );
 
         foreach($string_references['ref_sources'] as $referenced_source){
-
-            if($referenced_key==$max_source){
-                break;
-            }
 
             //We have a reference within this message, let's fetch it to better understand it:
             $sources = $this->SOURCE_model->fetch(array(

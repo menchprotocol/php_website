@@ -925,7 +925,7 @@ class Source extends CI_Controller
                         $delete_redirect_url = '/@' . $source__profiles[0]['source__id'];
                     } else {
                         //Is the plugin activated?
-                        $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/@p7269' : '/@' );
+                        $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/source/plugin/7269' : '/@' );
                     }
                 }
 
@@ -1535,13 +1535,13 @@ class Source extends CI_Controller
 
 
 
-    function sign($idea__id = 0){
+    function signin($idea__id = 0){
 
         //Check to see if they are previously logged in?
         if(superpower_assigned()) {
             //Lead player and above, go to console:
             if($idea__id > 0){
-                return redirect_message(( superpower_assigned(10939) ? '/!' : '/' ) . $idea__id);
+                return redirect_message(( superpower_assigned(10939) ? '/idea/go/' : '/' ) . $idea__id);
             } else {
                 return redirect_message('/');
             }
@@ -1552,7 +1552,7 @@ class Source extends CI_Controller
             'hide_header' => 1,
             'title' => $sources__11035[4269]['m_name'],
         ));
-        $this->load->view('source/source_sign', array(
+        $this->load->view('source/source_signin', array(
             'sign_idea__id' => $idea__id,
         ));
         $this->load->view('footer');
@@ -1731,7 +1731,7 @@ class Source extends CI_Controller
         if (strlen($_POST['referrer_url']) > 0) {
             $sign_url = urldecode($_POST['referrer_url']);
         } elseif(intval($_POST['sign_idea__id']) > 0) {
-            $sign_url = '/!'.$_POST['sign_idea__id'];
+            $sign_url = '/idea/go/'.$_POST['sign_idea__id'];
         } else {
             //Go to home page and let them continue from there:
             $sign_url = '/';
@@ -1771,11 +1771,11 @@ class Source extends CI_Controller
 
             if(( substr_count($sources[0]['source__icon'], 'class="') ?  : null )){
 
-                return redirect_message('/@p7267?search_for='.urlencode(one_two_explode('class="','"',$sources[0]['source__icon'])));
+                return redirect_message('/source/plugin/7267?search_for='.urlencode(one_two_explode('class="','"',$sources[0]['source__icon'])));
 
             } elseif(strlen($sources[0]['source__icon'])) {
 
-                return redirect_message('/@p7267?search_for=' . urlencode($sources[0]['source__icon']));
+                return redirect_message('/source/plugin/7267?search_for=' . urlencode($sources[0]['source__icon']));
 
             } else {
                 return view_json(array(
@@ -1874,7 +1874,7 @@ class Source extends CI_Controller
 
         if (intval($_POST['sign_idea__id']) > 0) {
 
-            $sign_url = '/j'.$_POST['sign_idea__id'];
+            $sign_url = '/read/start/'.$_POST['sign_idea__id'];
 
         } elseif (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
 
@@ -2070,7 +2070,7 @@ class Source extends CI_Controller
             return redirect_message('/');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/@s', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Missing Email</div>');
+            return redirect_message('/source/signin/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Missing Email</div>');
         }
 
         //Validate READ ID and matching email:
@@ -2081,10 +2081,10 @@ class Source extends CI_Controller
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('/@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Invalid data source</div>');
+            return redirect_message('//source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['read__time']) + config_var(11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Magic link has expired. Try again.</div>');
+            return redirect_message('//source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Magic link has expired. Try again.</div>');
         }
 
         //Fetch source:
@@ -2092,7 +2092,7 @@ class Source extends CI_Controller
             'source__id' => $validate_links[0]['read__player'],
         ));
         if(count($sources) < 1){
-            return redirect_message('/@s?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>User not found</div>');
+            return redirect_message('//source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>User not found</div>');
         }
 
         //Log them in:

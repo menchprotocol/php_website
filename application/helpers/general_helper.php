@@ -401,7 +401,7 @@ function source_count_connections($source__id, $return_html = true){
 
     //Plugin?
     if(superpower_active(12699, true) && in_array($source__id, $CI->config->item('sources_id_6287'))){
-        $source_count_connections[6287] = ( $return_html ? '<a href="@p'.$source__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
+        $source_count_connections[6287] = ( $return_html ? '<a href="/source/plugin/'.$source__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
     }
 
     return $source_count_connections;
@@ -927,7 +927,7 @@ function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
         if($has_session){
             $goto_url = '/@'.$session_source['source__id'];
         } else {
-            $goto_url = '/@s?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '//source/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:
@@ -1631,7 +1631,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 //See if this idea has a time-range:
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['idea__id']);
-                $export_row['object__url'] = '/!' . $db_row['idea__id'];
+                $export_row['object__url'] = '/idea/go/' . $db_row['idea__id'];
                 $export_row['object__status'] = intval($db_row['idea__status']);
                 $export_row['object__icon'] = idea_fetch_cover($db_row['idea__id']);
                 $export_row['object__title'] = $db_row['idea__title'];

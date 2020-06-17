@@ -70,7 +70,7 @@ if($search_for_is_set){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache('sources__4737' /* Idea Status */, $in['idea__status'], true, 'right').' <a href="/!'.$in['idea__id'].'">'.$in['idea__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache('sources__4737' /* Idea Status */, $in['idea__status'], true, 'right').' <a href="/idea/go/'.$in['idea__id'].'">'.$in['idea__title'].'</a></td>';
 
             if($replace_with_is_set){
 
@@ -89,7 +89,7 @@ if($search_for_is_set){
                     'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                     'read__right' => $in['idea__id'],
                 ), array('read__left')) as $idea_previous) {
-                    echo '<span class="next_idea_icon_' . $idea_previous['idea__id'] . '"><a href="/!' . $idea_previous['idea__id'] . '" data-toggle="tooltip" title="' . $idea_previous['idea__title'] . '" data-placement="bottom">' . $sources__7585[$idea_previous['idea__type']]['m_icon'] . '</a> &nbsp;</span>';
+                    echo '<span class="next_idea_icon_' . $idea_previous['idea__id'] . '"><a href="/idea/go/' . $idea_previous['idea__id'] . '" data-toggle="tooltip" title="' . $idea_previous['idea__title'] . '" data-placement="bottom">' . $sources__7585[$idea_previous['idea__type']]['m_icon'] . '</a> &nbsp;</span>';
                 }
 
                 echo '</td>';

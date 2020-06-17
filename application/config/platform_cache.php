@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-17 12:16:57 PST
+//Generated 2020-06-17 13:27:01 PST
 
 //EXPERT AUTHORS:
 $config['sources_id_13339'] = array(3084,2750);
@@ -51,7 +51,7 @@ $config['sources__13304'] = array(
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
-        'm_parents' => array(13304,13291,12896,11035,4527,13024,7305),
+        'm_parents' => array(13304,13291,11035,4527,13024,7305),
     ),
 );
 
@@ -126,7 +126,7 @@ $config['sources__13291'] = array(
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
-        'm_parents' => array(13304,13291,12896,11035,4527,13024,7305),
+        'm_parents' => array(13304,13291,11035,4527,13024,7305),
     ),
 );
 
@@ -899,7 +899,7 @@ $config['sources__12677'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
+        'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
@@ -1303,13 +1303,13 @@ $config['sources__10876'] = array(
     6287 => array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
         'm_name' => 'PLUGINS',
-        'm_desc' => 'https://mench.com/@p',
+        'm_desc' => 'https://mench.com/source/plugin',
         'm_parents' => array(13297,6405,6194,12699,12500,10876,11035,4527),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
-        'm_desc' => 'https://mench.com/@s',
+        'm_desc' => 'https://mench.com/source/signin',
         'm_parents' => array(10876,4527,11035),
     ),
     7291 => array(
@@ -2485,7 +2485,7 @@ $config['sources__11089'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
+        'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
@@ -3229,7 +3229,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(6225,4235,12969,12749,3084,13216,12707,12991,12211,10573,11068,4535,4341,4430,12205,6287,12750,12896,7256,13023,4269,7291,4536,4997,12275,13007,10957,7540);
+$config['sources_id_11035'] = array(6225,4235,12969,12749,3084,13216,12707,12991,12211,10573,11068,4535,4341,4430,12205,6287,12750,12896,7256,13023,4269,7291,13000,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3335,7 +3335,7 @@ $config['sources__11035'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
+        'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
@@ -3349,7 +3349,7 @@ $config['sources__11035'] = array(
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
-        'm_parents' => array(13304,13291,12896,11035,4527,13024,7305),
+        'm_parents' => array(13304,13291,11035,4527,13024,7305),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
@@ -3362,6 +3362,12 @@ $config['sources__11035'] = array(
         'm_name' => 'SIGNOUT',
         'm_desc' => '',
         'm_parents' => array(12500,10876,11035),
+    ),
+    13000 => array(
+        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_name' => 'SOCIAL IDEATION GAME',
+        'm_desc' => '',
+        'm_parents' => array(11035,7305),
     ),
     4536 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -3460,7 +3466,7 @@ $config['sources__11018'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
+        'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
@@ -4318,7 +4324,7 @@ $config['sources__4527'] = array(
     ),
     4986 => array(
         'm_icon' => '<i class="fad fa-at" aria-hidden="true"></i>',
-        'm_name' => 'IDEA NOTES 3X SOURCES ALLOWED',
+        'm_name' => 'IDEA NOTES 2X SOURCES ALLOWED',
         'm_desc' => '',
         'm_parents' => array(10889,4527),
     ),
@@ -4614,7 +4620,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
-        'm_parents' => array(13304,13291,12896,11035,4527,13024,7305),
+        'm_parents' => array(13304,13291,11035,4527,13024,7305),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
@@ -5653,7 +5659,7 @@ $config['sources__7551'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
+        'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
@@ -6197,7 +6203,7 @@ $config['sources__6150'] = array(
     ),
 );
 
-//IDEA NOTES 3X SOURCES ALLOWED:
+//IDEA NOTES 2X SOURCES ALLOWED:
 $config['sources_id_4986'] = array(12419,4231);
 $config['sources__4986'] = array(
     12419 => array(
@@ -6808,7 +6814,7 @@ $config['sources__4755'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
+        'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
@@ -6886,7 +6892,7 @@ $config['sources__4755'] = array(
     ),
     12906 => array(
         'm_icon' => '<i class="fal fa-bookmark read"></i>',
-        'm_name' => 'UNSAVED',
+        'm_name' => 'UNSAVE IDEA',
         'm_desc' => '',
         'm_parents' => array(12896,4755,4593),
     ),
@@ -7509,7 +7515,7 @@ $config['sources__4593'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
+        'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
@@ -7743,7 +7749,7 @@ $config['sources__4593'] = array(
     ),
     12906 => array(
         'm_icon' => '<i class="fal fa-bookmark read"></i>',
-        'm_name' => 'UNSAVED',
+        'm_name' => 'UNSAVE IDEA',
         'm_desc' => '',
         'm_parents' => array(12896,4755,4593),
     ),
@@ -7867,7 +7873,7 @@ $config['sources__4485'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark read"></i>',
-        'm_name' => 'SAVED',
+        'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),

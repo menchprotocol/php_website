@@ -416,7 +416,7 @@ if(!$in_my_reads){
     if(!$is_home_page){
 
         //GET STARTED
-        echo '<div class="margin-top-down read-add"><a class="btn btn-read" href="/j'.$idea_focus['idea__id'].'">'.$sources__11035[4235]['m_icon'].' '.$sources__11035[4235]['m_name'].'</a></div>';
+        echo '<div class="margin-top-down read-add"><a class="btn btn-read" href="/read/start/'.$idea_focus['idea__id'].'">'.$sources__11035[4235]['m_icon'].' '.$sources__11035[4235]['m_name'].'</a></div>';
 
     }
 
