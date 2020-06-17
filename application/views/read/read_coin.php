@@ -155,29 +155,14 @@ if($recipient_source['source__id']){
     if(count($player_reads)){
 
         echo '<div class="read-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>'.$sources__11035[12969]['m_name'].'</div>';
+
+
         echo '<div class="clear-reads-list">';
-
-        $all_completed = true;
-
-        echo '<div id="home_reads" class="cover-list" style="padding-top:21px; padding-left:34px;">';
-        foreach($player_reads as $idea) {
-            $completion_rate = $this->READ_model->completion_progress($session_source['source__id'], $idea);
-            echo view_idea_cover($idea, true, null, $completion_rate);
-            if($completion_rate['completion_percentage']!=100 && $all_completed){
-                $all_completed = false;
+            echo '<div id="home_reads" class="cover-list" style="padding-top:21px; padding-left:34px;">';
+            foreach($player_reads as $idea) {
+                echo view_idea_cover($idea, true);
             }
-        }
-        echo '</div>';
-
-        echo '<div class="doclear">&nbsp;</div>';
-
-
-        //NEXT
-        if(!$all_completed){
-            echo '<div class="inline-block margin-top-down pull-right"><a href="/read/next" class="btn btn-read btn-circle">'.$sources__11035[12211]['m_icon'].'</a></div>';
-        }
-
-
+            echo '</div>';
         echo '</div>';
 
 
@@ -215,7 +200,6 @@ if($recipient_source['source__id']){
         echo '</div>';
 
     }
-
 
 
 } else {
@@ -406,7 +390,7 @@ if($recipient_source['source__id']){
 if($is_home_page){
 
     //FEATURED
-    echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].'</div>';
+    echo '<div class="read-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].'</div>';
     echo '<div class="cover-list" style="padding:13px 0 33px 33px;">';
     foreach($ideas_next as $key => $next_idea){
         echo view_idea_cover($next_idea, false, idea_calc_common_prefix($ideas_next, 'idea__title'));
