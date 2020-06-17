@@ -2,6 +2,7 @@
 
 $session_source = superpower_assigned();
 $first_segment = $this->uri->segment(1);
+$is_home = !strlen($first_segment);
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $sources__2738 = $this->config->item('sources__2738');
 $current_mench = current_mench();
@@ -134,18 +135,6 @@ if(!isset($hide_header)){
 
                                 $class = extract_icon_color($m['m_icon']);
 
-                                if($m['source__id']==12749) {
-
-                                    $focus_idea__id = ( is_numeric($first_segment) ? $first_segment : ( !$first_segment ? $this->config->item('featured_idea__id') : 0 ) );
-                                    if( $focus_idea__id>0 && idea_is_source($focus_idea__id) ){
-                                        //Contribute to Idea
-                                        $m['m_desc'] = '/~'.$focus_idea__id;
-                                    } else {
-                                        continue;
-                                    }
-
-                                }
-
                                 //Apply superpower to Mench actions only
                                 $superpower_actives = ( in_array($m['source__id'], $this->config->item('sources_id_2738')) ? array_intersect($this->config->item('sources_id_10957'), $m['m_parents']) : array());
 
@@ -195,8 +184,11 @@ if(!isset($hide_header)){
                             //Skip superpowers if not assigned
                             if($read__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
                                 continue;
-                            } elseif($read__type==6415 && !($first_segment=='r')){
+                            } elseif($read__type==6415 && !$is_home){
                                 //Deleting reads only available on Reads home
+                                continue;
+                            } elseif($read__type==12749 && !$is_home && !is_numeric($first_segment)){
+                                //Not an editable discovery
                                 continue;
                             }
 
@@ -204,9 +196,14 @@ if(!isset($hide_header)){
                             $extra_class = null;
                             $text_class = null;
 
-                            //Fetch URL:
-                            if(in_array($read__type, $this->config->item('sources_id_10876'))){
+                            if($read__type==12749) {
 
+                                //Map Idea
+                                $page_url = 'href="/~'.( $is_home ? $this->config->item('featured_idea__id') : $first_segment ).'"';
+
+                            } elseif(in_array($read__type, $this->config->item('sources_id_10876'))){
+
+                                //Fetch URL:
                                 $page_url = 'href="'.$sources__10876[$read__type]['m_desc'].'"';
 
                             } elseif($read__type==12205) {
