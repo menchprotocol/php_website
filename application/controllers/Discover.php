@@ -445,10 +445,10 @@ class Discover extends CI_Controller
         if(!$in_my_reads){
             $i__id_added = $this->DISCOVER_model->start($session_source['e__id'], $i__id);
             if($i__id_added){
-                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>Successfully added to your '.$sources__11035[12969]['m_name'].'. Continue below.</div>';
+                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>Successfully added to your '.$sources__11035[12969]['m_name'].'. Continue below:</div>';
             } else {
                 //Failed to add to Discovery:
-                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>FAILED to add to your '.$sources__11035[12969]['m_name'].'.</div>');
+                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>FAILED to add to '.$sources__11035[12969]['m_name'].'.</div>');
             }
         }
 
