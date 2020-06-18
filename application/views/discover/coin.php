@@ -10,7 +10,7 @@
 <?php
 
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
-$sources__12467 = $this->config->item('sources__12467'); //MENCH COINS
+$sources__13291 = $this->config->item('sources__13291'); //DISCOVER TABS
 $idea_type_meet_requirement = in_array($idea_focus['i__type'], $this->config->item('sources_id_7309'));
 $recipient_source = superpower_assigned();
 if(!isset($recipient_source['e__id']) ){
@@ -184,7 +184,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==12273 && ( $idea_stats['ideas_average']>$chapters || (!$in_my_reads && ($idea_stats['ideas_average']>0 || $chapters>0)))){
+    } elseif($x__type==13359 && ( $idea_stats['ideas_average']>$chapters || (!$in_my_reads && ($idea_stats['ideas_average']>0 || $chapters>0)))){
 
         //IDEAS
         $counter = $idea_stats['ideas_average'];
@@ -193,9 +193,9 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
             $this_tab .= '<p class="space-content">The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:</p>';
             $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-            $this_tab .= '<span class="reading-paths">Minimum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
-            $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
-            $this_tab .= '<span class="reading-paths">Maximum:</span>'.$sources__12467[12273]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
+            $this_tab .= '<span class="reading-paths">Minimum:</span>'.$sources__13291[13359]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
+            $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__13291[13359]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
+            $this_tab .= '<span class="reading-paths">Maximum:</span>'.$sources__13291[13359]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
             $this_tab .= '</p>';
         }
 
