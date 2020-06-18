@@ -1521,6 +1521,8 @@ label {
 .list-radio-select .list-group-item.active {
     color:#000000 !important;
 }
+.show-active-max {display: none !important;}
+.active .show-active-max {display: inline-block !important;}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
@@ -1558,8 +1560,6 @@ label {
     }
 
     .show-max{display: none !important;}
-    .show-active-max {display: none !important;}
-    .active .show-active-max {display: inline-block !important;}
     .show-min{display: block !important;}
 
     .mench-navigation .block-sign-link{
