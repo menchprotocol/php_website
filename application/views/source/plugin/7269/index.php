@@ -4,8 +4,8 @@
 $this->session->set_userdata('session_time_7269', time());
 
 $source_orphans = $this->SOURCE_model->fetch(array(
-    ' NOT EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
-    'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+    ' NOT EXISTS (SELECT 1 FROM mench__x WHERE e__id=x__down AND x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND x__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
+    'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
 ));
 
 if(count($source_orphans) > 0){

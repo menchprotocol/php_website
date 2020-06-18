@@ -5,35 +5,35 @@ $all_children = 0;
 $updated = 0;
 $session_source = superpower_assigned();
 
-foreach($this->IDEA_model->fetch(array(
-    'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-    'idea__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
-), 0, 0, array('idea__id' => 'DESC')) as $count => $in) {
+foreach($this->MAP_model->fetch(array(
+    'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
+), 0, 0, array('i__id' => 'DESC')) as $count => $in) {
 
-    echo '<div>'.($count+1).')<span class="icon-block">'.view_cache('sources__6193' /* OR Ideas */, $in['idea__type']).'</span><a href="/idea/go/'.$in['idea__id'].'">'.view_idea__title($in).'</a></div>';
+    echo '<div>'.($count+1).')<span class="icon-block">'.view_cache('sources__6193' /* OR Ideas */, $in['i__type']).'</span><a href="/map/i_go/'.$in['i__id'].'">'.view_i__title($in).'</a></div>';
 
     echo '<ul style="list-style: decimal;">';
     //Fetch all children for this OR:
-    foreach($this->READ_model->fetch(array(
-        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-        'read__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-        'read__left' => $in['idea__id'],
-    ), array('read__right'), 0, 0, array('read__sort' => 'ASC')) as $child_or){
+    foreach($this->DISCOVER_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__left' => $in['i__id'],
+    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $child_or){
 
-        $read_coins = $this->READ_model->fetch(array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null,
-            'read__left' => $child_or['idea__id'],
-        ), array(), 1, 0, array(), 'COUNT(read__id) as totals');
+        $x_coins = $this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null,
+            'x__left' => $child_or['i__id'],
+        ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
 
 
         $all_children++;
 
         echo '<li>';
-        echo '<span class="icon-block">'.view_cache('sources__7585', $child_or['idea__type']).'</span>';
-        echo '<a href="/idea/go/'.$child_or['idea__id'].'">'.view_idea__title($child_or).'</a>';
-        echo ( $read_coins[0]['totals'] > 0 ? ' <span class="read montserrat"><i class="fas fa-circle read"></i> '.$read_coins[0]['totals'].'</span>' : '' );
+        echo '<span class="icon-block">'.view_cache('sources__7585', $child_or['i__type']).'</span>';
+        echo '<a href="/map/i_go/'.$child_or['i__id'].'">'.view_i__title($child_or).'</a>';
+        echo ( $x_coins[0]['totals'] > 0 ? ' <span class="read montserrat"><i class="fas fa-circle read"></i> '.$x_coins[0]['totals'].'</span>' : '' );
         echo '</li>';
 
     }
@@ -41,5 +41,5 @@ foreach($this->IDEA_model->fetch(array(
     echo '<hr />';
 }
 
-echo 'READ: '.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
+echo 'DISCOVER: '.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
 

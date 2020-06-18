@@ -4,11 +4,11 @@ $(document).ready(function () {
 
     idea_note_activate();
 
-    autosize($('#read_text_answer'));
+    autosize($('#x_respond'));
 
     //Watchout for file uplods:
     $('.boxUpload').find('input[type="file"]').change(function () {
-        read_file_upload(droppedFiles, 'file');
+        x_upload(droppedFiles, 'file');
     });
 
     //Move main reads, if any:
@@ -24,30 +24,30 @@ $(document).ready(function () {
             e.preventDefault();
             e.stopPropagation();
         })
-            .on('dragover dragenter', function () {
-                $('.playerUploader').addClass('is-working');
-            })
-            .on('dragleave dragend drop', function () {
-                $('.playerUploader').removeClass('is-working');
-            })
-            .on('drop', function (e) {
-                droppedFiles = e.originalEvent.dataTransfer.files;
-                e.preventDefault();
-                read_file_upload(droppedFiles, 'drop');
-            });
+        .on('dragover dragenter', function () {
+            $('.playerUploader').addClass('is-working');
+        })
+        .on('dragleave dragend drop', function () {
+            $('.playerUploader').removeClass('is-working');
+        })
+        .on('drop', function (e) {
+            droppedFiles = e.originalEvent.dataTransfer.files;
+            e.preventDefault();
+            x_upload(droppedFiles, 'drop');
+        });
     }
 
 });
 
 
-function select_answer(idea__id){
+function select_answer(i__id){
 
     //Allow answer to be saved/updated:
-    var idea__type = parseInt($('.list-answers').attr('idea__type'));
-    var current_status = parseInt($('.read_answer_'+idea__id).attr('is-selected'));
+    var i__type = parseInt($('.list-answers').attr('i__type'));
+    var current_status = parseInt($('.x_answer_'+i__id).attr('is-selected'));
 
     //Clear all if single selection:
-    if(idea__type == 6684){
+    if(i__type == 6684){
         //Single Selection, clear all:
         $('.answer-item').attr('is-selected', 0);
         $('.check-icon i').removeClass('fas').addClass('far');
@@ -56,24 +56,24 @@ function select_answer(idea__id){
     if(current_status==1){
 
         //Previously Selected, delete selection:
-        if(idea__type == 7231){
+        if(i__type == 7231){
             //Multi Selection
-            $('.read_answer_'+idea__id).attr('is-selected', 0);
-            $('.read_answer_'+idea__id+' .check-icon i').removeClass('fas').addClass('far');
+            $('.x_answer_'+i__id).attr('is-selected', 0);
+            $('.x_answer_'+i__id+' .check-icon i').removeClass('fas').addClass('far');
         }
 
     } else if(current_status==0){
 
         //Previously Selected, delete selection:
-        $('.read_answer_'+idea__id).attr('is-selected', 1);
-        $('.read_answer_'+idea__id+' .check-icon i').removeClass('far').addClass('fas');
+        $('.x_answer_'+i__id).attr('is-selected', 1);
+        $('.x_answer_'+i__id+' .check-icon i').removeClass('far').addClass('fas');
 
     }
 
 }
 
 
-function read_file_upload(droppedFiles, uploadType) {
+function x_upload(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
     if ($('.boxUpload').hasClass('is-uploading')) {
@@ -96,10 +96,10 @@ function read_file_upload(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('idea__id', idea_loaded_id);
+        ajaxData.append('i__id', idea_loaded_id);
 
         $.ajax({
-            url: '/read/read_file_upload',
+            url: '/discover/x_upload',
             type: $('.boxUpload').attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -123,21 +123,22 @@ function read_file_upload(droppedFiles, uploadType) {
     } else {
         // ajax for legacy browsers
     }
+
 }
 
 
-function read_text_answer(){
+function x_respond(){
     //Show Loading:
     $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    $.post("/read/read_text_answer", {
-        idea__id:idea_loaded_id,
-        read_text_answer:$('#read_text_answer').val(),
+    $.post("/discover/x_respond", {
+        i__id:idea_loaded_id,
+        x_respond:$('#x_respond').val(),
     }, function (data) {
         if (data.status) {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/read/next/'+idea_loaded_id;
+                window.location = '/discover/x_next/'+idea_loaded_id;
             }, 987);
         } else {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><span class="read montserrat">'+data.message+'</span>');
@@ -145,7 +146,7 @@ function read_text_answer(){
     });
 }
 
-function read_answer(){
+function x_answer(){
 
     //Check
     var answered_ideas = [];
@@ -157,7 +158,7 @@ function read_answer(){
 
     //Show Loading:
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    $.post("/read/read_answer", {
+    $.post("/discover/x_answer", {
         idea_loaded_id:idea_loaded_id,
         answered_ideas:answered_ideas
     }, function (data) {
@@ -165,7 +166,7 @@ function read_answer(){
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/read/next/'+idea_loaded_id;
+                window.location = '/discover/x_next/'+idea_loaded_id;
             }, 987);
         } else {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><span class="read montserrat">'+data.message+'</span>');

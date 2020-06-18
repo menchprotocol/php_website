@@ -13,14 +13,14 @@ foreach($this->SOURCE_model->fetch() as $en) {
 
     $stats['source']++;
 
-    $is_player = count($this->READ_model->fetch(array(
-        'read__up' => 4430, //MENCH PLAYERS
-        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-        'read__down' => $en['source__id'],
-        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    $is_player = count($this->DISCOVER_model->fetch(array(
+        'x__up' => 4430, //MENCH PLAYERS
+        'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'x__down' => $en['e__id'],
+        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     ), array(), 1));
-    $is_read = count($this->READ_model->fetch(array(
-        'read__player' => $en['source__id'],
+    $is_read = count($this->DISCOVER_model->fetch(array(
+        'x__player' => $en['e__id'],
     ), array(), 1));
 
     if($is_player){
@@ -35,11 +35,11 @@ foreach($this->SOURCE_model->fetch() as $en) {
     }
     if($is_read && !$is_player){
         $stats['read_not_source_count']++;
-        $this->READ_model->create(array(
-            'read__type' => source_link_type(),
-            'read__up' => 4430, //MENCH PLAYERS
-            'read__player' => $en['source__id'],
-            'read__down' => $en['source__id'],
+        $this->DISCOVER_model->create(array(
+            'x__type' => source_link_type(),
+            'x__up' => 4430, //MENCH PLAYERS
+            'x__player' => $en['e__id'],
+            'x__down' => $en['e__id'],
         ));
     }
 

@@ -16,7 +16,7 @@ $(document).ready(function () {
             if(step_count==2){
                 search_email();
             } else if(step_count==3){
-                sign_check_password();
+                e_signin_password();
             } else if(step_count==4){
                 add_account();
             }
@@ -51,10 +51,10 @@ function search_email(){
     $('#custom_message').html(''); //Delete previous errors, if any
 
     //Check email and validate:
-    $.post("/source/sign_check_email", {
+    $.post("/source/e_signin_email", {
 
         input_email: $('#input_email').val(),
-        sign_idea__id: sign_idea__id,
+        sign_i__id: sign_i__id,
 
     }, function (data) {
 
@@ -66,7 +66,7 @@ function search_email(){
         if (data.status) {
 
             //Update source id IF existed previously:
-            $('#sign_source__id').val(data.sign_source__id);
+            $('#sign_e__id').val(data.sign_e__id);
 
             //Update email:
             $('#input_email').val(data.clean_input_email);
@@ -98,12 +98,12 @@ function add_account(){
     $('#input_name, #new_password').prop('disabled', true).css('background-color','#f0f0f0');
 
     //Check email and validate:
-    $.post("/source/sign_create_account", {
+    $.post("/source/e_signin_create", {
         input_email: $('#input_email').val(),
         input_name: $('#input_name').val(),
         new_password: $('#new_password').val(),
         referrer_url: referrer_url,
-        sign_idea__id: sign_idea__id,
+        sign_i__id: sign_i__id,
     }, function (data) {
 
         if (data.status) {
@@ -139,7 +139,7 @@ function add_account(){
 }
 
 var password_is_checking = false;
-function sign_check_password(){
+function e_signin_password(){
 
     if(password_is_checking){
         return false;
@@ -151,11 +151,11 @@ function sign_check_password(){
     $('#input_password').prop('disabled', true).css('background-color','#f0f0f0');
 
     //Check email and validate:
-    $.post("/source/sign_check_password", {
-        sign_source__id: $('#sign_source__id').val(),
+    $.post("/source/e_signin_password", {
+        sign_e__id: $('#sign_e__id').val(),
         input_password: $('#input_password').val(),
         referrer_url: referrer_url,
-        sign_idea__id: sign_idea__id,
+        sign_i__id: sign_i__id,
     }, function (data) {
 
         if (data.status) {
@@ -182,7 +182,7 @@ function sign_check_password(){
 
 }
 
-function magicemail(){
+function e_magic_email(){
     var r = confirm("Email login URL to "+$('#input_email').val()+"?");
     if (r == true) {
 
@@ -191,9 +191,9 @@ function magicemail(){
         $('.magic_result').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Sending Email...</div>');
 
         //Check email and validate:
-        $.post("/source/magicemail", {
+        $.post("/source/e_magic_email", {
             input_email: $('#input_email').val(),
-            sign_idea__id: sign_idea__id,
+            sign_i__id: sign_i__id,
         }, function (data) {
             if (data.status) {
                 //All good, they can close window:

@@ -1,8 +1,8 @@
 <?php
 
-if(!isset($_GET['read__id']) || !intval($_GET['read__id'])){
+if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
 
-    echo 'Missing Read ID (Append ?read__id=READ_ID in URL)';
+    echo 'Missing DISCOVER ID (Append ?x__id=INTERACTION_ID in URL)';
 
 } else {
 
@@ -10,8 +10,8 @@ if(!isset($_GET['read__id']) || !intval($_GET['read__id'])){
 
 
     //Fetch link metadata and display it:
-    $reads = $this->READ_model->fetch(array(
-        'read__id' => $_GET['read__id'],
+    $reads = $this->DISCOVER_model->fetch(array(
+        'x__id' => $_GET['x__id'],
     ));
 
     if (count($reads) < 1) {
@@ -25,8 +25,8 @@ if(!isset($_GET['read__id']) || !intval($_GET['read__id'])){
     } else {
 
         //unserialize metadata if needed:
-        if(strlen($reads[0]['read__metadata']) > 0){
-            $reads[0]['read__metadata'] = unserialize($reads[0]['read__metadata']);
+        if(strlen($reads[0]['x__metadata']) > 0){
+            $reads[0]['x__metadata'] = unserialize($reads[0]['x__metadata']);
         }
 
         //Print on scree:

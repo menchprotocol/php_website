@@ -5,14 +5,14 @@
 
 $(document).ready(function () {
 
-    //Watch for Reads removal click:
-    $('.read_remove_item').on('click', function(e) {
+    //Watch for Discovery removal click:
+    $('.x_remove').on('click', function(e) {
 
-        var idea__id = $(this).attr('idea__id');
-        var r = confirm("Remove ["+$('.text__4736_'+idea__id).text()+"] from your Reads?");
+        var i__id = $(this).attr('i__id');
+        var r = confirm("Remove "+$('.text__4736_'+i__id).text()+"?");
         if (r == true) {
             //Save changes:
-            $.post("/read/read_remove_item", { js_pl_id:js_pl_id ,idea__id:idea__id }, function (data) {
+            $.post("/discover/x_remove", { js_pl_id:js_pl_id ,i__id:i__id }, function (data) {
                 //Update UI to confirm with user:
                 if (!data.status) {
 
@@ -22,16 +22,16 @@ $(document).ready(function () {
                 } else {
 
                     //REMOVE BOOKMARK from UI:
-                    $('#ap_idea_'+idea__id).fadeOut();
+                    $('#ap_idea_'+i__id).fadeOut();
 
                     setTimeout(function () {
 
                         //Delete from body:
-                        $('#ap_idea_'+idea__id).remove();
+                        $('#ap_idea_'+i__id).remove();
 
                         //Re-sort:
                         setTimeout(function () {
-                            read_sort_save();
+                            x_sort();
                         }, 89);
 
                     }, 233);
@@ -43,13 +43,12 @@ $(document).ready(function () {
 
     });
 
-
 });
 
 
 
 
-function read_sort_save() {
+function x_sort() {
 
     var sort_rank = 0;
     var new_read_order = [];
@@ -61,9 +60,9 @@ function read_sort_save() {
         }
     });
 
-    //Update Reads order:
+    //Update order:
     if(sort_rank > 0){
-        $.post("/read/read_sort_save", {js_pl_id: js_pl_id, new_read_order: new_read_order}, function (data) {
+        $.post("/discover/x_sort", {js_pl_id: js_pl_id, new_read_order: new_read_order}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -71,6 +70,7 @@ function read_sort_save() {
             }
         });
     }
+
 }
 
 
@@ -79,7 +79,7 @@ function read_clear_all(){
     $('.clear-reads-list').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL...</b>');
 
     //Redirect:
-    window.location = '/read/read_coins_remove_all';
+    window.location = '/discover/x_clear_coins';
 
 }
 
@@ -91,7 +91,7 @@ function read_sort_load(){
         draggable: ".home_sort", // Specifies which items inside the element should be sortable
         handle: ".fa-bars", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            read_sort_save();
+            x_sort();
         }
     });
 }

@@ -1,30 +1,30 @@
 <?php
 
-if(!isset($_GET['source__id']) || !intval($_GET['source__id'])){
-    $_GET['source__id'] = $session_source['source__id'];
+if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
+    $_GET['e__id'] = $session_source['e__id'];
 }
 
-if(!isset($_GET['idea__id']) || !intval($_GET['idea__id'])) {
+if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     //List this users Reads ideas so they can choose:
     echo '<div>Choose one of your Reads reads to debug:</div><br />';
 
-    $player_reads = $this->READ_model->fetch(array(
-        'read__player' => $_GET['source__id'],
-        'read__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
-        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-    ), array('read__left'), 0, 0, array('read__sort' => 'ASC'));
+    $player_reads = $this->DISCOVER_model->fetch(array(
+        'x__player' => $_GET['e__id'],
+        'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+    ), array('x__left'), 0, 0, array('x__sort' => 'ASC'));
 
     foreach($player_reads as $priority => $read) {
-        echo '<div>' . ($priority + 1) . ') <a href="?idea__id=' . $read['idea__id'] . '&source__id=' . $_GET['source__id'] . '">' . view_idea__title($read) . '</a></div>';
+        echo '<div>' . ($priority + 1) . ') <a href="?i__id=' . $read['i__id'] . '&e__id=' . $_GET['e__id'] . '">' . view_i__title($read) . '</a></div>';
     }
 
 } else {
 
-    $ideas = $this->IDEA_model->fetch(array(
-        'idea__id' => $_GET['idea__id'],
-        'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+    $ideas = $this->MAP_model->fetch(array(
+        'i__id' => $_GET['i__id'],
+        'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
     ));
 
     if(count($ideas) < 1){
@@ -36,13 +36,13 @@ if(!isset($_GET['idea__id']) || !intval($_GET['idea__id'])) {
         //List the idea:
         view_json(array(
             'idea_general' => array(
-                'idea_recursive_parents' => $this->IDEA_model->recursive_parents($ideas[0]['idea__id']),
-                'idea___common_base' => $this->IDEA_model->metadata_common_base($ideas[0]),
+                'idea_recursive_parents' => $this->MAP_model->recursive_parents($ideas[0]['i__id']),
+                'i___common_base' => $this->MAP_model->metadata_common_base($ideas[0]),
             ),
             'idea_user' => array(
-                'read_find_next' => $this->READ_model->find_next($_GET['source__id'], $ideas[0], 0, false),
-                'read_completion_progress' => $this->READ_model->completion_progress($_GET['source__id'], $ideas[0]),
-                'read_completion_marks' => $this->READ_model->completion_marks($_GET['source__id'], $ideas[0]),
+                'read_find_next' => $this->DISCOVER_model->find_next($_GET['e__id'], $ideas[0], 0, false),
+                'read_completion_progress' => $this->DISCOVER_model->completion_progress($_GET['e__id'], $ideas[0]),
+                'read_completion_marks' => $this->DISCOVER_model->completion_marks($_GET['e__id'], $ideas[0]),
             ),
         ));
 

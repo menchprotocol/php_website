@@ -8,12 +8,12 @@
  * */
 
 //First first all sources that have Cache in PHP Config @4527 as their parent:
-$config_sources = $this->READ_model->fetch(array(
-    'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-    'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-    'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-    'read__up' => 4527,
-), array('read__down'), 0);
+$config_sources = $this->DISCOVER_model->fetch(array(
+    'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+    'x__up' => 4527,
+), array('x__down'), 0);
 
 echo htmlentities('<?php').'<br /><br />';
 echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br /><br />';
@@ -33,49 +33,49 @@ echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
 foreach($config_sources as $en){
 
     //Now fetch all its children:
-    $children = $this->READ_model->fetch(array(
-        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-        'read__up' => $en['read__down'],
-        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-    ), array('read__down'), 0, 0, array('read__sort' => 'ASC', 'source__title' => 'ASC'));
+    $children = $this->DISCOVER_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+        'x__up' => $en['x__down'],
+        'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+    ), array('x__down'), 0, 0, array('x__sort' => 'ASC', 'e__title' => 'ASC'));
 
 
     //Find common base, if allowed:
-    $common_prefix = ( in_array($en['read__down'], $this->config->item('sources_id_12588')) ? null : idea_calc_common_prefix($children, 'source__title') );
+    $common_prefix = ( in_array($en['x__down'], $this->config->item('sources_id_12588')) ? null : idea_calc_common_prefix($children, 'e__title') );
 
     //Generate raw IDs:
     $child_ids = array();
     foreach($children as $child){
-        array_push($child_ids , $child['source__id']);
+        array_push($child_ids , $child['e__id']);
     }
 
-    echo '<br />//'.$en['source__title'].':<br />';
-    echo '$config[\'sources_id_'.$en['read__down'].'\'] = array('.join(',',$child_ids).');<br />';
-    echo '$config[\'sources__'.$en['read__down'].'\'] = array(<br />';
+    echo '<br />//'.$en['e__title'].':<br />';
+    echo '$config[\'sources_id_'.$en['x__down'].'\'] = array('.join(',',$child_ids).');<br />';
+    echo '$config[\'sources__'.$en['x__down'].'\'] = array(<br />';
     foreach($children as $child){
 
         //Do we have an omit command?
         if(strlen($common_prefix) > 0){
-            $child['source__title'] = trim(substr($child['source__title'], strlen($common_prefix)));
+            $child['e__title'] = trim(substr($child['e__title'], strlen($common_prefix)));
         }
 
         //Fetch all parents for this child:
         $child_parent_ids = array(); //To be populated soon
-        $child_parents = $this->READ_model->fetch(array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-            'read__down' => $child['source__id'],
-            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-        ), array('read__up'), 0);
+        $child_parents = $this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+            'x__down' => $child['e__id'],
+            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        ), array('x__up'), 0);
         foreach($child_parents as $cp_en){
-            array_push($child_parent_ids, intval($cp_en['source__id']));
+            array_push($child_parent_ids, intval($cp_en['e__id']));
         }
 
-        echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['source__id'].' => array(<br />';
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['source__icon']).'\',<br />';
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_name\' => \''.htmlentities(str_replace('\'','\\\'',$child['source__title'])).'\',<br />';
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.htmlentities(str_replace('\'','\\\'',$child['read__message'])).'\',<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['e__id'].' => array(<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['e__icon']).'\',<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_name\' => \''.htmlentities(str_replace('\'','\\\'',$child['e__title'])).'\',<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.htmlentities(str_replace('\'','\\\'',$child['x__message'])).'\',<br />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_parents\' => array('.join(',',$child_parent_ids).'),<br />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp; ),<br />';
 

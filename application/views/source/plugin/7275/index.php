@@ -8,15 +8,15 @@
 
 $start_time = time();
 $filters = array(
-    'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+    'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
 );
-if(isset($_GET['idea__id'])){
-    $filters['idea__id'] = intval($_GET['idea__id']);
+if(isset($_GET['i__id'])){
+    $filters['i__id'] = intval($_GET['i__id']);
 }
 
-$published_ideas = $this->IDEA_model->fetch($filters);
+$published_ideas = $this->MAP_model->fetch($filters);
 foreach($published_ideas as $published_in){
-    $idea = $this->IDEA_model->metadata_common_base($published_in);
+    $idea = $this->MAP_model->metadata_common_base($published_in);
 }
 
 $total_time = time() - $start_time;

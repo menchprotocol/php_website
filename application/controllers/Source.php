@@ -13,15 +13,6 @@ class Source extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function source_404()
-    {
-        $this->load->view('header', array(
-            'title' => 'Page Not Found',
-        ));
-        $this->load->view('source/404');
-        $this->load->view('footer');
-    }
-
 
     function index()
     {
@@ -30,9 +21,9 @@ class Source extends CI_Controller
 
         //Log View:
         if($session_source){
-            $this->READ_model->create(array(
-                'read__type' => 12489, //Opened Leaderboard
-                'read__player' => $session_source['source__id'],
+            $this->DISCOVER_model->create(array(
+                'x__type' => 12489, //Opened Leaderboard
+                'x__player' => $session_source['e__id'],
             ));
         }
 
@@ -46,23 +37,31 @@ class Source extends CI_Controller
         $this->load->view('footer');
     }
 
+    function e_404()
+    {
+        $this->load->view('header', array(
+            'title' => 'Page Not Found',
+        ));
+        $this->load->view('source/404');
+        $this->load->view('footer');
+    }
 
     //Lists sources
-    function source_coin($source__id)
+    function e_coin($e__id)
     {
 
         //Make sure not a private read:
-        if(in_array($source__id, $this->config->item('sources_id_4755'))){
+        if(in_array($e__id, $this->config->item('sources_id_4755'))){
             $session_source = superpower_assigned(12701, true);
         } else {
             $session_source = superpower_assigned();
         }
 
         //Do we have any mass action to process here?
-        if (superpower_assigned(12703) && isset($_POST['mass_action_source__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_source__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_source__id']])) {
+        if (superpower_assigned(12703) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->SOURCE_model->mass_update($source__id, intval($_POST['mass_action_source__id']), $_POST['mass_value1_'.$_POST['mass_action_source__id']], $_POST['mass_value2_'.$_POST['mass_action_source__id']], $session_source['source__id']);
+            $process_mass_action = $this->SOURCE_model->mass_update($e__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_source['e__id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>';
@@ -75,18 +74,18 @@ class Source extends CI_Controller
 
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
-            $this->READ_model->create(array(
-                'read__player' => $session_source['source__id'],
-                'read__type' => 4994, //Player Opened Player
-                'read__down' => $source__id,
-                'read__sort' => $new_order,
+            $this->DISCOVER_model->create(array(
+                'x__player' => $session_source['e__id'],
+                'x__type' => 4994, //Player Opened Player
+                'x__down' => $e__id,
+                'x__sort' => $new_order,
             ));
 
         }
 
         //Validate source ID and fetch data:
         $sources = $this->SOURCE_model->fetch(array(
-            'source__id' => $source__id,
+            'e__id' => $e__id,
         ));
 
         if (count($sources) < 1) {
@@ -95,7 +94,7 @@ class Source extends CI_Controller
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $sources[0]['source__title'],
+            'title' => $sources[0]['e__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('source/coin', array(
@@ -115,8 +114,8 @@ class Source extends CI_Controller
 
         //Validate Source:
         $sources = $this->SOURCE_model->fetch(array(
-            'source__id' => $_POST['source__id'],
-            'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+            'e__id' => $_POST['e__id'],
+            'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         ));
 
         if (!$session_source) {
@@ -124,25 +123,25 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10967),
             ));
-        } elseif (!isset($_POST['source__id']) || intval($_POST['source__id']) < 1 || count($sources) < 1) {
+        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || count($sources) < 1) {
             view_json(array(
                 'status' => 0,
-                'message' => 'Invalid source__id',
+                'message' => 'Invalid e__id',
             ));
         }
 
 
 
         //All good, reset sort value for all children:
-        foreach($this->READ_model->fetch(array(
-            'read__up' => $_POST['source__id'],
-            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-            'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-        ), array('read__down'), 0, 0, array(), 'read__id') as $read) {
-            $this->READ_model->update($read['read__id'], array(
-                'read__sort' => 0,
-            ), $session_source['source__id'], 13007 /* SOURCE SORT RESET */);
+        foreach($this->DISCOVER_model->fetch(array(
+            'x__up' => $_POST['e__id'],
+            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+            'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+        ), array('x__down'), 0, 0, array(), 'x__id') as $read) {
+            $this->DISCOVER_model->update($read['x__id'], array(
+                'x__sort' => 0,
+            ), $session_source['e__id'], 13007 /* SOURCE SORT RESET */);
         }
 
         //Display message:
@@ -162,12 +161,12 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10967),
             ));
-        } elseif (!isset($_POST['source__id']) || intval($_POST['source__id']) < 1) {
+        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1) {
             view_json(array(
                 'status' => 0,
-                'message' => 'Invalid source__id',
+                'message' => 'Invalid e__id',
             ));
-        } elseif (!isset($_POST['new_read__sorts']) || !is_array($_POST['new_read__sorts']) || count($_POST['new_read__sorts']) < 1) {
+        } elseif (!isset($_POST['new_x__sorts']) || !is_array($_POST['new_x__sorts']) || count($_POST['new_x__sorts']) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
@@ -176,26 +175,26 @@ class Source extends CI_Controller
 
             //Validate Source:
             $sources = $this->SOURCE_model->fetch(array(
-                'source__id' => $_POST['source__id'],
-                'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                'e__id' => $_POST['e__id'],
+                'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             ));
 
             //Count Portfolio:
-            $source__portfolio_count = $this->READ_model->fetch(array(
-                'read__up' => $_POST['source__id'],
-                'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-            ), array('read__down'), 0, 0, array(), 'COUNT(source__id) as totals');
+            $e__portfolio_count = $this->DISCOVER_model->fetch(array(
+                'x__up' => $_POST['e__id'],
+                'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+            ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
             if (count($sources) < 1) {
 
                 view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid source__id',
+                    'message' => 'Invalid e__id',
                 ));
 
-            } elseif($source__portfolio_count[0]['totals'] > config_var(13005)){
+            } elseif($e__portfolio_count[0]['totals'] > config_var(13005)){
 
                 view_json(array(
                     'status' => 0,
@@ -205,10 +204,10 @@ class Source extends CI_Controller
             } else {
 
                 //Update them all:
-                foreach($_POST['new_read__sorts'] as $rank => $read__id) {
-                    $this->READ_model->update(intval($read__id), array(
-                        'read__sort' => intval($rank),
-                    ), $session_source['source__id'], 13006 /* SOURCE SORT MANUAL */);
+                foreach($_POST['new_x__sorts'] as $rank => $x__id) {
+                    $this->DISCOVER_model->update(intval($x__id), array(
+                        'x__sort' => intval($rank),
+                    ), $session_source['e__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
                 //Display message:
@@ -273,21 +272,21 @@ class Source extends CI_Controller
     {
 
         $items_per_page = config_var(11064);
-        $parent_source__id = intval($_POST['parent_source__id']);
+        $parent_e__id = intval($_POST['parent_e__id']);
         $source_focus_filter = intval($_POST['source_focus_filter']);
-        $is_source = source_is_idea_source($parent_source__id);
+        $is_source = source_is_idea_source($parent_e__id);
         $page = intval($_POST['page']);
         $filters = array(
-            'read__up' => $parent_source__id,
-            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'source__status IN (' . join(',', ( $source_focus_filter<0 /* Remove Filters */ ? $this->config->item('sources_id_7358') /* ACTIVE */ : array($source_focus_filter) /* This specific filter*/ )) . ')' => null,
-            'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+            'x__up' => $parent_e__id,
+            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'e__status IN (' . join(',', ( $source_focus_filter<0 /* Remove Filters */ ? $this->config->item('sources_id_7358') /* ACTIVE */ : array($source_focus_filter) /* This specific filter*/ )) . ')' => null,
+            'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         );
 
         //Fetch & display next batch of children:
-        $child_sources = $this->READ_model->fetch($filters, array('read__down'), $items_per_page, ($page * $items_per_page), array(
-            'read__sort' => 'ASC',
-            'source__title' => 'ASC'
+        $child_sources = $this->DISCOVER_model->fetch($filters, array('x__down'), $items_per_page, ($page * $items_per_page), array(
+            'x__sort' => 'ASC',
+            'e__title' => 'ASC'
         ));
 
         foreach($child_sources as $source) {
@@ -295,7 +294,7 @@ class Source extends CI_Controller
         }
 
         //Count total children:
-        $child_sources_count = $this->READ_model->fetch($filters, array('read__down'), 0, 0, array(), 'COUNT(read__id) as totals');
+        $child_sources_count = $this->DISCOVER_model->fetch($filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         //Do we need another load more button?
         if ($child_sources_count[0]['totals'] > (($page * $items_per_page) + count($child_sources))) {
@@ -314,12 +313,12 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['read__id'])) {
+        } elseif (!isset($_POST['x__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Read ID',
             ));
-        } elseif (!isset($_POST['idea__id']) || !idea_is_source($_POST['idea__id'])) {
+        } elseif (!isset($_POST['i__id']) || !idea_is_source($_POST['i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are not the author of this source',
@@ -327,9 +326,9 @@ class Source extends CI_Controller
         }
 
         //Archive Link:
-        $this->READ_model->update($_POST['read__id'], array(
-            'read__status' => 6173,
-        ), $session_source['source__id'], 10678 /* IDEA NOTES Unpublished */);
+        $this->DISCOVER_model->update($_POST['x__id'], array(
+            'x__status' => 6173,
+        ), $session_source['e__id'], 10678 /* IDEA NOTES Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -348,7 +347,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (intval($_POST['idea__id']) < 1) {
+        } elseif (intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
@@ -367,9 +366,9 @@ class Source extends CI_Controller
 
 
         //Validate Idea
-        $ideas = $this->IDEA_model->fetch(array(
-            'idea__id' => $_POST['idea__id'],
-            'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+        $ideas = $this->MAP_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         ));
         if (count($ideas) < 1) {
             return view_json(array(
@@ -387,8 +386,8 @@ class Source extends CI_Controller
 
             //Validate this existing source:
             $sources = $this->SOURCE_model->fetch(array(
-                'source__id' => $_POST['source_existing_id'],
-                'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                'e__id' => $_POST['source_existing_id'],
+                'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             ));
             if (count($sources) < 1) {
                 return view_json(array(
@@ -398,16 +397,16 @@ class Source extends CI_Controller
             }
 
             //Make sure not alreads linked:
-            if(count($this->READ_model->fetch(array(
-                'read__right' => $ideas[0]['idea__id'],
-                'read__up' => $_POST['source_existing_id'],
-                'read__type' => $_POST['note_type_id'],
-                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            if(count($this->DISCOVER_model->fetch(array(
+                'x__right' => $ideas[0]['i__id'],
+                'x__up' => $_POST['source_existing_id'],
+                'x__type' => $_POST['note_type_id'],
+                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             )))){
                 $sources__7551 = $this->config->item('sources__7551');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $sources[0]['source__title'].' is already added as idea '.$sources__7551[$_POST['note_type_id']]['m_name'],
+                    'message' => $sources[0]['e__title'].' is already added as idea '.$sources__7551[$_POST['note_type_id']]['m_name'],
                 ));
             }
 
@@ -418,7 +417,7 @@ class Source extends CI_Controller
         } else {
 
             //Create source:
-            $added_source = $this->SOURCE_model->verify_create($_POST['source_new_string'], $session_source['source__id']);
+            $added_source = $this->SOURCE_model->verify_create($_POST['source_new_string'], $session_source['e__id']);
             if(!$added_source['status']){
                 //We had an error, return it:
                 return view_json($added_source);
@@ -428,21 +427,20 @@ class Source extends CI_Controller
             $focus_source = $added_source['new_source'];
 
             //Assign to Player:
-            $this->SOURCE_model->assign_session_player($focus_source['source__id']);
+            $this->SOURCE_model->assign_session_player($focus_source['e__id']);
 
             //Update Algolia:
-            update_algolia(4536, $focus_source['source__id']);
+            update_algolia(4536, $focus_source['e__id']);
 
         }
 
         //Create Note:
-        $new_note = $this->READ_model->create(array(
-            'read__player' => $session_source['source__id'],
-            'read__type' => $_POST['note_type_id'],
-            'read__right' => $ideas[0]['idea__id'],
-
-            'read__up' => $focus_source['source__id'],
-            'read__message' => '@'.$focus_source['source__id'],
+        $new_note = $this->DISCOVER_model->create(array(
+            'x__player' => $session_source['e__id'],
+            'x__type' => $_POST['note_type_id'],
+            'x__right' => $ideas[0]['i__id'],
+            'x__up' => $focus_source['e__id'],
+            'x__message' => '@'.$focus_source['e__id'],
         ));
 
         //Return newly added or linked source:
@@ -454,7 +452,7 @@ class Source extends CI_Controller
     }
 
 
-    function source__add()
+    function e__add()
     {
 
         //Auth user and check required variables:
@@ -465,7 +463,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (intval($_POST['source__id']) < 1) {
+        } elseif (intval($_POST['e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Parent Source',
@@ -484,7 +482,7 @@ class Source extends CI_Controller
 
         //Validate parent source:
         $fetch_sources = $this->SOURCE_model->fetch(array(
-            'source__id' => $_POST['source__id'],
+            'e__id' => $_POST['e__id'],
         ));
         if (count($fetch_sources) < 1) {
             return view_json(array(
@@ -504,8 +502,8 @@ class Source extends CI_Controller
 
             //Validate this existing source:
             $sources = $this->SOURCE_model->fetch(array(
-                'source__id' => $_POST['source_existing_id'],
-                'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                'e__id' => $_POST['source_existing_id'],
+                'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
             ));
 
             if (count($sources) < 1) {
@@ -535,7 +533,7 @@ class Source extends CI_Controller
                 if($url_source['url_is_root']){
 
                     //Link to domains parent:
-                    $focus_source = array('source__id' => 1326);
+                    $focus_source = array('e__id' => 1326);
 
                     //Update domain to stay synced:
                     $_POST['source_new_string'] = $url_source['url_clean_domain'];
@@ -543,7 +541,7 @@ class Source extends CI_Controller
                 } else {
 
                     //Let's first find/add the domain:
-                    $url_domain = $this->SOURCE_model->domain($_POST['source_new_string'], $session_source['source__id']);
+                    $url_domain = $this->SOURCE_model->domain($_POST['source_new_string'], $session_source['e__id']);
 
                     //Link to this source:
                     $focus_source = $url_domain['source_domain'];
@@ -552,7 +550,7 @@ class Source extends CI_Controller
             } else {
 
                 //Create source:
-                $added_source = $this->SOURCE_model->verify_create($_POST['source_new_string'], $session_source['source__id']);
+                $added_source = $this->SOURCE_model->verify_create($_POST['source_new_string'], $session_source['e__id']);
                 if(!$added_source['status']){
                     //We had an error, return it:
                     return view_json($added_source);
@@ -575,28 +573,28 @@ class Source extends CI_Controller
             if ($_POST['is_parent']) {
 
                 //Profile
-                $read__down = $fetch_sources[0]['source__id'];
-                $read__up = $focus_source['source__id'];
-                $read__sort = 0; //Never sort profiles, only sort portfolios
+                $x__down = $fetch_sources[0]['e__id'];
+                $x__up = $focus_source['e__id'];
+                $x__sort = 0; //Never sort profiles, only sort portfolios
 
             } else {
 
                 //Portfolio
-                $read__up = $fetch_sources[0]['source__id'];
-                $read__down = $focus_source['source__id'];
+                $x__up = $fetch_sources[0]['e__id'];
+                $x__down = $focus_source['e__id'];
 
-                if(sources_currently_sorted($read__up)){
+                if(sources_currently_sorted($x__up)){
 
-                    $read__sort = 1 + $this->READ_model->max_order(array(
-                            'read__up' => $read__up,
-                            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                            'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                    $x__sort = 1 + $this->DISCOVER_model->max_order(array(
+                            'x__up' => $x__up,
+                            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                            'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                         ));
 
                 } else {
 
                     //Don't sort since currently not sorted:
-                    $read__sort = 0;
+                    $x__sort = 0;
 
                 }
 
@@ -605,36 +603,36 @@ class Source extends CI_Controller
 
             if (isset($url_source['url_is_root']) && $url_source['url_is_root']) {
 
-                $read__message = $url_source['clean_url'];
-                $read__type = 4256; //Generic URL (Domains always are generic)
+                $x__message = $url_source['clean_url'];
+                $x__type = 4256; //Generic URL (Domains always are generic)
 
             } elseif (isset($url_source['source_domain']) && $url_source['source_domain']) {
 
-                $read__message = $url_source['clean_url'];
-                $read__type = $url_source['read__type'];
+                $x__message = $url_source['clean_url'];
+                $x__type = $url_source['x__type'];
 
             } else {
 
-                $read__message = null;
-                $read__type = 4230; //Raw
+                $x__message = null;
+                $x__type = 4230; //Raw
 
             }
 
             // Link to new OR existing source:
-            $ur2 = $this->READ_model->create(array(
-                'read__player' => $session_source['source__id'],
-                'read__type' => $read__type,
-                'read__message' => $read__message,
-                'read__down' => $read__down,
-                'read__up' => $read__up,
-                'read__sort' => $read__sort,
+            $ur2 = $this->DISCOVER_model->create(array(
+                'x__player' => $session_source['e__id'],
+                'x__type' => $x__type,
+                'x__message' => $x__message,
+                'x__down' => $x__down,
+                'x__up' => $x__up,
+                'x__sort' => $x__sort,
             ));
         }
 
         //Fetch latest version:
         $sources_latest = $this->SOURCE_model->fetch(array(
-            'source__id' => $focus_source['source__id'],
-            'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+            'e__id' => $focus_source['e__id'],
+            'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         ));
         if(!count($sources_latest)){
             return view_json(array(
@@ -654,7 +652,7 @@ class Source extends CI_Controller
     function source_count_deletion()
     {
 
-        if (!isset($_POST['source__id']) || intval($_POST['source__id']) < 1) {
+        if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source ID',
@@ -662,10 +660,10 @@ class Source extends CI_Controller
         }
 
         //Simply counts the links for a given source:
-        $all_source_links = $this->READ_model->fetch(array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            '(read__down = ' . $_POST['source__id'] . ' OR read__up = ' . $_POST['source__id'] . ')' => null,
+        $all_source_links = $this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            '(x__down = ' . $_POST['e__id'] . ' OR x__up = ' . $_POST['e__id'] . ')' => null,
         ), array(), 0);
 
         return view_json(array(
@@ -678,11 +676,11 @@ class Source extends CI_Controller
 
 
 
-    function account_toggle_superpower($superpower_source__id){
+    function e_toggle_superpower($superpower_e__id){
 
         //Toggles the advance session variable for the player on/off for logged-in players:
         $session_source = superpower_assigned(10939);
-        $superpower_source__id = intval($superpower_source__id);
+        $superpower_e__id = intval($superpower_e__id);
         $sources__10957 = $this->config->item('sources__10957');
 
         if(!$session_source){
@@ -692,12 +690,12 @@ class Source extends CI_Controller
                 'message' => view_unauthorized_message(10939),
             ));
 
-        } elseif(!superpower_assigned($superpower_source__id)){
+        } elseif(!superpower_assigned($superpower_e__id)){
 
             //Access not authorized:
             return view_json(array(
                 'status' => 0,
-                'message' => 'You have not yet unlocked the superpower of '.$sources__10957[$superpower_source__id]['m_name'],
+                'message' => 'You have not yet unlocked the superpower of '.$sources__10957[$superpower_e__id]['m_name'],
             ));
 
         }
@@ -705,13 +703,13 @@ class Source extends CI_Controller
         //Figure out new toggle state:
         $session_data = $this->session->all_userdata();
 
-        if(in_array($superpower_source__id, $session_data['session_superpowers_activated'])){
+        if(in_array($superpower_e__id, $session_data['session_superpowers_activated'])){
             //Previously there, turn it off:
-            $session_data['session_superpowers_activated'] = array_diff($session_data['session_superpowers_activated'], array($superpower_source__id));
+            $session_data['session_superpowers_activated'] = array_diff($session_data['session_superpowers_activated'], array($superpower_e__id));
             $toggled_setting = 'DEACTIVATED';
         } else {
             //Not there, turn it on:
-            array_push($session_data['session_superpowers_activated'], $superpower_source__id);
+            array_push($session_data['session_superpowers_activated'], $superpower_e__id);
             $toggled_setting = 'ACTIVATED';
         }
 
@@ -721,11 +719,11 @@ class Source extends CI_Controller
 
 
         //Log Link:
-        $this->READ_model->create(array(
-            'read__player' => $session_source['source__id'],
-            'read__type' => 5007, //TOGGLE SUPERPOWER
-            'read__up' => $superpower_source__id,
-            'read__message' => 'SUPERPOWER '.$toggled_setting, //To be used when player logs in again
+        $this->DISCOVER_model->create(array(
+            'x__player' => $session_source['e__id'],
+            'x__type' => 5007, //TOGGLE SUPERPOWER
+            'x__up' => $superpower_e__id,
+            'x__message' => 'SUPERPOWER '.$toggled_setting, //To be used when player logs in again
         ));
 
         //Return to JS function:
@@ -744,17 +742,17 @@ class Source extends CI_Controller
         //Auth user and check required variables:
         $session_source = superpower_assigned(10939);
         $success_message = 'Saved'; //Default, might change based on what we do...
-        $is_valid_icon = is_valid_icon($_POST['source__icon']);
+        $is_valid_icon = is_valid_icon($_POST['e__icon']);
 
         //Fetch current data:
         $sources = $this->SOURCE_model->fetch(array(
-            'source__id' => intval($_POST['source__id']),
+            'e__id' => intval($_POST['e__id']),
         ));
 
 
-        $source__title_validate = source__title_validate($_POST['source__title']);
-        if(!$source__title_validate['status']){
-            return view_json($source__title_validate);
+        $e__title_validate = e__title_validate($_POST['e__title']);
+        if(!$e__title_validate['status']){
+            return view_json($e__title_validate);
         }
 
         if (!$session_source) {
@@ -762,7 +760,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['source__id']) || intval($_POST['source__id']) < 1 || !(count($sources) == 1)) {
+        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !(count($sources) == 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid ID',
@@ -772,12 +770,12 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Focus ID',
             ));
-        } elseif (!isset($_POST['source__status'])) {
+        } elseif (!isset($_POST['e__status'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing status',
             ));
-        } elseif (!isset($_POST['read__id']) || !isset($_POST['read__message']) || !isset($_POST['read__status'])) {
+        } elseif (!isset($_POST['x__id']) || !isset($_POST['x__message']) || !isset($_POST['x__status'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing source link data',
@@ -792,29 +790,29 @@ class Source extends CI_Controller
 
         $delete_redirect_url = null;
         $delete_from_ui = 0;
-        $js_read__type = 0; //Detect link type based on content
+        $js_x__type = 0; //Detect link type based on content
 
         //Prepare data to be updated:
         $source_update = array(
-            'source__title' => $source__title_validate['source__title_clean'],
-            'source__icon' => trim($_POST['source__icon']),
-            'source__status' => intval($_POST['source__status']),
+            'e__title' => $e__title_validate['e__title_clean'],
+            'e__icon' => trim($_POST['e__icon']),
+            'e__status' => intval($_POST['e__status']),
         );
 
         //Is this being deleted?
-        if (!in_array($source_update['source__status'], $this->config->item('sources_id_7358') /* ACTIVE */) && !($source_update['source__status'] == $sources[0]['source__status'])) {
+        if (!in_array($source_update['e__status'], $this->config->item('sources_id_7358') /* ACTIVE */) && !($source_update['e__status'] == $sources[0]['e__status'])) {
 
 
             //Make sure source is not referenced in key DB reference fields:
-            $source_count_connections = source_count_connections($_POST['source__id'], false);
+            $source_count_connections = source_count_connections($_POST['e__id'], false);
             if(count($source_count_connections) > 0){
 
                 $sources__6194 = $this->config->item('sources__6194');
 
                 //Construct the message:
                 $error_message = 'Cannot be deleted because source is referenced as ';
-                foreach($source_count_connections as $source__id=>$source_count){
-                    $error_message .= $sources__6194[$source__id]['m_name'].' '.view_number($source_count).' times ';
+                foreach($source_count_connections as $e__id=>$source_count){
+                    $error_message .= $sources__6194[$e__id]['m_name'].' '.view_number($source_count).' times ';
                 }
 
                 return view_json(array(
@@ -827,12 +825,12 @@ class Source extends CI_Controller
 
 
             //Count source references in IDEA NOTES:
-            $messages = $this->READ_model->fetch(array(
-                'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-                'read__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
-                'read__up' => $_POST['source__id'],
-            ), array('read__right'), 0, 0, array('read__sort' => 'ASC'));
+            $messages = $this->DISCOVER_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
+                'x__up' => $_POST['e__id'],
+            ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
             //Assume no merge:
             $merged_sources = array();
@@ -843,20 +841,20 @@ class Source extends CI_Controller
                 //Yes, validate this source:
 
                 //Validate the input for updating linked Idea:
-                $merger_source__id = 0;
+                $merger_e__id = 0;
                 if (substr($_POST['source_merge'], 0, 1) == '@') {
                     $parts = explode(' ', $_POST['source_merge']);
-                    $merger_source__id = intval(str_replace('@', '', $parts[0]));
+                    $merger_e__id = intval(str_replace('@', '', $parts[0]));
                 }
 
-                if ($merger_source__id < 1) {
+                if ($merger_e__id < 1) {
 
                     return view_json(array(
                         'status' => 0,
                         'message' => 'Unrecognized merger source [' . $_POST['source_merge'] . ']',
                     ));
 
-                } elseif ($merger_source__id == $_POST['source__id']) {
+                } elseif ($merger_e__id == $_POST['e__id']) {
 
                     return view_json(array(
                         'status' => 0,
@@ -867,13 +865,13 @@ class Source extends CI_Controller
 
                     //Finally validate merger source:
                     $merged_sources = $this->SOURCE_model->fetch(array(
-                        'source__id' => $merger_source__id,
-                        'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                        'e__id' => $merger_e__id,
+                        'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
                     ));
                     if (count($merged_sources) == 0) {
                         return view_json(array(
                             'status' => 0,
-                            'message' => 'Could not find source @' . $merger_source__id,
+                            'message' => 'Could not find source @' . $merger_e__id,
                         ));
                     }
 
@@ -890,39 +888,39 @@ class Source extends CI_Controller
             }
 
             //Delete/merge SOURCE LINKS:
-            if($_POST['source__id'] == $_POST['source_focus_id']){
+            if($_POST['e__id'] == $_POST['source_focus_id']){
 
                 //Fetch parents to redirect to:
-                $source__profiles = $this->READ_model->fetch(array(
-                    'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                    'read__down' => $_POST['source__id'],
-                    'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                    'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-                ), array('read__up'), 1);
+                $e__profiles = $this->DISCOVER_model->fetch(array(
+                    'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                    'x__down' => $_POST['e__id'],
+                    'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                    'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                ), array('x__up'), 1);
 
             }
 
 
-            $_POST['read__id'] = 0; //Do not consider the link as the source is being Deleted
+            $_POST['x__id'] = 0; //Do not consider the link as the source is being Deleted
             $delete_from_ui = 1; //Removing source
-            $merger_source__id = (count($merged_sources) > 0 ? $merged_sources[0]['source__id'] : 0);
-            $links_adjusted = $this->SOURCE_model->unlink($_POST['source__id'], $session_source['source__id'], $merger_source__id);
+            $merger_e__id = (count($merged_sources) > 0 ? $merged_sources[0]['e__id'] : 0);
+            $links_adjusted = $this->SOURCE_model->unlink($_POST['e__id'], $session_source['e__id'], $merger_e__id);
 
             //Show appropriate message based on action:
-            if ($merger_source__id > 0) {
+            if ($merger_e__id > 0) {
 
-                if($_POST['source__id'] == $_POST['source_focus_id'] || $merged_sources[0]['source__id'] == $_POST['source_focus_id']){
+                if($_POST['e__id'] == $_POST['source_focus_id'] || $merged_sources[0]['e__id'] == $_POST['source_focus_id']){
                     //Player is being Deleted and merged into another source:
-                    $delete_redirect_url = '/@' . $merged_sources[0]['source__id'];
+                    $delete_redirect_url = '/@' . $merged_sources[0]['e__id'];
                 }
 
                 $success_message = 'Source deleted & merged its ' . $links_adjusted . ' links here';
 
             } else {
 
-                if($_POST['source__id'] == $_POST['source_focus_id']){
-                    if(count($source__profiles)){
-                        $delete_redirect_url = '/@' . $source__profiles[0]['source__id'];
+                if($_POST['e__id'] == $_POST['source_focus_id']){
+                    if(count($e__profiles)){
+                        $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
                     } else {
                         //Is the plugin activated?
                         $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/source/plugin/7269' : '/@' );
@@ -937,63 +935,63 @@ class Source extends CI_Controller
         }
 
 
-        if (intval($_POST['read__id']) > 0) { //DO we have a link to update?
+        if (intval($_POST['x__id']) > 0) { //DO we have a link to update?
 
             //Yes, first validate source link:
-            $source_reads = $this->READ_model->fetch(array(
-                'read__id' => $_POST['read__id'],
-                'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+            $source_reads = $this->DISCOVER_model->fetch(array(
+                'x__id' => $_POST['x__id'],
+                'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             ));
             if (count($source_reads) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'INVALID READ ID',
+                    'message' => 'INVALID DISCOVER ID',
                 ));
             }
 
 
             //Status change?
-            if($source_reads[0]['read__status']!=$_POST['read__status']){
+            if($source_reads[0]['x__status']!=$_POST['x__status']){
 
-                if (in_array($_POST['read__status'], $this->config->item('sources_id_7360') /* ACTIVE */)) {
-                    $read__status = 10656; //Player Link updated Status
+                if (in_array($_POST['x__status'], $this->config->item('sources_id_7360') /* ACTIVE */)) {
+                    $x__status = 10656; //Player Link updated Status
                 } else {
                     $delete_from_ui = 1;
-                    $read__status = 10673; //Player Link Unpublished
+                    $x__status = 10673; //Player Link Unpublished
                 }
 
-                $this->READ_model->update($_POST['read__id'], array(
-                    'read__status' => intval($_POST['read__status']),
-                ), $session_source['source__id'], $read__status);
+                $this->DISCOVER_model->update($_POST['x__id'], array(
+                    'x__status' => intval($_POST['x__status']),
+                ), $session_source['e__id'], $x__status);
             }
 
 
             //Link content change?
-            if ($source_reads[0]['read__message'] == $_POST['read__message']) {
+            if ($source_reads[0]['x__message'] == $_POST['x__message']) {
 
                 //Link content has not changed:
-                $js_read__type = $source_reads[0]['read__type'];
-                $read__message = $source_reads[0]['read__message'];
+                $js_x__type = $source_reads[0]['x__type'];
+                $x__message = $source_reads[0]['x__message'];
 
             } else {
 
                 //Link content has changed:
-                $detected_read_type = read_detect_type($_POST['read__message']);
+                $detected_read_type = read_detect_type($_POST['x__message']);
 
                 if (!$detected_read_type['status']) {
 
                     return view_json($detected_read_type);
 
-                } elseif (in_array($detected_read_type['read__type'], $this->config->item('sources_id_4537'))) {
+                } elseif (in_array($detected_read_type['x__type'], $this->config->item('sources_id_4537'))) {
 
                     //This is a URL, validate modification:
 
                     if ($detected_read_type['url_is_root']) {
 
-                        if ($source_reads[0]['read__up'] == 1326) {
+                        if ($source_reads[0]['x__up'] == 1326) {
 
                             //Override with the clean domain for consistency:
-                            $_POST['read__message'] = $detected_read_type['url_clean_domain'];
+                            $_POST['x__message'] = $detected_read_type['url_clean_domain'];
 
                         } else {
 
@@ -1007,7 +1005,7 @@ class Source extends CI_Controller
 
                     } else {
 
-                        if ($source_reads[0]['read__up'] == 1326) {
+                        if ($source_reads[0]['x__up'] == 1326) {
 
                             return view_json(array(
                                 'status' => 0,
@@ -1016,10 +1014,10 @@ class Source extends CI_Controller
 
                         } elseif ($detected_read_type['source_domain']) {
                             //We do have the domain mapped! Is this connected to the domain source as its parent?
-                            if ($detected_read_type['source_domain']['source__id'] != $source_reads[0]['read__up']) {
+                            if ($detected_read_type['source_domain']['e__id'] != $source_reads[0]['x__up']) {
                                 return view_json(array(
                                     'status' => 0,
-                                    'message' => 'Must link to <b>@' . $detected_read_type['source_domain']['source__id'] . ' ' . $detected_read_type['source_domain']['source__title'] . '</b> as source profile',
+                                    'message' => 'Must link to <b>@' . $detected_read_type['source_domain']['e__id'] . ' ' . $detected_read_type['source_domain']['e__title'] . '</b> as source profile',
                                 ));
                             }
                         } else {
@@ -1035,30 +1033,30 @@ class Source extends CI_Controller
                 }
 
                 //Update variables:
-                $read__message = $_POST['read__message'];
-                $js_read__type = $detected_read_type['read__type'];
+                $x__message = $_POST['x__message'];
+                $js_x__type = $detected_read_type['x__type'];
 
 
-                $this->READ_model->update($_POST['read__id'], array(
-                    'read__message' => $read__message,
-                ), $session_source['source__id'], 10657 /* Player Link updated Content */);
+                $this->DISCOVER_model->update($_POST['x__id'], array(
+                    'x__message' => $x__message,
+                ), $session_source['e__id'], 10657 /* Player Link updated Content */);
 
 
                 //Also, did the link type change based on the content change?
-                if($js_read__type!=$source_reads[0]['read__type']){
-                    $this->READ_model->update($_POST['read__id'], array(
-                        'read__type' => $js_read__type,
-                    ), $session_source['source__id'], 10659 /* Player Link updated Type */);
+                if($js_x__type!=$source_reads[0]['x__type']){
+                    $this->DISCOVER_model->update($_POST['x__id'], array(
+                        'x__type' => $js_x__type,
+                    ), $session_source['e__id'], 10659 /* Player Link updated Type */);
                 }
             }
         }
 
         //Now update the DB:
-        $this->SOURCE_model->update(intval($_POST['source__id']), $source_update, true, $session_source['source__id']);
+        $this->SOURCE_model->update(intval($_POST['e__id']), $source_update, true, $session_source['e__id']);
 
 
         //Reset user session data if this data belongs to the logged-in user:
-        if ($_POST['source__id'] == $session_source['source__id']) {
+        if ($_POST['e__id'] == $session_source['e__id']) {
             //Re-activate Session with new data:
             $this->SOURCE_model->activate_session($session_source, true);
         }
@@ -1075,19 +1073,19 @@ class Source extends CI_Controller
             'message' => '<i class="fas fa-check-circle"></i> ' . $success_message,
             'delete_from_ui' => $delete_from_ui,
             'delete_redirect_url' => $delete_redirect_url,
-            'js_read__type' => intval($js_read__type),
+            'js_x__type' => intval($js_x__type),
         );
 
-        if (intval($_POST['read__id']) > 0) {
+        if (intval($_POST['x__id']) > 0) {
 
             //Fetch source link:
-            $reads = $this->READ_model->fetch(array(
-                'read__id' => $_POST['read__id'],
-            ), array('read__player'));
+            $reads = $this->DISCOVER_model->fetch(array(
+                'x__id' => $_POST['x__id'],
+            ), array('x__player'));
 
             //Prep last updated:
-            $return_array['read__message'] = view_read__message($read__message, $js_read__type);
-            $return_array['read__message_final'] = $read__message; //In case content was updated
+            $return_array['x__message'] = view_x__message($x__message, $js_x__type);
+            $return_array['x__message_final'] = $x__message; //In case content was updated
 
         }
 
@@ -1122,7 +1120,7 @@ class Source extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'url_previously_existed' => 1,
-                'algolia_object' => update_algolia(4536, $url_source['source_url']['source__id'], 1),
+                'algolia_object' => update_algolia(4536, $url_source['source_url']['e__id'], 1),
             ));
         } else {
             return view_json(array(
@@ -1135,7 +1133,7 @@ class Source extends CI_Controller
 
 
 
-    function account_update_radio()
+    function e_update_radio()
     {
         /*
          *
@@ -1151,12 +1149,12 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['parent_source__id']) || intval($_POST['parent_source__id']) < 1) {
+        } elseif (!isset($_POST['parent_e__id']) || intval($_POST['parent_e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing parent source',
             ));
-        } elseif (!isset($_POST['selected_source__id']) || intval($_POST['selected_source__id']) < 1) {
+        } elseif (!isset($_POST['selected_e__id']) || intval($_POST['selected_e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing selected source',
@@ -1174,58 +1172,58 @@ class Source extends CI_Controller
 
             //Fetch all possible answers based on parent source:
             $filters = array(
-                'read__up' => $_POST['parent_source__id'],
-                'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                'source__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+                'x__up' => $_POST['parent_e__id'],
+                'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
             );
 
             if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
                 //Just delete this single item, not the other ones:
-                $filters['read__down'] = $_POST['selected_source__id'];
+                $filters['x__down'] = $_POST['selected_e__id'];
             }
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->READ_model->fetch($filters, array('read__down'), 0, 0) as $answer_source){
-                array_push($possible_answers, $answer_source['source__id']);
+            foreach($this->DISCOVER_model->fetch($filters, array('x__down'), 0, 0) as $answer_source){
+                array_push($possible_answers, $answer_source['e__id']);
             }
 
             //Delete selected options for this player:
-            foreach($this->READ_model->fetch(array(
-                'read__up IN (' . join(',', $possible_answers) . ')' => null,
-                'read__down' => $session_source['source__id'],
-                'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            foreach($this->DISCOVER_model->fetch(array(
+                'x__up IN (' . join(',', $possible_answers) . ')' => null,
+                'x__down' => $session_source['e__id'],
+                'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             )) as $delete_source){
                 //Should usually delete a single option:
-                $this->READ_model->update($delete_source['read__id'], array(
-                    'read__status' => 6173, //Read Deleted
-                ), $session_source['source__id'], 6224 /* User Account Updated */);
+                $this->DISCOVER_model->update($delete_source['x__id'], array(
+                    'x__status' => 6173, //Read Deleted
+                ), $session_source['e__id'], 6224 /* User Account Updated */);
             }
 
         }
 
         //Add new option if not previously there:
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_previously_selected']){
-            $this->READ_model->create(array(
-                'read__up' => $_POST['selected_source__id'],
-                'read__down' => $session_source['source__id'],
-                'read__player' => $session_source['source__id'],
-                'read__type' => source_link_type(),
+            $this->DISCOVER_model->create(array(
+                'x__up' => $_POST['selected_e__id'],
+                'x__down' => $session_source['e__id'],
+                'x__player' => $session_source['e__id'],
+                'x__type' => source_link_type(),
             ));
         }
 
 
         //Log Account Update link type:
-        $_POST['account_update_function'] = 'account_update_radio'; //Add this variable to indicate which My Account function created this link
-        $this->READ_model->create(array(
-            'read__player' => $session_source['source__id'],
-            'read__type' => 6224, //My Account updated
-            'read__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
-            'read__metadata' => $_POST,
-            'read__up' => $_POST['parent_source__id'],
-            'read__down' => $_POST['selected_source__id'],
+        $_POST['account_update_function'] = 'e_update_radio'; //Add this variable to indicate which My Account function created this link
+        $this->DISCOVER_model->create(array(
+            'x__player' => $session_source['e__id'],
+            'x__type' => 6224, //My Account updated
+            'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
+            'x__metadata' => $_POST,
+            'x__up' => $_POST['parent_e__id'],
+            'x__down' => $_POST['selected_e__id'],
         ));
 
         //All good:
@@ -1240,7 +1238,7 @@ class Source extends CI_Controller
 
 
 
-    function account_update_avatar_icon()
+    function e_update_avatar()
     {
 
         $session_source = superpower_assigned();
@@ -1265,7 +1263,7 @@ class Source extends CI_Controller
         //Validate:
         $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'].' source';
         $validated = false;
-        foreach($this->config->item('sources__12279') as $source__id => $m) {
+        foreach($this->config->item('sources__12279') as $e__id => $m) {
             if(substr_count($m['m_icon'], $icon_new_css) == 1){
                 $validated = true;
                 break;
@@ -1281,13 +1279,13 @@ class Source extends CI_Controller
 
         //Update icon:
         $new_avatar = '<i class="'.$icon_new_css.'"></i>';
-        $this->SOURCE_model->update($session_source['source__id'], array(
-            'source__icon' => $new_avatar,
-        ), true, $session_source['source__id']);
+        $this->SOURCE_model->update($session_source['e__id'], array(
+            'e__icon' => $new_avatar,
+        ), true, $session_source['e__id']);
 
 
         //Update Session:
-        $session_source['source__icon'] = $new_avatar;
+        $session_source['e__icon'] = $new_avatar;
         $this->SOURCE_model->activate_session($session_source, true);
 
 
@@ -1300,7 +1298,7 @@ class Source extends CI_Controller
 
 
 
-    function account_update_email()
+    function e_update_email()
     {
 
         $session_source = superpower_assigned();
@@ -1324,12 +1322,12 @@ class Source extends CI_Controller
             $_POST['source_email'] = trim(strtolower($_POST['source_email']));
 
             //Check to make sure not duplicate:
-            $duplicates = $this->READ_model->fetch(array(
-                'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                'read__up' => 3288, //Mench Email
-                'read__down !=' => $session_source['source__id'],
-                'LOWER(read__message)' => $_POST['source_email'],
+            $duplicates = $this->DISCOVER_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                'x__up' => 3288, //Mench Email
+                'x__down !=' => $session_source['e__id'],
+                'LOWER(x__message)' => $_POST['source_email'],
             ));
             if (count($duplicates) > 0) {
                 //This is a duplicate, disallow:
@@ -1342,32 +1340,32 @@ class Source extends CI_Controller
 
 
         //Fetch existing email:
-        $user_emails = $this->READ_model->fetch(array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__down' => $session_source['source__id'],
-            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'read__up' => 3288, //Mench Email
+        $user_emails = $this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__down' => $session_source['e__id'],
+            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 3288, //Mench Email
         ));
         if (count($user_emails) > 0) {
 
             if (strlen($_POST['source_email']) == 0) {
 
                 //Delete email:
-                $this->READ_model->update($user_emails[0]['read__id'], array(
-                    'read__status' => 6173, //Read Deleted
-                ), $session_source['source__id'], 6224 /* User Account Updated */);
+                $this->DISCOVER_model->update($user_emails[0]['x__id'], array(
+                    'x__status' => 6173, //Read Deleted
+                ), $session_source['e__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
                     'message' => 'Email deleted',
                 );
 
-            } elseif ($user_emails[0]['read__message'] != $_POST['source_email']) {
+            } elseif ($user_emails[0]['x__message'] != $_POST['source_email']) {
 
                 //Update if not duplicate:
-                $this->READ_model->update($user_emails[0]['read__id'], array(
-                    'read__message' => $_POST['source_email'],
-                ), $session_source['source__id'], 6224 /* User Account Updated */);
+                $this->DISCOVER_model->update($user_emails[0]['x__id'], array(
+                    'x__message' => $_POST['source_email'],
+                ), $session_source['e__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1386,12 +1384,12 @@ class Source extends CI_Controller
         } elseif (strlen($_POST['source_email']) > 0) {
 
             //Create new link:
-            $this->READ_model->create(array(
-                'read__player' => $session_source['source__id'],
-                'read__down' => $session_source['source__id'],
-                'read__type' => source_link_type($_POST['source_email']),
-                'read__up' => 3288, //Mench Email
-                'read__message' => $_POST['source_email'],
+            $this->DISCOVER_model->create(array(
+                'x__player' => $session_source['e__id'],
+                'x__down' => $session_source['e__id'],
+                'x__type' => source_link_type($_POST['source_email']),
+                'x__up' => 3288, //Mench Email
+                'x__message' => $_POST['source_email'],
             ), true);
 
             $return = array(
@@ -1411,12 +1409,12 @@ class Source extends CI_Controller
 
         if($return['status']){
             //Log Account Update link type:
-            $_POST['account_update_function'] = 'account_update_email'; //Add this variable to indicate which My Account function created this link
-            $this->READ_model->create(array(
-                'read__player' => $session_source['source__id'],
-                'read__type' => 6224, //My Account updated
-                'read__message' => 'My Account '.$return['message']. ( strlen($_POST['source_email']) > 0 ? ': '.$_POST['source_email'] : ''),
-                'read__metadata' => $_POST,
+            $_POST['account_update_function'] = 'e_update_email'; //Add this variable to indicate which My Account function created this link
+            $this->DISCOVER_model->create(array(
+                'x__player' => $session_source['e__id'],
+                'x__type' => 6224, //My Account updated
+                'x__message' => 'My Account '.$return['message']. ( strlen($_POST['source_email']) > 0 ? ': '.$_POST['source_email'] : ''),
+                'x__metadata' => $_POST,
             ));
         }
 
@@ -1428,7 +1426,7 @@ class Source extends CI_Controller
     }
 
 
-    function account_update_password()
+    function e_update_password()
     {
 
         $session_source = superpower_assigned();
@@ -1446,19 +1444,19 @@ class Source extends CI_Controller
         }
 
         //Fetch existing password:
-        $user_passwords = $this->READ_model->fetch(array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'read__up' => 3286, //Password
-            'read__down' => $session_source['source__id'],
+        $user_passwords = $this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 3286, //Password
+            'x__down' => $session_source['e__id'],
         ));
 
-        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_source['source__id']));
+        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_source['e__id']));
 
 
         if (count($user_passwords) > 0) {
 
-            if ($hashed_password == $user_passwords[0]['read__message']) {
+            if ($hashed_password == $user_passwords[0]['x__message']) {
 
                 $return = array(
                     'status' => 0,
@@ -1468,9 +1466,9 @@ class Source extends CI_Controller
             } else {
 
                 //Update password:
-                $this->READ_model->update($user_passwords[0]['read__id'], array(
-                    'read__message' => $hashed_password,
-                ), $session_source['source__id'], 7578 /* User Updated Password  */);
+                $this->DISCOVER_model->update($user_passwords[0]['x__id'], array(
+                    'x__message' => $hashed_password,
+                ), $session_source['e__id'], 7578 /* User Updated Password  */);
 
                 $return = array(
                     'status' => 1,
@@ -1482,12 +1480,12 @@ class Source extends CI_Controller
         } else {
 
             //Create new link:
-            $this->READ_model->create(array(
-                'read__type' => source_link_type($hashed_password),
-                'read__up' => 3286, //Password
-                'read__player' => $session_source['source__id'],
-                'read__down' => $session_source['source__id'],
-                'read__message' => $hashed_password,
+            $this->DISCOVER_model->create(array(
+                'x__type' => source_link_type($hashed_password),
+                'x__up' => 3286, //Password
+                'x__player' => $session_source['e__id'],
+                'x__down' => $session_source['e__id'],
+                'x__message' => $hashed_password,
             ), true);
 
             $return = array(
@@ -1500,12 +1498,12 @@ class Source extends CI_Controller
 
         //Log Account Update link type:
         if($return['status']){
-            $_POST['account_update_function'] = 'account_update_password'; //Add this variable to indicate which My Account function created this link
-            $this->READ_model->create(array(
-                'read__player' => $session_source['source__id'],
-                'read__type' => 6224, //My Account Updated
-                'read__message' => 'My Account '.$return['message'],
-                'read__metadata' => $_POST,
+            $_POST['account_update_function'] = 'e_update_password'; //Add this variable to indicate which My Account function created this link
+            $this->DISCOVER_model->create(array(
+                'x__player' => $session_source['e__id'],
+                'x__type' => 6224, //My Account Updated
+                'x__message' => 'My Account '.$return['message'],
+                'x__metadata' => $_POST,
             ));
         }
 
@@ -1535,13 +1533,13 @@ class Source extends CI_Controller
 
 
 
-    function signin($idea__id = 0){
+    function signin($i__id = 0){
 
         //Check to see if they are previously logged in?
         if(superpower_assigned()) {
             //Lead player and above, go to console:
-            if($idea__id > 0){
-                return redirect_message(( superpower_assigned(10939) ? '/idea/go/' : '/' ) . $idea__id);
+            if($i__id > 0){
+                return redirect_message(( superpower_assigned(10939) ? '/map/i_go/' : '/' ) . $i__id);
             } else {
                 return redirect_message('/');
             }
@@ -1553,7 +1551,7 @@ class Source extends CI_Controller
             'title' => $sources__11035[4269]['m_name'],
         ));
         $this->load->view('source/signin', array(
-            'sign_idea__id' => $idea__id,
+            'sign_i__id' => $i__id,
         ));
         $this->load->view('footer');
 
@@ -1569,9 +1567,9 @@ class Source extends CI_Controller
 
 
 
-    function sign_create_account(){
+    function e_signin_create(){
 
-        if (!isset($_POST['sign_idea__id']) || !isset($_POST['referrer_url'])) {
+        if (!isset($_POST['sign_i__id']) || !isset($_POST['referrer_url'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -1652,47 +1650,47 @@ class Source extends CI_Controller
 
 
         //Add Player:
-        $this->READ_model->create(array(
-            'read__up' => 4430, //MENCH PLAYERS
-            'read__type' => source_link_type(),
-            'read__player' => $added_source['new_source']['source__id'],
-            'read__down' => $added_source['new_source']['source__id'],
+        $this->DISCOVER_model->create(array(
+            'x__up' => 4430, //MENCH PLAYERS
+            'x__type' => source_link_type(),
+            'x__player' => $added_source['new_source']['e__id'],
+            'x__down' => $added_source['new_source']['e__id'],
         ));
 
-        $this->READ_model->create(array(
-            'read__type' => source_link_type(trim(strtolower($_POST['input_email']))),
-            'read__message' => trim(strtolower($_POST['input_email'])),
-            'read__up' => 3288, //Mench Email
-            'read__player' => $added_source['new_source']['source__id'],
-            'read__down' => $added_source['new_source']['source__id'],
+        $this->DISCOVER_model->create(array(
+            'x__type' => source_link_type(trim(strtolower($_POST['input_email']))),
+            'x__message' => trim(strtolower($_POST['input_email'])),
+            'x__up' => 3288, //Mench Email
+            'x__player' => $added_source['new_source']['e__id'],
+            'x__down' => $added_source['new_source']['e__id'],
         ));
-        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_source['new_source']['source__id']));
-        $this->READ_model->create(array(
-            'read__type' => source_link_type($hash),
-            'read__message' => $hash,
-            'read__up' => 3286, //Mench Password
-            'read__player' => $added_source['new_source']['source__id'],
-            'read__down' => $added_source['new_source']['source__id'],
+        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_source['new_source']['e__id']));
+        $this->DISCOVER_model->create(array(
+            'x__type' => source_link_type($hash),
+            'x__message' => $hash,
+            'x__up' => 3286, //Mench Password
+            'x__player' => $added_source['new_source']['e__id'],
+            'x__down' => $added_source['new_source']['e__id'],
         ));
 
         //Now update Algolia:
-        update_algolia(4536,  $added_source['new_source']['source__id']);
+        update_algolia(4536,  $added_source['new_source']['e__id']);
 
         //Fetch referral Idea, if any:
-        if(intval($_POST['sign_idea__id']) > 0){
+        if(intval($_POST['sign_i__id']) > 0){
 
             //Fetch the Idea:
-            $referrer_ideas = $this->IDEA_model->fetch(array(
-                'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-                'idea__id' => $_POST['sign_idea__id'],
+            $referrer_ideas = $this->MAP_model->fetch(array(
+                'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+                'i__id' => $_POST['sign_i__id'],
             ));
 
             if(count($referrer_ideas) > 0){
-                //Add this Idea to their Reads:
-                $this->READ_model->start($added_source['new_source']['source__id'], $_POST['sign_idea__id']);
+                //Add this Idea to their Discoveries:
+                $this->DISCOVER_model->start($added_source['new_source']['e__id'], $_POST['sign_i__id']);
             } else {
                 //Cannot be added, likely because its not published:
-                $_POST['sign_idea__id'] = 0;
+                $_POST['sign_i__id'] = 0;
             }
 
         } else {
@@ -1711,15 +1709,15 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send Welcome Email:
-        $email_log = $this->READ_model->send_email(array($_POST['input_email']), $subject, $html_message);
+        $email_log = $this->DISCOVER_model->send_email(array($_POST['input_email']), $subject, $html_message);
 
 
         //Log User Signin Joined Mench
-        $invite_link = $this->READ_model->create(array(
-            'read__type' => 7562, //User Signin Joined Mench
-            'read__player' => $added_source['new_source']['source__id'],
-            'read__left' => intval($_POST['sign_idea__id']),
-            'read__metadata' => array(
+        $invite_link = $this->DISCOVER_model->create(array(
+            'x__type' => 7562, //User Signin Joined Mench
+            'x__player' => $added_source['new_source']['e__id'],
+            'x__left' => intval($_POST['sign_i__id']),
+            'x__metadata' => array(
                 'email_log' => $email_log,
             ),
         ));
@@ -1730,8 +1728,8 @@ class Source extends CI_Controller
 
         if (strlen($_POST['referrer_url']) > 0) {
             $sign_url = urldecode($_POST['referrer_url']);
-        } elseif(intval($_POST['sign_idea__id']) > 0) {
-            $sign_url = '/idea/go/'.$_POST['sign_idea__id'];
+        } elseif(intval($_POST['sign_i__id']) > 0) {
+            $sign_url = '/map/i_go/'.$_POST['sign_i__id'];
         } else {
             //Go to home page and let them continue from there:
             $sign_url = '/';
@@ -1749,12 +1747,12 @@ class Source extends CI_Controller
 
 
 
-    function search_google($source__id){
+    function search_google($e__id){
         $sources = $this->SOURCE_model->fetch(array(
-            'source__id' => $source__id,
+            'e__id' => $e__id,
         ));
         if(count($sources)){
-            return redirect_message('https://www.google.com/search?q='.urlencode($sources[0]['source__title']));
+            return redirect_message('https://www.google.com/search?q='.urlencode($sources[0]['e__title']));
         } else {
             return view_json(array(
                 'status' => 0,
@@ -1763,19 +1761,19 @@ class Source extends CI_Controller
         }
     }
 
-    function search_icon($source__id){
+    function search_icon($e__id){
         $sources = $this->SOURCE_model->fetch(array(
-            'source__id' => $source__id,
+            'e__id' => $e__id,
         ));
         if(count($sources)){
 
-            if(( substr_count($sources[0]['source__icon'], 'class="') ?  : null )){
+            if(( substr_count($sources[0]['e__icon'], 'class="') ?  : null )){
 
-                return redirect_message('/source/plugin/7267?search_for='.urlencode(one_two_explode('class="','"',$sources[0]['source__icon'])));
+                return redirect_message('/source/plugin/7267?search_for='.urlencode(one_two_explode('class="','"',$sources[0]['e__icon'])));
 
-            } elseif(strlen($sources[0]['source__icon'])) {
+            } elseif(strlen($sources[0]['e__icon'])) {
 
-                return redirect_message('/source/plugin/7267?search_for=' . urlencode($sources[0]['source__icon']));
+                return redirect_message('/source/plugin/7267?search_for=' . urlencode($sources[0]['e__icon']));
 
             } else {
                 return view_json(array(
@@ -1792,9 +1790,9 @@ class Source extends CI_Controller
         }
     }
 
-    function sign_check_password(){
+    function e_signin_password(){
 
-        if (!isset($_POST['sign_source__id']) || intval($_POST['sign_source__id'])<1) {
+        if (!isset($_POST['sign_e__id']) || intval($_POST['sign_e__id'])<1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing user ID',
@@ -1809,7 +1807,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing referrer URL',
             ));
-        } elseif (!isset($_POST['sign_idea__id'])) {
+        } elseif (!isset($_POST['sign_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea referrer',
@@ -1820,9 +1818,9 @@ class Source extends CI_Controller
 
         //Validaye user ID
         $sources = $this->SOURCE_model->fetch(array(
-            'source__id' => $_POST['sign_source__id'],
+            'e__id' => $_POST['sign_e__id'],
         ));
-        if (!in_array($sources[0]['source__status'], $this->config->item('sources_id_7357') /* PUBLIC */)) {
+        if (!in_array($sources[0]['e__status'], $this->config->item('sources_id_7357') /* PUBLIC */)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Your account source is not public. Contact us to adjust your account.',
@@ -1831,11 +1829,11 @@ class Source extends CI_Controller
 
         //Authenticate password:
         $sources[0]['is_masterpass_login'] = 0;
-        $user_passwords = $this->READ_model->fetch(array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'read__up' => 3286, //Password
-            'read__down' => $sources[0]['source__id'],
+        $user_passwords = $this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 3286, //Password
+            'x__down' => $sources[0]['e__id'],
         ));
         if (count($user_passwords) == 0) {
             //They do not have a password assigned yet!
@@ -1843,13 +1841,13 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.',
             ));
-        } elseif (!in_array($user_passwords[0]['read__status'], $this->config->item('sources_id_7359') /* PUBLIC */)) {
+        } elseif (!in_array($user_passwords[0]['x__status'], $this->config->item('sources_id_7359') /* PUBLIC */)) {
             //They do not have a password assigned yet!
             return view_json(array(
                 'status' => 0,
                 'message' => 'Password link is not public. Contact us to adjust your account.',
             ));
-        } elseif ($user_passwords[0]['read__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $sources[0]['source__id'])) {
+        } elseif ($user_passwords[0]['x__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $sources[0]['e__id'])) {
 
             //Is this the master password?
             if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == config_var(13014)){
@@ -1872,9 +1870,9 @@ class Source extends CI_Controller
         $this->SOURCE_model->activate_session($sources[0]);
 
 
-        if (intval($_POST['sign_idea__id']) > 0) {
+        if (intval($_POST['sign_i__id']) > 0) {
 
-            $sign_url = '/read/start/'.$_POST['sign_idea__id'];
+            $sign_url = '/discover/x_start/'.$_POST['sign_i__id'];
 
         } elseif (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
 
@@ -1893,112 +1891,8 @@ class Source extends CI_Controller
 
 
 
-    function sign_reset_password_apply()
-    {
 
-        //This function updates the user's new password as requested via a password reset:
-        if (!isset($_POST['read__id']) || intval($_POST['read__id']) < 1 || !isset($_POST['input_email']) || strlen($_POST['input_email']) < 1 || !isset($_POST['input_password'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing core data',
-            ));
-        } elseif (strlen($_POST['input_password']) < config_var(11066)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Must be longer than '.config_var(11066).' characters',
-            ));
-        } else {
-
-            //Validate READ ID and matching email:
-            $validate_links = $this->READ_model->fetch(array(
-                'read__id' => $_POST['read__id'],
-                'read__message' => $_POST['input_email'],
-                'read__type' => 7563, //User Signin Magic Link Email
-            )); //The user making the request
-            if(count($validate_links) < 1){
-                //Probably previously completed the reset password:
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Reset password link not found',
-                ));
-            }
-
-            //Validate user:
-            $sources = $this->SOURCE_model->fetch(array(
-                'source__id' => $validate_links[0]['read__player'],
-            ));
-            if(count($sources) < 1){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'User not found',
-                ));
-            }
-
-
-            //Generate the password hash:
-            $password_hash = hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']. $sources[0]['source__id'] );
-
-
-            //Fetch their passwords to authenticate login:
-            $user_passwords = $this->READ_model->fetch(array(
-                'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                'read__up' => 3286, //Mench Sign In Password
-                'read__down' => $sources[0]['source__id'],
-            ));
-
-            if (count($user_passwords) > 0) {
-
-                $detected_read_type = read_detect_type($password_hash);
-                if (!$detected_read_type['status']) {
-                    return view_json($detected_read_type);
-                }
-
-                //Update existing password:
-                $this->READ_model->update($user_passwords[0]['read__id'], array(
-                    'read__message' => $password_hash,
-                    'read__type' => $detected_read_type['read__type'],
-                ), $sources[0]['source__id'], 7578 /* User updated Password */);
-
-            } else {
-
-                //Create new password link:
-                $this->READ_model->create(array(
-                    'read__type' => source_link_type($password_hash),
-                    'read__message' => $password_hash,
-                    'read__up' => 3286, //Mench Password
-                    'read__player' => $sources[0]['source__id'],
-                    'read__down' => $sources[0]['source__id'],
-                ));
-
-            }
-
-
-            //Log password reset:
-            $this->READ_model->create(array(
-                'read__player' => $sources[0]['source__id'],
-                'read__type' => 7578, //User updated Password
-                'read__message' => $password_hash, //A copy of their password set at this time
-            ));
-
-
-            //Log them in:
-            $this->SOURCE_model->activate_session($sources[0]);
-
-            //Their next Idea in line:
-            return view_json(array(
-                'status' => 1,
-                'sign_url' => '/read/next',
-            ));
-
-
-        }
-    }
-
-
-
-
-    function magicemail(){
+    function e_magic_email(){
 
 
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
@@ -2006,7 +1900,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Email',
             ));
-        } elseif (!isset($_POST['sign_idea__id'])) {
+        } elseif (!isset($_POST['sign_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -2015,12 +1909,12 @@ class Source extends CI_Controller
 
         //Cleanup/validate email:
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
-        $user_emails = $this->READ_model->fetch(array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__message' => $_POST['input_email'],
-            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'read__up' => 3288, //Mench Email
-        ), array('read__down'));
+        $user_emails = $this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__message' => $_POST['input_email'],
+            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 3288, //Mench Email
+        ), array('x__down'));
         if(count($user_emails) < 1){
             return view_json(array(
                 'status' => 0,
@@ -2029,11 +1923,11 @@ class Source extends CI_Controller
         }
 
         //Log email search attempt:
-        $reset_link = $this->READ_model->create(array(
-            'read__type' => 7563, //User Signin Magic Link Email
-            'read__message' => $_POST['input_email'],
-            'read__player' => $user_emails[0]['source__id'], //User making request
-            'read__left' => intval($_POST['sign_idea__id']),
+        $reset_link = $this->DISCOVER_model->create(array(
+            'x__type' => 7563, //User Signin Magic Link Email
+            'x__message' => $_POST['input_email'],
+            'x__player' => $user_emails[0]['e__id'], //User making request
+            'x__left' => intval($_POST['sign_i__id']),
         ));
 
         //This is a new email, send invitation to join:
@@ -2043,11 +1937,11 @@ class Source extends CI_Controller
         $subject = 'MENCH '.$sources__11035[11068]['m_name'];
 
         ##Email Body
-        $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['source__title']).' 👋</div><br /><br />';
+        $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['e__title']).' 👋</div><br /><br />';
 
         $magic_link_expiry_hours = (config_var(11065)/3600);
         $html_message .= '<div>Login within the next '.$magic_link_expiry_hours.' hour'.view__s($magic_link_expiry_hours).':</div>';
-        $magic_url = $this->config->item('base_url').'/source/magic/' . $reset_link['read__id'] . '?email='.$_POST['input_email'];
+        $magic_url = $this->config->item('base_url').'/source/e_magic_sign/' . $reset_link['x__id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
@@ -2055,7 +1949,7 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send email:
-        $this->READ_model->send_email(array($_POST['input_email']), $subject, $html_message);
+        $this->DISCOVER_model->send_email(array($_POST['input_email']), $subject, $html_message);
 
         //Return success
         return view_json(array(
@@ -2063,7 +1957,7 @@ class Source extends CI_Controller
         ));
     }
 
-    function magic($read__id){
+    function e_magic_sign($x__id){
 
         //Validate email:
         if(superpower_assigned()){
@@ -2073,23 +1967,23 @@ class Source extends CI_Controller
             return redirect_message('/source/signin/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Missing Email</div>');
         }
 
-        //Validate READ ID and matching email:
-        $validate_links = $this->READ_model->fetch(array(
-            'read__id' => $read__id,
-            'read__message' => $_GET['email'],
-            'read__type' => 7563, //User Signin Magic Link Email
+        //Validate DISCOVER ID and matching email:
+        $validate_links = $this->DISCOVER_model->fetch(array(
+            'x__id' => $x__id,
+            'x__message' => $_GET['email'],
+            'x__type' => 7563, //User Signin Magic Link Email
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably previously completed the reset password:
             return redirect_message('//source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Invalid data source</div>');
-        } elseif(strtotime($validate_links[0]['read__time']) + config_var(11065) < time()){
+        } elseif(strtotime($validate_links[0]['x__time']) + config_var(11065) < time()){
             //Probably previously completed the reset password:
             return redirect_message('//source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Magic link has expired. Try again.</div>');
         }
 
         //Fetch source:
         $sources = $this->SOURCE_model->fetch(array(
-            'source__id' => $validate_links[0]['read__player'],
+            'e__id' => $validate_links[0]['x__player'],
         ));
         if(count($sources) < 1){
             return redirect_message('//source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>User not found</div>');
@@ -2098,19 +1992,19 @@ class Source extends CI_Controller
         //Log them in:
         $this->SOURCE_model->activate_session($sources[0]);
 
-        //Take them to READ HOME
+        //Take them to DISCOVER HOME
         return redirect_message( '/' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
 
     }
 
-    function sign_check_email(){
+    function e_signin_email(){
 
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Email',
             ));
-        } elseif (!isset($_POST['sign_idea__id'])) {
+        } elseif (!isset($_POST['sign_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -2122,11 +2016,11 @@ class Source extends CI_Controller
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
 
 
-        if(intval($_POST['sign_idea__id']) > 0){
+        if(intval($_POST['sign_i__id']) > 0){
             //Fetch the idea:
-            $referrer_ideas = $this->IDEA_model->fetch(array(
-                'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-                'idea__id' => $_POST['sign_idea__id'],
+            $referrer_ideas = $this->MAP_model->fetch(array(
+                'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+                'i__id' => $_POST['sign_i__id'],
             ));
         } else {
             $referrer_ideas = array();
@@ -2134,19 +2028,19 @@ class Source extends CI_Controller
 
 
         //Search for email to see if it exists...
-        $user_emails = $this->READ_model->fetch(array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__message' => $_POST['input_email'],
-            'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'read__up' => 3288, //Mench Email
-        ), array('read__down'));
+        $user_emails = $this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__message' => $_POST['input_email'],
+            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 3288, //Mench Email
+        ), array('x__down'));
 
         if(count($user_emails) > 0){
 
             return view_json(array(
                 'status' => 1,
                 'email_existed_previously' => 1,
-                'sign_source__id' => $user_emails[0]['source__id'],
+                'sign_e__id' => $user_emails[0]['e__id'],
                 'clean_input_email' => $_POST['input_email'],
             ));
 
@@ -2155,7 +2049,7 @@ class Source extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'email_existed_previously' => 0,
-                'sign_source__id' => 0,
+                'sign_e__id' => 0,
                 'clean_input_email' => $_POST['input_email'],
             ));
 
@@ -2163,9 +2057,9 @@ class Source extends CI_Controller
     }
 
 
-    function plugin($plugin_source__id = 0){
+    function plugin($plugin_e__id = 0){
 
-        if($plugin_source__id < 1){
+        if($plugin_e__id < 1){
 
             //List Plugins to choose from:
             $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
@@ -2179,7 +2073,7 @@ class Source extends CI_Controller
 
             //Load a specific plugin:
             //Valud Plugin?
-            if(!in_array($plugin_source__id, $this->config->item('sources_id_6287'))){
+            if(!in_array($plugin_e__id, $this->config->item('sources_id_6287'))){
                 die('Invalid Plugin ID');
             }
 
@@ -2194,7 +2088,7 @@ class Source extends CI_Controller
             //Needs extra superpowers?
             boost_power();
             $sources__6287 = $this->config->item('sources__6287'); //MENCH PLUGIN
-            $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $sources__6287[$plugin_source__id]['m_parents']);
+            $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $sources__6287[$plugin_e__id]['m_parents']);
             if($is_player_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
             }
@@ -2202,22 +2096,22 @@ class Source extends CI_Controller
 
             //This is also duplicated in plugin_frame to pass-on to plugin file:
             $view_data = array(
-                'plugin_source__id' => $plugin_source__id,
+                'plugin_e__id' => $plugin_e__id,
                 'session_source' => $session_source,
                 'is_player_request' => $is_player_request,
             );
 
-            if(in_array($plugin_source__id, $this->config->item('sources_id_12741'))){
+            if(in_array($plugin_e__id, $this->config->item('sources_id_12741'))){
 
                 //Raw UI:
-                $this->load->view('source/plugin/'.$plugin_source__id.'/index', $view_data);
+                $this->load->view('source/plugin/'.$plugin_e__id.'/index', $view_data);
 
             } else {
 
                 //Regular UI:
                 //Load Plugin:
                 $this->load->view('header', array(
-                    'title' => strip_tags($sources__6287[$plugin_source__id]['m_icon']).$sources__6287[$plugin_source__id]['m_name'].' | PLUGIN',
+                    'title' => strip_tags($sources__6287[$plugin_e__id]['m_icon']).$sources__6287[$plugin_e__id]['m_name'].' | PLUGIN',
                 ));
                 $this->load->view('source/plugin_frame', $view_data);
                 $this->load->view('footer');
@@ -2236,7 +2130,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(12700),
             ));
-        } elseif (!isset($_POST['idea__id']) || intval($_POST['idea__id']) < 1) {
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Starting Idea',
@@ -2249,14 +2143,14 @@ class Source extends CI_Controller
         }
 
         //Fetch/Validate idea:
-        $ideas = $this->IDEA_model->fetch(array(
-            'idea__id' => $_POST['idea__id'],
-            'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+        $ideas = $this->MAP_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         ));
         if(count($ideas) != 1){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Could not find idea #'.$_POST['idea__id'],
+                'message' => 'Could not find idea #'.$_POST['i__id'],
             ));
         }
 
@@ -2269,7 +2163,7 @@ class Source extends CI_Controller
         //Return report:
         return view_json(array(
             'status' => 1,
-            'message' => '<h3>'.$sources__7585[$ideas[0]['idea__type']]['m_icon'].' '.$sources__4737[$ideas[0]['idea__status']]['m_icon'].' '.view_idea__title($ideas[0]).'</h3>'.view_idea_scores_answer($_POST['idea__id'], $_POST['depth_levels'], $_POST['depth_levels'], $ideas[0]['idea__type']),
+            'message' => '<h3>'.$sources__7585[$ideas[0]['i__type']]['m_icon'].' '.$sources__4737[$ideas[0]['i__status']]['m_icon'].' '.view_i__title($ideas[0]).'</h3>'.view_idea_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $ideas[0]['i__type']),
         ));
 
 

@@ -16,15 +16,15 @@ $stats = array(
 if(!$obj || $obj==4535){
 
     //Update the weights for ideas and sources
-    foreach($this->IDEA_model->fetch(array(
-        'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+    foreach($this->MAP_model->fetch(array(
+        'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     )) as $in) {
         $stats['idea_scanned']++;
-        $stats['idea_updated'] += idea__weight_calculator($in);
+        $stats['idea_updated'] += i__weight_calculator($in);
     }
 
     //Now addup weights starting from primary Idea:
-    $stats['idea_total_weights'] = $this->IDEA_model->weight($this->config->item('featured_idea__id'));
+    $stats['idea_total_weights'] = $this->MAP_model->weight($this->config->item('featured_i__id'));
 
 }
 
@@ -32,10 +32,10 @@ if(!$obj || $obj==4535){
 if(!$obj || $obj==4536){
     //Update the weights for ideas and sources
     foreach($this->SOURCE_model->fetch(array(
-        'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
     )) as $en) {
         $stats['source_scanned']++;
-        $stats['source_updated'] += source__weight_calculator($en);
+        $stats['source_updated'] += e__weight_calculator($en);
     }
 }
 

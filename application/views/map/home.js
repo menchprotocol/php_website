@@ -15,7 +15,7 @@ $(document).ready(function () {
 
 
 var saving_idea = false;
-function idea_create(){
+function i_create(){
 
     if(saving_idea){
         alert('Idea already being saved, Be patient...');
@@ -32,14 +32,14 @@ function idea_create(){
     add_to_list('myIdeas', '.itemidealist', '<div id="tempLoader" class="list-group-item no-side-padding montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving Idea...</div>');
 
     //Process this:
-    $.post("/idea/idea_create", {
+    $.post("/map/i_create", {
         newIdeaTitle: $('#newIdeaTitle').val(),
     }, function (data) {
         if (data.status) {
 
             //Redirect:
             $('#tempLoader').html(data.message);
-            window.location = '/~' + data.idea__id;
+            window.location = '/~' + data.i__id;
 
         } else {
 

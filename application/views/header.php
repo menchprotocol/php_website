@@ -21,15 +21,15 @@ $current_mench = current_mench();
     <?php
     //PLAYER VARIABLES
     echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_source && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
-    echo ' var js_pl_id = ' . ( $session_source ? $session_source['source__id'] : 0 ) . '; ';
-    echo ' var js_pl_name = \'' . ( $session_source ? $session_source['source__title'] : '' ) . '\'; ';
+    echo ' var js_pl_id = ' . ( $session_source ? $session_source['e__id'] : 0 ) . '; ';
+    echo ' var js_pl_name = \'' . ( $session_source ? $session_source['e__title'] : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
     //JAVASCRIPT PLATFORM MEMORY
-    foreach($this->config->item('sources__11054') as $read__type => $m){
-        if(count($this->config->item('sources__'.$read__type))){
-            echo ' var js_sources__'.$read__type.' = ' . json_encode($this->config->item('sources__'.$read__type)) . ';';
-            echo ' var js_sources_id_'.$read__type.' = ' . json_encode($this->config->item('sources_id_'.$read__type)) . ';';
+    foreach($this->config->item('sources__11054') as $x__type => $m){
+        if(count($this->config->item('sources__'.$x__type))){
+            echo ' var js_sources__'.$x__type.' = ' . json_encode($this->config->item('sources__'.$x__type)) . ';';
+            echo ' var js_sources_id_'.$x__type.' = ' . json_encode($this->config->item('sources_id_'.$x__type)) . ';';
         }
     }
     ?>
@@ -113,13 +113,13 @@ if(!isset($hide_header)){
                             //RESORT
                             $sources__12893_resort = array();
                             $count = 0;
-                            foreach($this->config->item('sources__12893') as $read__type => $m) {
-                                $m['source__id'] = $read__type;
+                            foreach($this->config->item('sources__12893') as $x__type => $m) {
+                                $m['e__id'] = $x__type;
                                 if((!isset($sources__12893_resort[0])) && (
                                     $_SERVER['REQUEST_URI'] == $m['m_desc'] ||
-                                    ( $read__type==6205 /*  READ  */ && $current_mench['x_name']=='read' ) ||
-                                    ( $read__type==4535 /* IDEATE */ && $current_mench['x_name']=='idea' ) ||
-                                    ( $read__type==4536 /* SOURCE */ && $current_mench['x_name']=='source' )
+                                    ( $x__type==6205 /*  DISCOVER  */ && $current_mench['x_name']=='read' ) ||
+                                    ( $x__type==4535 /* IDEATE */ && $current_mench['x_name']=='idea' ) ||
+                                    ( $x__type==4536 /* SOURCE */ && $current_mench['x_name']=='source' )
                                 )){
                                     $sources__12893_resort[0] = $m;
                                 } else {
@@ -136,7 +136,7 @@ if(!isset($hide_header)){
                                 $class = extract_icon_color($m['m_icon']);
 
                                 //Apply superpower to Mench actions only
-                                $superpower_actives = ( in_array($m['source__id'], $this->config->item('sources_id_2738')) ? array_intersect($this->config->item('sources_id_10957'), $m['m_parents']) : array());
+                                $superpower_actives = ( in_array($m['e__id'], $this->config->item('sources_id_2738')) ? array_intersect($this->config->item('sources_id_10957'), $m['m_parents']) : array());
 
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
                                 echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
@@ -179,15 +179,15 @@ if(!isset($hide_header)){
                         echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
 
 
-                        foreach($this->config->item('sources__12500') as $read__type => $m) {
+                        foreach($this->config->item('sources__12500') as $x__type => $m) {
 
                             //Skip superpowers if not assigned
-                            if($read__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
+                            if($x__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
                                 continue;
-                            } elseif($read__type==6415 && !$is_home){
+                            } elseif($x__type==6415 && !$is_home){
                                 //Deleting reads only available on Reads home
                                 continue;
-                            } elseif($read__type==12749 && !$is_home && !is_numeric($first_segment)){
+                            } elseif($x__type==12749 && !$is_home && !is_numeric($first_segment)){
                                 //Not an editable discovery
                                 continue;
                             }
@@ -196,32 +196,32 @@ if(!isset($hide_header)){
                             $extra_class = null;
                             $text_class = null;
 
-                            if($read__type==12749) {
+                            if($x__type==12749) {
 
                                 //Map Idea
-                                $page_url = 'href="/~'.( $is_home ? $this->config->item('featured_idea__id') : $first_segment ).'"';
+                                $page_url = 'href="/~'.( $is_home ? $this->config->item('featured_i__id') : $first_segment ).'"';
 
-                            } elseif(in_array($read__type, $this->config->item('sources_id_10876'))){
+                            } elseif(in_array($x__type, $this->config->item('sources_id_10876'))){
 
                                 //Fetch URL:
-                                $page_url = 'href="'.$sources__10876[$read__type]['m_desc'].'"';
+                                $page_url = 'href="'.$sources__10876[$x__type]['m_desc'].'"';
 
-                            } elseif($read__type==12205) {
+                            } elseif($x__type==12205) {
 
                                 //SET TO PLAYER
-                                $read__type = $session_source['source__id'];
-                                $page_url = 'href="/@'.$read__type.'"';
-                                $m['m_name'] = $session_source['source__title'];
-                                $m['m_icon'] = $session_source['source__icon'];
-                                $text_class = 'text__6197_'.$read__type;
+                                $x__type = $session_source['e__id'];
+                                $page_url = 'href="/@'.$x__type.'"';
+                                $m['m_name'] = $session_source['e__title'];
+                                $m['m_icon'] = $session_source['e__icon'];
+                                $text_class = 'text__6197_'.$x__type;
 
-                            } elseif($read__type==12899) {
+                            } elseif($x__type==12899) {
 
                                 //FEEDBACK SUPPORT
                                 $page_url = 'href="javascript:void(0);"';
                                 $extra_class = ' icon_12899 ';
 
-                            } elseif($read__type==6415) {
+                            } elseif($x__type==6415) {
 
                                 //CLEAR DISCOVERIES
                                 $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')"';

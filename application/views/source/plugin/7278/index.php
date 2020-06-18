@@ -29,39 +29,39 @@ $node_size = array(
 );
 
 //Add Ideas:
-$ideas = $this->IDEA_model->fetch(array(
-    'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+$ideas = $this->MAP_model->fetch(array(
+    'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
 ));
 foreach($ideas as $in){
 
     //Prep metadata:
-    $idea__metadata = ( strlen($in['idea__metadata']) > 0 ? unserialize($in['idea__metadata']) : array());
+    $i__metadata = ( strlen($in['i__metadata']) > 0 ? unserialize($in['i__metadata']) : array());
 
     //Add Idea node:
     $this->db->insert('gephi_nodes', array(
-        'id' => $id_prefix[4535].$in['idea__id'],
-        'label' => $in['idea__title'],
-        //'size' => ( isset($idea__metadata['idea___max_seconds']) ? round(($idea__metadata['idea___max_seconds']/3600),0) : 0 ), //Max time
+        'id' => $id_prefix[4535].$in['i__id'],
+        'label' => $in['i__title'],
+        //'size' => ( isset($i__metadata['i___max_seconds']) ? round(($i__metadata['i___max_seconds']/3600),0) : 0 ), //Max time
         'size' => $node_size[4535],
         'node_type' => 1, //Idea
-        'node_status' => $in['idea__status'],
+        'node_status' => $in['i__status'],
     ));
 
     //Fetch children:
-    foreach($this->READ_model->fetch(array(
-        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-        'read__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-        'read__left' => $in['idea__id'],
-    ), array('read__right'), 0, 0) as $next_idea){
+    foreach($this->DISCOVER_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+        'x__left' => $in['i__id'],
+    ), array('x__right'), 0, 0) as $next_idea){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4535].$next_idea['read__left'],
-            'target' => $id_prefix[4535].$next_idea['read__right'],
-            'label' => $sources__4593[$next_idea['read__type']]['m_name'], //TODO maybe give visibility to condition here?
+            'source' => $id_prefix[4535].$next_idea['x__left'],
+            'target' => $id_prefix[4535].$next_idea['x__right'],
+            'label' => $sources__4593[$next_idea['x__type']]['m_name'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type' => $next_idea['read__type'],
-            'edge_status' => $next_idea['read__status'],
+            'edge_type' => $next_idea['x__type'],
+            'edge_status' => $next_idea['x__status'],
         ));
 
     }
@@ -70,79 +70,79 @@ foreach($ideas as $in){
 
 //Add sources:
 $sources = $this->SOURCE_model->fetch(array(
-    'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+    'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
 ));
 foreach($sources as $en){
 
     //Add source node:
     $this->db->insert('gephi_nodes', array(
-        'id' => $id_prefix[4536].$en['source__id'],
-        'label' => $en['source__title'],
+        'id' => $id_prefix[4536].$en['e__id'],
+        'label' => $en['e__title'],
         'size' => $node_size[4536] ,
         'node_type' => 2, //Player
-        'node_status' => $en['source__status'],
+        'node_status' => $en['e__status'],
     ));
 
     //Fetch children:
-    foreach($this->READ_model->fetch(array(
-        'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-        'read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-        'read__up' => $en['source__id'],
-    ), array('read__down'), 0, 0) as $source_child){
+    foreach($this->DISCOVER_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'x__up' => $en['e__id'],
+    ), array('x__down'), 0, 0) as $source_child){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4536].$source_child['read__up'],
-            'target' => $id_prefix[4536].$source_child['read__down'],
-            'label' => $sources__4593[$source_child['read__type']]['m_name'].': '.$source_child['read__message'],
+            'source' => $id_prefix[4536].$source_child['x__up'],
+            'target' => $id_prefix[4536].$source_child['x__down'],
+            'label' => $sources__4593[$source_child['x__type']]['m_name'].': '.$source_child['x__message'],
             'weight' => 1,
-            'edge_type' => $source_child['read__type'],
-            'edge_status' => $source_child['read__status'],
+            'edge_type' => $source_child['x__type'],
+            'edge_status' => $source_child['x__status'],
         ));
 
     }
 }
 
 //Add messages:
-$messages = $this->READ_model->fetch(array(
-    'read__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-    'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-    'read__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
-), array('read__right'), 0, 0);
+$messages = $this->DISCOVER_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+    'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
+), array('x__right'), 0, 0);
 foreach($messages as $message) {
 
     //Add message node:
     $this->db->insert('gephi_nodes', array(
-        'id' => $message['read__id'],
-        'label' => $sources__4593[$message['read__type']]['m_name'] . ': ' . $message['read__message'],
+        'id' => $message['x__id'],
+        'label' => $sources__4593[$message['x__type']]['m_name'] . ': ' . $message['x__message'],
         'size' => $node_size['msg'],
-        'node_type' => $message['read__type'], //Message type
-        'node_status' => $message['read__status'],
+        'node_type' => $message['x__type'], //Message type
+        'node_status' => $message['x__status'],
     ));
 
     //Add child idea link:
     $this->db->insert('gephi_edges', array(
-        'source' => $message['read__id'],
-        'target' => $id_prefix[4535].$message['read__right'],
+        'source' => $message['x__id'],
+        'target' => $id_prefix[4535].$message['x__right'],
         'label' => 'Child Idea',
         'weight' => 1,
     ));
 
     //Add parent idea link?
-    if ($message['read__left'] > 0) {
+    if ($message['x__left'] > 0) {
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4535].$message['read__left'],
-            'target' => $message['read__id'],
+            'source' => $id_prefix[4535].$message['x__left'],
+            'target' => $message['x__id'],
             'label' => 'Parent Idea',
             'weight' => 1,
         ));
     }
 
     //Add parent source link?
-    if ($message['read__up'] > 0) {
+    if ($message['x__up'] > 0) {
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4536].$message['read__up'],
-            'target' => $message['read__id'],
+            'source' => $id_prefix[4536].$message['x__up'],
+            'target' => $message['x__id'],
             'label' => 'Parent Source',
             'weight' => 1,
         ));

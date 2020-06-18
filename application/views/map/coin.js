@@ -16,11 +16,11 @@ $(document).ready(function () {
     load_editor();
 
     //Lookout for textinput updates
-    view_input_text_update_start();
+    x_set_text_start();
 
     //Put focus on messages if no message:
     if(!$('#idea_notes_list_4231 .note_sortable').length){
-        $('#read__message4231').focus();
+        $('#x__message4231').focus();
     }
 
     autosize($('.text__4736_'+idea_loaded_id));
@@ -43,22 +43,22 @@ $(document).ready(function () {
 });
 
 
-function source_only_unlink(read__id, note_type_id) {
+function source_only_unlink(x__id, note_type_id) {
 
     var r = confirm("Remove this source?");
     if (r == true) {
         $.post("/source/source_only_unlink", {
 
-            idea__id: idea_loaded_id,
-            read__id: read__id,
+            i__id: idea_loaded_id,
+            x__id: x__id,
 
         }, function (data) {
             if (data.status) {
 
                 idea_note_counter(note_type_id, -1);
-                $(".tr_" + read__id).fadeOut();
+                $(".tr_" + x__id).fadeOut();
                 setTimeout(function () {
-                    $(".tr_" + read__id).remove();
+                    $(".tr_" + x__id).remove();
                 }, 610);
 
             } else {
@@ -94,7 +94,7 @@ function source_only_add(source_existing_id, note_type_id) {
     input.prop('disabled', true);
     $.post("/source/source_only_add", {
 
-        idea__id: idea_loaded_id,
+        i__id: idea_loaded_id,
         note_type_id: note_type_id,
         source_existing_id: source_existing_id,
         source_new_string: source_new_string,
@@ -178,7 +178,7 @@ function source_source_only_search(note_type_id) {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    //If clicked, would trigger the autocomplete:selected above which will trigger the source__add() function
+                    //If clicked, would trigger the autocomplete:selected above which will trigger the e__add() function
                     return view_search_result(suggestion);
                 },
                 header: function (data) {
@@ -204,21 +204,21 @@ function read_preview(){
     }
 }
 
-function idea_unlink(idea__id, read__id, is_parent){
-    var idea__title = $('.text__4736_'+idea__id).text();
-    if(!idea__title.length){
-        idea__title = $('.text__4736_'+idea__id).val();
+function i_unlink(i__id, x__id, is_parent){
+    var i__title = $('.text__4736_'+i__id).text();
+    if(!i__title.length){
+        i__title = $('.text__4736_'+i__id).val();
     }
-    var r = confirm("Unlink ["+idea__title+"]?");
+    var r = confirm("Unlink ["+i__title+"]?");
     if (r == true) {
 
         //Fetch Idea Data to load modify widget:
-        $.post("/idea/idea_unlink", {
-            idea__id: idea__id,
-            read__id: read__id,
+        $.post("/map/i_unlink", {
+            i__id: i__id,
+            x__id: x__id,
         }, function (data) {
             if (data.status) {
-                idea_ui_delete(idea__id,read__id);
+                idea_ui_delete(i__id,x__id);
                 if(!is_parent){
                     idea_note_counter(11020, -1);
                 }
@@ -227,19 +227,19 @@ function idea_unlink(idea__id, read__id, is_parent){
     }
 }
 
-function idea_ui_delete(idea__id,read__id){
+function idea_ui_delete(i__id,x__id){
 
     //Delete from UI:
-    $('.idea__tr_' + read__id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
+    $('.idea__tr_' + x__id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
 
     //Hide the editor & saving results:
-    $('.idea__tr_' + read__id).fadeOut();
+    $('.idea__tr_' + x__id).fadeOut();
 
     //Disappear in a while:
     setTimeout(function () {
 
         //Hide the editor & saving results:
-        $('.idea__tr_' + read__id).remove();
+        $('.idea__tr_' + x__id).remove();
 
         //Hide editing box:
         $('#modifybox').addClass('hidden');
@@ -265,26 +265,26 @@ function prep_search_pad(){
 
 }
 
-function idea_sort_save(idea__id) {
+function i_sort_save(i__id) {
 
-    var new_read__sorts = [];
+    var new_x__sorts = [];
     var sort_rank = 0;
 
     $("#list-in-" + idea_loaded_id + "-0 .ideas_sortable").each(function () {
         //Fetch variables for this idea:
-        var idea__id = parseInt($(this).attr('idea-id'));
-        var read__id = parseInt($(this).attr('read__id'));
+        var i__id = parseInt($(this).attr('idea-id'));
+        var x__id = parseInt($(this).attr('x__id'));
 
         sort_rank++;
 
         //Store in DB:
-        new_read__sorts[sort_rank] = read__id;
+        new_x__sorts[sort_rank] = x__id;
     });
 
     //It might be zero for lists that have jsut been emptied
-    if (sort_rank > 0 && idea__id) {
+    if (sort_rank > 0 && i__id) {
         //Update backend:
-        $.post("/idea/idea_sort_save", {idea__id: idea__id, new_read__sorts: new_read__sorts}, function (data) {
+        $.post("/map/i_sort_save", {i__id: i__id, new_x__sorts: new_x__sorts}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -294,7 +294,7 @@ function idea_sort_save(idea__id) {
     }
 }
 
-function idea_sort_load(idea__id) {
+function idea_sort_load(i__id) {
 
 
     var element_key = null;
@@ -309,12 +309,12 @@ function idea_sort_load(idea__id) {
         draggable: ".ideas_sortable", // Specifies which items inside the element should be sortable
         handle: ".idea-sort-handle", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            idea_sort_save(idea__id);
+            i_sort_save(i__id);
         }
     });
 }
 
-function idea_add(idea_linked_id, is_parent, idea_link_child_id) {
+function i_add(idea_linked_id, is_parent, idea_link_child_id) {
 
     /*
      *
@@ -328,24 +328,24 @@ function idea_add(idea_linked_id, is_parent, idea_link_child_id) {
     var sort_handler = ".ideas_sortable";
     var sort_list_id = "list-in-" + idea_loaded_id + '-' + is_parent;
     var input_field = $('#addidea-c-' + idea_linked_id + '-' + is_parent);
-    var idea__title = input_field.val();
+    var i__title = input_field.val();
 
 
-    if( idea__title.charAt(0)=='#'){
-        if(isNaN(idea__title.substr(1))){
+    if( i__title.charAt(0)=='#'){
+        if(isNaN(i__title.substr(1))){
             alert('Use numbers only. Example: #1234');
             return false;
         } else {
             //Update the references:
-            idea_link_child_id = parseInt(idea__title.substr(1));
-            idea__title = idea_link_child_id; //As if we were just linking
+            idea_link_child_id = parseInt(i__title.substr(1));
+            i__title = idea_link_child_id; //As if we were just linking
         }
     }
 
 
 
     //We either need the idea name (to create a new idea) or the idea_link_child_id>0 to create an IDEA link:
-    if (!idea_link_child_id && idea__title.length < 1) {
+    if (!idea_link_child_id && i__title.length < 1) {
         alert('Enter something');
         input_field.focus();
         return false;
@@ -357,10 +357,10 @@ function idea_add(idea_linked_id, is_parent, idea_link_child_id) {
 
 
     //Update backend:
-    $.post("/idea/idea_add", {
+    $.post("/map/i_add", {
         idea_linked_id: idea_linked_id,
         is_parent:is_parent,
-        idea__title: idea__title,
+        i__title: i__title,
         idea_link_child_id: idea_link_child_id
     }, function (data) {
 
@@ -382,7 +382,7 @@ function idea_add(idea_linked_id, is_parent, idea_link_child_id) {
             idea_sort_load(idea_linked_id);
 
             //Lookout for textinput updates
-            view_input_text_update_start();
+            x_set_text_start();
 
             //Expand selections:
             prep_search_pad();
@@ -402,7 +402,7 @@ function idea_add(idea_linked_id, is_parent, idea_link_child_id) {
 
 }
 
-function idea_update_dropdown(element_id, new_source__id, idea__id, read__id, show_full_name){
+function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
     /*
     *
@@ -416,9 +416,9 @@ function idea_update_dropdown(element_id, new_source__id, idea__id, read__id, sh
     *
     * */
 
-    var current_selected = parseInt($('.dropi_'+element_id+'_'+idea__id+'_'+read__id+'.active').attr('new-en-id'));
-    new_source__id = parseInt(new_source__id);
-    if(current_selected == new_source__id){
+    var current_selected = parseInt($('.dropi_'+element_id+'_'+i__id+'_'+x__id+'.active').attr('new-en-id'));
+    new_e__id = parseInt(new_e__id);
+    if(current_selected == new_e__id){
         //Nothing changed:
         return false;
     }
@@ -426,8 +426,8 @@ function idea_update_dropdown(element_id, new_source__id, idea__id, read__id, sh
     //Changing Idea Status?
     if(element_id==4737){
 
-        var is_idea_active = (new_source__id in js_sources__7356);
-        var is_idea_public = (new_source__id in js_sources__7355);
+        var is_idea_active = (new_e__id in js_sources__7356);
+        var is_idea_public = (new_e__id in js_sources__7355);
 
 
         //Deleting?
@@ -463,25 +463,25 @@ function idea_update_dropdown(element_id, new_source__id, idea__id, read__id, sh
 
     //Show Loading...
     var data_object = eval('js_sources__'+element_id);
-    $('.dropd_'+element_id+'_'+idea__id+'_'+read__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? '<span class="show-max">SAVING...</span>' : '' ) +'</b>');
+    $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? '<span class="show-max">SAVING...</span>' : '' ) +'</b>');
 
-    $.post("/idea/idea_update_dropdown", {
+    $.post("/map/i_set_dropdown", {
 
-        idea__id: idea__id,
-        read__id: read__id,
+        i__id: i__id,
+        x__id: x__id,
         idea_loaded_id:idea_loaded_id,
         element_id: element_id,
-        new_source__id: new_source__id
+        new_e__id: new_e__id
 
     }, function (data) {
         if (data.status) {
 
             //Update on page:
-            $('.dropd_'+element_id+'_'+idea__id+'_'+read__id+' .btn').html('<span class="icon-block">'+data_object[new_source__id]['m_icon']+'</span><span class="show-max">' + ( show_full_name ? data_object[new_source__id]['m_name'] : '' ) + '</span>');
-            $('.dropd_'+element_id+'_'+idea__id+'_'+read__id+' .dropi_' + element_id +'_'+idea__id+ '_' + read__id).removeClass('active');
-            $('.dropd_'+element_id+'_'+idea__id+'_'+read__id+' .optiond_' + new_source__id+'_'+idea__id+ '_' + read__id).addClass('active');
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m_icon']+'</span><span class="show-max">' + ( show_full_name ? data_object[new_e__id]['m_name'] : '' ) + '</span>');
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .dropi_' + element_id +'_'+i__id+ '_' + x__id).removeClass('active');
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .optiond_' + new_e__id+'_'+i__id+ '_' + x__id).addClass('active');
 
-            $('.dropd_'+element_id+'_'+idea__id+'_'+read__id).attr('selected-val' , new_source__id);
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id).attr('selected-val' , new_e__id);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main idea page:
@@ -501,14 +501,14 @@ function idea_update_dropdown(element_id, new_source__id, idea__id, read__id, sh
             }
 
             if(element_id==4486){
-                $('.idea__tr_'+read__id+' .link_marks').addClass('hidden');
-                $('.idea__tr_'+read__id+' .settings_' + new_source__id).removeClass('hidden');
+                $('.idea__tr_'+x__id+' .link_marks').addClass('hidden');
+                $('.idea__tr_'+x__id+' .settings_' + new_e__id).removeClass('hidden');
             }
 
         } else {
 
             //Reset to default:
-            $('.dropd_'+element_id+'_'+idea__id+'_'+read__id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m_name'] : '' ));
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m_name'] : '' ));
 
             //Show error:
             alert(data.message);

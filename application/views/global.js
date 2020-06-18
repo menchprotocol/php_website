@@ -128,15 +128,15 @@ function load_editor(){
 }
 
 
-function js_extract_icon_color(source__icon){
+function js_extract_icon_color(e__icon){
 
     //NOTE: Has a twin PHP function
 
-    if(source__icon.includes('read')){
+    if(e__icon.includes('read')){
         return ' read ';
-    } else if(source__icon.includes( 'idea')){
+    } else if(e__icon.includes( 'idea')){
         return ' idea ';
-    } else if(source__icon.includes('source') || !source__icon.length){
+    } else if(e__icon.includes('source') || !e__icon.length){
         return ' source ';
     } else {
         return '';
@@ -156,8 +156,8 @@ function view_search_result(algolia_object){
 }
 
 
-function js_view_platform_message(source__id){
-    var messages = js_sources__12687[source__id]['m_desc'].split(" | ");
+function js_view_platform_message(e__id){
+    var messages = js_sources__12687[e__id]['m_desc'].split(" | ");
     if(messages.length == 1){
         //Return message:
         return messages[0];
@@ -168,15 +168,15 @@ function js_view_platform_message(source__id){
 }
 
 
-function loadtab(read__type, tab_data_id, note_idea__id, owner_source__id){
+function loadtab(x__type, tab_data_id, note_i__id, owner_e__id){
 
     //Hide all tabs:
-    $('.tab-group-'+read__type).addClass('hidden');
-    $('.tab-nav-'+read__type).removeClass('active');
+    $('.tab-group-'+x__type).addClass('hidden');
+    $('.tab-nav-'+x__type).removeClass('active');
 
     //Show this tab:
-    $('.tab-group-'+read__type+'.tab-data-'+tab_data_id).removeClass('hidden');
-    $('.tab-nav-'+read__type+'.tab-head-'+tab_data_id).addClass('active');
+    $('.tab-group-'+x__type+'.tab-data-'+tab_data_id).removeClass('hidden');
+    $('.tab-nav-'+x__type+'.tab-head-'+tab_data_id).addClass('active');
 
     //Focus on potential input field if any:
     $('.input_note_'+tab_data_id).focus();
@@ -343,7 +343,7 @@ $(document).ready(function () {
                             var search_body = $("#mench_search").val().substr(1);
                             if(!isNaN(search_body)){
                                 //Valid Integer, Give option to go there:
-                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/idea/go/' : '/@' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
+                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/map/i_go/' : '/@' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
                             }
 
                         }
@@ -371,10 +371,10 @@ $(document).ready(function () {
 
 
 
-function read_preview_type_load(){
+function x_type_preview_load(){
 
     //Watchout for content change
-    var textInput = document.getElementById('read__message');
+    var textInput = document.getElementById('x__message');
 
     //Init a timeout variable to be used below
     var timeout = null;
@@ -390,7 +390,7 @@ function read_preview_type_load(){
         // Make a new timeout set to go off in 800ms
         timeout = setTimeout(function () {
             //update type:
-            read_preview_type();
+            x_type_preview();
         }, 610);
     };
 
@@ -399,23 +399,23 @@ function read_preview_type_load(){
 
 
 
-function read_preview_type() {
+function x_type_preview() {
 
     /*
      * Updates the type of link based on the link content
      *
      * */
 
-    $('#read__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('#x__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Fetch Idea Data to load modify widget:
-    $.post("/read/read_preview_type", {
-        read__message: $('#read__message').val(),
-        read__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('source-link-id')) : 0 ),
+    $.post("/discover/x_type_preview", {
+        x__message: $('#x__message').val(),
+        x__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('source-link-id')) : 0 ),
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
-        $('#read__type_preview').html((data.status ? data.html_ui : '<b class="read">' + data.message+'</b>'));
+        $('#x__type_preview').html((data.status ? data.html_ui : '<b class="read">' + data.message+'</b>'));
 
         if(data.status && data.source_link_preview.length > 0){
             $('#source_link_preview').html(data.source_link_preview);
@@ -464,10 +464,10 @@ function toggle_search(){
 
 
 
-function read_toggle_saved(idea__id){
+function x_save(i__id){
     $('.toggle_saved').toggleClass('hidden');
-    $.post("/read/read_toggle_saved", {
-        idea__id:idea__id,
+    $.post("/discover/x_save", {
+        i__id:i__id,
     }, function (data) {
         if (!data.status) {
             alert(data.message);
@@ -571,9 +571,9 @@ function idea_load_search(element_focus, is_idea_previous, shortcut, is_add_mode
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             if(is_add_mode=='link_in') {
-                return idea_add($(this).attr('idea-id'), is_idea_previous, 0);
+                return i_add($(this).attr('idea-id'), is_idea_previous, 0);
             } else if(is_add_mode=='link_my_in') {
-                return idea_create();
+                return i_create();
             }
             e.preventDefault();
         }
@@ -588,7 +588,7 @@ function idea_load_search(element_focus, is_idea_previous, shortcut, is_add_mode
     $(element_focus).on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='link_in'){
-            idea_add($(this).attr('idea-id'), is_idea_previous, suggestion.object__id);
+            i_add($(this).attr('idea-id'), is_idea_previous, suggestion.object__id);
         } else {
             //Go to idea:
             window.location = suggestion.object__url;
@@ -626,17 +626,17 @@ function idea_load_search(element_focus, is_idea_previous, shortcut, is_add_mode
             },
             header: function (data) {
                 if (is_add_mode=='link_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_idea_previous+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_idea_previous+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='link_my_in'){
-                    return '<a href="javascript:idea_create()" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:i_create()" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
                 if(is_add_mode=='link_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_idea_previous+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_idea_previous+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:idea_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_idea_previous+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_idea_previous+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },
@@ -647,51 +647,51 @@ function idea_load_search(element_focus, is_idea_previous, shortcut, is_add_mode
 
 
 
-function view_input_text_update_start(){
-    $('.view_input_text_update').keypress(function(e) {
+function x_set_text_start(){
+    $('.x_set_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-            view_input_text_update(this);
+            x_set_text(this);
             e.preventDefault();
         }
     }).change(function() {
-        view_input_text_update(this);
+        x_set_text(this);
     });
 }
 
-function view_input_text_count(cache_source__id, object__id) {
+function view_input_text_count(cache_e__id, object__id) {
 
     //Count text area characters:
 
     //Update count:
-    var len = $('.text__'+cache_source__id+'_'+object__id).val().length;
-    if (len > js_sources__6404[cache_source__id]['m_desc']) {
-        $('#current_count_'+cache_source__id+'_'+object__id).addClass('overload').text(len);
+    var len = $('.text__'+cache_e__id+'_'+object__id).val().length;
+    if (len > js_sources__6404[cache_e__id]['m_desc']) {
+        $('#current_count_'+cache_e__id+'_'+object__id).addClass('overload').text(len);
     } else {
-        $('#current_count_'+cache_source__id+'_'+object__id).removeClass('overload').text(len);
+        $('#current_count_'+cache_e__id+'_'+object__id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_sources__6404[cache_source__id]['m_desc'] * js_sources__6404[12088]['m_desc'] )){
-        $('.title_counter_'+cache_source__id+'_'+object__id).removeClass('hidden');
+    if(len > ( js_sources__6404[cache_e__id]['m_desc'] * js_sources__6404[12088]['m_desc'] )){
+        $('.title_counter_'+cache_e__id+'_'+object__id).removeClass('hidden');
     } else {
-        $('.title_counter_'+cache_source__id+'_'+object__id).addClass('hidden');
+        $('.title_counter_'+cache_e__id+'_'+object__id).addClass('hidden');
     }
 
 }
 
-function update_text_name(cache_source__id, source__id, source__title){
-    if(cache_source__id==6197){
-        source__title = source__title.toUpperCase();
+function update_text_name(cache_e__id, e__id, e__title){
+    if(cache_e__id==6197){
+        e__title = e__title.toUpperCase();
     }
-    $(".text__"+cache_source__id+"_" + source__id).val(source__title).text(source__title).attr('old-value', source__title);
+    $(".text__"+cache_e__id+"_" + e__id).val(e__title).text(e__title).attr('old-value', e__title);
 }
 
-function view_input_text_update(this_handler){
+function x_set_text(this_handler){
 
     var modify_data = {
         object__id: parseInt($(this_handler).attr('object__id')),
-        cache_source__id: parseInt($(this_handler).attr('cache_source__id')),
+        cache_e__id: parseInt($(this_handler).attr('cache_e__id')),
         field_value: $(this_handler).val().trim()
     };
 
@@ -702,10 +702,10 @@ function view_input_text_update(this_handler){
     }
 
     //Grey background to indicate saving...
-    var handler = '.text__'+modify_data['cache_source__id']+'_'+modify_data['object__id'];
+    var handler = '.text__'+modify_data['cache_e__id']+'_'+modify_data['object__id'];
     $(handler).addClass('dynamic_saving');
 
-    $.post("/read/view_input_text_update", modify_data, function (data) {
+    $.post("/discover/x_set_text", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -718,7 +718,7 @@ function view_input_text_update(this_handler){
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_name(modify_data['cache_source__id'], modify_data['object__id'], modify_data['field_value']);
+            update_text_name(modify_data['cache_e__id'], modify_data['object__id'], modify_data['field_value']);
 
         }
 
@@ -750,7 +750,7 @@ function idea_note_activate(){
         autosize($(this));
 
         //Activate sorting:
-        idea_note_sort_load(note_type_id);
+        i_note_sort_load(note_type_id);
 
         var showFiles = function (files) {
             if(typeof files[0] !== 'undefined'){
@@ -768,15 +768,15 @@ function idea_note_activate(){
         });
 
         //Watch for message creation:
-        $('#read__message' + note_type_id).keydown(function (e) {
+        $('#x__message' + note_type_id).keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
-                idea_note_add_text(note_type_id);
+                i_note_text(note_type_id);
             }
         });
 
         //Watchout for file uplods:
         $('.box' + note_type_id).find('input[type="file"]').change(function () {
-            idea_note_add_file(droppedFiles, 'file', note_type_id);
+            i_note_file(droppedFiles, 'file', note_type_id);
         });
 
 
@@ -799,7 +799,7 @@ function idea_note_activate(){
                 .on('drop', function (e) {
                     droppedFiles = e.originalEvent.dataTransfer.files;
                     e.preventDefault();
-                    idea_note_add_file(droppedFiles, 'drop', note_type_id);
+                    i_note_file(droppedFiles, 'drop', note_type_id);
                 });
         }
 
@@ -815,7 +815,7 @@ function idea_note_counter(note_type_id, adjustment_count){
 function idea_note_count_new(note_type_id) {
 
     //Update count:
-    var len = $('#read__message' + note_type_id).val().length;
+    var len = $('#x__message' + note_type_id).val().length;
     if (len > js_sources__6404[4485]['m_desc']) {
         $('#charNum' + note_type_id).addClass('overload').text(len);
     } else {
@@ -831,24 +831,24 @@ function idea_note_count_new(note_type_id) {
 
 }
 
-function idea_note_edit_count(read__id) {
+function idea_note_edit_count(x__id) {
     //See if this is a valid text message editing:
-    if (!($('#charEditingNum' + read__id).length)) {
+    if (!($('#charEditingNum' + x__id).length)) {
         return false;
     }
     //Update count:
-    var len = $('#message_body_' + read__id).val().length;
+    var len = $('#message_body_' + x__id).val().length;
     if (len > js_sources__6404[4485]['m_desc']) {
-        $('#charEditingNum' + read__id).addClass('overload').text(len);
+        $('#charEditingNum' + x__id).addClass('overload').text(len);
     } else {
-        $('#charEditingNum' + read__id).removeClass('overload').text(len);
+        $('#charEditingNum' + x__id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
     if(len > ( js_sources__6404[4485]['m_desc'] * js_sources__6404[12088]['m_desc'] )){
-        $('#ideaNoteCount' + read__id).removeClass('hidden');
+        $('#ideaNoteCount' + x__id).removeClass('hidden');
     } else {
-        $('#ideaNoteCount' + read__id).addClass('hidden');
+        $('#ideaNoteCount' + x__id).addClass('hidden');
     }
 }
 
@@ -883,23 +883,23 @@ function idea_note_source_search(obj) {
     }
 }
 
-function idea_note_sort_apply(note_type_id) {
+function i_note_sort_apply(note_type_id) {
 
-    var new_read__sorts = [];
+    var new_x__sorts = [];
     var sort_rank = 0;
-    var this_read__id = 0;
+    var this_x__id = 0;
 
     $(".msg_source_type_" + note_type_id).each(function () {
-        this_read__id = parseInt($(this).attr('read__id'));
-        if (this_read__id > 0) {
+        this_x__id = parseInt($(this).attr('x__id'));
+        if (this_x__id > 0) {
             sort_rank++;
-            new_read__sorts[sort_rank] = this_read__id;
+            new_x__sorts[sort_rank] = this_x__id;
         }
     });
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/idea/idea_note_sort", {new_read__sorts: new_read__sorts}, function (data) {
+        $.post("/map/i_note_sort", {new_x__sorts: new_x__sorts}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
@@ -909,49 +909,49 @@ function idea_note_sort_apply(note_type_id) {
     }
 }
 
-function idea_note_sort_load(note_type_id) {
+function i_note_sort_load(note_type_id) {
 
     var inner_content = null;
 
     var sort_msg = Sortable.create( document.getElementById("idea_notes_list_" + note_type_id) , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        handle: ".idea_note_sorting", // Restricts sort start click/touch to the specified element
+        handle: ".i_note_sorting", // Restricts sort start click/touch to the specified element
         draggable: ".note_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            idea_note_sort_apply(note_type_id);
+            i_note_sort_apply(note_type_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
             //See if this is a YouTube or Vimeo iFrame that needs to be temporarily deleted:
-            var read__id = $(evt.item).attr('read__id');
-            if ($('#ul-nav-' + read__id).find('.video-sorting').length !== 0) {
-                inner_content = $('#msgbody_' + read__id).html();
-                $('#msgbody_' + read__id).css('height', $('#msgbody_' + read__id).height()).html('<i class="fas fa-bars"></i> SORT VIDEO');
+            var x__id = $(evt.item).attr('x__id');
+            if ($('#ul-nav-' + x__id).find('.video-sorting').length !== 0) {
+                inner_content = $('#msgbody_' + x__id).html();
+                $('#msgbody_' + x__id).css('height', $('#msgbody_' + x__id).height()).html('<i class="fas fa-bars"></i> SORT VIDEO');
             } else {
                 inner_content = null;
             }
         },
         onEnd: function (evt/**Event*/) {
             if (inner_content) {
-                var read__id = $(evt.item).attr('read__id');
-                $('#msgbody_' + read__id).html(inner_content);
+                var x__id = $(evt.item).attr('x__id');
+                $('#msgbody_' + x__id).html(inner_content);
             }
         }
     });
 
 }
 
-function idea_note_edit_start(read__id) {
+function idea_note_edit_start(x__id) {
 
     //Start editing:
-    $("#ul-nav-" + read__id).addClass('in-editing');
-    $("#ul-nav-" + read__id + " .edit-off").addClass('hidden');
-    $("#ul-nav-" + read__id + " .edit-on").removeClass('hidden');
-    $("#ul-nav-" + read__id + ">div").css('width', '100%');
+    $("#ul-nav-" + x__id).addClass('in-editing');
+    $("#ul-nav-" + x__id + " .edit-off").addClass('hidden');
+    $("#ul-nav-" + x__id + " .edit-on").removeClass('hidden');
+    $("#ul-nav-" + x__id + ">div").css('width', '100%');
 
     //Set focus to end of text:
-    var textinput = $("#ul-nav-" + read__id + " textarea");
+    var textinput = $("#ul-nav-" + x__id + " textarea");
     var data = textinput.val();
     textinput.focus().val('').val(data);
     autosize(textinput); //Adjust height
@@ -960,36 +960,36 @@ function idea_note_edit_start(read__id) {
     idea_note_source_search(textinput);
 
     //Try to initiate the editor, which only applies to text messages:
-    idea_note_edit_count(read__id);
+    idea_note_edit_count(x__id);
 
 }
 
-function idea_note_edit_cancel(read__id) {
+function idea_note_edit_cancel(x__id) {
     //Revert editing:
-    $("#ul-nav-" + read__id).removeClass('in-editing');
-    $("#ul-nav-" + read__id + " .edit-off").removeClass('hidden');
-    $("#ul-nav-" + read__id + " .edit-on").addClass('hidden');
-    $("#ul-nav-" + read__id + ">div").css('width', 'inherit');
+    $("#ul-nav-" + x__id).removeClass('in-editing');
+    $("#ul-nav-" + x__id + " .edit-off").removeClass('hidden');
+    $("#ul-nav-" + x__id + " .edit-on").addClass('hidden');
+    $("#ul-nav-" + x__id + ">div").css('width', 'inherit');
 }
 
-function idea_note_modify(read__id, note_type_id) {
+function i_note_edit(x__id, note_type_id) {
 
     //Show loader:
-    $("#ul-nav-" + read__id + " .edit-updates").html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>');
+    $("#ul-nav-" + x__id + " .edit-updates").html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
     //Revert View:
-    idea_note_edit_cancel(read__id);
+    idea_note_edit_cancel(x__id);
 
 
     var modify_data = {
-        read__id: parseInt(read__id),
-        message_read__status: parseInt($("#message_status_" + read__id).val()),
-        idea__id: parseInt(idea_loaded_id),
-        read__message: $("#ul-nav-" + read__id + " textarea").val(),
+        x__id: parseInt(x__id),
+        message_x__status: parseInt($("#message_status_" + x__id).val()),
+        i__id: parseInt(idea_loaded_id),
+        x__message: $("#ul-nav-" + x__id + " textarea").val(),
     };
 
     //Update message:
-    $.post("/idea/idea_note_modify", modify_data, function (data) {
+    $.post("/map/i_note_edit", modify_data, function (data) {
 
         if (data.status) {
 
@@ -999,20 +999,20 @@ function idea_note_modify(read__id, note_type_id) {
                 idea_note_counter(note_type_id, -1);
 
                 //Yes, message was deleted, adjust accordingly:
-                $("#ul-nav-" + read__id).html('<div>' + data.message + '</div>');
+                $("#ul-nav-" + x__id).html('<div>' + data.message + '</div>');
 
                 //Disapper in a while:
                 setTimeout(function ()
                 {
-                    $("#ul-nav-" + read__id).fadeOut();
+                    $("#ul-nav-" + x__id).fadeOut();
 
                     setTimeout(function () {
 
                         //Delete first:
-                        $("#ul-nav-" + read__id).remove();
+                        $("#ul-nav-" + x__id).remove();
 
                         //Adjust sort for this message type:
-                        idea_note_sort_apply(note_type_id);
+                        i_note_sort_apply(note_type_id);
 
                     }, 610);
                 }, 610);
@@ -1022,13 +1022,13 @@ function idea_note_modify(read__id, note_type_id) {
                 //IDEA NOTE EDITED...
 
                 //Update text message:
-                $("#ul-nav-" + read__id + " .text_message").html(data.message);
+                $("#ul-nav-" + x__id + " .text_message").html(data.message);
 
                 //Update message status:
-                $("#ul-nav-" + read__id + " .message_status").html(data.message_new_status_icon);
+                $("#ul-nav-" + x__id + " .message_status").html(data.message_new_status_icon);
 
                 //Show success here
-                $("#ul-nav-" + read__id + " .edit-updates").html('<b>' + data.success_icon + '</b>');
+                $("#ul-nav-" + x__id + " .edit-updates").html('<b>' + data.success_icon + '</b>');
 
                 lazy_load();
 
@@ -1036,7 +1036,7 @@ function idea_note_modify(read__id, note_type_id) {
 
         } else {
             //Oops, some sort of an error, lets
-            $("#ul-nav-" + read__id + " .edit-updates").html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
         }
 
         //Tooltips:
@@ -1044,7 +1044,7 @@ function idea_note_modify(read__id, note_type_id) {
 
         //Disapper in a while:
         setTimeout(function () {
-            $("#ul-nav-" + read__id + " .edit-updates>b").fadeOut();
+            $("#ul-nav-" + x__id + " .edit-updates>b").fadeOut();
         }, 4181);
 
     });
@@ -1055,16 +1055,16 @@ function idea_note_start_adding(note_type_id) {
     $('.save_notes_' + note_type_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
     $('.add_notes_' + note_type_id).addClass('is-working');
     $('.no_notes_' + note_type_id).remove();
-    $('#read__message' + note_type_id).prop("disabled", true);
+    $('#x__message' + note_type_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
 
 function idea_note_end_adding(result, note_type_id) {
 
     //Update UI to unlock:
-    $('.save_notes_' + note_type_id).html('<i class="fas fa-plus"></i>').attr('href', 'javascript:idea_note_add_text('+note_type_id+');');
+    $('.save_notes_' + note_type_id).html('<i class="fas fa-plus"></i>').attr('href', 'javascript:i_note_text('+note_type_id+');');
     $('.add_notes_' + note_type_id).removeClass('is-working');
-    $("#read__message" + note_type_id).prop("disabled", false).focus();
+    $("#x__message" + note_type_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
 
     //What was the result?
@@ -1091,7 +1091,7 @@ function idea_note_end_adding(result, note_type_id) {
     }
 }
 
-function idea_note_add_file(droppedFiles, uploadType, note_type_id) {
+function i_note_file(droppedFiles, uploadType, note_type_id) {
 
     //Prevent multiple concurrent uploads:
     if ($('.box' + note_type_id).hasClass('is-uploading')) {
@@ -1115,11 +1115,11 @@ function idea_note_add_file(droppedFiles, uploadType, note_type_id) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('idea__id', idea_loaded_id);
+        ajaxData.append('i__id', idea_loaded_id);
         ajaxData.append('note_type_id', note_type_id);
 
         $.ajax({
-            url: '/idea/idea_note_add_file',
+            url: '/map/i_note_file',
             type: $('.box' + note_type_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -1150,16 +1150,16 @@ function idea_note_add_file(droppedFiles, uploadType, note_type_id) {
     }
 }
 
-function idea_note_add_text(note_type_id) {
+function i_note_text(note_type_id) {
 
     //Lock message:
     idea_note_start_adding(note_type_id);
 
     //Update backend:
-    $.post("/idea/idea_note_add_text", {
+    $.post("/map/i_note_text", {
 
-        idea__id: idea_loaded_id, //Synonymous
-        read__message: $('#read__message' + note_type_id).val(),
+        i__id: idea_loaded_id, //Synonymous
+        x__message: $('#x__message' + note_type_id).val(),
         note_type_id: note_type_id,
 
     }, function (data) {
@@ -1168,8 +1168,8 @@ function idea_note_add_text(note_type_id) {
         if (data.status) {
 
             //Reset input field:
-            $("#read__message" + note_type_id).val("");
-            autosize.update($("#read__message" + note_type_id));
+            $("#x__message" + note_type_id).val("");
+            autosize.update($("#x__message" + note_type_id));
 
             idea_note_count_new(note_type_id);
             idea_note_counter(note_type_id, +1);

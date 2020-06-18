@@ -15,12 +15,12 @@ $show_max = config_var(11986);
         echo '<div class="read-topic" style="margin-top:21px;"><span class="icon-block">'.$sources__11035[12205]['m_icon'].'</span>'.$sources__11035[12205]['m_name'].'</div>';
 
         echo '<div class="list-group">';
-        foreach($this->READ_model->fetch(array(
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
-            'read__player' => $session_source['source__id'],
-            'source__id' => $session_source['source__id'],
-        ), array('read__down')) as $my_source){
+        foreach($this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
+            'x__player' => $session_source['e__id'],
+            'e__id' => $session_source['e__id'],
+        ), array('x__down')) as $my_source){
             echo view_source($my_source);
         }
         echo '</div>';
@@ -29,7 +29,7 @@ $show_max = config_var(11986);
 
 
 
-    foreach($this->config->item('sources__13207') as $source__id => $m) {
+    foreach($this->config->item('sources__13207') as $e__id => $m) {
 
         echo '<div style="padding-top:34px;">';
         echo '<table class="table table-sm table-striped">';
@@ -42,21 +42,21 @@ $show_max = config_var(11986);
 
         echo '<div class="list-group">';
 
-        //TODO: Expand to include read__down for IDEA COINS (Currently only counts read__up)
-        foreach($this->READ_model->fetch(array(
+        //TODO: Expand to include x__down for IDEA COINS (Currently only counts x__up)
+        foreach($this->DISCOVER_model->fetch(array(
 
-            'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-            ' EXISTS (SELECT 1 FROM mench_interactions WHERE source__id=read__down AND read__up IN (' . join(',', $this->config->item('sources_id_'.$source__id)) . ') AND read__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND read__status IN ('.join(',', $this->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+            ' EXISTS (SELECT 1 FROM mench__x WHERE e__id=x__down AND x__up IN (' . join(',', $this->config->item('sources_id_'.$e__id)) . ') AND x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND x__status IN ('.join(',', $this->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
 
-        ), array('read__up'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(read__id) as totals, source__id, source__title, source__icon, source__metadata, source__status, source__weight', 'source__id, source__title, source__icon, source__metadata, source__status, source__weight') as $count=>$source) {
+        ), array('x__up'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(x__id) as totals, e__id, e__title, e__icon, e__metadata, e__status, e__weight', 'e__id, e__title, e__icon, e__metadata, e__status, e__weight') as $count=>$source) {
 
             if($count==$show_max){
-                echo '<div class="list-group-item see_more_who'.$source__id.' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$source__id.'\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
-                echo '<div class="list-group-item see_more_who'.$source__id.' no-height"></div>';
+                echo '<div class="list-group-item see_more_who'.$e__id.' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                echo '<div class="list-group-item see_more_who'.$e__id.' no-height"></div>';
             }
 
-            echo view_source($source, false, ( $count<$show_max ? '' : 'see_more_who'.$source__id.' hidden'));
+            echo view_source($source, false, ( $count<$show_max ? '' : 'see_more_who'.$e__id.' hidden'));
 
         }
         echo '</div>';

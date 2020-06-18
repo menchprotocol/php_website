@@ -3,9 +3,9 @@
 
 <?php
 
-if(!isset($_GET['idea__id']) || !intval($_GET['idea__id'])){
+if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
 
-    echo 'Missing Idea ID (Append ?idea__id=IDEA_ID in URL)';
+    echo 'Missing Idea ID (Append ?i__id=IDEA_ID in URL)';
 
 } else {
 
@@ -21,7 +21,7 @@ if(!isset($_GET['idea__id']) || !intval($_GET['idea__id'])){
                      style="max-width:550px; margin:1px 0 10px; display: inline-block;">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Start at #</span>
-                        <input style="padding-left:3px; min-width:56px;" type="number" min="1" step="1" name="idea__id" id="idea__id" value="'.$_GET['idea__id'].'" class="form-control">
+                        <input style="padding-left:3px; min-width:56px;" type="number" min="1" step="1" name="i__id" id="i__id" value="'.$_GET['i__id'].'" class="form-control">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #999999;"> and go </span>
                         <input style="padding-left:3px; min-width:56px;" type="number" min="1" step="1" name="depth_levels" id="depth_levels" value="'.$_GET['depth_levels'].'" class="form-control">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #999999; border-right:0px solid #FFF;"> levels deep.</span>

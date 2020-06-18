@@ -27,21 +27,21 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($add_fields, $required_columns, $read__player)
+function detect_missing_columns($add_fields, $required_columns, $x__player)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
         if (!isset($add_fields[$req_field]) || strlen($add_fields[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->READ_model->create(array(
-                'read__message' => 'Missing required field [' . $req_field . '] for inserting new DB row',
-                'read__metadata' => array(
+            $CI->DISCOVER_model->create(array(
+                'x__message' => 'Missing required field [' . $req_field . '] for inserting new DB row',
+                'x__metadata' => array(
                     'insert_columns' => $add_fields,
                     'required_columns' => $required_columns,
                 ),
-                'read__type' => 4246, //Platform Bug Reports
-                'read__player' => $read__player,
+                'x__type' => 4246, //Platform Bug Reports
+                'x__player' => $x__player,
             ));
 
             return true; //We have an issue
@@ -76,7 +76,7 @@ function array_flatten($hierarchical_array){
 }
 
 
-function extract_source_references($read__message)
+function extract_source_references($x__message)
 {
 
     //Analyzes a message text to extract Source References (Like @123) and URLs
@@ -84,7 +84,7 @@ function extract_source_references($read__message)
     $session_source = superpower_assigned();
 
     //Replace non-ascii characters with space:
-    $read__message = preg_replace('/[[:^print:]]/', ' ', $read__message);
+    $x__message = preg_replace('/[[:^print:]]/', ' ', $x__message);
 
     //Analyze the message to find referencing URLs and Players in the message text:
     $string_references = array(
@@ -96,7 +96,7 @@ function extract_source_references($read__message)
     );
 
     //See what we can find:
-    foreach(preg_split('/\s+/', $read__message) as $word) {
+    foreach(preg_split('/\s+/', $x__message) as $word) {
         if (filter_var($word, FILTER_VALIDATE_URL)) {
 
             if(substr_count($word,':')==3){
@@ -114,13 +114,13 @@ function extract_source_references($read__message)
 
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
 
-            $source__id = intval(substr($word, 1));
-            array_push($string_references['ref_sources'], $source__id);
+            $e__id = intval(substr($word, 1));
+            array_push($string_references['ref_sources'], $e__id);
 
             if(substr_count($word,':')==2){
                 //See if this is it:
                 $times = explode(':',$word);
-                if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$source__id.':'.$times[1].':'.$times[2]){
+                if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$e__id.':'.$times[1].':'.$times[2]){
                     $string_references['ref_time_found'] = true;
                     $string_references['ref_time_start'] = second_calc($times[1]);
                     $string_references['ref_time_end'] = second_calc($times[2]);
@@ -197,14 +197,14 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     if (@file_get_contents($fav_icon)) {
         return '<img src="'.$fav_icon.'">';
     } else {
-        return ( $return_icon ? view_source__icon() : null );
+        return ( $return_icon ? view_e__icon() : null );
     }
 }
 
 function source_link_type($string = null){
     $detected_read_type = read_detect_type($string);
     if ($detected_read_type['status']){
-        return $detected_read_type['read__type'];
+        return $detected_read_type['x__type'];
     }
     return 0;
 }
@@ -224,14 +224,14 @@ function read_detect_type($string)
 
         return array(
             'status' => 1,
-            'read__type' => 4230, //Raw
+            'x__type' => 4230, //Raw
         );
 
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(
             'status' => 1,
-            'read__type' => 4319, //Number
+            'x__type' => 4319, //Number
         );
 
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
@@ -245,7 +245,7 @@ function read_detect_type($string)
         //Date/time:
         return array(
             'status' => 1,
-            'read__type' => 4318,
+            'x__type' => 4318,
         );
 
     } elseif (substr($string, -1)=='%' && is_numeric(substr($string, 0, (strlen($string)-1)))) {
@@ -253,7 +253,7 @@ function read_detect_type($string)
         //Percent:
         return array(
             'status' => 1,
-            'read__type' => 7657,
+            'x__type' => 7657,
         );
 
     } elseif (!substr_count($string, ' ')) {
@@ -261,7 +261,7 @@ function read_detect_type($string)
         //Single Word:
         return array(
             'status' => 1,
-            'read__type' => 12827,
+            'x__type' => 12827,
         );
 
     } else {
@@ -269,7 +269,7 @@ function read_detect_type($string)
         //Regular text link:
         return array(
             'status' => 1,
-            'read__type' => 4255, //Text Link
+            'x__type' => 4255, //Text Link
         );
 
     }
@@ -371,7 +371,7 @@ function is_valid_icon($string){
 }
 
 
-function source_count_connections($source__id, $return_html = true){
+function source_count_connections($e__id, $return_html = true){
 
     //NOTE HERE
 
@@ -381,15 +381,15 @@ function source_count_connections($source__id, $return_html = true){
     $sources__6194 = $CI->config->item('sources__6194');
 
     foreach(array(
-        4737 => 'SELECT count(idea__id) as totals FROM mench_ideas WHERE idea__status=',
-        7585 => 'SELECT count(idea__id) as totals FROM mench_ideas WHERE idea__status IN ('.join(',', $CI->config->item('sources_id_7355')).') AND idea__type=',
-        6177 => 'SELECT count(source__id) as totals FROM mench_sources WHERE source__status=',
-        4364 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__player=',
-        6186 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status=',
-        4593 => 'SELECT count(read__id) as totals FROM mench_interactions WHERE read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND read__type=',
+        4737 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status=',
+        7585 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status IN ('.join(',', $CI->config->item('sources_id_7355')).') AND i__type=',
+        6177 => 'SELECT count(e__id) as totals FROM mench__e WHERE e__status=',
+        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND x__player=',
+        6186 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status=',
+        4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND x__type=',
     ) as $source_app_id => $query){
 
-        $query = $CI->db->query( $query . $source__id );
+        $query = $CI->db->query( $query . $e__id );
         foreach($query->result() as $row)
         {
             if($row->totals > 0){
@@ -400,8 +400,8 @@ function source_count_connections($source__id, $return_html = true){
     }
 
     //Plugin?
-    if(superpower_active(12699, true) && in_array($source__id, $CI->config->item('sources_id_6287'))){
-        $source_count_connections[6287] = ( $return_html ? '<a href="/source/plugin/'.$source__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
+    if(superpower_active(12699, true) && in_array($e__id, $CI->config->item('sources_id_6287'))){
+        $source_count_connections[6287] = ( $return_html ? '<a href="/source/plugin/'.$e__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
     }
 
     return $source_count_connections;
@@ -409,29 +409,29 @@ function source_count_connections($source__id, $return_html = true){
 }
 
 
-function idea_fetch_cover($idea__id, $html_format = false){
+function idea_fetch_cover($i__id, $html_format = false){
 
     $CI =& get_instance();
     $idea_fetch_cover = null;
-    foreach($CI->READ_model->fetch(array( //IDEA SOURCE
-        'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-        'read__right' => $idea__id,
-        '(read__up > 0 OR read__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+    foreach($CI->DISCOVER_model->fetch(array( //IDEA SOURCE
+        'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+        'x__right' => $i__id,
+        '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     ), array(), 0, 0, array(
-        'read__type' => 'ASC', //Messages First, Sources Second
-        'read__sort' => 'ASC', //Sort by message order
+        'x__type' => 'ASC', //Messages First, Sources Second
+        'x__sort' => 'ASC', //Sort by message order
     )) as $fetched_source){
 
-        foreach(array('read__up','read__down') as $source_ref_field) {
+        foreach(array('x__up','x__down') as $source_ref_field) {
             if($fetched_source[$source_ref_field] > 0){
                 //See if this source has a photo:
-                foreach($CI->READ_model->fetch(array(
-                    'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'read__type' => 4260, //IMAGES ONLY
-                    'read__down' => $fetched_source[$source_ref_field],
+                foreach($CI->DISCOVER_model->fetch(array(
+                    'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'x__type' => 4260, //IMAGES ONLY
+                    'x__down' => $fetched_source[$source_ref_field],
                 )) as $source_image) {
-                    $idea_fetch_cover = $source_image['read__message'];
+                    $idea_fetch_cover = $source_image['x__message'];
                     break;
                 }
                 if($idea_fetch_cover){
@@ -449,31 +449,31 @@ function idea_fetch_cover($idea__id, $html_format = false){
 }
 
 
-function idea__weight_calculator($idea){
+function i__weight_calculator($idea){
 
     //DISCOVERIES
     $CI =& get_instance();
 
-    $count_reads = $CI->READ_model->fetch(array(
-        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        '(read__right='.$idea['idea__id'].' OR read__left='.$idea['idea__id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
+    $count_reads = $CI->DISCOVER_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        '(x__right='.$idea['i__id'].' OR x__left='.$idea['i__id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
-    $counts = $CI->READ_model->fetch(array(
-        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'read__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-        '(read__right='.$idea['idea__id'].' OR read__left='.$idea['idea__id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
+    $counts = $CI->DISCOVER_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+        '(x__right='.$idea['i__id'].' OR x__left='.$idea['i__id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Returns the weight of a idea:
     $weight = ( $count_reads[0]['totals'] * config_var(12568) )
         + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
-    if($weight != $idea['idea__weight']){
-        return $CI->IDEA_model->update($idea['idea__id'], array(
-            'idea__weight' => $weight,
+    if($weight != $idea['i__weight']){
+        return $CI->MAP_model->update($idea['i__id'], array(
+            'i__weight' => $weight,
         ));
     } else {
         return 0;
@@ -481,31 +481,31 @@ function idea__weight_calculator($idea){
 
 }
 
-function source__weight_calculator($source){
+function e__weight_calculator($source){
 
     //DISCOVERIES
     $CI =& get_instance();
 
-    $count_reads = $CI->READ_model->fetch(array(
-        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        '(read__down='.$source['source__id'].' OR read__up='.$source['source__id'].' OR read__player='.$source['source__id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
+    $count_reads = $CI->DISCOVER_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].' OR x__player='.$source['e__id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
-    $counts = $CI->READ_model->fetch(array(
-        'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        '(read__down='.$source['source__id'].' OR read__up='.$source['source__id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(read__id) as totals');
+    $counts = $CI->DISCOVER_model->fetch(array(
+        'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+        '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Returns the weight of a source:
     $weight = ( $count_reads[0]['totals'] * config_var(12568) )
             + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
-    if($weight != $source['source__weight']){
-        return $CI->SOURCE_model->update($source['source__id'], array(
-            'source__weight' => $weight,
+    if($weight != $source['e__weight']){
+        return $CI->SOURCE_model->update($source['e__id'], array(
+            'e__weight' => $weight,
         ));
     } else {
         return 0;
@@ -513,23 +513,23 @@ function source__weight_calculator($source){
 
 }
 
-function filter_cache_group($search_source__id, $cache_source__id){
+function filter_cache_group($search_e__id, $cache_e__id){
 
     //Determines which category an source belongs to
 
     $CI =& get_instance();
-    foreach($CI->config->item('sources__'.$cache_source__id) as $source__id => $m) {
-        if(in_array($search_source__id, $CI->config->item('sources_id_'.$source__id))){
+    foreach($CI->config->item('sources__'.$cache_e__id) as $e__id => $m) {
+        if(in_array($search_e__id, $CI->config->item('sources_id_'.$e__id))){
             return $m;
         }
     }
     return false;
 }
 
-function config_var($source__id){
+function config_var($e__id){
     $CI =& get_instance();
     $sources__6404 = $CI->config->item('sources__6404');
-    return $sources__6404[$source__id]['m_desc'];
+    return $sources__6404[$e__id]['m_desc'];
 }
 
 function update_description($before_string, $after_string){
@@ -578,7 +578,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function idea_is_unlockable($idea){
     $CI =& get_instance();
-    return in_array($idea['idea__status'], $CI->config->item('sources_id_7355') /* PUBLIC */);
+    return in_array($idea['i__status'], $CI->config->item('sources_id_7355') /* PUBLIC */);
 }
 
 function redirect_message($url, $message = null)
@@ -601,22 +601,22 @@ function redirect_message($url, $message = null)
 }
 
 function sortByWeight($a, $b) {
-    if(isset($a['source__weight']) && isset($b['source__weight'])){
-        return $b['source__weight'] - $a['source__weight'];
+    if(isset($a['e__weight']) && isset($b['e__weight'])){
+        return $b['e__weight'] - $a['e__weight'];
     }
 }
 
-function superpower_active($superpower_source__id, $boolean_only = false){
+function superpower_active($superpower_e__id, $boolean_only = false){
 
-    if( intval($superpower_source__id)>0 ){
+    if( intval($superpower_e__id)>0 ){
 
         $CI =& get_instance();
-        $is_match = (superpower_assigned() ? in_array(intval($superpower_source__id), $CI->session->userdata('session_superpowers_activated')) : false);
+        $is_match = (superpower_assigned() ? in_array(intval($superpower_e__id), $CI->session->userdata('session_superpowers_activated')) : false);
 
         if($boolean_only){
             return $is_match;
         } else {
-            return ' superpower-'.$superpower_source__id . ' ' . ( $is_match ? '' : ' hidden ' );
+            return ' superpower-'.$superpower_e__id . ' ' . ( $is_match ? '' : ' hidden ' );
         }
 
     } else {
@@ -627,15 +627,15 @@ function superpower_active($superpower_source__id, $boolean_only = false){
     }
 }
 
-function extract_icon_color($source__icon){
+function extract_icon_color($e__icon){
 
     //NOTE: Has a twin JS function
 
-    if(substr_count($source__icon, 'read')>0){
+    if(substr_count($e__icon, 'read')>0){
         return ' read ';
-    } elseif(substr_count($source__icon, 'idea')>0){
+    } elseif(substr_count($e__icon, 'idea')>0){
         return ' idea ';
-    } elseif(substr_count($source__icon, 'source')>0 || !$source__icon){
+    } elseif(substr_count($e__icon, 'source')>0 || !$e__icon){
         return ' source ';
     } else {
         return '';
@@ -684,7 +684,7 @@ function current_mench(){
 
 
 
-function read_coins_idea($read__type, $idea__id, $load_page = 0){
+function x_coins_idea($x__type, $i__id, $load_page = 0){
 
     /*
      * Counts MENCH COINS for ideas
@@ -697,22 +697,22 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
     $CI =& get_instance();
 
     //We need to count this:
-    if($read__type==12273){
+    if($x__type==12273){
 
-        $join_objects = array('read__up');
+        $join_objects = array('x__up');
         $query_filters = array(
-            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-            'read__right' => $idea__id,
+            'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+            'x__right' => $i__id,
         );
 
-    } elseif($read__type==6255){
+    } elseif($x__type==6255){
 
-        $join_objects = array('read__player');
+        $join_objects = array('x__player');
         $query_filters = array(
-            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
-            'read__left' => $idea__id,
+            'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //DISCOVER COIN
+            'x__left' => $i__id,
         );
 
     } else {
@@ -722,7 +722,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->READ_model->fetch($query_filters, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('read__id' => 'DESC') ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
+    $query = $CI->DISCOVER_model->fetch($query_filters, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('x__id' => 'DESC') ), ( !$load_page ? 'COUNT(x__id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -742,7 +742,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
 
         //No Results:
         $sources__12467 = $CI->config->item('sources__12467'); //MENCH COINS
-        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$sources__12467[$read__type]['m_name'].' yet</div>';
+        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$sources__12467[$x__type]['m_name'].' yet</div>';
 
     }
 
@@ -751,7 +751,7 @@ function read_coins_idea($read__type, $idea__id, $load_page = 0){
 
 }
 
-function read_coins_source($read__type, $source__id, $load_page = 0){
+function x_coins_source($x__type, $e__id, $load_page = 0){
 
     /*
      * Counts MENCH COINS for sources
@@ -764,34 +764,34 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
     $CI =& get_instance();
 
     //We need to count this:
-    if($read__type==12274){
+    if($x__type==12274){
 
-        $order_columns = array('source__weight' => 'DESC'); //BEST SOURCES
-        $join_objects = array('read__down');
+        $order_columns = array('e__weight' => 'DESC'); //BEST SOURCES
+        $join_objects = array('x__down');
         $query_filters = array(
-            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $CI->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
-            'read__player' => $source__id,
+            'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
+            'x__player' => $e__id,
         );
 
-    } elseif($read__type==12273){
+    } elseif($x__type==12273){
 
-        $order_columns = array('idea__weight' => 'DESC'); //BEST IDEAS
-        $join_objects = array('read__right');
+        $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
+        $join_objects = array('x__right');
         $query_filters = array(
-            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-            '(read__up = '.$source__id.' OR read__down = '.$source__id.')' => null,
+            'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+            '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
         );
 
-    } elseif($read__type==6255){
+    } elseif($x__type==6255){
 
-        $order_columns = array('read__id' => 'DESC'); //LATEST DISCOVERIES
-        $join_objects = array('read__left');
+        $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
+        $join_objects = array('x__left');
         $query_filters = array(
-            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //READ COIN
-            'read__player' => $source__id,
+            'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null, //DISCOVER COIN
+            'x__player' => $e__id,
         );
 
     } else {
@@ -801,7 +801,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->READ_model->fetch($query_filters, $join_objects, config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(read__id) as totals' : '*' ));
+    $query = $CI->DISCOVER_model->fetch($query_filters, $join_objects, config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(x__id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -811,21 +811,21 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
         //Return UI:
         $ui = '<div class="list-group">';
-        if($read__type==12274){
+        if($x__type==12274){
 
             //SOURCE COIN
             foreach($query as $item){
                 $ui .= view_source($item);
             }
 
-        } elseif($read__type==6255){
+        } elseif($x__type==6255){
 
-            //READ COIN
+            //DISCOVER COIN
             foreach($query as $item){
                 $ui .= view_idea($item);
             }
 
-        } elseif($read__type==12273){
+        } elseif($x__type==12273){
 
             //IDEA COIN
             $previous_do_hide = true;
@@ -837,21 +837,21 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
                 $boxbar_details = null;
                 $string_references['ref_time_found'] = false;
 
-                if(strlen($item['read__message'])){
+                if(strlen($item['x__message'])){
                     $boxbar_details .= '<div class="message_content">';
-                    $boxbar_details .= $CI->READ_model->message_send($item['read__message']);
+                    $boxbar_details .= $CI->DISCOVER_model->message_send($item['x__message']);
                     $boxbar_details .= '</div>';
-                    $string_references = extract_source_references($item['read__message']);
+                    $string_references = extract_source_references($item['x__message']);
                 }
 
-                $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['idea__weight']) || ($count >= $show_max)));
+                $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['i__weight']) || ($count >= $show_max)));
 
                 if(!$previous_do_hide && $do_hide){
                     $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
                     $ui .= '<div class="see_more_sources"></div>';
                 }
 
-                $ui .= view_idea($item, 0, false, false, $item['read__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+                $ui .= view_idea($item, 0, false, false, $item['x__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
 
                 $previous_do_hide = $do_hide;
 
@@ -864,7 +864,7 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
         //No Results:
         $sources__12467 = $CI->config->item('sources__12467'); //MENCH COINS
-        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$sources__12467[$read__type]['m_name'].' yet</div>';
+        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$sources__12467[$x__type]['m_name'].' yet</div>';
 
     }
 
@@ -873,21 +873,21 @@ function read_coins_source($read__type, $source__id, $load_page = 0){
 
 }
 
-function idea_stats($idea__metadata){
+function idea_stats($i__metadata){
     //Calculates average based on metadata:
-    $metadata = unserialize($idea__metadata);
-    $sources_array = array_merge(( isset($metadata['idea___experts']) ? $metadata['idea___experts'] : array() ), ( isset($metadata['idea___content']) ? $metadata['idea___content'] : array() ));
-    $certificate_array = ( isset($metadata['idea___certificates']) ? $metadata['idea___certificates'] : array() );
+    $metadata = unserialize($i__metadata);
+    $sources_array = array_merge(( isset($metadata['i___experts']) ? $metadata['i___experts'] : array() ), ( isset($metadata['i___content']) ? $metadata['i___content'] : array() ));
+    $certificate_array = ( isset($metadata['i___certificates']) ? $metadata['i___certificates'] : array() );
     usort($sources_array, 'sortByWeight');
 
     //Return stats:
     return array(
-        'ideas_min' => ( isset($metadata['idea___min_reads']) && $metadata['idea___min_reads']>=2 ? $metadata['idea___min_reads']-1 : 0 ),
-        'ideas_max' => ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? $metadata['idea___max_reads']-1 : 0 ),
-        'ideas_average' => ( isset($metadata['idea___max_reads']) && $metadata['idea___max_reads']>=2 ? round(( ($metadata['idea___min_reads']-1) + ($metadata['idea___max_reads']-1) ) / 2) : 0 ),
-        'duration_min' => ( isset($metadata['idea___min_seconds']) ? $metadata['idea___min_seconds'] : 0 ),
-        'duration_max' => ( isset($metadata['idea___max_seconds']) ? $metadata['idea___max_seconds'] : 0 ),
-        'duration_average' => ( isset($metadata['idea___max_seconds']) ? round(($metadata['idea___min_seconds']+$metadata['idea___max_seconds'])/2) : 0 ),
+        'ideas_min' => ( isset($metadata['i___min_reads']) && $metadata['i___min_reads']>=2 ? $metadata['i___min_reads']-1 : 0 ),
+        'ideas_max' => ( isset($metadata['i___max_reads']) && $metadata['i___max_reads']>=2 ? $metadata['i___max_reads']-1 : 0 ),
+        'ideas_average' => ( isset($metadata['i___max_reads']) && $metadata['i___max_reads']>=2 ? round(( ($metadata['i___min_reads']-1) + ($metadata['i___max_reads']-1) ) / 2) : 0 ),
+        'duration_min' => ( isset($metadata['i___min_seconds']) ? $metadata['i___min_seconds'] : 0 ),
+        'duration_max' => ( isset($metadata['i___max_seconds']) ? $metadata['i___max_seconds'] : 0 ),
+        'duration_average' => ( isset($metadata['i___max_seconds']) ? round(($metadata['i___min_seconds']+$metadata['i___max_seconds'])/2) : 0 ),
         'sources_count' => count($sources_array),
         'sources_array' => $sources_array,
         'certificate_count' => count($certificate_array),
@@ -895,7 +895,7 @@ function idea_stats($idea__metadata){
     );
 
 }
-function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
+function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
 {
 
     //Authenticates logged-in users with their session information
@@ -904,12 +904,12 @@ function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
     $has_session = ( is_array($session_source) && count($session_source) > 0 && $session_source );
 
     //Let's start checking various ways we can give user access:
-    if ($has_session && !$superpower_source__id) {
+    if ($has_session && !$superpower_e__id) {
 
         //No minimum level required, grant access IF user is logged in:
         return $session_source;
 
-    } elseif ($has_session && in_array($superpower_source__id, $CI->session->userdata('session_superpowers_assigned'))) {
+    } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_assigned'))) {
 
         //They are part of one of the levels assigned to them:
         return $session_source;
@@ -926,13 +926,13 @@ function superpower_assigned($superpower_source__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/@'.$session_source['source__id'];
+            $goto_url = '/@'.$session_source['e__id'];
         } else {
             $goto_url = '//source/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.view_unauthorized_message($superpower_source__id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
     }
 
 }
@@ -965,13 +965,13 @@ function idea_calc_bold_upto_weight($child_list){
         if(!is_null($previous_weight)){
             if($previous_weight<1000){
                 break;
-            } elseif($previous_weight/$child_item['idea__weight'] >= 2){
-                $bold_upto_weight = $child_item['idea__weight'];
+            } elseif($previous_weight/$child_item['i__weight'] >= 2){
+                $bold_upto_weight = $child_item['i__weight'];
                 break;
             }
         }
 
-        $previous_weight = $child_item['idea__weight'];
+        $previous_weight = $child_item['i__weight'];
     }
     return $bold_upto_weight;
 }
@@ -1019,7 +1019,7 @@ function idea_calc_common_prefix($child_list, $child_field){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $read__player = 0, $read__metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -1051,13 +1051,13 @@ function upload_to_cdn($file_url, $read__player = 0, $read__metadata = null, $is
 
     //MAKE SURE WE CAN ACCESS AWS:
     if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
-        $CI->READ_model->create(array(
-            'read__type' => 4246, //Platform Bug Reports
-            'read__player' => $read__player,
-            'read__message' => 'upload_to_cdn() Failed to load AWS S3',
-            'read__metadata' => array(
+        $CI->DISCOVER_model->create(array(
+            'x__type' => 4246, //Platform Bug Reports
+            'x__player' => $x__player,
+            'x__message' => 'upload_to_cdn() Failed to load AWS S3',
+            'x__metadata' => array(
                 'file_url' => $file_url,
-                'read__metadata' => $read__metadata,
+                'x__metadata' => $x__metadata,
                 'is_local' => ( $is_local ? 1 : 0 ),
             ),
         ));
@@ -1087,13 +1087,13 @@ function upload_to_cdn($file_url, $read__player = 0, $read__metadata = null, $is
 
 
     if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
-        $CI->READ_model->create(array(
-            'read__type' => 4246, //Platform Bug Reports
-            'read__player' => $read__player,
-            'read__message' => 'upload_to_cdn() Failed to upload file to Mench CDN',
-            'read__metadata' => array(
+        $CI->DISCOVER_model->create(array(
+            'x__type' => 4246, //Platform Bug Reports
+            'x__player' => $x__player,
+            'x__message' => 'upload_to_cdn() Failed to upload file to Mench CDN',
+            'x__metadata' => array(
                 'file_url' => $file_url,
-                'read__metadata' => $read__metadata,
+                'x__metadata' => $x__metadata,
                 'is_local' => ( $is_local ? 1 : 0 ),
             ),
         ));
@@ -1110,7 +1110,7 @@ function upload_to_cdn($file_url, $read__player = 0, $read__metadata = null, $is
     //Define new URL:
     $cdn_new_url = trim($result['ObjectURL']);
 
-    if($read__player < 1){
+    if($x__player < 1){
         //Just return URL:
         return array(
             'status' => 1,
@@ -1119,9 +1119,9 @@ function upload_to_cdn($file_url, $read__player = 0, $read__metadata = null, $is
     }
 
     //Create and link new source to CDN and uploader:
-    $url_source = $CI->SOURCE_model->url($cdn_new_url, $read__player, 0, $page_title);
+    $url_source = $CI->SOURCE_model->url($cdn_new_url, $x__player, 0, $page_title);
 
-    if(isset($url_source['source_url']['source__id']) && $url_source['source_url']['source__id'] > 0){
+    if(isset($url_source['source_url']['e__id']) && $url_source['source_url']['e__id'] > 0){
 
         //All good:
         return array(
@@ -1132,13 +1132,13 @@ function upload_to_cdn($file_url, $read__player = 0, $read__metadata = null, $is
 
     } else {
 
-        $CI->READ_model->create(array(
-            'read__type' => 4246, //Platform Bug Reports
-            'read__player' => $read__player,
-            'read__message' => 'upload_to_cdn() Failed to create new source from CDN file',
-            'read__metadata' => array(
+        $CI->DISCOVER_model->create(array(
+            'x__type' => 4246, //Platform Bug Reports
+            'x__player' => $x__player,
+            'x__message' => 'upload_to_cdn() Failed to create new source from CDN file',
+            'x__metadata' => array(
                 'file_url' => $file_url,
-                'read__metadata' => $read__metadata,
+                'x__metadata' => $x__metadata,
                 'is_local' => ( $is_local ? 1 : 0 ),
             ),
         ));
@@ -1210,7 +1210,7 @@ function analyze_domain($full_url){
 
 
 
-function idea__title_validate($string){
+function i__title_validate($string){
 
     //Validate:
     if(!strlen(trim($string))){
@@ -1244,18 +1244,18 @@ function idea__title_validate($string){
 
 }
 
-function source__title_validate($string, $read__type = 0){
+function e__title_validate($string, $x__type = 0){
 
     //Validate:
     $CI =& get_instance();
     $sources__4592 = $CI->config->item('sources__4592');
     $errors = false;
-    $source__title_clean = trim($string);
+    $e__title_clean = trim($string);
 
     if(!strlen(trim($string))){
 
-        if($read__type){
-            $source__title_clean = $sources__4592[$read__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+        if($x__type){
+            $e__title_clean = $sources__4592[$x__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1265,8 +1265,8 @@ function source__title_validate($string, $read__type = 0){
 
     } elseif(strlen(trim($string)) < config_var(12232)){
 
-        if($read__type){
-            $source__title_clean = $sources__4592[$read__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+        if($x__type){
+            $e__title_clean = $sources__4592[$x__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1276,8 +1276,8 @@ function source__title_validate($string, $read__type = 0){
 
     } elseif(substr_count($string , '  ') > 0){
 
-        if($read__type){
-            $source__title_clean = str_replace('  ',' ',str_replace('  ',' ',str_replace('  ',' ',$string)));
+        if($x__type){
+            $e__title_clean = str_replace('  ',' ',str_replace('  ',' ',str_replace('  ',' ',$string)));
         }
 
         $errors = array(
@@ -1287,8 +1287,8 @@ function source__title_validate($string, $read__type = 0){
 
     } elseif (strlen($string) > config_var(6197)) {
 
-        if($read__type){
-            $source__title_clean = substr($string, 0, config_var(6197));
+        if($x__type){
+            $e__title_clean = substr($string, 0, config_var(6197));
         }
 
         $errors = array(
@@ -1298,11 +1298,11 @@ function source__title_validate($string, $read__type = 0){
 
     }
 
-    $source__title_clean = strtoupper(trim($source__title_clean));
+    $e__title_clean = strtoupper(trim($e__title_clean));
 
     //Just the clean name?
-    if($read__type){
-        return $source__title_clean;
+    if($x__type){
+        return $e__title_clean;
     }
 
 
@@ -1314,14 +1314,14 @@ function source__title_validate($string, $read__type = 0){
         //All good, return success:
         return array(
             'status' => 1,
-            'source__title_clean' => $source__title_clean,
+            'e__title_clean' => $e__title_clean,
         );
     }
 }
 
 
 
-function source_is_idea_source($source__id, $session_source = array()){
+function source_is_idea_source($e__id, $session_source = array()){
 
 
     if(!$session_source){
@@ -1329,38 +1329,38 @@ function source_is_idea_source($source__id, $session_source = array()){
         $session_source = superpower_assigned();
     }
 
-    if(!$session_source || $source__id < 1){
+    if(!$session_source || $e__id < 1){
         return false;
     }
 
     //Ways a player can modify a source:
     $CI =& get_instance();
     return (
-        $source__id==$session_source['source__id'] || //Player is the source
+        $e__id==$session_source['e__id'] || //Player is the source
         superpower_active(10967, true) || //Player has Global source editing superpower
-        count($CI->READ_model->fetch(array( //Player created the source
-            'read__player' => $session_source['source__id'],
-            'read__down' => $source__id,
-            'read__type' => 4251, //New Source Created
+        count($CI->DISCOVER_model->fetch(array( //Player created the source
+            'x__player' => $session_source['e__id'],
+            'x__down' => $e__id,
+            'x__type' => 4251, //New Source Created
         ))) ||
-        count($CI->READ_model->fetch(array( //Player has source in their portfolio
-            'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'read__up' => $session_source['source__id'],
-            'read__down' => $source__id,
+        count($CI->DISCOVER_model->fetch(array( //Player has source in their portfolio
+            'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__up' => $session_source['e__id'],
+            'x__down' => $e__id,
         )))
     );
 
 }
 
-function idea_is_source($idea__id, $session_source = array()){
+function idea_is_source($i__id, $session_source = array()){
 
     if(!$session_source){
         //Fetch from session:
         $session_source = superpower_assigned();
     }
 
-    if(!$session_source || $idea__id < 1){
+    if(!$session_source || $i__id < 1){
         return false;
     }
 
@@ -1371,16 +1371,16 @@ function idea_is_source($idea__id, $session_source = array()){
         (
             superpower_active(10939, true) && //PUBLISHING PEN
                 (
-                count($CI->READ_model->fetch(array( //Player created the idea
-                    'read__type' => 4250, //IDEA CREATOR
-                    'read__right' => $idea__id,
-                    'read__player' => $session_source['source__id'],
+                count($CI->DISCOVER_model->fetch(array( //Player created the idea
+                    'x__type' => 4250, //IDEA CREATOR
+                    'x__right' => $i__id,
+                    'x__player' => $session_source['e__id'],
                 ))) ||
-                count($CI->READ_model->fetch(array( //IDEA SOURCE
-                    'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-                    'read__right' => $idea__id,
-                    '(read__up = '.$session_source['source__id'].' OR read__down = '.$session_source['source__id'].')' => null,
+                count($CI->DISCOVER_model->fetch(array( //IDEA SOURCE
+                    'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                    'x__right' => $i__id,
+                    '(x__up = '.$session_source['e__id'].' OR x__down = '.$session_source['e__id'].')' => null,
                 )))
             )
         )
@@ -1409,13 +1409,13 @@ function objectToArray($object)
     return array_map('objectToArray', $object);
 }
 
-function sources_currently_sorted($source__id){
+function sources_currently_sorted($e__id){
     $CI =& get_instance();
-    return count( $CI->READ_model->fetch(array(
-        'read__sort >' => 0, //Sorted
-        'read__up' => $source__id,
-        'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-        'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+    return count( $CI->DISCOVER_model->fetch(array(
+        'x__sort >' => 0, //Sorted
+        'x__up' => $e__id,
+        'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
     ), array(), 1) );
 }
 
@@ -1455,11 +1455,11 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 
     if($object__type==4535){
-        $focus_field_id = 'idea__id';
-        $focus_field_status = 'idea__status';
+        $focus_field_id = 'i__id';
+        $focus_field_status = 'i__status';
     } elseif($object__type==4536){
-        $focus_field_id = 'source__id';
-        $focus_field_status = 'source__status';
+        $focus_field_id = 'e__id';
+        $focus_field_status = 'e__status';
     }
 
 
@@ -1504,33 +1504,33 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
         //Fetch item(s) for updates including their parents:
         if ($loop_obj == 4535) {
 
-            $loop_filed_id = 'idea__id';
-            $loop_filed_name = 'idea__metadata';
-            $limits['read__type'] = 4250;
+            $loop_filed_id = 'i__id';
+            $loop_filed_name = 'i__metadata';
+            $limits['x__type'] = 4250;
 
             if($object__id){
-                $limits['read__right'] = $object__id;
+                $limits['x__right'] = $object__id;
             } else {
-                $limits['idea__status IN (' . join(',', $CI->config->item('sources_id_7356')) . ')'] = null; //ACTIVE
-                $limits['read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
+                $limits['i__status IN (' . join(',', $CI->config->item('sources_id_7356')) . ')'] = null; //ACTIVE
+                $limits['x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->READ_model->fetch($limits, array('read__right'), 0);
+            $db_rows[$loop_obj] = $CI->DISCOVER_model->fetch($limits, array('x__right'), 0);
 
         } elseif ($loop_obj == 4536) {
 
-            $loop_filed_id = 'source__id';
-            $loop_filed_name = 'source__metadata';
-            $limits['read__type'] = 4251;
+            $loop_filed_id = 'e__id';
+            $loop_filed_name = 'e__metadata';
+            $limits['x__type'] = 4251;
 
             if($object__id){
-                $limits['read__down'] = $object__id;
+                $limits['x__down'] = $object__id;
             } else {
-                $limits['source__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')'] = null; //ACTIVE
-                $limits['read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
+                $limits['e__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')'] = null; //ACTIVE
+                $limits['x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->READ_model->fetch($limits, array('read__down'), 0);
+            $db_rows[$loop_obj] = $CI->DISCOVER_model->fetch($limits, array('x__down'), 0);
 
         }
 
@@ -1549,9 +1549,9 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             if($object__id){
                 //Update weight before updating this object:
                 if($object__type==4536){
-                    source__weight_calculator($db_row);
+                    e__weight_calculator($db_row);
                 } elseif($object__type==4535){
-                    idea__weight_calculator($db_row);
+                    i__weight_calculator($db_row);
                 }
             }
 
@@ -1586,41 +1586,41 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             if ($loop_obj == 4536) {
 
                 $export_row['object__type'] = $loop_obj;
-                $export_row['object__id'] = intval($db_row['source__id']);
-                $export_row['object__url'] = '/@' . $db_row['source__id'];
-                $export_row['object__status'] = intval($db_row['source__status']);
-                $export_row['object__icon'] = view_source__icon($db_row['source__icon']);
-                $export_row['object__title'] = $db_row['source__title'];
-                $export_row['object__weight'] = intval($db_row['source__weight']);
-                $export_row['object__ideas'] = read_coins_source(12273, $db_row['source__id']);
+                $export_row['object__id'] = intval($db_row['e__id']);
+                $export_row['object__url'] = '/@' . $db_row['e__id'];
+                $export_row['object__status'] = intval($db_row['e__status']);
+                $export_row['object__icon'] = view_e__icon($db_row['e__icon']);
+                $export_row['object__title'] = $db_row['e__title'];
+                $export_row['object__weight'] = intval($db_row['e__weight']);
+                $export_row['object__ideas'] = x_coins_source(12273, $db_row['e__id']);
                 $export_row['object__duration'] = null;
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_source_' . $db_row['read__player']);
-                if($db_row['read__player']!=$db_row['source__id']){
+                array_push($export_row['_tags'], 'alg_source_' . $db_row['x__player']);
+                if($db_row['x__player']!=$db_row['e__id']){
                     //Also give access to source themselves, in case they can login:
-                    array_push($export_row['_tags'], 'alg_source_' . $db_row['source__id']);
+                    array_push($export_row['_tags'], 'alg_source_' . $db_row['e__id']);
                 }
 
-                if(in_array($db_row['source__status'], $CI->config->item('sources_id_12575'))){
+                if(in_array($db_row['e__status'], $CI->config->item('sources_id_12575'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
                 //Fetch Profiles:
                 $export_row['object__keywords'] = '';
-                foreach($CI->READ_model->fetch(array(
-                    'read__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                    'read__down' => $db_row['source__id'], //This child source
-                    'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                    'source__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-                ), array('read__up'), 0, 0, array('source__weight' => 'DESC')) as $read) {
+                foreach($CI->DISCOVER_model->fetch(array(
+                    'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                    'x__down' => $db_row['e__id'], //This child source
+                    'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                    'e__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $read) {
 
                     //Always add to tags:
-                    array_push($export_row['_tags'], 'alg_source_' . $read['source__id']);
+                    array_push($export_row['_tags'], 'alg_source_' . $read['e__id']);
 
                     //Add content to keywords if any:
-                    if (strlen($read['read__message']) > 0) {
-                        $export_row['object__keywords'] .= $read['read__message'] . ' ';
+                    if (strlen($read['x__message']) > 0) {
+                        $export_row['object__keywords'] .= $read['x__message'] . ' ';
                     }
 
                 }
@@ -1631,47 +1631,47 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 //See if this idea has a time-range:
                 $export_row['object__type'] = $loop_obj;
-                $export_row['object__id'] = intval($db_row['idea__id']);
-                $export_row['object__url'] = '/idea/go/' . $db_row['idea__id'];
-                $export_row['object__status'] = intval($db_row['idea__status']);
-                $export_row['object__icon'] = idea_fetch_cover($db_row['idea__id']);
-                $export_row['object__title'] = $db_row['idea__title'];
-                $export_row['object__weight'] = intval($db_row['idea__weight']);
+                $export_row['object__id'] = intval($db_row['i__id']);
+                $export_row['object__url'] = '/map/i_go/' . $db_row['i__id'];
+                $export_row['object__status'] = intval($db_row['i__status']);
+                $export_row['object__icon'] = idea_fetch_cover($db_row['i__id']);
+                $export_row['object__title'] = $db_row['i__title'];
+                $export_row['object__weight'] = intval($db_row['i__weight']);
 
                 //Idea Stats:
-                $idea_stats = idea_stats($db_row['idea__metadata']);
+                $idea_stats = idea_stats($db_row['i__metadata']);
                 $export_row['object__ideas'] = $idea_stats['ideas_average'];
                 $export_row['object__duration'] = view_time_hours($idea_stats['duration_average']);
 
-                if(in_array($db_row['idea__status'], $CI->config->item('sources_id_12138'))){
+                if(in_array($db_row['i__status'], $CI->config->item('sources_id_12138'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
                 //Add keywords:
                 $export_row['object__keywords'] = '';
-                foreach($CI->READ_model->fetch(array(
-                    'read__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                    'read__type IN (' . join(',', $CI->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
-                    'read__right' => $db_row['idea__id'],
-                ), array(), 0, 0, array('read__sort' => 'ASC')) as $keyword) {
-                    $export_row['object__keywords'] .= $keyword['read__message'] . ' ';
+                foreach($CI->DISCOVER_model->fetch(array(
+                    'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                    'x__type IN (' . join(',', $CI->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
+                    'x__right' => $db_row['i__id'],
+                ), array(), 0, 0, array('x__sort' => 'ASC')) as $keyword) {
+                    $export_row['object__keywords'] .= $keyword['x__message'] . ' ';
                 }
                 $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
 
 
                 //Is SOURCE for any IDEA?
-                foreach($CI->READ_model->fetch(array(
-                    'read__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'read__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-                    'read__right' => $db_row['idea__id'],
-                    '(read__up > 0 OR read__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                foreach($CI->DISCOVER_model->fetch(array(
+                    'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                    'x__right' => $db_row['i__id'],
+                    '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array(), 0) as $source){
 
-                    if($source['read__up']>0){
-                        array_push($export_row['_tags'], 'alg_source_' . $source['read__up']);
+                    if($source['x__up']>0){
+                        array_push($export_row['_tags'], 'alg_source_' . $source['x__up']);
                     }
-                    if($source['read__down']>0){
-                        array_push($export_row['_tags'], 'alg_source_' . $source['read__down']);
+                    if($source['x__down']>0){
+                        array_push($export_row['_tags'], 'alg_source_' . $source['x__down']);
                     }
 
                 }
@@ -1775,7 +1775,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
             foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                update_metadata(( isset($all_db_rows[$key]['idea__id']) ? 4535 : 4536), $all_db_rows[$key][( isset($all_db_rows[$key]['idea__id']) ? 'idea__id' : 'source__id')], array(
+                update_metadata(( isset($all_db_rows[$key]['i__id']) ? 4535 : 4536), $all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
                     'algolia__id' => intval($algolia_id),
                 ));
             }
@@ -1795,7 +1795,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 }
 
-function update_metadata($object__type, $object__id, $new_fields, $read__player = 0)
+function update_metadata($object__type, $object__id, $new_fields, $x__player = 0)
 {
 
     $CI =& get_instance();
@@ -1804,7 +1804,7 @@ function update_metadata($object__type, $object__id, $new_fields, $read__player 
      *
      * Enables the easy manipulation of the text metadata field which holds cache data for developers
      *
-     * $object__type:           READ, SOURCE OR IDEA
+     * $object__type:           DISCOVER, SOURCE OR IDEA
      *
      * $obj:                    The Player, Idea or Link itself.
      *                          We're looking for the $obj ID and METADATA
@@ -1821,25 +1821,25 @@ function update_metadata($object__type, $object__id, $new_fields, $read__player 
     //Fetch metadata for this object:
     if ($object__type == 4535) {
 
-        $obj_filed_id = 'idea__id';
-        $obj_filed_name = 'idea__metadata';
-        $db_objects = $CI->IDEA_model->fetch(array(
+        $obj_filed_id = 'i__id';
+        $obj_filed_name = 'i__metadata';
+        $db_objects = $CI->MAP_model->fetch(array(
             $obj_filed_id => $object__id,
         ));
 
     } elseif ($object__type == 4536) {
 
-        $obj_filed_id = 'source__id';
-        $obj_filed_name = 'source__metadata';
+        $obj_filed_id = 'e__id';
+        $obj_filed_name = 'e__metadata';
         $db_objects = $CI->SOURCE_model->fetch(array(
             $obj_filed_id => $object__id,
         ));
 
     } elseif ($object__type == 6205) {
 
-        $obj_filed_id = 'read__id';
-        $obj_filed_name = 'read__metadata';
-        $db_objects = $CI->READ_model->fetch(array(
+        $obj_filed_id = 'x__id';
+        $obj_filed_name = 'x__metadata';
+        $db_objects = $CI->DISCOVER_model->fetch(array(
             $obj_filed_id => $object__id,
         ));
 
@@ -1873,20 +1873,20 @@ function update_metadata($object__type, $object__id, $new_fields, $read__player 
     //Now update DB without logging any links as this is considered a back-end update:
     if ($object__type == 4535) {
 
-        $affected_rows = $CI->IDEA_model->update($object__id, array(
-            'idea__metadata' => $metadata,
-        ), false, $read__player);
+        $affected_rows = $CI->MAP_model->update($object__id, array(
+            'i__metadata' => $metadata,
+        ), false, $x__player);
 
     } elseif ($object__type == 4536) {
 
         $affected_rows = $CI->SOURCE_model->update($object__id, array(
-            'source__metadata' => $metadata,
-        ), false, $read__player);
+            'e__metadata' => $metadata,
+        ), false, $x__player);
 
     } elseif ($object__type == 6205) {
 
-        $affected_rows = $CI->READ_model->update($object__id, array(
-            'read__metadata' => $metadata,
+        $affected_rows = $CI->DISCOVER_model->update($object__id, array(
+            'x__metadata' => $metadata,
         ));
 
     }

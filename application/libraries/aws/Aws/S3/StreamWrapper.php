@@ -319,7 +319,7 @@ class StreamWrapper
      * @param string $path    Directory which should be created.
      * @param int    $mode    Permissions. 700-range permissions map to
      *                        ACL_PUBLIC. 600-range permissions map to
-     *                        ACL_AUTH_READ. All other permissions map to
+     *                        ACL_AUTH_DISCOVER. All other permissions map to
      *                        ACL_PRIVATE. Expects octal form.
      * @param int    $options A bitwise mask of values, such as
      *                        STREAM_MKDIR_RECURSIVE.

@@ -3,8 +3,8 @@ $sources__4269 = $this->config->item('sources__4269');
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
 $this_attempt = array(
-    'read__type' => ( $sign_idea__id > 0 ? 7560 /* User Signin Idea Channel Choose */ : 7561 /* User Signin on Website */ ),
-    'read__left' => $sign_idea__id,
+    'x__type' => ( $sign_i__id > 0 ? 7560 /* User Signin Idea Channel Choose */ : 7561 /* User Signin on Website */ ),
+    'x__left' => $sign_i__id,
 );
 
 $current_sign_idea_attempt = array(); //Will try to find this...
@@ -13,7 +13,7 @@ if(is_array($current_sign_idea_attempts) && count($current_sign_idea_attempts) >
     //See if any of the current sign-in attempts match this:
     foreach($current_sign_idea_attempts as $sign_idea_attempt){
         $all_match = true;
-        foreach(array('read__left') as $sign_idea_attempt_field){
+        foreach(array('x__left') as $sign_idea_attempt_field){
             if(intval($this_attempt[$sign_idea_attempt_field]) != intval($sign_idea_attempt[$sign_idea_attempt_field])){
                 $all_match = false;
                 break;
@@ -34,7 +34,7 @@ if(is_array($current_sign_idea_attempts) && count($current_sign_idea_attempts) >
 if(count($current_sign_idea_attempt) == 0){
 
     //Log link:
-    $current_sign_idea_attempt = $this->READ_model->create($this_attempt);
+    $current_sign_idea_attempt = $this->DISCOVER_model->create($this_attempt);
 
     //Grow the array:
     array_push($current_sign_idea_attempts, $current_sign_idea_attempt);
@@ -47,7 +47,7 @@ if(count($current_sign_idea_attempt) == 0){
 
 <script>
     var go_next_icon = '<?= $sources__11035[12211]['m_icon'] ?>';
-    var sign_idea__id = <?= $sign_idea__id ?>;
+    var sign_i__id = <?= $sign_i__id ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
 </script>
 <script src="/application/views/source/signin.js?v=<?= config_var(11060) ?>"
@@ -62,15 +62,15 @@ if(count($current_sign_idea_attempt) == 0){
     <h1 class="text-center"><?= $sources__11035[4269]['m_name'] ?></h1>
 
     <?php
-    if($sign_idea__id > 0){
+    if($sign_i__id > 0){
 
-        $sign_ideas = $this->IDEA_model->fetch(array(
-            'idea__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            'idea__id' => $sign_idea__id,
+        $sign_ideas = $this->MAP_model->fetch(array(
+            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            'i__id' => $sign_i__id,
         ));
 
         if(count($sign_ideas)){
-            echo '<p style="margin-top:13px;">To Read <a href="/'.$sign_idea__id.'" class="montserrat">'.$sign_ideas[0]['idea__title'].'</a>.</p>';
+            echo '<p style="margin-top:13px;">To Read <a href="/'.$sign_i__id.'" class="montserrat">'.$sign_ideas[0]['i__title'].'</a>.</p>';
         }
 
     }
@@ -99,17 +99,17 @@ if(count($current_sign_idea_attempt) == 0){
         <div id="step3" class="signup-steps hidden">
 
             <!-- To be updated to >0 IF email was found -->
-            <input type="hidden" id="sign_source__id" value="0" />
+            <input type="hidden" id="sign_e__id" value="0" />
 
             <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$sources__4269[3286]['m_icon'].'</span>'.$sources__4269[3286]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="read margin-top-down hideIfEmpty"></div>
             <span id="step3buttons">
                 <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source transparent btn-raised  btn-circle" title="<?= $sources__11035[12991]['m_name'] ?>"><?= $sources__11035[12991]['m_icon'] ?></a>
-                <a href="javascript:void(0)" onclick="sign_check_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle" title="<?= $sources__11035[12211]['m_name'] ?>"><?= $sources__11035[12211]['m_icon'] ?></a>
+                <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle" title="<?= $sources__11035[12211]['m_name'] ?>"><?= $sources__11035[12211]['m_icon'] ?></a>
             </span>
 
-            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="magicemail()" class="dounderline"><?= $sources__11035[11068]['m_name'] ?></a> <?= $sources__11035[11068]['m_icon'] ?></span>
+            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="e_magic_email()" class="dounderline"><?= $sources__11035[11068]['m_name'] ?></a> <?= $sources__11035[11068]['m_icon'] ?></span>
 
         </div>
 

@@ -1,5 +1,5 @@
 
-<script src="/application/views/read/home.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/map/home.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container">
     <?php
@@ -10,12 +10,12 @@
     echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
 
     echo '<div id="myIdeas" class="list-group">';
-    foreach($this->READ_model->fetch(array(
-        'idea__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-        'read__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'read__type' => 10573, //IDEA NOTES Bookmarks
-        'read__up' => $session_source['source__id'], //For this player
-    ), array('read__right'), 0, 0, array('idea__weight' => 'DESC')) as $idea){
+    foreach($this->DISCOVER_model->fetch(array(
+        'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'x__type' => 10573, //IDEA NOTES Bookmarks
+        'x__up' => $session_source['e__id'], //For this player
+    ), array('x__right'), 0, 0, array('i__weight' => 'DESC')) as $idea){
         echo view_idea($idea, 0, false, true);
     }
 

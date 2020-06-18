@@ -12,12 +12,16 @@ $route['translate_uri_dashes']      = FALSE;
  *
  * */
 
-
-$route['default_controller']        = "read/read_coin"; //Home pate
-$route['(:num)']                    = "read/read_coin/$1"; //Read Idea
-$route['x']                         = "read/interactions"; //Read Interactions history
-$route['404_override']              = 'source/source_404'; //Page not found, etc...
-$route['@(:num)']                   = "source/source_coin/$1"; //Specific source
+//Home
+$route['default_controller']        = "discover/index"; //Home page
 $route['@']                         = "source/index"; //Source Home
-$route['~']                         = "idea/index"; //Idea home
-$route['~(:num)']                   = "idea/idea_coin/$1"; //Modify idea
+$route['~']                         = "map/index"; //Idea home
+
+//COINS
+$route['(:num)']                    = "discover/x_coin/$1";
+$route['@(:num)']                   = "source/e_coin/$1";
+$route['~(:num)']                   = "map/i_coin/$1";
+
+//OTHER
+$route['x']                         = "discover/x_list"; //Read Interactions history
+$route['404_override']              = 'source/e_404'; //Page not found, etc...

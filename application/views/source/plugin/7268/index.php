@@ -2,7 +2,7 @@
 
 //SOURCE LIST DUPLICATES
 
-$q = $this->db->query('select en1.* from mench_sources en1 where (select count(*) from mench_sources en2 where en2.source__title = en1.source__title AND en2.source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')) > 1 AND en1.source__status IN (' . join(',', $this->config->item('sources_id_7358')) . ') ORDER BY en1.source__title ASC');
+$q = $this->db->query('select en1.* from mench__e en1 where (select count(*) from mench__e en2 where en2.e__title = en1.e__title AND en2.e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')) > 1 AND en1.e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ') ORDER BY en1.e__title ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){
@@ -12,12 +12,12 @@ if(count($duplicates) > 0){
 
     foreach($duplicates as $en) {
 
-        if ($prev_title != $en['source__title']) {
+        if ($prev_title != $en['e__title']) {
             echo '<hr />';
-            $prev_title = $en['source__title'];
+            $prev_title = $en['e__title'];
         }
 
-        echo '<span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$en['source__status']]['m_name'].': '.$sources__6177[$en['source__status']]['m_desc'].'">' . $sources__6177[$en['source__status']]['m_icon'] . '</span> <a href="/@' . $en['source__id'] . '"><b>' . $en['source__title'] . '</b></a> @' . $en['source__id'] . '<br />';
+        echo '<span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$en['e__status']]['m_name'].': '.$sources__6177[$en['e__status']]['m_desc'].'">' . $sources__6177[$en['e__status']]['m_icon'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
     }
 
 } else {

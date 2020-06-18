@@ -62,10 +62,10 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .span__4356{
     display: inline-block;
 }
-.media-content, .read__message video {
+.media-content, .x__message video {
     max-width: 377px;
 }
-.read__message img, .i_content img, .content-image {
+.x__message img, .i_content img, .content-image {
     max-width: 100%;
     max-height: 377px;
 }
@@ -647,7 +647,7 @@ img.no-radius {
     border-color:#000000 !important;
 }
 
-#read_text_answer{
+#x_respond{
     padding: 5px;
     border: 1px solid #000000 !important;
     height: 55px;
@@ -898,7 +898,7 @@ textarea.note-textarea{
     padding-right:5px !important;
 }
 
-.read__message {
+.x__message {
     display:inline-block;
     overflow: hidden;
     max-width: 100%;
@@ -1387,7 +1387,7 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.input-group .algolia-autocomplete, .read__message, .read_input {
+.input-group .algolia-autocomplete, .x__message, .read_input {
     width: -webkit-calc(100% - 68px);
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
@@ -1551,7 +1551,7 @@ label {
     td.MENCHcolumn2  { width: 20%; }
     td.MENCHcolumn3  { width: 20%; }
 
-    .media-content, .read__message img, .read__message video, .i_content img { max-width: 100%; }
+    .media-content, .x__message img, .x__message video, .i_content img { max-width: 100%; }
     .content-image {
         max-width: calc(100% - 66px);
         max-height:377px;
