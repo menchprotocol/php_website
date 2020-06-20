@@ -225,7 +225,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= '</div>';
         }
 
-    } elseif($x__type==4430 && $idea_stats['sources_count']){
+    } elseif($x__type==4430 && $idea_stats['players_count']>0){
 
         //PLAYERS
         $counter = $idea_stats['players_count'];
@@ -236,7 +236,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==12864 && $idea_stats['sources_count']){
+    } elseif($x__type==12864 && $idea_stats['sources_count']>0){
 
         //EXPERTS
         $counter = $idea_stats['sources_count'];
@@ -247,7 +247,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==7545 && $idea_stats['certificate_count']){
+    } elseif($x__type==7545 && $idea_stats['certificate_count']>0){
 
         //CERTIFICATES
         $counter = $idea_stats['certificate_count'];
