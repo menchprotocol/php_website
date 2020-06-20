@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-20 09:46:40 PST
+//Generated 2020-06-20 09:47:50 PST
 
 //MENCH OBJECTS:
 $config['sources_id_13355'] = array(13359,13360,13358,13362);
@@ -993,7 +993,7 @@ $config['sources__12467'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE COINS',
         'm_desc' => '',
-        'm_parents' => array(11035,10939,11089,4536,12467,12228,4527),
+        'm_parents' => array(10939,11089,4536,12467,12228,4527),
     ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -1449,7 +1449,7 @@ $config['sources__4536'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE COINS',
         'm_desc' => '',
-        'm_parents' => array(11035,10939,11089,4536,12467,12228,4527),
+        'm_parents' => array(10939,11089,4536,12467,12228,4527),
     ),
     13207 => array(
         'm_icon' => '<i class="fas fa-home source"></i>',
@@ -2534,7 +2534,7 @@ $config['sources__11089'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE COINS',
         'm_desc' => '',
-        'm_parents' => array(11035,10939,11089,4536,12467,12228,4527),
+        'm_parents' => array(10939,11089,4536,12467,12228,4527),
     ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -3270,7 +3270,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(6225,4235,12750,3084,13216,12707,12991,12211,11068,4535,12749,4341,13000,12969,10573,4430,6287,12896,7256,13023,4269,7291,4536,12274,4997,12275,13007,10957,7540);
+$config['sources_id_11035'] = array(6225,4235,12750,3084,13216,12707,12991,12211,11068,4535,12749,4341,13000,12969,10573,4430,6287,12896,7256,13023,4269,7291,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3409,12 +3409,6 @@ $config['sources__11035'] = array(
         'm_name' => 'SOURCE',
         'm_desc' => '',
         'm_parents' => array(10939,12489,11035,10876,12893,12761,4527,2738),
-    ),
-    12274 => array(
-        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE COINS',
-        'm_desc' => '',
-        'm_parents' => array(11035,10939,11089,4536,12467,12228,4527),
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-list source" aria-hidden="true"></i>',
@@ -4679,7 +4673,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE COINS',
         'm_desc' => '',
-        'm_parents' => array(11035,10939,11089,4536,12467,12228,4527),
+        'm_parents' => array(10939,11089,4536,12467,12228,4527),
     ),
     13207 => array(
         'm_icon' => '<i class="fas fa-home source"></i>',
