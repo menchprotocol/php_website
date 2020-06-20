@@ -12,7 +12,7 @@ $show_max = config_var(11986);
     //My Sources:
     if($session_source){
 
-        echo '<div class="discover-topic" style="margin-top:21px;"><span class="icon-block">'.$sources__11035[12205]['m_icon'].'</span>'.$sources__11035[12205]['m_name'].'</div>';
+        echo '<div class="discover-topic" style="margin-top:21px;"><span class="icon-block">'.$sources__11035[12274]['m_icon'].'</span>'.$sources__11035[12274]['m_name'].'</div>';
 
         echo '<div class="list-group">';
 
