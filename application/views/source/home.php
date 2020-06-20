@@ -20,8 +20,14 @@ $show_max = config_var(11986);
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
             'x__player' => $session_source['e__id'],
-        ), array('x__down')) as $my_source){
-            echo view_source($my_source);
+        ), array('x__down'), $load_max) as $count=>$my_source){
+
+            if($count==$show_max){
+                echo '<div class="list-group-item see_more_who'.$session_source['e__id'].' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$session_source['e__id'].'\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                echo '<div class="list-group-item see_more_who'.$session_source['e__id'].' no-height"></div>';
+            }
+
+            echo view_source($my_source, true, ( $count<$show_max ? '' : 'see_more_who'.$session_source['e__id'].' hidden'));
         }
 
 
