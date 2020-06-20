@@ -957,7 +957,15 @@ class MAP_model extends CI_Model
 
             //PLAYERS:
             if (!isset($metadata_this['__i___players'][$fetched_source['x__player']])) {
-                $metadata_this['__i___players'][$fetched_source['x__player']] = $fetched_source;
+                //Fetch Player:
+                foreach($this->DISCOVER_model->fetch(array(
+                    'x__up' => 4430, //MENCH PLAYERS
+                    'x__down' => $fetched_source['x__player'],
+                    'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                ), array('x__down'), 1) as $player){
+                    $metadata_this['__i___players'][$fetched_source['x__player']] = $player;
+                }
             }
 
         }
@@ -993,7 +1001,7 @@ class MAP_model extends CI_Model
 
             //Players
             if (!isset($metadata_this['__i___players'][$ideas_next['x__player']])) {
-                //Fetch Source:
+                //Fetch Player:
                 foreach($this->DISCOVER_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
                     'x__down' => $ideas_next['x__player'],
