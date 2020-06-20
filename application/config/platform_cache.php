@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-20 11:13:52 PST
+//Generated 2020-06-20 11:52:01 PST
 
 //SOURCE GROUPS:
 $config['sources_id_13365'] = array(13339,3000,13202);
@@ -229,7 +229,7 @@ $config['sources__13037'] = array(
         'm_icon' => '<i class="fas fa-minus-circle"></i>',
         'm_name' => 'NONE FOR NOW',
         'm_desc' => '',
-        'm_parents' => array(13037),
+        'm_parents' => array(4755,13037),
     ),
     13038 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
@@ -1170,7 +1170,7 @@ $config['sources_id_12574'] = array(6225,11029,11030);
 $config['sources__12574'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'ACCOUNT SETTINGS',
+        'm_name' => 'MY SETTINGS',
         'm_desc' => '',
         'm_parents' => array(12571,12574,11089,11035,4527),
     ),
@@ -1200,19 +1200,19 @@ $config['sources__12575'] = array(
 );
 
 //SOURCE LAYOUT OPEN BY DEFAULT:
-$config['sources_id_12571'] = array(6225,12273,11029,11030,13046);
+$config['sources_id_12571'] = array(12273,6225,11029,11030,13046);
 $config['sources__12571'] = array(
-    6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'ACCOUNT SETTINGS',
-        'm_desc' => '',
-        'm_parents' => array(12571,12574,11089,11035,4527),
-    ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA COINS',
         'm_desc' => '',
         'm_parents' => array(4535,12571,12467,11089,12228,4527),
+    ),
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'MY SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(12571,12574,11089,11035,4527),
     ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
@@ -2543,7 +2543,7 @@ $config['sources_id_11089'] = array(6225,10573,12969,12896,12274,12273,6255,6146
 $config['sources__11089'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'ACCOUNT SETTINGS',
+        'm_name' => 'MY SETTINGS',
         'm_desc' => '',
         'm_parents' => array(12571,12574,11089,11035,4527),
     ),
@@ -3305,14 +3305,8 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(6225,4235,12750,3084,13216,12707,12991,12211,11068,4535,12749,4341,13000,12969,10573,4430,6287,12896,7256,4269,4536,4997,12275,13007,10957,7540);
+$config['sources_id_11035'] = array(4235,12750,3084,13216,12707,12991,12211,11068,4535,12749,4341,13000,12969,10573,6225,4430,6287,12896,7256,4269,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
-    6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'ACCOUNT SETTINGS',
-        'm_desc' => 'Manage avatar, superpowers, subscription & name',
-        'm_parents' => array(12571,12574,11089,11035,4527),
-    ),
     4235 => array(
         'm_icon' => '<i class="fas fa-plus discover" aria-hidden="true"></i>',
         'm_name' => 'ADD TO DISCOVER LIST',
@@ -3396,6 +3390,12 @@ $config['sources__11035'] = array(
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
+    ),
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'MY SETTINGS',
+        'm_desc' => 'Manage avatar, superpowers, subscription & name',
+        'm_parents' => array(12571,12574,11089,11035,4527),
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user-crown source" aria-hidden="true"></i>',
@@ -4138,14 +4138,8 @@ $config['sources__10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['sources_id_4527'] = array(6225,10956,12279,12588,6150,11081,7704,5967,6255,12229,12326,12446,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,13037,13339,3000,12893,12273,4229,12842,4486,12840,12589,4485,7551,4986,12359,4603,12012,6193,10990,4983,4737,7356,12138,7355,12400,12675,12677,12420,12413,7585,13022,12330,7309,7712,12883,12884,12955,7751,6103,6186,4593,11047,11018,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,13355,6206,12112,6232,10876,12969,10573,12741,6287,12577,4755,12761,13023,4269,6204,4536,12274,13365,13207,12571,13004,12574,11080,12822,4592,12403,11059,4537,12524,4997,12887,6194,6177,7358,12575,7357,12401,11089,10957,12968,12523,10692,10869,13202,6146,12500);
+$config['sources_id_4527'] = array(10956,12279,12588,6150,11081,7704,5967,6255,12229,12326,12446,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,13037,13339,3000,12893,12273,4229,12842,4486,12840,12589,4485,7551,4986,12359,4603,12012,6193,10990,4983,4737,7356,12138,7355,12400,12675,12677,12420,12413,7585,13022,12330,7309,7712,12883,12884,12955,7751,6103,6186,4593,11047,11018,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,13355,6206,12112,6232,10876,12969,10573,6225,12741,6287,12577,4755,12761,13023,4269,6204,4536,12274,13365,13207,12571,13004,12574,11080,12822,4592,12403,11059,4537,12524,4997,12887,6194,6177,7358,12575,7357,12401,11089,10957,12968,12523,10692,10869,13202,6146,12500);
 $config['sources__4527'] = array(
-    6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'ACCOUNT SETTINGS',
-        'm_desc' => '',
-        'm_parents' => array(12571,12574,11089,11035,4527),
-    ),
     10956 => array(
         'm_icon' => '<i class="fad fa-paw-alt source" aria-hidden="true"></i>',
         'm_name' => 'AVATARS BASIC',
@@ -4637,6 +4631,12 @@ $config['sources__4527'] = array(
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
+    ),
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'MY SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(12571,12574,11089,11035,4527),
     ),
     12741 => array(
         'm_icon' => '<i class="fas fa-code"></i>',
@@ -6290,7 +6290,7 @@ $config['sources__4986'] = array(
     ),
 );
 
-//ACCOUNT SETTINGS:
+//MY SETTINGS:
 $config['sources_id_6225'] = array(12289,10869,10957,3288,3286,13037);
 $config['sources__6225'] = array(
     12289 => array(
@@ -6490,7 +6490,7 @@ $config['sources__4997'] = array(
 );
 
 //PRIVATE INTERACTION:
-$config['sources_id_4755'] = array(13039,13040,13041,13038,4235,6415,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,3288,12773,12453,10681,12450,4527,11054,6232,13042,3286,4783,4755,12896,7563,6157,7489,4246,4559,12117,7504,6144,7485,7486,6997,12489,12906);
+$config['sources_id_4755'] = array(13039,13040,13041,13038,4235,6415,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,3288,12773,12453,10681,12450,4527,11054,6232,13367,13042,3286,4783,4755,12896,7563,6157,7489,4246,4559,12117,7504,6144,7485,7486,6997,12489,12906);
 $config['sources__4755'] = array(
     13039 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
@@ -6887,6 +6887,12 @@ $config['sources__4755'] = array(
         'm_name' => 'MENCH VARIABLE',
         'm_desc' => '',
         'm_parents' => array(6403,4755,4527,6212),
+    ),
+    13367 => array(
+        'm_icon' => '<i class="fas fa-minus-circle"></i>',
+        'm_name' => 'NONE FOR NOW',
+        'm_desc' => '',
+        'm_parents' => array(4755,13037),
     ),
     13042 => array(
         'm_icon' => '<i class="far fa-usd-circle"></i>',
