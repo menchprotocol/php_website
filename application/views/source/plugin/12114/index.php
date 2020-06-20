@@ -69,7 +69,7 @@ $interactions_reads_growth_rate = format_percentage(($interactions_reads_last_we
 
 
 //Email Subject
-$subject = 'MENCH 🟡 IDEAS '.( $i_coins_growth_rate > 0 ? '+' : ( $i_coins_growth_rate < 0 ? '-' : '' ) ).$i_coins_growth_rate.'% for the week of '.date("M jS", $last_week_start_timestamp);
+$subject = '🟡 '.$sources__13355[13359]['m_name'].' '.( $i_coins_growth_rate > 0 ? '+' : ( $i_coins_growth_rate < 0 ? '-' : '' ) ).$i_coins_growth_rate.'% for the Week of '.date("M jS", $last_week_start_timestamp);
 
 //Email Body
 $html_message = '<br />';
