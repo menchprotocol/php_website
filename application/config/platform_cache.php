@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-20 09:47:50 PST
+//Generated 2020-06-20 09:53:26 PST
 
 //MENCH OBJECTS:
 $config['sources_id_13355'] = array(13359,13360,13358,13362);
@@ -741,7 +741,7 @@ $config['sources__12822'] = array(
     ),
 );
 
-//MY MAP:
+//MY IDEA MAPS:
 $config['sources_id_10573'] = array(4430);
 $config['sources__10573'] = array(
     4430 => array(
@@ -916,7 +916,7 @@ $config['sources__12677'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
-        'm_name' => 'MY MAP',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -2514,7 +2514,7 @@ $config['sources__11089'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
-        'm_name' => 'MY MAP',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -3198,7 +3198,7 @@ $config['sources__11054'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
-        'm_name' => 'MY MAP',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -3358,7 +3358,7 @@ $config['sources__11035'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
-        'm_name' => 'MY MAP',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -3471,7 +3471,7 @@ $config['sources__11018'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
-        'm_name' => 'MY MAP',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -4611,7 +4611,7 @@ $config['sources__4527'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
-        'm_name' => 'MY MAP',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -5694,7 +5694,7 @@ $config['sources__7551'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
-        'm_name' => 'MY MAP',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -7478,7 +7478,7 @@ $config['sources__4593'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
-        'm_name' => 'MY MAP',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -7908,7 +7908,7 @@ $config['sources__4485'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
-        'm_name' => 'MY MAP',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
