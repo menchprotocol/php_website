@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-20 11:03:50 PST
+//Generated 2020-06-20 11:08:02 PST
 
 //SOURCE GROUPS:
 $config['sources_id_13365'] = array(13339,3000,13202);
@@ -229,31 +229,31 @@ $config['sources__13037'] = array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
         'm_name' => '$5 PER MONTH',
         'm_desc' => '',
-        'm_parents' => array(13037),
+        'm_parents' => array(4755,13037),
     ),
     13039 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
         'm_name' => '$10 PER MONTH',
         'm_desc' => '',
-        'm_parents' => array(13037),
+        'm_parents' => array(4755,13037),
     ),
     13040 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
         'm_name' => '$20 PER MONTH',
         'm_desc' => '',
-        'm_parents' => array(13037),
+        'm_parents' => array(4755,13037),
     ),
     13041 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
         'm_name' => '$50 PER MONTH',
         'm_desc' => '',
-        'm_parents' => array(13037),
+        'm_parents' => array(4755,13037),
     ),
     13042 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
         'm_name' => 'CUSTOM AMOUNT',
         'm_desc' => '',
-        'm_parents' => array(13037),
+        'm_parents' => array(4755,13037),
     ),
 );
 
@@ -6484,8 +6484,32 @@ $config['sources__4997'] = array(
 );
 
 //PRIVATE INTERACTION:
-$config['sources_id_4755'] = array(4235,6415,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,3288,12773,12453,10681,12450,4527,11054,6232,3286,4783,4755,12896,7563,6157,7489,4246,4559,12117,7504,6144,7485,7486,6997,12489,12906);
+$config['sources_id_4755'] = array(13039,13040,13041,13038,4235,6415,13042,12336,12334,12197,4554,7757,6155,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,6132,12360,4266,4267,4282,6563,4570,7702,7495,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,3288,12773,12453,10681,12450,4527,11054,6232,3286,4783,4755,12896,7563,6157,7489,4246,4559,12117,7504,6144,7485,7486,6997,12489,12906);
 $config['sources__4755'] = array(
+    13039 => array(
+        'm_icon' => '<i class="fas fa-usd-circle"></i>',
+        'm_name' => '$10 PER MONTH',
+        'm_desc' => '',
+        'm_parents' => array(4755,13037),
+    ),
+    13040 => array(
+        'm_icon' => '<i class="fas fa-usd-circle"></i>',
+        'm_name' => '$20 PER MONTH',
+        'm_desc' => '',
+        'm_parents' => array(4755,13037),
+    ),
+    13041 => array(
+        'm_icon' => '<i class="fas fa-usd-circle"></i>',
+        'm_name' => '$50 PER MONTH',
+        'm_desc' => '',
+        'm_parents' => array(4755,13037),
+    ),
+    13038 => array(
+        'm_icon' => '<i class="fas fa-usd-circle"></i>',
+        'm_name' => '$5 PER MONTH',
+        'm_desc' => '',
+        'm_parents' => array(4755,13037),
+    ),
     4235 => array(
         'm_icon' => '<i class="fas fa-plus discover" aria-hidden="true"></i>',
         'm_name' => 'ADD TO DISCOVER LIST',
@@ -6497,6 +6521,12 @@ $config['sources__4755'] = array(
         'm_name' => 'CLEAR ALL DISCOVERIES',
         'm_desc' => '',
         'm_parents' => array(12500,4755,4593),
+    ),
+    13042 => array(
+        'm_icon' => '<i class="fas fa-usd-circle"></i>',
+        'm_name' => 'CUSTOM AMOUNT',
+        'm_desc' => '',
+        'm_parents' => array(4755,13037),
     ),
     12336 => array(
         'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
