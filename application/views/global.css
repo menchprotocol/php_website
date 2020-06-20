@@ -487,11 +487,11 @@ img.no-radius {
 
 .cover-block{
     display: block;
-    width: 175px;
+    width: 162px;
     height: 305px;
     overflow: hidden;
     float: left;
-    margin-right: 5px;
+    margin-right: 18px;
 }
 
 .cover-image{
@@ -1531,7 +1531,7 @@ label {
     }
 
     .cover-block{
-        width: 162px;
+        margin-right: 5px;
     }
 
     .icon-block-lg img {
