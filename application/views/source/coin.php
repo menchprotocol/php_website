@@ -12,20 +12,20 @@ $is_public = in_array($source['e__status'], $this->config->item('sources_id_7357
 $is_active = in_array($source['e__status'], $this->config->item('sources_id_7358'));
 $superpower_10967 = superpower_active(10967, true);
 $superpower_any = ( $session_source ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-$is_source = source_is_idea_source($source['e__id']);
+$is_source = e_is_idea_source($source['e__id']);
 
 ?>
 
 
 <style>
     /* For a cleaner UI hide the current focused source parent */
-    .source_child_icon_<?= $source['e__id'] ?>{ display:none; }
+    .e_child_icon_<?= $source['e__id'] ?>{ display:none; }
 </style>
 
 <script>
     //Set global variables:
-    var source_focus_filter = -1; //No filter, show all
-    var source_focus_id = <?= $source['e__id'] ?>;
+    var e_focus_filter = -1; //No filter, show all
+    var e_focus_id = <?= $source['e__id'] ?>;
 </script>
 
 <script src="/application/views/source/coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -34,7 +34,7 @@ $is_source = source_is_idea_source($source['e__id']);
 
     <?php
     //SOURCE NAME
-    echo '<div class="itemsource">'.view_input_text(6197, $source['e__title'], $source['e__id'], ($is_source && $is_active), 0, true, '<span class="source_ui_icon_'.$source['e__id'].'">'.view_e__icon($source['e__icon']).'</span>', extract_icon_color($source['e__icon'])).'</div>';
+    echo '<div class="itemsource">'.view_input_text(6197, $source['e__title'], $source['e__id'], ($is_source && $is_active), 0, true, '<span class="e_ui_icon_'.$source['e__id'].'">'.view_e__icon($source['e__icon']).'</span>', extract_icon_color($source['e__icon'])).'</div>';
 
     ?>
 
@@ -59,13 +59,13 @@ $is_source = source_is_idea_source($source['e__id']);
                             }
                             ?>
                         </select>
-                        <div class="notify_source_delete hidden">
+                        <div class="notify_e_delete hidden">
 
-                            <input type="hidden" id="source_link_count" value="0" />
-                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Saving will delete this source and UNLINK ALL <span class="source_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
+                            <input type="hidden" id="e_link_count" value="0" />
+                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
 
                             <span class="mini-header"><span class="tr_idea_link_title"></span> Merge Source Into:</span>
-                            <input style="padding-left:3px;" type="text" class="form-control algolia_search border source_text_search" id="source_merge" value="" placeholder="Search source to merge..." />
+                            <input style="padding-left:3px;" type="text" class="form-control algolia_search border e_text_search" id="e_merge" value="" placeholder="Search source to merge..." />
 
                         </div>
 
@@ -115,14 +115,14 @@ $is_source = source_is_idea_source($source['e__id']);
                             <span class="mini-header"><?= $sources__4341[6186]['m_icon'].' '.$sources__4341[6186]['m_name'] ?></span>
                             <select class="form-control border" id="x__status">
                                 <?php
-                                foreach($this->config->item('sources__6186') /* Read Status */ as $x__type => $m){
+                                foreach($this->config->item('sources__6186') /* Interaction Status */ as $x__type => $m){
                                     echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                                 }
                                 ?>
                             </select>
 
                             <div class="notify_unlink_source hidden">
-                                <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Saving will unlink source</div>
+                                <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will unlink source</div>
                             </div>
 
 
@@ -144,7 +144,7 @@ $is_source = source_is_idea_source($source['e__id']);
 
                             <span class="mini-header"><?= $sources__4341[4593]['m_icon'].' '.$sources__4341[4593]['m_name'] ?></span>
                             <span id="x__type_preview"></span>
-                            <p id="source_link_preview" class="hideIfEmpty"></p>
+                            <p id="e_link_preview" class="hideIfEmpty"></p>
 
 
 
@@ -158,8 +158,8 @@ $is_source = source_is_idea_source($source['e__id']);
 
             <table>
                 <tr>
-                    <td class="save-td"><a href="javascript:source_update();" class="btn btn-source btn-save">Save</a></td>
-                    <td class="save-result-td"><span class="save_source_changes"></span></td>
+                    <td class="save-td"><a href="javascript:e_update();" class="btn btn-source btn-save">Save</a></td>
+                    <td class="save-result-td"><span class="save_e_changes"></span></td>
                 </tr>
             </table>
 
@@ -172,7 +172,7 @@ $is_source = source_is_idea_source($source['e__id']);
 
 
     //FOR EDITING ONLY:
-    echo '<div class="hidden">'.view_source($source).'</div>';
+    echo '<div class="hidden">'.view_e($source).'</div>';
 
 
 
@@ -182,14 +182,14 @@ $is_source = source_is_idea_source($source['e__id']);
 
     //REFERENCES
     if(superpower_active(12701, true)){
-        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',source_count_connections($source['e__id'])).'</div>';
+        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',e_count_connections($source['e__id'])).'</div>';
     }
 
     //SOURCE DRAFTING?
     echo '<span class="icon-block e__status_' . $source['e__id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$sources__6177[$source['e__status']]['m_name'].': '.$sources__6177[$source['e__status']]['m_desc'].'">' . $sources__6177[$source['e__status']]['m_icon'] . '</span></span>';
 
     //Modify
-    echo '<a href="javascript:void(0);" onclick="source_modify_load(' . $source['e__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$sources__11035[12275]['m_name'].'">'.$sources__11035[12275]['m_icon'].'</a>';
+    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $source['e__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$sources__11035[12275]['m_name'].'">'.$sources__11035[12275]['m_icon'].'</a>';
 
 
     //ADMIN MENU
@@ -318,7 +318,7 @@ $is_source = source_is_idea_source($source['e__id']);
                         'x__up' => 3288, //Mench Email
                     ));
 
-                    $this_tab .= '<span class="white-wrapper"><input type="email" id="source_email" class="form-control border dotransparent" value="' . (count($user_emails) > 0 ? $user_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
+                    $this_tab .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($user_emails) > 0 ? $user_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
                 <a href="javascript:void(0)" onclick="e_update_email()" class="btn btn-source">Save</a>
                 <span class="saving-account save_email"></span>';
 
@@ -359,8 +359,8 @@ $is_source = source_is_idea_source($source['e__id']);
             }
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
-            foreach($e__profiles as $source_profile) {
-                $this_tab .= view_source($source_profile,true, null, true, $is_source);
+            foreach($e__profiles as $e_profile) {
+                $this_tab .= view_e($e_profile,true, null, true, $is_source);
             }
 
             //Input to add new parents:
@@ -420,16 +420,16 @@ $is_source = source_is_idea_source($source['e__id']);
                 $input_options = '';
                 $editor_counter = 0;
 
-                foreach($this->config->item('sources__4997') as $action_e__id => $source_list_action) {
+                foreach($this->config->item('sources__4997') as $action_e__id => $e_list_action) {
 
 
                     $editor_counter++;
-                    $dropdown_options .= '<option value="' . $action_e__id . '">' .$source_list_action['m_name'] . '</option>';
+                    $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m_name'] . '</option>';
                     $is_upper = ( in_array($action_e__id, $this->config->item('sources_id_12577') /* SOURCE UPDATER UPPERCASE */) ? ' montserrat doupper ' : false );
 
 
                     //Start with the input wrapper:
-                    $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$source_list_action['m_desc'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                    $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m_desc'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
 
 
@@ -450,7 +450,7 @@ $is_source = source_is_idea_source($source['e__id']);
                         //Player search box:
 
                         //String command:
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_search source_text_search border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
 
                         //We don't need the second value field here:
                         $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -459,10 +459,10 @@ $is_source = source_is_idea_source($source['e__id']);
                     } elseif($action_e__id == 11956){
 
                         //IF HAS THIS
-                        $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search source_text_search border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
 
                         //ADD THIS
-                        $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search source_text_search border '.$is_upper.'">';
+                        $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
 
 
                     } elseif($action_e__id == 5003){
@@ -488,12 +488,12 @@ $is_source = source_is_idea_source($source['e__id']);
 
                     } elseif($action_e__id == 5865){
 
-                        //Read Status update:
+                        //Interaction Status update:
 
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('sources__6186') /* Read Status */ as $x__type3 => $m3){
+                        foreach($this->config->item('sources__6186') /* Interaction Status */ as $x__type3 => $m3){
                             $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
@@ -501,7 +501,7 @@ $is_source = source_is_idea_source($source['e__id']);
                         //Replace:
                         $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('sources__6186') /* Read Status */ as $x__type3 => $m3){
+                        foreach($this->config->item('sources__6186') /* Interaction Status */ as $x__type3 => $m3){
                             $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
@@ -521,9 +521,9 @@ $is_source = source_is_idea_source($source['e__id']);
 
                 }
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;">'.( superpower_active(10967, true) && sources_currently_sorted($source['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$sources__11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="source_sort_reset()">'.$sources__11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.source_editor\').toggleClass(\'hidden\');" title="'.$sources__11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$sources__11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;">'.( superpower_active(10967, true) && sources_currently_sorted($source['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$sources__11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$sources__11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$sources__11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$sources__11035[4997]['m_icon'].'</a></div>';
                 $this_tab .= '<div class="doclear">&nbsp;</div>';
-                $this_tab .= '<div class="source_editor hidden">';
+                $this_tab .= '<div class="e_editor hidden">';
                 $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
                 $this_tab .= '<div class="inline-box">';
 
@@ -541,8 +541,8 @@ $is_source = source_is_idea_source($source['e__id']);
 
                 //Also add invisible child IDs for quick copy/pasting:
                 $this_tab .= '<div style="color:transparent;" class="hideIfEmpty">';
-                foreach($e__portfolios as $source_portfolio) {
-                    $this_tab .= $source_portfolio['e__id'].',';
+                foreach($e__portfolios as $e_portfolio) {
+                    $this_tab .= $e_portfolio['e__id'].',';
                 }
                 $this_tab .= '</div>';
 
@@ -557,8 +557,8 @@ $is_source = source_is_idea_source($source['e__id']);
                 //Source Status Filters:
                 if(superpower_active(12701, true)){
 
-                    $source_count = $this->SOURCE_model->child_count($source['e__id'], $this->config->item('sources_id_7358') /* ACTIVE */);
-                    $child_source_filters = $this->DISCOVER_model->fetch(array(
+                    $e_count = $this->SOURCE_model->child_count($source['e__id'], $this->config->item('sources_id_7358') /* ACTIVE */);
+                    $child_e_filters = $this->DISCOVER_model->fetch(array(
                         'x__up' => $source['e__id'],
                         'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                         'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -566,7 +566,7 @@ $is_source = source_is_idea_source($source['e__id']);
                     ), array('x__down'), 0, 0, array('e__status' => 'ASC'), 'COUNT(e__id) as totals, e__status', 'e__status');
 
                     //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
-                    if (count($child_source_filters) > 0 && $child_source_filters[0]['totals'] < $source_count) {
+                    if (count($child_e_filters) > 0 && $child_e_filters[0]['totals'] < $e_count) {
 
                         //Load status definitions:
                         $sources__6177 = $this->config->item('sources__6177'); //Source Status
@@ -575,13 +575,13 @@ $is_source = source_is_idea_source($source['e__id']);
                         $this_tab .= '<div class="nav nav-pills nav-sm">';
 
                         //Show fixed All button:
-                        $this_tab .= '<li class="nav-item"><a href="#" onclick="source_filter_status(-1)" class="nav-link en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $source_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
+                        $this_tab .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-link en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
 
                         //Show each specific filter based on DB counts:
-                        foreach($child_source_filters as $c_c) {
+                        foreach($child_e_filters as $c_c) {
                             $st = $sources__6177[$c_c['e__status']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
-                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['e__status'] . '" onclick="source_filter_status(' . $c_c['e__status'] . ')" class="nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
+                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['e__status'] . '" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
                         }
 
                         $this_tab .= '</div>';
@@ -592,11 +592,11 @@ $is_source = source_is_idea_source($source['e__id']);
 
             $this_tab .= '<div id="e__portfolio" class="list-group">';
 
-            foreach($e__portfolios as $source_portfolio) {
-                $this_tab .= view_source($source_portfolio,false, null, true, $is_source);
+            foreach($e__portfolios as $e_portfolio) {
+                $this_tab .= view_e($e_portfolio,false, null, true, $is_source);
             }
             if ($counter > count($e__portfolios)) {
-                $this_tab .= view_source_load_more(1, config_var(11064), $counter);
+                $this_tab .= view_e_load_more(1, config_var(11064), $counter);
             }
 
             //Input to add new child:
@@ -634,7 +634,7 @@ $is_source = source_is_idea_source($source['e__id']);
             //Also Show Related Sources:
             if(count($i__ids) > 0){
 
-                $already_included = array($source['e__id']);
+                $is_included = array($source['e__id']);
                 foreach ($this->DISCOVER_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
@@ -642,21 +642,21 @@ $is_source = source_is_idea_source($source['e__id']);
                     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array(), 0) as $fetched_source){
 
-                    foreach(array('x__up','x__down') as $source_ref_field) {
-                        if($fetched_source[$source_ref_field] > 0){
+                    foreach(array('x__up','x__down') as $e_ref_field) {
+                        if($fetched_source[$e_ref_field] > 0){
 
-                            if(in_array($fetched_source[$source_ref_field], $already_included)){
+                            if(in_array($fetched_source[$e_ref_field], $is_included)){
                                 continue;
                             }
 
                             $counter++;
-                            array_push($already_included, $fetched_source[$source_ref_field]);
+                            array_push($is_included, $fetched_source[$e_ref_field]);
 
                             $ref_sources = $this->SOURCE_model->fetch(array(
-                                'e__id' => $fetched_source[$source_ref_field],
+                                'e__id' => $fetched_source[$e_ref_field],
                             ));
 
-                            $this_tab .= view_source($ref_sources[0]);
+                            $this_tab .= view_e($ref_sources[0]);
 
                         }
                     }
@@ -690,7 +690,7 @@ $is_source = source_is_idea_source($source['e__id']);
                     $idea_notes_query = $this->DISCOVER_model->fetch($idea_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
                     $this_tab .= '<div class="list-group">';
                     foreach($idea_notes_query as $count => $idea_notes) {
-                        $this_tab .= view_idea($idea_notes, 0, false, false, $idea_notes['x__message'], null, false);
+                        $this_tab .= view_i($idea_notes, 0, false, false, $idea_notes['x__message'], null, false);
                     }
                     $this_tab .= '</div>';
 
@@ -703,21 +703,21 @@ $is_source = source_is_idea_source($source['e__id']);
 
         } elseif($x__type == 12969 /* MY DISCOVERIES */){
 
-            $idea_reads_filters = array(
+            $idea_discoveries_filters = array(
                 'x__player' => $source['e__id'],
                 'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
                 'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             );
-            $player_reads = $this->DISCOVER_model->fetch($idea_reads_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
-            $counter = $player_reads[0]['totals'];
+            $player_discoveries = $this->DISCOVER_model->fetch($idea_discoveries_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
+            $counter = $player_discoveries[0]['totals'];
 
             if($has_superpower){
                 if($counter > 0){
-                    $idea_reads_query = $this->DISCOVER_model->fetch($idea_reads_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
+                    $idea_discoveries_query = $this->DISCOVER_model->fetch($idea_discoveries_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
                     $this_tab .= '<div class="list-group">';
-                    foreach($idea_reads_query as $count => $idea_notes) {
-                        $this_tab .= view_idea($idea_notes);
+                    foreach($idea_discoveries_query as $count => $idea_notes) {
+                        $this_tab .= view_i($idea_notes);
                     }
                     $this_tab .= '</div>';
                 } else {
@@ -735,7 +735,7 @@ $is_source = source_is_idea_source($source['e__id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="read-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$x__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$x__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($x__type, $this->config->item('sources_id_13004')) ? superpower_active(10967) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$x__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
+        echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$x__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$x__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($x__type, $this->config->item('sources_id_13004')) ? superpower_active(10967) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$x__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';

@@ -89,15 +89,15 @@ foreach($sources as $en){
         'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
         'x__up' => $en['e__id'],
-    ), array('x__down'), 0, 0) as $source_child){
+    ), array('x__down'), 0, 0) as $e_child){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4536].$source_child['x__up'],
-            'target' => $id_prefix[4536].$source_child['x__down'],
-            'label' => $sources__4593[$source_child['x__type']]['m_name'].': '.$source_child['x__message'],
+            'source' => $id_prefix[4536].$e_child['x__up'],
+            'target' => $id_prefix[4536].$e_child['x__down'],
+            'label' => $sources__4593[$e_child['x__type']]['m_name'].': '.$e_child['x__message'],
             'weight' => 1,
-            'edge_type' => $source_child['x__type'],
-            'edge_status' => $source_child['x__status'],
+            'edge_type' => $e_child['x__type'],
+            'edge_status' => $e_child['x__status'],
         ));
 
     }

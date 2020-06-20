@@ -11,8 +11,8 @@ $(document).ready(function () {
         x_upload(droppedFiles, 'file');
     });
 
-    //Move main reads, if any:
-    $('.focus_reads_top').html($('.focus_reads_bottom').html());
+    //Move main discovers, if any:
+    $('.focus_discoveries_top').html($('.focus_discoveries_bottom').html());
 
     //Should we auto start?
     if (isAdvancedUpload) {
@@ -141,7 +141,7 @@ function x_respond(){
                 window.location = '/discover/x_next/'+idea_loaded_id;
             }, 987);
         } else {
-            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><span class="read montserrat">'+data.message+'</span>');
+            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');
         }
     });
 }
@@ -169,7 +169,7 @@ function x_answer(){
                 window.location = '/discover/x_next/'+idea_loaded_id;
             }, 987);
         } else {
-            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span><span class="read montserrat">'+data.message+'</span>');
+            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');
         }
     });
 }

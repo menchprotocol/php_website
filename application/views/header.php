@@ -51,7 +51,7 @@ $current_mench = current_mench();
 
     <script src="/application/views/global.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
-    <?php if($current_mench['x_name']=='read'){ ?>
+    <?php if($current_mench['x_name']=='discover'){ ?>
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=custom-share-buttons&cms=website' async='async'></script>
     <?php } ?>
 
@@ -117,7 +117,7 @@ if(!isset($hide_header)){
                                 $m['e__id'] = $x__type;
                                 if((!isset($sources__12893_resort[0])) && (
                                     $_SERVER['REQUEST_URI'] == $m['m_desc'] ||
-                                    ( $x__type==6205 /*  DISCOVER  */ && $current_mench['x_name']=='read' ) ||
+                                    ( $x__type==6205 /*  DISCOVER  */ && $current_mench['x_name']=='discover' ) ||
                                     ( $x__type==4535 /* IDEATE */ && $current_mench['x_name']=='idea' ) ||
                                     ( $x__type==4536 /* SOURCE */ && $current_mench['x_name']=='source' )
                                 )){
@@ -185,7 +185,7 @@ if(!isset($hide_header)){
                             if($x__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
                                 continue;
                             } elseif($x__type==6415 && !$is_home){
-                                //Deleting reads only available on Discoveries home
+                                //Deleting discovers only available on Discoveries home
                                 continue;
                             } elseif($x__type==12749 && !$is_home && !is_numeric($first_segment)){
                                 //Not an editable discovery
@@ -224,7 +224,7 @@ if(!isset($hide_header)){
                             } elseif($x__type==6415) {
 
                                 //CLEAR DISCOVERIES
-                                $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-reads-list\').toggleClass(\'hidden\')"';
+                                $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')"';
 
                             } else {
 

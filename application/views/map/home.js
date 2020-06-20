@@ -18,7 +18,7 @@ var saving_idea = false;
 function i_create(){
 
     if(saving_idea){
-        alert('Idea already being saved, Be patient...');
+        alert('Idea currently being saved, Be patient...');
         return false;
     } else {
         saving_idea = true;
@@ -44,7 +44,7 @@ function i_create(){
         } else {
 
             //Unlock:
-            $('#tempLoader').html('<span class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
+            $('#tempLoader').html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
             $('#newIdeaTitle').prop('disabled', false).focus();
 
         }

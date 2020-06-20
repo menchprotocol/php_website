@@ -2,13 +2,13 @@
 
 $stats = array(
     'ideas' => 0,
-    'source_missing' => 0,
+    'e_missing' => 0,
     'note_deleted' => 0,
     'is_deleted' => 0,
     'creator_missing' => 0,
     'creator_extra' => 0,
     'creator_fixed' => 0,
-    'source_duplicate' => 0,
+    'e_duplicate' => 0,
 );
 
 //FInd and delete duplicate sources:
@@ -47,12 +47,12 @@ foreach($this->MAP_model->fetch() as $in) {
         ));
     } elseif(count($idea_creators) >= 2) {
         //Remove extra:
-        foreach($idea_creators as $count => $idea_source_tr){
+        foreach($idea_creators as $count => $idea_e_tr){
             if($count == 0){
                 continue; //Keep first one
             } else {
                 $stats['creator_extra']++;
-                $this->db->query("DELETE FROM mench__x WHERE x__id=".$idea_source_tr['x__id']);
+                $this->db->query("DELETE FROM mench__x WHERE x__id=".$idea_e_tr['x__id']);
             }
         }
     }
@@ -61,7 +61,7 @@ foreach($this->MAP_model->fetch() as $in) {
     if(!$is_deleted && !count($idea_sources)){
 
         //Missing SOURCE
-        $stats['source_missing']++;
+        $stats['e_missing']++;
         $creator_id = ( count($idea_sources) ? $idea_sources[0]['x__player'] : $session_source['x__up'] );
         $this->DISCOVER_model->create(array(
             'x__type' => 4983, //IDEA COIN

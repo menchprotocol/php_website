@@ -21,22 +21,22 @@ $is_public = in_array($idea_focus['i__status'], $this->config->item('sources_id_
 
 <?php
 
-$source_focus_found = false; //Used to determine the first tab to be opened
+$e_focus_found = false; //Used to determine the first tab to be opened
 
 echo '<div class="container" style="padding-bottom:42px;">';
 
 if(!$is_source){
-    echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/map/i_source_request/'.$idea_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/map/i_source_add/'.$idea_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
+    echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/map/i_e_request/'.$idea_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/map/i_e_add/'.$idea_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
 if(isset($_GET['focus__source'])){
     //Filtered Specific Source:
-    $source_filters = $this->SOURCE_model->fetch(array(
+    $e_filters = $this->SOURCE_model->fetch(array(
         'e__id' => intval($_GET['focus__source']),
         'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
     ));
-    if(count($source_filters)){
-        echo '<div class="alert alert-danger no-margin"><span class="icon-block"><i class="fas fa-filter read"></i></span>Showing Discoveries for <a href="/@'.$source_filters[0]['e__id'].'" class="'.extract_icon_color($source_filters[0]['e__icon']).'">' . view_e__icon($source_filters[0]['e__icon']) . '&nbsp;' . $source_filters[0]['e__title'].'</a> Only (<a href="/'.$this->uri->segment(1).'">Remove Filter</a>)</div>';
+    if(count($e_filters)){
+        echo '<div class="alert alert-danger no-margin"><span class="icon-block"><i class="fas fa-filter discover"></i></span>Showing Discoveries for <a href="/@'.$e_filters[0]['e__id'].'" class="'.extract_icon_color($e_filters[0]['e__icon']).'">' . view_e__icon($e_filters[0]['e__icon']) . '&nbsp;' . $e_filters[0]['e__title'].'</a> Only (<a href="/'.$this->uri->segment(1).'">Remove Filter</a>)</div>';
     }
 }
 
@@ -52,7 +52,7 @@ $ideas_previous = $this->DISCOVER_model->fetch(array(
 
 echo '<div id="list-in-' . $idea_focus['i__id'] . '-1" class="list-group previous_ideas">';
 foreach($ideas_previous as $previous_idea) {
-    echo view_idea($previous_idea, $idea_focus['i__id'], true, idea_is_source($previous_idea['i__id']));
+    echo view_i($previous_idea, $idea_focus['i__id'], true, idea_is_source($previous_idea['i__id']));
 }
 if( $is_source && $is_active && $idea_focus['i__id']!=$this->config->item('featured_i__id')){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
@@ -79,7 +79,7 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo view_idea_note_mix(4231, $this->DISCOVER_model->fetch(array(
+echo view_i_note_mix(4231, $this->DISCOVER_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
     'x__type' => 4231,
     'x__right' => $idea_focus['i__id'],
@@ -96,7 +96,7 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_in
 echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $idea_focus['i__duration'], $idea_focus['i__id'], $is_source && $is_active, 0).'</div>';
 
 //IDEA DISCOVER (IF PUBLIC)
-echo '<div class="inline-block pull-right both-margin left-half-margin idea-read '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-read btn-circle" href="/'.$idea_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__11035[12750]['m_name'].'">'.$sources__11035[12750]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-discover btn-circle" href="/'.$idea_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__11035[12750]['m_name'].'">'.$sources__11035[12750]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
@@ -147,7 +147,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
         $this_tab .= '<div id="list-in-' . $idea_focus['i__id'] . '-0" class="list-group next_ideas">';
         foreach($ideas_next as $next_idea) {
-            $this_tab .= view_idea($next_idea, $idea_focus['i__id'], false, $is_source);
+            $this_tab .= view_i($next_idea, $idea_focus['i__id'], false, $is_source);
         }
 
         if($is_source && $is_active){
@@ -179,7 +179,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $this_tab .= '<div id="add-source-' .$x__type . '" class="list-group source-adder">';
 
         foreach($idea_notes as $idea_note) {
-            $this_tab .= view_source($idea_note, 0, null, $is_source && $is_active, $is_source);
+            $this_tab .= view_e($idea_note, 0, null, $is_source && $is_active, $is_source);
         }
 
         if($is_source && $is_active && !$disable_manual_add) {
@@ -211,7 +211,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         ), array('x__player'), 0, 0, array('x__sort' => 'ASC'));
 
         $counter = count($idea_notes);
-        $this_tab .= view_idea_note_mix($x__type, $idea_notes);
+        $this_tab .= view_i_note_mix($x__type, $idea_notes);
 
     } elseif($x__type==12589){
 
@@ -220,21 +220,21 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $input_options = '';
         $counter = 0;
 
-        foreach($this->config->item('sources__12589') as $action_e__id => $source_list_action) {
+        foreach($this->config->item('sources__12589') as $action_e__id => $e_list_action) {
 
             $counter++;
-            $dropdown_options .= '<option value="' . $action_e__id . '">' .$source_list_action['m_name'] . '</option>';
+            $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m_name'] . '</option>';
 
 
             //Start with the input wrapper:
-            $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$source_list_action['m_desc'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+            $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m_desc'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
             if(in_array($action_e__id, array(12591, 12592))){
 
                 //Source search box:
 
                 //String command:
-                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search source_text_search border montserrat">';
+                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border montserrat">';
 
                 //We don't need the second value field here:
                 $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';

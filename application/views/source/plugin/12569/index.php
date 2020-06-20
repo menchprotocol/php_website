@@ -9,8 +9,8 @@ $stats = array(
     'idea_scanned' => 0,
     'idea_updated' => 0,
     'idea_total_weights' => 0,
-    'source_scanned' => 0,
-    'source_updated' => 0,
+    'e_scanned' => 0,
+    'e_updated' => 0,
 );
 
 if(!$obj || $obj==4535){
@@ -34,14 +34,14 @@ if(!$obj || $obj==4536){
     foreach($this->SOURCE_model->fetch(array(
         'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
     )) as $en) {
-        $stats['source_scanned']++;
-        $stats['source_updated'] += e__weight_calculator($en);
+        $stats['e_scanned']++;
+        $stats['e_updated'] += e__weight_calculator($en);
     }
 }
 
 $stats['end_time'] = time();
 $stats['total_seconds'] = $stats['end_time'] - $stats['start_time'];
-$stats['total_items'] = $stats['source_scanned'] + $stats['idea_scanned'];
+$stats['total_items'] = $stats['e_scanned'] + $stats['idea_scanned'];
 if($stats['total_seconds'] > 0){
     $stats['millisecond_speed'] = round(($stats['total_seconds'] / $stats['total_items'] * 1000), 3);
 }

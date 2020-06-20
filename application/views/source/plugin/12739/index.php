@@ -14,7 +14,7 @@ if(isset($_GET['url_to_analyze']) && strlen($_GET['url_to_analyze'])>0){
     echo '<hr />'.nl2br(str_replace(' ','&nbsp;', print_r(array(
             'analyze_domain' => analyze_domain($_GET['url_to_analyze']),
             'view_url_embed' => view_url_embed($_GET['url_to_analyze'], null, true),
-            'source_url' => $this->SOURCE_model->url($_GET['url_to_analyze']),
+            'e_url' => $this->SOURCE_model->url($_GET['url_to_analyze']),
         ), true))).'<hr />';
 
     echo 'Embed Code:<hr />'.view_url_embed($_GET['url_to_analyze']);

@@ -7,7 +7,7 @@
     $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
     //MY IDEAS
-    echo '<div class="read-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
+    echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
 
     echo '<div id="myIdeas" class="list-group">';
     foreach($this->DISCOVER_model->fetch(array(
@@ -16,7 +16,7 @@
         'x__type' => 10573, //MY IDEAS
         'x__up' => $session_source['e__id'], //For this player
     ), array('x__right'), 0, 0, array('i__weight' => 'DESC')) as $idea){
-        echo view_idea($idea, 0, false, true);
+        echo view_i($idea, 0, false, true);
     }
 
     $sources__2738 = $this->config->item('sources__2738'); //MENCH

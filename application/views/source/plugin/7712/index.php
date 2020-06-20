@@ -1,6 +1,6 @@
 <?php
 
-$all_reads = 0;
+$all_discoveries = 0;
 $all_children = 0;
 $updated = 0;
 $session_source = superpower_assigned();
@@ -10,7 +10,7 @@ foreach($this->MAP_model->fetch(array(
     'i__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
 ), 0, 0, array('i__id' => 'DESC')) as $count => $in) {
 
-    echo '<div>'.($count+1).')<span class="icon-block">'.view_cache('sources__6193' /* OR Ideas */, $in['i__type']).'</span><a href="/map/i_go/'.$in['i__id'].'">'.view_i__title($in).'</a></div>';
+    echo '<div>'.($count+1).')<span class="icon-block">'.view_cache('sources__6193' /* OR Ideas */, $in['i__type']).'</span><a href="/map/i_go/'.$in['i__id'].'">'.view_i_title($in).'</a></div>';
 
     echo '<ul style="list-style: decimal;">';
     //Fetch all children for this OR:
@@ -32,8 +32,8 @@ foreach($this->MAP_model->fetch(array(
 
         echo '<li>';
         echo '<span class="icon-block">'.view_cache('sources__7585', $child_or['i__type']).'</span>';
-        echo '<a href="/map/i_go/'.$child_or['i__id'].'">'.view_i__title($child_or).'</a>';
-        echo ( $x_coins[0]['totals'] > 0 ? ' <span class="read montserrat"><i class="fas fa-circle read"></i> '.$x_coins[0]['totals'].'</span>' : '' );
+        echo '<a href="/map/i_go/'.$child_or['i__id'].'">'.view_i_title($child_or).'</a>';
+        echo ( $x_coins[0]['totals'] > 0 ? ' <span class="discover montserrat"><i class="fas fa-circle discover"></i> '.$x_coins[0]['totals'].'</span>' : '' );
         echo '</li>';
 
     }

@@ -12,7 +12,7 @@ $show_max = config_var(11986);
     //My Sources:
     if($session_source){
 
-        echo '<div class="read-topic" style="margin-top:21px;"><span class="icon-block">'.$sources__11035[12205]['m_icon'].'</span>'.$sources__11035[12205]['m_name'].'</div>';
+        echo '<div class="discover-topic" style="margin-top:21px;"><span class="icon-block">'.$sources__11035[12205]['m_icon'].'</span>'.$sources__11035[12205]['m_name'].'</div>';
 
         echo '<div class="list-group">';
 
@@ -27,7 +27,7 @@ $show_max = config_var(11986);
                 echo '<div class="list-group-item see_more_who'.$session_source['e__id'].' no-height"></div>';
             }
 
-            echo view_source($my_source, true, ( $count<$show_max ? '' : 'see_more_who'.$session_source['e__id'].' hidden'));
+            echo view_e($my_source, true, ( $count<$show_max ? '' : 'see_more_who'.$session_source['e__id'].' hidden'));
         }
 
 
@@ -44,7 +44,7 @@ $show_max = config_var(11986);
         echo '<table class="table table-sm table-striped">';
         echo '<tr></tr>'; //Skip white
         echo '<tr>';
-        echo '<td class="MENCHcolumn12 montserrat"><div class="read-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div></td>';
+        echo '<td class="MENCHcolumn12 montserrat"><div class="discover-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div></td>';
         echo '<td class="MENCHcolumn3">&nbsp;</td>';
         echo '</tr>';
         echo '</table>';
@@ -65,7 +65,7 @@ $show_max = config_var(11986);
                 echo '<div class="list-group-item see_more_who'.$e__id.' no-height"></div>';
             }
 
-            echo view_source($source, false, ( $count<$show_max ? '' : 'see_more_who'.$e__id.' hidden'));
+            echo view_e($source, false, ( $count<$show_max ? '' : 'see_more_who'.$e__id.' hidden'));
 
         }
         echo '</div>';

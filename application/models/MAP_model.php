@@ -239,9 +239,9 @@ class MAP_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
-        ), array(), 0) as $read){
+        ), array(), 0) as $discovery){
             //Delete this link:
-            $links_deleted += $this->DISCOVER_model->update($read['x__id'], array(
+            $links_deleted += $this->DISCOVER_model->update($discovery['x__id'], array(
                 'x__status' => 6173, //Link Deleted
             ), $x__player, 10686 /* Idea Link Unpublished */);
         }
@@ -265,7 +265,7 @@ class MAP_model extends CI_Model
         return $links_deleted;
     }
 
-    function match_read_status($x__player, $query = array()){
+    function match_x_status($x__player, $query = array()){
 
         //STATS
         $stats = array(
@@ -287,13 +287,13 @@ class MAP_model extends CI_Model
 
             $stats['scanned']++;
 
-            //Find creation read:
-            $reads = $this->DISCOVER_model->fetch(array(
+            //Find creation discover:
+            $discoveries = $this->DISCOVER_model->fetch(array(
                 'x__type' => $stats['x__type'],
                 'x__right' => $idea['i__id'],
             ));
 
-            if(!count($reads)){
+            if(!count($discoveries)){
 
                 $stats['missing_creation_fix']++;
 
@@ -305,10 +305,10 @@ class MAP_model extends CI_Model
                     'x__status' => $status_converter[$idea['i__status']],
                 ));
 
-            } elseif($reads[0]['x__status'] != $status_converter[$idea['i__status']]){
+            } elseif($discoveries[0]['x__status'] != $status_converter[$idea['i__status']]){
 
                 $stats['status_sync']++;
-                $this->DISCOVER_model->update($reads[0]['x__id'], array(
+                $this->DISCOVER_model->update($discoveries[0]['x__id'], array(
                     'x__status' => $status_converter[$idea['i__status']],
                 ));
 
@@ -478,7 +478,7 @@ class MAP_model extends CI_Model
                     )),
             ), true);
 
-            //Fetch and return full data to be properly shown on the UI using the view_idea() function
+            //Fetch and return full data to be properly shown on the UI using the view_i() function
             $new_ideas = $this->DISCOVER_model->fetch(array(
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $idea_new['i__id'],
@@ -488,7 +488,7 @@ class MAP_model extends CI_Model
             ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $next_idea_html = view_idea($new_ideas[0], $link_to_i__id, $is_parent, true /* Since they added it! */);
+            $next_idea_html = view_i($new_ideas[0], $link_to_i__id, $is_parent, true /* Since they added it! */);
 
         } else {
 
@@ -611,10 +611,10 @@ class MAP_model extends CI_Model
         $select_some = in_array($focus_in['i__type'] , $this->config->item('sources_id_12884')); //IDEA TYPE SELECT SOME
         $select_one_children = array(); //To be populated only if $focus_in is select one
         $select_some_children = array(); //To be populated only if $focus_in is select some
-        $conditional_reads = array(); //To be populated only for Conditional Ideas
+        $conditional_discoveries = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
-            '__i___common_reads' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__i___expansion_reads' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
+            '__i___common_discoveries' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
+            '__i___expansion_discoveries' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
             '__i___expansion_some' => array(), //Ideas that allows players to select one or more
             '__i___expansion_conditional' => array(), //Ideas that may exist as a link to expand Discovery via Conditional Idea links
         );
@@ -631,7 +631,7 @@ class MAP_model extends CI_Model
             if(in_array($next_idea['x__type'], $this->config->item('sources_id_12842'))){
 
                 //Conditional Idea Link:
-                array_push($conditional_reads, intval($next_idea['i__id']));
+                array_push($conditional_discoveries, intval($next_idea['i__id']));
 
             } elseif($select_one){
 
@@ -646,22 +646,22 @@ class MAP_model extends CI_Model
             } else {
 
                 //AND parent Idea with Fixed Idea Link:
-                array_push($metadata_this['__i___common_reads'], intval($next_idea['i__id']));
+                array_push($metadata_this['__i___common_discoveries'], intval($next_idea['i__id']));
 
                 //Go recursively down:
                 $child_recursion = $this->MAP_model->metadata_common_base($next_idea);
 
 
                 //Aggregate recursion data:
-                if(count($child_recursion['__i___common_reads']) > 0){
-                    array_push($metadata_this['__i___common_reads'], $child_recursion['__i___common_reads']);
+                if(count($child_recursion['__i___common_discoveries']) > 0){
+                    array_push($metadata_this['__i___common_discoveries'], $child_recursion['__i___common_discoveries']);
                 }
 
                 //Merge expansion steps:
-                if(count($child_recursion['__i___expansion_reads']) > 0){
-                    foreach($child_recursion['__i___expansion_reads'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__i___expansion_reads'])){
-                            $metadata_this['__i___expansion_reads'][$key] = $value;
+                if(count($child_recursion['__i___expansion_discoveries']) > 0){
+                    foreach($child_recursion['__i___expansion_discoveries'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__i___expansion_discoveries'])){
+                            $metadata_this['__i___expansion_discoveries'][$key] = $value;
                         }
                     }
                 }
@@ -685,13 +685,13 @@ class MAP_model extends CI_Model
 
         //Was this an OR branch that needs it's children added to the array?
         if($select_one && count($select_one_children) > 0){
-            $metadata_this['__i___expansion_reads'][$focus_in['i__id']] = $select_one_children;
+            $metadata_this['__i___expansion_discoveries'][$focus_in['i__id']] = $select_one_children;
         }
         if($select_some && count($select_some_children) > 0){
             $metadata_this['__i___expansion_some'][$focus_in['i__id']] = $select_some_children;
         }
-        if(count($conditional_reads) > 0){
-            $metadata_this['__i___expansion_conditional'][$focus_in['i__id']] = $conditional_reads;
+        if(count($conditional_discoveries) > 0){
+            $metadata_this['__i___expansion_conditional'][$focus_in['i__id']] = $conditional_discoveries;
         }
 
 
@@ -699,15 +699,15 @@ class MAP_model extends CI_Model
         if($is_first_in){
 
             //Make sure to add main idea to common idea:
-            if(count($metadata_this['__i___common_reads']) > 0){
-                $metadata_this['__i___common_reads'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['__i___common_reads']));
+            if(count($metadata_this['__i___common_discoveries']) > 0){
+                $metadata_this['__i___common_discoveries'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['__i___common_discoveries']));
             } else {
-                $metadata_this['__i___common_reads'] = array(intval($focus_in['i__id']));
+                $metadata_this['__i___common_discoveries'] = array(intval($focus_in['i__id']));
             }
 
             update_metadata(4535, $focus_in['i__id'], array(
-                'i___common_reads' => $metadata_this['__i___common_reads'],
-                'i___expansion_reads' => $metadata_this['__i___expansion_reads'],
+                'i___common_discoveries' => $metadata_this['__i___common_discoveries'],
+                'i___expansion_discoveries' => $metadata_this['__i___expansion_discoveries'],
                 'i___expansion_some' => $metadata_this['__i___expansion_some'],
                 'i___expansion_conditional' => $metadata_this['__i___expansion_conditional'],
             ));
@@ -722,7 +722,7 @@ class MAP_model extends CI_Model
     function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__player)
     {
 
-        //Alert: Has a twin function called source_mass_update()
+        //Alert: Has a twin function called e_mass_update()
 
         boost_power();
 
@@ -733,7 +733,7 @@ class MAP_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(in_array($action_e__id , array(12591, 12592)) && !is_valid_source_string($action_command1)){
+        } elseif(in_array($action_e__id , array(12591, 12592)) && !is_valid_e_string($action_command1)){
 
             return array(
                 'status' => 0,
@@ -768,7 +768,7 @@ class MAP_model extends CI_Model
         //Process request:
         foreach($ideas_next as $next_idea) {
 
-            //Logic here must match items in source_mass_actions config variable
+            //Logic here must match items in e_mass_actions config variable
 
             if(in_array($action_e__id , array(12591, 12592))){
 
@@ -810,7 +810,7 @@ class MAP_model extends CI_Model
                 //Check if it hs this item:
                 $adjust_i__id = intval(one_two_explode('#',' ',$action_command1));
 
-                $is_previous_already = $this->DISCOVER_model->fetch(array(
+                $is_previous = $this->DISCOVER_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                     'x__left' => $adjust_i__id,
@@ -818,17 +818,17 @@ class MAP_model extends CI_Model
                 ), array(), 0);
 
                 //See how to adjust:
-                if($action_e__id==12611 && !count($is_previous_already)){
+                if($action_e__id==12611 && !count($is_previous)){
 
                     $this->MAP_model->link_or_create('', $x__player, $adjust_i__id, false, 6184, 6677, $next_idea['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;
 
-                } elseif($action_e__id==12612 && count($is_previous_already)){
+                } elseif($action_e__id==12612 && count($is_previous)){
 
                     //Remove Source:
-                    $this->DISCOVER_model->update($is_previous_already[0]['x__id'], array(
+                    $this->DISCOVER_model->update($is_previous[0]['x__id'], array(
                         'x__status' => 6173,
                     ), $x__player, 10686 /* IDEA NOTES Unpublished */);
 
@@ -897,7 +897,7 @@ class MAP_model extends CI_Model
 
 
 
-    function metadata_source_insights($idea)
+    function metadata_e_insights($idea)
     {
 
         /*
@@ -909,8 +909,8 @@ class MAP_model extends CI_Model
          * */
 
         $metadata_this = array(
-            '__i___min_reads' => 1,
-            '__i___max_reads' => 1,
+            '__i___min_discoveries' => 1,
+            '__i___max_discoveries' => 1,
             '__i___min_seconds' => $idea['i__duration'],
             '__i___max_seconds' => $idea['i__duration'],
             '__i___experts' => array(),
@@ -928,26 +928,26 @@ class MAP_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $fetched_source) {
 
-            foreach(array('x__up','x__down') as $source_ref_field){
-                if($fetched_source[$source_ref_field] > 0){
+            foreach(array('x__up','x__down') as $e_ref_field){
+                if($fetched_source[$e_ref_field] > 0){
 
                     $ref_sources = $this->SOURCE_model->fetch(array(
-                        'e__id' => $fetched_source[$source_ref_field],
+                        'e__id' => $fetched_source[$e_ref_field],
                     ));
 
-                    $source_metadata_experts = $this->SOURCE_model->metadata_experts($ref_sources[0]);
+                    $e_metadata_experts = $this->SOURCE_model->metadata_experts($ref_sources[0]);
 
                     //CONTENT CHANNELS
-                    foreach($source_metadata_experts['__i___content'] as $e__id => $source_content) {
+                    foreach($e_metadata_experts['__i___content'] as $e__id => $e_content) {
                         if (!isset($metadata_this['__i___content'][$e__id])) {
-                            $metadata_this['__i___content'][$e__id] = $source_content;
+                            $metadata_this['__i___content'][$e__id] = $e_content;
                         }
                     }
 
                     //EXPERT PEOPLE/ORGANIZATIONS
-                    foreach($source_metadata_experts['__i___experts'] as $e__id => $source_expert) {
+                    foreach($e_metadata_experts['__i___experts'] as $e__id => $e_expert) {
                         if (!isset($metadata_this['__i___experts'][$e__id])) {
-                            $metadata_this['__i___experts'][$e__id] = $source_expert;
+                            $metadata_this['__i___experts'][$e__id] = $e_expert;
                         }
                     }
                 }
@@ -969,8 +969,8 @@ class MAP_model extends CI_Model
 
 
         $metadata_local = array(
-            'local__i___min_reads'=> null,
-            'local__i___max_reads'=> null,
+            'local__i___min_discoveries'=> null,
+            'local__i___max_discoveries'=> null,
             'local__i___min_seconds'=> null,
             'local__i___max_seconds'=> null,
         );
@@ -984,7 +984,7 @@ class MAP_model extends CI_Model
         ), array('x__right'), 0) as $ideas_next){
 
             //RECURSION
-            $metadata_recursion = $this->MAP_model->metadata_source_insights($ideas_next);
+            $metadata_recursion = $this->MAP_model->metadata_e_insights($ideas_next);
 
 
             //MERGE (3 SCENARIOS)
@@ -993,16 +993,16 @@ class MAP_model extends CI_Model
                 //ONE
 
                 //MIN
-                if(is_null($metadata_local['local__i___min_reads']) || $metadata_recursion['__i___min_reads'] < $metadata_local['local__i___min_reads']){
-                    $metadata_local['local__i___min_reads'] = $metadata_recursion['__i___min_reads'];
+                if(is_null($metadata_local['local__i___min_discoveries']) || $metadata_recursion['__i___min_discoveries'] < $metadata_local['local__i___min_discoveries']){
+                    $metadata_local['local__i___min_discoveries'] = $metadata_recursion['__i___min_discoveries'];
                 }
                 if(is_null($metadata_local['local__i___min_seconds']) || $metadata_recursion['__i___min_seconds'] < $metadata_local['local__i___min_seconds']){
                     $metadata_local['local__i___min_seconds'] = $metadata_recursion['__i___min_seconds'];
                 }
 
                 //MAX
-                if(is_null($metadata_local['local__i___max_reads']) || $metadata_recursion['__i___max_reads'] > $metadata_local['local__i___max_reads']){
-                    $metadata_local['local__i___max_reads'] = $metadata_recursion['__i___max_reads'];
+                if(is_null($metadata_local['local__i___max_discoveries']) || $metadata_recursion['__i___max_discoveries'] > $metadata_local['local__i___max_discoveries']){
+                    $metadata_local['local__i___max_discoveries'] = $metadata_recursion['__i___max_discoveries'];
                 }
                 if(is_null($metadata_local['local__i___max_seconds']) || $metadata_recursion['__i___max_seconds'] > $metadata_local['local__i___max_seconds']){
                     $metadata_local['local__i___max_seconds'] = $metadata_recursion['__i___max_seconds'];
@@ -1013,15 +1013,15 @@ class MAP_model extends CI_Model
                 //SOME
 
                 //MIN
-                if(is_null($metadata_local['local__i___min_reads']) || $metadata_recursion['__i___min_reads'] < $metadata_local['local__i___min_reads']){
-                    $metadata_local['local__i___min_reads'] = $metadata_recursion['__i___min_reads'];
+                if(is_null($metadata_local['local__i___min_discoveries']) || $metadata_recursion['__i___min_discoveries'] < $metadata_local['local__i___min_discoveries']){
+                    $metadata_local['local__i___min_discoveries'] = $metadata_recursion['__i___min_discoveries'];
                 }
                 if(is_null($metadata_local['local__i___min_seconds']) || $metadata_recursion['__i___min_seconds'] < $metadata_local['local__i___min_seconds']){
                     $metadata_local['local__i___min_seconds'] = $metadata_recursion['__i___min_seconds'];
                 }
 
                 //MAX
-                $metadata_this['__i___max_reads'] += intval($metadata_recursion['__i___max_reads']);
+                $metadata_this['__i___max_discoveries'] += intval($metadata_recursion['__i___max_discoveries']);
                 $metadata_this['__i___max_seconds'] += intval($metadata_recursion['__i___max_seconds']);
 
             } else {
@@ -1029,34 +1029,34 @@ class MAP_model extends CI_Model
                 //ALL
 
                 //MIN
-                $metadata_this['__i___min_reads'] += intval($metadata_recursion['__i___min_reads']);
+                $metadata_this['__i___min_discoveries'] += intval($metadata_recursion['__i___min_discoveries']);
                 $metadata_this['__i___min_seconds'] += intval($metadata_recursion['__i___min_seconds']);
 
                 //MAX
-                $metadata_this['__i___max_reads'] += intval($metadata_recursion['__i___max_reads']);
+                $metadata_this['__i___max_discoveries'] += intval($metadata_recursion['__i___max_discoveries']);
                 $metadata_this['__i___max_seconds'] += intval($metadata_recursion['__i___max_seconds']);
 
             }
 
 
             //EXPERT CONTENT
-            foreach($metadata_recursion['__i___content'] as $e__id => $source_content) {
+            foreach($metadata_recursion['__i___content'] as $e__id => $e_content) {
                 if (!isset($metadata_this['__i___content'][$e__id])) {
-                    $metadata_this['__i___content'][$e__id] = $source_content;
+                    $metadata_this['__i___content'][$e__id] = $e_content;
                 }
             }
 
             //EXPERT SOURCES
-            foreach($metadata_recursion['__i___experts'] as $e__id => $source_expert) {
+            foreach($metadata_recursion['__i___experts'] as $e__id => $e_expert) {
                 if (!isset($metadata_this['__i___experts'][$e__id])) {
-                    $metadata_this['__i___experts'][$e__id] = $source_expert;
+                    $metadata_this['__i___experts'][$e__id] = $e_expert;
                 }
             }
 
             //CERTIFICATES
-            foreach($metadata_recursion['__i___certificates'] as $e__id => $source_certificate) {
+            foreach($metadata_recursion['__i___certificates'] as $e__id => $e_certificate) {
                 if (!isset($metadata_this['__i___certificates'][$e__id])) {
-                    $metadata_this['__i___certificates'][$e__id] = $source_certificate;
+                    $metadata_this['__i___certificates'][$e__id] = $e_certificate;
                 }
             }
 
@@ -1070,11 +1070,11 @@ class MAP_model extends CI_Model
 
 
         //ADD LOCAL MIN/MAX
-        if(!is_null($metadata_local['local__i___min_reads'])){
-            $metadata_this['__i___min_reads'] += intval($metadata_local['local__i___min_reads']);
+        if(!is_null($metadata_local['local__i___min_discoveries'])){
+            $metadata_this['__i___min_discoveries'] += intval($metadata_local['local__i___min_discoveries']);
         }
-        if(!is_null($metadata_local['local__i___max_reads'])){
-            $metadata_this['__i___max_reads'] += intval($metadata_local['local__i___max_reads']);
+        if(!is_null($metadata_local['local__i___max_discoveries'])){
+            $metadata_this['__i___max_discoveries'] += intval($metadata_local['local__i___max_discoveries']);
         }
         if(!is_null($metadata_local['local__i___min_seconds'])){
             $metadata_this['__i___min_seconds'] += intval($metadata_local['local__i___min_seconds']);
@@ -1085,8 +1085,8 @@ class MAP_model extends CI_Model
 
         //Save to DB
         update_metadata(4535, $idea['i__id'], array(
-            'i___min_reads' => intval($metadata_this['__i___min_reads']),
-            'i___max_reads' => intval($metadata_this['__i___max_reads']),
+            'i___min_discoveries' => intval($metadata_this['__i___min_discoveries']),
+            'i___max_discoveries' => intval($metadata_this['__i___max_discoveries']),
             'i___min_seconds' => intval($metadata_this['__i___min_seconds']),
             'i___max_seconds' => intval($metadata_this['__i___max_seconds']),
             'i___experts' => $metadata_this['__i___experts'],

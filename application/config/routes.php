@@ -23,5 +23,5 @@ $route['@(:num)']                   = "source/e_coin/$1";
 $route['~(:num)']                   = "map/i_coin/$1";
 
 //OTHER
-$route['x']                         = "discover/x_list"; //Read Interactions history
+$route['x']                         = "discover/x_list"; //Interactions
 $route['404_override']              = 'source/e_404'; //Page not found, etc...

@@ -62,7 +62,7 @@ function load_editor(){
     });
 
     if(parseInt(js_sources__6404[12678]['m_desc'])){
-        $('.source_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+        $('.e_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('@' + suggestion.object__id + ' ' + suggestion.object__title);
 
@@ -132,8 +132,8 @@ function js_extract_icon_color(e__icon){
 
     //NOTE: Has a twin PHP function
 
-    if(e__icon.includes('read')){
-        return ' read ';
+    if(e__icon.includes('discover')){
+        return ' discover ';
     } else if(e__icon.includes( 'idea')){
         return ' idea ';
     } else if(e__icon.includes('source') || !e__icon.length){
@@ -299,7 +299,7 @@ $(document).ready(function () {
                                 if(search_filters.length>0){
                                     search_filters += ' AND ';
                                 }
-                                search_filters += ' ( _tags:is_featured OR _tags:alg_source_' + js_pl_id + ' ) ';
+                                search_filters += ' ( _tags:is_featured OR _tags:alg_e_' + js_pl_id + ' ) ';
                             }
 
                         } else {
@@ -335,7 +335,7 @@ $(document).ready(function () {
                     header: function (data) {
                         if(validURL(data.query)){
 
-                            return source_fetch_canonical(data.query, false);
+                            return e_fetch_canonical(data.query, false);
 
                         } else if($("#mench_search").val().charAt(0)=='#' || $("#mench_search").val().charAt(0)=='@'){
 
@@ -350,7 +350,7 @@ $(document).ready(function () {
                     },
                     empty: function (data) {
                         if(validURL(data.query)){
-                            return source_fetch_canonical(data.query, true);
+                            return e_fetch_canonical(data.query, true);
                         } else if($("#mench_search").val().charAt(0)=='#'){
                             if(isNaN($("#mench_search").val().substr(1))){
                                 return '<div class="not-found montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No IDEA found</div>';
@@ -415,12 +415,12 @@ function x_type_preview() {
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
-        $('#x__type_preview').html((data.status ? data.html_ui : '<b class="read">' + data.message+'</b>'));
+        $('#x__type_preview').html((data.status ? data.html_ui : '<b class="discover">' + data.message+'</b>'));
 
-        if(data.status && data.source_link_preview.length > 0){
-            $('#source_link_preview').html(data.source_link_preview);
+        if(data.status && data.e_link_preview.length > 0){
+            $('#e_link_preview').html(data.e_link_preview);
         } else {
-            $('#source_link_preview').html('');
+            $('#e_link_preview').html('');
         }
 
         //Reload Tooltip again:
@@ -489,10 +489,10 @@ function modify_cancel(){
     }
 }
 
-function source_fetch_canonical(query_string, not_found){
+function e_fetch_canonical(query_string, not_found){
 
     //Do a call to PHP to fetch canonical URL and see if that exists:
-    $.post("/source/source_fetch_canonical", { search_url:query_string }, function (searchdata) {
+    $.post("/source/e_fetch_canonical", { search_url:query_string }, function (searchdata) {
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
@@ -506,7 +506,7 @@ function source_fetch_canonical(query_string, not_found){
 
 
 function delete_all_saved(){
-    $('.object_saved').removeClass('source_saved');
+    $('.object_saved').removeClass('e_saved');
 }
 
 function validURL(str) {
@@ -604,7 +604,7 @@ function idea_load_search(element_focus, is_idea_previous, shortcut, is_add_mode
             } else {
                 algolia_index.search(q, {
 
-                    filters: ' object__type=4535 ' + ( js_session_superpowers_assigned.includes(12701) ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_source_' + js_pl_id : '' ) + ') ' ),
+                    filters: ' object__type=4535 ' + ( js_session_superpowers_assigned.includes(12701) ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
                     hitsPerPage:( is_add_mode=='link_in' ? 7 : 10 ),
 
                 }, function (error, content) {
@@ -745,7 +745,7 @@ function idea_note_activate(){
         var note_type_id = parseInt($(this).attr('note-type-id'));
 
         //Initiate @ search for all idea text areas:
-        idea_note_source_search($(this));
+        idea_note_e_search($(this));
 
         autosize($(this));
 
@@ -852,7 +852,7 @@ function idea_note_edit_count(x__id) {
     }
 }
 
-function idea_note_source_search(obj) {
+function idea_note_e_search(obj) {
 
     if(parseInt(js_sources__6404[12678]['m_desc'])){
         obj.textcomplete([
@@ -889,7 +889,7 @@ function i_note_sort_apply(note_type_id) {
     var sort_rank = 0;
     var this_x__id = 0;
 
-    $(".msg_source_type_" + note_type_id).each(function () {
+    $(".msg_e_type_" + note_type_id).each(function () {
         this_x__id = parseInt($(this).attr('x__id'));
         if (this_x__id > 0) {
             sort_rank++;
@@ -957,7 +957,7 @@ function idea_note_edit_start(x__id) {
     autosize(textinput); //Adjust height
 
     //Initiate search:
-    idea_note_source_search(textinput);
+    idea_note_e_search(textinput);
 
     //Try to initiate the editor, which only applies to text messages:
     idea_note_edit_count(x__id);
@@ -1036,7 +1036,7 @@ function i_note_edit(x__id, note_type_id) {
 
         } else {
             //Oops, some sort of an error, lets
-            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
         }
 
         //Tooltips:
@@ -1086,7 +1086,7 @@ function idea_note_end_adding(result, note_type_id) {
 
     } else {
 
-        $(".note_error_"+note_type_id).html('<span class="read">'+result.message+'</span>');
+        $(".note_error_"+note_type_id).html('<span class="discover">'+result.message+'</span>');
 
     }
 }

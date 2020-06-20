@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     //Activate Source-Only Inputs:
     $(".source-mapper").each(function () {
-        source_source_only_search($(this).attr('note_type_id'));
+        e_e_only_search($(this).attr('note_type_id'));
     });
 
     //Load top/bottom idea searches:
@@ -43,11 +43,11 @@ $(document).ready(function () {
 });
 
 
-function source_only_unlink(x__id, note_type_id) {
+function e_only_unlink(x__id, note_type_id) {
 
     var r = confirm("Remove this source?");
     if (r == true) {
-        $.post("/source/source_only_unlink", {
+        $.post("/source/e_only_unlink", {
 
             i__id: idea_loaded_id,
             x__id: x__id,
@@ -70,20 +70,20 @@ function source_only_unlink(x__id, note_type_id) {
 
 }
 
-function source_only_add(source_existing_id, note_type_id) {
+function e_only_add(e_existing_id, note_type_id) {
 
 
-    //if source_existing_id>0 it means we're linking to an existing source, in which case source_new_string should be null
-    //If source_existing_id=0 it means we are creating a new source and then linking it, in which case source_new_string is required
+    //if e_existing_id>0 it means we're linking to an existing source, in which case e_new_string should be null
+    //If e_existing_id=0 it means we are creating a new source and then linking it, in which case e_new_string is required
 
-    var source_new_string = null;
+    var e_new_string = null;
     var input = $('.source-map-'+note_type_id+' .add-input');
     var list_id = 'add-source-'+note_type_id;
 
-    if (source_existing_id == 0) {
+    if (e_existing_id == 0) {
 
-        source_new_string = input.val();
-        if (source_new_string.length < 1) {
+        e_new_string = input.val();
+        if (e_new_string.length < 1) {
             alert('Missing source name or URL, try again');
             input.focus();
             return false;
@@ -92,12 +92,12 @@ function source_only_add(source_existing_id, note_type_id) {
 
     //Add via Ajax:
     input.prop('disabled', true);
-    $.post("/source/source_only_add", {
+    $.post("/source/e_only_add", {
 
         i__id: idea_loaded_id,
         note_type_id: note_type_id,
-        source_existing_id: source_existing_id,
-        source_new_string: source_new_string,
+        e_existing_id: e_existing_id,
+        e_new_string: e_new_string,
 
     }, function (data) {
 
@@ -108,11 +108,11 @@ function source_only_add(source_existing_id, note_type_id) {
 
             idea_note_counter(note_type_id, +1);
 
-            //Raw input to make it reads for next URL:
+            //Raw input to make it discovers for next URL:
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.en-item', data.source_new_echo);
+            add_to_list(list_id, '.en-item', data.e_new_echo);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
@@ -126,7 +126,7 @@ function source_only_add(source_existing_id, note_type_id) {
 
 }
 
-function source_source_only_search(note_type_id) {
+function e_e_only_search(note_type_id) {
 
     if(!js_pl_id){
         return false;
@@ -143,7 +143,7 @@ function source_source_only_search(note_type_id) {
     }).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            source_only_add(0, note_type_id);
+            e_only_add(0, note_type_id);
             return true;
         }
     });
@@ -153,12 +153,12 @@ function source_source_only_search(note_type_id) {
         //Define filters:
         var extra_filters = '';
         if(note_type_id==4983){
-            extra_filters = ' AND ( _tags:alg_source_'+js_pl_id+' OR _tags:alg_source_' + js_sources_id_4983.join(' OR _tags:alg_source_') + ') ';
+            extra_filters = ' AND ( _tags:alg_e_'+js_pl_id+' OR _tags:alg_e_' + js_sources_id_4983.join(' OR _tags:alg_e_') + ') ';
         }
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            source_only_add(suggestion.object__id, note_type_id);
+            e_only_add(suggestion.object__id, note_type_id);
 
         }).autocomplete({hint: false, minLength: 1}, [{
 
@@ -181,24 +181,24 @@ function source_source_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="source_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
     }
 }
 
-function read_preview(){
+function discover_preview(){
     if(parseInt($('.dropi_4737_'+idea_loaded_id+'_0.active').attr('new-en-id')) in js_sources__7355){
         //Idea is public, go to preview:
         window.location = '/' + idea_loaded_id;
     } else {
-        //Inform them that they cannot read yet:
-        alert('You must publish idea before reading it.');
+        //Inform them that they cannot discover yet:
+        alert('You must publish idea before discovering it.');
     }
 }
 
@@ -442,12 +442,12 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         if(is_idea_public){
 
             //Enable Discoveries:
-            $('.idea-read').removeClass('hidden');
+            $('.idea-discover').removeClass('hidden');
 
         } else {
 
             //Disable Discoveries:
-            $('.idea-read').addClass('hidden');
+            $('.idea-discover').addClass('hidden');
 
         }
 

@@ -76,7 +76,7 @@ function array_flatten($hierarchical_array){
 }
 
 
-function extract_source_references($x__message)
+function extract_e_references($x__message)
 {
 
     //Analyzes a message text to extract Source References (Like @123) and URLs
@@ -201,15 +201,15 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     }
 }
 
-function source_link_type($string = null){
-    $detected_read_type = read_detect_type($string);
-    if ($detected_read_type['status']){
-        return $detected_read_type['x__type'];
+function e_link_type($string = null){
+    $detected_x_type = x_detect_type($string);
+    if ($detected_x_type['status']){
+        return $detected_x_type['x__type'];
     }
     return 0;
 }
 
-function read_detect_type($string)
+function x_detect_type($string)
 {
 
     /*
@@ -276,7 +276,7 @@ function read_detect_type($string)
 }
 
 function words_to_seconds($text){
-    //Average reading speed assumed to be 250 words/minute
+    //Average discovering speed assumed to be 250 words/minute
     return ( strlen($text) ? round( (substr_count($text, ' ') + 1) / 250 * 60 , 4 ) : 0 );
 }
 
@@ -284,7 +284,7 @@ function is_https_url($url){
     return substr($url, 0, 8) == 'https://';
 }
 
-function is_valid_source_string($string){
+function is_valid_e_string($string){
     return substr($string, 0, 1) == '@' && is_numeric(one_two_explode('@',' ',$string));
 }
 
@@ -371,12 +371,12 @@ function is_valid_icon($string){
 }
 
 
-function source_count_connections($e__id, $return_html = true){
+function e_count_connections($e__id, $return_html = true){
 
     //NOTE HERE
 
     //Checks where in the database/platform a source might be referenced
-    $source_count_connections = array(); //Holds return values
+    $e_count_connections = array(); //Holds return values
     $CI =& get_instance();
     $sources__6194 = $CI->config->item('sources__6194');
 
@@ -387,13 +387,13 @@ function source_count_connections($e__id, $return_html = true){
         4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND x__player=',
         6186 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status=',
         4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ') AND x__type=',
-    ) as $source_app_id => $query){
+    ) as $e_app_id => $query){
 
         $query = $CI->db->query( $query . $e__id );
         foreach($query->result() as $row)
         {
             if($row->totals > 0){
-                $source_count_connections[$source_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($sources__6194[$source_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$sources__6194[$source_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$sources__6194[$source_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
+                $e_count_connections[$e_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($sources__6194[$e_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$sources__6194[$e_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$sources__6194[$e_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
             }
         }
 
@@ -401,10 +401,10 @@ function source_count_connections($e__id, $return_html = true){
 
     //Plugin?
     if(superpower_active(12699, true) && in_array($e__id, $CI->config->item('sources_id_6287'))){
-        $source_count_connections[6287] = ( $return_html ? '<a href="/source/plugin/'.$e__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
+        $e_count_connections[6287] = ( $return_html ? '<a href="/source/plugin/'.$e__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
     }
 
-    return $source_count_connections;
+    return $e_count_connections;
 
 }
 
@@ -423,15 +423,15 @@ function idea_fetch_cover($i__id, $html_format = false){
         'x__sort' => 'ASC', //Sort by message order
     )) as $fetched_source){
 
-        foreach(array('x__up','x__down') as $source_ref_field) {
-            if($fetched_source[$source_ref_field] > 0){
+        foreach(array('x__up','x__down') as $e_ref_field) {
+            if($fetched_source[$e_ref_field] > 0){
                 //See if this source has a photo:
                 foreach($CI->DISCOVER_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type' => 4260, //IMAGES ONLY
-                    'x__down' => $fetched_source[$source_ref_field],
-                )) as $source_image) {
-                    $idea_fetch_cover = $source_image['x__message'];
+                    'x__down' => $fetched_source[$e_ref_field],
+                )) as $e_image) {
+                    $idea_fetch_cover = $e_image['x__message'];
                     break;
                 }
                 if($idea_fetch_cover){
@@ -454,7 +454,7 @@ function i__weight_calculator($idea){
     //DISCOVERIES
     $CI =& get_instance();
 
-    $count_reads = $CI->DISCOVER_model->fetch(array(
+    $count_discoveries = $CI->DISCOVER_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         '(x__right='.$idea['i__id'].' OR x__left='.$idea['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -467,7 +467,7 @@ function i__weight_calculator($idea){
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Returns the weight of a idea:
-    $weight = ( $count_reads[0]['totals'] * config_var(12568) )
+    $weight = ( $count_discoveries[0]['totals'] * config_var(12568) )
         + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
@@ -486,7 +486,7 @@ function e__weight_calculator($source){
     //DISCOVERIES
     $CI =& get_instance();
 
-    $count_reads = $CI->DISCOVER_model->fetch(array(
+    $count_discoveries = $CI->DISCOVER_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].' OR x__player='.$source['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -499,7 +499,7 @@ function e__weight_calculator($source){
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Returns the weight of a source:
-    $weight = ( $count_reads[0]['totals'] * config_var(12568) )
+    $weight = ( $count_discoveries[0]['totals'] * config_var(12568) )
             + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
@@ -631,8 +631,8 @@ function extract_icon_color($e__icon){
 
     //NOTE: Has a twin JS function
 
-    if(substr_count($e__icon, 'read')>0){
-        return ' read ';
+    if(substr_count($e__icon, 'discover')>0){
+        return ' discover ';
     } elseif(substr_count($e__icon, 'idea')>0){
         return ' idea ';
     } elseif(substr_count($e__icon, 'source')>0 || !$e__icon){
@@ -675,7 +675,7 @@ function current_mench(){
 
         return array(
             'x_id' => 6205,
-            'x_name' => 'read',
+            'x_name' => 'discover',
         );
 
     }
@@ -734,7 +734,7 @@ function x_coins_idea($x__type, $i__id, $load_page = 0){
         //Return UI:
         $ui = '<div class="list-group">';
         foreach($query as $item){
-            $ui .= view_source($item);
+            $ui .= view_e($item);
         }
         $ui .= '</div>';
 
@@ -815,14 +815,14 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
 
             //SOURCE COIN
             foreach($query as $item){
-                $ui .= view_source($item);
+                $ui .= view_e($item);
             }
 
         } elseif($x__type==6255){
 
             //DISCOVER COIN
             foreach($query as $item){
-                $ui .= view_idea($item);
+                $ui .= view_i($item);
             }
 
         } elseif($x__type==12273){
@@ -841,7 +841,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
                     $boxbar_details .= '<div class="message_content">';
                     $boxbar_details .= $CI->DISCOVER_model->message_send($item['x__message']);
                     $boxbar_details .= '</div>';
-                    $string_references = extract_source_references($item['x__message']);
+                    $string_references = extract_e_references($item['x__message']);
                 }
 
                 $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['i__weight']) || ($count >= $show_max)));
@@ -851,7 +851,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
                     $ui .= '<div class="see_more_sources"></div>';
                 }
 
-                $ui .= view_idea($item, 0, false, false, $item['x__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+                $ui .= view_i($item, 0, false, false, $item['x__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
 
                 $previous_do_hide = $do_hide;
 
@@ -882,9 +882,9 @@ function idea_stats($i__metadata){
 
     //Return stats:
     return array(
-        'ideas_min' => ( isset($metadata['i___min_reads']) && $metadata['i___min_reads']>=2 ? $metadata['i___min_reads']-1 : 0 ),
-        'ideas_max' => ( isset($metadata['i___max_reads']) && $metadata['i___max_reads']>=2 ? $metadata['i___max_reads']-1 : 0 ),
-        'ideas_average' => ( isset($metadata['i___max_reads']) && $metadata['i___max_reads']>=2 ? round(( ($metadata['i___min_reads']-1) + ($metadata['i___max_reads']-1) ) / 2) : 0 ),
+        'ideas_min' => ( isset($metadata['i___min_discoveries']) && $metadata['i___min_discoveries']>=2 ? $metadata['i___min_discoveries']-1 : 0 ),
+        'ideas_max' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? $metadata['i___max_discoveries']-1 : 0 ),
+        'ideas_average' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? round(( ($metadata['i___min_discoveries']-1) + ($metadata['i___max_discoveries']-1) ) / 2) : 0 ),
         'duration_min' => ( isset($metadata['i___min_seconds']) ? $metadata['i___min_seconds'] : 0 ),
         'duration_max' => ( isset($metadata['i___max_seconds']) ? $metadata['i___max_seconds'] : 0 ),
         'duration_average' => ( isset($metadata['i___max_seconds']) ? round(($metadata['i___min_seconds']+$metadata['i___max_seconds'])/2) : 0 ),
@@ -932,7 +932,7 @@ function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
     }
 
 }
@@ -1121,12 +1121,12 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
     //Create and link new source to CDN and uploader:
     $url_source = $CI->SOURCE_model->url($cdn_new_url, $x__player, 0, $page_title);
 
-    if(isset($url_source['source_url']['e__id']) && $url_source['source_url']['e__id'] > 0){
+    if(isset($url_source['e_url']['e__id']) && $url_source['e_url']['e__id'] > 0){
 
         //All good:
         return array(
             'status' => 1,
-            'cdn_source' => $url_source['source_url'],
+            'cdn_source' => $url_source['e_url'],
             'cdn_url' => $cdn_new_url,
         );
 
@@ -1321,7 +1321,7 @@ function e__title_validate($string, $x__type = 0){
 
 
 
-function source_is_idea_source($e__id, $session_source = array()){
+function e_is_idea_source($e__id, $session_source = array()){
 
 
     if(!$session_source){
@@ -1596,10 +1596,10 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__duration'] = null;
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_source_' . $db_row['x__player']);
+                array_push($export_row['_tags'], 'alg_e_' . $db_row['x__player']);
                 if($db_row['x__player']!=$db_row['e__id']){
                     //Also give access to source themselves, in case they can login:
-                    array_push($export_row['_tags'], 'alg_source_' . $db_row['e__id']);
+                    array_push($export_row['_tags'], 'alg_e_' . $db_row['e__id']);
                 }
 
                 if(in_array($db_row['e__status'], $CI->config->item('sources_id_12575'))){
@@ -1613,14 +1613,14 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     'x__down' => $db_row['e__id'], //This child source
                     'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'e__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $read) {
+                ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $discovery) {
 
                     //Always add to tags:
-                    array_push($export_row['_tags'], 'alg_source_' . $read['e__id']);
+                    array_push($export_row['_tags'], 'alg_e_' . $discovery['e__id']);
 
                     //Add content to keywords if any:
-                    if (strlen($read['x__message']) > 0) {
-                        $export_row['object__keywords'] .= $read['x__message'] . ' ';
+                    if (strlen($discovery['x__message']) > 0) {
+                        $export_row['object__keywords'] .= $discovery['x__message'] . ' ';
                     }
 
                 }
@@ -1668,10 +1668,10 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 ), array(), 0) as $source){
 
                     if($source['x__up']>0){
-                        array_push($export_row['_tags'], 'alg_source_' . $source['x__up']);
+                        array_push($export_row['_tags'], 'alg_e_' . $source['x__up']);
                     }
                     if($source['x__down']>0){
-                        array_push($export_row['_tags'], 'alg_source_' . $source['x__down']);
+                        array_push($export_row['_tags'], 'alg_e_' . $source['x__down']);
                     }
 
                 }

@@ -5,7 +5,7 @@ $filters = array();
 $joined_by = array();
 
 //We have a special OR filter when combined with any_e__id & any_i__id
-$any_idea_source_set = ( ( isset($_GET['any_e__id']) && $_GET['any_e__id'] > 0 ) || ( isset($_GET['any_i__id']) && $_GET['any_i__id'] > 0 ) );
+$any_idea_e_set = ( ( isset($_GET['any_e__id']) && $_GET['any_e__id'] > 0 ) || ( isset($_GET['any_i__id']) && $_GET['any_i__id'] > 0 ) );
 $parent_tr_filter = ( isset($_GET['x__reference']) && $_GET['x__reference'] > 0 ? ' OR x__reference = '.$_GET['x__reference'].' ' : false );
 
 
@@ -116,7 +116,7 @@ if(isset($_GET['x__right']) && strlen($_GET['x__right']) > 0){
     }
 }
 
-if(isset($_GET['x__reference']) && strlen($_GET['x__reference']) > 0 && !$any_idea_source_set){
+if(isset($_GET['x__reference']) && strlen($_GET['x__reference']) > 0 && !$any_idea_e_set){
     if (substr_count($_GET['x__reference'], ',') > 0) {
         //This is multiple:
         $filters['( x__reference IN (' . $_GET['x__reference'] . '))'] = null;
@@ -358,10 +358,10 @@ echo '</div></td>';
             //Fetch details for this user:
             $all_link_count = 0;
             $select_ui = '';
-            foreach($this->DISCOVER_model->fetch($ini_filter, array('x__type'), 0, 0, array('e__title' => 'ASC'), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $read) {
+            foreach($this->DISCOVER_model->fetch($ini_filter, array('x__type'), 0, 0, array('e__title' => 'ASC'), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $discovery) {
                 //Echo drop down:
-                $select_ui .= '<option value="' . $read['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $read['x__type']) ? 'selected="selected"' : '') . '>' . $read['e__title'] . ' ('  . number_format($read['total_count'], 0) . ')</option>';
-                $all_link_count += $read['total_count'];
+                $select_ui .= '<option value="' . $discovery['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $discovery['x__type']) ? 'selected="selected"' : '') . '>' . $discovery['e__title'] . ' ('  . number_format($discovery['total_count'], 0) . ')</option>';
+                $all_link_count += $discovery['total_count'];
             }
 
             //Now that we know the total show:
@@ -406,7 +406,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
 
 
 
-    echo '<input type="submit" class="btn btn-read" value="Apply" />';
+    echo '<input type="submit" class="btn btn-discover" value="Apply" />';
 
     if($has_filters){
         echo ' &nbsp;<a href="/x" style="font-size: 0.8em;">Remove Filters</a>';

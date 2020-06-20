@@ -12,7 +12,7 @@ $(document).ready(function () {
     }, function (data) {
         if (!data.status) {
             //Show Errors:
-            $('#plugin_7264').html('<span class="read">'+ data.message +'</span>');
+            $('#plugin_7264').html('<span class="discover">'+ data.message +'</span>');
         } else {
             //Load Report:
             $('#plugin_7264').html(data.message);

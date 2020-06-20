@@ -28,7 +28,7 @@ $ideas_next = $this->DISCOVER_model->fetch(array(
 
 $chapters = count($ideas_next);
 $completion_rate['completion_percentage'] = 0;
-$in_my_reads = ( $recipient_source['e__id'] ? $this->DISCOVER_model->idea_home($idea_focus['i__id'], $recipient_source) : false );
+$in_my_discoveries = ( $recipient_source['e__id'] ? $this->DISCOVER_model->idea_home($idea_focus['i__id'], $recipient_source) : false );
 
 
 if($recipient_source['e__id']){
@@ -41,13 +41,13 @@ if($recipient_source['e__id']){
         'x__sort' => fetch_cookie_order('7610_'.$idea_focus['i__id']),
     ));
 
-    if ($in_my_reads) {
+    if ($in_my_discoveries) {
 
         // % DONE
         $completion_rate = $this->DISCOVER_model->completion_progress($recipient_source['e__id'], $idea_focus);
 
         //Fetch progress history:
-        $read_completes = $this->DISCOVER_model->fetch(array(
+        $discovery_completes = $this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //DISCOVER COMPLETE
             'x__player' => $recipient_source['e__id'],
@@ -70,21 +70,21 @@ if($recipient_source['e__id']){
 
                 //They previously have unlocked a path here!
 
-                //Determine DISCOVER COIN type based on it's connection type's parents that will hold the appropriate read coin.
-                $read_completion_type_id = 0;
+                //Determine DISCOVER COIN type based on it's connection type's parents that will hold the appropriate discover coin.
+                $discovery_completion_type_id = 0;
                 foreach($this->config->item('sources__12327') /* DISCOVER UNLOCKS */ as $e__id => $m){
                     if(in_array($unlocked_connections[0]['x__type'], $m['m_parents'])){
-                        $read_completion_type_id = $e__id;
+                        $discovery_completion_type_id = $e__id;
                         break;
                     }
                 }
 
                 //Could we determine the coin type?
-                if($read_completion_type_id > 0){
+                if($discovery_completion_type_id > 0){
 
                     //Yes, Issue coin:
-                    array_push($read_completes, $this->DISCOVER_model->mark_complete($idea_focus, array(
-                        'x__type' => $read_completion_type_id,
+                    array_push($discovery_completes, $this->DISCOVER_model->mark_complete($idea_focus, array(
+                        'x__type' => $discovery_completion_type_id,
                         'x__player' => $recipient_source['e__id'],
                         'x__left' => $idea_focus['i__id'],
                     )));
@@ -111,7 +111,7 @@ if($recipient_source['e__id']){
                 if(!count($unlock_paths)){
 
                     //No path found:
-                    array_push($read_completes, $this->DISCOVER_model->mark_complete($idea_focus, array(
+                    array_push($discovery_completes, $this->DISCOVER_model->mark_complete($idea_focus, array(
                         'x__type' => 7492, //TERMINATE
                         'x__player' => $recipient_source['e__id'],
                         'x__left' => $idea_focus['i__id'],
@@ -124,11 +124,11 @@ if($recipient_source['e__id']){
 
 
         //DISCOVERIES UI
-        echo '<div class="hideIfEmpty focus_reads_top"></div>';
+        echo '<div class="hideIfEmpty focus_discoveries_top"></div>';
 
         //DISCOVER PROGRESS ONLY AT TOP LEVEL
         if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
-            echo '<div class="progress-bg-list no-horizonal-margin" title="Read '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+            echo '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
         }
 
     }
@@ -139,7 +139,7 @@ if($recipient_source['e__id']){
 
 
 //IDEA TITLE
-echo '<h1 class="block-one" '.( !$recipient_source['e__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_read_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i__title($idea_focus) . '</span></h1>';
+echo '<h1 class="block-one" '.( !$recipient_source['e__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($idea_focus) . '</span></h1>';
 
 
 
@@ -174,36 +174,36 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
         $this_tab .= '<div style="margin-bottom:34px;">';
         if($counter){
-            foreach($messages as $message_read) {
+            foreach($messages as $message_discovered) {
                 $counter++;
                 $this_tab .= $this->DISCOVER_model->message_send(
-                    $message_read['x__message'],
+                    $message_discovered['x__message'],
                     $recipient_source
                 );
             }
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==13359 && ( $idea_stats['ideas_average']>$chapters || (!$in_my_reads && ($idea_stats['ideas_average']>0 || $chapters>0)))){
+    } elseif($x__type==13359 && ( $idea_stats['ideas_average']>$chapters || (!$in_my_discoveries && ($idea_stats['ideas_average']>0 || $chapters>0)))){
 
         //IDEAS
         $counter = $idea_stats['ideas_average'];
 
         //IDEA or TIME difference?
         if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
-            $this_tab .= '<p class="space-content">The number of ideas you read (and the time it takes to read them) depends on the choices you make interactively along the way:</p>';
+            $this_tab .= '<p class="space-content">The number of ideas you discover (and the time it takes to discover them) depends on the choices you make interactively along the way:</p>';
             $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-            $this_tab .= '<span class="reading-paths">Minimum:</span>'.$sources__13291[13359]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
-            $this_tab .= '<span class="reading-paths">Average:</span>'.$sources__13291[13359]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
-            $this_tab .= '<span class="reading-paths">Maximum:</span>'.$sources__13291[13359]['m_icon'].' <span class="reading-count montserrat idea">'.$idea_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
+            $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Average:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
             $this_tab .= '</p>';
         }
 
         //NEXT IDEAS
-        if(!$in_my_reads && $chapters){
+        if(!$in_my_discoveries && $chapters){
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($ideas_next as $key => $next_idea){
-                $this_tab .= view_idea_read($next_idea, idea_calc_common_prefix($ideas_next, 'i__title'));
+                $this_tab .= view_i_discovered($next_idea, idea_calc_common_prefix($ideas_next, 'i__title'));
             }
             $this_tab .= '</div>';
         }
@@ -217,10 +217,10 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             'x__left !=' => $this->config->item('featured_i__id'),
         ), array('x__left'), 0);
         if(count($ideas_previous)){
-            $this_tab .= '<p class="space-content">'.view_i__title($idea_focus).' Helps you:</p>';
+            $this_tab .= '<p class="space-content">'.view_i_title($idea_focus).' Helps you:</p>';
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($ideas_previous as $key => $previous_idea){
-                $this_tab .= view_idea_read($previous_idea);
+                $this_tab .= view_i_discovered($previous_idea);
             }
             $this_tab .= '</div>';
         }
@@ -231,8 +231,8 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $counter = $idea_stats['sources_count'];
         $this_tab .= '<p class="space-content">Ideas mapped from these expert sources:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-        foreach ($idea_stats['sources_array'] as $source_source) {
-            $this_tab .= view_source_basic($source_source);
+        foreach ($idea_stats['sources_array'] as $e_source) {
+            $this_tab .= view_e_basic($e_source);
         }
         $this_tab .= '</div>';
 
@@ -242,9 +242,9 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $counter = $idea_stats['certificate_count'];
         $this_tab .= '<p class="space-content">Completion could earn you some of the following certificates:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-        foreach ($idea_stats['certificate_array'] as $source_source) {
-            $source_source['x__message'] = ''; //Remove for this
-            $this_tab .= view_source_basic($source_source);
+        foreach ($idea_stats['certificate_array'] as $e_source) {
+            $e_source['x__message'] = ''; //Remove for this
+            $this_tab .= view_e_basic($e_source);
         }
         $this_tab .= '</div>';
 
@@ -259,7 +259,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $counter = count($comments);
 
         $this_tab .= '<div style="margin-bottom:34px;">';
-        $this_tab .= view_idea_note_mix($x__type, $comments);
+        $this_tab .= view_i_note_mix($x__type, $comments);
         $this_tab .= '</div>';
 
     } elseif($x__type==13023){
@@ -319,15 +319,15 @@ echo $tab_content;
 
 
 
-if(!$in_my_reads){
+if(!$in_my_discoveries){
 
     //GET STARTED
-    echo '<div class="margin-top-down read-add"><a class="btn btn-read" href="/discover/x_start/'.$idea_focus['i__id'].'">'.$sources__11035[4235]['m_icon'].' '.$sources__11035[4235]['m_name'].'</a></div>';
+    echo '<div class="margin-top-down discover-add left-margin inline-block"><a class="btn btn-discover" href="/discover/x_start/'.$idea_focus['i__id'].'">'.$sources__11035[4235]['m_icon'].' '.$sources__11035[4235]['m_name'].'</a></div>';
 
 } else {
 
     //PREVIOUSLY UNLOCKED:
-    $unlocked_reads = $this->DISCOVER_model->fetch(array(
+    $unlocked_discoveries = $this->DISCOVER_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'x__type' => 6140, //DISCOVER UNLOCK LINK
@@ -336,8 +336,8 @@ if(!$in_my_reads){
     ), array('x__right'), 0);
 
     //Did we have any steps unlocked?
-    if(count($unlocked_reads) > 0){
-        view_idea_list($idea_focus, $unlocked_reads, $recipient_source, 'UNLOCKED:', false);
+    if(count($unlocked_discoveries) > 0){
+        view_i_list($idea_focus, $unlocked_discoveries, $recipient_source, 'UNLOCKED:', false);
     }
 
 
@@ -346,7 +346,7 @@ if(!$in_my_reads){
      * IDEA TYPE INPUT CONTROLLER
      * Now let's show the appropriate
      * inputs that correspond to the
-     * idea type that enable the reader
+     * idea type that enable the player
      * to move forward.
      *
      * */
@@ -357,15 +357,15 @@ if(!$in_my_reads){
 
 
         //Requirement lock
-        if(!count($read_completes) && !count($unlocked_connections) && count($unlock_paths)){
+        if(!count($discovery_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
             //List Unlock paths:
-            view_idea_list($idea_focus, $unlock_paths, $recipient_source, 'SUGGESTED IDEAS:');
+            view_i_list($idea_focus, $unlock_paths, $recipient_source, 'SUGGESTED IDEAS:');
 
         }
 
         //List Children if any:
-        view_idea_list($idea_focus, $ideas_next, $recipient_source, null, ( $completion_rate['completion_percentage'] < 100 ));
+        view_i_list($idea_focus, $ideas_next, $recipient_source, null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
     } elseif (in_array($idea_focus['i__type'], $this->config->item('sources_id_7712'))){
@@ -383,7 +383,7 @@ if(!$in_my_reads){
                 'x__left' => $idea_focus['i__id'],
             )))){
 
-                array_push($read_completes, $this->DISCOVER_model->mark_complete($idea_focus, array(
+                array_push($discovery_completes, $this->DISCOVER_model->mark_complete($idea_focus, array(
                     'x__type' => 4559, //DISCOVER MESSAGES
                     'x__player' => $recipient_source['e__id'],
                     'x__left' => $idea_focus['i__id'],
@@ -403,16 +403,16 @@ if(!$in_my_reads){
                 'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $idea_focus['i__id'],
-            ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $read){
+            ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $discovery){
                 //See if this answer was seleted:
                 if(count($this->DISCOVER_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //DISCOVER IDEA LINK
                     'x__left' => $idea_focus['i__id'],
-                    'x__right' => $read['i__id'],
+                    'x__right' => $discovery['i__id'],
                     'x__player' => $recipient_source['e__id'],
                 )))){
-                    array_push($x_answers, $read);
+                    array_push($x_answers, $discovery);
                 }
             }
 
@@ -421,13 +421,13 @@ if(!$in_my_reads){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_idea_list($idea_focus, $x_answers, $recipient_source, 'YOU ANSWERED:', false);
+                view_i_list($idea_focus, $x_answers, $recipient_source, 'YOU ANSWERED:', false);
 
                 echo '<div class="doclear">&nbsp;</div>';
 
                 view_next_idea_previous($idea_focus['i__id'], $recipient_source);
 
-                echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
+                echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -440,11 +440,11 @@ if(!$in_my_reads){
             //HTML:
             if ($idea_focus['i__type'] == 6684) {
 
-                echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
+                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
 
             } elseif ($idea_focus['i__type'] == 7231) {
 
-                echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
+                echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
 
             }
 
@@ -467,14 +467,14 @@ if(!$in_my_reads){
                     'x__player' => $recipient_source['e__id'],
                 )));
 
-                echo '<a href="javascript:void(0);" onclick="select_answer('.$next_idea['i__id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ideas="'.$next_idea['i__id'].'" class="x_answer_'.$next_idea['i__id'].' answer-item list-group-item itemread no-left-padding">';
+                echo '<a href="javascript:void(0);" onclick="select_answer('.$next_idea['i__id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_ideas="'.$next_idea['i__id'].'" class="x_answer_'.$next_idea['i__id'].' answer-item list-group-item itemdiscover no-left-padding">';
 
 
                 echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle read"></i></td>';
+                echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle discover"></i></td>';
 
                 echo '<td style="width:100%; padding: 0 !important;">';
-                echo '<b class="montserrat idea-url" style="margin-left:0;">'.view_i__title($next_idea, $common_prefix).'</b>';
+                echo '<b class="montserrat idea-url" style="margin-left:0;">'.view_i_title($next_idea, $common_prefix).'</b>';
                 echo '</td>';
 
                 echo '</tr></table>';
@@ -492,14 +492,14 @@ if(!$in_my_reads){
 
             echo '<div class="result-update margin-top-down"></div>';
 
-            echo view_idea_previous_read($idea_focus['i__id'], $recipient_source);
+            echo view_i_previous_discovered($idea_focus['i__id'], $recipient_source);
 
             //Button to submit selection:
             if(count($x_answers)>0){
-                echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
+                echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
             }
 
-            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0)" onclick="x_answer()">'.$sources__11035[12211]['m_icon'].'</a></div>';
+            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="x_answer()">'.$sources__11035[12211]['m_icon'].'</a></div>';
 
             echo '</div>';
 
@@ -508,28 +508,28 @@ if(!$in_my_reads){
     } elseif ($idea_focus['i__type'] == 6677) {
 
         //DISCOVER ONLY
-        view_idea_list($idea_focus, $ideas_next, $recipient_source);
+        view_i_list($idea_focus, $ideas_next, $recipient_source);
 
     } elseif ($idea_focus['i__type'] == 6683) {
 
         //TEXT RESPONSE
 
-        echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR RESPONSE:</div>';
+        echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR RESPONSE:</div>';
 
-        echo '<textarea class="border i_content padded read_input" placeholder="Write answer here" id="x_respond">'.( count($read_completes) ? trim($read_completes[0]['x__message']) : '' ).'</textarea>';
+        echo '<textarea class="border i_content padded discover_input" placeholder="Write answer here" id="x_respond">'.( count($discovery_completes) ? trim($discovery_completes[0]['x__message']) : '' ).'</textarea>';
 
         echo '<div class="text_saving_result margin-top-down"></div>';
 
         //Show Previous Button:
-        echo view_idea_previous_read($idea_focus['i__id'], $recipient_source);
+        echo view_i_previous_discovered($idea_focus['i__id'], $recipient_source);
 
         //Save/Upload & Next:
-        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-read btn-circle" href="javascript:void(0);" onclick="x_respond()">'.$sources__11035[12211]['m_icon'].'</a></div>';
+        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="x_respond()">'.$sources__11035[12211]['m_icon'].'</a></div>';
 
 
-        if(count($read_completes)){
+        if(count($discovery_completes)){
             //Next Ideas:
-            view_idea_list($idea_focus, $ideas_next, $recipient_source, null,false);
+            view_i_list($idea_focus, $ideas_next, $recipient_source, null,false);
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#x_respond\')); $(\'#x_respond\').focus(); }); </script>';
@@ -545,11 +545,11 @@ if(!$in_my_reads){
         echo '<input class="inputfile" type="file" name="file" id="fileType'.$idea_focus['i__type'].'" />';
 
 
-        if(!count($read_completes)) {
+        if(!count($discovery_completes)) {
 
             //Show Previous Button:
             echo '<div class="file_saving_result">';
-            echo view_idea_previous_read($idea_focus['i__id'], $recipient_source);
+            echo view_i_previous_discovered($idea_focus['i__id'], $recipient_source);
             echo '</div>';
 
             //Show next here but keep hidden until file is uploaded:
@@ -557,22 +557,22 @@ if(!$in_my_reads){
             view_next_idea_previous($idea_focus['i__id'], $recipient_source);
             echo '</div>';
 
-            echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-read btn-circle inline-block" for="fileType'.$idea_focus['i__type'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+            echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$idea_focus['i__type'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
         } else {
 
             echo '<div class="file_saving_result">';
 
-            echo '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div>';
+            echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div>';
 
-            echo '<div class="previous_answer">'.$this->DISCOVER_model->message_send($read_completes[0]['x__message']).'</div>';
+            echo '<div class="previous_answer">'.$this->DISCOVER_model->message_send($discovery_completes[0]['x__message']).'</div>';
 
             echo '</div>';
 
             //Any child ideas?
-            view_idea_list($idea_focus, $ideas_next, $recipient_source, null, true, false);
+            view_i_list($idea_focus, $ideas_next, $recipient_source, null, true, false);
 
-            echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-read inline-block btn-circle" for="fileType'.$idea_focus['i__type'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+            echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$idea_focus['i__type'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
         }
 

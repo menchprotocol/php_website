@@ -66,32 +66,32 @@ class Discover extends CI_Controller
         $message = '';
 
         //Fetch links and total link counts:
-        $reads = $this->DISCOVER_model->fetch($filters, $joined_by, config_var(11064), $query_offset);
-        $reads_count = $this->DISCOVER_model->fetch($filters, $joined_by, 0, 0, array(), 'COUNT(x__id) as total_count');
-        $total_items_loaded = ($query_offset+count($reads));
-        $has_more_links = ($reads_count[0]['total_count'] > 0 && $total_items_loaded < $reads_count[0]['total_count']);
+        $discoveries = $this->DISCOVER_model->fetch($filters, $joined_by, config_var(11064), $query_offset);
+        $discoveries_count = $this->DISCOVER_model->fetch($filters, $joined_by, 0, 0, array(), 'COUNT(x__id) as total_count');
+        $total_items_loaded = ($query_offset+count($discoveries));
+        $has_more_links = ($discoveries_count[0]['total_count'] > 0 && $total_items_loaded < $discoveries_count[0]['total_count']);
 
 
         //Display filter:
         if($total_items_loaded > 0){
-            $message .= '<div class="montserrat read-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($reads_count[0]['total_count'] , 0) .' INTERACTIONS:</div>';
+            $message .= '<div class="montserrat discover-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($discoveries_count[0]['total_count'] , 0) .' INTERACTIONS:</div>';
         }
 
 
-        if(count($reads)>0){
+        if(count($discoveries)>0){
 
             $message .= '<div class="list-group list-grey">';
-            foreach($reads as $read) {
+            foreach($discoveries as $discovery) {
 
-                $message .= view_interaction($read);
+                $message .= view_interaction($discovery);
 
-                if($session_source && strlen($read['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($read['x__message'], $_POST['x__message_search'])>0){
+                if($session_source && strlen($discovery['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($discovery['x__message'], $_POST['x__message_search'])>0){
 
-                    $new_content = str_replace($_POST['x__message_search'],trim($_POST['x__message_replace']),$read['x__message']);
+                    $new_content = str_replace($_POST['x__message_search'],trim($_POST['x__message_replace']),$discovery['x__message']);
 
-                    $this->DISCOVER_model->update($read['x__id'], array(
+                    $this->DISCOVER_model->update($discovery['x__id'], array(
                         'x__message' => $new_content,
-                    ), $session_source['e__id'], 12360, update_description($read['x__message'], $new_content));
+                    ), $session_source['e__id'], 12360, update_description($discovery['x__message'], $new_content));
 
                     $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_search'].'] with ['.trim($_POST['x__message_replace']).']</div>';
 
@@ -102,10 +102,10 @@ class Discover extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="read_load(link_filters, link_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-discover" onclick="discover_load(link_filters, link_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$reads_count[0]['total_count'].' link'.view__s($reads_count[0]['total_count']).' have been loaded</div>';
+                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$discoveries_count[0]['total_count'].' link'.view__s($discoveries_count[0]['total_count']).' have been loaded</div>';
 
             }
 
@@ -141,27 +141,27 @@ class Discover extends CI_Controller
         $sources__4592 = $this->config->item('sources__4592');
 
         //See what this is:
-        $detected_read_type = read_detect_type($_POST['x__message']);
+        $detected_x_type = x_detect_type($_POST['x__message']);
 
-        if(!$_POST['x__id'] && !in_array($detected_read_type['x__type'], $this->config->item('sources_id_4537'))){
+        if(!$_POST['x__id'] && !in_array($detected_x_type['x__type'], $this->config->item('sources_id_4537'))){
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid URL',
             ));
 
-        } elseif (!$detected_read_type['status'] && isset($detected_read_type['url_previously_existed']) && $detected_read_type['url_previously_existed']) {
+        } elseif (!$detected_x_type['status'] && isset($detected_x_type['url_previously_existed']) && $detected_x_type['url_previously_existed']) {
 
             //See if this is duplicate to either link:
-            $source_reads = $this->DISCOVER_model->fetch(array(
+            $e_discoveries = $this->DISCOVER_model->fetch(array(
                 'x__id' => $_POST['x__id'],
                 'x__type IN (' . join(',', $this->config->item('sources_id_4537')) . ')' => null, //Player URL Links
             ));
 
             //Are they both different?
-            if (count($source_reads) < 1 || ($source_reads[0]['x__up'] != $detected_read_type['source_url']['e__id'] && $source_reads[0]['x__down'] != $detected_read_type['source_url']['e__id'])) {
+            if (count($e_discoveries) < 1 || ($e_discoveries[0]['x__up'] != $detected_x_type['e_url']['e__id'] && $e_discoveries[0]['x__down'] != $detected_x_type['e_url']['e__id'])) {
                 //return error:
-                return view_json($detected_read_type);
+                return view_json($detected_x_type);
             }
 
         }
@@ -170,8 +170,8 @@ class Discover extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'html_ui' => '<b class="montserrat doupper '.extract_icon_color($sources__4592[$detected_read_type['x__type']]['m_icon']).'">' . $sources__4592[$detected_read_type['x__type']]['m_icon'] . ' ' . $sources__4592[$detected_read_type['x__type']]['m_name'] . '</b>',
-            'source_link_preview' => ( in_array($detected_read_type['x__type'], $this->config->item('sources_id_12524')) ? '<span class="paddingup inline-block">'.view_x__message($_POST['x__message'], $detected_read_type['x__type']).'</span>' : ''),
+            'html_ui' => '<b class="montserrat doupper '.extract_icon_color($sources__4592[$detected_x_type['x__type']]['m_icon']).'">' . $sources__4592[$detected_x_type['x__type']]['m_icon'] . ' ' . $sources__4592[$detected_x_type['x__type']]['m_name'] . '</b>',
+            'e_link_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('sources_id_12524')) ? '<span class="paddingup inline-block">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
         ));
 
     }
@@ -308,7 +308,7 @@ class Discover extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $sources__12112[$_POST['cache_e__id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to read ideas ;)',
+                    'message' => $sources__12112[$_POST['cache_e__id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
                     'original_val' => $ideas[0]['i__duration'],
                 ));
 
@@ -328,17 +328,17 @@ class Discover extends CI_Controller
         } elseif($_POST['cache_e__id']==4358 /* DISCOVER MARKS */){
 
             //Fetch/Validate Link:
-            $reads = $this->DISCOVER_model->fetch(array(
+            $discoveries = $this->DISCOVER_model->fetch(array(
                 'x__id' => $_POST['object__id'],
                 'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             ));
-            $x__metadata = unserialize($reads[0]['x__metadata']);
+            $x__metadata = unserialize($discoveries[0]['x__metadata']);
             if(!$x__metadata){
                 $x__metadata = array();
             }
 
-            if(!count($reads)){
+            if(!count($discoveries)){
 
                 return view_json(array(
                     'status' => 0,
@@ -372,15 +372,15 @@ class Discover extends CI_Controller
         } elseif($_POST['cache_e__id']==4735 /* UNLOCK MIN SCORE */ || $_POST['cache_e__id']==4739 /* UNLOCK MAX SCORE */){
 
             //Fetch/Validate Link:
-            $reads = $this->DISCOVER_model->fetch(array(
+            $discoveries = $this->DISCOVER_model->fetch(array(
                 'x__id' => $_POST['object__id'],
                 'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             ));
-            $x__metadata = unserialize($reads[0]['x__metadata']);
+            $x__metadata = unserialize($discoveries[0]['x__metadata']);
             $field_name = ( $_POST['cache_e__id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
 
-            if(!count($reads)){
+            if(!count($discoveries)){
 
                 return view_json(array(
                     'status' => 0,
@@ -437,12 +437,12 @@ class Discover extends CI_Controller
             return redirect_message('/source/signin/'.$i__id);
         }
 
-        //Add this Idea to their Discovery If not already there:
+        //Add this Idea to their Discovery If not there:
         $i__id_added = $i__id;
         $success_message = null;
-        $in_my_reads = $this->DISCOVER_model->idea_home($i__id, $session_source);
+        $in_my_discoveries = $this->DISCOVER_model->idea_home($i__id, $session_source);
 
-        if(!$in_my_reads){
+        if(!$in_my_discoveries){
             $i__id_added = $this->DISCOVER_model->start($session_source['e__id'], $i__id);
             if($i__id_added){
                 $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>Successfully added to your '.$sources__11035[12969]['m_name'].'. Continue below:</div>';
@@ -474,15 +474,15 @@ class Discover extends CI_Controller
             //Should we check for auto next redirect if empty? Only if this is a selection:
             if($ideas[0]['i__type']==6677){
 
-                //Mark as read If not previously:
-                $read_completes = $this->DISCOVER_model->fetch(array(
+                //Mark as discover If not previously:
+                $discovery_completes = $this->DISCOVER_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //DISCOVER COMPLETE
                     'x__player' => $session_source['e__id'],
                     'x__left' => $ideas[0]['i__id'],
                 ));
 
-                if(!count($read_completes)){
+                if(!count($discovery_completes)){
                     $this->DISCOVER_model->mark_complete($ideas[0], array(
                         'x__type' => 4559, //DISCOVER MESSAGES
                         'x__player' => $session_source['e__id'],
@@ -495,7 +495,7 @@ class Discover extends CI_Controller
         //Go to Next Idea:
         $next_i__id = $this->DISCOVER_model->find_next($session_source['e__id'], $ideas[0]);
         if($next_i__id > 0){
-            return redirect_message('/'.$next_i__id.'?previous_read='.( isset($_GET['previous_read']) && $_GET['previous_read']>0 ? $_GET['previous_read'] : $i__id ));
+            return redirect_message('/'.$next_i__id.'?previous_discovered='.( isset($_GET['previous_discovered']) && $_GET['previous_discovered']>0 ? $_GET['previous_discovered'] : $i__id ));
         } else {
             $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
             return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed everything in '.$sources__11035[12969]['m_name'].'.</div></div>');
@@ -558,7 +558,7 @@ class Discover extends CI_Controller
         //Make sure we found it:
         if ( count($ideas) < 1) {
 
-            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Idea ID ' . $i__id . ' not found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
         } elseif(!in_array($ideas[0]['i__status'], $this->config->item('sources_id_7355') /* PUBLIC */)){
 
@@ -674,9 +674,9 @@ class Discover extends CI_Controller
             'x__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $ideas[0]['i__id'],
             'x__player' => $session_source['e__id'],
-        )) as $read_progress){
-            $this->DISCOVER_model->update($read_progress['x__id'], array(
-                'x__status' => 6173, //Read Deleted
+        )) as $discovery_progress){
+            $this->DISCOVER_model->update($discovery_progress['x__id'], array(
+                'x__status' => 6173, //Interaction Removed
             ), $session_source['e__id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
 
@@ -693,7 +693,7 @@ class Discover extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => '<div class="read-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->DISCOVER_model->message_send($new_message).'</div>',
+            'message' => '<div class="discover-topic"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->DISCOVER_model->message_send($new_message).'</div>',
         ));
 
     }
@@ -739,9 +739,9 @@ class Discover extends CI_Controller
             'x__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $ideas[0]['i__id'],
             'x__player' => $session_source['e__id'],
-        )) as $read_progress){
-            $this->DISCOVER_model->update($read_progress['x__id'], array(
-                'x__status' => 6173, //Read Deleted
+        )) as $discovery_progress){
+            $this->DISCOVER_model->update($discovery_progress['x__id'], array(
+                'x__status' => 6173, //Interaction Removed
             ), $session_source['e__id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
 
@@ -816,7 +816,7 @@ class Discover extends CI_Controller
             //Delete all progressions:
             foreach($progress_links as $progress_link){
                 $this->DISCOVER_model->update($progress_link['x__id'], array(
-                    'x__status' => 6173, //Read Deleted
+                    'x__status' => 6173, //Interaction Removed
                     'x__reference' => $clear_all_link['x__id'], //To indicate when it was deleted
                 ), $session_source['e__id'], 6415 /* Reset All Discoveries */);
             }
@@ -876,7 +876,7 @@ class Discover extends CI_Controller
         )) as $remove_saved){
             $removed++;
             $this->DISCOVER_model->update($remove_saved['x__id'], array(
-                'x__status' => 6173, //Read Deleted
+                'x__status' => 6173, //Interaction Removed
             ), $session_source['e__id'], 12906 /* UNSAVED */);
         }
 
@@ -955,7 +955,7 @@ class Discover extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid player ID',
             ));
-        } elseif (!isset($_POST['new_read_order']) || !is_array($_POST['new_read_order']) || count($_POST['new_read_order']) < 1) {
+        } elseif (!isset($_POST['new_x_order']) || !is_array($_POST['new_x_order']) || count($_POST['new_x_order']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing sorting ideas',
@@ -964,7 +964,7 @@ class Discover extends CI_Controller
 
         //Update the order of their Discoveries:
         $results = array();
-        foreach($_POST['new_read_order'] as $x__sort => $x__id){
+        foreach($_POST['new_x_order'] as $x__sort => $x__id){
             if(intval($x__id) > 0 && intval($x__sort) > 0){
                 //Update order of this link:
                 $results[$x__sort] = $this->DISCOVER_model->update(intval($x__id), array(
@@ -976,7 +976,7 @@ class Discover extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => count($_POST['new_read_order']).' Ideas Sorted',
+            'message' => count($_POST['new_x_order']).' Ideas Sorted',
         ));
     }
 

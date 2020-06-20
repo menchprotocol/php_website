@@ -95,7 +95,7 @@ class Map extends CI_Controller {
             'i__id' => $i__id,
         ));
         if ( count($ideas) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>IDEA #' . $i__id . ' Not Found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>IDEA #' . $i__id . ' Not Found</div>');
         }
 
 
@@ -151,7 +151,7 @@ class Map extends CI_Controller {
     }
 
 
-    function i_source_request($i__id){
+    function i_e_request($i__id){
 
         //Make sure it's a logged in player:
         $session_source = superpower_assigned(null, true);
@@ -178,7 +178,7 @@ class Map extends CI_Controller {
 
     }
 
-    function i_source_add($i__id){
+    function i_e_add($i__id){
 
         //Make sure it's a logged in player:
         $session_source = superpower_assigned(10984, true);
@@ -292,7 +292,7 @@ class Map extends CI_Controller {
                 ));
             }
 
-            //Find the single read type in parent links:
+            //Find the single discover type in parent links:
             $link_update_types = array_intersect($this->config->item('sources_id_4593'), $sources__4527[$_POST['element_id']]['m_parents']);
             if(count($link_update_types)!=1){
                 return view_json(array(
@@ -402,7 +402,7 @@ class Map extends CI_Controller {
 
         //Delete this link:
         $this->DISCOVER_model->update($_POST['x__id'], array(
-            'x__status' => 6173, //Read Deleted
+            'x__status' => 6173, //Interaction Removed
         ), $session_source['e__id'], 10686 /* Idea Link Unpublished */);
 
         return view_json(array(
@@ -588,7 +588,7 @@ class Map extends CI_Controller {
         }
 
         //Create Message:
-        $read = $this->DISCOVER_model->create(array(
+        $discovery = $this->DISCOVER_model->create(array(
             'x__player' => $session_source['e__id'],
             'x__sort' => 1 + $this->DISCOVER_model->max_order(array(
                     'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -608,7 +608,7 @@ class Map extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'message' => view_idea_notes(array_merge($session_source, $read, array(
+            'message' => view_i_notes(array_merge($session_source, $discovery, array(
                 'x__down' => $session_source['e__id'],
             )), true),
         ));
@@ -699,7 +699,7 @@ class Map extends CI_Controller {
 
 
         //Create message:
-        $read = $this->DISCOVER_model->create(array(
+        $discovery = $this->DISCOVER_model->create(array(
             'x__player' => $session_source['e__id'],
             'x__type' => $_POST['note_type_id'],
             'x__up' => $cdn_status['cdn_source']['e__id'],
@@ -715,13 +715,13 @@ class Map extends CI_Controller {
 
         //Fetch full message for proper UI display:
         $new_messages = $this->DISCOVER_model->fetch(array(
-            'x__id' => $read['x__id'],
+            'x__id' => $discovery['x__id'],
         ));
 
         //Echo message:
         view_json(array(
             'status' => 1,
-            'message' => view_idea_notes(array_merge($session_source, $new_messages[0], array(
+            'message' => view_i_notes(array_merge($session_source, $new_messages[0], array(
                 'x__down' => $session_source['e__id'],
             )), true),
         ));
@@ -860,7 +860,7 @@ class Map extends CI_Controller {
                 if(in_array($_POST['message_x__status'], $this->config->item('sources_id_7359') /* PUBLIC */)){
 
                     //We're publishing, make sure potential source references are also published:
-                    $string_references = extract_source_references($_POST['x__message']);
+                    $string_references = extract_e_references($_POST['x__message']);
 
                     if (count($string_references['ref_sources']) > 0) {
 

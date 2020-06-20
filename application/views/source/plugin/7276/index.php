@@ -24,15 +24,15 @@ $stats = array(
     'featured_scanned' => 0,
 );
 
-$already_scanned = array(); //Keeps track of those
+$is_scanned = array(); //Keeps track of those
 foreach($this->MAP_model->fetch($query_filters, 0, 0, array('i__weight' => 'DESC')) as $idea){
 
-    if(in_array($idea['i__id'], $already_scanned)){
+    if(in_array($idea['i__id'], $is_scanned)){
         continue;
     }
 
-    $results = $this->MAP_model->metadata_source_insights($idea);
-    $already_scanned = array_merge($already_scanned, $results['__i___ids']);
+    $results = $this->MAP_model->metadata_e_insights($idea);
+    $is_scanned = array_merge($is_scanned, $results['__i___ids']);
 
     $stats['featured_scanned']++;
     $stats['idea_scanned'] += count($results['__i___ids']);

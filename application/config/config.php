@@ -351,7 +351,7 @@ $config['encryption_key'] = '';
 |
 | 'sess_match_ip'
 |
-|	Whether to match the user's IP address when reading the session data.
+|	Whether to match the user's IP address when discovering the session data.
 |
 |	WARNING: If you're using the database driver, don't forget to update
 |	         your session table's PRIMARY KEY when changing this setting.

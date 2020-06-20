@@ -10,13 +10,13 @@ if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
 
 
     //Fetch link metadata and display it:
-    $reads = $this->DISCOVER_model->fetch(array(
+    $discoveries = $this->DISCOVER_model->fetch(array(
         'x__id' => $_GET['x__id'],
     ));
 
-    if (count($reads) < 1) {
+    if (count($discoveries) < 1) {
 
-        echo 'Invalid Read ID';
+        echo 'Invalid Interaction ID';
 
     } elseif(!superpower_assigned(12701)) {
 
@@ -25,12 +25,12 @@ if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
     } else {
 
         //unserialize metadata if needed:
-        if(strlen($reads[0]['x__metadata']) > 0){
-            $reads[0]['x__metadata'] = unserialize($reads[0]['x__metadata']);
+        if(strlen($discoveries[0]['x__metadata']) > 0){
+            $discoveries[0]['x__metadata'] = unserialize($discoveries[0]['x__metadata']);
         }
 
         //Print on scree:
-        view_json($reads[0]);
+        view_json($discoveries[0]);
 
     }
 

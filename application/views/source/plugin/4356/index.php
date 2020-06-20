@@ -1,6 +1,6 @@
 <?php
 
-//Update Idea Read Time:
+//Update Idea Interaction Time:
 $i__id = ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 );
 $total_time = 0;
 $total_scanned = 0;
@@ -91,12 +91,12 @@ foreach($this->MAP_model->fetch($filters) as $in){
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('sources_id_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                 'x__down' => $message['x__up'],
-            ), array('x__up'), 0, 0, array('e__id' => 'ASC' /* Hack to get Text first */)) as $source_profile) {
+            ), array('x__up'), 0, 0, array('e__id' => 'ASC' /* Hack to get Text first */)) as $e_profile) {
 
-                if($source_profile['x__type'] == 4257 /* EMBED */){
+                if($e_profile['x__type'] == 4257 /* EMBED */){
 
                     //See if we have a Start/End time:
-                    $string_references = extract_source_references($message['x__message']);
+                    $string_references = extract_e_references($message['x__message']);
                     if($string_references['ref_time_found']){
                         $start_time = $string_references['ref_time_start'];
                         $end_time = $string_references['ref_time_end'];
@@ -105,16 +105,16 @@ foreach($this->MAP_model->fetch($filters) as $in){
                         $this_time = 90;
                     }
 
-                } elseif($source_profile['x__type'] == 4255 /* TEXT */){
+                } elseif($e_profile['x__type'] == 4255 /* TEXT */){
 
                     //Count Words:
-                    $this_time = words_to_seconds($source_profile['x__message']);
+                    $this_time = words_to_seconds($e_profile['x__message']);
 
-                } elseif($source_profile['x__type'] == 4259 /* AUDIO */){
+                } elseif($e_profile['x__type'] == 4259 /* AUDIO */){
 
                     $this_time = 60;
 
-                } elseif($source_profile['x__type'] == 4258 /* VIDEO */){
+                } elseif($e_profile['x__type'] == 4258 /* VIDEO */){
 
                     $this_time = 90;
 
@@ -127,7 +127,7 @@ foreach($this->MAP_model->fetch($filters) as $in){
                 $estimated_time += $this_time;
                 if($i__id){
                     //Show details:
-                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$sources__12822[$source_profile['x__type']]['m_name'].']: '.$source_profile['x__message'].'<hr />';
+                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$sources__12822[$e_profile['x__type']]['m_name'].']: '.$e_profile['x__message'].'<hr />';
                 }
             }
         }

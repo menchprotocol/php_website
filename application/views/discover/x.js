@@ -47,7 +47,7 @@ function interactions_load(link_filters, link_joined_by, page_num){
     }, function (data) {
         if (!data.status) {
             //Show Error:
-            $('#link_page_'+page_num).html('<span class="read">'+ data.message +'</span>');
+            $('#link_page_'+page_num).html('<span class="discover">'+ data.message +'</span>');
         } else {
             //Load Report:
             $('#link_page_'+page_num).html(data.message);

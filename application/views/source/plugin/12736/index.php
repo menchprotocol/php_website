@@ -3,10 +3,10 @@
 $stats = array(
     'source' => 0,
     'player' => 0,
-    'read' => 0,
-    'read_not_source_count' => 0,
-    'source_not_read_count' => 0,
-    'source_not_read_home' => array(),
+    'discover' => 0,
+    'discover_not_e_count' => 0,
+    'e_not_discovered_count' => 0,
+    'e_not_x_home' => array(),
 );
 
 foreach($this->SOURCE_model->fetch() as $en) {
@@ -19,24 +19,24 @@ foreach($this->SOURCE_model->fetch() as $en) {
         'x__down' => $en['e__id'],
         'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     ), array(), 1));
-    $is_read = count($this->DISCOVER_model->fetch(array(
+    $is_discovered = count($this->DISCOVER_model->fetch(array(
         'x__player' => $en['e__id'],
     ), array(), 1));
 
     if($is_player){
         $stats['player']++;
     }
-    if($is_read){
-        $stats['read']++;
+    if($is_discovered){
+        $stats['discover']++;
     }
-    if($is_player && !$is_read){
-        $stats['source_not_read_count']++;
-        array_push($stats['source_not_read_home'], $en);
+    if($is_player && !$is_discovered){
+        $stats['e_not_discovered_count']++;
+        array_push($stats['e_not_x_home'], $en);
     }
-    if($is_read && !$is_player){
-        $stats['read_not_source_count']++;
+    if($is_discovered && !$is_player){
+        $stats['discover_not_e_count']++;
         $this->DISCOVER_model->create(array(
-            'x__type' => source_link_type(),
+            'x__type' => e_link_type(),
             'x__up' => 4430, //MENCH PLAYERS
             'x__player' => $en['e__id'],
             'x__down' => $en['e__id'],

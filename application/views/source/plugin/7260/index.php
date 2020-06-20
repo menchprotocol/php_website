@@ -14,7 +14,7 @@ if(count($orphan_ideas) > 0){
     //List orphans:
     echo '<div class="list-group">';
     foreach($orphan_ideas as $idea) {
-        echo view_idea($idea, 0, false, true);
+        echo view_i($idea, 0, false, true);
     }
     echo '</div>';
 

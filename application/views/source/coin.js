@@ -14,7 +14,7 @@ $(document).ready(function () {
     //Source Loader:
     var portfolio_count = parseInt($('#new_portfolio').attr('current-count'));
     if(portfolio_count>0 && portfolio_count<parseInt(js_sources__6404[13005]['m_desc'])){
-        source_sort_portfolio_load();
+        e_sort_portfolio_load();
     }
 
     //Lookout for textinput updates
@@ -23,14 +23,14 @@ $(document).ready(function () {
     //Setup auto focus:
     $('#openEn6197').on('show.bs.collapse', function () {
         //call a service here
-        var original_val = $('#source_setting_name').val();
-        setTimeout(function() { $('#source_setting_name').focus().val('').val(original_val); }, 144);
+        var original_val = $('#e_setting_name').val();
+        setTimeout(function() { $('#e_setting_name').focus().val('').val(original_val); }, 144);
     });
 
     $('#openEn3288').on('show.bs.collapse', function () {
         //call a service here
-        var original_val = $('#source_email').val();
-        setTimeout(function() { $('#source_email').focus().val('').val(original_val); }, 144);
+        var original_val = $('#e_email').val();
+        setTimeout(function() { $('#e_email').focus().val('').val(original_val); }, 144);
     });
 
     $('#openEn3286').on('show.bs.collapse', function () {
@@ -78,24 +78,24 @@ $(document).ready(function () {
         if (parseInt($('#e__status').find(":selected").val()) == 6178 /* Player Deleted */) {
 
             //Notify Player:
-            $('.notify_source_delete').removeClass('hidden');
-            $('.source_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+            $('.notify_e_delete').removeClass('hidden');
+            $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total links:
-            $.post("/source/source_count_deletion", { e__id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
+            $.post("/source/e_count_deletion", { e__id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
 
                 if(data.status){
-                    $('.source_delete_stats').html('<b>'+data.source_link_count+'</b>');
-                    $('#source_link_count').val(data.source_link_count); //This would require a confirmation upon saving...
+                    $('.e_delete_stats').html('<b>'+data.e_link_count+'</b>');
+                    $('#e_link_count').val(data.e_link_count); //This would require a confirmation upon saving...
                 }
 
             });
 
         } else {
 
-            $('.notify_source_delete').addClass('hidden');
-            $('.source_delete_stats').html('');
-            $('#source_link_count').val('0');
+            $('.notify_e_delete').addClass('hidden');
+            $('.e_delete_stats').html('');
+            $('#e_link_count').val('0');
 
         }
     });
@@ -114,13 +114,13 @@ $(document).ready(function () {
 
 
     //Loadup various search bars:
-    source_load_search("#new-parent", 1, 'q');
-    source_load_search("#new_portfolio", 0, 'w');
+    e_load_search("#new-parent", 1, 'q');
+    e_load_search("#new_portfolio", 0, 'w');
 
 
     //Watchout for file uplods:
     $('.drag-box').find('input[type="file"]').change(function () {
-        source_upload_file(droppedFiles, 'file');
+        e_upload_file(droppedFiles, 'file');
     });
 
     //Should we auto start?
@@ -142,7 +142,7 @@ $(document).ready(function () {
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
                 e.preventDefault();
-                source_upload_file(droppedFiles, 'drop');
+                e_upload_file(droppedFiles, 'drop');
             });
     }
 
@@ -153,7 +153,7 @@ $(document).ready(function () {
 
 
 
-function source_load_search(element_focus, is_source_parent, shortcut) {
+function e_load_search(element_focus, is_e_parent, shortcut) {
 
     $(element_focus + ' .add-input').focus(function() {
 
@@ -167,7 +167,7 @@ function source_load_search(element_focus, is_source_parent, shortcut) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            e__add(0, is_source_parent);
+            e__add(0, is_e_parent);
             return true;
         }
 
@@ -177,9 +177,9 @@ function source_load_search(element_focus, is_source_parent, shortcut) {
 
             $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-                e__add(suggestion.object__id, is_source_parent);
+                e__add(suggestion.object__id, is_e_parent);
 
-            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_source_parent ? 'q' : 'a' )]}, [{
+            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_e_parent ? 'q' : 'a' )]}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
@@ -200,11 +200,11 @@ function source_load_search(element_focus, is_source_parent, shortcut) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:e__add(0,'+is_source_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:e__add(0,'+is_source_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -265,10 +265,10 @@ function e_toggle_superpower(superpower_id){
 
 
 //Adds OR links sources to sources
-function e__add(source_existing_id, is_parent) {
+function e__add(e_existing_id, is_parent) {
 
-    //if source_existing_id>0 it means we're linking to an existing source, in which case source_new_string should be null
-    //If source_existing_id=0 it means we are creating a new source and then linking it, in which case source_new_string is required
+    //if e_existing_id>0 it means we're linking to an existing source, in which case e_new_string should be null
+    //If e_existing_id=0 it means we are creating a new source and then linking it, in which case e_new_string is required
 
     if (is_parent) {
         var input = $('#new-parent .add-input');
@@ -278,10 +278,10 @@ function e__add(source_existing_id, is_parent) {
         var list_id = 'e__portfolio';
     }
 
-    var source_new_string = null;
-    if (source_existing_id == 0) {
-        source_new_string = input.val();
-        if (source_new_string.length < 1) {
+    var e_new_string = null;
+    if (e_existing_id == 0) {
+        e_new_string = input.val();
+        if (e_new_string.length < 1) {
             alert('Missing source name or URL, try again');
             input.focus();
             return false;
@@ -292,9 +292,9 @@ function e__add(source_existing_id, is_parent) {
     //Add via Ajax:
     $.post("/source/e__add", {
 
-        e__id: source_focus_id,
-        source_existing_id: source_existing_id,
-        source_new_string: source_new_string,
+        e__id: e_focus_id,
+        e_existing_id: e_existing_id,
+        e_new_string: e_new_string,
         is_parent: (is_parent ? 1 : 0),
 
     }, function (data) {
@@ -304,16 +304,16 @@ function e__add(source_existing_id, is_parent) {
 
         if (data.status) {
 
-            //Raw input to make it reads for next URL:
+            //Raw input to make it discovers for next URL:
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.en-item', data.source_new_echo);
+            add_to_list(list_id, '.en-item', data.e_new_echo);
 
             //Allow inline editing if enabled:
             x_set_text_start();
 
-            source_sort_portfolio_load();
+            e_sort_portfolio_load();
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
@@ -327,13 +327,13 @@ function e__add(source_existing_id, is_parent) {
 }
 
 
-function source_filter_status(new_val) {
+function e_filter_status(new_val) {
     //Delete active class:
     $('.en-status-filter').removeClass('active');
     //We do have a filter:
-    source_focus_filter = parseInt(new_val);
+    e_focus_filter = parseInt(new_val);
     $('.en-status-' + new_val).addClass('active');
-    source_load_page(0, 1);
+    e_load_page(0, 1);
 }
 
 function e__title_word_count() {
@@ -347,7 +347,7 @@ function e__title_word_count() {
 
 
 
-function source_load_page(page, load_new_filter) {
+function e_load_page(page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
@@ -359,10 +359,10 @@ function source_load_page(page, load_new_filter) {
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     }
 
-    $.post("/source/source_load_page", {
+    $.post("/source/e_load_page", {
         page: page,
-        parent_e__id: source_focus_id,
-        source_focus_filter: source_focus_filter,
+        parent_e__id: e_focus_id,
+        e_focus_filter: e_focus_filter,
     }, function (data) {
 
         //Appending to existing content:
@@ -371,7 +371,7 @@ function source_load_page(page, load_new_filter) {
         if (load_new_filter) {
             $('#e__portfolio').html(data + '<div id="new_portfolio" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            source_load_search("#new_portfolio", 0, 'w');
+            e_load_search("#new_portfolio", 0, 'w');
         } else {
             //Update UI to confirm with user:
             $(data).insertBefore('#new_portfolio');
@@ -391,7 +391,7 @@ function update_demo_icon(){
     $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_sources__2738[4536]['m_icon'] ));
 }
 
-function source_modify_load(e__id, x__id) {
+function e_modify_load(e__id, x__id) {
 
     //Make sure inputs are valid:
     if (!$('.e___' + e__id).length) {
@@ -408,22 +408,22 @@ function source_modify_load(e__id, x__id) {
     $('#modifybox').attr('source-id', e__id);
 
     //Cannot be deleted OR Unpublished as this would not load, so delete them:
-    $('.notify_source_delete, .notify_unlink_source').addClass('hidden');
+    $('.notify_e_delete, .notify_unlink_source').addClass('hidden');
 
     //Set opacity:
     delete_all_saved();
-    $(".saved_source_"+e__id).addClass('source_saved');
+    $(".saved_e_"+e__id).addClass('e_saved');
 
     //Might be in an INPUT or a DIV based on active superpowers:
-    var source_full_name = $(".text__6197_" + e__id + ":first").val();
-    if(!source_full_name.length){
-        source_full_name = $(".text__6197_" + e__id + ":first").text();
+    var e_full_name = $(".text__6197_" + e__id + ":first").val();
+    if(!e_full_name.length){
+        e_full_name = $(".text__6197_" + e__id + ":first").text();
     }
-    $('#e__title').val(source_full_name.toUpperCase()).focus();
-    $('.edit-header').html('<i class="fas fa-pen-square"></i> ' + source_full_name);
+    $('#e__title').val(e_full_name.toUpperCase()).focus();
+    $('.edit-header').html('<i class="fas fa-pen-square"></i> ' + e_full_name);
     $('#e__status').val($(".e___" + e__id + ":first").attr('en-status'));
-    $('.save_source_changes').html('');
-    $('.source_delete_stats').html('');
+    $('.save_e_changes').html('');
+    $('.e_delete_stats').html('');
 
     if (parseInt($('.e__icon_' + e__id).attr('en-is-set')) > 0) {
         $('#e__icon').val($('.e__icon_' + e__id).html());
@@ -438,8 +438,8 @@ function source_modify_load(e__id, x__id) {
     //Only show unlink button if not level 1
     if (parseInt(x__id) > 0) {
 
-        $('#x__status').val($(".e___" + e__id + ":first").attr('read-status'));
-        $('#source_link_count').val('0');
+        $('#x__status').val($(".e___" + e__id + ":first").attr('discover-status'));
+        $('#e_link_count').val('0');
 
 
         //Make the UI link and the ideas in the edit box:
@@ -459,14 +459,14 @@ function source_modify_load(e__id, x__id) {
     }
 }
 
-function source_link_form_lock(){
+function e_link_form_lock(){
     $('#x__message').prop("disabled", true).css('background-color','#999999');
 
     $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Uploading');
 
 }
 
-function source_link_form_unlock(result){
+function e_link_form_unlock(result){
 
     //What was the result?
     if (!result.status) {
@@ -476,7 +476,7 @@ function source_link_form_unlock(result){
     //Unlock either way:
     $('#x__message').prop("disabled", false).css('background-color','#FFF');
 
-    $('.btn-save').removeClass('grey').attr('href', 'javascript:source_update();').html('Save');
+    $('.btn-save').removeClass('grey').attr('href', 'javascript:e_update();').html('Save');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
@@ -486,7 +486,7 @@ function source_link_form_unlock(result){
 }
 
 
-function source_upload_file(droppedFiles, uploadType) {
+function e_upload_file(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
     if ($('.drag-box').hasClass('is-uploading')) {
@@ -506,7 +506,7 @@ function source_upload_file(droppedFiles, uploadType) {
     if (isAdvancedUpload) {
 
         //Lock message:
-        source_link_form_lock();
+        e_link_form_lock();
 
         var ajaxData = new FormData($('.drag-box').get(0));
         if (droppedFiles) {
@@ -522,7 +522,7 @@ function source_upload_file(droppedFiles, uploadType) {
         ajaxData.append('upload_type', uploadType);
 
         $.ajax({
-            url: '/source/source_upload_file',
+            url: '/source/e_upload_file',
             type: 'post',
             data: ajaxData,
             dataType: 'json',
@@ -544,14 +544,14 @@ function source_upload_file(droppedFiles, uploadType) {
                 }
 
                 //Unlock form:
-                source_link_form_unlock(data);
+                e_link_form_unlock(data);
 
             },
             error: function (data) {
                 var result = [];
                 result.status = 0;
                 result.message = data.responseText;
-                source_link_form_unlock(result);
+                e_link_form_unlock(result);
             }
         });
     } else {
@@ -560,7 +560,7 @@ function source_upload_file(droppedFiles, uploadType) {
 }
 
 
-function source_sort_save() {
+function e_sort_save() {
 
     var new_x__sorts = [];
     var sort_rank = 0;
@@ -579,7 +579,7 @@ function source_sort_save() {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/source/source_sort_save", {e__id: source_focus_id, new_x__sorts: new_x__sorts}, function (data) {
+        $.post("/source/e_sort_save", {e__id: e_focus_id, new_x__sorts: new_x__sorts}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -589,13 +589,13 @@ function source_sort_save() {
     }
 }
 
-function source_sort_reset(){
+function e_sort_reset(){
 
     $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Update via call:
-    $.post("/source/source_sort_reset", {
-        e__id: source_focus_id
+    $.post("/source/e_sort_reset", {
+        e__id: e_focus_id
     }, function (data) {
 
         if (!data.status) {
@@ -606,14 +606,14 @@ function source_sort_reset(){
         } else {
 
             //Refresh page:
-            window.location = '/@' + source_focus_id;
+            window.location = '/@' + e_focus_id;
 
         }
     });
 
 }
 
-function source_sort_portfolio_load() {
+function e_sort_portfolio_load() {
 
     var element_key = null;
     var theobject = document.getElementById("e__portfolio");
@@ -630,12 +630,12 @@ function source_sort_portfolio_load() {
         draggable: ".en-item", // Specifies which items inside the element should be sortable
         handle: ".fa-bars", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            source_sort_save();
+            e_sort_save();
         }
     });
 }
 
-function source_update() {
+function e_update() {
 
     //Validate that we have all we need:
     if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('source-id'))) {
@@ -644,10 +644,10 @@ function source_update() {
     }
 
     //Are we about to delete an source with a lot of links?
-    var link_count= parseInt($('#source_link_count').val());
+    var link_count= parseInt($('#e_link_count').val());
     if(link_count >= 3){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("Delete source & "+( $('#source_merge').val().length > 0 ? 'merge' : 'unlink' )+" "+link_count+" links?! Type \"delete\" to confirm.", "");
+        var confirm_removal = prompt("Delete source & "+( $('#e_merge').val().length > 0 ? 'merge' : 'unlink' )+" "+link_count+" links?! Type \"delete\" to confirm.", "");
 
         if (!(confirm_removal == 'delete')) {
             //Abandon process:
@@ -658,12 +658,12 @@ function source_update() {
 
     //Prepare data to be modified for this idea:
     var modify_data = {
-        source_focus_id: source_focus_id, //Determines if we need to change location upon removing...
+        e_focus_id: e_focus_id, //Determines if we need to change location upon removing...
         e__id: parseInt($('#modifybox').attr('source-id')),
         e__title: $('#e__title').val().toUpperCase(),
         e__icon: $('#e__icon').val(),
         e__status: $('#e__status').val(), //The new status (might not have changed too)
-        source_merge: $('#source_merge').val(),
+        e_merge: $('#e_merge').val(),
         //Link data:
         x__id: parseInt($('#modifybox').attr('source-link-id')),
         x__message: $('#x__message').val(),
@@ -671,10 +671,10 @@ function source_update() {
     };
 
     //Show spinner:
-    $('.save_source_changes').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12695) +  '').hide().fadeIn();
+    $('.save_e_changes').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12695) +  '').hide().fadeIn();
 
 
-    $.post("/source/source_update", modify_data, function (data) {
+    $.post("/source/e_update", modify_data, function (data) {
 
         if (data.status) {
 
@@ -727,8 +727,8 @@ function source_update() {
                     modify_data['e__icon'] = js_sources__2738[4536]['m_icon'];
                 }
                 $('.e__icon_' + modify_data['e__id']).attr('en-is-set' , icon_is_set );
-                $('.source_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
-                $('.source_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
+                $('.e_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
+                $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
 
 
                 //Did we have ideas to update?
@@ -743,18 +743,14 @@ function source_update() {
                         $("#x__message").val(data.x__message_final).hide().fadeIn('slow');
                     }
 
-
-                    //Link Icon:
-                    $('.read_type_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__4592[data.js_x__type]["m_name"] + ': ' + js_sources__4592[data.js_x__type]["m_desc"] + '">' + js_sources__4592[data.js_x__type]["m_icon"] + '</span>');
-
-                    //Read Status:
-                    $(".e___" + modify_data['e__id']).attr('read-status', modify_data['x__status'])
+                    //Interaction Status:
+                    $(".e___" + modify_data['e__id']).attr('discover-status', modify_data['x__status'])
                     $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_sources__6186[modify_data['x__status']]["m_name"] + ': ' + js_sources__6186[modify_data['x__status']]["m_desc"] + '">' + js_sources__6186[modify_data['x__status']]["m_icon"] + '</span>');
 
                 }
 
                 //Update source timestamp:
-                $('.save_source_changes').html(data.message);
+                $('.save_e_changes').html(data.message);
 
                 //Reload Tooltip again:
                 $('[data-toggle="tooltip"]').tooltip();
@@ -762,7 +758,7 @@ function source_update() {
 
         } else {
             //Ooops there was an error!
-            $('.save_source_changes').html('<span class="read montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
+            $('.save_e_changes').html('<span class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
         }
 
     });
@@ -805,7 +801,7 @@ function e_update_avatar(type_css, icon_css){
         $('.avatar-item.avatar-name-'+icon_css).addClass('active');
     }
 
-    $('.source_ui_icon_'+js_pl_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.e_ui_icon_'+js_pl_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Update via call:
     $.post("/source/e_update_avatar", {
@@ -821,7 +817,7 @@ function e_update_avatar(type_css, icon_css){
         } else {
 
             //Delete message:
-            $('.source_ui_icon_'+js_pl_id).html(data.new_avatar);
+            $('.e_ui_icon_'+js_pl_id).html(data.new_avatar);
 
         }
     });
@@ -866,7 +862,7 @@ function e_update_radio(parent_e__id, selected_e__id, enable_mulitiselect){
         if (!data.status) {
 
             //Ooops there was an error!
-            $(notify_el).html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $(notify_el).html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
 
         } else {
 
@@ -887,13 +883,13 @@ function e_update_email(){
 
     //Save the rest of the content:
     $.post("/source/e_update_email", {
-        source_email: $('#source_email').val(),
+        e_email: $('#e_email').val(),
     }, function (data) {
 
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_email').html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_email').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -924,7 +920,7 @@ function e_update_password(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_password').html('<b class="read montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_password').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
