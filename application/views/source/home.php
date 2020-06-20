@@ -8,9 +8,39 @@ $show_max = config_var(11986);
 
     <?php
 
+
+    //My Sources:
+    if($session_source){
+
+        echo '<div class="discover-topic" style="margin-top:21px;"><span class="icon-block">'.$sources__11035[12205]['m_icon'].'</span>'.$sources__11035[12205]['m_name'].'</div>';
+
+        echo '<div class="list-group">';
+
+        foreach($this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
+            'x__player' => $session_source['e__id'],
+        ), array('x__down'), $load_max, 0, array('e__weight' => 'DESC')) as $count=>$my_source){
+
+            if($count==$show_max){
+                echo '<div class="list-group-item see_more_who'.$session_source['e__id'].' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$session_source['e__id'].'\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                echo '<div class="list-group-item see_more_who'.$session_source['e__id'].' no-height"></div>';
+            }
+
+            echo view_e($my_source, true, ( $count<$show_max ? '' : 'see_more_who'.$session_source['e__id'].' hidden'));
+        }
+
+
+
+        echo '</div>';
+
+    }
+
+
+
     foreach($this->config->item('sources__13207') as $e__id => $m) {
 
-        echo '<div style="padding-bottom:34px;">';
+        echo '<div style="padding-top:34px;">';
         echo '<table class="table table-sm table-striped">';
         echo '<tr></tr>'; //Skip white
         echo '<tr>';
