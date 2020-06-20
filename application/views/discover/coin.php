@@ -240,7 +240,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
         //CERTIFICATES
         $counter = $idea_stats['certificate_count'];
-        $this_tab .= '<p class="space-content">Completion may earn you some of the following certificates:</p>';
+        $this_tab .= '<p class="space-content">Completion could earn you some of the following certificates:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
         foreach ($idea_stats['certificate_array'] as $source_source) {
             $source_source['x__message'] = ''; //Remove for this

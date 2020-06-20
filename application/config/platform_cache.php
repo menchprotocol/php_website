@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-20 06:11:17 PST
+//Generated 2020-06-20 06:43:20 PST
 
 //MENCH OBJECTS:
 $config['sources_id_13355'] = array(13359,13360,13358,13362);
@@ -497,49 +497,49 @@ $config['sources__12968'] = array(
     ),
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
-        'm_name' => 'ARTICLES',
+        'm_name' => 'ARTICLE',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     4446 => array(
         'm_icon' => '<i class="fas fa-tachometer source" aria-hidden="true"></i>',
-        'm_name' => 'ASSESSMENTS',
+        'm_name' => 'ASSESSMENT',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     3005 => array(
         'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
-        'm_name' => 'BOOKS',
+        'm_name' => 'BOOK',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fas fa-presentation source" aria-hidden="true"></i>',
-        'm_name' => 'COURSES',
+        'm_name' => 'COURSE',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     4763 => array(
         'm_icon' => '<i class="fas fa-megaphone source" aria-hidden="true"></i>',
-        'm_name' => 'DISTRIBUTION CHANNELS',
+        'm_name' => 'DISTRIBUTION CHANNEL',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     13350 => array(
         'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
-        'm_name' => 'REPORTS',
+        'm_name' => 'REPORT',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
-        'm_name' => 'TOOLS',
+        'm_name' => 'TOOL',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     2998 => array(
         'm_icon' => '<i class="fas fa-play-circle source"></i>',
-        'm_name' => 'VIDEOS',
+        'm_name' => 'VIDEO',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
@@ -5023,31 +5023,31 @@ $config['sources_id_4983'] = array(2997,4446,3005,3147,4763,3084,2750,13350,3192
 $config['sources__4983'] = array(
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT ARTICLES',
+        'm_name' => 'EXPERT ARTICLE',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     4446 => array(
         'm_icon' => '<i class="fas fa-tachometer source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT ASSESSMENTS',
+        'm_name' => 'EXPERT ASSESSMENT',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     3005 => array(
         'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT BOOKS',
+        'm_name' => 'EXPERT BOOK',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fas fa-presentation source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT COURSES',
+        'm_name' => 'EXPERT COURSE',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     4763 => array(
         'm_icon' => '<i class="fas fa-megaphone source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT DISTRIBUTION CHANNELS',
+        'm_name' => 'EXPERT DISTRIBUTION CHANNEL',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
@@ -5065,19 +5065,19 @@ $config['sources__4983'] = array(
     ),
     13350 => array(
         'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
-        'm_name' => 'EXPERT REPORTS',
+        'm_name' => 'EXPERT REPORT',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT TOOLS',
+        'm_name' => 'EXPERT TOOL',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     2998 => array(
         'm_icon' => '<i class="fas fa-play-circle source"></i>',
-        'm_name' => 'EXPERT VIDEOS',
+        'm_name' => 'EXPERT VIDEO',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
@@ -7989,55 +7989,55 @@ $config['sources_id_3000'] = array(3005,2998,2997,13218,3147,4446,13350,3192,476
 $config['sources__3000'] = array(
     3005 => array(
         'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
-        'm_name' => 'BOOKS',
+        'm_name' => 'BOOK',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     2998 => array(
         'm_icon' => '<i class="fas fa-play-circle source"></i>',
-        'm_name' => 'VIDEOS',
+        'm_name' => 'VIDEO',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
-        'm_name' => 'ARTICLES',
+        'm_name' => 'ARTICLE',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     13218 => array(
         'm_icon' => '<i class="fas fa-microphone source"></i>',
-        'm_name' => 'PODCASTS',
+        'm_name' => 'PODCAST',
         'm_desc' => '',
         'm_parents' => array(3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fas fa-presentation source" aria-hidden="true"></i>',
-        'm_name' => 'COURSES',
+        'm_name' => 'COURSE',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     4446 => array(
         'm_icon' => '<i class="fas fa-tachometer source" aria-hidden="true"></i>',
-        'm_name' => 'ASSESSMENTS',
+        'm_name' => 'ASSESSMENT',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     13350 => array(
         'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
-        'm_name' => 'REPORTS',
+        'm_name' => 'REPORT',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
-        'm_name' => 'TOOLS',
+        'm_name' => 'TOOL',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
     4763 => array(
         'm_icon' => '<i class="fas fa-megaphone source" aria-hidden="true"></i>',
-        'm_name' => 'DISTRIBUTION CHANNELS',
+        'm_name' => 'DISTRIBUTION CHANNEL',
         'm_desc' => '',
         'm_parents' => array(12968,4983,3000),
     ),
