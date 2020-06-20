@@ -6,12 +6,12 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
 if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
-    //List this users Reads ideas so they can choose:
-    echo '<div>Choose one of your Reads reads to debug:</div><br />';
+    //List this users Discoveries so they can choose:
+    echo '<div>Choose one of your Discoveries to debug:</div><br />';
 
     $player_reads = $this->DISCOVER_model->fetch(array(
         'x__player' => $_GET['e__id'],
-        'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+        'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
         'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
     ), array('x__left'), 0, 0, array('x__sort' => 'ASC'));

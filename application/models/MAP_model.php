@@ -468,7 +468,7 @@ class MAP_model extends CI_Model
 
             $relation = $this->DISCOVER_model->create(array(
                 'x__player' => $x__player,
-                'x__type' => 4228, //Idea Link Regular Reads
+                'x__type' => 4228, //Idea Link Regular Discovery
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $idea_new['i__id'],
                 'x__sort' => 1 + $this->DISCOVER_model->max_order(array(
@@ -614,9 +614,9 @@ class MAP_model extends CI_Model
         $conditional_reads = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
             '__i___common_reads' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__i___expansion_reads' => array(), //Ideas that may exist as a link to expand an Reads idea by answering OR ideas
+            '__i___expansion_reads' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
             '__i___expansion_some' => array(), //Ideas that allows players to select one or more
-            '__i___expansion_conditional' => array(), //Ideas that may exist as a link to expand an Reads idea via Conditional Idea links
+            '__i___expansion_conditional' => array(), //Ideas that may exist as a link to expand Discovery via Conditional Idea links
         );
 
         //Fetch children:
@@ -1118,7 +1118,7 @@ class MAP_model extends CI_Model
         $child_unlock_paths = array();
 
 
-        //Reads 1: Is there an OR parent that we can simply answer and unlock?
+        //Discovery 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
@@ -1132,7 +1132,7 @@ class MAP_model extends CI_Model
         }
 
 
-        //Reads 2: Are there any locked link parents that the user might be able to unlock?
+        //Discovery 2: Are there any locked link parents that the user might be able to unlock?
         foreach($this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
@@ -1159,7 +1159,7 @@ class MAP_model extends CI_Model
         }
 
 
-        //Reads 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
+        //Discovery 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $ideas_next = $this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC

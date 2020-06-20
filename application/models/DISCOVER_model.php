@@ -1123,7 +1123,7 @@ class DISCOVER_model extends CI_Model
             //Still Here? as a Last option go through DISCOVER LIST:
             foreach ($this->DISCOVER_model->fetch(array(
                 'x__player' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null,
+                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             ), array('x__left'), 0, 0, array('x__sort' => 'ASC')) as $read_list_idea) {
@@ -1145,7 +1145,7 @@ class DISCOVER_model extends CI_Model
     function delete($e__id, $i__id, $stop_method_id, $stop_feedback = null){
 
 
-        if(!in_array($stop_method_id, $this->config->item('sources_id_6150') /* Reads Idea Completed */)){
+        if(!in_array($stop_method_id, $this->config->item('sources_id_6150') /* Discoveries Idea Completed */)){
             return array(
                 'status' => 0,
                 'message' => 'Invalid stop method',
@@ -1163,17 +1163,17 @@ class DISCOVER_model extends CI_Model
             );
         }
 
-        //Go ahead and delete from Reads:
+        //Go ahead and delete from Discoveries:
         $player_reads = $this->DISCOVER_model->fetch(array(
             'x__player' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+            'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__left' => $i__id,
         ));
         if(count($player_reads) < 1){
             return array(
                 'status' => 0,
-                'message' => 'Could not locate Reads',
+                'message' => 'Could not locate Discovery',
             );
         }
 
@@ -1203,28 +1203,28 @@ class DISCOVER_model extends CI_Model
             return 0;
         }
 
-        //Make sure not previously added to this User's Reads:
+        //Make sure not previously added to this User's Discoveries:
         if(!count($this->DISCOVER_model->fetch(array(
                 'x__player' => $e__id,
                 'x__left' => $i__id,
-                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             )))){
 
-            //Not added to their Reads so far, let's go ahead and add it:
+            //Not added to their Discoveries so far, let's go ahead and add it:
             $idea_rank = 1;
             $home = $this->DISCOVER_model->create(array(
                 'x__type' => ( $recommender_i__id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
                 'x__player' => $e__id, //Belongs to this User
                 'x__left' => $ideas[0]['i__id'], //The Idea they are adding
                 'x__right' => $recommender_i__id, //Store the recommended idea
-                'x__sort' => $idea_rank, //Always place at the top of their Reads
+                'x__sort' => $idea_rank, //Always place at the top of their Discoveries
             ));
 
-            //Move other ideas down in the Reads:
+            //Move other ideas down in the Discovery List:
             foreach($this->DISCOVER_model->fetch(array(
                 'x__id !=' => $home['x__id'], //Not the newly added idea
-                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'x__player' => $e__id, //Belongs to this User
             ), array(), 0, 0, array('x__sort' => 'ASC')) as $current_ideas){
@@ -1239,31 +1239,36 @@ class DISCOVER_model extends CI_Model
 
             }
 
-            //Was this their first idea?
-            if(!count($this->DISCOVER_model->fetch(array(
-                'x__player' => $e__id,
-                'x__left !=' => $i__id,
-                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
-                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            )))){
+            //Do we need to add the starting idea?
+            if($i__id != $this->config->item('starting_i__id')){
 
-                //YES! Also add the starting idea:
-                $this->DISCOVER_model->start($e__id, $this->config->item('starting_i__id'), $i__id);
+                //Is this their first idea?
+                if(!count($this->DISCOVER_model->fetch(array(
+                    'x__player' => $e__id,
+                    'x__left !=' => $i__id,
+                    'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
+                    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                )))){
 
-                return $this->config->item('starting_i__id');
+                    //YES! Also add the starting idea:
+                    $this->DISCOVER_model->start($e__id, $this->config->item('starting_i__id'), $i__id);
 
-            } elseif($i__id != $this->config->item('starting_i__id')) {
+                    return $this->config->item('starting_i__id');
 
-                //Mark as readed if possible:
-                if($ideas[0]['i__type']==6677){
-                    $this->DISCOVER_model->mark_complete($ideas[0], array(
-                        'x__type' => 4559, //DISCOVER MESSAGES
-                        'x__player' => $e__id,
-                        'x__left' => $ideas[0]['i__id'],
-                    ));
+                } else {
+
+                    //Mark as Discovered if possible:
+                    if($ideas[0]['i__type']==6677){
+                        $this->DISCOVER_model->mark_complete($ideas[0], array(
+                            'x__type' => 4559, //DISCOVER MESSAGES
+                            'x__player' => $e__id,
+                            'x__left' => $ideas[0]['i__id'],
+                        ));
+                    }
+
                 }
-
             }
+
 
         }
 
@@ -1366,7 +1371,7 @@ class DISCOVER_model extends CI_Model
                     //Found a match:
                     $found_match++;
 
-                    //Unlock Reads:
+                    //Unlock Discovery:
                     $this->DISCOVER_model->create(array(
                         'x__type' => 6140, //DISCOVER UNLOCK LINK
                         'x__player' => $e__id,
@@ -1414,7 +1419,7 @@ class DISCOVER_model extends CI_Model
 
                 //Does this parent and its grandparents have an intersection with the user ideas?
                 if(!array_intersect($grand_parent_ids, $player_read_ids)){
-                    //Parent idea is NOT part of their Reads:
+                    //Parent idea is NOT part of their Discoveries:
                     continue;
                 }
 
@@ -1442,7 +1447,7 @@ class DISCOVER_model extends CI_Model
 
                     }
 
-                    //Terminate if we reached the Reads idea level:
+                    //Terminate if we reached the Top Discovery:
                     if(in_array($p_id , $player_read_ids)){
                         break;
                     }
@@ -1555,7 +1560,7 @@ class DISCOVER_model extends CI_Model
 
         if($recipient_source['e__id'] > 0){
 
-            //Fetch entire Reads:
+            //Fetch entire Discoveries:
             $player_read_ids = $this->DISCOVER_model->ids($recipient_source['e__id']);
             $in_my_reads = in_array($i__id, $player_read_ids);
 
@@ -1564,7 +1569,7 @@ class DISCOVER_model extends CI_Model
                 foreach($this->MAP_model->recursive_parents($i__id) as $grand_parent_ids) {
                     //Does this parent and its grandparents have an intersection with the user ideas?
                     if (array_intersect($grand_parent_ids, $player_read_ids)) {
-                        //Idea is part of their Reads:
+                        //Idea is part of their Discoveries:
                         $in_my_reads = true;
                         break;
                     }
@@ -1592,13 +1597,13 @@ class DISCOVER_model extends CI_Model
     function completion_marks($e__id, $idea, $top_level = true)
     {
 
-        //Fetch/validate Reads Common Ideas:
+        //Fetch/validate Discovery Common Ideas:
         $i__metadata = unserialize($idea['i__metadata']);
         if(!isset($i__metadata['i___common_reads'])){
 
             //Should not happen, log error:
             $this->DISCOVER_model->create(array(
-                'x__message' => 'completion_marks() Detected user Reads without i___common_reads value!',
+                'x__message' => 'completion_marks() Detected user Discoveries without i___common_reads value!',
                 'x__type' => 4246, //Platform Bug Reports
                 'x__player' => $e__id,
                 'x__left' => $idea['i__id'],
@@ -1818,7 +1823,7 @@ class DISCOVER_model extends CI_Model
             return false;
         }
 
-        //Fetch/validate Reads Common Ideas:
+        //Fetch/validate Discoveries Common Ideas:
         $i__metadata = unserialize($idea['i__metadata']);
         if(!isset($i__metadata['i___common_reads'])){
             //Since it's not there yet we assume the idea it self only!
@@ -1919,7 +1924,7 @@ class DISCOVER_model extends CI_Model
 
             /*
              *
-             * Completing an Reads depends on two factors:
+             * Completing an Discoveries depends on two factors:
              *
              * 1) number of steps (some may have 0 time estimate)
              * 2) estimated seconds (usual ly accurate)
@@ -1956,11 +1961,11 @@ class DISCOVER_model extends CI_Model
 
 
     function ids($e__id){
-        //Simply returns all the idea IDs for a user's Reads:
+        //Simply returns all the idea IDs for a user's Discoveries:
         $player_read_ids = array();
         foreach($this->DISCOVER_model->fetch(array(
             'x__player' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+            'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         ), array('x__left'), 0) as $user_in){

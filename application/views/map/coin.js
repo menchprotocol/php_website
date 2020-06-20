@@ -154,8 +154,6 @@ function source_source_only_search(note_type_id) {
         var extra_filters = '';
         if(note_type_id==4983){
             extra_filters = ' AND ( _tags:alg_source_'+js_pl_id+' OR _tags:alg_source_' + js_sources_id_4983.join(' OR _tags:alg_source_') + ') ';
-        } else if(note_type_id==10573){
-            extra_filters = ' AND ( _tags:alg_source_'+js_pl_id+' OR _tags:alg_source_' + js_sources_id_10573.join(' OR _tags:alg_source_') + ') ';
         }
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
@@ -440,15 +438,15 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         }
 
 
-        //Reads Setting:
+        //Discoveries Setting:
         if(is_idea_public){
 
-            //Enable Reads:
+            //Enable Discoveries:
             $('.idea-read').removeClass('hidden');
 
         } else {
 
-            //Disable Reads:
+            //Disable Discoveries:
             $('.idea-read').addClass('hidden');
 
         }

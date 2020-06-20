@@ -701,11 +701,11 @@ $is_source = source_is_idea_source($source['e__id']);
                 }
             }
 
-        } elseif($x__type == 12969 /* Reads */){
+        } elseif($x__type == 12969 /* MY DISCOVERIES */){
 
             $idea_reads_filters = array(
                 'x__player' => $source['e__id'],
-                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
                 'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             );

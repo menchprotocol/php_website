@@ -13,7 +13,7 @@
     foreach($this->DISCOVER_model->fetch(array(
         'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'x__type' => 10573, //IDEA NOTES Bookmarks
+        'x__type' => 10573, //MY IDEAS
         'x__up' => $session_source['e__id'], //For this player
     ), array('x__right'), 0, 0, array('i__weight' => 'DESC')) as $idea){
         echo view_idea($idea, 0, false, true);

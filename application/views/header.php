@@ -160,7 +160,7 @@ if(!isset($hide_header)){
 
                     //Search
                     if(intval(config_var(12678))){
-                        echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$sources__11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-times"></i></span></a></td>';
+                        echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$sources__11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-share mirror-v"></i></span></a></td>';
                     }
 
                     //Account
@@ -185,7 +185,7 @@ if(!isset($hide_header)){
                             if($x__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
                                 continue;
                             } elseif($x__type==6415 && !$is_home){
-                                //Deleting reads only available on Reads home
+                                //Deleting reads only available on Discoveries home
                                 continue;
                             } elseif($x__type==12749 && !$is_home && !is_numeric($first_segment)){
                                 //Not an editable discovery

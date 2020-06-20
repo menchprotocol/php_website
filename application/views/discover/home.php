@@ -14,7 +14,7 @@
         //MY DISCOVERIES
         $player_reads = $this->DISCOVER_model->fetch(array(
             'x__player' => $session_source['e__id'],
-            'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //Reads Idea Set
+            'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
             'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         ), array('x__left'), 0, 0, array('x__sort' => 'ASC'));

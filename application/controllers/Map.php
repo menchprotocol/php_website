@@ -47,7 +47,7 @@ class Map extends CI_Controller {
 
         //Also add to bookmarks:
         $this->DISCOVER_model->create(array(
-            'x__type' => 10573, //Idea Bookmarks
+            'x__type' => 10573, //MY IDEAS
             'x__player' => $session_source['e__id'],
             'x__right' => $idea['new_i__id'],
             'x__up' => $session_source['e__id'],

@@ -36,7 +36,7 @@ if(isset($_GET['focus__source'])){
         'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
     ));
     if(count($source_filters)){
-        echo '<div class="alert alert-danger no-margin"><span class="icon-block"><i class="fas fa-filter read"></i></span>Showing Reads of <a href="/@'.$source_filters[0]['e__id'].'" class="'.extract_icon_color($source_filters[0]['e__icon']).'">' . view_e__icon($source_filters[0]['e__icon']) . '&nbsp;' . $source_filters[0]['e__title'].'</a> Only (<a href="/'.$this->uri->segment(1).'">Remove Filter</a>)</div>';
+        echo '<div class="alert alert-danger no-margin"><span class="icon-block"><i class="fas fa-filter read"></i></span>Showing Discoveries for <a href="/@'.$source_filters[0]['e__id'].'" class="'.extract_icon_color($source_filters[0]['e__icon']).'">' . view_e__icon($source_filters[0]['e__icon']) . '&nbsp;' . $source_filters[0]['e__title'].'</a> Only (<a href="/'.$this->uri->segment(1).'">Remove Filter</a>)</div>';
     }
 }
 
