@@ -487,11 +487,11 @@ img.no-radius {
 
 .cover-block{
     display: block;
-    width: 146px;
+    width: 175px;
     height: 305px;
     overflow: hidden;
     float: left;
-    margin-right:34px;
+    margin-right: 5px;
 }
 
 .cover-image{

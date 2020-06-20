@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-20 07:09:08 PST
+//Generated 2020-06-20 07:31:31 PST
 
 //MENCH OBJECTS:
 $config['sources_id_13355'] = array(13359,13360,13358,13362);
@@ -939,7 +939,7 @@ $config['sources_id_12500'] = array(12205,12749,6415,6287,7291);
 $config['sources__12500'] = array(
     12205 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'MY ACCOUNT',
+        'm_name' => 'MY SOURCES',
         'm_desc' => '',
         'm_parents' => array(12500,11035),
     ),
@@ -3068,7 +3068,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.437',
+        'm_desc' => 'v1.438',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -3270,7 +3270,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(6225,4235,12750,3084,13216,12707,12991,12211,11068,4535,12749,4341,13000,12205,12969,10573,4430,6287,12896,7256,13023,4269,7291,4536,4997,12275,13007,10957,7540);
+$config['sources_id_11035'] = array(6225,4235,12750,3084,13216,12707,12991,12211,11068,4535,12749,4341,13000,12969,10573,12205,4430,6287,12896,7256,13023,4269,7291,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3350,12 +3350,6 @@ $config['sources__11035'] = array(
         'm_desc' => '',
         'm_parents' => array(11035,7305),
     ),
-    12205 => array(
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'MY ACCOUNT',
-        'm_desc' => '',
-        'm_parents' => array(12500,11035),
-    ),
     12969 => array(
         'm_icon' => '<i class="fas fa-user-circle read" aria-hidden="true"></i>',
         'm_name' => 'MY DISCOVERIES',
@@ -3367,6 +3361,12 @@ $config['sources__11035'] = array(
         'm_name' => 'MY IDEAS',
         'm_desc' => '',
         'm_parents' => array(12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
+    ),
+    12205 => array(
+        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'MY SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(12500,11035),
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user-crown source" aria-hidden="true"></i>',

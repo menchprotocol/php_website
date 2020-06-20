@@ -15,14 +15,17 @@ $show_max = config_var(11986);
         echo '<div class="read-topic" style="margin-top:21px;"><span class="icon-block">'.$sources__11035[12205]['m_icon'].'</span>'.$sources__11035[12205]['m_name'].'</div>';
 
         echo '<div class="list-group">';
+
         foreach($this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
             'x__player' => $session_source['e__id'],
-            'e__id' => $session_source['e__id'],
         ), array('x__down')) as $my_source){
             echo view_source($my_source);
         }
+
+
+
         echo '</div>';
 
     }
