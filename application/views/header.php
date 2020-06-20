@@ -160,7 +160,7 @@ if(!isset($hide_header)){
 
                     //Search
                     if(intval(config_var(12678))){
-                        echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$sources__11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="far fa-share mirror-v"></i></span></a></td>';
+                        echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$sources__11035[7256]['m_icon'].'</span><span class="search_icon hidden"><i class="fas fa-share mirror-h"></i></span></a></td>';
                     }
 
                     //Account
