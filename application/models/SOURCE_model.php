@@ -567,9 +567,9 @@ class SOURCE_model extends CI_Model
             'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $e__profile){
 
+
             if(in_array($e__profile['e__id'], $this->config->item('sources_id_3000'))){
                 //EXPERT CONTENT
-                $source['x__message'] = $e__profile['x__message']; //Update Description
                 if (!isset($metadata_this['__i___content'][$source['e__id']])) {
                     $metadata_this['__i___content'][$source['e__id']] = $source;
                 }

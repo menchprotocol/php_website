@@ -874,11 +874,19 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
 }
 
 function idea_stats($i__metadata){
+
     //Calculates average based on metadata:
     $metadata = unserialize($i__metadata);
-    $sources_array = array_merge(( isset($metadata['i___experts']) ? $metadata['i___experts'] : array() ), ( isset($metadata['i___content']) ? $metadata['i___content'] : array() ));
+
     $certificate_array = ( isset($metadata['i___certificates']) ? $metadata['i___certificates'] : array() );
+
+
+    $sources_array = array_merge(( isset($metadata['i___experts']) ? $metadata['i___experts'] : array() ), ( isset($metadata['i___content']) ? $metadata['i___content'] : array() ));
     usort($sources_array, 'sortByWeight');
+
+
+    $players_array = ( isset($metadata['i___players]']) ? $metadata['i___players'] : array() );
+    usort($players_array, 'sortByWeight');
 
     //Return stats:
     return array(
@@ -890,6 +898,8 @@ function idea_stats($i__metadata){
         'duration_average' => ( isset($metadata['i___max_seconds']) ? round(($metadata['i___min_seconds']+$metadata['i___max_seconds'])/2) : 0 ),
         'sources_count' => count($sources_array),
         'sources_array' => $sources_array,
+        'players_count' => count($players_array),
+        'players_array' => count($players_array),
         'certificate_count' => count($certificate_array),
         'certificate_array' => $certificate_array,
     );

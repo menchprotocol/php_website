@@ -913,6 +913,7 @@ class MAP_model extends CI_Model
             '__i___max_discoveries' => 1,
             '__i___min_seconds' => $idea['i__duration'],
             '__i___max_seconds' => $idea['i__duration'],
+            '__i___players' => array(),
             '__i___experts' => array(),
             '__i___content' => array(),
             '__i___certificates' => array(),
@@ -922,12 +923,13 @@ class MAP_model extends CI_Model
 
         //AGGREGATE IDEA SOURCES
         foreach($this->DISCOVER_model->fetch(array(
-            '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+            //Already for for x__up & x__down
             'x__right' => $idea['i__id'],
             'x__type IN (' . join(',', $this->config->item('sources_id_12273')).')' => null, //IDEA COIN
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $fetched_source) {
 
+            //SOURCES?
             foreach(array('x__up','x__down') as $e_ref_field){
                 if($fetched_source[$e_ref_field] > 0){
 
@@ -952,6 +954,12 @@ class MAP_model extends CI_Model
                     }
                 }
             }
+
+            //PLAYERS:
+            if (!isset($metadata_this['__i___players'][$fetched_source['x__player']])) {
+                $metadata_this['__i___players'][$fetched_source['x__player']] = $fetched_source;
+            }
+
         }
 
 
@@ -982,6 +990,19 @@ class MAP_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'x__left' => $idea['i__id'],
         ), array('x__right'), 0) as $ideas_next){
+
+            //Players
+            if (!isset($metadata_this['__i___players'][$ideas_next['x__player']])) {
+                //Fetch Source:
+                foreach($this->DISCOVER_model->fetch(array(
+                    'x__up' => 4430, //MENCH PLAYERS
+                    'x__down' => $ideas_next['x__player'],
+                    'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                ), array('x__down'), 1) as $player){
+                    $metadata_this['__i___players'][$ideas_next['x__player']] = $player;
+                }
+            }
 
             //RECURSION
             $metadata_recursion = $this->MAP_model->metadata_e_insights($ideas_next);
@@ -1039,6 +1060,13 @@ class MAP_model extends CI_Model
             }
 
 
+            //PLAYERS
+            foreach($metadata_recursion['__i___players'] as $e__id => $e_source) {
+                if (!isset($metadata_this['__i___players'][$e__id])) {
+                    $metadata_this['__i___players'][$e__id] = $e_source;
+                }
+            }
+
             //EXPERT CONTENT
             foreach($metadata_recursion['__i___content'] as $e__id => $e_content) {
                 if (!isset($metadata_this['__i___content'][$e__id])) {
@@ -1089,6 +1117,7 @@ class MAP_model extends CI_Model
             'i___max_discoveries' => intval($metadata_this['__i___max_discoveries']),
             'i___min_seconds' => intval($metadata_this['__i___min_seconds']),
             'i___max_seconds' => intval($metadata_this['__i___max_seconds']),
+            'i___players' => $metadata_this['__i___players'],
             'i___experts' => $metadata_this['__i___experts'],
             'i___content' => $metadata_this['__i___content'],
             'i___certificates' => $metadata_this['__i___certificates'],
