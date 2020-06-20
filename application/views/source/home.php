@@ -10,7 +10,7 @@ $show_max = config_var(11986);
 
     foreach($this->config->item('sources__13207') as $e__id => $m) {
 
-        echo '<div style="padding-top:34px;">';
+        echo '<div style="padding-bottom:34px;">';
         echo '<table class="table table-sm table-striped">';
         echo '<tr></tr>'; //Skip white
         echo '<tr>';
