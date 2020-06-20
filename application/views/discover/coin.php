@@ -231,7 +231,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $counter = $idea_stats['players_count'];
         $this_tab .= '<p class="space-content">Ideas were mapped by these players:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-        foreach ($idea_stats['sources_array'] as $e_source) {
+        foreach ($idea_stats['players_array'] as $e_source) {
             $this_tab .= view_e_basic($e_source);
         }
         $this_tab .= '</div>';

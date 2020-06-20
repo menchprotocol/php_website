@@ -899,7 +899,7 @@ function idea_stats($i__metadata){
         'sources_count' => count($sources_array),
         'sources_array' => $sources_array,
         'players_count' => count($players_array),
-        'players_array' => count($players_array),
+        'players_array' => $players_array,
         'certificate_count' => count($certificate_array),
         'certificate_array' => $certificate_array,
     );
