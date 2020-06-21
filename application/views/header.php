@@ -169,17 +169,16 @@ if(!isset($hide_header)){
                         //Player Menu
                         $sources__4527 = $this->config->item('sources__4527'); //Platform Memory
                         $sources__10876 = $this->config->item('sources__10876'); //Mench Website
+                        $load_menu = 12500;
 
                         echo '<td class="block-menu">';
                         echo '<div class="dropdown inline-block">';
-                        echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton12500" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                        echo '<span class="icon-block">' .$sources__4527[12500]['m_icon'].'</span>';
+                        echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$load_menu.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                        echo '<span class="icon-block">' .$sources__4527[$load_menu]['m_icon'].'</span>';
                         echo '</button>';
 
-                        echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
-
-
-                        foreach($this->config->item('sources__12500') as $x__type => $m) {
+                        echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$load_menu.'">';
+                        foreach($this->config->item('sources__'.$load_menu) as $x__type => $m) {
 
                             //Skip superpowers if not assigned
                             if($x__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){

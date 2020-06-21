@@ -658,6 +658,7 @@ function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $
 
     $ui .= ( $can_click ? '<a href="/'. $idea['i__id'] .'" class="itemdiscover">' : '' );
 
+
     //Right Stats:
     if($idea_stats['duration_average'] || $idea_stats['ideas_average']){
         $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $idea_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_stats['ideas_average'].'</span>' : '' ).'</span>'.( $idea_stats['duration_average'] ? '<span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span>': '' ).'</div>';
@@ -672,26 +673,14 @@ function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $
 
     $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.view_i_title($idea, $common_prefix).'</b>';
 
+
     //Search for Idea Image:
     if($show_editor){
         if($is_saved){
 
             $ui .= '<div class="note-editor edit-off">';
             $ui .= '<span class="show-on-hover">';
-            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="x_save('.$idea['i__id'].');$(\'#ap_idea_'.$idea['i__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
-            $ui .= '</span>';
-            $ui .= '</div>';
-
-        } else {
-
-            $ui .= '<div class="note-editor edit-off">';
-
-            $ui .= '<span class="show-on-hover">';
-
-            $ui .= '<span class="discover-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
-
-            $ui .= '<span title="REMOVE"><span class="x_remove" i__id="'.$idea['i__id'].'"><i class="fas fa-times"></i></span></span>';
-
+            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$idea['i__id'].');$(\'#ap_idea_'.$idea['i__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
             $ui .= '</span>';
             $ui .= '</div>';
 
@@ -1171,7 +1160,7 @@ function view_i_previous_discovered($i__id, $recipient_source){
             'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         )));
 
-        $ui .= '<div class="inline-block margin-top-down pull-left edit_select_answer"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="x_save('.$i__id.')"><i class="fas fa-bookmark toggle_saved '.( $is_saveded ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saveded ? 'hidden' : '' ).'"></i></a></div>';
+        $ui .= '<div class="inline-block margin-top-down pull-left edit_select_answer"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="i_save('.$i__id.')"><i class="fas fa-bookmark toggle_saved '.( $is_saveded ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saveded ? 'hidden' : '' ).'"></i></a></div>';
 
         //Main Discoveries:
         if($discovery_list_ui){
@@ -1350,7 +1339,8 @@ function view_i_cover($idea, $show_editor){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
-    $sources__13291 = $CI->config->item('sources__13291');
+    $sources__13369 = $CI->config->item('sources__13369'); //IDEA COVER UI
+
     $recipient_source = superpower_assigned();
     $idea_stats = idea_stats($idea['i__metadata']);
 
@@ -1371,18 +1361,71 @@ function view_i_cover($idea, $show_editor){
 
     //TOP LEFT
     $ui .= '<span class="media-info top-left">';
-    $ui .= $sources__13291[13359]['m_icon'].'<span style="padding-left: 2px;" title="'.$sources__13291[13359]['m_name'].'">'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span>';
+    $ui .= $sources__13369[13359]['m_icon'].'<span style="padding-left: 2px;" title="'.$sources__13369[13359]['m_name'].'">'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span>';
     $ui .= '</span>';
 
     //TOP RIGHT
     if($idea_stats['duration_average']){
-        $ui .= '<span class="media-info top-right">'.view_time_hours($idea_stats['duration_average']).'</span>';
+        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.view_time_hours($idea_stats['duration_average']).'</span>';
     }
 
     //Search for Idea Image:
     if($show_editor){
-        $ui .= '<span class="media-info bottom-left discover-sorter" title="SORT"><i class="fas fa-bars"></i></span>';
-        $ui .= '<span class="media-info bottom-right x_remove" i__id="'.$idea['i__id'].'" title="REMOVE"><i class="fas fa-times"></i></span>';
+
+        //SORT
+        $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$sources__13369[6132]['m_name'].': '.$sources__13369[6132]['m_desc'].'">'.$sources__13369[6132]['m_icon'].'</span>';
+
+        //IDEA COVER MENU
+        $load_menu = 13370;
+
+        $ui .= '<div class="dropdown inline-block">';
+        $ui .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$load_menu.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+        $ui .= '<span class="icon-block">' .$sources__13369[$load_menu]['m_icon'].'</span>';
+        $ui .= '</button>';
+
+        $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$load_menu.'">';
+        foreach($this->config->item('sources__'.$load_menu) as $x__type => $m) {
+
+            if($x__type==6155) {
+
+                //REMOVE DISCOVERY
+                $ui .= '<a href="javascript:void(0)" onclick="remove_discovery('.$idea['i__id'].')" class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+
+            } elseif($x__type==13372) {
+
+                //LIST all PROFILE URLS of all IDEA SOURCES
+                foreach($CI->DISCOVER_model->fetch(array( //IDEA SOURCE
+                    'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                    'x__right' => $idea['i__id'],
+                    '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                ), array(), 0) as $fetched_source){
+                    foreach(array('x__up','x__down') as $e_ref_field){
+                        if($fetched_source[$e_ref_field] > 0){
+
+                            //Fetch parent URLs:
+                            foreach($CI->DISCOVER_model->fetch(array(
+                                'e__status IN (' . join(',', $CI->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+                                'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                                'x__type IN (' . join(',', $CI->config->item('sources_id_4537')) . ')' => null, //SOURCE LINK URLS
+                                'x__down' => $fetched_source[$e_ref_field],
+                            ), array('x__up'), 0) as $e_profile) {
+
+                                //LINK
+                                $ui .= '<a href="'.$e_profile['x__message'].'" target="_blank" title="'.$fetched_source['e__title'].'" class="dropdown-item montserrat doupper '.extract_icon_color($e_profile['e__icon']).'"><span class="icon-block">'.$e_profile['e__icon'].'</span>'.$e_profile['e__title'].'</a>';
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $ui .= '</div>';
+        $ui .= '</div>';
+
+        $ui .= '<span class="media-info bottom-right remove_discovery" i__id="'.$idea['i__id'].'" title="REMOVE"><i class="fas fa-times"></i></span>';
+
     }
     $ui .= '</div>';
 

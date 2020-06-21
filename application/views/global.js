@@ -464,9 +464,9 @@ function toggle_search(){
 
 
 
-function x_save(i__id){
+function i_save(i__id){
     $('.toggle_saved').toggleClass('hidden');
-    $.post("/discover/x_save", {
+    $.post("/discover/i_save", {
         i__id:i__id,
     }, function (data) {
         if (!data.status) {

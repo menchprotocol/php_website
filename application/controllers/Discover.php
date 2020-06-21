@@ -834,7 +834,7 @@ class Discover extends CI_Controller
     }
 
 
-    function x_save(){
+    function i_save(){
 
         //See if we need to add or remove a highlight:
         //Authenticate Player:
@@ -901,7 +901,7 @@ class Discover extends CI_Controller
 
 
 
-    function x_remove(){
+    function remove_discovery(){
 
         /*
          *
