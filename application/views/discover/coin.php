@@ -225,9 +225,9 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= '</div>';
         }
 
-    } elseif($x__type==4430 && $idea_stats['players_count']>0){
+    } elseif($x__type==13368 && $idea_stats['players_count']>0){
 
-        //PLAYERS
+        //IDEATORS
         $counter = $idea_stats['players_count'];
         $this_tab .= '<p class="space-content">Ideas were mapped by these players:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
