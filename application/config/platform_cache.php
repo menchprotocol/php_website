@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-21 11:47:08 PST
+//Generated 2020-06-21 12:08:51 PST
 
 //IDEA COVER UI:
-$config['sources_id_13369'] = array(13359,13292,6132,13370);
+$config['sources_id_13369'] = array(13359,13292,6132,6155);
 $config['sources__13369'] = array(
     13359 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
@@ -20,22 +20,22 @@ $config['sources__13369'] = array(
         'm_parents' => array(13369,13298,13291,4535,13355),
     ),
     13292 => array(
-        'm_icon' => '<i class="fas fa-stopwatch discover"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch"></i>',
         'm_name' => 'AVERAGE DISCOVERY TIME',
         'm_desc' => '',
         'm_parents' => array(13369,4356),
     ),
     6132 => array(
-        'm_icon' => '<i class="fas fa-arrows discover"></i>',
+        'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_name' => 'SORT DISCOVERIES',
         'm_desc' => 'SORT from LEFT to RIGHT, TOP to BOTTOM',
         'm_parents' => array(13369,6153,4755,4593),
     ),
-    13370 => array(
-        'm_icon' => '<i class="fas fa-ellipsis-v discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVERY MENU',
+    6155 => array(
+        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_name' => 'REMOVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(12079,13369),
+        'm_parents' => array(13369,10888,6150,4593,4755),
     ),
 );
 
@@ -2539,7 +2539,7 @@ $config['sources__12112'] = array(
 );
 
 //MENCH DROPDOWN MENUS:
-$config['sources_id_12079'] = array(4486,4737,7585,10869,12500,13370);
+$config['sources_id_12079'] = array(4486,4737,7585,10869,12500);
 $config['sources__12079'] = array(
     4486 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
@@ -2570,12 +2570,6 @@ $config['sources__12079'] = array(
         'm_name' => 'VERTICAL MENU',
         'm_desc' => '',
         'm_parents' => array(13356,12079,12823,4527),
-    ),
-    13370 => array(
-        'm_icon' => '<i class="fas fa-ellipsis-v discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVERY MENU',
-        'm_desc' => '',
-        'm_parents' => array(12079,13369),
     ),
 );
 
@@ -6313,10 +6307,10 @@ $config['sources__6150'] = array(
         'm_parents' => array(4755,4593,6150),
     ),
     6155 => array(
-        'm_icon' => '<i class="far fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
         'm_name' => 'REMOVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13370,10888,6150,4593,4755),
+        'm_parents' => array(13369,10888,6150,4593,4755),
     ),
 );
 
@@ -6954,10 +6948,10 @@ $config['sources__4755'] = array(
         'm_parents' => array(12969,12227,4755,4593),
     ),
     6155 => array(
-        'm_icon' => '<i class="far fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
         'm_name' => 'REMOVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13370,10888,6150,4593,4755),
+        'm_parents' => array(13369,10888,6150,4593,4755),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
@@ -6972,7 +6966,7 @@ $config['sources__4755'] = array(
         'm_parents' => array(4755,7569,4593),
     ),
     6132 => array(
-        'm_icon' => '<i class="fas fa-arrows discover"></i>',
+        'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_name' => 'SORT DISCOVERIES',
         'm_desc' => '',
         'm_parents' => array(13369,6153,4755,4593),
@@ -7655,10 +7649,10 @@ $config['sources__4593'] = array(
         'm_parents' => array(12969,12227,4755,4593),
     ),
     6155 => array(
-        'm_icon' => '<i class="far fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
         'm_name' => 'REMOVE DISCOVERY',
         'm_desc' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
-        'm_parents' => array(13370,10888,6150,4593,4755),
+        'm_parents' => array(13369,10888,6150,4593,4755),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
@@ -7673,7 +7667,7 @@ $config['sources__4593'] = array(
         'm_parents' => array(4755,7569,4593),
     ),
     6132 => array(
-        'm_icon' => '<i class="fas fa-arrows discover"></i>',
+        'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_name' => 'SORT DISCOVERIES',
         'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
         'm_parents' => array(13369,6153,4755,4593),

@@ -1375,56 +1375,8 @@ function view_i_cover($idea, $show_editor){
         //SORT
         $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$sources__13369[6132]['m_name'].': '.$sources__13369[6132]['m_desc'].'">'.$sources__13369[6132]['m_icon'].'</span>';
 
-        //IDEA COVER MENU
-        $load_menu = 13370;
-
-        $ui .= '<div class="dropdown inline-block">';
-        $ui .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$load_menu.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-        $ui .= '<span class="icon-block">' .$sources__13369[$load_menu]['m_icon'].'</span>';
-        $ui .= '</button>';
-
-        $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$load_menu.'">';
-        foreach($this->config->item('sources__'.$load_menu) as $x__type => $m) {
-
-            if($x__type==6155) {
-
-                //REMOVE DISCOVERY
-                $ui .= '<a href="javascript:void(0)" onclick="remove_discovery('.$idea['i__id'].')" class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
-
-            } elseif($x__type==13372) {
-
-                //LIST all PROFILE URLS of all IDEA SOURCES
-                foreach($CI->DISCOVER_model->fetch(array( //IDEA SOURCE
-                    'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
-                    'x__right' => $idea['i__id'],
-                    '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-                ), array(), 0) as $fetched_source){
-                    foreach(array('x__up','x__down') as $e_ref_field){
-                        if($fetched_source[$e_ref_field] > 0){
-
-                            //Fetch parent URLs:
-                            foreach($CI->DISCOVER_model->fetch(array(
-                                'e__status IN (' . join(',', $CI->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-                                'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                                'x__type IN (' . join(',', $CI->config->item('sources_id_4537')) . ')' => null, //SOURCE LINK URLS
-                                'x__down' => $fetched_source[$e_ref_field],
-                            ), array('x__up'), 0) as $e_profile) {
-
-                                //LINK
-                                $ui .= '<a href="'.$e_profile['x__message'].'" target="_blank" title="'.$fetched_source['e__title'].'" class="dropdown-item montserrat doupper '.extract_icon_color($e_profile['e__icon']).'"><span class="icon-block">'.$e_profile['e__icon'].'</span>'.$e_profile['e__title'].'</a>';
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        $ui .= '</div>';
-        $ui .= '</div>';
-
-        $ui .= '<span class="media-info bottom-right remove_discovery" i__id="'.$idea['i__id'].'" title="REMOVE"><i class="fas fa-times"></i></span>';
+        //REMOVE
+        $ui .= '<span class="media-info bottom-right" onclick="remove_discovery('.$idea['i__id'].')" title="'.$sources__13369[6155]['m_name'].'">'.$sources__13369[6155]['m_icon'].'</span>';
 
     }
     $ui .= '</div>';
