@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-21 09:11:09 PST
+//Generated 2020-06-21 10:15:28 PST
 
 //SOURCE GROUPS:
 $config['sources_id_13365'] = array(13339,3000,13202);
@@ -812,7 +812,7 @@ $config['sources__12741'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
         'm_desc' => '',
-        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10650,6232,6201),
     ),
     11049 => array(
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
@@ -1316,7 +1316,7 @@ $config['sources__12420'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
         'm_desc' => '',
-        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10650,6232,6201),
     ),
 );
 
@@ -2475,7 +2475,7 @@ $config['sources__12112'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
         'm_desc' => '',
-        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10650,6232,6201),
     ),
     4736 => array(
         'm_icon' => '<i class="fas fa-h1 idea" aria-hidden="true"></i>',
@@ -2693,7 +2693,7 @@ $config['sources__6232'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
         'm_desc' => 'i__duration',
-        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10650,6232,6201),
     ),
     6202 => array(
         'm_icon' => '<i class="fas fa-hashtag idea" aria-hidden="true"></i>',
@@ -3068,7 +3068,7 @@ $config['sources__6404'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
         'm_desc' => '7200',
-        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10650,6232,6201),
     ),
     4485 => array(
         'm_icon' => '<i class="fas fa-comment-plus idea" aria-hidden="true"></i>',
@@ -3276,7 +3276,7 @@ $config['sources__11047'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
         'm_desc' => '/source/plugin/4356?i__id=',
-        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10650,6232,6201),
     ),
     7276 => array(
         'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
@@ -3472,7 +3472,7 @@ $config['sources__11035'] = array(
 );
 
 //MAP TABS:
-$config['sources_id_11018'] = array(11020,12419,4601,12589,10573,4983,7545,12969,6255,12896,6146,11047);
+$config['sources_id_11018'] = array(11020,12419,4601,10573,12589,4983,7545,12969,6255,12896,6146,11047);
 $config['sources__11018'] = array(
     11020 => array(
         'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
@@ -3492,17 +3492,17 @@ $config['sources__11018'] = array(
         'm_desc' => '',
         'm_parents' => array(10984,11018,10593,4593,4485),
     ),
-    12589 => array(
-        'm_icon' => '<i class="fas fa-list idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA LIST EDITOR',
-        'm_desc' => '',
-        'm_parents' => array(10984,11018,4527,12590),
-    ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
+    ),
+    12589 => array(
+        'm_icon' => '<i class="fas fa-list idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LIST EDITOR',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,4527,12590),
     ),
     4983 => array(
         'm_icon' => '<i class="fas fa-user-edit source" aria-hidden="true"></i>',
@@ -5301,7 +5301,7 @@ $config['sources__6201'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'DURATION IN SECONDS',
         'm_desc' => '',
-        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10650,6232,6201),
     ),
     13029 => array(
         'm_icon' => '<i class="fas fa-weight idea"></i>',
@@ -5795,7 +5795,7 @@ $config['sources__6287'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DURATION IN SECONDS',
         'm_desc' => '',
-        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10888,10650,6232,6201),
+        'm_parents' => array(13295,6287,12741,11047,7274,6404,12112,12420,10650,6232,6201),
     ),
     7261 => array(
         'm_icon' => '',
