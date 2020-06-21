@@ -885,7 +885,7 @@ function idea_stats($i__metadata){
     usort($sources_array, 'sortByWeight');
 
 
-    $players_array = ( isset($metadata['i___ideators']) ? $metadata['i___ideators'] : array() );
+    $players_array = ( isset($metadata['i___authors']) ? $metadata['i___authors'] : array() );
     usort($players_array, 'sortByWeight');
 
     //Return stats:
