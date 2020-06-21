@@ -1378,11 +1378,11 @@ function view_i_cover($idea, $show_editor){
         //IDEA COVER MENU
         $load_menu = 13370;
 
+        $ui .= '<span class="media-info bottom-right">';
         $ui .= '<div class="dropdown inline-block">';
         $ui .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$load_menu.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
         $ui .= '<span class="icon-block">' .$sources__13369[$load_menu]['m_icon'].'</span>';
         $ui .= '</button>';
-
         $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$load_menu.'">';
         foreach($CI->config->item('sources__'.$load_menu) as $x__type => $m) {
 
@@ -1423,8 +1423,7 @@ function view_i_cover($idea, $show_editor){
 
         $ui .= '</div>';
         $ui .= '</div>';
-
-        $ui .= '<span class="media-info bottom-right remove_discovery" i__id="'.$idea['i__id'].'" title="REMOVE"><i class="fas fa-times"></i></span>';
+        $ui .= '</span>';
 
     }
     $ui .= '</div>';
