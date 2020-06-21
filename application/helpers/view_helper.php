@@ -1384,7 +1384,7 @@ function view_i_cover($idea, $show_editor){
         $ui .= '</button>';
 
         $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$load_menu.'">';
-        foreach($this->config->item('sources__'.$load_menu) as $x__type => $m) {
+        foreach($CI->config->item('sources__'.$load_menu) as $x__type => $m) {
 
             if($x__type==6155) {
 
