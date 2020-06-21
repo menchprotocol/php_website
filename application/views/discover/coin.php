@@ -203,7 +203,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         } else {
 
             //Single Time range:
-            $this_tab .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span> to discover '.$counter.' idea'.view__s($counter).'.</p>';
+            $this_tab .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span> to discover '.$counter.' idea'.view__s($counter).':</p>';
 
         }
 
@@ -237,7 +237,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
         //IDEATORS
         $counter = $idea_stats['players_count'];
-        $this_tab .= '<p class="space-content">Ideas were mapped by these players:</p>';
+        $this_tab .= '<p class="space-content">Ideas mapped by these players:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
         foreach ($idea_stats['players_array'] as $e_source) {
             $this_tab .= view_e_basic($e_source);
@@ -248,7 +248,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
         //EXPERTS
         $counter = $idea_stats['sources_count'];
-        $this_tab .= '<p class="space-content">Ideas were mapped from these expert sources:</p>';
+        $this_tab .= '<p class="space-content">Ideas mapped from these expert sources:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
         foreach ($idea_stats['sources_array'] as $e_source) {
             $this_tab .= view_e_basic($e_source);
