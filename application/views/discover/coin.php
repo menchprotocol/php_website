@@ -184,7 +184,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==13359 && $idea_stats['ideas_average']>0){
+    } elseif($x__type==13359 && $idea_stats['ideas_average']>1){
 
         //IDEAS
         $counter = $idea_stats['ideas_average'];
