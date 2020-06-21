@@ -1,11 +1,11 @@
 
 
-function remove_discovery(i__id){
+function discover_remove(i__id){
 
     var r = confirm("Remove "+$('.text__4736_'+i__id).text()+"?");
     if (r == true) {
         //Save changes:
-        $.post("/discover/remove_discovery", { js_pl_id:js_pl_id ,i__id:i__id }, function (data) {
+        $.post("/discover/discover_remove", { js_pl_id:js_pl_id ,i__id:i__id }, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
 
@@ -24,7 +24,7 @@ function remove_discovery(i__id){
 
                     //Re-sort:
                     setTimeout(function () {
-                        x_sort();
+                        discover_sort();
                     }, 89);
 
                 }, 233);
@@ -33,10 +33,26 @@ function remove_discovery(i__id){
         });
     }
 
+    //To Prevent Page move:
+    return false;
+
 }
 
 
-function x_sort() {
+function discover_sort_load(){
+    //Load sorter:
+    var sort = Sortable.create(document.getElementById('home_discoveries'), {
+        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+        draggable: ".home_sort", // Specifies which items inside the element should be sortable
+        handle: ".discover-sorter", // Restricts sort start click/touch to the specified element
+        onUpdate: function (evt/**Event*/) {
+            discover_sort();
+        }
+    });
+}
+
+
+function discover_sort() {
 
     var sort_rank = 0;
     var new_x_order = [];
@@ -50,7 +66,7 @@ function x_sort() {
 
     //Update order:
     if(sort_rank > 0){
-        $.post("/discover/x_sort", {js_pl_id: js_pl_id, new_x_order: new_x_order}, function (data) {
+        $.post("/discover/discover_sort", {js_pl_id: js_pl_id, new_x_order: new_x_order}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -69,17 +85,4 @@ function discover_clear_all(){
     //Redirect:
     window.location = '/discover/x_clear_coins';
 
-}
-
-
-function discover_sort_load(){
-    //Load sorter:
-    var sort = Sortable.create(document.getElementById('home_discoveries'), {
-        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".home_sort", // Specifies which items inside the element should be sortable
-        handle: ".discover-sorter", // Restricts sort start click/touch to the specified element
-        onUpdate: function (evt/**Event*/) {
-            x_sort();
-        }
-    });
 }

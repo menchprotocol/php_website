@@ -901,7 +901,7 @@ class Discover extends CI_Controller
 
 
 
-    function remove_discovery(){
+    function discover_remove(){
 
         /*
          *
@@ -941,7 +941,7 @@ class Discover extends CI_Controller
 
 
 
-    function x_sort()
+    function discover_sort()
     {
         /*
          *
