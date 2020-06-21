@@ -8,13 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-20 22:08:42 PST
+//Generated 2020-06-20 22:09:57 PST
 
 //SOURCE GROUPS:
 $config['sources_id_13365'] = array(13339,3000,13202);
 $config['sources__13365'] = array(
     13339 => array(
-        'm_icon' => '<i class="fas fa-user-graduate source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT AUTHORS',
         'm_desc' => '',
         'm_parents' => array(13365,13207,4527,12864),
@@ -215,7 +215,7 @@ $config['sources__13207'] = array(
         'm_parents' => array(13365,4527,13207),
     ),
     13339 => array(
-        'm_icon' => '<i class="fas fa-user-graduate source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT AUTHORS',
         'm_desc' => '',
         'm_parents' => array(13365,13207,4527,12864),
@@ -4291,7 +4291,7 @@ $config['sources__4527'] = array(
         'm_parents' => array(4527,6204,6225),
     ),
     13339 => array(
-        'm_icon' => '<i class="fas fa-user-graduate source"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT AUTHORS',
         'm_desc' => '',
         'm_parents' => array(13365,13207,4527,12864),
