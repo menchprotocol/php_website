@@ -184,19 +184,29 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==13359 && ( $idea_stats['ideas_average']>$chapters || (!$in_my_discoveries && ($idea_stats['ideas_average']>0 || $chapters>0)))){
+    } elseif($x__type==13359 && $idea_stats['ideas_average']>0){
 
         //IDEAS
         $counter = $idea_stats['ideas_average'];
 
         //IDEA or TIME difference?
         if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
+
+            //Variable time range:
             $this_tab .= '<p class="space-content">The number of ideas you discover (and the time it takes to discover them) depends on the choices you make interactively along the way:</p>';
             $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
             $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
             $this_tab .= '<span class="discovering-paths">Average:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
             $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
             $this_tab .= '</p>';
+
+        } else {
+
+            //Single Time range:
+            $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
+            $this_tab .= '<span class="discovering-paths">Ideas:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
+            $this_tab .= '</p>';
+
         }
 
         //NEXT IDEAS

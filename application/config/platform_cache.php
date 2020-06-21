@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-20 22:09:57 PST
+//Generated 2020-06-21 09:09:13 PST
 
 //SOURCE GROUPS:
 $config['sources_id_13365'] = array(13339,3000,13202);
@@ -142,7 +142,7 @@ $config['sources__13300'] = array(
 );
 
 //DISCOVER TABS:
-$config['sources_id_13291'] = array(4231,12419,13359,12864,7545,13368,13023);
+$config['sources_id_13291'] = array(4231,13359,12419,12864,7545,13368,13023);
 $config['sources__13291'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
@@ -150,17 +150,17 @@ $config['sources__13291'] = array(
         'm_desc' => '',
         'm_parents' => array(13300,13294,13291,7524,12273,12359,10593,4986,4603,4593,4485),
     ),
-    12419 => array(
-        'm_icon' => '<i class="fas fa-comments idea" aria-hidden="true"></i>',
-        'm_name' => 'COMMENTS',
-        'm_desc' => '',
-        'm_parents' => array(13304,13291,11018,12359,5967,10593,4986,11089,4593,4485),
-    ),
     13359 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'KEY IDEAS',
         'm_desc' => '',
         'm_parents' => array(13298,13291,4535,13355),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments idea" aria-hidden="true"></i>',
+        'm_name' => 'COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(13304,13291,11018,12359,5967,10593,4986,11089,4593,4485),
     ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
