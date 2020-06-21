@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-20 20:05:15 PST
+//Generated 2020-06-20 21:06:02 PST
 
 //SOURCE GROUPS:
 $config['sources_id_13365'] = array(3000,13339,13202);
@@ -142,7 +142,7 @@ $config['sources__13300'] = array(
 );
 
 //DISCOVER TABS:
-$config['sources_id_13291'] = array(4231,12419,13359,13368,12864,7545,13023);
+$config['sources_id_13291'] = array(4231,12419,13359,12864,7545,13368,13023);
 $config['sources__13291'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
@@ -162,12 +162,6 @@ $config['sources__13291'] = array(
         'm_desc' => '',
         'm_parents' => array(13298,13291,4535,13355),
     ),
-    13368 => array(
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
-        'm_name' => 'AUTHORS',
-        'm_desc' => '',
-        'm_parents' => array(6232,13291),
-    ),
     12864 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT SOURCES',
@@ -179,6 +173,12 @@ $config['sources__13291'] = array(
         'm_name' => 'CERTIFICATES',
         'm_desc' => '',
         'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,7551,4593,4485),
+    ),
+    13368 => array(
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_name' => 'AUTHORS',
+        'm_desc' => '',
+        'm_parents' => array(6232,13291),
     ),
     13023 => array(
         'm_icon' => '<i class="fas fa-share source"></i>',
