@@ -651,6 +651,7 @@ function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $
     $is_saved = ( isset($idea['x__type']) && $idea['x__type']==12896 );
     $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $recipient_source );
     $first_segment = $CI->uri->segment(1);
+    $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
     $ui  = '<div id="ap_idea_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-link-id="'.$idea['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).'">';
@@ -659,11 +660,11 @@ function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $
 
     //Right Stats:
     if($idea_stats['duration_average'] || $idea_stats['ideas_average']){
-        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).'"><span style="width:53px; display: inline-block;">'.( $idea_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_stats['ideas_average'].'</span>' : '' ).'</span>'.( $idea_stats['duration_average'] ? '<span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span>': '' ).'</div>';
+        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $idea_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_stats['ideas_average'].'</span>' : '' ).'</span>'.( $idea_stats['duration_average'] ? '<span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span>': '' ).'</div>';
     }
 
 
-    if($can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
+    if($has_completion){
         $ui .= '<div class="progress-bg-list" title="Discovered '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
