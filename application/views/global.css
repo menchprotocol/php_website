@@ -500,7 +500,7 @@ img.no-radius {
     display: block;
     width: 144px;
     height: 209px;
-    overflow: hidden;
+    overflow: visible;
     margin-bottom: 10px;
     position: relative;
     border: 1px solid #000;
