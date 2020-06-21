@@ -1412,7 +1412,7 @@ function view_i_cover($idea, $show_editor){
                             ), array('x__up'), 0) as $e_profile) {
 
                                 //LINK
-                                $ui .= '<a href="'.$e_profile['x__message'].'" target="_blank" title="'.$fetched_source['e__title'].'" class="dropdown-item montserrat doupper '.extract_icon_color($e_profile['e__icon']).'"><span class="icon-block">'.$e_profile['e__icon'].'</span>'.$e_profile['e__title'].'</a>';
+                                $ui .= '<a href="'.$e_profile['x__message'].'" target="_blank" class="dropdown-item montserrat doupper '.extract_icon_color($e_profile['e__icon']).'"><span class="icon-block">'.$e_profile['e__icon'].'</span>'.$e_profile['e__title'].'</a>';
 
                             }
                         }
