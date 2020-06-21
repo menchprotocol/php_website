@@ -1,42 +1,48 @@
 
 
-function discover_remove(i__id){
 
-    var r = confirm("Remove "+$('.text__4736_'+i__id).text()+"?");
-    if (r == true) {
-        //Save changes:
-        $.post("/discover/discover_remove", { js_pl_id:js_pl_id ,i__id:i__id }, function (data) {
-            //Update UI to confirm with user:
-            if (!data.status) {
+$(document).ready(function () {
 
-                //There was some sort of an error returned!
-                alert(data.message);
+    //Watch for Discovery removal click:
+    $('.discover_remove').on('click', function(e) {
 
-            } else {
+        var i__id = $(this).attr('i__id');
+        var r = confirm("Remove "+$('.text__4736_'+i__id).text()+"?");
+        if (r == true) {
+            //Save changes:
+            $.post("/discover/discover_remove", { js_pl_id:js_pl_id ,i__id:i__id }, function (data) {
+                //Update UI to confirm with user:
+                if (!data.status) {
 
-                //REMOVE BOOKMARK from UI:
-                $('#ap_idea_'+i__id).fadeOut();
+                    //There was some sort of an error returned!
+                    alert(data.message);
 
-                setTimeout(function () {
+                } else {
 
-                    //Delete from body:
-                    $('#ap_idea_'+i__id).remove();
+                    //REMOVE BOOKMARK from UI:
+                    $('#ap_idea_'+i__id).fadeOut();
 
-                    //Re-sort:
                     setTimeout(function () {
-                        discover_sort();
-                    }, 89);
 
-                }, 233);
+                        //Delete from body:
+                        $('#ap_idea_'+i__id).remove();
 
-            }
-        });
-    }
+                        //Re-sort:
+                        setTimeout(function () {
+                            x_sort();
+                        }, 89);
 
-    //To Prevent Page move:
-    return false;
+                    }, 233);
+                }
+            });
+        }
 
-}
+        return false;
+
+    });
+
+});
+
 
 
 function discover_sort_load(){

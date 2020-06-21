@@ -1376,7 +1376,7 @@ function view_i_cover($idea, $show_editor){
         $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$sources__13369[6132]['m_name'].': '.$sources__13369[6132]['m_desc'].'">'.$sources__13369[6132]['m_icon'].'</span>';
 
         //REMOVE
-        $ui .= '<span class="media-info bottom-right" onclick="discover_remove('.$idea['i__id'].')" title="'.$sources__13369[6155]['m_name'].'">'.$sources__13369[6155]['m_icon'].'</span>';
+        $ui .= '<span class="media-info bottom-right discover_remove" i__id="'.$idea['i__id'].'" title="'.$sources__13369[6155]['m_name'].'">'.$sources__13369[6155]['m_icon'].'</span>';
 
     }
     $ui .= '</div>';
