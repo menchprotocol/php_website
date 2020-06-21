@@ -1377,9 +1377,8 @@ function view_i_cover($idea, $show_editor){
 
         //IDEA COVER MENU
         $load_menu = 13370;
-
-        $ui .= '<div class="media-info bottom-right">';
-        $ui .= '<div class="dropdown inline-block">';
+        $ui .= '<span class="media-info bottom-right">';
+        $ui .= '<div class="dropdown">';
         $ui .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$load_menu.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
         $ui .= '<span class="icon-block">' .$sources__13369[$load_menu]['m_icon'].'</span>';
         $ui .= '</button>';
@@ -1423,7 +1422,7 @@ function view_i_cover($idea, $show_editor){
 
         $ui .= '</div>';
         $ui .= '</div>';
-        $ui .= '</div>';
+        $ui .= '</span>';
 
     }
     $ui .= '</div>';
