@@ -77,7 +77,7 @@ function discover_sort_load(){
     var sort = Sortable.create(document.getElementById('home_discoveries'), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".home_sort", // Specifies which items inside the element should be sortable
-        handle: ".fa-bars", // Restricts sort start click/touch to the specified element
+        handle: ".discover-sorter", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             x_sort();
         }
