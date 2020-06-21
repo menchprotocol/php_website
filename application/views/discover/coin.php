@@ -204,7 +204,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
             //Single Time range:
             $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-            $this_tab .= '<span class="discovering-paths">Ideas:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths" style="width: 120px;">Discovery Time:</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
             $this_tab .= '</p>';
 
         }
