@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-22 11:18:58 PST
+//Generated 2020-06-22 12:24:38 PST
 
 //IDEA COVER UI:
 $config['sources_id_13369'] = array(13359,13292,6132,6155);
@@ -497,7 +497,7 @@ $config['sources__13023'] = array(
 $config['sources_id_13022'] = array(6677,6683,7637);
 $config['sources__13022'] = array(
     6677 => array(
-        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-eye idea" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(13022,12330,7585,4559,6192),
@@ -1569,7 +1569,7 @@ $config['sources__4536'] = array(
 $config['sources_id_12330'] = array(6677,6914,6907);
 $config['sources__12330'] = array(
     6677 => array(
-        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-eye idea" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(13022,12330,7585,4559,6192),
@@ -5645,7 +5645,7 @@ $config['sources__6193'] = array(
 $config['sources_id_7585'] = array(6677,6683,7637,6914,6907,6684,7231);
 $config['sources__7585'] = array(
     6677 => array(
-        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-eye idea" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => 'Read messages & go next',
         'm_parents' => array(13022,12330,7585,4559,6192),
