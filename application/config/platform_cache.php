@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-22 12:24:38 PST
+//Generated 2020-06-22 12:27:11 PST
 
 //IDEA COVER UI:
 $config['sources_id_13369'] = array(13359,13292,6132,6155);
@@ -503,13 +503,13 @@ $config['sources__13022'] = array(
         'm_parents' => array(13022,12330,7585,4559,6192),
     ),
     6683 => array(
-        'm_icon' => '<i class="far fa-keyboard idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-keyboard idea" aria-hidden="true"></i>',
         'm_name' => 'REPLY & NEXT',
         'm_desc' => '',
         'm_parents' => array(13022,12955,6144,7585,6192),
     ),
     7637 => array(
-        'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload idea" aria-hidden="true"></i>',
         'm_name' => 'UPLOAD & NEXT',
         'm_desc' => '',
         'm_parents' => array(13022,12955,12117,7751,7585,6192),
@@ -619,7 +619,7 @@ $config['sources__12968'] = array(
 $config['sources_id_12955'] = array(6683,6684,7231,7637);
 $config['sources__12955'] = array(
     6683 => array(
-        'm_icon' => '<i class="far fa-keyboard idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-keyboard idea" aria-hidden="true"></i>',
         'm_name' => 'REPLY & NEXT',
         'm_desc' => '60',
         'm_parents' => array(13022,12955,6144,7585,6192),
@@ -637,7 +637,7 @@ $config['sources__12955'] = array(
         'm_parents' => array(12955,12884,12334,12129,7712,7489,7585,6193),
     ),
     7637 => array(
-        'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload idea" aria-hidden="true"></i>',
         'm_name' => 'UPLOAD & NEXT',
         'm_desc' => '30',
         'm_parents' => array(13022,12955,12117,7751,7585,6192),
@@ -2295,7 +2295,7 @@ $config['sources__12229'] = array(
         'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
@@ -2384,7 +2384,7 @@ $config['sources__12227'] = array(
         'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
@@ -2449,7 +2449,7 @@ $config['sources__12141'] = array(
         'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
@@ -3144,7 +3144,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.44',
+        'm_desc' => 'v1.441',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -4536,7 +4536,7 @@ $config['sources__4527'] = array(
         'm_parents' => array(4527,10893),
     ),
     7751 => array(
-        'm_icon' => '<i class="far fa-upload idea"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload idea"></i>',
         'm_name' => 'IDEA TYPE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(10893,4527),
@@ -5157,7 +5157,7 @@ $config['sources__4983'] = array(
 $config['sources_id_7751'] = array(7637);
 $config['sources__7751'] = array(
     7637 => array(
-        'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA UPLOAD & NEXT',
         'm_desc' => '',
         'm_parents' => array(13022,12955,12117,7751,7585,6192),
@@ -5651,13 +5651,13 @@ $config['sources__7585'] = array(
         'm_parents' => array(13022,12330,7585,4559,6192),
     ),
     6683 => array(
-        'm_icon' => '<i class="far fa-keyboard idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-keyboard idea" aria-hidden="true"></i>',
         'm_name' => 'REPLY & NEXT',
         'm_desc' => 'Reply with text & go next',
         'm_parents' => array(13022,12955,6144,7585,6192),
     ),
     7637 => array(
-        'm_icon' => '<i class="far fa-paperclip idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload idea" aria-hidden="true"></i>',
         'm_name' => 'UPLOAD & NEXT',
         'm_desc' => 'Upload a file & go next',
         'm_parents' => array(13022,12955,12117,7751,7585,6192),
@@ -6266,7 +6266,7 @@ $config['sources__6255'] = array(
         'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
@@ -6996,7 +6996,7 @@ $config['sources__4755'] = array(
         'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
@@ -7709,7 +7709,7 @@ $config['sources__4593'] = array(
         'm_parents' => array(12229,12227,12141,6255,4755,4593),
     ),
     12117 => array(
-        'm_icon' => '<i class="far fa-paperclip discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
