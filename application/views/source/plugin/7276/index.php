@@ -12,10 +12,11 @@ if(isset($_GET['i__id'])){
         'i__id' => intval($_GET['i__id']),
     );
 } else {
-    //All Featured:
-    $query_filters = array(
-        'i__status IN (' . join(',', $this->config->item('sources_id_12138')) . ')' => null, //FEATURED
-    );
+    //All Orphans:
+    $query_filters = $this->MAP_model->fetch(array(
+        ' NOT EXISTS (SELECT 1 FROM mench__x WHERE i__id=x__right AND x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ') AND x__status IN ('.join(',', $this->config->item('sources_id_7360')) /* ACTIVE */.')) ' => null,
+        'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+    ));
 }
 
 $stats = array(
