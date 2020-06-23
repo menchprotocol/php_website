@@ -890,19 +890,21 @@ function i_stats($i__metadata){
     $players_array = ( isset($metadata['i___authors']) ? $metadata['i___authors'] : array() );
     usort($players_array, 'sortByWeight');
 
+    $source_count = count($players_array) + count($expert_content_array) + count($expert_author_array);
+
     //Return stats:
     return array(
 
         //IDEAS
         'ideas_min' => ( isset($metadata['i___min_discoveries']) && $metadata['i___min_discoveries']>=2 ? $metadata['i___min_discoveries']-1 : 0 ),
         'ideas_max' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? $metadata['i___max_discoveries']-1 : 0 ),
-        'ideas_average' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? round(( ($metadata['i___min_discoveries']-1) + ($metadata['i___max_discoveries']-1) ) / 2) : 0 ),
+        'ideas_average' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? round(( ($metadata['i___min_discoveries']-1) + ($metadata['i___max_discoveries']-1) ) / 2) : 1 ),
         'duration_min' => ( isset($metadata['i___min_seconds']) ? $metadata['i___min_seconds'] : 0 ),
         'duration_max' => ( isset($metadata['i___max_seconds']) ? $metadata['i___max_seconds'] : 0 ),
         'duration_average' => ( isset($metadata['i___max_seconds']) ? round(($metadata['i___min_seconds']+$metadata['i___max_seconds'])/2) : 0 ),
 
         //SOURCES
-        'sources_count' => count($players_array) + count($expert_content_array) + count($expert_author_array),
+        'sources_count' => ( $source_count>0 ? $source_count : 1 ),
         'expert_author_count' => count($expert_author_array),
         'expert_author_array' => $expert_author_array,
         'expert_content_count' => count($expert_content_array),
