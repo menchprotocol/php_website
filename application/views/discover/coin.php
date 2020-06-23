@@ -228,7 +228,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= '<p class="space-content">'.view_i_title($i_focus).' Helps you:</p>';
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($ideas_previous as $key => $previous_idea){
-                $this_tab .= view_i_discovered($previous_idea);
+                $this_tab .= view_i_discovered($previous_idea, null, false, array('completion_percentage' => 0));
             }
             $this_tab .= '</div>';
         }
