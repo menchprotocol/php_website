@@ -233,27 +233,30 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= '</div>';
         }
 
-    } elseif($x__type==4983 && $i_stats['players_count']>0){
+    } elseif($x__type==13358 && $i_stats['sources_count']>0 || $i_stats['players_count']>0){
+
+        $counter = $i_stats['players_count'] + $i_stats['sources_count'];
 
         //AUTHORS
-        $counter = $i_stats['players_count'];
-        $this_tab .= '<p class="space-content">Ideas mapped by these players:</p>';
-        $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-        foreach ($i_stats['players_array'] as $e_source) {
-            $this_tab .= view_e_basic($e_source);
+        if($i_stats['players_count']>0){
+            $this_tab .= '<p class="space-content">Ideas mapped by these players:</p>';
+            $this_tab .= '<div class="list-group" style="margin-bottom:21px;">';
+            foreach ($i_stats['players_array'] as $e_source) {
+                $this_tab .= view_e_basic($e_source);
+            }
+            $this_tab .= '</div>';
         }
-        $this_tab .= '</div>';
-
-    } elseif($x__type==12864 && $i_stats['sources_count']>0){
 
         //EXPERTS
-        $counter = $i_stats['sources_count'];
-        $this_tab .= '<p class="space-content">Ideas mapped from these expert sources:</p>';
-        $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-        foreach ($i_stats['sources_array'] as $e_source) {
-            $this_tab .= view_e_basic($e_source);
+        if($i_stats['sources_count']>0){
+            $this_tab .= '<p class="space-content">Ideas mapped from these expert sources:</p>';
+            $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
+            foreach ($i_stats['sources_array'] as $e_source) {
+                $this_tab .= view_e_basic($e_source);
+            }
+            $this_tab .= '</div>';
         }
-        $this_tab .= '</div>';
+
 
     } elseif($x__type==7545 && $i_stats['certificate_count']>0){
 
