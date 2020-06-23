@@ -629,7 +629,7 @@ function view_x_icon_legend($can_click, $completion_percentage){
 
 }
 
-function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_source = false)
+function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_source = false, $extra_class = null)
 {
 
     //See if user is logged-in:
@@ -654,7 +654,7 @@ function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="ap_idea_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-link-id="'.$idea['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).'">';
+    $ui  = '<div id="ap_idea_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-link-id="'.$idea['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'">';
 
     $ui .= ( $can_click ? '<a href="/'. $idea['i__id'] .'" class="itemdiscover">' : '' );
 
@@ -1114,6 +1114,8 @@ function view_i_previous_discovered($i__id, $recipient_source){
 
         //Find it:
         $recursive_parents = $CI->MAP_model->recursive_parents($i__id, true, true);
+        $sitemap_items = array();
+
         foreach($recursive_parents as $grand_parent_ids) {
             foreach(array_intersect($grand_parent_ids, $player_discovery_ids) as $intersect) {
                 foreach($grand_parent_ids as $previous_i__id) {
@@ -1129,7 +1131,11 @@ function view_i_previous_discovered($i__id, $recipient_source){
 
                     $idea_level_up++;
 
-                    $discovery_list_ui .= view_i_discovered($ideas_this[0]);
+                    if ($previous_i__id == $intersect) {
+                        array_push($sitemap_items, '<div class="list-group-item full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');">SEE SITEMAP</a></div>');
+                    }
+
+                    array_push($sitemap_items, view_i_discovered($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
 
                     if ($previous_i__id == $intersect) {
                         break;
@@ -1137,6 +1143,8 @@ function view_i_previous_discovered($i__id, $recipient_source){
                 }
             }
         }
+
+        $discovery_list_ui .= join('', array_reverse($sitemap_items));
     }
 
 
