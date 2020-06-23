@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-23 14:12:45 PST
+//Generated 2020-06-23 14:47:40 PST
 
 //DISCOVER LAYOUT:
 $config['sources_id_12994'] = array(13400,4736,13291,13289);
@@ -44,7 +44,7 @@ $config['sources_id_13369'] = array(13359,13292,6132,6155);
 $config['sources__13369'] = array(
     13359 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
-        'm_name' => 'KEY IDEAS',
+        'm_name' => 'IDEAS',
         'm_desc' => '',
         'm_parents' => array(13369,13298,13291,4535,13355),
     ),
@@ -96,7 +96,7 @@ $config['sources_id_13355'] = array(13359,13360,13358,13362);
 $config['sources__13355'] = array(
     13359 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
-        'm_name' => 'KEY IDEAS',
+        'm_name' => 'IDEAS',
         'm_desc' => '',
         'm_parents' => array(13369,13298,13291,4535,13355),
     ),
@@ -182,7 +182,7 @@ $config['sources__13298'] = array(
     ),
     13359 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
-        'm_name' => 'KEY IDEAS',
+        'm_name' => 'IDEAS',
         'm_desc' => '',
         'm_parents' => array(13369,13298,13291,4535,13355),
     ),
@@ -210,7 +210,7 @@ $config['sources__13291'] = array(
     ),
     13359 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
-        'm_name' => 'KEY IDEAS',
+        'm_name' => 'IDEAS',
         'm_desc' => '',
         'm_parents' => array(13369,13298,13291,4535,13355),
     ),
