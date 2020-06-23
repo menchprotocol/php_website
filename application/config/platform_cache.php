@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-23 14:54:39 PST
+//Generated 2020-06-23 14:57:31 PST
 
 //DISCOVER LAYOUT:
 $config['sources_id_12994'] = array(13400,4736,13291,13289);
@@ -110,7 +110,7 @@ $config['sources__13355'] = array(
         'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
-        'm_parents' => array(13291,4536,13355),
+        'm_parents' => array(13298,13291,4536,13355),
     ),
     13362 => array(
         'm_icon' => '<i class="fas fa-book"></i>',
@@ -166,7 +166,7 @@ $config['sources__13304'] = array(
 );
 
 //DISCOVER TABS HIDE IF ZERO:
-$config['sources_id_13298'] = array(7545,12864,13359);
+$config['sources_id_13298'] = array(7545,13359,13358);
 $config['sources__13298'] = array(
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
@@ -174,17 +174,17 @@ $config['sources__13298'] = array(
         'm_desc' => '',
         'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,7551,4593,4485),
     ),
-    12864 => array(
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERT SOURCES',
-        'm_desc' => '',
-        'm_parents' => array(4536,13298),
-    ),
     13359 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEAS',
         'm_desc' => '',
         'm_parents' => array(13369,13298,13291,4535,13355),
+    ),
+    13358 => array(
+        'm_icon' => '<i class="fas fa-circle source"></i>',
+        'm_name' => 'SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(13298,13291,4536,13355),
     ),
 );
 
@@ -224,7 +224,7 @@ $config['sources__13291'] = array(
         'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
-        'm_parents' => array(13291,4536,13355),
+        'm_parents' => array(13298,13291,4536,13355),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
@@ -1518,7 +1518,7 @@ $config['sources__4536'] = array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT SOURCES',
         'm_desc' => '',
-        'm_parents' => array(4536,13298),
+        'm_parents' => array(4536),
     ),
     6206 => array(
         'm_icon' => '<i class="fas fa-table source" aria-hidden="true"></i>',
@@ -1572,7 +1572,7 @@ $config['sources__4536'] = array(
         'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
-        'm_parents' => array(13291,4536,13355),
+        'm_parents' => array(13298,13291,4536,13355),
     ),
     4758 => array(
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',

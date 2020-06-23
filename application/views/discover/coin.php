@@ -233,7 +233,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= '</div>';
         }
 
-    } elseif($x__type==13358 && $i_stats['sources_count']>0 || $i_stats['players_count']>0){
+    } elseif($x__type==13358){
 
         $counter = $i_stats['players_count'] + $i_stats['sources_count'];
 
@@ -257,8 +257,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= '</div>';
         }
 
-
-    } elseif($x__type==7545 && $i_stats['certificate_count']>0){
+    } elseif($x__type==7545){
 
         //CERTIFICATES
         $counter = $i_stats['certificate_count'];
