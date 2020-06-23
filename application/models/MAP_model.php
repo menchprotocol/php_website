@@ -518,45 +518,56 @@ class MAP_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7359' : 'sources_id_7360'))) . ')' => null,
             'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
-        ), array('x__left')) as $i_previous) {
+        ), array('x__left')) as $idea_previous) {
+
+            //Prep ID:
+            $p_id = intval($idea_previous['i__id']);
+
+            //Add to appropriate array:
+            if (!$first_level) {
+                array_push($grand_parents, $p_id);
+            }
+
 
             //Fetch parents of parents:
-            $recursive_parents = $this->MAP_model->recursive_parents($i_previous['i__id'], false);
-
-            //Add to array:
-            array_push($grand_parents, intval($i_previous['i__id']));
+            $recursive_parents = $this->MAP_model->recursive_parents($p_id, false);
 
             if (count($recursive_parents) > 0) {
-                //Add to appropriate array:
-                array_push($grand_parents, $recursive_parents);
-                //$grand_parents = array_merge($grand_parents, $recursive_parents);
+                if ($first_level) {
+                    array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
+                } else {
+                    $grand_parents = array_merge($grand_parents, $recursive_parents);
+                }
+            } elseif ($first_level) {
+                array_push($grand_parents, array($p_id));
             }
 
         }
 
 
-        if (!$first_level) {
+        if ($first_level) {
+
+            //Now we must break down the array:
+            $recursive_parents = array();
+            $start_i__id = $this->config->item('featured_i__id');
+            $index = 0;
+            foreach($grand_parents as $grand_parent_ids) {
+                foreach($grand_parent_ids as $grand_parent_id) {
+                    if (!isset($recursive_parents[$index])) {
+                        $recursive_parents[$index] = array();
+                    }
+                    array_push($recursive_parents[$index], intval($grand_parent_id));
+                    if ($grand_parent_id == $start_i__id) {
+                        $index++;
+                    }
+                }
+            }
+
+            return $recursive_parents;
+
+        } else {
             return $grand_parents;
         }
-
-
-        //Flatten in a Special Way:
-        $recursive_parents = array();
-        $index = 0;
-        foreach($grand_parents as $grand_parent_ids) {
-            foreach($grand_parent_ids as $grand_parent_id) {
-                if (!isset($recursive_parents[$index])) {
-                    $recursive_parents[$index] = array();
-                }
-                array_push($recursive_parents[$index], intval($grand_parent_id));
-                if ($grand_parent_id == $start_i__id) {
-                    $index++;
-                }
-            }
-        }
-
-        return $recursive_parents;
-
 
     }
 
