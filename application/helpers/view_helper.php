@@ -1127,12 +1127,11 @@ function view_i_previous_discovered($i__id, $recipient_source){
                         'i__id' => $previous_i__id,
                     ));
 
-                    $completion_rate = $CI->DISCOVER_model->completion_progress($recipient_source['e__id'], $ideas_this[0]);
-
                     $idea_level_up++;
 
+                    $discovery_list_ui .= view_i_discovered($ideas_this[0]);
+
                     if ($previous_i__id == $intersect) {
-                        $discovery_list_ui .= view_i_discovered($ideas_this[0], null, false, $completion_rate);
                         break;
                     }
                 }
