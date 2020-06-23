@@ -294,11 +294,11 @@ class Source extends CI_Controller
         }
 
         //Count total children:
-        $child_sources_count = $this->DISCOVER_model->fetch($filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
+        $child_e_count = $this->DISCOVER_model->fetch($filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         //Do we need another load more button?
-        if ($child_sources_count[0]['totals'] > (($page * $items_per_page) + count($child_sources))) {
-            echo view_e_load_more(($page + 1), $items_per_page, $child_sources_count[0]['totals']);
+        if ($child_e_count[0]['totals'] > (($page * $items_per_page) + count($child_sources))) {
+            echo view_e_load_more(($page + 1), $items_per_page, $child_e_count[0]['totals']);
         }
 
     }

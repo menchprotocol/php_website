@@ -881,25 +881,36 @@ function i_stats($i__metadata){
     $certificate_array = ( isset($metadata['i___certificates']) ? $metadata['i___certificates'] : array() );
 
 
-    $sources_array = array_merge(( isset($metadata['i___experts']) ? $metadata['i___experts'] : array() ), ( isset($metadata['i___content']) ? $metadata['i___content'] : array() ));
-    usort($sources_array, 'sortByWeight');
+    $expert_author_array = ( isset($metadata['i___experts']) ? $metadata['i___experts'] : array() );
+    usort($expert_author_array, 'sortByWeight');
 
+    $expert_content_array = ( isset($metadata['i___content']) ? $metadata['i___content'] : array() );
+    usort($expert_content_array, 'sortByWeight');
 
     $players_array = ( isset($metadata['i___authors']) ? $metadata['i___authors'] : array() );
     usort($players_array, 'sortByWeight');
 
     //Return stats:
     return array(
+
+        //IDEAS
         'ideas_min' => ( isset($metadata['i___min_discoveries']) && $metadata['i___min_discoveries']>=2 ? $metadata['i___min_discoveries']-1 : 0 ),
         'ideas_max' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? $metadata['i___max_discoveries']-1 : 0 ),
         'ideas_average' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? round(( ($metadata['i___min_discoveries']-1) + ($metadata['i___max_discoveries']-1) ) / 2) : 0 ),
         'duration_min' => ( isset($metadata['i___min_seconds']) ? $metadata['i___min_seconds'] : 0 ),
         'duration_max' => ( isset($metadata['i___max_seconds']) ? $metadata['i___max_seconds'] : 0 ),
         'duration_average' => ( isset($metadata['i___max_seconds']) ? round(($metadata['i___min_seconds']+$metadata['i___max_seconds'])/2) : 0 ),
-        'sources_count' => count($sources_array),
-        'sources_array' => $sources_array,
+
+        //SOURCES
+        'sources_count' => count($players_array) + count($expert_content_array) + count($expert_author_array),
+        'expert_author_count' => count($expert_author_array),
+        'expert_author_array' => $expert_author_array,
+        'expert_content_count' => count($expert_content_array),
+        'expert_content_array' => $expert_content_array,
         'players_count' => count($players_array),
         'players_array' => $players_array,
+
+        //CERTIFICATES
         'certificate_count' => count($certificate_array),
         'certificate_array' => $certificate_array,
     );

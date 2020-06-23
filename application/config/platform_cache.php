@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-23 14:57:31 PST
+//Generated 2020-06-23 15:53:09 PST
 
 //DISCOVER LAYOUT:
 $config['sources_id_12994'] = array(13400,4736,13291,13289);
@@ -40,7 +40,7 @@ $config['sources__12994'] = array(
 );
 
 //IDEA COVER UI:
-$config['sources_id_13369'] = array(13359,13292,6132,6155);
+$config['sources_id_13369'] = array(13359,13292,6132,6155,13358);
 $config['sources__13369'] = array(
     13359 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
@@ -65,6 +65,12 @@ $config['sources__13369'] = array(
         'm_name' => 'REMOVE DISCOVERY',
         'm_desc' => '',
         'm_parents' => array(13369,10888,6150,4593,4755),
+    ),
+    13358 => array(
+        'm_icon' => '<i class="fas fa-circle source"></i>',
+        'm_name' => 'SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(13369,13298,13291,4536,13355),
     ),
 );
 
@@ -110,7 +116,7 @@ $config['sources__13355'] = array(
         'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4536,13355),
+        'm_parents' => array(13369,13298,13291,4536,13355),
     ),
     13362 => array(
         'm_icon' => '<i class="fas fa-book"></i>',
@@ -184,7 +190,7 @@ $config['sources__13298'] = array(
         'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4536,13355),
+        'm_parents' => array(13369,13298,13291,4536,13355),
     ),
 );
 
@@ -224,7 +230,7 @@ $config['sources__13291'] = array(
         'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4536,13355),
+        'm_parents' => array(13369,13298,13291,4536,13355),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
@@ -1572,7 +1578,7 @@ $config['sources__4536'] = array(
         'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_name' => 'SOURCES',
         'm_desc' => '',
-        'm_parents' => array(13298,13291,4536,13355),
+        'm_parents' => array(13369,13298,13291,4536,13355),
     ),
     4758 => array(
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',

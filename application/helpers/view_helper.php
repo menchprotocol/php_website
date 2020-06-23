@@ -1370,7 +1370,13 @@ function view_i_cover($idea, $show_editor){
 
     //TOP LEFT
     $ui .= '<span class="media-info top-left">';
-    $ui .= $sources__13369[13359]['m_icon'].'<span style="padding-left: 2px;" title="'.$sources__13369[13359]['m_name'].'">'.( $i_stats['ideas_average'] ? $i_stats['ideas_average'] : '1' ).'</span>';
+
+    //IDEAS
+    $ui .= $sources__13369[13359]['m_icon'].'<span style="padding-left: 2px;" title="'.$sources__13369[13359]['m_name'].'">'.( $i_stats['ideas_average'] ? $i_stats['ideas_average'] : '1' ).'</span><br />';
+
+    //SOURCES:
+    $ui .= $sources__13369[13358]['m_icon'].'<span style="padding-left: 2px;" title="'.$sources__13369[13358]['m_name'].'">'.( $i_stats['sources_count'] ? $i_stats['sources_count'] : '1' ).'</span>';
+
     $ui .= '</span>';
 
     //TOP RIGHT
