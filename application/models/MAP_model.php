@@ -523,12 +523,11 @@ class MAP_model extends CI_Model
             //Prep ID:
             $p_id = intval($idea_previous['i__id']);
 
-            //Fetch parents of parents:
-            $recursive_parents = $this->MAP_model->recursive_parents($p_id, false);
-
-
             //Add to appropriate array:
             array_push($grand_parents, array($p_id));
+
+            //Fetch parents of parents:
+            $recursive_parents = $this->MAP_model->recursive_parents($p_id, false);
 
             if (count($recursive_parents) > 0) {
                 $grand_parents = array_merge($grand_parents, $recursive_parents);
@@ -537,29 +536,30 @@ class MAP_model extends CI_Model
         }
 
 
-        if ($first_level) {
-
-            //Now we must break down the array:
-            $recursive_parents = array();
-            $start_i__id = $this->config->item('featured_i__id');
-            $index = 0;
-            foreach($grand_parents as $grand_parent_ids) {
-                foreach($grand_parent_ids as $grand_parent_id) {
-                    if (!isset($recursive_parents[$index])) {
-                        $recursive_parents[$index] = array();
-                    }
-                    array_push($recursive_parents[$index], intval($grand_parent_id));
-                    if ($grand_parent_id == $start_i__id) {
-                        $index++;
-                    }
-                }
-            }
-
-            return $recursive_parents;
-
-        } else {
+        if (!$first_level || 1) {
             return $grand_parents;
         }
+
+
+        //Now we must break down the array:
+        $recursive_parents = array();
+        $start_i__id = $this->config->item('featured_i__id');
+        $index = 0;
+        foreach($grand_parents as $grand_parent_ids) {
+            foreach($grand_parent_ids as $grand_parent_id) {
+                if (!isset($recursive_parents[$index])) {
+                    $recursive_parents[$index] = array();
+                }
+                array_push($recursive_parents[$index], intval($grand_parent_id));
+                if ($grand_parent_id == $start_i__id) {
+                    $index++;
+                }
+            }
+        }
+
+        return $recursive_parents;
+
+
     }
 
 
