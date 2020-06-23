@@ -524,7 +524,7 @@ class MAP_model extends CI_Model
             $p_id = intval($idea_previous['i__id']);
 
             //Add to appropriate array:
-            array_push($grand_parents, $p_id);
+            array_push($grand_parents, array($p_id));
 
             //Fetch parents of parents:
             $recursive_parents = $this->MAP_model->recursive_parents($p_id, false);
