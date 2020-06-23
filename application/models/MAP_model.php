@@ -536,7 +536,7 @@ class MAP_model extends CI_Model
                 if ($first_level) {
                     array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
                 } else {
-                    $grand_parents = array_merge($grand_parents, $recursive_parents);
+                    $grand_parents = array_merge($grand_parents, $recursive_parents, array($p_id));
                 }
             } elseif ($first_level) {
                 array_push($grand_parents, array($p_id));
