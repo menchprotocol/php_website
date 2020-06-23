@@ -1139,7 +1139,7 @@ function view_i_previous_discovered($i__id, $recipient_source){
                     array_push($sitemap_items, view_i_discovered($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
 
                     if ($previous_i__id == $intersect) {
-                        //break;
+                        break;
                     }
                 }
             }
