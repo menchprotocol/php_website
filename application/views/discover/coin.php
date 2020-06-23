@@ -247,21 +247,21 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= '</div>';
         }
 
-        //EXPERT AUTHORS
-        if($i_stats['expert_author_count']>0){
-            $this_tab .= '<p class="space-content">Ideas mapped from '.$i_stats['expert_author_count'].' Expert'.view__s($i_stats['expert_author_count']).':</p>';
-            $this_tab .= '<div class="list-group" style="margin-bottom:21px;">';
+        //EXPERT CONTENT
+        if($i_stats['expert_content_count']>0){
+            $this_tab .= '<p class="space-content">Ideas mapped from '.$i_stats['expert_content_count'].' Expert Content'.view__s($i_stats['expert_content_count']).':</p>';
+            $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach ($i_stats['expert_content_array'] as $e_source) {
                 $this_tab .= view_e_basic($e_source);
             }
             $this_tab .= '</div>';
         }
 
-        //EXPERT CONTENT
-        if($i_stats['expert_content_count']>0){
-            $this_tab .= '<p class="space-content">Ideas mapped from '.$i_stats['expert_content_count'].' Expert Content'.view__s($i_stats['expert_content_count']).':</p>';
-            $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-            foreach ($i_stats['expert_content_array'] as $e_source) {
+        //EXPERT AUTHORS
+        if($i_stats['expert_author_count']>0){
+            $this_tab .= '<p class="space-content">Published by '.$i_stats['expert_author_count'].' Expert Author'.view__s($i_stats['expert_author_count']).':</p>';
+            $this_tab .= '<div class="list-group" style="margin-bottom:21px;">';
+            foreach ($i_stats['expert_author_array'] as $e_source) {
                 $this_tab .= view_e_basic($e_source);
             }
             $this_tab .= '</div>';
