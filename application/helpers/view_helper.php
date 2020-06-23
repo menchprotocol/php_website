@@ -1133,7 +1133,7 @@ function view_i_previous_discovered($i__id, $recipient_source){
                     $idea_level_up++;
 
                     if ($previous_i__id == $intersect) {
-                        array_push($sitemap_items, '<div class="list-group-item itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$sources__12994[13400]['m_icon'].'</span>'.$sources__12994[13400]['m_name'].'</a></div>');
+                        array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$sources__12994[13400]['m_icon'].'</span><span class="montserrat">'.$sources__12994[13400]['m_name'].'</span></a></div>');
                     }
 
                     array_push($sitemap_items, view_i_discovered($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
@@ -1145,7 +1145,8 @@ function view_i_previous_discovered($i__id, $recipient_source){
             }
         }
 
-        $discovery_list_ui .= join('', array_reverse($sitemap_items));
+        $discovery_list_ui .= '<div class="list-group">' . join('', array_reverse($sitemap_items)) . '</div>';
+
     }
 
 
