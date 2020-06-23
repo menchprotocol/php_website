@@ -1102,6 +1102,7 @@ function view_i_previous_discovered($i__id, $recipient_source){
     $player_discovery_ids = $CI->DISCOVER_model->ids($recipient_source['e__id']);
     $discovery_list_ui = null;
     $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION
+    $sources__12994 = $CI->config->item('sources__12994'); //DISCOVER LAYOUT
 
     if(in_array($i__id, $player_discovery_ids)){
 
@@ -1132,7 +1133,7 @@ function view_i_previous_discovered($i__id, $recipient_source){
                     $idea_level_up++;
 
                     if ($previous_i__id == $intersect) {
-                        array_push($sitemap_items, '<div class="list-group-item full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');">SEE SITEMAP</a></div>');
+                        array_push($sitemap_items, '<div class="list-group-item itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$sources__12994[13400]['m_icon'].'</span>'.$sources__12994[13400]['m_name'].'</a></div>');
                     }
 
                     array_push($sitemap_items, view_i_discovered($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
