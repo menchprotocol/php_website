@@ -239,7 +239,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $counter = $i_stats['count_sources'];
 
         //List Sources:
-        foreach($CI->config->item('sources__13358') as $e__id2 => $m2){
+        foreach($this->config->item('sources__13358') as $e__id2 => $m2){
             if($i_stats['count_'.$e__id2]>0){
                 $this_tab .= '<div class="discover-topic"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id2].' '.$m2['m_name'].'</div>';
                 $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
