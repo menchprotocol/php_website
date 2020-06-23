@@ -878,19 +878,19 @@ function i_stats($i__metadata){
     //Calculates average based on metadata:
     $metadata = unserialize($i__metadata);
 
-    $certificate_array = ( isset($metadata['i___certificates']) ? $metadata['i___certificates'] : array() );
+    $array_7545 = ( isset($metadata['i___certificates']) ? $metadata['i___certificates'] : array() );
 
 
-    $expert_author_array = ( isset($metadata['i___experts']) ? $metadata['i___experts'] : array() );
-    usort($expert_author_array, 'sortByWeight');
+    $array_13339 = ( isset($metadata['i___experts']) ? $metadata['i___experts'] : array() );
+    usort($array_13339, 'sortByWeight');
 
-    $expert_content_array = ( isset($metadata['i___content']) ? $metadata['i___content'] : array() );
-    usort($expert_content_array, 'sortByWeight');
+    $array_3000 = ( isset($metadata['i___content']) ? $metadata['i___content'] : array() );
+    usort($array_3000, 'sortByWeight');
 
-    $players_array = ( isset($metadata['i___authors']) ? $metadata['i___authors'] : array() );
-    usort($players_array, 'sortByWeight');
+    $array_13202 = ( isset($metadata['i___authors']) ? $metadata['i___authors'] : array() );
+    usort($array_13202, 'sortByWeight');
 
-    $source_count = count($players_array) + count($expert_content_array) + count($expert_author_array);
+    $source_count = count($array_13202) + count($array_3000) + count($array_13339);
 
     //Return stats:
     return array(
@@ -904,17 +904,17 @@ function i_stats($i__metadata){
         'duration_average' => ( isset($metadata['i___max_seconds']) ? round(($metadata['i___min_seconds']+$metadata['i___max_seconds'])/2) : 0 ),
 
         //SOURCES
-        'sources_count' => ( $source_count>0 ? $source_count : 1 ),
-        'expert_author_count' => count($expert_author_array),
-        'expert_author_array' => $expert_author_array,
-        'expert_content_count' => count($expert_content_array),
-        'expert_content_array' => $expert_content_array,
-        'players_count' => count($players_array),
-        'players_array' => $players_array,
+        'count_sources' => ( $source_count>0 ? $source_count : 1 ),
+        'array_13339' => $array_13339,
+        'count_13339' => count($array_13339),
+        'array_3000' => $array_3000,
+        'count_3000' => count($array_3000),
+        'array_13202' => $array_13202,
+        'count_13202' => count($array_13202),
 
         //CERTIFICATES
-        'certificate_count' => count($certificate_array),
-        'certificate_array' => $certificate_array,
+        'count_7545' => count($array_7545),
+        'array_7545' => $array_7545,
     );
 
 }

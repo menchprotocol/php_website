@@ -1369,13 +1369,13 @@ function view_i_cover($idea, $show_editor){
     $ui .= i_fetch_cover($idea['i__id'], true);
 
     //TOP LEFT
-    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['ideas_average'].' '.$sources__13369[13359]['m_name'].' FROM '.$i_stats['sources_count'].' '.$sources__13369[13358]['m_name'].'">';
+    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['ideas_average'].' '.$sources__13369[13359]['m_name'].' FROM '.$i_stats['count_sources'].' '.$sources__13369[13358]['m_name'].'">';
 
     //IDEAS
     $ui .= $sources__13369[13359]['m_icon'].'<span style="padding-left: 2px;">'.$i_stats['ideas_average'].'</span><br />';
 
     //SOURCES:
-    $ui .= $sources__13369[13358]['m_icon'].'<span style="padding-left: 2px;">'.$i_stats['sources_count'].'</span>';
+    $ui .= $sources__13369[13358]['m_icon'].'<span style="padding-left: 2px;">'.$i_stats['count_sources'].'</span>';
 
     $ui .= '</span>';
 

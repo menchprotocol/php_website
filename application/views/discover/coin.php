@@ -11,6 +11,7 @@
 
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $sources__13291 = $this->config->item('sources__13291'); //DISCOVER TABS
+
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('sources_id_7309'));
 $recipient_source = superpower_assigned();
 if(!isset($recipient_source['e__id']) ){
@@ -235,45 +236,27 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==13358){
 
-        $counter = $i_stats['sources_count'];
+        $counter = $i_stats['count_sources'];
 
-        //AUTHORS
-        if($i_stats['players_count']>0){
-            $this_tab .= '<p class="space-content">Ideas mapped by '.$i_stats['players_count'].' player'.view__s($i_stats['players_count']).':</p>';
-            $this_tab .= '<div class="list-group" style="margin-bottom:21px;">';
-            foreach ($i_stats['players_array'] as $e_source) {
-                $this_tab .= view_e_basic($e_source);
+        //List Sources:
+        foreach($CI->config->item('sources__13358') as $e__id2 => $m2){
+            if($i_stats['count_'.$e__id2]>0){
+                $this_tab .= '<div class="discover-topic"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id2].' '.$m2['m_name'].'</div>';
+                $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
+                foreach ($i_stats['array_'.$e__id2] as $e_source) {
+                    $this_tab .= view_e_basic($e_source);
+                }
+                $this_tab .= '</div>';
             }
-            $this_tab .= '</div>';
-        }
-
-        //EXPERT CONTENT
-        if($i_stats['expert_content_count']>0){
-            $this_tab .= '<p class="space-content">Ideas mapped from '.$i_stats['expert_content_count'].' Expert Content'.view__s($i_stats['expert_content_count']).':</p>';
-            $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-            foreach ($i_stats['expert_content_array'] as $e_source) {
-                $this_tab .= view_e_basic($e_source);
-            }
-            $this_tab .= '</div>';
-        }
-
-        //EXPERT AUTHORS
-        if($i_stats['expert_author_count']>0){
-            $this_tab .= '<p class="space-content">Published by '.$i_stats['expert_author_count'].' Expert Author'.view__s($i_stats['expert_author_count']).':</p>';
-            $this_tab .= '<div class="list-group" style="margin-bottom:21px;">';
-            foreach ($i_stats['expert_author_array'] as $e_source) {
-                $this_tab .= view_e_basic($e_source);
-            }
-            $this_tab .= '</div>';
         }
 
     } elseif($x__type==7545){
 
         //CERTIFICATES
-        $counter = $i_stats['certificate_count'];
+        $counter = $i_stats['count_7545'];
         $this_tab .= '<p class="space-content">Completion could earn you some of the following certificates:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-        foreach ($i_stats['certificate_array'] as $e_source) {
+        foreach ($i_stats['array_7545'] as $e_source) {
             $e_source['x__message'] = ''; //Remove for this
             $this_tab .= view_e_basic($e_source);
         }
