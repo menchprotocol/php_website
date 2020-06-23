@@ -524,22 +524,13 @@ class MAP_model extends CI_Model
             $p_id = intval($idea_previous['i__id']);
 
             //Add to appropriate array:
-            if (!$first_level) {
-                array_push($grand_parents, $p_id);
-            }
-
+            array_push($grand_parents, $p_id);
 
             //Fetch parents of parents:
             $recursive_parents = $this->MAP_model->recursive_parents($p_id, false);
 
             if (count($recursive_parents) > 0) {
-                if ($first_level) {
-                    array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
-                } else {
-                    $grand_parents = array_merge($grand_parents, $recursive_parents, array($p_id));
-                }
-            } elseif ($first_level) {
-                array_push($grand_parents, array($p_id));
+                $grand_parents = array_merge($grand_parents, $recursive_parents);
             }
 
         }
