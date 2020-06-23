@@ -520,14 +520,11 @@ class MAP_model extends CI_Model
             'x__right' => $i__id,
         ), array('x__left')) as $idea_previous) {
 
-            //Prep ID:
-            $p_id = intval($idea_previous['i__id']);
-
-            //Add to appropriate array:
-            array_push($grand_parents, $p_id);
-
             //Fetch parents of parents:
-            $recursive_parents = $this->MAP_model->recursive_parents($p_id, false);
+            $recursive_parents = $this->MAP_model->recursive_parents($idea_previous['i__id'], false);
+
+            //Add to array:
+            array_push($grand_parents, intval($idea_previous['i__id']));
 
             if (count($recursive_parents) > 0) {
                 //Add to appropriate array:
@@ -538,14 +535,13 @@ class MAP_model extends CI_Model
         }
 
 
-        if (!$first_level || 1) {
+        if (!$first_level) {
             return $grand_parents;
         }
 
 
-        //Now we must break down the array:
+        //Flatten in a Special Way:
         $recursive_parents = array();
-        $start_i__id = $this->config->item('featured_i__id');
         $index = 0;
         foreach($grand_parents as $grand_parent_ids) {
             foreach($grand_parent_ids as $grand_parent_id) {

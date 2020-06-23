@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-22 17:21:07 PST
+//Generated 2020-06-23 14:08:53 PST
 
 //DISCOVER LAYOUT:
 $config['sources_id_12994'] = array(13400,4736,13291,13289);
@@ -3375,7 +3375,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(4235,13000,12750,3084,13216,12707,12991,12211,11068,4535,12749,4341,12969,10573,6225,6287,12896,7256,4269,4536,4997,12275,13007,10957,7540);
+$config['sources_id_11035'] = array(4235,13000,13401,12750,3084,13216,12707,12991,12211,11068,4535,12749,4341,12969,10573,6225,6287,12896,7256,4269,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-plus discover" aria-hidden="true"></i>',
@@ -3388,6 +3388,12 @@ $config['sources__11035'] = array(
         'm_name' => 'A SOCIAL IDEATION GAME',
         'm_desc' => '',
         'm_parents' => array(11035,7305),
+    ),
+    13401 => array(
+        'm_icon' => '<i class="fas fa-search-minus"></i>',
+        'm_name' => 'CLOSE SEARCH',
+        'm_desc' => '',
+        'm_parents' => array(11035,7256),
     ),
     12750 => array(
         'm_icon' => '<i class="fas fa-step-forward discover"></i>',

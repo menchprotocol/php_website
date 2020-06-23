@@ -1975,10 +1975,10 @@ class Source extends CI_Controller
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('//source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
+            return redirect_message('/source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['x__time']) + config_var(11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('//source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic link has expired. Try again.</div>');
+            return redirect_message('/source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic link has expired. Try again.</div>');
         }
 
         //Fetch source:
@@ -1986,7 +1986,7 @@ class Source extends CI_Controller
             'e__id' => $validate_links[0]['x__player'],
         ));
         if(count($sources) < 1){
-            return redirect_message('//source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
+            return redirect_message('/source/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
         }
 
         //Log them in:
