@@ -530,7 +530,9 @@ class MAP_model extends CI_Model
             $recursive_parents = $this->MAP_model->recursive_parents($p_id, false);
 
             if (count($recursive_parents) > 0) {
-                $grand_parents = array_merge($grand_parents, $recursive_parents);
+                //Add to appropriate array:
+                array_push($grand_parents, $recursive_parents);
+                //$grand_parents = array_merge($grand_parents, $recursive_parents);
             }
 
         }
