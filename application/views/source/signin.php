@@ -7,40 +7,40 @@ $this_attempt = array(
     'x__left' => $sign_i__id,
 );
 
-$current_sign_idea_attempt = array(); //Will try to find this...
-$current_sign_idea_attempts = $this->session->userdata('sign_idea_attempts');
-if(is_array($current_sign_idea_attempts) && count($current_sign_idea_attempts) > 0){
+$current_sign_i_attempt = array(); //Will try to find this...
+$current_sign_i_attempts = $this->session->userdata('sign_i_attempts');
+if(is_array($current_sign_i_attempts) && count($current_sign_i_attempts) > 0){
     //See if any of the current sign-in attempts match this:
-    foreach($current_sign_idea_attempts as $sign_idea_attempt){
+    foreach($current_sign_i_attempts as $sign_i_attempt){
         $all_match = true;
-        foreach(array('x__left') as $sign_idea_attempt_field){
-            if(intval($this_attempt[$sign_idea_attempt_field]) != intval($sign_idea_attempt[$sign_idea_attempt_field])){
+        foreach(array('x__left') as $sign_i_attempt_field){
+            if(intval($this_attempt[$sign_i_attempt_field]) != intval($sign_i_attempt[$sign_i_attempt_field])){
                 $all_match = false;
                 break;
             }
         }
         if($all_match){
             //We found a match!
-            $current_sign_idea_attempt = $sign_idea_attempt;
+            $current_sign_i_attempt = $sign_i_attempt;
             break;
         }
     }
 } else {
-    $current_sign_idea_attempts = array();
+    $current_sign_i_attempts = array();
 }
 
 
 //See what to do based on current matches:
-if(count($current_sign_idea_attempt) == 0){
+if(count($current_sign_i_attempt) == 0){
 
     //Log link:
-    $current_sign_idea_attempt = $this->DISCOVER_model->create($this_attempt);
+    $current_sign_i_attempt = $this->DISCOVER_model->create($this_attempt);
 
     //Grow the array:
-    array_push($current_sign_idea_attempts, $current_sign_idea_attempt);
+    array_push($current_sign_i_attempts, $current_sign_i_attempt);
 
     //Add this sign-in attempt to session:
-    $this->session->set_userdata(array('sign_idea_attempts' => $current_sign_idea_attempts));
+    $this->session->set_userdata(array('sign_i_attempts' => $current_sign_i_attempts));
 
 }
 ?>

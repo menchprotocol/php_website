@@ -234,13 +234,13 @@ function view_i_notes($discovery, $is_source = false)
         }
 
         //Modify:
-        $ui .= '<span title="MODIFY"><a href="javascript:idea_note_edit_start(' . $discovery['x__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="MODIFY"><a href="javascript:i_note_edit_start(' . $discovery['x__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
         $ui .= '</span></div>';
 
 
         //Text editing:
-        $ui .= '<textarea onkeyup="idea_note_edit_count(' . $discovery['x__id'] . ')" name="x__message" id="message_body_' . $discovery['x__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($discovery['x__message']).'">' . $discovery['x__message'] . '</textarea>';
+        $ui .= '<textarea onkeyup="i_note_edit_count(' . $discovery['x__id'] . ')" name="x__message" id="message_body_' . $discovery['x__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($discovery['x__message']).'">' . $discovery['x__message'] . '</textarea>';
 
 
         //Editing menu:
@@ -253,7 +253,7 @@ function view_i_notes($discovery, $is_source = false)
         $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:i_note_edit(' . $discovery['x__id'] . ',' . $discovery['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
         //Cancel Edit:
-        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:idea_note_edit_cancel(' . $discovery['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
+        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-idea white-third" href="javascript:i_note_edit_cancel(' . $discovery['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
         //Show drop down for message link status:
         $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 5px 0 0; display: block;">';
@@ -647,21 +647,21 @@ function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $
         }
     }
 
-    $idea_stats = idea_stats($idea['i__metadata']);
+    $i_stats = i_stats($idea['i__metadata']);
     $is_saved = ( isset($idea['x__type']) && $idea['x__type']==12896 );
     $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $recipient_source );
     $first_segment = $CI->uri->segment(1);
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="ap_idea_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-link-id="'.$idea['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div id="ap_i_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-link-id="'.$idea['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'">';
 
     $ui .= ( $can_click ? '<a href="/'. $idea['i__id'] .'" class="itemdiscover">' : '' );
 
 
     //Right Stats:
-    if($idea_stats['duration_average'] || $idea_stats['ideas_average']){
-        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $idea_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$idea_stats['ideas_average'].'</span>' : '' ).'</span>'.( $idea_stats['duration_average'] ? '<span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span>': '' ).'</div>';
+    if($i_stats['duration_average'] || $i_stats['ideas_average']){
+        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['ideas_average'].'</span>' : '' ).'</span>'.( $i_stats['duration_average'] ? '<span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span>': '' ).'</div>';
     }
 
 
@@ -680,7 +680,7 @@ function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $
 
             $ui .= '<div class="note-editor edit-off">';
             $ui .= '<span class="show-on-hover">';
-            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$idea['i__id'].');$(\'#ap_idea_'.$idea['i__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$idea['i__id'].');$(\'#ap_i_'.$idea['i__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
             $ui .= '</span>';
             $ui .= '</div>';
 
@@ -718,35 +718,35 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         'i__status IN (' . join(',', $CI->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $idea_discovered){
+    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $i_discovered){
 
         //Prep Metadata:
-        $metadata = unserialize($idea_discovered['x__metadata']);
+        $metadata = unserialize($i_discovered['x__metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $idea_discovered['i__id'],
+            'x__right' => $i_discovered['i__id'],
         ), array(), 0, 0, array('x__sort' => 'ASC'));
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$sources__4486[$idea_discovered['x__type']]['m_name'].'">'. $sources__4486[$idea_discovered['x__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Interaction Status: '.$sources__6186[$idea_discovered['x__status']]['m_name'].'">'. $sources__6186[$idea_discovered['x__status']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$sources__4486[$i_discovered['x__type']]['m_name'].'">'. $sources__4486[$i_discovered['x__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Interaction Status: '.$sources__6186[$i_discovered['x__status']]['m_name'].'">'. $sources__6186[$i_discovered['x__status']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$sources__7585[$idea_discovered['i__type']]['m_name'].'">'. $sources__7585[$idea_discovered['i__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$idea_discovered['i__status']]['m_name'].'">'. $sources__4737[$idea_discovered['i__status']]['m_icon']. '</span>';
-        $ui .= '<a href="?i__id='.$idea_discovered['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($idea_discovered) . '</u></a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$sources__7585[$i_discovered['i__type']]['m_name'].'">'. $sources__7585[$i_discovered['i__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$i_discovered['i__status']]['m_name'].'">'. $sources__4737[$i_discovered['i__status']]['m_icon']. '</span>';
+        $ui .= '<a href="?i__id='.$i_discovered['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_discovered) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($idea_discovered['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($idea_discovered['x__type'] == 4229) ? view_i_marks($idea_discovered) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_discovered['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($i_discovered['x__type'] == 4229) ? view_i_marks($i_discovered) : '' ).'</span>]';
 
         if(count($messages) > 0){
-            $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$idea_discovered['i__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
+            $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$i_discovered['i__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
         }
         $ui .= '</div>';
 
         //Display Messages:
-        $ui .= '<div class="messages-'.$idea_discovered['i__id'].' hidden">';
+        $ui .= '<div class="messages-'.$i_discovered['i__id'].' hidden">';
         foreach($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
             $ui .= $CI->DISCOVER_model->message_send($msg['x__message']);
@@ -755,7 +755,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  view_i_scores_answer($idea_discovered['i__id'], $depth_levels, $original_depth_levels, $idea_discovered['i__type']);
+        $ui .=  view_i_scores_answer($i_discovered['i__id'], $depth_levels, $original_depth_levels, $i_discovered['i__type']);
 
     }
 
@@ -801,23 +801,23 @@ function view_radio_sources($parent_e__id, $child_e__id, $enable_mulitiselect, $
 }
 
 
-function view_i_marks($idea_discovered){
+function view_i_marks($i_discovered){
 
     //Validate core inputs:
-    if(!isset($idea_discovered['x__metadata']) || !isset($idea_discovered['x__type'])){
+    if(!isset($i_discovered['x__metadata']) || !isset($i_discovered['x__type'])){
         return false;
     }
 
     //prep metadata:
-    $x__metadata = unserialize($idea_discovered['x__metadata']);
+    $x__metadata = unserialize($i_discovered['x__metadata']);
 
     //Return mark:
-    return ( $idea_discovered['x__type'] == 4228 ? ( !isset($x__metadata['tr__assessment_points']) || $x__metadata['tr__assessment_points'] == 0 ? '' : '<span class="score-range">[<span style="'.( $x__metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $x__metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $x__metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $x__metadata['tr__assessment_points'].'</span>]</span>' ) : '<span class="score-range">['.$x__metadata['tr__conditional_score_min'] . ( $x__metadata['tr__conditional_score_min']==$x__metadata['tr__conditional_score_max'] ? '' : '-'.$x__metadata['tr__conditional_score_max'] ).'%]</span>' );
+    return ( $i_discovered['x__type'] == 4228 ? ( !isset($x__metadata['tr__assessment_points']) || $x__metadata['tr__assessment_points'] == 0 ? '' : '<span class="score-range">[<span style="'.( $x__metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $x__metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $x__metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $x__metadata['tr__assessment_points'].'</span>]</span>' ) : '<span class="score-range">['.$x__metadata['tr__conditional_score_min'] . ( $x__metadata['tr__conditional_score_min']==$x__metadata['tr__conditional_score_max'] ? '' : '-'.$x__metadata['tr__conditional_score_max'] ).'%]</span>' );
 
 }
 
 
-function view_i($idea, $idea_linked_id = 0, $is_parent = false, $is_source = false, $message_input = null, $extra_class = null, $control_enabled = true)
+function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false, $message_input = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -831,12 +831,12 @@ function view_i($idea, $idea_linked_id = 0, $is_parent = false, $is_source = fal
 
     //DISCOVER
     $x__id = ( isset($idea['x__id']) ? $idea['x__id'] : 0 );
-    $is_idea_link = ($x__id && in_array($idea['x__type'], $CI->config->item('sources_id_4486')));
+    $is_i_link = ($x__id && in_array($idea['x__type'], $CI->config->item('sources_id_4486')));
 
     //IDEA
-    $idea_stats = idea_stats($idea['i__metadata']);
+    $i_stats = i_stats($idea['i__metadata']);
     $is_public = in_array($idea['i__status'], $CI->config->item('sources_id_7355'));
-    $is_source = ( !$is_idea_link ? false : $is_source ); //Disable Edits on Idea List Page
+    $is_source = ( !$is_i_link ? false : $is_source ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
 
@@ -851,7 +851,7 @@ function view_i($idea, $idea_linked_id = 0, $is_parent = false, $is_source = fal
     }
 
 
-    $ui = '<div x__id="' . $x__id . '" idea-id="' . $idea['i__id'] . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_idea_'.$idea['i__id'] . ' idea_line_' . $idea['i__id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' idea__tr_'.$x__id.' '.$extra_class.'" style="padding-left:0;">';
+    $ui = '<div x__id="' . $x__id . '" idea-id="' . $idea['i__id'] . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_i_'.$idea['i__id'] . ' i_line_' . $idea['i__id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' i__tr_'.$x__id.' '.$extra_class.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -860,23 +860,23 @@ function view_i($idea, $idea_linked_id = 0, $is_parent = false, $is_source = fal
         $ui .= '<div class="block">';
 
             //IDAE Link:
-            $idea_link = '/map/i_go/'.$idea['i__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
+            $i_link = '/map/i_go/'.$idea['i__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
 
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="'.$idea_link.'" title="Idea Weight: '.number_format($idea['i__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
+            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($idea['i__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
 
             //IDEA TITLE
-            if($is_idea_link && superpower_active(13354, true)){
+            if($is_i_link && superpower_active(13354, true)){
 
                 $ui .= view_input_text(4736, $idea['i__title'], $idea['i__id'], $is_source, (($idea['x__sort']*100)+1));
 
             } else {
 
-                $ui .= '<a href="'.$idea_link.'" class="title-block montserrat">';
+                $ui .= '<a href="'.$i_link.'" class="title-block montserrat">';
                 $ui .= $box_items_list;
 
                 //IDEA STATUS
-                if(!$is_public && $is_idea_link){
+                if(!$is_public && $is_i_link){
                     //Show the drafting status:
                     $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$idea['i__status']]['m_name'].' @'.$idea['i__status'].'">' . $sources__4737[$idea['i__status']]['m_icon'] . '</span>&nbsp;</span>';
                 }
@@ -894,7 +894,7 @@ function view_i($idea, $idea_linked_id = 0, $is_parent = false, $is_source = fal
     $ui .= '<td class="MENCHcolumn3 source">';
 
 
-    if($is_idea_link && $control_enabled && $is_source){
+    if($is_i_link && $control_enabled && $is_source){
 
         //RIGHT EDITING:
         $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
@@ -983,7 +983,7 @@ function view_i($idea, $idea_linked_id = 0, $is_parent = false, $is_source = fal
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
         if($previous_ideas[0]['total_ideas'] > 0){
-            $ui .= $previous_ideas[0]['total_ideas'].( $is_parent ? '<a href="/map/i_navigate/'.$idea['i__id'].'/'.$idea_linked_id.'/previous">'.$sources__12413[11019]['m_icon'].'</a>' : $sources__12413[11019]['m_icon'] );
+            $ui .= $previous_ideas[0]['total_ideas'].( $is_parent ? '<a href="/map/i_navigate/'.$idea['i__id'].'/'.$i_linked_id.'/previous">'.$sources__12413[11019]['m_icon'].'</a>' : $sources__12413[11019]['m_icon'] );
         }
         $ui .= '</span>';
 
@@ -996,11 +996,11 @@ function view_i($idea, $idea_linked_id = 0, $is_parent = false, $is_source = fal
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
         if($next_ideas[0]['total_ideas'] > 0){
 
-            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:45px;">'.( $is_parent ? '<a href="/map/i_navigate/'.$idea['i__id'].'/'.$idea_linked_id.'/x_next">'.$sources__12413[11020]['m_icon'].'</a>' : $sources__12413[11020]['m_icon'] ).$next_ideas[0]['total_ideas'].'</span>';
+            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:45px;">'.( $is_parent ? '<a href="/map/i_navigate/'.$idea['i__id'].'/'.$i_linked_id.'/x_next">'.$sources__12413[11020]['m_icon'].'</a>' : $sources__12413[11020]['m_icon'] ).$next_ideas[0]['total_ideas'].'</span>';
 
             //TREE SIZE
-            if($idea_stats['ideas_average'] > 0){
-                $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[13177]['m_name'].': '.$idea_stats['ideas_min'].' - '.$idea_stats['ideas_max'].'" data-toggle="tooltip" data-placement="top">'.$sources__12413[13177]['m_icon'].'&nbsp;'.number_format($idea_stats['ideas_average'], 0).'</span>';
+            if($i_stats['ideas_average'] > 0){
+                $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[13177]['m_name'].': '.$i_stats['ideas_min'].' - '.$i_stats['ideas_max'].'" data-toggle="tooltip" data-placement="top">'.$sources__12413[13177]['m_icon'].'&nbsp;'.number_format($i_stats['ideas_average'], 0).'</span>';
             }
 
         }
@@ -1049,7 +1049,7 @@ function view_i_list($idea, $ideas_next, $recipient_source, $prefix_statement = 
 
     //If no list just return the next step:
     if(!count($ideas_next)){
-        return ( $show_next ? view_next_idea_previous($idea['i__id'], $recipient_source) : false );
+        return ( $show_next ? view_next_i_previous($idea['i__id'], $recipient_source) : false );
     }
 
     $CI =& get_instance();
@@ -1057,7 +1057,7 @@ function view_i_list($idea, $ideas_next, $recipient_source, $prefix_statement = 
     if(count($ideas_next)){
 
         //List children so they know what's ahead:
-        $common_prefix = idea_calc_common_prefix($ideas_next, 'i__title');
+        $common_prefix = i_calc_common_prefix($ideas_next, 'i__title');
 
         echo '<div class="discover-topic">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
@@ -1070,12 +1070,12 @@ function view_i_list($idea, $ideas_next, $recipient_source, $prefix_statement = 
     }
 
     if($show_next){
-        view_next_idea_previous($idea['i__id'], $recipient_source);
+        view_next_i_previous($idea['i__id'], $recipient_source);
         echo '<div class="doclear">&nbsp;</div>';
     }
 }
 
-function view_next_idea_previous($i__id, $recipient_source){
+function view_next_i_previous($i__id, $recipient_source){
 
     $CI =& get_instance();
     $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION
@@ -1097,7 +1097,7 @@ function view_i_previous_discovered($i__id, $recipient_source){
     //Discoveries
     $CI =& get_instance();
     $ui = null;
-    $idea_level_up = 0;
+    $i_level_up = 0;
     $previous_level_id = 0; //The ID of the Idea one level up
     $player_discovery_ids = $CI->DISCOVER_model->ids($recipient_source['e__id']);
     $discovery_list_ui = null;
@@ -1121,7 +1121,7 @@ function view_i_previous_discovered($i__id, $recipient_source){
             foreach(array_intersect($grand_parent_ids, $player_discovery_ids) as $intersect) {
                 foreach($grand_parent_ids as $previous_i__id) {
 
-                    if($idea_level_up==0){
+                    if($i_level_up==0){
                         //Remember the first parent for the back button:
                         $previous_level_id = $previous_i__id;
                     }
@@ -1130,7 +1130,7 @@ function view_i_previous_discovered($i__id, $recipient_source){
                         'i__id' => $previous_i__id,
                     ));
 
-                    $idea_level_up++;
+                    $i_level_up++;
 
                     if ($previous_i__id == $intersect) {
                         array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$sources__12994[13400]['m_icon'].'</span><span class="montserrat">'.$sources__12994[13400]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
@@ -1189,13 +1189,13 @@ function view_i_previous_discovered($i__id, $recipient_source){
 }
 
 
-function view_i_note_source($i__id, $x__type, $idea_notes, $is_source){
+function view_i_note_source($i__id, $x__type, $i_notes, $is_source){
 
     $CI =& get_instance();
     $sources__11018 = $CI->config->item('sources__11018');
 
     $ui = '<div class="list-group">';
-    foreach($idea_notes as $source) {
+    foreach($i_notes as $source) {
         $ui .= view_e($source, false, null, true, $is_source);
     }
 
@@ -1209,14 +1209,14 @@ function view_i_note_source($i__id, $x__type, $idea_notes, $is_source){
                            idea-id="' . $i__id . '"
                            id="add-source-idea-' . $i__id . '"
                            placeholder="'.$sources__11018[$x__type]['m_name'].'">
-                </div><div class="algolia_pad_search hidden idea_pad_top"></div></div>';
+                </div><div class="algolia_pad_search hidden i_pad_top"></div></div>';
     }
     $ui .= '</div>';
 
     return $ui;
 }
 
-function view_i_note_mix($x__type, $idea_notes){
+function view_i_note_mix($x__type, $i_notes){
 
     $CI =& get_instance();
     $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
@@ -1226,7 +1226,7 @@ function view_i_note_mix($x__type, $idea_notes){
     $ui = '';
 
 
-    if(!count($idea_notes)){
+    if(!count($i_notes)){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin-bottom:13px;">';
         $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($sources__4485[$x__type]['m_name'])).'. Be the first to post one</div>';
         $ui .= '</div>';
@@ -1234,11 +1234,11 @@ function view_i_note_mix($x__type, $idea_notes){
 
 
     //Show no-Message notifications for each message type:
-    $ui .= '<div id="idea_notes_list_'.$x__type.'" class="list-group">';
+    $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
 
     //List current notes:
-    foreach($idea_notes as $idea_notes) {
-        $ui .= view_i_notes($idea_notes, ($idea_notes['x__player']==$session_source['e__id']));
+    foreach($i_notes as $i_notes) {
+        $ui .= view_i_notes($i_notes, ($i_notes['x__player']==$session_source['e__id']));
     }
 
     //ADD NEW:
@@ -1249,7 +1249,7 @@ function view_i_note_mix($x__type, $idea_notes){
 
 
 
-        $ui .= '<textarea onkeyup="idea_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note-type-id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note-type-id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
@@ -1351,9 +1351,9 @@ function view_i_cover($idea, $show_editor){
     $sources__13369 = $CI->config->item('sources__13369'); //IDEA COVER UI
 
     $recipient_source = superpower_assigned();
-    $idea_stats = idea_stats($idea['i__metadata']);
+    $i_stats = i_stats($idea['i__metadata']);
 
-    $ui  = '<a href="/'.$idea['i__id'] . '" id="ap_idea_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-link-id="'.$idea['x__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
+    $ui  = '<a href="/'.$idea['i__id'] . '" id="ap_i_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-link-id="'.$idea['x__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
 
     $ui .= '<div class="cover-image">';
     if($recipient_source){
@@ -1366,16 +1366,16 @@ function view_i_cover($idea, $show_editor){
 
     }
 
-    $ui .= idea_fetch_cover($idea['i__id'], true);
+    $ui .= i_fetch_cover($idea['i__id'], true);
 
     //TOP LEFT
     $ui .= '<span class="media-info top-left">';
-    $ui .= $sources__13369[13359]['m_icon'].'<span style="padding-left: 2px;" title="'.$sources__13369[13359]['m_name'].'">'.( $idea_stats['ideas_average'] ? $idea_stats['ideas_average'] : '1' ).'</span>';
+    $ui .= $sources__13369[13359]['m_icon'].'<span style="padding-left: 2px;" title="'.$sources__13369[13359]['m_name'].'">'.( $i_stats['ideas_average'] ? $i_stats['ideas_average'] : '1' ).'</span>';
     $ui .= '</span>';
 
     //TOP RIGHT
-    if($idea_stats['duration_average']){
-        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.view_time_hours($idea_stats['duration_average']).'</span>';
+    if($i_stats['duration_average']){
+        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.view_time_hours($i_stats['duration_average']).'</span>';
     }
 
     //Search for Idea Image:

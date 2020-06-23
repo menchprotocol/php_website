@@ -20,12 +20,12 @@ $(document).ready(function () {
                 } else {
 
                     //REMOVE BOOKMARK from UI:
-                    $('#ap_idea_'+i__id).fadeOut();
+                    $('#ap_i_'+i__id).fadeOut();
 
                     setTimeout(function () {
 
                         //Delete from body:
-                        $('#ap_idea_'+i__id).remove();
+                        $('#ap_i_'+i__id).remove();
 
                         //Re-sort:
                         setTimeout(function () {

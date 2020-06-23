@@ -42,7 +42,7 @@ foreach($config_sources as $en){
 
 
     //Find common base, if allowed:
-    $common_prefix = ( in_array($en['x__down'], $this->config->item('sources_id_12588')) ? null : idea_calc_common_prefix($children, 'e__title') );
+    $common_prefix = ( in_array($en['x__down'], $this->config->item('sources_id_12588')) ? null : i_calc_common_prefix($children, 'e__title') );
 
     //Generate raw IDs:
     $child_ids = array();

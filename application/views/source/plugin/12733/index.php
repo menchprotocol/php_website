@@ -35,11 +35,11 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
         //List the idea:
         view_json(array(
-            'idea_general' => array(
-                'idea_recursive_parents' => $this->MAP_model->recursive_parents($ideas[0]['i__id']),
+            'i_general' => array(
+                'i_recursive_parents' => $this->MAP_model->recursive_parents($ideas[0]['i__id']),
                 'i___common_base' => $this->MAP_model->metadata_common_base($ideas[0]),
             ),
-            'idea_user' => array(
+            'i_user' => array(
                 'discover_find_next' => $this->DISCOVER_model->find_next($_GET['e__id'], $ideas[0], 0, false),
                 'discover_completion_progress' => $this->DISCOVER_model->completion_progress($_GET['e__id'], $ideas[0]),
                 'discover_completion_marks' => $this->DISCOVER_model->completion_marks($_GET['e__id'], $ideas[0]),

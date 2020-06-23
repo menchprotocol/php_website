@@ -274,7 +274,7 @@ class Source extends CI_Controller
         $items_per_page = config_var(11064);
         $parent_e__id = intval($_POST['parent_e__id']);
         $e_focus_filter = intval($_POST['e_focus_filter']);
-        $is_source = e_is_idea_source($parent_e__id);
+        $is_source = e_is_i_source($parent_e__id);
         $page = intval($_POST['page']);
         $filters = array(
             'x__up' => $parent_e__id,
@@ -318,7 +318,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Interaction ID',
             ));
-        } elseif (!isset($_POST['i__id']) || !idea_is_source($_POST['i__id'])) {
+        } elseif (!isset($_POST['i__id']) || !i_is_source($_POST['i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are not the author of this source',

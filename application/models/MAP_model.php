@@ -248,14 +248,14 @@ class MAP_model extends CI_Model
 
 
         //REMOVE NOTES:
-        $idea_notes = $this->DISCOVER_model->fetch(array( //Idea Links
+        $i_notes = $this->DISCOVER_model->fetch(array( //Idea Links
             'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
             'x__right' => $i__id,
         ), array(), 0);
-        foreach($idea_notes as $idea_note){
+        foreach($i_notes as $i_note){
             //Delete this link:
-            $links_deleted += $this->DISCOVER_model->update($idea_note['x__id'], array(
+            $links_deleted += $this->DISCOVER_model->update($i_note['x__id'], array(
                 'x__status' => 6173, //Link Deleted
             ), $x__player, 10686 /* Idea Link Unpublished */);
         }
@@ -319,7 +319,7 @@ class MAP_model extends CI_Model
         return $stats;
     }
 
-    function link_or_create($i__title, $x__player, $link_to_i__id = 0, $is_parent = false, $new_idea_status = 6184, $i__type = 6677, $link_i__id = 0)
+    function link_or_create($i__title, $x__player, $link_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $link_i__id = 0)
     {
 
         /*
@@ -412,7 +412,7 @@ class MAP_model extends CI_Model
             }
 
             //All good so far, continue with linking:
-            $idea_new = $ideas[0];
+            $i_new = $ideas[0];
 
             //Make sure this is not a duplicate Idea for its parent:
             $dup_links = $this->DISCOVER_model->fetch(array(
@@ -428,7 +428,7 @@ class MAP_model extends CI_Model
                 //Ooopsi, this is a duplicate!
                 return array(
                     'status' => 0,
-                    'message' => '[' . $idea_new['i__title'] . '] is previously linked here.',
+                    'message' => '[' . $i_new['i__title'] . '] is previously linked here.',
                 );
 
             } elseif ($link_to_i__id > 0 && $link_i__id == $link_to_i__id) {
@@ -436,7 +436,7 @@ class MAP_model extends CI_Model
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $idea_new['i__title'] . '" as its own '.( $is_parent ? 'previous' : 'next' ).' idea.',
+                    'message' => 'You cannot add "' . $i_new['i__title'] . '" as its own '.( $is_parent ? 'previous' : 'next' ).' idea.',
                 );
 
             }
@@ -454,10 +454,10 @@ class MAP_model extends CI_Model
 
 
             //Create new Idea:
-            $idea_new = $this->MAP_model->create(array(
-                'i__title' => $i__title_validation['idea_clean_title'],
+            $i_new = $this->MAP_model->create(array(
+                'i__title' => $i__title_validation['i_clean_title'],
                 'i__type' => $i__type,
-                'i__status' => $new_idea_status,
+                'i__status' => $new_i_status,
             ), $x__player);
 
         }
@@ -470,37 +470,37 @@ class MAP_model extends CI_Model
                 'x__player' => $x__player,
                 'x__type' => 4228, //Idea Link Regular Discovery
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
-                ( $is_parent ? 'x__left' : 'x__right' ) => $idea_new['i__id'],
+                ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__sort' => 1 + $this->DISCOVER_model->max_order(array(
                         'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-                        'x__left' => ( $is_parent ? $idea_new['i__id'] : $link_to_i__id ),
+                        'x__left' => ( $is_parent ? $i_new['i__id'] : $link_to_i__id ),
                     )),
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the view_i() function
             $new_ideas = $this->DISCOVER_model->fetch(array(
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
-                ( $is_parent ? 'x__left' : 'x__right' ) => $idea_new['i__id'],
+                ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                 'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $next_idea_html = view_i($new_ideas[0], $link_to_i__id, $is_parent, true /* Since they added it! */);
+            $next_i_html = view_i($new_ideas[0], $link_to_i__id, $is_parent, true /* Since they added it! */);
 
         } else {
 
-            $next_idea_html = null;
+            $next_i_html = null;
 
         }
 
         //Return result:
         return array(
             'status' => 1,
-            'new_i__id' => $idea_new['i__id'],
-            'next_idea_html' => $next_idea_html,
+            'new_i__id' => $i_new['i__id'],
+            'next_i_html' => $next_i_html,
         );
 
     }
@@ -518,13 +518,13 @@ class MAP_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7359' : 'sources_id_7360'))) . ')' => null,
             'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
-        ), array('x__left')) as $idea_previous) {
+        ), array('x__left')) as $i_previous) {
 
             //Fetch parents of parents:
-            $recursive_parents = $this->MAP_model->recursive_parents($idea_previous['i__id'], false);
+            $recursive_parents = $this->MAP_model->recursive_parents($i_previous['i__id'], false);
 
             //Add to array:
-            array_push($grand_parents, intval($idea_previous['i__id']));
+            array_push($grand_parents, intval($i_previous['i__id']));
 
             if (count($recursive_parents) > 0) {
                 //Add to appropriate array:
@@ -730,7 +730,7 @@ class MAP_model extends CI_Model
                 'message' => 'Unknown Source. Format must be: @123 Source Title',
             );
 
-        } elseif(in_array($action_e__id , array(12611, 12612)) && !is_valid_idea_string($action_command1)){
+        } elseif(in_array($action_e__id , array(12611, 12612)) && !is_valid_i_string($action_command1)){
 
             return array(
                 'status' => 0,
@@ -764,14 +764,14 @@ class MAP_model extends CI_Model
 
                 //Check if it hs this item:
                 $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
-                $idea_has_sources = $this->DISCOVER_model->fetch(array(
+                $i_has_sources = $this->DISCOVER_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'x__right' => $next_idea['i__id'],
                     '(x__up = '.$e__profile_id.' OR x__down = '.$e__profile_id.')' => null,
                 ));
 
-                if($action_e__id==12591 && !count($idea_has_sources)){
+                if($action_e__id==12591 && !count($i_has_sources)){
 
                     //Missing & Must be Added:
                     $this->DISCOVER_model->create(array(
@@ -784,10 +784,10 @@ class MAP_model extends CI_Model
 
                     $applied_success++;
 
-                } elseif($action_e__id==12592 && count($idea_has_sources)){
+                } elseif($action_e__id==12592 && count($i_has_sources)){
 
                     //Has and must be deleted:
-                    $this->DISCOVER_model->update($idea_has_sources[0]['x__id'], array(
+                    $this->DISCOVER_model->update($i_has_sources[0]['x__id'], array(
                         'x__status' => 6173,
                     ), $x__player, 10678 /* IDEA NOTES Unpublished */);
 
@@ -1138,7 +1138,7 @@ class MAP_model extends CI_Model
 
 
         //Validate this locked idea:
-        if(!idea_is_unlockable($idea)){
+        if(!i_is_unlockable($idea)){
             return array();
         }
 
@@ -1152,9 +1152,9 @@ class MAP_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__right' => $idea['i__id'],
             'i__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
-        ), array('x__left'), 0) as $idea_or_parent){
-            if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $idea_or_parent['i__id'])) {
-                array_push($child_unlock_paths, $idea_or_parent);
+        ), array('x__left'), 0) as $i_or_parent){
+            if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $i_or_parent['i__id'])) {
+                array_push($child_unlock_paths, $i_or_parent);
             }
         }
 
@@ -1165,16 +1165,16 @@ class MAP_model extends CI_Model
             'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
             'x__right' => $idea['i__id'],
-        ), array('x__left'), 0) as $idea_locked_parent){
-            if(idea_is_unlockable($idea_locked_parent)){
+        ), array('x__left'), 0) as $i_locked_parent){
+            if(i_is_unlockable($i_locked_parent)){
                 //Need to check recursively:
-                foreach($this->MAP_model->unlock_paths($idea_locked_parent) as $locked_path){
+                foreach($this->MAP_model->unlock_paths($i_locked_parent) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $locked_path['i__id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }
                 }
-            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $idea_locked_parent['i__id'])) {
-                array_push($child_unlock_paths, $idea_locked_parent);
+            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $i_locked_parent['i__id'])) {
+                array_push($child_unlock_paths, $i_locked_parent);
             }
         }
 
@@ -1200,7 +1200,7 @@ class MAP_model extends CI_Model
 
         //Go through children to see if any/all can be completed:
         foreach($ideas_next as $next_idea){
-            if(idea_is_unlockable($next_idea)){
+            if(i_is_unlockable($next_idea)){
 
                 //Need to check recursively:
                 foreach($this->MAP_model->unlock_paths($next_idea) as $locked_path){

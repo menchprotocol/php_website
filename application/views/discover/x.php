@@ -5,7 +5,7 @@ $filters = array();
 $joined_by = array();
 
 //We have a special OR filter when combined with any_e__id & any_i__id
-$any_idea_e_set = ( ( isset($_GET['any_e__id']) && $_GET['any_e__id'] > 0 ) || ( isset($_GET['any_i__id']) && $_GET['any_i__id'] > 0 ) );
+$any_i_e_set = ( ( isset($_GET['any_e__id']) && $_GET['any_e__id'] > 0 ) || ( isset($_GET['any_i__id']) && $_GET['any_i__id'] > 0 ) );
 $parent_tr_filter = ( isset($_GET['x__reference']) && $_GET['x__reference'] > 0 ? ' OR x__reference = '.$_GET['x__reference'].' ' : false );
 
 
@@ -116,7 +116,7 @@ if(isset($_GET['x__right']) && strlen($_GET['x__right']) > 0){
     }
 }
 
-if(isset($_GET['x__reference']) && strlen($_GET['x__reference']) > 0 && !$any_idea_e_set){
+if(isset($_GET['x__reference']) && strlen($_GET['x__reference']) > 0 && !$any_i_e_set){
     if (substr_count($_GET['x__reference'], ',') > 0) {
         //This is multiple:
         $filters['( x__reference IN (' . $_GET['x__reference'] . '))'] = null;

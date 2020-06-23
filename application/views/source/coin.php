@@ -12,7 +12,7 @@ $is_public = in_array($source['e__status'], $this->config->item('sources_id_7357
 $is_active = in_array($source['e__status'], $this->config->item('sources_id_7358'));
 $superpower_10967 = superpower_active(10967, true);
 $superpower_any = ( $session_source ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-$is_source = e_is_idea_source($source['e__id']);
+$is_source = e_is_i_source($source['e__id']);
 
 ?>
 
@@ -64,7 +64,7 @@ $is_source = e_is_idea_source($source['e__id']);
                             <input type="hidden" id="e_link_count" value="0" />
                             <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
 
-                            <span class="mini-header"><span class="tr_idea_link_title"></span> Merge Source Into:</span>
+                            <span class="mini-header"><span class="tr_i_link_title"></span> Merge Source Into:</span>
                             <input style="padding-left:3px;" type="text" class="form-control algolia_search border e_text_search" id="e_merge" value="" placeholder="Search source to merge..." />
 
                         </div>
@@ -672,7 +672,7 @@ $is_source = e_is_idea_source($source['e__id']);
         } elseif(in_array($x__type, $this->config->item('sources_id_4485'))){
 
             //IDEA NOTES
-            $idea_notes_filters = array(
+            $i_notes_filters = array(
                 'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                 'x__type' => $x__type,
@@ -680,17 +680,17 @@ $is_source = e_is_idea_source($source['e__id']);
             );
 
             //COUNT ONLY
-            $item_counters = $this->DISCOVER_model->fetch($idea_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
+            $item_counters = $this->DISCOVER_model->fetch($i_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
             if($has_superpower){
                 if($counter>0){
 
-                    $idea_notes_query = $this->DISCOVER_model->fetch($idea_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
+                    $i_notes_query = $this->DISCOVER_model->fetch($i_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
                     $this_tab .= '<div class="list-group">';
-                    foreach($idea_notes_query as $count => $idea_notes) {
-                        $this_tab .= view_i($idea_notes, 0, false, false, $idea_notes['x__message'], null, false);
+                    foreach($i_notes_query as $count => $i_notes) {
+                        $this_tab .= view_i($i_notes, 0, false, false, $i_notes['x__message'], null, false);
                     }
                     $this_tab .= '</div>';
 
@@ -703,21 +703,21 @@ $is_source = e_is_idea_source($source['e__id']);
 
         } elseif($x__type == 12969 /* MY DISCOVERIES */){
 
-            $idea_discoveries_filters = array(
+            $i_discoveries_filters = array(
                 'x__player' => $source['e__id'],
                 'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
                 'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             );
-            $player_discoveries = $this->DISCOVER_model->fetch($idea_discoveries_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
+            $player_discoveries = $this->DISCOVER_model->fetch($i_discoveries_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
             $counter = $player_discoveries[0]['totals'];
 
             if($has_superpower){
                 if($counter > 0){
-                    $idea_discoveries_query = $this->DISCOVER_model->fetch($idea_discoveries_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
+                    $i_discoveries_query = $this->DISCOVER_model->fetch($i_discoveries_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
                     $this_tab .= '<div class="list-group">';
-                    foreach($idea_discoveries_query as $count => $idea_notes) {
-                        $this_tab .= view_i($idea_notes);
+                    foreach($i_discoveries_query as $count => $i_notes) {
+                        $this_tab .= view_i($i_notes);
                     }
                     $this_tab .= '</div>';
                 } else {

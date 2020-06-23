@@ -21,7 +21,7 @@ if(isset($_GET['i__id'])){
 
 $stats = array(
     'start_time' => time(),
-    'idea_scanned' => 0,
+    'i_scanned' => 0,
     'featured_scanned' => 0,
 );
 
@@ -36,7 +36,7 @@ foreach($this->MAP_model->fetch($query_filters, 0, 0, array('i__weight' => 'DESC
     $is_scanned = array_merge($is_scanned, $results['__i___ids']);
 
     $stats['featured_scanned']++;
-    $stats['idea_scanned'] += count($results['__i___ids']);
+    $stats['i_scanned'] += count($results['__i___ids']);
 
 }
 

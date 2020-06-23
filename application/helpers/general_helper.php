@@ -288,7 +288,7 @@ function is_valid_e_string($string){
     return substr($string, 0, 1) == '@' && is_numeric(one_two_explode('@',' ',$string));
 }
 
-function is_valid_idea_string($string){
+function is_valid_i_string($string){
     return substr($string, 0, 1) == '#' && is_numeric(one_two_explode('#',' ',$string));
 }
 
@@ -409,10 +409,10 @@ function e_count_connections($e__id, $return_html = true){
 }
 
 
-function idea_fetch_cover($i__id, $html_format = false){
+function i_fetch_cover($i__id, $html_format = false){
 
     $CI =& get_instance();
-    $idea_fetch_cover = null;
+    $i_fetch_cover = null;
     foreach($CI->DISCOVER_model->fetch(array( //IDEA SOURCE
         'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
@@ -431,10 +431,10 @@ function idea_fetch_cover($i__id, $html_format = false){
                     'x__type' => 4260, //IMAGES ONLY
                     'x__down' => $fetched_source[$e_ref_field],
                 )) as $e_image) {
-                    $idea_fetch_cover = $e_image['x__message'];
+                    $i_fetch_cover = $e_image['x__message'];
                     break;
                 }
-                if($idea_fetch_cover){
+                if($i_fetch_cover){
                     break;
                 }
             }
@@ -443,7 +443,7 @@ function idea_fetch_cover($i__id, $html_format = false){
     }
 
     //Return something:
-    $image_url = ( $idea_fetch_cover ? $idea_fetch_cover : config_var(12904) );
+    $image_url = ( $i_fetch_cover ? $i_fetch_cover : config_var(12904) );
     return ( $html_format ? '<img src="'.$image_url.'" />' : $image_url );
 
 }
@@ -576,7 +576,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 }
 
-function idea_is_unlockable($idea){
+function i_is_unlockable($idea){
     $CI =& get_instance();
     return in_array($idea['i__status'], $CI->config->item('sources_id_7355') /* PUBLIC */);
 }
@@ -829,7 +829,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
 
             //IDEA COIN
             $previous_do_hide = true;
-            $bold_upto_weight = idea_calc_bold_upto_weight($query);
+            $bold_upto_weight = i_calc_bold_upto_weight($query);
             $show_max = config_var(11986);
 
             foreach($query as $count => $item){
@@ -873,7 +873,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
 
 }
 
-function idea_stats($i__metadata){
+function i_stats($i__metadata){
 
     //Calculates average based on metadata:
     $metadata = unserialize($i__metadata);
@@ -967,7 +967,7 @@ function fetch_cookie_order($cookie_name){
     return $new_order_value;
 }
 
-function idea_calc_bold_upto_weight($child_list){
+function i_calc_bold_upto_weight($child_list){
     $bold_upto_weight = 0;
     $previous_weight = null;
     foreach($child_list as $count => $child_item) {
@@ -986,7 +986,7 @@ function idea_calc_bold_upto_weight($child_list){
     return $bold_upto_weight;
 }
 
-function idea_calc_common_prefix($child_list, $child_field){
+function i_calc_common_prefix($child_list, $child_field){
 
     $CI =& get_instance();
 
@@ -1249,7 +1249,7 @@ function i__title_validate($string){
     //All good, return success:
     return array(
         'status' => 1,
-        'idea_clean_title' => trim($string),
+        'i_clean_title' => trim($string),
     );
 
 }
@@ -1331,7 +1331,7 @@ function e__title_validate($string, $x__type = 0){
 
 
 
-function e_is_idea_source($e__id, $session_source = array()){
+function e_is_i_source($e__id, $session_source = array()){
 
 
     if(!$session_source){
@@ -1363,7 +1363,7 @@ function e_is_idea_source($e__id, $session_source = array()){
 
 }
 
-function idea_is_source($i__id, $session_source = array()){
+function i_is_source($i__id, $session_source = array()){
 
     if(!$session_source){
         //Fetch from session:
@@ -1644,14 +1644,14 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__id'] = intval($db_row['i__id']);
                 $export_row['object__url'] = '/map/i_go/' . $db_row['i__id'];
                 $export_row['object__status'] = intval($db_row['i__status']);
-                $export_row['object__icon'] = idea_fetch_cover($db_row['i__id']);
+                $export_row['object__icon'] = i_fetch_cover($db_row['i__id']);
                 $export_row['object__title'] = $db_row['i__title'];
                 $export_row['object__weight'] = intval($db_row['i__weight']);
 
                 //Idea Stats:
-                $idea_stats = idea_stats($db_row['i__metadata']);
-                $export_row['object__ideas'] = $idea_stats['ideas_average'];
-                $export_row['object__duration'] = view_time_hours($idea_stats['duration_average']);
+                $i_stats = i_stats($db_row['i__metadata']);
+                $export_row['object__ideas'] = $i_stats['ideas_average'];
+                $export_row['object__duration'] = view_time_hours($i_stats['duration_average']);
 
                 if(in_array($db_row['i__status'], $CI->config->item('sources_id_12138'))){
                     array_push($export_row['_tags'], 'is_featured');

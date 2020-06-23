@@ -1,5 +1,5 @@
 <script>
-    var idea_loaded_id = <?= $idea_focus['i__id'] ?>;
+    var i_loaded_id = <?= $i_focus['i__id'] ?>;
 </script>
 
 <script src="/application/views/discover/coin.js?v=<?= config_var(11060) ?>"
@@ -11,7 +11,7 @@
 
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 $sources__13291 = $this->config->item('sources__13291'); //DISCOVER TABS
-$idea_type_meet_requirement = in_array($idea_focus['i__type'], $this->config->item('sources_id_7309'));
+$i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('sources_id_7309'));
 $recipient_source = superpower_assigned();
 if(!isset($recipient_source['e__id']) ){
     $recipient_source['e__id'] = 0;
@@ -23,12 +23,12 @@ $ideas_next = $this->DISCOVER_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
     'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-    'x__left' => $idea_focus['i__id'],
+    'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
 $chapters = count($ideas_next);
 $completion_rate['completion_percentage'] = 0;
-$in_my_discoveries = ( $recipient_source['e__id'] ? $this->DISCOVER_model->idea_home($idea_focus['i__id'], $recipient_source) : false );
+$in_my_discoveries = ( $recipient_source['e__id'] ? $this->DISCOVER_model->i_home($i_focus['i__id'], $recipient_source) : false );
 
 
 if($recipient_source['e__id']){
@@ -37,32 +37,32 @@ if($recipient_source['e__id']){
     $this->DISCOVER_model->create(array(
         'x__player' => $recipient_source['e__id'],
         'x__type' => 7610, //PLAYER VIEWED IDEA
-        'x__left' => $idea_focus['i__id'],
-        'x__sort' => fetch_cookie_order('7610_'.$idea_focus['i__id']),
+        'x__left' => $i_focus['i__id'],
+        'x__sort' => fetch_cookie_order('7610_'.$i_focus['i__id']),
     ));
 
     if ($in_my_discoveries) {
 
         // % DONE
-        $completion_rate = $this->DISCOVER_model->completion_progress($recipient_source['e__id'], $idea_focus);
+        $completion_rate = $this->DISCOVER_model->completion_progress($recipient_source['e__id'], $i_focus);
 
         //Fetch progress history:
         $discovery_completes = $this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //DISCOVER COMPLETE
             'x__player' => $recipient_source['e__id'],
-            'x__left' => $idea_focus['i__id'],
+            'x__left' => $i_focus['i__id'],
         ));
 
 
-        if($idea_type_meet_requirement){
+        if($i_type_meet_requirement){
 
             //Reverse check answers to see if they have previously unlocked a path:
             $unlocked_connections = $this->DISCOVER_model->fetch(array(
                 'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //DISCOVER IDEA LINKS
-                'x__right' => $idea_focus['i__id'],
+                'x__right' => $i_focus['i__id'],
                 'x__player' => $recipient_source['e__id'],
             ), array('x__left'), 1);
 
@@ -83,10 +83,10 @@ if($recipient_source['e__id']){
                 if($discovery_completion_type_id > 0){
 
                     //Yes, Issue coin:
-                    array_push($discovery_completes, $this->DISCOVER_model->mark_complete($idea_focus, array(
+                    array_push($discovery_completes, $this->DISCOVER_model->mark_complete($i_focus, array(
                         'x__type' => $discovery_completion_type_id,
                         'x__player' => $recipient_source['e__id'],
-                        'x__left' => $idea_focus['i__id'],
+                        'x__left' => $i_focus['i__id'],
                     )));
 
                 } else {
@@ -96,7 +96,7 @@ if($recipient_source['e__id']){
                         'x__type' => 4246, //Platform Bug Reports
                         'x__player' => $recipient_source['e__id'],
                         'x__message' => 'x_coin() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
-                        'x__left' => $idea_focus['i__id'],
+                        'x__left' => $i_focus['i__id'],
                         'x__reference' => $unlocked_connections[0]['x__id'],
                     ));
 
@@ -105,16 +105,16 @@ if($recipient_source['e__id']){
             } else {
 
                 //Try to find paths to unlock:
-                $unlock_paths = $this->MAP_model->unlock_paths($idea_focus);
+                $unlock_paths = $this->MAP_model->unlock_paths($i_focus);
 
                 //Set completion method:
                 if(!count($unlock_paths)){
 
                     //No path found:
-                    array_push($discovery_completes, $this->DISCOVER_model->mark_complete($idea_focus, array(
+                    array_push($discovery_completes, $this->DISCOVER_model->mark_complete($i_focus, array(
                         'x__type' => 7492, //TERMINATE
                         'x__player' => $recipient_source['e__id'],
-                        'x__left' => $idea_focus['i__id'],
+                        'x__left' => $i_focus['i__id'],
                     )));
 
 
@@ -139,12 +139,12 @@ if($recipient_source['e__id']){
 
 
 //IDEA TITLE
-echo '<h1 class="block-one" '.( !$recipient_source['e__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($idea_focus) . '</span></h1>';
+echo '<h1 class="block-one" '.( !$recipient_source['e__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
 
 
 
 //IDEA LAYOUT
-$idea_stats = idea_stats($idea_focus['i__metadata']);
+$i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 13291;
 $tab_pills = '<ul class="nav nav-pills nav-sm">';
 $tab_content = '';
@@ -155,7 +155,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
     //Is this a caret menu?
     if(in_array(11040 , $m['m_parents'])){
-        echo view_caret($x__type, $m, $idea_focus['i__id']);
+        echo view_caret($x__type, $m, $i_focus['i__id']);
         continue;
     }
 
@@ -168,7 +168,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $messages = $this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $idea_focus['i__id'],
+            'x__right' => $i_focus['i__id'],
         ), array(), 0, 0, array('x__sort' => 'ASC'));
         $counter = count($messages);
 
@@ -184,26 +184,26 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==13359 && $idea_stats['ideas_average']>1){
+    } elseif($x__type==13359 && $i_stats['ideas_average']>1){
 
         //IDEAS
-        $counter = $idea_stats['ideas_average'];
+        $counter = $i_stats['ideas_average'];
 
         //IDEA or TIME difference?
-        if($idea_stats['ideas_min']!=$idea_stats['ideas_max'] || $idea_stats['duration_min']!=$idea_stats['duration_max']){
+        if($i_stats['ideas_min']!=$i_stats['ideas_max'] || $i_stats['duration_min']!=$i_stats['duration_max']){
 
             //Variable time range:
             $this_tab .= '<p class="space-content">The number of ideas you discover (and the time it takes to discover them) depends on the choices you make interactively along the way:</p>';
             $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-            $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_min']).'</span><br />';
-            $this_tab .= '<span class="discovering-paths">Average:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span><br />';
-            $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$idea_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($idea_stats['duration_max']).'</span>';
+            $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_min']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Average:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_max']).'</span>';
             $this_tab .= '</p>';
 
         } else {
 
             //Single Time range:
-            $this_tab .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($idea_stats['duration_average']).'</span> to discover '.$counter.' idea'.view__s($counter).':</p>';
+            $this_tab .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span> to discover '.$counter.' idea'.view__s($counter).':</p>';
 
         }
 
@@ -211,7 +211,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         if(!$in_my_discoveries && $chapters){
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($ideas_next as $key => $next_idea){
-                $this_tab .= view_i_discovered($next_idea, idea_calc_common_prefix($ideas_next, 'i__title'));
+                $this_tab .= view_i_discovered($next_idea, i_calc_common_prefix($ideas_next, 'i__title'));
             }
             $this_tab .= '</div>';
         }
@@ -221,11 +221,11 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-            'x__right' => $idea_focus['i__id'],
+            'x__right' => $i_focus['i__id'],
             'x__left !=' => $this->config->item('featured_i__id'),
         ), array('x__left'), 0);
         if(count($ideas_previous)){
-            $this_tab .= '<p class="space-content">'.view_i_title($idea_focus).' Helps you:</p>';
+            $this_tab .= '<p class="space-content">'.view_i_title($i_focus).' Helps you:</p>';
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($ideas_previous as $key => $previous_idea){
                 $this_tab .= view_i_discovered($previous_idea);
@@ -233,35 +233,35 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= '</div>';
         }
 
-    } elseif($x__type==4983 && $idea_stats['players_count']>0){
+    } elseif($x__type==4983 && $i_stats['players_count']>0){
 
         //AUTHORS
-        $counter = $idea_stats['players_count'];
+        $counter = $i_stats['players_count'];
         $this_tab .= '<p class="space-content">Ideas mapped by these players:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-        foreach ($idea_stats['players_array'] as $e_source) {
+        foreach ($i_stats['players_array'] as $e_source) {
             $this_tab .= view_e_basic($e_source);
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==12864 && $idea_stats['sources_count']>0){
+    } elseif($x__type==12864 && $i_stats['sources_count']>0){
 
         //EXPERTS
-        $counter = $idea_stats['sources_count'];
+        $counter = $i_stats['sources_count'];
         $this_tab .= '<p class="space-content">Ideas mapped from these expert sources:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-        foreach ($idea_stats['sources_array'] as $e_source) {
+        foreach ($i_stats['sources_array'] as $e_source) {
             $this_tab .= view_e_basic($e_source);
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==7545 && $idea_stats['certificate_count']>0){
+    } elseif($x__type==7545 && $i_stats['certificate_count']>0){
 
         //CERTIFICATES
-        $counter = $idea_stats['certificate_count'];
+        $counter = $i_stats['certificate_count'];
         $this_tab .= '<p class="space-content">Completion could earn you some of the following certificates:</p>';
         $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-        foreach ($idea_stats['certificate_array'] as $e_source) {
+        foreach ($i_stats['certificate_array'] as $e_source) {
             $e_source['x__message'] = ''; //Remove for this
             $this_tab .= view_e_basic($e_source);
         }
@@ -273,7 +273,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $comments = $this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__type' => 12419, //COMMENTS
-            'x__right' => $idea_focus['i__id'],
+            'x__right' => $i_focus['i__id'],
         ), array('x__player'), 0, 0, array('x__sort' => 'ASC'));
         $counter = count($comments);
 
@@ -284,14 +284,14 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
     } elseif($x__type==13023){
 
         //SHARE
-        $this_url = $this->config->item('base_url').'/'.$idea_focus['i__id'];
+        $this_url = $this->config->item('base_url').'/'.$i_focus['i__id'];
 
         $this_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
         $this_tab .= '<div style="margin-bottom:13px;">Share URL:</div>';
         $this_tab .= '<input style="margin-bottom:13px;" type="url" value="' .$this_url . '" class="form-control border">';
         $this_tab .= '<div style="margin-bottom:13px;">Or share using:</div>';
         foreach($this->config->item('sources__13023') as $m2) {
-            $this_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$idea_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
+            $this_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
         }
         $this_tab .= '</div>';
 
@@ -317,7 +317,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('sources_id_13300'));
     $tab_pill_count++;
 
-    $tab_pills .= '<li class="nav-item"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.', '.$idea_focus['i__id'].', 0)">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-active-max">&nbsp;'.$m['m_name'].'</span></a></li>';
+    $tab_pills .= '<li class="nav-item"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.', '.$i_focus['i__id'].', 0)">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-active-max">&nbsp;'.$m['m_name'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $this_tab;
@@ -341,7 +341,7 @@ echo $tab_content;
 if(!$in_my_discoveries){
 
     //GET STARTED
-    echo '<div class="margin-top-down discover-add left-margin inline-block"><a class="btn btn-discover" href="/discover/x_start/'.$idea_focus['i__id'].'">'.$sources__11035[4235]['m_icon'].' '.$sources__11035[4235]['m_name'].'</a></div>';
+    echo '<div class="margin-top-down discover-add left-margin inline-block"><a class="btn btn-discover" href="/discover/x_start/'.$i_focus['i__id'].'">'.$sources__11035[4235]['m_icon'].' '.$sources__11035[4235]['m_name'].'</a></div>';
 
 } else {
 
@@ -351,12 +351,12 @@ if(!$in_my_discoveries){
         'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'x__type' => 6140, //DISCOVER UNLOCK LINK
         'x__player' => $recipient_source['e__id'],
-        'x__left' => $idea_focus['i__id'],
+        'x__left' => $i_focus['i__id'],
     ), array('x__right'), 0);
 
     //Did we have any steps unlocked?
     if(count($unlocked_discoveries) > 0){
-        view_i_list($idea_focus, $unlocked_discoveries, $recipient_source, 'UNLOCKED:', false);
+        view_i_list($i_focus, $unlocked_discoveries, $recipient_source, 'UNLOCKED:', false);
     }
 
 
@@ -372,22 +372,22 @@ if(!$in_my_discoveries){
 
 
     //LOCKED
-    if ($idea_type_meet_requirement) {
+    if ($i_type_meet_requirement) {
 
 
         //Requirement lock
         if(!count($discovery_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
             //List Unlock paths:
-            view_i_list($idea_focus, $unlock_paths, $recipient_source, 'SUGGESTED IDEAS:');
+            view_i_list($i_focus, $unlock_paths, $recipient_source, 'SUGGESTED IDEAS:');
 
         }
 
         //List Children if any:
-        view_i_list($idea_focus, $ideas_next, $recipient_source, null, ( $completion_rate['completion_percentage'] < 100 ));
+        view_i_list($i_focus, $ideas_next, $recipient_source, null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
-    } elseif (in_array($idea_focus['i__type'], $this->config->item('sources_id_7712'))){
+    } elseif (in_array($i_focus['i__type'], $this->config->item('sources_id_7712'))){
 
         //SELECT ANSWER
 
@@ -399,18 +399,18 @@ if(!$in_my_discoveries){
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',' , $this->config->item('sources_id_12229')) . ')' => null, //DISCOVER COMPLETE
                 'x__player' => $recipient_source['e__id'],
-                'x__left' => $idea_focus['i__id'],
+                'x__left' => $i_focus['i__id'],
             )))){
 
-                array_push($discovery_completes, $this->DISCOVER_model->mark_complete($idea_focus, array(
+                array_push($discovery_completes, $this->DISCOVER_model->mark_complete($i_focus, array(
                     'x__type' => 4559, //DISCOVER MESSAGES
                     'x__player' => $recipient_source['e__id'],
-                    'x__left' => $idea_focus['i__id'],
+                    'x__left' => $i_focus['i__id'],
                 )));
 
             }
 
-            view_next_idea_previous($idea_focus['i__id'], $recipient_source);
+            view_next_i_previous($i_focus['i__id'], $recipient_source);
             return true;
 
         } else {
@@ -421,13 +421,13 @@ if(!$in_my_discoveries){
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $idea_focus['i__id'],
+                'x__left' => $i_focus['i__id'],
             ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $discovery){
                 //See if this answer was seleted:
                 if(count($this->DISCOVER_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //DISCOVER IDEA LINK
-                    'x__left' => $idea_focus['i__id'],
+                    'x__left' => $i_focus['i__id'],
                     'x__right' => $discovery['i__id'],
                     'x__player' => $recipient_source['e__id'],
                 )))){
@@ -440,11 +440,11 @@ if(!$in_my_discoveries){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_i_list($idea_focus, $x_answers, $recipient_source, 'YOU ANSWERED:', false);
+                view_i_list($i_focus, $x_answers, $recipient_source, 'YOU ANSWERED:', false);
 
                 echo '<div class="doclear">&nbsp;</div>';
 
-                view_next_idea_previous($idea_focus['i__id'], $recipient_source);
+                view_next_i_previous($i_focus['i__id'], $recipient_source);
 
                 echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
 
@@ -457,31 +457,31 @@ if(!$in_my_discoveries){
             echo '<div class="edit_select_answer '.( count($x_answers)>0 ? 'hidden' : '' ).'">';
 
             //HTML:
-            if ($idea_focus['i__type'] == 6684) {
+            if ($i_focus['i__type'] == 6684) {
 
                 echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
 
-            } elseif ($idea_focus['i__type'] == 7231) {
+            } elseif ($i_focus['i__type'] == 7231) {
 
                 echo '<div class="discover-topic"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
 
             }
 
             //Open for list to be printed:
-            echo '<div class="list-group list-answers" i__type="'.$idea_focus['i__type'].'">';
+            echo '<div class="list-group list-answers" i__type="'.$i_focus['i__type'].'">';
 
 
 
 
             //List children to choose from:
-            $common_prefix = idea_calc_common_prefix($ideas_next, 'i__title');
+            $common_prefix = i_calc_common_prefix($ideas_next, 'i__title');
             foreach($ideas_next as $key => $next_idea) {
 
                 //Has this been previously selected?
                 $previously_selected = count($this->DISCOVER_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('sources_id_12326')) . ')' => null, //DISCOVER IDEA LINKS
-                    'x__left' => $idea_focus['i__id'],
+                    'x__left' => $i_focus['i__id'],
                     'x__right' => $next_idea['i__id'],
                     'x__player' => $recipient_source['e__id'],
                 )));
@@ -511,7 +511,7 @@ if(!$in_my_discoveries){
 
             echo '<div class="result-update margin-top-down"></div>';
 
-            echo view_i_previous_discovered($idea_focus['i__id'], $recipient_source);
+            echo view_i_previous_discovered($i_focus['i__id'], $recipient_source);
 
             //Button to submit selection:
             if(count($x_answers)>0){
@@ -524,12 +524,12 @@ if(!$in_my_discoveries){
 
         }
 
-    } elseif ($idea_focus['i__type'] == 6677) {
+    } elseif ($i_focus['i__type'] == 6677) {
 
         //DISCOVER ONLY
-        view_i_list($idea_focus, $ideas_next, $recipient_source);
+        view_i_list($i_focus, $ideas_next, $recipient_source);
 
-    } elseif ($idea_focus['i__type'] == 6683) {
+    } elseif ($i_focus['i__type'] == 6683) {
 
         //TEXT RESPONSE
 
@@ -540,7 +540,7 @@ if(!$in_my_discoveries){
         echo '<div class="text_saving_result margin-top-down"></div>';
 
         //Show Previous Button:
-        echo view_i_previous_discovered($idea_focus['i__id'], $recipient_source);
+        echo view_i_previous_discovered($i_focus['i__id'], $recipient_source);
 
         //Save/Upload & Next:
         echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="x_respond()">'.$sources__11035[12211]['m_icon'].'</a></div>';
@@ -548,35 +548,35 @@ if(!$in_my_discoveries){
 
         if(count($discovery_completes)){
             //Next Ideas:
-            view_i_list($idea_focus, $ideas_next, $recipient_source, null,false);
+            view_i_list($i_focus, $ideas_next, $recipient_source, null,false);
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#x_respond\')); $(\'#x_respond\').focus(); }); </script>';
 
 
-    } elseif (in_array($idea_focus['i__type'], $this->config->item('sources_id_7751'))) {
+    } elseif (in_array($i_focus['i__type'], $this->config->item('sources_id_7751'))) {
 
         //FILE UPLOAD
 
         echo '<div class="playerUploader">';
         echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
-        echo '<input class="inputfile" type="file" name="file" id="fileType'.$idea_focus['i__type'].'" />';
+        echo '<input class="inputfile" type="file" name="file" id="fileType'.$i_focus['i__type'].'" />';
 
 
         if(!count($discovery_completes)) {
 
             //Show Previous Button:
             echo '<div class="file_saving_result">';
-            echo view_i_previous_discovered($idea_focus['i__id'], $recipient_source);
+            echo view_i_previous_discovered($i_focus['i__id'], $recipient_source);
             echo '</div>';
 
             //Show next here but keep hidden until file is uploaded:
             echo '<div class="go_next_upload hidden">';
-            view_next_idea_previous($idea_focus['i__id'], $recipient_source);
+            view_next_i_previous($i_focus['i__id'], $recipient_source);
             echo '</div>';
 
-            echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$idea_focus['i__type'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+            echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-discover btn-circle inline-block" for="fileType'.$i_focus['i__type'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
         } else {
 
@@ -589,9 +589,9 @@ if(!$in_my_discoveries){
             echo '</div>';
 
             //Any child ideas?
-            view_i_list($idea_focus, $ideas_next, $recipient_source, null, true, false);
+            view_i_list($i_focus, $ideas_next, $recipient_source, null, true, false);
 
-            echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$idea_focus['i__type'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+            echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 
         }
 
@@ -605,8 +605,8 @@ if(!$in_my_discoveries){
         $this->DISCOVER_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__player' => $recipient_source['e__id'],
-            'x__message' => 'step_echo() unknown idea type source ID ['.$idea_focus['i__type'].'] that could not be rendered',
-            'x__left' => $idea_focus['i__id'],
+            'x__message' => 'step_echo() unknown idea type source ID ['.$i_focus['i__type'].'] that could not be rendered',
+            'x__left' => $i_focus['i__id'],
         ));
 
     }

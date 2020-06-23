@@ -10,7 +10,7 @@ var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
-    idea_note_activate();
+    i_note_activate();
 
     //Load search for mass update function:
     load_editor();
@@ -19,11 +19,11 @@ $(document).ready(function () {
     x_set_text_start();
 
     //Put focus on messages if no message:
-    if(!$('#idea_notes_list_4231 .note_sortable').length){
+    if(!$('#i_notes_list_4231 .note_sortable').length){
         $('#x__message4231').focus();
     }
 
-    autosize($('.text__4736_'+idea_loaded_id));
+    autosize($('.text__4736_'+i_loaded_id));
 
     //Activate Source-Only Inputs:
     $(".source-mapper").each(function () {
@@ -31,14 +31,14 @@ $(document).ready(function () {
     });
 
     //Load top/bottom idea searches:
-    idea_load_search(".IdeaAddPrevious",1, 'q', 'link_in');
-    idea_load_search(".ideaadder-level-2-child",0, 'w', 'link_in');
+    i_load_search(".IdeaAddPrevious",1, 'q', 'link_in');
+    i_load_search(".ideaadder-level-2-child",0, 'w', 'link_in');
 
     //Expand selections:
     prep_search_pad();
 
     //Load Sortable:
-    idea_sort_load(idea_loaded_id);
+    i_sort_load(i_loaded_id);
 
 });
 
@@ -49,13 +49,13 @@ function e_only_unlink(x__id, note_type_id) {
     if (r == true) {
         $.post("/source/e_only_unlink", {
 
-            i__id: idea_loaded_id,
+            i__id: i_loaded_id,
             x__id: x__id,
 
         }, function (data) {
             if (data.status) {
 
-                idea_note_counter(note_type_id, -1);
+                i_note_counter(note_type_id, -1);
                 $(".tr_" + x__id).fadeOut();
                 setTimeout(function () {
                     $(".tr_" + x__id).remove();
@@ -94,7 +94,7 @@ function e_only_add(e_existing_id, note_type_id) {
     input.prop('disabled', true);
     $.post("/source/e_only_add", {
 
-        i__id: idea_loaded_id,
+        i__id: i_loaded_id,
         note_type_id: note_type_id,
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
@@ -106,7 +106,7 @@ function e_only_add(e_existing_id, note_type_id) {
 
         if (data.status) {
 
-            idea_note_counter(note_type_id, +1);
+            i_note_counter(note_type_id, +1);
 
             //Raw input to make it discovers for next URL:
             input.focus();
@@ -134,7 +134,7 @@ function e_e_only_search(note_type_id) {
 
     var element_focus = ".source-map-"+note_type_id;
 
-    var base_creator_url = '/source/create/'+idea_loaded_id+'/?content_title=';
+    var base_creator_url = '/source/create/'+i_loaded_id+'/?content_title=';
 
     $(element_focus + ' .add-input').focus(function() {
         $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
@@ -193,9 +193,9 @@ function e_e_only_search(note_type_id) {
 }
 
 function discover_preview(){
-    if(parseInt($('.dropi_4737_'+idea_loaded_id+'_0.active').attr('new-en-id')) in js_sources__7355){
+    if(parseInt($('.dropi_4737_'+i_loaded_id+'_0.active').attr('new-en-id')) in js_sources__7355){
         //Idea is public, go to preview:
-        window.location = '/' + idea_loaded_id;
+        window.location = '/' + i_loaded_id;
     } else {
         //Inform them that they cannot discover yet:
         alert('You must publish idea before discovering it.');
@@ -216,28 +216,28 @@ function i_unlink(i__id, x__id, is_parent){
             x__id: x__id,
         }, function (data) {
             if (data.status) {
-                idea_ui_delete(i__id,x__id);
+                i_ui_delete(i__id,x__id);
                 if(!is_parent){
-                    idea_note_counter(11020, -1);
+                    i_note_counter(11020, -1);
                 }
             }
         });
     }
 }
 
-function idea_ui_delete(i__id,x__id){
+function i_ui_delete(i__id,x__id){
 
     //Delete from UI:
-    $('.idea__tr_' + x__id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
+    $('.i__tr_' + x__id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
 
     //Hide the editor & saving results:
-    $('.idea__tr_' + x__id).fadeOut();
+    $('.i__tr_' + x__id).fadeOut();
 
     //Disappear in a while:
     setTimeout(function () {
 
         //Hide the editor & saving results:
-        $('.idea__tr_' + x__id).remove();
+        $('.i__tr_' + x__id).remove();
 
         //Hide editing box:
         $('#modifybox').addClass('hidden');
@@ -250,15 +250,15 @@ function prep_search_pad(){
 
     //All level 2s:
     $('.IdeaAddPrevious').focus(function() {
-        $('.idea_pad_top' ).removeClass('hidden');
+        $('.i_pad_top' ).removeClass('hidden');
     }).focusout(function() {
-        $('.idea_pad_top' ).addClass('hidden');
+        $('.i_pad_top' ).addClass('hidden');
     });
 
     $('.ideaadder-level-2-child').focus(function() {
-        $('.idea_pad_bottom' ).removeClass('hidden');
+        $('.i_pad_bottom' ).removeClass('hidden');
     }).focusout(function() {
-        $('.idea_pad_bottom' ).addClass('hidden');
+        $('.i_pad_bottom' ).addClass('hidden');
     });
 
 }
@@ -268,7 +268,7 @@ function i_sort_save(i__id) {
     var new_x__sorts = [];
     var sort_rank = 0;
 
-    $("#list-in-" + idea_loaded_id + "-0 .ideas_sortable").each(function () {
+    $("#list-in-" + i_loaded_id + "-0 .ideas_sortable").each(function () {
         //Fetch variables for this idea:
         var i__id = parseInt($(this).attr('idea-id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -292,11 +292,11 @@ function i_sort_save(i__id) {
     }
 }
 
-function idea_sort_load(i__id) {
+function i_sort_load(i__id) {
 
 
     var element_key = null;
-    var theobject = document.getElementById("list-in-" + idea_loaded_id + "-0");
+    var theobject = document.getElementById("list-in-" + i_loaded_id + "-0");
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
         return false;
@@ -312,20 +312,20 @@ function idea_sort_load(i__id) {
     });
 }
 
-function i_add(idea_linked_id, is_parent, idea_link_child_id) {
+function i_add(i_linked_id, is_parent, i_link_child_id) {
 
     /*
      *
-     * Either creates an IDEA link between idea_linked_id & idea_link_child_id
+     * Either creates an IDEA link between i_linked_id & i_link_child_id
      * OR will create a new idea based on input text and then link it
-     * to idea_linked_id (In this case idea_link_child_id=0)
+     * to i_linked_id (In this case i_link_child_id=0)
      *
      * */
 
 
     var sort_handler = ".ideas_sortable";
-    var sort_list_id = "list-in-" + idea_loaded_id + '-' + is_parent;
-    var input_field = $('#addidea-c-' + idea_linked_id + '-' + is_parent);
+    var sort_list_id = "list-in-" + i_loaded_id + '-' + is_parent;
+    var input_field = $('#addidea-c-' + i_linked_id + '-' + is_parent);
     var i__title = input_field.val();
 
 
@@ -335,15 +335,15 @@ function i_add(idea_linked_id, is_parent, idea_link_child_id) {
             return false;
         } else {
             //Update the references:
-            idea_link_child_id = parseInt(i__title.substr(1));
-            i__title = idea_link_child_id; //As if we were just linking
+            i_link_child_id = parseInt(i__title.substr(1));
+            i__title = i_link_child_id; //As if we were just linking
         }
     }
 
 
 
-    //We either need the idea name (to create a new idea) or the idea_link_child_id>0 to create an IDEA link:
-    if (!idea_link_child_id && i__title.length < 1) {
+    //We either need the idea name (to create a new idea) or the i_link_child_id>0 to create an IDEA link:
+    if (!i_link_child_id && i__title.length < 1) {
         alert('Enter something');
         input_field.focus();
         return false;
@@ -356,10 +356,10 @@ function i_add(idea_linked_id, is_parent, idea_link_child_id) {
 
     //Update backend:
     $.post("/map/i_add", {
-        idea_linked_id: idea_linked_id,
+        i_linked_id: i_linked_id,
         is_parent:is_parent,
         i__title: i__title,
-        idea_link_child_id: idea_link_child_id
+        i_link_child_id: i_link_child_id
     }, function (data) {
 
         //Delete loader:
@@ -369,15 +369,15 @@ function i_add(idea_linked_id, is_parent, idea_link_child_id) {
 
             if(!is_parent){
                 //Only children have a counter:
-                idea_note_counter(11020, +1);
+                i_note_counter(11020, +1);
             }
 
 
             //Add new
-            add_to_list(sort_list_id, sort_handler, data.next_idea_html);
+            add_to_list(sort_list_id, sort_handler, data.next_i_html);
 
             //Reload sorting to enable sorting for the newly added idea:
-            idea_sort_load(idea_linked_id);
+            i_sort_load(i_linked_id);
 
             //Lookout for textinput updates
             x_set_text_start();
@@ -424,12 +424,12 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
     //Changing Idea Status?
     if(element_id==4737){
 
-        var is_idea_active = (new_e__id in js_sources__7356);
-        var is_idea_public = (new_e__id in js_sources__7355);
+        var is_i_active = (new_e__id in js_sources__7356);
+        var is_i_public = (new_e__id in js_sources__7355);
 
 
         //Deleting?
-        if(!is_idea_active){
+        if(!is_i_active){
             //Seems to be deleting, confirm:
             var r = confirm("Delete this idea AND unlink all its links to other ideas?");
             if (r == false) {
@@ -439,7 +439,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
 
         //Discoveries Setting:
-        if(is_idea_public){
+        if(is_i_public){
 
             //Enable Discoveries:
             $('.idea-discover').removeClass('hidden');
@@ -467,7 +467,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
         i__id: i__id,
         x__id: x__id,
-        idea_loaded_id:idea_loaded_id,
+        i_loaded_id:i_loaded_id,
         element_id: element_id,
         new_e__id: new_e__id
 
@@ -499,8 +499,8 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
             }
 
             if(element_id==4486){
-                $('.idea__tr_'+x__id+' .link_marks').addClass('hidden');
-                $('.idea__tr_'+x__id+' .settings_' + new_e__id).removeClass('hidden');
+                $('.i__tr_'+x__id+' .link_marks').addClass('hidden');
+                $('.i__tr_'+x__id+' .settings_' + new_e__id).removeClass('hidden');
             }
 
         } else {

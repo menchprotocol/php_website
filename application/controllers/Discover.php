@@ -440,7 +440,7 @@ class Discover extends CI_Controller
         //Add this Idea to their Discovery If not there:
         $i__id_added = $i__id;
         $success_message = null;
-        $in_my_discoveries = $this->DISCOVER_model->idea_home($i__id, $session_source);
+        $in_my_discoveries = $this->DISCOVER_model->i_home($i__id, $session_source);
 
         if(!$in_my_discoveries){
             $i__id_added = $this->DISCOVER_model->start($session_source['e__id'], $i__id);
@@ -582,7 +582,7 @@ class Discover extends CI_Controller
 
         //Load specific view based on Idea Level:
         $this->load->view('discover/coin', array(
-            'idea_focus' => $ideas[0],
+            'i_focus' => $ideas[0],
         ));
 
         $this->load->view('footer');
@@ -770,7 +770,7 @@ class Discover extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['idea_loaded_id'])) {
+        } elseif (!isset($_POST['i_loaded_id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea id.',
@@ -783,7 +783,7 @@ class Discover extends CI_Controller
         }
 
         //Save answer:
-        return view_json($this->DISCOVER_model->answer($session_source['e__id'], $_POST['idea_loaded_id'], $_POST['answered_ideas']));
+        return view_json($this->DISCOVER_model->answer($session_source['e__id'], $_POST['i_loaded_id'], $_POST['answered_ideas']));
 
     }
 

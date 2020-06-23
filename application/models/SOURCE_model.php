@@ -446,7 +446,7 @@ class SOURCE_model extends CI_Model
 
         //Analyze domain:
         $url_analysis = analyze_domain($url);
-        $domaidea_previously_existed = 0; //Assume false
+        $domai_previously_existed = 0; //Assume false
         $e_domain = false; //Have an empty placeholder:
 
 
@@ -463,7 +463,7 @@ class SOURCE_model extends CI_Model
         //Do we need to create an source for this domain?
         if (count($url_links) > 0) {
 
-            $domaidea_previously_existed = 1;
+            $domai_previously_existed = 1;
             $e_domain = $url_links[0];
 
         } elseif ($x__player) {
@@ -488,7 +488,7 @@ class SOURCE_model extends CI_Model
         return array_merge( $url_analysis , array(
             'status' => 1,
             'message' => 'Success',
-            'domaidea_previously_existed' => $domaidea_previously_existed,
+            'domai_previously_existed' => $domai_previously_existed,
             'e_domain' => $e_domain,
         ));
 
@@ -733,7 +733,7 @@ class SOURCE_model extends CI_Model
             $e_url = $url_source['e_domain'];
 
             //IF the URL exists since the domain existed and the URL is the domain!
-            if ($url_source['domaidea_previously_existed']) {
+            if ($url_source['domai_previously_existed']) {
                 $url_previously_existed = 1;
             }
 
@@ -845,7 +845,7 @@ class SOURCE_model extends CI_Model
     function mass_update($e__id, $action_e__id, $action_command1, $action_command2, $x__player)
     {
 
-        //Alert: Has a twin function called idea_mass_update()
+        //Alert: Has a twin function called i_mass_update()
 
         boost_power();
 

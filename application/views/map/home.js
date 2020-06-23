@@ -3,7 +3,7 @@
 $(document).ready(function () {
 
     //Load Idea Search:
-    idea_load_search("#newIdeaTitle",0, 'a', 'link_my_in');
+    i_load_search("#newIdeaTitle",0, 'a', 'link_my_in');
 
     $('#newIdeaTitle').focus(function() {
         $('.algolia_pad_search').removeClass('hidden');

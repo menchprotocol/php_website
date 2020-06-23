@@ -18,22 +18,22 @@ foreach($this->DISCOVER_model->fetch(array(
     'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
     'LENGTH(x__metadata) > 0' => null,
-), array('x__right'), 0, 0) as $idea_discovered) {
+), array('x__right'), 0, 0) as $i_discovered) {
     //Echo HTML format of this message:
-    $metadata = unserialize($idea_discovered['x__metadata']);
-    $mark = view_i_marks($idea_discovered);
+    $metadata = unserialize($i_discovered['x__metadata']);
+    $mark = view_i_marks($i_discovered);
     if($mark){
 
         //Fetch parent Idea:
         $previous_ideas = $this->MAP_model->fetch(array(
-            'i__id' => $idea_discovered['x__left'],
+            'i__id' => $i_discovered['x__left'],
         ));
 
         $counter++;
         echo '<tr>';
         echo '<td style="width: 50px;">'.$counter.'</td>';
-        echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_i_marks($idea_discovered).'</td>';
-        echo '<td>'.$sources__6186[$idea_discovered['x__status']]['m_icon'].'</td>';
+        echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_i_marks($i_discovered).'</td>';
+        echo '<td>'.$sources__6186[$i_discovered['x__status']]['m_icon'].'</td>';
         echo '<td style="text-align: left;">';
 
         echo '<div>';
@@ -42,8 +42,8 @@ foreach($this->DISCOVER_model->fetch(array(
         echo '</div>';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$idea_discovered['i__status']]['m_icon'].'</span>';
-        echo '<a href="/map/i_go/'.$idea_discovered['i__id'].'">'.$idea_discovered['i__title'].' [child]</a>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$i_discovered['i__status']]['m_icon'].'</span>';
+        echo '<a href="/map/i_go/'.$i_discovered['i__id'].'">'.$i_discovered['i__title'].' [child]</a>';
         echo '</div>';
 
         if(count($this->DISCOVER_model->fetch(array(
@@ -51,8 +51,8 @@ foreach($this->DISCOVER_model->fetch(array(
                 'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                 'i__type NOT IN (6907,6914)' => null, //NOT AND/OR Lock
                 'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-                'x__right' => $idea_discovered['i__id'],
-            ), array('x__left'))) > 1 || $idea_discovered['i__type'] != 6677){
+                'x__right' => $i_discovered['i__id'],
+            ), array('x__left'))) > 1 || $i_discovered['i__type'] != 6677){
 
             echo '<div>';
             echo 'NOT COOL';
@@ -63,7 +63,7 @@ foreach($this->DISCOVER_model->fetch(array(
             //Update user progression link type:
             $user_discoveries = $this->DISCOVER_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //DISCOVER COIN
-                'x__left' => $idea_discovered['i__id'],
+                'x__left' => $i_discovered['i__id'],
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             ), array(), 0);
 
@@ -98,22 +98,22 @@ if(1){
         'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'LENGTH(x__metadata) > 0' => null,
-    ), array('x__right'), 0, 0) as $idea_discovered) {
+    ), array('x__right'), 0, 0) as $i_discovered) {
         //Echo HTML format of this message:
-        $metadata = unserialize($idea_discovered['x__metadata']);
+        $metadata = unserialize($i_discovered['x__metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         if($tr__assessment_points!=0){
 
             //Fetch parent Idea:
             $previous_ideas = $this->MAP_model->fetch(array(
-                'i__id' => $idea_discovered['x__left'],
+                'i__id' => $i_discovered['x__left'],
             ));
 
             $counter++;
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
-            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_i_marks($idea_discovered).'</td>';
-            echo '<td>'.$sources__6186[$idea_discovered['x__status']]['m_icon'].'</td>';
+            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_i_marks($i_discovered).'</td>';
+            echo '<td>'.$sources__6186[$i_discovered['x__status']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$previous_ideas[0]['i__status']]['m_icon'].'</span>';
@@ -121,8 +121,8 @@ if(1){
             echo '</div>';
 
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$idea_discovered['i__status']]['m_icon'].'</span>';
-            echo '<a href="/map/i_go/'.$idea_discovered['i__id'].'">'.$idea_discovered['i__title'].'</a>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$i_discovered['i__status']]['m_icon'].'</span>';
+            echo '<a href="/map/i_go/'.$i_discovered['i__id'].'">'.$i_discovered['i__title'].'</a>';
             echo '</div>';
             echo '</td>';
             echo '</tr>';

@@ -43,7 +43,7 @@ class Map extends CI_Controller {
 
 
         //Create Idea:
-        $idea = $this->MAP_model->link_or_create($i__title_validation['idea_clean_title'], $session_source['e__id']);
+        $idea = $this->MAP_model->link_or_create($i__title_validation['i_clean_title'], $session_source['e__id']);
 
         //Also add to bookmarks:
         $this->DISCOVER_model->create(array(
@@ -83,8 +83,8 @@ class Map extends CI_Controller {
          * comes through /iID
          *
          * */
-        $idea_is_source = idea_is_source($i__id);
-        return redirect_message(( $idea_is_source ? '/~' : '/' ) . $i__id . ( $idea_is_source && isset($_GET['focus__source']) ? '?focus__source='.$_GET['focus__source'] : '' ) );
+        $i_is_source = i_is_source($i__id);
+        return redirect_message(( $i_is_source ? '/~' : '/' ) . $i__id . ( $i_is_source && isset($_GET['focus__source']) ? '?focus__source='.$_GET['focus__source'] : '' ) );
     }
 
 
@@ -143,7 +143,7 @@ class Map extends CI_Controller {
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('map/coin', array(
-            'idea_focus' => $ideas[0],
+            'i_focus' => $ideas[0],
             'session_source' => $session_source,
         ));
         $this->load->view('footer');
@@ -259,7 +259,7 @@ class Map extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Target Idea ID',
             ));
-        } elseif (!isset($_POST['idea_loaded_id']) || intval($_POST['idea_loaded_id']) < 1) {
+        } elseif (!isset($_POST['i_loaded_id']) || intval($_POST['i_loaded_id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Loaded Idea ID',
@@ -316,7 +316,7 @@ class Map extends CI_Controller {
                 if(!in_array($_POST['new_e__id'], $this->config->item('sources_id_7356'))){
 
                     //Determine what to do after deleted:
-                    if($_POST['i__id'] == $_POST['idea_loaded_id']){
+                    if($_POST['i__id'] == $_POST['i_loaded_id']){
 
                         //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
                         foreach($this->MAP_model->recursive_parents($_POST['i__id'], true, false) as $grand_parent_ids) {
@@ -336,7 +336,7 @@ class Map extends CI_Controller {
                         if(!$delete_element){
 
                             //Just delete from UI using JS:
-                            $delete_element = '.idea_line_' . $_POST['i__id'];
+                            $delete_element = '.i_line_' . $_POST['i__id'];
 
                         }
 
@@ -418,9 +418,9 @@ class Map extends CI_Controller {
 
         /*
          *
-         * Either creates a IDEA link between idea_linked_id & idea_link_child_id
+         * Either creates a IDEA link between i_linked_id & i_link_child_id
          * OR will create a new idea with outcome i__title and then link it
-         * to idea_linked_id (In this case idea_link_child_id=0)
+         * to i_linked_id (In this case i_link_child_id=0)
          *
          * */
 
@@ -431,7 +431,7 @@ class Map extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['idea_linked_id']) || intval($_POST['idea_linked_id']) < 1) {
+        } elseif (!isset($_POST['i_linked_id']) || intval($_POST['i_linked_id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Idea ID',
@@ -441,7 +441,7 @@ class Map extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Is Parent setting',
             ));
-        } elseif (!isset($_POST['i__title']) || !isset($_POST['idea_link_child_id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['idea_link_child_id']) < 1)) {
+        } elseif (!isset($_POST['i__title']) || !isset($_POST['i_link_child_id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['i_link_child_id']) < 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing either Idea Outcome OR Child Idea ID',
@@ -451,7 +451,7 @@ class Map extends CI_Controller {
                 'status' => 0,
                 'message' => 'Idea outcome cannot be longer than '.config_var(4736).' characters',
             ));
-        } elseif($_POST['idea_link_child_id'] >= 2147483647){
+        } elseif($_POST['i_link_child_id'] >= 2147483647){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Value must be less than 2147483647',
@@ -459,14 +459,14 @@ class Map extends CI_Controller {
         }
 
 
-        $new_idea_type = 6677; //Idea Read & Next
+        $new_i_type = 6677; //Idea Read & Next
         $linked_ideas = array();
 
-        if($_POST['idea_link_child_id'] > 0){
+        if($_POST['i_link_child_id'] > 0){
 
             //Fetch link idea to determine idea type:
             $linked_ideas = $this->MAP_model->fetch(array(
-                'i__id' => intval($_POST['idea_link_child_id']),
+                'i__id' => intval($_POST['i_link_child_id']),
                 'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             ));
 
@@ -474,17 +474,17 @@ class Map extends CI_Controller {
                 //validate linked Idea:
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Idea #'.$_POST['idea_link_child_id'].' is not active',
+                    'message' => 'Idea #'.$_POST['i_link_child_id'].' is not active',
                 ));
             }
 
             if(!intval($_POST['is_parent']) && in_array($linked_ideas[0]['i__type'], $this->config->item('sources_id_7712'))){
-                $new_idea_type = 6914; //Require All
+                $new_i_type = 6914; //Require All
             }
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->MAP_model->link_or_create(trim($_POST['i__title']), $session_source['e__id'], $_POST['idea_linked_id'], intval($_POST['is_parent']), 6184, $new_idea_type, $_POST['idea_link_child_id']));
+        return view_json($this->MAP_model->link_or_create(trim($_POST['i__title']), $session_source['e__id'], $_POST['i_linked_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_link_child_id']));
 
     }
 

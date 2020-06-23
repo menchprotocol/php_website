@@ -1212,13 +1212,13 @@ class DISCOVER_model extends CI_Model
             )))){
 
             //Not added to their Discoveries so far, let's go ahead and add it:
-            $idea_rank = 1;
+            $i_rank = 1;
             $home = $this->DISCOVER_model->create(array(
                 'x__type' => ( $recommender_i__id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
                 'x__player' => $e__id, //Belongs to this User
                 'x__left' => $ideas[0]['i__id'], //The Idea they are adding
                 'x__right' => $recommender_i__id, //Store the recommended idea
-                'x__sort' => $idea_rank, //Always place at the top of their Discoveries
+                'x__sort' => $i_rank, //Always place at the top of their Discoveries
             ));
 
             //Move other ideas down in the Discovery List:
@@ -1230,11 +1230,11 @@ class DISCOVER_model extends CI_Model
             ), array(), 0, 0, array('x__sort' => 'ASC')) as $current_ideas){
 
                 //Increase rank:
-                $idea_rank++;
+                $i_rank++;
 
                 //Update order:
                 $this->DISCOVER_model->update($current_ideas['x__id'], array(
-                    'x__sort' => $idea_rank,
+                    'x__sort' => $i_rank,
                 ), $e__id, 10681 /* Ideas Ordered Automatically  */);
 
             }
@@ -1470,7 +1470,7 @@ class DISCOVER_model extends CI_Model
          *
          * */
 
-        if(!idea_is_unlockable($idea)){
+        if(!i_is_unlockable($idea)){
             return array(
                 'status' => 0,
                 'message' => 'Not a valid locked idea type and status',
@@ -1554,7 +1554,7 @@ class DISCOVER_model extends CI_Model
     }
 
 
-    function idea_home($i__id, $recipient_source){
+    function i_home($i__id, $recipient_source){
 
         $in_my_discoveries = false;
 
@@ -1655,20 +1655,20 @@ class DISCOVER_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $question_i__id,
                     'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
-                ), array('x__right')) as $idea_answer){
+                ), array('x__right')) as $i_answer){
 
                     //Extract Link Metadata:
-                    $possible_answer_metadata = unserialize($idea_answer['x__metadata']);
+                    $possible_answer_metadata = unserialize($i_answer['x__metadata']);
 
                     //Assign to this question:
-                    $answer_marks_index[$idea_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
+                    $answer_marks_index[$i_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
 
                     //Addup local min/max marks:
-                    if(is_null($local_min) || $answer_marks_index[$idea_answer['i__id']] < $local_min){
-                        $local_min = $answer_marks_index[$idea_answer['i__id']];
+                    if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){
+                        $local_min = $answer_marks_index[$i_answer['i__id']];
                     }
-                    if(is_null($local_max) || $answer_marks_index[$idea_answer['i__id']] > $local_max){
-                        $local_max = $answer_marks_index[$idea_answer['i__id']];
+                    if(is_null($local_max) || $answer_marks_index[$i_answer['i__id']] > $local_max){
+                        $local_max = $answer_marks_index[$i_answer['i__id']];
                     }
                 }
 
@@ -1737,17 +1737,17 @@ class DISCOVER_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $question_i__id,
                     'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
-                ), array('x__right')) as $idea_answer){
+                ), array('x__right')) as $i_answer){
 
                     //Extract Link Metadata:
-                    $possible_answer_metadata = unserialize($idea_answer['x__metadata']);
+                    $possible_answer_metadata = unserialize($i_answer['x__metadata']);
 
                     //Assign to this question:
-                    $answer_marks_index[$idea_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
+                    $answer_marks_index[$i_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
 
                     //Addup local min/max marks:
-                    if(is_null($local_min) || $answer_marks_index[$idea_answer['i__id']] < $local_min){
-                        $local_min = $answer_marks_index[$idea_answer['i__id']];
+                    if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){
+                        $local_min = $answer_marks_index[$i_answer['i__id']];
                     }
                 }
 
@@ -1757,7 +1757,7 @@ class DISCOVER_model extends CI_Model
                 }
 
                 //Always Add local max:
-                $metadata_this['steps_marks_max'] += $answer_marks_index[$idea_answer['i__id']];
+                $metadata_this['steps_marks_max'] += $answer_marks_index[$i_answer['i__id']];
 
             }
 
@@ -2015,13 +2015,13 @@ class DISCOVER_model extends CI_Model
 
             //ONE ANSWER
             $x__type = 6157; //Award Coin
-            $idea_link_type_id = 12336; //Save Answer
+            $i_link_type_id = 12336; //Save Answer
 
         } elseif($ideas[0]['i__type'] == 7231){
 
             //SOME ANSWERS
             $x__type = 7489; //Award Coin
-            $idea_link_type_id = 12334; //Save Answer
+            $i_link_type_id = 12334; //Save Answer
 
         }
 
@@ -2042,7 +2042,7 @@ class DISCOVER_model extends CI_Model
         foreach($answer_i__ids as $answer_i__id){
             $answers_newly_added++;
             $this->DISCOVER_model->create(array(
-                'x__type' => $idea_link_type_id,
+                'x__type' => $i_link_type_id,
                 'x__player' => $e__id,
                 'x__left' => $ideas[0]['i__id'],
                 'x__right' => $answer_i__id,

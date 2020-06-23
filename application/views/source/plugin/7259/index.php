@@ -64,7 +64,7 @@ if($search_for_is_set){
             if($replace_with_is_confirmed && $i__title_validation['status']){
                 //Update idea:
                 $this->MAP_model->update($in['i__id'], array(
-                    'i__title' => $i__title_validation['idea_clean_title'],
+                    'i__title' => $i__title_validation['i_clean_title'],
                 ), true, $session_source['e__id']);
             }
 
@@ -88,8 +88,8 @@ if($search_for_is_set){
                     'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                     'x__right' => $in['i__id'],
-                ), array('x__left')) as $idea_previous) {
-                    echo '<span class="next_idea_icon_' . $idea_previous['i__id'] . '"><a href="/map/i_go/' . $idea_previous['i__id'] . '" data-toggle="tooltip" title="' . $idea_previous['i__title'] . '" data-placement="bottom">' . $sources__7585[$idea_previous['i__type']]['m_icon'] . '</a> &nbsp;</span>';
+                ), array('x__left')) as $i_previous) {
+                    echo '<span class="next_i_icon_' . $i_previous['i__id'] . '"><a href="/map/i_go/' . $i_previous['i__id'] . '" data-toggle="tooltip" title="' . $i_previous['i__title'] . '" data-placement="bottom">' . $sources__7585[$i_previous['i__type']]['m_icon'] . '</a> &nbsp;</span>';
                 }
 
                 echo '</td>';

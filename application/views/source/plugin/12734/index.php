@@ -13,7 +13,7 @@ foreach($active_ideas as $count=>$in){
             $crossovers = array_intersect($recursive_children, $grand_parent_ids);
             if(count($crossovers) > 0){
                 //Ooooopsi, this should not happen:
-                echo $in['idea_titile'].' Has Parent/Child crossover for #'.join(' & #', $crossovers).'<hr />';
+                echo $in['i_titile'].' Has Parent/Child crossover for #'.join(' & #', $crossovers).'<hr />';
                 $found++;
                 break; //Otherwise too show...
             }
