@@ -1709,7 +1709,7 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send Welcome Email:
-        $email_log = $this->DISCOVER_model->send_email(array($_POST['input_email']), $subject, $html_message);
+        $email_log = $this->DISCOVER_model->email_sent(array($_POST['input_email']), $subject, $html_message);
 
 
         //Log User Signin Joined Mench
@@ -1949,7 +1949,7 @@ class Source extends CI_Controller
         $html_message .= '<div>MENCH</div>';
 
         //Send email:
-        $this->DISCOVER_model->send_email(array($_POST['input_email']), $subject, $html_message);
+        $this->DISCOVER_model->email_sent(array($_POST['input_email']), $subject, $html_message);
 
         //Return success
         return view_json(array(

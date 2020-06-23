@@ -404,7 +404,7 @@ class DISCOVER_model extends CI_Model
                 $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'/@5967" target="_blank">@5967</a></div>';
 
                 //Send email:
-                $dispatched_email = $this->DISCOVER_model->send_email($sub_emails, $subject, $html_message);
+                $dispatched_email = $this->DISCOVER_model->email_sent($sub_emails, $subject, $html_message);
 
                 //Log emails sent:
                 foreach($sub_e__ids as $to_e__id){
@@ -627,7 +627,7 @@ class DISCOVER_model extends CI_Model
 
 
 
-    function send_email($to_array, $subject, $html_message)
+    function email_sent($to_array, $subject, $html_message)
     {
 
         /*
@@ -995,7 +995,7 @@ class DISCOVER_model extends CI_Model
             if(($current_mench['x_name']=='discover' && !superpower_active(10967, true)) || $is_current_source){
 
                 //NO LINK so we can maintain focus...
-                if((!$has_text && $is_current_source) || ($current_mench['x_name']=='discover' && $e_count==1 && ($e_media_count==1 || count($e_urls)==1))){
+                if((!$has_text && $is_current_source) || ($current_mench['x_name']=='discover' && $e_count==1 && $e_media_count==$e_count /* All media */)){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, ' ', $output_body_message);

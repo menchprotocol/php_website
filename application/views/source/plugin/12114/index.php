@@ -115,7 +115,7 @@ foreach($this->DISCOVER_model->fetch($subscriber_filters, array('x__down')) as $
     )) as $e_email){
         if(filter_var($e_email['x__message'], FILTER_VALIDATE_EMAIL)){
             //Send Email
-            $this->DISCOVER_model->send_email(array($e_email['x__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['e__title']).' 👋</div>'.$html_message);
+            $this->DISCOVER_model->email_sent(array($e_email['x__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['e__title']).' 👋</div>'.$html_message);
             $email_recipients++;
         }
     }
