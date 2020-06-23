@@ -241,7 +241,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         //List Sources:
         foreach($this->config->item('sources__13358') as $e__id2 => $m2){
             if($i_stats['count_'.$e__id2]>0){
-                $this_tab .= '<div class="discover-topic"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id2].' '.$m2['m_name'].'</div>';
+                $this_tab .= '<div class="discover-topic"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id2].' '.$m2['m_name'].':</div>';
                 $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
                 foreach ($i_stats['array_'.$e__id2] as $e_source) {
                     $this_tab .= view_e_basic($e_source);
