@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-23 17:44:26 PST
+//Generated 2020-06-23 17:45:58 PST
 
 //SOURCES:
 $config['sources_id_13358'] = array(13202,3000,13339);
@@ -3419,7 +3419,7 @@ $config['sources__11035'] = array(
         'm_parents' => array(11035,7256),
     ),
     12211 => array(
-        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_name' => 'COMPLETE & NEXT',
         'm_desc' => '',
         'm_parents' => array(13289,11035),
