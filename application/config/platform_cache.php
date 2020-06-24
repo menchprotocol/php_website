@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-23 17:17:30 PST
+//Generated 2020-06-23 17:44:26 PST
 
 //SOURCES:
 $config['sources_id_13358'] = array(13202,3000,13339);
@@ -3398,7 +3398,7 @@ $config['sources__11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['sources_id_11035'] = array(4235,13000,13401,12750,3084,13216,12707,12991,12211,11068,4535,12749,4341,12969,10573,6225,6287,12896,7256,4269,4536,4997,12275,13007,10957,7540);
+$config['sources_id_11035'] = array(4235,13000,13401,12211,12750,3084,13216,12707,12991,11068,4535,12749,4341,12969,10573,6225,6287,12896,7256,4269,4536,4997,12275,13007,10957,7540);
 $config['sources__11035'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-plus discover" aria-hidden="true"></i>',
@@ -3417,6 +3417,12 @@ $config['sources__11035'] = array(
         'm_name' => 'CLOSE SEARCH',
         'm_desc' => '',
         'm_parents' => array(11035,7256),
+    ),
+    12211 => array(
+        'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'COMPLETE & NEXT',
+        'm_desc' => '',
+        'm_parents' => array(13289,11035),
     ),
     12750 => array(
         'm_icon' => '<i class="fas fa-step-forward discover"></i>',
@@ -3445,12 +3451,6 @@ $config['sources__11035'] = array(
     12991 => array(
         'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
         'm_name' => 'GO BACK',
-        'm_desc' => '',
-        'm_parents' => array(13289,11035),
-    ),
-    12211 => array(
-        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
-        'm_name' => 'GO NEXT',
         'm_desc' => '',
         'm_parents' => array(13289,11035),
     ),
