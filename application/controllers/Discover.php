@@ -495,7 +495,7 @@ class Discover extends CI_Controller
         //Go to Next Idea:
         $next_i__id = $this->DISCOVER_model->find_next($session_source['e__id'], $ideas[0]);
         if($next_i__id > 0){
-            return redirect_message('/'.$next_i__id.'?previous_discovered='.( isset($_GET['previous_discovered']) && $_GET['previous_discovered']>0 ? $_GET['previous_discovered'] : $i__id ));
+            return redirect_message('/'.$next_i__id.'?previous_discover='.( isset($_GET['previous_discover']) && $_GET['previous_discover']>0 ? $_GET['previous_discover'] : $i__id ));
         } else {
             $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
             return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed everything in '.$sources__11035[12969]['m_name'].'.</div></div>');
@@ -546,7 +546,7 @@ class Discover extends CI_Controller
          *
          * */
 
-        if($i__id==$this->config->item('featured_i__id')){
+        if($i__id==config_var(13405)){
             return redirect_message('/');
         }
 
@@ -945,7 +945,7 @@ class Discover extends CI_Controller
     {
         /*
          *
-         * Saves the order of Discovered ideas based on
+         * Saves the order of discover ideas based on
          * user preferences.
          *
          * */

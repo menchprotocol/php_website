@@ -68,7 +68,7 @@
 
             echo '<div class="list-group no-side-padding">';
             foreach($player_saved as $priority => $idea) {
-                echo view_i_discovered($idea, null, true);
+                echo view_i_discover($idea, null, true);
             }
             echo '</div>';
 
@@ -78,7 +78,7 @@
 
         //Not logged in, show description:
         $ideas = $this->MAP_model->fetch(array(
-            'i__id' => $this->config->item('featured_i__id'),
+            'i__id' => config_var(13405),
         ));
 
         //IDEA TITLE
@@ -89,9 +89,9 @@
         foreach($this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $this->config->item('featured_i__id'),
-        ), array(), 0, 0, array('x__sort' => 'ASC')) as $message_discovered) {
-            echo $this->DISCOVER_model->message_send( $message_discovered['x__message'] );
+            'x__right' => config_var(13405),
+        ), array(), 0, 0, array('x__sort' => 'ASC')) as $message_discover) {
+            echo $this->DISCOVER_model->message_send( $message_discover['x__message'] );
         }
         echo '</div>';
 
@@ -105,7 +105,7 @@
         'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
-        'x__left' => $this->config->item('featured_i__id'),
+        'x__left' => config_var(13405),
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
     echo '<div class="discover-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].'</div>';

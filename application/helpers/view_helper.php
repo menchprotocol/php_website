@@ -555,7 +555,7 @@ function view_cache($config_var_name, $e__id, $micro_status = true, $data_placem
 
 
 
-function view_coins_count_discovered($i__id = 0, $e__id = 0){
+function view_coins_count_discover($i__id = 0, $e__id = 0){
 
     $CI =& get_instance();
     $query_filters = array(
@@ -629,7 +629,7 @@ function view_x_icon_legend($can_click, $completion_percentage){
 
 }
 
-function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_source = false, $extra_class = null)
+function view_i_discover($idea, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_source = false, $extra_class = null)
 {
 
     //See if user is logged-in:
@@ -649,7 +649,7 @@ function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $
 
     $i_stats = i_stats($idea['i__metadata']);
     $is_saved = ( isset($idea['x__type']) && $idea['x__type']==12896 );
-    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $recipient_source );
+    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || superpower_active(13404, true) );
     $first_segment = $CI->uri->segment(1);
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
@@ -666,7 +666,7 @@ function view_i_discovered($idea, $common_prefix = null, $show_editor = false, $
 
 
     if($has_completion){
-        $ui .= '<div class="progress-bg-list" title="Discovered '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        $ui .= '<div class="progress-bg-list" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
     $ui .= '<span class="icon-block">'.view_x_icon_legend($can_click, $completion_rate['completion_percentage']).'</span>';
@@ -718,35 +718,35 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         'i__status IN (' . join(',', $CI->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $i_discovered){
+    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $i_discover){
 
         //Prep Metadata:
-        $metadata = unserialize($i_discovered['x__metadata']);
+        $metadata = unserialize($i_discover['x__metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $i_discovered['i__id'],
+            'x__right' => $i_discover['i__id'],
         ), array(), 0, 0, array('x__sort' => 'ASC'));
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$sources__4486[$i_discovered['x__type']]['m_name'].'">'. $sources__4486[$i_discovered['x__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Interaction Status: '.$sources__6186[$i_discovered['x__status']]['m_name'].'">'. $sources__6186[$i_discovered['x__status']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$sources__4486[$i_discover['x__type']]['m_name'].'">'. $sources__4486[$i_discover['x__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Interaction Status: '.$sources__6186[$i_discover['x__status']]['m_name'].'">'. $sources__6186[$i_discover['x__status']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$sources__7585[$i_discovered['i__type']]['m_name'].'">'. $sources__7585[$i_discovered['i__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$i_discovered['i__status']]['m_name'].'">'. $sources__4737[$i_discovered['i__status']]['m_icon']. '</span>';
-        $ui .= '<a href="?i__id='.$i_discovered['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_discovered) . '</u></a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$sources__7585[$i_discover['i__type']]['m_name'].'">'. $sources__7585[$i_discover['i__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$i_discover['i__status']]['m_name'].'">'. $sources__4737[$i_discover['i__status']]['m_icon']. '</span>';
+        $ui .= '<a href="?i__id='.$i_discover['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_discover) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_discovered['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($i_discovered['x__type'] == 4229) ? view_i_marks($i_discovered) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_discover['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($i_discover['x__type'] == 4229) ? view_i_marks($i_discover) : '' ).'</span>]';
 
         if(count($messages) > 0){
-            $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$i_discovered['i__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
+            $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$i_discover['i__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
         }
         $ui .= '</div>';
 
         //Display Messages:
-        $ui .= '<div class="messages-'.$i_discovered['i__id'].' hidden">';
+        $ui .= '<div class="messages-'.$i_discover['i__id'].' hidden">';
         foreach($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
             $ui .= $CI->DISCOVER_model->message_send($msg['x__message']);
@@ -755,7 +755,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  view_i_scores_answer($i_discovered['i__id'], $depth_levels, $original_depth_levels, $i_discovered['i__type']);
+        $ui .=  view_i_scores_answer($i_discover['i__id'], $depth_levels, $original_depth_levels, $i_discover['i__type']);
 
     }
 
@@ -801,18 +801,18 @@ function view_radio_sources($parent_e__id, $child_e__id, $enable_mulitiselect, $
 }
 
 
-function view_i_marks($i_discovered){
+function view_i_marks($i_discover){
 
     //Validate core inputs:
-    if(!isset($i_discovered['x__metadata']) || !isset($i_discovered['x__type'])){
+    if(!isset($i_discover['x__metadata']) || !isset($i_discover['x__type'])){
         return false;
     }
 
     //prep metadata:
-    $x__metadata = unserialize($i_discovered['x__metadata']);
+    $x__metadata = unserialize($i_discover['x__metadata']);
 
     //Return mark:
-    return ( $i_discovered['x__type'] == 4228 ? ( !isset($x__metadata['tr__assessment_points']) || $x__metadata['tr__assessment_points'] == 0 ? '' : '<span class="score-range">[<span style="'.( $x__metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $x__metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $x__metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $x__metadata['tr__assessment_points'].'</span>]</span>' ) : '<span class="score-range">['.$x__metadata['tr__conditional_score_min'] . ( $x__metadata['tr__conditional_score_min']==$x__metadata['tr__conditional_score_max'] ? '' : '-'.$x__metadata['tr__conditional_score_max'] ).'%]</span>' );
+    return ( $i_discover['x__type'] == 4228 ? ( !isset($x__metadata['tr__assessment_points']) || $x__metadata['tr__assessment_points'] == 0 ? '' : '<span class="score-range">[<span style="'.( $x__metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $x__metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $x__metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $x__metadata['tr__assessment_points'].'</span>]</span>' ) : '<span class="score-range">['.$x__metadata['tr__conditional_score_min'] . ( $x__metadata['tr__conditional_score_min']==$x__metadata['tr__conditional_score_max'] ? '' : '-'.$x__metadata['tr__conditional_score_max'] ).'%]</span>' );
 
 }
 
@@ -1063,7 +1063,7 @@ function view_i_list($idea, $ideas_next, $recipient_source, $prefix_statement = 
 
         echo '<div class="list-group">';
         foreach($ideas_next as $key => $next_idea){
-            echo view_i_discovered($next_idea, $common_prefix);
+            echo view_i_discover($next_idea, $common_prefix);
         }
         echo '</div>';
 
@@ -1081,14 +1081,14 @@ function view_next_i_previous($i__id, $recipient_source){
     $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION
 
     //PREVIOUS:
-    echo view_i_previous_discovered($i__id, $recipient_source);
+    echo view_i_previous_discover($i__id, $recipient_source);
 
     //NEXT:
     echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="/discover/x_next/'.$i__id.'">'.$sources__11035[12211]['m_icon'].'</a></div>';
 
 }
 
-function view_i_previous_discovered($i__id, $recipient_source){
+function view_i_previous_discover($i__id, $recipient_source){
 
     if(!$recipient_source || $recipient_source['e__id'] < 1){
         return null;
@@ -1136,10 +1136,10 @@ function view_i_previous_discovered($i__id, $recipient_source){
                         //array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$sources__12994[13400]['m_icon'].'</span><span class="montserrat">'.$sources__12994[13400]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
                     }
 
-                    //array_push($sitemap_items, view_i_discovered($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
+                    //array_push($sitemap_items, view_i_discover($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
 
                     if ($previous_i__id == $intersect) {
-                        array_push($sitemap_items, view_i_discovered($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
+                        array_push($sitemap_items, view_i_discover($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
                         break;
                     }
                 }
@@ -1155,8 +1155,8 @@ function view_i_previous_discovered($i__id, $recipient_source){
     if($previous_level_id > 0){
 
         //Previous
-        if(isset($_GET['previous_discovered']) && $_GET['previous_discovered']>0){
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/'.$_GET['previous_discovered'].'" title="'.$sources__11035[12991]['m_name'].'">'.$sources__11035[12991]['m_icon'].'</a></div>';
+        if(isset($_GET['previous_discover']) && $_GET['previous_discover']>0){
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/'.$_GET['previous_discover'].'" title="'.$sources__11035[12991]['m_name'].'">'.$sources__11035[12991]['m_icon'].'</a></div>';
         } else {
             $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/discover/x_previous/'.$previous_level_id.'/'.$i__id.'" title="'.$sources__11035[12991]['m_name'].'">'.$sources__11035[12991]['m_icon'].'</a></div>';
         }
@@ -1362,7 +1362,7 @@ function view_i_cover($idea, $show_editor){
         $completion_rate = $CI->DISCOVER_model->completion_progress($recipient_source['e__id'], $idea);
 
         if($completion_rate['completion_percentage']>0){
-            $ui .= '<div class="progress-bg-image" title="Discovered '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+            $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
         }
 
     }
@@ -1429,7 +1429,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
     $is_link_source = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('sources_id_4592')));
     $is_x_progress = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('sources_id_12227')));
     $is_e_only = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('sources_id_7551')));
-    $inline_editing = $control_enabled && superpower_active(13354, true);
+    $inline_editing = $control_enabled && superpower_active(13402, true);
     $has_e_editor = superpower_active(10967, true);
     $show_toolbar = superpower_active(12706, true);
 

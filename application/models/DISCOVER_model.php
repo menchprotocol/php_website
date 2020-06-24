@@ -1240,7 +1240,7 @@ class DISCOVER_model extends CI_Model
             }
 
             //Do we need to add the starting idea?
-            if($i__id != $this->config->item('starting_i__id')){
+            if($i__id != config_var(13406)){
 
                 //Is this their first idea?
                 if(!count($this->DISCOVER_model->fetch(array(
@@ -1251,13 +1251,13 @@ class DISCOVER_model extends CI_Model
                 )))){
 
                     //YES! Also add the starting idea:
-                    $this->DISCOVER_model->start($e__id, $this->config->item('starting_i__id'), $i__id);
+                    $this->DISCOVER_model->start($e__id, config_var(13406), $i__id);
 
-                    return $this->config->item('starting_i__id');
+                    return config_var(13406);
 
                 } else {
 
-                    //Mark as Discovered if possible:
+                    //Mark as discover if possible:
                     if($ideas[0]['i__type']==6677){
                         $this->DISCOVER_model->mark_complete($ideas[0], array(
                             'x__type' => 4559, //DISCOVER MESSAGES

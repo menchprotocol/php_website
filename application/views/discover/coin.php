@@ -129,7 +129,7 @@ if($recipient_source['e__id']){
 
         //DISCOVER PROGRESS ONLY AT TOP LEVEL
         if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
-            echo '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+            echo '<div class="progress-bg-list no-horizonal-margin" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
         }
 
     }
@@ -175,10 +175,10 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
         $this_tab .= '<div style="margin-bottom:34px;">';
         if($counter){
-            foreach($messages as $message_discovered) {
+            foreach($messages as $message_discover) {
                 $counter++;
                 $this_tab .= $this->DISCOVER_model->message_send(
-                    $message_discovered['x__message'],
+                    $message_discover['x__message'],
                     $recipient_source
                 );
             }
@@ -212,7 +212,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         if(!$in_my_discoveries && $chapters){
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($ideas_next as $key => $next_idea){
-                $this_tab .= view_i_discovered($next_idea, i_calc_common_prefix($ideas_next, 'i__title'));
+                $this_tab .= view_i_discover($next_idea, i_calc_common_prefix($ideas_next, 'i__title'));
             }
             $this_tab .= '</div>';
         }
@@ -223,13 +223,13 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i_focus['i__id'],
-            'x__left !=' => $this->config->item('featured_i__id'),
+            'x__left !=' => config_var(13405),
         ), array('x__left'), 0);
         if(count($ideas_previous)){
             $this_tab .= '<p class="space-content">'.view_i_title($i_focus).' Helps you:</p>';
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($ideas_previous as $key => $previous_idea){
-                $this_tab .= view_i_discovered($previous_idea, null, false, array('completion_percentage' => 0));
+                $this_tab .= view_i_discover($previous_idea, null, false, array('completion_percentage' => 0));
             }
             $this_tab .= '</div>';
         }
@@ -506,7 +506,7 @@ if(!$in_my_discoveries){
 
             echo '<div class="result-update margin-top-down"></div>';
 
-            echo view_i_previous_discovered($i_focus['i__id'], $recipient_source);
+            echo view_i_previous_discover($i_focus['i__id'], $recipient_source);
 
             //Button to submit selection:
             if(count($x_answers)>0){
@@ -535,7 +535,7 @@ if(!$in_my_discoveries){
         echo '<div class="text_saving_result margin-top-down"></div>';
 
         //Show Previous Button:
-        echo view_i_previous_discovered($i_focus['i__id'], $recipient_source);
+        echo view_i_previous_discover($i_focus['i__id'], $recipient_source);
 
         //Save/Upload & Next:
         echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="x_respond()">'.$sources__11035[12211]['m_icon'].'</a></div>';
@@ -563,7 +563,7 @@ if(!$in_my_discoveries){
 
             //Show Previous Button:
             echo '<div class="file_saving_result">';
-            echo view_i_previous_discovered($i_focus['i__id'], $recipient_source);
+            echo view_i_previous_discover($i_focus['i__id'], $recipient_source);
             echo '</div>';
 
             //Show next here but keep hidden until file is uploaded:

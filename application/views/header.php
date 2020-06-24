@@ -198,7 +198,7 @@ if(!isset($hide_header)){
                             if($x__type==12749) {
 
                                 //Map Idea
-                                $page_url = 'href="/~'.( $is_home ? $this->config->item('featured_i__id') : $first_segment ).'"';
+                                $page_url = 'href="/~'.( $is_home ? config_var(13405) : $first_segment ).'"';
 
                             } elseif(in_array($x__type, $this->config->item('sources_id_10876'))){
 

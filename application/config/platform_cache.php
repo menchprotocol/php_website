@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-24 09:58:50 PST
+//Generated 2020-06-24 10:44:37 PST
 
 //SOURCES:
 $config['sources_id_13358'] = array(13202,3000,13339);
@@ -3077,7 +3077,7 @@ $config['sources__11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['sources_id_6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,4485,4736,11064,11065,13014,11063,13005,11060,11079,11066,12088,13206,11986,12232,6197,12568,12565);
+$config['sources_id_6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,13405,12176,4356,4485,4736,13406,11064,11065,13014,11063,13005,11060,11079,11066,12088,13206,11986,12232,6197,12568,12565);
 $config['sources__6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -3127,6 +3127,12 @@ $config['sources__6404'] = array(
         'm_desc' => 'support@mench.com',
         'm_parents' => array(6404,13023,4269,12103,6225,4755),
     ),
+    13405 => array(
+        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_name' => 'HOME PAGE IDEA ID',
+        'm_desc' => '7766',
+        'm_parents' => array(6404),
+    ),
     12176 => array(
         'm_icon' => '<i class="fad fa-clock idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA DEFAULT TIME SECONDS',
@@ -3150,6 +3156,12 @@ $config['sources__6404'] = array(
         'm_name' => 'IDEA TITLE',
         'm_desc' => '100',
         'm_parents' => array(13294,12994,6404,10990,12112,10644,6232,6201),
+    ),
+    13406 => array(
+        'm_icon' => '<i class="fas fa-info-circle idea"></i>',
+        'm_name' => 'INTRODUCTION IDEA ID',
+        'm_desc' => '13804',
+        'm_parents' => array(6404),
     ),
     11064 => array(
         'm_icon' => '',
@@ -3565,7 +3577,7 @@ $config['sources__11018'] = array(
         'm_icon' => '<i class="fas fa-list idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LIST EDITOR',
         'm_desc' => '',
-        'm_parents' => array(10984,11018,4527,12590),
+        'm_parents' => array(13403,11018,4527,12590),
     ),
     4983 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -3641,78 +3653,96 @@ $config['sources__10990'] = array(
 );
 
 //SUPERPOWERS:
-$config['sources_id_10957'] = array(12701,12705,13354,12700,10986,10939,12673,10984,10967,12703,12699,12706);
+$config['sources_id_10957'] = array(10939,13354,12673,13403,12700,10986,10984,10967,13402,12706,12703,12699,13404,12701,12705);
 $config['sources__10957'] = array(
-    12701 => array(
-        'm_icon' => '<i class="fad fa-glasses discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVER GLASSES',
-        'm_desc' => 'Read info from all players',
-        'm_parents' => array(10957),
-    ),
-    12705 => array(
-        'm_icon' => '<i class="fad fa-list discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVER LIST EDIT',
-        'm_desc' => 'Mass Edit Reads',
+    10939 => array(
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA MAPPING',
+        'm_desc' => 'Basic Publishing Powers',
         'm_parents' => array(10957),
     ),
     13354 => array(
-        'm_icon' => '<i class="fas fa-money-check-edit discover"></i>',
-        'm_name' => 'INLINE EDITING',
-        'm_desc' => 'Rename Ideas & Sources Inline',
+        'm_icon' => '<i class="fas fa-money-check-edit idea"></i>',
+        'm_name' => 'INLINE MAPPING',
+        'm_desc' => 'Rename Ideas Inline',
+        'm_parents' => array(10957),
+    ),
+    12673 => array(
+        'm_icon' => '<i class="fas fa-ellipsis-h idea" aria-hidden="true"></i>',
+        'm_name' => 'MAP TOOLBAR',
+        'm_desc' => 'Edit next & previous ideas on the fly',
+        'm_parents' => array(10957),
+    ),
+    13403 => array(
+        'm_icon' => '<i class="fas fa-list idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA LIST EDIT',
+        'm_desc' => 'Mass Idea Edit',
         'm_parents' => array(10957),
     ),
     12700 => array(
-        'm_icon' => '<i class="fad fa-link idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
         'm_name' => 'MAP ADVANCE',
         'm_desc' => 'Advance Idea Linking',
         'm_parents' => array(10957),
     ),
     10986 => array(
-        'm_icon' => '<i class="fad fa-scrubber idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-scrubber idea" aria-hidden="true"></i>',
         'm_name' => 'MAP SOURCING',
         'm_desc' => 'Advance Source Tools',
         'm_parents' => array(10957),
     ),
-    10939 => array(
-        'm_icon' => '<i class="fad fa-pen idea" aria-hidden="true"></i>',
-        'm_name' => 'MAPPING',
-        'm_desc' => 'Basic Publishing Powers',
-        'm_parents' => array(10957),
-    ),
-    12673 => array(
-        'm_icon' => '<i class="fad fa-rectangle-wide idea" aria-hidden="true"></i>',
-        'm_name' => 'MAP TOOLBAR',
-        'm_desc' => 'Edit next & previous ideas on the fly',
-        'm_parents' => array(10957),
-    ),
     10984 => array(
-        'm_icon' => '<i class="fas fa-walkie-talkie idea" aria-hidden="true"></i>',
-        'm_name' => 'MAP WALKIE TALKIE',
+        'm_icon' => '<i class="fas fa-sync idea" aria-hidden="true"></i>',
+        'm_name' => 'COLLABORATIVE MAPPING',
         'm_desc' => 'Collaborative Publishing Powers',
         'm_parents' => array(10957),
     ),
     10967 => array(
-        'm_icon' => '<i class="fad fa-edit source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE EDITOR',
+        'm_icon' => '<i class="fas fa-map-marker-alt source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCING',
         'm_desc' => 'Organize Sources',
         'm_parents' => array(10957),
     ),
+    13402 => array(
+        'm_icon' => '<i class="fas fa-money-check-edit source"></i>',
+        'm_name' => 'INLINE SOURCING',
+        'm_desc' => 'Rename Sources Inline',
+        'm_parents' => array(10957),
+    ),
+    12706 => array(
+        'm_icon' => '<i class="fas fa-ellipsis-h source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCE TOOLBAR',
+        'm_desc' => 'List Parent Sources',
+        'm_parents' => array(10957),
+    ),
     12703 => array(
-        'm_icon' => '<i class="fad fa-list source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-list source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE LIST EDIT',
         'm_desc' => 'Mass Source Edit',
         'm_parents' => array(10957),
     ),
     12699 => array(
-        'm_icon' => '<i class="fad fa-plug source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-plug source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE PLUG',
         'm_desc' => 'Access Mench Plugins',
         'm_parents' => array(10957),
     ),
-    12706 => array(
-        'm_icon' => '<i class="fad fa-rectangle-wide source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE TOOLBAR',
-        'm_desc' => 'List Parent Sources',
+    13404 => array(
+        'm_icon' => '<i class="fas fa-fast-forward discover"></i>',
+        'm_name' => 'DISCOVER SKIP AHEAD',
+        'm_desc' => 'Allows Players to Navigate All Ideas',
+        'm_parents' => array(10957),
+    ),
+    12701 => array(
+        'm_icon' => '<i class="fas fa-glasses discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER GLASSES',
+        'm_desc' => 'Read info from all players',
+        'm_parents' => array(10957),
+    ),
+    12705 => array(
+        'm_icon' => '<i class="fas fa-list discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER LIST EDIT',
+        'm_desc' => 'Mass Edit Reads',
         'm_parents' => array(10957),
     ),
 );
@@ -4423,7 +4453,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-list idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA LIST EDITOR',
         'm_desc' => '',
-        'm_parents' => array(10984,11018,4527,12590),
+        'm_parents' => array(13403,11018,4527,12590),
     ),
     4485 => array(
         'm_icon' => '<i class="fas fa-comment-plus idea" aria-hidden="true"></i>',

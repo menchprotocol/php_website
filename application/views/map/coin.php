@@ -54,7 +54,7 @@ echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group previous_i
 foreach($ideas_previous as $previous_idea) {
     echo view_i($previous_idea, $i_focus['i__id'], true, i_is_source($previous_idea['i__id']));
 }
-if( $is_source && $is_active && $i_focus['i__id']!=$this->config->item('featured_i__id')){
+if( $is_source && $is_active && $i_focus['i__id']!=config_var(13405)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
@@ -234,7 +234,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12589){
 
-        //NEXT EDITOR
+        //IDAE LIST EDITOR
         $dropdown_options = '';
         $input_options = '';
         $counter = 0;

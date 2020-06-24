@@ -111,8 +111,8 @@ class Map extends CI_Controller {
         }
 
 
-        //Mass Editing?
-        if (superpower_active(10984, true) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
+        //Mass List Editing?
+        if (superpower_active(13403, true) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 
             //Process mass action:
             $process_mass_action = $this->MAP_model->mass_update($i__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_source['e__id']);

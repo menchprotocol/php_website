@@ -1390,7 +1390,7 @@ function i_is_source($i__id, $session_source = array()){
     //Ways a player can modify an idea:
     $CI =& get_instance();
     return (
-        superpower_active(10984, true) || //GLOBAL EDITING
+        superpower_active(10984, true) || //COLLABORATIVE IDEATION
         (
             superpower_active(10939, true) && //PUBLISHING PEN
                 (

@@ -24,7 +24,7 @@ if(!$obj || $obj==4535){
     }
 
     //Now addup weights starting from primary Idea:
-    $stats['i_total_weights'] = $this->MAP_model->weight($this->config->item('featured_i__id'));
+    $stats['i_total_weights'] = $this->MAP_model->weight(config_var(13405));
 
 }
 
