@@ -131,7 +131,6 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
     if($x__type==11020){
 
-
         //IDEA NEXT
         $ideas_next = $this->DISCOVER_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -140,10 +139,8 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             'x__left' => $i_focus['i__id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-
         //CHILD IDEAS
         $counter = count($ideas_next);
-
 
         $this_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_ideas">';
         foreach($ideas_next as $next_idea) {
@@ -212,6 +209,28 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
         $counter = count($i_notes);
         $this_tab .= view_i_note_mix($x__type, $i_notes);
+
+    } elseif($x__type==12696){
+
+        $player_discoveries = $this->DISCOVER_model->fetch(array(
+            'x__left' => $i_focus['i__id'],
+            'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        ), array('x__player'), 0, 0, array(), 'COUNT(x__id) as totals');
+        $counter = $player_discoveries[0]['totals'];
+        if($counter > 0){
+
+            $this_tab .= '<div class="list-group">';
+            foreach($this->DISCOVER_model->fetch(array(
+                'x__left' => $i_focus['i__id'],
+                'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
+                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            ), array('x__player')) as $player){
+                $this_tab .= view_e($player);
+            }
+            $this_tab .= '</div>';
+
+        }
 
     } elseif($x__type==12589){
 
