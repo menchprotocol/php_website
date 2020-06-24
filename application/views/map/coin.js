@@ -150,12 +150,6 @@ function e_e_only_search(note_type_id) {
 
     if(parseInt(js_sources__6404[12678]['m_desc'])){
 
-        //Define filters:
-        var extra_filters = '';
-        if(note_type_id==4983){
-            extra_filters = ' AND ( _tags:alg_e_'+js_pl_id+' OR _tags:alg_e_' + js_sources_id_4983.join(' OR _tags:alg_e_') + ') ';
-        }
-
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             e_only_add(suggestion.object__id, note_type_id);
@@ -164,7 +158,7 @@ function e_e_only_search(note_type_id) {
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'object__type=4536' + extra_filters,
+                    filters: 'object__type=4536',
                     hitsPerPage: 10,
                 }, function (error, content) {
                     if (error) {

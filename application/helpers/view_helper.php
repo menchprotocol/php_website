@@ -828,6 +828,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
     $sources__4486 = $CI->config->item('sources__4486');
     $sources__2738 = $CI->config->item('sources__2738');
     $sources__12413 = $CI->config->item('sources__12413');
+    $sources__13408 = $CI->config->item('sources__13408');
 
     //DISCOVER
     $x__id = ( isset($idea['x__id']) ? $idea['x__id'] : 0 );
@@ -944,7 +945,6 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
 
 
 
-
         if($x__id){
 
             $x__metadata = unserialize($idea['x__metadata']);
@@ -975,37 +975,22 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
 
 
 
-        //PREVIOUS IDEAS COUNT
-        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11019]['m_name'].'" style="width:42px; text-align:right;">';
+        //IDEA TREE:
         $previous_ideas = $CI->DISCOVER_model->fetch(array(
             'x__right' => $idea['i__id'],
             'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
-        if($previous_ideas[0]['total_ideas'] > 0){
-            $ui .= $previous_ideas[0]['total_ideas'].( $is_parent ? '<a href="/map/i_navigate/'.$idea['i__id'].'/'.$i_linked_id.'/previous">'.$sources__12413[11019]['m_icon'].'</a>' : $sources__12413[11019]['m_icon'] );
-        }
-        $ui .= '</span>';
 
-
-        //NEXT IDEAS COUNT
         $next_ideas = $CI->DISCOVER_model->fetch(array(
             'x__left' => $idea['i__id'],
             'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
-        if($next_ideas[0]['total_ideas'] > 0){
 
-            $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:45px;">'.( $is_parent ? '<a href="/map/i_navigate/'.$idea['i__id'].'/'.$i_linked_id.'/x_next">'.$sources__12413[11020]['m_icon'].'</a>' : $sources__12413[11020]['m_icon'] ).$next_ideas[0]['total_ideas'].'</span>';
-
-            //TREE SIZE
-            if($i_stats['ideas_average'] > 0){
-                $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[13177]['m_name'].': '.$i_stats['ideas_min'].' - '.$i_stats['ideas_max'].'" data-toggle="tooltip" data-placement="top">'.$sources__12413[13177]['m_icon'].'&nbsp;'.number_format($i_stats['ideas_average'], 0).'</span>';
-            }
-
-        }
-
-
+        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11019]['m_name'].'" style="width:34px; text-align:right;">'.$i_stats['ideas_min'].'|'.$previous_ideas[0]['total_ideas'].'</span>';
+        $ui .= '<span class="icon-block">'.$sources__13408[12413]['m_icon'].'</span>';
+        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="width:34px; text-align:left;">'.$next_ideas[0]['total_ideas'].'|'.$i_stats['ideas_max'].'</span>';
 
 
 
