@@ -988,9 +988,9 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
 
-        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11019]['m_name'].'" style="width:21px; text-align:right;">'.$previous_ideas[0]['total_ideas'].'</span>';
+        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11019]['m_name'].'" style="width:21px; text-align:right;">'.( $previous_ideas[0]['total_ideas']>0 ? $previous_ideas[0]['total_ideas'] : '&nbsp;' ).'</span>';
         $ui .= '<span class="icon-block">'.$sources__13408[12413]['m_icon'].'</span>';
-        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="text-align:left;">'.$next_ideas[0]['total_ideas'].( $i_stats['ideas_max']>$next_ideas[0]['total_ideas'] ? '<span style="padding: 0 2px;">-</span>'.$i_stats['ideas_max'] : '' ).'</span>';
+        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="text-align:left;">'.($next_ideas[0]['total_ideas']>0 ? $next_ideas[0]['total_ideas'] : '' ).( $i_stats['ideas_max']>$next_ideas[0]['total_ideas'] ? '<span style="padding: 0 2px;">-</span>'.$i_stats['ideas_max'] : '' ).'</span>';
 
 
 
