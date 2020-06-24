@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-23 16:49:21 PST
+//Generated 2020-06-23 17:17:30 PST
 
 //SOURCES:
 $config['sources_id_13358'] = array(13202,3000,13339);
@@ -229,13 +229,31 @@ $config['sources__13300'] = array(
 );
 
 //DISCOVER TABS:
-$config['sources_id_13291'] = array(4231,13359,13358,7545,12419,13023);
+$config['sources_id_13291'] = array(4231,12419,7545,13023,13359,13358);
 $config['sources__13291'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(13300,13294,13291,7524,12273,12359,10593,4986,4603,4593,4485),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
+        'm_name' => 'COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(13304,13291,11018,12359,5967,10593,4986,11089,4593,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
+        'm_name' => 'CERTIFICATES',
+        'm_desc' => '',
+        'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,7551,4593,4485),
+    ),
+    13023 => array(
+        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_name' => 'SHARE',
+        'm_desc' => '',
+        'm_parents' => array(13304,13291,4527,13024,7305),
     ),
     13359 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
@@ -248,24 +266,6 @@ $config['sources__13291'] = array(
         'm_name' => 'SOURCES',
         'm_desc' => '',
         'm_parents' => array(4527,13369,13298,13291,4536,13355),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
-        'm_name' => 'CERTIFICATES',
-        'm_desc' => '',
-        'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,7551,4593,4485),
-    ),
-    12419 => array(
-        'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
-        'm_name' => 'COMMENTS',
-        'm_desc' => '',
-        'm_parents' => array(13304,13291,11018,12359,5967,10593,4986,11089,4593,4485),
-    ),
-    13023 => array(
-        'm_icon' => '<i class="fas fa-share"></i>',
-        'm_name' => 'SHARE',
-        'm_desc' => '',
-        'm_parents' => array(13304,13291,4527,13024,7305),
     ),
 );
 
