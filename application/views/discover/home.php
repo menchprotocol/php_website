@@ -110,10 +110,10 @@
 
     echo '<div class="discover-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].'</div>';
     echo '<div class="cover-list">';
-    foreach($featured_ideas as $key => $featured_idea){
-        if(!in_array($featured_idea['i__id'], $player_discovery_ids)){
+    foreach($featured_ideas as $key => $idea){
+        if(!in_array($idea['i__id'], $player_discovery_ids)){
             //Show only if not in discovering list:
-            echo view_i_cover($featured_idea, false);
+            echo view_i_cover($idea, false);
         }
     }
     echo '</div>';

@@ -4,6 +4,16 @@
 <div class="container">
     <?php
 
+    $player_maps = $this->DISCOVER_model->fetch(array(
+        'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'x__type' => 10573, //MY IDEAS
+        'x__up' => $session_source['e__id'], //For this player
+    ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+
+
+    echo ( count($player_maps) > 1 ? '<script> $(document).ready(function () {discover_sort_load()}); </script>' : '<style> .discover-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+
     $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
     $sources__2738 = $this->config->item('sources__2738'); //MENCH
 
@@ -13,15 +23,11 @@
 
     echo '<div id="idea_covers" class="cover-list">';
 
-    foreach($this->DISCOVER_model->fetch(array(
-        'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'x__type' => 10573, //MY IDEAS
-        'x__up' => $session_source['e__id'], //For this player
-    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $idea){
+    foreach($player_maps as $idea){
         echo view_i_cover($idea, true);
     }
 
+    /*
     echo '<div class="list-group-item list-adder itemidea">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
@@ -31,6 +37,7 @@
                            id="newIdeaTitle"
                            placeholder="NEW IDEA">
                 </div><div class="algolia_pad_search hidden"></div></div>';
+    */
 
     echo '</div>';
 
