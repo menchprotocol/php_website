@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-23 17:45:58 PST
+//Generated 2020-06-24 09:58:50 PST
 
 //SOURCES:
 $config['sources_id_13358'] = array(13202,3000,13339);
@@ -1014,7 +1014,7 @@ $config['sources__12687'] = array(
 $config['sources_id_12675'] = array(11020);
 $config['sources__12675'] = array(
     11020 => array(
-        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'NEXT IDEAS',
         'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
@@ -1022,7 +1022,7 @@ $config['sources__12675'] = array(
 );
 
 //IDEA TABS NO MANUAL ADD / HIDE IF ZERO:
-$config['sources_id_12677'] = array(6255,12969,10573,12896,6146);
+$config['sources_id_12677'] = array(6255,12969,10573,12896);
 $config['sources__12677'] = array(
     6255 => array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
@@ -1037,7 +1037,7 @@ $config['sources__12677'] = array(
         'm_parents' => array(6205,13210,12228,11035,11018,12677,12701,4527,11089),
     ),
     10573 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
@@ -1047,12 +1047,6 @@ $config['sources__12677'] = array(
         'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
-    ),
-    6146 => array(
-        'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'UNFINISHED',
-        'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,11089,12228,4527),
     ),
 );
 
@@ -1405,13 +1399,13 @@ $config['sources__12420'] = array(
 $config['sources_id_12413'] = array(6170,6169,13177,11020,11019);
 $config['sources__12413'] = array(
     6170 => array(
-        'm_icon' => '<i class="fas fa-sitemap idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA TREE MAX',
         'm_desc' => '',
         'm_parents' => array(12413,6232,6214,6159),
     ),
     6169 => array(
-        'm_icon' => '<i class="fal fa-sitemap idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA TREE MIN',
         'm_desc' => '',
         'm_parents' => array(12413,6232,6214,6159),
@@ -1423,13 +1417,13 @@ $config['sources__12413'] = array(
         'm_parents' => array(12413),
     ),
     11020 => array(
-        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'NEXT IDEAS',
         'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
     ),
     11019 => array(
-        'm_icon' => '<i class="fas fa-step-backward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'PREVIOUS IDEAS',
         'm_desc' => '',
         'm_parents' => array(13294,12413,10990),
@@ -2626,7 +2620,7 @@ $config['sources__12079'] = array(
 );
 
 //SOURCE TABS:
-$config['sources_id_11089'] = array(6225,10573,12969,12896,12274,12273,6255,6146,11030,11029,13046,12419,7545);
+$config['sources_id_11089'] = array(6225,10573,12969,12896,12274,12273,6255,11030,11029,13046,12419,7545);
 $config['sources__11089'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -2635,7 +2629,7 @@ $config['sources__11089'] = array(
         'm_parents' => array(12571,12574,11089,11035,4527),
     ),
     10573 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
@@ -2669,12 +2663,6 @@ $config['sources__11089'] = array(
         'm_name' => 'DISCOVER COINS',
         'm_desc' => '',
         'm_parents' => array(6205,12677,10939,11018,12467,11089,12228,4527),
-    ),
-    6146 => array(
-        'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'UNFINISHED',
-        'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,11089,12228,4527),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
@@ -2867,13 +2855,13 @@ $config['sources__6232'] = array(
         'm_parents' => array(13294,12994,6404,10990,12112,10644,6232,6201),
     ),
     6170 => array(
-        'm_icon' => '<i class="fas fa-sitemap idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA TREE MAX',
         'm_desc' => 'i___max_discoveries',
         'm_parents' => array(12413,6232,6214,6159),
     ),
     6169 => array(
-        'm_icon' => '<i class="fal fa-sitemap idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA TREE MIN',
         'm_desc' => 'i___min_discoveries',
         'm_parents' => array(12413,6232,6214,6159),
@@ -3325,7 +3313,7 @@ $config['sources__11054'] = array(
         'm_parents' => array(6403,11054,4527),
     ),
     10573 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
@@ -3485,7 +3473,7 @@ $config['sources__11035'] = array(
         'm_parents' => array(6205,13210,12228,11035,11018,12677,12701,4527,11089),
     ),
     10573 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
@@ -3559,16 +3547,16 @@ $config['sources__11035'] = array(
 );
 
 //MAP TABS:
-$config['sources_id_11018'] = array(11020,10573,12589,4983,12969,6255,12896,6146,7545,4601,12419,11047);
+$config['sources_id_11018'] = array(11020,10573,12589,4983,12969,6255,12896,7545,4601,12419,11047);
 $config['sources__11018'] = array(
     11020 => array(
-        'm_icon' => '<i class="fas fa-step-forward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'NEXT IDEAS',
         'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
     ),
     10573 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
@@ -3602,12 +3590,6 @@ $config['sources__11018'] = array(
         'm_name' => 'SAVED IDEAS',
         'm_desc' => '',
         'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
-    ),
-    6146 => array(
-        'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'UNFINISHED',
-        'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,11089,12228,4527),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
@@ -3651,7 +3633,7 @@ $config['sources__10990'] = array(
         'm_parents' => array(13294,12994,6404,10990,12112,10644,6232,6201),
     ),
     11019 => array(
-        'm_icon' => '<i class="fas fa-step-backward idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'PREVIOUS IDEAS',
         'm_desc' => '',
         'm_parents' => array(13294,12413,10990),
@@ -4738,7 +4720,7 @@ $config['sources__4527'] = array(
         'm_parents' => array(6205,13210,12228,11035,11018,12677,12701,4527,11089),
     ),
     10573 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
@@ -4975,7 +4957,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-times-circle discover" aria-hidden="true"></i>',
         'm_name' => 'UNFINISHED',
         'm_desc' => '',
-        'm_parents' => array(12701,12677,11018,11089,12228,4527),
+        'm_parents' => array(12228,4527),
     ),
     12500 => array(
         'm_icon' => '<i class="fas fa-ellipsis-v" aria-hidden="true"></i>',
@@ -5833,7 +5815,7 @@ $config['sources__7551'] = array(
         'm_parents' => array(6232,11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
     ),
     10573 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
@@ -7635,7 +7617,7 @@ $config['sources__4593'] = array(
         'm_parents' => array(13300,13294,13291,7524,12273,12359,10593,4986,4603,4593,4485),
     ),
     10573 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
@@ -8083,7 +8065,7 @@ $config['sources__4485'] = array(
         'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,7551,4593,4485),
     ),
     10573 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
         'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(4535,12677,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
