@@ -923,7 +923,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
 
 
 
-    if($message_input){
+    if(strlen($message_input)>0){
         $ui .= '<div class="idea-footer hideIfEmpty">' . $CI->DISCOVER_model->message_send($message_input, $session_source) . '</div>';
     }
 
