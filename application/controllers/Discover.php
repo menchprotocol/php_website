@@ -19,7 +19,7 @@ class Discover extends CI_Controller
         //Load header:
         $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
-            'title' => $sources__11035[13000]['m_name'],
+            'title' => $sources__11035[13210]['m_name'],
         ));
         $this->load->view('discover/home');
         $this->load->view('footer');
@@ -912,11 +912,12 @@ class Discover extends CI_Controller
          *
          * */
 
+        $session_source = superpower_assigned();
 
-        if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid player ID',
+                'message' => view_unauthorized_message(),
             ));
         } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
@@ -926,7 +927,7 @@ class Discover extends CI_Controller
         }
 
         //Call function to delete form Discoveries:
-        $delete_result = $this->DISCOVER_model->delete($_POST['js_pl_id'], $_POST['i__id'], 6155); //REMOVED BOOKMARK
+        $delete_result = $this->DISCOVER_model->delete($session_source['e__id'], $_POST['i__id'], 6155); //REMOVED BOOKMARK
 
         if(!$delete_result['status']){
             return view_json($delete_result);
@@ -950,10 +951,12 @@ class Discover extends CI_Controller
          *
          * */
 
-        if (!isset($_POST['js_pl_id']) || intval($_POST['js_pl_id']) < 1) {
+        $session_source = superpower_assigned();
+
+        if (!$session_source) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid player ID',
+                'message' => view_unauthorized_message(),
             ));
         } elseif (!isset($_POST['new_x_order']) || !is_array($_POST['new_x_order']) || count($_POST['new_x_order']) < 1) {
             return view_json(array(
@@ -969,7 +972,7 @@ class Discover extends CI_Controller
                 //Update order of this link:
                 $results[$x__sort] = $this->DISCOVER_model->update(intval($x__id), array(
                     'x__sort' => $x__sort,
-                ), $_POST['js_pl_id'], 6132 /* Ideas Ordered by User */);
+                ), $session_source['e__id'], 6132 /* Ideas Ordered by User */);
             }
         }
 

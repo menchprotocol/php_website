@@ -483,6 +483,8 @@ img.no-radius {
 .cover-list{
     display: block;
     width: 100%;
+    padding-top:21px;
+    padding-left:34px;
 }
 
 .cover-block{

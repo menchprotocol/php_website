@@ -27,7 +27,7 @@
 
 
             echo '<div class="clear-discovery-list">';
-            echo '<div id="home_discoveries" class="cover-list" style="padding-top:21px; padding-left:34px;">';
+            echo '<div id="idea_covers" class="cover-list">';
             foreach($player_discoveries as $idea) {
                 array_push($player_discovery_ids, $idea['i__id']);
                 echo view_i_cover($idea, true);
@@ -109,7 +109,7 @@
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
     echo '<div class="discover-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[13216]['m_icon'].'</span>'.$sources__11035[13216]['m_name'].'</div>';
-    echo '<div class="cover-list" style="padding:13px 0 33px 33px;">';
+    echo '<div class="cover-list">';
     foreach($featured_ideas as $key => $featured_idea){
         if(!in_array($featured_idea['i__id'], $player_discovery_ids)){
             //Show only if not in discovering list:

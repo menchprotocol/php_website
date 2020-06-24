@@ -5,21 +5,22 @@
     <?php
 
     $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+    $sources__2738 = $this->config->item('sources__2738'); //MENCH
 
     //MY IDEAS
     echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
 
-    echo '<div id="myIdeas" class="list-group">';
+
+    echo '<div id="idea_covers" class="cover-list">';
+
     foreach($this->DISCOVER_model->fetch(array(
         'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
         'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'x__type' => 10573, //MY IDEAS
         'x__up' => $session_source['e__id'], //For this player
-    ), array('x__right'), 0, 0, array('i__weight' => 'DESC')) as $idea){
-        echo view_i($idea, 0, false, true);
+    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $idea){
+        echo view_i_cover($idea, true);
     }
-
-    $sources__2738 = $this->config->item('sources__2738'); //MENCH
 
     echo '<div class="list-group-item list-adder itemidea">
                 <div class="input-group border">

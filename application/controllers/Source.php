@@ -27,9 +27,9 @@ class Source extends CI_Controller
             ));
         }
 
-        $sources__2738 = $this->config->item('sources__2738'); //MENCH
+        $sources__11035 = $this->config->item('sources__11035');
         $this->load->view('header', array(
-            'title' => $sources__2738[4536]['m_name'],
+            'title' => $sources__11035[13207]['m_name'],
         ));
         $this->load->view('source/home', array(
             'session_source' => $session_source,

@@ -1389,6 +1389,7 @@ function view_i_cover($idea, $show_editor){
 
 }
 
+
 function view_e_basic($source)
 {
     $ui = '<div class="list-group-item no-side-padding">';
