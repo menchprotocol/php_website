@@ -210,7 +210,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $counter = count($i_notes);
         $this_tab .= view_i_note_mix($x__type, $i_notes);
 
-    } elseif($x__type==12696){
+    } elseif($x__type==12969){
 
         $player_discoveries = $this->DISCOVER_model->fetch(array(
             'x__left' => $i_focus['i__id'],
