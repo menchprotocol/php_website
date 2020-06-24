@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-24 10:46:10 PST
+//Generated 2020-06-24 11:11:52 PST
 
 //SOURCES:
 $config['sources_id_13358'] = array(13202,3000,13339);
@@ -3559,13 +3559,55 @@ $config['sources__11035'] = array(
 );
 
 //MAP TABS:
-$config['sources_id_11018'] = array(11020,10573,12589,4983,12969,6255,12896,7545,4601,12419,11047);
+$config['sources_id_11018'] = array(4983,11020,6255,12969,12419,4601,7545,12896,10573,12589,11047);
 $config['sources__11018'] = array(
+    4983 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'IDEA SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(6232,11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
+    ),
     11020 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'NEXT IDEAS',
         'm_desc' => '',
         'm_parents' => array(12675,12413,11018),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVER COINS',
+        'm_desc' => '',
+        'm_parents' => array(6205,12677,10939,11018,12467,11089,12228,4527),
+    ),
+    12969 => array(
+        'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
+        'm_name' => 'MY DISCOVERIES',
+        'm_desc' => '',
+        'm_parents' => array(6205,13210,12228,11035,11018,12677,12701,4527,11089),
+    ),
+    12419 => array(
+        'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
+        'm_name' => 'COMMENTS',
+        'm_desc' => '',
+        'm_parents' => array(13304,13291,11018,12359,5967,10593,4986,11089,4593,4485),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
+        'm_name' => 'KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(10984,11018,10593,4593,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
+        'm_name' => 'CERTIFICATES',
+        'm_desc' => '',
+        'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,7551,4593,4485),
+    ),
+    12896 => array(
+        'm_icon' => '<i class="fas fa-bookmark discover"></i>',
+        'm_name' => 'SAVED IDEAS',
+        'm_desc' => '',
+        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
@@ -3578,48 +3620,6 @@ $config['sources__11018'] = array(
         'm_name' => 'IDEA LIST EDITOR',
         'm_desc' => '',
         'm_parents' => array(13403,11018,4527,12590),
-    ),
-    4983 => array(
-        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_name' => 'IDEA SOURCES',
-        'm_desc' => '',
-        'm_parents' => array(6232,11054,4485,11018,12141,10939,12450,12273,12228,10593,4527,7551,4593),
-    ),
-    12969 => array(
-        'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_name' => 'MY DISCOVERIES',
-        'm_desc' => '',
-        'm_parents' => array(6205,13210,12228,11035,11018,12677,12701,4527,11089),
-    ),
-    6255 => array(
-        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVER COINS',
-        'm_desc' => '',
-        'm_parents' => array(6205,12677,10939,11018,12467,11089,12228,4527),
-    ),
-    12896 => array(
-        'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVED IDEAS',
-        'm_desc' => '',
-        'm_parents' => array(13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
-        'm_name' => 'CERTIFICATES',
-        'm_desc' => '',
-        'm_parents' => array(13298,13291,12273,12197,11030,11018,10986,11089,7551,4593,4485),
-    ),
-    4601 => array(
-        'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
-        'm_name' => 'KEYWORDS',
-        'm_desc' => '',
-        'm_parents' => array(10984,11018,10593,4593,4485),
-    ),
-    12419 => array(
-        'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
-        'm_name' => 'COMMENTS',
-        'm_desc' => '',
-        'm_parents' => array(13304,13291,11018,12359,5967,10593,4986,11089,4593,4485),
     ),
     11047 => array(
         'm_icon' => '<i class="fas fa-caret-down idea" aria-hidden="true"></i>',
@@ -3657,7 +3657,7 @@ $config['sources_id_10957'] = array(10939,13354,12673,13403,12700,10986,10984,10
 $config['sources__10957'] = array(
     10939 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA MAPPING',
+        'm_name' => 'IDEA MAPPER',
         'm_desc' => 'Basic Publishing Powers',
         'm_parents' => array(10957),
     ),
