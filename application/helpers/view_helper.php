@@ -549,7 +549,7 @@ function view_cache($config_var_name, $e__id, $micro_status = true, $data_placem
             return $cache_source['m_icon'].' '.$cache_source['m_name'].' ';
         }
     } else {
-        return '<span class="status-label" ' . ( $micro_status && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="' . $data_placement . '" title="' . ($micro_status ? $cache_source['m_name'] : '') . (strlen($cache_source['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache_source['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache_source['m_icon'] . ' ' . ($micro_status ? '' : $cache_source['m_name']) . '</span>';
+        return '<span ' . ( $micro_status && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="' . $data_placement . '" title="' . ($micro_status ? $cache_source['m_name'] : '') . (strlen($cache_source['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache_source['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache_source['m_icon'] . ' ' . ($micro_status ? '' : $cache_source['m_name']) . '</span>';
     }
 }
 
@@ -879,7 +879,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
                 //IDEA STATUS
                 if(!$is_public && $is_i_link){
                     //Show the drafting status:
-                    $ui .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$idea['i__status']]['m_name'].' @'.$idea['i__status'].'">' . $sources__4737[$idea['i__status']]['m_icon'] . '</span>&nbsp;</span>';
+                    $ui .= '<span class="inline-block">'.view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'right').'&nbsp;</span>';
                 }
 
                 $ui .= view_i_title($idea); //IDEA TITLE
@@ -1381,7 +1381,9 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
     }
     $ui .= '</div>';
 
-    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.view_i_title($idea).'</b>';
+
+    //Title + Drafting?
+    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.(!in_array($idea['i__status'], $CI->config->item('sources_id_7355')) ? view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'right').'&nbsp' : '').view_i_title($idea).($idea['x__sort'] < 1 ? '<br />[Newly Added]' : '').'</b>';
 
     $ui .= '</a>';
 
