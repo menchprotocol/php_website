@@ -1366,7 +1366,7 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
 
     //TOP RIGHT
     if($i_stats['duration_average'] || !$discover_mode){
-        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.( !$discover_mode ? view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'right').' ' : '').view_time_hours($i_stats['duration_average']).'</span>';
+        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.( !$discover_mode ? view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'right') : '').view_time_hours($i_stats['duration_average']).'</span>';
     }
 
     //Search for Idea Image:
