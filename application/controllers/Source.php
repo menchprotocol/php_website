@@ -585,7 +585,7 @@ class Source extends CI_Controller
 
                 if(sources_currently_sorted($x__up)){
 
-                    $x__sort = 1 + $this->DISCOVER_model->max_order(array(
+                    $x__sort = 1 + $this->DISCOVER_model->max_sort(array(
                             'x__up' => $x__up,
                             'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                             'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE

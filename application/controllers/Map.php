@@ -52,6 +52,11 @@ class Map extends CI_Controller {
             'x__right' => $idea['new_i__id'],
             'x__up' => $session_source['e__id'],
             'x__message' => '@'.$session_source['e__id'],
+            'x__sort' => 1 + $this->DISCOVER_model->max_sort(array(
+                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'x__type' => 10573, //MY IDEAS
+                'x__up' => $session_source['e__id'],
+            )),
         ), true);
 
         return view_json(array(
@@ -590,7 +595,7 @@ class Map extends CI_Controller {
         //Create Message:
         $discovery = $this->DISCOVER_model->create(array(
             'x__player' => $session_source['e__id'],
-            'x__sort' => 1 + $this->DISCOVER_model->max_order(array(
+            'x__sort' => 1 + $this->DISCOVER_model->max_sort(array(
                     'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'x__type' => intval($_POST['note_type_id']),
                     'x__right' => intval($_POST['i__id']),
@@ -705,7 +710,7 @@ class Map extends CI_Controller {
             'x__up' => $cdn_status['cdn_source']['e__id'],
             'x__right' => intval($_POST['i__id']),
             'x__message' => '@' . $cdn_status['cdn_source']['e__id'],
-            'x__sort' => 1 + $this->DISCOVER_model->max_order(array(
+            'x__sort' => 1 + $this->DISCOVER_model->max_sort(array(
                     'x__type' => $_POST['note_type_id'],
                     'x__right' => $_POST['i__id'],
                 )),

@@ -27,7 +27,8 @@
 
 
     //ADD IDEA MAPS
-    echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[13416]['m_icon'].'</span>'.$sources__11035[13416]['m_name'].'</div>';
+    echo '<div class="doclear">&nbsp;</div>';
+    echo '<div class="discover-topic" style="padding:21px 0 13px;"><span class="icon-block">'.$sources__11035[13416]['m_icon'].'</span>'.$sources__11035[13416]['m_name'].'</div>';
     echo '<div class="list-group">';
     echo '<div class="list-group-item list-adder itemidea">
                 <div class="input-group border">

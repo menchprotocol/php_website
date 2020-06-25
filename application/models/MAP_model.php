@@ -471,7 +471,7 @@ class MAP_model extends CI_Model
                 'x__type' => 4228, //Idea Link Regular Discovery
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
-                'x__sort' => 1 + $this->DISCOVER_model->max_order(array(
+                'x__sort' => 1 + $this->DISCOVER_model->max_sort(array(
                         'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
                         'x__left' => ( $is_parent ? $i_new['i__id'] : $link_to_i__id ),

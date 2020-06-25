@@ -610,7 +610,7 @@ class DISCOVER_model extends CI_Model
         return $affected_rows;
     }
 
-    function max_order($query_filters)
+    function max_sort($query_filters)
     {
 
         //Fetches the maximum order value
