@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-25 15:47:07 PST
+//Generated 2020-06-25 15:49:14 PST
 
 //REMOVE IDEA:
 $config['sources_id_13414'] = array(6155,13415);
@@ -563,7 +563,7 @@ $config['sources__12761'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
 );
 
@@ -772,7 +772,7 @@ $config['sources__12893'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -1114,7 +1114,7 @@ $config['sources__12677'] = array(
 );
 
 //VERTICAL MENU:
-$config['sources_id_12500'] = array(13207,12749,6415,6287,7291,4536);
+$config['sources_id_12500'] = array(13207,12749,6415,6287,7291);
 $config['sources__12500'] = array(
     13207 => array(
         'm_icon' => '<i class="fas fa-medal source"></i>',
@@ -1145,12 +1145,6 @@ $config['sources__12500'] = array(
         'm_name' => 'SIGNOUT',
         'm_desc' => '',
         'm_parents' => array(12500,10876),
-    ),
-    4536 => array(
-        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE',
-        'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
     ),
 );
 
@@ -1320,7 +1314,7 @@ $config['sources_id_12574'] = array(6225,11029,11030);
 $config['sources__12574'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'MY SETTINGS',
+        'm_name' => 'MY SOURCE SETTINGS',
         'm_desc' => '',
         'm_parents' => array(12574,11089,11035,4527),
     ),
@@ -2657,7 +2651,7 @@ $config['sources_id_11089'] = array(6225,10573,12274,12273,6255,12969,12896,1103
 $config['sources__11089'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'MY SETTINGS',
+        'm_name' => 'MY SOURCE SETTINGS',
         'm_desc' => '',
         'm_parents' => array(12574,11089,11035,4527),
     ),
@@ -3537,7 +3531,7 @@ $config['sources__11035'] = array(
     ),
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'MY SETTINGS',
+        'm_name' => 'MY SOURCE SETTINGS',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(12574,11089,11035,4527),
     ),
@@ -3569,7 +3563,7 @@ $config['sources__11035'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-list source" aria-hidden="true"></i>',
@@ -4254,7 +4248,7 @@ $config['sources__2738'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -4832,7 +4826,7 @@ $config['sources__4527'] = array(
     ),
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'MY SETTINGS',
+        'm_name' => 'MY SOURCE SETTINGS',
         'm_desc' => '',
         'm_parents' => array(12574,11089,11035,4527),
     ),
@@ -4900,7 +4894,7 @@ $config['sources__4527'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -6434,7 +6428,7 @@ $config['sources__4986'] = array(
     ),
 );
 
-//MY SETTINGS:
+//MY SOURCE SETTINGS:
 $config['sources_id_6225'] = array(12289,10869,10957,3288,3286,13037);
 $config['sources__6225'] = array(
     12289 => array(
