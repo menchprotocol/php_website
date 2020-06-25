@@ -18,21 +18,10 @@
     echo ( count($player_maps) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> .discover-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
 
 
-    if(count($player_maps) > 0){
-        //MY IDEAS
-        echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
-        echo '<div id="idea_covers" class="cover-list">';
-        foreach($player_maps as $idea){
-            echo view_i_cover($idea, true, false);
-        }
-        echo '</div>';
-        echo '<div class="doclear" style="padding-bottom: 21px;">&nbsp;</div>';
-    }
-
-
+    //MY IDEAS
+    echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
 
     //ADD IDEA MAPS
-    echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[13416]['m_icon'].'</span>'.$sources__11035[13416]['m_name'].'</div>';
     echo '<div class="list-group">';
     echo '<div class="list-group-item list-adder itemidea">
                 <div class="input-group border">
@@ -44,6 +33,14 @@
                            placeholder="NEW IDEA">
                 </div><div class="algolia_pad_search hidden"></div></div>';
     echo '</div>';
+
+
+    echo '<div id="idea_covers" class="cover-list">';
+    foreach($player_maps as $idea){
+        echo view_i_cover($idea, true, false);
+    }
+    echo '</div>';
+    echo '<div class="doclear">&nbsp;</div>';
 
     ?>
 </div>

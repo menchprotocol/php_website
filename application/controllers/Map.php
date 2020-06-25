@@ -45,18 +45,28 @@ class Map extends CI_Controller {
         //Create Idea:
         $idea = $this->MAP_model->link_or_create($i__title_validation['i_clean_title'], $session_source['e__id']);
 
-        //Also add to bookmarks:
+
+        //Move Existing Bookmarks by one:
+        $x__sort = 2;
+        foreach($this->DISCOVER_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type' => 10573, //MY IDEAS
+            'x__up' => $session_source['e__id'], //For this player
+        ), array(), 0, 0, array('x__sort' => 'ASC')) as $player_map){
+            $this->DISCOVER_model->update($player_map['x__id'], array(
+                'x__sort' => $x__sort,
+            ), $session_source['e__id']);
+            $x__sort++;
+        }
+
+        //Add to bookmarks:
         $this->DISCOVER_model->create(array(
             'x__type' => 10573, //MY IDEAS
             'x__player' => $session_source['e__id'],
             'x__right' => $idea['new_i__id'],
             'x__up' => $session_source['e__id'],
             'x__message' => '@'.$session_source['e__id'],
-            'x__sort' => 1 + $this->DISCOVER_model->max_sort(array(
-                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                'x__type' => 10573, //MY IDEAS
-                'x__up' => $session_source['e__id'],
-            )),
+            'x__sort' => 1, //Top of the list
         ), true);
 
         return view_json(array(
