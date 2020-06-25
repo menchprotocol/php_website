@@ -857,7 +857,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-    $ui .= '<td class="MENCHcolumn12">';
+    $ui .= '<td class="MENCHcolumn1">';
         $ui .= '<div class="block">';
 
             //IDAE Link:
@@ -891,10 +891,14 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
     $ui .= '</td>';
 
 
+    //DISCOVER
+    $ui .= '<td class="MENCHcolumn2 source">';
+    $ui .= view_coins_count_discover($idea['i__id']);
+    $ui .= '</td>';
+
+
     //SOURCE
     $ui .= '<td class="MENCHcolumn3 source">';
-
-
     if($is_i_link && $control_enabled && $is_source){
 
         //RIGHT EDITING:
@@ -915,11 +919,12 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
 
     }
 
-
     //SOURCE STATS
-    $ui .= view_coins_count_source($idea['i__id'], 0);
-
+    $ui .= view_coins_count_source($idea['i__id']);
     $ui .= '</td>';
+
+
+
     $ui .= '</tr></table>';
 
 
