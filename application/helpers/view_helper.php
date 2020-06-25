@@ -1377,7 +1377,7 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
 
         //IDEA STATUS?
         if(!$discover_mode){
-            $ui .= '<span class="media-info bottom-center">'.view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'bottom').'</span>';
+            $ui .= '<span class="media-info bottom-center">'.view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'top').'</span>';
         }
 
         //REMOVE
