@@ -1365,8 +1365,8 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
     $ui .= '</span>';
 
     //TOP RIGHT
-    if($i_stats['duration_average'] || !$discover_mode){
-        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.( !$discover_mode ? view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'bottom') : '').view_time_hours($i_stats['duration_average']).'</span>';
+    if($i_stats['duration_average']){
+        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.view_time_hours($i_stats['duration_average']).'</span>';
     }
 
     //Search for Idea Image:
@@ -1374,6 +1374,11 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
 
         //SORT
         $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$sources__13369[13413]['m_name'].': '.$sources__13369[13413]['m_desc'].'">'.$sources__13369[13413]['m_icon'].'</span>';
+
+        //IDEA STATUS?
+        if(!$discover_mode){
+            $ui .= '<span class="media-info bottom-center">'.view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'bottom').'</span>';
+        }
 
         //REMOVE
         $ui .= '<span class="media-info bottom-right x_remove" i__id="'.$idea['i__id'].'" title="'.$sources__13369[13414]['m_name'].'">'.$sources__13369[13414]['m_icon'].'</span>';
