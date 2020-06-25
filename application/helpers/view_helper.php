@@ -1376,7 +1376,7 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
         $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$sources__13369[13413]['m_name'].': '.$sources__13369[13413]['m_desc'].'">'.$sources__13369[13413]['m_icon'].'</span>';
 
         //IDEA STATUS?
-        if(!$discover_mode){
+        if(!$discover_mode && !in_array($idea['i__status'], $CI->config->item('sources_id_7355'))){
             $ui .= '<span class="media-info bottom-center">'.view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'top').'</span>';
         }
 
