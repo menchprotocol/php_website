@@ -21,7 +21,7 @@
     echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
     echo '<div id="idea_covers" class="cover-list">';
     foreach($player_maps as $idea){
-        echo view_i_cover($idea, true);
+        echo view_i_cover($idea, true, false);
     }
     echo '</div>';
 
