@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-25 15:49:14 PST
+//Generated 2020-06-25 15:51:06 PST
 
 //REMOVE IDEA:
 $config['sources_id_13414'] = array(6155,13415);
@@ -650,7 +650,7 @@ $config['sources__13004'] = array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(13411,13004,12574,11089,11028),
+        'm_parents' => array(12571,13411,13004,12574,11089,11028),
     ),
 );
 
@@ -1328,7 +1328,7 @@ $config['sources__12574'] = array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(13411,13004,12574,11089,11028),
+        'm_parents' => array(12571,13411,13004,12574,11089,11028),
     ),
 );
 
@@ -1344,7 +1344,7 @@ $config['sources__12575'] = array(
 );
 
 //SOURCE LAYOUT OPEN BY DEFAULT:
-$config['sources_id_12571'] = array(12273,11029,13046);
+$config['sources_id_12571'] = array(12273,11029,11030,13046);
 $config['sources__12571'] = array(
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -1357,6 +1357,12 @@ $config['sources__12571'] = array(
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(13004,12574,12571,11089,11028),
+    ),
+    11030 => array(
+        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(12571,13411,13004,12574,11089,11028),
     ),
     13046 => array(
         'm_icon' => '<i class="fas fa-exchange rotate source"></i>',
@@ -2695,7 +2701,7 @@ $config['sources__11089'] = array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
-        'm_parents' => array(13411,13004,12574,11089,11028),
+        'm_parents' => array(12571,13411,13004,12574,11089,11028),
     ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
