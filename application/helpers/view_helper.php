@@ -1365,8 +1365,8 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
     $ui .= '</span>';
 
     //TOP RIGHT
-    if($i_stats['duration_average']){
-        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.view_time_hours($i_stats['duration_average']).'</span>';
+    if($i_stats['duration_average'] || !$discover_mode){
+        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.( !$discover_mode ? view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'right').' ' : '').view_time_hours($i_stats['duration_average']).'</span>';
     }
 
     //Search for Idea Image:
@@ -1383,7 +1383,7 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
 
 
     //Title + Drafting?
-    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.( !$discover_mode ? view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'right').' ' : '').view_i_title($idea).($idea['x__sort'] < 1 ? '<div class="dorubik">⚠️ &nbsp;Newly Added</div>' : '').'</b>';
+    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.view_i_title($idea).($idea['x__sort'] < 1 ? '<div class="dorubik">⚠️ &nbsp;Newly Added</div>' : '').'</b>';
 
     $ui .= '</a>';
 
