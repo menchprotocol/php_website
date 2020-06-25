@@ -1396,7 +1396,17 @@ function view_e_basic($source)
 {
     $ui = '<div class="list-group-item no-side-padding">';
     $ui .= '<span class="icon-block">' . view_e__icon($source['e__icon']) . '</span>';
-    $ui .= '<span class="title-block title-no-right"><span '.( isset($source['x__message']) && strlen($source['x__message']) > 0 ? ' class="underdot" title="'.$source['x__message'].'" data-toggle="tooltip" data-placement="top" ' : '' ).'>'.$source['e__title'].'</span></span>';
+
+    $source__title = '<span '.( isset($source['x__message']) && strlen($source['x__message']) > 0 ? ' class="underdot" title="'.$source['x__message'].'" data-toggle="tooltip" data-placement="top" ' : '' ).'>'.$source['e__title'].'</span>';
+
+    if(superpower_active(10939, true)){
+        //Give Link:
+        $ui .= '<a class="title-block title-no-right montserrat" href="/@'.$source['e__id'].'">'.$source__title.'</a>';
+    } else {
+        //No Link:
+        $ui .= '<span class="title-block title-no-right">'.$source__title.'</span>';
+    }
+
     $ui .= '</div>';
     return $ui;
 }
