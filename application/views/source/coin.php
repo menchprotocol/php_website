@@ -368,7 +368,7 @@ $is_source = e_is_i_source($source['e__id']);
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4536]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
+                           class="form-control source form-control-thick montserrat algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
                            placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
@@ -604,7 +604,7 @@ $is_source = e_is_i_source($source['e__id']);
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4536]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control source form-control-thick montserrat doupper algolia_search dotransparent add-input"
+                           class="form-control source form-control-thick montserrat algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
                            placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
