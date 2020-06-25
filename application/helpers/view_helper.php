@@ -1383,7 +1383,7 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
 
 
     //Title + Drafting?
-    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.(!in_array($idea['i__status'], $CI->config->item('sources_id_7355')) ? view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'right').'&nbsp' : '').view_i_title($idea).($idea['x__sort'] < 1 ? '<br />[Newly Added]' : '').'</b>';
+    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.(!in_array($idea['i__status'], $CI->config->item('sources_id_7355')) ? view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'right').'&nbsp' : '').view_i_title($idea).($idea['x__sort'] < 1 ? '<div class="dorubik">⚠️ Newly Added</div>' : '').'</b>';
 
     $ui .= '</a>';
 
