@@ -1142,10 +1142,10 @@ class DISCOVER_model extends CI_Model
     }
 
 
-    function delete($e__id, $i__id, $stop_method_id, $stop_feedback = null){
+    function delete($e__id, $i__id, $x__type){
 
 
-        if(!in_array($stop_method_id, $this->config->item('sources_id_6150') /* Discoveries Idea Completed */)){
+        if(!in_array($x__type, $this->config->item('sources_id_6150') /* Discoveries Idea Completed */)){
             return array(
                 'status' => 0,
                 'message' => 'Invalid stop method',
@@ -1177,12 +1177,11 @@ class DISCOVER_model extends CI_Model
             );
         }
 
-        //Delete Bookmark:
+        //Delete:
         foreach($player_discoveries as $discovery){
             $this->DISCOVER_model->update($discovery['x__id'], array(
-                'x__message' => $stop_feedback,
                 'x__status' => 6173, //DELETED
-            ), $e__id, $stop_method_id);
+            ), $e__id, $x__type);
         }
 
         return array(

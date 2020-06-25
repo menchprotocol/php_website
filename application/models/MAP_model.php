@@ -505,7 +505,48 @@ class MAP_model extends CI_Model
 
     }
 
+    function delete($e__id, $i__id, $x__type){
 
+        //Validate idea to be deleted:
+        $ideas = $this->MAP_model->fetch(array(
+            'i__id' => $i__id,
+        ));
+        if (count($ideas) < 1) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid idea',
+            );
+        }
+
+
+        //Go ahead and delete from Discoveries:
+        $player_idea_maps = $this->DISCOVER_model->fetch(array(
+            'x__type' => 10573, //MY IDEAS
+            'x__up' => $e__id,
+            'x__right' => $i__id,
+            'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        ));
+        if(count($player_idea_maps) < 1){
+            return array(
+                'status' => 0,
+                'message' => 'Could not locate Idea Map',
+            );
+        }
+
+        //Delete:
+        foreach($player_idea_maps as $discovery){
+            $this->DISCOVER_model->update($discovery['x__id'], array(
+                'x__status' => 6173, //DELETED
+            ), $e__id, $x__type);
+        }
+
+        return array(
+            'status' => 1,
+            'message' => 'Success',
+        );
+
+    }
 
     function recursive_parents($i__id, $first_level = true, $public_only = true)
     {

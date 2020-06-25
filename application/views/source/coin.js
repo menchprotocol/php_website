@@ -404,7 +404,7 @@ function e_modify_load(e__id, x__id) {
     $("#modifybox").removeClass('hidden').hide().fadeIn();
 
     //Update variables:
-    $('#modifybox').attr('source-link-id', x__id);
+    $('#modifybox').attr('source-x-id', x__id);
     $('#modifybox').attr('source-id', e__id);
 
     //Cannot be deleted OR Unpublished as this would not load, so delete them:
@@ -665,7 +665,7 @@ function e_update() {
         e__status: $('#e__status').val(), //The new status (might not have changed too)
         e_merge: $('#e_merge').val(),
         //Link data:
-        x__id: parseInt($('#modifybox').attr('source-link-id')),
+        x__id: parseInt($('#modifybox').attr('source-x-id')),
         x__message: $('#x__message').val(),
         x__status: $('#x__status').val(),
     };

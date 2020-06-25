@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
 
-    discover_remove();
+    x_remove(6155);
 
 });
 

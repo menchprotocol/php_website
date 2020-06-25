@@ -546,6 +546,7 @@ img.no-radius {
 
 .progress-bg-image{
     width:100% !important;
+    background-color: #CCCCCC;
 }
 
 .progress-bg-list .progress-done, .progress-bg-image .progress-done{

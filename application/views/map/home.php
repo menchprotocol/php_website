@@ -11,23 +11,24 @@
         'x__up' => $session_source['e__id'], //For this player
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-
-    echo ( count($player_maps) > 1 ? '<script> $(document).ready(function () {discover_sort_load()}); </script>' : '<style> .discover-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+    echo ( count($player_maps) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> .discover-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
 
     $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
     $sources__2738 = $this->config->item('sources__2738'); //MENCH
 
+
     //MY IDEAS
     echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
-
-
     echo '<div id="idea_covers" class="cover-list">';
-
     foreach($player_maps as $idea){
         echo view_i_cover($idea, true);
     }
+    echo '</div>';
 
-    /*
+
+    //ADD IDEA MAPS
+    echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[13416]['m_icon'].'</span>'.$sources__11035[13416]['m_name'].'</div>';
+    echo '<div class="list-group">';
     echo '<div class="list-group-item list-adder itemidea">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
@@ -37,8 +38,6 @@
                            id="newIdeaTitle"
                            placeholder="NEW IDEA">
                 </div><div class="algolia_pad_search hidden"></div></div>';
-    */
-
     echo '</div>';
 
     ?>

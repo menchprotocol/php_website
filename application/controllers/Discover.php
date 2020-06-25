@@ -901,7 +901,7 @@ class Discover extends CI_Controller
 
 
 
-    function discover_remove(){
+    function x_remove(){
 
         /*
          *
@@ -924,10 +924,22 @@ class Discover extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing idea ID',
             ));
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('sources_id_13414'))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Interaction Type',
+            ));
         }
 
+
         //Call function to delete form Discoveries:
-        $delete_result = $this->DISCOVER_model->delete($session_source['e__id'], $_POST['i__id'], 6155); //REMOVED BOOKMARK
+        if($_POST['x__type']==6155){
+            //Delete Discovery
+            $delete_result = $this->DISCOVER_model->delete($session_source['e__id'], $_POST['i__id'], $_POST['x__type']);
+        } elseif($_POST['x__type']==13415){
+            //Delete IDEA MAP
+            $delete_result = $this->MAP_model->delete($session_source['e__id'], $_POST['i__id'], $_POST['x__type']);
+        }
 
         if(!$delete_result['status']){
             return view_json($delete_result);
@@ -942,7 +954,7 @@ class Discover extends CI_Controller
 
 
 
-    function discover_sort()
+    function x_sort()
     {
         /*
          *
@@ -963,6 +975,11 @@ class Discover extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing sorting ideas',
             ));
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('sources_id_13413'))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Interaction Type',
+            ));
         }
 
         //Update the order of their Discoveries:
@@ -972,7 +989,7 @@ class Discover extends CI_Controller
                 //Update order of this link:
                 $results[$x__sort] = $this->DISCOVER_model->update(intval($x__id), array(
                     'x__sort' => $x__sort,
-                ), $session_source['e__id'], 6132 /* Ideas Ordered by User */);
+                ), $session_source['e__id'], intval($_POST['x__type']));
             }
         }
 

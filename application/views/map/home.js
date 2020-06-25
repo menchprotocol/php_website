@@ -11,7 +11,7 @@ $(document).ready(function () {
         $('.algolia_pad_search').addClass('hidden');
     });
 
-    discover_remove();
+    x_remove(13415);
 
 });
 

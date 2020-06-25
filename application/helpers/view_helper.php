@@ -654,7 +654,7 @@ function view_i_discover($idea, $common_prefix = null, $show_editor = false, $co
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="ap_i_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-link-id="'.$idea['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div id="ap_i_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-x-id="'.$idea['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'">';
 
     $ui .= ( $can_click ? '<a href="/'. $idea['i__id'] .'" class="itemdiscover">' : '' );
 
@@ -1329,7 +1329,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
     return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
-function view_i_cover($idea, $show_editor){
+function view_i_cover($idea, $show_editor, $discover_mode = true){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1338,7 +1338,7 @@ function view_i_cover($idea, $show_editor){
     $recipient_source = superpower_assigned();
     $i_stats = i_stats($idea['i__metadata']);
 
-    $ui  = '<a href="/'.$idea['i__id'] . '" id="ap_i_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-link-id="'.$idea['x__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
+    $ui  = '<a href="'.( $discover_mode ? '/'.$idea['i__id'] : '/~'.$idea['i__id'] ) . '" id="ap_i_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-x-id="'.$idea['x__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
 
     $ui .= '<div class="cover-image">';
     if($recipient_source){
@@ -1373,10 +1373,10 @@ function view_i_cover($idea, $show_editor){
     if($show_editor){
 
         //SORT
-        $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$sources__13369[6132]['m_name'].': '.$sources__13369[6132]['m_desc'].'">'.$sources__13369[6132]['m_icon'].'</span>';
+        $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$sources__13369[13413]['m_name'].': '.$sources__13369[13413]['m_desc'].'">'.$sources__13369[13413]['m_icon'].'</span>';
 
         //REMOVE
-        $ui .= '<span class="media-info bottom-right discover_remove" i__id="'.$idea['i__id'].'" title="'.$sources__13369[6155]['m_name'].'">'.$sources__13369[6155]['m_icon'].'</span>';
+        $ui .= '<span class="media-info bottom-right x_remove" i__id="'.$idea['i__id'].'" title="'.$sources__13369[13414]['m_name'].'">'.$sources__13369[13414]['m_icon'].'</span>';
 
     }
     $ui .= '</div>';

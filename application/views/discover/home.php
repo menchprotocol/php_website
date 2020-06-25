@@ -19,7 +19,7 @@
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         ), array('x__left'), 0, 0, array('x__sort' => 'ASC'));
 
-        echo ( count($player_discoveries) > 1 ? '<script> $(document).ready(function () {discover_sort_load()}); </script>' : '<style> .discover-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+        echo ( count($player_discoveries) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> .discover-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
 
         if(count($player_discoveries)){
 
