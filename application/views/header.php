@@ -138,8 +138,23 @@ if(!isset($hide_header)){
                                 //Apply superpower to Mench actions only
                                 $superpower_actives = ( in_array($m['e__id'], $this->config->item('sources_id_2738')) ? array_intersect($this->config->item('sources_id_10957'), $m['m_parents']) : array());
 
+                                //Determine URL?
+                                if($m['e__id']==4536){
+                                    //SOURCE
+                                    $page_url = 'href="/@'.$session_source['e__id'].'"';
+                                } elseif($m['e__id']==4535){
+                                    //Map
+                                    $page_url = 'href="/~"';
+                                } elseif($m['e__id']==6205){
+                                    //Discover
+                                    $page_url = 'href="/"';
+                                } else {
+                                    //Unknown
+                                    continue;
+                                }
+
                                 echo '<div class="btn-group mench_coin '.$class.' border-' . $class.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-                                echo '<a class="btn ' . $class . '" href="' . $m['m_desc'] .'">';
+                                echo '<a class="btn ' . $class . '" '.$page_url.'>';
                                 echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                                 echo '<span class="montserrat ' . $class . '_name '.( $count>0 ? 'show-max' : '' ).'">' . $m['m_name'] . '&nbsp;</span>';
                                 echo '</a>';
@@ -205,9 +220,9 @@ if(!isset($hide_header)){
                                 //Fetch URL:
                                 $page_url = 'href="'.$sources__10876[$x__type]['m_desc'].'"';
 
-                            } elseif($x__type==12205) {
+                            } elseif($x__type==4536) {
 
-                                //SET TO PLAYER
+                                //SET SOURCE TO PLAYER
                                 $x__type = $session_source['e__id'];
                                 $page_url = 'href="/@'.$x__type.'"';
                                 $m['m_name'] = $session_source['e__title'];

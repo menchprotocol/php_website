@@ -213,10 +213,13 @@ $is_source = e_is_i_source($source['e__id']);
 
         //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
-        $has_superpower = ( !count($superpower_actives) || superpower_active(end($superpower_actives), true) );
-        $this_tab = null;
+        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+            //Missing Superpower:
+            continue;
+        }
+
         $counter = 0;
-        $auto_expand_tab = in_array($x__type, $this->config->item('sources_id_12571'));
+        $this_tab = null;
 
 
         //SOURCE
@@ -368,7 +371,7 @@ $is_source = e_is_i_source($source['e__id']);
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4536]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control source form-control-thick montserrat algolia_search dotransparent add-input"
+                           class="form-control form-control-thick montserrat algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
                            placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
@@ -604,7 +607,7 @@ $is_source = e_is_i_source($source['e__id']);
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4536]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control source form-control-thick montserrat algolia_search dotransparent add-input"
+                           class="form-control form-control-thick montserrat algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
                            placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
@@ -614,9 +617,7 @@ $is_source = e_is_i_source($source['e__id']);
         } elseif(in_array($x__type, $this->config->item('sources_id_12467'))){
 
             $counter = x_coins_source($x__type, $source['e__id']);
-            if($has_superpower){
-                $this_tab = x_coins_source($x__type, $source['e__id'], 1);
-            }
+            $this_tab = x_coins_source($x__type, $source['e__id'], 1);
 
         } elseif($x__type==13046){
 
@@ -684,21 +685,19 @@ $is_source = e_is_i_source($source['e__id']);
             $counter = $item_counters[0]['totals'];
 
             //SHOW LASTEST 100
-            if($has_superpower){
-                if($counter>0){
+            if($counter>0){
 
-                    $i_notes_query = $this->DISCOVER_model->fetch($i_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
-                    $this_tab .= '<div class="list-group">';
-                    foreach($i_notes_query as $count => $i_notes) {
-                        $this_tab .= view_i($i_notes, 0, false, false, $i_notes['x__message'], null, false);
-                    }
-                    $this_tab .= '</div>';
-
-                } else {
-
-                    $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$sources__11089[$x__type]['m_name'].' yet</div>';
-
+                $i_notes_query = $this->DISCOVER_model->fetch($i_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
+                $this_tab .= '<div class="list-group">';
+                foreach($i_notes_query as $count => $i_notes) {
+                    $this_tab .= view_i($i_notes, 0, false, false, $i_notes['x__message'], null, false);
                 }
+                $this_tab .= '</div>';
+
+            } else {
+
+                $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$sources__11089[$x__type]['m_name'].' yet</div>';
+
             }
 
         } elseif($x__type == 12969 /* MY DISCOVERIES */){
@@ -712,38 +711,37 @@ $is_source = e_is_i_source($source['e__id']);
             $player_discoveries = $this->DISCOVER_model->fetch($i_discoveries_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
             $counter = $player_discoveries[0]['totals'];
 
-            if($has_superpower){
-                if($counter > 0){
-                    $i_discoveries_query = $this->DISCOVER_model->fetch($i_discoveries_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
-                    $this_tab .= '<div class="list-group">';
-                    foreach($i_discoveries_query as $count => $i_notes) {
-                        $this_tab .= view_i($i_notes);
-                    }
-                    $this_tab .= '</div>';
-                } else {
-                    $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$sources__11089[$x__type]['m_name'].' yet</div>';
+            if($counter > 0){
+                $i_discoveries_query = $this->DISCOVER_model->fetch($i_discoveries_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
+                $this_tab .= '<div class="list-group">';
+                foreach($i_discoveries_query as $count => $i_notes) {
+                    $this_tab .= view_i($i_notes);
                 }
+                $this_tab .= '</div>';
+            } else {
+                $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$sources__11089[$x__type]['m_name'].' yet</div>';
             }
 
         }
 
+
         if(!$counter && (!in_array($x__type, $this->config->item('sources_id_12574')) || !$session_source)){
+            //Hide since Zero without exception @12574:
             continue;
         }
 
 
+        $auto_expand_tab = in_array($x__type, $this->config->item('sources_id_12571'));
+
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$x__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$x__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($x__type, $this->config->item('sources_id_13004')) ? superpower_active(10967) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$x__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
+        echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$x__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$x__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($x__type, $this->config->item('sources_id_13004')) ? superpower_active(13422) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$x__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
         if($this_tab) {
             echo $this_tab;
-        } elseif(!$has_superpower){
-            $superpower = $sources__10957[end($superpower_actives)];
-            echo '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Missing <span class="'.extract_icon_color($superpower['m_icon']).'">'. $superpower['m_icon'] . '&nbsp;' . $superpower['m_name'] . '</span></div>';
         }
         echo '</div>';
         echo '</div>';

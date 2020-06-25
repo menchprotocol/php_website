@@ -8,21 +8,7 @@
     //SOURCE HOME
     foreach($this->config->item('sources__13207') as $e__id => $m) {
 
-        if($e__id==12205){
-
-            if(!$session_source){
-                //Only show if logged in:
-                continue;
-            }
-
-            //MY SOURCES, count SOURCE COINS:
-            $e_list = $this->DISCOVER_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('sources_id_12274')) . ')' => null, //SOURCE COIN
-                'x__player' => $session_source['e__id'],
-            ), array('x__down'), $load_max, 0, array('e__weight' => 'DESC'));
-
-        } elseif(in_array($e__id, $this->config->item('sources_id_13365'))){
+        if(in_array($e__id, $this->config->item('sources_id_13365'))){
 
             //SOURCE GROUPS
             //TODO: Expand to include x__down for IDEA COINS (Currently only counts x__up)
