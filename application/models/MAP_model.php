@@ -524,7 +524,6 @@ class MAP_model extends CI_Model
             'x__type' => 10573, //MY IDEAS
             'x__up' => $e__id,
             'x__right' => $i__id,
-            'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         ));
         if(count($player_idea_maps) < 1){
