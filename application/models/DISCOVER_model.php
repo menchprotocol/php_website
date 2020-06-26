@@ -903,6 +903,7 @@ class DISCOVER_model extends CI_Model
          *
          * */
 
+
         //Start building the Output message body based on format:
         $has_text = substr_count($message_input, ' ');
         $message_input .= ' ';//Helps with accurate source reference replacement
@@ -1015,6 +1016,18 @@ class DISCOVER_model extends CI_Model
             }
 
             $referenced_key++;
+        }
+
+
+        //HACK COINS:
+        if(substr_count($message_input, '🟡')){
+            $message_input = str_replace('🟡','<span class="icon-block-xs"><i class="fas fa-circle idea"></i></span>', $message_input);
+        }
+        if(substr_count($message_input, '🔵')){
+            $message_input = str_replace('🔵','<span class="icon-block-xs"><i class="fas fa-circle source"></i></span>', $message_input);
+        }
+        if(substr_count($message_input, '🔴')){
+            $message_input = str_replace('🔴','<span class="icon-block-xs"><i class="fas fa-circle discover"></i></span>', $message_input);
         }
 
 

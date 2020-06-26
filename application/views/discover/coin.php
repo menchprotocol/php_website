@@ -276,6 +276,11 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $this_tab .= view_i_note_mix($x__type, $comments);
         $this_tab .= '</div>';
 
+    } elseif($x__type==13360){
+
+        $counter = x_coins_idea(6255, $i_focus['i__id']);
+        $this_tab .= '<p class="space-content">This idea has been discovered '.$counter.' times.</p>';
+
     } elseif($x__type==13023){
 
         //SHARE
