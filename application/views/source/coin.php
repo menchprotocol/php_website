@@ -12,7 +12,7 @@ $is_public = in_array($source['e__status'], $this->config->item('sources_id_7357
 $is_active = in_array($source['e__status'], $this->config->item('sources_id_7358'));
 $superpower_10967 = superpower_active(10967, true);
 $superpower_any = ( $session_source ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-$is_source = e_is_i_source($source['e__id']);
+$is_source = player_is_e_source($source['e__id']);
 
 ?>
 
