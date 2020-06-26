@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-26 13:05:57 PST
+//Generated 2020-06-26 13:21:47 PST
 
 //SOURCE LAYOUT HIDE IF SOURCE:
 $config['sources_id_13424'] = array(12969,10573,12896);
@@ -21,7 +21,7 @@ $config['sources__13424'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13424,4535,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -978,7 +978,7 @@ $config['sources__12822'] = array(
     ),
 );
 
-//MY IDEAS:
+//MY IDEA MAPS:
 $config['sources_id_10573'] = array(4430);
 $config['sources__10573'] = array(
     4430 => array(
@@ -2709,7 +2709,7 @@ $config['sources__11089'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13424,4535,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -3399,7 +3399,7 @@ $config['sources__11054'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13424,4535,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -3511,7 +3511,7 @@ $config['sources__11035'] = array(
     ),
     13216 => array(
         'm_icon' => '<i class="fas fa-star idea"></i>',
-        'm_name' => 'FEATURED IDEAS',
+        'm_name' => 'FEATURED IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13210,11035),
     ),
@@ -3571,7 +3571,7 @@ $config['sources__11035'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13424,4535,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -3696,7 +3696,7 @@ $config['sources__11018'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13424,4535,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -4866,7 +4866,7 @@ $config['sources__4527'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13424,4535,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -5919,7 +5919,7 @@ $config['sources__7551'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13424,4535,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -7733,7 +7733,7 @@ $config['sources__4593'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13424,4535,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
@@ -8193,7 +8193,7 @@ $config['sources__4485'] = array(
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'MY IDEAS',
+        'm_name' => 'MY IDEA MAPS',
         'm_desc' => '',
         'm_parents' => array(13424,4535,13211,11054,4527,10984,11018,11035,11089,4593,7551,4485),
     ),
