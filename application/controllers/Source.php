@@ -274,7 +274,7 @@ class Source extends CI_Controller
         $items_per_page = config_var(11064);
         $parent_e__id = intval($_POST['parent_e__id']);
         $e_focus_filter = intval($_POST['e_focus_filter']);
-        $is_source = e_is_i_source($parent_e__id);
+        $is_source = player_is_e_source($parent_e__id);
         $page = intval($_POST['page']);
         $filters = array(
             'x__up' => $parent_e__id,

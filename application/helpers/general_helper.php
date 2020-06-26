@@ -1344,7 +1344,7 @@ function e__title_validate($string, $x__type = 0){
 
 
 
-function e_is_i_source($e__id, $session_source = array()){
+function player_is_e_source($e__id, $session_source = array()){
 
 
     if(!$session_source){
@@ -1359,14 +1359,25 @@ function e_is_i_source($e__id, $session_source = array()){
     //Ways a player can modify a source:
     $CI =& get_instance();
     return (
-        $e__id==$session_source['e__id'] || //Player is the source
-        superpower_active(10967, true) || //Player has Global source editing superpower
-        count($CI->DISCOVER_model->fetch(array( //Player created the source
+
+        //Player is the source
+        $e__id==$session_source['e__id']
+
+
+        //Player has Global source editing superpower
+        || superpower_active(10967, true)
+
+
+        //Player created the source
+        || count($CI->DISCOVER_model->fetch(array(
             'x__player' => $session_source['e__id'],
             'x__down' => $e__id,
             'x__type' => 4251, //New Source Created
-        ))) ||
-        count($CI->DISCOVER_model->fetch(array( //Player has source in their portfolio
+        )))
+
+
+        //Player has source in their portfolio
+        || count($CI->DISCOVER_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__up' => $session_source['e__id'],

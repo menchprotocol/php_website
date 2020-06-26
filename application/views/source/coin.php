@@ -209,7 +209,6 @@ $is_source = e_is_i_source($source['e__id']);
 
 
     //Print Play Layout
-    $is_source = $session_source && $session_source['e__id']==$source['e__id'];
     foreach($sources__11089 as $x__type => $m){
 
         //Don't show empty tabs:
@@ -365,7 +364,7 @@ $is_source = e_is_i_source($source['e__id']);
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach($e__profiles as $e_profile) {
-                $this_tab .= view_e($e_profile,true, null, true, $is_source);
+                $this_tab .= view_e($e_profile,true, null, true, ($is_source || ($session_source && ($session_source['e__id']==$e_profile['x__player']))));
             }
 
             //Input to add new parents:
@@ -598,7 +597,7 @@ $is_source = e_is_i_source($source['e__id']);
             $this_tab .= '<div id="e__portfolio" class="list-group">';
 
             foreach($e__portfolios as $e_portfolio) {
-                $this_tab .= view_e($e_portfolio,false, null, true, $is_source);
+                $this_tab .= view_e($e_portfolio,false, null, true, ($is_source || ($session_source && ($session_source['e__id']==$e_portfolio['x__player']))));
             }
             if ($counter > count($e__portfolios)) {
                 $this_tab .= view_e_load_more(1, config_var(11064), $counter);
