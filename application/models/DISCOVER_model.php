@@ -1030,6 +1030,16 @@ class DISCOVER_model extends CI_Model
             $message_input = str_replace('🔴','<span class="icon-block-xs"><i class="fas fa-circle discover"></i></span>', $message_input);
         }
 
+        if(substr_count($output_body_message, '🟡')){
+            $output_body_message = str_replace('🟡','<span class="icon-block-xs"><i class="fas fa-circle idea"></i></span>', $output_body_message);
+        }
+        if(substr_count($output_body_message, '🔵')){
+            $output_body_message = str_replace('🔵','<span class="icon-block-xs"><i class="fas fa-circle source"></i></span>', $output_body_message);
+        }
+        if(substr_count($output_body_message, '🔴')){
+            $output_body_message = str_replace('🔴','<span class="icon-block-xs"><i class="fas fa-circle discover"></i></span>', $output_body_message);
+        }
+
 
         //Return results:
         return array(
