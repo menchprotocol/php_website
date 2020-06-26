@@ -209,12 +209,19 @@ $is_source = e_is_i_source($source['e__id']);
 
 
     //Print Play Layout
+    $is_source = $session_source && $session_source['e__id']==$source['e__id'];
     foreach($sources__11089 as $x__type => $m){
 
         //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             //Missing Superpower:
+            continue;
+        } elseif(in_array($x__type, $this->config->item('sources_id_13424')) && $is_source){
+            //SOURCE LAYOUT HIDE IF SOURCE:
+            continue;
+        } elseif(in_array($x__type, $this->config->item('sources_id_13425')) && !$is_source){
+            //SOURCE LAYOUT SHOW IF SOURCE:
             continue;
         }
 
@@ -224,11 +231,6 @@ $is_source = e_is_i_source($source['e__id']);
 
         //SOURCE
         if($x__type==6225){
-
-            //Account Setting
-            if(!$session_source || $session_source['e__id']!=$source['e__id']){
-                continue;
-            }
 
             $this_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
 
