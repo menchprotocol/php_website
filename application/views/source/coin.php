@@ -206,9 +206,43 @@ $is_source = player_is_e_source($source['e__id']);
 
 
 
+    //MENCH COINS
+    $tab_group = 12467;
+    $tab_content = '';
+    foreach($this->config->item('sources__'.$tab_group) as $x__type => $m) {
+
+        //Has required Superpowers
+        $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
+        if(count($superpower_actives) && !superpower_assigned(end($superpower_actives))){
+            continue;
+        }
+
+        //Does have 1 or more coins
+        $counter = x_coins_source($x__type, $source['e__id']);
+        if(!$counter){
+            //Hide since Zero:
+            continue;
+        }
+
+        $this_tab = x_coins_source($x__type, $source['e__id'], 1);
+        $default_active = in_array($x__type, $this->config->item('sources_id_12571'));
+
+        echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'</a></li>';
 
 
-    //Print Play Layout
+        $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
+        $tab_content .= $this_tab;
+        $tab_content .= '</div>';
+
+    }
+    //Show All Tab Content:
+    echo $tab_content;
+
+
+
+
+
+    //SOURCE TABS
     foreach($sources__11089 as $x__type => $m){
 
         //Don't show empty tabs:
@@ -614,11 +648,6 @@ $is_source = player_is_e_source($source['e__id']);
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
-
-        } elseif(in_array($x__type, $this->config->item('sources_id_12467'))){
-
-            $counter = x_coins_source($x__type, $source['e__id']);
-            $this_tab = x_coins_source($x__type, $source['e__id'], 1);
 
         } elseif($x__type==13046){
 

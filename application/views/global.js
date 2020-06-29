@@ -168,7 +168,7 @@ function js_view_platform_message(e__id){
 }
 
 
-function loadtab(x__type, tab_data_id, note_i__id, owner_e__id){
+function loadtab(x__type, tab_data_id){
 
     //Hide all tabs:
     $('.tab-group-'+x__type).addClass('hidden');
