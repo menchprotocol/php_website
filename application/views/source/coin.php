@@ -232,7 +232,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
         $this_tab = x_coins_source($x__type, $source['e__id'], 1);
         $default_active = in_array($x__type, $this->config->item('sources_id_12571'));
 
-        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'</a></li>';
+        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'</a></li>';
 
 
         $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
@@ -280,8 +280,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
         $this_tab = null;
 
 
-        //SOURCE
-        if($x__type==6225){
+        if($x__type==6225){ //ACCOUNT SETTING
 
             $this_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
 
@@ -398,9 +397,8 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
             $this_tab .= '</div>'; //End of accordion
 
-        } elseif($x__type==11030){
+        } elseif($x__type==11030){ //SOURCE PROFILE
 
-            //SOURCE PROFILE
             //FETCH ALL PARENTS
             $e__profiles = $this->DISCOVER_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
@@ -577,7 +575,11 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
                 }
 
+
                 $this_tab .= '<div class="pull-right grey" style="margin:-25px 5px 0 0;">'.( superpower_active(10967, true) && sources_currently_sorted($source['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$sources__11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$sources__11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$sources__11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$sources__11035[4997]['m_icon'].'</a></div>';
+
+
+
                 $this_tab .= '<div class="doclear">&nbsp;</div>';
                 $this_tab .= '<div class="e_editor hidden">';
                 $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
@@ -647,9 +649,10 @@ $player_is_e_source = player_is_e_source($source['e__id']);
             }
 
             $this_tab .= '<div id="e__portfolio" class="list-group">';
+            $common_prefix = i_calc_common_prefix($e__portfolios, 'e__title');
 
             foreach($e__portfolios as $e_portfolio) {
-                $this_tab .= view_e($e_portfolio,false, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_portfolio['x__player']))));
+                $this_tab .= view_e($e_portfolio,false, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_portfolio['x__player']))), $common_prefix);
             }
             if ($counter > count($e__portfolios)) {
                 $this_tab .= view_e_load_more(1, config_var(11064), $counter);

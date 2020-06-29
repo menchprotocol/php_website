@@ -822,7 +822,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
 
             //DISCOVER COIN
             foreach($query as $item){
-                $ui .= view_i($item);
+                $ui .= view_i($item, 0, false, false, null, null, false);
             }
 
         } elseif($x__type==12273){

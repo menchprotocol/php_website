@@ -179,7 +179,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= view_e($i_note, 0, null, $player_is_i_source && $is_active, $player_is_i_source);
         }
 
-        if($player_is_i_source && $is_active && !$disable_manual_add) {
+        if($i_is_source && $is_active && !$disable_manual_add) {
             $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $sources__2738[4536]['m_icon'] . '</span></span>
@@ -304,7 +304,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
     $default_active = in_array($x__type, $this->config->item('sources_id_12675'));
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'</a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';

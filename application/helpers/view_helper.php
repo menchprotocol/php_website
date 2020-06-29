@@ -1401,7 +1401,7 @@ function view_e_basic($source)
 }
 
 
-function view_e($source, $is_parent = false, $extra_class = null, $control_enabled = false, $player_is_e_source = false)
+function view_e($source, $is_parent = false, $extra_class = null, $control_enabled = false, $player_is_e_source = false, $common_prefix = null)
 {
 
     $CI =& get_instance();
@@ -1508,7 +1508,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
         //SOURCE NAME
         $ui .= '<a href="'.$e_url.'" class="title-block title-no-right montserrat '.extract_icon_color($source['e__icon']).'">';
         $ui .= $box_items_list;
-        $ui .= '<span class="text__6197_' . $source['e__id'] . '">'.$source['e__title'].'</span>';
+        $ui .= '<span class="text__6197_' . $source['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $source['e__title']) :  $source['e__title'] ).'</span>';
         if($show_toolbar){
             $ui .= $child_counter;
         }
