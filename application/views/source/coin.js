@@ -590,27 +590,28 @@ function e_sort_save() {
 }
 
 function e_sort_reset(){
+    var r = confirm("Reset all Portfolio Source orders & sort alphabetically?");
+    if (r == true) {
+        $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
 
-    $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
+        //Update via call:
+        $.post("/source/e_sort_reset", {
+            e__id: e_focus_id
+        }, function (data) {
 
-    //Update via call:
-    $.post("/source/e_sort_reset", {
-        e__id: e_focus_id
-    }, function (data) {
+            if (!data.status) {
 
-        if (!data.status) {
+                //Ooops there was an error!
+                alert(data.message);
 
-            //Ooops there was an error!
-            alert(data.message);
+            } else {
 
-        } else {
+                //Refresh page:
+                window.location = '/@' + e_focus_id;
 
-            //Refresh page:
-            window.location = '/@' + e_focus_id;
-
-        }
-    });
-
+            }
+        });
+    }
 }
 
 function e_sort_portfolio_load() {
