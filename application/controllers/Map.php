@@ -82,7 +82,7 @@ class Map extends CI_Controller {
         $session_source = superpower_assigned(10939, true);
         $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
-            'title' => $sources__11035[13211]['m_name'],
+            'title' => $sources__11035[10573]['m_name'],
             'session_source' => $session_source,
         ));
         $this->load->view('map/home');
