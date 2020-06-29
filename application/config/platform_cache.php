@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-29 16:11:18 PST
+//Generated 2020-06-29 16:15:32 PST
 
 //SOURCE LAYOUT HIDE IF SOURCE:
 $config['sources_id_13424'] = array(12969,10573,12896);
@@ -688,15 +688,15 @@ $config['sources_id_13004'] = array(11029,11030);
 $config['sources__13004'] = array(
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO',
+        'm_name' => 'PORTFOLIO SOURCES',
         'm_desc' => '',
         'm_parents' => array(13004,12574,12571,11089,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE',
+        'm_name' => 'PROFILE SOURCES',
         'm_desc' => '',
-        'm_parents' => array(12571,13411,13004,12574,11089,11028),
+        'm_parents' => array(13411,13004,12574,11089,11028),
     ),
 );
 
@@ -1372,15 +1372,15 @@ $config['sources__12574'] = array(
     ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO',
+        'm_name' => 'PORTFOLIO SOURCES',
         'm_desc' => '',
         'm_parents' => array(13004,12574,12571,11089,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE',
+        'm_name' => 'PROFILE SOURCES',
         'm_desc' => '',
-        'm_parents' => array(12571,13411,13004,12574,11089,11028),
+        'm_parents' => array(13411,13004,12574,11089,11028),
     ),
 );
 
@@ -1396,7 +1396,7 @@ $config['sources__12575'] = array(
 );
 
 //SOURCE LAYOUT OPEN BY DEFAULT:
-$config['sources_id_12571'] = array(12273,11029,11030);
+$config['sources_id_12571'] = array(12273,11029);
 $config['sources__12571'] = array(
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -1406,15 +1406,9 @@ $config['sources__12571'] = array(
     ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO',
+        'm_name' => 'PORTFOLIO SOURCES',
         'm_desc' => '',
         'm_parents' => array(13004,12574,12571,11089,11028),
-    ),
-    11030 => array(
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE',
-        'm_desc' => '',
-        'm_parents' => array(12571,13411,13004,12574,11089,11028),
     ),
 );
 
@@ -2699,25 +2693,25 @@ $config['sources__12079'] = array(
 );
 
 //SOURCE TABS:
-$config['sources_id_11089'] = array(6225,11030,11029,12419,7545,10573,12969,12896);
+$config['sources_id_11089'] = array(11029,11030,6225,12419,7545,10573,12969,12896);
 $config['sources__11089'] = array(
+    11029 => array(
+        'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(13004,12574,12571,11089,11028),
+    ),
+    11030 => array(
+        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(13411,13004,12574,11089,11028),
+    ),
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => '',
         'm_parents' => array(13425,12574,11089,11035,4527),
-    ),
-    11030 => array(
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE',
-        'm_desc' => '',
-        'm_parents' => array(12571,13411,13004,12574,11089,11028),
-    ),
-    11029 => array(
-        'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO',
-        'm_desc' => '',
-        'm_parents' => array(13004,12574,12571,11089,11028),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
