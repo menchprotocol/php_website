@@ -988,7 +988,6 @@ class DISCOVER_model extends CI_Model
 
             //Append any appendix generated:
             $text_tooltip = ( strlen($text_tooltip) ? ' class="underdot" title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
-            $short_name_class = ( strlen($sources[0]['e__title']) <= 13 ? ' inline-block ' : '' );
             $output_body_message .= $e_appendix;
             $identifier_string = '@' . $referenced_source.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_source,' ',$message_input) : '' ).' ';
 
@@ -1004,14 +1003,14 @@ class DISCOVER_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="'.$short_name_class.'"><span class="icon-block-xs img-block">'.view_e__icon($sources[0]['e__icon']).'</span><span class="text__6197_' . $sources[0]['e__id']  . '">' . $sources[0]['e__title']  . '</span></span></span>'.' ', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="inline-block"><span class="icon-block-xs img-block">'.view_e__icon($sources[0]['e__icon']).'</span><span class="text__6197_' . $sources[0]['e__id']  . '">' . $sources[0]['e__title']  . '</span></span></span>'.' ', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat '.$short_name_class.extract_icon_color($sources[0]['e__icon']).'" href="/@' . $sources[0]['e__id'] . '">'.( !in_array($sources[0]['e__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($sources[0]['e__icon']).'</span><span class="text__6197_' . $sources[0]['e__id']  . '">' . $sources[0]['e__title']  . '</span></a></span>'.' ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat inline-block" href="/@' . $sources[0]['e__id'] . '">'.( !in_array($sources[0]['e__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($sources[0]['e__icon']).'</span><span class="text__6197_' . $sources[0]['e__id']  . '">' . $sources[0]['e__title']  . '</span></a></span>'.' ', $output_body_message);
 
             }
 
