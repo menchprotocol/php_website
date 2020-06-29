@@ -12,7 +12,7 @@ $is_public = in_array($source['e__status'], $this->config->item('sources_id_7357
 $is_active = in_array($source['e__status'], $this->config->item('sources_id_7358'));
 $superpower_10967 = superpower_active(10967, true);
 $superpower_any = ( $session_source ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-$is_source = player_is_e_source($source['e__id']);
+$player_is_e_source = player_is_e_source($source['e__id']);
 
 ?>
 
@@ -34,7 +34,7 @@ $is_source = player_is_e_source($source['e__id']);
 
     <?php
     //SOURCE NAME
-    echo '<div class="itemsource">'.view_input_text(6197, $source['e__title'], $source['e__id'], ($is_source && $is_active), 0, true, '<span class="e_ui_icon_'.$source['e__id'].'">'.view_e__icon($source['e__icon']).'</span>', extract_icon_color($source['e__icon'])).'</div>';
+    echo '<div class="itemsource">'.view_input_text(6197, $source['e__title'], $source['e__id'], ($player_is_e_source && $is_active), 0, true, '<span class="e_ui_icon_'.$source['e__id'].'">'.view_e__icon($source['e__icon']).'</span>', extract_icon_color($source['e__icon'])).'</div>';
 
     ?>
 
@@ -268,10 +268,10 @@ $is_source = player_is_e_source($source['e__id']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             //Missing Superpower:
             continue;
-        } elseif(in_array($x__type, $this->config->item('sources_id_13424')) && $is_source){
+        } elseif(in_array($x__type, $this->config->item('sources_id_13424')) && $player_is_e_source){
             //SOURCE LAYOUT HIDE IF SOURCE:
             continue;
-        } elseif(in_array($x__type, $this->config->item('sources_id_13425')) && !$is_source){
+        } elseif(in_array($x__type, $this->config->item('sources_id_13425')) && !$player_is_e_source){
             //SOURCE LAYOUT SHOW IF SOURCE:
             continue;
         }
@@ -416,7 +416,7 @@ $is_source = player_is_e_source($source['e__id']);
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach($e__profiles as $e_profile) {
-                $this_tab .= view_e($e_profile,true, null, true, ($is_source || ($session_source && ($session_source['e__id']==$e_profile['x__player']))));
+                $this_tab .= view_e($e_profile,true, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_profile['x__player']))));
             }
 
             //Input to add new parents:
@@ -649,7 +649,7 @@ $is_source = player_is_e_source($source['e__id']);
             $this_tab .= '<div id="e__portfolio" class="list-group">';
 
             foreach($e__portfolios as $e_portfolio) {
-                $this_tab .= view_e($e_portfolio,false, null, true, ($is_source || ($session_source && ($session_source['e__id']==$e_portfolio['x__player']))));
+                $this_tab .= view_e($e_portfolio,false, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_portfolio['x__player']))));
             }
             if ($counter > count($e__portfolios)) {
                 $this_tab .= view_e_load_more(1, config_var(11064), $counter);

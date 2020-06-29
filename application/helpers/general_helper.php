@@ -1364,10 +1364,6 @@ function player_is_e_source($e__id, $session_source = array()){
         $e__id==$session_source['e__id']
 
 
-        //Player has Global source editing superpower
-        || superpower_active(10967, true)
-
-
         //Player created the source
         || count($CI->DISCOVER_model->fetch(array(
             'x__player' => $session_source['e__id'],
@@ -1375,6 +1371,10 @@ function player_is_e_source($e__id, $session_source = array()){
             'x__type' => 4251, //New Source Created
         )))
 
+        /*
+
+        //Player has Global source editing superpower
+        || superpower_active(10967, true)
 
         //Player has source in their portfolio
         || count($CI->DISCOVER_model->fetch(array(
@@ -1383,11 +1383,13 @@ function player_is_e_source($e__id, $session_source = array()){
             'x__up' => $session_source['e__id'],
             'x__down' => $e__id,
         )))
+
+        */
     );
 
 }
 
-function i_is_source($i__id, $session_source = array()){
+function player_is_i_source($i__id, $session_source = array()){
 
     if(!$session_source){
         //Fetch from session:

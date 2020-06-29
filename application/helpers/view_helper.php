@@ -195,7 +195,7 @@ function view_i_title($idea, $common_prefix = null){
 }
 
 
-function view_i_notes($discovery, $is_source = false)
+function view_i_notes($discovery, $note_is_e_source = false)
 {
 
     /*
@@ -211,7 +211,7 @@ function view_i_notes($discovery, $is_source = false)
     $session_source = superpower_assigned();
     $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
     $sources__6186 = $CI->config->item('sources__6186'); //Interaction Status
-    $is_source = ( $is_source || superpower_active(10984, true) );
+    $note_is_e_source = ( $note_is_e_source || superpower_active(10984, true) );
 
 
     //Build the HTML UI:
@@ -225,7 +225,7 @@ function view_i_notes($discovery, $is_source = false)
     $ui .= '</div>';
 
     //Editing menu:
-    if($is_source){
+    if($note_is_e_source){
         $ui .= '<div class="note-editor edit-off"><span class="show-on-hover">';
 
         //Sorting allowed?
@@ -817,7 +817,7 @@ function view_i_marks($i_discover){
 }
 
 
-function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false, $message_input = null, $extra_class = null, $control_enabled = true)
+function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source = false, $message_input = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -837,7 +837,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
     //IDEA
     $i_stats = i_stats($idea['i__metadata']);
     $is_public = in_array($idea['i__status'], $CI->config->item('sources_id_7355'));
-    $is_source = ( !$is_i_link ? false : $is_source ); //Disable Edits on Idea List Page
+    $player_is_i_source = ( !$is_i_link ? false : $player_is_i_source ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
 
@@ -869,7 +869,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
             //IDEA TITLE
             if($is_i_link && superpower_active(13354, true)){
 
-                $ui .= view_input_text(4736, $idea['i__title'], $idea['i__id'], $is_source, (($idea['x__sort']*100)+1));
+                $ui .= view_input_text(4736, $idea['i__title'], $idea['i__id'], $player_is_i_source, (($idea['x__sort']*100)+1));
 
             } else {
 
@@ -899,7 +899,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
 
     //SOURCE
     $ui .= '<td class="MENCHcolumn3 source">';
-    if($is_i_link && $control_enabled && $is_source){
+    if($is_i_link && $control_enabled && $player_is_i_source){
 
         //RIGHT EDITING:
         $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
@@ -942,10 +942,10 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
         $ui .= $box_items_list;
 
         //IDEA TYPE
-        $ui .= '<div class="inline-block">'.view_input_dropdown(7585, $idea['i__type'], null, $is_source, false, $idea['i__id']).'</div>';
+        $ui .= '<div class="inline-block">'.view_input_dropdown(7585, $idea['i__type'], null, $player_is_i_source, false, $idea['i__id']).'</div>';
 
         //IDEA STATUS
-        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $idea['i__status'], null, $is_source, false, $idea['i__id']) . ' </div>';
+        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $idea['i__status'], null, $player_is_i_source, false, $idea['i__id']) . ' </div>';
 
 
 
@@ -958,20 +958,20 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $is_source = false,
             $ui .= '<span class="' . superpower_active(12700) . '">';
 
             //LINK TYPE
-            $ui .= view_input_dropdown(4486, $idea['x__type'], null, $is_source, false, $idea['i__id'], $idea['x__id']);
+            $ui .= view_input_dropdown(4486, $idea['x__type'], null, $player_is_i_source, false, $idea['i__id'], $idea['x__id']);
 
             //LINK MARKS
             $ui .= '<span class="link_marks settings_4228 '.( $idea['x__type']==4228 ? : 'hidden' ).'">';
-            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $idea['x__id'], $is_source, ($idea['x__sort']*10)+2 );
+            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $idea['x__id'], $player_is_i_source, ($idea['x__sort']*10)+2 );
             $ui .='</span>';
 
 
             //LINK CONDITIONAL RANGE
             $ui .= '<span class="link_marks settings_4229 '.( $idea['x__type']==4229 ? : 'hidden' ).'">';
             //MIN
-            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $idea['x__id'], $is_source, ($idea['x__sort']*10)+3);
+            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $idea['x__id'], $player_is_i_source, ($idea['x__sort']*10)+3);
             //MAX
-            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $idea['x__id'], $is_source, ($idea['x__sort']*10)+4);
+            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $idea['x__id'], $player_is_i_source, ($idea['x__sort']*10)+4);
             $ui .= '</span>';
             $ui .= '</span>';
 
@@ -1178,33 +1178,6 @@ function view_i_previous_discover($i__id, $recipient_source){
 
 }
 
-
-function view_i_note_source($i__id, $x__type, $i_notes, $is_source){
-
-    $CI =& get_instance();
-    $sources__11018 = $CI->config->item('sources__11018');
-
-    $ui = '<div class="list-group">';
-    foreach($i_notes as $source) {
-        $ui .= view_e($source, false, null, true, $is_source);
-    }
-
-    if( $is_source ){
-        $ui .= '<div class="list-group-item itemsource '.superpower_active(10939).'" style="padding:5px 0;">
-                <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__11018[$x__type]['m_icon'].'</span></span>
-                    <input type="text"
-                           class="form-control IdeaAddPrevious form-control-thick doupper add-input montserrat algolia_search dotransparent"
-                           maxlength="' . config_var(6197) . '"
-                           idea-id="' . $i__id . '"
-                           id="add-source-idea-' . $i__id . '"
-                           placeholder="'.$sources__11018[$x__type]['m_name'].'">
-                </div><div class="algolia_pad_search hidden i_pad_top"></div></div>';
-    }
-    $ui .= '</div>';
-
-    return $ui;
-}
 
 function view_i_note_mix($x__type, $i_notes){
 
@@ -1428,7 +1401,7 @@ function view_e_basic($source)
 }
 
 
-function view_e($source, $is_parent = false, $extra_class = null, $control_enabled = false, $is_source = false)
+function view_e($source, $is_parent = false, $extra_class = null, $control_enabled = false, $player_is_e_source = false)
 {
 
     $CI =& get_instance();
@@ -1523,7 +1496,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
     //SOURCE TOOLBAR?
     if($inline_editing){
 
-        $ui .= view_input_text(6197, $source['e__title'], $source['e__id'], $is_source, 0, false, null, extract_icon_color($source['e__icon']));
+        $ui .= view_input_text(6197, $source['e__title'], $source['e__id'], $player_is_e_source, 0, false, null, extract_icon_color($source['e__icon']));
 
         if($show_toolbar){
             $ui .= $child_counter;
@@ -1556,7 +1529,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
     $ui .= '<div class="note-editor edit-off">';
     $ui .= '<span class="show-on-hover">';
 
-    if($control_enabled && $is_source){
+    if($control_enabled && $player_is_e_source){
         if($is_link_source){
 
             //Sort
@@ -1633,14 +1606,14 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
 }
 
 
-function view_input_text($cache_e__id, $current_value, $object__id, $is_source, $tabindex = 0, $extra_large = false, $e__icon = null, $append_css = null){
+function view_input_text($cache_e__id, $current_value, $object__id, $player_is_i_source, $tabindex = 0, $extra_large = false, $e__icon = null, $append_css = null){
 
     $CI =& get_instance();
     $sources__12112 = $CI->config->item('sources__12112');
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
-    $attributes = ( $is_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block x_set_text text__'.$cache_e__id.'_'.$object__id.' texttype_'.($extra_large?'_lg':'_sm').' text_e_'.$cache_e__id.' '.$append_css.'" cache_e__id="'.$cache_e__id.'" object__id="'.$object__id.'" ';
+    $attributes = ( $player_is_i_source ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block x_set_text text__'.$cache_e__id.'_'.$object__id.' texttype_'.($extra_large?'_lg':'_sm').' text_e_'.$cache_e__id.' '.$append_css.'" cache_e__id="'.$cache_e__id.'" object__id="'.$object__id.'" ';
 
     //Also Append Counter to the end?
     if($extra_large){
@@ -1661,13 +1634,13 @@ function view_input_text($cache_e__id, $current_value, $object__id, $is_source, 
 
     }
 
-    return '<span class="span__'.$cache_e__id.' '.( !$is_source ? 'edit-locked' : '' ).'">'.$icon.$focus_element.'</span>'.$character_counter;
+    return '<span class="span__'.$cache_e__id.' '.( !$player_is_i_source ? 'edit-locked' : '' ).'">'.$icon.$focus_element.'</span>'.$character_counter;
 }
 
 
 
 
-function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $is_source = true, $show_full_name = true, $i__id = 0, $x__id = 0){
+function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $player_is_i_source = true, $show_full_name = true, $i__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $sources__this = $CI->config->item('sources__'.$cache_e__id);
@@ -1683,7 +1656,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $is_sour
     $ui = '<div title="'.$sources__12079[$cache_e__id]['m_name'].'" data-toggle="tooltip" data-placement="top" class="inline-block">';
     $ui .= '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' '.( !$show_full_name ? ' icon-block ' : '' ).'" selected-val="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $is_source ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
+    $ui .= '<button type="button" '.( $player_is_i_source ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
 
     $ui .= '<span class="icon-block">' .$sources__this[$selected_e__id]['m_icon'].'</span><span class="show-max">'.( $show_full_name ?  $sources__this[$selected_e__id]['m_name'] : '' ).'</span>';
 

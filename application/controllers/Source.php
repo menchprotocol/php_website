@@ -16,13 +16,13 @@ class Source extends CI_Controller
 
     function index()
     {
-        //Leaderboard:
+        //source:
         $session_source = superpower_assigned(null);
 
         //Log View:
         if($session_source){
             $this->DISCOVER_model->create(array(
-                'x__type' => 12489, //Opened Leaderboard
+                'x__type' => 12489, //Opened source
                 'x__player' => $session_source['e__id'],
             ));
         }
@@ -89,7 +89,7 @@ class Source extends CI_Controller
         ));
 
         if (count($sources) < 1) {
-            return redirect_message('/@');
+            return redirect_message('/source');
         }
 
         //Load views:
@@ -274,7 +274,7 @@ class Source extends CI_Controller
         $items_per_page = config_var(11064);
         $parent_e__id = intval($_POST['parent_e__id']);
         $e_focus_filter = intval($_POST['e_focus_filter']);
-        $is_source = player_is_e_source($parent_e__id);
+        $player_is_e_source = player_is_e_source($parent_e__id);
         $page = intval($_POST['page']);
         $filters = array(
             'x__up' => $parent_e__id,
@@ -290,7 +290,7 @@ class Source extends CI_Controller
         ));
 
         foreach($child_sources as $source) {
-            echo view_e($source,false, null, true, $is_source);
+            echo view_e($source,false, null, true, $player_is_e_source);
         }
 
         //Count total children:
@@ -318,7 +318,7 @@ class Source extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Interaction ID',
             ));
-        } elseif (!isset($_POST['i__id']) || !i_is_source($_POST['i__id'])) {
+        } elseif (!isset($_POST['i__id']) || !player_is_i_source($_POST['i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are not the author of this source',
@@ -923,7 +923,7 @@ class Source extends CI_Controller
                         $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
                     } else {
                         //Is the plugin activated?
-                        $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/source/plugin/7269' : '/@' );
+                        $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/source/plugin/7269' : '/source' );
                     }
                 }
 

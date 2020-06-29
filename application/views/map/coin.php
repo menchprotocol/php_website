@@ -2,7 +2,7 @@
 $sources__2738 = $this->config->item('sources__2738');
 $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
-$is_source = i_is_source($i_focus['i__id']);
+$player_is_i_source = player_is_i_source($i_focus['i__id']);
 $is_active = in_array($i_focus['i__status'], $this->config->item('sources_id_7356'));
 $is_public = in_array($i_focus['i__status'], $this->config->item('sources_id_7355'));
 
@@ -10,7 +10,7 @@ $is_public = in_array($i_focus['i__status'], $this->config->item('sources_id_735
 
 <style>
     .i_child_icon_<?= $i_focus['i__id'] ?> { display:none; }
-    <?= ( !$is_source ? '.note-editor {display:none;}' : '' ) ?>
+    <?= ( !$player_is_i_source ? '.note-editor {display:none;}' : '' ) ?>
 </style>
 
 <script>
@@ -25,7 +25,7 @@ $e_focus_found = false; //Used to determine the first tab to be opened
 
 echo '<div class="container" style="padding-bottom:42px;">';
 
-if(!$is_source){
+if(!$player_is_i_source){
     echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/map/i_e_request/'.$i_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/map/i_e_add/'.$i_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
@@ -52,9 +52,9 @@ $ideas_previous = $this->DISCOVER_model->fetch(array(
 
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group previous_ideas">';
 foreach($ideas_previous as $previous_idea) {
-    echo view_i($previous_idea, $i_focus['i__id'], true, i_is_source($previous_idea['i__id']));
+    echo view_i($previous_idea, $i_focus['i__id'], true, player_is_i_source($previous_idea['i__id']));
 }
-if( $is_source && $is_active && $i_focus['i__id']!=config_var(13405)){
+if( $player_is_i_source && $is_active && $i_focus['i__id']!=config_var(13405)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
@@ -74,7 +74,7 @@ echo '</div>';
 
 //IDEA TITLE
 echo '<div class="itemidea">';
-echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($is_source && $is_active), 0, true);
+echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($player_is_i_source && $is_active), 0, true);
 echo '</div>';
 
 
@@ -87,13 +87,13 @@ echo view_i_note_mix(4231, $this->DISCOVER_model->fetch(array(
 
 
 //IDEA TYPE
-echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $is_source && $is_active, true, $i_focus['i__id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $player_is_i_source && $is_active, true, $i_focus['i__id']).'</div>';
 
 //IDEA STATUS
-echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-idea', $is_source, true, $i_focus['i__id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-idea', $player_is_i_source, true, $i_focus['i__id']).'</div>';
 
 //IDEA TIME
-echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $is_source && $is_active, 0).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $player_is_i_source && $is_active, 0).'</div>';
 
 //IDEA DISCOVER (IF PUBLIC)
 echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-discover btn-circle" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__11035[12750]['m_name'].'">'.$sources__11035[12750]['m_icon'].'</a></div>';
@@ -144,10 +144,10 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
         $this_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_ideas">';
         foreach($ideas_next as $next_idea) {
-            $this_tab .= view_i($next_idea, $i_focus['i__id'], false, $is_source);
+            $this_tab .= view_i($next_idea, $i_focus['i__id'], false, $player_is_i_source);
         }
 
-        if($is_source && $is_active){
+        if($player_is_i_source && $is_active){
             $this_tab .= '<div class="list-group-item list-adder itemidea '.superpower_active(10939).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
@@ -176,10 +176,10 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $this_tab .= '<div id="add-source-' .$x__type . '" class="list-group source-adder">';
 
         foreach($i_notes as $i_note) {
-            $this_tab .= view_e($i_note, 0, null, $is_source && $is_active, $is_source);
+            $this_tab .= view_e($i_note, 0, null, $player_is_i_source && $is_active, $player_is_i_source);
         }
 
-        if($is_source && $is_active && !$disable_manual_add) {
+        if($player_is_i_source && $is_active && !$disable_manual_add) {
             $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $sources__2738[4536]['m_icon'] . '</span></span>

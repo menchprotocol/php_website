@@ -98,8 +98,8 @@ class Map extends CI_Controller {
          * comes through /iID
          *
          * */
-        $i_is_source = i_is_source($i__id);
-        return redirect_message(( $i_is_source ? '/~' : '/' ) . $i__id . ( $i_is_source && isset($_GET['focus__source']) ? '?focus__source='.$_GET['focus__source'] : '' ) );
+        $player_is_i_source = player_is_i_source($i__id);
+        return redirect_message(( $player_is_i_source ? '/~' : '/' ) . $i__id . ( $player_is_i_source && isset($_GET['focus__source']) ? '?focus__source='.$_GET['focus__source'] : '' ) );
     }
 
 
