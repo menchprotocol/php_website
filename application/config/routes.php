@@ -15,6 +15,7 @@ $route['translate_uri_dashes']      = FALSE;
 //Home
 $route['default_controller']        = "x/index"; //Home page
 $route['~']                         = "i/index"; //Idea home
+$route['@']                         = "e/index"; //Source home
 
 //COINS
 $route['(:num)']                    = "x/x_coin/$1";
