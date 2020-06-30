@@ -179,7 +179,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= view_e($i_note, 0, null, $player_is_i_source && $is_active, $player_is_i_source);
         }
 
-        if($i_is_source && $is_active && !$disable_manual_add) {
+        if($player_is_i_source && $is_active && !$disable_manual_add) {
             $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-mapper source-map-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $sources__2738[4536]['m_icon'] . '</span></span>
