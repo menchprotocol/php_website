@@ -13,14 +13,14 @@ $route['translate_uri_dashes']      = FALSE;
  * */
 
 //Home
-$route['default_controller']        = "discover/index"; //Home page
-$route['~']                         = "map/index"; //Idea home
+$route['default_controller']        = "x/index"; //Home page
+$route['~']                         = "i/index"; //Idea home
 
 //COINS
-$route['(:num)']                    = "discover/x_coin/$1";
-$route['@(:num)']                   = "source/e_coin/$1";
-$route['~(:num)']                   = "map/i_coin/$1";
+$route['(:num)']                    = "x/x_coin/$1";
+$route['@(:num)']                   = "e/e_coin/$1";
+$route['~(:num)']                   = "i/i_coin/$1";
 
 //OTHER
-$route['x']                         = "discover/x_list"; //Interactions
-$route['404_override']              = 'source/e_404'; //Page not found, etc...
+$route['x']                         = "x/x_list"; //Interactions
+$route['404_override']              = 'e/e_404'; //Page not found, etc...

@@ -140,16 +140,12 @@ if(!isset($hide_header)){
 
                                 //Determine URL?
                                 if($m['e__id']==4536){
-                                    //SOURCE
                                     $page_url = 'href="/@'.$session_source['e__id'].'"';
                                 } elseif($m['e__id']==4535){
-                                    //Map
                                     $page_url = 'href="/~"';
                                 } elseif($m['e__id']==6205){
-                                    //Discover
                                     $page_url = 'href="/"';
                                 } else {
-                                    //Unknown
                                     continue;
                                 }
 
@@ -212,7 +208,6 @@ if(!isset($hide_header)){
 
                             if($x__type==12749) {
 
-                                //Map Idea
                                 $page_url = 'href="/~'.( $is_home ? config_var(13405) : $first_segment ).'"';
 
                             } elseif(in_array($x__type, $this->config->item('sources_id_10876'))){
@@ -261,7 +256,7 @@ if(!isset($hide_header)){
                         //echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$sources__11035[12899]['m_name'].'">'.$sources__11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-link block-sign-link"><a href="/source/signin" class="montserrat"><span class="show-max">'.$sources__11035[4269]['m_name'].'&nbsp;</span>'.$sources__11035[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-link block-sign-link"><a href="/e/signin" class="montserrat"><span class="show-max">'.$sources__11035[4269]['m_name'].'&nbsp;</span>'.$sources__11035[4269]['m_icon'].'</a></td>';
 
                     }
 

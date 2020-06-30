@@ -343,7 +343,7 @@ $(document).ready(function () {
                             var search_body = $("#mench_search").val().substr(1);
                             if(!isNaN(search_body)){
                                 //Valid Integer, Give option to go there:
-                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/map/i_go/' : '/@' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
+                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/i/i_go/' : '/@' ) + search_body + '" class="suggestion"><span class="icon-block-sm"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
                             }
 
                         }
@@ -409,7 +409,7 @@ function x_type_preview() {
     $('#x__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Fetch Idea Data to load modify widget:
-    $.post("/discover/x_type_preview", {
+    $.post("/x/x_type_preview", {
         x__message: $('#x__message').val(),
         x__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('source-x-id')) : 0 ),
     }, function (data) {
@@ -466,7 +466,7 @@ function toggle_search(){
 
 function i_save(i__id){
     $('.toggle_saved').toggleClass('hidden');
-    $.post("/discover/i_save", {
+    $.post("/x/i_save", {
         i__id:i__id,
     }, function (data) {
         if (!data.status) {
@@ -492,7 +492,7 @@ function modify_cancel(){
 function e_fetch_canonical(query_string, not_found){
 
     //Do a call to PHP to fetch canonical URL and see if that exists:
-    $.post("/source/e_fetch_canonical", { search_url:query_string }, function (searchdata) {
+    $.post("/e/e_fetch_canonical", { search_url:query_string }, function (searchdata) {
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
@@ -705,7 +705,7 @@ function x_set_text(this_handler){
     var handler = '.text__'+modify_data['cache_e__id']+'_'+modify_data['object__id'];
     $(handler).addClass('dynamic_saving');
 
-    $.post("/discover/x_set_text", modify_data, function (data) {
+    $.post("/x/x_set_text", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -899,7 +899,7 @@ function i_note_sort_apply(note_type_id) {
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/map/i_note_sort", {new_x__sorts: new_x__sorts}, function (data) {
+        $.post("/i/i_note_sort", {new_x__sorts: new_x__sorts}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
@@ -989,7 +989,7 @@ function i_note_edit(x__id, note_type_id) {
     };
 
     //Update message:
-    $.post("/map/i_note_edit", modify_data, function (data) {
+    $.post("/i/i_note_edit", modify_data, function (data) {
 
         if (data.status) {
 
@@ -1119,7 +1119,7 @@ function i_note_file(droppedFiles, uploadType, note_type_id) {
         ajaxData.append('note_type_id', note_type_id);
 
         $.ajax({
-            url: '/map/i_note_file',
+            url: '/i/i_note_file',
             type: $('.box' + note_type_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -1156,7 +1156,7 @@ function i_note_text(note_type_id) {
     i_note_start_adding(note_type_id);
 
     //Update backend:
-    $.post("/map/i_note_text", {
+    $.post("/i/i_note_text", {
 
         i__id: i_loaded_id, //Synonymous
         x__message: $('#x__message' + note_type_id).val(),
@@ -1193,7 +1193,7 @@ function x_remove(x__type){
         var r = confirm("Remove "+$('.text__4736_'+i__id).text()+"?");
         if (r == true) {
             //Save changes:
-            $.post("/discover/x_remove", { x__type:x__type, i__id:i__id }, function (data) {
+            $.post("/x/x_remove", { x__type:x__type, i__id:i__id }, function (data) {
                 //Update UI to confirm with user:
                 if (!data.status) {
 
@@ -1248,7 +1248,7 @@ function x_sort(x__type) {
 
     //Update order:
     if(sort_rank > 0){
-        $.post("/discover/x_sort", { new_x_order:new_x_order, x__type:x__type }, function (data) {
+        $.post("/x/x_sort", { new_x_order:new_x_order, x__type:x__type }, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!

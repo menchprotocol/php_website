@@ -221,7 +221,7 @@ function view_i_notes($discovery, $note_is_e_source = false)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $discovery['x__id'] . '">';
-    $ui .= $CI->DISCOVER_model->message_send($discovery['x__message'], $session_source, $discovery['x__right']);
+    $ui .= $CI->X_model->message_send($discovery['x__message'], $session_source, $discovery['x__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -406,7 +406,7 @@ function view_interaction($discovery, $is_parent_tr = false)
 
         //Metadata
         if(strlen($discovery['x__metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="/source/plugin/12722?x__id=' . $discovery['x__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/e/plugin/12722?x__id=' . $discovery['x__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
         }
 
         //Order
@@ -424,7 +424,7 @@ function view_interaction($discovery, $is_parent_tr = false)
         //Creator (Do not repeat)
         if($discovery['x__player'] > 0 && $discovery['x__player']!=$discovery['x__up'] && $discovery['x__player']!=$discovery['x__down']){
 
-            $add_sources = $CI->SOURCE_model->fetch(array(
+            $add_sources = $CI->E_model->fetch(array(
                 'e__id' => $discovery['x__player'],
             ));
 
@@ -449,21 +449,21 @@ function view_interaction($discovery, $is_parent_tr = false)
             if(in_array(6160 , $m['m_parents'])){
 
                 //SOURCE
-                $sources = $CI->SOURCE_model->fetch(array('e__id' => $discovery[$sources__6232[$e__id]['m_desc']]));
+                $sources = $CI->E_model->fetch(array('e__id' => $discovery[$sources__6232[$e__id]['m_desc']]));
 
                 $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$e__id]['m_icon']. '</span>'.( $discovery[$sources__6232[$e__id]['m_desc']]==$discovery['x__player'] ? $sources__4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['e__icon']).' img-block">'.view_e__icon($sources[0]['e__icon']). '&nbsp;'.$sources[0]['e__title'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
                 //IDEA
-                $ideas = $CI->MAP_model->fetch(array('i__id' => $discovery[$sources__6232[$e__id]['m_desc']]));
+                $ideas = $CI->I_model->fetch(array('i__id' => $discovery[$sources__6232[$e__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/map/i_go/'.$ideas[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$e__id]['m_icon']. '</span>'.$sources__2738[4535]['m_icon']. '&nbsp;'.view_i_title($ideas[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$ideas[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$e__id]['m_icon']. '</span>'.$sources__2738[4535]['m_icon']. '&nbsp;'.view_i_title($ideas[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
                 //PARENT DISCOVER
-                $discoveries = $CI->DISCOVER_model->fetch(array('x__id' => $discovery[$sources__6232[$e__id]['m_desc']]));
+                $discoveries = $CI->X_model->fetch(array('x__id' => $discovery[$sources__6232[$e__id]['m_desc']]));
 
                 $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$e__id]['m_name'].'">'.$sources__4341[$e__id]['m_icon']. '</span><div class="discover-ref">'.view_interaction($discoveries[0], true).'</div></div>';
 
@@ -568,7 +568,7 @@ function view_coins_count_discover($i__id = 0, $e__id = 0){
         $query_filters['x__player'] = intval($_GET['focus__source']);
     }
 
-    $x_coins = $CI->DISCOVER_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
+    $x_coins = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
 
     if($x_coins[0]['totals'] > 0){
         return '<span class="montserrat discover"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($x_coins[0]['totals']).'</span>';
@@ -600,7 +600,7 @@ function view_coins_count_source($i__id = 0, $e__id = 0, $number_only = false){
         );
     }
 
-    $e_coins = $CI->DISCOVER_model->fetch($coins_filter, array(), 0, 0, array(), 'COUNT(x__id) as totals');
+    $e_coins = $CI->X_model->fetch($coins_filter, array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     if($number_only){
         return $e_coins[0]['totals'];
@@ -641,7 +641,7 @@ function view_i_discover($idea, $common_prefix = null, $show_editor = false, $co
 
     if(!$completion_rate){
         if($recipient_source){
-            $completion_rate = $CI->DISCOVER_model->completion_progress($recipient_source['e__id'], $idea);
+            $completion_rate = $CI->X_model->completion_progress($recipient_source['e__id'], $idea);
         } else {
             $completion_rate['completion_percentage'] = 0;
         }
@@ -713,7 +713,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
 
 
     $ui = null;
-    foreach($CI->DISCOVER_model->fetch(array(
+    foreach($CI->X_model->fetch(array(
         'x__left' => $i__id,
         'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -723,7 +723,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         //Prep Metadata:
         $metadata = unserialize($i_discover['x__metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
-        $messages = $CI->DISCOVER_model->fetch(array(
+        $messages = $CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $i_discover['i__id'],
@@ -749,7 +749,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '<div class="messages-'.$i_discover['i__id'].' hidden">';
         foreach($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
-            $ui .= $CI->DISCOVER_model->message_send($msg['x__message']);
+            $ui .= $CI->X_model->message_send($msg['x__message']);
             $ui .= '</div>';
         }
         $ui .= '</div>';
@@ -779,7 +779,7 @@ function view_radio_sources($parent_e__id, $child_e__id, $enable_mulitiselect, $
     }
 
     foreach($CI->config->item('sources__'.$parent_e__id) as $e__id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="e_update_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( count($CI->DISCOVER_model->fetch(array(
+        $ui .= '<a href="javascript:void(0);" onclick="e_update_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( count($CI->X_model->fetch(array(
                 'x__up' => $e__id,
                 'x__down' => $child_e__id,
                 'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
@@ -861,7 +861,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
         $ui .= '<div class="block">';
 
             //IDAE Link:
-            $i_link = '/map/i_go/'.$idea['i__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
+            $i_link = '/i/i_go/'.$idea['i__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
 
             //IDEA ICON:
             $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($idea['i__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
@@ -930,7 +930,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
 
 
     if($message_input && trim($message_input)!=$CI->uri->segment(1)){
-        $ui .= '<div class="idea-footer hideIfEmpty">' . $CI->DISCOVER_model->message_send($message_input, $session_source) . '</div>';
+        $ui .= '<div class="idea-footer hideIfEmpty">' . $CI->X_model->message_send($message_input, $session_source) . '</div>';
     }
 
 
@@ -981,13 +981,13 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
 
 
         //IDEA TREE:
-        $previous_ideas = $CI->DISCOVER_model->fetch(array(
+        $previous_ideas = $CI->X_model->fetch(array(
             'x__right' => $idea['i__id'],
             'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
 
-        $next_ideas = $CI->DISCOVER_model->fetch(array(
+        $next_ideas = $CI->X_model->fetch(array(
             'x__left' => $idea['i__id'],
             'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -1073,7 +1073,7 @@ function view_next_i_previous($i__id, $recipient_source){
     echo view_i_previous_discover($i__id, $recipient_source);
 
     //NEXT:
-    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="/discover/x_next/'.$i__id.'">'.$sources__11035[12211]['m_icon'].'</a></div>';
+    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="/x/x_next/'.$i__id.'">'.$sources__11035[12211]['m_icon'].'</a></div>';
 
 }
 
@@ -1088,7 +1088,7 @@ function view_i_previous_discover($i__id, $recipient_source){
     $ui = null;
     $i_level_up = 0;
     $previous_level_id = 0; //The ID of the Idea one level up
-    $player_discovery_ids = $CI->DISCOVER_model->ids($recipient_source['e__id']);
+    $player_discovery_ids = $CI->X_model->ids($recipient_source['e__id']);
     $discovery_list_ui = null;
     $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION
     $sources__12994 = $CI->config->item('sources__12994'); //DISCOVER LAYOUT
@@ -1096,14 +1096,14 @@ function view_i_previous_discover($i__id, $recipient_source){
     if(in_array($i__id, $player_discovery_ids)){
 
         //A discovering list item:
-        $ideas_this = $CI->MAP_model->fetch(array(
+        $ideas_this = $CI->I_model->fetch(array(
             'i__id' => $i__id,
         ));
 
     } else {
 
         //Find it:
-        $recursive_parents = $CI->MAP_model->recursive_parents($i__id, true, true);
+        $recursive_parents = $CI->I_model->recursive_parents($i__id, true, true);
         $sitemap_items = array();
 
         foreach($recursive_parents as $grand_parent_ids) {
@@ -1115,7 +1115,7 @@ function view_i_previous_discover($i__id, $recipient_source){
                         $previous_level_id = $previous_i__id;
                     }
 
-                    $ideas_this = $CI->MAP_model->fetch(array(
+                    $ideas_this = $CI->I_model->fetch(array(
                         'i__id' => $previous_i__id,
                     ));
 
@@ -1147,12 +1147,12 @@ function view_i_previous_discover($i__id, $recipient_source){
         if(isset($_GET['previous_discover']) && $_GET['previous_discover']>0){
             $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/'.$_GET['previous_discover'].'" title="'.$sources__11035[12991]['m_name'].'">'.$sources__11035[12991]['m_icon'].'</a></div>';
         } else {
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/discover/x_previous/'.$previous_level_id.'/'.$i__id.'" title="'.$sources__11035[12991]['m_name'].'">'.$sources__11035[12991]['m_icon'].'</a></div>';
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/x/x_previous/'.$previous_level_id.'/'.$i__id.'" title="'.$sources__11035[12991]['m_name'].'">'.$sources__11035[12991]['m_icon'].'</a></div>';
         }
 
 
         //Is Saved?
-        $is_saveded = count($CI->DISCOVER_model->fetch(array(
+        $is_saveded = count($CI->X_model->fetch(array(
             'x__up' => $recipient_source['e__id'],
             'x__right' => $i__id,
             'x__type' => 12896, //SAVED
@@ -1321,7 +1321,7 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
     $ui .= '<div class="cover-image">';
     if($recipient_source){
 
-        $completion_rate = $CI->DISCOVER_model->completion_progress($recipient_source['e__id'], $idea);
+        $completion_rate = $CI->X_model->completion_progress($recipient_source['e__id'], $idea);
 
         if($completion_rate['completion_percentage']>0){
             $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
@@ -1419,7 +1419,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
     $has_e_editor = superpower_active(10967, true);
     $show_toolbar = superpower_active(12706, true);
 
-    $e__profiles = $CI->DISCOVER_model->fetch(array(
+    $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
         'x__down' => $source['e__id'], //This child source
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -1463,7 +1463,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
     if($show_toolbar){
         $child_counter = '';
         if($has_e_editor){
-            $e__portfolio_count = $CI->DISCOVER_model->fetch(array(
+            $e__portfolio_count = $CI->X_model->fetch(array(
                 'x__up' => $source['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -1589,7 +1589,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
 
             //DISCOVER PROGRESS
             $ui .= '<div class="message_content paddingup">';
-            $ui .= $CI->DISCOVER_model->message_send($source['x__message']);
+            $ui .= $CI->X_model->message_send($source['x__message']);
             $ui .= '</div>';
 
         }

@@ -34,7 +34,7 @@ function detect_missing_columns($add_fields, $required_columns, $x__player)
         if (!isset($add_fields[$req_field]) || strlen($add_fields[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->DISCOVER_model->create(array(
+            $CI->X_model->create(array(
                 'x__message' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'x__metadata' => array(
                     'insert_columns' => $add_fields,
@@ -238,7 +238,7 @@ function x_detect_type($string)
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->SOURCE_model->url($string);
+        return $CI->E_model->url($string);
 
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 
@@ -401,7 +401,7 @@ function e_count_connections($e__id, $return_html = true){
 
     //Plugin?
     if(superpower_active(12699, true) && in_array($e__id, $CI->config->item('sources_id_6287'))){
-        $e_count_connections[6287] = ( $return_html ? '<a href="/source/plugin/'.$e__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
+        $e_count_connections[6287] = ( $return_html ? '<a href="/e/plugin/'.$e__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
     }
 
     return $e_count_connections;
@@ -413,7 +413,7 @@ function i_fetch_cover($i__id, $html_format = false){
 
     $CI =& get_instance();
     $i_fetch_cover = null;
-    foreach($CI->DISCOVER_model->fetch(array( //IDEA SOURCE
+    foreach($CI->X_model->fetch(array( //IDEA SOURCE
         'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
         'x__right' => $i__id,
@@ -426,7 +426,7 @@ function i_fetch_cover($i__id, $html_format = false){
         foreach(array('x__up','x__down') as $e_ref_field) {
             if($fetched_source[$e_ref_field] > 0){
                 //See if this source has a photo:
-                foreach($CI->DISCOVER_model->fetch(array(
+                foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type' => 4260, //IMAGES ONLY
                     'x__down' => $fetched_source[$e_ref_field],
@@ -454,13 +454,13 @@ function i__weight_calculator($idea){
     //DISCOVERIES
     $CI =& get_instance();
 
-    $count_discoveries = $CI->DISCOVER_model->fetch(array(
+    $count_discoveries = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         '(x__right='.$idea['i__id'].' OR x__left='.$idea['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
-    $counts = $CI->DISCOVER_model->fetch(array(
+    $counts = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
         '(x__right='.$idea['i__id'].' OR x__left='.$idea['i__id'].')' => null,
@@ -472,7 +472,7 @@ function i__weight_calculator($idea){
 
     //Should we update?
     if($weight != $idea['i__weight']){
-        return $CI->MAP_model->update($idea['i__id'], array(
+        return $CI->I_model->update($idea['i__id'], array(
             'i__weight' => $weight,
         ));
     } else {
@@ -486,13 +486,13 @@ function e__weight_calculator($source){
     //DISCOVERIES
     $CI =& get_instance();
 
-    $count_discoveries = $CI->DISCOVER_model->fetch(array(
+    $count_discoveries = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].' OR x__player='.$source['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
-    $counts = $CI->DISCOVER_model->fetch(array(
+    $counts = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].')' => null,
@@ -504,7 +504,7 @@ function e__weight_calculator($source){
 
     //Should we update?
     if($weight != $source['e__weight']){
-        return $CI->SOURCE_model->update($source['e__id'], array(
+        return $CI->E_model->update($source['e__id'], array(
             'e__weight' => $weight,
         ));
     } else {
@@ -722,7 +722,7 @@ function x_coins_idea($x__type, $i__id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->DISCOVER_model->fetch($query_filters, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('x__id' => 'DESC') ), ( !$load_page ? 'COUNT(x__id) as totals' : '*' ));
+    $query = $CI->X_model->fetch($query_filters, ( !$load_page ? array() : $join_objects ), config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : array('x__id' => 'DESC') ), ( !$load_page ? 'COUNT(x__id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -801,7 +801,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
     }
 
     //Fetch Results:
-    $query = $CI->DISCOVER_model->fetch($query_filters, $join_objects, config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(x__id) as totals' : '*' ));
+    $query = $CI->X_model->fetch($query_filters, $join_objects, config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(x__id) as totals' : '*' ));
 
     if(!$load_page){
         return $query[0]['totals'];
@@ -839,7 +839,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
 
                 if(strlen($item['x__message'])){
                     $boxbar_details .= '<div class="message_content">';
-                    $boxbar_details .= $CI->DISCOVER_model->message_send($item['x__message']);
+                    $boxbar_details .= $CI->X_model->message_send($item['x__message']);
                     $boxbar_details .= '</div>';
                     $string_references = extract_e_references($item['x__message']);
                 }
@@ -951,7 +951,7 @@ function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
         if($has_session){
             $goto_url = '/@'.$session_source['e__id'];
         } else {
-            $goto_url = '/source/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '/e/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:
@@ -1074,7 +1074,7 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
 
     //MAKE SURE WE CAN ACCESS AWS:
     if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
-        $CI->DISCOVER_model->create(array(
+        $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__player' => $x__player,
             'x__message' => 'upload_to_cdn() Failed to load AWS S3',
@@ -1110,7 +1110,7 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
 
 
     if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
-        $CI->DISCOVER_model->create(array(
+        $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__player' => $x__player,
             'x__message' => 'upload_to_cdn() Failed to upload file to Mench CDN',
@@ -1142,7 +1142,7 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
     }
 
     //Create and link new source to CDN and uploader:
-    $url_source = $CI->SOURCE_model->url($cdn_new_url, $x__player, 0, $page_title);
+    $url_source = $CI->E_model->url($cdn_new_url, $x__player, 0, $page_title);
 
     if(isset($url_source['e_url']['e__id']) && $url_source['e_url']['e__id'] > 0){
 
@@ -1155,7 +1155,7 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
 
     } else {
 
-        $CI->DISCOVER_model->create(array(
+        $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__player' => $x__player,
             'x__message' => 'upload_to_cdn() Failed to create new source from CDN file',
@@ -1365,7 +1365,7 @@ function player_is_e_source($e__id, $session_source = array()){
 
 
         //Player created the source
-        || count($CI->DISCOVER_model->fetch(array(
+        || count($CI->X_model->fetch(array(
             'x__player' => $session_source['e__id'],
             'x__down' => $e__id,
             'x__type' => 4251, //New Source Created
@@ -1377,7 +1377,7 @@ function player_is_e_source($e__id, $session_source = array()){
         || superpower_active(10967, true)
 
         //Player has source in their portfolio
-        || count($CI->DISCOVER_model->fetch(array(
+        || count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'x__up' => $session_source['e__id'],
@@ -1407,12 +1407,12 @@ function player_is_i_source($i__id, $session_source = array()){
         (
             superpower_active(10939, true) && //PUBLISHING PEN
                 (
-                count($CI->DISCOVER_model->fetch(array( //Player created the idea
+                count($CI->X_model->fetch(array( //Player created the idea
                     'x__type' => 4250, //IDEA CREATOR
                     'x__right' => $i__id,
                     'x__player' => $session_source['e__id'],
                 ))) ||
-                count($CI->DISCOVER_model->fetch(array( //IDEA SOURCE
+                count($CI->X_model->fetch(array( //IDEA SOURCE
                     'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'x__right' => $i__id,
@@ -1447,7 +1447,7 @@ function objectToArray($object)
 
 function sources_currently_sorted($e__id){
     $CI =& get_instance();
-    return count( $CI->DISCOVER_model->fetch(array(
+    return count( $CI->X_model->fetch(array(
         'x__sort >' => 0, //Sorted
         'x__up' => $e__id,
         'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
@@ -1551,7 +1551,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $limits['x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->DISCOVER_model->fetch($limits, array('x__right'), 0);
+            $db_rows[$loop_obj] = $CI->X_model->fetch($limits, array('x__right'), 0);
 
         } elseif ($loop_obj == 4536) {
 
@@ -1566,7 +1566,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $limits['x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->DISCOVER_model->fetch($limits, array('x__down'), 0);
+            $db_rows[$loop_obj] = $CI->X_model->fetch($limits, array('x__down'), 0);
 
         }
 
@@ -1644,7 +1644,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 //Fetch Profiles:
                 $export_row['object__keywords'] = '';
-                foreach($CI->DISCOVER_model->fetch(array(
+                foreach($CI->X_model->fetch(array(
                     'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $db_row['e__id'], //This child source
                     'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
@@ -1668,7 +1668,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 //See if this idea has a time-range:
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['i__id']);
-                $export_row['object__url'] = '/map/i_go/' . $db_row['i__id'];
+                $export_row['object__url'] = '/i/i_go/' . $db_row['i__id'];
                 $export_row['object__status'] = intval($db_row['i__status']);
                 $export_row['object__icon'] = i_fetch_cover($db_row['i__id']);
                 $export_row['object__title'] = $db_row['i__title'];
@@ -1685,7 +1685,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 //Add keywords:
                 $export_row['object__keywords'] = '';
-                foreach($CI->DISCOVER_model->fetch(array(
+                foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
                     'x__right' => $db_row['i__id'],
@@ -1696,7 +1696,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 
                 //Is SOURCE for any IDEA?
-                foreach($CI->DISCOVER_model->fetch(array(
+                foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                     'x__right' => $db_row['i__id'],
@@ -1859,7 +1859,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__player = 0
 
         $obj_filed_id = 'i__id';
         $obj_filed_name = 'i__metadata';
-        $db_objects = $CI->MAP_model->fetch(array(
+        $db_objects = $CI->I_model->fetch(array(
             $obj_filed_id => $object__id,
         ));
 
@@ -1867,7 +1867,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__player = 0
 
         $obj_filed_id = 'e__id';
         $obj_filed_name = 'e__metadata';
-        $db_objects = $CI->SOURCE_model->fetch(array(
+        $db_objects = $CI->E_model->fetch(array(
             $obj_filed_id => $object__id,
         ));
 
@@ -1875,7 +1875,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__player = 0
 
         $obj_filed_id = 'x__id';
         $obj_filed_name = 'x__metadata';
-        $db_objects = $CI->DISCOVER_model->fetch(array(
+        $db_objects = $CI->X_model->fetch(array(
             $obj_filed_id => $object__id,
         ));
 
@@ -1909,19 +1909,19 @@ function update_metadata($object__type, $object__id, $new_fields, $x__player = 0
     //Now update DB without logging any links as this is considered a back-end update:
     if ($object__type == 4535) {
 
-        $affected_rows = $CI->MAP_model->update($object__id, array(
+        $affected_rows = $CI->I_model->update($object__id, array(
             'i__metadata' => $metadata,
         ), false, $x__player);
 
     } elseif ($object__type == 4536) {
 
-        $affected_rows = $CI->SOURCE_model->update($object__id, array(
+        $affected_rows = $CI->E_model->update($object__id, array(
             'e__metadata' => $metadata,
         ), false, $x__player);
 
     } elseif ($object__type == 6205) {
 
-        $affected_rows = $CI->DISCOVER_model->update($object__id, array(
+        $affected_rows = $CI->X_model->update($object__id, array(
             'x__metadata' => $metadata,
         ));
 
