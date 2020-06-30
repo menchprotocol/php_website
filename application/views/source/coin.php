@@ -178,7 +178,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
     //NAME & STATUS
     echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="pull-right inline-block" style="margin:0 24px -28px 0;">';
+    echo '<div class="pull-right inline-block" style="margin:0 24px -55px 0;">';
 
     //REFERENCES
     if(superpower_active(12701, true)){
