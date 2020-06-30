@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-06-30 11:45:46 PST
+//Generated 2020-06-30 11:53:44 PST
 
 //SOURCE LAYOUT HIDE IF SOURCE:
 $config['sources_id_13424'] = array(12969,10573,12896);
@@ -3131,7 +3131,7 @@ $config['sources__6404'] = array(
     7274 => array(
         'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
         'm_name' => 'CRON JOBS',
-        'm_desc' => '/usr/bin/php /var/www/platform/index.php source plugin',
+        'm_desc' => '/usr/bin/php /var/www/platform/index.php e plugin',
         'm_parents' => array(6404,6287,6403,12999),
     ),
     12904 => array(
@@ -3239,7 +3239,7 @@ $config['sources__6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.456',
+        'm_desc' => 'v1.457',
         'm_parents' => array(6404),
     ),
     11079 => array(
