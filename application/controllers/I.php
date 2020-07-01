@@ -62,7 +62,7 @@ class I extends CI_Controller {
         //Add to bookmarks:
         $this->X_model->create(array(
             'x__type' => 10573, //MY IDEAS
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__right' => $idea['new_i__id'],
             'x__up' => $session_source['e__id'],
             'x__message' => '@'.$session_source['e__id'],
@@ -142,7 +142,7 @@ class I extends CI_Controller {
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
-                'x__player' => $session_source['e__id'],
+                'x__member' => $session_source['e__id'],
                 'x__type' => 4993, //Player Opened Idea
                 'x__right' => $i__id,
                 'x__sort' => $new_order,
@@ -174,7 +174,7 @@ class I extends CI_Controller {
         if(count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 12450,
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__right' => $i__id,
         )))){
             return redirect_message('/~'.$i__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
@@ -184,7 +184,7 @@ class I extends CI_Controller {
         //Inform moderators:
         $this->X_model->create(array(
             'x__type' => 12450,
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__right' => $i__id,
         ));
 
@@ -201,7 +201,7 @@ class I extends CI_Controller {
         //Idea Source:
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA COIN
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__up' => $session_source['e__id'],
             'x__message' => '@'.$session_source['e__id'],
             'x__right' => $i__id,
@@ -364,13 +364,13 @@ class I extends CI_Controller {
                 } elseif(in_array($_POST['new_e__id'], $this->config->item('n___12138')) && !superpower_assigned(10984) && !count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 12453, //Idea Feature Request
-                        'x__player' => $session_source['e__id'],
+                        'x__member' => $session_source['e__id'],
                         'x__right' => $_POST['i__id'],
                     )))){
 
                     $this->X_model->create(array(
                         'x__type' => 12453, //Idea Feature Request
-                        'x__player' => $session_source['e__id'],
+                        'x__member' => $session_source['e__id'],
                         'x__right' => $_POST['i__id'],
                     ));
 
@@ -604,7 +604,7 @@ class I extends CI_Controller {
 
         //Create Message:
         $discovery = $this->X_model->create(array(
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__sort' => 1 + $this->X_model->max_sort(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type' => intval($_POST['note_type_id']),
@@ -715,7 +715,7 @@ class I extends CI_Controller {
 
         //Create message:
         $discovery = $this->X_model->create(array(
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__type' => $_POST['note_type_id'],
             'x__up' => $cdn_status['cdn_source']['e__id'],
             'x__right' => intval($_POST['i__id']),

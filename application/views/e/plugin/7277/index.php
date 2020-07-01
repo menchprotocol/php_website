@@ -10,6 +10,7 @@
  *
  * */
 
+die();
 
 //Fetch all valid variable names:
 $valid_variables = array();

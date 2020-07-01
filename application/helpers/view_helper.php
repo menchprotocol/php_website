@@ -397,7 +397,7 @@ function view_interaction($discovery, $is_parent_tr = false)
 
 
     //Hide Sensitive Details?
-    if(in_array($discovery['x__type'] , $CI->config->item('n___4755')) && (!$session_source || $discovery['x__player']!=$session_source['e__id']) && !superpower_active(12701, true)){
+    if(in_array($discovery['x__type'] , $CI->config->item('n___4755')) && (!$session_source || $discovery['x__member']!=$session_source['e__id']) && !superpower_active(12701, true)){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -422,10 +422,10 @@ function view_interaction($discovery, $is_parent_tr = false)
 
 
         //Creator (Do not repeat)
-        if($discovery['x__player'] > 0 && $discovery['x__player']!=$discovery['x__up'] && $discovery['x__player']!=$discovery['x__down']){
+        if($discovery['x__member'] > 0 && $discovery['x__member']!=$discovery['x__up'] && $discovery['x__member']!=$discovery['x__down']){
 
             $add_sources = $CI->E_model->fetch(array(
-                'e__id' => $discovery['x__player'],
+                'e__id' => $discovery['x__member'],
             ));
 
             $ui .= '<div class="simple-line"><a href="/@'.$add_sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($add_sources[0]['e__icon']).'"><span class="img-block">'.view_e__icon($add_sources[0]['e__icon']) . '</span> ' . $add_sources[0]['e__title'] . '</span></a></div>';
@@ -451,7 +451,7 @@ function view_interaction($discovery, $is_parent_tr = false)
                 //SOURCE
                 $sources = $CI->E_model->fetch(array('e__id' => $discovery[$e___6232[$e__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $discovery[$e___6232[$e__id]['m_desc']]==$discovery['x__player'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['e__icon']).' img-block">'.view_e__icon($sources[0]['e__icon']). '&nbsp;'.$sources[0]['e__title'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $discovery[$e___6232[$e__id]['m_desc']]==$discovery['x__member'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['e__icon']).' img-block">'.view_e__icon($sources[0]['e__icon']). '&nbsp;'.$sources[0]['e__title'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
@@ -561,11 +561,11 @@ function view_coins_count_discover($i__id = 0, $e__id = 0){
     $query_filters = array(
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null,
-        ( $i__id > 0 ? 'x__left' : 'x__player' ) => ( $i__id > 0 ? $i__id : $e__id ),
+        ( $i__id > 0 ? 'x__left' : 'x__member' ) => ( $i__id > 0 ? $i__id : $e__id ),
     );
 
     if(isset($_GET['focus__source'])){
-        $query_filters['x__player'] = intval($_GET['focus__source']);
+        $query_filters['x__member'] = intval($_GET['focus__source']);
     }
 
     $x_coins = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
@@ -1201,7 +1201,7 @@ function view_i_note_mix($x__type, $i_notes){
 
     //List current notes:
     foreach($i_notes as $i_notes) {
-        $ui .= view_i_notes($i_notes, ($i_notes['x__player']==$session_source['e__id']));
+        $ui .= view_i_notes($i_notes, ($i_notes['x__member']==$session_source['e__id']));
     }
 
     //ADD NEW:

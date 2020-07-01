@@ -15,11 +15,11 @@ class I_model extends CI_Model
     }
 
 
-    function create($add_fields, $x__player = 0)
+    function create($add_fields, $x__member = 0)
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('i__title', 'i__type', 'i__status'), $x__player)) {
+        if (detect_missing_columns($add_fields, array('i__title', 'i__type', 'i__status'), $x__member)) {
             return false;
         }
 
@@ -37,11 +37,11 @@ class I_model extends CI_Model
 
         if ($add_fields['i__id'] > 0) {
 
-            if ($x__player > 0) {
+            if ($x__member > 0) {
 
                 //Log link new Idea:
                 $this->X_model->create(array(
-                    'x__player' => $x__player,
+                    'x__member' => $x__member,
                     'x__right' => $add_fields['i__id'],
                     'x__message' => $add_fields['i__title'],
                     'x__type' => 4250, //New Idea Created
@@ -49,10 +49,10 @@ class I_model extends CI_Model
 
                 //Also add as source:
                 $this->X_model->create(array(
-                    'x__player' => $x__player,
-                    'x__up' => $x__player,
+                    'x__member' => $x__member,
+                    'x__up' => $x__member,
                     'x__type' => 4983, //IDEA COIN
-                    'x__message' => '@'.$x__player,
+                    'x__message' => '@'.$x__member,
                     'x__right' => $add_fields['i__id'],
                 ), true);
 
@@ -79,7 +79,7 @@ class I_model extends CI_Model
             $this->X_model->create(array(
                 'x__message' => 'i_create() failed to create a new idea',
                 'x__type' => 4246, //Platform Bug Reports
-                'x__player' => $x__player,
+                'x__member' => $x__member,
                 'x__metadata' => $add_fields,
             ));
             return false;
@@ -113,7 +113,7 @@ class I_model extends CI_Model
         return $q->result_array();
     }
 
-    function update($id, $update_columns, $external_sync = false, $x__player = 0)
+    function update($id, $update_columns, $external_sync = false, $x__member = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -121,7 +121,7 @@ class I_model extends CI_Model
         }
 
         //Fetch current Idea filed values so we can compare later on after we've updated it:
-        if($x__player > 0){
+        if($x__member > 0){
             $before_data = $this->I_model->fetch(array('i__id' => $id));
         }
 
@@ -136,7 +136,7 @@ class I_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $x__player > 0) {
+        if ($affected_rows > 0 && $x__member > 0) {
 
             //Unlike source modification, we require a player source ID to log the modification link:
             //Log modification link for every field changed:
@@ -192,7 +192,7 @@ class I_model extends CI_Model
 
                 //Value has changed, log link:
                 $this->X_model->create(array(
-                    'x__player' => $x__player,
+                    'x__member' => $x__member,
                     'x__type' => $x__type,
                     'x__right' => $id,
                     'x__down' => $x__down,
@@ -219,7 +219,7 @@ class I_model extends CI_Model
             $this->X_model->create(array(
                 'x__right' => $id,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__player' => $x__player,
+                'x__member' => $x__member,
                 'x__message' => 'update() Failed to update',
                 'x__metadata' => array(
                     'input' => $update_columns,
@@ -231,7 +231,7 @@ class I_model extends CI_Model
         return $affected_rows;
     }
 
-    function unlink($i__id, $x__player = 0){
+    function unlink($i__id, $x__member = 0){
 
         //REMOVE IDEA LINKS
         $links_deleted = 0;
@@ -243,7 +243,7 @@ class I_model extends CI_Model
             //Delete this link:
             $links_deleted += $this->X_model->update($discovery['x__id'], array(
                 'x__status' => 6173, //Link Deleted
-            ), $x__player, 10686 /* Idea Link Unpublished */);
+            ), $x__member, 10686 /* Idea Link Unpublished */);
         }
 
 
@@ -257,7 +257,7 @@ class I_model extends CI_Model
             //Delete this link:
             $links_deleted += $this->X_model->update($i_note['x__id'], array(
                 'x__status' => 6173, //Link Deleted
-            ), $x__player, 10686 /* Idea Link Unpublished */);
+            ), $x__member, 10686 /* Idea Link Unpublished */);
         }
 
 
@@ -265,7 +265,7 @@ class I_model extends CI_Model
         return $links_deleted;
     }
 
-    function match_x_status($x__player, $query = array()){
+    function match_x_status($x__member, $query = array()){
 
         //STATS
         $stats = array(
@@ -298,7 +298,7 @@ class I_model extends CI_Model
                 $stats['missing_creation_fix']++;
 
                 $this->X_model->create(array(
-                    'x__player' => $x__player,
+                    'x__member' => $x__member,
                     'x__right' => $idea['i__id'],
                     'x__message' => $idea['i__title'],
                     'x__type' => $stats['x__type'],
@@ -319,7 +319,7 @@ class I_model extends CI_Model
         return $stats;
     }
 
-    function link_or_create($i__title, $x__player, $link_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $link_i__id = 0)
+    function link_or_create($i__title, $x__member, $link_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $link_i__id = 0)
     {
 
         /*
@@ -458,7 +458,7 @@ class I_model extends CI_Model
                 'i__title' => $i__title_validation['i_clean_title'],
                 'i__type' => $i__type,
                 'i__status' => $new_i_status,
-            ), $x__player);
+            ), $x__member);
 
         }
 
@@ -467,7 +467,7 @@ class I_model extends CI_Model
         if($link_to_i__id > 0){
 
             $relation = $this->X_model->create(array(
-                'x__player' => $x__player,
+                'x__member' => $x__member,
                 'x__type' => 4228, //Idea Link Regular Discovery
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
@@ -760,7 +760,7 @@ class I_model extends CI_Model
 
     }
 
-    function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__player)
+    function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__member)
     {
 
         //Alert: Has a twin function called e_mass_update()
@@ -826,7 +826,7 @@ class I_model extends CI_Model
 
                     //Missing & Must be Added:
                     $this->X_model->create(array(
-                        'x__player' => $x__player,
+                        'x__member' => $x__member,
                         'x__up' => $e__profile_id,
                         'x__type' => 4983, //IDEA COIN
                         'x__message' => '@'.$e__profile_id,
@@ -840,7 +840,7 @@ class I_model extends CI_Model
                     //Has and must be deleted:
                     $this->X_model->update($i_has_sources[0]['x__id'], array(
                         'x__status' => 6173,
-                    ), $x__player, 10678 /* IDEA NOTES Unpublished */);
+                    ), $x__member, 10678 /* IDEA NOTES Unpublished */);
 
                     $applied_success++;
 
@@ -861,7 +861,7 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->link_or_create('', $x__player, $adjust_i__id, false, 6184, 6677, $next_idea['i__id']);
+                    $this->I_model->link_or_create('', $x__member, $adjust_i__id, false, 6184, 6677, $next_idea['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;
@@ -871,7 +871,7 @@ class I_model extends CI_Model
                     //Remove Source:
                     $this->X_model->update($is_previous[0]['x__id'], array(
                         'x__status' => 6173,
-                    ), $x__player, 10686 /* IDEA NOTES Unpublished */);
+                    ), $x__member, 10686 /* IDEA NOTES Unpublished */);
 
                     $applied_success++;
 
@@ -884,7 +884,7 @@ class I_model extends CI_Model
 
         //Log mass source edit link:
         $this->X_model->create(array(
-            'x__player' => $x__player,
+            'x__member' => $x__member,
             'x__type' => $action_e__id,
             'x__right' => $i__id,
             'x__metadata' => array(
@@ -997,15 +997,15 @@ class I_model extends CI_Model
             }
 
             //PLAYERS:
-            if (!isset($metadata_this['__i___13202'][$fetched_source['x__player']])) {
+            if (!isset($metadata_this['__i___13202'][$fetched_source['x__member']])) {
                 //Fetch Player:
                 foreach($this->X_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
-                    'x__down' => $fetched_source['x__player'],
+                    'x__down' => $fetched_source['x__member'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array('x__down'), 1) as $player){
-                    $metadata_this['__i___13202'][$fetched_source['x__player']] = $player;
+                    $metadata_this['__i___13202'][$fetched_source['x__member']] = $player;
                 }
             }
 
@@ -1041,15 +1041,15 @@ class I_model extends CI_Model
         ), array('x__right'), 0) as $ideas_next){
 
             //Players
-            if (!isset($metadata_this['__i___13202'][$ideas_next['x__player']])) {
+            if (!isset($metadata_this['__i___13202'][$ideas_next['x__member']])) {
                 //Fetch Player:
                 foreach($this->X_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
-                    'x__down' => $ideas_next['x__player'],
+                    'x__down' => $ideas_next['x__member'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array('x__down'), 1) as $player){
-                    $metadata_this['__i___13202'][$ideas_next['x__player']] = $player;
+                    $metadata_this['__i___13202'][$ideas_next['x__member']] = $player;
                 }
             }
 

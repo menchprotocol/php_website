@@ -23,7 +23,7 @@ class E extends CI_Controller
         if($session_source){
             $this->X_model->create(array(
                 'x__type' => 12489, //Opened source
-                'x__player' => $session_source['e__id'],
+                'x__member' => $session_source['e__id'],
             ));
         }
 
@@ -75,7 +75,7 @@ class E extends CI_Controller
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
-                'x__player' => $session_source['e__id'],
+                'x__member' => $session_source['e__id'],
                 'x__type' => 4994, //Player Opened Player
                 'x__down' => $e__id,
                 'x__sort' => $new_order,
@@ -436,7 +436,7 @@ class E extends CI_Controller
 
         //Create Note:
         $new_note = $this->X_model->create(array(
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__type' => $_POST['note_type_id'],
             'x__right' => $ideas[0]['i__id'],
             'x__up' => $focus_source['e__id'],
@@ -620,7 +620,7 @@ class E extends CI_Controller
 
             // Link to new OR existing source:
             $ur2 = $this->X_model->create(array(
-                'x__player' => $session_source['e__id'],
+                'x__member' => $session_source['e__id'],
                 'x__type' => $x__type,
                 'x__message' => $x__message,
                 'x__down' => $x__down,
@@ -720,7 +720,7 @@ class E extends CI_Controller
 
         //Log Link:
         $this->X_model->create(array(
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__type' => 5007, //TOGGLE SUPERPOWER
             'x__up' => $superpower_e__id,
             'x__message' => 'SUPERPOWER '.$toggled_setting, //To be used when player logs in again
@@ -1081,7 +1081,7 @@ class E extends CI_Controller
             //Fetch source link:
             $discoveries = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
-            ), array('x__player'));
+            ), array('x__member'));
 
             //Prep last updated:
             $return_array['x__message'] = view_x__message($x__message, $js_x__type);
@@ -1209,7 +1209,7 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__up' => $_POST['selected_e__id'],
                 'x__down' => $session_source['e__id'],
-                'x__player' => $session_source['e__id'],
+                'x__member' => $session_source['e__id'],
                 'x__type' => e_x__type(),
             ));
         }
@@ -1218,7 +1218,7 @@ class E extends CI_Controller
         //Log Account Update link type:
         $_POST['account_update_function'] = 'e_update_radio'; //Add this variable to indicate which My Account function created this link
         $this->X_model->create(array(
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__type' => 6224, //My Account updated
             'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
             'x__metadata' => $_POST,
@@ -1385,7 +1385,7 @@ class E extends CI_Controller
 
             //Create new link:
             $this->X_model->create(array(
-                'x__player' => $session_source['e__id'],
+                'x__member' => $session_source['e__id'],
                 'x__down' => $session_source['e__id'],
                 'x__type' => e_x__type($_POST['e_email']),
                 'x__up' => 3288, //Mench Email
@@ -1411,7 +1411,7 @@ class E extends CI_Controller
             //Log Account Update link type:
             $_POST['account_update_function'] = 'e_update_email'; //Add this variable to indicate which My Account function created this link
             $this->X_model->create(array(
-                'x__player' => $session_source['e__id'],
+                'x__member' => $session_source['e__id'],
                 'x__type' => 6224, //My Account updated
                 'x__message' => 'My Account '.$return['message']. ( strlen($_POST['e_email']) > 0 ? ': '.$_POST['e_email'] : ''),
                 'x__metadata' => $_POST,
@@ -1483,7 +1483,7 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__type' => e_x__type($hashed_password),
                 'x__up' => 3286, //Password
-                'x__player' => $session_source['e__id'],
+                'x__member' => $session_source['e__id'],
                 'x__down' => $session_source['e__id'],
                 'x__message' => $hashed_password,
             ), true);
@@ -1500,7 +1500,7 @@ class E extends CI_Controller
         if($return['status']){
             $_POST['account_update_function'] = 'e_update_password'; //Add this variable to indicate which My Account function created this link
             $this->X_model->create(array(
-                'x__player' => $session_source['e__id'],
+                'x__member' => $session_source['e__id'],
                 'x__type' => 6224, //My Account Updated
                 'x__message' => 'My Account '.$return['message'],
                 'x__metadata' => $_POST,
@@ -1653,7 +1653,7 @@ class E extends CI_Controller
         $this->X_model->create(array(
             'x__up' => 4430, //MENCH PLAYERS
             'x__type' => e_x__type(),
-            'x__player' => $added_source['new_source']['e__id'],
+            'x__member' => $added_source['new_source']['e__id'],
             'x__down' => $added_source['new_source']['e__id'],
         ));
 
@@ -1661,7 +1661,7 @@ class E extends CI_Controller
             'x__type' => e_x__type(trim(strtolower($_POST['input_email']))),
             'x__message' => trim(strtolower($_POST['input_email'])),
             'x__up' => 3288, //Mench Email
-            'x__player' => $added_source['new_source']['e__id'],
+            'x__member' => $added_source['new_source']['e__id'],
             'x__down' => $added_source['new_source']['e__id'],
         ));
         $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_source['new_source']['e__id']));
@@ -1669,7 +1669,7 @@ class E extends CI_Controller
             'x__type' => e_x__type($hash),
             'x__message' => $hash,
             'x__up' => 3286, //Mench Password
-            'x__player' => $added_source['new_source']['e__id'],
+            'x__member' => $added_source['new_source']['e__id'],
             'x__down' => $added_source['new_source']['e__id'],
         ));
 
@@ -1715,7 +1715,7 @@ class E extends CI_Controller
         //Log User Signin Joined Mench
         $invite_link = $this->X_model->create(array(
             'x__type' => 7562, //User Signin Joined Mench
-            'x__player' => $added_source['new_source']['e__id'],
+            'x__member' => $added_source['new_source']['e__id'],
             'x__left' => intval($_POST['sign_i__id']),
             'x__metadata' => array(
                 'email_log' => $email_log,
@@ -1926,7 +1926,7 @@ class E extends CI_Controller
         $reset_link = $this->X_model->create(array(
             'x__type' => 7563, //User Signin Magic Link Email
             'x__message' => $_POST['input_email'],
-            'x__player' => $user_emails[0]['e__id'], //User making request
+            'x__member' => $user_emails[0]['e__id'], //User making request
             'x__left' => intval($_POST['sign_i__id']),
         ));
 
@@ -1983,7 +1983,7 @@ class E extends CI_Controller
 
         //Fetch source:
         $sources = $this->E_model->fetch(array(
-            'e__id' => $validate_links[0]['x__player'],
+            'e__id' => $validate_links[0]['x__member'],
         ));
         if(count($sources) < 1){
             return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');

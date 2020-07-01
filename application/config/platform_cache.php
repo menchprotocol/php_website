@@ -3077,7 +3077,7 @@ $config['e___6232'] = array(
     4364 => array(
         'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION PLAYER',
-        'm_desc' => 'x__player',
+        'm_desc' => 'x__member',
         'm_parents' => array(11081,6160,6232,6194,4341),
     ),
     4371 => array(

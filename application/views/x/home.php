@@ -13,7 +13,7 @@
 
         //MY DISCOVERIES
         $player_discoveries = $this->X_model->fetch(array(
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

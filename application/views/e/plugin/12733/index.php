@@ -10,7 +10,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
     echo '<div>Choose one of your Discoveries to debug:</div><br />';
 
     $player_discoveries = $this->X_model->fetch(array(
-        'x__player' => $_GET['e__id'],
+        'x__member' => $_GET['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC

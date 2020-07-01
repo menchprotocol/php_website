@@ -27,7 +27,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($add_fields, $required_columns, $x__player)
+function detect_missing_columns($add_fields, $required_columns, $x__member)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
@@ -41,7 +41,7 @@ function detect_missing_columns($add_fields, $required_columns, $x__player)
                     'required_columns' => $required_columns,
                 ),
                 'x__type' => 4246, //Platform Bug Reports
-                'x__player' => $x__player,
+                'x__member' => $x__member,
             ));
 
             return true; //We have an issue
@@ -384,7 +384,7 @@ function e_count_connections($e__id, $return_html = true){
         4737 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status=',
         7585 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status IN ('.join(',', $CI->config->item('n___7355')).') AND i__type=',
         6177 => 'SELECT count(e__id) as totals FROM mench__e WHERE e__status=',
-        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__player=',
+        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__member=',
         6186 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status=',
         4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
     ) as $e_app_id => $query){
@@ -488,7 +488,7 @@ function e__weight_calculator($source){
 
     $count_discoveries = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].' OR x__player='.$source['e__id'].')' => null,
+        '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].' OR x__member='.$source['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
@@ -708,7 +708,7 @@ function x_coins_idea($x__type, $i__id, $load_page = 0){
 
     } elseif($x__type==6255){
 
-        $join_objects = array('x__player');
+        $join_objects = array('x__member');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
@@ -771,7 +771,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COIN
-            'x__player' => $e__id,
+            'x__member' => $e__id,
         );
 
     } elseif($x__type==12273){
@@ -791,7 +791,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
-            'x__player' => $e__id,
+            'x__member' => $e__id,
         );
 
     } else {
@@ -1042,7 +1042,7 @@ function i_calc_common_prefix($child_list, $child_field){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $x__member = 0, $x__metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -1076,7 +1076,7 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
     if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__player' => $x__player,
+            'x__member' => $x__member,
             'x__message' => 'upload_to_cdn() Failed to load AWS S3',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1112,7 +1112,7 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
     if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__player' => $x__player,
+            'x__member' => $x__member,
             'x__message' => 'upload_to_cdn() Failed to upload file to Mench CDN',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1133,7 +1133,7 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
     //Define new URL:
     $cdn_new_url = trim($result['ObjectURL']);
 
-    if($x__player < 1){
+    if($x__member < 1){
         //Just return URL:
         return array(
             'status' => 1,
@@ -1142,7 +1142,7 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
     }
 
     //Create and link new source to CDN and uploader:
-    $url_source = $CI->E_model->url($cdn_new_url, $x__player, 0, $page_title);
+    $url_source = $CI->E_model->url($cdn_new_url, $x__member, 0, $page_title);
 
     if(isset($url_source['e_url']['e__id']) && $url_source['e_url']['e__id'] > 0){
 
@@ -1157,7 +1157,7 @@ function upload_to_cdn($file_url, $x__player = 0, $x__metadata = null, $is_local
 
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__player' => $x__player,
+            'x__member' => $x__member,
             'x__message' => 'upload_to_cdn() Failed to create new source from CDN file',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1366,7 +1366,7 @@ function player_is_e_source($e__id, $session_source = array()){
 
         //Player created the source
         || count($CI->X_model->fetch(array(
-            'x__player' => $session_source['e__id'],
+            'x__member' => $session_source['e__id'],
             'x__down' => $e__id,
             'x__type' => 4251, //New Source Created
         )))
@@ -1410,7 +1410,7 @@ function player_is_i_source($i__id, $session_source = array()){
                 count($CI->X_model->fetch(array( //Player created the idea
                     'x__type' => 4250, //IDEA CREATOR
                     'x__right' => $i__id,
-                    'x__player' => $session_source['e__id'],
+                    'x__member' => $session_source['e__id'],
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1632,8 +1632,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__duration'] = null;
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_e_' . $db_row['x__player']);
-                if($db_row['x__player']!=$db_row['e__id']){
+                array_push($export_row['_tags'], 'alg_e_' . $db_row['x__member']);
+                if($db_row['x__member']!=$db_row['e__id']){
                     //Also give access to source themselves, in case they can login:
                     array_push($export_row['_tags'], 'alg_e_' . $db_row['e__id']);
                 }
@@ -1831,7 +1831,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 }
 
-function update_metadata($object__type, $object__id, $new_fields, $x__player = 0)
+function update_metadata($object__type, $object__id, $new_fields, $x__member = 0)
 {
 
     $CI =& get_instance();
@@ -1911,13 +1911,13 @@ function update_metadata($object__type, $object__id, $new_fields, $x__player = 0
 
         $affected_rows = $CI->I_model->update($object__id, array(
             'i__metadata' => $metadata,
-        ), false, $x__player);
+        ), false, $x__member);
 
     } elseif ($object__type == 4536) {
 
         $affected_rows = $CI->E_model->update($object__id, array(
             'e__metadata' => $metadata,
-        ), false, $x__player);
+        ), false, $x__member);
 
     } elseif ($object__type == 6205) {
 

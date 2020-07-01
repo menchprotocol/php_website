@@ -414,7 +414,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach($e__profiles as $e_profile) {
-                $this_tab .= view_e($e_profile,true, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_profile['x__player']))));
+                $this_tab .= view_e($e_profile,true, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_profile['x__member']))));
             }
 
             //Input to add new parents:
@@ -652,7 +652,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
             $common_prefix = i_calc_common_prefix($e__portfolios, 'e__title');
 
             foreach($e__portfolios as $e_portfolio) {
-                $this_tab .= view_e($e_portfolio,false, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_portfolio['x__player']))), $common_prefix);
+                $this_tab .= view_e($e_portfolio,false, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_portfolio['x__member']))), $common_prefix);
             }
             if ($counter > count($e__portfolios)) {
                 $this_tab .= view_e_load_more(1, config_var(11064), $counter);
@@ -754,7 +754,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
         } elseif($x__type == 12969 /* MY DISCOVERIES */){
 
             $i_discoveries_filters = array(
-                'x__player' => $source['e__id'],
+                'x__member' => $source['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

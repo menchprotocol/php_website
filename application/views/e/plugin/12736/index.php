@@ -20,7 +20,7 @@ foreach($this->E_model->fetch() as $en) {
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array(), 1));
     $is_discover = count($this->X_model->fetch(array(
-        'x__player' => $en['e__id'],
+        'x__member' => $en['e__id'],
     ), array(), 1));
 
     if($is_player){
@@ -38,7 +38,7 @@ foreach($this->E_model->fetch() as $en) {
         $this->X_model->create(array(
             'x__type' => e_x__type(),
             'x__up' => 4430, //MENCH PLAYERS
-            'x__player' => $en['e__id'],
+            'x__member' => $en['e__id'],
             'x__down' => $en['e__id'],
         ));
     }
