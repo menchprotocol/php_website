@@ -154,11 +154,19 @@ $tab_pill_count = 0;
 foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
 
 
+    $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
+    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+        continue;
+    }
+
+
     //Is this a caret menu?
     if(in_array(11040 , $m['m_parents'])){
         echo view_caret($x__type, $m, $i_focus['i__id']);
         continue;
     }
+
+
 
     $counter = null; //Assume no counters
     $this_tab = '';
