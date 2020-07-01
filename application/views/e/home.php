@@ -16,7 +16,7 @@
             $e_list = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
-                ' EXISTS (SELECT 1 FROM mench__x WHERE e__id=x__down AND x__up IN (' . join(',', $this->config->item('n___'.$e__id)) . ') AND x__type IN (' . join(',', $this->config->item('n___4592')) . ') AND x__status IN ('.join(',', $this->config->item('n___7359')) /* PUBLIC */.')) ' => null,
+                ' EXISTS (SELECT 1 FROM mench__x WHERE e__id=x__down AND x__up IN (' . ( in_array($e__id, $this->config->item('n___4527')) ? join(',', $this->config->item('n___'.$e__id)) : $e__id ) . ') AND x__type IN (' . join(',', $this->config->item('n___4592')) . ') AND x__status IN ('.join(',', $this->config->item('n___7359')) /* PUBLIC */.')) ' => null,
             ), array('x__up'), $load_max, 0, array('totals' => 'DESC'), $select, $group_by);
             //TODO: Expand to include x__down for IDEA COINS (Currently only counts x__up)
 

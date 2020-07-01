@@ -573,7 +573,7 @@ class E_model extends CI_Model
                 if (!isset($metadata_this['p___3000'][$e['e__id']])) {
                     $metadata_this['p___3000'][$e['e__id']] = $e;
                 }
-            } elseif(in_array($e__profile['e__id'], $this->config->item('n___13339'))) {
+            } elseif($e__profile['e__id']==13339) {
                 //EXPERT AUTHORS
                 $e['x__message'] = $e__profile['x__message']; //Update Description
                 if (!isset($metadata_this['p___13339'][$e['e__id']])) {
