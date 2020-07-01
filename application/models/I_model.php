@@ -654,10 +654,10 @@ class I_model extends CI_Model
         $select_some_children = array(); //To be populated only if $focus_in is select some
         $conditional_x = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
-            '__i___6168' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__i___6228' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
-            '__i___12885' => array(), //Ideas that allows members to select one or more
-            '__i___6283' => array(), //Ideas that may exist as a link to expand Discovery via Conditional Idea links
+            'p___6168' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
+            'p___6228' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
+            'p___12885' => array(), //Ideas that allows members to select one or more
+            'p___6283' => array(), //Ideas that may exist as a link to expand Discovery via Conditional Idea links
         );
 
         //Fetch children:
@@ -687,36 +687,36 @@ class I_model extends CI_Model
             } else {
 
                 //AND parent Idea with Fixed Idea Link:
-                array_push($metadata_this['__i___6168'], intval($next_i['i__id']));
+                array_push($metadata_this['p___6168'], intval($next_i['i__id']));
 
                 //Go recursively down:
                 $child_recursion = $this->I_model->metadata_common_base($next_i);
 
 
                 //Aggregate recursion data:
-                if(count($child_recursion['__i___6168']) > 0){
-                    array_push($metadata_this['__i___6168'], $child_recursion['__i___6168']);
+                if(count($child_recursion['p___6168']) > 0){
+                    array_push($metadata_this['p___6168'], $child_recursion['p___6168']);
                 }
 
                 //Merge expansion steps:
-                if(count($child_recursion['__i___6228']) > 0){
-                    foreach($child_recursion['__i___6228'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__i___6228'])){
-                            $metadata_this['__i___6228'][$key] = $value;
+                if(count($child_recursion['p___6228']) > 0){
+                    foreach($child_recursion['p___6228'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['p___6228'])){
+                            $metadata_this['p___6228'][$key] = $value;
                         }
                     }
                 }
-                if(count($child_recursion['__i___12885']) > 0){
-                    foreach($child_recursion['__i___12885'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__i___12885'])){
-                            $metadata_this['__i___12885'][$key] = $value;
+                if(count($child_recursion['p___12885']) > 0){
+                    foreach($child_recursion['p___12885'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['p___12885'])){
+                            $metadata_this['p___12885'][$key] = $value;
                         }
                     }
                 }
-                if(count($child_recursion['__i___6283']) > 0){
-                    foreach($child_recursion['__i___6283'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__i___6283'])){
-                            $metadata_this['__i___6283'][$key] = $value;
+                if(count($child_recursion['p___6283']) > 0){
+                    foreach($child_recursion['p___6283'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['p___6283'])){
+                            $metadata_this['p___6283'][$key] = $value;
                         }
                     }
                 }
@@ -726,13 +726,13 @@ class I_model extends CI_Model
 
         //Was this an OR branch that needs it's children added to the array?
         if($select_one && count($select_one_children) > 0){
-            $metadata_this['__i___6228'][$focus_in['i__id']] = $select_one_children;
+            $metadata_this['p___6228'][$focus_in['i__id']] = $select_one_children;
         }
         if($select_some && count($select_some_children) > 0){
-            $metadata_this['__i___12885'][$focus_in['i__id']] = $select_some_children;
+            $metadata_this['p___12885'][$focus_in['i__id']] = $select_some_children;
         }
         if(count($conditional_x) > 0){
-            $metadata_this['__i___6283'][$focus_in['i__id']] = $conditional_x;
+            $metadata_this['p___6283'][$focus_in['i__id']] = $conditional_x;
         }
 
 
@@ -740,17 +740,17 @@ class I_model extends CI_Model
         if($is_first_in){
 
             //Make sure to add main idea to common idea:
-            if(count($metadata_this['__i___6168']) > 0){
-                $metadata_this['__i___6168'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['__i___6168']));
+            if(count($metadata_this['p___6168']) > 0){
+                $metadata_this['p___6168'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['p___6168']));
             } else {
-                $metadata_this['__i___6168'] = array(intval($focus_in['i__id']));
+                $metadata_this['p___6168'] = array(intval($focus_in['i__id']));
             }
 
             update_metadata(4535, $focus_in['i__id'], array(
-                'i___6168' => $metadata_this['__i___6168'],
-                'i___6228' => $metadata_this['__i___6228'],
-                'i___12885' => $metadata_this['__i___12885'],
-                'i___6283' => $metadata_this['__i___6283'],
+                'i___6168' => $metadata_this['p___6168'],
+                'i___6228' => $metadata_this['p___6228'],
+                'i___12885' => $metadata_this['p___12885'],
+                'i___6283' => $metadata_this['p___6283'],
             ));
 
         }
@@ -950,15 +950,15 @@ class I_model extends CI_Model
          * */
 
         $metadata_this = array(
-            '__i___6169' => 1,
-            '__i___6170' => 1,
-            '__i___6161' => $i['i__duration'],
-            '__i___6162' => $i['i__duration'],
-            '__i___13202' => array(),
-            '__i___13339' => array(),
-            '__i___3000' => array(),
-            '__i___7545' => array(),
-            '__i___ids' => array($i['i__id']), //Keeps Track of the IDs scanned here
+            'p___6169' => 1,
+            'p___6170' => 1,
+            'p___6161' => $i['i__duration'],
+            'p___6162' => $i['i__duration'],
+            'p___13202' => array(),
+            'p___13339' => array(),
+            'p___3000' => array(),
+            'p___7545' => array(),
+            'p___ids' => array($i['i__id']), //Keeps Track of the IDs scanned here
         );
 
 
@@ -981,23 +981,23 @@ class I_model extends CI_Model
                     $e_metadata_experts = $this->E_model->metadata_experts($ref_es[0]);
 
                     //CONTENT CHANNELS
-                    foreach($e_metadata_experts['__i___3000'] as $e__id => $e_content) {
-                        if (!isset($metadata_this['__i___3000'][$e__id])) {
-                            $metadata_this['__i___3000'][$e__id] = $e_content;
+                    foreach($e_metadata_experts['p___3000'] as $e__id => $e_content) {
+                        if (!isset($metadata_this['p___3000'][$e__id])) {
+                            $metadata_this['p___3000'][$e__id] = $e_content;
                         }
                     }
 
                     //EXPERT PEOPLE/ORGANIZATIONS
-                    foreach($e_metadata_experts['__i___13339'] as $e__id => $e_expert) {
-                        if (!isset($metadata_this['__i___13339'][$e__id])) {
-                            $metadata_this['__i___13339'][$e__id] = $e_expert;
+                    foreach($e_metadata_experts['p___13339'] as $e__id => $e_expert) {
+                        if (!isset($metadata_this['p___13339'][$e__id])) {
+                            $metadata_this['p___13339'][$e__id] = $e_expert;
                         }
                     }
                 }
             }
 
             //PLAYERS:
-            if (!isset($metadata_this['__i___13202'][$fetched_e['x__member']])) {
+            if (!isset($metadata_this['p___13202'][$fetched_e['x__member']])) {
                 //Fetch Player:
                 foreach($this->X_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
@@ -1005,7 +1005,7 @@ class I_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array('x__down'), 1) as $member){
-                    $metadata_this['__i___13202'][$fetched_e['x__member']] = $member;
+                    $metadata_this['p___13202'][$fetched_e['x__member']] = $member;
                 }
             }
 
@@ -1019,17 +1019,17 @@ class I_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $e) {
-            if (!isset($metadata_this['__i___7545'][$e['e__id']])) {
-                $metadata_this['__i___7545'][$e['e__id']] = $e;
+            if (!isset($metadata_this['p___7545'][$e['e__id']])) {
+                $metadata_this['p___7545'][$e['e__id']] = $e;
             }
         }
 
 
         $metadata_local = array(
-            'local__i___6169'=> null,
-            'local__i___6170'=> null,
-            'local__i___6161'=> null,
-            'local__i___6162'=> null,
+            'localp___6169'=> null,
+            'localp___6170'=> null,
+            'localp___6161'=> null,
+            'localp___6162'=> null,
         );
 
         //NEXT IDEAS
@@ -1041,7 +1041,7 @@ class I_model extends CI_Model
         ), array('x__right'), 0) as $is_next){
 
             //Players
-            if (!isset($metadata_this['__i___13202'][$is_next['x__member']])) {
+            if (!isset($metadata_this['p___13202'][$is_next['x__member']])) {
                 //Fetch Player:
                 foreach($this->X_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
@@ -1049,7 +1049,7 @@ class I_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array('x__down'), 1) as $member){
-                    $metadata_this['__i___13202'][$is_next['x__member']] = $member;
+                    $metadata_this['p___13202'][$is_next['x__member']] = $member;
                 }
             }
 
@@ -1063,19 +1063,19 @@ class I_model extends CI_Model
                 //ONE
 
                 //MIN
-                if(is_null($metadata_local['local__i___6169']) || $metadata_recursion['__i___6169'] < $metadata_local['local__i___6169']){
-                    $metadata_local['local__i___6169'] = $metadata_recursion['__i___6169'];
+                if(is_null($metadata_local['localp___6169']) || $metadata_recursion['p___6169'] < $metadata_local['localp___6169']){
+                    $metadata_local['localp___6169'] = $metadata_recursion['p___6169'];
                 }
-                if(is_null($metadata_local['local__i___6161']) || $metadata_recursion['__i___6161'] < $metadata_local['local__i___6161']){
-                    $metadata_local['local__i___6161'] = $metadata_recursion['__i___6161'];
+                if(is_null($metadata_local['localp___6161']) || $metadata_recursion['p___6161'] < $metadata_local['localp___6161']){
+                    $metadata_local['localp___6161'] = $metadata_recursion['p___6161'];
                 }
 
                 //MAX
-                if(is_null($metadata_local['local__i___6170']) || $metadata_recursion['__i___6170'] > $metadata_local['local__i___6170']){
-                    $metadata_local['local__i___6170'] = $metadata_recursion['__i___6170'];
+                if(is_null($metadata_local['localp___6170']) || $metadata_recursion['p___6170'] > $metadata_local['localp___6170']){
+                    $metadata_local['localp___6170'] = $metadata_recursion['p___6170'];
                 }
-                if(is_null($metadata_local['local__i___6162']) || $metadata_recursion['__i___6162'] > $metadata_local['local__i___6162']){
-                    $metadata_local['local__i___6162'] = $metadata_recursion['__i___6162'];
+                if(is_null($metadata_local['localp___6162']) || $metadata_recursion['p___6162'] > $metadata_local['localp___6162']){
+                    $metadata_local['localp___6162'] = $metadata_recursion['p___6162'];
                 }
 
             } elseif(in_array($i['i__type'], $this->config->item('n___12884'))){
@@ -1083,93 +1083,93 @@ class I_model extends CI_Model
                 //SOME
 
                 //MIN
-                if(is_null($metadata_local['local__i___6169']) || $metadata_recursion['__i___6169'] < $metadata_local['local__i___6169']){
-                    $metadata_local['local__i___6169'] = $metadata_recursion['__i___6169'];
+                if(is_null($metadata_local['localp___6169']) || $metadata_recursion['p___6169'] < $metadata_local['localp___6169']){
+                    $metadata_local['localp___6169'] = $metadata_recursion['p___6169'];
                 }
-                if(is_null($metadata_local['local__i___6161']) || $metadata_recursion['__i___6161'] < $metadata_local['local__i___6161']){
-                    $metadata_local['local__i___6161'] = $metadata_recursion['__i___6161'];
+                if(is_null($metadata_local['localp___6161']) || $metadata_recursion['p___6161'] < $metadata_local['localp___6161']){
+                    $metadata_local['localp___6161'] = $metadata_recursion['p___6161'];
                 }
 
                 //MAX
-                $metadata_this['__i___6170'] += intval($metadata_recursion['__i___6170']);
-                $metadata_this['__i___6162'] += intval($metadata_recursion['__i___6162']);
+                $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
+                $metadata_this['p___6162'] += intval($metadata_recursion['p___6162']);
 
             } else {
 
                 //ALL
 
                 //MIN
-                $metadata_this['__i___6169'] += intval($metadata_recursion['__i___6169']);
-                $metadata_this['__i___6161'] += intval($metadata_recursion['__i___6161']);
+                $metadata_this['p___6169'] += intval($metadata_recursion['p___6169']);
+                $metadata_this['p___6161'] += intval($metadata_recursion['p___6161']);
 
                 //MAX
-                $metadata_this['__i___6170'] += intval($metadata_recursion['__i___6170']);
-                $metadata_this['__i___6162'] += intval($metadata_recursion['__i___6162']);
+                $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
+                $metadata_this['p___6162'] += intval($metadata_recursion['p___6162']);
 
             }
 
 
             //PLAYERS
-            foreach($metadata_recursion['__i___13202'] as $e__id => $e) {
-                if (!isset($metadata_this['__i___13202'][$e__id])) {
-                    $metadata_this['__i___13202'][$e__id] = $e;
+            foreach($metadata_recursion['p___13202'] as $e__id => $e) {
+                if (!isset($metadata_this['p___13202'][$e__id])) {
+                    $metadata_this['p___13202'][$e__id] = $e;
                 }
             }
 
             //EXPERT CONTENT
-            foreach($metadata_recursion['__i___3000'] as $e__id => $e_content) {
-                if (!isset($metadata_this['__i___3000'][$e__id])) {
-                    $metadata_this['__i___3000'][$e__id] = $e_content;
+            foreach($metadata_recursion['p___3000'] as $e__id => $e_content) {
+                if (!isset($metadata_this['p___3000'][$e__id])) {
+                    $metadata_this['p___3000'][$e__id] = $e_content;
                 }
             }
 
             //EXPERT SOURCES
-            foreach($metadata_recursion['__i___13339'] as $e__id => $e_expert) {
-                if (!isset($metadata_this['__i___13339'][$e__id])) {
-                    $metadata_this['__i___13339'][$e__id] = $e_expert;
+            foreach($metadata_recursion['p___13339'] as $e__id => $e_expert) {
+                if (!isset($metadata_this['p___13339'][$e__id])) {
+                    $metadata_this['p___13339'][$e__id] = $e_expert;
                 }
             }
 
             //CERTIFICATES
-            foreach($metadata_recursion['__i___7545'] as $e__id => $e_certificate) {
-                if (!isset($metadata_this['__i___7545'][$e__id])) {
-                    $metadata_this['__i___7545'][$e__id] = $e_certificate;
+            foreach($metadata_recursion['p___7545'] as $e__id => $e_certificate) {
+                if (!isset($metadata_this['p___7545'][$e__id])) {
+                    $metadata_this['p___7545'][$e__id] = $e_certificate;
                 }
             }
 
             //AGGREGATE IDS
-            foreach($metadata_recursion['__i___ids'] as $i__id) {
-                if (!in_array(intval($i__id), $metadata_this['__i___ids'])) {
-                    array_push($metadata_this['__i___ids'], intval($i__id));
+            foreach($metadata_recursion['p___ids'] as $i__id) {
+                if (!in_array(intval($i__id), $metadata_this['p___ids'])) {
+                    array_push($metadata_this['p___ids'], intval($i__id));
                 }
             }
         }
 
 
         //ADD LOCAL MIN/MAX
-        if(!is_null($metadata_local['local__i___6169'])){
-            $metadata_this['__i___6169'] += intval($metadata_local['local__i___6169']);
+        if(!is_null($metadata_local['localp___6169'])){
+            $metadata_this['p___6169'] += intval($metadata_local['localp___6169']);
         }
-        if(!is_null($metadata_local['local__i___6170'])){
-            $metadata_this['__i___6170'] += intval($metadata_local['local__i___6170']);
+        if(!is_null($metadata_local['localp___6170'])){
+            $metadata_this['p___6170'] += intval($metadata_local['localp___6170']);
         }
-        if(!is_null($metadata_local['local__i___6161'])){
-            $metadata_this['__i___6161'] += intval($metadata_local['local__i___6161']);
+        if(!is_null($metadata_local['localp___6161'])){
+            $metadata_this['p___6161'] += intval($metadata_local['localp___6161']);
         }
-        if(!is_null($metadata_local['local__i___6162'])){
-            $metadata_this['__i___6162'] += intval($metadata_local['local__i___6162']);
+        if(!is_null($metadata_local['localp___6162'])){
+            $metadata_this['p___6162'] += intval($metadata_local['localp___6162']);
         }
 
         //Save to DB
         update_metadata(4535, $i['i__id'], array(
-            'i___6169' => intval($metadata_this['__i___6169']),
-            'i___6170' => intval($metadata_this['__i___6170']),
-            'i___6161' => intval($metadata_this['__i___6161']),
-            'i___6162' => intval($metadata_this['__i___6162']),
-            'i___13202' => $metadata_this['__i___13202'], //Mench Ideators
-            'i___13339' => $metadata_this['__i___13339'], //Expert Authors
-            'i___3000' => $metadata_this['__i___3000'], //Expert Content
-            'i___7545' => $metadata_this['__i___7545'], //Certificates
+            'i___6169' => intval($metadata_this['p___6169']),
+            'i___6170' => intval($metadata_this['p___6170']),
+            'i___6161' => intval($metadata_this['p___6161']),
+            'i___6162' => intval($metadata_this['p___6162']),
+            'i___13202' => $metadata_this['p___13202'], //Mench Ideators
+            'i___13339' => $metadata_this['p___13339'], //Expert Authors
+            'i___3000' => $metadata_this['p___3000'], //Expert Content
+            'i___7545' => $metadata_this['p___7545'], //Certificates
         ));
 
         //Return data:

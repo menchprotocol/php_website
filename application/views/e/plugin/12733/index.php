@@ -35,14 +35,14 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
         //List the idea:
         view_json(array(
-            'i_general' => array(
-                'i_recursive_parents' => $this->I_model->recursive_parents($is[0]['i__id']),
-                'i___common_base' => $this->I_model->metadata_common_base($is[0]),
+            'I_model' => array(
+                'recursive_parents' => $this->I_model->recursive_parents($is[0]['i__id']),
+                'metadata_common_base' => $this->I_model->metadata_common_base($is[0]),
             ),
-            'i_user' => array(
-                'x_find_next' => $this->X_model->find_next($_GET['e__id'], $is[0], 0, false),
-                'x_completion_progress' => $this->X_model->completion_progress($_GET['e__id'], $is[0]),
-                'x_completion_marks' => $this->X_model->completion_marks($_GET['e__id'], $is[0]),
+            'X_model' => array(
+                'find_next' => $this->X_model->find_next($_GET['e__id'], $is[0], 0, false),
+                'completion_progress' => $this->X_model->completion_progress($_GET['e__id'], $is[0]),
+                'completion_marks' => $this->X_model->completion_marks($_GET['e__id'], $is[0]),
             ),
         ));
 

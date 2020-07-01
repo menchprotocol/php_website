@@ -33,10 +33,10 @@ foreach($this->I_model->fetch($query_filters, 0, 0, array('i__weight' => 'DESC')
     }
 
     $results = $this->I_model->metadata_e_insights($i);
-    $is_scanned = array_merge($is_scanned, $results['__i___ids']);
+    $is_scanned = array_merge($is_scanned, $results['p___ids']);
 
     $stats['featured_scanned']++;
-    $stats['i_scanned'] += count($results['__i___ids']);
+    $stats['i_scanned'] += count($results['p___ids']);
 
 }
 

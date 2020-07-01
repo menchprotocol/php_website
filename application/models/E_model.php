@@ -555,8 +555,8 @@ class E_model extends CI_Model
         //Goes through $max_search_levels of sources to find expert channels, people & organizations
         $max_search_levels = 3;
         $metadata_this = array(
-            '__i___13339' => array(),
-            '__i___3000' => array(),
+            'p___13339' => array(),
+            'p___3000' => array(),
         );
 
         //SOURCE PROFILE
@@ -570,14 +570,14 @@ class E_model extends CI_Model
 
             if(in_array($e__profile['e__id'], $this->config->item('n___3000'))){
                 //EXPERT CONTENT
-                if (!isset($metadata_this['__i___3000'][$e['e__id']])) {
-                    $metadata_this['__i___3000'][$e['e__id']] = $e;
+                if (!isset($metadata_this['p___3000'][$e['e__id']])) {
+                    $metadata_this['p___3000'][$e['e__id']] = $e;
                 }
             } elseif(in_array($e__profile['e__id'], $this->config->item('n___13339'))) {
                 //EXPERT AUTHORS
                 $e['x__message'] = $e__profile['x__message']; //Update Description
-                if (!isset($metadata_this['__i___13339'][$e['e__id']])) {
-                    $metadata_this['__i___13339'][$e['e__id']] = $e;
+                if (!isset($metadata_this['p___13339'][$e['e__id']])) {
+                    $metadata_this['p___13339'][$e['e__id']] = $e;
                 }
             }
 
@@ -587,16 +587,16 @@ class E_model extends CI_Model
                 $metadata_recursion = $this->E_model->metadata_experts($e__profile, ($level + 1));
 
                 //CONTENT CHANNELS
-                foreach($metadata_recursion['__i___3000'] as $e__id => $e_content) {
-                    if (!isset($metadata_this['__i___3000'][$e__id])) {
-                        $metadata_this['__i___3000'][$e__id] = $e_content;
+                foreach($metadata_recursion['p___3000'] as $e__id => $e_content) {
+                    if (!isset($metadata_this['p___3000'][$e__id])) {
+                        $metadata_this['p___3000'][$e__id] = $e_content;
                     }
                 }
 
                 //EXPERT PEOPLE/ORGANIZATIONS
-                foreach($metadata_recursion['__i___13339'] as $e__id => $e_expert) {
-                    if (!isset($metadata_this['__i___13339'][$e__id])) {
-                        $metadata_this['__i___13339'][$e__id] = $e_expert;
+                foreach($metadata_recursion['p___13339'] as $e__id => $e_expert) {
+                    if (!isset($metadata_this['p___13339'][$e__id])) {
+                        $metadata_this['p___13339'][$e__id] = $e_expert;
                     }
                 }
             }
