@@ -449,21 +449,21 @@ function i_fetch_cover($i__id, $html_format = false){
 }
 
 
-function i__weight_calculator($idea){
+function i__weight_calculator($i){
 
     //DISCOVERIES
     $CI =& get_instance();
 
     $count_discoveries = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__right='.$idea['i__id'].' OR x__left='.$idea['i__id'].')' => null,
+        '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
     $counts = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-        '(x__right='.$idea['i__id'].' OR x__left='.$idea['i__id'].')' => null,
+        '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Returns the weight of a idea:
@@ -471,8 +471,8 @@ function i__weight_calculator($idea){
         + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
-    if($weight != $idea['i__weight']){
-        return $CI->I_model->update($idea['i__id'], array(
+    if($weight != $i['i__weight']){
+        return $CI->I_model->update($i['i__id'], array(
             'i__weight' => $weight,
         ));
     } else {
@@ -576,9 +576,9 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 }
 
-function i_is_unlockable($idea){
+function i_is_unlockable($i){
     $CI =& get_instance();
-    return in_array($idea['i__status'], $CI->config->item('n___7355') /* PUBLIC */);
+    return in_array($i['i__status'], $CI->config->item('n___7355') /* PUBLIC */);
 }
 
 function redirect_message($url, $message = null)
@@ -875,8 +875,8 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
 
 function var_index(){
     //Returns a simplified index of all Mench variables @6212
-    $var_index = array();
     $CI =& get_instance();
+    $var_index = array();
     foreach($CI->config->item('e___6212') as $e__id => $m){
         foreach($CI->config->item('e___'.$e__id) as $e__id2 => $m2){
             if(strlen($m2['m_desc']) > 0){
@@ -910,9 +910,9 @@ function i_stats($i__metadata){
     return array(
 
         //IDEAS
-        'ideas_min' => ( isset($metadata['i___min_discoveries']) && $metadata['i___min_discoveries']>=2 ? $metadata['i___min_discoveries']-1 : 0 ),
-        'ideas_max' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? $metadata['i___max_discoveries']-1 : 0 ),
-        'ideas_average' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? round(( ($metadata['i___min_discoveries']-1) + ($metadata['i___max_discoveries']-1) ) / 2) : 1 ),
+        'i_min' => ( isset($metadata['i___min_discoveries']) && $metadata['i___min_discoveries']>=2 ? $metadata['i___min_discoveries']-1 : 0 ),
+        'i_max' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? $metadata['i___max_discoveries']-1 : 0 ),
+        'i_average' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? round(( ($metadata['i___min_discoveries']-1) + ($metadata['i___max_discoveries']-1) ) / 2) : 1 ),
         'duration_min' => ( isset($metadata['i___min_seconds']) ? $metadata['i___min_seconds'] : 0 ),
         'duration_max' => ( isset($metadata['i___max_seconds']) ? $metadata['i___max_seconds'] : 0 ),
         'duration_average' => ( isset($metadata['i___max_seconds']) ? round(($metadata['i___min_seconds']+$metadata['i___max_seconds'])/2) : 0 ),
@@ -1690,7 +1690,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 //Idea Stats:
                 $i_stats = i_stats($db_row['i__metadata']);
-                $export_row['object__ideas'] = $i_stats['ideas_average'];
+                $export_row['object__ideas'] = $i_stats['i_average'];
                 $export_row['object__duration'] = view_time_hours($i_stats['duration_average']);
 
                 if(in_array($db_row['i__status'], $CI->config->item('n___12138'))){

@@ -43,7 +43,7 @@ class I extends CI_Controller {
 
 
         //Create Idea:
-        $idea = $this->I_model->link_or_create($i__title_validation['i_clean_title'], $session_source['e__id']);
+        $i = $this->I_model->link_or_create($i__title_validation['i_clean_title'], $session_source['e__id']);
 
 
         //Move Existing Bookmarks by one:
@@ -63,7 +63,7 @@ class I extends CI_Controller {
         $this->X_model->create(array(
             'x__type' => 10573, //MY IDEAS
             'x__member' => $session_source['e__id'],
-            'x__right' => $idea['new_i__id'],
+            'x__right' => $i['new_i__id'],
             'x__up' => $session_source['e__id'],
             'x__message' => '@'.$session_source['e__id'],
             'x__sort' => 1, //Top of the list
@@ -72,7 +72,7 @@ class I extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'message' => '<span class="icon-block"><i class="fas fa-check-circle idea"></i></span>Success! Redirecting now...',
-            'i__id' => $idea['new_i__id'],
+            'i__id' => $i['new_i__id'],
         ));
 
     }
@@ -106,16 +106,16 @@ class I extends CI_Controller {
     function i_coin($i__id){
 
         //Validate/fetch Idea:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
         ));
-        if ( count($ideas) < 1) {
+        if ( count($is) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>IDEA #' . $i__id . ' Not Found</div>');
         }
 
 
         $session_source = superpower_assigned(10939); //Idea Pen?
-        $is_public = in_array($ideas[0]['i__status'], $this->config->item('n___7355'));
+        $is_public = in_array($is[0]['i__status'], $this->config->item('n___7355'));
 
         if(!$session_source){
             if($is_public){
@@ -154,11 +154,11 @@ class I extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $ideas[0]['i__title'],
+            'title' => $is[0]['i__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('i/layout', array(
-            'i_focus' => $ideas[0],
+            'i_focus' => $is[0],
             'session_source' => $session_source,
         ));
         $this->load->view('footer');
@@ -223,16 +223,16 @@ class I extends CI_Controller {
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $idea){
+        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $i){
             if($action=='next'){
                 if($trigger_next){
-                    return redirect_message('/~' . $idea['i__id'] );
+                    return redirect_message('/~' . $i['i__id'] );
                 }
-                if($idea['i__id']==$current_i__id){
+                if($i['i__id']==$current_i__id){
                     $trigger_next = true;
                 }
             } elseif($action=='previous'){
-                if($idea['i__id']==$current_i__id){
+                if($i['i__id']==$current_i__id){
                     if($track_previous > 0){
                         return redirect_message('/~' . $track_previous );
                     } else {
@@ -240,7 +240,7 @@ class I extends CI_Controller {
                         break;
                     }
                 } else {
-                    $track_previous = $idea['i__id'];
+                    $track_previous = $i['i__id'];
                 }
             }
         }
@@ -583,11 +583,11 @@ class I extends CI_Controller {
 
 
         //Fetch/Validate the idea:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => intval($_POST['i__id']),
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
-        if(count($ideas)<1){
+        if(count($is)<1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea',
@@ -682,10 +682,10 @@ class I extends CI_Controller {
         }
 
         //Validate Idea:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
         ));
-        if(count($ideas)<1){
+        if(count($is)<1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
@@ -820,10 +820,10 @@ class I extends CI_Controller {
         }
 
         //Validate Idea:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
         ));
-        if (count($ideas) < 1) {
+        if (count($is) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Idea Not Found',

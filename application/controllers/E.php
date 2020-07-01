@@ -366,11 +366,11 @@ class E extends CI_Controller
 
 
         //Validate Idea
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
-        if (count($ideas) < 1) {
+        if (count($is) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea',
@@ -398,7 +398,7 @@ class E extends CI_Controller
 
             //Make sure not linked:
             if(count($this->X_model->fetch(array(
-                'x__right' => $ideas[0]['i__id'],
+                'x__right' => $is[0]['i__id'],
                 'x__up' => $_POST['e_existing_id'],
                 'x__type' => $_POST['note_type_id'],
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -438,7 +438,7 @@ class E extends CI_Controller
         $new_note = $this->X_model->create(array(
             'x__member' => $session_source['e__id'],
             'x__type' => $_POST['note_type_id'],
-            'x__right' => $ideas[0]['i__id'],
+            'x__right' => $is[0]['i__id'],
             'x__up' => $focus_source['e__id'],
             'x__message' => '@'.$focus_source['e__id'],
         ));
@@ -2143,11 +2143,11 @@ class E extends CI_Controller
         }
 
         //Fetch/Validate idea:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
-        if(count($ideas) != 1){
+        if(count($is) != 1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Could not find idea #'.$_POST['i__id'],
@@ -2163,7 +2163,7 @@ class E extends CI_Controller
         //Return report:
         return view_json(array(
             'status' => 1,
-            'message' => '<h3>'.$e___7585[$ideas[0]['i__type']]['m_icon'].' '.$e___4737[$ideas[0]['i__status']]['m_icon'].' '.view_i_title($ideas[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $ideas[0]['i__type']),
+            'message' => '<h3>'.$e___7585[$is[0]['i__type']]['m_icon'].' '.$e___4737[$is[0]['i__status']]['m_icon'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__type']),
         ));
 
 

@@ -36,8 +36,8 @@
 
 
     echo '<div id="idea_covers" class="cover-list">';
-    foreach($player_ideas as $idea){
-        echo view_i_cover($idea, true, false);
+    foreach($player_ideas as $i){
+        echo view_i_cover($i, true, false);
     }
     echo '</div>';
     echo '<div class="doclear">&nbsp;</div>';

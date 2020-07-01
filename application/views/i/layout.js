@@ -262,7 +262,7 @@ function i_sort_save(i__id) {
     var new_x__sorts = [];
     var sort_rank = 0;
 
-    $("#list-in-" + i_loaded_id + "-0 .ideas_sortable").each(function () {
+    $("#list-in-" + i_loaded_id + "-0 .i_sortable").each(function () {
         //Fetch variables for this idea:
         var i__id = parseInt($(this).attr('idea-id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -298,7 +298,7 @@ function i_sort_load(i__id) {
 
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".ideas_sortable", // Specifies which items inside the element should be sortable
+        draggable: ".i_sortable", // Specifies which items inside the element should be sortable
         handle: ".idea-sort-handle", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             i_sort_save(i__id);
@@ -317,7 +317,7 @@ function i_add(i_linked_id, is_parent, i_link_child_id) {
      * */
 
 
-    var sort_handler = ".ideas_sortable";
+    var sort_handler = ".i_sortable";
     var sort_list_id = "list-in-" + i_loaded_id + '-' + is_parent;
     var input_field = $('#addidea-c-' + i_linked_id + '-' + is_parent);
     var i__title = input_field.val();

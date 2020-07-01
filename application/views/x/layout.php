@@ -20,14 +20,14 @@ if(!isset($recipient_source['e__id']) ){
 
 
 //NEXT IDEAS
-$ideas_next = $this->X_model->fetch(array(
+$is_next = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-$chapters = count($ideas_next);
+$chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
 $in_my_discoveries = ( $recipient_source['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $recipient_source) : false );
 
@@ -193,20 +193,20 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==12273 && $i_stats['ideas_average']>1){
+    } elseif($x__type==12273 && $i_stats['i_average']>1){
 
         //IDEAS
-        $counter = $i_stats['ideas_average'];
+        $counter = $i_stats['i_average'];
 
         //IDEA or TIME difference?
-        if($i_stats['ideas_min']!=$i_stats['ideas_max'] || $i_stats['duration_min']!=$i_stats['duration_max']){
+        if($i_stats['i_min']!=$i_stats['i_max'] || $i_stats['duration_min']!=$i_stats['duration_max']){
 
             //Variable time range:
             $this_tab .= '<p class="space-content">The number of ideas you discover (and the time it takes to discover them) depends on the choices you make interactively along the way:</p>';
             $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-            $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_min']).'</span><br />';
-            $this_tab .= '<span class="discovering-paths">Average:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span><br />';
-            $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_max']).'</span>';
+            $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i_min'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_min']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Average:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i_average'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i_max'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_max']).'</span>';
             $this_tab .= '</p>';
 
         } else {
@@ -219,24 +219,24 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //NEXT IDEAS
         if(!$in_my_discoveries && $chapters){
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-            foreach($ideas_next as $key => $next_idea){
-                $this_tab .= view_i_discover($next_idea, i_calc_common_prefix($ideas_next, 'i__title'));
+            foreach($is_next as $key => $next_idea){
+                $this_tab .= view_i_discover($next_idea, i_calc_common_prefix($is_next, 'i__title'));
             }
             $this_tab .= '</div>';
         }
 
         //IDEA PREVIOUS
-        $ideas_previous = $this->X_model->fetch(array(
+        $is_previous = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i_focus['i__id'],
             'x__left !=' => config_var(13405),
         ), array('x__left'), 0);
-        if(count($ideas_previous)){
+        if(count($is_previous)){
             $this_tab .= '<p class="space-content">'.view_i_title($i_focus).' Helps you:</p>';
             $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-            foreach($ideas_previous as $key => $previous_idea){
+            foreach($is_previous as $key => $previous_idea){
                 $this_tab .= view_i_discover($previous_idea, null, false, array('completion_percentage' => 0));
             }
             $this_tab .= '</div>';
@@ -392,7 +392,7 @@ if(!$in_my_discoveries){
         }
 
         //List Children if any:
-        view_i_list($i_focus, $ideas_next, $recipient_source, null, ( $completion_rate['completion_percentage'] < 100 ));
+        view_i_list($i_focus, $is_next, $recipient_source, null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
     } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))){
@@ -482,8 +482,8 @@ if(!$in_my_discoveries){
 
 
             //List children to choose from:
-            $common_prefix = i_calc_common_prefix($ideas_next, 'i__title');
-            foreach($ideas_next as $key => $next_idea) {
+            $common_prefix = i_calc_common_prefix($is_next, 'i__title');
+            foreach($is_next as $key => $next_idea) {
 
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
@@ -535,7 +535,7 @@ if(!$in_my_discoveries){
     } elseif ($i_focus['i__type'] == 6677) {
 
         //DISCOVER ONLY
-        view_i_list($i_focus, $ideas_next, $recipient_source);
+        view_i_list($i_focus, $is_next, $recipient_source);
 
     } elseif ($i_focus['i__type'] == 6683) {
 
@@ -556,7 +556,7 @@ if(!$in_my_discoveries){
 
         if(count($discovery_completes)){
             //Next Ideas:
-            view_i_list($i_focus, $ideas_next, $recipient_source, null,false);
+            view_i_list($i_focus, $is_next, $recipient_source, null,false);
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#x_respond\')); $(\'#x_respond\').focus(); }); </script>';
@@ -597,7 +597,7 @@ if(!$in_my_discoveries){
             echo '</div>';
 
             //Any child ideas?
-            view_i_list($i_focus, $ideas_next, $recipient_source, null, true, false);
+            view_i_list($i_focus, $is_next, $recipient_source, null, true, false);
 
             echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-discover inline-block btn-circle" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
 

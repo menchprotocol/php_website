@@ -28,9 +28,9 @@
 
             echo '<div class="clear-discovery-list">';
             echo '<div id="idea_covers" class="cover-list">';
-            foreach($player_discoveries as $idea) {
-                array_push($player_discovery_ids, $idea['i__id']);
-                echo view_i_cover($idea, true);
+            foreach($player_discoveries as $i) {
+                array_push($player_discovery_ids, $i['i__id']);
+                echo view_i_cover($i, true);
             }
             echo '</div>';
             echo '</div>';
@@ -67,8 +67,8 @@
             echo '<div class="discover-topic" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12896]['m_icon'].'</span>'.$e___11035[12896]['m_name'].'</div>';
 
             echo '<div class="list-group no-side-padding">';
-            foreach($player_saved as $priority => $idea) {
-                echo view_i_discover($idea, null, true);
+            foreach($player_saved as $priority => $i) {
+                echo view_i_discover($i, null, true);
             }
             echo '</div>';
 
@@ -77,12 +77,12 @@
     } else {
 
         //Not logged in, show description:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => config_var(13405),
         ));
 
         //IDEA TITLE
-        echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon">'.view_x_icon_legend( false , 0 ).'</span><span class="title-block-lg">' . view_i_title($ideas[0]) . '</span></h1>';
+        echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon">'.view_x_icon_legend( false , 0 ).'</span><span class="title-block-lg">' . view_i_title($is[0]) . '</span></h1>';
 
         //IDEA MESSAGES
         echo '<div style="margin-bottom:34px;">';
@@ -109,10 +109,10 @@
 
     echo '<div class="discover-topic" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13427]['m_icon'].'</span>'.$e___11035[13427]['m_name'].'</div>';
     echo '<div class="cover-list">';
-    foreach($featured_ideas as $key => $idea){
-        if(!in_array($idea['i__id'], $player_discovery_ids)){
+    foreach($featured_ideas as $key => $i){
+        if(!in_array($i['i__id'], $player_discovery_ids)){
             //Show only if not in discovering list:
-            echo view_i_cover($idea, false);
+            echo view_i_cover($i, false);
         }
     }
     echo '</div>';

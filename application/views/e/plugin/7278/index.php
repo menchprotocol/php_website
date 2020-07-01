@@ -29,10 +29,10 @@ $node_size = array(
 );
 
 //Add Ideas:
-$ideas = $this->I_model->fetch(array(
+$is = $this->I_model->fetch(array(
     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
 ));
-foreach($ideas as $in){
+foreach($is as $in){
 
     //Prep metadata:
     $i__metadata = ( strlen($in['i__metadata']) > 0 ? unserialize($in['i__metadata']) : array());
@@ -150,4 +150,4 @@ foreach($messages as $message) {
 
 }
 
-echo count($ideas).' ideas & '.count($sources).' sources & '.count($messages).' messages synced.';
+echo count($is).' ideas & '.count($sources).' sources & '.count($messages).' messages synced.';

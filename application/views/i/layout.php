@@ -43,7 +43,7 @@ if(isset($_GET['focus__source'])){
 
 
 //IDEA PREVIOUS
-$ideas_previous = $this->X_model->fetch(array(
+$is_previous = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
@@ -51,7 +51,7 @@ $ideas_previous = $this->X_model->fetch(array(
 ), array('x__left'), 0);
 
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group previous_ideas">';
-foreach($ideas_previous as $previous_idea) {
+foreach($is_previous as $previous_idea) {
     echo view_i($previous_idea, $i_focus['i__id'], true, player_is_i_source($previous_idea['i__id']));
 }
 if( $player_is_i_source && $is_active && $i_focus['i__id']!=config_var(13405)){
@@ -132,7 +132,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     if($x__type==11020){
 
         //IDEA NEXT
-        $ideas_next = $this->X_model->fetch(array(
+        $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
@@ -140,10 +140,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
         //CHILD IDEAS
-        $counter = count($ideas_next);
+        $counter = count($is_next);
 
         $this_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_ideas">';
-        foreach($ideas_next as $next_idea) {
+        foreach($is_next as $next_idea) {
             $this_tab .= view_i($next_idea, $i_focus['i__id'], false, $player_is_i_source);
         }
 

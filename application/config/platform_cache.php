@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-01 13:52:08 PST
+//Generated 2020-07-01 14:01:15 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -1540,25 +1540,25 @@ $config['e___12577'] = array(
     ),
     11956 => array(
         'm_icon' => '<i class="fad fa-layer-plus source"></i>',
-        'm_name' => 'PROFILE ADD IF HAS @',
+        'm_name' => 'PROFILE ADD @ IF HAS @',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
     5981 => array(
         'm_icon' => '<i class="fad fa-layer-plus source"></i>',
-        'm_name' => 'PROFILE ADD IF MISSING @',
+        'm_name' => 'PROFILE ADD @ IF MISSING',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
     13441 => array(
         'm_icon' => '<i class="fad fa-arrow-right source"></i>',
-        'm_name' => 'PROFILE MOVE IF MISSING @',
+        'm_name' => 'PROFILE MOVE @ IF MISSING',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fad fa-layer-minus source"></i>',
-        'm_name' => 'PROFILE REMOVE IF HAS @',
+        'm_name' => 'PROFILE REMOVE @ IF THERE',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
@@ -2964,7 +2964,7 @@ $config['e___11081'] = array(
         'm_parents' => array(11081,6160,6194,4341),
     ),
     4371 => array(
-        'm_icon' => '<i class="fas fa-link" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'REFERENCE',
         'm_desc' => '',
         'm_parents' => array(11081,10692,4367,4341),
@@ -4242,7 +4242,7 @@ $config['e___10692'] = array(
         'm_parents' => array(11081,10692,6202,4341),
     ),
     4371 => array(
-        'm_icon' => '<i class="fas fa-link" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'REFERENCE',
         'm_desc' => '',
         'm_parents' => array(11081,10692,4367,4341),
@@ -5322,7 +5322,7 @@ $config['e___4341'] = array(
         'm_parents' => array(13410,7578,10679,10657,5001,4341),
     ),
     4371 => array(
-        'm_icon' => '<i class="fas fa-link" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION REFERENCE',
         'm_desc' => 'x__reference',
         'm_parents' => array(11081,10692,4367,4341),
@@ -6601,37 +6601,37 @@ $config['e___4997'] = array(
     ),
     13441 => array(
         'm_icon' => '<i class="fad fa-arrow-right source"></i>',
-        'm_name' => 'PROFILE MOVE IF MISSING @',
+        'm_name' => 'PROFILE MOVE @ IF MISSING',
         'm_desc' => 'Migrates all portfolio sources to another source while preserves their message',
         'm_parents' => array(12577,4593,4997),
     ),
     5981 => array(
         'm_icon' => '<i class="fad fa-layer-plus source"></i>',
-        'm_name' => 'PROFILE ADD IF MISSING @',
+        'm_name' => 'PROFILE ADD @ IF MISSING',
         'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
         'm_parents' => array(12577,4593,4997),
     ),
     11956 => array(
         'm_icon' => '<i class="fad fa-layer-plus source"></i>',
-        'm_name' => 'PROFILE ADD IF HAS @',
+        'm_name' => 'PROFILE ADD @ IF HAS @',
         'm_desc' => 'Adds a parent entity only IF the entity has another parent entity.',
         'm_parents' => array(12577,4593,4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fad fa-layer-minus source"></i>',
-        'm_name' => 'PROFILE REMOVE IF HAS @',
+        'm_name' => 'PROFILE REMOVE @ IF THERE',
         'm_desc' => 'If already added as the parent, this will remove searched entity as the parent of all child entities',
         'm_parents' => array(12577,4593,4997),
     ),
     12928 => array(
         'm_icon' => '<i class="fad fa-layer-plus source"></i>',
-        'm_name' => 'PROFILE ADD IF HAS 1+ IDEAS',
+        'm_name' => 'PROFILE ADD @ IF HAS 1+ IDEAS',
         'm_desc' => 'Adds a profile source if the source has 1 or more ideas',
         'm_parents' => array(4997),
     ),
     12930 => array(
         'm_icon' => '<i class="fad fa-layer-plus source"></i>',
-        'm_name' => 'PROFILE ADD IF HAS 0 IDEAS',
+        'm_name' => 'PROFILE ADD @ IF HAS 0 IDEAS',
         'm_desc' => 'Adds a profile source if the source has 0 ideas',
         'm_parents' => array(4997),
     ),
@@ -7733,25 +7733,25 @@ $config['e___4593'] = array(
     ),
     11956 => array(
         'm_icon' => '<i class="fad fa-layer-plus source"></i>',
-        'm_name' => 'PORTFOLIO EDITOR PROFILE ADD IF HAS @',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE ADD @ IF HAS @',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
     5981 => array(
         'm_icon' => '<i class="fad fa-layer-plus source"></i>',
-        'm_name' => 'PORTFOLIO EDITOR PROFILE ADD IF MISSING @',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE ADD @ IF MISSING',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
     13441 => array(
         'm_icon' => '<i class="fad fa-arrow-right source"></i>',
-        'm_name' => 'PORTFOLIO EDITOR PROFILE MOVE IF MISSING @',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE MOVE @ IF MISSING',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fad fa-layer-minus source"></i>',
-        'm_name' => 'PORTFOLIO EDITOR PROFILE REMOVE IF HAS @',
+        'm_name' => 'PORTFOLIO EDITOR PROFILE REMOVE @ IF THERE',
         'm_desc' => '',
         'm_parents' => array(12577,4593,4997),
     ),

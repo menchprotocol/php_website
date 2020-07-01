@@ -26,13 +26,13 @@ $stats = array(
 );
 
 $is_scanned = array(); //Keeps track of those
-foreach($this->I_model->fetch($query_filters, 0, 0, array('i__weight' => 'DESC')) as $idea){
+foreach($this->I_model->fetch($query_filters, 0, 0, array('i__weight' => 'DESC')) as $i){
 
-    if(in_array($idea['i__id'], $is_scanned)){
+    if(in_array($i['i__id'], $is_scanned)){
         continue;
     }
 
-    $results = $this->I_model->metadata_e_insights($idea);
+    $results = $this->I_model->metadata_e_insights($i);
     $is_scanned = array_merge($is_scanned, $results['__i___ids']);
 
     $stats['featured_scanned']++;

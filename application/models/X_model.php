@@ -133,39 +133,39 @@ class X_model extends CI_Model
 
 
             //AUTO COMPLETES?
-            $ideas_next_autoscan = array();
-            $ideas = $this->I_model->fetch(array(
+            $is_next_autoscan = array();
+            $is = $this->I_model->fetch(array(
                 'i__id' => $add_fields['x__left'],
             ));
 
 
-            if(in_array($ideas[0]['i__type'], $this->config->item('n___7712'))){
+            if(in_array($is[0]['i__type'], $this->config->item('n___7712'))){
 
                 //IDEA TYPE SELECT NEXT
-                $ideas_next_autoscan = $this->X_model->fetch(array(
+                $is_next_autoscan = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVER ANSWERED
                     'x__member' => $add_fields['x__member'],
-                    'x__left' => $ideas[0]['i__id'],
+                    'x__left' => $is[0]['i__id'],
                     'x__right>' => 0, //With an answer
                     'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'i__type IN (' . join(',', $this->config->item('n___12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
                 ), array('x__right'), 0);
 
-            } elseif(in_array($ideas[0]['i__type'], $this->config->item('n___13022'))){
+            } elseif(in_array($is[0]['i__type'], $this->config->item('n___13022'))){
 
                 //IDEA TYPE ALL NEXT
-                $ideas_next_autoscan = $this->X_model->fetch(array(
+                $is_next_autoscan = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => $ideas[0]['i__id'],
+                    'x__left' => $is[0]['i__id'],
                     'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'i__type IN (' . join(',', $this->config->item('n___12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
                 ), array('x__right'), 0);
 
             }
 
-            foreach($ideas_next_autoscan as $next_idea){
+            foreach($is_next_autoscan as $next_idea){
 
                 //IS IT EMPTY?
                 if(
@@ -209,7 +209,7 @@ class X_model extends CI_Model
                 foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 7545, //CERTIFICATES
-                    'x__right' => $ideas[0]['i__id'],
+                    'x__right' => $is[0]['i__id'],
                 )) as $discovery_tag){
 
                     //Generate stats:
@@ -291,7 +291,7 @@ class X_model extends CI_Model
                         'x__member' => $add_fields['x__member'],
                         'x__up' => $discovery_tag['x__up'],
                         'x__down' => $add_fields['x__member'],
-                        'x__left' => $ideas[0]['i__id'],
+                        'x__left' => $is[0]['i__id'],
                         'x__message' => $links_added.' added, '.$links_edited.' edited & '.$links_deleted.' deleted with new content ['.$add_fields['x__message'].']',
                     ));
 
@@ -379,8 +379,8 @@ class X_model extends CI_Model
                     if (in_array(6202 , $m['m_parents'])) {
 
                         //IDEA
-                        $ideas = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/i/i_go/' . $ideas[0]['i__id'] . '" target="_parent">#'.$ideas[0]['i__id'].' '.$ideas[0]['i__title'].'</a></div>';
+                        $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id'] . '" target="_parent">#'.$is[0]['i__id'].' '.$is[0]['i__title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 
@@ -1036,14 +1036,14 @@ class X_model extends CI_Model
 
 
 
-    function find_next($e__id, $idea, $find_after_i__id = 0, $search_up = true)
+    function find_next($e__id, $i, $find_after_i__id = 0, $search_up = true)
     {
 
         //CHECK DOWN/NEXT
         $first_incomplete = null;
         $found_trigger = false;
         foreach ($this->X_model->fetch(array(
-            'x__left' => $idea['i__id'],
+            'x__left' => $i['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -1057,7 +1057,7 @@ class X_model extends CI_Model
             }
 
 
-            $is_or_idea = in_array($idea['i__type'], $this->config->item('n___6193'));
+            $is_or_idea = in_array($i['i__type'], $this->config->item('n___6193'));
             $is_fixed_link = in_array($next_idea['x__type'], $this->config->item('n___12840'));
             $is_complete = count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1071,7 +1071,7 @@ class X_model extends CI_Model
                 $is_selected = count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
-                    'x__left' => $idea['i__id'],
+                    'x__left' => $i['i__id'],
                     'x__right' => $next_idea['i__id'],
                     'x__member' => $e__id,
                 )));
@@ -1099,18 +1099,18 @@ class X_model extends CI_Model
         if ($search_up) {
 
             //Check Previous/Up
-            $current_previous = $idea['i__id'];
+            $current_previous = $i['i__id'];
             $player_discovery_ids = $this->X_model->ids($e__id);
-            $recursive_parents = $this->I_model->recursive_parents($idea['i__id'], true, true);
+            $recursive_parents = $this->I_model->recursive_parents($i['i__id'], true, true);
             foreach ($recursive_parents as $grand_parent_ids) {
                 foreach (array_intersect($grand_parent_ids, $player_discovery_ids) as $intersect) {
                     foreach ($grand_parent_ids as $previous_i__id) {
 
                         //Find the next siblings:
-                        $ideas_this = $this->I_model->fetch(array(
+                        $is_this = $this->I_model->fetch(array(
                             'i__id' => $previous_i__id,
                         ));
-                        $found_next = $this->X_model->find_next($e__id, $ideas_this[0], $current_previous, false);
+                        $found_next = $this->X_model->find_next($e__id, $is_this[0], $current_previous, false);
                         if ($found_next) {
                             return $found_next;
                         }
@@ -1153,10 +1153,10 @@ class X_model extends CI_Model
         }
 
         //Validate idea to be deleted:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
         ));
-        if (count($ideas) < 1) {
+        if (count($is) < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid idea',
@@ -1194,11 +1194,11 @@ class X_model extends CI_Model
     function start($e__id, $i__id, $recommender_i__id = 0){
 
         //Validate Idea ID:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
-        if (count($ideas) != 1) {
+        if (count($is) != 1) {
             return 0;
         }
 
@@ -1215,7 +1215,7 @@ class X_model extends CI_Model
             $home = $this->X_model->create(array(
                 'x__type' => ( $recommender_i__id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
                 'x__member' => $e__id, //Belongs to this User
-                'x__left' => $ideas[0]['i__id'], //The Idea they are adding
+                'x__left' => $is[0]['i__id'], //The Idea they are adding
                 'x__right' => $recommender_i__id, //Store the recommended idea
                 'x__sort' => $i_rank, //Always place at the top of their Discoveries
             ));
@@ -1257,11 +1257,11 @@ class X_model extends CI_Model
                 } else {
 
                     //Mark as discover if possible:
-                    if($ideas[0]['i__type']==6677){
-                        $this->X_model->mark_complete($ideas[0], array(
+                    if($is[0]['i__type']==6677){
+                        $this->X_model->mark_complete($is[0], array(
                             'x__type' => 4559, //DISCOVER MESSAGES
                             'x__member' => $e__id,
-                            'x__left' => $ideas[0]['i__id'],
+                            'x__left' => $is[0]['i__id'],
                         ));
                     }
 
@@ -1278,7 +1278,7 @@ class X_model extends CI_Model
 
 
 
-    function completion_recursive_up($e__id, $idea, $is_bottom_level = true){
+    function completion_recursive_up($e__id, $i, $is_bottom_level = true){
 
         /*
          *
@@ -1288,7 +1288,7 @@ class X_model extends CI_Model
 
 
         //First let's make sure this entire Idea completed by the user:
-        $completion_rate = $this->X_model->completion_progress($e__id, $idea);
+        $completion_rate = $this->X_model->completion_progress($e__id, $i);
 
 
         if($completion_rate['completion_percentage'] < 100){
@@ -1298,16 +1298,16 @@ class X_model extends CI_Model
 
 
         //Look at Conditional Idea Links ONLY at this level:
-        $i__metadata = unserialize($idea['i__metadata']);
-        if(isset($i__metadata['i___expansion_conditional'][$idea['i__id']]) && count($i__metadata['i___expansion_conditional'][$idea['i__id']]) > 0){
+        $i__metadata = unserialize($i['i__metadata']);
+        if(isset($i__metadata['i___expansion_conditional'][$i['i__id']]) && count($i__metadata['i___expansion_conditional'][$i['i__id']]) > 0){
 
             //Make sure previous link unlocks have NOT happened before:
             $existing_expansions = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 6140, //DISCOVER UNLOCK LINK
                 'x__member' => $e__id,
-                'x__left' => $idea['i__id'],
-                'x__right IN (' . join(',', $i__metadata['i___expansion_conditional'][$idea['i__id']]) . ')' => null, //Limit to cached answers
+                'x__left' => $i['i__id'],
+                'x__right IN (' . join(',', $i__metadata['i___expansion_conditional'][$i['i__id']]) . ')' => null, //Limit to cached answers
             ));
             if(count($existing_expansions) > 0){
 
@@ -1320,7 +1320,7 @@ class X_model extends CI_Model
                  * happens, is it an error or not, and should simply be ignored?
                  *
                 $this->X_model->create(array(
-                    'x__left' => $idea['i__id'],
+                    'x__left' => $i['i__id'],
                     'x__right' => $existing_expansions[0]['x__right'],
                     'x__message' => 'completion_recursive_up() detected duplicate Label Expansion entries',
                     'x__type' => 4246, //Platform Bug Reports
@@ -1334,7 +1334,7 @@ class X_model extends CI_Model
 
 
             //Yes, Let's calculate user's score for this idea:
-            $user_marks = $this->X_model->completion_marks($e__id, $idea);
+            $user_marks = $this->X_model->completion_marks($e__id, $i);
 
 
 
@@ -1346,8 +1346,8 @@ class X_model extends CI_Model
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
-                'x__left' => $idea['i__id'],
-                'x__right IN (' . join(',', $i__metadata['i___expansion_conditional'][$idea['i__id']]) . ')' => null, //Limit to cached answers
+                'x__left' => $i['i__id'],
+                'x__right IN (' . join(',', $i__metadata['i___expansion_conditional'][$i['i__id']]) . ')' => null, //Limit to cached answers
             ), array('x__right'), 0, 0);
 
 
@@ -1374,7 +1374,7 @@ class X_model extends CI_Model
                     $this->X_model->create(array(
                         'x__type' => 6140, //DISCOVER UNLOCK LINK
                         'x__member' => $e__id,
-                        'x__left' => $idea['i__id'],
+                        'x__left' => $i['i__id'],
                         'x__right' => $locked_link['i__id'],
                         'x__metadata' => array(
                             'completion_rate' => $completion_rate,
@@ -1392,7 +1392,7 @@ class X_model extends CI_Model
                     'x__message' => 'completion_recursive_up() found ['.$found_match.'] routing logic matches!',
                     'x__type' => 4246, //Platform Bug Reports
                     'x__member' => $e__id,
-                    'x__left' => $idea['i__id'],
+                    'x__left' => $i['i__id'],
                     'x__metadata' => array(
                         'completion_rate' => $completion_rate,
                         'user_marks' => $user_marks,
@@ -1414,7 +1414,7 @@ class X_model extends CI_Model
             $parents_checked = array();
 
             //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-            foreach($this->I_model->recursive_parents($idea['i__id']) as $grand_parent_ids) {
+            foreach($this->I_model->recursive_parents($i['i__id']) as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user ideas?
                 if(!array_intersect($grand_parent_ids, $player_discovery_ids)){
@@ -1459,7 +1459,7 @@ class X_model extends CI_Model
     }
 
 
-    function unlock_locked_step($e__id, $idea){
+    function unlock_locked_step($e__id, $i){
 
         /*
          * A function that starts from a locked idea and checks:
@@ -1469,7 +1469,7 @@ class X_model extends CI_Model
          *
          * */
 
-        if(!i_is_unlockable($idea)){
+        if(!i_is_unlockable($i)){
             return array(
                 'status' => 0,
                 'message' => 'Not a valid locked idea type and status',
@@ -1477,13 +1477,13 @@ class X_model extends CI_Model
         }
 
 
-        $ideas_next = $this->X_model->fetch(array(
+        $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'x__left' => $idea['i__id'],
+            'x__left' => $i['i__id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
-        if(count($ideas_next) < 1){
+        if(count($is_next) < 1){
             return array(
                 'status' => 0,
                 'message' => 'Idea has no child ideas',
@@ -1503,13 +1503,13 @@ class X_model extends CI_Model
          * OR Ideas are completed when a single child is completed
          *
          * */
-        $requires_all_children = ( $idea['i__type'] == 6914 /* AND Lock, meaning all children are needed */ );
+        $requires_all_children = ( $i['i__type'] == 6914 /* AND Lock, meaning all children are needed */ );
 
         //Generate list of users who have completed it:
         $qualified_completed_users = array();
 
         //Go through children and see how many completed:
-        foreach($ideas_next as $count => $next_idea){
+        foreach($is_next as $count => $next_idea){
 
             //Fetch users who completed this:
             if($count==0){
@@ -1581,23 +1581,23 @@ class X_model extends CI_Model
     }
 
 
-    function mark_complete($idea, $add_fields){
+    function mark_complete($i, $add_fields){
 
         //Log completion link:
         $new_link = $this->X_model->create($add_fields);
 
         //Process completion automations:
-        $this->X_model->completion_recursive_up($add_fields['x__member'], $idea);
+        $this->X_model->completion_recursive_up($add_fields['x__member'], $i);
 
         return $new_link;
 
     }
 
-    function completion_marks($e__id, $idea, $top_level = true)
+    function completion_marks($e__id, $i, $top_level = true)
     {
 
         //Fetch/validate Discovery Common Ideas:
-        $i__metadata = unserialize($idea['i__metadata']);
+        $i__metadata = unserialize($i['i__metadata']);
         if(!isset($i__metadata['i___common_discoveries'])){
 
             //Should not happen, log error:
@@ -1605,7 +1605,7 @@ class X_model extends CI_Model
                 'x__message' => 'completion_marks() Detected user Discoveries without i___common_discoveries value!',
                 'x__type' => 4246, //Platform Bug Reports
                 'x__member' => $e__id,
-                'x__left' => $idea['i__id'],
+                'x__left' => $i['i__id'],
             ));
 
             return 0;
@@ -1815,18 +1815,18 @@ class X_model extends CI_Model
 
 
 
-    function completion_progress($e__id, $idea, $top_level = true)
+    function completion_progress($e__id, $i, $top_level = true)
     {
 
-        if(!isset($idea['i__metadata'])){
+        if(!isset($i['i__metadata'])){
             return false;
         }
 
         //Fetch/validate Discoveries Common Ideas:
-        $i__metadata = unserialize($idea['i__metadata']);
+        $i__metadata = unserialize($i['i__metadata']);
         if(!isset($i__metadata['i___common_discoveries'])){
             //Since it's not there yet we assume the idea it self only!
-            $i__metadata['i___common_discoveries'] = array($idea['i__id']);
+            $i__metadata['i___common_discoveries'] = array($i['i__id']);
         }
 
 
@@ -1978,7 +1978,7 @@ class X_model extends CI_Model
 
     function answer($e__id, $question_i__id, $answer_i__ids){
 
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $question_i__id,
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
@@ -1986,7 +1986,7 @@ class X_model extends CI_Model
             'e__id' => $e__id,
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ));
-        if (!count($ideas)) {
+        if (!count($is)) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid idea ID',
@@ -1996,7 +1996,7 @@ class X_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid source ID',
             );
-        } elseif (!in_array($ideas[0]['i__type'], $this->config->item('n___7712'))) {
+        } elseif (!in_array($is[0]['i__type'], $this->config->item('n___7712'))) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Idea type [Must be Answer]',
@@ -2010,13 +2010,13 @@ class X_model extends CI_Model
 
 
         //Define completion links for each answer:
-        if($ideas[0]['i__type'] == 6684){
+        if($is[0]['i__type'] == 6684){
 
             //ONE ANSWER
             $x__type = 6157; //Award Coin
             $i_x__type = 12336; //Save Answer
 
-        } elseif($ideas[0]['i__type'] == 7231){
+        } elseif($is[0]['i__type'] == 7231){
 
             //SOME ANSWERS
             $x__type = 7489; //Award Coin
@@ -2029,7 +2029,7 @@ class X_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVER ANSWERED
             'x__member' => $e__id,
-            'x__left' => $ideas[0]['i__id'],
+            'x__left' => $is[0]['i__id'],
         )) as $discovery_progress){
             $this->X_model->update($discovery_progress['x__id'], array(
                 'x__status' => 6173, //Link Deleted
@@ -2043,7 +2043,7 @@ class X_model extends CI_Model
             $this->X_model->create(array(
                 'x__type' => $i_x__type,
                 'x__member' => $e__id,
-                'x__left' => $ideas[0]['i__id'],
+                'x__left' => $is[0]['i__id'],
                 'x__right' => $answer_i__id,
             ));
         }
@@ -2058,10 +2058,10 @@ class X_model extends CI_Model
         }
 
         //Issue DISCOVER/IDEA COIN:
-        $this->X_model->mark_complete($ideas[0], array(
+        $this->X_model->mark_complete($is[0], array(
             'x__type' => $x__type,
             'x__member' => $e__id,
-            'x__left' => $ideas[0]['i__id'],
+            'x__left' => $is[0]['i__id'],
         ));
 
         //All good, something happened:

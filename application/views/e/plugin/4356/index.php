@@ -55,12 +55,12 @@ foreach($this->I_model->fetch($filters) as $in){
         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
-    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $ideas_next){
-        $this_time = words_to_seconds($ideas_next['i__title']);
+    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $is_next){
+        $this_time = words_to_seconds($is_next['i__title']);
         $estimated_time += $this_time;
         if($i__id){
             //Show details:
-            echo $this_time.' Seconds NEXT: '.$ideas_next['i__title'].'<hr />';
+            echo $this_time.' Seconds NEXT: '.$is_next['i__title'].'<hr />';
         }
     }
 

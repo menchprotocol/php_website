@@ -187,11 +187,11 @@ function view_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function view_i_title($idea, $common_prefix = null){
+function view_i_title($i, $common_prefix = null){
     if(strlen($common_prefix) > 0){
-        $idea['i__title'] = trim(substr($idea['i__title'], strlen($common_prefix)));
+        $i['i__title'] = trim(substr($i['i__title'], strlen($common_prefix)));
     }
-    return '<span class="text__4736_'.$idea['i__id'].'">'.htmlentities(trim($idea['i__title'])).'</span>';
+    return '<span class="text__4736_'.$i['i__id'].'">'.htmlentities(trim($i['i__title'])).'</span>';
 }
 
 
@@ -456,9 +456,9 @@ function view_interaction($discovery, $is_parent_tr = false)
             } elseif(in_array(6202 , $m['m_parents'])){
 
                 //IDEA
-                $ideas = $CI->I_model->fetch(array('i__id' => $discovery[$var_index[$e__id]]));
+                $is = $CI->I_model->fetch(array('i__id' => $discovery[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$ideas[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.$e___2738[4535]['m_icon']. '&nbsp;'.view_i_title($ideas[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.$e___2738[4535]['m_icon']. '&nbsp;'.view_i_title($is[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
@@ -629,7 +629,7 @@ function view_x_icon_legend($can_click, $completion_percentage){
 
 }
 
-function view_i_discover($idea, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_source = false, $extra_class = null)
+function view_i_discover($i, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_source = false, $extra_class = null)
 {
 
     //See if user is logged-in:
@@ -641,27 +641,27 @@ function view_i_discover($idea, $common_prefix = null, $show_editor = false, $co
 
     if(!$completion_rate){
         if($recipient_source){
-            $completion_rate = $CI->X_model->completion_progress($recipient_source['e__id'], $idea);
+            $completion_rate = $CI->X_model->completion_progress($recipient_source['e__id'], $i);
         } else {
             $completion_rate['completion_percentage'] = 0;
         }
     }
 
-    $i_stats = i_stats($idea['i__metadata']);
-    $is_saved = ( isset($idea['x__type']) && $idea['x__type']==12896 );
+    $i_stats = i_stats($i['i__metadata']);
+    $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
     $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || superpower_active(13404, true) );
     $first_segment = $CI->uri->segment(1);
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="ap_i_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-x-id="'.$idea['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div id="ap_i_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'">';
 
-    $ui .= ( $can_click ? '<a href="/'. $idea['i__id'] .'" class="itemdiscover">' : '' );
+    $ui .= ( $can_click ? '<a href="/'. $i['i__id'] .'" class="itemdiscover">' : '' );
 
 
     //Right Stats:
-    if($i_stats['duration_average'] || $i_stats['ideas_average']){
-        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['ideas_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['ideas_average'].'</span>' : '' ).'</span>'.( $i_stats['duration_average'] ? '<span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span>': '' ).'</div>';
+    if($i_stats['duration_average'] || $i_stats['i_average']){
+        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['i_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['i_average'].'</span>' : '' ).'</span>'.( $i_stats['duration_average'] ? '<span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span>': '' ).'</div>';
     }
 
 
@@ -671,7 +671,7 @@ function view_i_discover($idea, $common_prefix = null, $show_editor = false, $co
 
     $ui .= '<span class="icon-block">'.view_x_icon_legend($can_click, $completion_rate['completion_percentage']).'</span>';
 
-    $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.view_i_title($idea, $common_prefix).'</b>';
+    $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' idea-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
 
     //Search for Idea Image:
@@ -680,7 +680,7 @@ function view_i_discover($idea, $common_prefix = null, $show_editor = false, $co
 
             $ui .= '<div class="note-editor edit-off">';
             $ui .= '<span class="show-on-hover">';
-            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$idea['i__id'].');$(\'#ap_i_'.$idea['i__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$i['i__id'].');$(\'#ap_i_'.$i['i__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
             $ui .= '</span>';
             $ui .= '</div>';
 
@@ -817,7 +817,7 @@ function view_i_marks($i_discover){
 }
 
 
-function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source = false, $message_input = null, $extra_class = null, $control_enabled = true)
+function view_i($i, $i_linked_id = 0, $is_parent = false, $player_is_i_source = false, $message_input = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -831,12 +831,12 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
     $e___13408 = $CI->config->item('e___13408');
 
     //DISCOVER
-    $x__id = ( isset($idea['x__id']) ? $idea['x__id'] : 0 );
-    $is_i_link = ($x__id && in_array($idea['x__type'], $CI->config->item('n___4486')));
+    $x__id = ( isset($i['x__id']) ? $i['x__id'] : 0 );
+    $is_i_link = ($x__id && in_array($i['x__type'], $CI->config->item('n___4486')));
 
     //IDEA
-    $i_stats = i_stats($idea['i__metadata']);
-    $is_public = in_array($idea['i__status'], $CI->config->item('n___7355'));
+    $i_stats = i_stats($i['i__metadata']);
+    $is_public = in_array($i['i__status'], $CI->config->item('n___7355'));
     $player_is_i_source = ( !$is_i_link ? false : $player_is_i_source ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
@@ -847,12 +847,12 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
     $box_items_list = '';
 
     //DISCOVER STATUS
-    if($x__id && !in_array($idea['x__status'], $CI->config->item('n___7359'))){
-        $box_items_list .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$idea['x__status']]['m_name'].' @'.$idea['x__status'].'">' . $e___6186[$idea['x__status']]['m_icon'] . '</span>&nbsp;</span>';
+    if($x__id && !in_array($i['x__status'], $CI->config->item('n___7359'))){
+        $box_items_list .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$i['x__status']]['m_name'].' @'.$i['x__status'].'">' . $e___6186[$i['x__status']]['m_icon'] . '</span>&nbsp;</span>';
     }
 
 
-    $ui = '<div x__id="' . $x__id . '" idea-id="' . $idea['i__id'] . '" class="list-group-item no-side-padding itemidea itemidealist ideas_sortable paddingup level2_in object_saved saved_i_'.$idea['i__id'] . ' i_line_' . $idea['i__id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' i__tr_'.$x__id.' '.$extra_class.'" style="padding-left:0;">';
+    $ui = '<div x__id="' . $x__id . '" idea-id="' . $i['i__id'] . '" class="list-group-item no-side-padding itemidea itemidealist i_sortable paddingup level2_in object_saved saved_i_'.$i['i__id'] . ' i_line_' . $i['i__id'] . ( $is_parent ? ' parent-idea ' : '' ) . ' i__tr_'.$x__id.' '.$extra_class.'" style="padding-left:0;">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -861,15 +861,15 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
         $ui .= '<div class="block">';
 
             //IDAE Link:
-            $i_link = '/i/i_go/'.$idea['i__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
+            $i_link = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
 
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($idea['i__weight'], 0).'">'.$e___2738[4535]['m_icon'].'</a></span>';
+            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.$e___2738[4535]['m_icon'].'</a></span>';
 
             //IDEA TITLE
             if($is_i_link && superpower_active(13354, true)){
 
-                $ui .= view_input_text(4736, $idea['i__title'], $idea['i__id'], $player_is_i_source, (($idea['x__sort']*100)+1));
+                $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $player_is_i_source, (($i['x__sort']*100)+1));
 
             } else {
 
@@ -879,10 +879,10 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
                 //IDEA STATUS
                 if(!$is_public && $is_i_link){
                     //Show the drafting status:
-                    $ui .= '<span class="inline-block">'.view_cache('e___4737' /* Idea Status */, $idea['i__status'], true, 'right').'&nbsp;</span>';
+                    $ui .= '<span class="inline-block">'.view_cache('e___4737' /* Idea Status */, $i['i__status'], true, 'right').'&nbsp;</span>';
                 }
 
-                $ui .= view_i_title($idea); //IDEA TITLE
+                $ui .= view_i_title($i); //IDEA TITLE
                 $ui .= '</a>';
 
             }
@@ -893,7 +893,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
 
     //DISCOVER
     $ui .= '<td class="MENCHcolumn2 source">';
-    $ui .= view_coins_count_discover($idea['i__id']);
+    $ui .= view_coins_count_discover($i['i__id']);
     $ui .= '</td>';
 
 
@@ -911,7 +911,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
         }
 
         //Unlink:
-        $ui .= '<span title="UNLINK"><a href="javascript:void(0);" onclick="i_unlink('.$idea['i__id'].', '.$idea['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
+        $ui .= '<span title="UNLINK"><a href="javascript:void(0);" onclick="i_unlink('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
@@ -920,7 +920,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
     }
 
     //SOURCE STATS
-    $ui .= view_coins_count_source($idea['i__id']);
+    $ui .= view_coins_count_source($i['i__id']);
     $ui .= '</td>';
 
 
@@ -942,36 +942,36 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
         $ui .= $box_items_list;
 
         //IDEA TYPE
-        $ui .= '<div class="inline-block">'.view_input_dropdown(7585, $idea['i__type'], null, $player_is_i_source, false, $idea['i__id']).'</div>';
+        $ui .= '<div class="inline-block">'.view_input_dropdown(7585, $i['i__type'], null, $player_is_i_source, false, $i['i__id']).'</div>';
 
         //IDEA STATUS
-        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $idea['i__status'], null, $player_is_i_source, false, $idea['i__id']) . ' </div>';
+        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__status'], null, $player_is_i_source, false, $i['i__id']) . ' </div>';
 
 
 
 
         if($x__id){
 
-            $x__metadata = unserialize($idea['x__metadata']);
+            $x__metadata = unserialize($i['x__metadata']);
 
             //IDEA LINK BAR
             $ui .= '<span class="' . superpower_active(12700) . '">';
 
             //LINK TYPE
-            $ui .= view_input_dropdown(4486, $idea['x__type'], null, $player_is_i_source, false, $idea['i__id'], $idea['x__id']);
+            $ui .= view_input_dropdown(4486, $i['x__type'], null, $player_is_i_source, false, $i['i__id'], $i['x__id']);
 
             //LINK MARKS
-            $ui .= '<span class="link_marks settings_4228 '.( $idea['x__type']==4228 ? : 'hidden' ).'">';
-            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $idea['x__id'], $player_is_i_source, ($idea['x__sort']*10)+2 );
+            $ui .= '<span class="link_marks settings_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
+            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $player_is_i_source, ($i['x__sort']*10)+2 );
             $ui .='</span>';
 
 
             //LINK CONDITIONAL RANGE
-            $ui .= '<span class="link_marks settings_4229 '.( $idea['x__type']==4229 ? : 'hidden' ).'">';
+            $ui .= '<span class="link_marks settings_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
             //MIN
-            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $idea['x__id'], $player_is_i_source, ($idea['x__sort']*10)+3);
+            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $player_is_i_source, ($i['x__sort']*10)+3);
             //MAX
-            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $idea['x__id'], $player_is_i_source, ($idea['x__sort']*10)+4);
+            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $player_is_i_source, ($i['x__sort']*10)+4);
             $ui .= '</span>';
             $ui .= '</span>';
 
@@ -982,20 +982,20 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
 
         //IDEA TREE:
         $previous_ideas = $CI->X_model->fetch(array(
-            'x__right' => $idea['i__id'],
+            'x__right' => $i['i__id'],
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
 
         $next_ideas = $CI->X_model->fetch(array(
-            'x__left' => $idea['i__id'],
+            'x__left' => $i['i__id'],
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
 
         $ui .= '<span class="inline-block montserrat idea" title="'.$e___12413[11019]['m_name'].'" style="width:21px; text-align:right;">'.( $previous_ideas[0]['total_ideas']>0 ? $previous_ideas[0]['total_ideas'] : '&nbsp;' ).'</span>';
         $ui .= '<span class="icon-block">'.$e___13408[12413]['m_icon'].'</span>';
-        $ui .= '<span class="inline-block montserrat idea" title="'.$e___12413[11020]['m_name'].'" style="text-align:left;">'.($next_ideas[0]['total_ideas']>0 ? $next_ideas[0]['total_ideas'] : '' ).( $i_stats['ideas_max']>$next_ideas[0]['total_ideas'] ? '<span style="padding: 0 2px;">-</span>'.$i_stats['ideas_max'] : '' ).'</span>';
+        $ui .= '<span class="inline-block montserrat idea" title="'.$e___12413[11020]['m_name'].'" style="text-align:left;">'.($next_ideas[0]['total_ideas']>0 ? $next_ideas[0]['total_ideas'] : '' ).( $i_stats['i_max']>$next_ideas[0]['total_ideas'] ? '<span style="padding: 0 2px;">-</span>'.$i_stats['i_max'] : '' ).'</span>';
 
 
 
@@ -1034,24 +1034,24 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($idea, $ideas_next, $recipient_source, $prefix_statement = null, $show_next = true){
+function view_i_list($i, $is_next, $recipient_source, $prefix_statement = null, $show_next = true){
 
     //If no list just return the next step:
-    if(!count($ideas_next)){
-        return ( $show_next ? view_next_i_previous($idea['i__id'], $recipient_source) : false );
+    if(!count($is_next)){
+        return ( $show_next ? view_next_i_previous($i['i__id'], $recipient_source) : false );
     }
 
     $CI =& get_instance();
 
-    if(count($ideas_next)){
+    if(count($is_next)){
 
         //List children so they know what's ahead:
-        $common_prefix = i_calc_common_prefix($ideas_next, 'i__title');
+        $common_prefix = i_calc_common_prefix($is_next, 'i__title');
 
         echo '<div class="discover-topic">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
         echo '<div class="list-group">';
-        foreach($ideas_next as $key => $next_idea){
+        foreach($is_next as $key => $next_idea){
             echo view_i_discover($next_idea, $common_prefix);
         }
         echo '</div>';
@@ -1059,7 +1059,7 @@ function view_i_list($idea, $ideas_next, $recipient_source, $prefix_statement = 
     }
 
     if($show_next){
-        view_next_i_previous($idea['i__id'], $recipient_source);
+        view_next_i_previous($i['i__id'], $recipient_source);
         echo '<div class="doclear">&nbsp;</div>';
     }
 }
@@ -1096,7 +1096,7 @@ function view_i_previous_discover($i__id, $recipient_source){
     if(in_array($i__id, $player_discovery_ids)){
 
         //A discovering list item:
-        $ideas_this = $CI->I_model->fetch(array(
+        $is_this = $CI->I_model->fetch(array(
             'i__id' => $i__id,
         ));
 
@@ -1115,7 +1115,7 @@ function view_i_previous_discover($i__id, $recipient_source){
                         $previous_level_id = $previous_i__id;
                     }
 
-                    $ideas_this = $CI->I_model->fetch(array(
+                    $is_this = $CI->I_model->fetch(array(
                         'i__id' => $previous_i__id,
                     ));
 
@@ -1125,10 +1125,10 @@ function view_i_previous_discover($i__id, $recipient_source){
                         //array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$e___12994[13400]['m_icon'].'</span><span class="montserrat">'.$e___12994[13400]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
                     }
 
-                    //array_push($sitemap_items, view_i_discover($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
+                    //array_push($sitemap_items, view_i_discover($is_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
 
                     if ($previous_i__id == $intersect) {
-                        array_push($sitemap_items, view_i_discover($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
+                        array_push($sitemap_items, view_i_discover($is_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
                         break;
                     }
                 }
@@ -1307,21 +1307,21 @@ function view_time_hours($total_seconds, $hide_hour = false){
     return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
-function view_i_cover($idea, $show_editor, $discover_mode = true){
+function view_i_cover($i, $show_editor, $discover_mode = true){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
 
     $recipient_source = superpower_assigned();
-    $i_stats = i_stats($idea['i__metadata']);
+    $i_stats = i_stats($i['i__metadata']);
 
-    $ui  = '<a href="'.( $discover_mode ? '/'.$idea['i__id'] : '/~'.$idea['i__id'] ) . '" id="ap_i_'.$idea['i__id'].'" '.( isset($idea['x__id']) ? ' sort-x-id="'.$idea['x__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
+    $ui  = '<a href="'.( $discover_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] ) . '" id="ap_i_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
 
     $ui .= '<div class="cover-image">';
     if($recipient_source){
 
-        $completion_rate = $CI->X_model->completion_progress($recipient_source['e__id'], $idea);
+        $completion_rate = $CI->X_model->completion_progress($recipient_source['e__id'], $i);
 
         if($completion_rate['completion_percentage']>0){
             $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
@@ -1329,10 +1329,10 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
 
     }
 
-    $ui .= i_fetch_cover($idea['i__id'], true);
+    $ui .= i_fetch_cover($i['i__id'], true);
 
     //TOP LEFT
-    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['ideas_average'].' '.$e___13369[12273]['m_name'].' FROM '.$i_stats['count_sources'].' '.$e___13369[12274]['m_name'].'">';
+    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['i_average'].' '.$e___13369[12273]['m_name'].' FROM '.$i_stats['count_sources'].' '.$e___13369[12274]['m_name'].'">';
 
     //SOURCES:
     if(superpower_active(10967, true)){
@@ -1340,11 +1340,11 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
     }
 
     //IDEAS:
-    $ui .= $e___13369[12273]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['ideas_average']).'</span><br />';
+    $ui .= $e___13369[12273]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['i_average']).'</span><br />';
 
     //DISCOVERIES:
     if(superpower_active(12701, true)){
-        $discover_coins = x_coins_idea(6255, $idea['i__id']);
+        $discover_coins = x_coins_idea(6255, $i['i__id']);
         if($discover_coins > 0){
             $ui .= $e___13369[6255]['m_icon'].'<span style="padding-left: 2px;">'.view_number($discover_coins).'</span>';
         }
@@ -1365,19 +1365,19 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
         $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
 
         //IDEA STATUS?
-        if(!$discover_mode && !in_array($idea['i__status'], $CI->config->item('n___7355'))){
-            $ui .= '<span class="media-info bottom-center">'.view_cache('e___4737' /* Idea Status */, $idea['i__status'], true, 'top').'</span>';
+        if(!$discover_mode && !in_array($i['i__status'], $CI->config->item('n___7355'))){
+            $ui .= '<span class="media-info bottom-center">'.view_cache('e___4737' /* Idea Status */, $i['i__status'], true, 'top').'</span>';
         }
 
         //REMOVE
-        $ui .= '<span class="media-info bottom-right x_remove" i__id="'.$idea['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
+        $ui .= '<span class="media-info bottom-right x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
 
     }
     $ui .= '</div>';
 
 
     //Title + Drafting?
-    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.view_i_title($idea).($idea['x__sort'] < 1 ? '<div class="dorubik">⚠️ &nbsp;Newly Added</div>' : '').'</b>';
+    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.view_i_title($i).($i['x__sort'] < 1 ? '<div class="dorubik">⚠️ &nbsp;Newly Added</div>' : '').'</b>';
 
     $ui .= '</a>';
 

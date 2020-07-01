@@ -203,11 +203,11 @@ class X extends CI_Controller
 
         } elseif($_POST['cache_e__id']==4736 /* IDEA TITLE */){
 
-            $ideas = $this->I_model->fetch(array(
+            $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['object__id'],
                 'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
-            if(!count($ideas)){
+            if(!count($is)){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid Idea ID.',
@@ -220,7 +220,7 @@ class X extends CI_Controller
             if(!$i__title_validation['status']){
                 //We had an error, return it:
                 return view_json(array_merge($i__title_validation, array(
-                    'original_val' => $ideas[0]['i__title'],
+                    'original_val' => $is[0]['i__title'],
                 )));
             }
 
@@ -274,12 +274,12 @@ class X extends CI_Controller
 
         } elseif($_POST['cache_e__id']==4356 /* DISCOVER TIME */){
 
-            $ideas = $this->I_model->fetch(array(
+            $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['object__id'],
                 'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
-            if(!count($ideas)){
+            if(!count($is)){
 
                 return view_json(array(
                     'status' => 0,
@@ -292,7 +292,7 @@ class X extends CI_Controller
                 return view_json(array(
                     'status' => 0,
                     'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' must be a number greater than zero.',
-                    'original_val' => $ideas[0]['i__duration'],
+                    'original_val' => $is[0]['i__duration'],
                 ));
 
             } elseif($_POST['field_value'] > config_var(4356)){
@@ -301,7 +301,7 @@ class X extends CI_Controller
                 return view_json(array(
                     'status' => 0,
                     'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
-                    'original_val' => $ideas[0]['i__duration'],
+                    'original_val' => $is[0]['i__duration'],
                 ));
 
             } elseif($_POST['field_value'] < config_var(12427)){
@@ -309,7 +309,7 @@ class X extends CI_Controller
                 return view_json(array(
                     'status' => 0,
                     'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
-                    'original_val' => $ideas[0]['i__duration'],
+                    'original_val' => $is[0]['i__duration'],
                 ));
 
             } else {
@@ -467,33 +467,33 @@ class X extends CI_Controller
         if($i__id > 0){
 
             //Fetch Idea:
-            $ideas = $this->I_model->fetch(array(
+            $is = $this->I_model->fetch(array(
                 'i__id' => $i__id,
             ));
 
             //Should we check for auto next redirect if empty? Only if this is a selection:
-            if($ideas[0]['i__type']==6677){
+            if($is[0]['i__type']==6677){
 
                 //Mark as discover If not previously:
                 $discovery_completes = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
                     'x__member' => $session_source['e__id'],
-                    'x__left' => $ideas[0]['i__id'],
+                    'x__left' => $is[0]['i__id'],
                 ));
 
                 if(!count($discovery_completes)){
-                    $this->X_model->mark_complete($ideas[0], array(
+                    $this->X_model->mark_complete($is[0], array(
                         'x__type' => 4559, //DISCOVER MESSAGES
                         'x__member' => $session_source['e__id'],
-                        'x__left' => $ideas[0]['i__id'],
+                        'x__left' => $is[0]['i__id'],
                     ));
                 }
             }
         }
 
         //Go to Next Idea:
-        $next_i__id = $this->X_model->find_next($session_source['e__id'], $ideas[0]);
+        $next_i__id = $this->X_model->find_next($session_source['e__id'], $is[0]);
         if($next_i__id > 0){
             return redirect_message('/'.$next_i__id.'?previous_discover='.( isset($_GET['previous_discover']) && $_GET['previous_discover']>0 ? $_GET['previous_discover'] : $i__id ));
         } else {
@@ -551,16 +551,16 @@ class X extends CI_Controller
         }
 
         //Fetch data:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
         ));
 
         //Make sure we found it:
-        if ( count($ideas) < 1) {
+        if ( count($is) < 1) {
 
             return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
-        } elseif(!in_array($ideas[0]['i__status'], $this->config->item('n___7355') /* PUBLIC */)){
+        } elseif(!in_array($is[0]['i__status'], $this->config->item('n___7355') /* PUBLIC */)){
 
             if(superpower_assigned(10939)){
 
@@ -577,12 +577,12 @@ class X extends CI_Controller
         }
 
         $this->load->view('header', array(
-            'title' => $ideas[0]['i__title'],
+            'title' => $is[0]['i__title'],
         ));
 
         //Load specific view based on Idea Level:
         $this->load->view('x/layout', array(
-            'i_focus' => $ideas[0],
+            'i_focus' => $is[0],
         ));
 
         $this->load->view('footer');
@@ -636,11 +636,11 @@ class X extends CI_Controller
         }
 
         //Validate Idea:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
-        if(count($ideas)<1){
+        if(count($is)<1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
@@ -661,7 +661,7 @@ class X extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $session_source['e__id'], $_FILES[$_POST['upload_type']], true, $ideas[0]['i__title']);
+        $cdn_status = upload_to_cdn($temp_local, $session_source['e__id'], $_FILES[$_POST['upload_type']], true, $is[0]['i__title']);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -672,7 +672,7 @@ class X extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
-            'x__left' => $ideas[0]['i__id'],
+            'x__left' => $is[0]['i__id'],
             'x__member' => $session_source['e__id'],
         )) as $discovery_progress){
             $this->X_model->update($discovery_progress['x__id'], array(
@@ -682,9 +682,9 @@ class X extends CI_Controller
 
         //Save new answer:
         $new_message = '@'.$cdn_status['cdn_source']['e__id'];
-        $this->X_model->mark_complete($ideas[0], array(
+        $this->X_model->mark_complete($is[0], array(
             'x__type' => 12117,
-            'x__left' => $ideas[0]['i__id'],
+            'x__left' => $is[0]['i__id'],
             'x__member' => $session_source['e__id'],
             'x__message' => $new_message,
             'x__up' => $cdn_status['cdn_source']['e__id'],
@@ -722,11 +722,11 @@ class X extends CI_Controller
         }
 
         //Validate/Fetch idea:
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
-        if(count($ideas) < 1){
+        if(count($is) < 1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Idea not published.',
@@ -737,7 +737,7 @@ class X extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
-            'x__left' => $ideas[0]['i__id'],
+            'x__left' => $is[0]['i__id'],
             'x__member' => $session_source['e__id'],
         )) as $discovery_progress){
             $this->X_model->update($discovery_progress['x__id'], array(
@@ -746,9 +746,9 @@ class X extends CI_Controller
         }
 
         //Save new answer:
-        $this->X_model->mark_complete($ideas[0], array(
+        $this->X_model->mark_complete($is[0], array(
             'x__type' => 6144,
-            'x__left' => $ideas[0]['i__id'],
+            'x__left' => $is[0]['i__id'],
             'x__member' => $session_source['e__id'],
             'x__message' => $_POST['x_respond'],
         ));
@@ -855,11 +855,11 @@ class X extends CI_Controller
 
         }
 
-        $ideas = $this->I_model->fetch(array(
+        $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
-        if (!count($ideas)) {
+        if (!count($is)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',

@@ -22,12 +22,12 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
 } else {
 
-    $ideas = $this->I_model->fetch(array(
+    $is = $this->I_model->fetch(array(
         'i__id' => $_GET['i__id'],
         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     ));
 
-    if(count($ideas) < 1){
+    if(count($is) < 1){
 
         echo 'Public Idea not found';
 
@@ -36,13 +36,13 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
         //List the idea:
         view_json(array(
             'i_general' => array(
-                'i_recursive_parents' => $this->I_model->recursive_parents($ideas[0]['i__id']),
-                'i___common_base' => $this->I_model->metadata_common_base($ideas[0]),
+                'i_recursive_parents' => $this->I_model->recursive_parents($is[0]['i__id']),
+                'i___common_base' => $this->I_model->metadata_common_base($is[0]),
             ),
             'i_user' => array(
-                'discover_find_next' => $this->X_model->find_next($_GET['e__id'], $ideas[0], 0, false),
-                'discover_completion_progress' => $this->X_model->completion_progress($_GET['e__id'], $ideas[0]),
-                'discover_completion_marks' => $this->X_model->completion_marks($_GET['e__id'], $ideas[0]),
+                'discover_find_next' => $this->X_model->find_next($_GET['e__id'], $is[0], 0, false),
+                'discover_completion_progress' => $this->X_model->completion_progress($_GET['e__id'], $is[0]),
+                'discover_completion_marks' => $this->X_model->completion_marks($_GET['e__id'], $is[0]),
             ),
         ));
 
