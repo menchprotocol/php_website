@@ -438,32 +438,32 @@ function view_interaction($discovery, $is_parent_tr = false)
     //5x Relations:
     if(!$is_parent_tr){
 
-        $e___6232 = $CI->config->item('e___6232'); //PLATFORM VARIABLES
+        $var_index = var_index();
         foreach($CI->config->item('e___10692') as $e__id => $m) {
 
             //Do we have this set?
-            if(!intval($discovery[$e___6232[$e__id]['m_desc']])){
+            if(!array_key_exists($e__id, $var_index) || !intval($discovery[$var_index[$e__id]])){
                 continue;
             }
 
             if(in_array(6160 , $m['m_parents'])){
 
                 //SOURCE
-                $sources = $CI->E_model->fetch(array('e__id' => $discovery[$e___6232[$e__id]['m_desc']]));
+                $sources = $CI->E_model->fetch(array('e__id' => $discovery[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $discovery[$e___6232[$e__id]['m_desc']]==$discovery['x__member'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['e__icon']).' img-block">'.view_e__icon($sources[0]['e__icon']). '&nbsp;'.$sources[0]['e__title'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $discovery[$var_index[$e__id]]==$discovery['x__member'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['e__icon']).' img-block">'.view_e__icon($sources[0]['e__icon']). '&nbsp;'.$sources[0]['e__title'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
                 //IDEA
-                $ideas = $CI->I_model->fetch(array('i__id' => $discovery[$e___6232[$e__id]['m_desc']]));
+                $ideas = $CI->I_model->fetch(array('i__id' => $discovery[$var_index[$e__id]]));
 
                 $ui .= '<div class="simple-line"><a href="/i/i_go/'.$ideas[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.$e___2738[4535]['m_icon']. '&nbsp;'.view_i_title($ideas[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
                 //PARENT DISCOVER
-                $discoveries = $CI->X_model->fetch(array('x__id' => $discovery[$e___6232[$e__id]['m_desc']]));
+                $discoveries = $CI->X_model->fetch(array('x__id' => $discovery[$var_index[$e__id]]));
 
                 $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'">'.$e___4341[$e__id]['m_icon']. '</span><div class="discover-ref">'.view_interaction($discoveries[0], true).'</div></div>';
 

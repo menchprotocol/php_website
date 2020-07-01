@@ -367,31 +367,31 @@ class X_model extends CI_Model
                 //Compose email body, start with link content:
                 $html_message = '<div>' . ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '<i>No link content</i>') . '</div><br />';
 
-                $e___6232 = $this->config->item('e___6232'); //PLATFORM VARIABLES
+                $var_index = var_index();
 
                 //Append link object links:
                 foreach($this->config->item('e___11081') as $e__id => $m) {
 
-                    if (!intval($add_fields[$e___6232[$e__id]['m_desc']])) {
+                    if(!array_key_exists($e__id, $var_index) || !intval($add_fields[$var_index[$e__id]])){
                         continue;
                     }
 
                     if (in_array(6202 , $m['m_parents'])) {
 
                         //IDEA
-                        $ideas = $this->I_model->fetch(array( 'i__id' => $add_fields[$e___6232[$e__id]['m_desc']] ));
+                        $ideas = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
                         $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/i/i_go/' . $ideas[0]['i__id'] . '" target="_parent">#'.$ideas[0]['i__id'].' '.$ideas[0]['i__title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 
                         //SOURCE
-                        $sources = $this->E_model->fetch(array( 'e__id' => $add_fields[$e___6232[$e__id]['m_desc']] ));
+                        $sources = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
                         $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/@' . $sources[0]['e__id'] . '" target="_parent">@'.$sources[0]['e__id'].' '.$sources[0]['e__title'].'</a></div>';
 
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
                         //DISCOVER
-                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields[$e___6232[$e__id]['m_desc']] . '" target="_parent">'.$add_fields[$e___6232[$e__id]['m_desc']].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields[$var_index[$e__id]] . '" target="_parent">'.$add_fields[$var_index[$e__id]].'</a></div>';
 
                     }
 

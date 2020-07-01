@@ -873,6 +873,19 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
 
 }
 
+function var_index(){
+    //Returns a simplified index of all Mench variables @6212
+    $var_index = array();
+    foreach($this->config->item('e___6212') as $e__id => $m){
+        foreach($this->config->item('e___'.$e__id) as $e__id2 => $m2){
+            if(strlen($m2['m_desc']) > 0){
+                $var_index[$e__id2] = $m2['m_desc'];
+            }
+        }
+    }
+    return $var_index;
+}
+
 function i_stats($i__metadata){
 
     //Calculates average based on metadata:

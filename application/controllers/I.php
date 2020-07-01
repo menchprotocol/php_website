@@ -258,7 +258,7 @@ class I extends CI_Controller {
     function i_set_dropdown(){
 
         //Maintain a manual index as a hack for the Idea/Source tables for now:
-        $e___6232 = $this->config->item('e___6232'); //PLATFORM VARIABLES
+        $var_index = var_index();
         $deletion_redirect = null;
         $delete_element = null;
 
@@ -284,10 +284,10 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Link ID',
             ));
-        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $e___6232) || strlen($e___6232[$_POST['element_id']]['m_desc'])<5 || !count($this->config->item('n___'.$_POST['element_id']))) {
+        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $var_index) || !count($this->config->item('n___'.$_POST['element_id']))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Element ID ['.$_POST['element_id'].'] Missing from @6232',
+                'message' => 'Invalid Variable ID ['.$_POST['element_id'].']',
             ));
         } elseif (!isset($_POST['new_e__id']) || intval($_POST['new_e__id']) < 1 || !in_array($_POST['new_e__id'], $this->config->item('n___'.$_POST['element_id']))) {
             return view_json(array(
@@ -318,7 +318,7 @@ class I extends CI_Controller {
 
             //All good, Update Link:
             $this->X_model->update($_POST['x__id'], array(
-                $e___6232[$_POST['element_id']]['m_desc'] => $_POST['new_e__id'],
+                $var_index[$_POST['element_id']] => $_POST['new_e__id'],
             ), $session_source['e__id'], end($link_update_types));
 
         } else {
@@ -380,7 +380,7 @@ class I extends CI_Controller {
 
             //Update Idea:
             $this->I_model->update($_POST['i__id'], array(
-                $e___6232[$_POST['element_id']]['m_desc'] => $_POST['new_e__id'],
+                $var_index[$_POST['element_id']] => $_POST['new_e__id'],
             ), true, $session_source['e__id']);
 
         }

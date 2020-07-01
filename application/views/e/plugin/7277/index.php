@@ -5,87 +5,77 @@
  * A function that would run through all
  * object metadata variables and delete
  * all variables that are not indexed
- * as part of Variables Names source @6232
+ * as part of Variables Names
  *
  *
  * */
 
-die();
 
-//Fetch all valid variable names:
-$valid_variables = array();
-foreach($this->X_model->fetch(array(
-    'x__up' => 6232, //Variables Names
-    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-    'LENGTH(x__message) > 0' => null,
-), array('x__down'), 0) as $var_name){
-    array_push($valid_variables, $var_name['x__message']);
-}
-
-//Now let's start the cleanup process...
-$invalid_variables = array();
-
-//Idea Metadata
-foreach($this->I_model->fetch(array()) as $in){
-
-    if(strlen($in['i__metadata']) < 1){
-        continue;
-    }
-
-    foreach(unserialize($in['i__metadata']) as $key => $value){
-        if(!in_array($key, $valid_variables)){
-            //Delete this:
-            update_metadata(4535, $in['i__id'], array(
-                $key => null,
-            ));
-
-            //Add to index:
-            if(!in_array($key, $invalid_variables)){
-                array_push($invalid_variables, $key);
-            }
-        }
-    }
-
-}
-
-//Player Metadata
-foreach($this->E_model->fetch(array()) as $en){
-
-    if(strlen($en['e__metadata']) < 1){
-        continue;
-    }
-
-    foreach(unserialize($en['e__metadata']) as $key => $value){
-        if(!in_array($key, $valid_variables)){
-            //Delete this:
-            update_metadata(4536, $en['e__id'], array(
-                $key => null,
-            ));
-
-            //Add to index:
-            if(!in_array($key, $invalid_variables)){
-                array_push($invalid_variables, $key);
-            }
-        }
-    }
-
-}
-
-$x__metadata = array(
-    'invalid' => $invalid_variables,
-    'valid' => $valid_variables,
+$var_index = var_index();
+$stats = array(
+    'invalid' => array(),
+    'valid' => array(),
 );
 
-if(count($invalid_variables) > 0){
+foreach($this->config->item('e___7277') as $e__id => $m) {
+
+    if(!array_key_exists($e__id, $var_index)) {
+        //Metadata must be a valid variable:
+        continue;
+    }
+
+    //Cleanup Metadata Variables:
+    if($e__id==6159){
+        $query = $this->I_model->fetch(array());
+        $object__type = 4535;
+        $object__id_key = 'i__id';
+    } elseif($e__id==6172){
+        $query = $this->E_model->fetch(array());
+        $object__type = 4536;
+        $object__id_key = 'e__id';
+    }
+
+    foreach($query as $item) {
+        if(strlen($item[$var_index[$e__id]])){
+            //Has Metadata Set:
+            foreach(unserialize($item[$var_index[$e__id]]) as $variable_name => $value){
+                if(!in_array($variable_name, $var_index)){
+
+                    //Invalid variable, Delete this:
+                    update_metadata($object__type, $item[$object__id_key], array(
+                        $variable_name => null,
+                    ));
+
+                    //Add to index:
+                    if(!array_key_exists($variable_name, $stats['invalid'])) {
+                        $stats['invalid'][$variable_name] = 0;
+                    }
+                    //Now Increment:
+                    $stats['invalid'][$variable_name]++;
+
+                } else {
+
+                    //Valid:
+                    if(!array_key_exists($variable_name, $stats['valid'])) {
+                        $stats['valid'][$variable_name] = 0;
+                    }
+                    //Now Increment:
+                    $stats['valid'][$variable_name]++;
+
+                }
+            }
+        }
+    }
+}
+
+
+if(count($stats['invalid']) > 0){
     //Did we have anything to delete? Report with system bug:
     $this->X_model->create(array(
-        'x__message' => 'cron__7277() deleted '.count($invalid_variables).' unknown variables from metadatas. To prevent this from happening, register the variables via Variables Names @6232',
+        'x__message' => 'cron__7277() removed '.count($stats['invalid']).' unknown variables from metadatas. To prevent this from happening, register the variables via Variables Names @6212',
         'x__type' => 4246, //Platform Bug Reports
-        'x__up' => 6232, //Variables Names
-        'x__metadata' => $x__metadata,
+        'x__metadata' => $stats,
     ));
 }
 
-view_json($x__metadata);
+view_json($stats);
