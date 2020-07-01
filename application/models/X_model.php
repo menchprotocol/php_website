@@ -1299,7 +1299,7 @@ class X_model extends CI_Model
 
         //Look at Conditional Idea Links ONLY at this level:
         $i__metadata = unserialize($i['i__metadata']);
-        if(isset($i__metadata['i___expansion_conditional'][$i['i__id']]) && count($i__metadata['i___expansion_conditional'][$i['i__id']]) > 0){
+        if(isset($i__metadata['i___6283'][$i['i__id']]) && count($i__metadata['i___6283'][$i['i__id']]) > 0){
 
             //Make sure previous link unlocks have NOT happened before:
             $existing_expansions = $this->X_model->fetch(array(
@@ -1307,7 +1307,7 @@ class X_model extends CI_Model
                 'x__type' => 6140, //DISCOVER UNLOCK LINK
                 'x__member' => $e__id,
                 'x__left' => $i['i__id'],
-                'x__right IN (' . join(',', $i__metadata['i___expansion_conditional'][$i['i__id']]) . ')' => null, //Limit to cached answers
+                'x__right IN (' . join(',', $i__metadata['i___6283'][$i['i__id']]) . ')' => null, //Limit to cached answers
             ));
             if(count($existing_expansions) > 0){
 
@@ -1347,7 +1347,7 @@ class X_model extends CI_Model
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
                 'x__left' => $i['i__id'],
-                'x__right IN (' . join(',', $i__metadata['i___expansion_conditional'][$i['i__id']]) . ')' => null, //Limit to cached answers
+                'x__right IN (' . join(',', $i__metadata['i___6283'][$i['i__id']]) . ')' => null, //Limit to cached answers
             ), array('x__right'), 0, 0);
 
 
@@ -1598,11 +1598,11 @@ class X_model extends CI_Model
 
         //Fetch/validate Discovery Common Ideas:
         $i__metadata = unserialize($i['i__metadata']);
-        if(!isset($i__metadata['i___common_x'])){
+        if(!isset($i__metadata['i___6168'])){
 
             //Should not happen, log error:
             $this->X_model->create(array(
-                'x__message' => 'completion_marks() Detected user Discoveries without i___common_x value!',
+                'x__message' => 'completion_marks() Detected user Discoveries without i___6168 value!',
                 'x__type' => 4246, //Platform Bug Reports
                 'x__member' => $e__id,
                 'x__left' => $i['i__id'],
@@ -1612,7 +1612,7 @@ class X_model extends CI_Model
         }
 
         //Generate flat steps:
-        $flat_common_x = array_flatten($i__metadata['i___common_x']);
+        $flat_common_x = array_flatten($i__metadata['i___6168']);
 
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
@@ -1631,7 +1631,7 @@ class X_model extends CI_Model
 
 
         //Process Answer ONE:
-        if(isset($i__metadata['i___expansion_x']) && count($i__metadata['i___expansion_x']) > 0){
+        if(isset($i__metadata['i___6228']) && count($i__metadata['i___6228']) > 0){
 
             //We need expansion steps (OR Ideas) to calculate question/answers:
             //To save all the marks for specific answers:
@@ -1639,7 +1639,7 @@ class X_model extends CI_Model
             $answer_marks_index = array();
 
             //Go through these expansion steps:
-            foreach($i__metadata['i___expansion_x'] as $question_i__id => $answers_i__ids ){
+            foreach($i__metadata['i___6228'] as $question_i__id => $answers_i__ids ){
 
                 //Calculate local min/max marks:
                 array_push($question_i__ids, $question_i__id);
@@ -1713,7 +1713,7 @@ class X_model extends CI_Model
 
 
         //Process Answer SOME:
-        if(isset($i__metadata['i___expansion_some']) && count($i__metadata['i___expansion_some']) > 0){
+        if(isset($i__metadata['i___12885']) && count($i__metadata['i___12885']) > 0){
 
             //We need expansion steps (OR Ideas) to calculate question/answers:
             //To save all the marks for specific answers:
@@ -1721,7 +1721,7 @@ class X_model extends CI_Model
             $answer_marks_index = array();
 
             //Go through these expansion steps:
-            foreach($i__metadata['i___expansion_some'] as $question_i__id => $answers_i__ids ){
+            foreach($i__metadata['i___12885'] as $question_i__id => $answers_i__ids ){
 
                 //Calculate local min/max marks:
                 array_push($question_i__ids, $question_i__id);
@@ -1824,14 +1824,14 @@ class X_model extends CI_Model
 
         //Fetch/validate Discoveries Common Ideas:
         $i__metadata = unserialize($i['i__metadata']);
-        if(!isset($i__metadata['i___common_x'])){
+        if(!isset($i__metadata['i___6168'])){
             //Since it's not there yet we assume the idea it self only!
-            $i__metadata['i___common_x'] = array($i['i__id']);
+            $i__metadata['i___6168'] = array($i['i__id']);
         }
 
 
         //Generate flat steps:
-        $flat_common_x = array_flatten($i__metadata['i___common_x']);
+        $flat_common_x = array_flatten($i__metadata['i___6168']);
 
 
         //Count totals:
@@ -1862,11 +1862,11 @@ class X_model extends CI_Model
 
         //Expansion Answer ONE
         $answer_array = array();
-        if(isset($i__metadata['i___expansion_x']) && count($i__metadata['i___expansion_x']) > 0) {
-            $answer_array = array_merge($answer_array , array_flatten($i__metadata['i___expansion_x']));
+        if(isset($i__metadata['i___6228']) && count($i__metadata['i___6228']) > 0) {
+            $answer_array = array_merge($answer_array , array_flatten($i__metadata['i___6228']));
         }
-        if(isset($i__metadata['i___expansion_some']) && count($i__metadata['i___expansion_some']) > 0) {
-            $answer_array = array_merge($answer_array , array_flatten($i__metadata['i___expansion_some']));
+        if(isset($i__metadata['i___12885']) && count($i__metadata['i___12885']) > 0) {
+            $answer_array = array_merge($answer_array , array_flatten($i__metadata['i___12885']));
         }
 
         if(count($answer_array)){
@@ -1894,14 +1894,14 @@ class X_model extends CI_Model
 
 
         //Expansion steps Recursive
-        if(isset($i__metadata['i___expansion_conditional']) && count($i__metadata['i___expansion_conditional']) > 0){
+        if(isset($i__metadata['i___6283']) && count($i__metadata['i___6283']) > 0){
 
             //Now let's check if user has unlocked any Miletones:
             foreach($this->X_model->fetch(array(
                 'x__type' => 6140, //DISCOVER UNLOCK LINK
                 'x__member' => $e__id, //Belongs to this User
                 'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
-                'x__right IN (' . join(',', array_flatten($i__metadata['i___expansion_conditional'])) . ')' => null,
+                'x__right IN (' . join(',', array_flatten($i__metadata['i___6283'])) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ), array('x__right')) as $expansion_in) {

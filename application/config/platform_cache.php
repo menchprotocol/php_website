@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-01 14:01:15 PST
+//Generated 2020-07-01 14:28:39 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -79,49 +79,49 @@ $config['e___6159'] = array(
     6168 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA COMMON STEPS',
-        'm_desc' => 'i___common_discoveries',
+        'm_desc' => 'i___6168',
         'm_parents' => array(6159),
     ),
     6283 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA EXPANSION CONDITIONAL',
-        'm_desc' => 'i___expansion_conditional',
+        'm_desc' => 'i___6283',
         'm_parents' => array(6159),
     ),
     12885 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA EXPANSION SOME',
-        'm_desc' => 'i___expansion_some',
+        'm_desc' => 'i___12885',
         'm_parents' => array(6159),
     ),
     6228 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA EXPANSION STEPS',
-        'm_desc' => 'i___expansion_discoveries',
+        'm_desc' => 'i___6228',
         'm_parents' => array(6159),
     ),
     6162 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'IDEA METADATA MAXIMUM SECONDS',
-        'm_desc' => 'i___max_seconds',
+        'm_desc' => 'i___6162',
         'm_parents' => array(13292,4739,6159),
     ),
     6161 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'IDEA METADATA MINIMUM SECONDS',
-        'm_desc' => 'i___min_seconds',
+        'm_desc' => 'i___6161',
         'm_parents' => array(13292,4735,6159),
     ),
     6170 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA TREE MAX',
-        'm_desc' => 'i___max_discoveries',
+        'm_desc' => 'i___6170',
         'm_parents' => array(13409,6159),
     ),
     6169 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA TREE MIN',
-        'm_desc' => 'i___min_discoveries',
+        'm_desc' => 'i___6169',
         'm_parents' => array(13409,6159),
     ),
     13202 => array(
@@ -3173,7 +3173,7 @@ $config['e___6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.459',
+        'm_desc' => 'v1.4591',
         'm_parents' => array(6404),
     ),
     11079 => array(

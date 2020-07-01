@@ -654,10 +654,10 @@ class I_model extends CI_Model
         $select_some_children = array(); //To be populated only if $focus_in is select some
         $conditional_x = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
-            '__i___common_x' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__i___expansion_x' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
-            '__i___expansion_some' => array(), //Ideas that allows members to select one or more
-            '__i___expansion_conditional' => array(), //Ideas that may exist as a link to expand Discovery via Conditional Idea links
+            '__i___6168' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
+            '__i___6228' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
+            '__i___12885' => array(), //Ideas that allows members to select one or more
+            '__i___6283' => array(), //Ideas that may exist as a link to expand Discovery via Conditional Idea links
         );
 
         //Fetch children:
@@ -687,36 +687,36 @@ class I_model extends CI_Model
             } else {
 
                 //AND parent Idea with Fixed Idea Link:
-                array_push($metadata_this['__i___common_x'], intval($next_i['i__id']));
+                array_push($metadata_this['__i___6168'], intval($next_i['i__id']));
 
                 //Go recursively down:
                 $child_recursion = $this->I_model->metadata_common_base($next_i);
 
 
                 //Aggregate recursion data:
-                if(count($child_recursion['__i___common_x']) > 0){
-                    array_push($metadata_this['__i___common_x'], $child_recursion['__i___common_x']);
+                if(count($child_recursion['__i___6168']) > 0){
+                    array_push($metadata_this['__i___6168'], $child_recursion['__i___6168']);
                 }
 
                 //Merge expansion steps:
-                if(count($child_recursion['__i___expansion_x']) > 0){
-                    foreach($child_recursion['__i___expansion_x'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__i___expansion_x'])){
-                            $metadata_this['__i___expansion_x'][$key] = $value;
+                if(count($child_recursion['__i___6228']) > 0){
+                    foreach($child_recursion['__i___6228'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__i___6228'])){
+                            $metadata_this['__i___6228'][$key] = $value;
                         }
                     }
                 }
-                if(count($child_recursion['__i___expansion_some']) > 0){
-                    foreach($child_recursion['__i___expansion_some'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__i___expansion_some'])){
-                            $metadata_this['__i___expansion_some'][$key] = $value;
+                if(count($child_recursion['__i___12885']) > 0){
+                    foreach($child_recursion['__i___12885'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__i___12885'])){
+                            $metadata_this['__i___12885'][$key] = $value;
                         }
                     }
                 }
-                if(count($child_recursion['__i___expansion_conditional']) > 0){
-                    foreach($child_recursion['__i___expansion_conditional'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__i___expansion_conditional'])){
-                            $metadata_this['__i___expansion_conditional'][$key] = $value;
+                if(count($child_recursion['__i___6283']) > 0){
+                    foreach($child_recursion['__i___6283'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__i___6283'])){
+                            $metadata_this['__i___6283'][$key] = $value;
                         }
                     }
                 }
@@ -726,13 +726,13 @@ class I_model extends CI_Model
 
         //Was this an OR branch that needs it's children added to the array?
         if($select_one && count($select_one_children) > 0){
-            $metadata_this['__i___expansion_x'][$focus_in['i__id']] = $select_one_children;
+            $metadata_this['__i___6228'][$focus_in['i__id']] = $select_one_children;
         }
         if($select_some && count($select_some_children) > 0){
-            $metadata_this['__i___expansion_some'][$focus_in['i__id']] = $select_some_children;
+            $metadata_this['__i___12885'][$focus_in['i__id']] = $select_some_children;
         }
         if(count($conditional_x) > 0){
-            $metadata_this['__i___expansion_conditional'][$focus_in['i__id']] = $conditional_x;
+            $metadata_this['__i___6283'][$focus_in['i__id']] = $conditional_x;
         }
 
 
@@ -740,17 +740,17 @@ class I_model extends CI_Model
         if($is_first_in){
 
             //Make sure to add main idea to common idea:
-            if(count($metadata_this['__i___common_x']) > 0){
-                $metadata_this['__i___common_x'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['__i___common_x']));
+            if(count($metadata_this['__i___6168']) > 0){
+                $metadata_this['__i___6168'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['__i___6168']));
             } else {
-                $metadata_this['__i___common_x'] = array(intval($focus_in['i__id']));
+                $metadata_this['__i___6168'] = array(intval($focus_in['i__id']));
             }
 
             update_metadata(4535, $focus_in['i__id'], array(
-                'i___common_x' => $metadata_this['__i___common_x'],
-                'i___expansion_x' => $metadata_this['__i___expansion_x'],
-                'i___expansion_some' => $metadata_this['__i___expansion_some'],
-                'i___expansion_conditional' => $metadata_this['__i___expansion_conditional'],
+                'i___6168' => $metadata_this['__i___6168'],
+                'i___6228' => $metadata_this['__i___6228'],
+                'i___12885' => $metadata_this['__i___12885'],
+                'i___6283' => $metadata_this['__i___6283'],
             ));
 
         }
@@ -950,10 +950,10 @@ class I_model extends CI_Model
          * */
 
         $metadata_this = array(
-            '__i___min_x' => 1,
-            '__i___max_x' => 1,
-            '__i___min_seconds' => $i['i__duration'],
-            '__i___max_seconds' => $i['i__duration'],
+            '__i___6169' => 1,
+            '__i___6170' => 1,
+            '__i___6161' => $i['i__duration'],
+            '__i___6162' => $i['i__duration'],
             '__i___13202' => array(),
             '__i___13339' => array(),
             '__i___3000' => array(),
@@ -1026,10 +1026,10 @@ class I_model extends CI_Model
 
 
         $metadata_local = array(
-            'local__i___min_x'=> null,
-            'local__i___max_x'=> null,
-            'local__i___min_seconds'=> null,
-            'local__i___max_seconds'=> null,
+            'local__i___6169'=> null,
+            'local__i___6170'=> null,
+            'local__i___6161'=> null,
+            'local__i___6162'=> null,
         );
 
         //NEXT IDEAS
@@ -1063,19 +1063,19 @@ class I_model extends CI_Model
                 //ONE
 
                 //MIN
-                if(is_null($metadata_local['local__i___min_x']) || $metadata_recursion['__i___min_x'] < $metadata_local['local__i___min_x']){
-                    $metadata_local['local__i___min_x'] = $metadata_recursion['__i___min_x'];
+                if(is_null($metadata_local['local__i___6169']) || $metadata_recursion['__i___6169'] < $metadata_local['local__i___6169']){
+                    $metadata_local['local__i___6169'] = $metadata_recursion['__i___6169'];
                 }
-                if(is_null($metadata_local['local__i___min_seconds']) || $metadata_recursion['__i___min_seconds'] < $metadata_local['local__i___min_seconds']){
-                    $metadata_local['local__i___min_seconds'] = $metadata_recursion['__i___min_seconds'];
+                if(is_null($metadata_local['local__i___6161']) || $metadata_recursion['__i___6161'] < $metadata_local['local__i___6161']){
+                    $metadata_local['local__i___6161'] = $metadata_recursion['__i___6161'];
                 }
 
                 //MAX
-                if(is_null($metadata_local['local__i___max_x']) || $metadata_recursion['__i___max_x'] > $metadata_local['local__i___max_x']){
-                    $metadata_local['local__i___max_x'] = $metadata_recursion['__i___max_x'];
+                if(is_null($metadata_local['local__i___6170']) || $metadata_recursion['__i___6170'] > $metadata_local['local__i___6170']){
+                    $metadata_local['local__i___6170'] = $metadata_recursion['__i___6170'];
                 }
-                if(is_null($metadata_local['local__i___max_seconds']) || $metadata_recursion['__i___max_seconds'] > $metadata_local['local__i___max_seconds']){
-                    $metadata_local['local__i___max_seconds'] = $metadata_recursion['__i___max_seconds'];
+                if(is_null($metadata_local['local__i___6162']) || $metadata_recursion['__i___6162'] > $metadata_local['local__i___6162']){
+                    $metadata_local['local__i___6162'] = $metadata_recursion['__i___6162'];
                 }
 
             } elseif(in_array($i['i__type'], $this->config->item('n___12884'))){
@@ -1083,28 +1083,28 @@ class I_model extends CI_Model
                 //SOME
 
                 //MIN
-                if(is_null($metadata_local['local__i___min_x']) || $metadata_recursion['__i___min_x'] < $metadata_local['local__i___min_x']){
-                    $metadata_local['local__i___min_x'] = $metadata_recursion['__i___min_x'];
+                if(is_null($metadata_local['local__i___6169']) || $metadata_recursion['__i___6169'] < $metadata_local['local__i___6169']){
+                    $metadata_local['local__i___6169'] = $metadata_recursion['__i___6169'];
                 }
-                if(is_null($metadata_local['local__i___min_seconds']) || $metadata_recursion['__i___min_seconds'] < $metadata_local['local__i___min_seconds']){
-                    $metadata_local['local__i___min_seconds'] = $metadata_recursion['__i___min_seconds'];
+                if(is_null($metadata_local['local__i___6161']) || $metadata_recursion['__i___6161'] < $metadata_local['local__i___6161']){
+                    $metadata_local['local__i___6161'] = $metadata_recursion['__i___6161'];
                 }
 
                 //MAX
-                $metadata_this['__i___max_x'] += intval($metadata_recursion['__i___max_x']);
-                $metadata_this['__i___max_seconds'] += intval($metadata_recursion['__i___max_seconds']);
+                $metadata_this['__i___6170'] += intval($metadata_recursion['__i___6170']);
+                $metadata_this['__i___6162'] += intval($metadata_recursion['__i___6162']);
 
             } else {
 
                 //ALL
 
                 //MIN
-                $metadata_this['__i___min_x'] += intval($metadata_recursion['__i___min_x']);
-                $metadata_this['__i___min_seconds'] += intval($metadata_recursion['__i___min_seconds']);
+                $metadata_this['__i___6169'] += intval($metadata_recursion['__i___6169']);
+                $metadata_this['__i___6161'] += intval($metadata_recursion['__i___6161']);
 
                 //MAX
-                $metadata_this['__i___max_x'] += intval($metadata_recursion['__i___max_x']);
-                $metadata_this['__i___max_seconds'] += intval($metadata_recursion['__i___max_seconds']);
+                $metadata_this['__i___6170'] += intval($metadata_recursion['__i___6170']);
+                $metadata_this['__i___6162'] += intval($metadata_recursion['__i___6162']);
 
             }
 
@@ -1147,25 +1147,25 @@ class I_model extends CI_Model
 
 
         //ADD LOCAL MIN/MAX
-        if(!is_null($metadata_local['local__i___min_x'])){
-            $metadata_this['__i___min_x'] += intval($metadata_local['local__i___min_x']);
+        if(!is_null($metadata_local['local__i___6169'])){
+            $metadata_this['__i___6169'] += intval($metadata_local['local__i___6169']);
         }
-        if(!is_null($metadata_local['local__i___max_x'])){
-            $metadata_this['__i___max_x'] += intval($metadata_local['local__i___max_x']);
+        if(!is_null($metadata_local['local__i___6170'])){
+            $metadata_this['__i___6170'] += intval($metadata_local['local__i___6170']);
         }
-        if(!is_null($metadata_local['local__i___min_seconds'])){
-            $metadata_this['__i___min_seconds'] += intval($metadata_local['local__i___min_seconds']);
+        if(!is_null($metadata_local['local__i___6161'])){
+            $metadata_this['__i___6161'] += intval($metadata_local['local__i___6161']);
         }
-        if(!is_null($metadata_local['local__i___max_seconds'])){
-            $metadata_this['__i___max_seconds'] += intval($metadata_local['local__i___max_seconds']);
+        if(!is_null($metadata_local['local__i___6162'])){
+            $metadata_this['__i___6162'] += intval($metadata_local['local__i___6162']);
         }
 
         //Save to DB
         update_metadata(4535, $i['i__id'], array(
-            'i___min_x' => intval($metadata_this['__i___min_x']),
-            'i___max_x' => intval($metadata_this['__i___max_x']),
-            'i___min_seconds' => intval($metadata_this['__i___min_seconds']),
-            'i___max_seconds' => intval($metadata_this['__i___max_seconds']),
+            'i___6169' => intval($metadata_this['__i___6169']),
+            'i___6170' => intval($metadata_this['__i___6170']),
+            'i___6161' => intval($metadata_this['__i___6161']),
+            'i___6162' => intval($metadata_this['__i___6162']),
             'i___13202' => $metadata_this['__i___13202'], //Mench Ideators
             'i___13339' => $metadata_this['__i___13339'], //Expert Authors
             'i___3000' => $metadata_this['__i___3000'], //Expert Content

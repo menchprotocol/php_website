@@ -910,12 +910,12 @@ function i_stats($i__metadata){
     return array(
 
         //IDEAS
-        'i_min' => ( isset($metadata['i___min_x']) && $metadata['i___min_x']>=2 ? $metadata['i___min_x']-1 : 0 ),
-        'i_max' => ( isset($metadata['i___max_x']) && $metadata['i___max_x']>=2 ? $metadata['i___max_x']-1 : 0 ),
-        'i_average' => ( isset($metadata['i___max_x']) && $metadata['i___max_x']>=2 ? round(( ($metadata['i___min_x']-1) + ($metadata['i___max_x']-1) ) / 2) : 1 ),
-        'duration_min' => ( isset($metadata['i___min_seconds']) ? $metadata['i___min_seconds'] : 0 ),
-        'duration_max' => ( isset($metadata['i___max_seconds']) ? $metadata['i___max_seconds'] : 0 ),
-        'duration_average' => ( isset($metadata['i___max_seconds']) ? round(($metadata['i___min_seconds']+$metadata['i___max_seconds'])/2) : 0 ),
+        'i_min' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
+        'i_max' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? $metadata['i___6170']-1 : 0 ),
+        'i_average' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? round(( ($metadata['i___6169']-1) + ($metadata['i___6170']-1) ) / 2) : 1 ),
+        'duration_min' => ( isset($metadata['i___6161']) ? $metadata['i___6161'] : 0 ),
+        'duration_max' => ( isset($metadata['i___6162']) ? $metadata['i___6162'] : 0 ),
+        'duration_average' => ( isset($metadata['i___6162']) ? round(($metadata['i___6161']+$metadata['i___6162'])/2) : 0 ),
 
         //SOURCES
         'count_es' => ( $e_count>0 ? $e_count : 1 ),
