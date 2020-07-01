@@ -11,9 +11,9 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     $player_discoveries = $this->X_model->fetch(array(
         'x__player' => $_GET['e__id'],
-        'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
-        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('e___n_12969')) . ')' => null, //MY DISCOVERIES
+        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+        'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
     ), array('x__left'), 0, 0, array('x__sort' => 'ASC'));
 
     foreach($player_discoveries as $priority => $discovery) {
@@ -24,7 +24,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     $ideas = $this->I_model->fetch(array(
         'i__id' => $_GET['i__id'],
-        'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+        'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
     ));
 
     if(count($ideas) < 1){

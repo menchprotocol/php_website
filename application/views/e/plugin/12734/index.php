@@ -1,7 +1,7 @@
 <?php
 
 $active_ideas = $this->I_model->fetch(array(
-    'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+    'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
 ), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ));
 $found = 0;
 foreach($active_ideas as $count=>$in){

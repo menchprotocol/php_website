@@ -29,7 +29,7 @@ $current_mench = current_mench();
     foreach($this->config->item('e___11054') as $x__type => $m){
         if(count($this->config->item('e___'.$x__type))){
             echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
-            echo ' var js_sources_id_'.$x__type.' = ' . json_encode($this->config->item('sources_id_'.$x__type)) . ';';
+            echo ' var js_e___n_'.$x__type.' = ' . json_encode($this->config->item('e___n_'.$x__type)) . ';';
         }
     }
     ?>
@@ -136,7 +136,7 @@ if(!isset($hide_header)){
                                 $class = extract_icon_color($m['m_icon']);
 
                                 //Apply superpower to Mench actions only
-                                $superpower_actives = ( in_array($m['e__id'], $this->config->item('sources_id_2738')) ? array_intersect($this->config->item('sources_id_10957'), $m['m_parents']) : array());
+                                $superpower_actives = ( in_array($m['e__id'], $this->config->item('e___n_2738')) ? array_intersect($this->config->item('e___n_10957'), $m['m_parents']) : array());
 
                                 //Determine URL?
                                 if($m['e__id']==4536){
@@ -202,7 +202,7 @@ if(!isset($hide_header)){
                                 continue;
                             }
 
-                            $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
+                            $superpower_actives = array_intersect($this->config->item('e___n_10957'), $m['m_parents']);
                             $extra_class = null;
                             $text_class = null;
 
@@ -210,7 +210,7 @@ if(!isset($hide_header)){
 
                                 $page_url = 'href="/~'.( $is_home ? config_var(13405) : $first_segment ).'"';
 
-                            } elseif(in_array($x__type, $this->config->item('sources_id_10876'))){
+                            } elseif(in_array($x__type, $this->config->item('e___n_10876'))){
 
                                 //Fetch URL:
                                 $page_url = 'href="'.$e___10876[$x__type]['m_desc'].'"';

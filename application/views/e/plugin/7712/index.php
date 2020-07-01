@@ -6,8 +6,8 @@ $updated = 0;
 $session_source = superpower_assigned();
 
 foreach($this->I_model->fetch(array(
-    'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-    'i__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
+    'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('e___n_7712')) . ')' => null,
 ), 0, 0, array('i__id' => 'DESC')) as $count => $in) {
 
     echo '<div>'.($count+1).')<span class="icon-block">'.view_cache('e___6193' /* OR Ideas */, $in['i__type']).'</span><a href="/i/i_go/'.$in['i__id'].'">'.view_i_title($in).'</a></div>';
@@ -15,15 +15,15 @@ foreach($this->I_model->fetch(array(
     echo '<ul style="list-style: decimal;">';
     //Fetch all children for this OR:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+        'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $child_or){
 
         $x_coins = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null,
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_6255')) . ')' => null,
             'x__left' => $child_or['i__id'],
         ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
 

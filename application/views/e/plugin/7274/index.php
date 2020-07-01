@@ -4,9 +4,9 @@
 $longest_time = 0;
 $longest_id = 0;
 $cron_jobs = $this->X_model->fetch(array(
-    'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-    'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-    'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+    'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+    'e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')' => null, //ACTIVE
     'x__up' => 7274,
 ), array('x__down'), config_var(11064), 0, array('x__message' => 'ASC'));
 foreach($cron_jobs as $cron_job){

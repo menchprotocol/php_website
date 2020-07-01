@@ -14,9 +14,9 @@
         //MY DISCOVERIES
         $player_discoveries = $this->X_model->fetch(array(
             'x__player' => $session_source['e__id'],
-            'x__type IN (' . join(',', $this->config->item('sources_id_12969')) . ')' => null, //MY DISCOVERIES
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_12969')) . ')' => null, //MY DISCOVERIES
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
         ), array('x__left'), 0, 0, array('x__sort' => 'ASC'));
 
         echo ( count($player_discoveries) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> .discover-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
@@ -58,8 +58,8 @@
         $player_saved = $this->X_model->fetch(array(
             'x__up' => $session_source['e__id'],
             'x__type' => 12896, //SAVED
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
         ), array('x__right'), 0, 0, array('x__id' => 'DESC'));
 
         if(count($player_saved)){
@@ -87,7 +87,7 @@
         //IDEA MESSAGES
         echo '<div style="margin-bottom:34px;">';
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => config_var(13405),
         ), array(), 0, 0, array('x__sort' => 'ASC')) as $message_discover) {
@@ -101,9 +101,9 @@
 
     //FEATURED IDEAS
     $featured_ideas = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+        'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => config_var(13405),
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 

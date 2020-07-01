@@ -159,7 +159,7 @@ class I_model extends CI_Model
 
                 } elseif($key=='i__status'){
 
-                    if(in_array($value, $this->config->item('sources_id_7356') /* ACTIVE */)){
+                    if(in_array($value, $this->config->item('e___n_7356') /* ACTIVE */)){
                         $x__type = 10648; //Idea updated Status
                     } else {
                         $x__type = 6182; //Idea Deleted
@@ -236,8 +236,8 @@ class I_model extends CI_Model
         //REMOVE IDEA LINKS
         $links_deleted = 0;
         foreach($this->X_model->fetch(array( //Idea Links
-            'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
             '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
         ), array(), 0) as $discovery){
             //Delete this link:
@@ -249,8 +249,8 @@ class I_model extends CI_Model
 
         //REMOVE NOTES:
         $i_notes = $this->X_model->fetch(array( //Idea Links
-            'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
+            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('e___n_4485')) . ')' => null, //IDEA NOTES
             'x__right' => $i__id,
         ), array(), 0);
         foreach($i_notes as $i_note){
@@ -346,7 +346,7 @@ class I_model extends CI_Model
                     'status' => 0,
                     'message' => 'Invalid Idea ID',
                 );
-            } elseif (!in_array($linked_ideas[0]['i__status'], $this->config->item('sources_id_7356')) /* ACTIVE */) {
+            } elseif (!in_array($linked_ideas[0]['i__status'], $this->config->item('e___n_7356')) /* ACTIVE */) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active ideas. This idea is not active.',
@@ -404,7 +404,7 @@ class I_model extends CI_Model
                     'status' => 0,
                     'message' => 'Invalid Linked Idea ID',
                 );
-            } elseif (!in_array($ideas[0]['i__status'], $this->config->item('sources_id_7356') /* ACTIVE */)) {
+            } elseif (!in_array($ideas[0]['i__status'], $this->config->item('e___n_7356') /* ACTIVE */)) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active ideas. This idea is not active.',
@@ -418,8 +418,8 @@ class I_model extends CI_Model
             $dup_links = $this->X_model->fetch(array(
                 'x__left' => $previous_idea['i__id'],
                 'x__right' => $next_idea['i__id'],
-                'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-                'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+                'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
             ));
 
             //Check for issues:
@@ -472,8 +472,8 @@ class I_model extends CI_Model
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__sort' => 1 + $this->X_model->max_sort(array(
-                        'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                        'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+                        'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
                         'x__left' => ( $is_parent ? $i_new['i__id'] : $link_to_i__id ),
                     )),
             ), true);
@@ -482,9 +482,9 @@ class I_model extends CI_Model
             $new_ideas = $this->X_model->fetch(array(
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
-                'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-                'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+                'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+                'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
             ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
@@ -524,7 +524,7 @@ class I_model extends CI_Model
             'x__type' => 10573, //MY IDEAS
             'x__up' => $e__id,
             'x__right' => $i__id,
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
         ));
         if(count($player_ideas) < 1){
             return array(
@@ -554,9 +554,9 @@ class I_model extends CI_Model
 
         //Fetch parents:
         foreach($this->X_model->fetch(array(
-            'i__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7355' : 'sources_id_7356'))) . ')' => null,
-            'x__status IN (' . join(',', $this->config->item(($public_only ? 'sources_id_7359' : 'sources_id_7360'))) . ')' => null,
-            'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+            'i__status IN (' . join(',', $this->config->item(($public_only ? 'e___n_7355' : 'e___n_7356'))) . ')' => null,
+            'x__status IN (' . join(',', $this->config->item(($public_only ? 'e___n_7359' : 'e___n_7360'))) . ')' => null,
+            'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         ), array('x__left')) as $idea_previous) {
 
@@ -618,9 +618,9 @@ class I_model extends CI_Model
 
         //Fetch parents:
         foreach($this->X_model->fetch(array(
-            'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+            'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
         ), array('x__right')) as $next_idea){
 
@@ -648,8 +648,8 @@ class I_model extends CI_Model
 
         //Set variables:
         $is_first_in = ( !isset($focus_in['x__id']) ); //First idea does not have a link, just the idea
-        $select_one = in_array($focus_in['i__type'] , $this->config->item('sources_id_12883')); //IDEA TYPE SELECT ONE
-        $select_some = in_array($focus_in['i__type'] , $this->config->item('sources_id_12884')); //IDEA TYPE SELECT SOME
+        $select_one = in_array($focus_in['i__type'] , $this->config->item('e___n_12883')); //IDEA TYPE SELECT ONE
+        $select_some = in_array($focus_in['i__type'] , $this->config->item('e___n_12884')); //IDEA TYPE SELECT SOME
         $select_one_children = array(); //To be populated only if $focus_in is select one
         $select_some_children = array(); //To be populated only if $focus_in is select some
         $conditional_discoveries = array(); //To be populated only for Conditional Ideas
@@ -662,14 +662,14 @@ class I_model extends CI_Model
 
         //Fetch children:
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
             'x__left' => $focus_in['i__id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $next_idea){
 
             //Determine action based on parent idea type:
-            if(in_array($next_idea['x__type'], $this->config->item('sources_id_12842'))){
+            if(in_array($next_idea['x__type'], $this->config->item('e___n_12842'))){
 
                 //Conditional Idea Link:
                 array_push($conditional_discoveries, intval($next_idea['i__id']));
@@ -767,7 +767,7 @@ class I_model extends CI_Model
 
         boost_power();
 
-        if(!in_array($action_e__id, $this->config->item('sources_id_12589'))) {
+        if(!in_array($action_e__id, $this->config->item('e___n_12589'))) {
 
             return array(
                 'status' => 0,
@@ -799,9 +799,9 @@ class I_model extends CI_Model
         $applied_success = 0; //To be populated...
 
         $ideas_next = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-            'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
@@ -816,8 +816,8 @@ class I_model extends CI_Model
                 //Check if it hs this item:
                 $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
                 $i_has_sources = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+                    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('e___n_12273')) . ')' => null, //IDEA COIN
                     'x__right' => $next_idea['i__id'],
                     '(x__up = '.$e__profile_id.' OR x__down = '.$e__profile_id.')' => null,
                 ));
@@ -852,8 +852,8 @@ class I_model extends CI_Model
                 $adjust_i__id = intval(one_two_explode('#',' ',$action_command1));
 
                 $is_previous = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                    'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+                    'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
                     'x__left' => $adjust_i__id,
                     'x__right' => $next_idea['i__id'],
                 ), array(), 0);
@@ -918,9 +918,9 @@ class I_model extends CI_Model
         $total_child_weights = 0;
 
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
         ), array('x__right'), 0, 0, array(), 'i__id, i__weight') as $next_idea){
             $total_child_weights += $next_idea['i__weight'] + $this->I_model->weight($next_idea['i__id']);
@@ -966,8 +966,8 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             //Already for for x__up & x__down
             'x__right' => $idea['i__id'],
-            'x__type IN (' . join(',', $this->config->item('sources_id_12273')).')' => null, //IDEA COIN
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_12273')).')' => null, //IDEA COIN
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $fetched_source) {
 
             //SOURCES?
@@ -1002,8 +1002,8 @@ class I_model extends CI_Model
                 foreach($this->X_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
                     'x__down' => $fetched_source['x__player'],
-                    'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
                 ), array('x__down'), 1) as $player){
                     $metadata_this['__i___13202'][$fetched_source['x__player']] = $player;
                 }
@@ -1016,8 +1016,8 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__right' => $idea['i__id'],
             'x__type' => 7545, //CERTIFICATES
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $source) {
             if (!isset($metadata_this['__i___7545'][$source['e__id']])) {
                 $metadata_this['__i___7545'][$source['e__id']] = $source;
@@ -1034,9 +1034,9 @@ class I_model extends CI_Model
 
         //NEXT IDEAS
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
             'x__left' => $idea['i__id'],
         ), array('x__right'), 0) as $ideas_next){
 
@@ -1046,8 +1046,8 @@ class I_model extends CI_Model
                 foreach($this->X_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
                     'x__down' => $ideas_next['x__player'],
-                    'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
                 ), array('x__down'), 1) as $player){
                     $metadata_this['__i___13202'][$ideas_next['x__player']] = $player;
                 }
@@ -1058,7 +1058,7 @@ class I_model extends CI_Model
 
 
             //MERGE (3 SCENARIOS)
-            if(in_array($ideas_next['x__type'], $this->config->item('sources_id_12842')) || in_array($idea['i__type'], $this->config->item('sources_id_12883'))){
+            if(in_array($ideas_next['x__type'], $this->config->item('e___n_12842')) || in_array($idea['i__type'], $this->config->item('e___n_12883'))){
 
                 //ONE
 
@@ -1078,7 +1078,7 @@ class I_model extends CI_Model
                     $metadata_local['local__i___max_seconds'] = $metadata_recursion['__i___max_seconds'];
                 }
 
-            } elseif(in_array($idea['i__type'], $this->config->item('sources_id_12884'))){
+            } elseif(in_array($idea['i__type'], $this->config->item('e___n_12884'))){
 
                 //SOME
 
@@ -1198,11 +1198,11 @@ class I_model extends CI_Model
 
         //Discovery 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__right' => $idea['i__id'],
-            'i__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null,
+            'i__type IN (' . join(',', $this->config->item('e___n_7712')) . ')' => null,
         ), array('x__left'), 0) as $i_or_parent){
             if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $i_or_parent['i__id'])) {
                 array_push($child_unlock_paths, $i_or_parent);
@@ -1212,9 +1212,9 @@ class I_model extends CI_Model
 
         //Discovery 2: Are there any locked link parents that the user might be able to unlock?
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('sources_id_12842')) . ')' => null, //IDEA LINKS ONE-WAY
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_12842')) . ')' => null, //IDEA LINKS ONE-WAY
             'x__right' => $idea['i__id'],
         ), array('x__left'), 0) as $i_locked_parent){
             if(i_is_unlockable($i_locked_parent)){
@@ -1239,9 +1239,9 @@ class I_model extends CI_Model
 
         //Discovery 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $ideas_next = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $idea['i__id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
         if(count($ideas_next) < 1){

@@ -15,9 +15,9 @@
 $valid_variables = array();
 foreach($this->X_model->fetch(array(
     'x__up' => 6232, //Variables Names
-    'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-    'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+    'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
     'LENGTH(x__message) > 0' => null,
 ), array('x__down'), 0) as $var_name){
     array_push($valid_variables, $var_name['x__message']);

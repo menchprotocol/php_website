@@ -30,7 +30,7 @@ $node_size = array(
 
 //Add Ideas:
 $ideas = $this->I_model->fetch(array(
-    'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+    'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
 ));
 foreach($ideas as $in){
 
@@ -49,9 +49,9 @@ foreach($ideas as $in){
 
     //Fetch children:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+        'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+        'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0) as $next_idea){
 
@@ -70,7 +70,7 @@ foreach($ideas as $in){
 
 //Add sources:
 $sources = $this->E_model->fetch(array(
-    'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+    'e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')' => null, //ACTIVE
 ));
 foreach($sources as $en){
 
@@ -85,9 +85,9 @@ foreach($sources as $en){
 
     //Fetch children:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
         'x__up' => $en['e__id'],
     ), array('x__down'), 0, 0) as $e_child){
 
@@ -105,9 +105,9 @@ foreach($sources as $en){
 
 //Add messages:
 $messages = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-    'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('sources_id_4485')) . ')' => null, //IDEA NOTES
+    'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+    'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('e___n_4485')) . ')' => null, //IDEA NOTES
 ), array('x__right'), 0, 0);
 foreach($messages as $message) {
 

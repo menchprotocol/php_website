@@ -9,9 +9,9 @@
 
 //First first all sources that have Cache in PHP Config @4527 as their parent:
 $config_sources = $this->X_model->fetch(array(
-    'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+    'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
+    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
     'x__up' => 4527,
 ), array('x__down'), 0);
 
@@ -34,15 +34,15 @@ foreach($config_sources as $en){
 
     //Now fetch all its children:
     $children = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
         'x__up' => $en['x__down'],
-        'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
     ), array('x__down'), 0, 0, array('x__sort' => 'ASC', 'e__title' => 'ASC'));
 
 
     //Find common base, if allowed:
-    $common_prefix = ( in_array($en['x__down'], $this->config->item('sources_id_12588')) ? null : i_calc_common_prefix($children, 'e__title') );
+    $common_prefix = ( in_array($en['x__down'], $this->config->item('e___n_12588')) ? null : i_calc_common_prefix($children, 'e__title') );
 
     //Generate raw IDs:
     $child_ids = array();
@@ -51,7 +51,7 @@ foreach($config_sources as $en){
     }
 
     echo '<br />//'.$en['e__title'].':<br />';
-    echo '$config[\'sources_id_'.$en['x__down'].'\'] = array('.join(',',$child_ids).');<br />';
+    echo '$config[\'e___n_'.$en['x__down'].'\'] = array('.join(',',$child_ids).');<br />';
     echo '$config[\'e___'.$en['x__down'].'\'] = array(<br />';
     foreach($children as $child){
 
@@ -63,10 +63,10 @@ foreach($config_sources as $en){
         //Fetch all parents for this child:
         $child_parent_ids = array(); //To be populated soon
         $child_parents = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
             'x__down' => $child['e__id'],
-            'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
         ), array('x__up'), 0);
         foreach($child_parents as $cp_en){
             array_push($child_parent_ids, intval($cp_en['e__id']));

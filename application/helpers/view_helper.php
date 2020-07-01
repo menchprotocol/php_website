@@ -229,7 +229,7 @@ function view_i_notes($discovery, $note_is_e_source = false)
         $ui .= '<div class="note-editor edit-off"><span class="show-on-hover">';
 
         //Sorting allowed?
-        if(in_array($discovery['x__type'], $CI->config->item('sources_id_4603'))){
+        if(in_array($discovery['x__type'], $CI->config->item('e___n_4603'))){
             $ui .= '<span title="SORT"><i class="fas fa-bars i_note_sorting"></i></span>';
         }
 
@@ -382,11 +382,11 @@ function view_interaction($discovery, $is_parent_tr = false)
 
 
     //COINS AWARDED?
-    if(in_array($discovery['x__type'], $CI->config->item('sources_id_6255'))){
+    if(in_array($discovery['x__type'], $CI->config->item('e___n_6255'))){
         $coins_type = 'discover';
-    } elseif(in_array($discovery['x__type'], $CI->config->item('sources_id_12274'))){
+    } elseif(in_array($discovery['x__type'], $CI->config->item('e___n_12274'))){
         $coins_type = 'source';
-    } elseif(in_array($discovery['x__type'], $CI->config->item('sources_id_12273')) && ($discovery['x__up']>0 || $discovery['x__down']>0)){
+    } elseif(in_array($discovery['x__type'], $CI->config->item('e___n_12273')) && ($discovery['x__up']>0 || $discovery['x__down']>0)){
         $coins_type = 'idea';
     } else {
         $coins_type = null;
@@ -397,7 +397,7 @@ function view_interaction($discovery, $is_parent_tr = false)
 
 
     //Hide Sensitive Details?
-    if(in_array($discovery['x__type'] , $CI->config->item('sources_id_4755')) && (!$session_source || $discovery['x__player']!=$session_source['e__id']) && !superpower_active(12701, true)){
+    if(in_array($discovery['x__type'] , $CI->config->item('e___n_4755')) && (!$session_source || $discovery['x__player']!=$session_source['e__id']) && !superpower_active(12701, true)){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -559,8 +559,8 @@ function view_coins_count_discover($i__id = 0, $e__id = 0){
 
     $CI =& get_instance();
     $query_filters = array(
-        'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('sources_id_6255')) . ')' => null,
+        'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('e___n_6255')) . ')' => null,
         ( $i__id > 0 ? 'x__left' : 'x__player' ) => ( $i__id > 0 ? $i__id : $e__id ),
     );
 
@@ -586,16 +586,16 @@ function view_coins_count_source($i__id = 0, $e__id = 0, $number_only = false){
     if($i__id){
         $mench = 'source';
         $coins_filter = array(
-            'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+            'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('e___n_12273')) . ')' => null, //IDEA COIN
             'x__right' => $i__id,
             '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
     } elseif($e__id){
         $mench = 'idea';
         $coins_filter = array(
-            'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
+            'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('e___n_12273')) . ')' => null, //IDEA COIN
             '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
         );
     }
@@ -715,16 +715,16 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
     $ui = null;
     foreach($CI->X_model->fetch(array(
         'x__left' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-        'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'i__status IN (' . join(',', $CI->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+        'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
+        'i__status IN (' . join(',', $CI->config->item('e___n_7356')) . ')' => null, //ACTIVE
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $i_discover){
 
         //Prep Metadata:
         $metadata = unserialize($i_discover['x__metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $i_discover['i__id'],
         ), array(), 0, 0, array('x__sort' => 'ASC'));
@@ -738,7 +738,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_discover['i__status']]['m_name'].'">'. $e___4737[$i_discover['i__status']]['m_icon']. '</span>';
         $ui .= '<a href="?i__id='.$i_discover['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_discover) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_discover['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($i_discover['x__type'] == 4229) ? view_i_marks($i_discover) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_discover['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('e___n_6193') /* OR Ideas */ )) || ($i_discover['x__type'] == 4229) ? view_i_marks($i_discover) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$i_discover['i__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -774,7 +774,7 @@ function view_radio_sources($parent_e__id, $child_e__id, $enable_mulitiselect, $
 
     $ui = '<div class="list-group list-radio-select radio-'.$parent_e__id.'">';
 
-    if(!count($CI->config->item('sources_id_'.$parent_e__id))){
+    if(!count($CI->config->item('e___n_'.$parent_e__id))){
         return false;
     }
 
@@ -782,8 +782,8 @@ function view_radio_sources($parent_e__id, $child_e__id, $enable_mulitiselect, $
         $ui .= '<a href="javascript:void(0);" onclick="e_update_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( count($CI->X_model->fetch(array(
                 'x__up' => $e__id,
                 'x__down' => $child_e__id,
-                'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
             )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'<span class="change-results"></span></a>';
         $count++;
     }
@@ -832,11 +832,11 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
 
     //DISCOVER
     $x__id = ( isset($idea['x__id']) ? $idea['x__id'] : 0 );
-    $is_i_link = ($x__id && in_array($idea['x__type'], $CI->config->item('sources_id_4486')));
+    $is_i_link = ($x__id && in_array($idea['x__type'], $CI->config->item('e___n_4486')));
 
     //IDEA
     $i_stats = i_stats($idea['i__metadata']);
-    $is_public = in_array($idea['i__status'], $CI->config->item('sources_id_7355'));
+    $is_public = in_array($idea['i__status'], $CI->config->item('e___n_7355'));
     $player_is_i_source = ( !$is_i_link ? false : $player_is_i_source ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
@@ -847,7 +847,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
     $box_items_list = '';
 
     //DISCOVER STATUS
-    if($x__id && !in_array($idea['x__status'], $CI->config->item('sources_id_7359'))){
+    if($x__id && !in_array($idea['x__status'], $CI->config->item('e___n_7359'))){
         $box_items_list .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$idea['x__status']]['m_name'].' @'.$idea['x__status'].'">' . $e___6186[$idea['x__status']]['m_icon'] . '</span>&nbsp;</span>';
     }
 
@@ -983,14 +983,14 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
         //IDEA TREE:
         $previous_ideas = $CI->X_model->fetch(array(
             'x__right' => $idea['i__id'],
-            'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-            'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+            'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
 
         $next_ideas = $CI->X_model->fetch(array(
             'x__left' => $idea['i__id'],
-            'x__type IN (' . join(',', $CI->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
-            'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+            'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
 
         $ui .= '<span class="inline-block montserrat idea" title="'.$e___12413[11019]['m_name'].'" style="width:21px; text-align:right;">'.( $previous_ideas[0]['total_ideas']>0 ? $previous_ideas[0]['total_ideas'] : '&nbsp;' ).'</span>';
@@ -1019,7 +1019,7 @@ function view_caret($e__id, $m, $object__id){
     //Display drop down menu:
     $CI =& get_instance();
 
-    $superpower_actives = array_intersect($CI->config->item('sources_id_10957'), $m['m_parents']);
+    $superpower_actives = array_intersect($CI->config->item('e___n_10957'), $m['m_parents']);
 
     $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_name'].'" data-toggle="tooltip" data-placement="top">';
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
@@ -1156,7 +1156,7 @@ function view_i_previous_discover($i__id, $recipient_source){
             'x__up' => $recipient_source['e__id'],
             'x__right' => $i__id,
             'x__type' => 12896, //SAVED
-            'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
         )));
 
         $ui .= '<div class="inline-block margin-top-down pull-left edit_select_answer"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="i_save('.$i__id.')"><i class="fas fa-bookmark toggle_saved '.( $is_saveded ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saveded ? 'hidden' : '' ).'"></i></a></div>';
@@ -1183,8 +1183,8 @@ function view_i_note_mix($x__type, $i_notes){
 
     $CI =& get_instance();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
-    $handles_uploads = (in_array($x__type, $CI->config->item('sources_id_12359')));
-    $handles_url = (in_array($x__type, $CI->config->item('sources_id_7551')) || in_array($x__type, $CI->config->item('sources_id_4986')));
+    $handles_uploads = (in_array($x__type, $CI->config->item('e___n_12359')));
+    $handles_url = (in_array($x__type, $CI->config->item('e___n_7551')) || in_array($x__type, $CI->config->item('e___n_4986')));
     $session_source = superpower_assigned();
     $ui = '';
 
@@ -1205,7 +1205,7 @@ function view_i_note_mix($x__type, $i_notes){
     }
 
     //ADD NEW:
-    if(!in_array($x__type, $CI->config->item('sources_id_12677'))){
+    if(!in_array($x__type, $CI->config->item('e___n_12677'))){
         $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $x__type .'">';
         $ui .= '<div class="add_notes_form">';
         $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';      //Used for dropping files
@@ -1365,7 +1365,7 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
         $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
 
         //IDEA STATUS?
-        if(!$discover_mode && !in_array($idea['i__status'], $CI->config->item('sources_id_7355'))){
+        if(!$discover_mode && !in_array($idea['i__status'], $CI->config->item('e___n_7355'))){
             $ui .= '<span class="media-info bottom-center">'.view_cache('e___4737' /* Idea Status */, $idea['i__status'], true, 'top').'</span>';
         }
 
@@ -1418,23 +1418,23 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
     $e___6186 = $CI->config->item('e___6186'); //Interaction Status
 
     $x__id = (isset($source['x__id']) ? $source['x__id'] : 0);
-    $is_link_source = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('sources_id_4592')));
-    $is_x_progress = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('sources_id_12227')));
-    $is_e_only = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('sources_id_7551')));
+    $is_link_source = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('e___n_4592')));
+    $is_x_progress = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('e___n_12227')));
+    $is_e_only = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('e___n_7551')));
     $inline_editing = $control_enabled && superpower_active(13402, true);
     $has_e_editor = superpower_active(10967, true);
     $show_toolbar = superpower_active(12706, true);
 
     $e__profiles = $CI->X_model->fetch(array(
-        'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $CI->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
         'x__down' => $source['e__id'], //This child source
-        'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $CI->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $CI->config->item('e___n_7358')) . ')' => null, //ACTIVE
     ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
 
-    $is_public = in_array($source['e__status'], $CI->config->item('sources_id_7357'));
-    $is_link_published = ( !$x__id || in_array($source['x__status'], $CI->config->item('sources_id_7359')));
-    $is_hidden = filter_array($e__profiles, 'e__id', '4755') || in_array($source['e__id'], $CI->config->item('sources_id_4755'));
+    $is_public = in_array($source['e__status'], $CI->config->item('e___n_7357'));
+    $is_link_published = ( !$x__id || in_array($source['x__status'], $CI->config->item('e___n_7359')));
+    $is_hidden = filter_array($e__profiles, 'e__id', '4755') || in_array($source['e__id'], $CI->config->item('e___n_4755'));
 
     if(!$session_source && (!$is_public || !$is_link_published)){
         //Not logged in, so should only see published:
@@ -1471,9 +1471,9 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
         if($has_e_editor){
             $e__portfolio_count = $CI->X_model->fetch(array(
                 'x__up' => $source['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $CI->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                'e__status IN (' . join(',', $CI->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                'e__status IN (' . join(',', $CI->config->item('e___n_7357')) . ')' => null, //PUBLIC
             ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
             if($e__portfolio_count[0]['totals'] > 0){
                 $child_counter .= '<span class="pull-right" '.( $inline_editing ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($e__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($e__portfolio_count[0]['totals']).'</span></span>';
@@ -1641,7 +1641,7 @@ function view_input_text($cache_e__id, $current_value, $object__id, $player_is_i
 
         $focus_element = '<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
         $character_counter = ''; //None
-        if(in_array($cache_e__id, $CI->config->item('sources_id_12420'))){ //IDEA TEXT INPUT SHOW ICON
+        if(in_array($cache_e__id, $CI->config->item('e___n_12420'))){ //IDEA TEXT INPUT SHOW ICON
             $icon = '<span class="icon-block">'.( $e__icon ? $e__icon : $e___12112[$cache_e__id]['m_icon'] ).'</span>';
         } else {
             $icon = $e__icon;
@@ -1681,7 +1681,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $player_
 
     foreach($e___this as $e__id => $m) {
 
-        $superpower_actives = array_intersect($CI->config->item('sources_id_10957'), $m['m_parents']);
+        $superpower_actives = array_intersect($CI->config->item('e___n_10957'), $m['m_parents']);
         $is_url_desc = ( substr($m['m_desc'], 0, 1)=='/' );
 
         //What type of URL?

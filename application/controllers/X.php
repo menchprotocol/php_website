@@ -143,7 +143,7 @@ class X extends CI_Controller
         //See what this is:
         $detected_x_type = x_detect_type($_POST['x__message']);
 
-        if(!$_POST['x__id'] && !in_array($detected_x_type['x__type'], $this->config->item('sources_id_4537'))){
+        if(!$_POST['x__id'] && !in_array($detected_x_type['x__type'], $this->config->item('e___n_4537'))){
 
             return view_json(array(
                 'status' => 0,
@@ -155,7 +155,7 @@ class X extends CI_Controller
             //See if this is duplicate to either link:
             $e_discoveries = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
-                'x__type IN (' . join(',', $this->config->item('sources_id_4537')) . ')' => null, //Player URL Links
+                'x__type IN (' . join(',', $this->config->item('e___n_4537')) . ')' => null, //Player URL Links
             ));
 
             //Are they both different?
@@ -171,7 +171,7 @@ class X extends CI_Controller
         return view_json(array(
             'status' => 1,
             'html_ui' => '<b class="montserrat doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m_icon']).'">' . $e___4592[$detected_x_type['x__type']]['m_icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m_name'] . '</b>',
-            'e_link_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('sources_id_12524')) ? '<span class="paddingup inline-block">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
+            'e_link_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('e___n_12524')) ? '<span class="paddingup inline-block">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
         ));
 
     }
@@ -205,7 +205,7 @@ class X extends CI_Controller
 
             $ideas = $this->I_model->fetch(array(
                 'i__id' => $_POST['object__id'],
-                'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+                'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
             ));
             if(!count($ideas)){
                 return view_json(array(
@@ -238,7 +238,7 @@ class X extends CI_Controller
 
             $sources = $this->E_model->fetch(array(
                 'e__id' => $_POST['object__id'],
-                'e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')' => null, //ACTIVE
+                'e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')' => null, //ACTIVE
             ));
             if(!count($sources)){
                 return view_json(array(
@@ -276,7 +276,7 @@ class X extends CI_Controller
 
             $ideas = $this->I_model->fetch(array(
                 'i__id' => $_POST['object__id'],
-                'i__status IN (' . join(',', $this->config->item('sources_id_7356')) . ')' => null, //ACTIVE
+                'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
             ));
 
             if(!count($ideas)){
@@ -330,8 +330,8 @@ class X extends CI_Controller
             //Fetch/Validate Link:
             $discoveries = $this->X_model->fetch(array(
                 'x__id' => $_POST['object__id'],
-                'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
             ));
             $x__metadata = unserialize($discoveries[0]['x__metadata']);
             if(!$x__metadata){
@@ -374,8 +374,8 @@ class X extends CI_Controller
             //Fetch/Validate Link:
             $discoveries = $this->X_model->fetch(array(
                 'x__id' => $_POST['object__id'],
-                'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
             ));
             $x__metadata = unserialize($discoveries[0]['x__metadata']);
             $field_name = ( $_POST['cache_e__id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
@@ -476,8 +476,8 @@ class X extends CI_Controller
 
                 //Mark as discover If not previously:
                 $discovery_completes = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('sources_id_12229')) . ')' => null, //DISCOVER COMPLETE
+                    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('e___n_12229')) . ')' => null, //DISCOVER COMPLETE
                     'x__player' => $session_source['e__id'],
                     'x__left' => $ideas[0]['i__id'],
                 ));
@@ -513,13 +513,13 @@ class X extends CI_Controller
         //Make sure not a select idea:
         if(!count($this->I_model->fetch(array(
             'i__id' => $current_i__id,
-            'i__type IN (' . join(',', $this->config->item('sources_id_7712')) . ')' => null, //SELECT IDEA
+            'i__type IN (' . join(',', $this->config->item('e___n_7712')) . ')' => null, //SELECT IDEA
         )))){
             //FIND NEXT IDEAS
             foreach($this->X_model->fetch(array(
-                'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('sources_id_4486')) . ')' => null, //IDEA LINKS
+                'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $previous_level_id,
             ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $next_idea){
                 if($next_idea['i__id']==$i__id){
@@ -560,7 +560,7 @@ class X extends CI_Controller
 
             return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
-        } elseif(!in_array($ideas[0]['i__status'], $this->config->item('sources_id_7355') /* PUBLIC */)){
+        } elseif(!in_array($ideas[0]['i__status'], $this->config->item('e___n_7355') /* PUBLIC */)){
 
             if(superpower_assigned(10939)){
 
@@ -638,7 +638,7 @@ class X extends CI_Controller
         //Validate Idea:
         $ideas = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
         ));
         if(count($ideas)<1){
             return view_json(array(
@@ -670,8 +670,8 @@ class X extends CI_Controller
 
         //Delete previous answer(s):
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //DISCOVER COIN
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $ideas[0]['i__id'],
             'x__player' => $session_source['e__id'],
         )) as $discovery_progress){
@@ -724,7 +724,7 @@ class X extends CI_Controller
         //Validate/Fetch idea:
         $ideas = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
         ));
         if(count($ideas) < 1){
             return view_json(array(
@@ -735,8 +735,8 @@ class X extends CI_Controller
 
         //Delete previous answer(s):
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //DISCOVER COIN
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('e___n_6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $ideas[0]['i__id'],
             'x__player' => $session_source['e__id'],
         )) as $discovery_progress){
@@ -796,8 +796,8 @@ class X extends CI_Controller
 
         //Fetch their current progress links:
         $progress_links = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('sources_id_12227')) . ')' => null,
+            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('e___n_12227')) . ')' => null,
             'x__player' => $session_source['e__id'],
         ), array(), 0);
 
@@ -857,7 +857,7 @@ class X extends CI_Controller
 
         $ideas = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
         ));
         if (!count($ideas)) {
             return view_json(array(
@@ -872,7 +872,7 @@ class X extends CI_Controller
             'x__up' => $session_source['e__id'],
             'x__right' => $_POST['i__id'],
             'x__type' => 12896, //SAVED
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
         )) as $remove_saved){
             $removed++;
             $this->X_model->update($remove_saved['x__id'], array(
@@ -924,7 +924,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing idea ID',
             ));
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('sources_id_13414'))) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('e___n_13414'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Interaction Type',
@@ -975,7 +975,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing sorting ideas',
             ));
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('sources_id_13413'))) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('e___n_13413'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Interaction Type',

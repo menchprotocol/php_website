@@ -4,9 +4,9 @@ if(isset($_GET['update_user_icons'])){
 
     $base_filters = array(
         'x__up' => 4430, //Players
-        'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
     );
 
     if(!isset($_GET['force'])) {

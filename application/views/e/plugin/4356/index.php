@@ -11,7 +11,7 @@ $filters = array();
 if($i__id > 0){
     $filters['i__id'] = $i__id;
 } else {
-    $filters['i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')'] = null; //PUBLIC
+    $filters['i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')'] = null; //PUBLIC
 }
 
 foreach($this->I_model->fetch($filters) as $in){
@@ -19,7 +19,7 @@ foreach($this->I_model->fetch($filters) as $in){
 
     //First see if manually updated:
     if(count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
             'x__type' => 10650,
             'x__right' => $i__id,
         ))) && $in['i__duration']!=config_var(12176)){
@@ -51,9 +51,9 @@ foreach($this->I_model->fetch($filters) as $in){
 
     //Then count the title of next ideas:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-        'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+        'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $ideas_next){
         $this_time = words_to_seconds($ideas_next['i__title']);
@@ -67,7 +67,7 @@ foreach($this->I_model->fetch($filters) as $in){
 
     //Fetch All Messages for this:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $in['i__id'],
     ), array(), 0, 0, array('x__sort' => 'ASC')) as $message){
@@ -87,9 +87,9 @@ foreach($this->I_model->fetch($filters) as $in){
             //Yes, see
             //Source Profile
             foreach($this->X_model->fetch(array(
-                'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
-                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('sources_id_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
+                'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('e___n_12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                 'x__down' => $message['x__up'],
             ), array('x__up'), 0, 0, array('e__id' => 'ASC' /* Hack to get Text first */)) as $e_profile) {
 

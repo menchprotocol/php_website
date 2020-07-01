@@ -2,7 +2,7 @@
 
 //SOURCE LIST DUPLICATES
 
-$q = $this->db->query('select en1.* from mench__e en1 where (select count(*) from mench__e en2 where en2.e__title = en1.e__title AND en2.e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ')) > 1 AND en1.e__status IN (' . join(',', $this->config->item('sources_id_7358')) . ') ORDER BY en1.e__title ASC');
+$q = $this->db->query('select en1.* from mench__e en1 where (select count(*) from mench__e en2 where en2.e__title = en1.e__title AND en2.e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')) > 1 AND en1.e__status IN (' . join(',', $this->config->item('e___n_7358')) . ') ORDER BY en1.e__title ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){
