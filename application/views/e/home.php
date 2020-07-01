@@ -4,23 +4,37 @@
 
     $load_max = config_var(13206);
     $show_max = config_var(11986);
+    $select = 'COUNT(x__id) as totals, e__id, e__title, e__icon, e__metadata, e__status, e__weight';
+    $group_by =                       'e__id, e__title, e__icon, e__metadata, e__status, e__weight';
 
-    //SOURCE HOME
+    //SOURCE LEADERBOARD
     foreach($this->config->item('sources__13207') as $e__id => $m) {
 
         if(in_array($e__id, $this->config->item('sources_id_13365'))){
 
-            //SOURCE GROUPS
-            //TODO: Expand to include x__down for IDEA COINS (Currently only counts x__up)
+            //WITH MOST IDEAS
             $e_list = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('sources_id_12273')) . ')' => null, //IDEA COIN
                 ' EXISTS (SELECT 1 FROM mench__x WHERE e__id=x__down AND x__up IN (' . join(',', $this->config->item('sources_id_'.$e__id)) . ') AND x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND x__status IN ('.join(',', $this->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
-            ), array('x__up'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(x__id) as totals, e__id, e__title, e__icon, e__metadata, e__status, e__weight', 'e__id, e__title, e__icon, e__metadata, e__status, e__weight');
+            ), array('x__up'), $load_max, 0, array('totals' => 'DESC'), $select, $group_by);
+            //TODO: Expand to include x__down for IDEA COINS (Currently only counts x__up)
+
+
+        } elseif(in_array($e__id, $this->config->item('sources_id_13439'))){
+
+            //WITH MOST DISCOVERIES
+            $e_list = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //DISCOVER COIN
+                ' EXISTS (SELECT 1 FROM mench__x WHERE e__id=x__down AND x__up IN (' . join(',', $this->config->item('sources_id_'.$e__id)) . ') AND x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND x__status IN ('.join(',', $this->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
+            ), array('x__up'), $load_max, 0, array('totals' => 'DESC'), $select, $group_by);
 
         } else {
+
             //Unknown
             continue;
+
         }
 
         if(!count($e_list)){

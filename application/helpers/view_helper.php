@@ -1491,7 +1491,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
 
 
     //SOURCE
-    $ui .= '<td class="MENCHcolumn12">';
+    $ui .= '<td class="MENCHcolumn1">';
 
     $e_url = ( $is_x_progress ? '/'.$CI->uri->segment(1).'?focus__source='.$source['e__id'] : '/@'.$source['e__id'] );
 
@@ -1528,7 +1528,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
 
 
     //IDEA
-    $ui .= '<td class="MENCHcolumn3 source">';
+    $ui .= '<td class="MENCHcolumn2 source">';
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
@@ -1559,9 +1559,18 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
     $ui .= '</div>';
     $ui .= '</div>';
 
-
     $ui .= view_coins_count_source(0, $source['e__id']);
     $ui .= '</td>';
+
+
+
+
+    //DISCOVER
+    $ui .= '<td class="MENCHcolumn3 discover">';
+    $ui .= view_coins_count_discover(0, $source['e__id']);
+    $ui .= '</td>';
+
+
 
 
     $ui .= '</tr></table>';
