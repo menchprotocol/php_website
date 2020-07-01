@@ -17,9 +17,9 @@ class X extends CI_Controller
     function index(){
 
         //Load header:
-        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
-            'title' => $sources__11035[13210]['m_name'],
+            'title' => $e___11035[13210]['m_name'],
         ));
         $this->load->view('x/home');
         $this->load->view('footer');
@@ -38,10 +38,10 @@ class X extends CI_Controller
          * */
 
         //Load header:
-        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
         $this->load->view('header', array(
-            'title' => $sources__11035[4341]['m_name'],
+            'title' => $e___11035[4341]['m_name'],
         ));
         $this->load->view('x/x');
         $this->load->view('footer');
@@ -138,7 +138,7 @@ class X extends CI_Controller
         }
 
         //Will Contain every possible Player Link Connector:
-        $sources__4592 = $this->config->item('sources__4592');
+        $e___4592 = $this->config->item('e___4592');
 
         //See what this is:
         $detected_x_type = x_detect_type($_POST['x__message']);
@@ -170,7 +170,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'html_ui' => '<b class="montserrat doupper '.extract_icon_color($sources__4592[$detected_x_type['x__type']]['m_icon']).'">' . $sources__4592[$detected_x_type['x__type']]['m_icon'] . ' ' . $sources__4592[$detected_x_type['x__type']]['m_name'] . '</b>',
+            'html_ui' => '<b class="montserrat doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m_icon']).'">' . $e___4592[$detected_x_type['x__type']]['m_icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m_name'] . '</b>',
             'e_link_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('sources_id_12524')) ? '<span class="paddingup inline-block">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
         ));
 
@@ -183,7 +183,7 @@ class X extends CI_Controller
 
         //Authenticate Player:
         $session_source = superpower_assigned();
-        $sources__12112 = $this->config->item('sources__12112');
+        $e___12112 = $this->config->item('e___12112');
 
         if (!$session_source) {
 
@@ -291,7 +291,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $sources__12112[$_POST['cache_e__id']]['m_name'].' must be a number greater than zero.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' must be a number greater than zero.',
                     'original_val' => $ideas[0]['i__duration'],
                 ));
 
@@ -300,7 +300,7 @@ class X extends CI_Controller
                 $hours = rtrim(number_format((config_var(4356)/3600), 1), '.0');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $sources__12112[$_POST['cache_e__id']]['m_name'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
                     'original_val' => $ideas[0]['i__duration'],
                 ));
 
@@ -308,7 +308,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $sources__12112[$_POST['cache_e__id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
                     'original_val' => $ideas[0]['i__duration'],
                 ));
 
@@ -350,7 +350,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $sources__12112[$_POST['cache_e__id']]['m_name'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
                     'original_val' => ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : 0 ),
                 ));
 
@@ -361,7 +361,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $session_source['e__id'], 10663 /* Idea Link updated Marks */, $sources__12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $session_source['e__id'], 10663 /* Idea Link updated Marks */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return view_json(array(
                     'status' => 1,
@@ -392,7 +392,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $sources__12112[$_POST['cache_e__id']]['m_name'].' must be an integer between 0 and 100.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' must be an integer between 0 and 100.',
                     'original_val' => ( isset($x__metadata[$field_name]) ? $x__metadata[$field_name] : '' ),
                 ));
 
@@ -403,7 +403,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $session_source['e__id'], 10664 /* Idea Link updated Score */, $sources__12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $session_source['e__id'], 10664 /* Idea Link updated Score */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return view_json(array(
                     'status' => 1,
@@ -430,7 +430,7 @@ class X extends CI_Controller
         //Adds Idea to the Players Discovery
 
         $session_source = superpower_assigned();
-        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
         //Check to see if added to Discovery for logged-in users:
         if(!$session_source){
@@ -445,10 +445,10 @@ class X extends CI_Controller
         if(!$in_my_discoveries){
             $i__id_added = $this->X_model->start($session_source['e__id'], $i__id);
             if($i__id_added){
-                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>Successfully added to '.$sources__11035[12969]['m_name'].'. Continue below:</div>';
+                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>Successfully added to '.$e___11035[12969]['m_name'].'. Continue below:</div>';
             } else {
                 //Failed to add to Discovery:
-                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$sources__11035[12969]['m_icon'].'</span>FAILED to add to '.$sources__11035[12969]['m_name'].'.</div>');
+                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>FAILED to add to '.$e___11035[12969]['m_name'].'.</div>');
             }
         }
 
@@ -497,8 +497,8 @@ class X extends CI_Controller
         if($next_i__id > 0){
             return redirect_message('/'.$next_i__id.'?previous_discover='.( isset($_GET['previous_discover']) && $_GET['previous_discover']>0 ? $_GET['previous_discover'] : $i__id ));
         } else {
-            $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
-            return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed everything in '.$sources__11035[12969]['m_name'].'.</div></div>');
+            $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+            return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed everything in '.$e___11035[12969]['m_name'].'.</div></div>');
         }
 
     }

@@ -1,6 +1,6 @@
 <?php
 
-$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 echo '<div class="container">';
 echo '<h1 style="padding-top:5px;">🙈 PAGE NOT FOUND</h1>';

@@ -4,8 +4,8 @@
 <div class="container">
     <?php
 
-    $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
-    $sources__2738 = $this->config->item('sources__2738'); //MENCH
+    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+    $e___2738 = $this->config->item('e___2738'); //MENCH
 
 
     $player_ideas = $this->X_model->fetch(array(
@@ -19,13 +19,13 @@
 
 
     //MY IDEAS
-    echo '<div class="discover-topic"><span class="icon-block">'.$sources__11035[10573]['m_icon'].'</span>'.$sources__11035[10573]['m_name'].'</div>';
+    echo '<div class="discover-topic"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_name'].'</div>';
 
     //ADD IDEAS
     echo '<div class="list-group">';
     echo '<div class="list-group-item list-adder itemidea">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick montserrat algolia_search dotransparent add-input"
                            maxlength="' . config_var(4736) . '"

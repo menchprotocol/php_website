@@ -164,16 +164,16 @@ class I_model extends CI_Model
                     } else {
                         $x__type = 6182; //Idea Deleted
                     }
-                    $sources__4737 = $this->config->item('sources__4737'); //Idea Status
-                    $x__message = view_db_field($key) . ' updated from [' . $sources__4737[$before_data[0][$key]]['m_name'] . '] to [' . $sources__4737[$value]['m_name'] . ']';
+                    $e___4737 = $this->config->item('e___4737'); //Idea Status
+                    $x__message = view_db_field($key) . ' updated from [' . $e___4737[$before_data[0][$key]]['m_name'] . '] to [' . $e___4737[$value]['m_name'] . ']';
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
 
                 } elseif($key=='i__type'){
 
                     $x__type = 10651; //Idea updated Subtype
-                    $sources__7585 = $this->config->item('sources__7585'); //Idea Subtypes
-                    $x__message = view_db_field($key) . ' updated from [' . $sources__7585[$before_data[0][$key]]['m_name'] . '] to [' . $sources__7585[$value]['m_name'] . ']';
+                    $e___7585 = $this->config->item('e___7585'); //Idea Subtypes
+                    $x__message = view_db_field($key) . ' updated from [' . $e___7585[$before_data[0][$key]]['m_name'] . '] to [' . $e___7585[$value]['m_name'] . ']';
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
 
@@ -954,10 +954,10 @@ class I_model extends CI_Model
             '__i___max_discoveries' => 1,
             '__i___min_seconds' => $idea['i__duration'],
             '__i___max_seconds' => $idea['i__duration'],
-            '__i___authors' => array(),
-            '__i___experts' => array(),
-            '__i___content' => array(),
-            '__i___certificates' => array(),
+            '__i___13202' => array(),
+            '__i___13339' => array(),
+            '__i___3000' => array(),
+            '__i___7545' => array(),
             '__i___ids' => array($idea['i__id']), //Keeps Track of the IDs scanned here
         );
 
@@ -981,23 +981,23 @@ class I_model extends CI_Model
                     $e_metadata_experts = $this->E_model->metadata_experts($ref_sources[0]);
 
                     //CONTENT CHANNELS
-                    foreach($e_metadata_experts['__i___content'] as $e__id => $e_content) {
-                        if (!isset($metadata_this['__i___content'][$e__id])) {
-                            $metadata_this['__i___content'][$e__id] = $e_content;
+                    foreach($e_metadata_experts['__i___3000'] as $e__id => $e_content) {
+                        if (!isset($metadata_this['__i___3000'][$e__id])) {
+                            $metadata_this['__i___3000'][$e__id] = $e_content;
                         }
                     }
 
                     //EXPERT PEOPLE/ORGANIZATIONS
-                    foreach($e_metadata_experts['__i___experts'] as $e__id => $e_expert) {
-                        if (!isset($metadata_this['__i___experts'][$e__id])) {
-                            $metadata_this['__i___experts'][$e__id] = $e_expert;
+                    foreach($e_metadata_experts['__i___13339'] as $e__id => $e_expert) {
+                        if (!isset($metadata_this['__i___13339'][$e__id])) {
+                            $metadata_this['__i___13339'][$e__id] = $e_expert;
                         }
                     }
                 }
             }
 
             //PLAYERS:
-            if (!isset($metadata_this['__i___authors'][$fetched_source['x__player']])) {
+            if (!isset($metadata_this['__i___13202'][$fetched_source['x__player']])) {
                 //Fetch Player:
                 foreach($this->X_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
@@ -1005,7 +1005,7 @@ class I_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 ), array('x__down'), 1) as $player){
-                    $metadata_this['__i___authors'][$fetched_source['x__player']] = $player;
+                    $metadata_this['__i___13202'][$fetched_source['x__player']] = $player;
                 }
             }
 
@@ -1019,8 +1019,8 @@ class I_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $source) {
-            if (!isset($metadata_this['__i___certificates'][$source['e__id']])) {
-                $metadata_this['__i___certificates'][$source['e__id']] = $source;
+            if (!isset($metadata_this['__i___7545'][$source['e__id']])) {
+                $metadata_this['__i___7545'][$source['e__id']] = $source;
             }
         }
 
@@ -1041,7 +1041,7 @@ class I_model extends CI_Model
         ), array('x__right'), 0) as $ideas_next){
 
             //Players
-            if (!isset($metadata_this['__i___authors'][$ideas_next['x__player']])) {
+            if (!isset($metadata_this['__i___13202'][$ideas_next['x__player']])) {
                 //Fetch Player:
                 foreach($this->X_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
@@ -1049,7 +1049,7 @@ class I_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 ), array('x__down'), 1) as $player){
-                    $metadata_this['__i___authors'][$ideas_next['x__player']] = $player;
+                    $metadata_this['__i___13202'][$ideas_next['x__player']] = $player;
                 }
             }
 
@@ -1110,30 +1110,30 @@ class I_model extends CI_Model
 
 
             //PLAYERS
-            foreach($metadata_recursion['__i___authors'] as $e__id => $e_source) {
-                if (!isset($metadata_this['__i___authors'][$e__id])) {
-                    $metadata_this['__i___authors'][$e__id] = $e_source;
+            foreach($metadata_recursion['__i___13202'] as $e__id => $e_source) {
+                if (!isset($metadata_this['__i___13202'][$e__id])) {
+                    $metadata_this['__i___13202'][$e__id] = $e_source;
                 }
             }
 
             //EXPERT CONTENT
-            foreach($metadata_recursion['__i___content'] as $e__id => $e_content) {
-                if (!isset($metadata_this['__i___content'][$e__id])) {
-                    $metadata_this['__i___content'][$e__id] = $e_content;
+            foreach($metadata_recursion['__i___3000'] as $e__id => $e_content) {
+                if (!isset($metadata_this['__i___3000'][$e__id])) {
+                    $metadata_this['__i___3000'][$e__id] = $e_content;
                 }
             }
 
             //EXPERT SOURCES
-            foreach($metadata_recursion['__i___experts'] as $e__id => $e_expert) {
-                if (!isset($metadata_this['__i___experts'][$e__id])) {
-                    $metadata_this['__i___experts'][$e__id] = $e_expert;
+            foreach($metadata_recursion['__i___13339'] as $e__id => $e_expert) {
+                if (!isset($metadata_this['__i___13339'][$e__id])) {
+                    $metadata_this['__i___13339'][$e__id] = $e_expert;
                 }
             }
 
             //CERTIFICATES
-            foreach($metadata_recursion['__i___certificates'] as $e__id => $e_certificate) {
-                if (!isset($metadata_this['__i___certificates'][$e__id])) {
-                    $metadata_this['__i___certificates'][$e__id] = $e_certificate;
+            foreach($metadata_recursion['__i___7545'] as $e__id => $e_certificate) {
+                if (!isset($metadata_this['__i___7545'][$e__id])) {
+                    $metadata_this['__i___7545'][$e__id] = $e_certificate;
                 }
             }
 
@@ -1166,10 +1166,10 @@ class I_model extends CI_Model
             'i___max_discoveries' => intval($metadata_this['__i___max_discoveries']),
             'i___min_seconds' => intval($metadata_this['__i___min_seconds']),
             'i___max_seconds' => intval($metadata_this['__i___max_seconds']),
-            'i___authors' => $metadata_this['__i___authors'],
-            'i___experts' => $metadata_this['__i___experts'],
-            'i___content' => $metadata_this['__i___content'],
-            'i___certificates' => $metadata_this['__i___certificates'],
+            'i___13202' => $metadata_this['__i___13202'], //Mench Ideators
+            'i___13339' => $metadata_this['__i___13339'], //Expert Authors
+            'i___3000' => $metadata_this['__i___3000'], //Expert Content
+            'i___7545' => $metadata_this['__i___7545'], //Certificates
         ));
 
         //Return data:

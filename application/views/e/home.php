@@ -8,7 +8,7 @@
     $group_by =                       'e__id, e__title, e__icon, e__metadata, e__status, e__weight';
 
     //SOURCE LEADERBOARD
-    foreach($this->config->item('sources__13207') as $e__id => $m) {
+    foreach($this->config->item('e___13207') as $e__id => $m) {
 
         if(in_array($e__id, $this->config->item('sources_id_13365'))){
 

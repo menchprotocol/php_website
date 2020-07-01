@@ -27,9 +27,9 @@ class E extends CI_Controller
             ));
         }
 
-        $sources__11035 = $this->config->item('sources__11035');
+        $e___11035 = $this->config->item('e___11035');
         $this->load->view('header', array(
-            'title' => $sources__11035[13207]['m_name'],
+            'title' => $e___11035[13207]['m_name'],
         ));
         $this->load->view('e/home', array(
             'session_source' => $session_source,
@@ -403,10 +403,10 @@ class E extends CI_Controller
                 'x__type' => $_POST['note_type_id'],
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             )))){
-                $sources__7551 = $this->config->item('sources__7551');
+                $e___7551 = $this->config->item('e___7551');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $sources[0]['e__title'].' is already added as idea '.$sources__7551[$_POST['note_type_id']]['m_name'],
+                    'message' => $sources[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m_name'],
                 ));
             }
 
@@ -681,7 +681,7 @@ class E extends CI_Controller
         //Toggles the advance session variable for the player on/off for logged-in players:
         $session_source = superpower_assigned(10939);
         $superpower_e__id = intval($superpower_e__id);
-        $sources__10957 = $this->config->item('sources__10957');
+        $e___10957 = $this->config->item('e___10957');
 
         if(!$session_source){
 
@@ -695,7 +695,7 @@ class E extends CI_Controller
             //Access not authorized:
             return view_json(array(
                 'status' => 0,
-                'message' => 'You have not yet unlocked the superpower of '.$sources__10957[$superpower_e__id]['m_name'],
+                'message' => 'You have not yet unlocked the superpower of '.$e___10957[$superpower_e__id]['m_name'],
             ));
 
         }
@@ -807,12 +807,12 @@ class E extends CI_Controller
             $e_count_connections = e_count_connections($_POST['e__id'], false);
             if(count($e_count_connections) > 0){
 
-                $sources__6194 = $this->config->item('sources__6194');
+                $e___6194 = $this->config->item('e___6194');
 
                 //Construct the message:
                 $error_message = 'Cannot be deleted because source is referenced as ';
                 foreach($e_count_connections as $e__id=>$e_count){
-                    $error_message .= $sources__6194[$e__id]['m_name'].' '.view_number($e_count).' times ';
+                    $error_message .= $e___6194[$e__id]['m_name'].' '.view_number($e_count).' times ';
                 }
 
                 return view_json(array(
@@ -1210,7 +1210,7 @@ class E extends CI_Controller
                 'x__up' => $_POST['selected_e__id'],
                 'x__down' => $session_source['e__id'],
                 'x__player' => $session_source['e__id'],
-                'x__type' => e_link_type(),
+                'x__type' => e_x__type(),
             ));
         }
 
@@ -1263,7 +1263,7 @@ class E extends CI_Controller
         //Validate:
         $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'].' source';
         $validated = false;
-        foreach($this->config->item('sources__12279') as $e__id => $m) {
+        foreach($this->config->item('e___12279') as $e__id => $m) {
             if(substr_count($m['m_icon'], $icon_new_css) == 1){
                 $validated = true;
                 break;
@@ -1387,7 +1387,7 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__player' => $session_source['e__id'],
                 'x__down' => $session_source['e__id'],
-                'x__type' => e_link_type($_POST['e_email']),
+                'x__type' => e_x__type($_POST['e_email']),
                 'x__up' => 3288, //Mench Email
                 'x__message' => $_POST['e_email'],
             ), true);
@@ -1481,7 +1481,7 @@ class E extends CI_Controller
 
             //Create new link:
             $this->X_model->create(array(
-                'x__type' => e_link_type($hashed_password),
+                'x__type' => e_x__type($hashed_password),
                 'x__up' => 3286, //Password
                 'x__player' => $session_source['e__id'],
                 'x__down' => $session_source['e__id'],
@@ -1545,10 +1545,10 @@ class E extends CI_Controller
             }
         }
 
-        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
             'hide_header' => 1,
-            'title' => $sources__11035[4269]['m_name'],
+            'title' => $e___11035[4269]['m_name'],
         ));
         $this->load->view('e/signin', array(
             'sign_i__id' => $i__id,
@@ -1652,13 +1652,13 @@ class E extends CI_Controller
         //Add Player:
         $this->X_model->create(array(
             'x__up' => 4430, //MENCH PLAYERS
-            'x__type' => e_link_type(),
+            'x__type' => e_x__type(),
             'x__player' => $added_source['new_source']['e__id'],
             'x__down' => $added_source['new_source']['e__id'],
         ));
 
         $this->X_model->create(array(
-            'x__type' => e_link_type(trim(strtolower($_POST['input_email']))),
+            'x__type' => e_x__type(trim(strtolower($_POST['input_email']))),
             'x__message' => trim(strtolower($_POST['input_email'])),
             'x__up' => 3288, //Mench Email
             'x__player' => $added_source['new_source']['e__id'],
@@ -1666,7 +1666,7 @@ class E extends CI_Controller
         ));
         $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_source['new_source']['e__id']));
         $this->X_model->create(array(
-            'x__type' => e_link_type($hash),
+            'x__type' => e_x__type($hash),
             'x__message' => $hash,
             'x__up' => 3286, //Mench Password
             'x__player' => $added_source['new_source']['e__id'],
@@ -1933,8 +1933,8 @@ class E extends CI_Controller
         //This is a new email, send invitation to join:
 
         ##Email Subject
-        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
-        $subject = 'MENCH '.$sources__11035[11068]['m_name'];
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+        $subject = 'MENCH '.$e___11035[11068]['m_name'];
 
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['e__title']).' 👋</div><br /><br />';
@@ -2062,9 +2062,9 @@ class E extends CI_Controller
         if($plugin_e__id < 1){
 
             //List Plugins to choose from:
-            $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+            $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
             $this->load->view('header', array(
-                'title' => $sources__11035[6287]['m_name'],
+                'title' => $e___11035[6287]['m_name'],
             ));
             $this->load->view('e/plugin_home');
             $this->load->view('footer');
@@ -2087,8 +2087,8 @@ class E extends CI_Controller
 
             //Needs extra superpowers?
             boost_power();
-            $sources__6287 = $this->config->item('sources__6287'); //MENCH PLUGIN
-            $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $sources__6287[$plugin_e__id]['m_parents']);
+            $e___6287 = $this->config->item('e___6287'); //MENCH PLUGIN
+            $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $e___6287[$plugin_e__id]['m_parents']);
             if($is_player_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
             }
@@ -2111,7 +2111,7 @@ class E extends CI_Controller
                 //Regular UI:
                 //Load Plugin:
                 $this->load->view('header', array(
-                    'title' => strip_tags($sources__6287[$plugin_e__id]['m_icon']).$sources__6287[$plugin_e__id]['m_name'].' | PLUGIN',
+                    'title' => strip_tags($e___6287[$plugin_e__id]['m_icon']).$e___6287[$plugin_e__id]['m_name'].' | PLUGIN',
                 ));
                 $this->load->view('e/plugin_frame', $view_data);
                 $this->load->view('footer');
@@ -2156,14 +2156,14 @@ class E extends CI_Controller
 
 
         //Load AND/OR Ideas:
-        $sources__7585 = $this->config->item('sources__7585'); // Idea Subtypes
-        $sources__4737 = $this->config->item('sources__4737'); // Idea Status
+        $e___7585 = $this->config->item('e___7585'); // Idea Subtypes
+        $e___4737 = $this->config->item('e___4737'); // Idea Status
 
 
         //Return report:
         return view_json(array(
             'status' => 1,
-            'message' => '<h3>'.$sources__7585[$ideas[0]['i__type']]['m_icon'].' '.$sources__4737[$ideas[0]['i__status']]['m_icon'].' '.view_i_title($ideas[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $ideas[0]['i__type']),
+            'message' => '<h3>'.$e___7585[$ideas[0]['i__type']]['m_icon'].' '.$e___4737[$ideas[0]['i__status']]['m_icon'].' '.view_i_title($ideas[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $ideas[0]['i__type']),
         ));
 
 

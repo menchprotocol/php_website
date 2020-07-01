@@ -36,7 +36,7 @@ foreach($this->E_model->fetch() as $en) {
     if($is_discover && !$is_player){
         $stats['discover_not_e_count']++;
         $this->X_model->create(array(
-            'x__type' => e_link_type(),
+            'x__type' => e_x__type(),
             'x__up' => 4430, //MENCH PLAYERS
             'x__player' => $en['e__id'],
             'x__down' => $en['e__id'],

@@ -201,7 +201,7 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     }
 }
 
-function e_link_type($string = null){
+function e_x__type($string = null){
     $detected_x_type = x_detect_type($string);
     if ($detected_x_type['status']){
         return $detected_x_type['x__type'];
@@ -378,7 +378,7 @@ function e_count_connections($e__id, $return_html = true){
     //Checks where in the database/platform a source might be referenced
     $e_count_connections = array(); //Holds return values
     $CI =& get_instance();
-    $sources__6194 = $CI->config->item('sources__6194');
+    $e___6194 = $CI->config->item('e___6194');
 
     foreach(array(
         4737 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status=',
@@ -393,7 +393,7 @@ function e_count_connections($e__id, $return_html = true){
         foreach($query->result() as $row)
         {
             if($row->totals > 0){
-                $e_count_connections[$e_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($sources__6194[$e_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$sources__6194[$e_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$sources__6194[$e_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
+                $e_count_connections[$e_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($e___6194[$e_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$e___6194[$e_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$e___6194[$e_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
             }
         }
 
@@ -401,7 +401,7 @@ function e_count_connections($e__id, $return_html = true){
 
     //Plugin?
     if(superpower_active(12699, true) && in_array($e__id, $CI->config->item('sources_id_6287'))){
-        $e_count_connections[6287] = ( $return_html ? '<a href="/e/plugin/'.$e__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$sources__6194[6287]['m_name'].'">'.$sources__6194[6287]['m_icon'].'</a>' : 1 );
+        $e_count_connections[6287] = ( $return_html ? '<a href="/e/plugin/'.$e__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$e___6194[6287]['m_name'].'">'.$e___6194[6287]['m_icon'].'</a>' : 1 );
     }
 
     return $e_count_connections;
@@ -518,7 +518,7 @@ function filter_cache_group($search_e__id, $cache_e__id){
     //Determines which category an source belongs to
 
     $CI =& get_instance();
-    foreach($CI->config->item('sources__'.$cache_e__id) as $e__id => $m) {
+    foreach($CI->config->item('e___'.$cache_e__id) as $e__id => $m) {
         if(in_array($search_e__id, $CI->config->item('sources_id_'.$e__id))){
             return $m;
         }
@@ -528,8 +528,8 @@ function filter_cache_group($search_e__id, $cache_e__id){
 
 function config_var($e__id){
     $CI =& get_instance();
-    $sources__6404 = $CI->config->item('sources__6404');
-    return $sources__6404[$e__id]['m_desc'];
+    $e___6404 = $CI->config->item('e___6404');
+    return $e___6404[$e__id]['m_desc'];
 }
 
 function update_description($before_string, $after_string){
@@ -538,8 +538,8 @@ function update_description($before_string, $after_string){
 
 function random_avatar(){
     $CI =& get_instance();
-    $sources__10956 = $CI->config->item('sources__10956');
-    return $sources__10956[array_rand($sources__10956)]['m_icon'];
+    $e___10956 = $CI->config->item('e___10956');
+    return $e___10956[array_rand($e___10956)]['m_icon'];
 }
 
 function format_percentage($percent){
@@ -741,8 +741,8 @@ function x_coins_idea($x__type, $i__id, $load_page = 0){
     } else {
 
         //No Results:
-        $sources__12467 = $CI->config->item('sources__12467'); //MENCH COINS
-        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$sources__12467[$x__type]['m_name'].' yet</div>';
+        $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
+        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$e___12467[$x__type]['m_name'].' yet</div>';
 
     }
 
@@ -863,8 +863,8 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
     } else {
 
         //No Results:
-        $sources__12467 = $CI->config->item('sources__12467'); //MENCH COINS
-        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$sources__12467[$x__type]['m_name'].' yet</div>';
+        $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
+        $ui = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Have not earned any '.$e___12467[$x__type]['m_name'].' yet</div>';
 
     }
 
@@ -878,16 +878,16 @@ function i_stats($i__metadata){
     //Calculates average based on metadata:
     $metadata = unserialize($i__metadata);
 
-    $array_7545 = ( isset($metadata['i___certificates']) ? $metadata['i___certificates'] : array() );
+    $array_7545 = ( isset($metadata['i___7545']) ? $metadata['i___7545'] : array() );
 
 
-    $array_13339 = ( isset($metadata['i___experts']) ? $metadata['i___experts'] : array() );
+    $array_13339 = ( isset($metadata['i___13339']) ? $metadata['i___13339'] : array() );
     usort($array_13339, 'sortByWeight');
 
-    $array_3000 = ( isset($metadata['i___content']) ? $metadata['i___content'] : array() );
+    $array_3000 = ( isset($metadata['i___3000']) ? $metadata['i___3000'] : array() );
     usort($array_3000, 'sortByWeight');
 
-    $array_13202 = ( isset($metadata['i___authors']) ? $metadata['i___authors'] : array() );
+    $array_13202 = ( isset($metadata['i___13202']) ? $metadata['i___13202'] : array() );
     usort($array_13202, 'sortByWeight');
 
     $source_count = count($array_13202) + count($array_3000) + count($array_13339);
@@ -1271,14 +1271,14 @@ function e__title_validate($string, $x__type = 0){
 
     //Validate:
     $CI =& get_instance();
-    $sources__4592 = $CI->config->item('sources__4592');
+    $e___4592 = $CI->config->item('e___4592');
     $errors = false;
     $e__title_clean = trim($string);
 
     if(!strlen(trim($string))){
 
         if($x__type){
-            $e__title_clean = $sources__4592[$x__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+            $e__title_clean = $e___4592[$x__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1289,7 +1289,7 @@ function e__title_validate($string, $x__type = 0){
     } elseif(strlen(trim($string)) < config_var(12232)){
 
         if($x__type){
-            $e__title_clean = $sources__4592[$x__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+            $e__title_clean = $e___4592[$x__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1483,7 +1483,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
     }
 
 
-    $sources__7585 = $CI->config->item('sources__7585'); // Idea Subtypes
+    $e___7585 = $CI->config->item('e___7585'); // Idea Subtypes
 
     //Define the support objects indexed on algolia:
     $object__id = intval($object__id);

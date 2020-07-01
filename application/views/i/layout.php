@@ -1,6 +1,6 @@
 <?php
-$sources__2738 = $this->config->item('sources__2738');
-$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$e___2738 = $this->config->item('e___2738');
+$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 $player_is_i_source = player_is_i_source($i_focus['i__id']);
 $is_active = in_array($i_focus['i__status'], $this->config->item('sources_id_7356'));
@@ -57,7 +57,7 @@ foreach($ideas_previous as $previous_idea) {
 if( $player_is_i_source && $is_active && $i_focus['i__id']!=config_var(13405)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick montserrat add-input algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
@@ -96,7 +96,7 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_in
 echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $player_is_i_source && $is_active, 0).'</div>';
 
 //IDEA DISCOVER (IF PUBLIC)
-echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-discover btn-circle" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__11035[12750]['m_name'].'">'.$sources__11035[12750]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-discover btn-circle" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[12750]['m_name'].'">'.$e___11035[12750]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
@@ -107,7 +107,7 @@ echo '<div class="doclear">&nbsp;</div>';
 $tab_group = 11018;
 $tab_content = '';
 echo '<ul class="nav nav-pills nav-sm">';
-foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
+foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
     //Is this a caret menu?
@@ -150,7 +150,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         if($player_is_i_source && $is_active){
             $this_tab .= '<div class="list-group-item list-adder itemidea '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4535]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control ideaadder-level-2-child form-control-thick add-input montserrat algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
@@ -182,7 +182,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         if($player_is_i_source && $is_active && !$disable_manual_add) {
             $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-only source-idea-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $sources__2738[4536]['m_icon'] . '</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___2738[4536]['m_icon'] . '</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
@@ -239,7 +239,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $input_options = '';
         $counter = 0;
 
-        foreach($this->config->item('sources__12589') as $action_e__id => $e_list_action) {
+        foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
 
             $counter++;
             $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m_name'] . '</option>';

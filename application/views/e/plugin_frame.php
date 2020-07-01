@@ -1,16 +1,16 @@
 <?php
 
-$sources__6287 = $this->config->item('sources__6287'); //MENCH PLUGIN
-$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$e___6287 = $this->config->item('e___6287'); //MENCH PLUGIN
+$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 echo '<div class="container">';
 
     //Plugins, Header & Source Link:
-    echo '<h1 style="padding-top:5px;"><a href="/e/plugin/"><span class="icon-block">'.view_e__icon($sources__11035[6287]['m_icon']).'</span></a><a href="/@'.$plugin_e__id.'"><span class="icon-block">'.view_e__icon($sources__6287[$plugin_e__id]['m_icon']).'</span>'.$sources__6287[$plugin_e__id]['m_name'].'</a></h1>';
+    echo '<h1 style="padding-top:5px;"><a href="/e/plugin/"><span class="icon-block">'.view_e__icon($e___11035[6287]['m_icon']).'</span></a><a href="/@'.$plugin_e__id.'"><span class="icon-block">'.view_e__icon($e___6287[$plugin_e__id]['m_icon']).'</span>'.$e___6287[$plugin_e__id]['m_name'].'</a></h1>';
 
     //Optional Description:
-    if(strlen($sources__6287[$plugin_e__id]['m_desc']) > 0){
-        echo '<p>'.$sources__6287[$plugin_e__id]['m_desc'].'</p>';
+    if(strlen($e___6287[$plugin_e__id]['m_desc']) > 0){
+        echo '<p>'.$e___6287[$plugin_e__id]['m_desc'].'</p>';
     }
 
     //Load Plugin:

@@ -5,11 +5,11 @@
 echo '<p>Below are all the Conditional Step Links:</p>';
 echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
 
-$sources__6103 = $this->config->item('sources__6103'); //Link Metadata
-$sources__6186 = $this->config->item('sources__6186'); //Interaction Status
+$e___6103 = $this->config->item('e___6103'); //Link Metadata
+$e___6186 = $this->config->item('e___6186'); //Interaction Status
 
 echo '<tr style="font-weight: bold;">';
-echo '<td colspan="4" style="text-align: left;">'.$sources__6103[6402]['m_icon'].' '.$sources__6103[6402]['m_name'].'</td>';
+echo '<td colspan="4" style="text-align: left;">'.$e___6103[6402]['m_icon'].' '.$e___6103[6402]['m_name'].'</td>';
 echo '</tr>';
 $counter = 0;
 $total_count = 0;
@@ -33,16 +33,16 @@ foreach($this->X_model->fetch(array(
         echo '<tr>';
         echo '<td style="width: 50px;">'.$counter.'</td>';
         echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_i_marks($i_discover).'</td>';
-        echo '<td>'.$sources__6186[$i_discover['x__status']]['m_icon'].'</td>';
+        echo '<td>'.$e___6186[$i_discover['x__status']]['m_icon'].'</td>';
         echo '<td style="text-align: left;">';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$previous_ideas[0]['i__status']]['m_icon'].'</span>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_ideas[0]['i__status']]['m_icon'].'</span>';
         echo '<a href="/i/i_go/'.$previous_ideas[0]['i__id'].'">'.$previous_ideas[0]['i__title'].'</a>';
         echo '</div>';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$i_discover['i__status']]['m_icon'].'</span>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_discover['i__status']]['m_icon'].'</span>';
         echo '<a href="/i/i_go/'.$i_discover['i__id'].'">'.$i_discover['i__title'].' [child]</a>';
         echo '</div>';
 
@@ -113,15 +113,15 @@ if(1){
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
             echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_i_marks($i_discover).'</td>';
-            echo '<td>'.$sources__6186[$i_discover['x__status']]['m_icon'].'</td>';
+            echo '<td>'.$e___6186[$i_discover['x__status']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$previous_ideas[0]['i__status']]['m_icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_ideas[0]['i__status']]['m_icon'].'</span>';
             echo '<a href="/i/i_go/'.$previous_ideas[0]['i__id'].'">'.$previous_ideas[0]['i__title'].'</a>';
             echo '</div>';
 
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$sources__4737[$i_discover['i__status']]['m_icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_discover['i__status']]['m_icon'].'</span>';
             echo '<a href="/i/i_go/'.$i_discover['i__id'].'">'.$i_discover['i__title'].'</a>';
             echo '</div>';
             echo '</td>';

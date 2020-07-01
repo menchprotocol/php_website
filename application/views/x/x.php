@@ -207,8 +207,8 @@ if(isset($_GET['x__type'])){
 
 $has_filters = ( count($_GET) > 0 );
 
-$sources__2738 = $this->config->item('sources__2738');
-$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$e___2738 = $this->config->item('e___2738');
+$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 ?>
 
@@ -225,9 +225,9 @@ $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
 
 echo '<div class="container">';
 
-    echo '<h1 class="'.extract_icon_color($sources__11035[4341]['m_icon']).' inline-block"><span class="icon-block">'.$sources__11035[4341]['m_icon'].'</span>'.$sources__11035[4341]['m_name'].'</h1>';
+    echo '<h1 class="'.extract_icon_color($e___11035[4341]['m_icon']).' inline-block"><span class="icon-block">'.$e___11035[4341]['m_icon'].'</span>'.$e___11035[4341]['m_name'].'</h1>';
 
-    echo '<div class="inline-block '.superpower_active(12701).'" style="padding-left:7px;"><span class="icon-block">'.$sources__11035[12707]['m_icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$sources__11035[12707]['m_name'].'</a></div>';
+    echo '<div class="inline-block '.superpower_active(12701).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m_icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$e___11035[12707]['m_name'].'</a></div>';
 
 
     echo '<div class="inline-box show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
@@ -372,7 +372,7 @@ echo '</div></td>';
 
             //Load all fast:
             echo '<option value="0">ALL INTERACTION TYPES</option>';
-            foreach($this->config->item('sources__4593') /* DISCOVER Types */ as $e__id => $m){
+            foreach($this->config->item('e___4593') /* DISCOVER Types */ as $e__id => $m){
                 //Echo drop down:
                 echo '<option value="' . $e__id . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $e__id) ? 'selected="selected"' : '') . '>' . $m['m_name'] . '</option>';
             }

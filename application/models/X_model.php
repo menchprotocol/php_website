@@ -312,10 +312,10 @@ class X_model extends CI_Model
         if(in_array($add_fields['x__type'] , $this->config->item('sources_id_5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
 
             //Try to fetch subscribers:
-            $sources__5967 = $this->config->item('sources__5967'); //Include subscription details
+            $e___5967 = $this->config->item('e___5967'); //Include subscription details
             $sub_emails = array();
             $sub_e__ids = array();
-            foreach(explode(',', $sources__5967[$add_fields['x__type']]['m_desc']) as $subscriber_e__id){
+            foreach(explode(',', $e___5967[$add_fields['x__type']]['m_desc']) as $subscriber_e__id){
 
                 //Do not inform the user who just took the action:
                 if($subscriber_e__id==$add_fields['x__player']){
@@ -362,36 +362,36 @@ class X_model extends CI_Model
 
 
                 //Email Subject:
-                $subject = 'Notification: '  . $player_name . ' ' . $sources__5967[$add_fields['x__type']]['m_name'];
+                $subject = 'Notification: '  . $player_name . ' ' . $e___5967[$add_fields['x__type']]['m_name'];
 
                 //Compose email body, start with link content:
                 $html_message = '<div>' . ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '<i>No link content</i>') . '</div><br />';
 
-                $sources__6232 = $this->config->item('sources__6232'); //PLATFORM VARIABLES
+                $e___6232 = $this->config->item('e___6232'); //PLATFORM VARIABLES
 
                 //Append link object links:
-                foreach($this->config->item('sources__11081') as $e__id => $m) {
+                foreach($this->config->item('e___11081') as $e__id => $m) {
 
-                    if (!intval($add_fields[$sources__6232[$e__id]['m_desc']])) {
+                    if (!intval($add_fields[$e___6232[$e__id]['m_desc']])) {
                         continue;
                     }
 
                     if (in_array(6202 , $m['m_parents'])) {
 
                         //IDEA
-                        $ideas = $this->I_model->fetch(array( 'i__id' => $add_fields[$sources__6232[$e__id]['m_desc']] ));
+                        $ideas = $this->I_model->fetch(array( 'i__id' => $add_fields[$e___6232[$e__id]['m_desc']] ));
                         $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/i/i_go/' . $ideas[0]['i__id'] . '" target="_parent">#'.$ideas[0]['i__id'].' '.$ideas[0]['i__title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 
                         //SOURCE
-                        $sources = $this->E_model->fetch(array( 'e__id' => $add_fields[$sources__6232[$e__id]['m_desc']] ));
+                        $sources = $this->E_model->fetch(array( 'e__id' => $add_fields[$e___6232[$e__id]['m_desc']] ));
                         $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/@' . $sources[0]['e__id'] . '" target="_parent">@'.$sources[0]['e__id'].' '.$sources[0]['e__title'].'</a></div>';
 
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
                         //DISCOVER
-                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields[$sources__6232[$e__id]['m_desc']] . '" target="_parent">'.$add_fields[$sources__6232[$e__id]['m_desc']].'</a></div>';
+                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields[$e___6232[$e__id]['m_desc']] . '" target="_parent">'.$add_fields[$e___6232[$e__id]['m_desc']].'</a></div>';
 
                     }
 
@@ -529,13 +529,13 @@ class X_model extends CI_Model
                         //Now determine what type is this:
                         if($key=='x__status'){
 
-                            $sources__6186 = $this->config->item('sources__6186'); //Interaction Status
-                            $x__message .= view_db_field($key) . ' updated from [' . $sources__6186[$before_data[0][$key]]['m_name'] . '] to [' . $sources__6186[$value]['m_name'] . ']'."\n";
+                            $e___6186 = $this->config->item('e___6186'); //Interaction Status
+                            $x__message .= view_db_field($key) . ' updated from [' . $e___6186[$before_data[0][$key]]['m_name'] . '] to [' . $e___6186[$value]['m_name'] . ']'."\n";
 
                         } elseif($key=='x__type'){
 
-                            $sources__4593 = $this->config->item('sources__4593'); //Link Types
-                            $x__message .= view_db_field($key) . ' updated from [' . $sources__4593[$before_data[0][$key]]['m_name'] . '] to [' . $sources__4593[$value]['m_name'] . ']'."\n";
+                            $e___4593 = $this->config->item('e___4593'); //Link Types
+                            $x__message .= view_db_field($key) . ' updated from [' . $e___4593[$before_data[0][$key]]['m_name'] . '] to [' . $e___4593[$value]['m_name'] . ']'."\n";
 
                         } elseif(in_array($key, array('x__up', 'x__down'))) {
 
@@ -763,8 +763,8 @@ class X_model extends CI_Model
             $recipient_source = superpower_assigned();
         }
 
-        $sources__6177 = $this->config->item('sources__6177');
-        $sources__4485 = $this->config->item('sources__4485');
+        $e___6177 = $this->config->item('e___6177');
+        $e___4485 = $this->config->item('e___4485');
 
         //Cleanup:
         $message_input = trim($message_input);
@@ -1010,7 +1010,7 @@ class X_model extends CI_Model
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat inline-block" href="/@' . $sources[0]['e__id'] . '">'.( !in_array($sources[0]['e__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$sources__6177[$sources[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($sources[0]['e__icon']).'</span><span class="text__6197_' . $sources[0]['e__id']  . '">' . $sources[0]['e__title']  . '</span></a></span>'.' ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat inline-block" href="/@' . $sources[0]['e__id'] . '">'.( !in_array($sources[0]['e__status'], $this->config->item('sources_id_7357')) ? '<span class="img-block icon-block-xs">'.$e___6177[$sources[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($sources[0]['e__icon']).'</span><span class="text__6197_' . $sources[0]['e__id']  . '">' . $sources[0]['e__title']  . '</span></a></span>'.' ', $output_body_message);
 
             }
 
@@ -2014,13 +2014,13 @@ class X_model extends CI_Model
 
             //ONE ANSWER
             $x__type = 6157; //Award Coin
-            $i_link_type_id = 12336; //Save Answer
+            $i_x__type = 12336; //Save Answer
 
         } elseif($ideas[0]['i__type'] == 7231){
 
             //SOME ANSWERS
             $x__type = 7489; //Award Coin
-            $i_link_type_id = 12334; //Save Answer
+            $i_x__type = 12334; //Save Answer
 
         }
 
@@ -2041,7 +2041,7 @@ class X_model extends CI_Model
         foreach($answer_i__ids as $answer_i__id){
             $answers_newly_added++;
             $this->X_model->create(array(
-                'x__type' => $i_link_type_id,
+                'x__type' => $i_x__type,
                 'x__player' => $e__id,
                 'x__left' => $ideas[0]['i__id'],
                 'x__right' => $answer_i__id,

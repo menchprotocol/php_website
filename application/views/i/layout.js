@@ -148,7 +148,7 @@ function e_e_only_search(note_type_id) {
         }
     });
 
-    if(parseInt(js_sources__6404[12678]['m_desc'])){
+    if(parseInt(js_e___6404[12678]['m_desc'])){
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -187,7 +187,7 @@ function e_e_only_search(note_type_id) {
 }
 
 function discover_preview(){
-    if(parseInt($('.dropi_4737_'+i_loaded_id+'_0.active').attr('new-en-id')) in js_sources__7355){
+    if(parseInt($('.dropi_4737_'+i_loaded_id+'_0.active').attr('new-en-id')) in js_e___7355){
         //Idea is public, go to preview:
         window.location = '/' + i_loaded_id;
     } else {
@@ -418,8 +418,8 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
     //Changing Idea Status?
     if(element_id==4737){
 
-        var is_i_active = (new_e__id in js_sources__7356);
-        var is_i_public = (new_e__id in js_sources__7355);
+        var is_i_active = (new_e__id in js_e___7356);
+        var is_i_public = (new_e__id in js_e___7355);
 
 
         //Deleting?
@@ -454,7 +454,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
 
     //Show Loading...
-    var data_object = eval('js_sources__'+element_id);
+    var data_object = eval('js_e___'+element_id);
     $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? '<span class="show-max">SAVING...</span>' : '' ) +'</b>');
 
     $.post("/i/i_set_dropdown", {

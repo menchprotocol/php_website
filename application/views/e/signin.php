@@ -1,6 +1,6 @@
 <?php
-$sources__4269 = $this->config->item('sources__4269');
-$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$e___4269 = $this->config->item('e___4269');
+$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 $this_attempt = array(
     'x__type' => ( $sign_i__id > 0 ? 7560 /* User Signin Idea Channel Choose */ : 7561 /* User Signin on Website */ ),
@@ -46,7 +46,7 @@ if(count($current_sign_i_attempt) == 0){
 ?>
 
 <script>
-    var go_next_icon = '<?= $sources__11035[12211]['m_icon'] ?>';
+    var go_next_icon = '<?= $e___11035[12211]['m_icon'] ?>';
     var sign_i__id = <?= $sign_i__id ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
 </script>
@@ -59,7 +59,7 @@ if(count($current_sign_i_attempt) == 0){
     <div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>
 
 
-    <h1 class="text-center"><?= $sources__11035[4269]['m_name'] ?></h1>
+    <h1 class="text-center"><?= $e___11035[4269]['m_name'] ?></h1>
 
     <?php
     if($sign_i__id > 0){
@@ -75,7 +75,7 @@ if(count($current_sign_i_attempt) == 0){
 
     }
 
-    echo '<p style="margin-top:13px;">'.$sources__11035[4269]['m_desc'].'</p>';
+    echo '<p style="margin-top:13px;">'.$e___11035[4269]['m_desc'].'</p>';
     ?>
 
 
@@ -83,11 +83,11 @@ if(count($current_sign_i_attempt) == 0){
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
-            <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$sources__4269[3288]['m_icon'].'</span>'.$sources__4269[3288]['m_name'] ?></span>
+            <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m_icon'].'</span>'.$e___4269[3288]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised btn-circle" title="<?= $sources__11035[12211]['m_name'] ?>"><?= $sources__11035[12211]['m_icon'] ?></a>
+                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised btn-circle" title="<?= $e___11035[12211]['m_name'] ?>"><?= $e___11035[12211]['m_icon'] ?></a>
             </span>
         </div>
 
@@ -101,15 +101,15 @@ if(count($current_sign_i_attempt) == 0){
             <!-- To be updated to >0 IF email was found -->
             <input type="hidden" id="sign_e__id" value="0" />
 
-            <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$sources__4269[3286]['m_icon'].'</span>'.$sources__4269[3286]['m_name'] ?></span>
+            <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m_icon'].'</span>'.$e___4269[3286]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source transparent btn-raised  btn-circle" title="<?= $sources__11035[12991]['m_name'] ?>"><?= $sources__11035[12991]['m_icon'] ?></a>
-                <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle" title="<?= $sources__11035[12211]['m_name'] ?>"><?= $sources__11035[12211]['m_icon'] ?></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source transparent btn-raised  btn-circle" title="<?= $e___11035[12991]['m_name'] ?>"><?= $e___11035[12991]['m_icon'] ?></a>
+                <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-raised  btn-circle" title="<?= $e___11035[12211]['m_name'] ?>"><?= $e___11035[12211]['m_icon'] ?></a>
             </span>
 
-            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="e_magic_email()" class="dounderline"><?= $sources__11035[11068]['m_name'] ?></a> <?= $sources__11035[11068]['m_icon'] ?></span>
+            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="e_magic_email()" class="dounderline"><?= $e___11035[11068]['m_name'] ?></a> <?= $e___11035[11068]['m_icon'] ?></span>
 
         </div>
 
@@ -129,13 +129,13 @@ if(count($current_sign_i_attempt) == 0){
 
             <!-- Full Name -->
             <div class="margin-top-down">
-                <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.str_replace(' source','',$sources__4269[13025]['m_icon']).'</span>'.$sources__4269[13025]['m_name'] ?>:</span>
-                <div class="form-group is-empty"><input type="text" placeholder="<?= $sources__4269[13025]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat"></div>
+                <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.str_replace(' source','',$e___4269[13025]['m_icon']).'</span>'.$e___4269[13025]['m_name'] ?>:</span>
+                <div class="form-group is-empty"><input type="text" placeholder="<?= $e___4269[13025]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat"></div>
             </div>
 
             <!-- New Password -->
             <div class="margin-top-down">
-                <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $sources__4269[3286]['m_icon'] ?></span>NEW PASSWORD:</span>
+                <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[3286]['m_icon'] ?></span>NEW PASSWORD:</span>
                 <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
             </div>
 
@@ -143,8 +143,8 @@ if(count($current_sign_i_attempt) == 0){
             <!-- Signup Buttons -->
             <div id="new_account_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source transparent btn-raised btn-circle" title="<?= $sources__11035[12991]['m_name'] ?>"><?= $sources__11035[12991]['m_icon'] ?></a>
-                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source btn-raised btn-circle" title="<?= $sources__11035[12211]['m_name'] ?>"><?= $sources__11035[12211]['m_icon'] ?></a>
+                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source transparent btn-raised btn-circle" title="<?= $e___11035[12991]['m_name'] ?>"><?= $e___11035[12991]['m_icon'] ?></a>
+                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source btn-raised btn-circle" title="<?= $e___11035[12211]['m_name'] ?>"><?= $e___11035[12211]['m_icon'] ?></a>
             </span>
 
         </div>

@@ -209,8 +209,8 @@ function view_i_notes($discovery, $note_is_e_source = false)
 
     $CI =& get_instance();
     $session_source = superpower_assigned();
-    $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
-    $sources__6186 = $CI->config->item('sources__6186'); //Interaction Status
+    $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
+    $e___6186 = $CI->config->item('e___6186'); //Interaction Status
     $note_is_e_source = ( $note_is_e_source || superpower_active(10984, true) );
 
 
@@ -258,7 +258,7 @@ function view_i_notes($discovery, $note_is_e_source = false)
         //Show drop down for message link status:
         $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 5px 0 0; display: block;">';
         $ui .= '<select id="message_status_' . $discovery['x__id'] . '"  class="form-control border" style="margin-bottom:0;">';
-        foreach($CI->config->item('sources__12012') as $e__id => $m){
+        foreach($CI->config->item('e___12012') as $e__id => $m){
             $ui .= '<option value="' . $e__id . '" '.( $e__id==$discovery['x__status'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
         }
         $ui .= '</select>';
@@ -287,8 +287,8 @@ function view_e__icon($e__icon = null)
     } else {
         //Return default icon for sources:
         $CI =& get_instance();
-        $sources__2738 = $CI->config->item('sources__2738'); //MENCH
-        return $sources__2738[4536]['m_icon'];
+        $e___2738 = $CI->config->item('e___2738'); //MENCH
+        return $e___2738[4536]['m_icon'];
     }
 }
 
@@ -343,17 +343,17 @@ function view_interaction($discovery, $is_parent_tr = false)
 {
 
     $CI =& get_instance();
-    $sources__4593 = $CI->config->item('sources__4593'); //Link Type
-    $sources__4341 = $CI->config->item('sources__4341'); //Link Table
-    $sources__2738 = $CI->config->item('sources__2738');
-    $sources__6186 = $CI->config->item('sources__6186'); //Interaction Status
+    $e___4593 = $CI->config->item('e___4593'); //Link Type
+    $e___4341 = $CI->config->item('e___4341'); //Link Table
+    $e___2738 = $CI->config->item('e___2738');
+    $e___6186 = $CI->config->item('e___6186'); //Interaction Status
     $session_source = superpower_assigned();
 
 
 
-    if(!isset($sources__4593[$discovery['x__type']])){
+    if(!isset($e___4593[$discovery['x__type']])){
         //We've probably have not yet updated php cache, set error:
-        $sources__4593[$discovery['x__type']] = array(
+        $e___4593[$discovery['x__type']] = array(
             'm_icon' => '<i class="fas fa-exclamation-circle"></i>',
             'm_name' => 'Link Type Not Synced in PHP Cache',
             'm_desc' => '',
@@ -370,14 +370,14 @@ function view_interaction($discovery, $is_parent_tr = false)
 
 
     //Interaction ID
-    $ui .= '<div class="simple-line"><a href="/x?x__id='.$discovery['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4367]['m_icon']. '</span>'.$discovery['x__id'].'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/x?x__id='.$discovery['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[4367]['m_icon']. '</span>'.$discovery['x__id'].'</a></div>';
 
 
     //Status
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[6186]['m_name'].( strlen($sources__6186[$discovery['x__status']]['m_desc']) ? ': '.$sources__6186[$discovery['x__status']]['m_desc'] : '' ).'"><span class="icon-block">'.$sources__6186[$discovery['x__status']]['m_icon'].'</span>'.$sources__6186[$discovery['x__status']]['m_name'].'</span></div>';
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_name'].( strlen($e___6186[$discovery['x__status']]['m_desc']) ? ': '.$e___6186[$discovery['x__status']]['m_desc'] : '' ).'"><span class="icon-block">'.$e___6186[$discovery['x__status']]['m_icon'].'</span>'.$e___6186[$discovery['x__status']]['m_name'].'</span></div>';
 
     //Time
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $sources__4341[4362]['m_name'].': '.$discovery['x__time'] . ' PST"><span class="icon-block">'.$sources__4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($discovery['x__time'])) . ' ago</span></div>';
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $e___4341[4362]['m_name'].': '.$discovery['x__time'] . ' PST"><span class="icon-block">'.$e___4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($discovery['x__time'])) . ' ago</span></div>';
 
 
 
@@ -393,7 +393,7 @@ function view_interaction($discovery, $is_parent_tr = false)
     }
 
     //Interaction Type & Coins
-    $ui .= '<div class="simple-line"><a href="/@'.$discovery['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4593]['m_name'].( strlen($sources__4593[$discovery['x__type']]['m_desc']) ? ': '.$sources__4593[$discovery['x__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$sources__4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($sources__4593[$discovery['x__type']]['m_icon']).'">'. $sources__4593[$discovery['x__type']]['m_icon'] . '&nbsp;' . $sources__4593[$discovery['x__type']]['m_name'] . '</span>'.($coins_type ? '&nbsp;<span title="'.$coins_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coins_type.'"></i></span>' : '').'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$discovery['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_name'].( strlen($e___4593[$discovery['x__type']]['m_desc']) ? ': '.$e___4593[$discovery['x__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($e___4593[$discovery['x__type']]['m_icon']).'">'. $e___4593[$discovery['x__type']]['m_icon'] . '&nbsp;' . $e___4593[$discovery['x__type']]['m_name'] . '</span>'.($coins_type ? '&nbsp;<span title="'.$coins_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coins_type.'"></i></span>' : '').'</a></div>';
 
 
     //Hide Sensitive Details?
@@ -406,18 +406,18 @@ function view_interaction($discovery, $is_parent_tr = false)
 
         //Metadata
         if(strlen($discovery['x__metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="/e/plugin/12722?x__id=' . $discovery['x__id'] . '" class="montserrat"><span class="icon-block">'.$sources__4341[6103]['m_icon']. '</span>'.$sources__4341[6103]['m_name']. '</a></div>';
+            $ui .= '<div class="simple-line"><a href="/e/plugin/12722?x__id=' . $discovery['x__id'] . '" class="montserrat"><span class="icon-block">'.$e___4341[6103]['m_icon']. '</span>'.$e___4341[6103]['m_name']. '</a></div>';
         }
 
         //Order
         if($discovery['x__sort'] > 0){
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4370]['m_name']. '"><span class="icon-block">'.$sources__4341[4370]['m_icon']. '</span>'.view_ordinal($discovery['x__sort']).'</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[4370]['m_name']. '"><span class="icon-block">'.$e___4341[4370]['m_icon']. '</span>'.view_ordinal($discovery['x__sort']).'</span></div>';
         }
 
 
         //Message
         if(strlen($discovery['x__message']) > 0 && $discovery['x__message']!='@'.$discovery['x__up']){
-            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4372]['m_name'].'"><span class="icon-block">'.$sources__4341[4372]['m_icon'].'</span><div class="title-block discover-msg">'.htmlentities($discovery['x__message']).'</div></div>';
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4372]['m_name'].'"><span class="icon-block">'.$e___4341[4372]['m_icon'].'</span><div class="title-block discover-msg">'.htmlentities($discovery['x__message']).'</div></div>';
         }
 
 
@@ -428,7 +428,7 @@ function view_interaction($discovery, $is_parent_tr = false)
                 'e__id' => $discovery['x__player'],
             ));
 
-            $ui .= '<div class="simple-line"><a href="/@'.$add_sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($add_sources[0]['e__icon']).'"><span class="img-block">'.view_e__icon($add_sources[0]['e__icon']) . '</span> ' . $add_sources[0]['e__title'] . '</span></a></div>';
+            $ui .= '<div class="simple-line"><a href="/@'.$add_sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($add_sources[0]['e__icon']).'"><span class="img-block">'.view_e__icon($add_sources[0]['e__icon']) . '</span> ' . $add_sources[0]['e__title'] . '</span></a></div>';
 
         }
 
@@ -438,34 +438,34 @@ function view_interaction($discovery, $is_parent_tr = false)
     //5x Relations:
     if(!$is_parent_tr){
 
-        $sources__6232 = $CI->config->item('sources__6232'); //PLATFORM VARIABLES
-        foreach($CI->config->item('sources__10692') as $e__id => $m) {
+        $e___6232 = $CI->config->item('e___6232'); //PLATFORM VARIABLES
+        foreach($CI->config->item('e___10692') as $e__id => $m) {
 
             //Do we have this set?
-            if(!intval($discovery[$sources__6232[$e__id]['m_desc']])){
+            if(!intval($discovery[$e___6232[$e__id]['m_desc']])){
                 continue;
             }
 
             if(in_array(6160 , $m['m_parents'])){
 
                 //SOURCE
-                $sources = $CI->E_model->fetch(array('e__id' => $discovery[$sources__6232[$e__id]['m_desc']]));
+                $sources = $CI->E_model->fetch(array('e__id' => $discovery[$e___6232[$e__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$e__id]['m_icon']. '</span>'.( $discovery[$sources__6232[$e__id]['m_desc']]==$discovery['x__player'] ? $sources__4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['e__icon']).' img-block">'.view_e__icon($sources[0]['e__icon']). '&nbsp;'.$sources[0]['e__title'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$sources[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $discovery[$e___6232[$e__id]['m_desc']]==$discovery['x__player'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($sources[0]['e__icon']).' img-block">'.view_e__icon($sources[0]['e__icon']). '&nbsp;'.$sources[0]['e__title'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
                 //IDEA
-                $ideas = $CI->I_model->fetch(array('i__id' => $discovery[$sources__6232[$e__id]['m_desc']]));
+                $ideas = $CI->I_model->fetch(array('i__id' => $discovery[$e___6232[$e__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$ideas[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$sources__4341[$e__id]['m_icon']. '</span>'.$sources__2738[4535]['m_icon']. '&nbsp;'.view_i_title($ideas[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$ideas[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.$e___2738[4535]['m_icon']. '&nbsp;'.view_i_title($ideas[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
                 //PARENT DISCOVER
-                $discoveries = $CI->X_model->fetch(array('x__id' => $discovery[$sources__6232[$e__id]['m_desc']]));
+                $discoveries = $CI->X_model->fetch(array('x__id' => $discovery[$e___6232[$e__id]['m_desc']]));
 
-                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$sources__4341[$e__id]['m_name'].'">'.$sources__4341[$e__id]['m_icon']. '</span><div class="discover-ref">'.view_interaction($discoveries[0], true).'</div></div>';
+                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'">'.$e___4341[$e__id]['m_icon']. '</span><div class="discover-ref">'.view_interaction($discoveries[0], true).'</div></div>';
 
             }
         }
@@ -612,7 +612,7 @@ function view_coins_count_source($i__id = 0, $e__id = 0, $number_only = false){
 function view_x_icon_legend($can_click, $completion_percentage){
 
     $CI =& get_instance();
-    $sources__12446 = $CI->config->item('sources__12446'); //DISCOVER ICON LEGEND
+    $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
 
     if(!$can_click || $completion_percentage==0){
         //DISCOVER NOT STARTED
@@ -625,7 +625,7 @@ function view_x_icon_legend($can_click, $completion_percentage){
         $discovery_legend = 13338;
     }
 
-    return '<span title="'.$sources__12446[$discovery_legend]['m_name'].'">'.$sources__12446[$discovery_legend]['m_icon'].'</span>';
+    return '<span title="'.$e___12446[$discovery_legend]['m_name'].'">'.$e___12446[$discovery_legend]['m_icon'].'</span>';
 
 }
 
@@ -706,10 +706,10 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
 
     //Go down recursively:
     $CI =& get_instance();
-    $sources__6186 = $CI->config->item('sources__6186'); //Interaction Status
-    $sources__4486 = $CI->config->item('sources__4486');
-    $sources__4737 = $CI->config->item('sources__4737'); // Idea Status
-    $sources__7585 = $CI->config->item('sources__7585'); // Idea Subtypes
+    $e___6186 = $CI->config->item('e___6186'); //Interaction Status
+    $e___4486 = $CI->config->item('e___4486');
+    $e___4737 = $CI->config->item('e___4737'); // Idea Status
+    $e___7585 = $CI->config->item('e___7585'); // Idea Subtypes
 
 
     $ui = null;
@@ -731,11 +731,11 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$sources__4486[$i_discover['x__type']]['m_name'].'">'. $sources__4486[$i_discover['x__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Interaction Status: '.$sources__6186[$i_discover['x__status']]['m_name'].'">'. $sources__6186[$i_discover['x__status']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$e___4486[$i_discover['x__type']]['m_name'].'">'. $e___4486[$i_discover['x__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Interaction Status: '.$e___6186[$i_discover['x__status']]['m_name'].'">'. $e___6186[$i_discover['x__status']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$sources__7585[$i_discover['i__type']]['m_name'].'">'. $sources__7585[$i_discover['i__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$sources__4737[$i_discover['i__status']]['m_name'].'">'. $sources__4737[$i_discover['i__status']]['m_icon']. '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___7585[$i_discover['i__type']]['m_name'].'">'. $e___7585[$i_discover['i__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_discover['i__status']]['m_name'].'">'. $e___4737[$i_discover['i__status']]['m_icon']. '</span>';
         $ui .= '<a href="?i__id='.$i_discover['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_discover) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_discover['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('sources_id_6193') /* OR Ideas */ )) || ($i_discover['x__type'] == 4229) ? view_i_marks($i_discover) : '' ).'</span>]';
@@ -778,7 +778,7 @@ function view_radio_sources($parent_e__id, $child_e__id, $enable_mulitiselect, $
         return false;
     }
 
-    foreach($CI->config->item('sources__'.$parent_e__id) as $e__id => $m) {
+    foreach($CI->config->item('e___'.$parent_e__id) as $e__id => $m) {
         $ui .= '<a href="javascript:void(0);" onclick="e_update_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( count($CI->X_model->fetch(array(
                 'x__up' => $e__id,
                 'x__down' => $child_e__id,
@@ -822,13 +822,13 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
 
     $CI =& get_instance();
     $session_source = superpower_assigned();
-    $sources__6186 = $CI->config->item('sources__6186');
-    $sources__4737 = $CI->config->item('sources__4737'); //IDEA STATUS
-    $sources__7585 = $CI->config->item('sources__7585');
-    $sources__4486 = $CI->config->item('sources__4486');
-    $sources__2738 = $CI->config->item('sources__2738');
-    $sources__12413 = $CI->config->item('sources__12413');
-    $sources__13408 = $CI->config->item('sources__13408');
+    $e___6186 = $CI->config->item('e___6186');
+    $e___4737 = $CI->config->item('e___4737'); //IDEA STATUS
+    $e___7585 = $CI->config->item('e___7585');
+    $e___4486 = $CI->config->item('e___4486');
+    $e___2738 = $CI->config->item('e___2738');
+    $e___12413 = $CI->config->item('e___12413');
+    $e___13408 = $CI->config->item('e___13408');
 
     //DISCOVER
     $x__id = ( isset($idea['x__id']) ? $idea['x__id'] : 0 );
@@ -848,7 +848,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
 
     //DISCOVER STATUS
     if($x__id && !in_array($idea['x__status'], $CI->config->item('sources_id_7359'))){
-        $box_items_list .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$sources__6186[$idea['x__status']]['m_name'].' @'.$idea['x__status'].'">' . $sources__6186[$idea['x__status']]['m_icon'] . '</span>&nbsp;</span>';
+        $box_items_list .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$idea['x__status']]['m_name'].' @'.$idea['x__status'].'">' . $e___6186[$idea['x__status']]['m_icon'] . '</span>&nbsp;</span>';
     }
 
 
@@ -864,7 +864,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
             $i_link = '/i/i_go/'.$idea['i__id'].( isset($_GET['focus__source']) ? '?focus__source='.intval($_GET['focus__source']) : '' );
 
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($idea['i__weight'], 0).'">'.$sources__2738[4535]['m_icon'].'</a></span>';
+            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($idea['i__weight'], 0).'">'.$e___2738[4535]['m_icon'].'</a></span>';
 
             //IDEA TITLE
             if($is_i_link && superpower_active(13354, true)){
@@ -879,7 +879,7 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
                 //IDEA STATUS
                 if(!$is_public && $is_i_link){
                     //Show the drafting status:
-                    $ui .= '<span class="inline-block">'.view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'right').'&nbsp;</span>';
+                    $ui .= '<span class="inline-block">'.view_cache('e___4737' /* Idea Status */, $idea['i__status'], true, 'right').'&nbsp;</span>';
                 }
 
                 $ui .= view_i_title($idea); //IDEA TITLE
@@ -993,9 +993,9 @@ function view_i($idea, $i_linked_id = 0, $is_parent = false, $player_is_i_source
             'x__status IN (' . join(',', $CI->config->item('sources_id_7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_ideas');
 
-        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11019]['m_name'].'" style="width:21px; text-align:right;">'.( $previous_ideas[0]['total_ideas']>0 ? $previous_ideas[0]['total_ideas'] : '&nbsp;' ).'</span>';
-        $ui .= '<span class="icon-block">'.$sources__13408[12413]['m_icon'].'</span>';
-        $ui .= '<span class="inline-block montserrat idea" title="'.$sources__12413[11020]['m_name'].'" style="text-align:left;">'.($next_ideas[0]['total_ideas']>0 ? $next_ideas[0]['total_ideas'] : '' ).( $i_stats['ideas_max']>$next_ideas[0]['total_ideas'] ? '<span style="padding: 0 2px;">-</span>'.$i_stats['ideas_max'] : '' ).'</span>';
+        $ui .= '<span class="inline-block montserrat idea" title="'.$e___12413[11019]['m_name'].'" style="width:21px; text-align:right;">'.( $previous_ideas[0]['total_ideas']>0 ? $previous_ideas[0]['total_ideas'] : '&nbsp;' ).'</span>';
+        $ui .= '<span class="icon-block">'.$e___13408[12413]['m_icon'].'</span>';
+        $ui .= '<span class="inline-block montserrat idea" title="'.$e___12413[11020]['m_name'].'" style="text-align:left;">'.($next_ideas[0]['total_ideas']>0 ? $next_ideas[0]['total_ideas'] : '' ).( $i_stats['ideas_max']>$next_ideas[0]['total_ideas'] ? '<span style="padding: 0 2px;">-</span>'.$i_stats['ideas_max'] : '' ).'</span>';
 
 
 
@@ -1024,7 +1024,7 @@ function view_caret($e__id, $m, $object__id){
     $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_name'].'" data-toggle="tooltip" data-placement="top">';
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
-    foreach($CI->config->item('sources__'.$e__id) as $e__id2 => $m2){
+    foreach($CI->config->item('e___'.$e__id) as $e__id2 => $m2){
         $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $object__id . '"><span class="icon-block">'.view_e__icon($m2['m_icon']).'</span> '.$m2['m_name'].'</a>';
     }
     $ui .= '</div>';
@@ -1067,13 +1067,13 @@ function view_i_list($idea, $ideas_next, $recipient_source, $prefix_statement = 
 function view_next_i_previous($i__id, $recipient_source){
 
     $CI =& get_instance();
-    $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
 
     //PREVIOUS:
     echo view_i_previous_discover($i__id, $recipient_source);
 
     //NEXT:
-    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="/x/x_next/'.$i__id.'">'.$sources__11035[12211]['m_icon'].'</a></div>';
+    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="/x/x_next/'.$i__id.'">'.$e___11035[12211]['m_icon'].'</a></div>';
 
 }
 
@@ -1090,8 +1090,8 @@ function view_i_previous_discover($i__id, $recipient_source){
     $previous_level_id = 0; //The ID of the Idea one level up
     $player_discovery_ids = $CI->X_model->ids($recipient_source['e__id']);
     $discovery_list_ui = null;
-    $sources__11035 = $CI->config->item('sources__11035'); //MENCH NAVIGATION
-    $sources__12994 = $CI->config->item('sources__12994'); //DISCOVER LAYOUT
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
+    $e___12994 = $CI->config->item('e___12994'); //DISCOVER LAYOUT
 
     if(in_array($i__id, $player_discovery_ids)){
 
@@ -1122,7 +1122,7 @@ function view_i_previous_discover($i__id, $recipient_source){
                     $i_level_up++;
 
                     if ($previous_i__id == $intersect) {
-                        //array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$sources__12994[13400]['m_icon'].'</span><span class="montserrat">'.$sources__12994[13400]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
+                        //array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$e___12994[13400]['m_icon'].'</span><span class="montserrat">'.$e___12994[13400]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
                     }
 
                     //array_push($sitemap_items, view_i_discover($ideas_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
@@ -1145,9 +1145,9 @@ function view_i_previous_discover($i__id, $recipient_source){
 
         //Previous
         if(isset($_GET['previous_discover']) && $_GET['previous_discover']>0){
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/'.$_GET['previous_discover'].'" title="'.$sources__11035[12991]['m_name'].'">'.$sources__11035[12991]['m_icon'].'</a></div>';
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/'.$_GET['previous_discover'].'" title="'.$e___11035[12991]['m_name'].'">'.$e___11035[12991]['m_icon'].'</a></div>';
         } else {
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/x/x_previous/'.$previous_level_id.'/'.$i__id.'" title="'.$sources__11035[12991]['m_name'].'">'.$sources__11035[12991]['m_icon'].'</a></div>';
+            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-discover btn-circle" href="/x/x_previous/'.$previous_level_id.'/'.$i__id.'" title="'.$e___11035[12991]['m_name'].'">'.$e___11035[12991]['m_icon'].'</a></div>';
         }
 
 
@@ -1182,7 +1182,7 @@ function view_i_previous_discover($i__id, $recipient_source){
 function view_i_note_mix($x__type, $i_notes){
 
     $CI =& get_instance();
-    $sources__4485 = $CI->config->item('sources__4485'); //IDEA NOTES
+    $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $handles_uploads = (in_array($x__type, $CI->config->item('sources_id_12359')));
     $handles_url = (in_array($x__type, $CI->config->item('sources_id_7551')) || in_array($x__type, $CI->config->item('sources_id_4986')));
     $session_source = superpower_assigned();
@@ -1191,7 +1191,7 @@ function view_i_note_mix($x__type, $i_notes){
 
     if(!count($i_notes)){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin-bottom:13px;">';
-        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($sources__4485[$x__type]['m_name'])).'. Be the first to post one</div>';
+        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m_name'])).'. Be the first to post one</div>';
         $ui .= '</div>';
     }
 
@@ -1257,13 +1257,13 @@ function view_i_note_mix($x__type, $i_notes){
 
 function view_platform_message($e__id){
     $CI =& get_instance();
-    $sources__12687 = $CI->config->item('sources__12687');
-    if(!substr_count($sources__12687[$e__id]['m_desc'], " | ")){
+    $e___12687 = $CI->config->item('e___12687');
+    if(!substr_count($e___12687[$e__id]['m_desc'], " | ")){
         //Single message:
-        return $sources__12687[$e__id]['m_desc'];
+        return $e___12687[$e__id]['m_desc'];
     } else {
         //Random message:
-        $line_messages = explode(" | ", $sources__12687[$e__id]['m_desc']);
+        $line_messages = explode(" | ", $e___12687[$e__id]['m_desc']);
         return $line_messages[rand(0, (count($line_messages) - 1))];
     }
 }
@@ -1282,8 +1282,8 @@ function view_unauthorized_message($superpower_e__id = 0){
 
             //Missing Superpower:
             $CI =& get_instance();
-            $sources__10957 = $CI->config->item('sources__10957');
-            return 'You are missing the required superpower of '.$sources__10957[$superpower_e__id]['m_name'];
+            $e___10957 = $CI->config->item('e___10957');
+            return 'You are missing the required superpower of '.$e___10957[$superpower_e__id]['m_name'];
 
         }
     }
@@ -1311,7 +1311,7 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
-    $sources__13369 = $CI->config->item('sources__13369'); //IDEA COVER UI
+    $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
 
     $recipient_source = superpower_assigned();
     $i_stats = i_stats($idea['i__metadata']);
@@ -1332,21 +1332,21 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
     $ui .= i_fetch_cover($idea['i__id'], true);
 
     //TOP LEFT
-    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['ideas_average'].' '.$sources__13369[12273]['m_name'].' FROM '.$i_stats['count_sources'].' '.$sources__13369[12274]['m_name'].'">';
+    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['ideas_average'].' '.$e___13369[12273]['m_name'].' FROM '.$i_stats['count_sources'].' '.$e___13369[12274]['m_name'].'">';
 
     //SOURCES:
     if(superpower_active(10967, true)){
-        $ui .= $sources__13369[12274]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['count_sources']).'</span><br />';
+        $ui .= $e___13369[12274]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['count_sources']).'</span><br />';
     }
 
     //IDEAS:
-    $ui .= $sources__13369[12273]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['ideas_average']).'</span><br />';
+    $ui .= $e___13369[12273]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['ideas_average']).'</span><br />';
 
     //DISCOVERIES:
     if(superpower_active(12701, true)){
         $discover_coins = x_coins_idea(6255, $idea['i__id']);
         if($discover_coins > 0){
-            $ui .= $sources__13369[6255]['m_icon'].'<span style="padding-left: 2px;">'.view_number($discover_coins).'</span>';
+            $ui .= $e___13369[6255]['m_icon'].'<span style="padding-left: 2px;">'.view_number($discover_coins).'</span>';
         }
     }
 
@@ -1355,22 +1355,22 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
 
     //TOP RIGHT
     if($i_stats['duration_average']){
-        $ui .= '<span class="media-info top-right" title="'.$sources__13369[13292]['m_name'].'">'.view_time_hours($i_stats['duration_average']).'</span>';
+        $ui .= '<span class="media-info top-right" title="'.$e___13369[13292]['m_name'].'">'.view_time_hours($i_stats['duration_average']).'</span>';
     }
 
     //Search for Idea Image:
     if($show_editor){
 
         //SORT
-        $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$sources__13369[13413]['m_name'].': '.$sources__13369[13413]['m_desc'].'">'.$sources__13369[13413]['m_icon'].'</span>';
+        $ui .= '<span class="media-info bottom-left discover-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
 
         //IDEA STATUS?
         if(!$discover_mode && !in_array($idea['i__status'], $CI->config->item('sources_id_7355'))){
-            $ui .= '<span class="media-info bottom-center">'.view_cache('sources__4737' /* Idea Status */, $idea['i__status'], true, 'top').'</span>';
+            $ui .= '<span class="media-info bottom-center">'.view_cache('e___4737' /* Idea Status */, $idea['i__status'], true, 'top').'</span>';
         }
 
         //REMOVE
-        $ui .= '<span class="media-info bottom-right x_remove" i__id="'.$idea['i__id'].'" title="'.$sources__13369[13414]['m_name'].'">'.$sources__13369[13414]['m_icon'].'</span>';
+        $ui .= '<span class="media-info bottom-right x_remove" i__id="'.$idea['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
 
     }
     $ui .= '</div>';
@@ -1412,10 +1412,10 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
 
     $CI =& get_instance();
     $session_source = superpower_assigned();
-    $sources__6177 = $CI->config->item('sources__6177'); //Source Status
-    $sources__2738 = $CI->config->item('sources__2738');
-    $sources__4592 = $CI->config->item('sources__4592');
-    $sources__6186 = $CI->config->item('sources__6186'); //Interaction Status
+    $e___6177 = $CI->config->item('e___6177'); //Source Status
+    $e___2738 = $CI->config->item('e___2738');
+    $e___4592 = $CI->config->item('e___4592');
+    $e___6186 = $CI->config->item('e___6186'); //Interaction Status
 
     $x__id = (isset($source['x__id']) ? $source['x__id'] : 0);
     $is_link_source = ( $x__id > 0 && in_array($source['x__type'], $CI->config->item('sources_id_4592')));
@@ -1453,13 +1453,13 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
 
     //SOURCE STATUS
     if(!$is_public){
-        $box_items_list .= '<span class="inline-block e__status_' . $source['e__id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$source['e__status']]['m_name'].' @'.$source['e__status'].'">' . $sources__6177[$source['e__status']]['m_icon'] . '</span>&nbsp;</span>';
+        $box_items_list .= '<span class="inline-block e__status_' . $source['e__id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$source['e__status']]['m_name'].' @'.$source['e__status'].'">' . $e___6177[$source['e__status']]['m_icon'] . '</span>&nbsp;</span>';
     }
 
     //DISCOVER STATUS
     if($x__id){
         if(!$is_link_published){
-            $box_items_list .= '<span class="inline-block x__status_' . $x__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$sources__6186[$source['x__status']]['m_name'].' @'.$source['x__status'].'">' . $sources__6186[$source['x__status']]['m_icon'] . '</span>&nbsp;</span>';
+            $box_items_list .= '<span class="inline-block x__status_' . $x__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$source['x__status']]['m_name'].' @'.$source['x__status'].'">' . $e___6186[$source['x__status']]['m_icon'] . '</span>&nbsp;</span>';
         }
     }
 
@@ -1484,7 +1484,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
 
 
     //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$source['e__id'].' e___' . $source['e__id'] . ( $x__id > 0 ? ' tr_' . $source['x__id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $source['e__id'] . '" en-status="' . $source['e__status'] . '" x__id="'.$x__id.'" discover-status="'.( $x__id ? $source['x__status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$source['e__id'].' e__id_' . $source['e__id'] . ( $x__id > 0 ? ' tr_' . $source['x__id'].' ' : '' ) . ( $is_parent ? ' parent-source ' : '' ) . ' '. $extra_class  . '" source-id="' . $source['e__id'] . '" en-status="' . $source['e__status'] . '" x__id="'.$x__id.'" discover-status="'.( $x__id ? $source['x__status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -1624,7 +1624,7 @@ function view_e($source, $is_parent = false, $extra_class = null, $control_enabl
 function view_input_text($cache_e__id, $current_value, $object__id, $player_is_i_source, $tabindex = 0, $extra_large = false, $e__icon = null, $append_css = null){
 
     $CI =& get_instance();
-    $sources__12112 = $CI->config->item('sources__12112');
+    $e___12112 = $CI->config->item('e___12112');
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
@@ -1633,16 +1633,16 @@ function view_input_text($cache_e__id, $current_value, $object__id, $player_is_i
     //Also Append Counter to the end?
     if($extra_large){
 
-        $focus_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="view_input_text_count('.$cache_e__id.','.$object__id.')" placeholder="'.$sources__12112[$cache_e__id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        $focus_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="view_input_text_count('.$cache_e__id.','.$object__id.')" placeholder="'.$e___12112[$cache_e__id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
         $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$object__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$object__id.'">0</span>/'.config_var($cache_e__id).' CHARACTERS</div>';
-        $icon = '<span class="icon-block title-icon">'.( $e__icon ? $e__icon : $sources__12112[4535]['m_icon'] ).'</span>';
+        $icon = '<span class="icon-block title-icon">'.( $e__icon ? $e__icon : $e___12112[4535]['m_icon'] ).'</span>';
 
     } else {
 
         $focus_element = '<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
         $character_counter = ''; //None
         if(in_array($cache_e__id, $CI->config->item('sources_id_12420'))){ //IDEA TEXT INPUT SHOW ICON
-            $icon = '<span class="icon-block">'.( $e__icon ? $e__icon : $sources__12112[$cache_e__id]['m_icon'] ).'</span>';
+            $icon = '<span class="icon-block">'.( $e__icon ? $e__icon : $e___12112[$cache_e__id]['m_icon'] ).'</span>';
         } else {
             $icon = $e__icon;
         }
@@ -1658,28 +1658,28 @@ function view_input_text($cache_e__id, $current_value, $object__id, $player_is_i
 function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $player_is_i_source = true, $show_full_name = true, $i__id = 0, $x__id = 0){
 
     $CI =& get_instance();
-    $sources__this = $CI->config->item('sources__'.$cache_e__id);
+    $e___this = $CI->config->item('e___'.$cache_e__id);
 
-    if(!$selected_e__id || !isset($sources__this[$selected_e__id])){
+    if(!$selected_e__id || !isset($e___this[$selected_e__id])){
         return false;
     }
 
-    $sources__12079 = $CI->config->item('sources__12079');
-    $sources__4527 = $CI->config->item('sources__4527');
+    $e___12079 = $CI->config->item('e___12079');
+    $e___4527 = $CI->config->item('e___4527');
 
-    //data-toggle="tooltip" data-placement="top" title="'.$sources__4527[$cache_e__id]['m_name'].'"
-    $ui = '<div title="'.$sources__12079[$cache_e__id]['m_name'].'" data-toggle="tooltip" data-placement="top" class="inline-block">';
+    //data-toggle="tooltip" data-placement="top" title="'.$e___4527[$cache_e__id]['m_name'].'"
+    $ui = '<div title="'.$e___12079[$cache_e__id]['m_name'].'" data-toggle="tooltip" data-placement="top" class="inline-block">';
     $ui .= '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' '.( !$show_full_name ? ' icon-block ' : '' ).'" selected-val="'.$selected_e__id.'">';
 
     $ui .= '<button type="button" '.( $player_is_i_source ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
 
-    $ui .= '<span class="icon-block">' .$sources__this[$selected_e__id]['m_icon'].'</span><span class="show-max">'.( $show_full_name ?  $sources__this[$selected_e__id]['m_name'] : '' ).'</span>';
+    $ui .= '<span class="icon-block">' .$e___this[$selected_e__id]['m_icon'].'</span><span class="show-max">'.( $show_full_name ?  $e___this[$selected_e__id]['m_name'] : '' ).'</span>';
 
     $ui .= '</button>';
 
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_e__id.'">';
 
-    foreach($sources__this as $e__id => $m) {
+    foreach($e___this as $e__id => $m) {
 
         $superpower_actives = array_intersect($CI->config->item('sources_id_10957'), $m['m_parents']);
         $is_url_desc = ( substr($m['m_desc'], 0, 1)=='/' );

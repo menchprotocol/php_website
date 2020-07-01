@@ -8,7 +8,7 @@ $duplicates = $q->result_array();
 if(count($duplicates) > 0){
 
     $prev_title = null;
-    $sources__6177 = $this->config->item('sources__6177'); //Source Status
+    $e___6177 = $this->config->item('e___6177'); //Source Status
 
     foreach($duplicates as $en) {
 
@@ -17,7 +17,7 @@ if(count($duplicates) > 0){
             $prev_title = $en['e__title'];
         }
 
-        echo '<span data-toggle="tooltip" data-placement="right" title="'.$sources__6177[$en['e__status']]['m_name'].': '.$sources__6177[$en['e__status']]['m_desc'].'">' . $sources__6177[$en['e__status']]['m_icon'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
+        echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__status']]['m_name'].': '.$e___6177[$en['e__status']]['m_desc'].'">' . $e___6177[$en['e__status']]['m_icon'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
     }
 
 } else {

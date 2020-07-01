@@ -9,8 +9,8 @@
 
 <?php
 
-$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
-$sources__13291 = $this->config->item('sources__13291'); //DISCOVER TABS
+$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+$e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('sources_id_7309'));
 $recipient_source = superpower_assigned();
@@ -73,7 +73,7 @@ if($recipient_source['e__id']){
 
                 //Determine DISCOVER COIN type based on it's connection type's parents that will hold the appropriate discover coin.
                 $discovery_completion_type_id = 0;
-                foreach($this->config->item('sources__12327') /* DISCOVER UNLOCKS */ as $e__id => $m){
+                foreach($this->config->item('e___12327') /* DISCOVER UNLOCKS */ as $e__id => $m){
                     if(in_array($unlocked_connections[0]['x__type'], $m['m_parents'])){
                         $discovery_completion_type_id = $e__id;
                         break;
@@ -151,7 +151,7 @@ $tab_pills = '<ul class="nav nav-pills nav-sm">';
 $tab_content = '';
 $tab_pill_count = 0;
 
-foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
+foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
     $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
@@ -204,9 +204,9 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             //Variable time range:
             $this_tab .= '<p class="space-content">The number of ideas you discover (and the time it takes to discover them) depends on the choices you make interactively along the way:</p>';
             $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-            $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$sources__13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_min']).'</span><br />';
-            $this_tab .= '<span class="discovering-paths">Average:</span>'.$sources__13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span><br />';
-            $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$sources__13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_max']).'</span>';
+            $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_min']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Average:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_max']).'</span>';
             $this_tab .= '</p>';
 
         } else {
@@ -247,7 +247,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $counter = $i_stats['count_sources'];
 
         //List Sources:
-        foreach($this->config->item('sources__4251') as $e__id2 => $m2){
+        foreach($this->config->item('e___4251') as $e__id2 => $m2){
             if($i_stats['count_'.$e__id2]>0){
                 $this_tab .= '<div class="discover-topic"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id2].' '.$m2['m_name'].':</div>';
                 $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
@@ -298,7 +298,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $this_tab .= '<div style="margin-bottom:13px;">Share URL:</div>';
         $this_tab .= '<input style="margin-bottom:13px;" type="url" value="' .$this_url . '" class="form-control border">';
         $this_tab .= '<div style="margin-bottom:13px;">Or share using:</div>';
-        foreach($this->config->item('sources__13023') as $m2) {
+        foreach($this->config->item('e___13023') as $m2) {
             $this_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
         }
         $this_tab .= '</div>';
@@ -349,7 +349,7 @@ echo $tab_content;
 if(!$in_my_discoveries){
 
     //GET STARTED
-    echo '<div class="margin-top-down discover-add left-margin inline-block"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$sources__11035[4235]['m_icon'].' '.$sources__11035[4235]['m_name'].'</a></div>';
+    echo '<div class="margin-top-down discover-add left-margin inline-block"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_name'].'</a></div>';
 
 } else {
 
@@ -526,7 +526,7 @@ if(!$in_my_discoveries){
                 echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
             }
 
-            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="x_answer()">'.$sources__11035[12211]['m_icon'].'</a></div>';
+            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0)" onclick="x_answer()">'.$e___11035[12211]['m_icon'].'</a></div>';
 
             echo '</div>';
 
@@ -551,7 +551,7 @@ if(!$in_my_discoveries){
         echo view_i_previous_discover($i_focus['i__id'], $recipient_source);
 
         //Save/Upload & Next:
-        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="x_respond()">'.$sources__11035[12211]['m_icon'].'</a></div>';
+        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-discover btn-circle" href="javascript:void(0);" onclick="x_respond()">'.$e___11035[12211]['m_icon'].'</a></div>';
 
 
         if(count($discovery_completes)){

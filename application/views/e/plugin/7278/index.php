@@ -13,7 +13,7 @@ $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;"
 $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
 //Load IDEA LINKS:
-$sources__4593 = $this->config->item('sources__4593');
+$e___4593 = $this->config->item('e___4593');
 
 //To make sure Idea/source IDs are unique:
 $id_prefix = array(
@@ -58,7 +58,7 @@ foreach($ideas as $in){
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[4535].$next_idea['x__left'],
             'target' => $id_prefix[4535].$next_idea['x__right'],
-            'label' => $sources__4593[$next_idea['x__type']]['m_name'], //TODO maybe give visibility to condition here?
+            'label' => $e___4593[$next_idea['x__type']]['m_name'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $next_idea['x__type'],
             'edge_status' => $next_idea['x__status'],
@@ -94,7 +94,7 @@ foreach($sources as $en){
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[4536].$e_child['x__up'],
             'target' => $id_prefix[4536].$e_child['x__down'],
-            'label' => $sources__4593[$e_child['x__type']]['m_name'].': '.$e_child['x__message'],
+            'label' => $e___4593[$e_child['x__type']]['m_name'].': '.$e_child['x__message'],
             'weight' => 1,
             'edge_type' => $e_child['x__type'],
             'edge_status' => $e_child['x__status'],
@@ -114,7 +114,7 @@ foreach($messages as $message) {
     //Add message node:
     $this->db->insert('gephi_nodes', array(
         'id' => $message['x__id'],
-        'label' => $sources__4593[$message['x__type']]['m_name'] . ': ' . $message['x__message'],
+        'label' => $e___4593[$message['x__type']]['m_name'] . ': ' . $message['x__message'],
         'size' => $node_size['msg'],
         'node_type' => $message['x__type'], //Message type
         'node_status' => $message['x__status'],

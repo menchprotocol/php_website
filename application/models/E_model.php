@@ -18,11 +18,11 @@ class E_model extends CI_Model
 
 
 
-    function activate_session($source, $update_session = false){
+    function activate_session($e, $update_session = false){
 
         //PROFILE
         $session_data = array(
-            'session_profile' => $source,
+            'session_profile' => $e,
             'session_parent_ids' => array(),
             'session_superpowers_assigned' => array(),
             'session_superpowers_activated' => array(),
@@ -34,16 +34,16 @@ class E_model extends CI_Model
             $session_data['session_page_count'] = 0;
 
             $this->X_model->create(array(
-                'x__player' => $source['e__id'],
+                'x__player' => $e['e__id'],
                 'x__type' => 7564, //PLAYER SIGN
-                'x__metadata' => $source,
+                'x__metadata' => $e,
             ));
 
         }
 
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-            'x__down' => $source['e__id'], //This child source
+            'x__down' => $e['e__id'], //This child source
             'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
             'e__status IN (' . join(',', $this->config->item('sources_id_7357')) . ')' => null, //PUBLIC
         ), array('x__up')) as $e_profile){
@@ -58,7 +58,7 @@ class E_model extends CI_Model
 
                 //Was the latest toggle to de-activate? If not, assume active:
                 $last_advance_settings = $this->X_model->fetch(array(
-                    'x__player' => $source['e__id'],
+                    'x__player' => $e['e__id'],
                     'x__type' => 5007, //TOGGLE SUPERPOWER
                     'x__up' => $e_profile['e__id'],
                     'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
@@ -73,7 +73,7 @@ class E_model extends CI_Model
         //SESSION
         $this->session->set_userdata($session_data);
 
-        return $source;
+        return $e;
 
     }
 
@@ -116,7 +116,7 @@ class E_model extends CI_Model
             ));
 
             //Fetch to return the complete source data:
-            $sources = $this->E_model->fetch(array(
+            $es = $this->E_model->fetch(array(
                 'e__id' => $add_fields['e__id'],
             ));
 
@@ -125,7 +125,7 @@ class E_model extends CI_Model
                 update_algolia(4536, $add_fields['e__id']);
             }
 
-            return $sources[0];
+            return $es[0];
 
         } else {
 
@@ -226,8 +226,8 @@ class E_model extends CI_Model
                     } else {
                         $x__type = 6178; //Source Deleted
                     }
-                    $sources__6177 = $this->config->item('sources__6177'); //Source Status
-                    $x__message = view_db_field($key) . ' updated from [' . $sources__6177[$before_data[0][$key]]['m_name'] . '] to [' . $sources__6177[$value]['m_name'] . ']';
+                    $e___6177 = $this->config->item('e___6177'); //Source Status
+                    $x__message = view_db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m_name'] . '] to [' . $e___6177[$value]['m_name'] . ']';
 
                 } elseif($key=='e__icon') {
 
@@ -332,7 +332,7 @@ class E_model extends CI_Model
                 'x__player' => $x__player,
                 'x__down' => $x__player,
                 'x__up' => $set_e_child_id,
-                'x__type' => e_link_type(),
+                'x__type' => e_x__type(),
                 'x__reference' => $updated_x__id,
             ));
         }
@@ -398,7 +398,7 @@ class E_model extends CI_Model
 
         //Assign to Creator:
         $this->X_model->create(array(
-            'x__type' => e_link_type(),
+            'x__type' => e_x__type(),
             'x__player' => $session_source['e__id'],
             'x__up' => $session_source['e__id'],
             'x__down' => $e__id,
@@ -409,7 +409,7 @@ class E_model extends CI_Model
 
             //Add Pending Review:
             $this->X_model->create(array(
-                'x__type' => e_link_type(),
+                'x__type' => e_x__type(),
                 'x__player' => $session_source['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
@@ -555,8 +555,8 @@ class E_model extends CI_Model
         //Goes through $max_search_levels of sources to find expert channels, people & organizations
         $max_search_levels = 3;
         $metadata_this = array(
-            '__i___experts' => array(),
-            '__i___content' => array(),
+            '__i___13339' => array(),
+            '__i___3000' => array(),
         );
 
         //SOURCE PROFILE
@@ -570,14 +570,14 @@ class E_model extends CI_Model
 
             if(in_array($e__profile['e__id'], $this->config->item('sources_id_3000'))){
                 //EXPERT CONTENT
-                if (!isset($metadata_this['__i___content'][$source['e__id']])) {
-                    $metadata_this['__i___content'][$source['e__id']] = $source;
+                if (!isset($metadata_this['__i___3000'][$source['e__id']])) {
+                    $metadata_this['__i___3000'][$source['e__id']] = $source;
                 }
             } elseif(in_array($e__profile['e__id'], $this->config->item('sources_id_13339'))) {
                 //EXPERT AUTHORS
                 $source['x__message'] = $e__profile['x__message']; //Update Description
-                if (!isset($metadata_this['__i___experts'][$source['e__id']])) {
-                    $metadata_this['__i___experts'][$source['e__id']] = $source;
+                if (!isset($metadata_this['__i___13339'][$source['e__id']])) {
+                    $metadata_this['__i___13339'][$source['e__id']] = $source;
                 }
             }
 
@@ -587,16 +587,16 @@ class E_model extends CI_Model
                 $metadata_recursion = $this->E_model->metadata_experts($e__profile, ($level + 1));
 
                 //CONTENT CHANNELS
-                foreach($metadata_recursion['__i___content'] as $e__id => $e_content) {
-                    if (!isset($metadata_this['__i___content'][$e__id])) {
-                        $metadata_this['__i___content'][$e__id] = $e_content;
+                foreach($metadata_recursion['__i___3000'] as $e__id => $e_content) {
+                    if (!isset($metadata_this['__i___3000'][$e__id])) {
+                        $metadata_this['__i___3000'][$e__id] = $e_content;
                     }
                 }
 
                 //EXPERT PEOPLE/ORGANIZATIONS
-                foreach($metadata_recursion['__i___experts'] as $e__id => $e_expert) {
-                    if (!isset($metadata_this['__i___experts'][$e__id])) {
-                        $metadata_this['__i___experts'][$e__id] = $e_expert;
+                foreach($metadata_recursion['__i___13339'] as $e__id => $e_expert) {
+                    if (!isset($metadata_this['__i___13339'][$e__id])) {
+                        $metadata_this['__i___13339'][$e__id] = $e_expert;
                     }
                 }
             }
@@ -638,8 +638,8 @@ class E_model extends CI_Model
 
         //Remember if source name was passed:
         $name_was_passed = ( $page_title ? true : false );
-        $sources__4537 = $this->config->item('sources__4537');
-        $sources__4592 = $this->config->item('sources__4592');
+        $e___4537 = $this->config->item('e___4537');
+        $e___4592 = $this->config->item('e___4592');
 
         //Initially assume Generic URL unless we can prove otherwise:
         $x__type = 4256; //Generic URL
@@ -686,7 +686,7 @@ class E_model extends CI_Model
             } elseif ($url_analysis['url_file_extension'] && is_https_url($url)) {
 
                 $detected_extension = false;
-                foreach($this->config->item('sources__11080') as $e__id => $m){
+                foreach($this->config->item('e___11080') as $e__id => $m){
                     if(in_array($url_analysis['url_file_extension'], explode('|' , $m['m_desc']))){
                         $x__type = $e__id;
                         $detected_extension = true;
@@ -759,14 +759,14 @@ class E_model extends CI_Model
 
                 if(!$page_title){
                     //Assign a generic source name:
-                    $page_title = $sources__4592[$x__type]['m_name'].' '.substr(md5($url), 0, 8);
+                    $page_title = $e___4592[$x__type]['m_name'].' '.substr(md5($url), 0, 8);
                 }
 
                 //Prefix type in name:
                 $page_title = $page_title;
 
                 //Create a new source for this URL ONLY If player source is provided...
-                $added_source = $this->E_model->verify_create($page_title, $x__player, 6181, $sources__4592[$x__type]['m_icon']);
+                $added_source = $this->E_model->verify_create($page_title, $x__player, 6181, $e___4592[$x__type]['m_icon']);
                 if($added_source['status']){
 
                     //All good:
@@ -817,7 +817,7 @@ class E_model extends CI_Model
             //Link URL to its parent domain?
             $this->X_model->create(array(
                 'x__player' => $x__player,
-                'x__type' => e_link_type(),
+                'x__type' => e_x__type(),
                 'x__up' => $e_url['e__id'],
                 'x__down' => $add_to_child_e__id,
             ));
@@ -872,14 +872,14 @@ class E_model extends CI_Model
                 'message' => $is_valid_icon['message'],
             );
 
-        } elseif(in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956)) && !is_valid_e_string($action_command1)){
+        } elseif(in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441)) && !is_valid_e_string($action_command1)){
 
             return array(
                 'status' => 0,
                 'message' => 'Unknown Source. Format must be: @123 Source Name',
             );
 
-        } elseif($action_e__id==11956 && !is_valid_e_string($action_command2)){
+        } elseif(in_array($action_e__id, array(11956)) && !is_valid_e_string($action_command2)){
 
             return array(
                 'status' => 0,
@@ -906,28 +906,28 @@ class E_model extends CI_Model
 
 
         //Process request:
-        foreach($children as $source) {
+        foreach($children as $x) {
 
             //Logic here must match items in e_mass_actions config variable
 
             //Take command-specific action:
             if ($action_e__id == 4998) { //Add Prefix String
 
-                $this->E_model->update($source['e__id'], array(
-                    'e__title' => $action_command1 . $source['e__title'],
+                $this->E_model->update($x['e__id'], array(
+                    'e__title' => $action_command1 . $x['e__title'],
                 ), true, $x__player);
 
                 $applied_success++;
 
             } elseif ($action_e__id == 4999) { //Add Postfix String
 
-                $this->E_model->update($source['e__id'], array(
-                    'e__title' => $source['e__title'] . $action_command1,
+                $this->E_model->update($x['e__id'], array(
+                    'e__title' => $x['e__title'] . $action_command1,
                 ), true, $x__player);
 
                 $applied_success++;
 
-            } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956))) { //Add/Delete parent source
+            } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
                 //What player searched for:
                 $parent_e__id = intval(one_two_explode('@',' ',$action_command1));
@@ -935,22 +935,30 @@ class E_model extends CI_Model
                 //See if child source has searched parent source:
                 $child_parent_sources = $this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $source['e__id'], //This child source
+                    'x__down' => $x['e__id'], //This child source
                     'x__up' => $parent_e__id,
                     'x__status IN (' . join(',', $this->config->item('sources_id_7360')) . ')' => null, //ACTIVE
                 ));
 
-                if(($action_e__id==5981 && count($child_parent_sources)==0) || ($action_e__id==12928 && view_coins_count_source(0,$source['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_count_source(0,$source['e__id'],true))){
+                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_sources)==0) || ($action_e__id==12928 && view_coins_count_source(0,$x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_count_source(0,$x['e__id'],true))){
 
                     //Parent Player Addition
                     $this->X_model->create(array(
                         'x__player' => $x__player,
-                        'x__type' => e_link_type(),
-                        'x__down' => $source['e__id'], //This child source
+                        'x__type' => e_x__type(),
+                        'x__down' => $x['e__id'], //This child source
                         'x__up' => $parent_e__id,
+                        'x__message' => $x['x__message'], //Move message
                     ));
 
                     $applied_success++;
+
+                    if($action_e__id==13441){
+                        //Since we're migrating we should remove from here:
+                        $this->X_model->update($x['x__id'], array(
+                            'x__status' => 6173, //Link Deleted
+                        ), $x__player, 10673 /* Player Link Unpublished  */);
+                    }
 
                 } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_sources) > 0){
 
@@ -973,8 +981,8 @@ class E_model extends CI_Model
                         //Add as a parent because it meets the condition
                         $this->X_model->create(array(
                             'x__player' => $x__player,
-                            'x__type' => e_link_type(),
-                            'x__down' => $source['e__id'], //This child source
+                            'x__type' => e_x__type(),
+                            'x__down' => $x['e__id'], //This child source
                             'x__up' => $parent_new_e__id,
                         ));
 
@@ -986,61 +994,61 @@ class E_model extends CI_Model
 
             } elseif ($action_e__id == 5943) { //Player Mass Update Player Icon
 
-                $this->E_model->update($source['e__id'], array(
+                $this->E_model->update($x['e__id'], array(
                     'e__icon' => $action_command1,
                 ), true, $x__player);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 12318 && !strlen($source['e__icon'])) { //Player Mass Update Player Icon
+            } elseif ($action_e__id == 12318 && !strlen($x['e__icon'])) { //Player Mass Update Player Icon
 
-                $this->E_model->update($source['e__id'], array(
+                $this->E_model->update($x['e__id'], array(
                     'e__icon' => $action_command1,
                 ), true, $x__player);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5000 && substr_count($source['e__title'], strtoupper($action_command1)) > 0) { //Replace Player Matching Name
+            } elseif ($action_e__id == 5000 && substr_count($x['e__title'], strtoupper($action_command1)) > 0) { //Replace Player Matching Name
 
-                $this->E_model->update($source['e__id'], array(
-                    'e__title' => str_replace(strtoupper($action_command1), strtoupper($action_command2), $source['e__title']),
+                $this->E_model->update($x['e__id'], array(
+                    'e__title' => str_replace(strtoupper($action_command1), strtoupper($action_command2), $x['e__title']),
                 ), true, $x__player);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 10625 && substr_count($source['e__icon'], $action_command1) > 0) { //Replace Player Matching Icon
+            } elseif ($action_e__id == 10625 && substr_count($x['e__icon'], $action_command1) > 0) { //Replace Player Matching Icon
 
-                $this->E_model->update($source['e__id'], array(
-                    'e__icon' => str_replace($action_command1, $action_command2, $source['e__icon']),
+                $this->E_model->update($x['e__id'], array(
+                    'e__icon' => str_replace($action_command1, $action_command2, $x['e__icon']),
                 ), true, $x__player);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5001 && substr_count($source['x__message'], $action_command1) > 0) { //Replace Link Matching String
+            } elseif ($action_e__id == 5001 && substr_count($x['x__message'], $action_command1) > 0) { //Replace Link Matching String
 
-                $this->X_model->update($source['x__id'], array(
-                    'x__message' => str_replace($action_command1, $action_command2, $source['x__message']),
+                $this->X_model->update($x['x__id'], array(
+                    'x__message' => str_replace($action_command1, $action_command2, $x['x__message']),
                 ), $x__player, 10657 /* Player Link Updated Content  */);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5003 && ($action_command1=='*' || $source['e__status']==$action_command1) && in_array($action_command2, $this->config->item('sources_id_6177'))) {
+            } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__status']==$action_command1) && in_array($action_command2, $this->config->item('sources_id_6177'))) {
 
                 //Being deleted? Unlink as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('sources_id_7358'))){
-                    $this->E_model->unlink($source['e__id'], $x__player);
+                    $this->E_model->unlink($x['e__id'], $x__player);
                 }
 
                 //Update Matching Player Status:
-                $this->E_model->update($source['e__id'], array(
+                $this->E_model->update($x['e__id'], array(
                     'e__status' => $action_command2,
                 ), true, $x__player);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5865 && ($action_command1=='*' || $source['x__status']==$action_command1) && in_array($action_command2, $this->config->item('sources_id_6186') /* Interaction Status */)) { //Update Matching Interaction Status
+            } elseif ($action_e__id == 5865 && ($action_command1=='*' || $x['x__status']==$action_command1) && in_array($action_command2, $this->config->item('sources_id_6186') /* Interaction Status */)) { //Update Matching Interaction Status
 
-                $this->X_model->update($source['x__id'], array(
+                $this->X_model->update($x['x__id'], array(
                     'x__status' => $action_command2,
                 ), $x__player, ( in_array($action_command2, $this->config->item('sources_id_7360') /* ACTIVE */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unpublished */ ));
 

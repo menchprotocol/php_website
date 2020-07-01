@@ -1,13 +1,13 @@
 
 <?php
 
-$sources__6206 = $this->config->item('sources__6206'); //MENCH SOURCE
-$sources__4341 = $this->config->item('sources__4341'); //Link Table
-$sources__2738 = $this->config->item('sources__2738'); //MENCH
-$sources__6177 = $this->config->item('sources__6177'); //Source Status
-$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
-$sources__11089 = $this->config->item('sources__11089'); //SOURCE LAYOUT
-$sources__10957 = $this->config->item('sources__10957'); //SUPERPOWERS
+$e___6206 = $this->config->item('e___6206'); //MENCH SOURCE
+$e___4341 = $this->config->item('e___4341'); //Link Table
+$e___2738 = $this->config->item('e___2738'); //MENCH
+$e___6177 = $this->config->item('e___6177'); //Source Status
+$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+$e___11089 = $this->config->item('e___11089'); //SOURCE LAYOUT
+$e___10957 = $this->config->item('e___10957'); //SUPERPOWERS
 $is_public = in_array($source['e__status'], $this->config->item('sources_id_7357'));
 $is_active = in_array($source['e__status'], $this->config->item('sources_id_7358'));
 $superpower_10967 = superpower_active(10967, true);
@@ -51,10 +51,10 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                     <div class="inline-box">
 
                         <!-- Player Status -->
-                        <span class="mini-header"><?= $sources__6206[6177]['m_icon'].' '.$sources__6206[6177]['m_name'] ?></span>
+                        <span class="mini-header"><?= $e___6206[6177]['m_icon'].' '.$e___6206[6177]['m_name'] ?></span>
                         <select class="form-control border" id="e__status">
                             <?php
-                            foreach($this->config->item('sources__6177') /* Source Status */ as $x__type => $m){
+                            foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
                                 echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                             }
                             ?>
@@ -72,7 +72,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
 
                         <!-- Player Name -->
-                        <span class="mini-header" style="margin-top:20px;"><?= $sources__6206[6197]['m_icon'].' '.$sources__6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
+                        <span class="mini-header" style="margin-top:20px;"><?= $e___6206[6197]['m_icon'].' '.$e___6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
                         <span class="white-wrapper">
                                 <textarea class="form-control text-edit border montserrat doupper" id="e__title"
                                           onkeyup="e__title_word_count()" data-lpignore="true"
@@ -83,7 +83,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
 
                         <!-- Player Icon -->
-                        <span class="mini-header"><?= $sources__6206[6198]['m_icon'].' '.$sources__6206[6198]['m_name'] ?>
+                        <span class="mini-header"><?= $e___6206[6198]['m_icon'].' '.$e___6206[6198]['m_name'] ?>
 
                                 <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
 
@@ -112,10 +112,10 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                         <div class="inline-box">
 
 
-                            <span class="mini-header"><?= $sources__4341[6186]['m_icon'].' '.$sources__4341[6186]['m_name'] ?></span>
+                            <span class="mini-header"><?= $e___4341[6186]['m_icon'].' '.$e___4341[6186]['m_name'] ?></span>
                             <select class="form-control border" id="x__status">
                                 <?php
-                                foreach($this->config->item('sources__6186') /* Interaction Status */ as $x__type => $m){
+                                foreach($this->config->item('e___6186') /* Interaction Status */ as $x__type => $m){
                                     echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                                 }
                                 ?>
@@ -129,7 +129,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
 
                             <form class="drag-box" method="post" enctype="multipart/form-data">
-                                <span class="mini-header" style="margin-top: 20px;"><?= $sources__4341[4372]['m_icon'].' '.$sources__4341[4372]['m_name'] ?></span>
+                                <span class="mini-header" style="margin-top: 20px;"><?= $e___4341[4372]['m_icon'].' '.$e___4341[4372]['m_name'] ?></span>
                                 <span class="white-wrapper">
                                     <textarea class="form-control text-edit border" id="x__message"
                                               data-lpignore="true"
@@ -142,7 +142,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                             </form>
 
 
-                            <span class="mini-header"><?= $sources__4341[4593]['m_icon'].' '.$sources__4341[4593]['m_name'] ?></span>
+                            <span class="mini-header"><?= $e___4341[4593]['m_icon'].' '.$e___4341[4593]['m_name'] ?></span>
                             <span id="x__type_preview"></span>
                             <p id="e_link_preview" class="hideIfEmpty"></p>
 
@@ -186,17 +186,17 @@ $player_is_e_source = player_is_e_source($source['e__id']);
     }
 
     //SOURCE DRAFTING?
-    echo '<span class="icon-block e__status_' . $source['e__id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$sources__6177[$source['e__status']]['m_name'].': '.$sources__6177[$source['e__status']]['m_desc'].'">' . $sources__6177[$source['e__status']]['m_icon'] . '</span></span>';
+    echo '<span class="icon-block e__status_' . $source['e__id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$source['e__status']]['m_name'].': '.$e___6177[$source['e__status']]['m_desc'].'">' . $e___6177[$source['e__status']]['m_icon'] . '</span></span>';
 
     //Modify
-    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $source['e__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$sources__11035[12275]['m_name'].'">'.$sources__11035[12275]['m_icon'].'</a>';
+    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $source['e__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a>';
 
 
     //ADMIN MENU
     if(superpower_assigned(12703)){
-        $sources__4527 = $this->config->item('sources__4527'); //Platform Memory
+        $e___4527 = $this->config->item('e___4527'); //Platform Memory
         echo '<ul class="nav nav-pills nav-sm" style="display: inline-block; border: 0; margin: 0;">';
-        echo view_caret(12887, $sources__4527[12887], $source['e__id']);
+        echo view_caret(12887, $e___4527[12887], $source['e__id']);
         echo '</ul>';
     }
 
@@ -214,7 +214,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
     $tab_group = 12467;
     $tab_nav = '';
     $tab_content = '';
-    foreach($this->config->item('sources__'.$tab_group) as $x__type => $m) {
+    foreach($this->config->item('e___'.$tab_group) as $x__type => $m) {
 
         //Has required Superpowers
         $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
@@ -261,7 +261,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
 
     //SOURCE TABS
-    foreach($sources__11089 as $x__type => $m){
+    foreach($e___11089 as $x__type => $m){
 
         //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('sources_id_10957'), $m['m_parents']);
@@ -285,7 +285,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
             $this_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
 
             //Display account fields ordered with their SOURCE LINKS:
-            foreach($this->config->item('sources__6225') as $acc_e__id => $acc_detail) {
+            foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
                 //Do they have any assigned? Skip this section if not:
                 if($acc_e__id == 10957 /* Superpowers */ && !$superpower_any){
@@ -326,7 +326,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
 
                     //List avatars:
-                    foreach($this->config->item('sources__12279') as $x__type3 => $m3) {
+                    foreach($this->config->item('e___12279') as $x__type3 => $m3) {
 
                         $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m_icon']));
                         $avatar_type_match = ($e__icon_parts[0] == $avatar_icon_parts[0]);
@@ -351,7 +351,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
                     //List avatars:
                     $this_tab .= '<div class="list-group">';
-                    foreach($sources__10957 as $superpower_e__id => $m3){
+                    foreach($e___10957 as $superpower_e__id => $m3){
 
                         //What is the superpower requirement?
                         if(!superpower_assigned($superpower_e__id)){
@@ -420,7 +420,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
             //Input to add new parents:
             $this_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4536]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
@@ -474,7 +474,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                 $input_options = '';
                 $editor_counter = 0;
 
-                foreach($this->config->item('sources__4997') as $action_e__id => $e_list_action) {
+                foreach($this->config->item('e___4997') as $action_e__id => $e_list_action) {
 
 
                     $editor_counter++;
@@ -499,7 +499,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                         $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
 
 
-                    } elseif(in_array($action_e__id, array(5981, 12928, 12930, 5982))){
+                    } elseif(in_array($action_e__id, array(5981, 12928, 12930, 5982, 13441))){
 
                         //Player search box:
 
@@ -507,7 +507,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                         $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
 
                         //We don't need the second value field here:
-                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
+                        $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" placeholder="Search Source" />';
 
 
                     } elseif($action_e__id == 11956){
@@ -526,7 +526,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('sources__6177') /* Source Status */ as $x__type3 => $m3){
+                        foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
                             $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
@@ -534,7 +534,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                         //Replace:
                         $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('sources__6177') /* Source Status */ as $x__type3 => $m3){
+                        foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
                             $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
@@ -547,7 +547,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('sources__6186') /* Interaction Status */ as $x__type3 => $m3){
+                        foreach($this->config->item('e___6186') /* Interaction Status */ as $x__type3 => $m3){
                             $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
@@ -555,7 +555,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                         //Replace:
                         $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('sources__6186') /* Interaction Status */ as $x__type3 => $m3){
+                        foreach($this->config->item('e___6186') /* Interaction Status */ as $x__type3 => $m3){
                             $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
@@ -576,7 +576,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                 }
 
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 3px 0 0;">'.( superpower_active(10967, true) && sources_currently_sorted($source['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$sources__11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$sources__11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$sources__11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$sources__11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 3px 0 0;">'.( superpower_active(10967, true) && sources_currently_sorted($source['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
 
 
 
@@ -627,7 +627,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                     if (count($child_e_filters) > 0 && $child_e_filters[0]['totals'] < $e_count) {
 
                         //Load status definitions:
-                        $sources__6177 = $this->config->item('sources__6177'); //Source Status
+                        $e___6177 = $this->config->item('e___6177'); //Source Status
 
                         //Add 2nd Navigation to UI
                         $this_tab .= '<div class="nav nav-pills nav-sm">';
@@ -637,7 +637,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
                         //Show each specific filter based on DB counts:
                         foreach($child_e_filters as $c_c) {
-                            $st = $sources__6177[$c_c['e__status']];
+                            $st = $e___6177[$c_c['e__status']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
                             $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['e__status'] . '" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
                         }
@@ -661,7 +661,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
             //Input to add new child:
             $this_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$sources__2738[4536]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4536]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
@@ -747,7 +747,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
             } else {
 
-                $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$sources__11089[$x__type]['m_name'].' yet</div>';
+                $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___11089[$x__type]['m_name'].' yet</div>';
 
             }
 
@@ -770,7 +770,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                 }
                 $this_tab .= '</div>';
             } else {
-                $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$sources__11089[$x__type]['m_name'].' yet</div>';
+                $this_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___11089[$x__type]['m_name'].' yet</div>';
             }
 
         }

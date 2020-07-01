@@ -10,7 +10,7 @@ $duplicates = $q->result_array();
 if(count($duplicates) > 0){
 
     $prev_title = null;
-    $sources__4737 = $this->config->item('sources__4737'); //Idea Status
+    $e___4737 = $this->config->item('e___4737'); //Idea Status
 
     foreach($duplicates as $in) {
         if ($prev_title != $in['i__title']) {
@@ -18,7 +18,7 @@ if(count($duplicates) > 0){
             $prev_title = $in['i__title'];
         }
 
-        echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$sources__4737[$in['i__status']]['m_name'].': '.$sources__4737[$in['i__status']]['m_desc'].'">' . $sources__4737[$in['i__status']]['m_icon'] . '</span> <a href="/i/i_go/' . $in['i__id'] . '"><b>' . $in['i__title'] . '</b></a> #' . $in['i__id'] . '</div>';
+        echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$e___4737[$in['i__status']]['m_name'].': '.$e___4737[$in['i__status']]['m_desc'].'">' . $e___4737[$in['i__status']]['m_icon'] . '</span> <a href="/i/i_go/' . $in['i__id'] . '"><b>' . $in['i__title'] . '</b></a> #' . $in['i__id'] . '</div>';
     }
 
 } else {

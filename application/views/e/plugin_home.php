@@ -1,14 +1,14 @@
 <?php
 
-$sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 //List Plugins:
 echo '<div class="container">';
 
-echo '<h1 style="padding-top:5px;"><span class="icon-block">'.view_e__icon($sources__11035[6287]['m_icon']).'</span>'.count($this->config->item('sources__6287')).' '.$sources__11035[6287]['m_name'].'</h1>';
+echo '<h1 style="padding-top:5px;"><span class="icon-block">'.view_e__icon($e___11035[6287]['m_icon']).'</span>'.count($this->config->item('e___6287')).' '.$e___11035[6287]['m_name'].'</h1>';
 
 echo '<div class="list-group">';
-foreach($this->config->item('sources__6287') as $e__id => $m) {
+foreach($this->config->item('e___6287') as $e__id => $m) {
 
     echo '<a href="/e/plugin/'.$e__id.'" class="list-group-item no-side-padding">';
 

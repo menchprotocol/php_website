@@ -52,7 +52,7 @@ foreach($config_sources as $en){
 
     echo '<br />//'.$en['e__title'].':<br />';
     echo '$config[\'sources_id_'.$en['x__down'].'\'] = array('.join(',',$child_ids).');<br />';
-    echo '$config[\'sources__'.$en['x__down'].'\'] = array(<br />';
+    echo '$config[\'e___'.$en['x__down'].'\'] = array(<br />';
     foreach($children as $child){
 
         //Do we have an omit command?

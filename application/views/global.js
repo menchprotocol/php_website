@@ -61,7 +61,7 @@ function load_editor(){
         mass_action_ui();
     });
 
-    if(parseInt(js_sources__6404[12678]['m_desc'])){
+    if(parseInt(js_e___6404[12678]['m_desc'])){
         $('.e_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('@' + suggestion.object__id + ' ' + suggestion.object__title);
@@ -147,7 +147,7 @@ function view_search_result(algolia_object){
 
     //Determine object type:
     var is_idea = (parseInt(algolia_object.object__type)==4535);
-    var is_public = ( parseInt(algolia_object.object__status) in ( is_idea ? js_sources__7355 : js_sources__7357 ));
+    var is_public = ( parseInt(algolia_object.object__status) in ( is_idea ? js_e___7355 : js_e___7357 ));
     var obj_icon = ( is_idea ? '<i class="fas fa-circle idea"></i>' : algolia_object.object__icon );
     var obj_full_name = ( algolia_object._highlightResult && algolia_object._highlightResult.object__title.value ? algolia_object._highlightResult.object__title.value : algolia_object.object__title );
 
@@ -157,7 +157,7 @@ function view_search_result(algolia_object){
 
 
 function js_view_platform_message(e__id){
-    var messages = js_sources__12687[e__id]['m_desc'].split(" | ");
+    var messages = js_e___12687[e__id]['m_desc'].split(" | ");
     if(messages.length == 1){
         //Return message:
         return messages[0];
@@ -226,7 +226,7 @@ $(document).ready(function () {
 
     //Load Algolia on Focus:
     $(".algolia_search").focus(function () {
-        if(!algolia_index && parseInt(js_sources__6404[12678]['m_desc'])){
+        if(!algolia_index && parseInt(js_e___6404[12678]['m_desc'])){
             //Loadup Algolia once:
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
             algolia_index = client.initIndex('alg_index');
@@ -260,7 +260,7 @@ $(document).ready(function () {
     });
 
 
-    if(parseInt(js_sources__6404[12678]['m_desc'])){
+    if(parseInt(js_e___6404[12678]['m_desc'])){
 
         $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -579,7 +579,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
         }
     });
 
-    if(!parseInt(js_sources__6404[12678]['m_desc'])){
+    if(!parseInt(js_e___6404[12678]['m_desc'])){
         //Previously loaded:
         return false;
     }
@@ -665,14 +665,14 @@ function view_input_text_count(cache_e__id, object__id) {
 
     //Update count:
     var len = $('.text__'+cache_e__id+'_'+object__id).val().length;
-    if (len > js_sources__6404[cache_e__id]['m_desc']) {
+    if (len > js_e___6404[cache_e__id]['m_desc']) {
         $('#current_count_'+cache_e__id+'_'+object__id).addClass('overload').text(len);
     } else {
         $('#current_count_'+cache_e__id+'_'+object__id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_sources__6404[cache_e__id]['m_desc'] * js_sources__6404[12088]['m_desc'] )){
+    if(len > ( js_e___6404[cache_e__id]['m_desc'] * js_e___6404[12088]['m_desc'] )){
         $('.title_counter_'+cache_e__id+'_'+object__id).removeClass('hidden');
     } else {
         $('.title_counter_'+cache_e__id+'_'+object__id).addClass('hidden');
@@ -816,14 +816,14 @@ function i_note_count_new(note_type_id) {
 
     //Update count:
     var len = $('#x__message' + note_type_id).val().length;
-    if (len > js_sources__6404[4485]['m_desc']) {
+    if (len > js_e___6404[4485]['m_desc']) {
         $('#charNum' + note_type_id).addClass('overload').text(len);
     } else {
         $('#charNum' + note_type_id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_sources__6404[4485]['m_desc'] * js_sources__6404[12088]['m_desc'] )){
+    if(len > ( js_e___6404[4485]['m_desc'] * js_e___6404[12088]['m_desc'] )){
         $('#ideaNoteNewCount' + note_type_id).removeClass('hidden');
     } else {
         $('#ideaNoteNewCount' + note_type_id).addClass('hidden');
@@ -838,14 +838,14 @@ function i_note_edit_count(x__id) {
     }
     //Update count:
     var len = $('#message_body_' + x__id).val().length;
-    if (len > js_sources__6404[4485]['m_desc']) {
+    if (len > js_e___6404[4485]['m_desc']) {
         $('#charEditingNum' + x__id).addClass('overload').text(len);
     } else {
         $('#charEditingNum' + x__id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_sources__6404[4485]['m_desc'] * js_sources__6404[12088]['m_desc'] )){
+    if(len > ( js_e___6404[4485]['m_desc'] * js_e___6404[12088]['m_desc'] )){
         $('#ideaNoteCount' + x__id).removeClass('hidden');
     } else {
         $('#ideaNoteCount' + x__id).addClass('hidden');
@@ -854,7 +854,7 @@ function i_note_edit_count(x__id) {
 
 function i_note_e_search(obj) {
 
-    if(parseInt(js_sources__6404[12678]['m_desc'])){
+    if(parseInt(js_e___6404[12678]['m_desc'])){
         obj.textcomplete([
             {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,

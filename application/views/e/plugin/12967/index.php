@@ -9,7 +9,7 @@
 
 //IF MISSING
 $updated = 0;
-foreach($this->config->item('sources__12523') as $e__id => $m) {
+foreach($this->config->item('e___12523') as $e__id => $m) {
     //Update All Child Icons that are not the same:
     foreach($this->X_model->fetch(array(
         'x__up' => $e__id,
@@ -25,14 +25,14 @@ foreach($this->config->item('sources__12523') as $e__id => $m) {
     }
 
 }
-echo $updated.' Icons updated across '.count($this->config->item('sources__12523')).' IF NEW sources.<br />';
+echo $updated.' Icons updated across '.count($this->config->item('e___12523')).' IF NEW sources.<br />';
 
 
 
 
 //IF DIFFERENT
 $updated = 0;
-foreach($this->config->item('sources__12968') as $e__id => $m) {
+foreach($this->config->item('e___12968') as $e__id => $m) {
     //Update All Child Icons that are not the same:
     foreach($this->X_model->fetch(array(
         'x__up' => $e__id,
@@ -49,4 +49,4 @@ foreach($this->config->item('sources__12968') as $e__id => $m) {
     }
 
 }
-echo $updated.' Icons updated across '.count($this->config->item('sources__12968')).' IF DIFFERENT sources.<br />';
+echo $updated.' Icons updated across '.count($this->config->item('e___12968')).' IF DIFFERENT sources.<br />';

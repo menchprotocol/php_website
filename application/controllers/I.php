@@ -15,7 +15,7 @@ class I extends CI_Controller {
 
     function i_create(){
 
-        $sources__6201 = $this->config->item('sources__6201'); //Idea Table
+        $e___6201 = $this->config->item('e___6201'); //Idea Table
         $session_source = superpower_assigned(10939);
         if (!$session_source) {
 
@@ -29,7 +29,7 @@ class I extends CI_Controller {
             //Do not treat this case as error as it could happen in moving Messages between types:
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing '.$sources__6201[4736]['m_name'],
+                'message' => 'Missing '.$e___6201[4736]['m_name'],
             ));
 
         }
@@ -80,9 +80,9 @@ class I extends CI_Controller {
     function index(){
         //Idea Bookmarks
         $session_source = superpower_assigned(10939, true);
-        $sources__11035 = $this->config->item('sources__11035'); //MENCH NAVIGATION
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
-            'title' => $sources__11035[10573]['m_name'],
+            'title' => $e___11035[10573]['m_name'],
             'session_source' => $session_source,
         ));
         $this->load->view('i/home');
@@ -258,7 +258,7 @@ class I extends CI_Controller {
     function i_set_dropdown(){
 
         //Maintain a manual index as a hack for the Idea/Source tables for now:
-        $sources__6232 = $this->config->item('sources__6232'); //PLATFORM VARIABLES
+        $e___6232 = $this->config->item('e___6232'); //PLATFORM VARIABLES
         $deletion_redirect = null;
         $delete_element = null;
 
@@ -284,7 +284,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Link ID',
             ));
-        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $sources__6232) || strlen($sources__6232[$_POST['element_id']]['m_desc'])<5 || !count($this->config->item('sources_id_'.$_POST['element_id']))) {
+        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $e___6232) || strlen($e___6232[$_POST['element_id']]['m_desc'])<5 || !count($this->config->item('sources_id_'.$_POST['element_id']))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Element ID ['.$_POST['element_id'].'] Missing from @6232',
@@ -299,8 +299,8 @@ class I extends CI_Controller {
         if($_POST['x__id'] > 0){
 
             //Validate the link update Type ID:
-            $sources__4527 = $this->config->item('sources__4527');
-            if(!is_array($sources__4527[$_POST['element_id']]['m_parents']) || !count($sources__4527[$_POST['element_id']]['m_parents'])){
+            $e___4527 = $this->config->item('e___4527');
+            if(!is_array($e___4527[$_POST['element_id']]['m_parents']) || !count($e___4527[$_POST['element_id']]['m_parents'])){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Missing @'.$_POST['element_id'].' in @4527',
@@ -308,7 +308,7 @@ class I extends CI_Controller {
             }
 
             //Find the single discover type in parent links:
-            $link_update_types = array_intersect($this->config->item('sources_id_4593'), $sources__4527[$_POST['element_id']]['m_parents']);
+            $link_update_types = array_intersect($this->config->item('sources_id_4593'), $e___4527[$_POST['element_id']]['m_parents']);
             if(count($link_update_types)!=1){
                 return view_json(array(
                     'status' => 0,
@@ -318,7 +318,7 @@ class I extends CI_Controller {
 
             //All good, Update Link:
             $this->X_model->update($_POST['x__id'], array(
-                $sources__6232[$_POST['element_id']]['m_desc'] => $_POST['new_e__id'],
+                $e___6232[$_POST['element_id']]['m_desc'] => $_POST['new_e__id'],
             ), $session_source['e__id'], end($link_update_types));
 
         } else {
@@ -380,7 +380,7 @@ class I extends CI_Controller {
 
             //Update Idea:
             $this->I_model->update($_POST['i__id'], array(
-                $sources__6232[$_POST['element_id']]['m_desc'] => $_POST['new_e__id'],
+                $e___6232[$_POST['element_id']]['m_desc'] => $_POST['new_e__id'],
             ), true, $session_source['e__id']);
 
         }
@@ -922,14 +922,14 @@ class I extends CI_Controller {
         }
 
 
-        $sources__6186 = $this->config->item('sources__6186');
+        $e___6186 = $this->config->item('e___6186');
 
         //Print the challenge:
         return view_json(array(
             'status' => 1,
             'delete_from_ui' => 0,
             'message' => $this->X_model->message_send($msg_validation['input_message'], $session_source, $_POST['i__id']),
-            'message_new_status_icon' => '<span title="' . $sources__6186[$_POST['message_x__status']]['m_name'] . ': ' . $sources__6186[$_POST['message_x__status']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $sources__6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
+            'message_new_status_icon' => '<span title="' . $e___6186[$_POST['message_x__status']]['m_name'] . ': ' . $e___6186[$_POST['message_x__status']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $e___6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check-circle"></i> Saved</span>',
         ));
 

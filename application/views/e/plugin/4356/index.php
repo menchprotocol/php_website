@@ -5,8 +5,8 @@ $i__id = ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 );
 $total_time = 0;
 $total_scanned = 0;
 $total_updated = 0;
-$sources__12822 = $this->config->item('sources__12822');
-$sources__12955 = $this->config->item('sources__12955'); //Idea Type Completion Time
+$e___12822 = $this->config->item('e___12822');
+$e___12955 = $this->config->item('e___12955'); //Idea Type Completion Time
 $filters = array();
 if($i__id > 0){
     $filters['i__id'] = $i__id;
@@ -38,13 +38,13 @@ foreach($this->I_model->fetch($filters) as $in){
 
 
     //Idea Type Has Time?
-    if(array_key_exists($in['i__type'], $sources__12955)){
+    if(array_key_exists($in['i__type'], $e___12955)){
         //Yes, add Extra Time:
-        $extra_time = intval($sources__12955[$in['i__type']]['m_desc']);
+        $extra_time = intval($e___12955[$in['i__type']]['m_desc']);
         $estimated_time += $extra_time;
         if($i__id){
             //Show details:
-            echo $extra_time.' Seconds For being '.$sources__12955[$in['i__type']]['m_name'].'<hr />';
+            echo $extra_time.' Seconds For being '.$e___12955[$in['i__type']]['m_name'].'<hr />';
         }
     }
 
@@ -127,7 +127,7 @@ foreach($this->I_model->fetch($filters) as $in){
                 $estimated_time += $this_time;
                 if($i__id){
                     //Show details:
-                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$sources__12822[$e_profile['x__type']]['m_name'].']: '.$e_profile['x__message'].'<hr />';
+                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$e___12822[$e_profile['x__type']]['m_name'].']: '.$e_profile['x__message'].'<hr />';
                 }
             }
         }
