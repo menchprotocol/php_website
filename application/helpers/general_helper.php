@@ -910,15 +910,16 @@ function i_stats($i__metadata){
     return array(
 
         //IDEAS
-        'i_min' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
-        'i_max' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? $metadata['i___6170']-1 : 0 ),
-        'i_average' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? round(( ($metadata['i___6169']-1) + ($metadata['i___6170']-1) ) / 2) : 1 ),
-        'duration_min' => ( isset($metadata['i___6161']) ? $metadata['i___6161'] : 0 ),
-        'duration_max' => ( isset($metadata['i___6162']) ? $metadata['i___6162'] : 0 ),
-        'duration_average' => ( isset($metadata['i___6162']) ? round(($metadata['i___6161']+$metadata['i___6162'])/2) : 0 ),
+        'i___6169' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
+        'i___6170' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? $metadata['i___6170']-1 : 0 ),
+        'i___13443' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? round(( ($metadata['i___6169']-1) + ($metadata['i___6170']-1) ) / 2) : 1 ),
+
+        'i___6161' => ( isset($metadata['i___6161']) ? $metadata['i___6161'] : 0 ),
+        'i___6162' => ( isset($metadata['i___6162']) ? $metadata['i___6162'] : 0 ),
+        'i___13292' => ( isset($metadata['i___6162']) ? round(($metadata['i___6161']+$metadata['i___6162'])/2) : 0 ),
 
         //SOURCES
-        'count_es' => ( $e_count>0 ? $e_count : 1 ),
+        'e_count' => ( $e_count>0 ? $e_count : 1 ),
         'array_13339' => $array_13339,
         'count_13339' => count($array_13339),
         'array_3000' => $array_3000,
@@ -1690,8 +1691,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 //Idea Stats:
                 $i_stats = i_stats($db_row['i__metadata']);
-                $export_row['object__is'] = $i_stats['i_average'];
-                $export_row['object__duration'] = view_time_hours($i_stats['duration_average']);
+                $export_row['object__is'] = $i_stats['i___13443'];
+                $export_row['object__duration'] = view_time_hours($i_stats['i___13292']);
 
                 if(in_array($db_row['i__status'], $CI->config->item('n___12138'))){
                     array_push($export_row['_tags'], 'is_featured');

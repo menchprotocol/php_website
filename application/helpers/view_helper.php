@@ -660,8 +660,8 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
 
     //Right Stats:
-    if($i_stats['duration_average'] || $i_stats['i_average']){
-        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['i_average'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['i_average'].'</span>' : '' ).'</span>'.( $i_stats['duration_average'] ? '<span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span>': '' ).'</div>';
+    if($i_stats['i___13292'] || $i_stats['i___13443']){
+        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['i___13443'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['i___13443'].'</span>' : '' ).'</span>'.( $i_stats['i___13292'] ? '<span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span>': '' ).'</div>';
     }
 
 
@@ -995,7 +995,7 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
 
         $ui .= '<span class="inline-block montserrat idea" title="'.$e___12413[11019]['m_name'].'" style="width:21px; text-align:right;">'.( $previous_is[0]['total_is']>0 ? $previous_is[0]['total_is'] : '&nbsp;' ).'</span>';
         $ui .= '<span class="icon-block">'.$e___13408[12413]['m_icon'].'</span>';
-        $ui .= '<span class="inline-block montserrat idea" title="'.$e___12413[11020]['m_name'].'" style="text-align:left;">'.($next_is[0]['total_is']>0 ? $next_is[0]['total_is'] : '' ).( $i_stats['i_max']>$next_is[0]['total_is'] ? '<span style="padding: 0 2px;">-</span>'.$i_stats['i_max'] : '' ).'</span>';
+        $ui .= '<span class="inline-block montserrat idea" title="'.$e___12413[11020]['m_name'].'" style="text-align:left;">'.($next_is[0]['total_is']>0 ? $next_is[0]['total_is'] : '' ).( $i_stats['i___6170']>$next_is[0]['total_is'] ? '<span style="padding: 0 2px;">-</span>'.$i_stats['i___6170'] : '' ).'</span>';
 
 
 
@@ -1332,15 +1332,15 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     $ui .= i_fetch_cover($i['i__id'], true);
 
     //TOP LEFT
-    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['i_average'].' '.$e___13369[12273]['m_name'].' FROM '.$i_stats['count_es'].' '.$e___13369[12274]['m_name'].'">';
+    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['i___13443'].' '.$e___13369[12273]['m_name'].' FROM '.$i_stats['e_count'].' '.$e___13369[12274]['m_name'].'">';
 
     //SOURCES:
     if(superpower_active(10967, true)){
-        $ui .= $e___13369[12274]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['count_es']).'</span><br />';
+        $ui .= $e___13369[12274]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['e_count']).'</span><br />';
     }
 
     //IDEAS:
-    $ui .= $e___13369[12273]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['i_average']).'</span><br />';
+    $ui .= $e___13369[12273]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['i___13443']).'</span><br />';
 
     //DISCOVERIES:
     if(superpower_active(12701, true)){
@@ -1354,8 +1354,8 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     $ui .= '</span>';
 
     //TOP RIGHT
-    if($i_stats['duration_average']){
-        $ui .= '<span class="media-info top-right" title="'.$e___13369[13292]['m_name'].'">'.view_time_hours($i_stats['duration_average']).'</span>';
+    if($i_stats['i___13292']){
+        $ui .= '<span class="media-info top-right" title="'.$e___13369[13292]['m_name'].'">'.view_time_hours($i_stats['i___13292']).'</span>';
     }
 
     //Search for Idea Image:

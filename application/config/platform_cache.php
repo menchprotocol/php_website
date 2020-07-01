@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-01 15:10:10 PST
+//Generated 2020-07-01 15:19:03 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -116,13 +116,13 @@ $config['e___6159'] = array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA TREE MAX',
         'm_desc' => 'i___6170',
-        'm_parents' => array(13409,6159),
+        'm_parents' => array(13443,13409,6159),
     ),
     6169 => array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA TREE MIN',
         'm_desc' => 'i___6169',
-        'm_parents' => array(13409,6159),
+        'm_parents' => array(13443,13409,6159),
     ),
     13202 => array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
