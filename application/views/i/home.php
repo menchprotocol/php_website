@@ -8,18 +8,18 @@
     $e___2738 = $this->config->item('e___2738'); //MENCH
 
 
-    $player_ideas = $this->X_model->fetch(array(
+    $member_is = $this->X_model->fetch(array(
         'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 10573, //MY IDEAS
-        'x__up' => $session_source['e__id'], //For this player
+        'x__up' => $session_e['e__id'], //For this member
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-    echo ( count($player_ideas) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> .discover-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+    echo ( count($member_is) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
 
 
     //MY IDEAS
-    echo '<div class="discover-topic"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_name'].'</div>';
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_name'].'</div>';
 
     //ADD IDEAS
     echo '<div class="list-group">';
@@ -35,8 +35,8 @@
     echo '</div>';
 
 
-    echo '<div id="idea_covers" class="cover-list">';
-    foreach($player_ideas as $i){
+    echo '<div id="i_covers" class="cover-list">';
+    foreach($member_is as $i){
         echo view_i_cover($i, true, false);
     }
     echo '</div>';

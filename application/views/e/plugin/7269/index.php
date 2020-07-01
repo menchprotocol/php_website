@@ -11,8 +11,8 @@ $e_orphans = $this->E_model->fetch(array(
 if(count($e_orphans) > 0){
 
     echo '<div class="list-group">';
-    foreach($e_orphans as $source) {
-        echo view_e($source, false, null, true, true);
+    foreach($e_orphans as $e) {
+        echo view_e($e, false, null, true, true);
     }
     echo '</div>';
 

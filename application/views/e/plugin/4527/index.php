@@ -8,7 +8,7 @@
  * */
 
 //First first all sources that have Cache in PHP Config @4527 as their parent:
-$config_sources = $this->X_model->fetch(array(
+$config_es = $this->X_model->fetch(array(
     'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -30,7 +30,7 @@ echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
 
 
 //CONFIG VARS
-foreach($config_sources as $en){
+foreach($config_es as $en){
 
     //Now fetch all its children:
     $children = $this->X_model->fetch(array(

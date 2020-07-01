@@ -5,7 +5,7 @@ echo '<form method="GET" action="">';
 
 echo '<div class="mini-header">URL:</div>';
 echo '<input type="url" class="form-control border maxout" name="url_to_analyze" value="'.@$_GET['url_to_analyze'].'"><br />';
-echo '<input type="submit" class="btn btn-idea" value="Analyze">';
+echo '<input type="submit" class="btn btn-i" value="Analyze">';
 
 
 if(isset($_GET['url_to_analyze']) && strlen($_GET['url_to_analyze'])>0){

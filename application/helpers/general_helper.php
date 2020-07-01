@@ -81,7 +81,7 @@ function extract_e_references($x__message)
 
     //Analyzes a message text to extract Source References (Like @123) and URLs
     $CI =& get_instance();
-    $session_source = superpower_assigned();
+    $session_e = superpower_assigned();
 
     //Replace non-ascii characters with space:
     $x__message = preg_replace('/[[:^print:]]/', ' ', $x__message);
@@ -89,7 +89,7 @@ function extract_e_references($x__message)
     //Analyze the message to find referencing URLs and Players in the message text:
     $string_references = array(
         'ref_urls' => array(),
-        'ref_sources' => array(),
+        'ref_es' => array(),
         'ref_time_found' => false,
         'ref_time_start' => 0,
         'ref_time_end' => 0,
@@ -115,7 +115,7 @@ function extract_e_references($x__message)
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
 
             $e__id = intval(substr($word, 1));
-            array_push($string_references['ref_sources'], $e__id);
+            array_push($string_references['ref_es'], $e__id);
 
             if(substr_count($word,':')==2){
                 //See if this is it:
@@ -141,7 +141,7 @@ function extract_e_references($x__message)
 
 
     //Slicing only supported with a single reference:
-    $total_references = count($string_references['ref_sources']) + count($string_references['ref_urls']);
+    $total_references = count($string_references['ref_es']) + count($string_references['ref_urls']);
     if($total_references > 1){
         $string_references['ref_time_found'] = false;
         $string_references['ref_time_start'] = 0;
@@ -421,15 +421,15 @@ function i_fetch_cover($i__id, $html_format = false){
     ), array(), 0, 0, array(
         'x__type' => 'ASC', //Messages First, Sources Second
         'x__sort' => 'ASC', //Sort by message order
-    )) as $fetched_source){
+    )) as $fetched_e){
 
         foreach(array('x__up','x__down') as $e_ref_field) {
-            if($fetched_source[$e_ref_field] > 0){
+            if($fetched_e[$e_ref_field] > 0){
                 //See if this source has a photo:
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 4260, //IMAGES ONLY
-                    'x__down' => $fetched_source[$e_ref_field],
+                    'x__down' => $fetched_e[$e_ref_field],
                 )) as $e_image) {
                     $i_fetch_cover = $e_image['x__message'];
                     break;
@@ -454,7 +454,7 @@ function i__weight_calculator($i){
     //DISCOVERIES
     $CI =& get_instance();
 
-    $count_discoveries = $CI->X_model->fetch(array(
+    $count_x = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -467,7 +467,7 @@ function i__weight_calculator($i){
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Returns the weight of a idea:
-    $weight = ( $count_discoveries[0]['totals'] * config_var(12568) )
+    $weight = ( $count_x[0]['totals'] * config_var(12568) )
         + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
@@ -481,30 +481,30 @@ function i__weight_calculator($i){
 
 }
 
-function e__weight_calculator($source){
+function e__weight_calculator($e){
 
     //DISCOVERIES
     $CI =& get_instance();
 
-    $count_discoveries = $CI->X_model->fetch(array(
+    $count_x = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].' OR x__member='.$source['e__id'].')' => null,
+        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__member='.$e['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
     $counts = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].')' => null,
+        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Returns the weight of a source:
-    $weight = ( $count_discoveries[0]['totals'] * config_var(12568) )
+    $weight = ( $count_x[0]['totals'] * config_var(12568) )
             + ( $counts[0]['totals'] * config_var(12565) );
 
     //Should we update?
-    if($weight != $source['e__weight']){
-        return $CI->E_model->update($source['e__id'], array(
+    if($weight != $e['e__weight']){
+        return $CI->E_model->update($e['e__id'], array(
             'e__weight' => $weight,
         ));
     } else {
@@ -684,7 +684,7 @@ function current_mench(){
 
 
 
-function x_coins_idea($x__type, $i__id, $load_page = 0){
+function x_coins_i($x__type, $i__id, $load_page = 0){
 
     /*
      * Counts MENCH COINS for ideas
@@ -751,7 +751,7 @@ function x_coins_idea($x__type, $i__id, $load_page = 0){
 
 }
 
-function x_coins_source($x__type, $e__id, $load_page = 0){
+function x_coins_e($x__type, $e__id, $load_page = 0){
 
     /*
      * Counts MENCH COINS for sources
@@ -848,7 +848,7 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
 
                 if(!$previous_do_hide && $do_hide){
                     $ui .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
-                    $ui .= '<div class="see_more_sources"></div>';
+                    $ui .= '<div class="see_mores"></div>';
                 }
 
                 $ui .= view_i($item, 0, false, false, $item['x__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
@@ -904,21 +904,21 @@ function i_stats($i__metadata){
     $array_13202 = ( isset($metadata['i___13202']) ? $metadata['i___13202'] : array() );
     usort($array_13202, 'sortByWeight');
 
-    $source_count = count($array_13202) + count($array_3000) + count($array_13339);
+    $e_count = count($array_13202) + count($array_3000) + count($array_13339);
 
     //Return stats:
     return array(
 
         //IDEAS
-        'i_min' => ( isset($metadata['i___min_discoveries']) && $metadata['i___min_discoveries']>=2 ? $metadata['i___min_discoveries']-1 : 0 ),
-        'i_max' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? $metadata['i___max_discoveries']-1 : 0 ),
-        'i_average' => ( isset($metadata['i___max_discoveries']) && $metadata['i___max_discoveries']>=2 ? round(( ($metadata['i___min_discoveries']-1) + ($metadata['i___max_discoveries']-1) ) / 2) : 1 ),
+        'i_min' => ( isset($metadata['i___min_x']) && $metadata['i___min_x']>=2 ? $metadata['i___min_x']-1 : 0 ),
+        'i_max' => ( isset($metadata['i___max_x']) && $metadata['i___max_x']>=2 ? $metadata['i___max_x']-1 : 0 ),
+        'i_average' => ( isset($metadata['i___max_x']) && $metadata['i___max_x']>=2 ? round(( ($metadata['i___min_x']-1) + ($metadata['i___max_x']-1) ) / 2) : 1 ),
         'duration_min' => ( isset($metadata['i___min_seconds']) ? $metadata['i___min_seconds'] : 0 ),
         'duration_max' => ( isset($metadata['i___max_seconds']) ? $metadata['i___max_seconds'] : 0 ),
         'duration_average' => ( isset($metadata['i___max_seconds']) ? round(($metadata['i___min_seconds']+$metadata['i___max_seconds'])/2) : 0 ),
 
         //SOURCES
-        'count_sources' => ( $source_count>0 ? $source_count : 1 ),
+        'count_es' => ( $e_count>0 ? $e_count : 1 ),
         'array_13339' => $array_13339,
         'count_13339' => count($array_13339),
         'array_3000' => $array_3000,
@@ -937,19 +937,19 @@ function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
 
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
-    $session_source = $CI->session->userdata('session_profile');
-    $has_session = ( is_array($session_source) && count($session_source) > 0 && $session_source );
+    $session_e = $CI->session->userdata('session_profile');
+    $has_session = ( is_array($session_e) && count($session_e) > 0 && $session_e );
 
     //Let's start checking various ways we can give user access:
     if ($has_session && !$superpower_e__id) {
 
         //No minimum level required, grant access IF user is logged in:
-        return $session_source;
+        return $session_e;
 
     } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_assigned'))) {
 
         //They are part of one of the levels assigned to them:
-        return $session_source;
+        return $session_e;
 
     }
 
@@ -963,7 +963,7 @@ function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/@'.$session_source['e__id'];
+            $goto_url = '/@'.$session_e['e__id'];
         } else {
             $goto_url = '/e/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
@@ -1156,14 +1156,14 @@ function upload_to_cdn($file_url, $x__member = 0, $x__metadata = null, $is_local
     }
 
     //Create and link new source to CDN and uploader:
-    $url_source = $CI->E_model->url($cdn_new_url, $x__member, 0, $page_title);
+    $url_e = $CI->E_model->url($cdn_new_url, $x__member, 0, $page_title);
 
-    if(isset($url_source['e_url']['e__id']) && $url_source['e_url']['e__id'] > 0){
+    if(isset($url_e['e_url']['e__id']) && $url_e['e_url']['e__id'] > 0){
 
         //All good:
         return array(
             'status' => 1,
-            'cdn_source' => $url_source['e_url'],
+            'cdn_e' => $url_e['e_url'],
             'cdn_url' => $cdn_new_url,
         );
 
@@ -1358,29 +1358,29 @@ function e__title_validate($string, $x__type = 0){
 
 
 
-function player_is_e_source($e__id, $session_source = array()){
+function member_is_e($e__id, $session_e = array()){
 
 
-    if(!$session_source){
+    if(!$session_e){
         //Fetch from session:
-        $session_source = superpower_assigned();
+        $session_e = superpower_assigned();
     }
 
-    if(!$session_source || $e__id < 1){
+    if(!$session_e || $e__id < 1){
         return false;
     }
 
-    //Ways a player can modify a source:
+    //Ways a member can modify a source:
     $CI =& get_instance();
     return (
 
         //Player is the source
-        $e__id==$session_source['e__id']
+        $e__id==$session_e['e__id']
 
 
         //Player created the source
         || count($CI->X_model->fetch(array(
-            'x__member' => $session_source['e__id'],
+            'x__member' => $session_e['e__id'],
             'x__down' => $e__id,
             'x__type' => 4251, //New Source Created
         )))
@@ -1394,7 +1394,7 @@ function player_is_e_source($e__id, $session_source = array()){
         || count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__up' => $session_source['e__id'],
+            'x__up' => $session_e['e__id'],
             'x__down' => $e__id,
         )))
 
@@ -1403,18 +1403,18 @@ function player_is_e_source($e__id, $session_source = array()){
 
 }
 
-function player_is_i_source($i__id, $session_source = array()){
+function member_is_i_e($i__id, $session_e = array()){
 
-    if(!$session_source){
+    if(!$session_e){
         //Fetch from session:
-        $session_source = superpower_assigned();
+        $session_e = superpower_assigned();
     }
 
-    if(!$session_source || $i__id < 1){
+    if(!$session_e || $i__id < 1){
         return false;
     }
 
-    //Ways a player can modify an idea:
+    //Ways a member can modify an idea:
     $CI =& get_instance();
     return (
         superpower_active(10984, true) || //COLLABORATIVE IDEATION
@@ -1424,13 +1424,13 @@ function player_is_i_source($i__id, $session_source = array()){
                 count($CI->X_model->fetch(array( //Player created the idea
                     'x__type' => 4250, //IDEA CREATOR
                     'x__right' => $i__id,
-                    'x__member' => $session_source['e__id'],
+                    'x__member' => $session_e['e__id'],
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
                     'x__right' => $i__id,
-                    '(x__up = '.$session_source['e__id'].' OR x__down = '.$session_source['e__id'].')' => null,
+                    '(x__up = '.$session_e['e__id'].' OR x__down = '.$session_e['e__id'].')' => null,
                 )))
             )
         )
@@ -1642,7 +1642,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__icon'] = view_e__icon($db_row['e__icon']);
                 $export_row['object__title'] = $db_row['e__title'];
                 $export_row['object__weight'] = intval($db_row['e__weight']);
-                $export_row['object__ideas'] = x_coins_source(12273, $db_row['e__id']);
+                $export_row['object__is'] = x_coins_e(12273, $db_row['e__id']);
                 $export_row['object__duration'] = null;
 
                 //Add source as their own author:
@@ -1663,14 +1663,14 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     'x__down' => $db_row['e__id'], //This child source
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $discovery) {
+                ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $x) {
 
                     //Always add to tags:
-                    array_push($export_row['_tags'], 'alg_e_' . $discovery['e__id']);
+                    array_push($export_row['_tags'], 'alg_e_' . $x['e__id']);
 
                     //Add content to keywords if any:
-                    if (strlen($discovery['x__message']) > 0) {
-                        $export_row['object__keywords'] .= $discovery['x__message'] . ' ';
+                    if (strlen($x['x__message']) > 0) {
+                        $export_row['object__keywords'] .= $x['x__message'] . ' ';
                     }
 
                 }
@@ -1690,7 +1690,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 //Idea Stats:
                 $i_stats = i_stats($db_row['i__metadata']);
-                $export_row['object__ideas'] = $i_stats['i_average'];
+                $export_row['object__is'] = $i_stats['i_average'];
                 $export_row['object__duration'] = view_time_hours($i_stats['duration_average']);
 
                 if(in_array($db_row['i__status'], $CI->config->item('n___12138'))){
@@ -1715,13 +1715,13 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
                     'x__right' => $db_row['i__id'],
                     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-                ), array(), 0) as $source){
+                ), array(), 0) as $e){
 
-                    if($source['x__up']>0){
-                        array_push($export_row['_tags'], 'alg_e_' . $source['x__up']);
+                    if($e['x__up']>0){
+                        array_push($export_row['_tags'], 'alg_e_' . $e['x__up']);
                     }
-                    if($source['x__down']>0){
-                        array_push($export_row['_tags'], 'alg_e_' . $source['x__down']);
+                    if($e['x__down']>0){
+                        array_push($export_row['_tags'], 'alg_e_' . $e['x__down']);
                     }
 
                 }

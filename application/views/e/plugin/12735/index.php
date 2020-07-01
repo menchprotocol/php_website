@@ -19,7 +19,7 @@ foreach($this->I_model->fetch() as $in) {
     $is_deleted = !in_array($in['i__status'], $this->config->item('n___7356'));
 
     //Scan sources:
-    $i_sources = $this->X_model->fetch(array(
+    $i_es = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
         'x__right' => $in['i__id'],
@@ -40,7 +40,7 @@ foreach($this->I_model->fetch() as $in) {
     if(!count($i_creators)) {
         $stats['creator_missing']++;
         $this->X_model->create(array(
-            'x__member' => $session_source['e__id'],
+            'x__member' => $session_e['e__id'],
             'x__right' => $in['i__id'],
             'x__message' => $in['i__title'],
             'x__type' => 4250, //New Idea Created
@@ -58,11 +58,11 @@ foreach($this->I_model->fetch() as $in) {
     }
 
 
-    if(!$is_deleted && !count($i_sources)){
+    if(!$is_deleted && !count($i_es)){
 
         //Missing SOURCE
         $stats['e_missing']++;
-        $creator_id = ( count($i_sources) ? $i_sources[0]['x__member'] : $session_source['x__up'] );
+        $creator_id = ( count($i_es) ? $i_es[0]['x__member'] : $session_e['x__up'] );
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA COIN
             'x__member' => $creator_id,
@@ -78,7 +78,7 @@ foreach($this->I_model->fetch() as $in) {
             //Delete this link:
             $stats['note_deleted'] += $this->X_model->update($i_note['x__id'], array(
                 'x__status' => 6173, //Link Deleted
-            ), $session_source['e__id'], 10686 /* Idea Link Unpublished */);
+            ), $session_e['e__id'], 10686 /* Idea Link Unpublished */);
         }
 
     }

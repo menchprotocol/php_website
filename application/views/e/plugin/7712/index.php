@@ -1,9 +1,9 @@
 <?php
 
-$all_discoveries = 0;
+$all_x = 0;
 $all_children = 0;
 $updated = 0;
-$session_source = superpower_assigned();
+$session_e = superpower_assigned();
 
 foreach($this->I_model->fetch(array(
     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE

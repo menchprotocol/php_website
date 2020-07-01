@@ -15,14 +15,14 @@ $(document).ready(function () {
 
 });
 
-var saving_idea = false;
+var saving_i = false;
 function i_create(){
 
-    if(saving_idea){
+    if(saving_i){
         alert('Idea currently being saved, Be patient...');
         return false;
     } else {
-        saving_idea = true;
+        saving_i = true;
     }
 
     //Lockdown:
@@ -50,7 +50,7 @@ function i_create(){
 
         }
 
-        saving_idea = false;
+        saving_i = false;
     });
 
 }

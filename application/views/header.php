@@ -1,6 +1,6 @@
 <?php
 
-$session_source = superpower_assigned();
+$session_e = superpower_assigned();
 $first_segment = $this->uri->segment(1);
 $is_home = !strlen($first_segment);
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
@@ -20,9 +20,9 @@ $current_mench = current_mench();
     <script type="text/javascript">
     <?php
     //PLAYER VARIABLES
-    echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_source && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
-    echo ' var js_pl_id = ' . ( $session_source ? $session_source['e__id'] : 0 ) . '; ';
-    echo ' var js_pl_name = \'' . ( $session_source ? $session_source['e__title'] : '' ) . '\'; ';
+    echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_e && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
+    echo ' var js_pl_id = ' . ( $session_e ? $session_e['e__id'] : 0 ) . '; ';
+    echo ' var js_pl_name = \'' . ( $session_e ? $session_e['e__title'] : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
     //JAVASCRIPT PLATFORM MEMORY
@@ -103,7 +103,7 @@ if(!isset($hide_header)){
 
                         //MAIN NAVIGATION
                         echo '<div class="primary_nav mench_nav">';
-                        if(!$session_source){
+                        if(!$session_e){
 
                             //LOGO ONLY
                             echo '<a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a>';
@@ -140,7 +140,7 @@ if(!isset($hide_header)){
 
                                 //Determine URL?
                                 if($m['e__id']==4536){
-                                    $page_url = 'href="/@'.$session_source['e__id'].'"';
+                                    $page_url = 'href="/@'.$session_e['e__id'].'"';
                                 } elseif($m['e__id']==4535){
                                     $page_url = 'href="/~"';
                                 } elseif($m['e__id']==6205){
@@ -175,7 +175,7 @@ if(!isset($hide_header)){
                     }
 
                     //Account
-                    if ($session_source) {
+                    if ($session_e) {
 
                         //Player Menu
                         $e___4527 = $this->config->item('e___4527'); //Platform Memory
@@ -198,7 +198,7 @@ if(!isset($hide_header)){
                                 //Deleting discovers only available on Discoveries home
                                 continue;
                             } elseif($x__type==12749 && !$is_home && !is_numeric($first_segment)){
-                                //Not an editable discovery
+                                //Not an editable x
                                 continue;
                             }
 
@@ -218,10 +218,10 @@ if(!isset($hide_header)){
                             } elseif($x__type==4536) {
 
                                 //SET SOURCE TO PLAYER
-                                $x__type = $session_source['e__id'];
+                                $x__type = $session_e['e__id'];
                                 $page_url = 'href="/@'.$x__type.'"';
-                                $m['m_name'] = $session_source['e__title'];
-                                $m['m_icon'] = $session_source['e__icon'];
+                                $m['m_name'] = $session_e['e__title'];
+                                $m['m_icon'] = $session_e['e__icon'];
                                 $text_class = 'text__6197_'.$x__type;
 
                             } elseif($x__type==12899) {
@@ -233,7 +233,7 @@ if(!isset($hide_header)){
                             } elseif($x__type==6415) {
 
                                 //CLEAR DISCOVERIES
-                                $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-discovery-list\').toggleClass(\'hidden\')"';
+                                $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-xy-list\').toggleClass(\'hidden\')"';
 
                             } else {
 

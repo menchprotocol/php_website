@@ -56,7 +56,7 @@ if($search_for_is_set){
                     //Update idea:
                     $this->E_model->update($en['e__id'], array(
                         'e__title' => $new_outcome,
-                    ), true, $session_source['e__id']);
+                    ), true, $session_e['e__id']);
                 }
             }
 
@@ -101,5 +101,5 @@ if($replace_with_is_set){
 }
 
 
-echo '<input type="submit" class="btn btn-idea" value="Go">';
+echo '<input type="submit" class="btn btn-i" value="Go">';
 echo '</form>';

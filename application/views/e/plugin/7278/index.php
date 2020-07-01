@@ -53,15 +53,15 @@ foreach($is as $in){
         'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
         'x__left' => $in['i__id'],
-    ), array('x__right'), 0, 0) as $next_idea){
+    ), array('x__right'), 0, 0) as $next_i){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4535].$next_idea['x__left'],
-            'target' => $id_prefix[4535].$next_idea['x__right'],
-            'label' => $e___4593[$next_idea['x__type']]['m_name'], //TODO maybe give visibility to condition here?
+            'source' => $id_prefix[4535].$next_i['x__left'],
+            'target' => $id_prefix[4535].$next_i['x__right'],
+            'label' => $e___4593[$next_i['x__type']]['m_name'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type' => $next_idea['x__type'],
-            'edge_status' => $next_idea['x__status'],
+            'edge_type' => $next_i['x__type'],
+            'edge_status' => $next_i['x__status'],
         ));
 
     }
@@ -69,10 +69,10 @@ foreach($is as $in){
 
 
 //Add sources:
-$sources = $this->E_model->fetch(array(
+$es = $this->E_model->fetch(array(
     'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ));
-foreach($sources as $en){
+foreach($es as $en){
 
     //Add source node:
     $this->db->insert('gephi_nodes', array(
@@ -150,4 +150,4 @@ foreach($messages as $message) {
 
 }
 
-echo count($is).' ideas & '.count($sources).' sources & '.count($messages).' messages synced.';
+echo count($is).' ideas & '.count($es).' sources & '.count($messages).' messages synced.';

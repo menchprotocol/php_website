@@ -308,16 +308,16 @@ class E_model extends CI_Model
             'x__down' => $x__member,
             'x__up IN (' . join(',', $children) . ')' => null, //Current children
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), config_var(11064)) as $discovery) {
+        ), array(), config_var(11064)) as $x) {
 
-            if (!$previously_assigned && $discovery['x__up'] == $set_e_child_id) {
+            if (!$previously_assigned && $x['x__up'] == $set_e_child_id) {
                 $previously_assigned = true;
             } else {
                 //Delete assignment:
-                $updated_x__id = $discovery['x__id'];
+                $updated_x__id = $x['x__id'];
 
                 //Do not log update link here as we would log it further below:
-                $this->X_model->update($discovery['x__id'], array(
+                $this->X_model->update($x['x__id'], array(
                     'x__status' => 6173, //Link Deleted
                 ), $x__member, 6224 /* User Account Updated */);
             }
@@ -389,18 +389,18 @@ class E_model extends CI_Model
         return $adjusted_count;
     }
 
-    function assign_session_player($e__id){
+    function assign_session_member($e__id){
 
-        $session_source = superpower_assigned();
-        if(!$session_source){
+        $session_e = superpower_assigned();
+        if(!$session_e){
             return false;
         }
 
         //Assign to Creator:
         $this->X_model->create(array(
             'x__type' => e_x__type(),
-            'x__member' => $session_source['e__id'],
-            'x__up' => $session_source['e__id'],
+            'x__member' => $session_e['e__id'],
+            'x__up' => $session_e['e__id'],
             'x__down' => $e__id,
         ));
 
@@ -410,7 +410,7 @@ class E_model extends CI_Model
             //Add Pending Review:
             $this->X_model->create(array(
                 'x__type' => e_x__type(),
-                'x__member' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));
@@ -418,7 +418,7 @@ class E_model extends CI_Model
             //SOURCE PENDING MODERATION TYPE:
             $this->X_model->create(array(
                 'x__type' => 7504, //SOURCE PENDING MODERATION
-                'x__member' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));
@@ -469,8 +469,8 @@ class E_model extends CI_Model
         } elseif ($x__member) {
 
             //Yes, let's add a new source:
-            $added_source = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__member, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
-            $e_domain = $added_source['new_source'];
+            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__member, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
+            $e_domain = $added_e['new_e'];
 
             //And link source to the domains source:
             $this->X_model->create(array(
@@ -511,33 +511,33 @@ class E_model extends CI_Model
             6180 => 6175, //SOURCE DRAFT => DISCOVER DRAFT
             6178 => 6173, //SOURCE DELETE => DISCOVER DELETE
         );
-        foreach($this->E_model->fetch($query) as $source){
+        foreach($this->E_model->fetch($query) as $e){
 
             $stats['scanned']++;
 
             //Find creation discover:
-            $discoveries = $this->X_model->fetch(array(
+            $x = $this->X_model->fetch(array(
                 'x__type' => $stats['x__type'],
-                'x__down' => $source['e__id'],
+                'x__down' => $e['e__id'],
             ));
 
-            if(!count($discoveries)){
+            if(!count($x)){
 
                 $stats['missing_creation_fix']++;
 
                 $this->X_model->create(array(
                     'x__member' => $x__member,
-                    'x__down' => $source['e__id'],
-                    'x__message' => $source['e__title'],
+                    'x__down' => $e['e__id'],
+                    'x__message' => $e['e__title'],
                     'x__type' => $stats['x__type'],
-                    'x__status' => $status_converter[$source['e__status']],
+                    'x__status' => $status_converter[$e['e__status']],
                 ));
 
-            } elseif($discoveries[0]['x__status'] != $status_converter[$source['e__status']]){
+            } elseif($x[0]['x__status'] != $status_converter[$e['e__status']]){
 
                 $stats['status_sync']++;
-                $this->X_model->update($discoveries[0]['x__id'], array(
-                    'x__status' => $status_converter[$source['e__status']],
+                $this->X_model->update($x[0]['x__id'], array(
+                    'x__status' => $status_converter[$e['e__status']],
                 ));
 
             }
@@ -550,7 +550,7 @@ class E_model extends CI_Model
 
 
 
-    function metadata_experts($source, $level = 1){
+    function metadata_experts($e, $level = 1){
 
         //Goes through $max_search_levels of sources to find expert channels, people & organizations
         $max_search_levels = 3;
@@ -561,7 +561,7 @@ class E_model extends CI_Model
 
         //SOURCE PROFILE
         foreach($this->X_model->fetch(array(
-            'x__down' => $source['e__id'],
+            'x__down' => $e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')).')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
@@ -570,14 +570,14 @@ class E_model extends CI_Model
 
             if(in_array($e__profile['e__id'], $this->config->item('n___3000'))){
                 //EXPERT CONTENT
-                if (!isset($metadata_this['__i___3000'][$source['e__id']])) {
-                    $metadata_this['__i___3000'][$source['e__id']] = $source;
+                if (!isset($metadata_this['__i___3000'][$e['e__id']])) {
+                    $metadata_this['__i___3000'][$e['e__id']] = $e;
                 }
             } elseif(in_array($e__profile['e__id'], $this->config->item('n___13339'))) {
                 //EXPERT AUTHORS
-                $source['x__message'] = $e__profile['x__message']; //Update Description
-                if (!isset($metadata_this['__i___13339'][$source['e__id']])) {
-                    $metadata_this['__i___13339'][$source['e__id']] = $source;
+                $e['x__message'] = $e__profile['x__message']; //Update Description
+                if (!isset($metadata_this['__i___13339'][$e['e__id']])) {
+                    $metadata_this['__i___13339'][$e['e__id']] = $e;
                 }
             }
 
@@ -616,9 +616,9 @@ class E_model extends CI_Model
          * Input legend:
          *
          * - $url:                  Input URL
-         * - $x__member:       IF > 0 will save URL (if not previously there) and give credit to this source as the player
+         * - $x__member:       IF > 0 will save URL (if not previously there) and give credit to this source as the member
          * - $add_to_child_e__id:   IF > 0 Will also add URL to this child if present
-         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable players to edit auto generated title)
+         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable members to edit auto generated title)
          *
          * */
 
@@ -719,10 +719,10 @@ class E_model extends CI_Model
 
 
         //Fetch/Create domain source:
-        $url_source = $this->E_model->domain($url, $x__member, ( $url_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
-        if(!$url_source['status']){
+        $url_e = $this->E_model->domain($url, $x__member, ( $url_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
+        if(!$url_e['status']){
             //We had an issue:
-            return $url_source;
+            return $url_e;
         }
 
 
@@ -730,10 +730,10 @@ class E_model extends CI_Model
         if ($url_analysis['url_is_root']) {
 
             //URL is the domain in this case:
-            $e_url = $url_source['e_domain'];
+            $e_url = $url_e['e_domain'];
 
             //IF the URL exists since the domain existed and the URL is the domain!
-            if ($url_source['domai_previously_existed']) {
+            if ($url_e['domai_previously_existed']) {
                 $url_previously_existed = 1;
             }
 
@@ -765,24 +765,24 @@ class E_model extends CI_Model
                 //Prefix type in name:
                 $page_title = $page_title;
 
-                //Create a new source for this URL ONLY If player source is provided...
-                $added_source = $this->E_model->verify_create($page_title, $x__member, 6181, $e___4592[$x__type]['m_icon']);
-                if($added_source['status']){
+                //Create a new source for this URL ONLY If member source is provided...
+                $added_e = $this->E_model->verify_create($page_title, $x__member, 6181, $e___4592[$x__type]['m_icon']);
+                if($added_e['status']){
 
                     //All good:
-                    $e_url = $added_source['new_source'];
+                    $e_url = $added_e['new_e'];
 
                     //Always link URL to its parent domain:
                     $this->X_model->create(array(
                         'x__member' => $x__member,
                         'x__type' => $x__type,
-                        'x__up' => $url_source['e_domain']['e__id'],
+                        'x__up' => $url_e['e_domain']['e__id'],
                         'x__down' => $e_url['e__id'],
                         'x__message' => $url,
                     ));
 
                     //Assign to Player:
-                    $this->E_model->assign_session_player($e_url['e__id']);
+                    $this->E_model->assign_session_member($e_url['e__id']);
 
                     //Update Search Index:
                     update_algolia(4536, $e_url['e__id']);
@@ -791,10 +791,10 @@ class E_model extends CI_Model
 
                     //Log error:
                     $this->X_model->create(array(
-                        'x__message' => 'e_url['.$url.'] FAILED to create ['.$page_title.'] with message: '.$added_source['message'],
+                        'x__message' => 'e_url['.$url.'] FAILED to create ['.$page_title.'] with message: '.$added_e['message'],
                         'x__type' => 4246, //Platform Bug Reports
                         'x__member' => $x__member,
-                        'x__up' => $url_source['e_domain']['e__id'],
+                        'x__up' => $url_e['e_domain']['e__id'],
                         'x__metadata' => array(
                             'url' => $url,
                             'x__member' => $x__member,
@@ -806,7 +806,7 @@ class E_model extends CI_Model
                 }
 
             } else {
-                //URL not found and no player source provided to create the URL:
+                //URL not found and no member source provided to create the URL:
                 $e_url = array();
             }
         }
@@ -836,7 +836,7 @@ class E_model extends CI_Model
                 'clean_url' => $url,
                 'x__type' => $x__type,
                 'page_title' => html_entity_decode($page_title, ENT_QUOTES),
-                'e_domain' => $url_source['e_domain'],
+                'e_domain' => $url_e['e_domain'],
                 'e_url' => $e_url,
             )
         );
@@ -929,18 +929,18 @@ class E_model extends CI_Model
 
             } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
-                //What player searched for:
+                //What member searched for:
                 $parent_e__id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
-                $child_parent_sources = $this->X_model->fetch(array(
+                $child_parent_es = $this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $x['e__id'], //This child source
                     'x__up' => $parent_e__id,
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
-                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_sources)==0) || ($action_e__id==12928 && view_coins_count_source(0,$x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_count_source(0,$x['e__id'],true))){
+                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_es)==0) || ($action_e__id==12928 && view_coins_count_e(0,$x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_count_e(0,$x['e__id'],true))){
 
                     //Parent Player Addition
                     $this->X_model->create(array(
@@ -960,12 +960,12 @@ class E_model extends CI_Model
                         ), $x__member, 10673 /* Player Link Unpublished  */);
                     }
 
-                } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_sources) > 0){
+                } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_es) > 0){
 
                     if($action_e__id==5982){
 
                         //Parent Player Removal
-                        foreach($child_parent_sources as $delete_tr){
+                        foreach($child_parent_es as $delete_tr){
 
                             $this->X_model->update($delete_tr['x__id'], array(
                                 'x__status' => 6173, //Link Deleted
@@ -1119,7 +1119,7 @@ class E_model extends CI_Model
         }
 
         //Create source
-        $focus_source = $this->E_model->create(array(
+        $focus_e = $this->E_model->create(array(
             'e__title' => $e__title_validate['e__title_clean'],
             'e__icon' => $e__icon,
             'e__status' => $e__status,
@@ -1128,7 +1128,7 @@ class E_model extends CI_Model
         //Return success:
         return array(
             'status' => 1,
-            'new_source' => $focus_source,
+            'new_e' => $focus_e,
         );
 
     }

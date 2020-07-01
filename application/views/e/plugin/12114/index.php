@@ -57,14 +57,14 @@ $e_coins_last_week = $this->X_model->fetch(array(
 $e_coins_growth_rate = format_percentage( ($e_coins_last_week[0]['totals'] / ( $e_coins_last_week[0]['totals'] - $e_coins_new_last_week[0]['totals'] ) * 100)-100);
 
 
-$interactions_discoveries_new_last_week = $this->X_model->fetch(array(
+$interactions_x_new_last_week = $this->X_model->fetch(array(
     'x__time >=' => $last_week_start,
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-$interactions_discoveries_last_week = $this->X_model->fetch(array(
+$interactions_x_last_week = $this->X_model->fetch(array(
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-$interactions_discoveries_growth_rate = format_percentage(($interactions_discoveries_last_week[0]['totals'] / ( $interactions_discoveries_last_week[0]['totals'] - $interactions_discoveries_new_last_week[0]['totals'] ) * 100)-100);
+$interactions_x_growth_rate = format_percentage(($interactions_x_last_week[0]['totals'] / ( $interactions_x_last_week[0]['totals'] - $interactions_x_new_last_week[0]['totals'] ) * 100)-100);
 
 
 
@@ -82,7 +82,7 @@ $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; te
 
 $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $x_coins_growth_rate >= 0 ? '+' : '-' ).$x_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($x_coins_last_week[0]['totals'], 0).'" style="border-bottom:1px dotted #999999;">'.view_number($x_coins_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'" target="_blank" style="color: #FF0000; font-weight:bold; text-decoration:none;">'.$e___13355[6255]['m_name'].' &raquo;</a></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $interactions_discoveries_growth_rate >= 0 ? '+' : '-' ).$interactions_discoveries_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($interactions_discoveries_last_week[0]['totals'], 0).'" style="border-bottom:1px dotted #999999;">'.view_number($interactions_discoveries_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'/x" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">'.$e___13355[13362]['m_name'].' &raquo;</a></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">📖</b><b style="min-width:55px; display: inline-block;">'.( $interactions_x_growth_rate >= 0 ? '+' : '-' ).$interactions_x_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($interactions_x_last_week[0]['totals'], 0).'" style="border-bottom:1px dotted #999999;">'.view_number($interactions_x_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'/x" target="_blank" style="color: #000000; font-weight:bold; text-decoration:none;">'.$e___13355[13362]['m_name'].' &raquo;</a></div>';
 
 
 $html_message .= '<br />';
@@ -97,25 +97,25 @@ $subscriber_filters = array(
 );
 
 //Should we limit the scope?
-if($is_player_request){
-    $session_source = superpower_assigned();
-    $subscriber_filters['x__down'] = $session_source['e__id'];
+if($is_member_request){
+    $session_e = superpower_assigned();
+    $subscriber_filters['x__down'] = $session_e['e__id'];
 }
 
 
 $email_recipients = 0;
 //Send email to all subscribers:
-foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscribed_player){
+foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscribed_member){
     //Try fetching subscribers email:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => 3288, //Mench Email
-        'x__down' => $subscribed_player['e__id'],
+        'x__down' => $subscribed_member['e__id'],
     )) as $e_email){
         if(filter_var($e_email['x__message'], FILTER_VALIDATE_EMAIL)){
             //Send Email
-            $this->X_model->email_sent(array($e_email['x__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_player['e__title']).' 👋</div>'.$html_message);
+            $this->X_model->email_sent(array($e_email['x__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_member['e__title']).' 👋</div>'.$html_message);
             $email_recipients++;
         }
     }

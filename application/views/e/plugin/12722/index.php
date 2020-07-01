@@ -10,11 +10,11 @@ if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
 
 
     //Fetch link metadata and display it:
-    $discoveries = $this->X_model->fetch(array(
+    $x = $this->X_model->fetch(array(
         'x__id' => $_GET['x__id'],
     ));
 
-    if (count($discoveries) < 1) {
+    if (count($x) < 1) {
 
         echo 'Invalid Interaction ID';
 
@@ -25,12 +25,12 @@ if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
     } else {
 
         //unserialize metadata if needed:
-        if(strlen($discoveries[0]['x__metadata']) > 0){
-            $discoveries[0]['x__metadata'] = unserialize($discoveries[0]['x__metadata']);
+        if(strlen($x[0]['x__metadata']) > 0){
+            $x[0]['x__metadata'] = unserialize($x[0]['x__metadata']);
         }
 
         //Print on scree:
-        view_json($discoveries[0]);
+        view_json($x[0]);
 
     }
 

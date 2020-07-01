@@ -67,9 +67,9 @@ $(document).ready(function () {
     $('#x__status').change(function () {
         if (parseInt($('#x__status').find(":selected").val()) == 6173 /* DELETED */ ) {
             //About to delete? Notify them:
-            $('.notify_unlink_source').removeClass('hidden');
+            $('.notify_unlink_e').removeClass('hidden');
         } else {
-            $('.notify_unlink_source').addClass('hidden');
+            $('.notify_unlink_e').addClass('hidden');
         }
     });
 
@@ -82,7 +82,7 @@ $(document).ready(function () {
             $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total links:
-            $.post("/e/e_count_deletion", { e__id: parseInt($('#modifybox').attr('source-id')) }, function (data) {
+            $.post("/e/e_count_deletion", { e__id: parseInt($('#modifybox').attr('e-id')) }, function (data) {
 
                 if(data.status){
                     $('.e_delete_stats').html('<b>'+data.e_link_count+'</b>');
@@ -404,11 +404,11 @@ function e_modify_load(e__id, x__id) {
     $("#modifybox").removeClass('hidden').hide().fadeIn();
 
     //Update variables:
-    $('#modifybox').attr('source-x-id', x__id);
-    $('#modifybox').attr('source-id', e__id);
+    $('#modifybox').attr('e-x-id', x__id);
+    $('#modifybox').attr('e-id', e__id);
 
     //Cannot be deleted OR Unpublished as this would not load, so delete them:
-    $('.notify_e_delete, .notify_unlink_source').addClass('hidden');
+    $('.notify_e_delete, .notify_unlink_e').addClass('hidden');
 
     //Set opacity:
     delete_all_saved();
@@ -438,12 +438,12 @@ function e_modify_load(e__id, x__id) {
     //Only show unlink button if not level 1
     if (parseInt(x__id) > 0) {
 
-        $('#x__status').val($(".e__id_" + e__id + ":first").attr('discover-status'));
+        $('#x__status').val($(".e__id_" + e__id + ":first").attr('x-status'));
         $('#e_link_count').val('0');
 
 
         //Make the UI link and the ideas in the edit box:
-        $('.unlink-source, .en-has-tr').removeClass('hidden');
+        $('.unlink-e, .en-has-tr').removeClass('hidden');
 
         //Assign value:
         $('#x__message').val($(".x__message_val_" + x__id + ":first").text());
@@ -454,7 +454,7 @@ function e_modify_load(e__id, x__id) {
     } else {
 
         //Hide the section and clear it:
-        $('.unlink-source, .en-has-tr').addClass('hidden');
+        $('.unlink-e, .en-has-tr').addClass('hidden');
 
     }
 }
@@ -567,7 +567,7 @@ function e_sort_save() {
 
     $("#e__portfolio .en-item").each(function () {
         //Fetch variables for this idea:
-        var e__id = parseInt($(this).attr('source-id'));
+        var e__id = parseInt($(this).attr('e-id'));
         var x__id = parseInt($(this).attr('x__id'));
 
         sort_rank++;
@@ -639,7 +639,7 @@ function e_sort_portfolio_load() {
 function e_update() {
 
     //Validate that we have all we need:
-    if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('source-id'))) {
+    if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('e-id'))) {
         //Oops, this should not happen!
         return false;
     }
@@ -660,13 +660,13 @@ function e_update() {
     //Prepare data to be modified for this idea:
     var modify_data = {
         e_focus_id: e_focus_id, //Determines if we need to change location upon removing...
-        e__id: parseInt($('#modifybox').attr('source-id')),
+        e__id: parseInt($('#modifybox').attr('e-id')),
         e__title: $('#e__title').val().toUpperCase(),
         e__icon: $('#e__icon').val(),
         e__status: $('#e__status').val(), //The new status (might not have changed too)
         e_merge: $('#e_merge').val(),
         //Link data:
-        x__id: parseInt($('#modifybox').attr('source-x-id')),
+        x__id: parseInt($('#modifybox').attr('e-x-id')),
         x__message: $('#x__message').val(),
         x__status: $('#x__status').val(),
     };
@@ -745,7 +745,7 @@ function e_update() {
                     }
 
                     //Interaction Status:
-                    $(".e__id_" + modify_data['e__id']).attr('discover-status', modify_data['x__status'])
+                    $(".e__id_" + modify_data['e__id']).attr('x-status', modify_data['x__status'])
                     $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m_name"] + ': ' + js_e___6186[modify_data['x__status']]["m_desc"] + '">' + js_e___6186[modify_data['x__status']]["m_icon"] + '</span>');
 
                 }

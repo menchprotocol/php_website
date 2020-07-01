@@ -8,37 +8,37 @@ $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___11089 = $this->config->item('e___11089'); //SOURCE LAYOUT
 $e___10957 = $this->config->item('e___10957'); //SUPERPOWERS
-$is_public = in_array($source['e__status'], $this->config->item('n___7357'));
-$is_active = in_array($source['e__status'], $this->config->item('n___7358'));
+$is_public = in_array($e['e__status'], $this->config->item('n___7357'));
+$is_active = in_array($e['e__status'], $this->config->item('n___7358'));
 $superpower_10967 = superpower_active(10967, true);
-$superpower_any = ( $session_source ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-$player_is_e_source = player_is_e_source($source['e__id']);
+$superpower_any = ( $session_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
+$member_is_e = member_is_e($e['e__id']);
 
 ?>
 
 
 <style>
     /* For a cleaner UI hide the current focused source parent */
-    .e_child_icon_<?= $source['e__id'] ?>{ display:none; }
+    .e_child_icon_<?= $e['e__id'] ?>{ display:none; }
 </style>
 
 <script>
     //Set global variables:
     var e_focus_filter = -1; //No filter, show all
-    var e_focus_id = <?= $source['e__id'] ?>;
+    var e_focus_id = <?= $e['e__id'] ?>;
 </script>
 
 <script src="/application/views/e/layout.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
-<div class="container source-ui">
+<div class="container e-ui">
 
     <?php
     //SOURCE NAME
-    echo '<div class="itemsource">'.view_input_text(6197, $source['e__title'], $source['e__id'], ($player_is_e_source && $is_active), 0, true, '<span class="e_ui_icon_'.$source['e__id'].'">'.view_e__icon($source['e__icon']).'</span>', extract_icon_color($source['e__icon'])).'</div>';
+    echo '<div class="itemsource">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($member_is_e && $is_active), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
 
     ?>
 
-    <div id="modifybox" class="fixed-box hidden" source-id="0" source-x-id="0" style="padding: 5px;">
+    <div id="modifybox" class="fixed-box hidden" e-id="0" e-x-id="0" style="padding: 5px;">
 
         <h5 class="badge badge-h edit-header"><i class="fas fa-pen-square"></i> Modify</h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
@@ -121,7 +121,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                                 ?>
                             </select>
 
-                            <div class="notify_unlink_source hidden">
+                            <div class="notify_unlink_e hidden">
                                 <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will unlink source</div>
                             </div>
 
@@ -158,7 +158,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
             <table>
                 <tr>
-                    <td class="save-td"><a href="javascript:e_update();" class="btn btn-source btn-save">Save</a></td>
+                    <td class="save-td"><a href="javascript:e_update();" class="btn btn-e btn-save">Save</a></td>
                     <td class="save-result-td"><span class="save_e_changes"></span></td>
                 </tr>
             </table>
@@ -172,7 +172,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
 
     //FOR EDITING ONLY:
-    echo '<div class="hidden">'.view_e($source).'</div>';
+    echo '<div class="hidden">'.view_e($e).'</div>';
 
 
 
@@ -182,21 +182,21 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
     //REFERENCES
     if(superpower_active(12701, true)){
-        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',e_count_connections($source['e__id'])).'</div>';
+        echo '<div class="inline-block '.superpower_active(12701).'">'.join('',e_count_connections($e['e__id'])).'</div>';
     }
 
     //SOURCE DRAFTING?
-    echo '<span class="icon-block e__status_' . $source['e__id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$source['e__status']]['m_name'].': '.$e___6177[$source['e__status']]['m_desc'].'">' . $e___6177[$source['e__status']]['m_icon'] . '</span></span>';
+    echo '<span class="icon-block e__status_' . $e['e__id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_name'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span>';
 
     //Modify
-    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $source['e__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a>';
+    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a>';
 
 
     //ADMIN MENU
     if(superpower_assigned(12703)){
         $e___4527 = $this->config->item('e___4527'); //Platform Memory
         echo '<ul class="nav nav-pills nav-sm" style="display: inline-block; border: 0; margin: 0;">';
-        echo view_caret(12887, $e___4527[12887], $source['e__id']);
+        echo view_caret(12887, $e___4527[12887], $e['e__id']);
         echo '</ul>';
     }
 
@@ -223,13 +223,13 @@ $player_is_e_source = player_is_e_source($source['e__id']);
         }
 
         //Does have 1 or more coins
-        $counter = x_coins_source($x__type, $source['e__id']);
+        $counter = x_coins_e($x__type, $e['e__id']);
         if(!$counter){
             //Hide since Zero:
             continue;
         }
 
-        $this_tab = x_coins_source($x__type, $source['e__id'], 1);
+        $this_tab = x_coins_e($x__type, $e['e__id'], 1);
         $default_active = in_array($x__type, $this->config->item('n___12571'));
 
         $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'</a></li>';
@@ -268,10 +268,10 @@ $player_is_e_source = player_is_e_source($source['e__id']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             //Missing Superpower:
             continue;
-        } elseif(in_array($x__type, $this->config->item('n___13424')) && $player_is_e_source){
+        } elseif(in_array($x__type, $this->config->item('n___13424')) && $member_is_e){
             //SOURCE LAYOUT HIDE IF SOURCE:
             continue;
-        } elseif(in_array($x__type, $this->config->item('n___13425')) && !$player_is_e_source){
+        } elseif(in_array($x__type, $this->config->item('n___13425')) && !$member_is_e){
             //SOURCE LAYOUT SHOW IF SOURCE:
             continue;
         }
@@ -316,7 +316,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
                 if ($acc_e__id == 12289) {
 
-                    $e__icon_parts = explode(' ',one_two_explode('class="', '"', $session_source['e__icon']));
+                    $e__icon_parts = explode(' ',one_two_explode('class="', '"', $session_e['e__icon']));
 
                     $this_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $e__icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
@@ -368,24 +368,24 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
                     $user_emails = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__down' => $session_source['e__id'],
+                        'x__down' => $session_e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__up' => 3288, //Mench Email
                     ));
 
                     $this_tab .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($user_emails) > 0 ? $user_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
-                <a href="javascript:void(0)" onclick="e_update_email()" class="btn btn-source">Save</a>
+                <a href="javascript:void(0)" onclick="e_update_email()" class="btn btn-e">Save</a>
                 <span class="saving-account save_email"></span>';
 
                 } elseif ($acc_e__id == 3286 /* Password */) {
 
                     $this_tab .= '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
-                <a href="javascript:void(0)" onclick="e_update_password()" class="btn btn-source">Save</a>
+                <a href="javascript:void(0)" onclick="e_update_password()" class="btn btn-e">Save</a>
                 <span class="saving-account save_password"></span>';
 
                 } elseif ($is_multi_selectable || $is_single_selectable) {
 
-                    $this_tab .= view_radio_sources($acc_e__id, $session_source['e__id'], ($is_multi_selectable ? 1 : 0));
+                    $this_tab .= view_radio_es($acc_e__id, $session_e['e__id'], ($is_multi_selectable ? 1 : 0));
 
                 }
 
@@ -404,7 +404,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                'x__down' => $source['e__id'],
+                'x__down' => $e['e__id'],
             ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
 
             $counter = count($e__profiles);
@@ -414,7 +414,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach($e__profiles as $e_profile) {
-                $this_tab .= view_e($e_profile,true, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_profile['x__member']))));
+                $this_tab .= view_e($e_profile,true, null, true, ($member_is_e || ($session_e && ($session_e['e__id']==$e_profile['x__member']))));
             }
 
             //Input to add new parents:
@@ -433,7 +433,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
             //SOURCE PORTFOLIO
             $e__portfolio_count = $this->X_model->fetch(array(
-                'x__up' => $source['e__id'],
+                'x__up' => $e['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -460,7 +460,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                    'x__up' => $source['e__id'],
+                    'x__up' => $e['e__id'],
                 ), array('x__down'), config_var(11064), 0, $order_columns);
 
             }
@@ -576,7 +576,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                 }
 
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 3px 0 0;">'.( superpower_active(10967, true) && sources_currently_sorted($source['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 3px 0 0;">'.( superpower_active(10967, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
 
 
 
@@ -592,7 +592,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
                 $this_tab .= $input_options;
 
-                $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-source inline-block"></div>';
+                $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-e inline-block"></div>';
 
                 $this_tab .= '</div>';
                 $this_tab .= '</form>';
@@ -615,9 +615,9 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                 //Source Status Filters:
                 if(superpower_active(12701, true)){
 
-                    $e_count = $this->E_model->child_count($source['e__id'], $this->config->item('n___7358') /* ACTIVE */);
+                    $e_count = $this->E_model->child_count($e['e__id'], $this->config->item('n___7358') /* ACTIVE */);
                     $child_e_filters = $this->X_model->fetch(array(
-                        'x__up' => $source['e__id'],
+                        'x__up' => $e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -652,7 +652,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
             $common_prefix = i_calc_common_prefix($e__portfolios, 'e__title');
 
             foreach($e__portfolios as $e_portfolio) {
-                $this_tab .= view_e($e_portfolio,false, null, true, ($player_is_e_source || ($session_source && ($session_source['e__id']==$e_portfolio['x__member']))), $common_prefix);
+                $this_tab .= view_e($e_portfolio,false, null, true, ($member_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__member']))), $common_prefix);
             }
             if ($counter > count($e__portfolios)) {
                 $this_tab .= view_e_load_more(1, config_var(11064), $counter);
@@ -678,7 +678,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
-                '(x__up = '.$source['e__id'].' OR x__down = '.$source['e__id'].')' => null,
+                '(x__up = '.$e['e__id'].' OR x__down = '.$e['e__id'].')' => null,
             ), array(), config_var(11064), 0, array(), 'x__right') as $item) {
                 array_push($i__ids, $item['x__right']);
             }
@@ -686,29 +686,29 @@ $player_is_e_source = player_is_e_source($source['e__id']);
             //Also Show Related Sources:
             if(count($i__ids) > 0){
 
-                $is_included = array($source['e__id']);
+                $is_included = array($e['e__id']);
                 foreach ($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
                     'x__right IN (' . join(',', $i__ids) . ')' => null,
                     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-                ), array(), 0) as $fetched_source){
+                ), array(), 0) as $fetched_e){
 
                     foreach(array('x__up','x__down') as $e_ref_field) {
-                        if($fetched_source[$e_ref_field] > 0){
+                        if($fetched_e[$e_ref_field] > 0){
 
-                            if(in_array($fetched_source[$e_ref_field], $is_included)){
+                            if(in_array($fetched_e[$e_ref_field], $is_included)){
                                 continue;
                             }
 
                             $counter++;
-                            array_push($is_included, $fetched_source[$e_ref_field]);
+                            array_push($is_included, $fetched_e[$e_ref_field]);
 
-                            $ref_sources = $this->E_model->fetch(array(
-                                'e__id' => $fetched_source[$e_ref_field],
+                            $ref_es = $this->E_model->fetch(array(
+                                'e__id' => $fetched_e[$e_ref_field],
                             ));
 
-                            $this_tab .= view_e($ref_sources[0]);
+                            $this_tab .= view_e($ref_es[0]);
 
                         }
                     }
@@ -728,7 +728,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__type' => $x__type,
-                'x__up' => $source['e__id'],
+                'x__up' => $e['e__id'],
             );
 
             //COUNT ONLY
@@ -753,19 +753,19 @@ $player_is_e_source = player_is_e_source($source['e__id']);
 
         } elseif($x__type == 12969 /* MY DISCOVERIES */){
 
-            $i_discoveries_filters = array(
-                'x__member' => $source['e__id'],
+            $i_x_filters = array(
+                'x__member' => $e['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             );
-            $player_discoveries = $this->X_model->fetch($i_discoveries_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
-            $counter = $player_discoveries[0]['totals'];
+            $member_x = $this->X_model->fetch($i_x_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
+            $counter = $member_x[0]['totals'];
 
             if($counter > 0){
-                $i_discoveries_query = $this->X_model->fetch($i_discoveries_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
+                $i_x_query = $this->X_model->fetch($i_x_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
                 $this_tab .= '<div class="list-group">';
-                foreach($i_discoveries_query as $count => $i_notes) {
+                foreach($i_x_query as $count => $i_notes) {
                     $this_tab .= view_i($i_notes);
                 }
                 $this_tab .= '</div>';
@@ -776,7 +776,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
         }
 
 
-        if(!$counter && (!in_array($x__type, $this->config->item('n___12574')) || !$session_source)){
+        if(!$counter && (!in_array($x__type, $this->config->item('n___12574')) || !$session_e)){
             //Hide since Zero without exception @12574:
             continue;
         }
@@ -787,7 +787,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="discover-topic"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$x__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$x__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($x__type, $this->config->item('n___13004')) ? superpower_active(13422) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$x__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
+        echo '<div class="headline"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$x__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$x__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($x__type, $this->config->item('n___13004')) ? superpower_active(13422) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$x__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
 
         //BODY
         echo '<div class="contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';

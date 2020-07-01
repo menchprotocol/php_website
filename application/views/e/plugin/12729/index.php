@@ -14,10 +14,10 @@ $e___12140 = $this->config->item('e___12140');
 $full_coins = $this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___12141')) . ')' => null, //Full
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-), array(), 0, 0, array(), 'COUNT(x__id) as total_discoveries');
+), array(), 0, 0, array(), 'COUNT(x__id) as total_x');
 echo '<tr class="panel-title down-border" style="font-weight: bold;">';
 echo '<td style="text-align: left;" class="montserrat doupper">'.$e___12140[12141]['m_icon'].' '.$e___12140[12141]['m_name'].'</td>';
-echo '<td style="text-align: left;">'.number_format($full_coins[0]['total_discoveries'], 0).'</td>';
+echo '<td style="text-align: left;">'.number_format($full_coins[0]['total_x'], 0).'</td>';
 echo '</tr>';
 
 
@@ -28,14 +28,14 @@ echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan=
 foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___12141')) . ')' => null, //Full
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-), array('x__type'), 0, 0, array('total_discoveries' => 'DESC'), 'COUNT(x__id) as total_discoveries, e__title, e__icon, e__id, x__type', 'e__id, e__title, e__icon, x__type') as $discovery) {
+), array('x__type'), 0, 0, array('total_x' => 'DESC'), 'COUNT(x__id) as total_x, e__title, e__icon, e__id, x__type', 'e__id, e__title, e__icon, x__type') as $x) {
 
     //Determine which weight group this belongs to:
-    $direction = filter_cache_group($discovery['e__id'], 2738);
+    $direction = filter_cache_group($x['e__id'], 2738);
 
     echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;"><span class="icon-block">'.$discovery['e__icon'].'</span><a href="/@'.$discovery['e__id'].'" class="montserrat doupper">'.$discovery['e__title'].'</a></td>';
-    echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($discovery['total_discoveries'], 0).'</td>';
+    echo '<td style="text-align: left;"><span class="icon-block">'.$x['e__icon'].'</span><a href="/@'.$x['e__id'].'" class="montserrat doupper">'.$x['e__title'].'</a></td>';
+    echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($x['total_x'], 0).'</td>';
     echo '</tr>';
 
 }

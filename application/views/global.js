@@ -146,12 +146,12 @@ function js_extract_icon_color(e__icon){
 function view_search_result(algolia_object){
 
     //Determine object type:
-    var is_idea = (parseInt(algolia_object.object__type)==4535);
-    var is_public = ( parseInt(algolia_object.object__status) in ( is_idea ? js_e___7355 : js_e___7357 ));
-    var obj_icon = ( is_idea ? '<i class="fas fa-circle idea"></i>' : algolia_object.object__icon );
+    var is_i = (parseInt(algolia_object.object__type)==4535);
+    var is_public = ( parseInt(algolia_object.object__status) in ( is_i ? js_e___7355 : js_e___7357 ));
+    var obj_icon = ( is_i ? '<i class="fas fa-circle idea"></i>' : algolia_object.object__icon );
     var obj_full_name = ( algolia_object._highlightResult && algolia_object._highlightResult.object__title.value ? algolia_object._highlightResult.object__title.value : algolia_object.object__title );
 
-    return '<span class="icon-block">'+ obj_icon +'</span><span class="montserrat '+ ( !is_idea ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>' + ( is_public ? '' : '<span class="icon-block"><i class="far fa-spinner fa-spin"></i></span>' ); //htmlentitiesjs()
+    return '<span class="icon-block">'+ obj_icon +'</span><span class="montserrat '+ ( !is_i ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>' + ( is_public ? '' : '<span class="icon-block"><i class="far fa-spinner fa-spin"></i></span>' ); //htmlentitiesjs()
 
 }
 
@@ -204,7 +204,7 @@ $(document).ready(function () {
     //load_intercom();
 
     if(js_pl_id > 1){
-        //For any logged in player except shervin:
+        //For any logged in member except shervin:
         load_fullstory();
     }
 
@@ -273,11 +273,11 @@ $(document).ready(function () {
                 source: function (q, cb) {
 
                     //Players can filter search with first word:
-                    var search_only_source = $("#mench_search").val().charAt(0) == '@';
+                    var search_only_e = $("#mench_search").val().charAt(0) == '@';
                     var search_only_in = $("#mench_search").val().charAt(0) == '#';
 
                     //Do not search if specific command ONLY:
-                    if (( search_only_in || search_only_source ) && !isNaN($("#mench_search").val().substr(1)) ) {
+                    if (( search_only_in || search_only_e ) && !isNaN($("#mench_search").val().substr(1)) ) {
 
                         cb([]);
                         return;
@@ -287,7 +287,7 @@ $(document).ready(function () {
                         //Now determine the filters we need to apply:
                         var search_filters = '';
 
-                        if(search_only_source || search_only_in){
+                        if(search_only_e || search_only_in){
                             search_filters += ' object__type='+( search_only_in ? 4535 : 4536 );
                         }
 
@@ -411,7 +411,7 @@ function x_type_preview() {
     //Fetch Idea Data to load modify widget:
     $.post("/x/x_type_preview", {
         x__message: $('#x__message').val(),
-        x__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('source-x-id')) : 0 ),
+        x__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('e-x-id')) : 0 ),
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
@@ -495,7 +495,7 @@ function e_fetch_canonical(query_string, not_found){
     $.post("/e/e_fetch_canonical", { search_url:query_string }, function (searchdata) {
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
-            $('.add-source-suggest').remove();
+            $('.add-e-suggest').remove();
             $('.not-found').html('<a href="/@'+searchdata.algolia_object.object__id+'" class="suggestion montserrat">' + view_search_result(searchdata.algolia_object)+'</a>');
         }
     });
@@ -571,7 +571,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             if(is_add_mode=='link_in') {
-                return i_add($(this).attr('idea-id'), is_i_previous, 0);
+                return i_add($(this).attr('i-id'), is_i_previous, 0);
             } else if(is_add_mode=='link_my_in') {
                 return i_create();
             }
@@ -588,7 +588,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
     $(element_focus).on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='link_in'){
-            i_add($(this).attr('idea-id'), is_i_previous, suggestion.object__id);
+            i_add($(this).attr('i-id'), is_i_previous, suggestion.object__id);
         } else {
             //Go to idea:
             window.location = suggestion.object__url;
@@ -626,7 +626,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             },
             header: function (data) {
                 if (is_add_mode=='link_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='link_my_in'){
                     return '<a href="javascript:i_create()" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
@@ -634,9 +634,9 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             empty: function (data) {
                 if(is_add_mode=='link_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('idea-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },
@@ -1223,10 +1223,10 @@ function x_remove(x__type){
 
 function x_sort_load(x__type){
     //Load sorter:
-    var sort = Sortable.create(document.getElementById('idea_covers'), {
+    var sort = Sortable.create(document.getElementById('i_covers'), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".home_sort", // Specifies which items inside the element should be sortable
-        handle: ".discover-sorter", // Restricts sort start click/touch to the specified element
+        handle: ".x-sorter", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             x_sort(x__type);
         }
@@ -1238,7 +1238,7 @@ function x_sort(x__type) {
 
     var sort_rank = 0;
     var new_x_order = [];
-    $("#idea_covers .home_sort").each(function () {
+    $("#i_covers .home_sort").each(function () {
         var link_id = parseInt($(this).attr('sort-x-id'));
         if(link_id > 0){
             sort_rank++;

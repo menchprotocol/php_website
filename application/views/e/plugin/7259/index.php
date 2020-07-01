@@ -65,7 +65,7 @@ if($search_for_is_set){
                 //Update idea:
                 $this->I_model->update($in['i__id'], array(
                     'i__title' => $i__title_validation['i_clean_title'],
-                ), true, $session_source['e__id']);
+                ), true, $session_e['e__id']);
             }
 
             echo '<tr class="panel-title down-border">';
@@ -127,5 +127,5 @@ if($replace_with_is_set && !$completed_replacements){
 }
 
 
-echo '<input type="submit" class="btn btn-idea" value="Go">';
+echo '<input type="submit" class="btn btn-i" value="Go">';
 echo '</form>';

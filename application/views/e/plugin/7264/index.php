@@ -11,7 +11,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
 
     //IDEA MARKS BIRDS EYE
 
-    //Give an overview of the point links in a hierchial format to enable players to overview:
+    //Give an overview of the point links in a hierchial format to enable members to overview:
     $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
 
     echo '<form method="GET" action="">';
@@ -27,7 +27,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300; border-left: 1px solid #999999; border-right:0px solid #FFF;"> levels deep.</span>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-idea" value="Go" style="display: inline-block; margin-top: -41px;" />
+                <input type="submit" class="btn btn-i" value="Go" style="display: inline-block; margin-top: -41px;" />
             </div>';
 
     echo '</form>';

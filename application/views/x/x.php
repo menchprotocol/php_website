@@ -358,10 +358,10 @@ echo '</div></td>';
             //Fetch details for this user:
             $all_link_count = 0;
             $select_ui = '';
-            foreach($this->X_model->fetch($ini_filter, array('x__type'), 0, 0, array('e__title' => 'ASC'), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $discovery) {
+            foreach($this->X_model->fetch($ini_filter, array('x__type'), 0, 0, array('e__title' => 'ASC'), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $x) {
                 //Echo drop down:
-                $select_ui .= '<option value="' . $discovery['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $discovery['x__type']) ? 'selected="selected"' : '') . '>' . $discovery['e__title'] . ' ('  . number_format($discovery['total_count'], 0) . ')</option>';
-                $all_link_count += $discovery['total_count'];
+                $select_ui .= '<option value="' . $x['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $x['x__type']) ? 'selected="selected"' : '') . '>' . $x['e__title'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
+                $all_link_count += $x['total_count'];
             }
 
             //Now that we know the total show:
@@ -406,7 +406,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
 
 
 
-    echo '<input type="submit" class="btn btn-discover" value="Apply" />';
+    echo '<input type="submit" class="btn btn-x" value="Apply" />';
 
     if($has_filters){
         echo ' &nbsp;<a href="/x" style="font-size: 0.8em;">Remove Filters</a>';

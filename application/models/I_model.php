@@ -138,7 +138,7 @@ class I_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $x__member > 0) {
 
-            //Unlike source modification, we require a player source ID to log the modification link:
+            //Unlike source modification, we require a member source ID to log the modification link:
             //Log modification link for every field changed:
             foreach($update_columns as $key => $value) {
 
@@ -239,9 +239,9 @@ class I_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
-        ), array(), 0) as $discovery){
+        ), array(), 0) as $x){
             //Delete this link:
-            $links_deleted += $this->X_model->update($discovery['x__id'], array(
+            $links_deleted += $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //Link Deleted
             ), $x__member, 10686 /* Idea Link Unpublished */);
         }
@@ -288,12 +288,12 @@ class I_model extends CI_Model
             $stats['scanned']++;
 
             //Find creation discover:
-            $discoveries = $this->X_model->fetch(array(
+            $x = $this->X_model->fetch(array(
                 'x__type' => $stats['x__type'],
                 'x__right' => $i['i__id'],
             ));
 
-            if(!count($discoveries)){
+            if(!count($x)){
 
                 $stats['missing_creation_fix']++;
 
@@ -305,10 +305,10 @@ class I_model extends CI_Model
                     'x__status' => $status_converter[$i['i__status']],
                 ));
 
-            } elseif($discoveries[0]['x__status'] != $status_converter[$i['i__status']]){
+            } elseif($x[0]['x__status'] != $status_converter[$i['i__status']]){
 
                 $stats['status_sync']++;
-                $this->X_model->update($discoveries[0]['x__id'], array(
+                $this->X_model->update($x[0]['x__id'], array(
                     'x__status' => $status_converter[$i['i__status']],
                 ));
 
@@ -337,16 +337,16 @@ class I_model extends CI_Model
 
         //Validate Original idea:
         if($link_to_i__id > 0){
-            $linked_ideas = $this->I_model->fetch(array(
+            $linked_is = $this->I_model->fetch(array(
                 'i__id' => intval($link_to_i__id),
             ));
 
-            if (count($linked_ideas) < 1) {
+            if (count($linked_is) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Idea ID',
                 );
-            } elseif (!in_array($linked_ideas[0]['i__status'], $this->config->item('n___7356')) /* ACTIVE */) {
+            } elseif (!in_array($linked_is[0]['i__status'], $this->config->item('n___7356')) /* ACTIVE */) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active ideas. This idea is not active.',
@@ -367,13 +367,13 @@ class I_model extends CI_Model
             //Determine which is parent Idea, and which is child
             if($is_parent){
 
-                $previous_idea = $is[0];
-                $next_idea = $linked_ideas[0];
+                $previous_i = $is[0];
+                $next_i = $linked_is[0];
 
                 /*
                 //Prevent child duplicates:
-                $recursive_children = $this->I_model->recursive_child_ids($next_idea['i__id'], false);
-                if (in_array($previous_idea['i__id'], $recursive_children)) {
+                $recursive_children = $this->I_model->recursive_child_ids($next_i['i__id'], false);
+                if (in_array($previous_i['i__id'], $recursive_children)) {
                     return array(
                         'status' => 0,
                         'message' => 'Idea previously set as child, so it cannot be added as parent',
@@ -383,13 +383,13 @@ class I_model extends CI_Model
 
             } else {
 
-                $previous_idea = $linked_ideas[0];
-                $next_idea = $is[0];
+                $previous_i = $linked_is[0];
+                $next_i = $is[0];
 
                 //Prevent parent duplicate:
-                $recursive_parents = $this->I_model->recursive_parents($previous_idea['i__id']);
+                $recursive_parents = $this->I_model->recursive_parents($previous_i['i__id']);
                 foreach($recursive_parents as $grand_parent_ids) {
-                    if (in_array($next_idea['i__id'], $grand_parent_ids)) {
+                    if (in_array($next_i['i__id'], $grand_parent_ids)) {
                         return array(
                             'status' => 0,
                             'message' => 'Idea previously set as parent, so it cannot be added as child',
@@ -416,8 +416,8 @@ class I_model extends CI_Model
 
             //Make sure this is not a duplicate Idea for its parent:
             $dup_links = $this->X_model->fetch(array(
-                'x__left' => $previous_idea['i__id'],
-                'x__right' => $next_idea['i__id'],
+                'x__left' => $previous_i['i__id'],
+                'x__right' => $next_i['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ));
@@ -479,7 +479,7 @@ class I_model extends CI_Model
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the view_i() function
-            $new_ideas = $this->X_model->fetch(array(
+            $new_is = $this->X_model->fetch(array(
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
@@ -488,7 +488,7 @@ class I_model extends CI_Model
             ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $next_i_html = view_i($new_ideas[0], $link_to_i__id, $is_parent, true /* Since they added it! */);
+            $next_i_html = view_i($new_is[0], $link_to_i__id, $is_parent, true /* Since they added it! */);
 
         } else {
 
@@ -520,13 +520,13 @@ class I_model extends CI_Model
 
 
         //Go ahead and delete from Discoveries:
-        $player_ideas = $this->X_model->fetch(array(
+        $member_is = $this->X_model->fetch(array(
             'x__type' => 10573, //MY IDEAS
             'x__up' => $e__id,
             'x__right' => $i__id,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
-        if(count($player_ideas) < 1){
+        if(count($member_is) < 1){
             return array(
                 'status' => 0,
                 'message' => 'Could not locate Idea',
@@ -534,8 +534,8 @@ class I_model extends CI_Model
         }
 
         //Delete:
-        foreach($player_ideas as $discovery){
-            $this->X_model->update($discovery['x__id'], array(
+        foreach($member_is as $x){
+            $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //DELETED
             ), $e__id, $x__type);
         }
@@ -622,12 +622,12 @@ class I_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
-        ), array('x__right')) as $next_idea){
+        ), array('x__right')) as $next_i){
 
-            array_push($child_ids, intval($next_idea['i__id']));
+            array_push($child_ids, intval($next_i['i__id']));
 
             //Fetch parents of parents:
-            $recursive_children = $this->I_model->recursive_child_ids($next_idea['i__id'], false);
+            $recursive_children = $this->I_model->recursive_child_ids($next_i['i__id'], false);
 
             //Add to current array if we found anything:
             if(count($recursive_children) > 0){
@@ -652,11 +652,11 @@ class I_model extends CI_Model
         $select_some = in_array($focus_in['i__type'] , $this->config->item('n___12884')); //IDEA TYPE SELECT SOME
         $select_one_children = array(); //To be populated only if $focus_in is select one
         $select_some_children = array(); //To be populated only if $focus_in is select some
-        $conditional_discoveries = array(); //To be populated only for Conditional Ideas
+        $conditional_x = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
-            '__i___common_discoveries' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
-            '__i___expansion_discoveries' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
-            '__i___expansion_some' => array(), //Ideas that allows players to select one or more
+            '__i___common_x' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
+            '__i___expansion_x' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
+            '__i___expansion_some' => array(), //Ideas that allows members to select one or more
             '__i___expansion_conditional' => array(), //Ideas that may exist as a link to expand Discovery via Conditional Idea links
         );
 
@@ -666,43 +666,43 @@ class I_model extends CI_Model
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $focus_in['i__id'],
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $next_idea){
+        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $next_i){
 
             //Determine action based on parent idea type:
-            if(in_array($next_idea['x__type'], $this->config->item('n___12842'))){
+            if(in_array($next_i['x__type'], $this->config->item('n___12842'))){
 
                 //Conditional Idea Link:
-                array_push($conditional_discoveries, intval($next_idea['i__id']));
+                array_push($conditional_x, intval($next_i['i__id']));
 
             } elseif($select_one){
 
                 //OR parent Idea with Fixed Idea Link:
-                array_push($select_one_children, intval($next_idea['i__id']));
+                array_push($select_one_children, intval($next_i['i__id']));
 
             } elseif($select_some){
 
                 //OR parent Idea with Fixed Idea Link:
-                array_push($select_some_children, intval($next_idea['i__id']));
+                array_push($select_some_children, intval($next_i['i__id']));
 
             } else {
 
                 //AND parent Idea with Fixed Idea Link:
-                array_push($metadata_this['__i___common_discoveries'], intval($next_idea['i__id']));
+                array_push($metadata_this['__i___common_x'], intval($next_i['i__id']));
 
                 //Go recursively down:
-                $child_recursion = $this->I_model->metadata_common_base($next_idea);
+                $child_recursion = $this->I_model->metadata_common_base($next_i);
 
 
                 //Aggregate recursion data:
-                if(count($child_recursion['__i___common_discoveries']) > 0){
-                    array_push($metadata_this['__i___common_discoveries'], $child_recursion['__i___common_discoveries']);
+                if(count($child_recursion['__i___common_x']) > 0){
+                    array_push($metadata_this['__i___common_x'], $child_recursion['__i___common_x']);
                 }
 
                 //Merge expansion steps:
-                if(count($child_recursion['__i___expansion_discoveries']) > 0){
-                    foreach($child_recursion['__i___expansion_discoveries'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__i___expansion_discoveries'])){
-                            $metadata_this['__i___expansion_discoveries'][$key] = $value;
+                if(count($child_recursion['__i___expansion_x']) > 0){
+                    foreach($child_recursion['__i___expansion_x'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__i___expansion_x'])){
+                            $metadata_this['__i___expansion_x'][$key] = $value;
                         }
                     }
                 }
@@ -726,13 +726,13 @@ class I_model extends CI_Model
 
         //Was this an OR branch that needs it's children added to the array?
         if($select_one && count($select_one_children) > 0){
-            $metadata_this['__i___expansion_discoveries'][$focus_in['i__id']] = $select_one_children;
+            $metadata_this['__i___expansion_x'][$focus_in['i__id']] = $select_one_children;
         }
         if($select_some && count($select_some_children) > 0){
             $metadata_this['__i___expansion_some'][$focus_in['i__id']] = $select_some_children;
         }
-        if(count($conditional_discoveries) > 0){
-            $metadata_this['__i___expansion_conditional'][$focus_in['i__id']] = $conditional_discoveries;
+        if(count($conditional_x) > 0){
+            $metadata_this['__i___expansion_conditional'][$focus_in['i__id']] = $conditional_x;
         }
 
 
@@ -740,15 +740,15 @@ class I_model extends CI_Model
         if($is_first_in){
 
             //Make sure to add main idea to common idea:
-            if(count($metadata_this['__i___common_discoveries']) > 0){
-                $metadata_this['__i___common_discoveries'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['__i___common_discoveries']));
+            if(count($metadata_this['__i___common_x']) > 0){
+                $metadata_this['__i___common_x'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['__i___common_x']));
             } else {
-                $metadata_this['__i___common_discoveries'] = array(intval($focus_in['i__id']));
+                $metadata_this['__i___common_x'] = array(intval($focus_in['i__id']));
             }
 
             update_metadata(4535, $focus_in['i__id'], array(
-                'i___common_discoveries' => $metadata_this['__i___common_discoveries'],
-                'i___expansion_discoveries' => $metadata_this['__i___expansion_discoveries'],
+                'i___common_x' => $metadata_this['__i___common_x'],
+                'i___expansion_x' => $metadata_this['__i___expansion_x'],
                 'i___expansion_some' => $metadata_this['__i___expansion_some'],
                 'i___expansion_conditional' => $metadata_this['__i___expansion_conditional'],
             ));
@@ -807,7 +807,7 @@ class I_model extends CI_Model
 
 
         //Process request:
-        foreach($is_next as $next_idea) {
+        foreach($is_next as $next_i) {
 
             //Logic here must match items in e_mass_actions config variable
 
@@ -815,14 +815,14 @@ class I_model extends CI_Model
 
                 //Check if it hs this item:
                 $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
-                $i_has_sources = $this->X_model->fetch(array(
+                $i_has_es = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
-                    'x__right' => $next_idea['i__id'],
+                    'x__right' => $next_i['i__id'],
                     '(x__up = '.$e__profile_id.' OR x__down = '.$e__profile_id.')' => null,
                 ));
 
-                if($action_e__id==12591 && !count($i_has_sources)){
+                if($action_e__id==12591 && !count($i_has_es)){
 
                     //Missing & Must be Added:
                     $this->X_model->create(array(
@@ -830,15 +830,15 @@ class I_model extends CI_Model
                         'x__up' => $e__profile_id,
                         'x__type' => 4983, //IDEA COIN
                         'x__message' => '@'.$e__profile_id,
-                        'x__right' => $next_idea['i__id'],
+                        'x__right' => $next_i['i__id'],
                     ), true);
 
                     $applied_success++;
 
-                } elseif($action_e__id==12592 && count($i_has_sources)){
+                } elseif($action_e__id==12592 && count($i_has_es)){
 
                     //Has and must be deleted:
-                    $this->X_model->update($i_has_sources[0]['x__id'], array(
+                    $this->X_model->update($i_has_es[0]['x__id'], array(
                         'x__status' => 6173,
                     ), $x__member, 10678 /* IDEA NOTES Unpublished */);
 
@@ -855,13 +855,13 @@ class I_model extends CI_Model
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__left' => $adjust_i__id,
-                    'x__right' => $next_idea['i__id'],
+                    'x__right' => $next_i['i__id'],
                 ), array(), 0);
 
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->link_or_create('', $x__member, $adjust_i__id, false, 6184, 6677, $next_idea['i__id']);
+                    $this->I_model->link_or_create('', $x__member, $adjust_i__id, false, 6184, 6677, $next_i['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;
@@ -922,8 +922,8 @@ class I_model extends CI_Model
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
-        ), array('x__right'), 0, 0, array(), 'i__id, i__weight') as $next_idea){
-            $total_child_weights += $next_idea['i__weight'] + $this->I_model->weight($next_idea['i__id']);
+        ), array('x__right'), 0, 0, array(), 'i__id, i__weight') as $next_i){
+            $total_child_weights += $next_i['i__weight'] + $this->I_model->weight($next_i['i__id']);
         }
 
         //Update This Level:
@@ -950,8 +950,8 @@ class I_model extends CI_Model
          * */
 
         $metadata_this = array(
-            '__i___min_discoveries' => 1,
-            '__i___max_discoveries' => 1,
+            '__i___min_x' => 1,
+            '__i___max_x' => 1,
             '__i___min_seconds' => $i['i__duration'],
             '__i___max_seconds' => $i['i__duration'],
             '__i___13202' => array(),
@@ -968,17 +968,17 @@ class I_model extends CI_Model
             'x__right' => $i['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12273')).')' => null, //IDEA COIN
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array(), 0) as $fetched_source) {
+        ), array(), 0) as $fetched_e) {
 
             //SOURCES?
             foreach(array('x__up','x__down') as $e_ref_field){
-                if($fetched_source[$e_ref_field] > 0){
+                if($fetched_e[$e_ref_field] > 0){
 
-                    $ref_sources = $this->E_model->fetch(array(
-                        'e__id' => $fetched_source[$e_ref_field],
+                    $ref_es = $this->E_model->fetch(array(
+                        'e__id' => $fetched_e[$e_ref_field],
                     ));
 
-                    $e_metadata_experts = $this->E_model->metadata_experts($ref_sources[0]);
+                    $e_metadata_experts = $this->E_model->metadata_experts($ref_es[0]);
 
                     //CONTENT CHANNELS
                     foreach($e_metadata_experts['__i___3000'] as $e__id => $e_content) {
@@ -997,15 +997,15 @@ class I_model extends CI_Model
             }
 
             //PLAYERS:
-            if (!isset($metadata_this['__i___13202'][$fetched_source['x__member']])) {
+            if (!isset($metadata_this['__i___13202'][$fetched_e['x__member']])) {
                 //Fetch Player:
                 foreach($this->X_model->fetch(array(
                     'x__up' => 4430, //MENCH PLAYERS
-                    'x__down' => $fetched_source['x__member'],
+                    'x__down' => $fetched_e['x__member'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array('x__down'), 1) as $player){
-                    $metadata_this['__i___13202'][$fetched_source['x__member']] = $player;
+                ), array('x__down'), 1) as $member){
+                    $metadata_this['__i___13202'][$fetched_e['x__member']] = $member;
                 }
             }
 
@@ -1018,16 +1018,16 @@ class I_model extends CI_Model
             'x__type' => 7545, //CERTIFICATES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__up'), 0) as $source) {
-            if (!isset($metadata_this['__i___7545'][$source['e__id']])) {
-                $metadata_this['__i___7545'][$source['e__id']] = $source;
+        ), array('x__up'), 0) as $e) {
+            if (!isset($metadata_this['__i___7545'][$e['e__id']])) {
+                $metadata_this['__i___7545'][$e['e__id']] = $e;
             }
         }
 
 
         $metadata_local = array(
-            'local__i___min_discoveries'=> null,
-            'local__i___max_discoveries'=> null,
+            'local__i___min_x'=> null,
+            'local__i___max_x'=> null,
             'local__i___min_seconds'=> null,
             'local__i___max_seconds'=> null,
         );
@@ -1048,8 +1048,8 @@ class I_model extends CI_Model
                     'x__down' => $is_next['x__member'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array('x__down'), 1) as $player){
-                    $metadata_this['__i___13202'][$is_next['x__member']] = $player;
+                ), array('x__down'), 1) as $member){
+                    $metadata_this['__i___13202'][$is_next['x__member']] = $member;
                 }
             }
 
@@ -1063,16 +1063,16 @@ class I_model extends CI_Model
                 //ONE
 
                 //MIN
-                if(is_null($metadata_local['local__i___min_discoveries']) || $metadata_recursion['__i___min_discoveries'] < $metadata_local['local__i___min_discoveries']){
-                    $metadata_local['local__i___min_discoveries'] = $metadata_recursion['__i___min_discoveries'];
+                if(is_null($metadata_local['local__i___min_x']) || $metadata_recursion['__i___min_x'] < $metadata_local['local__i___min_x']){
+                    $metadata_local['local__i___min_x'] = $metadata_recursion['__i___min_x'];
                 }
                 if(is_null($metadata_local['local__i___min_seconds']) || $metadata_recursion['__i___min_seconds'] < $metadata_local['local__i___min_seconds']){
                     $metadata_local['local__i___min_seconds'] = $metadata_recursion['__i___min_seconds'];
                 }
 
                 //MAX
-                if(is_null($metadata_local['local__i___max_discoveries']) || $metadata_recursion['__i___max_discoveries'] > $metadata_local['local__i___max_discoveries']){
-                    $metadata_local['local__i___max_discoveries'] = $metadata_recursion['__i___max_discoveries'];
+                if(is_null($metadata_local['local__i___max_x']) || $metadata_recursion['__i___max_x'] > $metadata_local['local__i___max_x']){
+                    $metadata_local['local__i___max_x'] = $metadata_recursion['__i___max_x'];
                 }
                 if(is_null($metadata_local['local__i___max_seconds']) || $metadata_recursion['__i___max_seconds'] > $metadata_local['local__i___max_seconds']){
                     $metadata_local['local__i___max_seconds'] = $metadata_recursion['__i___max_seconds'];
@@ -1083,15 +1083,15 @@ class I_model extends CI_Model
                 //SOME
 
                 //MIN
-                if(is_null($metadata_local['local__i___min_discoveries']) || $metadata_recursion['__i___min_discoveries'] < $metadata_local['local__i___min_discoveries']){
-                    $metadata_local['local__i___min_discoveries'] = $metadata_recursion['__i___min_discoveries'];
+                if(is_null($metadata_local['local__i___min_x']) || $metadata_recursion['__i___min_x'] < $metadata_local['local__i___min_x']){
+                    $metadata_local['local__i___min_x'] = $metadata_recursion['__i___min_x'];
                 }
                 if(is_null($metadata_local['local__i___min_seconds']) || $metadata_recursion['__i___min_seconds'] < $metadata_local['local__i___min_seconds']){
                     $metadata_local['local__i___min_seconds'] = $metadata_recursion['__i___min_seconds'];
                 }
 
                 //MAX
-                $metadata_this['__i___max_discoveries'] += intval($metadata_recursion['__i___max_discoveries']);
+                $metadata_this['__i___max_x'] += intval($metadata_recursion['__i___max_x']);
                 $metadata_this['__i___max_seconds'] += intval($metadata_recursion['__i___max_seconds']);
 
             } else {
@@ -1099,20 +1099,20 @@ class I_model extends CI_Model
                 //ALL
 
                 //MIN
-                $metadata_this['__i___min_discoveries'] += intval($metadata_recursion['__i___min_discoveries']);
+                $metadata_this['__i___min_x'] += intval($metadata_recursion['__i___min_x']);
                 $metadata_this['__i___min_seconds'] += intval($metadata_recursion['__i___min_seconds']);
 
                 //MAX
-                $metadata_this['__i___max_discoveries'] += intval($metadata_recursion['__i___max_discoveries']);
+                $metadata_this['__i___max_x'] += intval($metadata_recursion['__i___max_x']);
                 $metadata_this['__i___max_seconds'] += intval($metadata_recursion['__i___max_seconds']);
 
             }
 
 
             //PLAYERS
-            foreach($metadata_recursion['__i___13202'] as $e__id => $e_source) {
+            foreach($metadata_recursion['__i___13202'] as $e__id => $e) {
                 if (!isset($metadata_this['__i___13202'][$e__id])) {
-                    $metadata_this['__i___13202'][$e__id] = $e_source;
+                    $metadata_this['__i___13202'][$e__id] = $e;
                 }
             }
 
@@ -1147,11 +1147,11 @@ class I_model extends CI_Model
 
 
         //ADD LOCAL MIN/MAX
-        if(!is_null($metadata_local['local__i___min_discoveries'])){
-            $metadata_this['__i___min_discoveries'] += intval($metadata_local['local__i___min_discoveries']);
+        if(!is_null($metadata_local['local__i___min_x'])){
+            $metadata_this['__i___min_x'] += intval($metadata_local['local__i___min_x']);
         }
-        if(!is_null($metadata_local['local__i___max_discoveries'])){
-            $metadata_this['__i___max_discoveries'] += intval($metadata_local['local__i___max_discoveries']);
+        if(!is_null($metadata_local['local__i___max_x'])){
+            $metadata_this['__i___max_x'] += intval($metadata_local['local__i___max_x']);
         }
         if(!is_null($metadata_local['local__i___min_seconds'])){
             $metadata_this['__i___min_seconds'] += intval($metadata_local['local__i___min_seconds']);
@@ -1162,8 +1162,8 @@ class I_model extends CI_Model
 
         //Save to DB
         update_metadata(4535, $i['i__id'], array(
-            'i___min_discoveries' => intval($metadata_this['__i___min_discoveries']),
-            'i___max_discoveries' => intval($metadata_this['__i___max_discoveries']),
+            'i___min_x' => intval($metadata_this['__i___min_x']),
+            'i___max_x' => intval($metadata_this['__i___max_x']),
             'i___min_seconds' => intval($metadata_this['__i___min_seconds']),
             'i___max_seconds' => intval($metadata_this['__i___max_seconds']),
             'i___13202' => $metadata_this['__i___13202'], //Mench Ideators
@@ -1250,20 +1250,20 @@ class I_model extends CI_Model
         }
 
         //Go through children to see if any/all can be completed:
-        foreach($is_next as $next_idea){
-            if(i_is_unlockable($next_idea)){
+        foreach($is_next as $next_i){
+            if(i_is_unlockable($next_i)){
 
                 //Need to check recursively:
-                foreach($this->I_model->unlock_paths($next_idea) as $locked_path){
+                foreach($this->I_model->unlock_paths($next_i) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $locked_path['i__id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }
                 }
 
-            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $next_idea['i__id'])) {
+            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $next_i['i__id'])) {
 
                 //Not locked, so this can be completed:
-                array_push($child_unlock_paths, $next_idea);
+                array_push($child_unlock_paths, $next_i);
 
             }
         }

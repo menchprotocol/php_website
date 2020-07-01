@@ -42,18 +42,18 @@
 
 
 
-        echo '<div class="discover-topic"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
+        echo '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</div>';
         echo '<div class="list-group" style="padding-bottom:34px;">';
 
 
-        foreach($e_list as $count=>$source) {
+        foreach($e_list as $count=>$e) {
 
             if($count==$show_max){
                 echo '<div class="list-group-item see_more_who'.$e__id.' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
                 echo '<div class="list-group-item see_more_who'.$e__id.' no-height"></div>';
             }
 
-            echo view_e($source, false, ( $count<$show_max ? '' : 'see_more_who'.$e__id.' hidden'));
+            echo view_e($e, false, ( $count<$show_max ? '' : 'see_more_who'.$e__id.' hidden'));
 
         }
 

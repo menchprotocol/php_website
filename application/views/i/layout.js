@@ -26,7 +26,7 @@ $(document).ready(function () {
     autosize($('.text__4736_'+i_loaded_id));
 
     //Activate Source-Only Inputs:
-    $(".source-only").each(function () {
+    $(".e-only").each(function () {
         e_e_only_search($(this).attr('note_type_id'));
     });
 
@@ -77,8 +77,8 @@ function e_only_add(e_existing_id, note_type_id) {
     //If e_existing_id=0 it means we are creating a new source and then linking it, in which case e_new_string is required
 
     var e_new_string = null;
-    var input = $('.source-idea-'+note_type_id+' .add-input');
-    var list_id = 'add-source-'+note_type_id;
+    var input = $('.e-i-'+note_type_id+' .add-input');
+    var list_id = 'add-e-'+note_type_id;
 
     if (e_existing_id == 0) {
 
@@ -132,7 +132,7 @@ function e_e_only_search(note_type_id) {
         return false;
     }
 
-    var element_focus = ".source-idea-"+note_type_id;
+    var element_focus = ".e-i-"+note_type_id;
 
     var base_creator_url = '/e/create/'+i_loaded_id+'/?content_title=';
 
@@ -186,7 +186,7 @@ function e_e_only_search(note_type_id) {
     }
 }
 
-function discover_preview(){
+function x_preview(){
     if(parseInt($('.dropi_4737_'+i_loaded_id+'_0.active').attr('new-en-id')) in js_e___7355){
         //Idea is public, go to preview:
         window.location = '/' + i_loaded_id;
@@ -264,7 +264,7 @@ function i_sort_save(i__id) {
 
     $("#list-in-" + i_loaded_id + "-0 .i_sortable").each(function () {
         //Fetch variables for this idea:
-        var i__id = parseInt($(this).attr('idea-id'));
+        var i__id = parseInt($(this).attr('i-id'));
         var x__id = parseInt($(this).attr('x__id'));
 
         sort_rank++;
@@ -299,7 +299,7 @@ function i_sort_load(i__id) {
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".i_sortable", // Specifies which items inside the element should be sortable
-        handle: ".idea-sort-handle", // Restricts sort start click/touch to the specified element
+        handle: ".i-sort-handle", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             i_sort_save(i__id);
         }
@@ -319,7 +319,7 @@ function i_add(i_linked_id, is_parent, i_link_child_id) {
 
     var sort_handler = ".i_sortable";
     var sort_list_id = "list-in-" + i_loaded_id + '-' + is_parent;
-    var input_field = $('#addidea-c-' + i_linked_id + '-' + is_parent);
+    var input_field = $('#addi-c-' + i_linked_id + '-' + is_parent);
     var i__title = input_field.val();
 
 
@@ -436,12 +436,12 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         if(is_i_public){
 
             //Enable Discoveries:
-            $('.idea-discover').removeClass('hidden');
+            $('.i-x').removeClass('hidden');
 
         } else {
 
             //Disable Discoveries:
-            $('.idea-discover').addClass('hidden');
+            $('.i-x').addClass('hidden');
 
         }
 

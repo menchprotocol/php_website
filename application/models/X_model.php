@@ -165,7 +165,7 @@ class X_model extends CI_Model
 
             }
 
-            foreach($is_next_autoscan as $next_idea){
+            foreach($is_next_autoscan as $next_i){
 
                 //IS IT EMPTY?
                 if(
@@ -173,14 +173,14 @@ class X_model extends CI_Model
                     !count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 4231, //IDEA NOTES Messages
-                        'x__right' => $next_idea['i__id'],
+                        'x__right' => $next_i['i__id'],
                     ))) &&
 
                     //No Next
                     !count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                        'x__left' => $next_idea['i__id'],
+                        'x__left' => $next_i['i__id'],
                     ))) &&
 
                     //Not Already Completed:
@@ -188,14 +188,14 @@ class X_model extends CI_Model
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
                         'x__member' => $add_fields['x__member'],
-                        'x__left' => $next_idea['i__id'],
+                        'x__left' => $next_i['i__id'],
                     )))){
 
                     //Mark as complete:
-                    $this->X_model->mark_complete($next_idea, array(
+                    $this->X_model->mark_complete($next_i, array(
                         'x__type' => 4559, //DISCOVER MESSAGES
                         'x__member' => $add_fields['x__member'],
-                        'x__left' => $next_idea['i__id'],
+                        'x__left' => $next_i['i__id'],
                     ));
 
                 }
@@ -210,7 +210,7 @@ class X_model extends CI_Model
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 7545, //CERTIFICATES
                     'x__right' => $is[0]['i__id'],
-                )) as $discovery_tag){
+                )) as $x_tag){
 
                     //Generate stats:
                     $links_added = 0;
@@ -222,7 +222,7 @@ class X_model extends CI_Model
                     $existing_links = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                        'x__up' => $discovery_tag['x__up'], //CERTIFICATES saved here
+                        'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
                         'x__down' => $add_fields['x__member'],
                     ));
 
@@ -257,13 +257,13 @@ class X_model extends CI_Model
                         //See if we need to delete single selectable links:
                         foreach($this->config->item('n___6204') as $single_select_e__id){
                             $single_selectable = $this->config->item('n___'.$single_select_e__id);
-                            if(is_array($single_selectable) && count($single_selectable) && in_array($discovery_tag['x__up'], $single_selectable)){
+                            if(is_array($single_selectable) && count($single_selectable) && in_array($x_tag['x__up'], $single_selectable)){
                                 //Delete other siblings, if any:
                                 foreach($this->X_model->fetch(array(
                                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                                     'x__up IN (' . join(',', $single_selectable) . ')' => null,
-                                    'x__up !=' => $discovery_tag['x__up'],
+                                    'x__up !=' => $x_tag['x__up'],
                                     'x__down' => $add_fields['x__member'],
                                 )) as $single_selectable_siblings_preset){
                                     $links_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
@@ -279,7 +279,7 @@ class X_model extends CI_Model
                             'x__type' => $detected_x_type['x__type'],
                             'x__message' => $add_fields['x__message'],
                             'x__member' => $add_fields['x__member'],
-                            'x__up' => $discovery_tag['x__up'],
+                            'x__up' => $x_tag['x__up'],
                             'x__down' => $add_fields['x__member'],
                         ));
 
@@ -289,7 +289,7 @@ class X_model extends CI_Model
                     $this->X_model->create(array(
                         'x__type' => 12197, //Tag Player
                         'x__member' => $add_fields['x__member'],
-                        'x__up' => $discovery_tag['x__up'],
+                        'x__up' => $x_tag['x__up'],
                         'x__down' => $add_fields['x__member'],
                         'x__left' => $is[0]['i__id'],
                         'x__message' => $links_added.' added, '.$links_edited.' edited & '.$links_deleted.' deleted with new content ['.$add_fields['x__message'].']',
@@ -297,10 +297,10 @@ class X_model extends CI_Model
 
                     if($links_added>0 || $links_edited>0 || $links_deleted>0){
                         //See if Session needs to be updated:
-                        $session_source = superpower_assigned();
-                        if($session_source && $session_source['e__id']==$add_fields['x__member']){
+                        $session_e = superpower_assigned();
+                        if($session_e && $session_e['e__id']==$add_fields['x__member']){
                             //Yes, update session:
-                            $this->E_model->activate_session($session_source, true);
+                            $this->E_model->activate_session($session_e, true);
                         }
                     }
                 }
@@ -346,23 +346,23 @@ class X_model extends CI_Model
 
                 if($add_fields['x__member'] > 0){
 
-                    //Fetch player details:
-                    $add_sources = $this->E_model->fetch(array(
+                    //Fetch member details:
+                    $add_es = $this->E_model->fetch(array(
                         'e__id' => $add_fields['x__member'],
                     ));
 
-                    $player_name = $add_sources[0]['e__title'];
+                    $member_name = $add_es[0]['e__title'];
 
                 } else {
 
-                    //No player:
-                    $player_name = 'MENCH';
+                    //No member:
+                    $member_name = 'MENCH';
 
                 }
 
 
                 //Email Subject:
-                $subject = 'Notification: '  . $player_name . ' ' . $e___5967[$add_fields['x__type']]['m_name'];
+                $subject = 'Notification: '  . $member_name . ' ' . $e___5967[$add_fields['x__type']]['m_name'];
 
                 //Compose email body, start with link content:
                 $html_message = '<div>' . ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '<i>No link content</i>') . '</div><br />';
@@ -385,8 +385,8 @@ class X_model extends CI_Model
                     } elseif (in_array(6160 , $m['m_parents'])) {
 
                         //SOURCE
-                        $sources = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/@' . $sources[0]['e__id'] . '" target="_parent">@'.$sources[0]['e__id'].' '.$sources[0]['e__title'].'</a></div>';
+                        $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
+                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/@' . $es[0]['e__id'] . '" target="_parent">@'.$es[0]['e__id'].' '.$es[0]['e__title'].'</a></div>';
 
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
@@ -540,26 +540,26 @@ class X_model extends CI_Model
                         } elseif(in_array($key, array('x__up', 'x__down'))) {
 
                             //Fetch new/old source names:
-                            $before_sources = $this->E_model->fetch(array(
+                            $befores = $this->E_model->fetch(array(
                                 'e__id' => $before_data[0][$key],
                             ));
-                            $after_sources = $this->E_model->fetch(array(
+                            $after_es = $this->E_model->fetch(array(
                                 'e__id' => $value,
                             ));
 
-                            $x__message .= view_db_field($key) . ' updated from [' . $before_sources[0]['e__title'] . '] to [' . $after_sources[0]['e__title'] . ']' . "\n";
+                            $x__message .= view_db_field($key) . ' updated from [' . $befores[0]['e__title'] . '] to [' . $after_es[0]['e__title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('x__left', 'x__right'))) {
 
                             //Fetch new/old Idea outcomes:
-                            $before_ideas = $this->I_model->fetch(array(
+                            $before_is = $this->I_model->fetch(array(
                                 'i__id' => $before_data[0][$key],
                             ));
-                            $after_ideas = $this->I_model->fetch(array(
+                            $after_is = $this->I_model->fetch(array(
                                 'i__id' => $value,
                             ));
 
-                            $x__message .= view_db_field($key) . ' updated from [' . $before_ideas[0]['i__title'] . '] to [' . $after_ideas[0]['i__title'] . ']' . "\n";
+                            $x__message .= view_db_field($key) . ' updated from [' . $before_is[0]['i__title'] . '] to [' . $after_is[0]['i__title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('x__message', 'x__sort'))){
 
@@ -685,7 +685,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_send($message_input, $recipient_source = array(), $message_i__id = 0)
+    function message_send($message_input, $recipient_e = array(), $message_i__id = 0)
     {
 
         /*
@@ -699,7 +699,7 @@ class X_model extends CI_Model
          *                          source and then referenced within a message.
          *
          *
-         * - $recipient_source:         The source object that this message is supposed
+         * - $recipient_e:         The source object that this message is supposed
          *                          to be delivered to. May be an empty array for
          *                          when we want to show these messages to guests,
          *                          and it may contain the full source object or it
@@ -715,7 +715,7 @@ class X_model extends CI_Model
         }
 
         //Validate message:
-        $msg_validation = $this->X_model->message_compile($message_input, $recipient_source, 0, $message_i__id, false);
+        $msg_validation = $this->X_model->message_compile($message_input, $recipient_e, 0, $message_i__id, false);
 
 
         //Did we have ane error in message validation?
@@ -724,11 +724,11 @@ class X_model extends CI_Model
             //Log Error Link:
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__member' => (isset($recipient_source['e__id']) ? $recipient_source['e__id'] : 0),
+                'x__member' => (isset($recipient_e['e__id']) ? $recipient_e['e__id'] : 0),
                 'x__message' => 'message_compile() returned error [' . $msg_validation['message'] . '] for input message [' . $message_input . ']',
                 'x__metadata' => array(
                     'input_message' => $message_input,
-                    'recipient_source' => $recipient_source,
+                    'recipient_e' => $recipient_e,
                     'message_i__id' => $message_i__id
                 ),
             ));
@@ -746,7 +746,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_compile($message_input, $recipient_source = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true)
+    function message_compile($message_input, $recipient_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true)
     {
 
         /*
@@ -759,8 +759,8 @@ class X_model extends CI_Model
 
 
         //Try to fetch session if recipient not provided:
-        if(!isset($recipient_source['e__id'])){
-            $recipient_source = superpower_assigned();
+        if(!isset($recipient_e['e__id'])){
+            $recipient_e = superpower_assigned();
         }
 
         $e___6177 = $this->config->item('e___6177');
@@ -803,12 +803,12 @@ class X_model extends CI_Model
         if($strict_validation && substr_count($message_input, '@')==1 && substr_count($message_input, '|')==1){
             //We Seem to have a creation mode:
             $e__title = one_two_explode('@','|',$message_input);
-            $added_source = $this->E_model->verify_create($e__title, $recipient_source['e__id']);
-            if(!$added_source['status']){
-                return $added_source;
+            $added_e = $this->E_model->verify_create($e__title, $recipient_e['e__id']);
+            if(!$added_e['status']){
+                return $added_e;
             } else {
                 //New source added, replace text:
-                $message_input = str_replace($e__title.'|', $added_source['new_source']['e__id'], $message_input);
+                $message_input = str_replace($e__title.'|', $added_e['new_e']['e__id'], $message_input);
             }
         }
 
@@ -826,15 +826,15 @@ class X_model extends CI_Model
 
             if(in_array($message_type_e__id, $this->config->item('n___4986'))){
                 //IDEA NOTES 2X SOURCE REFERENCES ALLOWED
-                $min_source = 0;
-                $max_source = 2;
+                $min_e = 0;
+                $max_e = 2;
             } elseif(in_array($message_type_e__id, $this->config->item('n___7551'))){
                 //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
-                $min_source = 1;
-                $max_source = 1;
+                $min_e = 1;
+                $max_e = 1;
             } else {
-                $min_source = 0;
-                $max_source = 0;
+                $min_e = 0;
+                $max_e = 0;
             }
 
             /*
@@ -845,12 +845,12 @@ class X_model extends CI_Model
              * */
 
             //URLs are the same as a source:
-            $total_references = count($string_references['ref_sources']) + count($string_references['ref_urls']);
+            $total_references = count($string_references['ref_es']) + count($string_references['ref_urls']);
 
-            if($total_references<$min_source || $total_references>$max_source){
+            if($total_references<$min_e || $total_references>$max_e){
                 return array(
                     'status' => 0,
-                    'message' => 'You referenced '.$total_references.' sources where you must have '.$min_source.( $max_source!=$min_source ? '-'.$max_source : '' ).' references.',
+                    'message' => 'You referenced '.$total_references.' sources where you must have '.$min_e.( $max_e!=$min_e ? '-'.$max_e : '' ).' references.',
                 );
             }
         }
@@ -873,21 +873,21 @@ class X_model extends CI_Model
             foreach($string_references['ref_urls'] as $url_key => $input_url) {
 
                 //No source linked, but we have a URL that we should turn into an source if not previously:
-                $url_source = $this->E_model->url($input_url, ( isset($recipient_source['e__id']) ? $recipient_source['e__id'] : 0 ));
+                $url_e = $this->E_model->url($input_url, ( isset($recipient_e['e__id']) ? $recipient_e['e__id'] : 0 ));
 
                 //Did we have an error?
-                if (!$url_source['status'] || !isset($url_source['e_url']['e__id']) || intval($url_source['e_url']['e__id']) < 1) {
-                    return $url_source;
+                if (!$url_e['status'] || !isset($url_e['e_url']['e__id']) || intval($url_e['e_url']['e__id']) < 1) {
+                    return $url_e;
                 }
 
                 //Transform URL into a source:
-                if(intval($url_source['e_url']['e__id']) > 0){
+                if(intval($url_e['e_url']['e__id']) > 0){
 
-                    array_push($string_references['ref_sources'], intval($url_source['e_url']['e__id']));
+                    array_push($string_references['ref_es'], intval($url_e['e_url']['e__id']));
 
                     //Replace the URL with this new @source in message.
                     //This is the only valid modification we can do to $message_input before storing it in the DB:
-                    $message_input = str_replace($input_url, '@' . $url_source['e_url']['e__id'], $message_input);
+                    $message_input = str_replace($input_url, '@' . $url_e['e_url']['e__id'], $message_input);
 
                     //Remove URL:
                     unset($string_references['ref_urls'][$url_key]);
@@ -920,22 +920,22 @@ class X_model extends CI_Model
             'x__down' => 0,
         );
 
-        foreach($string_references['ref_sources'] as $referenced_source){
+        foreach($string_references['ref_es'] as $referenced_e){
 
             //We have a reference within this message, let's fetch it to better understand it:
-            $sources = $this->E_model->fetch(array(
+            $es = $this->E_model->fetch(array(
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                'e__id' => $referenced_source, //Alert: We will only have a single reference per message
+                'e__id' => $referenced_e, //Alert: We will only have a single reference per message
             ));
-            if (count($sources) < 1) {
+            if (count($es) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'The referenced source @' . $referenced_source . ' not found',
+                    'message' => 'The referenced source @' . $referenced_e . ' not found',
                 );
             }
 
             //Set as source reference:
-            $e_reference_fields[$e_reference_keys[$referenced_key]] = intval($referenced_source);
+            $e_reference_fields[$e_reference_keys[$referenced_key]] = intval($referenced_e);
 
             //See if this source has any parent links to be shown in this appendix
             $e_urls = array();
@@ -943,17 +943,17 @@ class X_model extends CI_Model
             $e_count = 0;
             $e_appendix = null;
             $text_tooltip = null;
-            $is_current_source = $current_mench['x_name']=='source' && substr($this->uri->segment(1), 1)==$referenced_source;
+            $is_current_e = $current_mench['x_name']=='source' && substr($this->uri->segment(1), 1)==$referenced_e;
 
 
             //Determine what type of Media this reference has:
-            if(!$is_current_source || $string_references['ref_time_found']){
+            if(!$is_current_e || $string_references['ref_time_found']){
 
                 foreach($this->X_model->fetch(array(
                     'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
-                    'x__down' => $referenced_source,
+                    'x__down' => $referenced_e,
                 ), array('x__up'), 0, 0, array(
                     'x__type' => 'ASC', /* Text first */
                     'e__weight' => 'DESC',
@@ -965,12 +965,12 @@ class X_model extends CI_Model
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
-                        $e_appendix .= '<div class="source-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input) . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input) . '</div>';
 
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
                         array_push($e_urls, $e_profile['x__message']);
-                        $e_appendix .= '<div class="source-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input) . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input) . '</div>';
 
                     } else {
 
@@ -989,13 +989,13 @@ class X_model extends CI_Model
             //Append any appendix generated:
             $text_tooltip = ( strlen($text_tooltip) ? ' class="underdot" title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
             $output_body_message .= $e_appendix;
-            $identifier_string = '@' . $referenced_source.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_source,' ',$message_input) : '' ).' ';
+            $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
 
             //PLAYER REFERENCE
-            if(($current_mench['x_name']=='discover' && !superpower_active(10967, true)) || $is_current_source){
+            if(($current_mench['x_name']=='discover' && !superpower_active(10967, true)) || $is_current_e){
 
                 //NO LINK so we can maintain focus...
-                if((!$has_text && $is_current_source) || ($current_mench['x_name']=='discover' && $e_count==1 && $e_media_count==$e_count /* All media */)){
+                if((!$has_text && $is_current_e) || ($current_mench['x_name']=='discover' && $e_count==1 && $e_media_count==$e_count /* All media */)){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, ' ', $output_body_message);
@@ -1003,14 +1003,14 @@ class X_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="inline-block"><span class="icon-block-xs img-block">'.view_e__icon($sources[0]['e__icon']).'</span><span class="text__6197_' . $sources[0]['e__id']  . '">' . $sources[0]['e__title']  . '</span></span></span>'.' ', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="inline-block"><span class="icon-block-xs img-block">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_' . $es[0]['e__id']  . '">' . $es[0]['e__title']  . '</span></span></span>'.' ', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat inline-block" href="/@' . $sources[0]['e__id'] . '">'.( !in_array($sources[0]['e__status'], $this->config->item('n___7357')) ? '<span class="img-block icon-block-xs">'.$e___6177[$sources[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($sources[0]['e__icon']).'</span><span class="text__6197_' . $sources[0]['e__id']  . '">' . $sources[0]['e__title']  . '</span></a></span>'.' ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat inline-block" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="img-block icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_' . $es[0]['e__id']  . '">' . $es[0]['e__title']  . '</span></a></span>'.' ', $output_body_message);
 
             }
 
@@ -1047,46 +1047,46 @@ class X_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $next_idea) {
+        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $next_i) {
 
             if ($find_after_i__id && !$found_trigger) {
-                if ($next_idea['i__id'] == $find_after_i__id) {
+                if ($next_i['i__id'] == $find_after_i__id) {
                     $found_trigger = true;
                 }
                 continue;
             }
 
 
-            $is_or_idea = in_array($i['i__type'], $this->config->item('n___6193'));
-            $is_fixed_link = in_array($next_idea['x__type'], $this->config->item('n___12840'));
+            $is_or_i = in_array($i['i__type'], $this->config->item('n___6193'));
+            $is_fixed_link = in_array($next_i['x__type'], $this->config->item('n___12840'));
             $is_complete = count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
                 'x__member' => $e__id,
-                'x__left' => $next_idea['i__id'],
+                'x__left' => $next_i['i__id'],
             )));
 
-            if($is_or_idea){
+            if($is_or_i){
                 //OR IDEAS - Must be Selected
                 $is_selected = count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                     'x__left' => $i['i__id'],
-                    'x__right' => $next_idea['i__id'],
+                    'x__right' => $next_i['i__id'],
                     'x__member' => $e__id,
                 )));
             }
 
 
-            if (!$is_complete && $is_fixed_link && ( !$is_or_idea || $is_selected )) {
+            if (!$is_complete && $is_fixed_link && ( !$is_or_i || $is_selected )) {
 
                 //FIXED LINK, or Selected OR IDEA, that is NOT COMPLETE, It's This:
-                return intval($next_idea['i__id']);
+                return intval($next_i['i__id']);
 
             } elseif ($is_complete) {
 
                 //This is complete, but maybe there is a child that's not:
-                $found_next = $this->X_model->find_next($e__id, $next_idea, 0, false);
+                $found_next = $this->X_model->find_next($e__id, $next_i, 0, false);
                 if ($found_next) {
                     return $found_next;
                 }
@@ -1100,10 +1100,10 @@ class X_model extends CI_Model
 
             //Check Previous/Up
             $current_previous = $i['i__id'];
-            $player_discovery_ids = $this->X_model->ids($e__id);
+            $member_xy_ids = $this->X_model->ids($e__id);
             $recursive_parents = $this->I_model->recursive_parents($i['i__id'], true, true);
             foreach ($recursive_parents as $grand_parent_ids) {
-                foreach (array_intersect($grand_parent_ids, $player_discovery_ids) as $intersect) {
+                foreach (array_intersect($grand_parent_ids, $member_xy_ids) as $intersect) {
                     foreach ($grand_parent_ids as $previous_i__id) {
 
                         //Find the next siblings:
@@ -1126,8 +1126,8 @@ class X_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            ), array('x__left'), 0, 0, array('x__sort' => 'ASC')) as $discovery_list_idea) {
-                $found_next = $this->X_model->find_next($e__id, $discovery_list_idea, $find_after_i__id, false);
+            ), array('x__left'), 0, 0, array('x__sort' => 'ASC')) as $x_list_i) {
+                $found_next = $this->X_model->find_next($e__id, $x_list_i, $find_after_i__id, false);
                 if ($found_next) {
                     return $found_next;
                 }
@@ -1164,13 +1164,13 @@ class X_model extends CI_Model
         }
 
         //Go ahead and delete from Discoveries:
-        $player_discoveries = $this->X_model->fetch(array(
+        $member_x = $this->X_model->fetch(array(
             'x__member' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__left' => $i__id,
         ));
-        if(count($player_discoveries) < 1){
+        if(count($member_x) < 1){
             return array(
                 'status' => 0,
                 'message' => 'Could not locate Discovery',
@@ -1178,8 +1178,8 @@ class X_model extends CI_Model
         }
 
         //Delete:
-        foreach($player_discoveries as $discovery){
-            $this->X_model->update($discovery['x__id'], array(
+        foreach($member_x as $x){
+            $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //DELETED
             ), $e__id, $x__type);
         }
@@ -1226,13 +1226,13 @@ class X_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__member' => $e__id, //Belongs to this User
-            ), array(), 0, 0, array('x__sort' => 'ASC')) as $current_ideas){
+            ), array(), 0, 0, array('x__sort' => 'ASC')) as $current_is){
 
                 //Increase rank:
                 $i_rank++;
 
                 //Update order:
-                $this->X_model->update($current_ideas['x__id'], array(
+                $this->X_model->update($current_is['x__id'], array(
                     'x__sort' => $i_rank,
                 ), $e__id, 10681 /* Ideas Ordered Automatically  */);
 
@@ -1408,7 +1408,7 @@ class X_model extends CI_Model
         if($is_bottom_level){
 
             //Fetch user ideas:
-            $player_discovery_ids = $this->X_model->ids($e__id);
+            $member_xy_ids = $this->X_model->ids($e__id);
 
             //Prevent duplicate processes even if on multiple parent ideas:
             $parents_checked = array();
@@ -1417,7 +1417,7 @@ class X_model extends CI_Model
             foreach($this->I_model->recursive_parents($i['i__id']) as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user ideas?
-                if(!array_intersect($grand_parent_ids, $player_discovery_ids)){
+                if(!array_intersect($grand_parent_ids, $member_xy_ids)){
                     //Parent idea is NOT part of their Discoveries:
                     continue;
                 }
@@ -1433,21 +1433,21 @@ class X_model extends CI_Model
                     array_push($parents_checked, $p_id);
 
                     //Fetch parent idea:
-                    $previous_ideas = $this->I_model->fetch(array(
+                    $previous_is = $this->I_model->fetch(array(
                         'i__id' => $p_id,
                         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     ));
 
                     //Now see if this child completion resulted in a full parent completion:
-                    if(count($previous_ideas) > 0){
+                    if(count($previous_is) > 0){
 
                         //Fetch parent completion:
-                        $this->X_model->completion_recursive_up($e__id, $previous_ideas[0], false);
+                        $this->X_model->completion_recursive_up($e__id, $previous_is[0], false);
 
                     }
 
                     //Terminate if we reached the Top Discovery:
-                    if(in_array($p_id , $player_discovery_ids)){
+                    if(in_array($p_id , $member_xy_ids)){
                         break;
                     }
                 }
@@ -1509,7 +1509,7 @@ class X_model extends CI_Model
         $qualified_completed_users = array();
 
         //Go through children and see how many completed:
-        foreach($is_next as $count => $next_idea){
+        foreach($is_next as $count => $next_i){
 
             //Fetch users who completed this:
             if($count==0){
@@ -1518,7 +1518,7 @@ class X_model extends CI_Model
                 $qualified_completed_users = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
-                    'x__left' => $next_idea['i__id'],
+                    'x__left' => $next_i['i__id'],
                 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
                 if($requires_all_children && count($qualified_completed_users)==0){
@@ -1535,7 +1535,7 @@ class X_model extends CI_Model
                     $qualified_completed_users = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
-                        'x__left' => $next_idea['i__id'],
+                        'x__left' => $next_i['i__id'],
                     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
                 }
@@ -1553,30 +1553,30 @@ class X_model extends CI_Model
     }
 
 
-    function i_home($i__id, $recipient_source){
+    function i_home($i__id, $recipient_e){
 
-        $in_my_discoveries = false;
+        $in_my_x = false;
 
-        if($recipient_source['e__id'] > 0){
+        if($recipient_e['e__id'] > 0){
 
             //Fetch entire Discoveries:
-            $player_discovery_ids = $this->X_model->ids($recipient_source['e__id']);
-            $in_my_discoveries = in_array($i__id, $player_discovery_ids);
+            $member_xy_ids = $this->X_model->ids($recipient_e['e__id']);
+            $in_my_x = in_array($i__id, $member_xy_ids);
 
-            if(!$in_my_discoveries){
+            if(!$in_my_x){
                 //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
                 foreach($this->I_model->recursive_parents($i__id) as $grand_parent_ids) {
                     //Does this parent and its grandparents have an intersection with the user ideas?
-                    if (array_intersect($grand_parent_ids, $player_discovery_ids)) {
+                    if (array_intersect($grand_parent_ids, $member_xy_ids)) {
                         //Idea is part of their Discoveries:
-                        $in_my_discoveries = true;
+                        $in_my_x = true;
                         break;
                     }
                 }
             }
         }
 
-        return $in_my_discoveries;
+        return $in_my_x;
 
     }
 
@@ -1598,11 +1598,11 @@ class X_model extends CI_Model
 
         //Fetch/validate Discovery Common Ideas:
         $i__metadata = unserialize($i['i__metadata']);
-        if(!isset($i__metadata['i___common_discoveries'])){
+        if(!isset($i__metadata['i___common_x'])){
 
             //Should not happen, log error:
             $this->X_model->create(array(
-                'x__message' => 'completion_marks() Detected user Discoveries without i___common_discoveries value!',
+                'x__message' => 'completion_marks() Detected user Discoveries without i___common_x value!',
                 'x__type' => 4246, //Platform Bug Reports
                 'x__member' => $e__id,
                 'x__left' => $i['i__id'],
@@ -1612,7 +1612,7 @@ class X_model extends CI_Model
         }
 
         //Generate flat steps:
-        $flat_common_discoveries = array_flatten($i__metadata['i___common_discoveries']);
+        $flat_common_x = array_flatten($i__metadata['i___common_x']);
 
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
@@ -1631,7 +1631,7 @@ class X_model extends CI_Model
 
 
         //Process Answer ONE:
-        if(isset($i__metadata['i___expansion_discoveries']) && count($i__metadata['i___expansion_discoveries']) > 0){
+        if(isset($i__metadata['i___expansion_x']) && count($i__metadata['i___expansion_x']) > 0){
 
             //We need expansion steps (OR Ideas) to calculate question/answers:
             //To save all the marks for specific answers:
@@ -1639,7 +1639,7 @@ class X_model extends CI_Model
             $answer_marks_index = array();
 
             //Go through these expansion steps:
-            foreach($i__metadata['i___expansion_discoveries'] as $question_i__id => $answers_i__ids ){
+            foreach($i__metadata['i___expansion_x'] as $question_i__id => $answers_i__ids ){
 
                 //Calculate local min/max marks:
                 array_push($question_i__ids, $question_i__id);
@@ -1824,37 +1824,37 @@ class X_model extends CI_Model
 
         //Fetch/validate Discoveries Common Ideas:
         $i__metadata = unserialize($i['i__metadata']);
-        if(!isset($i__metadata['i___common_discoveries'])){
+        if(!isset($i__metadata['i___common_x'])){
             //Since it's not there yet we assume the idea it self only!
-            $i__metadata['i___common_discoveries'] = array($i['i__id']);
+            $i__metadata['i___common_x'] = array($i['i__id']);
         }
 
 
         //Generate flat steps:
-        $flat_common_discoveries = array_flatten($i__metadata['i___common_discoveries']);
+        $flat_common_x = array_flatten($i__metadata['i___common_x']);
 
 
         //Count totals:
         $common_totals = $this->I_model->fetch(array(
-            'i__id IN ('.join(',',$flat_common_discoveries).')' => null,
+            'i__id IN ('.join(',',$flat_common_x).')' => null,
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), 0, 0, array(), 'COUNT(i__id) as total_discoveries, SUM(i__duration) as total_seconds');
+        ), 0, 0, array(), 'COUNT(i__id) as total_x, SUM(i__duration) as total_seconds');
 
 
         //Count completed for user:
         $common_completed = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
             'x__member' => $e__id, //Belongs to this User
-            'x__left IN (' . join(',', $flat_common_discoveries ) . ')' => null,
+            'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), array('x__left'), 0, 0, array(), 'COUNT(i__id) as completed_discoveries, SUM(i__duration) as completed_seconds');
+        ), array('x__left'), 0, 0, array(), 'COUNT(i__id) as completed_x, SUM(i__duration) as completed_seconds');
 
 
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
-            'steps_total' => intval($common_totals[0]['total_discoveries']),
-            'steps_completed' => intval($common_completed[0]['completed_discoveries']),
+            'steps_total' => intval($common_totals[0]['total_x']),
+            'steps_completed' => intval($common_completed[0]['completed_x']),
             'seconds_total' => intval($common_totals[0]['total_seconds']),
             'seconds_completed' => intval($common_completed[0]['completed_seconds']),
         );
@@ -1862,8 +1862,8 @@ class X_model extends CI_Model
 
         //Expansion Answer ONE
         $answer_array = array();
-        if(isset($i__metadata['i___expansion_discoveries']) && count($i__metadata['i___expansion_discoveries']) > 0) {
-            $answer_array = array_merge($answer_array , array_flatten($i__metadata['i___expansion_discoveries']));
+        if(isset($i__metadata['i___expansion_x']) && count($i__metadata['i___expansion_x']) > 0) {
+            $answer_array = array_merge($answer_array , array_flatten($i__metadata['i___expansion_x']));
         }
         if(isset($i__metadata['i___expansion_some']) && count($i__metadata['i___expansion_some']) > 0) {
             $answer_array = array_merge($answer_array , array_flatten($i__metadata['i___expansion_some']));
@@ -1875,7 +1875,7 @@ class X_model extends CI_Model
             foreach($this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'x__member' => $e__id, //Belongs to this User
-                'x__left IN (' . join(',', $flat_common_discoveries ) . ')' => null,
+                'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
                 'x__right IN (' . join(',', $answer_array) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -1900,7 +1900,7 @@ class X_model extends CI_Model
             foreach($this->X_model->fetch(array(
                 'x__type' => 6140, //DISCOVER UNLOCK LINK
                 'x__member' => $e__id, //Belongs to this User
-                'x__left IN (' . join(',', $flat_common_discoveries ) . ')' => null,
+                'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
                 'x__right IN (' . join(',', array_flatten($i__metadata['i___expansion_conditional'])) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -1961,16 +1961,16 @@ class X_model extends CI_Model
 
     function ids($e__id){
         //Simply returns all the idea IDs for a user's Discoveries:
-        $player_discovery_ids = array();
+        $member_xy_ids = array();
         foreach($this->X_model->fetch(array(
             'x__member' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ), array('x__left'), 0) as $user_in){
-            array_push($player_discovery_ids, intval($user_in['i__id']));
+            array_push($member_xy_ids, intval($user_in['i__id']));
         }
-        return $player_discovery_ids;
+        return $member_xy_ids;
     }
 
 
@@ -1982,7 +1982,7 @@ class X_model extends CI_Model
             'i__id' => $question_i__id,
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
-        $sources = $this->E_model->fetch(array(
+        $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ));
@@ -1991,7 +1991,7 @@ class X_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid idea ID',
             );
-        } elseif (!count($sources)) {
+        } elseif (!count($es)) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid source ID',
@@ -2030,8 +2030,8 @@ class X_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVER ANSWERED
             'x__member' => $e__id,
             'x__left' => $is[0]['i__id'],
-        )) as $discovery_progress){
-            $this->X_model->update($discovery_progress['x__id'], array(
+        )) as $x_progress){
+            $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Link Deleted
             ), $e__id, 12129 /* DISCOVER ANSWER DELETED */);
         }

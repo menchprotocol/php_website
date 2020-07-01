@@ -17,13 +17,13 @@ class E extends CI_Controller
     function index()
     {
         //source:
-        $session_source = superpower_assigned(null);
+        $session_e = superpower_assigned(null);
 
         //Log View:
-        if($session_source){
+        if($session_e){
             $this->X_model->create(array(
                 'x__type' => 12489, //Opened source
-                'x__member' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
             ));
         }
 
@@ -32,7 +32,7 @@ class E extends CI_Controller
             'title' => $e___11035[13207]['m_name'],
         ));
         $this->load->view('e/home', array(
-            'session_source' => $session_source,
+            'session_e' => $session_e,
         ));
         $this->load->view('footer');
     }
@@ -52,16 +52,16 @@ class E extends CI_Controller
 
         //Make sure not a private discover:
         if(in_array($e__id, $this->config->item('n___4755'))){
-            $session_source = superpower_assigned(12701, true);
+            $session_e = superpower_assigned(12701, true);
         } else {
-            $session_source = superpower_assigned();
+            $session_e = superpower_assigned();
         }
 
         //Do we have any mass action to process here?
         if (superpower_assigned(12703) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->E_model->mass_update($e__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_source['e__id']);
+            $process_mass_action = $this->E_model->mass_update($e__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_e['e__id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>';
@@ -75,7 +75,7 @@ class E extends CI_Controller
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
-                'x__member' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
                 'x__type' => 4994, //Player Opened Player
                 'x__down' => $e__id,
                 'x__sort' => $new_order,
@@ -84,22 +84,22 @@ class E extends CI_Controller
         }
 
         //Validate source ID and fetch data:
-        $sources = $this->E_model->fetch(array(
+        $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
         ));
 
-        if (count($sources) < 1) {
+        if (count($es) < 1) {
             return redirect_message('/@');
         }
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $sources[0]['e__title'],
+            'title' => $es[0]['e__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('e/layout', array(
-            'source' => $sources[0],
-            'session_source' => $session_source,
+            'e' => $es[0],
+            'session_e' => $session_e,
         ));
         $this->load->view('footer');
 
@@ -110,20 +110,20 @@ class E extends CI_Controller
     {
 
         //Authenticate Player:
-        $session_source = superpower_assigned(10967);
+        $session_e = superpower_assigned(10967);
 
         //Validate Source:
-        $sources = $this->E_model->fetch(array(
+        $es = $this->E_model->fetch(array(
             'e__id' => $_POST['e__id'],
             'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
 
-        if (!$session_source) {
+        if (!$session_e) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10967),
             ));
-        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || count($sources) < 1) {
+        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || count($es) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Invalid e__id',
@@ -138,10 +138,10 @@ class E extends CI_Controller
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__down'), 0, 0, array(), 'x__id') as $discovery) {
-            $this->X_model->update($discovery['x__id'], array(
+        ), array('x__down'), 0, 0, array(), 'x__id') as $x) {
+            $this->X_model->update($x['x__id'], array(
                 'x__sort' => 0,
-            ), $session_source['e__id'], 13007 /* SOURCE SORT RESET */);
+            ), $session_e['e__id'], 13007 /* SOURCE SORT RESET */);
         }
 
         //Display message:
@@ -155,8 +155,8 @@ class E extends CI_Controller
     {
 
         //Authenticate Player:
-        $session_source = superpower_assigned(10967);
-        if (!$session_source) {
+        $session_e = superpower_assigned(10967);
+        if (!$session_e) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10967),
@@ -174,7 +174,7 @@ class E extends CI_Controller
         } else {
 
             //Validate Source:
-            $sources = $this->E_model->fetch(array(
+            $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e__id'],
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
@@ -187,7 +187,7 @@ class E extends CI_Controller
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
-            if (count($sources) < 1) {
+            if (count($es) < 1) {
 
                 view_json(array(
                     'status' => 0,
@@ -207,7 +207,7 @@ class E extends CI_Controller
                 foreach($_POST['new_x__sorts'] as $rank => $x__id) {
                     $this->X_model->update(intval($x__id), array(
                         'x__sort' => intval($rank),
-                    ), $session_source['e__id'], 13006 /* SOURCE SORT MANUAL */);
+                    ), $session_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
                 //Display message:
@@ -225,8 +225,8 @@ class E extends CI_Controller
     {
 
         //Authenticate Player:
-        $session_source = superpower_assigned(10939);
-        if (!$session_source) {
+        $session_e = superpower_assigned(10939);
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -274,7 +274,7 @@ class E extends CI_Controller
         $items_per_page = config_var(11064);
         $parent_e__id = intval($_POST['parent_e__id']);
         $e_focus_filter = intval($_POST['e_focus_filter']);
-        $player_is_e_source = player_is_e_source($parent_e__id);
+        $member_is_e = member_is_e($parent_e__id);
         $page = intval($_POST['page']);
         $filters = array(
             'x__up' => $parent_e__id,
@@ -284,20 +284,20 @@ class E extends CI_Controller
         );
 
         //Fetch & display next batch of children:
-        $child_sources = $this->X_model->fetch($filters, array('x__down'), $items_per_page, ($page * $items_per_page), array(
+        $child_es = $this->X_model->fetch($filters, array('x__down'), $items_per_page, ($page * $items_per_page), array(
             'x__sort' => 'ASC',
             'e__title' => 'ASC'
         ));
 
-        foreach($child_sources as $source) {
-            echo view_e($source,false, null, true, $player_is_e_source);
+        foreach($child_es as $e) {
+            echo view_e($e,false, null, true, $member_is_e);
         }
 
         //Count total children:
         $child_e_count = $this->X_model->fetch($filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         //Do we need another load more button?
-        if ($child_e_count[0]['totals'] > (($page * $items_per_page) + count($child_sources))) {
+        if ($child_e_count[0]['totals'] > (($page * $items_per_page) + count($child_es))) {
             echo view_e_load_more(($page + 1), $items_per_page, $child_e_count[0]['totals']);
         }
 
@@ -306,9 +306,9 @@ class E extends CI_Controller
     function e_only_unlink(){
 
         //Auth user and check required variables:
-        $session_source = superpower_assigned(10939);
+        $session_e = superpower_assigned(10939);
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -318,7 +318,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Interaction ID',
             ));
-        } elseif (!isset($_POST['i__id']) || !player_is_i_source($_POST['i__id'])) {
+        } elseif (!isset($_POST['i__id']) || !member_is_i_e($_POST['i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are not the author of this source',
@@ -328,7 +328,7 @@ class E extends CI_Controller
         //Archive Link:
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173,
-        ), $session_source['e__id'], 10678 /* IDEA NOTES Unpublished */);
+        ), $session_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -340,9 +340,9 @@ class E extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_source = superpower_assigned(10939);
+        $session_e = superpower_assigned(10939);
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -385,11 +385,11 @@ class E extends CI_Controller
         if ($_POST['e_existing_id'] > 0) {
 
             //Validate this existing source:
-            $sources = $this->E_model->fetch(array(
+            $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e_existing_id'],
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
-            if (count($sources) < 1) {
+            if (count($es) < 1) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid active source',
@@ -406,47 +406,47 @@ class E extends CI_Controller
                 $e___7551 = $this->config->item('e___7551');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $sources[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m_name'],
+                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m_name'],
                 ));
             }
 
 
             //All good, assign:
-            $focus_source = $sources[0];
+            $focus_e = $es[0];
 
         } else {
 
             //Create source:
-            $added_source = $this->E_model->verify_create($_POST['e_new_string'], $session_source['e__id']);
-            if(!$added_source['status']){
+            $added_e = $this->E_model->verify_create($_POST['e_new_string'], $session_e['e__id']);
+            if(!$added_e['status']){
                 //We had an error, return it:
-                return view_json($added_source);
+                return view_json($added_e);
             }
 
             //Assign new source:
-            $focus_source = $added_source['new_source'];
+            $focus_e = $added_e['new_e'];
 
             //Assign to Player:
-            $this->E_model->assign_session_player($focus_source['e__id']);
+            $this->E_model->assign_session_member($focus_e['e__id']);
 
             //Update Algolia:
-            update_algolia(4536, $focus_source['e__id']);
+            update_algolia(4536, $focus_e['e__id']);
 
         }
 
         //Create Note:
         $new_note = $this->X_model->create(array(
-            'x__member' => $session_source['e__id'],
+            'x__member' => $session_e['e__id'],
             'x__type' => $_POST['note_type_id'],
             'x__right' => $is[0]['i__id'],
-            'x__up' => $focus_source['e__id'],
-            'x__message' => '@'.$focus_source['e__id'],
+            'x__up' => $focus_e['e__id'],
+            'x__message' => '@'.$focus_e['e__id'],
         ));
 
         //Return newly added or linked source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e(array_merge($focus_source, $new_note), 0, null, true, true),
+            'e_new_echo' => view_e(array_merge($focus_e, $new_note), 0, null, true, true),
         ));
 
     }
@@ -456,9 +456,9 @@ class E extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_source = superpower_assigned(10939);
+        $session_e = superpower_assigned(10939);
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -481,10 +481,10 @@ class E extends CI_Controller
         }
 
         //Validate parent source:
-        $fetch_sources = $this->E_model->fetch(array(
+        $fetch_es = $this->E_model->fetch(array(
             'e__id' => $_POST['e__id'],
         ));
-        if (count($fetch_sources) < 1) {
+        if (count($fetch_es) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid parent source ID',
@@ -501,12 +501,12 @@ class E extends CI_Controller
         if (intval($_POST['e_existing_id']) > 0) {
 
             //Validate this existing source:
-            $sources = $this->E_model->fetch(array(
+            $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e_existing_id'],
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
-            if (count($sources) < 1) {
+            if (count($es) < 1) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid active source',
@@ -514,7 +514,7 @@ class E extends CI_Controller
             }
 
             //All good, assign:
-            $focus_source = $sources[0];
+            $focus_e = $es[0];
 
         } else {
 
@@ -524,39 +524,39 @@ class E extends CI_Controller
             if (filter_var($_POST['e_new_string'], FILTER_VALIDATE_URL)) {
 
                 //Digest URL to see what type it is and if we have any errors:
-                $url_source = $this->E_model->url($_POST['e_new_string']);
-                if (!$url_source['status']) {
-                    return view_json($url_source);
+                $url_e = $this->E_model->url($_POST['e_new_string']);
+                if (!$url_e['status']) {
+                    return view_json($url_e);
                 }
 
                 //Is this a root domain? Add to domains if so:
-                if($url_source['url_is_root']){
+                if($url_e['url_is_root']){
 
                     //Link to domains parent:
-                    $focus_source = array('e__id' => 1326);
+                    $focus_e = array('e__id' => 1326);
 
                     //Update domain to stay synced:
-                    $_POST['e_new_string'] = $url_source['url_clean_domain'];
+                    $_POST['e_new_string'] = $url_e['url_clean_domain'];
 
                 } else {
 
                     //Let's first find/add the domain:
-                    $url_domain = $this->E_model->domain($_POST['e_new_string'], $session_source['e__id']);
+                    $url_domain = $this->E_model->domain($_POST['e_new_string'], $session_e['e__id']);
 
                     //Link to this source:
-                    $focus_source = $url_domain['e_domain'];
+                    $focus_e = $url_domain['e_domain'];
                 }
 
             } else {
 
                 //Create source:
-                $added_source = $this->E_model->verify_create($_POST['e_new_string'], $session_source['e__id']);
-                if(!$added_source['status']){
+                $added_e = $this->E_model->verify_create($_POST['e_new_string'], $session_e['e__id']);
+                if(!$added_e['status']){
                     //We had an error, return it:
-                    return view_json($added_source);
+                    return view_json($added_e);
                 } else {
                     //Assign new source:
-                    $focus_source = $added_source['new_source'];
+                    $focus_e = $added_e['new_e'];
                 }
 
             }
@@ -573,15 +573,15 @@ class E extends CI_Controller
             if ($_POST['is_parent']) {
 
                 //Profile
-                $x__down = $fetch_sources[0]['e__id'];
-                $x__up = $focus_source['e__id'];
+                $x__down = $fetch_es[0]['e__id'];
+                $x__up = $focus_e['e__id'];
                 $x__sort = 0; //Never sort profiles, only sort portfolios
 
             } else {
 
                 //Portfolio
-                $x__up = $fetch_sources[0]['e__id'];
-                $x__down = $focus_source['e__id'];
+                $x__up = $fetch_es[0]['e__id'];
+                $x__down = $focus_e['e__id'];
 
                 if(sources_currently_sorted($x__up)){
 
@@ -601,15 +601,15 @@ class E extends CI_Controller
             }
 
 
-            if (isset($url_source['url_is_root']) && $url_source['url_is_root']) {
+            if (isset($url_e['url_is_root']) && $url_e['url_is_root']) {
 
-                $x__message = $url_source['clean_url'];
+                $x__message = $url_e['clean_url'];
                 $x__type = 4256; //Generic URL (Domains always are generic)
 
-            } elseif (isset($url_source['e_domain']) && $url_source['e_domain']) {
+            } elseif (isset($url_e['e_domain']) && $url_e['e_domain']) {
 
-                $x__message = $url_source['clean_url'];
-                $x__type = $url_source['x__type'];
+                $x__message = $url_e['clean_url'];
+                $x__type = $url_e['x__type'];
 
             } else {
 
@@ -620,7 +620,7 @@ class E extends CI_Controller
 
             // Link to new OR existing source:
             $ur2 = $this->X_model->create(array(
-                'x__member' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
                 'x__type' => $x__type,
                 'x__message' => $x__message,
                 'x__down' => $x__down,
@@ -630,11 +630,11 @@ class E extends CI_Controller
         }
 
         //Fetch latest version:
-        $sources_latest = $this->E_model->fetch(array(
-            'e__id' => $focus_source['e__id'],
+        $es_latest = $this->E_model->fetch(array(
+            'e__id' => $focus_e['e__id'],
             'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
-        if(!count($sources_latest)){
+        if(!count($es_latest)){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Failed to create/fetch new source',
@@ -644,7 +644,7 @@ class E extends CI_Controller
         //Return newly added or linked source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e(array_merge($sources_latest[0], $ur2), $_POST['is_parent'], null, true, true),
+            'e_new_echo' => view_e(array_merge($es_latest[0], $ur2), $_POST['is_parent'], null, true, true),
         ));
 
     }
@@ -678,12 +678,12 @@ class E extends CI_Controller
 
     function e_toggle_superpower($superpower_e__id){
 
-        //Toggles the advance session variable for the player on/off for logged-in players:
-        $session_source = superpower_assigned(10939);
+        //Toggles the advance session variable for the member on/off for logged-in members:
+        $session_e = superpower_assigned(10939);
         $superpower_e__id = intval($superpower_e__id);
         $e___10957 = $this->config->item('e___10957');
 
-        if(!$session_source){
+        if(!$session_e){
 
             return view_json(array(
                 'status' => 0,
@@ -720,10 +720,10 @@ class E extends CI_Controller
 
         //Log Link:
         $this->X_model->create(array(
-            'x__member' => $session_source['e__id'],
+            'x__member' => $session_e['e__id'],
             'x__type' => 5007, //TOGGLE SUPERPOWER
             'x__up' => $superpower_e__id,
-            'x__message' => 'SUPERPOWER '.$toggled_setting, //To be used when player logs in again
+            'x__message' => 'SUPERPOWER '.$toggled_setting, //To be used when member logs in again
         ));
 
         //Return to JS function:
@@ -740,12 +740,12 @@ class E extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_source = superpower_assigned(10939);
+        $session_e = superpower_assigned(10939);
         $success_message = 'Saved'; //Default, might change based on what we do...
         $is_valid_icon = is_valid_icon($_POST['e__icon']);
 
         //Fetch current data:
-        $sources = $this->E_model->fetch(array(
+        $es = $this->E_model->fetch(array(
             'e__id' => intval($_POST['e__id']),
         ));
 
@@ -755,12 +755,12 @@ class E extends CI_Controller
             return view_json($e__title_validate);
         }
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !(count($sources) == 1)) {
+        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !(count($es) == 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid ID',
@@ -800,7 +800,7 @@ class E extends CI_Controller
         );
 
         //Is this being deleted?
-        if (!in_array($e_update['e__status'], $this->config->item('n___7358') /* ACTIVE */) && !($e_update['e__status'] == $sources[0]['e__status'])) {
+        if (!in_array($e_update['e__status'], $this->config->item('n___7358') /* ACTIVE */) && !($e_update['e__status'] == $es[0]['e__status'])) {
 
 
             //Make sure source is not referenced in key DB reference fields:
@@ -833,7 +833,7 @@ class E extends CI_Controller
             ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
             //Assume no merge:
-            $merged_sources = array();
+            $merged_es = array();
 
             //See if we have merger source:
             if (strlen($_POST['e_merge']) > 0) {
@@ -864,11 +864,11 @@ class E extends CI_Controller
                 } else {
 
                     //Finally validate merger source:
-                    $merged_sources = $this->E_model->fetch(array(
+                    $merged_es = $this->E_model->fetch(array(
                         'e__id' => $merger_e__id,
                         'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                     ));
-                    if (count($merged_sources) == 0) {
+                    if (count($merged_es) == 0) {
                         return view_json(array(
                             'status' => 0,
                             'message' => 'Could not find source @' . $merger_e__id,
@@ -903,15 +903,15 @@ class E extends CI_Controller
 
             $_POST['x__id'] = 0; //Do not consider the link as the source is being Deleted
             $delete_from_ui = 1; //Removing source
-            $merger_e__id = (count($merged_sources) > 0 ? $merged_sources[0]['e__id'] : 0);
-            $links_adjusted = $this->E_model->unlink($_POST['e__id'], $session_source['e__id'], $merger_e__id);
+            $merger_e__id = (count($merged_es) > 0 ? $merged_es[0]['e__id'] : 0);
+            $links_adjusted = $this->E_model->unlink($_POST['e__id'], $session_e['e__id'], $merger_e__id);
 
             //Show appropriate message based on action:
             if ($merger_e__id > 0) {
 
-                if($_POST['e__id'] == $_POST['e_focus_id'] || $merged_sources[0]['e__id'] == $_POST['e_focus_id']){
+                if($_POST['e__id'] == $_POST['e_focus_id'] || $merged_es[0]['e__id'] == $_POST['e_focus_id']){
                     //Player is being Deleted and merged into another source:
-                    $delete_redirect_url = '/@' . $merged_sources[0]['e__id'];
+                    $delete_redirect_url = '/@' . $merged_es[0]['e__id'];
                 }
 
                 $success_message = 'Source deleted & merged its ' . $links_adjusted . ' links here';
@@ -938,11 +938,11 @@ class E extends CI_Controller
         if (intval($_POST['x__id']) > 0) { //DO we have a link to update?
 
             //Yes, first validate source link:
-            $e_discoveries = $this->X_model->fetch(array(
+            $e_x = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ));
-            if (count($e_discoveries) < 1) {
+            if (count($e_x) < 1) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'INVALID DISCOVER ID',
@@ -951,7 +951,7 @@ class E extends CI_Controller
 
 
             //Status change?
-            if($e_discoveries[0]['x__status']!=$_POST['x__status']){
+            if($e_x[0]['x__status']!=$_POST['x__status']){
 
                 if (in_array($_POST['x__status'], $this->config->item('n___7360') /* ACTIVE */)) {
                     $x__status = 10656; //Player Link updated Status
@@ -962,16 +962,16 @@ class E extends CI_Controller
 
                 $this->X_model->update($_POST['x__id'], array(
                     'x__status' => intval($_POST['x__status']),
-                ), $session_source['e__id'], $x__status);
+                ), $session_e['e__id'], $x__status);
             }
 
 
             //Link content change?
-            if ($e_discoveries[0]['x__message'] == $_POST['x__message']) {
+            if ($e_x[0]['x__message'] == $_POST['x__message']) {
 
                 //Link content has not changed:
-                $js_x__type = $e_discoveries[0]['x__type'];
-                $x__message = $e_discoveries[0]['x__message'];
+                $js_x__type = $e_x[0]['x__type'];
+                $x__message = $e_x[0]['x__message'];
 
             } else {
 
@@ -988,7 +988,7 @@ class E extends CI_Controller
 
                     if ($detected_x_type['url_is_root']) {
 
-                        if ($e_discoveries[0]['x__up'] == 1326) {
+                        if ($e_x[0]['x__up'] == 1326) {
 
                             //Override with the clean domain for consistency:
                             $_POST['x__message'] = $detected_x_type['url_clean_domain'];
@@ -1005,7 +1005,7 @@ class E extends CI_Controller
 
                     } else {
 
-                        if ($e_discoveries[0]['x__up'] == 1326) {
+                        if ($e_x[0]['x__up'] == 1326) {
 
                             return view_json(array(
                                 'status' => 0,
@@ -1014,7 +1014,7 @@ class E extends CI_Controller
 
                         } elseif ($detected_x_type['e_domain']) {
                             //We do have the domain saved! Is this connected to the domain source as its parent?
-                            if ($detected_x_type['e_domain']['e__id'] != $e_discoveries[0]['x__up']) {
+                            if ($detected_x_type['e_domain']['e__id'] != $e_x[0]['x__up']) {
                                 return view_json(array(
                                     'status' => 0,
                                     'message' => 'Must link to <b>@' . $detected_x_type['e_domain']['e__id'] . ' ' . $detected_x_type['e_domain']['e__title'] . '</b> as source profile',
@@ -1039,26 +1039,26 @@ class E extends CI_Controller
 
                 $this->X_model->update($_POST['x__id'], array(
                     'x__message' => $x__message,
-                ), $session_source['e__id'], 10657 /* Player Link updated Content */);
+                ), $session_e['e__id'], 10657 /* Player Link updated Content */);
 
 
                 //Also, did the link type change based on the content change?
-                if($js_x__type!=$e_discoveries[0]['x__type']){
+                if($js_x__type!=$e_x[0]['x__type']){
                     $this->X_model->update($_POST['x__id'], array(
                         'x__type' => $js_x__type,
-                    ), $session_source['e__id'], 10659 /* Player Link updated Type */);
+                    ), $session_e['e__id'], 10659 /* Player Link updated Type */);
                 }
             }
         }
 
         //Now update the DB:
-        $this->E_model->update(intval($_POST['e__id']), $e_update, true, $session_source['e__id']);
+        $this->E_model->update(intval($_POST['e__id']), $e_update, true, $session_e['e__id']);
 
 
         //Reset user session data if this data belongs to the logged-in user:
-        if ($_POST['e__id'] == $session_source['e__id']) {
+        if ($_POST['e__id'] == $session_e['e__id']) {
             //Re-activate Session with new data:
-            $this->E_model->activate_session($session_source, true);
+            $this->E_model->activate_session($session_e, true);
         }
 
 
@@ -1079,7 +1079,7 @@ class E extends CI_Controller
         if (intval($_POST['x__id']) > 0) {
 
             //Fetch source link:
-            $discoveries = $this->X_model->fetch(array(
+            $x = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
             ), array('x__member'));
 
@@ -1098,9 +1098,9 @@ class E extends CI_Controller
     function e_fetch_canonical(){
 
         //Auth user and check required variables:
-        $session_source = superpower_assigned();
+        $session_e = superpower_assigned();
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1114,13 +1114,13 @@ class E extends CI_Controller
         }
 
         //Fetch URL:
-        $url_source = $this->E_model->url($_POST['search_url']);
+        $url_e = $this->E_model->url($_POST['search_url']);
 
-        if($url_source['url_previously_existed']){
+        if($url_e['url_previously_existed']){
             return view_json(array(
                 'status' => 1,
                 'url_previously_existed' => 1,
-                'algolia_object' => update_algolia(4536, $url_source['e_url']['e__id'], 1),
+                'algolia_object' => update_algolia(4536, $url_e['e_url']['e__id'], 1),
             ));
         } else {
             return view_json(array(
@@ -1138,13 +1138,13 @@ class E extends CI_Controller
         /*
          *
          * Saves the radio selection of some account fields
-         * that are displayed using view_radio_sources()
+         * that are displayed using view_radio_es()
          *
          * */
 
-        $session_source = superpower_assigned();
+        $session_e = superpower_assigned();
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1185,21 +1185,21 @@ class E extends CI_Controller
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->X_model->fetch($filters, array('x__down'), 0, 0) as $answer_source){
-                array_push($possible_answers, $answer_source['e__id']);
+            foreach($this->X_model->fetch($filters, array('x__down'), 0, 0) as $answer_e){
+                array_push($possible_answers, $answer_e['e__id']);
             }
 
-            //Delete selected options for this player:
+            //Delete selected options for this member:
             foreach($this->X_model->fetch(array(
                 'x__up IN (' . join(',', $possible_answers) . ')' => null,
-                'x__down' => $session_source['e__id'],
+                'x__down' => $session_e['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )) as $delete_source){
+            )) as $delete){
                 //Should usually delete a single option:
-                $this->X_model->update($delete_source['x__id'], array(
+                $this->X_model->update($delete['x__id'], array(
                     'x__status' => 6173, //Interaction Removed
-                ), $session_source['e__id'], 6224 /* User Account Updated */);
+                ), $session_e['e__id'], 6224 /* User Account Updated */);
             }
 
         }
@@ -1208,8 +1208,8 @@ class E extends CI_Controller
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_previously_selected']){
             $this->X_model->create(array(
                 'x__up' => $_POST['selected_e__id'],
-                'x__down' => $session_source['e__id'],
-                'x__member' => $session_source['e__id'],
+                'x__down' => $session_e['e__id'],
+                'x__member' => $session_e['e__id'],
                 'x__type' => e_x__type(),
             ));
         }
@@ -1218,7 +1218,7 @@ class E extends CI_Controller
         //Log Account Update link type:
         $_POST['account_update_function'] = 'e_update_radio'; //Add this variable to indicate which My Account function created this link
         $this->X_model->create(array(
-            'x__member' => $session_source['e__id'],
+            'x__member' => $session_e['e__id'],
             'x__type' => 6224, //My Account updated
             'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
             'x__metadata' => $_POST,
@@ -1241,9 +1241,9 @@ class E extends CI_Controller
     function e_update_avatar()
     {
 
-        $session_source = superpower_assigned();
+        $session_e = superpower_assigned();
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1279,14 +1279,14 @@ class E extends CI_Controller
 
         //Update icon:
         $new_avatar = '<i class="'.$icon_new_css.'"></i>';
-        $this->E_model->update($session_source['e__id'], array(
+        $this->E_model->update($session_e['e__id'], array(
             'e__icon' => $new_avatar,
-        ), true, $session_source['e__id']);
+        ), true, $session_e['e__id']);
 
 
         //Update Session:
-        $session_source['e__icon'] = $new_avatar;
-        $this->E_model->activate_session($session_source, true);
+        $session_e['e__icon'] = $new_avatar;
+        $this->E_model->activate_session($session_e, true);
 
 
         return view_json(array(
@@ -1301,9 +1301,9 @@ class E extends CI_Controller
     function e_update_email()
     {
 
-        $session_source = superpower_assigned();
+        $session_e = superpower_assigned();
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1326,7 +1326,7 @@ class E extends CI_Controller
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Mench Email
-                'x__down !=' => $session_source['e__id'],
+                'x__down !=' => $session_e['e__id'],
                 'LOWER(x__message)' => $_POST['e_email'],
             ));
             if (count($duplicates) > 0) {
@@ -1342,7 +1342,7 @@ class E extends CI_Controller
         //Fetch existing email:
         $user_emails = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $session_source['e__id'],
+            'x__down' => $session_e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Mench Email
         ));
@@ -1353,7 +1353,7 @@ class E extends CI_Controller
                 //Delete email:
                 $this->X_model->update($user_emails[0]['x__id'], array(
                     'x__status' => 6173, //Interaction Removed
-                ), $session_source['e__id'], 6224 /* User Account Updated */);
+                ), $session_e['e__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1365,7 +1365,7 @@ class E extends CI_Controller
                 //Update if not duplicate:
                 $this->X_model->update($user_emails[0]['x__id'], array(
                     'x__message' => $_POST['e_email'],
-                ), $session_source['e__id'], 6224 /* User Account Updated */);
+                ), $session_e['e__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1385,8 +1385,8 @@ class E extends CI_Controller
 
             //Create new link:
             $this->X_model->create(array(
-                'x__member' => $session_source['e__id'],
-                'x__down' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
+                'x__down' => $session_e['e__id'],
                 'x__type' => e_x__type($_POST['e_email']),
                 'x__up' => 3288, //Mench Email
                 'x__message' => $_POST['e_email'],
@@ -1411,7 +1411,7 @@ class E extends CI_Controller
             //Log Account Update link type:
             $_POST['account_update_function'] = 'e_update_email'; //Add this variable to indicate which My Account function created this link
             $this->X_model->create(array(
-                'x__member' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
                 'x__type' => 6224, //My Account updated
                 'x__message' => 'My Account '.$return['message']. ( strlen($_POST['e_email']) > 0 ? ': '.$_POST['e_email'] : ''),
                 'x__metadata' => $_POST,
@@ -1429,9 +1429,9 @@ class E extends CI_Controller
     function e_update_password()
     {
 
-        $session_source = superpower_assigned();
+        $session_e = superpower_assigned();
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1448,10 +1448,10 @@ class E extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3286, //Password
-            'x__down' => $session_source['e__id'],
+            'x__down' => $session_e['e__id'],
         ));
 
-        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_source['e__id']));
+        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_e['e__id']));
 
 
         if (count($user_passwords) > 0) {
@@ -1468,7 +1468,7 @@ class E extends CI_Controller
                 //Update password:
                 $this->X_model->update($user_passwords[0]['x__id'], array(
                     'x__message' => $hashed_password,
-                ), $session_source['e__id'], 7578 /* User Updated Password  */);
+                ), $session_e['e__id'], 7578 /* User Updated Password  */);
 
                 $return = array(
                     'status' => 1,
@@ -1483,8 +1483,8 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__type' => e_x__type($hashed_password),
                 'x__up' => 3286, //Password
-                'x__member' => $session_source['e__id'],
-                'x__down' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
+                'x__down' => $session_e['e__id'],
                 'x__message' => $hashed_password,
             ), true);
 
@@ -1500,7 +1500,7 @@ class E extends CI_Controller
         if($return['status']){
             $_POST['account_update_function'] = 'e_update_password'; //Add this variable to indicate which My Account function created this link
             $this->X_model->create(array(
-                'x__member' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
                 'x__type' => 6224, //My Account Updated
                 'x__message' => 'My Account '.$return['message'],
                 'x__metadata' => $_POST,
@@ -1537,7 +1537,7 @@ class E extends CI_Controller
 
         //Check to see if they are previously logged in?
         if(superpower_assigned()) {
-            //Lead player and above, go to console:
+            //Lead member and above, go to console:
             if($i__id > 0){
                 return redirect_message(( superpower_assigned(10939) ? '/i/i_go/' : '/' ) . $i__id);
             } else {
@@ -1642,10 +1642,10 @@ class E extends CI_Controller
 
 
         //All good, create new source:
-        $added_source = $this->E_model->verify_create(trim($_POST['input_name']), 0, 6181, random_avatar());
-        if(!$added_source['status']){
+        $added_e = $this->E_model->verify_create(trim($_POST['input_name']), 0, 6181, random_avatar());
+        if(!$added_e['status']){
             //We had an error, return it:
-            return view_json($added_source);
+            return view_json($added_e);
         }
 
 
@@ -1653,48 +1653,48 @@ class E extends CI_Controller
         $this->X_model->create(array(
             'x__up' => 4430, //MENCH PLAYERS
             'x__type' => e_x__type(),
-            'x__member' => $added_source['new_source']['e__id'],
-            'x__down' => $added_source['new_source']['e__id'],
+            'x__member' => $added_e['new_e']['e__id'],
+            'x__down' => $added_e['new_e']['e__id'],
         ));
 
         $this->X_model->create(array(
             'x__type' => e_x__type(trim(strtolower($_POST['input_email']))),
             'x__message' => trim(strtolower($_POST['input_email'])),
             'x__up' => 3288, //Mench Email
-            'x__member' => $added_source['new_source']['e__id'],
-            'x__down' => $added_source['new_source']['e__id'],
+            'x__member' => $added_e['new_e']['e__id'],
+            'x__down' => $added_e['new_e']['e__id'],
         ));
-        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_source['new_source']['e__id']));
+        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_e['new_e']['e__id']));
         $this->X_model->create(array(
             'x__type' => e_x__type($hash),
             'x__message' => $hash,
             'x__up' => 3286, //Mench Password
-            'x__member' => $added_source['new_source']['e__id'],
-            'x__down' => $added_source['new_source']['e__id'],
+            'x__member' => $added_e['new_e']['e__id'],
+            'x__down' => $added_e['new_e']['e__id'],
         ));
 
         //Now update Algolia:
-        update_algolia(4536,  $added_source['new_source']['e__id']);
+        update_algolia(4536,  $added_e['new_e']['e__id']);
 
         //Fetch referral Idea, if any:
         if(intval($_POST['sign_i__id']) > 0){
 
             //Fetch the Idea:
-            $referrer_ideas = $this->I_model->fetch(array(
+            $referrer_is = $this->I_model->fetch(array(
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'i__id' => $_POST['sign_i__id'],
             ));
 
-            if(count($referrer_ideas) > 0){
+            if(count($referrer_is) > 0){
                 //Add this Idea to their Discoveries:
-                $this->X_model->start($added_source['new_source']['e__id'], $_POST['sign_i__id']);
+                $this->X_model->start($added_e['new_e']['e__id'], $_POST['sign_i__id']);
             } else {
                 //Cannot be added, likely because its not published:
                 $_POST['sign_i__id'] = 0;
             }
 
         } else {
-            $referrer_ideas = array();
+            $referrer_is = array();
         }
 
 
@@ -1715,7 +1715,7 @@ class E extends CI_Controller
         //Log User Signin Joined Mench
         $invite_link = $this->X_model->create(array(
             'x__type' => 7562, //User Signin Joined Mench
-            'x__member' => $added_source['new_source']['e__id'],
+            'x__member' => $added_e['new_e']['e__id'],
             'x__left' => intval($_POST['sign_i__id']),
             'x__metadata' => array(
                 'email_log' => $email_log,
@@ -1723,7 +1723,7 @@ class E extends CI_Controller
         ));
 
         //Assign session & log login link:
-        $this->E_model->activate_session($added_source['new_source']);
+        $this->E_model->activate_session($added_e['new_e']);
 
 
         if (strlen($_POST['referrer_url']) > 0) {
@@ -1748,11 +1748,11 @@ class E extends CI_Controller
 
 
     function search_google($e__id){
-        $sources = $this->E_model->fetch(array(
+        $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
         ));
-        if(count($sources)){
-            return redirect_message('https://www.google.com/search?q='.urlencode($sources[0]['e__title']));
+        if(count($es)){
+            return redirect_message('https://www.google.com/search?q='.urlencode($es[0]['e__title']));
         } else {
             return view_json(array(
                 'status' => 0,
@@ -1762,18 +1762,18 @@ class E extends CI_Controller
     }
 
     function search_icon($e__id){
-        $sources = $this->E_model->fetch(array(
+        $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
         ));
-        if(count($sources)){
+        if(count($es)){
 
-            if(( substr_count($sources[0]['e__icon'], 'class="') ?  : null )){
+            if(( substr_count($es[0]['e__icon'], 'class="') ?  : null )){
 
-                return redirect_message('/e/plugin/7267?search_for='.urlencode(one_two_explode('class="','"',$sources[0]['e__icon'])));
+                return redirect_message('/e/plugin/7267?search_for='.urlencode(one_two_explode('class="','"',$es[0]['e__icon'])));
 
-            } elseif(strlen($sources[0]['e__icon'])) {
+            } elseif(strlen($es[0]['e__icon'])) {
 
-                return redirect_message('/e/plugin/7267?search_for=' . urlencode($sources[0]['e__icon']));
+                return redirect_message('/e/plugin/7267?search_for=' . urlencode($es[0]['e__icon']));
 
             } else {
                 return view_json(array(
@@ -1817,10 +1817,10 @@ class E extends CI_Controller
 
 
         //Validaye user ID
-        $sources = $this->E_model->fetch(array(
+        $es = $this->E_model->fetch(array(
             'e__id' => $_POST['sign_e__id'],
         ));
-        if (!in_array($sources[0]['e__status'], $this->config->item('n___7357') /* PUBLIC */)) {
+        if (!in_array($es[0]['e__status'], $this->config->item('n___7357') /* PUBLIC */)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Your account source is not public. Contact us to adjust your account.',
@@ -1828,12 +1828,12 @@ class E extends CI_Controller
         }
 
         //Authenticate password:
-        $sources[0]['is_masterpass_login'] = 0;
+        $es[0]['is_masterpass_login'] = 0;
         $user_passwords = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3286, //Password
-            'x__down' => $sources[0]['e__id'],
+            'x__down' => $es[0]['e__id'],
         ));
         if (count($user_passwords) == 0) {
             //They do not have a password assigned yet!
@@ -1847,12 +1847,12 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Password link is not public. Contact us to adjust your account.',
             ));
-        } elseif ($user_passwords[0]['x__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $sources[0]['e__id'])) {
+        } elseif ($user_passwords[0]['x__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $es[0]['e__id'])) {
 
             //Is this the master password?
             if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == config_var(13014)){
 
-                $sources[0]['is_masterpass_login'] = 1;
+                $es[0]['is_masterpass_login'] = 1;
 
             } else {
 
@@ -1867,7 +1867,7 @@ class E extends CI_Controller
 
 
         //Assign session & log link:
-        $this->E_model->activate_session($sources[0]);
+        $this->E_model->activate_session($es[0]);
 
 
         if (intval($_POST['sign_i__id']) > 0) {
@@ -1982,15 +1982,15 @@ class E extends CI_Controller
         }
 
         //Fetch source:
-        $sources = $this->E_model->fetch(array(
+        $es = $this->E_model->fetch(array(
             'e__id' => $validate_links[0]['x__member'],
         ));
-        if(count($sources) < 1){
+        if(count($es) < 1){
             return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
         }
 
         //Log them in:
-        $this->E_model->activate_session($sources[0]);
+        $this->E_model->activate_session($es[0]);
 
         //Take them to DISCOVER HOME
         return redirect_message( '/' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
@@ -2018,12 +2018,12 @@ class E extends CI_Controller
 
         if(intval($_POST['sign_i__id']) > 0){
             //Fetch the idea:
-            $referrer_ideas = $this->I_model->fetch(array(
+            $referrer_is = $this->I_model->fetch(array(
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'i__id' => $_POST['sign_i__id'],
             ));
         } else {
-            $referrer_ideas = array();
+            $referrer_is = array();
         }
 
 
@@ -2078,18 +2078,18 @@ class E extends CI_Controller
             }
 
             //Running from browser? If so, authenticate:
-            $is_player_request = isset($_SERVER['SERVER_NAME']);
-            if($is_player_request){
-                $session_source = superpower_assigned(12699, true);
+            $is_member_request = isset($_SERVER['SERVER_NAME']);
+            if($is_member_request){
+                $session_e = superpower_assigned(12699, true);
             } else {
-                $session_source = false;
+                $session_e = false;
             }
 
             //Needs extra superpowers?
             boost_power();
             $e___6287 = $this->config->item('e___6287'); //MENCH PLUGIN
             $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$plugin_e__id]['m_parents']);
-            if($is_player_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+            if($is_member_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
             }
 
@@ -2097,8 +2097,8 @@ class E extends CI_Controller
             //This is also duplicated in plugin_frame to pass-on to plugin file:
             $view_data = array(
                 'plugin_e__id' => $plugin_e__id,
-                'session_source' => $session_source,
-                'is_player_request' => $is_player_request,
+                'session_e' => $session_e,
+                'is_member_request' => $is_member_request,
             );
 
             if(in_array($plugin_e__id, $this->config->item('n___12741'))){
@@ -2123,9 +2123,9 @@ class E extends CI_Controller
     function plugin_7264(){
 
         //Authenticate Player:
-        $session_source = superpower_assigned(12700);
+        $session_e = superpower_assigned(12700);
 
-        if (!$session_source) {
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(12700),

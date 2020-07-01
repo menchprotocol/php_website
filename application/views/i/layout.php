@@ -2,7 +2,7 @@
 $e___2738 = $this->config->item('e___2738');
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
-$player_is_i_source = player_is_i_source($i_focus['i__id']);
+$member_is_i_e = member_is_i_e($i_focus['i__id']);
 $is_active = in_array($i_focus['i__status'], $this->config->item('n___7356'));
 $is_public = in_array($i_focus['i__status'], $this->config->item('n___7355'));
 
@@ -10,7 +10,7 @@ $is_public = in_array($i_focus['i__status'], $this->config->item('n___7355'));
 
 <style>
     .i_child_icon_<?= $i_focus['i__id'] ?> { display:none; }
-    <?= ( !$player_is_i_source ? '.note-editor {display:none;}' : '' ) ?>
+    <?= ( !$member_is_i_e ? '.note-editor {display:none;}' : '' ) ?>
 </style>
 
 <script>
@@ -25,14 +25,14 @@ $e_focus_found = false; //Used to determine the first tab to be opened
 
 echo '<div class="container" style="padding-bottom:42px;">';
 
-if(!$player_is_i_source){
+if(!$member_is_i_e){
     echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/i/i_e_request/'.$i_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/i/i_e_add/'.$i_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
-if(isset($_GET['focus__source'])){
+if(isset($_GET['focus__e'])){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
-        'e__id' => intval($_GET['focus__source']),
+        'e__id' => intval($_GET['focus__e']),
         'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
@@ -50,19 +50,19 @@ $is_previous = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0);
 
-echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group previous_ideas">';
-foreach($is_previous as $previous_idea) {
-    echo view_i($previous_idea, $i_focus['i__id'], true, player_is_i_source($previous_idea['i__id']));
+echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group previous_is">';
+foreach($is_previous as $previous_i) {
+    echo view_i($previous_i, $i_focus['i__id'], true, member_is_i_e($previous_i['i__id']));
 }
-if( $player_is_i_source && $is_active && $i_focus['i__id']!=config_var(13405)){
+if( $member_is_i_e && $is_active && $i_focus['i__id']!=config_var(13405)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick montserrat add-input algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
-                           idea-id="' . $i_focus['i__id'] . '"
-                           id="addidea-c-' . $i_focus['i__id'] . '-1"
+                           i-id="' . $i_focus['i__id'] . '"
+                           id="addi-c-' . $i_focus['i__id'] . '-1"
                            placeholder="PREVIOUS IDEA">
                 </div><div class="algolia_pad_search hidden i_pad_top"></div></div>';
 }
@@ -74,7 +74,7 @@ echo '</div>';
 
 //IDEA TITLE
 echo '<div class="itemidea">';
-echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($player_is_i_source && $is_active), 0, true);
+echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($member_is_i_e && $is_active), 0, true);
 echo '</div>';
 
 
@@ -87,16 +87,16 @@ echo view_i_note_mix(4231, $this->X_model->fetch(array(
 
 
 //IDEA TYPE
-echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $player_is_i_source && $is_active, true, $i_focus['i__id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-i', $member_is_i_e && $is_active, true, $i_focus['i__id']).'</div>';
 
 //IDEA STATUS
-echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-idea', $player_is_i_source, true, $i_focus['i__id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-i', $member_is_i_e, true, $i_focus['i__id']).'</div>';
 
 //IDEA TIME
-echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $player_is_i_source && $is_active, 0).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $member_is_i_e && $is_active, 0).'</div>';
 
 //IDEA DISCOVER (IF PUBLIC)
-echo '<div class="inline-block pull-right both-margin left-half-margin idea-discover '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-discover btn-circle" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[12750]['m_name'].'">'.$e___11035[12750]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin left-half-margin i-x '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-x btn-circle" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[12750]['m_name'].'">'.$e___11035[12750]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
@@ -142,20 +142,20 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //CHILD IDEAS
         $counter = count($is_next);
 
-        $this_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_ideas">';
-        foreach($is_next as $next_idea) {
-            $this_tab .= view_i($next_idea, $i_focus['i__id'], false, $player_is_i_source);
+        $this_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_is">';
+        foreach($is_next as $next_i) {
+            $this_tab .= view_i($next_i, $i_focus['i__id'], false, $member_is_i_e);
         }
 
-        if($player_is_i_source && $is_active){
+        if($member_is_i_e && $is_active){
             $this_tab .= '<div class="list-group-item list-adder itemidea '.superpower_active(10939).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4535]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control ideaadder-level-2-child form-control-thick add-input montserrat algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
-                           idea-id="' . $i_focus['i__id'] . '"
-                           id="addidea-c-' . $i_focus['i__id'] . '-0"
+                           i-id="' . $i_focus['i__id'] . '"
+                           id="addi-c-' . $i_focus['i__id'] . '-0"
                            placeholder="NEXT IDEA">
                 </div><div class="algolia_pad_search hidden i_pad_bottom"></div></div>';
         }
@@ -173,21 +173,21 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = count($i_notes);
 
-        $this_tab .= '<div id="add-source-' .$x__type . '" class="list-group source-adder">';
+        $this_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder">';
 
         foreach($i_notes as $i_note) {
-            $this_tab .= view_e($i_note, 0, null, $player_is_i_source && $is_active, $player_is_i_source);
+            $this_tab .= view_e($i_note, 0, null, $member_is_i_e && $is_active, $member_is_i_e);
         }
 
-        if($player_is_i_source && $is_active && !$disable_manual_add) {
-            $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding source-only source-idea-' . $x__type . '" note_type_id="' . $x__type . '">
+        if($member_is_i_e && $is_active && !$disable_manual_add) {
+            $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___2738[4536]['m_icon'] . '</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
                            placeholder="NEW SOURCE">
-                </div><div class="algolia_pad_search hidden pad_expand source-pad-' . $x__type . '"></div></div>';
+                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '"></div></div>';
         }
 
         $this_tab .= '</div>';
@@ -195,8 +195,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif(in_array($x__type, $this->config->item('n___12467'))){
 
         //MENCH COINS
-        $counter = x_coins_idea($x__type, $i_focus['i__id']);
-        $this_tab = x_coins_idea($x__type, $i_focus['i__id'], 1);
+        $counter = x_coins_i($x__type, $i_focus['i__id']);
+        $this_tab = x_coins_i($x__type, $i_focus['i__id'], 1);
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
@@ -212,12 +212,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12969){
 
-        $player_discoveries = $this->X_model->fetch(array(
+        $member_x = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__member'), 0, 0, array(), 'COUNT(x__id) as totals');
-        $counter = $player_discoveries[0]['totals'];
+        $counter = $member_x[0]['totals'];
         if($counter > 0){
 
             $this_tab .= '<div class="list-group">';
@@ -225,8 +225,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__left' => $i_focus['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__member')) as $player){
-                $this_tab .= view_e($player);
+            ), array('x__member')) as $member){
+                $this_tab .= view_e($member);
             }
             $this_tab .= '</div>';
 
@@ -283,7 +283,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $this_tab .= $input_options;
 
-        $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-idea inline-block"></div>';
+        $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-i inline-block"></div>';
 
         $this_tab .= '</div>';
         $this_tab .= '</form>';

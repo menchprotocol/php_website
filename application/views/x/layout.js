@@ -12,7 +12,7 @@ $(document).ready(function () {
     });
 
     //Move main discovers, if any:
-    $('.focus_discoveries_top').html($('.focus_discoveries_bottom').html());
+    $('.focus_x_top').html($('.focus_x_bottom').html());
 
     //Should we auto start?
     if (isAdvancedUpload) {
@@ -25,10 +25,10 @@ $(document).ready(function () {
             e.stopPropagation();
         })
         .on('dragover dragenter', function () {
-            $('.playerUploader').addClass('is-working');
+            $('.memberUploader').addClass('is-working');
         })
         .on('dragleave dragend drop', function () {
-            $('.playerUploader').removeClass('is-working');
+            $('.memberUploader').removeClass('is-working');
         })
         .on('drop', function (e) {
             droppedFiles = e.originalEvent.dataTransfer.files;
@@ -149,10 +149,10 @@ function x_respond(){
 function x_answer(){
 
     //Check
-    var answered_ideas = [];
+    var answered_is = [];
     $(".answer-item").each(function () {
         if ($(this).attr('is-selected')=='1') {
-            answered_ideas.push(parseInt($(this).attr('answered_ideas')));
+            answered_is.push(parseInt($(this).attr('answered_is')));
         }
     });
 
@@ -160,7 +160,7 @@ function x_answer(){
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/x/x_answer", {
         i_loaded_id:i_loaded_id,
-        answered_ideas:answered_ideas
+        answered_is:answered_is
     }, function (data) {
         if (data.status) {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');

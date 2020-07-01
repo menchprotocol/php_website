@@ -16,8 +16,8 @@ class I extends CI_Controller {
     function i_create(){
 
         $e___6201 = $this->config->item('e___6201'); //Idea Table
-        $session_source = superpower_assigned(10939);
-        if (!$session_source) {
+        $session_e = superpower_assigned(10939);
+        if (!$session_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -43,7 +43,7 @@ class I extends CI_Controller {
 
 
         //Create Idea:
-        $i = $this->I_model->link_or_create($i__title_validation['i_clean_title'], $session_source['e__id']);
+        $i = $this->I_model->link_or_create($i__title_validation['i_clean_title'], $session_e['e__id']);
 
 
         //Move Existing Bookmarks by one:
@@ -51,21 +51,21 @@ class I extends CI_Controller {
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 10573, //MY IDEAS
-            'x__up' => $session_source['e__id'], //For this player
-        ), array(), 0, 0, array('x__sort' => 'ASC')) as $player_idea){
-            $this->X_model->update($player_idea['x__id'], array(
+            'x__up' => $session_e['e__id'], //For this member
+        ), array(), 0, 0, array('x__sort' => 'ASC')) as $member_i){
+            $this->X_model->update($member_i['x__id'], array(
                 'x__sort' => $x__sort,
-            ), $session_source['e__id']);
+            ), $session_e['e__id']);
             $x__sort++;
         }
 
         //Add to bookmarks:
         $this->X_model->create(array(
             'x__type' => 10573, //MY IDEAS
-            'x__member' => $session_source['e__id'],
+            'x__member' => $session_e['e__id'],
             'x__right' => $i['new_i__id'],
-            'x__up' => $session_source['e__id'],
-            'x__message' => '@'.$session_source['e__id'],
+            'x__up' => $session_e['e__id'],
+            'x__message' => '@'.$session_e['e__id'],
             'x__sort' => 1, //Top of the list
         ), true);
 
@@ -79,11 +79,11 @@ class I extends CI_Controller {
 
     function index(){
         //Idea Bookmarks
-        $session_source = superpower_assigned(10939, true);
+        $session_e = superpower_assigned(10939, true);
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
             'title' => $e___11035[10573]['m_name'],
-            'session_source' => $session_source,
+            'session_e' => $session_e,
         ));
         $this->load->view('i/home');
         $this->load->view('footer');
@@ -98,8 +98,8 @@ class I extends CI_Controller {
          * comes through /iID
          *
          * */
-        $player_is_i_source = player_is_i_source($i__id);
-        return redirect_message(( $player_is_i_source ? '/~' : '/' ) . $i__id . ( $player_is_i_source && isset($_GET['focus__source']) ? '?focus__source='.$_GET['focus__source'] : '' ) );
+        $member_is_i_e = member_is_i_e($i__id);
+        return redirect_message(( $member_is_i_e ? '/~' : '/' ) . $i__id . ( $member_is_i_e && isset($_GET['focus__e']) ? '?focus__e='.$_GET['focus__e'] : '' ) );
     }
 
 
@@ -114,10 +114,10 @@ class I extends CI_Controller {
         }
 
 
-        $session_source = superpower_assigned(10939); //Idea Pen?
+        $session_e = superpower_assigned(10939); //Idea Pen?
         $is_public = in_array($is[0]['i__status'], $this->config->item('n___7355'));
 
-        if(!$session_source){
+        if(!$session_e){
             if($is_public){
                 return redirect_message('/'.$i__id);
             } else {
@@ -130,7 +130,7 @@ class I extends CI_Controller {
         if (superpower_active(13403, true) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->I_model->mass_update($i__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_source['e__id']);
+            $process_mass_action = $this->I_model->mass_update($i__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_e['e__id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>';
@@ -142,7 +142,7 @@ class I extends CI_Controller {
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
-                'x__member' => $session_source['e__id'],
+                'x__member' => $session_e['e__id'],
                 'x__type' => 4993, //Player Opened Idea
                 'x__right' => $i__id,
                 'x__sort' => $new_order,
@@ -159,7 +159,7 @@ class I extends CI_Controller {
         ));
         $this->load->view('i/layout', array(
             'i_focus' => $is[0],
-            'session_source' => $session_source,
+            'session_e' => $session_e,
         ));
         $this->load->view('footer');
 
@@ -168,13 +168,13 @@ class I extends CI_Controller {
 
     function i_e_request($i__id){
 
-        //Make sure it's a logged in player:
-        $session_source = superpower_assigned(null, true);
+        //Make sure it's a logged in member:
+        $session_e = superpower_assigned(null, true);
 
         if(count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 12450,
-            'x__member' => $session_source['e__id'],
+            'x__member' => $session_e['e__id'],
             'x__right' => $i__id,
         )))){
             return redirect_message('/~'.$i__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
@@ -184,7 +184,7 @@ class I extends CI_Controller {
         //Inform moderators:
         $this->X_model->create(array(
             'x__type' => 12450,
-            'x__member' => $session_source['e__id'],
+            'x__member' => $session_e['e__id'],
             'x__right' => $i__id,
         ));
 
@@ -195,15 +195,15 @@ class I extends CI_Controller {
 
     function i_e_add($i__id){
 
-        //Make sure it's a logged in player:
-        $session_source = superpower_assigned(10984, true);
+        //Make sure it's a logged in member:
+        $session_e = superpower_assigned(10984, true);
 
         //Idea Source:
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA COIN
-            'x__member' => $session_source['e__id'],
-            'x__up' => $session_source['e__id'],
-            'x__message' => '@'.$session_source['e__id'],
+            'x__member' => $session_e['e__id'],
+            'x__up' => $session_e['e__id'],
+            'x__message' => '@'.$session_e['e__id'],
             'x__right' => $i__id,
         ));
 
@@ -263,8 +263,8 @@ class I extends CI_Controller {
         $delete_element = null;
 
         //Authenticate Player:
-        $session_source = superpower_assigned();
-        if (!$session_source) {
+        $session_e = superpower_assigned();
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -319,7 +319,7 @@ class I extends CI_Controller {
             //All good, Update Link:
             $this->X_model->update($_POST['x__id'], array(
                 $var_index[$_POST['element_id']] => $_POST['new_e__id'],
-            ), $session_source['e__id'], end($link_update_types));
+            ), $session_e['e__id'], end($link_update_types));
 
         } else {
 
@@ -358,19 +358,19 @@ class I extends CI_Controller {
                     }
 
                     //Delete all links:
-                    $this->I_model->unlink($_POST['i__id'] , $session_source['e__id']);
+                    $this->I_model->unlink($_POST['i__id'] , $session_e['e__id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
                 } elseif(in_array($_POST['new_e__id'], $this->config->item('n___12138')) && !superpower_assigned(10984) && !count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 12453, //Idea Feature Request
-                        'x__member' => $session_source['e__id'],
+                        'x__member' => $session_e['e__id'],
                         'x__right' => $_POST['i__id'],
                     )))){
 
                     $this->X_model->create(array(
                         'x__type' => 12453, //Idea Feature Request
-                        'x__member' => $session_source['e__id'],
+                        'x__member' => $session_e['e__id'],
                         'x__right' => $_POST['i__id'],
                     ));
 
@@ -381,7 +381,7 @@ class I extends CI_Controller {
             //Update Idea:
             $this->I_model->update($_POST['i__id'], array(
                 $var_index[$_POST['element_id']] => $_POST['new_e__id'],
-            ), true, $session_source['e__id']);
+            ), true, $session_e['e__id']);
 
         }
 
@@ -397,8 +397,8 @@ class I extends CI_Controller {
     function i_unlink(){
 
         //Authenticate Player:
-        $session_source = superpower_assigned();
-        if (!$session_source) {
+        $session_e = superpower_assigned();
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -418,7 +418,7 @@ class I extends CI_Controller {
         //Delete this link:
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173, //Interaction Removed
-        ), $session_source['e__id'], 10686 /* Idea Link Unpublished */);
+        ), $session_e['e__id'], 10686 /* Idea Link Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -440,8 +440,8 @@ class I extends CI_Controller {
          * */
 
         //Authenticate Player:
-        $session_source = superpower_assigned(10939);
-        if (!$session_source) {
+        $session_e = superpower_assigned(10939);
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -475,17 +475,17 @@ class I extends CI_Controller {
 
 
         $new_i_type = 6677; //Idea Read & Next
-        $linked_ideas = array();
+        $linked_is = array();
 
         if($_POST['i_link_child_id'] > 0){
 
             //Fetch link idea to determine idea type:
-            $linked_ideas = $this->I_model->fetch(array(
+            $linked_is = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['i_link_child_id']),
                 'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
-            if(count($linked_ideas)==0){
+            if(count($linked_is)==0){
                 //validate linked Idea:
                 return view_json(array(
                     'status' => 0,
@@ -493,13 +493,13 @@ class I extends CI_Controller {
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($linked_ideas[0]['i__type'], $this->config->item('n___7712'))){
+            if(!intval($_POST['is_parent']) && in_array($linked_is[0]['i__type'], $this->config->item('n___7712'))){
                 $new_i_type = 6914; //Require All
             }
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->I_model->link_or_create(trim($_POST['i__title']), $session_source['e__id'], $_POST['i_linked_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_link_child_id']));
+        return view_json($this->I_model->link_or_create(trim($_POST['i__title']), $session_e['e__id'], $_POST['i_linked_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_link_child_id']));
 
     }
 
@@ -507,8 +507,8 @@ class I extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_source = superpower_assigned(10939);
-        if (!$session_source) {
+        $session_e = superpower_assigned(10939);
+        if (!$session_e) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -526,10 +526,10 @@ class I extends CI_Controller {
         } else {
 
             //Validate Parent Idea:
-            $previous_ideas = $this->I_model->fetch(array(
+            $previous_is = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['i__id']),
             ));
-            if (count($previous_ideas) < 1) {
+            if (count($previous_is) < 1) {
                 view_json(array(
                     'status' => 0,
                     'message' => 'Invalid i__id',
@@ -540,7 +540,7 @@ class I extends CI_Controller {
                 foreach($_POST['new_x__sorts'] as $rank => $x__id) {
                     $this->X_model->update(intval($x__id), array(
                         'x__sort' => intval($rank),
-                    ), $session_source['e__id'], 10675 /* Ideas Ordered by Player */);
+                    ), $session_e['e__id'], 10675 /* Ideas Ordered by Player */);
                 }
 
                 //Display message:
@@ -556,9 +556,9 @@ class I extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_source = superpower_assigned();
+        $session_e = superpower_assigned();
 
-        if (!$session_source) {
+        if (!$session_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -595,7 +595,7 @@ class I extends CI_Controller {
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $session_source, $_POST['note_type_id'], $_POST['i__id']);
+        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $session_e, $_POST['note_type_id'], $_POST['i__id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -603,8 +603,8 @@ class I extends CI_Controller {
         }
 
         //Create Message:
-        $discovery = $this->X_model->create(array(
-            'x__member' => $session_source['e__id'],
+        $x = $this->X_model->create(array(
+            'x__member' => $session_e['e__id'],
             'x__sort' => 1 + $this->X_model->max_sort(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type' => intval($_POST['note_type_id']),
@@ -623,8 +623,8 @@ class I extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'message' => view_i_notes(array_merge($session_source, $discovery, array(
-                'x__down' => $session_source['e__id'],
+            'message' => view_i_notes(array_merge($session_e, $x, array(
+                'x__down' => $session_e['e__id'],
             )), true),
         ));
     }
@@ -636,8 +636,8 @@ class I extends CI_Controller {
         //TODO: MERGE WITH FUNCTION x_upload()
 
         //Authenticate Player:
-        $session_source = superpower_assigned();
-        if (!$session_source) {
+        $session_e = superpower_assigned();
+        if (!$session_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -706,7 +706,7 @@ class I extends CI_Controller {
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $session_source['e__id'], $_FILES[$_POST['upload_type']], true);
+        $cdn_status = upload_to_cdn($temp_local, $session_e['e__id'], $_FILES[$_POST['upload_type']], true);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -714,12 +714,12 @@ class I extends CI_Controller {
 
 
         //Create message:
-        $discovery = $this->X_model->create(array(
-            'x__member' => $session_source['e__id'],
+        $x = $this->X_model->create(array(
+            'x__member' => $session_e['e__id'],
             'x__type' => $_POST['note_type_id'],
-            'x__up' => $cdn_status['cdn_source']['e__id'],
+            'x__up' => $cdn_status['cdn_e']['e__id'],
             'x__right' => intval($_POST['i__id']),
-            'x__message' => '@' . $cdn_status['cdn_source']['e__id'],
+            'x__message' => '@' . $cdn_status['cdn_e']['e__id'],
             'x__sort' => 1 + $this->X_model->max_sort(array(
                     'x__type' => $_POST['note_type_id'],
                     'x__right' => $_POST['i__id'],
@@ -730,14 +730,14 @@ class I extends CI_Controller {
 
         //Fetch full message for proper UI display:
         $new_messages = $this->X_model->fetch(array(
-            'x__id' => $discovery['x__id'],
+            'x__id' => $x['x__id'],
         ));
 
         //Echo message:
         view_json(array(
             'status' => 1,
-            'message' => view_i_notes(array_merge($session_source, $new_messages[0], array(
-                'x__down' => $session_source['e__id'],
+            'message' => view_i_notes(array_merge($session_e, $new_messages[0], array(
+                'x__down' => $session_e['e__id'],
             )), true),
         ));
 
@@ -750,8 +750,8 @@ class I extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_source = superpower_assigned(10939);
-        if (!$session_source) {
+        $session_e = superpower_assigned(10939);
+        if (!$session_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -776,7 +776,7 @@ class I extends CI_Controller {
                 //Log update and give credit to the session Player:
                 $this->X_model->update($x__id, array(
                     'x__sort' => intval($x__sort),
-                ), $session_source['e__id'], 10676 /* IDEA NOTES Ordered */);
+                ), $session_e['e__id'], 10676 /* IDEA NOTES Ordered */);
             }
         }
 
@@ -791,8 +791,8 @@ class I extends CI_Controller {
     {
 
         //Authenticate Player:
-        $session_source = superpower_assigned();
-        if (!$session_source) {
+        $session_e = superpower_assigned();
+        if (!$session_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -843,7 +843,7 @@ class I extends CI_Controller {
         }
 
         //Validate new message:
-        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $session_source, $messages[0]['x__type'], $_POST['i__id']);
+        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $session_e, $messages[0]['x__type'], $_POST['i__id']);
         if (!$msg_validation['status']) {
 
             //There was some sort of an error:
@@ -860,7 +860,7 @@ class I extends CI_Controller {
                 'x__up' => $msg_validation['x__up'],
                 'x__down' => $msg_validation['x__down'],
 
-            ), $session_source['e__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['input_message']));
+            ), $session_e['e__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['input_message']));
 
         }
 
@@ -877,14 +877,14 @@ class I extends CI_Controller {
                     //We're publishing, make sure potential source references are also published:
                     $string_references = extract_e_references($_POST['x__message']);
 
-                    if (count($string_references['ref_sources']) > 0) {
+                    if (count($string_references['ref_es']) > 0) {
 
                         //We do have an source reference, what's its status?
-                        $ref_sources = $this->E_model->fetch(array(
-                            'e__id' => $string_references['ref_sources'][0],
+                        $ref_es = $this->E_model->fetch(array(
+                            'e__id' => $string_references['ref_es'][0],
                         ));
 
-                        if(count($ref_sources)>0 && !in_array($ref_sources[0]['e__status'], $this->config->item('n___7357') /* PUBLIC */)){
+                        if(count($ref_es)>0 && !in_array($ref_es[0]['e__status'], $this->config->item('n___7357') /* PUBLIC */)){
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'You cannot published this message because its referenced source is not yet public',
@@ -896,14 +896,14 @@ class I extends CI_Controller {
                 //yes, do so and return results:
                 $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
                     'x__status' => $_POST['message_x__status'],
-                ), $session_source['e__id'], 10677 /* IDEA NOTES updated Status */);
+                ), $session_e['e__id'], 10677 /* IDEA NOTES updated Status */);
 
             } else {
 
                 //New status is no longer active, so delete the IDEA NOTES:
                 $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
                     'x__status' => $_POST['message_x__status'],
-                ), $session_source['e__id'], 10678 /* IDEA NOTES Unpublished */);
+                ), $session_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
 
                 //Return success:
                 if($affected_rows > 0){
@@ -928,7 +928,7 @@ class I extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'delete_from_ui' => 0,
-            'message' => $this->X_model->message_send($msg_validation['input_message'], $session_source, $_POST['i__id']),
+            'message' => $this->X_model->message_send($msg_validation['input_message'], $session_e, $_POST['i__id']),
             'message_new_status_icon' => '<span title="' . $e___6186[$_POST['message_x__status']]['m_name'] . ': ' . $e___6186[$_POST['message_x__status']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $e___6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check-circle"></i> Saved</span>',
         ));
