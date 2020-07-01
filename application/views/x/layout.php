@@ -2,7 +2,7 @@
     var i_loaded_id = <?= $i_focus['i__id'] ?>;
 </script>
 
-<script src="/application/views/x/coin.js?v=<?= config_var(11060) ?>"
+<script src="/application/views/x/layout.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <div class="container">

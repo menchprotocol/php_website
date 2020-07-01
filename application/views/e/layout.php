@@ -28,7 +28,7 @@ $player_is_e_source = player_is_e_source($source['e__id']);
     var e_focus_id = <?= $source['e__id'] ?>;
 </script>
 
-<script src="/application/views/e/coin.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/e/layout.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
 <div class="container source-ui">
 

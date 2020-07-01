@@ -157,7 +157,7 @@ class I extends CI_Controller {
             'title' => $ideas[0]['i__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('i/coin', array(
+        $this->load->view('i/layout', array(
             'i_focus' => $ideas[0],
             'session_source' => $session_source,
         ));

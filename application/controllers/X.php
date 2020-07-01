@@ -581,7 +581,7 @@ class X extends CI_Controller
         ));
 
         //Load specific view based on Idea Level:
-        $this->load->view('x/coin', array(
+        $this->load->view('x/layout', array(
             'i_focus' => $ideas[0],
         ));
 

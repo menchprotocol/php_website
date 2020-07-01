@@ -99,13 +99,15 @@
 
 
 
-    //FEATURED
+    //FEATURED IDEAS
     $featured_ideas = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('sources_id_7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('sources_id_12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => config_var(13405),
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+
+    echo '<div class="discover-topic" style="margin-top: 34px;"><span class="icon-block">'.$sources__11035[13427]['m_icon'].'</span>'.$sources__11035[13427]['m_name'].'</div>';
     echo '<div class="cover-list">';
     foreach($featured_ideas as $key => $idea){
         if(!in_array($idea['i__id'], $player_discovery_ids)){
@@ -114,6 +116,7 @@
         }
     }
     echo '</div>';
+
 
     ?>
 </div>

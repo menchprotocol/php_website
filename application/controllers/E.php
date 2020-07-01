@@ -97,7 +97,7 @@ class E extends CI_Controller
             'title' => $sources[0]['e__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('e/coin', array(
+        $this->load->view('e/layout', array(
             'source' => $sources[0],
             'session_source' => $session_source,
         ));

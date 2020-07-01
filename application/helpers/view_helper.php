@@ -1335,16 +1335,21 @@ function view_i_cover($idea, $show_editor, $discover_mode = true){
     $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['ideas_average'].' '.$sources__13369[13359]['m_name'].' FROM '.$i_stats['count_sources'].' '.$sources__13369[13358]['m_name'].'">';
 
     //SOURCES:
-    $ui .= $sources__13369[13358]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['count_sources']).'</span><br />';
+    if(superpower_active(10967, true)){
+        $ui .= $sources__13369[13358]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['count_sources']).'</span><br />';
+    }
 
     //IDEAS:
     $ui .= $sources__13369[13359]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['ideas_average']).'</span><br />';
 
     //DISCOVERIES:
-    $discover_coins = x_coins_idea(6255, $idea['i__id']);
-    if($discover_coins > 0){
-        $ui .= $sources__13369[13360]['m_icon'].'<span style="padding-left: 2px;">'.view_number($discover_coins).'</span>';
+    if(superpower_active(12701, true)){
+        $discover_coins = x_coins_idea(6255, $idea['i__id']);
+        if($discover_coins > 0){
+            $ui .= $sources__13369[13360]['m_icon'].'<span style="padding-left: 2px;">'.view_number($discover_coins).'</span>';
+        }
     }
+
 
     $ui .= '</span>';
 
@@ -1399,6 +1404,7 @@ function view_e_basic($source)
     $ui .= '</div>';
     return $ui;
 }
+
 
 
 function view_e($source, $is_parent = false, $extra_class = null, $control_enabled = false, $player_is_e_source = false, $common_prefix = null)
