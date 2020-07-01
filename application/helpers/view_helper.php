@@ -523,7 +523,7 @@ function view_time_difference($t, $second_time = null)
 }
 
 
-function view_cache($config_var_name, $e__id, $micro_status = true, $data_placement = 'top')
+function view_cache($config_var_id, $e__id, $micro_status = true, $data_placement = 'top', $i__id = 0)
 {
 
     /*
@@ -533,7 +533,7 @@ function view_cache($config_var_name, $e__id, $micro_status = true, $data_placem
      * */
 
     $CI =& get_instance();
-    $config_array = $CI->config->item($config_var_name);
+    $config_array = $CI->config->item('e___'.$config_var_id);
     $cache = $config_array[$e__id];
     if (!$cache) {
         //Could not find matching item
@@ -549,7 +549,7 @@ function view_cache($config_var_name, $e__id, $micro_status = true, $data_placem
             return $cache['m_icon'].' '.$cache['m_name'].' ';
         }
     } else {
-        return '<span ' . ( $micro_status && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="' . $data_placement . '" title="' . ($micro_status ? $cache['m_name'] : '') . (strlen($cache['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_name']) . '</span>';
+        return '<span class="'.( $micro_status ? 'cache_micro_'.$config_var_id.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="' . $data_placement . '" title="' . ($micro_status ? $cache['m_name'] : '') . (strlen($cache['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_name']) . '</span>';
     }
 }
 
@@ -863,8 +863,8 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
             //IDAE Link:
             $i_link = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
 
-            //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache('e___4737' /* Idea Status */, $i['i__status'], true, 'right').'</a></span>';
+            //IDEA STATUS:
+            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right').'</a></span>';
 
             //IDEA TITLE
             if($is_i_link && superpower_active(13354, true)){
@@ -1359,7 +1359,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
 
         //IDEA STATUS?
         if(!$x_mode && !in_array($i['i__status'], $CI->config->item('n___7355'))){
-            $ui .= '<span class="media-info bottom-center">'.view_cache('e___4737' /* Idea Status */, $i['i__status'], true, 'top').'</span>';
+            $ui .= '<span class="media-info bottom-center">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'top').'</span>';
         }
 
         //REMOVE

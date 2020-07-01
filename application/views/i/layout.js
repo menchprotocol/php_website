@@ -475,6 +475,10 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id).attr('selected-val' , new_e__id);
 
+            //Update micro icons, if any: (Idea status has it)
+            $('.cache_micro_'+element_id+'_'+i__id).html(data_object[new_e__id]['m_icon']);
+
+
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main idea page:
                 window.location = data.deletion_redirect;
