@@ -65,7 +65,7 @@ if(count($current_sign_i_attempt) == 0){
     if($sign_i__id > 0){
 
         $sign_ideas = $this->I_model->fetch(array(
-            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'i__id' => $sign_i__id,
         ));
 

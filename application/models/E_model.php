@@ -42,16 +42,16 @@ class E_model extends CI_Model
         }
 
         foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__down' => $e['e__id'], //This child source
-            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up')) as $e_profile){
 
             //Push to parent IDs:
             array_push($session_data['session_parent_ids'], intval($e_profile['e__id']));
 
-            if(in_array($e_profile['e__id'], $this->config->item('e___n_10957'))){
+            if(in_array($e_profile['e__id'], $this->config->item('n___10957'))){
 
                 //It's assigned!
                 array_push($session_data['session_superpowers_assigned'], intval($e_profile['e__id']));
@@ -61,7 +61,7 @@ class E_model extends CI_Model
                     'x__player' => $e['e__id'],
                     'x__type' => 5007, //TOGGLE SUPERPOWER
                     'x__up' => $e_profile['e__id'],
-                    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1); //Fetch the single most recent supoerpower toggle only
                 if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['x__message'] , ' DEACTIVATED')){
                     array_push($session_data['session_superpowers_activated'], intval($e_profile['e__id']));
@@ -221,7 +221,7 @@ class E_model extends CI_Model
 
                 } elseif($key=='e__status') {
 
-                    if(in_array($value, $this->config->item('e___n_7358') /* ACTIVE */)){
+                    if(in_array($value, $this->config->item('n___7358') /* ACTIVE */)){
                         $x__type = 10654; //Source Updated Status
                     } else {
                         $x__type = 6178; //Source Deleted
@@ -292,7 +292,7 @@ class E_model extends CI_Model
 
 
         //Fetch all the child sources for $e_profile_bucket_id and make sure they match $set_e_child_id
-        $children = $this->config->item('e___n_' . $e_profile_bucket_id);
+        $children = $this->config->item('n___' . $e_profile_bucket_id);
         if ($e_profile_bucket_id < 1) {
             return false;
         } elseif (!$children) {
@@ -307,7 +307,7 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__down' => $x__player,
             'x__up IN (' . join(',', $children) . ')' => null, //Current children
-            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), config_var(11064)) as $discovery) {
 
             if (!$previously_assigned && $discovery['x__up'] == $set_e_child_id) {
@@ -346,15 +346,15 @@ class E_model extends CI_Model
         foreach(array_merge(
                 //Player references within IDEA NOTES:
                     $this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-                        'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('e___n_4485')) . ')' => null, //IDEA NOTES
+                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                        'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
                         'x__up' => $e__id,
                     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')),
                     //Player links:
                     $this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ')' => null,
                     ), array(), 0)
                 ) as $adjust_tr){
@@ -452,8 +452,8 @@ class E_model extends CI_Model
 
         //Check to see if we have domain linked previously:
         $url_links = $this->X_model->fetch(array(
-            'e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
             'x__up' => 1326, //Domain Player
             'x__message' => $url_analysis['url_clean_domain'],
@@ -562,18 +562,18 @@ class E_model extends CI_Model
         //SOURCE PROFILE
         foreach($this->X_model->fetch(array(
             'x__down' => $source['e__id'],
-            'x__type IN (' . join(',', $this->config->item('e___n_4592')).')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4592')).')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $e__profile){
 
 
-            if(in_array($e__profile['e__id'], $this->config->item('e___n_3000'))){
+            if(in_array($e__profile['e__id'], $this->config->item('n___3000'))){
                 //EXPERT CONTENT
                 if (!isset($metadata_this['__i___3000'][$source['e__id']])) {
                     $metadata_this['__i___3000'][$source['e__id']] = $source;
                 }
-            } elseif(in_array($e__profile['e__id'], $this->config->item('e___n_13339'))) {
+            } elseif(in_array($e__profile['e__id'], $this->config->item('n___13339'))) {
                 //EXPERT AUTHORS
                 $source['x__message'] = $e__profile['x__message']; //Update Description
                 if (!isset($metadata_this['__i___13339'][$source['e__id']])) {
@@ -712,7 +712,7 @@ class E_model extends CI_Model
         if (!$name_was_passed) {
 
             //Only fetch URL content in certain situations:
-            $url_content = ( in_array($x__type, $this->config->item('e___n_11059')) /* not a direct file type */ ? null : @file_get_contents($url) );
+            $url_content = ( in_array($x__type, $this->config->item('n___11059')) /* not a direct file type */ ? null : @file_get_contents($url) );
             $page_title = e__title_validate(( $url_content ? one_two_explode('>', '', one_two_explode('<title', '</title', $url_content)) : $page_title ), $x__type);
 
         }
@@ -741,9 +741,9 @@ class E_model extends CI_Model
 
             //Check to see if URL previously exists:
             $url_links = $this->X_model->fetch(array(
-                'e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')' => null, //ACTIVE
-                'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('e___n_4537')) . ')' => null, //Player URL Links
+                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Player URL Links
                 'x__message' => $url,
             ), array('x__down'));
 
@@ -851,7 +851,7 @@ class E_model extends CI_Model
 
         $is_valid_icon = is_valid_icon($action_command1);
 
-        if(!in_array($action_e__id, $this->config->item('e___n_4997'))) {
+        if(!in_array($action_e__id, $this->config->item('n___4997'))) {
 
             return array(
                 'status' => 0,
@@ -899,9 +899,9 @@ class E_model extends CI_Model
         $applied_success = 0; //To be populated...
         $children = $this->X_model->fetch(array(
             'x__up' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-            'e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0);
 
 
@@ -934,10 +934,10 @@ class E_model extends CI_Model
 
                 //See if child source has searched parent source:
                 $child_parent_sources = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $x['e__id'], //This child source
                     'x__up' => $parent_e__id,
-                    'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
                 if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_sources)==0) || ($action_e__id==12928 && view_coins_count_source(0,$x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_count_source(0,$x['e__id'],true))){
@@ -1032,10 +1032,10 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__status']==$action_command1) && in_array($action_command2, $this->config->item('e___n_6177'))) {
+            } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__status']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
 
                 //Being deleted? Unlink as well if that's the case:
-                if(!in_array($action_command2, $this->config->item('e___n_7358'))){
+                if(!in_array($action_command2, $this->config->item('n___7358'))){
                     $this->E_model->unlink($x['e__id'], $x__player);
                 }
 
@@ -1046,11 +1046,11 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5865 && ($action_command1=='*' || $x['x__status']==$action_command1) && in_array($action_command2, $this->config->item('e___n_6186') /* Interaction Status */)) { //Update Matching Interaction Status
+            } elseif ($action_e__id == 5865 && ($action_command1=='*' || $x['x__status']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Interaction Status */)) { //Update Matching Interaction Status
 
                 $this->X_model->update($x['x__id'], array(
                     'x__status' => $action_command2,
-                ), $x__player, ( in_array($action_command2, $this->config->item('e___n_7360') /* ACTIVE */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unpublished */ ));
+                ), $x__player, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unpublished */ ));
 
                 $applied_success++;
 
@@ -1089,8 +1089,8 @@ class E_model extends CI_Model
         //Do a child count:
         $e__portfolio_count = $this->X_model->fetch(array(
             'x__up' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__status IN (' . join(',', $e_statuses) . ')' => null,
         ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
@@ -1104,7 +1104,7 @@ class E_model extends CI_Model
 
     function verify_create($e__title, $x__player = 0, $e__status = 6181, $e__icon = null){
 
-        if(!in_array($e__status, $this->config->item('e___n_6177'))){
+        if(!in_array($e__status, $this->config->item('n___6177'))){
             //Invalid Status ID
             return array(
                 'status' => 0,

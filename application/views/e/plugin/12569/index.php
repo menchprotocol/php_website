@@ -17,7 +17,7 @@ if(!$obj || $obj==4535){
 
     //Update the weights for ideas and sources
     foreach($this->I_model->fetch(array(
-        'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     )) as $in) {
         $stats['i_scanned']++;
         $stats['i_updated'] += i__weight_calculator($in);
@@ -32,7 +32,7 @@ if(!$obj || $obj==4535){
 if(!$obj || $obj==4536){
     //Update the weights for ideas and sources
     foreach($this->E_model->fetch(array(
-        'e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     )) as $en) {
         $stats['e_scanned']++;
         $stats['e_updated'] += e__weight_calculator($en);

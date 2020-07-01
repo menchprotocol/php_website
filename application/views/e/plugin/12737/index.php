@@ -5,7 +5,7 @@ $skipped = 0;
 $fixed = 0;
 
 foreach($this->X_model->fetch(array(
-    'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
 ), array(), 0) as $e_link){
 
     if(filter_var($e_link['x__message'], FILTER_VALIDATE_URL)){

@@ -3,7 +3,7 @@
 //IDEA LIST INVALID TITLES
 
 $active_ideas = $this->I_model->fetch(array(
-    'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
 ));
 
 //Give an overview:

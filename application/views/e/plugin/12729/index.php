@@ -12,8 +12,8 @@ echo '</tr>';
 $e___12140 = $this->config->item('e___12140');
 
 $full_coins = $this->X_model->fetch(array(
-    'x__type IN (' . join(',', $this->config->item('e___n_12141')) . ')' => null, //Full
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___12141')) . ')' => null, //Full
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ), array(), 0, 0, array(), 'COUNT(x__id) as total_discoveries');
 echo '<tr class="panel-title down-border" style="font-weight: bold;">';
 echo '<td style="text-align: left;" class="montserrat doupper">'.$e___12140[12141]['m_icon'].' '.$e___12140[12141]['m_name'].'</td>';
@@ -26,8 +26,8 @@ echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan=
 
 //Show each link type:
 foreach($this->X_model->fetch(array(
-    'x__type IN (' . join(',', $this->config->item('e___n_12141')) . ')' => null, //Full
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___12141')) . ')' => null, //Full
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ), array('x__type'), 0, 0, array('total_discoveries' => 'DESC'), 'COUNT(x__id) as total_discoveries, e__title, e__icon, e__id, x__type', 'e__id, e__title, e__icon, x__type') as $discovery) {
 
     //Determine which weight group this belongs to:

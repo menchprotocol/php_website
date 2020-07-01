@@ -14,9 +14,9 @@ echo '</tr>';
 $counter = 0;
 $total_count = 0;
 foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-    'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('e___n_12842')) . ')' => null, //IDEA LINKS ONE-WAY
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
     'LENGTH(x__metadata) > 0' => null,
 ), array('x__right'), 0, 0) as $i_discover) {
     //Echo HTML format of this message:
@@ -47,10 +47,10 @@ foreach($this->X_model->fetch(array(
         echo '</div>';
 
         if(count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-                'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'i__type NOT IN (6907,6914)' => null, //NOT AND/OR Lock
-                'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__right' => $i_discover['i__id'],
             ), array('x__left'))) > 1 || $i_discover['i__type'] != 6677){
 
@@ -62,9 +62,9 @@ foreach($this->X_model->fetch(array(
 
             //Update user progression link type:
             $user_discoveries = $this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('e___n_6255')) . ')' => null, //DISCOVER COIN
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__left' => $i_discover['i__id'],
-                'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 0);
 
             $updated = 0;
@@ -94,9 +94,9 @@ if(1){
 
     $counter = 0;
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-        'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'LENGTH(x__metadata) > 0' => null,
     ), array('x__right'), 0, 0) as $i_discover) {
         //Echo HTML format of this message:

@@ -49,7 +49,7 @@ class I extends CI_Controller {
         //Move Existing Bookmarks by one:
         $x__sort = 2;
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 10573, //MY IDEAS
             'x__up' => $session_source['e__id'], //For this player
         ), array(), 0, 0, array('x__sort' => 'ASC')) as $player_idea){
@@ -115,7 +115,7 @@ class I extends CI_Controller {
 
 
         $session_source = superpower_assigned(10939); //Idea Pen?
-        $is_public = in_array($ideas[0]['i__status'], $this->config->item('e___n_7355'));
+        $is_public = in_array($ideas[0]['i__status'], $this->config->item('n___7355'));
 
         if(!$session_source){
             if($is_public){
@@ -172,7 +172,7 @@ class I extends CI_Controller {
         $session_source = superpower_assigned(null, true);
 
         if(count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 12450,
             'x__player' => $session_source['e__id'],
             'x__right' => $i__id,
@@ -219,9 +219,9 @@ class I extends CI_Controller {
         $track_previous = 0;
 
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-            'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $idea){
             if($action=='next'){
@@ -284,12 +284,12 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Link ID',
             ));
-        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $e___6232) || strlen($e___6232[$_POST['element_id']]['m_desc'])<5 || !count($this->config->item('e___n_'.$_POST['element_id']))) {
+        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $e___6232) || strlen($e___6232[$_POST['element_id']]['m_desc'])<5 || !count($this->config->item('n___'.$_POST['element_id']))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Element ID ['.$_POST['element_id'].'] Missing from @6232',
             ));
-        } elseif (!isset($_POST['new_e__id']) || intval($_POST['new_e__id']) < 1 || !in_array($_POST['new_e__id'], $this->config->item('e___n_'.$_POST['element_id']))) {
+        } elseif (!isset($_POST['new_e__id']) || intval($_POST['new_e__id']) < 1 || !in_array($_POST['new_e__id'], $this->config->item('n___'.$_POST['element_id']))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Value ID',
@@ -308,7 +308,7 @@ class I extends CI_Controller {
             }
 
             //Find the single discover type in parent links:
-            $link_update_types = array_intersect($this->config->item('e___n_4593'), $e___4527[$_POST['element_id']]['m_parents']);
+            $link_update_types = array_intersect($this->config->item('n___4593'), $e___4527[$_POST['element_id']]['m_parents']);
             if(count($link_update_types)!=1){
                 return view_json(array(
                     'status' => 0,
@@ -328,7 +328,7 @@ class I extends CI_Controller {
             if($_POST['element_id']==4737){
 
                 //Delete all idea links?
-                if(!in_array($_POST['new_e__id'], $this->config->item('e___n_7356'))){
+                if(!in_array($_POST['new_e__id'], $this->config->item('n___7356'))){
 
                     //Determine what to do after deleted:
                     if($_POST['i__id'] == $_POST['i_loaded_id']){
@@ -361,8 +361,8 @@ class I extends CI_Controller {
                     $this->I_model->unlink($_POST['i__id'] , $session_source['e__id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
-                } elseif(in_array($_POST['new_e__id'], $this->config->item('e___n_12138')) && !superpower_assigned(10984) && !count($this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                } elseif(in_array($_POST['new_e__id'], $this->config->item('n___12138')) && !superpower_assigned(10984) && !count($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 12453, //Idea Feature Request
                         'x__player' => $session_source['e__id'],
                         'x__right' => $_POST['i__id'],
@@ -482,7 +482,7 @@ class I extends CI_Controller {
             //Fetch link idea to determine idea type:
             $linked_ideas = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['i_link_child_id']),
-                'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
             if(count($linked_ideas)==0){
@@ -493,7 +493,7 @@ class I extends CI_Controller {
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($linked_ideas[0]['i__type'], $this->config->item('e___n_7712'))){
+            if(!intval($_POST['is_parent']) && in_array($linked_ideas[0]['i__type'], $this->config->item('n___7712'))){
                 $new_i_type = 6914; //Require All
             }
         }
@@ -572,7 +572,7 @@ class I extends CI_Controller {
                 'message' => 'Invalid Idea ID',
             ));
 
-        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('e___n_4485'))) {
+        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___4485'))) {
 
             return view_json(array(
                 'status' => 0,
@@ -585,7 +585,7 @@ class I extends CI_Controller {
         //Fetch/Validate the idea:
         $ideas = $this->I_model->fetch(array(
             'i__id' => intval($_POST['i__id']),
-            'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
+            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if(count($ideas)<1){
             return view_json(array(
@@ -606,7 +606,7 @@ class I extends CI_Controller {
         $discovery = $this->X_model->create(array(
             'x__player' => $session_source['e__id'],
             'x__sort' => 1 + $this->X_model->max_sort(array(
-                    'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type' => intval($_POST['note_type_id']),
                     'x__right' => intval($_POST['i__id']),
                 )),
@@ -651,7 +651,7 @@ class I extends CI_Controller {
                 'message' => 'Missing IDEA',
             ));
 
-        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('e___n_12359'))) {
+        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___12359'))) {
 
             return view_json(array(
                 'status' => 0,
@@ -833,7 +833,7 @@ class I extends CI_Controller {
         //Validate Message:
         $messages = $this->X_model->fetch(array(
             'x__id' => intval($_POST['x__id']),
-            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ));
         if (count($messages) < 1) {
             return view_json(array(
@@ -869,10 +869,10 @@ class I extends CI_Controller {
         if($messages[0]['x__status'] != $_POST['message_x__status']){
 
             //Are we deleting this message?
-            if(in_array($_POST['message_x__status'], $this->config->item('e___n_7360') /* ACTIVE */)){
+            if(in_array($_POST['message_x__status'], $this->config->item('n___7360') /* ACTIVE */)){
 
                 //If making the link public, all referenced sources must also be public...
-                if(in_array($_POST['message_x__status'], $this->config->item('e___n_7359') /* PUBLIC */)){
+                if(in_array($_POST['message_x__status'], $this->config->item('n___7359') /* PUBLIC */)){
 
                     //We're publishing, make sure potential source references are also published:
                     $string_references = extract_e_references($_POST['x__message']);
@@ -884,7 +884,7 @@ class I extends CI_Controller {
                             'e__id' => $string_references['ref_sources'][0],
                         ));
 
-                        if(count($ref_sources)>0 && !in_array($ref_sources[0]['e__status'], $this->config->item('e___n_7357') /* PUBLIC */)){
+                        if(count($ref_sources)>0 && !in_array($ref_sources[0]['e__status'], $this->config->item('n___7357') /* PUBLIC */)){
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'You cannot published this message because its referenced source is not yet public',

@@ -15,9 +15,9 @@ foreach($this->E_model->fetch() as $en) {
 
     $is_player = count($this->X_model->fetch(array(
         'x__up' => 4430, //MENCH PLAYERS
-        'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__down' => $en['e__id'],
-        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array(), 1));
     $is_discover = count($this->X_model->fetch(array(
         'x__player' => $en['e__id'],

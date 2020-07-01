@@ -12,7 +12,7 @@
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 
-$i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('e___n_7309'));
+$i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 $recipient_source = superpower_assigned();
 if(!isset($recipient_source['e__id']) ){
     $recipient_source['e__id'] = 0;
@@ -21,9 +21,9 @@ if(!isset($recipient_source['e__id']) ){
 
 //NEXT IDEAS
 $ideas_next = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-    'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
@@ -49,8 +49,8 @@ if($recipient_source['e__id']){
 
         //Fetch progress history:
         $discovery_completes = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('e___n_12229')) . ')' => null, //DISCOVER COMPLETE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
             'x__player' => $recipient_source['e__id'],
             'x__left' => $i_focus['i__id'],
         ));
@@ -60,9 +60,9 @@ if($recipient_source['e__id']){
 
             //Reverse check answers to see if they have previously unlocked a path:
             $unlocked_connections = $this->X_model->fetch(array(
-                'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
-                'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('e___n_12326')) . ')' => null, //DISCOVER IDEA LINKS
+                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'x__right' => $i_focus['i__id'],
                 'x__player' => $recipient_source['e__id'],
             ), array('x__left'), 1);
@@ -154,7 +154,7 @@ $tab_pill_count = 0;
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
-    $superpower_actives = array_intersect($this->config->item('e___n_10957'), $m['m_parents']);
+    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
     if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
         continue;
     }
@@ -175,7 +175,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //MESSAGES
         $messages = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $i_focus['i__id'],
         ), array(), 0, 0, array('x__sort' => 'ASC'));
@@ -227,9 +227,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //IDEA PREVIOUS
         $ideas_previous = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-            'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i_focus['i__id'],
             'x__left !=' => config_var(13405),
         ), array('x__left'), 0);
@@ -274,7 +274,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //COMMENTS
         $comments = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 12419, //COMMENTS
             'x__right' => $i_focus['i__id'],
         ), array('x__player'), 0, 0, array('x__sort' => 'ASC'));
@@ -312,17 +312,17 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
 
-    if(!$counter && in_array($x__type, $this->config->item('e___n_13298'))){
+    if(!$counter && in_array($x__type, $this->config->item('n___13298'))){
         //Hide since Zero count:
         continue;
     }
 
-    if(!$recipient_source['e__id'] && in_array($x__type, $this->config->item('e___n_13304'))){
+    if(!$recipient_source['e__id'] && in_array($x__type, $this->config->item('n___13304'))){
         //Hide since Not logged in:
         continue;
     }
 
-    $default_active = in_array($x__type, $this->config->item('e___n_13300'));
+    $default_active = in_array($x__type, $this->config->item('n___13300'));
     $tab_pill_count++;
 
     $tab_pills .= '<li class="nav-item"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-active-max">&nbsp;'.$m['m_name'].'</span></a></li>';
@@ -355,8 +355,8 @@ if(!$in_my_discoveries){
 
     //PREVIOUSLY UNLOCKED:
     $unlocked_discoveries = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-        'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type' => 6140, //DISCOVER UNLOCK LINK
         'x__player' => $recipient_source['e__id'],
         'x__left' => $i_focus['i__id'],
@@ -395,7 +395,7 @@ if(!$in_my_discoveries){
         view_i_list($i_focus, $ideas_next, $recipient_source, null, ( $completion_rate['completion_percentage'] < 100 ));
 
 
-    } elseif (in_array($i_focus['i__type'], $this->config->item('e___n_7712'))){
+    } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))){
 
         //SELECT ANSWER
 
@@ -404,8 +404,8 @@ if(!$in_my_discoveries){
 
             //Mark this as complete since there is no child to choose from:
             if(!count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',' , $this->config->item('e___n_12229')) . ')' => null, //DISCOVER COMPLETE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',' , $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
                 'x__player' => $recipient_source['e__id'],
                 'x__left' => $i_focus['i__id'],
             )))){
@@ -426,15 +426,15 @@ if(!$in_my_discoveries){
             //First fetch answers based on correct order:
             $x_answers = array();
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-                'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('e___n_12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $i_focus['i__id'],
             ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $discovery){
                 //See if this answer was seleted:
                 if(count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('e___n_12326')) . ')' => null, //DISCOVER IDEA LINK
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINK
                     'x__left' => $i_focus['i__id'],
                     'x__right' => $discovery['i__id'],
                     'x__player' => $recipient_source['e__id'],
@@ -487,8 +487,8 @@ if(!$in_my_discoveries){
 
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('e___n_12326')) . ')' => null, //DISCOVER IDEA LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                     'x__left' => $i_focus['i__id'],
                     'x__right' => $next_idea['i__id'],
                     'x__player' => $recipient_source['e__id'],
@@ -562,7 +562,7 @@ if(!$in_my_discoveries){
         echo '<script> $(document).ready(function () { autosize($(\'#x_respond\')); $(\'#x_respond\').focus(); }); </script>';
 
 
-    } elseif (in_array($i_focus['i__type'], $this->config->item('e___n_7751'))) {
+    } elseif (in_array($i_focus['i__type'], $this->config->item('n___7751'))) {
 
         //FILE UPLOAD
 

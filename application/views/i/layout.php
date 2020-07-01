@@ -3,8 +3,8 @@ $e___2738 = $this->config->item('e___2738');
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 $player_is_i_source = player_is_i_source($i_focus['i__id']);
-$is_active = in_array($i_focus['i__status'], $this->config->item('e___n_7356'));
-$is_public = in_array($i_focus['i__status'], $this->config->item('e___n_7355'));
+$is_active = in_array($i_focus['i__status'], $this->config->item('n___7356'));
+$is_public = in_array($i_focus['i__status'], $this->config->item('n___7355'));
 
 ?>
 
@@ -33,7 +33,7 @@ if(isset($_GET['focus__source'])){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
         'e__id' => intval($_GET['focus__source']),
-        'e__status IN (' . join(',', $this->config->item('e___n_7358')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
         echo '<div class="alert alert-danger no-margin"><span class="icon-block"><i class="fas fa-filter discover"></i></span>Showing Discoveries for ' . view_e__icon($e_filters[0]['e__icon']) . '&nbsp;<a href="/@'.$e_filters[0]['e__id'].'" class="'.extract_icon_color($e_filters[0]['e__icon']).'">' . $e_filters[0]['e__title'].'</a> Only (<a href="/'.$this->uri->segment(1).'">Remove Filter</a>)</div>';
@@ -44,9 +44,9 @@ if(isset($_GET['focus__source'])){
 
 //IDEA PREVIOUS
 $ideas_previous = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-    'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0);
 
@@ -80,7 +80,7 @@ echo '</div>';
 
 //IDEA MESSAGES:
 echo view_i_note_mix(4231, $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 4231,
     'x__right' => $i_focus['i__id'],
 ), array('x__player'), 0, 0, array('x__sort' => 'ASC')));
@@ -117,14 +117,14 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     }
 
     //Have Needed Superpowers?
-    $superpower_actives = array_intersect($this->config->item('e___n_10957'), $m['m_parents']);
+    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
     if(count($superpower_actives) && !superpower_assigned(end($superpower_actives))){
         continue;
     }
 
 
 
-    $disable_manual_add = in_array($x__type, $this->config->item('e___n_12677'));
+    $disable_manual_add = in_array($x__type, $this->config->item('n___12677'));
     $counter = null; //Assume no counters
     $this_tab = '';
 
@@ -133,9 +133,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //IDEA NEXT
         $ideas_next = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-            'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i_focus['i__id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
@@ -162,11 +162,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $this_tab .= '</div>';
 
-    } elseif(in_array($x__type, $this->config->item('e___n_7551'))){
+    } elseif(in_array($x__type, $this->config->item('n___7551'))){
 
         //Reference Sources Only:
         $i_notes = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => $x__type,
             'x__right' => $i_focus['i__id'],
         ), array('x__up'), 0, 0, array('x__sort' => 'ASC'));
@@ -192,17 +192,17 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $this_tab .= '</div>';
 
-    } elseif(in_array($x__type, $this->config->item('e___n_12467'))){
+    } elseif(in_array($x__type, $this->config->item('n___12467'))){
 
         //MENCH COINS
         $counter = x_coins_idea($x__type, $i_focus['i__id']);
         $this_tab = x_coins_idea($x__type, $i_focus['i__id'], 1);
 
-    } elseif(in_array($x__type, $this->config->item('e___n_4485'))){
+    } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
         //IDEA NOTES
         $i_notes = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => $x__type,
             'x__right' => $i_focus['i__id'],
         ), array('x__player'), 0, 0, array('x__sort' => 'ASC'));
@@ -214,8 +214,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $player_discoveries = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
-            'x__type IN (' . join(',', $this->config->item('e___n_12969')) . ')' => null, //MY DISCOVERIES
-            'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__player'), 0, 0, array(), 'COUNT(x__id) as totals');
         $counter = $player_discoveries[0]['totals'];
         if($counter > 0){
@@ -223,8 +223,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $this_tab .= '<div class="list-group">';
             foreach($this->X_model->fetch(array(
                 'x__left' => $i_focus['i__id'],
-                'x__type IN (' . join(',', $this->config->item('e___n_12969')) . ')' => null, //MY DISCOVERIES
-                'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__player')) as $player){
                 $this_tab .= view_e($player);
             }
@@ -302,7 +302,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     }
 
 
-    $default_active = in_array($x__type, $this->config->item('e___n_12675'));
+    $default_active = in_array($x__type, $this->config->item('n___12675'));
 
     echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'</a></li>';
 

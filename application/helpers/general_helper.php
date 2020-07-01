@@ -382,11 +382,11 @@ function e_count_connections($e__id, $return_html = true){
 
     foreach(array(
         4737 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status=',
-        7585 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status IN ('.join(',', $CI->config->item('e___n_7355')).') AND i__type=',
+        7585 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status IN ('.join(',', $CI->config->item('n___7355')).') AND i__type=',
         6177 => 'SELECT count(e__id) as totals FROM mench__e WHERE e__status=',
-        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ') AND x__player=',
+        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__player=',
         6186 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status=',
-        4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ') AND x__type=',
+        4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
     ) as $e_app_id => $query){
 
         $query = $CI->db->query( $query . $e__id );
@@ -400,7 +400,7 @@ function e_count_connections($e__id, $return_html = true){
     }
 
     //Plugin?
-    if(superpower_active(12699, true) && in_array($e__id, $CI->config->item('e___n_6287'))){
+    if(superpower_active(12699, true) && in_array($e__id, $CI->config->item('n___6287'))){
         $e_count_connections[6287] = ( $return_html ? '<a href="/e/plugin/'.$e__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$e___6194[6287]['m_name'].'">'.$e___6194[6287]['m_icon'].'</a>' : 1 );
     }
 
@@ -414,8 +414,8 @@ function i_fetch_cover($i__id, $html_format = false){
     $CI =& get_instance();
     $i_fetch_cover = null;
     foreach($CI->X_model->fetch(array( //IDEA SOURCE
-        'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('e___n_12273')) . ')' => null, //IDEA COIN
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
         'x__right' => $i__id,
         '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     ), array(), 0, 0, array(
@@ -427,7 +427,7 @@ function i_fetch_cover($i__id, $html_format = false){
             if($fetched_source[$e_ref_field] > 0){
                 //See if this source has a photo:
                 foreach($CI->X_model->fetch(array(
-                    'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
+                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 4260, //IMAGES ONLY
                     'x__down' => $fetched_source[$e_ref_field],
                 )) as $e_image) {
@@ -455,14 +455,14 @@ function i__weight_calculator($idea){
     $CI =& get_instance();
 
     $count_discoveries = $CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         '(x__right='.$idea['i__id'].' OR x__left='.$idea['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
     $counts = $CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $CI->config->item('e___n_4486')) . ')' => null, //IDEA LINKS
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
         '(x__right='.$idea['i__id'].' OR x__left='.$idea['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -487,14 +487,14 @@ function e__weight_calculator($source){
     $CI =& get_instance();
 
     $count_discoveries = $CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].' OR x__player='.$source['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
     $counts = $CI->X_model->fetch(array(
-        'x__type IN (' . join(',', $CI->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         '(x__down='.$source['e__id'].' OR x__up='.$source['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -519,7 +519,7 @@ function filter_cache_group($search_e__id, $cache_e__id){
 
     $CI =& get_instance();
     foreach($CI->config->item('e___'.$cache_e__id) as $e__id => $m) {
-        if(in_array($search_e__id, $CI->config->item('e___n_'.$e__id))){
+        if(in_array($search_e__id, $CI->config->item('n___'.$e__id))){
             return $m;
         }
     }
@@ -578,7 +578,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function i_is_unlockable($idea){
     $CI =& get_instance();
-    return in_array($idea['i__status'], $CI->config->item('e___n_7355') /* PUBLIC */);
+    return in_array($idea['i__status'], $CI->config->item('n___7355') /* PUBLIC */);
 }
 
 function redirect_message($url, $message = null)
@@ -701,8 +701,8 @@ function x_coins_idea($x__type, $i__id, $load_page = 0){
 
         $join_objects = array('x__up');
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('e___n_12273')) . ')' => null, //IDEA COIN
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
             'x__right' => $i__id,
         );
 
@@ -710,8 +710,8 @@ function x_coins_idea($x__type, $i__id, $load_page = 0){
 
         $join_objects = array('x__player');
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('e___n_6255')) . ')' => null, //DISCOVER COIN
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $i__id,
         );
 
@@ -769,8 +769,8 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
         $order_columns = array('e__weight' => 'DESC'); //BEST SOURCES
         $join_objects = array('x__down');
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('e___n_12274')) . ')' => null, //SOURCE COIN
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COIN
             'x__player' => $e__id,
         );
 
@@ -779,8 +779,8 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
         $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
         $join_objects = array('x__right');
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('e___n_12273')) . ')' => null, //IDEA COIN
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
             '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
         );
 
@@ -789,8 +789,8 @@ function x_coins_source($x__type, $e__id, $load_page = 0){
         $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
         $join_objects = array('x__left');
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('e___n_6255')) . ')' => null, //DISCOVER COIN
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
             'x__player' => $e__id,
         );
 
@@ -1378,8 +1378,8 @@ function player_is_e_source($e__id, $session_source = array()){
 
         //Player has source in their portfolio
         || count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__up' => $session_source['e__id'],
             'x__down' => $e__id,
         )))
@@ -1413,8 +1413,8 @@ function player_is_i_source($i__id, $session_source = array()){
                     'x__player' => $session_source['e__id'],
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
-                    'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('e___n_12273')) . ')' => null, //IDEA COIN
+                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
                     'x__right' => $i__id,
                     '(x__up = '.$session_source['e__id'].' OR x__down = '.$session_source['e__id'].')' => null,
                 )))
@@ -1450,8 +1450,8 @@ function sources_currently_sorted($e__id){
     return count( $CI->X_model->fetch(array(
         'x__sort >' => 0, //Sorted
         'x__up' => $e__id,
-        'x__type IN (' . join(',', $CI->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 1) );
 }
 
@@ -1470,7 +1470,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
      *
      * */
 
-    if($object__type && !in_array($object__type , $CI->config->item('e___n_12761'))){
+    if($object__type && !in_array($object__type , $CI->config->item('n___12761'))){
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
@@ -1514,7 +1514,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
     } else {
 
         //Do both ideas and sources:
-        $fetch_objects = $CI->config->item('e___n_12761');
+        $fetch_objects = $CI->config->item('n___12761');
 
         if (!$return_row_only) {
 
@@ -1547,8 +1547,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             if($object__id){
                 $limits['x__right'] = $object__id;
             } else {
-                $limits['i__status IN (' . join(',', $CI->config->item('e___n_7356')) . ')'] = null; //ACTIVE
-                $limits['x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')'] = null; //ACTIVE
+                $limits['i__status IN (' . join(',', $CI->config->item('n___7356')) . ')'] = null; //ACTIVE
+                $limits['x__status IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 
             $db_rows[$loop_obj] = $CI->X_model->fetch($limits, array('x__right'), 0);
@@ -1562,8 +1562,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             if($object__id){
                 $limits['x__down'] = $object__id;
             } else {
-                $limits['e__status IN (' . join(',', $CI->config->item('e___n_7358')) . ')'] = null; //ACTIVE
-                $limits['x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')'] = null; //ACTIVE
+                $limits['e__status IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
+                $limits['x__status IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 
             $db_rows[$loop_obj] = $CI->X_model->fetch($limits, array('x__down'), 0);
@@ -1638,17 +1638,17 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     array_push($export_row['_tags'], 'alg_e_' . $db_row['e__id']);
                 }
 
-                if(in_array($db_row['e__status'], $CI->config->item('e___n_12575'))){
+                if(in_array($db_row['e__status'], $CI->config->item('n___12575'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
                 //Fetch Profiles:
                 $export_row['object__keywords'] = '';
                 foreach($CI->X_model->fetch(array(
-                    'x__type IN (' . join(',', $CI->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $db_row['e__id'], //This child source
-                    'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
-                    'e__status IN (' . join(',', $CI->config->item('e___n_7358')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $discovery) {
 
                     //Always add to tags:
@@ -1679,15 +1679,15 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__ideas'] = $i_stats['ideas_average'];
                 $export_row['object__duration'] = view_time_hours($i_stats['duration_average']);
 
-                if(in_array($db_row['i__status'], $CI->config->item('e___n_12138'))){
+                if(in_array($db_row['i__status'], $CI->config->item('n___12138'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
                 //Add keywords:
                 $export_row['object__keywords'] = '';
                 foreach($CI->X_model->fetch(array(
-                    'x__status IN (' . join(',', $CI->config->item('e___n_7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $CI->config->item('e___n_4485')) . ')' => null, //IDEA NOTES
+                    'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__type IN (' . join(',', $CI->config->item('n___4485')) . ')' => null, //IDEA NOTES
                     'x__right' => $db_row['i__id'],
                 ), array(), 0, 0, array('x__sort' => 'ASC')) as $keyword) {
                     $export_row['object__keywords'] .= $keyword['x__message'] . ' ';
@@ -1697,8 +1697,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 //Is SOURCE for any IDEA?
                 foreach($CI->X_model->fetch(array(
-                    'x__status IN (' . join(',', $CI->config->item('e___n_7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('e___n_12273')) . ')' => null, //IDEA COIN
+                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
                     'x__right' => $db_row['i__id'],
                     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array(), 0) as $source){
@@ -1850,7 +1850,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__player = 0
      *
      * */
 
-    if (!in_array($object__type, $CI->config->item('e___n_2738')) || $object__id < 1 || count($new_fields) < 1) {
+    if (!in_array($object__type, $CI->config->item('n___2738')) || $object__id < 1 || count($new_fields) < 1) {
         return false;
     }
 

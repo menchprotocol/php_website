@@ -8,7 +8,7 @@
 
 $start_time = time();
 $filters = array(
-    'i__status IN (' . join(',', $this->config->item('e___n_7355')) . ')' => null, //PUBLIC
+    'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
 );
 if(isset($_GET['i__id'])){
     $filters['i__id'] = intval($_GET['i__id']);

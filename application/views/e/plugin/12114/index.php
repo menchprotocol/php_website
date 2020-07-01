@@ -11,15 +11,15 @@ $last_week_end = date("Y-m-d H:i:s", $last_week_end_timestamp);
 
 //IDEA
 $i_coins_new_last_week = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('e___n_12273')) . ')' => null, //IDEA COIN
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     'x__time >=' => $last_week_start,
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $i_coins_last_week = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('e___n_12273')) . ')' => null, //IDEA COIN
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -28,14 +28,14 @@ $i_coins_growth_rate = format_percentage(($i_coins_last_week[0]['totals'] / ( $i
 
 //DISCOVER
 $x_coins_new_last_week = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('e___n_6255')) . ')' => null, //DISCOVER COIN
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
     'x__time >=' => $last_week_start,
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $x_coins_last_week = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('e___n_6255')) . ')' => null, //DISCOVER COIN
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $x_coins_growth_rate = format_percentage(( $x_coins_last_week[0]['totals'] / ( $x_coins_last_week[0]['totals'] - $x_coins_new_last_week[0]['totals'] ) * 100)-100);
@@ -44,14 +44,14 @@ $x_coins_growth_rate = format_percentage(( $x_coins_last_week[0]['totals'] / ( $
 
 //SOURCE
 $e_coins_new_last_week = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('e___n_12274')) . ')' => null, //SOURCE COIN
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___12274')) . ')' => null, //SOURCE COIN
     'x__time >=' => $last_week_start,
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $e_coins_last_week = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('e___n_12274')) . ')' => null, //SOURCE COIN
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___12274')) . ')' => null, //SOURCE COIN
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $e_coins_growth_rate = format_percentage( ($e_coins_last_week[0]['totals'] / ( $e_coins_last_week[0]['totals'] - $e_coins_new_last_week[0]['totals'] ) * 100)-100);
@@ -91,9 +91,9 @@ $html_message .= '<div>MENCH</div>';
 
 $subscriber_filters = array(
     'x__up' => 12114,
-    'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
-    'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-    'e__status IN (' . join(',', $this->config->item('e___n_7357')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 );
 
 //Should we limit the scope?
@@ -108,8 +108,8 @@ $email_recipients = 0;
 foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscribed_player){
     //Try fetching subscribers email:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('e___n_4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => 3288, //Mench Email
         'x__down' => $subscribed_player['e__id'],
     )) as $e_email){

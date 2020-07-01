@@ -16,12 +16,12 @@ foreach($this->I_model->fetch() as $in) {
 
     $stats['ideas']++;
 
-    $is_deleted = !in_array($in['i__status'], $this->config->item('e___n_7356'));
+    $is_deleted = !in_array($in['i__status'], $this->config->item('n___7356'));
 
     //Scan sources:
     $i_sources = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('e___n_12273')) . ')' => null, //IDEA COIN
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
         'x__right' => $in['i__id'],
         '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     ));
@@ -32,8 +32,8 @@ foreach($this->I_model->fetch() as $in) {
     ), array(), 0, 0, array('x__id' => 'ASC')); //Order in case we have extra & need to remove
 
     $i_notes = $this->X_model->fetch(array( //Idea Links
-        'x__status IN (' . join(',', $this->config->item('e___n_7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('e___n_4485')) . ')' => null, //IDEA NOTES
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
         'x__right' => $in['i__id'],
     ), array(), 0);
 

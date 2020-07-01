@@ -9,8 +9,8 @@
 
 
     $player_ideas = $this->X_model->fetch(array(
-        'i__status IN (' . join(',', $this->config->item('e___n_7356')) . ')' => null, //ACTIVE
-        'x__status IN (' . join(',', $this->config->item('e___n_7359')) . ')' => null, //PUBLIC
+        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 10573, //MY IDEAS
         'x__up' => $session_source['e__id'], //For this player
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
