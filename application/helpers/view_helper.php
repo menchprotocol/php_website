@@ -864,7 +864,7 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
             $i_link = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
 
             //IDEA STATUS:
-            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right').'</a></span>';
+            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a></span>';
 
             //IDEA TITLE
             if($is_i_link && superpower_active(13354, true)){
