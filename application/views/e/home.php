@@ -28,7 +28,7 @@
                 'x__status IN (' . join(',', $this->config->item('sources_id_7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('sources_id_6255')) . ')' => null, //DISCOVER COIN
                 ' EXISTS (SELECT 1 FROM mench__x WHERE e__id=x__down AND x__up IN (' . join(',', $this->config->item('sources_id_'.$e__id)) . ') AND x__type IN (' . join(',', $this->config->item('sources_id_4592')) . ') AND x__status IN ('.join(',', $this->config->item('sources_id_7359')) /* PUBLIC */.')) ' => null,
-            ), array('x__up'), $load_max, 0, array('totals' => 'DESC'), $select, $group_by);
+            ), array('x__player'), $load_max, 0, array('totals' => 'DESC'), $select, $group_by);
 
         } else {
 
