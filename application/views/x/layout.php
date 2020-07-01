@@ -193,7 +193,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         }
         $this_tab .= '</div>';
 
-    } elseif($x__type==13359 && $i_stats['ideas_average']>1){
+    } elseif($x__type==12273 && $i_stats['ideas_average']>1){
 
         //IDEAS
         $counter = $i_stats['ideas_average'];
@@ -204,9 +204,9 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             //Variable time range:
             $this_tab .= '<p class="space-content">The number of ideas you discover (and the time it takes to discover them) depends on the choices you make interactively along the way:</p>';
             $this_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-            $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_min']).'</span><br />';
-            $this_tab .= '<span class="discovering-paths">Average:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span><br />';
-            $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$sources__13291[13359]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_max']).'</span>';
+            $this_tab .= '<span class="discovering-paths">Minimum:</span>'.$sources__13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_min'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_min']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Average:</span>'.$sources__13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_average'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_average']).'</span><br />';
+            $this_tab .= '<span class="discovering-paths">Maximum:</span>'.$sources__13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['ideas_max'].'</span><span class="mono-space">'.view_time_hours($i_stats['duration_max']).'</span>';
             $this_tab .= '</p>';
 
         } else {
@@ -242,12 +242,12 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
             $this_tab .= '</div>';
         }
 
-    } elseif($x__type==13358){
+    } elseif($x__type==12274){
 
         $counter = $i_stats['count_sources'];
 
         //List Sources:
-        foreach($this->config->item('sources__13358') as $e__id2 => $m2){
+        foreach($this->config->item('sources__4251') as $e__id2 => $m2){
             if($i_stats['count_'.$e__id2]>0){
                 $this_tab .= '<div class="discover-topic"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id2].' '.$m2['m_name'].':</div>';
                 $this_tab .= '<div class="list-group" style="margin-bottom:34px;">';
@@ -284,7 +284,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
         $this_tab .= view_i_note_mix($x__type, $comments);
         $this_tab .= '</div>';
 
-    } elseif($x__type==13360){
+    } elseif($x__type==6255){
 
         $counter = x_coins_idea(6255, $i_focus['i__id']);
         $this_tab .= '<p class="space-content">This idea has been discovered '.$counter.' times.</p>';

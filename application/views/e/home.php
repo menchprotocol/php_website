@@ -20,7 +20,6 @@
             ), array('x__up'), $load_max, 0, array('totals' => 'DESC'), $select, $group_by);
             //TODO: Expand to include x__down for IDEA COINS (Currently only counts x__up)
 
-
         } elseif(in_array($e__id, $this->config->item('sources_id_13439'))){
 
             //WITH MOST DISCOVERIES
