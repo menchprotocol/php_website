@@ -864,7 +864,7 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
             $i_link = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
 
             //IDEA ICON:
-            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.$e___2738[4535]['m_icon'].'</a></span>';
+            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache('e___4737' /* Idea Status */, $i['i__status'], true, 'right').'</a></span>';
 
             //IDEA TITLE
             if($is_i_link && superpower_active(13354, true)){
@@ -875,13 +875,6 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
 
                 $ui .= '<a href="'.$i_link.'" class="title-block montserrat">';
                 $ui .= $box_items_list;
-
-                //IDEA STATUS
-                if(!$is_public && $is_i_link){
-                    //Show the drafting status:
-                    $ui .= '<span class="inline-block">'.view_cache('e___4737' /* Idea Status */, $i['i__status'], true, 'right').'&nbsp;</span>';
-                }
-
                 $ui .= view_i_title($i); //IDEA TITLE
                 $ui .= '</a>';
 
