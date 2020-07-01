@@ -184,7 +184,7 @@ foreach($this->config->item('sources__'.$tab_group) as $x__type => $m){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $sources__2738[4536]['m_icon'] . '</span></span>
                     <input type="text"
-                           class="form-control form-control-thick montserrat algolia_search input_note_'.$x__type.' dotransparent add-input"
+                           class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
                            placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand source-pad-' . $x__type . '"></div></div>';
