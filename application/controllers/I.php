@@ -375,7 +375,6 @@ class I extends CI_Controller {
                     ));
 
                 }
-
             }
 
             //Update Idea:
