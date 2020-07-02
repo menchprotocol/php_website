@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-02 13:41:05 PST
+//Generated 2020-07-02 16:05:54 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -128,7 +128,7 @@ $config['e___6159'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MENCH IDEATORS',
         'm_desc' => 'i___13202',
-        'm_parents' => array(6159,4251,13365,4527,13207),
+        'm_parents' => array(13451,6159,4251,13365,4527,13207),
     ),
 );
 
@@ -186,7 +186,7 @@ $config['e___4251'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MENCH IDEATORS',
         'm_desc' => '',
-        'm_parents' => array(6159,4251,13365,4527,13207),
+        'm_parents' => array(13451,6159,4251,13365,4527,13207),
     ),
     3000 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
@@ -209,7 +209,7 @@ $config['e___13439'] = array(
         'm_icon' => '<i class="fas fa-map-marker-check discover"></i>',
         'm_name' => 'MENCH READERS',
         'm_desc' => '',
-        'm_parents' => array(13207,4527,13439),
+        'm_parents' => array(13451,13207,4527,13439),
     ),
 );
 
@@ -218,9 +218,9 @@ $config['n___13438'] = array(4430);
 $config['e___13438'] = array(
     4430 => array(
         'm_icon' => '<i class="fad fa-users source" aria-hidden="true"></i>',
-        'm_name' => 'MEMBERS',
+        'm_name' => 'MENCH MEMBERS',
         'm_desc' => '',
-        'm_parents' => array(13438,13202,4364,4536,1278,10573),
+        'm_parents' => array(13451,13438,13202,4364,4536,1278,10573),
     ),
 );
 
@@ -422,7 +422,7 @@ $config['e___13365'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MENCH IDEATORS',
         'm_desc' => '',
-        'm_parents' => array(6159,4251,13365,4527,13207),
+        'm_parents' => array(13451,6159,4251,13365,4527,13207),
     ),
 );
 
@@ -581,9 +581,9 @@ $config['n___13202'] = array(4430);
 $config['e___13202'] = array(
     4430 => array(
         'm_icon' => '<i class="fad fa-users source" aria-hidden="true"></i>',
-        'm_name' => 'MEMBERS',
+        'm_name' => 'MENCH MEMBERS',
         'm_desc' => '',
-        'm_parents' => array(13438,13202,4364,4536,1278,10573),
+        'm_parents' => array(13451,13438,13202,4364,4536,1278,10573),
     ),
 );
 
@@ -594,13 +594,13 @@ $config['e___13207'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MENCH IDEATORS',
         'm_desc' => '',
-        'm_parents' => array(6159,4251,13365,4527,13207),
+        'm_parents' => array(13451,6159,4251,13365,4527,13207),
     ),
     13438 => array(
         'm_icon' => '<i class="fas fa-map-marker-check discover"></i>',
         'm_name' => 'MENCH READERS',
         'm_desc' => '',
-        'm_parents' => array(13207,4527,13439),
+        'm_parents' => array(13451,13207,4527,13439),
     ),
     13339 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
@@ -1163,9 +1163,9 @@ $config['n___10573'] = array(4430);
 $config['e___10573'] = array(
     4430 => array(
         'm_icon' => '<i class="fad fa-users source" aria-hidden="true"></i>',
-        'm_name' => 'MEMBERS',
+        'm_name' => 'MENCH MEMBERS',
         'm_desc' => '',
-        'm_parents' => array(13438,13202,4364,4536,1278,10573),
+        'm_parents' => array(13451,13438,13202,4364,4536,1278,10573),
     ),
 );
 
@@ -1627,14 +1627,20 @@ $config['e___12524'] = array(
     ),
 );
 
-//SYNC ICONS IF NEW:
-$config['n___12523'] = array(6293);
+//SYNC ICONS IF MISSING ICON:
+$config['n___12523'] = array(6293,13450);
 $config['e___12523'] = array(
     6293 => array(
         'm_icon' => '<i class="fas fa-image source"></i>',
         'm_name' => 'GIPHY GIFS',
         'm_desc' => '',
         'm_parents' => array(12523,12891,1326),
+    ),
+    13450 => array(
+        'm_icon' => '<i class="fas fa-text"></i>',
+        'm_name' => 'MENCH TERMINOLOGY INDEX',
+        'm_desc' => '',
+        'm_parents' => array(12523,7305),
     ),
 );
 
@@ -1816,9 +1822,9 @@ $config['e___4536'] = array(
     ),
     4430 => array(
         'm_icon' => '<i class="fad fa-users source" aria-hidden="true"></i>',
-        'm_name' => 'MEMBERS',
+        'm_name' => 'MENCH MEMBERS',
         'm_desc' => '',
-        'm_parents' => array(13438,13202,4364,4536,1278,10573),
+        'm_parents' => array(13451,13438,13202,4364,4536,1278,10573),
     ),
     6206 => array(
         'm_icon' => '<i class="fas fa-table source" aria-hidden="true"></i>',
@@ -4659,7 +4665,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MENCH IDEATORS',
         'm_desc' => '',
-        'm_parents' => array(6159,4251,13365,4527,13207),
+        'm_parents' => array(13451,6159,4251,13365,4527,13207),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
@@ -4701,7 +4707,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-map-marker-check discover"></i>',
         'm_name' => 'MENCH READERS',
         'm_desc' => '',
-        'm_parents' => array(13207,4527,13439),
+        'm_parents' => array(13451,13207,4527,13439),
     ),
     6206 => array(
         'm_icon' => '<i class="fas fa-table source" aria-hidden="true"></i>',
@@ -4981,7 +4987,7 @@ $config['e___4527'] = array(
     ),
     12523 => array(
         'm_icon' => '<i class="fad fa-sync source fa-spin" aria-hidden="true"></i>',
-        'm_name' => 'SYNC ICONS IF NEW',
+        'm_name' => 'SYNC ICONS IF MISSING ICON',
         'm_desc' => '',
         'm_parents' => array(12967,4527),
     ),
