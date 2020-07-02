@@ -605,7 +605,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
                 algolia_index.search(q, {
 
                     filters: ' object__type=4535 ' + ( js_session_superpowers_assigned.includes(12701) ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
-                    hitsPerPage:( is_add_mode=='link_in' ? 7 : 10 ),
+                    hitsPerPage:21,
 
                 }, function (error, content) {
                     if (error) {
@@ -860,7 +860,7 @@ function i_note_e_search(obj) {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
                 search: function (query, callback) {
                     algolia_index.search(query, {
-                        hitsPerPage: 7,
+                        hitsPerPage: 5,
                         filters: 'object__type=4536',
                     })
                         .then(function searchSuccess(content) {
