@@ -197,20 +197,13 @@ if(!isset($hide_header)){
                             } elseif($x__type==6415 && !$is_home){
                                 //Deleting discovers only available on Discoveries home
                                 continue;
-                            } elseif($x__type==12749 && !$is_home && !is_numeric($first_segment)){
-                                //Not an editable x
-                                continue;
                             }
 
                             $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
                             $extra_class = null;
                             $text_class = null;
 
-                            if($x__type==12749) {
-
-                                $page_url = 'href="/~'.( $is_home ? config_var(13405) : $first_segment ).'"';
-
-                            } elseif(in_array($x__type, $this->config->item('n___10876'))){
+                            if(in_array($x__type, $this->config->item('n___10876'))){
 
                                 //Fetch URL:
                                 $page_url = 'href="'.$e___10876[$x__type]['m_desc'].'"';

@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-02 12:06:16 PST
+//Generated 2020-07-02 12:43:26 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -467,13 +467,19 @@ $config['e___4603'] = array(
 );
 
 //DISCOVER TABS SHOW IF LOGGED-IN:
-$config['n___13304'] = array(12419,13023);
+$config['n___13304'] = array(12419,12749,13023);
 $config['e___13304'] = array(
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
         'm_name' => 'COMMENTS',
         'm_desc' => '',
         'm_parents' => array(11089,13304,13291,11018,12359,5967,10593,4986,4593,4485),
+    ),
+    12749 => array(
+        'm_icon' => '<i class="fas fa-pen"></i>',
+        'm_name' => 'CONTRIBUTE',
+        'm_desc' => '',
+        'm_parents' => array(10939,13304,13291),
     ),
     13023 => array(
         'm_icon' => '<i class="fas fa-share"></i>',
@@ -518,7 +524,7 @@ $config['e___13300'] = array(
 );
 
 //DISCOVER TABS:
-$config['n___13291'] = array(4231,12419,7545,13023,12274,12273,6255);
+$config['n___13291'] = array(4231,12419,7545,13023,12749,12274,12273,6255);
 $config['e___13291'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
@@ -543,6 +549,12 @@ $config['e___13291'] = array(
         'm_name' => 'SHARE',
         'm_desc' => '',
         'm_parents' => array(13304,13291,4527,13024,7305),
+    ),
+    12749 => array(
+        'm_icon' => '<i class="fas fa-pen"></i>',
+        'm_name' => 'CONTRIBUTE',
+        'm_desc' => '',
+        'm_parents' => array(10939,13304,13291),
     ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -1328,7 +1340,7 @@ $config['e___12677'] = array(
 );
 
 //VERTICAL MENU:
-$config['n___12500'] = array(13449,13207,12749,6415,6287,7291);
+$config['n___12500'] = array(13449,13207,6415,6287,7291);
 $config['e___12500'] = array(
     13449 => array(
         'm_icon' => '<i class="fas fa-user source"></i>',
@@ -1341,12 +1353,6 @@ $config['e___12500'] = array(
         'm_name' => 'LEADERBOARD',
         'm_desc' => '',
         'm_parents' => array(10876,12500,11035,10939,4527,4536),
-    ),
-    12749 => array(
-        'm_icon' => '<i class="fas fa-pen idea"></i>',
-        'm_name' => 'MAP THIS IDEA',
-        'm_desc' => '',
-        'm_parents' => array(10939,12500,11035),
     ),
     6415 => array(
         'm_icon' => '<i class="fas fa-trash-alt discover" aria-hidden="true"></i>',
@@ -3352,7 +3358,7 @@ $config['e___11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(6225,4235,13401,12211,13210,12750,13427,12707,12991,13207,11068,4535,12749,4341,12969,10573,10573,6287,12896,7256,4269,4536,4997,12275,13007,10957,7540);
+$config['n___11035'] = array(6225,4235,13401,12211,13210,12750,13427,12707,12991,13207,11068,4535,4341,12969,10573,10573,6287,12896,7256,4269,4536,4997,12275,13007,10957,7540);
 $config['e___11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3425,12 +3431,6 @@ $config['e___11035'] = array(
         'm_name' => 'MAP',
         'm_desc' => '',
         'm_parents' => array(10939,12893,11035,12761,12112,2738),
-    ),
-    12749 => array(
-        'm_icon' => '<i class="fas fa-pen idea"></i>',
-        'm_name' => 'MAP THIS IDEA',
-        'm_desc' => '',
-        'm_parents' => array(10939,12500,11035),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',

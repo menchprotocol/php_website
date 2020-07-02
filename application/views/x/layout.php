@@ -144,7 +144,7 @@ echo '<h1 class="block-one" '.( !$recipient_e['e__id'] ? ' style="padding-top: 2
 
 
 
-//IDEA LAYOUT
+//DISCOVER LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 13291;
 $tab_pills = '<ul class="nav nav-pills nav-sm">';
@@ -153,20 +153,16 @@ $tab_pill_count = 0;
 
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
-
     $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
     if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
         continue;
     }
-
 
     //Is this a caret menu?
     if(in_array(11040 , $m['m_parents'])){
         echo view_caret($x__type, $m, $i_focus['i__id']);
         continue;
     }
-
-
 
     $counter = null; //Assume no counters
     $this_tab = '';
@@ -301,6 +297,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         foreach($this->config->item('e___13023') as $m2) {
             $this_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
         }
+        $this_tab .= '</div>';
+
+    } elseif($x__type==12749) {
+
+        //CONTRIBUTE
+        $this_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
+        $this_tab .= '<div>Contribute to this idea in <a href="/~'.$i_focus['i__id'].'">Map Mode</a>.</div>';
         $this_tab .= '</div>';
 
     } else {
