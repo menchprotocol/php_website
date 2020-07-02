@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-02 12:02:24 PST
+//Generated 2020-07-02 12:06:16 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -3477,7 +3477,7 @@ $config['e___11035'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
-        'm_desc' => 'Mench is a non-profit & open-source platform on a mission to expand human potential by spreading ideas that matter.',
+        'm_desc' => 'Mench is a non-profit Social Ideation Network on a mission to expand your potential by discovering ideas that matter.',
         'm_parents' => array(12497,10876,4527,11035),
     ),
     4536 => array(
