@@ -987,7 +987,7 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $text_tooltip = ( strlen($text_tooltip) ? ' class="underdot" title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
+            $text_tooltip = ( strlen($text_tooltip) ? ' title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
             $output_body_message .= $e_appendix;
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
 
