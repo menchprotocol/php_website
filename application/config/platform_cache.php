@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-02 10:57:48 PST
+//Generated 2020-07-02 12:02:24 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -3025,7 +3025,7 @@ $config['e___11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,13405,12176,4356,4485,4736,13406,11064,11065,13014,11063,13005,11060,11079,11066,12088,13206,11986,12232,6197,12565,12568);
+$config['n___6404'] = array(12678,7274,12904,13210,11057,11056,12331,12427,3288,13405,12176,4356,4485,4736,13406,11064,11065,13014,11063,13005,11060,11079,11066,12088,13206,11986,12232,6197,12565,12568);
 $config['e___6404'] = array(
     12678 => array(
         'm_icon' => '',
@@ -3044,6 +3044,12 @@ $config['e___6404'] = array(
         'm_name' => 'DEFAULT BOOK COVER',
         'm_desc' => '//s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg',
         'm_parents' => array(6404,1,7524),
+    ),
+    13210 => array(
+        'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
+        'm_name' => 'DISCOVER HOME',
+        'm_desc' => 'Social Ideation Network',
+        'm_parents' => array(6404,11035,6205),
     ),
     11057 => array(
         'm_icon' => '',
@@ -3374,9 +3380,9 @@ $config['e___11035'] = array(
     ),
     13210 => array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
-        'm_name' => 'DISCOVER IDEAS THAT MATTER',
+        'm_name' => 'DISCOVER HOME',
         'm_desc' => '',
-        'm_parents' => array(11035,6205),
+        'm_parents' => array(6404,11035,6205),
     ),
     12750 => array(
         'm_icon' => '<i class="fas fa-step-forward discover"></i>',
