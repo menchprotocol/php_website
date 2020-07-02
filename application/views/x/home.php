@@ -28,9 +28,9 @@
 
             echo '<div class="clear-xy-list">';
             echo '<div id="i_covers" class="cover-list">';
-            foreach($member_x as $i) {
-                array_push($member_xy_ids, $i['i__id']);
-                echo view_i_cover($i, true);
+            foreach($member_x as $x) {
+                array_push($member_xy_ids, $x['i__id']);
+                echo view_i_cover($x, true);
             }
             echo '</div>';
             echo '</div>';
@@ -67,8 +67,8 @@
             echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12896]['m_icon'].'</span>'.$e___11035[12896]['m_name'].'</div>';
 
             echo '<div class="list-group no-side-padding">';
-            foreach($member_saved as $priority => $i) {
-                echo view_i_x($i, null, true);
+            foreach($member_saved as $priority => $x) {
+                echo view_i_x($x, null, true);
             }
             echo '</div>';
 
@@ -77,21 +77,18 @@
     } else {
 
         //Not logged in, show description:
-        $is = $this->I_model->fetch(array(
-            'i__id' => config_var(13405),
-        ));
 
         //IDEA TITLE
-        echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon">'.view_x_icon_legend( false , 0 ).'</span><span class="title-block-lg">' . view_i_title($is[0]) . '</span></h1>';
+        echo '<h1 class="block-one" style="padding-top: 21px;"><span class="icon-block top-icon">'.view_x_icon_legend( false , 0 ).'</span><span class="title-block-lg">' . view_i_title($i) . '</span></h1>';
 
         //IDEA MESSAGES
         echo '<div style="margin-bottom:34px;">';
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => config_var(13405),
-        ), array(), 0, 0, array('x__sort' => 'ASC')) as $message_x) {
-            echo $this->X_model->message_send( $message_x['x__message'] );
+            'x__right' => $i['i__id'],
+        ), array(), 0, 0, array('x__sort' => 'ASC')) as $x) {
+            echo $this->X_model->message_send( $x['x__message'] );
         }
         echo '</div>';
 
@@ -104,15 +101,15 @@
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-        'x__left' => config_var(13405),
+        'x__left' => $i['i__id'],
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
     echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13427]['m_icon'].'</span>'.$e___11035[13427]['m_name'].'</div>';
     echo '<div class="cover-list">';
-    foreach($featured_is as $key => $i){
-        if(!in_array($i['i__id'], $member_xy_ids)){
+    foreach($featured_is as $key => $x){
+        if(!in_array($x['i__id'], $member_xy_ids)){
             //Show only if not in discovering list:
-            echo view_i_cover($i, false);
+            echo view_i_cover($x, false);
         }
     }
     echo '</div>';

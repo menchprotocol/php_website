@@ -17,11 +17,15 @@ class X extends CI_Controller
     function index(){
 
         //Load header:
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $this->load->view('header', array(
-            'title' => $e___11035[13210]['m_name'],
+        $is = $this->I_model->fetch(array(
+            'i__id' => config_var(13405),
         ));
-        $this->load->view('x/home');
+        $this->load->view('header', array(
+            'title' => $is[0]['i__title'],
+        ));
+        $this->load->view('x/home', array(
+            'i' => $is[0],
+        ));
         $this->load->view('footer');
 
     }
