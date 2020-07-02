@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-01 16:20:21 PST
+//Generated 2020-07-02 10:57:48 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -789,7 +789,7 @@ $config['e___12761'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
 );
 
@@ -986,7 +986,7 @@ $config['e___12893'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -1328,13 +1328,13 @@ $config['e___12677'] = array(
 );
 
 //VERTICAL MENU:
-$config['n___12500'] = array(4536,13207,12749,6415,6287,7291);
+$config['n___12500'] = array(13449,13207,12749,6415,6287,7291);
 $config['e___12500'] = array(
-    4536 => array(
-        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCE',
+    13449 => array(
+        'm_icon' => '<i class="fas fa-user source"></i>',
+        'm_name' => 'MY SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(12500),
     ),
     13207 => array(
         'm_icon' => '<i class="fas fa-medal source"></i>',
@@ -3478,7 +3478,7 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-list source" aria-hidden="true"></i>',
@@ -4163,7 +4163,7 @@ $config['e___2738'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -4815,7 +4815,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE',
         'm_desc' => '',
-        'm_parents' => array(12500,10939,12489,11035,12893,12761,4527,2738),
+        'm_parents' => array(10939,12489,11035,12893,12761,4527,2738),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-plus-circle source" aria-hidden="true"></i>',

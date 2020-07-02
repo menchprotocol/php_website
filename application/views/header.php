@@ -215,7 +215,7 @@ if(!isset($hide_header)){
                                 //Fetch URL:
                                 $page_url = 'href="'.$e___10876[$x__type]['m_desc'].'"';
 
-                            } elseif($x__type==4536) {
+                            } elseif($x__type==13449) {
 
                                 //SET SOURCE TO PLAYER
                                 $x__type = $session_e['e__id'];
