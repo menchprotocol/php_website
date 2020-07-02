@@ -303,7 +303,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //CONTRIBUTE
         $this_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
-        $this_tab .= '<div>Contribute to this idea in <a href="/~'.$i_focus['i__id'].'">Map Mode</a>.</div>';
+        $this_tab .= '<div>Contribute to this idea in <a href="/~'.$i_focus['i__id'].'" class="montserrat">Map Mode</a>.</div>';
         $this_tab .= '</div>';
 
     } else {
