@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-02 12:43:26 PST
+//Generated 2020-07-02 12:44:32 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -476,7 +476,7 @@ $config['e___13304'] = array(
         'm_parents' => array(11089,13304,13291,11018,12359,5967,10593,4986,4593,4485),
     ),
     12749 => array(
-        'm_icon' => '<i class="fas fa-pen"></i>',
+        'm_icon' => '<i class="fas fa-pen-square"></i>',
         'm_name' => 'CONTRIBUTE',
         'm_desc' => '',
         'm_parents' => array(10939,13304,13291),
@@ -551,7 +551,7 @@ $config['e___13291'] = array(
         'm_parents' => array(13304,13291,4527,13024,7305),
     ),
     12749 => array(
-        'm_icon' => '<i class="fas fa-pen"></i>',
+        'm_icon' => '<i class="fas fa-pen-square"></i>',
         'm_name' => 'CONTRIBUTE',
         'm_desc' => '',
         'm_parents' => array(10939,13304,13291),
