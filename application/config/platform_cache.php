@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-07 16:11:56 PST
+//Generated 2020-07-07 16:27:24 PST
 
 //METADATA CLEAN VARIABLES:
 $config['n___7277'] = array(6159,6172);
@@ -65,7 +65,7 @@ $config['e___6159'] = array(
         'm_parents' => array(6159,4251,12968,13428,13365,13207,12864),
     ),
     3000 => array(
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => 'i___3000',
         'm_parents' => array(6159,4251,13428,13365,12864,13207,4527),
@@ -189,7 +189,7 @@ $config['e___4251'] = array(
         'm_parents' => array(13451,6159,4251,13365,4527,13207),
     ),
     3000 => array(
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
         'm_parents' => array(6159,4251,13428,13365,12864,13207,4527),
@@ -413,7 +413,7 @@ $config['e___13365'] = array(
         'm_parents' => array(6159,4251,12968,13428,13365,13207,12864),
     ),
     3000 => array(
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
         'm_parents' => array(6159,4251,13428,13365,12864,13207,4527),
@@ -609,7 +609,7 @@ $config['e___13207'] = array(
         'm_parents' => array(6159,4251,12968,13428,13365,13207,12864),
     ),
     3000 => array(
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
         'm_parents' => array(6159,4251,13428,13365,12864,13207,4527),
@@ -910,13 +910,19 @@ $config['e___12969'] = array(
 );
 
 //SYNC ICONS IF DIFFERENT:
-$config['n___12968'] = array(13339,2997,4446,3005,3147,13350,3192,2998);
+$config['n___12968'] = array(13339,13466,2997,4446,3005,3147,13350,3192,2998);
 $config['e___12968'] = array(
     13339 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'AUTHORS',
         'm_desc' => '',
         'm_parents' => array(6159,4251,12968,13428,13365,13207,12864),
+    ),
+    13466 => array(
+        'm_icon' => '<i class="fad fa-calendar-star source"></i>',
+        'm_name' => 'EVENTS',
+        'm_desc' => '',
+        'm_parents' => array(12968,12864),
     ),
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
@@ -1803,7 +1809,7 @@ $config['e___4536'] = array(
         'm_parents' => array(4536),
     ),
     12891 => array(
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fas fa-layer-group source"></i>',
         'm_name' => 'EXPERT PLATFORMS',
         'm_desc' => '',
         'm_parents' => array(12864,4536),
@@ -4380,7 +4386,7 @@ $config['e___4527'] = array(
         'm_parents' => array(4527,6204,6225),
     ),
     3000 => array(
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
         'm_name' => 'EXPERT CONTENT',
         'm_desc' => '',
         'm_parents' => array(6159,4251,13428,13365,12864,13207,4527),
