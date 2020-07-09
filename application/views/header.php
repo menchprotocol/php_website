@@ -108,7 +108,15 @@ if(!isset($hide_header)){
                             echo '<td><div class="mench_nav left_nav">';
 
                             //MENCH LOGO
-                            echo '<span class="inline-block pull-left"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo '.( $session_e ? 'show-max' : '' ).'">MENCH</b></a></span>';
+                            echo '<span class="inline-block pull-left">';
+                            if($session_e){
+                                //Just logo
+                                echo '<img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo show-max">MENCH</b>';
+                            } else {
+                                //Link to Discoveries:
+                                echo '<a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a>';
+                            }
+                            echo '</span>';
 
                         } elseif(in_array($x__type, $this->config->item('n___12467')) && $session_e){
 
