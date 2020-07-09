@@ -121,9 +121,9 @@ if(!isset($hide_header)){
                                 $page_url = 'href="/"';
                             }
 
-                            $class = extract_icon_color($m['m_icon']);
+                            $class = trim(extract_icon_color($m['m_icon']));
                             $is_active = ($current_mench['x_name']==$class);
-                            echo '<div class="btn-group pull-left mench_coin '.$class.' mench-coins border-' . trim($class).( $is_active ? ' active ' : '' ).'">';
+                            echo '<div class="btn-group pull-left mench_coin '.$class.' mench-coins border-' . $class.( $is_active ? ' active ' : '' ).'">';
                             echo '<a class="btn ' . $class . '" '.$page_url.'>';
                             echo '<span class="icon-block-xs">' . $m['m_icon'] . '</span>';
                             echo view_number($this->config->item('s___'.$x__type)).' ';
