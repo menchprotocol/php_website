@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-08 20:37:07 PST
+//Generated 2020-07-08 20:42:27 PST
 $config['s___12273'] = 3914; //IDEAS
 $config['s___12274'] = 5005; //SOURCES
 $config['s___6255'] = 121862; //DISCOVERIES
-$config['s___13362'] = 1165976; //TRANSACTIONS
+$config['s___13362'] = 1165990; //TRANSACTIONS
 
 //UNIQUE IDEAS:
 $config['n___13480'] = array(4250);
@@ -26,7 +26,7 @@ $config['e___13480'] = array(
 );
 
 //MENCH HEADER:
-$config['n___13357'] = array(2738,12274,12273,6255,7256,13479);
+$config['n___13357'] = array(2738,6255,12273,12274,7256,13479);
 $config['e___13357'] = array(
     2738 => array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
@@ -34,11 +34,11 @@ $config['e___13357'] = array(
         'm_desc' => '',
         'm_parents' => array(13357,13436,12891,2,11054,12041,4527,1,7312),
     ),
-    12274 => array(
-        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_name' => 'SOURCES',
+    6255 => array(
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(13357,12761,13478,13454,13298,13355,13369,13291,4536,12467,12228,4527),
+        'm_parents' => array(13357,13478,13455,13355,13369,13291,12701,6205,12677,10939,11018,12467,12228,4527),
     ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -46,11 +46,11 @@ $config['e___13357'] = array(
         'm_desc' => '',
         'm_parents' => array(13357,12761,13478,12112,13457,13298,13355,13369,13291,13410,4983,4535,12571,12467,12228,4527),
     ),
-    6255 => array(
-        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVERIES',
+    12274 => array(
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_name' => 'SOURCES',
         'm_desc' => '',
-        'm_parents' => array(13357,13478,13455,13355,13369,13291,12701,6205,12677,10939,11018,12467,12228,4527),
+        'm_parents' => array(13357,12761,13478,13454,13298,13355,13369,13291,4536,12467,12228,4527),
     ),
     7256 => array(
         'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
