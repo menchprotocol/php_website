@@ -19,7 +19,7 @@ class X extends CI_Controller
         //Load header:
         $e___13488 = $this->config->item('e___13488');
         $this->load->view('header', array(
-            'title' => $e___13488[13210]['m_name'],
+            'title' => $e___13488[10876]['m_name'],
         ));
         $this->load->view('x/home');
         $this->load->view('footer');
