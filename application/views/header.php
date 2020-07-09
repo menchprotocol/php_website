@@ -108,7 +108,7 @@ if(!isset($hide_header)){
                             echo '<td><div class="mench_nav left_nav">';
 
                             //MENCH LOGO
-                            echo '<span class="inline-block pull-left" style="padding-right: 5px;"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo '.( $session_e ? 'show-max' : '' ).'">MENCH</b></a></span>';
+                            echo '<span class="inline-block pull-left"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo '.( $session_e ? 'show-max' : '' ).'">MENCH</b></a></span>';
 
                         } elseif(in_array($x__type, $this->config->item('n___12467')) && $session_e){
 
