@@ -238,6 +238,10 @@ a.btn, .btn.dropdown-toggle, label.btn {
     padding:12px 0 11px 0 !important;
 }
 
+.mench_coin .btn {
+    padding: 13px 0px 5px 0px !important;
+}
+
 img.no-radius {
     border-radius:0 !important;
 }
@@ -949,6 +953,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 .mench_coin{
     text-decoration: none;
+    margin-left: 13px !important;
 }
 
 
