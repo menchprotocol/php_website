@@ -768,21 +768,26 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
 
         //SOURCES
         $order_columns = array('e__weight' => 'DESC'); //BEST SOURCES
+        $join_objects = array('x__down');
 
         if($e__id > 0){
-            $join_objects = array('x__down');
+
             $query_filters = array(
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COINS
                 'x__member' => $e__id,
             );
+
         } else {
-            $join_objects = array();
+
+            //COUNT EXPERT SOURCES ONLY
             $query_filters = array(
+                'x__up IN (' . join(',', $CI->config->item('n___12864')) . ')' => null, //EXPERT SOURCES
+                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
-                '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
             );
+
         }
 
     } elseif($x__type==12273){
