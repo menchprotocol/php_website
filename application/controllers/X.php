@@ -17,8 +17,9 @@ class X extends CI_Controller
     function index(){
 
         //Load header:
+        $e___13488 = $this->config->item('e___13488');
         $this->load->view('header', array(
-            'title' => config_var(13210),
+            'title' => $e___13488[13210]['m_name'],
         ));
         $this->load->view('x/home');
         $this->load->view('footer');

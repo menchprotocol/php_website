@@ -5,6 +5,7 @@
     <?php
 
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+    $e___13488 = $this->config->item('e___13488'); //MENCH HOME PAGES
     $e___12467 = $this->config->item('e___12467'); //MENCH
 
 
@@ -19,7 +20,7 @@
 
 
     //MY IDEAS
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_name'].'</div>';
+    echo '<div class="headline"><span class="icon-block">'.$e___13488[10573]['m_icon'].'</span>'.$e___13488[10573]['m_name'].'</div>';
 
     //ADD IDEAS
     echo '<div class="list-group">';

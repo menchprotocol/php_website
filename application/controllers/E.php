@@ -27,9 +27,9 @@ class E extends CI_Controller
             ));
         }
 
-        $e___11035 = $this->config->item('e___11035');
+        $e___13488 = $this->config->item('e___13488');
         $this->load->view('header', array(
-            'title' => $e___11035[13207]['m_name'],
+            'title' => $e___13488[13207]['m_name'],
         ));
         $this->load->view('e/home', array(
             'session_e' => $session_e,

@@ -80,9 +80,9 @@ class I extends CI_Controller {
     function index(){
         //Idea Bookmarks
         $session_e = superpower_assigned(10939, true);
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+        $e___13488 = $this->config->item('e___13488'); //MENCH HOME PAGES
         $this->load->view('header', array(
-            'title' => $e___11035[10573]['m_name'],
+            'title' => $e___13488[10573]['m_name'],
             'session_e' => $session_e,
         ));
         $this->load->view('i/home');
