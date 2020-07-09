@@ -771,7 +771,7 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
         $join_objects = array('x__down');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COIN
+            'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COINS
         );
 
         if($e__id > 0){
@@ -787,13 +787,13 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
         if($e__id > 0){
             $query_filters = array(
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
+                'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COINS
                 '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
             );
         } else {
             $query_filters = array(
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
+                'x__type IN (' . join(',', $CI->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
             );
         }
 
