@@ -140,7 +140,7 @@ if($recipient_e['e__id']){
 
 
 //IDEA TITLE
-echo '<h1 class="block-one" '.( !$recipient_e['e__id'] ? ' style="padding-top: 21px;" ' : '' ).'><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
+echo '<h1 class="block-one"><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
 
 
 
