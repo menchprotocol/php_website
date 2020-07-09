@@ -127,7 +127,7 @@ if(!isset($hide_header)){
                             echo '<a class="btn ' . $class . '" '.$page_url.'>';
                             echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                             echo view_number($this->config->item('s___'.$x__type)).' ';
-                            echo '<span class="montserrat ' . $class . '_name show-max">' . $m['m_name'] . '&nbsp;</span>';
+                            //echo '<span class="montserrat ' . $class . '_name show-max">' . $m['m_name'] . '</span>';
                             echo '</a>';
                             echo '</div>';
 
