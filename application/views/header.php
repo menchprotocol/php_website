@@ -110,7 +110,7 @@ if(!isset($hide_header)){
                             //MENCH LOGO
                             echo '<span class="inline-block pull-left"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo show-max">MENCH</b></span>';
 
-                        } elseif(in_array($x__type, $this->config->item('n___12467')) && $session_e){
+                        } elseif(in_array($x__type, $this->config->item('n___12467'))){
 
                             //Mench Coins
                             if($x__type==12274){
