@@ -108,7 +108,7 @@ if(!isset($hide_header)){
                             echo '<td><div class="mench_nav left_nav">';
 
                             //MENCH LOGO
-                            echo '<span class="inline-block"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></span>';
+                            echo '<span class="inline-block pull-left"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></span>';
 
                         } elseif(in_array($x__type, $this->config->item('n___12467'))){
 
@@ -123,7 +123,7 @@ if(!isset($hide_header)){
 
                             $class = extract_icon_color($m['m_icon']);
                             $is_active = ($current_mench['x_name']==$class);
-                            echo '<div class="btn-group mench_coin '.$class.' mench-coins border-' . $class.( $is_active ? ' active ' : '' ).'">';
+                            echo '<div class="btn-group pull-left mench_coin '.$class.' mench-coins border-' . $class.( $is_active ? ' active ' : '' ).'">';
                             echo '<a class="btn ' . $class . '" '.$page_url.'>';
                             echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                             echo view_number($this->config->item('s___'.$x__type)).' ';
