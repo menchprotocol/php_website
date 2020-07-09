@@ -766,6 +766,7 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
     //We need to count this:
     if($x__type==12274){
 
+        //SOURCES
         $order_columns = array('e__weight' => 'DESC'); //BEST SOURCES
         $join_objects = array('x__down');
         $query_filters = array(
@@ -779,19 +780,26 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
 
     } elseif($x__type==12273){
 
+        //IDEAS
         $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
         $join_objects = array('x__right');
-        $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
-        );
 
         if($e__id > 0){
-            $query_filters['(x__up = '.$e__id.' OR x__down = '.$e__id.')'] = null;
+            $query_filters = array(
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
+                '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
+            );
+        } else {
+            $query_filters = array(
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
+            );
         }
 
     } elseif($x__type==6255){
 
+        //DISCOVERIES
         $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
         $join_objects = array('x__left');
         $query_filters = array(
