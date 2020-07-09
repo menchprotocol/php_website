@@ -657,14 +657,14 @@ function current_mench(){
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
 
-    if($first_letter=='@' || $first_segment=='source'){
+    if($first_letter=='@' || $first_segment=='e' || $first_segment=='source'){
 
         return array(
             'x_id' => 12274,
             'x_name' => 'source',
         );
 
-    } elseif($first_letter=='~' || $first_segment=='idea'){
+    } elseif($first_letter=='~' || $first_segment=='i' || $first_segment=='idea'){
 
         return array(
             'x_id' => 12273,
