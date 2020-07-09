@@ -780,7 +780,7 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
             $join_objects = array();
             $query_filters = array(
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
+                'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
                 '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
             );
         }
