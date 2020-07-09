@@ -362,7 +362,7 @@ img.no-radius {
     background-color: #FFFFFF;
     border:0px solid #f0f0f0;
     cursor: pointer;
-    padding: 7px 0;
+    padding: 7px 3px;
     color: #000000;
     font-weight: 500;
     margin: 0;
