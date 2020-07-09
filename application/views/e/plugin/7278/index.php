@@ -17,14 +17,14 @@ $e___4593 = $this->config->item('e___4593');
 
 //To make sure Idea/source IDs are unique:
 $id_prefix = array(
-    4535 => 100,
-    4536 => 200,
+    12273 => 100,
+    12274 => 200,
 );
 
 //Size of nodes:
 $node_size = array(
-    4535 => 3,
-    4536 => 2,
+    12273 => 3,
+    12274 => 2,
     'msg' => 1,
 );
 
@@ -39,10 +39,10 @@ foreach($is as $in){
 
     //Add Idea node:
     $this->db->insert('gephi_nodes', array(
-        'id' => $id_prefix[4535].$in['i__id'],
+        'id' => $id_prefix[12273].$in['i__id'],
         'label' => $in['i__title'],
         //'size' => ( isset($i__metadata['i___6162']) ? round(($i__metadata['i___6162']/3600),0) : 0 ), //Max time
-        'size' => $node_size[4535],
+        'size' => $node_size[12273],
         'node_type' => 1, //Idea
         'node_status' => $in['i__status'],
     ));
@@ -56,8 +56,8 @@ foreach($is as $in){
     ), array('x__right'), 0, 0) as $next_i){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4535].$next_i['x__left'],
-            'target' => $id_prefix[4535].$next_i['x__right'],
+            'source' => $id_prefix[12273].$next_i['x__left'],
+            'target' => $id_prefix[12273].$next_i['x__right'],
             'label' => $e___4593[$next_i['x__type']]['m_name'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $next_i['x__type'],
@@ -76,9 +76,9 @@ foreach($es as $en){
 
     //Add source node:
     $this->db->insert('gephi_nodes', array(
-        'id' => $id_prefix[4536].$en['e__id'],
+        'id' => $id_prefix[12274].$en['e__id'],
         'label' => $en['e__title'],
-        'size' => $node_size[4536] ,
+        'size' => $node_size[12274] ,
         'node_type' => 2, //Player
         'node_status' => $en['e__status'],
     ));
@@ -92,8 +92,8 @@ foreach($es as $en){
     ), array('x__down'), 0, 0) as $e_child){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4536].$e_child['x__up'],
-            'target' => $id_prefix[4536].$e_child['x__down'],
+            'source' => $id_prefix[12274].$e_child['x__up'],
+            'target' => $id_prefix[12274].$e_child['x__down'],
             'label' => $e___4593[$e_child['x__type']]['m_name'].': '.$e_child['x__message'],
             'weight' => 1,
             'edge_type' => $e_child['x__type'],
@@ -123,7 +123,7 @@ foreach($messages as $message) {
     //Add child idea link:
     $this->db->insert('gephi_edges', array(
         'source' => $message['x__id'],
-        'target' => $id_prefix[4535].$message['x__right'],
+        'target' => $id_prefix[12273].$message['x__right'],
         'label' => 'Child Idea',
         'weight' => 1,
     ));
@@ -131,7 +131,7 @@ foreach($messages as $message) {
     //Add parent idea link?
     if ($message['x__left'] > 0) {
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4535].$message['x__left'],
+            'source' => $id_prefix[12273].$message['x__left'],
             'target' => $message['x__id'],
             'label' => 'Parent Idea',
             'weight' => 1,
@@ -141,7 +141,7 @@ foreach($messages as $message) {
     //Add parent source link?
     if ($message['x__up'] > 0) {
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[4536].$message['x__up'],
+            'source' => $id_prefix[12274].$message['x__up'],
             'target' => $message['x__id'],
             'label' => 'Parent Source',
             'weight' => 1,

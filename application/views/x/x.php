@@ -207,7 +207,6 @@ if(isset($_GET['x__type'])){
 
 $has_filters = ( count($_GET) > 0 );
 
-$e___2738 = $this->config->item('e___2738');
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 ?>

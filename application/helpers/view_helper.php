@@ -287,8 +287,8 @@ function view_e__icon($e__icon = null)
     } else {
         //Return default icon for sources:
         $CI =& get_instance();
-        $e___2738 = $CI->config->item('e___2738'); //MENCH
-        return $e___2738[4536]['m_icon'];
+        $e___12467 = $CI->config->item('e___12467'); //MENCH
+        return $e___12467[12274]['m_icon'];
     }
 }
 
@@ -345,7 +345,7 @@ function view_interaction($x, $is_parent_tr = false)
     $CI =& get_instance();
     $e___4593 = $CI->config->item('e___4593'); //Link Type
     $e___4341 = $CI->config->item('e___4341'); //Link Table
-    $e___2738 = $CI->config->item('e___2738');
+    $e___12467 = $CI->config->item('e___12467');
     $e___6186 = $CI->config->item('e___6186'); //Interaction Status
     $session_e = superpower_assigned();
 
@@ -458,7 +458,7 @@ function view_interaction($x, $is_parent_tr = false)
                 //IDEA
                 $is = $CI->I_model->fetch(array('i__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.$e___2738[4535]['m_icon']. '&nbsp;'.view_i_title($is[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.$e___12467[12273]['m_icon']. '&nbsp;'.view_i_title($is[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
@@ -826,7 +826,7 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
     $e___4737 = $CI->config->item('e___4737'); //IDEA STATUS
     $e___7585 = $CI->config->item('e___7585');
     $e___4486 = $CI->config->item('e___4486');
-    $e___2738 = $CI->config->item('e___2738');
+    $e___12467 = $CI->config->item('e___12467');
     $e___12413 = $CI->config->item('e___12413');
     $e___13408 = $CI->config->item('e___13408');
 
@@ -1406,7 +1406,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $CI =& get_instance();
     $session_e = superpower_assigned();
     $e___6177 = $CI->config->item('e___6177'); //Source Status
-    $e___2738 = $CI->config->item('e___2738');
     $e___4592 = $CI->config->item('e___4592');
     $e___6186 = $CI->config->item('e___6186'); //Interaction Status
 
@@ -1628,7 +1627,7 @@ function view_input_text($cache_e__id, $current_value, $object__id, $member_is_i
 
         $focus_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="view_input_text_count('.$cache_e__id.','.$object__id.')" placeholder="'.$e___12112[$cache_e__id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
         $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$object__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$object__id.'">0</span>/'.config_var($cache_e__id).' CHARACTERS</div>';
-        $icon = '<span class="icon-block title-icon">'.( $e__icon ? $e__icon : $e___12112[4535]['m_icon'] ).'</span>';
+        $icon = '<span class="icon-block title-icon">'.( $e__icon ? $e__icon : $e___12112[12273]['m_icon'] ).'</span>';
 
     } else {
 

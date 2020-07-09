@@ -5,7 +5,7 @@
     <?php
 
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-    $e___2738 = $this->config->item('e___2738'); //MENCH
+    $e___12467 = $this->config->item('e___12467'); //MENCH
 
 
     $member_is = $this->X_model->fetch(array(
@@ -25,7 +25,7 @@
     echo '<div class="list-group">';
     echo '<div class="list-group-item list-adder itemidea">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4535]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick montserrat algolia_search dotransparent add-input"
                            maxlength="' . config_var(4736) . '"

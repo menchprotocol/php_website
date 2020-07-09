@@ -3,7 +3,7 @@
 
 $e___6206 = $this->config->item('e___6206'); //MENCH SOURCE
 $e___4341 = $this->config->item('e___4341'); //Link Table
-$e___2738 = $this->config->item('e___2738'); //MENCH
+$e___12467 = $this->config->item('e___12467'); //MENCH
 $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___11089 = $this->config->item('e___11089'); //SOURCE LAYOUT
@@ -223,13 +223,13 @@ $member_is_e = member_is_e($e['e__id']);
         }
 
         //Does have 1 or more coins
-        $counter = x_coins_e($x__type, $e['e__id']);
+        $counter = x_stats_count($x__type, $e['e__id']);
         if(!$counter){
             //Hide since Zero:
             continue;
         }
 
-        $this_tab = x_coins_e($x__type, $e['e__id'], 1);
+        $this_tab = x_stats_count($x__type, $e['e__id'], 1);
         $default_active = in_array($x__type, $this->config->item('n___12571'));
 
         $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].( strlen($m['m_desc']) ? ': '.$m['m_desc'] : '' ).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'</a></li>';
@@ -420,7 +420,7 @@ $member_is_e = member_is_e($e['e__id']);
             //Input to add new parents:
             $this_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4536]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
@@ -661,7 +661,7 @@ $member_is_e = member_is_e($e['e__id']);
             //Input to add new child:
             $this_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4536]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"

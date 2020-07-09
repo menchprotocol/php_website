@@ -70,7 +70,7 @@ function load_editor(){
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'object__type=4536',
+                    filters: 'object__type=12274',
                     hitsPerPage: 5,
                 }, function (error, content) {
                     if (error) {
@@ -101,7 +101,7 @@ function load_editor(){
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'object__type=4535',
+                    filters: 'object__type=12273',
                     hitsPerPage: 5,
                 }, function (error, content) {
                     if (error) {
@@ -146,7 +146,7 @@ function js_extract_icon_color(e__icon){
 function view_search_result(algolia_object){
 
     //Determine object type:
-    var is_i = (parseInt(algolia_object.object__type)==4535);
+    var is_i = (parseInt(algolia_object.object__type)==12273);
     var is_public = ( parseInt(algolia_object.object__status) in ( is_i ? js_e___7355 : js_e___7357 ));
     var obj_icon = ( is_i ? '<i class="fas fa-circle idea"></i>' : algolia_object.object__icon );
     var obj_full_name = ( algolia_object._highlightResult && algolia_object._highlightResult.object__title.value ? algolia_object._highlightResult.object__title.value : algolia_object.object__title );
@@ -288,7 +288,7 @@ $(document).ready(function () {
                         var search_filters = '';
 
                         if(search_only_e || search_only_in){
-                            search_filters += ' object__type='+( search_only_in ? 4535 : 4536 );
+                            search_filters += ' object__type='+( search_only_in ? 12273 : 12274 );
                         }
 
                         if(js_pl_id > 0){
@@ -443,7 +443,7 @@ var isAdvancedUpload = function () {
 var search_is_on = false;
 function toggle_search(){
 
-    $('.primary_nav').addClass('hidden');
+    $('.left_nav').addClass('hidden');
     $('.search_icon').toggleClass('hidden');
 
     if(search_is_on){
@@ -604,7 +604,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             } else {
                 algolia_index.search(q, {
 
-                    filters: ' object__type=4535 ' + ( js_session_superpowers_assigned.includes(12701) ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
+                    filters: ' object__type=12273 ' + ( js_session_superpowers_assigned.includes(12701) ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
                     hitsPerPage:21,
 
                 }, function (error, content) {
@@ -861,7 +861,7 @@ function i_note_e_search(obj) {
                 search: function (query, callback) {
                     algolia_index.search(query, {
                         hitsPerPage: 5,
-                        filters: 'object__type=4536',
+                        filters: 'object__type=12274',
                     })
                         .then(function searchSuccess(content) {
                             if (content.query === query) {

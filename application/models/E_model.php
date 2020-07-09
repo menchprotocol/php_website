@@ -122,7 +122,7 @@ class E_model extends CI_Model
 
             if($external_sync){
                 //Update Algolia:
-                update_algolia(4536, $add_fields['e__id']);
+                update_algolia(12274, $add_fields['e__id']);
             }
 
             return $es[0];
@@ -201,7 +201,7 @@ class E_model extends CI_Model
 
             if($external_sync){
                 //Sync algolia:
-                update_algolia(4536, $id);
+                update_algolia(12274, $id);
             }
 
             //Log modification link for every field changed:
@@ -785,7 +785,7 @@ class E_model extends CI_Model
                     $this->E_model->assign_session_member($e_url['e__id']);
 
                     //Update Search Index:
-                    update_algolia(4536, $e_url['e__id']);
+                    update_algolia(12274, $e_url['e__id']);
 
                 } else {
 

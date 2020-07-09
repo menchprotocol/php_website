@@ -87,19 +87,19 @@ class X_model extends CI_Model
         //Sync algolia?
         if ($external_sync) {
             if ($add_fields['x__up'] > 0) {
-                update_algolia(4536, $add_fields['x__up']);
+                update_algolia(12274, $add_fields['x__up']);
             }
 
             if ($add_fields['x__down'] > 0) {
-                update_algolia(4536, $add_fields['x__down']);
+                update_algolia(12274, $add_fields['x__down']);
             }
 
             if ($add_fields['x__left'] > 0) {
-                update_algolia(4535, $add_fields['x__left']);
+                update_algolia(12273, $add_fields['x__left']);
             }
 
             if ($add_fields['x__right'] > 0) {
-                update_algolia(4535, $add_fields['x__right']);
+                update_algolia(12273, $add_fields['x__right']);
             }
         }
 

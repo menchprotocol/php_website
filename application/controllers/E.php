@@ -430,7 +430,7 @@ class E extends CI_Controller
             $this->E_model->assign_session_member($focus_e['e__id']);
 
             //Update Algolia:
-            update_algolia(4536, $focus_e['e__id']);
+            update_algolia(12274, $focus_e['e__id']);
 
         }
 
@@ -1120,7 +1120,7 @@ class E extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'url_previously_existed' => 1,
-                'algolia_object' => update_algolia(4536, $url_e['e_url']['e__id'], 1),
+                'algolia_object' => update_algolia(12274, $url_e['e_url']['e__id'], 1),
             ));
         } else {
             return view_json(array(
@@ -1674,7 +1674,7 @@ class E extends CI_Controller
         ));
 
         //Now update Algolia:
-        update_algolia(4536,  $added_e['new_e']['e__id']);
+        update_algolia(12274,  $added_e['new_e']['e__id']);
 
         //Fetch referral Idea, if any:
         if(intval($_POST['sign_i__id']) > 0){

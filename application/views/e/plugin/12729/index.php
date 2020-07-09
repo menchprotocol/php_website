@@ -31,7 +31,7 @@ foreach($this->X_model->fetch(array(
 ), array('x__type'), 0, 0, array('total_x' => 'DESC'), 'COUNT(x__id) as total_x, e__title, e__icon, e__id, x__type', 'e__id, e__title, e__icon, x__type') as $x) {
 
     //Determine which weight group this belongs to:
-    $direction = filter_cache_group($x['e__id'], 2738);
+    $direction = filter_cache_group($x['e__id'], 12467);
 
     echo '<tr class="panel-title down-border">';
     echo '<td style="text-align: left;"><span class="icon-block">'.$x['e__icon'].'</span><a href="/@'.$x['e__id'].'" class="montserrat doupper">'.$x['e__title'].'</a></td>';

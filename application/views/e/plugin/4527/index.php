@@ -29,6 +29,13 @@ echo '/*<br />
 echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
 
 
+
+//MEMORY STAT COUNTS
+foreach($CI->config->item('e___13478') as $x__type => $m) {
+    echo '$config[\'s___'.$x__type.'\'] = '.x_stats_count($x__type).'; //'.$m['m_name'].'<br />';
+}
+
+
 //CONFIG VARS
 foreach($config_es as $en){
 

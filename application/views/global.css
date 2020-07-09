@@ -231,10 +231,10 @@ a.btn, .btn.dropdown-toggle, label.btn {
     padding:15px;
 }
 
-.primary_nav a.btn, .primary_nav .btn.dropdown-toggle, .primary_nav label.btn{
+.left_nav a.btn, .left_nav .btn.dropdown-toggle, .left_nav label.btn{
     padding:10px;
 }
-.primary_nav .btn {
+.left_nav .btn {
     padding:12px 0 11px 0 !important;
 }
 
@@ -458,13 +458,25 @@ img.no-radius {
     cursor: help;
 }
 
-
+.mench-coins{
+    border-bottom: 5px solid;
+    border-color: transparent;
+}
+.border-source.active{
+    border-color: #007AFD;
+}
+.border-idea.active{
+    border-color: #ffc500;
+}
+.border-discover.active{
+    border-color: #FC1B44;
+}
 
 
 /* MENCH Colors */
-.source, .source .fas, .source .far, .source .fal, .source .fad, .color4536, .info-item i.source:hover, .info-item a.source:hover, .headline.source, .headline.source a, .headline.source i  { color:#007AFD !important; }
-.idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color4535, .info-item i.idea:hover, .info-item a.idea:hover, .headline.idea, .headline.idea a, .headline.idea i  { color:#ffc500 !important; }
-.discover, .discover .fas, .discover .far, .discover .fal, .discover .fad, .color6205, .info-item i.discover:hover, .info-item a.discover:hover, .fas.redalert, .headline.discover, .headline.discover a, .headline.discover i  { color:#FC1B44 !important; }
+.source, .source .fas, .source .far, .source .fal, .source .fad, .color12274, .info-item i.source:hover, .info-item a.source:hover, .headline.source, .headline.source a, .headline.source i  { color:#007AFD !important; }
+.idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color12273, .info-item i.idea:hover, .info-item a.idea:hover, .headline.idea, .headline.idea a, .headline.idea i  { color:#ffc500 !important; }
+.discover, .discover .fas, .discover .far, .discover .fal, .discover .fad, .color6255, .info-item i.discover:hover, .info-item a.discover:hover, .fas.redalert, .headline.discover, .headline.discover a, .headline.discover i  { color:#FC1B44 !important; }
 .grey, .grey i { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
@@ -941,7 +953,7 @@ td.MENCHcolumn3  { width: 13%; }
 
 
 
-.primary_nav{
+.left_nav{
     width: 100% !important;
     max-width: none !important;
 }

@@ -660,21 +660,21 @@ function current_mench(){
     if($first_letter=='@' || $first_segment=='source'){
 
         return array(
-            'x_id' => 4536,
+            'x_id' => 12274,
             'x_name' => 'source',
         );
 
     } elseif($first_letter=='~' || $first_segment=='idea'){
 
         return array(
-            'x_id' => 4535,
+            'x_id' => 12273,
             'x_name' => 'idea',
         );
 
     } else {
 
         return array(
-            'x_id' => 6205,
+            'x_id' => 6255,
             'x_name' => 'discover',
         );
 
@@ -751,7 +751,7 @@ function x_coins_i($x__type, $i__id, $load_page = 0){
 
 }
 
-function x_coins_e($x__type, $e__id, $load_page = 0){
+function x_stats_count($x__type, $e__id = 0, $load_page = 0){
 
     /*
      * Counts MENCH COINS for sources
@@ -771,8 +771,11 @@ function x_coins_e($x__type, $e__id, $load_page = 0){
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COIN
-            'x__member' => $e__id,
         );
+
+        if($e__id > 0){
+            $query_filters['x__member'] = $e__id;
+        }
 
     } elseif($x__type==12273){
 
@@ -781,8 +784,11 @@ function x_coins_e($x__type, $e__id, $load_page = 0){
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
-            '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
         );
+
+        if($e__id > 0){
+            $query_filters['(x__up = '.$e__id.' OR x__down = '.$e__id.')'] = null;
+        }
 
     } elseif($x__type==6255){
 
@@ -791,8 +797,17 @@ function x_coins_e($x__type, $e__id, $load_page = 0){
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
-            'x__member' => $e__id,
         );
+        if($e__id > 0){
+            $query_filters['x__member'] = $e__id;
+        }
+
+    } elseif($x__type==13362){
+
+        //TRANSACTIONS
+        $order_columns = array(); //LATEST DISCOVERIES
+        $join_objects = array();
+        $query_filters = array( 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null );
 
     } else {
 
@@ -804,7 +819,7 @@ function x_coins_e($x__type, $e__id, $load_page = 0){
     $query = $CI->X_model->fetch($query_filters, $join_objects, config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(x__id) as totals' : '*' ));
 
     if(!$load_page){
-        return $query[0]['totals'];
+        return intval($query[0]['totals']);
     }
 
     if(count($query)){
@@ -1505,10 +1520,10 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
     $limits = array();
 
 
-    if($object__type==4535){
+    if($object__type==12273){
         $focus_field_id = 'i__id';
         $focus_field_status = 'i__status';
-    } elseif($object__type==4536){
+    } elseif($object__type==12274){
         $focus_field_id = 'e__id';
         $focus_field_status = 'e__status';
     }
@@ -1553,7 +1568,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
         unset($limits);
 
         //Fetch item(s) for updates including their parents:
-        if ($loop_obj == 4535) {
+        if ($loop_obj == 12273) {
 
             $loop_filed_id = 'i__id';
             $loop_filed_name = 'i__metadata';
@@ -1568,7 +1583,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
             $db_rows[$loop_obj] = $CI->X_model->fetch($limits, array('x__right'), 0);
 
-        } elseif ($loop_obj == 4536) {
+        } elseif ($loop_obj == 12274) {
 
             $loop_filed_id = 'e__id';
             $loop_filed_name = 'e__metadata';
@@ -1599,9 +1614,9 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             //Update Weight if single update:
             if($object__id){
                 //Update weight before updating this object:
-                if($object__type==4536){
+                if($object__type==12274){
                     e__weight_calculator($db_row);
-                } elseif($object__type==4535){
+                } elseif($object__type==12273){
                     i__weight_calculator($db_row);
                 }
             }
@@ -1634,7 +1649,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             $export_row['_tags'] = array();
 
             //Now build object-specific index:
-            if ($loop_obj == 4536) {
+            if ($loop_obj == 12274) {
 
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['e__id']);
@@ -1643,7 +1658,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__icon'] = view_e__icon($db_row['e__icon']);
                 $export_row['object__title'] = $db_row['e__title'];
                 $export_row['object__weight'] = intval($db_row['e__weight']);
-                $export_row['object__is'] = x_coins_e(12273, $db_row['e__id']);
+                $export_row['object__is'] = x_stats_count(12273, $db_row['e__id']);
                 $export_row['object__duration'] = null;
 
                 //Add source as their own author:
@@ -1678,7 +1693,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
 
-            } elseif ($loop_obj == 4535) {
+            } elseif ($loop_obj == 12273) {
 
                 //See if this idea has a time-range:
                 $export_row['object__type'] = $loop_obj;
@@ -1826,7 +1841,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
             foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                update_metadata(( isset($all_db_rows[$key]['i__id']) ? 4535 : 4536), $all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
+                update_metadata(( isset($all_db_rows[$key]['i__id']) ? 12273 : 12274), $all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
                     'algolia__id' => intval($algolia_id),
                 ));
             }
@@ -1865,12 +1880,12 @@ function update_metadata($object__type, $object__id, $new_fields, $x__member = 0
      *
      * */
 
-    if (!in_array($object__type, $CI->config->item('n___2738')) || $object__id < 1 || count($new_fields) < 1) {
+    if (!in_array($object__type, $CI->config->item('n___12467')) || $object__id < 1 || count($new_fields) < 1) {
         return false;
     }
 
     //Fetch metadata for this object:
-    if ($object__type == 4535) {
+    if ($object__type == 12273) {
 
         $obj_filed_id = 'i__id';
         $obj_filed_name = 'i__metadata';
@@ -1878,7 +1893,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__member = 0
             $obj_filed_id => $object__id,
         ));
 
-    } elseif ($object__type == 4536) {
+    } elseif ($object__type == 12274) {
 
         $obj_filed_id = 'e__id';
         $obj_filed_name = 'e__metadata';
@@ -1886,7 +1901,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__member = 0
             $obj_filed_id => $object__id,
         ));
 
-    } elseif ($object__type == 6205) {
+    } elseif ($object__type == 6255) {
 
         $obj_filed_id = 'x__id';
         $obj_filed_name = 'x__metadata';
@@ -1922,19 +1937,19 @@ function update_metadata($object__type, $object__id, $new_fields, $x__member = 0
     }
 
     //Now update DB without logging any links as this is considered a back-end update:
-    if ($object__type == 4535) {
+    if ($object__type == 12273) {
 
         $affected_rows = $CI->I_model->update($object__id, array(
             'i__metadata' => $metadata,
         ), false, $x__member);
 
-    } elseif ($object__type == 4536) {
+    } elseif ($object__type == 12274) {
 
         $affected_rows = $CI->E_model->update($object__id, array(
             'e__metadata' => $metadata,
         ), false, $x__member);
 
-    } elseif ($object__type == 6205) {
+    } elseif ($object__type == 6255) {
 
         $affected_rows = $CI->X_model->update($object__id, array(
             'x__metadata' => $metadata,

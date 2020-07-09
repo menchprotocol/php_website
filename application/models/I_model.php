@@ -62,7 +62,7 @@ class I_model extends CI_Model
                 ));
 
                 //Update Algolia:
-                update_algolia(4535, $add_fields['i__id']);
+                update_algolia(12273, $add_fields['i__id']);
 
                 return $is[0];
 
@@ -210,7 +210,7 @@ class I_model extends CI_Model
 
             if($external_sync){
                 //Sync algolia:
-                update_algolia(4535, $id);
+                update_algolia(12273, $id);
             }
 
         } elseif($affected_rows < 1){
@@ -746,7 +746,7 @@ class I_model extends CI_Model
                 $metadata_this['p___6168'] = array(intval($focus_in['i__id']));
             }
 
-            update_metadata(4535, $focus_in['i__id'], array(
+            update_metadata(12273, $focus_in['i__id'], array(
                 'i___6168' => $metadata_this['p___6168'],
                 'i___6228' => $metadata_this['p___6228'],
                 'i___12885' => $metadata_this['p___12885'],
@@ -1161,7 +1161,7 @@ class I_model extends CI_Model
         }
 
         //Save to DB
-        update_metadata(4535, $i['i__id'], array(
+        update_metadata(12273, $i['i__id'], array(
             'i___6169' => intval($metadata_this['p___6169']),
             'i___6170' => intval($metadata_this['p___6170']),
             'i___6161' => intval($metadata_this['p___6161']),

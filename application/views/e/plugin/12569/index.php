@@ -13,7 +13,7 @@ $stats = array(
     'e_updated' => 0,
 );
 
-if(!$obj || $obj==4535){
+if(!$obj || $obj==12273){
 
     //Update the weights for ideas and sources
     foreach($this->I_model->fetch(array(
@@ -29,7 +29,7 @@ if(!$obj || $obj==4535){
 }
 
 
-if(!$obj || $obj==4536){
+if(!$obj || $obj==12274){
     //Update the weights for ideas and sources
     foreach($this->E_model->fetch(array(
         'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE

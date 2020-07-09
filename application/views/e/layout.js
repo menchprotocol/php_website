@@ -183,7 +183,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'object__type=4536',
+                    filters: 'object__type=12274',
                     hitsPerPage: 21,
                 }, function (error, content) {
                     if (error) {
@@ -388,7 +388,7 @@ function e_load_page(page, load_new_filter) {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___2738[4536]['m_icon'] ));
+    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___12467[12274]['m_icon'] ));
 }
 
 function e_modify_load(e__id, x__id) {
@@ -725,7 +725,7 @@ function e_update() {
                 var icon_is_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
                 if(!icon_is_set){
                     //Set source default icon:
-                    modify_data['e__icon'] = js_e___2738[4536]['m_icon'];
+                    modify_data['e__icon'] = js_e___12467[12274]['m_icon'];
                 }
                 $('.e__icon_' + modify_data['e__id']).attr('en-is-set' , icon_is_set );
                 $('.e_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);

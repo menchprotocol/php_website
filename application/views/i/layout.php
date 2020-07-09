@@ -1,5 +1,5 @@
 <?php
-$e___2738 = $this->config->item('e___2738');
+$e___12467 = $this->config->item('e___12467');
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 $member_is_i_e = member_is_i_e($i_focus['i__id']);
@@ -57,7 +57,7 @@ foreach($is_previous as $previous_i) {
 if( $member_is_i_e && $is_active && $i_focus['i__id']!=config_var(13405)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4535]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control IdeaAddPrevious form-control-thick montserrat add-input algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
@@ -150,7 +150,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($member_is_i_e && $is_active){
             $this_tab .= '<div class="list-group-item list-adder itemidea '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___2738[4535]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control ideaadder-level-2-child form-control-thick add-input montserrat algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
@@ -182,7 +182,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($member_is_i_e && $is_active && !$disable_manual_add) {
             $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___2738[4536]['m_icon'] . '</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___12467[12274]['m_icon'] . '</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
