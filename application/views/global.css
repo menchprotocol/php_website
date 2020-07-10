@@ -482,12 +482,13 @@ img.no-radius {
     width: 100% !important;
 }
 .discover-controller td{
-    padding: 10px 0;
+    padding:13px 0 5px;
+    text-align: center;
 }
 
 .discover-controller i{
     color: #000 !important;
-    font-size: 2em;
+    font-size: 2.1em;
 }
 
 /* MENCH Colors */

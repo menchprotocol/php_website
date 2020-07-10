@@ -8,26 +8,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-10 12:51:24 PST
+//Generated 2020-07-10 12:54:58 PST
 $config['s___12273'] = 3914; //IDEAS
 $config['s___12274'] = 5009; //SOURCES
 $config['s___6255'] = 121865; //DISCOVERIES
-$config['s___13362'] = 1168358; //TRANSACTIONS
+$config['s___13362'] = 1168365; //TRANSACTIONS
 
 //DISCOVER CONTROLLER:
-$config['n___13289'] = array(13491,12991,13400,12896,12211);
+$config['n___13289'] = array(12991,13491,13400,12896,12211);
 $config['e___13289'] = array(
-    13491 => array(
-        'm_icon' => '<i class="fas fa-text-size discover"></i>',
-        'm_name' => 'FONT SIZE',
-        'm_desc' => '',
-        'm_parents' => array(13289,4527,6204),
-    ),
     12991 => array(
         'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
         'm_name' => 'GO BACK',
         'm_desc' => '',
         'm_parents' => array(13289,11035),
+    ),
+    13491 => array(
+        'm_icon' => '<i class="fas fa-text-size discover"></i>',
+        'm_name' => 'FONT SIZE',
+        'm_desc' => '',
+        'm_parents' => array(13289,4527,6204),
     ),
     13400 => array(
         'm_icon' => '<i class="fas fa-list discover"></i>',
