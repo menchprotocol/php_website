@@ -268,10 +268,10 @@ $member_is_e = member_is_e($e['e__id']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             //Missing Superpower:
             continue;
-        } elseif(in_array($x__type, $this->config->item('n___13424')) && $member_is_e){
+        } elseif(in_array($x__type, $this->config->item('n___13424')) && $e['e__id']==$session_e['e__id']){
             //SOURCE LAYOUT HIDE IF SOURCE:
             continue;
-        } elseif(in_array($x__type, $this->config->item('n___13425')) && !$member_is_e){
+        } elseif(in_array($x__type, $this->config->item('n___13425')) && $e['e__id']!=$session_e['e__id']){
             //SOURCE LAYOUT SHOW IF SOURCE:
             continue;
         }

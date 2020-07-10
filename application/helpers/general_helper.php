@@ -780,12 +780,10 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
 
         } else {
 
-            //COUNT EXPERT SOURCES ONLY
+            //PUBLIC SOURCE COINS
             $query_filters = array(
-                'x__up IN (' . join(',', $CI->config->item('n___12864')) . ')' => null, //EXPERT SOURCES
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COINS
             );
 
         }
