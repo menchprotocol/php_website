@@ -40,6 +40,14 @@ $(document).ready(function () {
 });
 
 
+function load_13400(){
+    alert('Loading Index');
+}
+
+function set_13491(font_size_e__id){
+    alert('Font set to '+font_size_e__id);
+}
+
 function select_answer(i__id){
 
     //Allow answer to be saved/updated:

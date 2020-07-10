@@ -167,19 +167,42 @@ if($recipient_e['e__id']==1){
 
         } elseif($e__id==12991){
 
+            //GO BACK
             $url = '<a href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
 
-        } elseif($e__id==12991){
+        } elseif($e__id==12211){
 
+            //GO NEXT
             $url = '<a href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+
+        } elseif($e__id==13491){
+
+            //FONT SIZE
+            $url = '<div class="dropdown inline-block">';
+            $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            $url .= '<span class="icon-block">' .$m['m_icon'].'</span>';
+            $url .= '</button>';
+            $url .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$e__id.'">';
+            foreach($this->config->item('e___'.$e__id) as $x__type2 => $m2) {
+                $url .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
+            }
+            $url .= '</div>';
+            $url .= '</div>';
+
+        } elseif($e__id==13400){
+
+            //IDEA INDEX
+            $url = '<a href="javascript:void(0);" onclick="load_13400()">'.$m['m_icon'].'</a>';
 
         } else {
 
-            $url = '<a href="/">'.$m['m_icon'].'</a>';
+            //Unknown:
+            continue;
 
         }
 
         echo '<td style="width:'.$column_width.'%;">'.$url.'</td>';
+
     }
 
     echo '</tr></table>';
