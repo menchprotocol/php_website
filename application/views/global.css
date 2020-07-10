@@ -1602,6 +1602,10 @@ label {
         width:40px;
     }
 
+    .discover-controller{
+        border-radius: 0 !important;
+    }
+
 }
 
 
