@@ -477,11 +477,12 @@ img.no-radius {
     border-color: #FC1B44;
 }
 
-.fixed-bottom{
-    background-color: #FC1B44;
-}
+
 .discover-controller{
+    background-color: #FC1B44;
     width: 100% !important;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .discover-controller td{
     padding:13px 0;
