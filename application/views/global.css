@@ -485,7 +485,7 @@ img.no-radius {
     border-top-right-radius: 10px;
 }
 .discover-controller td{
-    padding:13px 0;
+    padding:15px 0 10px;
     text-align: center;
 }
 
