@@ -5,10 +5,10 @@
 <script src="/application/views/x/layout.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
-<div class="container">
 
 <?php
 
+echo '<div class="container">';
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 
@@ -623,5 +623,14 @@ if(!$in_my_x){
     }
 }
 
+echo '</div>';
+
+if($recipient_e['e__id']==1){
+    echo '<div class="container fixed-bottom">';
+    echo '<div class="row">';
+    echo 'hi';
+    echo '</div>';
+    echo '</div>';
+}
+
 ?>
-</div>
