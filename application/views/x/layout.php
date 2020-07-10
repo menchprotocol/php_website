@@ -163,15 +163,15 @@ if($recipient_e['e__id']==1){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $url = '<a class="btn btn-x btn-circle" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
+            $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
 
         } elseif($e__id==12991){
 
-            $url = '<a class="btn btn-x btn-circle" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+            $url = '<a href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==12991){
 
-            $url = '<a class="btn btn-x btn-circle" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+            $url = '<a href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
 
         } else {
 
