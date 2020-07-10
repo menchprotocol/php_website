@@ -817,7 +817,7 @@ function view_i_marks($i_x){
 }
 
 
-function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false, $message_input = null, $extra_class = null, $control_enabled = true)
+function view_i($i, $i_linked_id = 0, $is_parent = false, $e_owns_i = false, $message_input = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -837,7 +837,7 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
     //IDEA
     $i_stats = i_stats($i['i__metadata']);
     $is_public = in_array($i['i__status'], $CI->config->item('n___7355'));
-    $member_is_i_e = ( !$is_i_link ? false : $member_is_i_e ); //Disable Edits on Idea List Page
+    $e_owns_i = ( !$is_i_link ? false : $e_owns_i ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
 
@@ -869,7 +869,7 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
             //IDEA TITLE
             if($is_i_link && superpower_active(13354, true)){
 
-                $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $member_is_i_e, (($i['x__sort']*100)+1));
+                $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_owns_i, (($i['x__sort']*100)+1));
 
             } else {
 
@@ -892,7 +892,7 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
 
     //SOURCE
     $ui .= '<td class="MENCHcolumn3 source">';
-    if($is_i_link && $control_enabled && $member_is_i_e){
+    if($is_i_link && $control_enabled && $e_owns_i){
 
         //RIGHT EDITING:
         $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
@@ -935,10 +935,10 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
         $ui .= $box_items_list;
 
         //IDEA TYPE
-        $ui .= '<div class="inline-block">'.view_input_dropdown(7585, $i['i__type'], null, $member_is_i_e, false, $i['i__id']).'</div>';
+        $ui .= '<div class="inline-block">'.view_input_dropdown(7585, $i['i__type'], null, $e_owns_i, false, $i['i__id']).'</div>';
 
         //IDEA STATUS
-        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__status'], null, $member_is_i_e, false, $i['i__id']) . ' </div>';
+        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__status'], null, $e_owns_i, false, $i['i__id']) . ' </div>';
 
 
 
@@ -951,20 +951,20 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $member_is_i_e = false
             $ui .= '<span class="' . superpower_active(12700) . '">';
 
             //LINK TYPE
-            $ui .= view_input_dropdown(4486, $i['x__type'], null, $member_is_i_e, false, $i['i__id'], $i['x__id']);
+            $ui .= view_input_dropdown(4486, $i['x__type'], null, $e_owns_i, false, $i['i__id'], $i['x__id']);
 
             //LINK MARKS
             $ui .= '<span class="link_marks settings_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
-            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $member_is_i_e, ($i['x__sort']*10)+2 );
+            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $e_owns_i, ($i['x__sort']*10)+2 );
             $ui .='</span>';
 
 
             //LINK CONDITIONAL RANGE
             $ui .= '<span class="link_marks settings_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
             //MIN
-            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $member_is_i_e, ($i['x__sort']*10)+3);
+            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $e_owns_i, ($i['x__sort']*10)+3);
             //MAX
-            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $member_is_i_e, ($i['x__sort']*10)+4);
+            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $e_owns_i, ($i['x__sort']*10)+4);
             $ui .= '</span>';
             $ui .= '</span>';
 
@@ -1613,14 +1613,14 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 }
 
 
-function view_input_text($cache_e__id, $current_value, $object__id, $member_is_i_e, $tabindex = 0, $extra_large = false, $e__icon = null, $append_css = null){
+function view_input_text($cache_e__id, $current_value, $object__id, $e_owns_i, $tabindex = 0, $extra_large = false, $e__icon = null, $append_css = null){
 
     $CI =& get_instance();
     $e___12112 = $CI->config->item('e___12112');
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
-    $attributes = ( $member_is_i_e ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block x_set_text text__'.$cache_e__id.'_'.$object__id.' texttype_'.($extra_large?'_lg':'_sm').' text_e_'.$cache_e__id.' '.$append_css.'" cache_e__id="'.$cache_e__id.'" object__id="'.$object__id.'" ';
+    $attributes = ( $e_owns_i ? '' : 'disabled' ).' tabindex="'.$tabindex.'" old-value="'.$current_value.'" class="form-control dotransparent montserrat inline-block x_set_text text__'.$cache_e__id.'_'.$object__id.' texttype_'.($extra_large?'_lg':'_sm').' text_e_'.$cache_e__id.' '.$append_css.'" cache_e__id="'.$cache_e__id.'" object__id="'.$object__id.'" ';
 
     //Also Append Counter to the end?
     if($extra_large){
@@ -1641,13 +1641,13 @@ function view_input_text($cache_e__id, $current_value, $object__id, $member_is_i
 
     }
 
-    return '<span class="span__'.$cache_e__id.' '.( !$member_is_i_e ? 'edit-locked' : '' ).'">'.$icon.$focus_element.'</span>'.$character_counter;
+    return '<span class="span__'.$cache_e__id.' '.( !$e_owns_i ? 'edit-locked' : '' ).'">'.$icon.$focus_element.'</span>'.$character_counter;
 }
 
 
 
 
-function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $member_is_i_e = true, $show_full_name = true, $i__id = 0, $x__id = 0){
+function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_owns_i = true, $show_full_name = true, $i__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
@@ -1663,7 +1663,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $member_
     $ui = '<div title="'.$e___12079[$cache_e__id]['m_name'].'" data-toggle="tooltip" data-placement="top" class="inline-block">';
     $ui .= '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' '.( !$show_full_name ? ' icon-block ' : '' ).'" selected-val="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $member_is_i_e ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
+    $ui .= '<button type="button" '.( $e_owns_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
 
     $ui .= '<span class="icon-block">' .$e___this[$selected_e__id]['m_icon'].'</span><span class="show-max">'.( $show_full_name ?  $e___this[$selected_e__id]['m_name'] : '' ).'</span>';
 

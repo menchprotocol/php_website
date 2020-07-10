@@ -98,8 +98,8 @@ class I extends CI_Controller {
          * comes through /iID
          *
          * */
-        $member_is_i_e = member_is_i_e($i__id);
-        return redirect_message(( $member_is_i_e ? '/~' : '/' ) . $i__id . ( $member_is_i_e && isset($_GET['focus__e']) ? '?focus__e='.$_GET['focus__e'] : '' ) );
+        $e_owns_i = e_owns_i($i__id);
+        return redirect_message(( $e_owns_i ? '/~' : '/' ) . $i__id . ( $e_owns_i && isset($_GET['focus__e']) ? '?focus__e='.$_GET['focus__e'] : '' ) );
     }
 
 

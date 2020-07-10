@@ -1437,7 +1437,7 @@ function member_is_e($e__id, $session_e = array()){
 
 }
 
-function member_is_i_e($i__id, $session_e = array()){
+function e_owns_i($i__id, $session_e = array()){
 
     if(!$session_e){
         //Fetch from session:

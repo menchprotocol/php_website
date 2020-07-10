@@ -318,7 +318,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Interaction ID',
             ));
-        } elseif (!isset($_POST['i__id']) || !member_is_i_e($_POST['i__id'])) {
+        } elseif (!isset($_POST['i__id']) || !e_owns_i($_POST['i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are not the author of this source',
