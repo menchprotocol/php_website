@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-10 12:45:34 PST
+//Generated 2020-07-10 12:49:57 PST
 $config['s___12273'] = 3914; //IDEAS
 $config['s___12274'] = 5009; //SOURCES
 $config['s___6255'] = 121865; //DISCOVERIES
-$config['s___13362'] = 1168352; //TRANSACTIONS
+$config['s___13362'] = 1168355; //TRANSACTIONS
 
 //FONT SIZE:
 $config['n___13491'] = array(13494,13493,13492);
