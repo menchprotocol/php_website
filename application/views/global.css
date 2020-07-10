@@ -488,6 +488,9 @@ img.no-radius {
     padding:15px 0 10px;
     text-align: center;
 }
+.discover-controller td a{
+    display: block;
+}
 
 .discover-controller i{
     color: #000 !important;
