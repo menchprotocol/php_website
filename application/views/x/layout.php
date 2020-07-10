@@ -156,11 +156,11 @@ if($recipient_e['e__id']==1){
         if($e__id==12896){
 
             //Is Saved?
-            $is_saved = count($CI->X_model->fetch(array(
+            $is_saved = count($this->X_model->fetch(array(
                 'x__up' => $recipient_e['e__id'],
                 'x__right' => $i_focus['i__id'],
                 'x__type' => 12896, //SAVED
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
             $url = '<a class="btn btn-x btn-circle" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
