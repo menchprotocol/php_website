@@ -139,6 +139,28 @@ if($recipient_e['e__id']){
 
 
 
+
+
+if($recipient_e['e__id']==1){
+
+    $column_width = number_format(100/count($this->config->item('n___13289')), 2);
+
+    echo '<div class="container fixed-bottom">';
+    echo '<div class="row">';
+    echo '<table class="discover-controller"><tr>';
+
+    foreach($this->config->item('e___13289') as $e__id => $m) {
+        echo '<td style="width:'.$column_width.'%;"><a href="/">'.$m['m_icon'].'</a></td>';
+    }
+
+    echo '</tr></table>';
+    echo '</div>';
+    echo '</div>';
+}
+
+
+
+
 //IDEA TITLE
 echo '<h1 class="block-one"><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
 
@@ -297,13 +319,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         foreach($this->config->item('e___13023') as $m2) {
             $this_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
         }
-        $this_tab .= '</div>';
-
-    } elseif($x__type==12749) {
-
-        //CONTRIBUTE
-        $this_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
-        $this_tab .= '<div>Contribute to this idea in <a href="/~'.$i_focus['i__id'].'" class="montserrat">Map Mode</a>.</div>';
         $this_tab .= '</div>';
 
     } else {
@@ -624,13 +639,5 @@ if(!$in_my_x){
 }
 
 echo '</div>';
-
-if($recipient_e['e__id']==1){
-    echo '<div class="container fixed-bottom">';
-    echo '<div class="row">';
-    echo 'hi';
-    echo '</div>';
-    echo '</div>';
-}
 
 ?>

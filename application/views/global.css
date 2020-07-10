@@ -477,6 +477,12 @@ img.no-radius {
     border-color: #FC1B44;
 }
 
+.discover-controller{
+    background-color: #FC1B44;
+}
+.discover-controller td{
+    padding: 10px 0;
+}
 
 /* MENCH Colors */
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color12274, .info-item i.source:hover, .info-item a.source:hover, .headline.source, .headline.source a, .headline.source i  { color:#007AFD !important; }

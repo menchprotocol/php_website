@@ -23,6 +23,7 @@ class E_model extends CI_Model
         //PROFILE
         $session_data = array(
             'session_profile' => $e,
+            'session_font_size' => null,
             'session_parent_ids' => array(),
             'session_superpowers_assigned' => array(),
             'session_superpowers_activated' => array(),
@@ -41,12 +42,18 @@ class E_model extends CI_Model
 
         }
 
+        //PROFILE
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__down' => $e['e__id'], //This child source
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up')) as $e_profile){
+
+            //FONT SIZE?
+            if(in_array($e_profile['e__id'], $this->config->item('n___13491'))){
+                $session_data['session_font_size'] = $e_profile['e__id'];
+            }
 
             //Push to parent IDs:
             array_push($session_data['session_parent_ids'], intval($e_profile['e__id']));

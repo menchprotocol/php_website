@@ -178,7 +178,7 @@ $member_is_e = member_is_e($e['e__id']);
 
     //NAME & STATUS
     echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="pull-right inline-block" style="margin:0 45px -28px 0;">';
+    echo '<div class="pull-right inline-block" style="margin:0 0 -28px 0;">';
 
     //REFERENCES
     if(superpower_active(12701, true)){

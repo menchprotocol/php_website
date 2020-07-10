@@ -69,7 +69,7 @@ $current_mench = current_mench();
 
 </head>
 
-<body class="<?= 'to'.$current_mench['x_name'] ?>">
+<body class="<?= 'font_size_'.$this->session->userdata('session_font_size').' to'.$current_mench['x_name']?>">
 
 <?php
 //Any message we need to show here?
@@ -122,9 +122,9 @@ if(!isset($hide_header)){
 
                             //Mench Coins
                             if($x__type==12274){
-                                $page_url = 'href="/@'.$session_e['e__id'].'"';
+                                $page_url = 'href="/@'.( $session_e['e__id'] > 0 ? $session_e['e__id'] : '' ).'"';
                             } elseif($x__type==12273){
-                                $page_url = 'href="/~"';
+                                $page_url = 'href="/~'.( is_numeric($first_segment) ? $first_segment : '' ).'"';
                             } elseif($x__type==6255){
                                 $page_url = 'href="/"';
                             }
