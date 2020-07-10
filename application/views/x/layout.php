@@ -150,7 +150,36 @@ if($recipient_e['e__id']==1){
     echo '<table class="discover-controller"><tr>';
 
     foreach($this->config->item('e___13289') as $e__id => $m) {
-        echo '<td style="width:'.$column_width.'%;"><a href="/">'.$m['m_icon'].'</a></td>';
+
+
+
+        if($e__id==12896){
+
+            //Is Saved?
+            $is_saved = count($CI->X_model->fetch(array(
+                'x__up' => $recipient_e['e__id'],
+                'x__right' => $i_focus['i__id'],
+                'x__type' => 12896, //SAVED
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            )));
+
+            $url = '<a class="btn btn-x btn-circle" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
+
+        } elseif($e__id==12991){
+
+            $url = '<a class="btn btn-x btn-circle" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+
+        } elseif($e__id==12991){
+
+            $url = '<a class="btn btn-x btn-circle" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+
+        } else {
+
+            $url = '<a href="/">'.$m['m_icon'].'</a>';
+
+        }
+
+        echo '<td style="width:'.$column_width.'%;">'.$url.'</td>';
     }
 
     echo '</tr></table>';
@@ -472,7 +501,8 @@ if(!$in_my_x){
 
                 view_next_i_previous($i_focus['i__id'], $recipient_e);
 
-                echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-x btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-pen"></i></a></div>';
+                //EDIT ANSWER:
+                echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_name'].'</a></div>';
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -537,7 +567,7 @@ if(!$in_my_x){
 
             echo '<div class="result-update margin-top-down"></div>';
 
-            echo view_i_previous_x($i_focus['i__id'], $recipient_e);
+            echo view_i_previous($i_focus['i__id'], $recipient_e);
 
             //Button to submit selection:
             if(count($x_answers)>0){
@@ -566,10 +596,10 @@ if(!$in_my_x){
         echo '<div class="text_saving_result margin-top-down"></div>';
 
         //Show Previous Button:
-        echo view_i_previous_x($i_focus['i__id'], $recipient_e);
+        echo view_i_previous($i_focus['i__id'], $recipient_e);
 
-        //Save/Upload & Next:
-        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-x btn-circle" href="javascript:void(0);" onclick="x_respond()">'.$e___11035[12211]['m_icon'].'</a></div>';
+        //Save Answer
+        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-x" href="javascript:void(0);" onclick="x_respond()">'.$e___11035[13497]['m_icon'].' '.$e___11035[13497]['m_name'].'</a></div>';
 
 
         if(count($x_completes)){
@@ -594,7 +624,7 @@ if(!$in_my_x){
 
             //Show Previous Button:
             echo '<div class="file_saving_result">';
-            echo view_i_previous_x($i_focus['i__id'], $recipient_e);
+            echo view_i_previous($i_focus['i__id'], $recipient_e);
             echo '</div>';
 
             //Show next here but keep hidden until file is uploaded:
@@ -602,7 +632,7 @@ if(!$in_my_x){
             view_next_i_previous($i_focus['i__id'], $recipient_e);
             echo '</div>';
 
-            echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-x btn-circle inline-block" for="fileType'.$i_focus['i__type'].'"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+            echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'">'.$e___11035[13497]['m_icon'].' '.$e___11035[13497]['m_name'].'</label></div>';
 
         } else {
 
@@ -617,7 +647,7 @@ if(!$in_my_x){
             //Any child ideas?
             view_i_list($i_focus, $is_next, $recipient_e, null, true, false);
 
-            echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-x inline-block btn-circle" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;"><i class="fad fa-cloud-upload-alt" style="margin-left: -4px;"></i></label></div>';
+            echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13497]['m_icon'].' '.$e___11035[13497]['m_name'].'</label></div>';
 
         }
 

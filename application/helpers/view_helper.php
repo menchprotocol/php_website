@@ -1063,14 +1063,14 @@ function view_next_i_previous($i__id, $recipient_e){
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
 
     //PREVIOUS:
-    echo view_i_previous_x($i__id, $recipient_e);
+    echo view_i_previous($i__id, $recipient_e);
 
     //NEXT:
     echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-x btn-circle" href="/x/x_next/'.$i__id.'">'.$e___11035[12211]['m_icon'].'</a></div>';
 
 }
 
-function view_i_previous_x($i__id, $recipient_e){
+function view_i_previous($i__id, $recipient_e){
 
     if(!$recipient_e || $recipient_e['e__id'] < 1){
         return null;
@@ -1142,17 +1142,6 @@ function view_i_previous_x($i__id, $recipient_e){
         } else {
             $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-x btn-circle" href="/x/x_previous/'.$previous_level_id.'/'.$i__id.'" title="'.$e___11035[12991]['m_name'].'">'.$e___11035[12991]['m_icon'].'</a></div>';
         }
-
-
-        //Is Saved?
-        $is_saveded = count($CI->X_model->fetch(array(
-            'x__up' => $recipient_e['e__id'],
-            'x__right' => $i__id,
-            'x__type' => 12896, //SAVED
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        )));
-
-        $ui .= '<div class="inline-block margin-top-down pull-left edit_select_answer"><a class="btn btn-x btn-circle" href="javascript:void(0);" onclick="i_save('.$i__id.')"><i class="fas fa-bookmark toggle_saved '.( $is_saveded ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saveded ? 'hidden' : '' ).'"></i></a></div>';
 
         //Main Discoveries:
         if($x_list_ui){

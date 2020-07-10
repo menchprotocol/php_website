@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-10 12:54:58 PST
+//Generated 2020-07-10 14:32:39 PST
 $config['s___12273'] = 3914; //IDEAS
-$config['s___12274'] = 5009; //SOURCES
+$config['s___12274'] = 5012; //SOURCES
 $config['s___6255'] = 121865; //DISCOVERIES
-$config['s___13362'] = 1168365; //TRANSACTIONS
+$config['s___13362'] = 1169058; //TRANSACTIONS
 
 //DISCOVER CONTROLLER:
 $config['n___13289'] = array(12991,13491,13400,12896,12211);
@@ -3251,7 +3251,7 @@ $config['e___6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => 'v1.45952',
+        'm_desc' => 'v1.4591',
         'm_parents' => array(6404),
     ),
     11079 => array(
@@ -3453,7 +3453,7 @@ $config['e___11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(6225,13401,12750,13427,12707,4235,12991,12211,11068,4341,12969,6287,12896,7256,4269,4997,12275,13007,10957,7540);
+$config['n___11035'] = array(6225,13401,12750,13495,13427,12707,4235,12991,12211,11068,4341,12969,6287,13497,12896,7256,4269,4997,12275,13007,10957,7540,13498);
 $config['e___11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3472,6 +3472,12 @@ $config['e___11035'] = array(
         'm_name' => 'DISCOVER THIS IDEA',
         'm_desc' => '',
         'm_parents' => array(13295,11035),
+    ),
+    13495 => array(
+        'm_icon' => '<i class="fas fa-pen discover"></i>',
+        'm_name' => 'EDIT ANSWER',
+        'm_desc' => ' ',
+        'm_parents' => array(11035),
     ),
     13427 => array(
         'm_icon' => '<i class="fas fa-star idea"></i>',
@@ -3527,6 +3533,12 @@ $config['e___11035'] = array(
         'm_desc' => '',
         'm_parents' => array(13297,6405,6194,12699,12500,10876,11035,4527),
     ),
+    13497 => array(
+        'm_icon' => '<i class="fas fa-save discover"></i>',
+        'm_name' => 'SAVE ANSWER',
+        'm_desc' => ' ',
+        'm_parents' => array(11035),
+    ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_name' => 'SAVED DISCOVERIES',
@@ -3573,6 +3585,12 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fad fa-university" aria-hidden="true"></i>',
         'm_name' => 'TERMS OF SERVICE',
         'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
+    13498 => array(
+        'm_icon' => '<i class="fas fa-cloud-upload-alt discover"></i>',
+        'm_name' => 'UPLOAD FILE',
+        'm_desc' => ' ',
         'm_parents' => array(11035),
     ),
 );
