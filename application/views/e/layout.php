@@ -424,7 +424,7 @@ $member_is_e = member_is_e($e['e__id']);
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           placeholder="NEW SOURCE">
+                           placeholder="SOURCE TITLE/URL">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
@@ -665,7 +665,7 @@ $member_is_e = member_is_e($e['e__id']);
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           placeholder="NEW SOURCE">
+                           placeholder="SOURCE TITLE/URL">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $this_tab .= '</div>';
