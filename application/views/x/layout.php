@@ -151,8 +151,6 @@ if($recipient_e['e__id']==1){
 
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
-
-
         if($e__id==12896){
 
             //Is Saved?
@@ -163,24 +161,24 @@ if($recipient_e['e__id']==1){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
+            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
 
         } elseif($e__id==12991){
 
             //GO BACK
-            $url = '<a href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==12211){
 
             //GO NEXT
-            $url = '<a href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==13491){
 
             //FONT SIZE
             $url = '<div class="dropdown inline-block">';
             $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-            $url .= '<span class="icon-block">' .$m['m_icon'].'</span>';
+            $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
             $url .= '</button>';
             $url .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$e__id.'">';
             foreach($this->config->item('e___'.$e__id) as $x__type2 => $m2) {
@@ -192,7 +190,7 @@ if($recipient_e['e__id']==1){
         } elseif($e__id==13400){
 
             //IDEA INDEX
-            $url = '<a href="javascript:void(0);" onclick="load_13400()">'.$m['m_icon'].'</a>';
+            $url = '<a href="javascript:void(0);" onclick="load_13400()" class="controller-nav">'.$m['m_icon'].'</a>';
 
         } else {
 
