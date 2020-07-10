@@ -5,13 +5,14 @@ $first_segment = $this->uri->segment(1);
 $is_home = !strlen($first_segment);
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $current_mench = current_mench();
+$is_ideator = superpower_assigned(10939);
 
 ?><!doctype html>
 <html lang="en" >
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['x_name'] ) ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment && !$session_e ? 'mench' : $current_mench['x_name'] ) ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : '' ) ?></title>
 
@@ -109,7 +110,7 @@ if(!isset($hide_header)){
 
                             //MENCH LOGO
                             echo '<span class="inline-block pull-left">';
-                            if($session_e){
+                            if($is_ideator){
                                 //Just logo
                                 echo '<img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo show-max">MENCH</b>';
                             } else {
@@ -118,11 +119,11 @@ if(!isset($hide_header)){
                             }
                             echo '</span>';
 
-                        } elseif(in_array($x__type, $this->config->item('n___12467')) && $session_e){
+                        } elseif(in_array($x__type, $this->config->item('n___12467')) && $is_ideator){
 
                             //Mench Coins
                             if($x__type==12274){
-                                $page_url = 'href="/@'.( $session_e['e__id'] > 0 ? $session_e['e__id'] : '' ).'"';
+                                $page_url = 'href="/@'.$session_e['e__id'].'"';
                             } elseif($x__type==12273){
                                 $page_url = 'href="/~'.( is_numeric($first_segment) && e_owns_i($first_segment) ? $first_segment : '' ).'"';
                             } elseif($x__type==6255){
