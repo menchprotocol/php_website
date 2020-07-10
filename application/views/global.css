@@ -479,9 +479,11 @@ img.no-radius {
 
 .discover-controller{
     background-color: #FC1B44;
+    width: 100% !important;
 }
 .discover-controller td{
     padding: 10px 0;
+    color: #000;
 }
 
 /* MENCH Colors */
