@@ -483,7 +483,11 @@ img.no-radius {
 }
 .discover-controller td{
     padding: 10px 0;
-    color: #000;
+}
+
+.discover-controller i{
+    color: #000 !important;
+    font-size: 2em;
 }
 
 /* MENCH Colors */
