@@ -274,7 +274,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Target Idea ID',
             ));
-        } elseif (!isset($_POST['i_loaded_id']) || intval($_POST['i_loaded_id']) < 1) {
+        } elseif (!isset($_POST['focus_i__id']) || intval($_POST['focus_i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Loaded Idea ID',
@@ -331,7 +331,7 @@ class I extends CI_Controller {
                 if(!in_array($_POST['new_e__id'], $this->config->item('n___7356'))){
 
                     //Determine what to do after deleted:
-                    if($_POST['i__id'] == $_POST['i_loaded_id']){
+                    if($_POST['i__id'] == $_POST['focus_i__id']){
 
                         //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
                         foreach($this->I_model->recursive_parents($_POST['i__id'], true, false) as $grand_parent_ids) {

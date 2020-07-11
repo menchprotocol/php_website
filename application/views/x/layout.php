@@ -1,10 +1,10 @@
 <script>
-    var i_loaded_id = <?= $i_focus['i__id'] ?>;
+    var focus_i__id = <?= $i_focus['i__id'] ?>;
+    var focus_i__type = <?= $i_focus['i__type'] ?>;
 </script>
 
 <script src="/application/views/x/layout.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
-
 
 <?php
 
@@ -135,76 +135,6 @@ if($recipient_e['e__id']){
     }
 
 }
-
-
-
-
-
-//DISCOVERY CONTROLLER
-if($in_my_x){
-
-    $column_width = number_format(100/count($this->config->item('n___13289')), 2);
-
-    echo '<div class="container fixed-bottom">';
-    echo '<div class="row">';
-    echo '<table class="discover-controller"><tr>';
-
-    foreach($this->config->item('e___13289') as $e__id => $m) {
-
-        $url = '';
-        if($e__id==12896){
-
-            //Is Saved?
-            $is_saved = count($this->X_model->fetch(array(
-                'x__up' => $recipient_e['e__id'],
-                'x__right' => $i_focus['i__id'],
-                'x__type' => 12896, //SAVED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )));
-
-            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
-
-        } elseif($e__id==12991){
-
-            //GO BACK
-            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
-
-        } elseif($e__id==12211){
-
-            //GO NEXT
-            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
-
-        } elseif($e__id==13491){
-
-            //FONT SIZE
-            $url .= '<div class="dropdown inline-block">';
-            $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-            $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
-            $url .= '</button>';
-            $url .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$e__id.'">';
-            foreach($this->config->item('e___'.$e__id) as $x__type2 => $m2) {
-                $url .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat font_items font_item_'.$x__type2.' '.( $this->session->userdata('session_var_13491')==$x__type2 ? ' active ' : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
-            }
-            $url .= '</div>';
-            $url .= '</div>';
-
-        } elseif($e__id==13400){
-
-            //IDEA INDEX
-            $url = '<a href="javascript:void(0);" onclick="load_13400()" class="controller-nav">'.$m['m_icon'].'</a>';
-
-        }
-
-        echo '<td style="width:'.$column_width.'%;">'.$url.'</td>';
-
-    }
-
-    echo '</tr></table>';
-    echo '</div>';
-    echo '</div>';
-}
-
-
 
 
 //IDEA TITLE
@@ -482,7 +412,7 @@ if(!$in_my_x){
 
             }
 
-            view_next_i_previous($i_focus['i__id'], $recipient_e);
+            view_i_next($i_focus['i__id'], $recipient_e);
             return true;
 
         } else {
@@ -516,7 +446,6 @@ if(!$in_my_x){
 
                 echo '<div class="doclear">&nbsp;</div>';
 
-                view_next_i_previous($i_focus['i__id'], $recipient_e);
 
                 //EDIT ANSWER:
                 echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_name'].'</a></div>';
@@ -542,8 +471,6 @@ if(!$in_my_x){
 
             //Open for list to be printed:
             echo '<div class="list-group list-answers" i__type="'.$i_focus['i__type'].'">';
-
-
 
 
             //List children to choose from:
@@ -606,18 +533,11 @@ if(!$in_my_x){
 
         //TEXT RESPONSE
 
-        echo '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR RESPONSE:</div>';
+        echo '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR ANSWER:</div>';
 
-        echo '<textarea class="border i_content padded x_input" placeholder="Write answer here" id="x_respond">'.( count($x_completes) ? trim($x_completes[0]['x__message']) : '' ).'</textarea>';
+        echo '<textarea class="border i_content padded x_input" placeholder="Write here..." id="x_respond">'.( count($x_completes) ? trim($x_completes[0]['x__message']) : '' ).'</textarea>';
 
         echo '<div class="text_saving_result margin-top-down"></div>';
-
-        //Show Previous Button:
-        echo view_i_previous($i_focus['i__id'], $recipient_e);
-
-        //Save Answer
-        echo '<div class="margin-top-down inline-block pull-right"><a class="btn btn-x" href="javascript:void(0);" onclick="x_respond()">'.$e___11035[13497]['m_icon'].' '.$e___11035[13497]['m_name'].'</a></div>';
-
 
         if(count($x_completes)){
             //Next Ideas:
@@ -627,31 +547,16 @@ if(!$in_my_x){
         echo '<script> $(document).ready(function () { autosize($(\'#x_respond\')); $(\'#x_respond\').focus(); }); </script>';
 
 
-    } elseif (in_array($i_focus['i__type'], $this->config->item('n___7751'))) {
+    } elseif ($i_focus['i__type'] == 7637) {
 
         //FILE UPLOAD
-
         echo '<div class="memberUploader">';
         echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
         echo '<input class="inputfile" type="file" name="file" id="fileType'.$i_focus['i__type'].'" />';
 
 
-        if(!count($x_completes)) {
-
-            //Show Previous Button:
-            echo '<div class="file_saving_result">';
-            echo view_i_previous($i_focus['i__id'], $recipient_e);
-            echo '</div>';
-
-            //Show next here but keep hidden until file is uploaded:
-            echo '<div class="go_next_upload hidden">';
-            view_next_i_previous($i_focus['i__id'], $recipient_e);
-            echo '</div>';
-
-            echo '<div class="inline-block margin-top-down edit_select_answer pull-right"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'">'.$e___11035[13497]['m_icon'].' '.$e___11035[13497]['m_name'].'</label></div>';
-
-        } else {
+        if(count($x_completes)) {
 
             echo '<div class="file_saving_result">';
 
@@ -664,27 +569,95 @@ if(!$in_my_x){
             //Any child ideas?
             view_i_list($i_focus, $is_next, $recipient_e, null, true, false);
 
-            echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13497]['m_icon'].' '.$e___11035[13497]['m_name'].'</label></div>';
+        } else {
+
+            //for when added:
+            echo '<div class="file_saving_result"></div>';
 
         }
+
+        //UPLOAD BUTTON:
+        echo '<div class="inline-block margin-top-down pull-right"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13497]['m_icon'].' '.$e___11035[13497]['m_name'].'</label></div>';
+
 
         echo '<div class="doclear">&nbsp;</div>';
         echo '</form>';
         echo '</div>';
 
-    } else {
-
-        //UNKNOWN IDEA TYPE
-        $this->X_model->create(array(
-            'x__type' => 4246, //Platform Bug Reports
-            'x__member' => $recipient_e['e__id'],
-            'x__message' => 'step_echo() unknown idea type source ID ['.$i_focus['i__type'].'] that could not be rendered',
-            'x__left' => $i_focus['i__id'],
-        ));
-
     }
 }
 
 echo '</div>';
+
+
+
+
+
+
+//DISCOVERY CONTROLLER
+if($in_my_x){
+
+    $column_width = number_format(100/count($this->config->item('n___13289')), 2);
+
+    echo '<div class="container fixed-bottom">';
+    echo '<div class="row">';
+    echo '<table class="discover-controller"><tr>';
+
+    foreach($this->config->item('e___13289') as $e__id => $m) {
+
+        $url = '';
+        if($e__id==12896){
+
+            //Is Saved?
+            $is_saved = count($this->X_model->fetch(array(
+                'x__up' => $recipient_e['e__id'],
+                'x__right' => $i_focus['i__id'],
+                'x__type' => 12896, //SAVED
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )));
+
+            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
+
+        } elseif($e__id==12991){
+
+            //GO BACK
+            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+
+        } elseif($e__id==12211){
+
+            //GO NEXT
+            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()">'.$m['m_icon'].'</a>';
+
+        } elseif($e__id==13491){
+
+            //FONT SIZE
+            $url .= '<div class="dropdown inline-block">';
+            $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
+            $url .= '</button>';
+            $url .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$e__id.'">';
+            foreach($this->config->item('e___'.$e__id) as $x__type2 => $m2) {
+                $url .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat font_items font_item_'.$x__type2.' '.( $this->session->userdata('session_var_13491')==$x__type2 ? ' active ' : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
+            }
+            $url .= '</div>';
+            $url .= '</div>';
+
+        } elseif($e__id==13400){
+
+            //IDEA INDEX
+            $url = '<a href="javascript:void(0);" onclick="load_13400()" class="controller-nav">'.$m['m_icon'].'</a>';
+
+        }
+
+        echo '<td style="width:'.$column_width.'%;">'.$url.'</td>';
+
+    }
+
+    echo '</tr></table>';
+    echo '</div>';
+    echo '</div>';
+}
+
+
 
 ?>

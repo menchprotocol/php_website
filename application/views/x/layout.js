@@ -44,12 +44,32 @@ function load_13400(){
     alert('Loading Index');
 }
 
+
+function go_12211(){
+    //Attempts to go next if no submissions:
+    if(focus_i__type==6683) {
+
+        //TEXT RESPONSE:
+        return x_respond();
+
+    } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
+
+        //Must upload file first:
+        alert('ERROR: You must upload file before going next.');
+
+    } else {
+
+        //Go Next:
+        window.location = '/x/x_next/' + focus_i__id;
+
+    }
+}
+
+
+
 function set_13491(font_size_e__id){
 
-    //Update Font:
-    $('body').attr("id", "font_size_"+font_size_e__id);
-    $('.font_items').removeClass('active');
-    $('.font_item_'+font_size_e__id).addClass('active');
+    html_13491(font_size_e__id);
 
     //Save to profile:
     $.post("/e/e_update_radio", {
@@ -121,7 +141,7 @@ function x_upload(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('i__id', i_loaded_id);
+        ajaxData.append('i__id', focus_i__id);
 
         $.ajax({
             url: '/x/x_upload',
@@ -156,14 +176,14 @@ function x_respond(){
     //Show Loading:
     $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/x/x_respond", {
-        i__id:i_loaded_id,
+        i__id:focus_i__id,
         x_respond:$('#x_respond').val(),
     }, function (data) {
         if (data.status) {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/x/x_next/'+i_loaded_id;
+                window.location = '/x/x_next/'+focus_i__id;
             }, 987);
         } else {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');
@@ -184,14 +204,14 @@ function x_answer(){
     //Show Loading:
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/x/x_answer", {
-        i_loaded_id:i_loaded_id,
+        focus_i__id:focus_i__id,
         answered_is:answered_is
     }, function (data) {
         if (data.status) {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
             setTimeout(function () {
                 //Go to redirect message:
-                window.location = '/x/x_next/'+i_loaded_id;
+                window.location = '/x/x_next/'+focus_i__id;
             }, 987);
         } else {
             $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');

@@ -463,7 +463,6 @@ function toggle_search(){
 }
 
 
-
 function i_save(i__id){
     $('.toggle_saved').toggleClass('hidden');
     $.post("/x/i_save", {
@@ -473,9 +472,17 @@ function i_save(i__id){
             alert(data.message);
             $('.toggle_saved').toggleClass('hidden');
         } else if (data.is_first_save) {
+            //To keep members informed of what just happened:
             alert(data.first_save_message);
         }
     });
+}
+
+function html_13491(font_size_e__id){
+    //Update Font:
+    $('body').attr("id", "font_size_"+font_size_e__id);
+    $('.font_items').removeClass('active');
+    $('.font_item_'+font_size_e__id).addClass('active');
 }
 
 
@@ -985,7 +992,7 @@ function i_note_edit(x__id, note_type_id) {
     var modify_data = {
         x__id: parseInt(x__id),
         message_x__status: parseInt($("#message_status_" + x__id).val()),
-        i__id: parseInt(i_loaded_id),
+        i__id: parseInt(focus_i__id),
         x__message: $("#ul-nav-" + x__id + " textarea").val(),
     };
 
@@ -1116,7 +1123,7 @@ function i_note_file(droppedFiles, uploadType, note_type_id) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('i__id', i_loaded_id);
+        ajaxData.append('i__id', focus_i__id);
         ajaxData.append('note_type_id', note_type_id);
 
         $.ajax({
@@ -1159,7 +1166,7 @@ function i_note_text(note_type_id) {
     //Update backend:
     $.post("/i/i_note_text", {
 
-        i__id: i_loaded_id, //Synonymous
+        i__id: focus_i__id, //Synonymous
         x__message: $('#x__message' + note_type_id).val(),
         note_type_id: note_type_id,
 

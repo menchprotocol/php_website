@@ -23,7 +23,7 @@ $(document).ready(function () {
         $('#x__message4231').focus();
     }
 
-    autosize($('.text__4736_'+i_loaded_id));
+    autosize($('.text__4736_'+focus_i__id));
 
     //Activate Source-Only Inputs:
     $(".e-only").each(function () {
@@ -38,7 +38,7 @@ $(document).ready(function () {
     prep_search_pad();
 
     //Load Sortable:
-    i_sort_load(i_loaded_id);
+    i_sort_load(focus_i__id);
 
 });
 
@@ -49,7 +49,7 @@ function e_only_unlink(x__id, note_type_id) {
     if (r == true) {
         $.post("/e/e_only_unlink", {
 
-            i__id: i_loaded_id,
+            i__id: focus_i__id,
             x__id: x__id,
 
         }, function (data) {
@@ -94,7 +94,7 @@ function e_only_add(e_existing_id, note_type_id) {
     input.prop('disabled', true);
     $.post("/e/e_only_add", {
 
-        i__id: i_loaded_id,
+        i__id: focus_i__id,
         note_type_id: note_type_id,
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
@@ -134,7 +134,7 @@ function e_e_only_search(note_type_id) {
 
     var element_focus = ".e-i-"+note_type_id;
 
-    var base_creator_url = '/e/create/'+i_loaded_id+'/?content_title=';
+    var base_creator_url = '/e/create/'+focus_i__id+'/?content_title=';
 
     $(element_focus + ' .add-input').focus(function() {
         $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
@@ -187,9 +187,9 @@ function e_e_only_search(note_type_id) {
 }
 
 function x_preview(){
-    if(parseInt($('.dropi_4737_'+i_loaded_id+'_0.active').attr('new-en-id')) in js_e___7355){
+    if(parseInt($('.dropi_4737_'+focus_i__id+'_0.active').attr('new-en-id')) in js_e___7355){
         //Idea is public, go to preview:
-        window.location = '/' + i_loaded_id;
+        window.location = '/' + focus_i__id;
     } else {
         //Inform them that they cannot discover yet:
         alert('You must publish idea before discovering it.');
@@ -262,7 +262,7 @@ function i_sort_save(i__id) {
     var new_x__sorts = [];
     var sort_rank = 0;
 
-    $("#list-in-" + i_loaded_id + "-0 .i_sortable").each(function () {
+    $("#list-in-" + focus_i__id + "-0 .i_sortable").each(function () {
         //Fetch variables for this idea:
         var i__id = parseInt($(this).attr('i-id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -290,7 +290,7 @@ function i_sort_load(i__id) {
 
 
     var element_key = null;
-    var theobject = document.getElementById("list-in-" + i_loaded_id + "-0");
+    var theobject = document.getElementById("list-in-" + focus_i__id + "-0");
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
         return false;
@@ -318,7 +318,7 @@ function i_add(i_linked_id, is_parent, i_link_child_id) {
 
 
     var sort_handler = ".i_sortable";
-    var sort_list_id = "list-in-" + i_loaded_id + '-' + is_parent;
+    var sort_list_id = "list-in-" + focus_i__id + '-' + is_parent;
     var input_field = $('#addi-c-' + i_linked_id + '-' + is_parent);
     var i__title = input_field.val();
 
@@ -461,7 +461,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
         i__id: i__id,
         x__id: x__id,
-        i_loaded_id:i_loaded_id,
+        focus_i__id:focus_i__id,
         element_id: element_id,
         new_e__id: new_e__id
 

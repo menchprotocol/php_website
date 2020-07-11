@@ -836,6 +836,11 @@ function e_update_radio(parent_e__id, selected_e__id, enable_mulitiselect){
         return false;
     }
 
+    //Updating Font?
+    if(parent_e__id==13491){
+        html_13491(selected_e__id);
+    }
+
     //Show spinner on the notification element:
     var notify_el = '.radio-'+parent_e__id+' .item-'+selected_e__id+' .change-results';
     $(notify_el).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');

@@ -769,7 +769,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['i_loaded_id'])) {
+        } elseif (!isset($_POST['focus_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea id.',
@@ -782,7 +782,7 @@ class X extends CI_Controller
         }
 
         //Save answer:
-        return view_json($this->X_model->answer($session_e['e__id'], $_POST['i_loaded_id'], $_POST['answered_is']));
+        return view_json($this->X_model->answer($session_e['e__id'], $_POST['focus_i__id'], $_POST['answered_is']));
 
     }
 

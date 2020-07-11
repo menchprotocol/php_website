@@ -15,7 +15,7 @@ $is_public = in_array($i_focus['i__status'], $this->config->item('n___7355'));
 
 <script>
     //Include some cached sources:
-    var i_loaded_id = <?= $i_focus['i__id'] ?>;
+    var focus_i__id = <?= $i_focus['i__id'] ?>;
 </script>
 <script src="/application/views/i/layout.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 

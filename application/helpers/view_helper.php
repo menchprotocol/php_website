@@ -1031,7 +1031,7 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null, $show
 
     //If no list just return the next step:
     if(!count($is_next)){
-        return ( $show_next ? view_next_i_previous($i['i__id'], $recipient_e) : false );
+        return ( $show_next ? view_i_next($i['i__id'], $recipient_e) : false );
     }
 
     $CI =& get_instance();
@@ -1052,12 +1052,12 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null, $show
     }
 
     if($show_next){
-        view_next_i_previous($i['i__id'], $recipient_e);
+        view_i_next($i['i__id'], $recipient_e);
         echo '<div class="doclear">&nbsp;</div>';
     }
 }
 
-function view_next_i_previous($i__id, $recipient_e){
+function view_i_next($i__id, $recipient_e){
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
@@ -1065,8 +1065,6 @@ function view_next_i_previous($i__id, $recipient_e){
     //PREVIOUS:
     echo view_i_previous($i__id, $recipient_e);
 
-    //NEXT:
-    echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-x btn-circle" href="/x/x_next/'.$i__id.'">'.$e___11035[12211]['m_icon'].'</a></div>';
 
 }
 
