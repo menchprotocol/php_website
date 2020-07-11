@@ -598,7 +598,7 @@ if($in_my_x){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><span class="toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a>';
+            $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a>';
 
         } elseif($e__id==12991){
 

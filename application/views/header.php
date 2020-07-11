@@ -160,8 +160,6 @@ if(!isset($hide_header)){
                         //echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m_name'].'">'.$e___11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        //<span class="show-max">'.$e___13479[4269]['m_name'].'&nbsp;</span>
-                        //block-sign-link
                         echo '<td class="block-link"><a href="/e/signin" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
 
                     } else {
