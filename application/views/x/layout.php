@@ -494,17 +494,13 @@ if(!$in_my_x){
             echo '</div>';
 
 
-
-
             echo '<div class="result-update margin-top-down"></div>';
 
 
             //Button to submit selection:
             if(count($x_selects)>0){
-                echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-x btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
+                echo '<div class="inline-block margin-top-down"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
             }
-
-            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-x btn-circle" href="javascript:void(0)" onclick="x_select()">'.$e___11035[12211]['m_icon'].'</a></div>';
 
             echo '</div>';
 
