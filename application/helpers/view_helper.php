@@ -654,7 +654,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="ap_i_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
+    $ui  = '<div id="i_saved_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
 
     $ui .= ( $can_click ? '<a href="/'. $i['i__id'] .'" class="itemdiscover">' : '' );
 
@@ -680,7 +680,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
             $ui .= '<div class="note-editor edit-off">';
             $ui .= '<span class="show-on-hover">';
-            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$i['i__id'].');$(\'#ap_i_'.$i['i__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$i['i__id'].');$(\'#i_saved_'.$i['i__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
             $ui .= '</span>';
             $ui .= '</div>';
 
@@ -1191,11 +1191,12 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
+    $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
 
     $recipient_e = superpower_assigned();
     $i_stats = i_stats($i['i__metadata']);
 
-    $ui  = '<a href="'.( $x_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] ) . '" id="ap_i_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
+    $ui  = '<a href="'.( $x_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] ) . '" id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
 
     $ui .= '<div class="cover-image">';
     if($recipient_e){
@@ -1215,17 +1216,17 @@ function view_i_cover($i, $show_editor, $x_mode = true){
 
     //SOURCES:
     if(superpower_active(10939, true)){
-        $ui .= $e___13369[12274]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['e_count']).'</span><br />';
+        $ui .= $e___12467[12274]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['e_count']).'</span><br />';
     }
 
     //IDEAS:
-    $ui .= $e___13369[12273]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['i___13443']).'</span><br />';
+    $ui .= $e___12467[12273]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['i___13443']).'</span><br />';
 
     //DISCOVERIES:
     if(superpower_active(12701, true)){
         $x_coins = x_coins_i(6255, $i['i__id']);
         if($x_coins > 0){
-            $ui .= $e___13369[6255]['m_icon'].'<span style="padding-left: 2px;">'.view_number($x_coins).'</span>';
+            $ui .= $e___12467[6255]['m_icon'].'<span style="padding-left: 2px;">'.view_number($x_coins).'</span>';
         }
     }
 

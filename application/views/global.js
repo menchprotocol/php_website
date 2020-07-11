@@ -1211,12 +1211,12 @@ function x_remove(x__type){
                 } else {
 
                     //REMOVE BOOKMARK from UI:
-                    $('#ap_i_'+i__id).fadeOut();
+                    $('#i_cover_'+i__id).fadeOut();
 
                     setTimeout(function () {
 
                         //Delete from body:
-                        $('#ap_i_'+i__id).remove();
+                        $('#i_cover_'+i__id).remove();
 
                     }, 233);
                 }
