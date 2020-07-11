@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-10 18:59:46 PST
+//Generated 2020-07-10 19:30:07 PST
 $config['s___12273'] = 3920; //IDEAS
-$config['s___12274'] = 5011; //SOURCES
-$config['s___6255'] = 121867; //DISCOVERIES
-$config['s___13362'] = 1170379; //TRANSACTIONS
+$config['s___12274'] = 5014; //SOURCES
+$config['s___6255'] = 121875; //DISCOVERIES
+$config['s___13362'] = 1170460; //TRANSACTIONS
 
 //DISCOVER CONTROLLER:
 $config['n___13289'] = array(12991,13491,13400,12896,12211);
@@ -3459,13 +3459,19 @@ $config['e___11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(6225,13401,12750,13495,13427,12707,4235,12991,12211,11068,4341,12969,6287,13497,12896,7256,4269,4997,12275,13007,10957,7540,13498);
+$config['n___11035'] = array(6225,13502,13401,12750,13495,13427,12707,4235,12991,12211,11068,4341,12969,6287,13503,12896,7256,4269,4997,12275,13007,10957,7540,13498);
 $config['e___11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'ACCOUNT SETTINGS',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(13425,12574,11089,11035,4527),
+    ),
+    13502 => array(
+        'm_icon' => '<i class="fas fa-times discover"></i>',
+        'm_name' => 'CANCEL',
+        'm_desc' => ' ',
+        'm_parents' => array(11035),
     ),
     13401 => array(
         'm_icon' => '<i class="fas fa-search-minus"></i>',
@@ -3481,7 +3487,7 @@ $config['e___11035'] = array(
     ),
     13495 => array(
         'm_icon' => '<i class="fas fa-pen discover"></i>',
-        'm_name' => 'EDIT ANSWER',
+        'm_name' => 'EDIT SELECTION',
         'm_desc' => ' ',
         'm_parents' => array(11035),
     ),
@@ -3539,9 +3545,9 @@ $config['e___11035'] = array(
         'm_desc' => '',
         'm_parents' => array(13297,6405,6194,12699,12500,10876,11035,4527),
     ),
-    13497 => array(
-        'm_icon' => '<i class="fas fa-save discover"></i>',
-        'm_name' => 'SAVE ANSWER',
+    13503 => array(
+        'm_icon' => '<i class="fas fa-check discover"></i>',
+        'm_name' => 'SAVE',
         'm_desc' => ' ',
         'm_parents' => array(11035),
     ),
