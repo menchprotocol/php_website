@@ -435,7 +435,7 @@ if(!$in_my_x){
 
 
                 //EDIT ANSWER:
-                echo '<div class="inline-block margin-top-down"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_name'].'</a></div>';
+                echo '<div class="inline-block margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_name'].'</a></div>';
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -598,6 +598,7 @@ if($in_my_x){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
+            $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
             $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a>';
 
         } elseif($e__id==12991){
