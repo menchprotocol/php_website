@@ -1039,6 +1039,11 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null){
 
     echo '<div class="headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
+    //Toogle for extra info:
+    $CI =& get_instance();
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
+    echo '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.x_info\').toggleClass(\'hidden\');" class="icon-block grey" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13509]['m_name'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
+
     echo '<div class="list-group">';
     foreach($is_next as $key => $next_i){
         echo view_i_x($next_i, $common_prefix);
