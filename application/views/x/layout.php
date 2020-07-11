@@ -616,28 +616,27 @@ if($in_my_x){
     }
 
 
+
+    echo '<div class="container load_12413 hidden">';
+    echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12413]['m_icon'].'</span>'.$e___11035[12413]['m_name'].'</div>';
+    echo '<div class="list-group">';
+
+    //My Discoveries:
+    echo '<div class="list-group-item no-side-padding itemdiscover"><a href="/"><span class="icon-block">'.$e___11035[10876]['m_icon'].'</span><span class="montserrat">'.$e___11035[10876]['m_name'].'</span></a></div>';
+
+
     //Did We Find It?
     if($previous_level_id){
-
-        echo '<div class="container load_12413 hidden">';
-        echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12413]['m_icon'].'</span>'.$e___11035[12413]['m_name'].'</div>';
-        echo '<div class="list-group">';
-
-        //My Discoveries:
-        echo '<div class="list-group-item no-side-padding itemdiscover"><a href="/"><span class="icon-block">'.$e___11035[10876]['m_icon'].'</span><span class="montserrat">'.$e___11035[10876]['m_name'].'</span></a></div>';
-
-
         //Idea Map:
         echo join('', array_reverse($sitemap_items));
-
-        //Current Idea:
-        echo '<div class="list-group-item no-side-padding itemdiscover">'.$main_title.'</div>';
-
-
-        echo '</div>';
-        echo '</div>';
-
     }
+
+    //Current Idea:
+    echo '<div class="list-group-item no-side-padding itemdiscover">'.$main_title.'</div>';
+
+
+    echo '</div>';
+    echo '</div>';
 
 
 
@@ -688,7 +687,7 @@ if($in_my_x){
             $url .= '</div>';
             $url .= '</div>';
 
-        } elseif($e__id==12413 && $previous_level_id){
+        } elseif($e__id==12413){
 
             //IDEA INDEX
             $url = '<a href="javascript:void(0);" onclick="$(\'.load_12413\').toggleClass(\'hidden\');" class="controller-nav">'.$m['m_icon'].'</a>';
