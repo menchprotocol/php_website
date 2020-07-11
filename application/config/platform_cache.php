@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 13:33:10 PST
+//Generated 2020-07-11 13:33:55 PST
 $config['s___12273'] = 3920; //IDEAS
 $config['s___12274'] = 5015; //SOURCES
 $config['s___6255'] = 121929; //DISCOVERIES
-$config['s___13362'] = 1171924; //TRANSACTIONS
+$config['s___13362'] = 1171928; //TRANSACTIONS
 
 //SAVED IDEAS:
 $config['n___13510'] = array(12896,12906);
@@ -32,14 +32,8 @@ $config['e___13510'] = array(
 );
 
 //DISCOVERY CONTROLLER:
-$config['n___13289'] = array(13510,12991,13491,12413,12211);
+$config['n___13289'] = array(12991,13491,12413,13510,12211);
 $config['e___13289'] = array(
-    13510 => array(
-        'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVED IDEAS',
-        'm_desc' => '',
-        'm_parents' => array(13289,13210,4527,11035),
-    ),
     12991 => array(
         'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
         'm_name' => 'GO BACK',
@@ -57,6 +51,12 @@ $config['e___13289'] = array(
         'm_name' => 'IDEA MAP',
         'm_desc' => '',
         'm_parents' => array(13453,13289,13408,6768,4527),
+    ),
+    13510 => array(
+        'm_icon' => '<i class="fas fa-bookmark discover"></i>',
+        'm_name' => 'SAVED IDEAS',
+        'm_desc' => '',
+        'm_parents' => array(13289,13210,4527,11035),
     ),
     12211 => array(
         'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
