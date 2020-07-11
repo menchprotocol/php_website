@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 12:53:42 PST
+//Generated 2020-07-11 12:55:54 PST
 $config['s___12273'] = 3920; //IDEAS
 $config['s___12274'] = 5014; //SOURCES
 $config['s___6255'] = 121929; //DISCOVERIES
-$config['s___13362'] = 1171845; //TRANSACTIONS
+$config['s___13362'] = 1171851; //TRANSACTIONS
 
 //DISCOVERY CONTROLLER:
 $config['n___13289'] = array(12991,13491,12413,12896,12211);
@@ -3549,7 +3549,7 @@ $config['e___11035'] = array(
     13509 => array(
         'm_icon' => '<i class="fas fa-info-square"></i>',
         'm_name' => 'TOGGLE EXTRA INFORMATION',
-        'm_desc' => ' ',
+        'm_desc' => '',
         'm_parents' => array(11035),
     ),
     12906 => array(
