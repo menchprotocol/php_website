@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 16:35:25 PST
+//Generated 2020-07-11 16:42:32 PST
 $config['s___12273'] = 3920; //IDEAS
 $config['s___12274'] = 5015; //SOURCES
 $config['s___6255'] = 121935; //DISCOVERIES
-$config['s___13362'] = 1172099; //TRANSACTIONS
+$config['s___13362'] = 1172103; //TRANSACTIONS
 
 //SAVED IDEAS:
 $config['n___13510'] = array(12896,12906);
@@ -96,7 +96,7 @@ $config['e___13488'] = array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
         'm_name' => 'DISCOVERY HOME',
         'm_desc' => '',
-        'm_parents' => array(13459,13488,2738,4527,1326),
+        'm_parents' => array(11035,13459,13488,2738,4527,1326),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
@@ -3411,7 +3411,7 @@ $config['e___11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(6225,13502,13401,12750,13495,13427,12707,4235,12991,12211,12413,11068,4341,12969,6287,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
+$config['n___11035'] = array(6225,13502,13401,12750,10876,13495,13427,12707,4235,12991,12211,12413,11068,4341,12969,6287,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
 $config['e___11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3436,6 +3436,12 @@ $config['e___11035'] = array(
         'm_name' => 'DISCOVER THIS IDEA',
         'm_desc' => '',
         'm_parents' => array(13295,11035),
+    ),
+    10876 => array(
+        'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
+        'm_name' => 'DISCOVERY HOME',
+        'm_desc' => '',
+        'm_parents' => array(11035,13459,13488,2738,4527,1326),
     ),
     13495 => array(
         'm_icon' => '<i class="fas fa-pen discover"></i>',
@@ -4276,7 +4282,7 @@ $config['e___2738'] = array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
         'm_name' => 'DISCOVERY HOME',
         'm_desc' => '',
-        'm_parents' => array(13459,13488,2738,4527,1326),
+        'm_parents' => array(11035,13459,13488,2738,4527,1326),
     ),
     10869 => array(
         'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
@@ -4484,7 +4490,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
         'm_name' => 'DISCOVERY HOME',
         'm_desc' => '',
-        'm_parents' => array(13459,13488,2738,4527,1326),
+        'm_parents' => array(11035,13459,13488,2738,4527,1326),
     ),
     6150 => array(
         'm_icon' => '<i class="far fa-bookmark discover" aria-hidden="true"></i>',

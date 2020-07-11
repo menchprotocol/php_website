@@ -622,8 +622,18 @@ if($in_my_x){
         echo '<div class="container load_12413 hidden">';
         echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12413]['m_icon'].'</span>'.$e___11035[12413]['m_name'].'</div>';
         echo '<div class="list-group">';
+
+        //My Discoveries:
+        echo '<div class="list-group-item no-side-padding"><a href="/"><span class="icon-block">'.$e___11035[10876]['m_icon'].'</span><span class="montserrat">'.$e___11035[10876]['m_name'].'</span></a></div>';
+
+
+        //Idea Map:
         echo join('', array_reverse($sitemap_items));
+
+        //Current Idea:
         echo '<div class="list-group-item no-side-padding">'.$main_title.'</div>';
+
+
         echo '</div>';
         echo '</div>';
 
