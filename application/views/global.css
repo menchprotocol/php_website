@@ -1390,7 +1390,11 @@ label {
 .e_saved, .e_saved:hover, .e_saved:focus{
     background-color:#c1dffb !important;
 }
-
+.x_info{
+    width:138px;
+    height: 23px;
+    overflow: hidden;
+}
 
 
 

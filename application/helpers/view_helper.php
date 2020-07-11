@@ -654,14 +654,14 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="ap_i_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div id="ap_i_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
 
     $ui .= ( $can_click ? '<a href="/'. $i['i__id'] .'" class="itemdiscover">' : '' );
 
 
     //Right Stats:
     if($i_stats['i___13292'] || $i_stats['i___13443']){
-        $ui .= '<div class="pull-right montserrat x_info hidden" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['i___13443'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['i___13443'].'</span>' : '' ).'</span>'.( $i_stats['i___13292'] ? '<span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span>': '' ).'</div>';
+        $ui .= '<div class="pull-right montserrat x_info hidden" style="'.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['i___13443'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['i___13443'].'</span>' : '' ).'</span>'.( $i_stats['i___13292'] ? '<span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span>': '' ).'</div>';
     }
 
 
@@ -1035,13 +1035,14 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null){
     }
 
     //List children so they know what's ahead:
+    $CI =& get_instance();
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
+
 
     echo '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
     //Toogle for extra info:
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     echo '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.x_info\').toggleClass(\'hidden\');" class="icon-block grey" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13509]['m_name'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
 
     echo '<div class="doclear">&nbsp;</div>';
