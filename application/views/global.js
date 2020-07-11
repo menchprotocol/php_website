@@ -71,7 +71,7 @@ function load_editor(){
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 'object__type=12274',
-                    hitsPerPage: 5,
+                    hitsPerPage: 8,
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -102,7 +102,7 @@ function load_editor(){
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 'object__type=12273',
-                    hitsPerPage: 5,
+                    hitsPerPage: 8,
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -868,7 +868,7 @@ function i_note_e_search(obj) {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
                 search: function (query, callback) {
                     algolia_index.search(query, {
-                        hitsPerPage: 5,
+                        hitsPerPage: 8,
                         filters: 'object__type=12274',
                     })
                         .then(function searchSuccess(content) {
