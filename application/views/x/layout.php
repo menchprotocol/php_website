@@ -624,14 +624,14 @@ if($in_my_x){
         echo '<div class="list-group">';
 
         //My Discoveries:
-        echo '<div class="list-group-item no-side-padding"><a href="/"><span class="icon-block">'.$e___11035[10876]['m_icon'].'</span><span class="montserrat">'.$e___11035[10876]['m_name'].'</span></a></div>';
+        echo '<div class="list-group-item no-side-padding itemdiscover"><a href="/"><span class="icon-block">'.$e___11035[10876]['m_icon'].'</span><span class="montserrat">'.$e___11035[10876]['m_name'].'</span></a></div>';
 
 
         //Idea Map:
         echo join('', array_reverse($sitemap_items));
 
         //Current Idea:
-        echo '<div class="list-group-item no-side-padding">'.$main_title.'</div>';
+        echo '<div class="list-group-item no-side-padding itemdiscover">'.$main_title.'</div>';
 
 
         echo '</div>';
