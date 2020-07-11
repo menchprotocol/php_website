@@ -616,10 +616,6 @@ if($in_my_x){
 
                     $i_level_up++;
 
-                    if ($previous_i__id == $intersect) {
-                        //array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$e___12994[12413]['m_icon'].'</span><span class="montserrat">'.$e___12994[12413]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
-                    }
-
                     array_push($sitemap_items, view_i_x($is_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
 
                 }
@@ -632,9 +628,10 @@ if($in_my_x){
 
 
     //Did We Find It?
-    if($previous_level_id > 0 && $x_list_ui){
+    $has_index = $previous_level_id > 0 && $x_list_ui;
+    if($has_index){
 
-        echo '<div class="load_12413 container hidden">';
+        echo '<div class="container load_12413 hidden">';
         echo '<div class="list-group">';
         echo $x_list_ui;
         echo '</div>';
@@ -691,7 +688,7 @@ if($in_my_x){
             $url .= '</div>';
             $url .= '</div>';
 
-        } elseif($e__id==12413){
+        } elseif($e__id==12413 && $has_index){
 
             //IDEA INDEX
             $url = '<a href="javascript:void(0);" onclick="$(\'.load_12413\').toggleClass(\'hidden\');" class="controller-nav">'.$m['m_icon'].'</a>';
