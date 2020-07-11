@@ -579,12 +579,15 @@ echo '</div>';
 //DISCOVERY CONTROLLER
 if($in_my_x){
 
+    $column_width = number_format(100/count($this->config->item('n___13289')), 2);
+
     echo '<div class="container fixed-bottom">';
     echo '<div class="row">';
     echo '<table class="discover-controller"><tr>';
 
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
+        $url = '';
         if($e__id==12896){
 
             //Is Saved?
@@ -611,7 +614,7 @@ if($in_my_x){
         } elseif($e__id==13491){
 
             //FONT SIZE
-            $url = '<div class="dropdown inline-block">';
+            $url .= '<div class="dropdown inline-block">';
             $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
             $url .= '</button>';
@@ -627,14 +630,9 @@ if($in_my_x){
             //IDEA INDEX
             $url = '<a href="javascript:void(0);" onclick="load_12413()" class="controller-nav">'.$m['m_icon'].'</a>';
 
-        } else {
-
-            //Unknown
-            continue;
-
         }
 
-        echo '<td>'.$url.'</td>';
+        echo '<td style="width:'.$column_width.'%;">'.$url.'</td>';
 
     }
 
