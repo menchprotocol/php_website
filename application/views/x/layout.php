@@ -588,17 +588,17 @@ if($in_my_x){
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
     $e___12994 = $this->config->item('e___12994'); //DISCOVER LAYOUT
 
-    if(in_array($i__id, $member_xy_ids)){
+    if(in_array($i_focus['i__id'], $member_xy_ids)){
 
         //A discovering list item:
         $is_this = $this->I_model->fetch(array(
-            'i__id' => $i__id,
+            'i__id' => $i_focus['i__id'],
         ));
 
     } else {
 
         //Find it:
-        $recursive_parents = $this->I_model->recursive_parents($i__id, true, true);
+        $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
         $sitemap_items = array();
 
         foreach($recursive_parents as $grand_parent_ids) {
