@@ -182,7 +182,7 @@ if($recipient_e['e__id']==1){
             $url .= '</button>';
             $url .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$e__id.'">';
             foreach($this->config->item('e___'.$e__id) as $x__type2 => $m2) {
-                $url .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat '.(  ? ' active ' : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
+                $url .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat font_items font_item_'.$x__type2.' '.( $this->session->userdata('session_var_13491')==$x__type2 ? ' active ' : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
             }
             $url .= '</div>';
             $url .= '</div>';

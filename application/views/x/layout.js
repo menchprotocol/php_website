@@ -48,6 +48,8 @@ function set_13491(font_size_e__id){
 
     //Update Font:
     $('body').attr("id", "font_size_"+font_size_e__id);
+    $('.font_items').removeClass('active');
+    $('.font_item_'+font_size_e__id).addClass('active');
 
     //Save to profile:
     $.post("/e/e_update_radio", {
