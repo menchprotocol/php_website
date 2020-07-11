@@ -175,16 +175,10 @@ function x_upload(droppedFiles, uploadType) {
 
 
 function x_reply(){
-    //Show Loading:
-    $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/x/x_reply", {
         i__id:focus_i__id,
         x_reply:$('#x_reply').val(),
     }, function (data) {
-
-        //Remove loader:
-        $('.text_saving_result').html('');
-
         if (data.status) {
             //Go to redirect message:
             window.location = '/x/x_next/'+focus_i__id;
@@ -206,15 +200,10 @@ function x_select(){
     });
 
     //Show Loading:
-    $('.selection_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/x/x_select", {
         focus_i__id:focus_i__id,
         answered_is:answered_is
     }, function (data) {
-
-        //Remove loader:
-        $('.selection_result').html('');
-
         if (data.status) {
             //Go to redirect message:
             window.location = '/x/x_next/'+focus_i__id;
@@ -222,7 +211,6 @@ function x_select(){
             //Show error:
             alert('ERROR: ' + data.message);
         }
-
     });
 }
 

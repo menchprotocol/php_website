@@ -494,8 +494,6 @@ if(!$in_my_x){
             echo '</div>';
 
 
-            echo '<div class="selection_result margin-top-down"></div>';
-
 
             //Button to submit selection:
             if(count($x_selects)>0){
@@ -518,8 +516,6 @@ if(!$in_my_x){
         echo '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR ANSWER:</div>';
 
         echo '<textarea class="border i_content padded x_input" placeholder="Write here..." id="x_reply">'.( count($x_completes) ? trim($x_completes[0]['x__message']) : '' ).'</textarea>';
-
-        echo '<div class="text_saving_result margin-top-down"></div>';
 
         if(count($x_completes)){
             //Next Ideas:
