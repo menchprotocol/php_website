@@ -1421,8 +1421,8 @@ function member_is_e($e__id, $session_e = array()){
 
         /*
 
-        //Player has Global source editing superpower
-        || superpower_active(10967, true)
+        //Player has Advance source editing superpower
+        || superpower_active(13422, true)
 
         //Player has source in their portfolio
         || count($CI->X_model->fetch(array(

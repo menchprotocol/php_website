@@ -496,11 +496,11 @@ if(!$in_my_x){
 
             if(count($x_selects)>0){
 
-                //Cancel:
-                echo '<div class="inline-block margin-top-down"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="'.$e___11035[13502]['m_name'].'">'.$e___11035[13502]['m_icon'].'</a></div>';
-
                 //Save Answers:
-                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">'.$e___11035[13503]['m_icon'].' '.$e___11035[13503]['m_name'].'</a></div>';
+                echo '<div class="inline-block margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">'.$e___11035[13503]['m_icon'].' '.$e___11035[13503]['m_name'].'</a></div>';
+
+                //Cancel:
+                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="'.$e___11035[13502]['m_name'].'">'.$e___11035[13502]['m_icon'].'</a></div>';
 
             }
 
@@ -559,7 +559,7 @@ if(!$in_my_x){
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="inline-block margin-top-down"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13498]['m_icon'].' '.$e___11035[13498]['m_name'].'</label></div>';
+        echo '<div class="inline-block margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13498]['m_icon'].' '.$e___11035[13498]['m_name'].'</label></div>';
 
 
         echo '<div class="doclear">&nbsp;</div>';
@@ -598,7 +598,7 @@ if($in_my_x){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
+            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><span class="toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a>';
 
         } elseif($e__id==12991){
 
@@ -624,10 +624,10 @@ if($in_my_x){
             $url .= '</div>';
             $url .= '</div>';
 
-        } elseif($e__id==13400){
+        } elseif($e__id==12413){
 
             //IDEA INDEX
-            $url = '<a href="javascript:void(0);" onclick="load_13400()" class="controller-nav">'.$m['m_icon'].'</a>';
+            $url = '<a href="javascript:void(0);" onclick="load_12413()" class="controller-nav">'.$m['m_icon'].'</a>';
 
         }
 

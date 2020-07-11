@@ -10,7 +10,8 @@ $e___11089 = $this->config->item('e___11089'); //SOURCE LAYOUT
 $e___10957 = $this->config->item('e___10957'); //SUPERPOWERS
 $is_public = in_array($e['e__status'], $this->config->item('n___7357'));
 $is_active = in_array($e['e__status'], $this->config->item('n___7358'));
-$superpower_10967 = superpower_active(10967, true);
+$superpower_10939 = superpower_active(10939, true);
+$superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 $superpower_any = ( $session_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
 $member_is_e = member_is_e($e['e__id']);
 
@@ -189,7 +190,7 @@ $member_is_e = member_is_e($e['e__id']);
     echo '<span class="icon-block e__status_' . $e['e__id'] . ( $is_public ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_name'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span>';
 
     //Modify
-    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(10967).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a>';
+    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a>';
 
 
     //ADMIN MENU
@@ -408,7 +409,7 @@ $member_is_e = member_is_e($e['e__id']);
             ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
 
             $counter = count($e__profiles);
-            if(!$counter && !$superpower_10967){
+            if(!$counter && !$superpower_13422){
                 continue;
             }
 
@@ -418,7 +419,7 @@ $member_is_e = member_is_e($e['e__id']);
             }
 
             //Input to add new parents:
-            $this_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
+            $this_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                     <input type="text"
@@ -442,7 +443,7 @@ $member_is_e = member_is_e($e['e__id']);
             $e__portfolios = array(); //Fetch some
 
 
-            if(!$counter && !$superpower_10967){
+            if(!$counter && !$superpower_10939){
                 continue;
             }
 
@@ -467,7 +468,7 @@ $member_is_e = member_is_e($e['e__id']);
 
 
             //SOURCE MASS EDITOR
-            if($superpower_10967){
+            if($superpower_13422){
 
                 //Mass Editor:
                 $dropdown_options = '';
@@ -576,7 +577,7 @@ $member_is_e = member_is_e($e['e__id']);
                 }
 
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 3px 0 0;">'.( superpower_active(10967, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-25px 3px 0 0;">'.( superpower_active(13422, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
 
 
 
@@ -659,7 +660,7 @@ $member_is_e = member_is_e($e['e__id']);
             }
 
             //Input to add new child:
-            $this_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10967).'">
+            $this_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                     <input type="text"

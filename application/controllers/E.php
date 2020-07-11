@@ -110,7 +110,7 @@ class E extends CI_Controller
     {
 
         //Authenticate Player:
-        $session_e = superpower_assigned(10967);
+        $session_e = superpower_assigned(13422);
 
         //Validate Source:
         $es = $this->E_model->fetch(array(
@@ -121,7 +121,7 @@ class E extends CI_Controller
         if (!$session_e) {
             view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10967),
+                'message' => view_unauthorized_message(13422),
             ));
         } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || count($es) < 1) {
             view_json(array(
@@ -155,11 +155,11 @@ class E extends CI_Controller
     {
 
         //Authenticate Player:
-        $session_e = superpower_assigned(10967);
+        $session_e = superpower_assigned(10939);
         if (!$session_e) {
             view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10967),
+                'message' => view_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1) {
             view_json(array(

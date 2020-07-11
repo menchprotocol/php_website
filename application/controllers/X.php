@@ -536,7 +536,7 @@ class X extends CI_Controller
 
 
 
-    function load_13400($i__id, $recipient_e){
+    function load_12413($i__id, $recipient_e){
 
         exit;
 
@@ -583,7 +583,7 @@ class X extends CI_Controller
                         $i_level_up++;
 
                         if ($previous_i__id == $intersect) {
-                            //array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$e___12994[13400]['m_icon'].'</span><span class="montserrat">'.$e___12994[13400]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
+                            //array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$e___12994[12413]['m_icon'].'</span><span class="montserrat">'.$e___12994[12413]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
                         }
 
                         //array_push($sitemap_items, view_i_x($is_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
@@ -809,7 +809,7 @@ class X extends CI_Controller
         } elseif (!isset($_POST['x_reply']) || !strlen($_POST['x_reply'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing text answer.',
+                'message' => 'Write a text reply before going next.',
             ));
         }
 
@@ -870,7 +870,7 @@ class X extends CI_Controller
         } elseif (!isset($_POST['answered_is']) || !is_array($_POST['answered_is']) || !count($_POST['answered_is'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Select an answer',
+                'message' => 'Select an answer before going next.',
             ));
         }
 

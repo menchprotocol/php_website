@@ -992,7 +992,7 @@ class X_model extends CI_Model
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
 
             //PLAYER REFERENCE
-            if(($current_mench['x_name']=='discover' && !superpower_active(10967, true)) || $is_current_e){
+            if(($current_mench['x_name']=='discover' && !superpower_active(10939, true)) || $is_current_e){
 
                 //NO LINK so we can maintain focus...
                 if((!$has_text && $is_current_e) || ($current_mench['x_name']=='discover' && $e_count==1 && $e_media_count==$e_count /* All media */)){

@@ -37,7 +37,7 @@ $(document).ready(function () {
 });
 
 
-function load_13400(){
+function load_12413(){
     alert('Loading Index');
 }
 
@@ -57,7 +57,7 @@ function go_12211(){
     } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
 
         //Must upload file first:
-        alert('ERROR: You must upload file before going next.');
+        alert('You must upload file before going next.');
 
     } else {
 
@@ -184,7 +184,7 @@ function x_reply(){
             window.location = '/x/x_next/'+focus_i__id;
         } else {
             //Show error:
-            alert('ERROR: ' + data.message);
+            alert(data.message);
         }
     });
 }
@@ -209,7 +209,7 @@ function x_select(){
             window.location = '/x/x_next/'+focus_i__id;
         } else {
             //Show error:
-            alert('ERROR: ' + data.message);
+            alert(data.message);
         }
     });
 }

@@ -412,7 +412,7 @@ class E_model extends CI_Model
         ));
 
         //Review source later:
-        if(!superpower_assigned(10967)){
+        if(!superpower_assigned(13422)){
 
             //Add Pending Review:
             $this->X_model->create(array(

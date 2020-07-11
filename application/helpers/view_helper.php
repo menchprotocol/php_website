@@ -649,7 +649,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
     $i_stats = i_stats($i['i__metadata']);
     $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
-    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || superpower_active(13404, true) );
+    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $recipient_e );
     $first_segment = $CI->uri->segment(1);
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
@@ -1205,7 +1205,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['i___13443'].' '.$e___13369[12273]['m_name'].' FROM '.$i_stats['e_count'].' '.$e___13369[12274]['m_name'].'">';
 
     //SOURCES:
-    if(superpower_active(10967, true)){
+    if(superpower_active(10939, true)){
         $ui .= $e___13369[12274]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['e_count']).'</span><br />';
     }
 
@@ -1291,8 +1291,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $is_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
     $is_e_only = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___7551')));
     $inline_editing = $control_enabled && superpower_active(13402, true);
-    $has_e_editor = superpower_active(10967, true);
-    $show_toolbar = superpower_active(12706, true);
+    $superpower_10939 = superpower_active(10939, true);
+    $superpower_12706 = superpower_active(12706, true);
 
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1335,9 +1335,9 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
     //PORTFOLIO COUNT (SYNC WITH NEXT IDEA COUNT)
-    if($show_toolbar){
+    if($superpower_12706){
         $child_counter = '';
-        if($has_e_editor){
+        if($superpower_10939){
             $e__portfolio_count = $CI->X_model->fetch(array(
                 'x__up' => $e['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1373,7 +1373,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $member_is_e, 0, false, null, extract_icon_color($e['e__icon']));
 
-        if($show_toolbar){
+        if($superpower_12706){
             $ui .= $child_counter;
             $ui .= '<div class="space-content">'.$box_items_list.'</div>';
         }
@@ -1384,7 +1384,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<a href="'.$e_url.'" class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'">';
         $ui .= $box_items_list;
         $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) :  $e['e__title'] ).'</span>';
-        if($show_toolbar){
+        if($superpower_12706){
             $ui .= $child_counter;
         }
         $ui .= '</a>';
@@ -1408,12 +1408,12 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         if($is_link_e){
 
             //Sort
-            if(!$is_parent && $has_e_editor){
+            if(!$is_parent && $superpower_10939){
                 $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
             }
 
             //Manage source link:
-            $ui .= '<span class="'.superpower_active(10967).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+            $ui .= '<span class="'.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
 
 
         } elseif($is_e_only){
@@ -1446,7 +1446,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
-    if($show_toolbar){
+    if($superpower_12706){
         //PROFILE
         $ui .= '<div class="space-content hideIfEmpty">';
         //PROFILE SOURCES:

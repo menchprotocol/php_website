@@ -4,8 +4,8 @@ $session_e = superpower_assigned();
 $first_segment = $this->uri->segment(1);
 $is_home = !strlen($first_segment);
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+$e___13479 = $this->config->item('e___13479');
 $current_mench = current_mench();
-$is_ideator = superpower_assigned(10939);
 
 ?><!doctype html>
 <html lang="en" >
@@ -100,146 +100,137 @@ if(!isset($hide_header)){
                 <tr>
                     <?php
 
-                    //MENCH HEADER
-                    foreach($this->config->item('e___13357') as $x__type => $m) {
+                    echo '<td><div class="mench_nav left_nav">';
 
-                        if ($x__type==2738){
+                    if(!superpower_assigned(10939)){
 
-                            //OPEN LEFT NAVIGATION:
-                            echo '<td><div class="mench_nav left_nav">';
+                        //LOGO ONLY
+                        echo '<span class="inline-block pull-left"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span>';
 
-                            //MENCH LOGO
-                            if(!$is_ideator){
-                                //Link to Discoveries:
-                                echo '<span class="inline-block pull-left"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span>';
-                            }
+                    } else {
 
-                        } elseif(in_array($x__type, $this->config->item('n___12467')) && $is_ideator){
-
-                            //Mench Coins
-                            if($x__type==12274){
+                        //MENCH COINS
+                        foreach($this->config->item('e___12467') as $x__type2 => $m2) {
+                            if($x__type2==12274){
                                 $page_url = 'href="/@'.$session_e['e__id'].'"';
-                            } elseif($x__type==12273){
+                            } elseif($x__type2==12273){
                                 $page_url = 'href="/~'.( is_numeric($first_segment) && e_owns_i($first_segment) ? $first_segment : '' ).'"';
-                            } elseif($x__type==6255){
+                            } elseif($x__type2==6255){
                                 $page_url = 'href="/"';
                             }
 
-                            $class = trim(extract_icon_color($m['m_icon']));
+                            $class = trim(extract_icon_color($m2['m_icon']));
                             $is_active = ($current_mench['x_name']==$class);
                             echo '<div class="btn-group pull-left mench_coin '.$class.' border-' . $class.( $is_active ? ' active ' : '' ).'">';
                             echo '<a class="btn ' . $class . '" '.$page_url.'>';
-                            echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                            echo view_number($this->config->item('s___'.$x__type)).' ';
-                            echo '<span class="montserrat ' . $class . '_name show-max">' . $m['m_name'] . '</span>';
+                            echo '<span class="icon-block">' . $m2['m_icon'] . '</span>';
+                            echo view_number($this->config->item('s___'.$x__type2)).' ';
+                            echo '<span class="montserrat ' . $class . '_name show-max">' . $m2['m_name'] . '</span>';
                             echo '</a>';
                             echo '</div>';
+                        }
+                    }
 
-                        } elseif($x__type==7256){
+                    echo '</div>';
 
-                            //SEARCH
+                    //SEARCH INPUT
+                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$m['m_name'].'"></form></div>';
 
-                            //CLOSE LEFT NAVIGATION:
-                            echo '</div>';
+                    echo '</td>';
 
-                            //Search Bar
-                            echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$m['m_name'].'"></form></div>';
 
-                            echo '</td>';
 
-                            if(intval(config_var(12678))){
+                    if(intval(config_var(12678))){
 
-                                //Search button
-                                echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$m['m_icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m_name'].'">'.$e___11035[13401]['m_icon'].'</span></a></td>';
+                        //Search button
+                        echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$m['m_icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m_name'].'">'.$e___11035[13401]['m_icon'].'</span></a></td>';
+                    }
+
+
+
+
+
+                    //MEMBER NAVIGATION:
+                    if (!$session_e) {
+
+                        //GUESTS
+
+                        //FEEDBACK SUPPORT
+                        //echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m_name'].'">'.$e___11035[12899]['m_icon'].'</a></td>';
+
+                        //Sign In/Up
+                        //<span class="show-max">'.$e___13479[4269]['m_name'].'&nbsp;</span>
+                        //block-sign-link
+                        echo '<td class="block-link"><a href="/e/signin" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
+
+                    } else {
+
+                        //MEMBERS
+
+                        $e___10876 = $this->config->item('e___10876'); //Mench Website
+                        $load_menu = 12500;
+
+                        echo '<td class="block-menu">';
+                        echo '<div class="dropdown inline-block">';
+                        echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$load_menu.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                        echo '<span class="icon-block">' .$e___13479[$load_menu]['m_icon'].'</span>';
+                        echo '</button>';
+
+                        echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$load_menu.'">';
+                        foreach($this->config->item('e___'.$load_menu) as $x__type2 => $m2) {
+
+                            //Skip superpowers if not assigned
+                            if($x__type2==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
+                                continue;
+                            } elseif($x__type2==6415 && !$is_home){
+                                //Deleting discovers only available on Discoveries home
+                                continue;
                             }
 
-                        } elseif($x__type==13479){
+                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m_parents']);
+                            $extra_class = null;
+                            $text_class = null;
 
-                            //MEMBER NAVIGATION:
-                            $e___13479 = $this->config->item('e___13479');
+                            if(in_array($x__type2, $this->config->item('n___10876'))){
 
-                            if (!$session_e) {
+                                //Fetch URL:
+                                $page_url = 'href="'.$e___10876[$x__type2]['m_desc'].'"';
 
-                                //GUESTS
+                            } elseif($x__type2==13449) {
+
+                                //SET SOURCE TO PLAYER
+                                $x__type2 = $session_e['e__id'];
+                                $page_url = 'href="/@'.$x__type2.'"';
+                                $m2['m_name'] = $session_e['e__title'];
+                                $m2['m_icon'] = $session_e['e__icon'];
+                                $text_class = 'text__6197_'.$x__type2;
+
+                            } elseif($x__type2==12899) {
 
                                 //FEEDBACK SUPPORT
-                                //echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m_name'].'">'.$e___11035[12899]['m_icon'].'</a></td>';
+                                $page_url = 'href="javascript:void(0);"';
+                                $extra_class = ' icon_12899 ';
 
-                                //Sign In/Up
-                                //<span class="show-max">'.$e___13479[4269]['m_name'].'&nbsp;</span>
-                                //block-sign-link
-                                echo '<td class="block-link"><a href="/e/signin" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
+                            } elseif($x__type2==6415) {
+
+                                //CLEAR DISCOVERIES
+                                $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-xy-list\').toggleClass(\'hidden\')"';
 
                             } else {
 
-                                //MEMBERS
-
-                                $e___10876 = $this->config->item('e___10876'); //Mench Website
-                                $load_menu = 12500;
-
-                                echo '<td class="block-menu">';
-                                echo '<div class="dropdown inline-block">';
-                                echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$load_menu.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                                echo '<span class="icon-block">' .$e___13479[$load_menu]['m_icon'].'</span>';
-                                echo '</button>';
-
-                                echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$load_menu.'">';
-                                foreach($this->config->item('e___'.$load_menu) as $x__type2 => $m2) {
-
-                                    //Skip superpowers if not assigned
-                                    if($x__type2==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
-                                        continue;
-                                    } elseif($x__type2==6415 && !$is_home){
-                                        //Deleting discovers only available on Discoveries home
-                                        continue;
-                                    }
-
-                                    $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m_parents']);
-                                    $extra_class = null;
-                                    $text_class = null;
-
-                                    if(in_array($x__type2, $this->config->item('n___10876'))){
-
-                                        //Fetch URL:
-                                        $page_url = 'href="'.$e___10876[$x__type2]['m_desc'].'"';
-
-                                    } elseif($x__type2==13449) {
-
-                                        //SET SOURCE TO PLAYER
-                                        $x__type2 = $session_e['e__id'];
-                                        $page_url = 'href="/@'.$x__type2.'"';
-                                        $m2['m_name'] = $session_e['e__title'];
-                                        $m2['m_icon'] = $session_e['e__icon'];
-                                        $text_class = 'text__6197_'.$x__type2;
-
-                                    } elseif($x__type2==12899) {
-
-                                        //FEEDBACK SUPPORT
-                                        $page_url = 'href="javascript:void(0);"';
-                                        $extra_class = ' icon_12899 ';
-
-                                    } elseif($x__type2==6415) {
-
-                                        //CLEAR DISCOVERIES
-                                        $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-xy-list\').toggleClass(\'hidden\')"';
-
-                                    } else {
-
-                                        continue;
-
-                                    }
-
-                                    //Navigation
-                                    echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m2['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="'.$text_class.'">'.$m2['m_name'].'</span></a>';
-
-                                }
-
-                                echo '</div>';
-                                echo '</div>';
-                                echo '</td>';
+                                continue;
 
                             }
+
+                            //Navigation
+                            echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m2['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m2['m_icon'].'</span><span class="'.$text_class.'">'.$m2['m_name'].'</span></a>';
+
                         }
+
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</td>';
+
                     }
                     ?>
                 </tr>
