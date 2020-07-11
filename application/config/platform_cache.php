@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 12:09:44 PST
+//Generated 2020-07-11 12:53:42 PST
 $config['s___12273'] = 3920; //IDEAS
-$config['s___12274'] = 5013; //SOURCES
-$config['s___6255'] = 121890; //DISCOVERIES
-$config['s___13362'] = 1171647; //TRANSACTIONS
+$config['s___12274'] = 5014; //SOURCES
+$config['s___6255'] = 121929; //DISCOVERIES
+$config['s___13362'] = 1171845; //TRANSACTIONS
 
 //DISCOVERY CONTROLLER:
 $config['n___13289'] = array(12991,13491,12413,12896,12211);
@@ -3406,7 +3406,7 @@ $config['e___11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(6225,13502,13401,12750,13495,13427,12707,4235,12991,12211,11068,4341,12969,6287,12896,13503,7256,4269,4997,12275,13007,10957,7540,12906,13498);
+$config['n___11035'] = array(6225,13502,13401,12750,13495,13427,12707,4235,12991,12211,11068,4341,12969,6287,12896,13503,7256,4269,4997,12275,13007,10957,7540,13509,12906,13498);
 $config['e___11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3544,6 +3544,12 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fad fa-university" aria-hidden="true"></i>',
         'm_name' => 'TERMS OF SERVICE',
         'm_desc' => '',
+        'm_parents' => array(11035),
+    ),
+    13509 => array(
+        'm_icon' => '<i class="fas fa-info-square"></i>',
+        'm_name' => 'TOGGLE EXTRA INFORMATION',
+        'm_desc' => ' ',
         'm_parents' => array(11035),
     ),
     12906 => array(
