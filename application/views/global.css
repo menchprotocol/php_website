@@ -229,8 +229,12 @@ li a {
 .btn {
     font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
-    font-size: 1.2em !important;
+    font-size: 1em !important;
     border-radius: 0 !important;
+}
+
+.btn-x, .btn-e, btn-i {
+    font-size: 1.2em !important;
 }
 
 a.btn, .btn.dropdown-toggle, label.btn {
@@ -491,7 +495,7 @@ img.no-radius {
     border-top-right-radius: 10px;
 }
 .discover-controller td{
-    padding:15px 0;
+    padding:12px 0;
     text-align: center;
 }
 .discover-controller td a{
