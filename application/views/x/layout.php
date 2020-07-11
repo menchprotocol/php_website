@@ -620,7 +620,7 @@ if($in_my_x){
     if($previous_level_id){
 
         echo '<div class="container load_12413 hidden">';
-        echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13510]['m_icon'].'</span>'.$e___11035[13510]['m_name'].'</div>';
+        echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12413]['m_icon'].'</span>'.$e___11035[12413]['m_name'].'</div>';
         echo '<div class="list-group">';
         echo join('', array_reverse($sitemap_items));
         echo '<div class="list-group-item no-side-padding">'.$main_title.'</div>';
