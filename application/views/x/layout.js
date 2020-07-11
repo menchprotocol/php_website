@@ -191,7 +191,7 @@ function x_reply(){
                 window.location = '/x/x_next/'+focus_i__id;
             }, 987);
         } else {
-            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');
+            alert('ERROR:' + data.message);
         }
     });
 }
