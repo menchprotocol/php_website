@@ -588,7 +588,7 @@ if($in_my_x){
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
         $url = '';
-        if($e__id==12896){
+        if($e__id==13510){
 
             //Is Saved?
             $is_saved = count($this->X_model->fetch(array(
@@ -598,8 +598,8 @@ if($in_my_x){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-            $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a>';
+            $e___13510 = $this->config->item('e___13510'); //SAVED IDEAS
+            $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
 
         } elseif($e__id==12991){
 

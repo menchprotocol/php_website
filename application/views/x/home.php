@@ -64,7 +64,7 @@
 
         if(count($member_saved)){
 
-            echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12896]['m_icon'].'</span>'.$e___11035[12896]['m_name'].'</div>';
+            echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13510]['m_icon'].'</span>'.$e___11035[13510]['m_name'].'</div>';
 
             echo '<div class="list-group no-side-padding">';
             foreach($member_saved as $priority => $x) {
