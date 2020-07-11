@@ -623,7 +623,7 @@ if($in_my_x){
         echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13510]['m_icon'].'</span>'.$e___11035[13510]['m_name'].'</div>';
         echo '<div class="list-group">';
         echo join('', array_reverse($sitemap_items));
-        echo '<div class="list-group-item">'.$main_title.'</div>';
+        echo '<div class="list-group-item no-side-padding">'.$main_title.'</div>';
         echo '</div>';
         echo '</div>';
 
