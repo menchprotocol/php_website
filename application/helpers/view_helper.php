@@ -661,7 +661,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
     //Right Stats:
     if($i_stats['i___13292'] || $i_stats['i___13443']){
-        $ui .= '<div class="pull-right montserrat" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['i___13443'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['i___13443'].'</span>' : '' ).'</span>'.( $i_stats['i___13292'] ? '<span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span>': '' ).'</div>';
+        $ui .= '<div class="pull-right montserrat x_info hidden" style="'.( $show_editor ? 'width:155px;' : 'width:138px;' ).' '.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['i___13443'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['i___13443'].'</span>' : '' ).'</span>'.( $i_stats['i___13292'] ? '<span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span>': '' ).'</div>';
     }
 
 
