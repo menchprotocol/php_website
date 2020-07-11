@@ -30,6 +30,7 @@ $is_next = $this->X_model->fetch(array(
 $chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
 $in_my_x = ( $recipient_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $recipient_e) : false );
+$in_my_top = ( $recipient_e['e__id'] ? in_array($i_focus['i__id'], $this->X_model->ids($recipient_e['e__id'])) : false );
 
 
 if($recipient_e['e__id']){
@@ -151,52 +152,50 @@ if($in_my_x){
 
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
-        if($e__id==12896){
+        $url = '';
+        if(!in_array($e__id, $this->config->item('n___13499')) || !$in_my_top){
+            if($e__id==12896){
 
-            //Is Saved?
-            $is_saved = count($this->X_model->fetch(array(
-                'x__up' => $recipient_e['e__id'],
-                'x__right' => $i_focus['i__id'],
-                'x__type' => 12896, //SAVED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )));
+                //Is Saved?
+                $is_saved = count($this->X_model->fetch(array(
+                    'x__up' => $recipient_e['e__id'],
+                    'x__right' => $i_focus['i__id'],
+                    'x__type' => 12896, //SAVED
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                )));
 
-            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
+                $url = '<a class="controller-nav" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><i class="fas fa-bookmark toggle_saved '.( $is_saved ? '' : 'hidden' ).'"></i><i class="fal fa-bookmark toggle_saved '.( $is_saved ? 'hidden' : '' ).'"></i></a>';
 
-        } elseif($e__id==12991){
+            } elseif($e__id==12991){
 
-            //GO BACK
-            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+                //GO BACK
+                $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
 
-        } elseif($e__id==12211){
+            } elseif($e__id==12211){
 
-            //GO NEXT
-            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+                //GO NEXT
+                $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
 
-        } elseif($e__id==13491){
+            } elseif($e__id==13491){
 
-            //FONT SIZE
-            $url = '<div class="dropdown inline-block">';
-            $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-            $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
-            $url .= '</button>';
-            $url .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$e__id.'">';
-            foreach($this->config->item('e___'.$e__id) as $x__type2 => $m2) {
-                $url .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat font_items font_item_'.$x__type2.' '.( $this->session->userdata('session_var_13491')==$x__type2 ? ' active ' : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
+                //FONT SIZE
+                $url .= '<div class="dropdown inline-block">';
+                $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
+                $url .= '</button>';
+                $url .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$e__id.'">';
+                foreach($this->config->item('e___'.$e__id) as $x__type2 => $m2) {
+                    $url .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat font_items font_item_'.$x__type2.' '.( $this->session->userdata('session_var_13491')==$x__type2 ? ' active ' : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
+                }
+                $url .= '</div>';
+                $url .= '</div>';
+
+            } elseif($e__id==13400){
+
+                //IDEA INDEX
+                $url = '<a href="javascript:void(0);" onclick="load_13400()" class="controller-nav">'.$m['m_icon'].'</a>';
+
             }
-            $url .= '</div>';
-            $url .= '</div>';
-
-        } elseif($e__id==13400){
-
-            //IDEA INDEX
-            $url = '<a href="javascript:void(0);" onclick="load_13400()" class="controller-nav">'.$m['m_icon'].'</a>';
-
-        } else {
-
-            //Unknown:
-            continue;
-
         }
 
         echo '<td style="width:'.$column_width.'%;">'.$url.'</td>';
