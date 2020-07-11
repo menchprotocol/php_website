@@ -140,8 +140,8 @@ if($recipient_e['e__id']){
 
 
 
-
-if($recipient_e['e__id']==1){
+//DISCOVERY CONTROLLER
+if($in_my_x){
 
     $column_width = number_format(100/count($this->config->item('n___13289')), 2);
 
