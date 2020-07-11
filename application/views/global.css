@@ -249,7 +249,7 @@ a.btn, .btn.dropdown-toggle, label.btn {
 }
 
 .mench_coin .btn {
-    padding: 8px 3px 8px 1px !important;
+    padding: 8px 8px 8px 0 !important;
 }
 
 img.no-radius {
