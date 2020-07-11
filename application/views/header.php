@@ -109,15 +109,10 @@ if(!isset($hide_header)){
                             echo '<td><div class="mench_nav left_nav">';
 
                             //MENCH LOGO
-                            echo '<span class="inline-block pull-left">';
-                            if($is_ideator){
-                                //Just logo
-                                echo '<img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo show-max">MENCH</b>';
-                            } else {
+                            if(!$is_ideator){
                                 //Link to Discoveries:
-                                echo '<a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a>';
+                                echo '<span class="inline-block pull-left"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span>';
                             }
-                            echo '</span>';
 
                         } elseif(in_array($x__type, $this->config->item('n___12467')) && $is_ideator){
 
@@ -132,9 +127,9 @@ if(!isset($hide_header)){
 
                             $class = trim(extract_icon_color($m['m_icon']));
                             $is_active = ($current_mench['x_name']==$class);
-                            echo '<div class="btn-group pull-left mench_coin '.$class.' mench-coins border-' . $class.( $is_active ? ' active ' : '' ).'">';
+                            echo '<div class="btn-group pull-left mench_coin '.$class.' border-' . $class.( $is_active ? ' active ' : '' ).'">';
                             echo '<a class="btn ' . $class . '" '.$page_url.'>';
-                            echo '<span class="icon-block-xs">' . $m['m_icon'] . '</span>';
+                            echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
                             echo view_number($this->config->item('s___'.$x__type)).' ';
                             echo '<span class="montserrat ' . $class . '_name show-max">' . $m['m_name'] . '</span>';
                             echo '</a>';

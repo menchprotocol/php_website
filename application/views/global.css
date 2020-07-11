@@ -472,11 +472,6 @@ img.no-radius {
     cursor: help;
 }
 
-.mench-coins{
-    border-top: 5px solid;
-    border-color: transparent;
-}
-
 .border-source.active{
     border-color: #007AFD;
 }
@@ -983,7 +978,8 @@ td.MENCHcolumn3  { width: 13%; }
 }
 .mench_coin{
     text-decoration: none;
-    margin-left: 13px !important;
+    border-top: 5px solid;
+    border-color: transparent;
 }
 
 
