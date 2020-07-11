@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-10 14:32:39 PST
+//Generated 2020-07-10 17:17:35 PST
 $config['s___12273'] = 3914; //IDEAS
 $config['s___12274'] = 5012; //SOURCES
 $config['s___6255'] = 121865; //DISCOVERIES
-$config['s___13362'] = 1169058; //TRANSACTIONS
+$config['s___13362'] = 1170132; //TRANSACTIONS
 
 //DISCOVER CONTROLLER:
 $config['n___13289'] = array(12991,13491,13400,12896,12211);
@@ -53,19 +53,19 @@ $config['e___13289'] = array(
 $config['n___13491'] = array(13494,13493,13492);
 $config['e___13491'] = array(
     13494 => array(
-        'm_icon' => '<i class="fas fa-h1 discover"></i>',
+        'm_icon' => '<i class="fas fa-h1"></i>',
         'm_name' => 'LARGE FONT',
         'm_desc' => ' ',
         'm_parents' => array(13491),
     ),
     13493 => array(
-        'm_icon' => '<i class="fas fa-h2 discover"></i>',
+        'm_icon' => '<i class="fas fa-h2"></i>',
         'm_name' => 'MEDIUM FONT',
         'm_desc' => ' ',
         'm_parents' => array(13491),
     ),
     13492 => array(
-        'm_icon' => '<i class="fas fa-h3 discover"></i>',
+        'm_icon' => '<i class="fas fa-h3"></i>',
         'm_name' => 'SMALL FONT',
         'm_desc' => ' ',
         'm_parents' => array(13491),

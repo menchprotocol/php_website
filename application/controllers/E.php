@@ -1229,7 +1229,7 @@ class E extends CI_Controller
 
         //HACK: Update Font size in session:
         if($_POST['parent_e__id']==13491){
-            $this->session->set_userdata(array('var_13491' => intval($_POST['selected_e__id'])));
+            $this->session->set_userdata(array('session_var_13491' => intval($_POST['selected_e__id'])));
         }
 
 

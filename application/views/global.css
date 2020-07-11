@@ -14,6 +14,12 @@ body {
     font-family: 'Rubik', sans-serif;
 }
 
+
+#font_size_13492 .msg{ font-size:1em; }
+#font_size_13493 .msg, #font_size_ .msg{ font-size:1.3em; }
+#font_size_13494 .msg{ font-size:1.8em; }
+
+
 /*
 
 h1, h2, h3, ul, p { padding: 0 5px; }

@@ -70,7 +70,7 @@ $is_ideator = superpower_assigned(10939);
 
 </head>
 
-<body id="<?= 'font_size_'.$this->session->userdata('var_13491') ?>" class="<?= 'to'.$current_mench['x_name'] ?>">
+<body id="<?= 'font_size_'.$this->session->userdata('session_var_13491') ?>" class="<?= 'to'.$current_mench['x_name'] ?>">
 
 <?php
 //Any message we need to show here?
