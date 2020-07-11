@@ -59,7 +59,7 @@ class I extends CI_Controller {
             $x__sort++;
         }
 
-        //Add to bookmarks:
+        //Add to my ideas:
         $this->X_model->create(array(
             'x__type' => 10573, //MY IDEAS
             'x__member' => $session_e['e__id'],
@@ -82,7 +82,7 @@ class I extends CI_Controller {
         $session_e = superpower_assigned(10939, true);
         $e___13488 = $this->config->item('e___13488'); //MENCH HOME PAGES
         $this->load->view('header', array(
-            'title' => $e___13488[10573]['m_name'],
+            'title' => $e___13488[13405]['m_name'],
             'session_e' => $session_e,
         ));
         $this->load->view('i/home');
