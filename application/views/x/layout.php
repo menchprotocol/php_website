@@ -588,14 +588,7 @@ if($in_my_x){
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
     $e___12994 = $this->config->item('e___12994'); //DISCOVER LAYOUT
 
-    if(in_array($i_focus['i__id'], $member_xy_ids)){
-
-        //A discovering list item:
-        $is_this = $this->I_model->fetch(array(
-            'i__id' => $i_focus['i__id'],
-        ));
-
-    } else {
+    if(!in_array($i_focus['i__id'], $member_xy_ids)){
 
         //Find it:
         $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
@@ -614,9 +607,9 @@ if($in_my_x){
                         'i__id' => $previous_i__id,
                     ));
 
-                    $i_level_up++;
+                    array_push($sitemap_items, view_i_x($is_this[0]));
 
-                    array_push($sitemap_items, view_i_x($is_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
+                    $i_level_up++;
 
                 }
             }
