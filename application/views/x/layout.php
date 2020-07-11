@@ -429,7 +429,7 @@ if(!$in_my_x){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_i_list($i_focus, $x_selects, $recipient_e, 'YOU ANSWERED:');
+                view_i_list($i_focus, $x_selects, $recipient_e, 'YOU SELECTED:');
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -497,7 +497,7 @@ if(!$in_my_x){
             if(count($x_selects)>0){
 
                 //Cancel:
-                echo '<div class="inline-block margin-top-down"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13502]['m_icon'].'</a></div>';
+                echo '<div class="inline-block margin-top-down"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="'.$e___11035[13502]['m_name'].'">'.$e___11035[13502]['m_icon'].'</a></div>';
 
                 //Save Answers:
                 echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">'.$e___11035[13503]['m_icon'].' '.$e___11035[13503]['m_name'].'</a></div>';

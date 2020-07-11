@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-10 19:30:07 PST
+//Generated 2020-07-10 19:32:08 PST
 $config['s___12273'] = 3920; //IDEAS
 $config['s___12274'] = 5014; //SOURCES
-$config['s___6255'] = 121875; //DISCOVERIES
-$config['s___13362'] = 1170460; //TRANSACTIONS
+$config['s___6255'] = 121876; //DISCOVERIES
+$config['s___13362'] = 1170472; //TRANSACTIONS
 
 //DISCOVER CONTROLLER:
 $config['n___13289'] = array(12991,13491,13400,12896,12211);
@@ -3459,7 +3459,7 @@ $config['e___11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(6225,13502,13401,12750,13495,13427,12707,4235,12991,12211,11068,4341,12969,6287,13503,12896,7256,4269,4997,12275,13007,10957,7540,13498);
+$config['n___11035'] = array(6225,13502,13401,12750,13495,13427,12707,4235,12991,12211,11068,4341,12969,6287,12896,13503,7256,4269,4997,12275,13007,10957,7540,13498);
 $config['e___11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3469,7 +3469,7 @@ $config['e___11035'] = array(
     ),
     13502 => array(
         'm_icon' => '<i class="fas fa-times discover"></i>',
-        'm_name' => 'CANCEL',
+        'm_name' => 'CANCEL EDITING',
         'm_desc' => ' ',
         'm_parents' => array(11035),
     ),
@@ -3545,17 +3545,17 @@ $config['e___11035'] = array(
         'm_desc' => '',
         'm_parents' => array(13297,6405,6194,12699,12500,10876,11035,4527),
     ),
-    13503 => array(
-        'm_icon' => '<i class="fas fa-check discover"></i>',
-        'm_name' => 'SAVE',
-        'm_desc' => ' ',
-        'm_parents' => array(11035),
-    ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_name' => 'SAVED DISCOVERIES',
         'm_desc' => '',
         'm_parents' => array(13455,13424,13210,12677,13289,4485,12701,7551,11089,11018,11035,4755,4593),
+    ),
+    13503 => array(
+        'm_icon' => '<i class="fas fa-check discover"></i>',
+        'm_name' => 'SAVE & NEXT',
+        'm_desc' => ' ',
+        'm_parents' => array(11035),
     ),
     7256 => array(
         'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
