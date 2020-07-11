@@ -435,7 +435,7 @@ if(!$in_my_x){
 
 
                 //EDIT ANSWER:
-                echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_name'].'</a></div>';
+                echo '<div class="inline-block margin-top-down"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_name'].'</a></div>';
 
                 echo '<div class="doclear">&nbsp;</div>';
 
