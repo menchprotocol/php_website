@@ -192,6 +192,7 @@ function x_reply(){
             }, 987);
         } else {
             alert('ERROR:' + data.message);
+            $('.text_saving_result').html('');
         }
     });
 }
