@@ -611,6 +611,10 @@ if($in_my_x){
 
                     $i_level_up++;
 
+                    if(in_array($previous_i__id, $member_xy_ids)){
+                        //We reached the top-level discovery:
+                        break;
+                    }
                 }
             }
         }
