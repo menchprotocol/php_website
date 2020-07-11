@@ -472,7 +472,8 @@ function i_save(i__id){
         if (!data.status) {
             alert(data.message);
             $('.toggle_saved').toggleClass('hidden');
-
+        } else if (data.is_first_save) {
+            alert(data.first_save_message);
         }
     });
 }
