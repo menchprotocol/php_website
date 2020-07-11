@@ -1401,7 +1401,7 @@ label {
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .icon-block { width:33px !important; display: inline-block; text-align: center; vertical-align: top; }
-.icon-block-xs{ width:20px; display: inline-block; text-align: center; vertical-align: top; }
+.icon-block-xs{ width:24px; display: inline-block; text-align: center; vertical-align: top; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; vertical-align: top; }
 .icon-block-img img,
 .icon-block-lg img,
