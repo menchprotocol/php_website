@@ -1212,7 +1212,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     $ui .= i_fetch_cover($i['i__id'], true);
 
     //TOP LEFT
-    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['i___13443'].' '.$e___13369[12273]['m_name'].' FROM '.$i_stats['e_count'].' '.$e___13369[12274]['m_name'].'">';
+    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['i___13443'].' '.$e___12467[12273]['m_name'].' FROM '.$i_stats['e_count'].' '.$e___12467[12274]['m_name'].'">';
 
     //SOURCES:
     if(superpower_active(10939, true)){
