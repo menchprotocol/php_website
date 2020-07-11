@@ -11,9 +11,6 @@ $(document).ready(function () {
         x_upload(droppedFiles, 'file');
     });
 
-    //Move main discovers, if any:
-    $('.focus_x_top').html($('.focus_x_bottom').html());
-
     //Should we auto start?
     if (isAdvancedUpload) {
 

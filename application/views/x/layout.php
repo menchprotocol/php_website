@@ -123,17 +123,12 @@ if($recipient_e['e__id']){
             }
         }
 
-
-        //DISCOVERIES UI
-        echo '<div class="hideIfEmpty focus_x_top"></div>';
-
         //DISCOVER PROGRESS ONLY AT TOP LEVEL
         if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
             echo '<div class="progress-bg-list no-horizonal-margin" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
         }
 
     }
-
 }
 
 
@@ -358,7 +353,7 @@ if(!$in_my_x){
 
     //Did we have any steps unlocked?
     if(count($unlocked_x) > 0){
-        view_i_list($i_focus, $unlocked_x, $recipient_e, 'UNLOCKED:', false);
+        view_i_list($i_focus, $unlocked_x, $recipient_e, 'UNLOCKED:');
     }
 
 
@@ -376,7 +371,6 @@ if(!$in_my_x){
     //LOCKED
     if ($i_type_meet_requirement) {
 
-
         //Requirement lock
         if(!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
@@ -386,7 +380,7 @@ if(!$in_my_x){
         }
 
         //List Children if any:
-        view_i_list($i_focus, $is_next, $recipient_e, null, ( $completion_rate['completion_percentage'] < 100 ));
+        view_i_list($i_focus, $is_next, $recipient_e);
 
 
     } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))){
@@ -412,7 +406,6 @@ if(!$in_my_x){
 
             }
 
-            view_i_next($i_focus['i__id'], $recipient_e);
             return true;
 
         } else {
@@ -442,7 +435,7 @@ if(!$in_my_x){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_i_list($i_focus, $x_selects, $recipient_e, 'YOU ANSWERED:', false);
+                view_i_list($i_focus, $x_selects, $recipient_e, 'YOU ANSWERED:');
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -511,7 +504,6 @@ if(!$in_my_x){
 
             echo '<div class="result-update margin-top-down"></div>';
 
-            echo view_i_previous($i_focus['i__id'], $recipient_e);
 
             //Button to submit selection:
             if(count($x_selects)>0){
@@ -541,7 +533,7 @@ if(!$in_my_x){
 
         if(count($x_completes)){
             //Next Ideas:
-            view_i_list($i_focus, $is_next, $recipient_e, null,false);
+            view_i_list($i_focus, $is_next, $recipient_e);
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -567,7 +559,7 @@ if(!$in_my_x){
             echo '</div>';
 
             //Any child ideas?
-            view_i_list($i_focus, $is_next, $recipient_e, null, true, false);
+            view_i_list($i_focus, $is_next, $recipient_e);
 
         } else {
 

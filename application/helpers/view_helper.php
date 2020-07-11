@@ -1027,134 +1027,24 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null, $show_next = true){
+function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null){
 
     //If no list just return the next step:
     if(!count($is_next)){
-        return ( $show_next ? view_i_next($i['i__id'], $recipient_e) : false );
+        return false;
     }
 
-    $CI =& get_instance();
+    //List children so they know what's ahead:
+    $common_prefix = i_calc_common_prefix($is_next, 'i__title');
 
-    if(count($is_next)){
+    echo '<div class="headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
-        //List children so they know what's ahead:
-        $common_prefix = i_calc_common_prefix($is_next, 'i__title');
-
-        echo '<div class="headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
-
-        echo '<div class="list-group">';
-        foreach($is_next as $key => $next_i){
-            echo view_i_x($next_i, $common_prefix);
-        }
-        echo '</div>';
-
+    echo '<div class="list-group">';
+    foreach($is_next as $key => $next_i){
+        echo view_i_x($next_i, $common_prefix);
     }
-
-    if($show_next){
-        view_i_next($i['i__id'], $recipient_e);
-        echo '<div class="doclear">&nbsp;</div>';
-    }
-}
-
-function view_i_next($i__id, $recipient_e){
-
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-
-    //PREVIOUS:
-    echo view_i_previous($i__id, $recipient_e);
-
-
-}
-
-function view_i_previous($i__id, $recipient_e){
-
-    if(!$recipient_e || $recipient_e['e__id'] < 1){
-        return null;
-    }
-
-    //Discoveries
-    $CI =& get_instance();
-    $ui = null;
-    $i_level_up = 0;
-    $previous_level_id = 0; //The ID of the Idea one level up
-    $member_xy_ids = $CI->X_model->ids($recipient_e['e__id']);
-    $x_list_ui = null;
-    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-    $e___12994 = $CI->config->item('e___12994'); //DISCOVER LAYOUT
-
-    if(in_array($i__id, $member_xy_ids)){
-
-        //A discovering list item:
-        $is_this = $CI->I_model->fetch(array(
-            'i__id' => $i__id,
-        ));
-
-    } else {
-
-        //Find it:
-        $recursive_parents = $CI->I_model->recursive_parents($i__id, true, true);
-        $sitemap_items = array();
-
-        foreach($recursive_parents as $grand_parent_ids) {
-            foreach(array_intersect($grand_parent_ids, $member_xy_ids) as $intersect) {
-                foreach($grand_parent_ids as $previous_i__id) {
-
-                    if($i_level_up==0){
-                        //Remember the first parent for the back button:
-                        $previous_level_id = $previous_i__id;
-                    }
-
-                    $is_this = $CI->I_model->fetch(array(
-                        'i__id' => $previous_i__id,
-                    ));
-
-                    $i_level_up++;
-
-                    if ($previous_i__id == $intersect) {
-                        //array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$e___12994[13400]['m_icon'].'</span><span class="montserrat">'.$e___12994[13400]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
-                    }
-
-                    //array_push($sitemap_items, view_i_x($is_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
-
-                    if ($previous_i__id == $intersect) {
-                        array_push($sitemap_items, view_i_x($is_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
-                        break;
-                    }
-                }
-            }
-        }
-
-        $x_list_ui .= '<div class="list-group">' . join('', array_reverse($sitemap_items)) . '</div>';
-
-    }
-
-
-    //Did We Find It?
-    if($previous_level_id > 0){
-
-        //Previous
-        if(isset($_GET['previous_x']) && $_GET['previous_x']>0){
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-x btn-circle" href="/'.$_GET['previous_x'].'" title="'.$e___11035[12991]['m_name'].'">'.$e___11035[12991]['m_icon'].'</a></div>';
-        } else {
-            $ui .= '<div class="inline-block margin-top-down edit_select_answer pull-left"><a class="btn btn-x btn-circle" href="/x/x_previous/'.$previous_level_id.'/'.$i__id.'" title="'.$e___11035[12991]['m_name'].'">'.$e___11035[12991]['m_icon'].'</a></div>';
-        }
-
-        //Main Discoveries:
-        if($x_list_ui){
-
-            $ui .= '<div class="focus_x_bottom hidden">';
-            $ui .= '<div class="list-group">';
-            $ui .= $x_list_ui;
-            $ui .= '</div>';
-            $ui .= '</div>';
-
-        }
-
-    }
-
-    return $ui;
+    echo '</div>';
+    echo '<div class="doclear">&nbsp;</div>';
 
 }
 
