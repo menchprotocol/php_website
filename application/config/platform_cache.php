@@ -8,11 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-10 18:53:48 PST
+//Generated 2020-07-10 18:59:46 PST
 $config['s___12273'] = 3920; //IDEAS
 $config['s___12274'] = 5011; //SOURCES
-$config['s___6255'] = 121866; //DISCOVERIES
-$config['s___13362'] = 1170359; //TRANSACTIONS
+$config['s___6255'] = 121867; //DISCOVERIES
+$config['s___13362'] = 1170379; //TRANSACTIONS
 
 //DISCOVER CONTROLLER:
 $config['n___13289'] = array(12991,13491,13400,12896,12211);
@@ -3311,7 +3311,7 @@ $config['e___6404'] = array(
 );
 
 //MENCH MEMORY JAVASCRIPT:
-$config['n___11054'] = array(4486,4983,4737,7356,7355,7585,2738,6404,6201,12687,10573,4592,6177,7357,6186);
+$config['n___11054'] = array(4486,4983,4737,7356,7355,7585,7712,2738,6404,6201,12687,10573,4592,6177,7357,6186);
 $config['e___11054'] = array(
     4486 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
@@ -3348,6 +3348,12 @@ $config['e___11054'] = array(
         'm_name' => 'IDEA TYPE',
         'm_desc' => '',
         'm_parents' => array(13408,13295,11054,12079,6204,10651,6160,6194,4527,6201),
+    ),
+    7712 => array(
+        'm_icon' => '<i class="far fa-question-circle idea"></i>',
+        'm_name' => 'IDEA TYPE SELECT NEXT',
+        'm_desc' => '',
+        'm_parents' => array(11054,13028,6287,10893,4527),
     ),
     2738 => array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
@@ -4748,7 +4754,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="far fa-question-circle idea"></i>',
         'm_name' => 'IDEA TYPE SELECT NEXT',
         'm_desc' => '',
-        'm_parents' => array(13028,6287,10893,4527),
+        'm_parents' => array(11054,13028,6287,10893,4527),
     ),
     12883 => array(
         'm_icon' => '<i class="fas fa-check idea"></i>',
@@ -6130,7 +6136,7 @@ $config['e___6287'] = array(
         'm_icon' => '<i class="far fa-question-circle idea"></i>',
         'm_name' => 'IDEA TYPE SELECT NEXT',
         'm_desc' => '',
-        'm_parents' => array(13028,6287,10893,4527),
+        'm_parents' => array(11054,13028,6287,10893,4527),
     ),
     4527 => array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',

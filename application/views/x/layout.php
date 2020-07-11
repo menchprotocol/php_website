@@ -418,7 +418,7 @@ if(!$in_my_x){
         } else {
 
             //First fetch answers based on correct order:
-            $x_answers = array();
+            $x_selects = array();
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -433,16 +433,16 @@ if(!$in_my_x){
                     'x__right' => $x['i__id'],
                     'x__member' => $recipient_e['e__id'],
                 )))){
-                    array_push($x_answers, $x);
+                    array_push($x_selects, $x);
                 }
             }
 
-            if(count($x_answers) > 0){
+            if(count($x_selects) > 0){
                 //MODIFY ANSWER
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_i_list($i_focus, $x_answers, $recipient_e, 'YOU ANSWERED:', false);
+                view_i_list($i_focus, $x_selects, $recipient_e, 'YOU ANSWERED:', false);
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -456,7 +456,7 @@ if(!$in_my_x){
             }
 
 
-            echo '<div class="edit_select_answer '.( count($x_answers)>0 ? 'hidden' : '' ).'">';
+            echo '<div class="edit_select_answer '.( count($x_selects)>0 ? 'hidden' : '' ).'">';
 
             //HTML:
             if ($i_focus['i__type'] == 6684) {
@@ -486,7 +486,7 @@ if(!$in_my_x){
                     'x__member' => $recipient_e['e__id'],
                 )));
 
-                echo '<a href="javascript:void(0);" onclick="select_answer('.$next_i['i__id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_is="'.$next_i['i__id'].'" class="x_answer_'.$next_i['i__id'].' answer-item list-group-item itemdiscover no-left-padding">';
+                echo '<a href="javascript:void(0);" onclick="select_answer('.$next_i['i__id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_is="'.$next_i['i__id'].'" class="x_select_'.$next_i['i__id'].' answer-item list-group-item itemdiscover no-left-padding">';
 
 
                 echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
@@ -514,11 +514,11 @@ if(!$in_my_x){
             echo view_i_previous($i_focus['i__id'], $recipient_e);
 
             //Button to submit selection:
-            if(count($x_answers)>0){
+            if(count($x_selects)>0){
                 echo '<div class="inline-block margin-top-down pull-left"><a class="btn btn-x btn-circle" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');"><i class="fas fa-arrow-left"></i></a></div>';
             }
 
-            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-x btn-circle" href="javascript:void(0)" onclick="x_answer()">'.$e___11035[12211]['m_icon'].'</a></div>';
+            echo '<div class="inline-block margin-top-down pull-right"><a class="btn btn-x btn-circle" href="javascript:void(0)" onclick="x_select()">'.$e___11035[12211]['m_icon'].'</a></div>';
 
             echo '</div>';
 
@@ -535,7 +535,7 @@ if(!$in_my_x){
 
         echo '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR ANSWER:</div>';
 
-        echo '<textarea class="border i_content padded x_input" placeholder="Write here..." id="x_respond">'.( count($x_completes) ? trim($x_completes[0]['x__message']) : '' ).'</textarea>';
+        echo '<textarea class="border i_content padded x_input" placeholder="Write here..." id="x_reply">'.( count($x_completes) ? trim($x_completes[0]['x__message']) : '' ).'</textarea>';
 
         echo '<div class="text_saving_result margin-top-down"></div>';
 
@@ -544,7 +544,7 @@ if(!$in_my_x){
             view_i_list($i_focus, $is_next, $recipient_e, null,false);
         }
 
-        echo '<script> $(document).ready(function () { autosize($(\'#x_respond\')); $(\'#x_respond\').focus(); }); </script>';
+        echo '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
 
 
     } elseif ($i_focus['i__type'] == 7637) {

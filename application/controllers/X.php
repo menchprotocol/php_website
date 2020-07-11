@@ -700,7 +700,7 @@ class X extends CI_Controller
 
 
 
-    function x_respond(){
+    function x_reply(){
 
         $session_e = superpower_assigned();
         if (!$session_e) {
@@ -713,7 +713,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing idea ID.',
             ));
-        } elseif (!isset($_POST['x_respond']) || !strlen($_POST['x_respond'])) {
+        } elseif (!isset($_POST['x_reply']) || !strlen($_POST['x_reply'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing text answer.',
@@ -749,7 +749,7 @@ class X extends CI_Controller
             'x__type' => 6144,
             'x__left' => $is[0]['i__id'],
             'x__member' => $session_e['e__id'],
-            'x__message' => $_POST['x_respond'],
+            'x__message' => $_POST['x_reply'],
         ));
 
         //All good:
@@ -761,7 +761,7 @@ class X extends CI_Controller
     }
 
 
-    function x_answer(){
+    function x_select(){
 
         $session_e = superpower_assigned();
         if (!$session_e) {

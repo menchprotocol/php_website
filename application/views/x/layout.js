@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     i_note_activate();
 
-    autosize($('#x_respond'));
+    autosize($('#x_reply'));
 
     //Watchout for file uplods:
     $('.boxUpload').find('input[type="file"]').change(function () {
@@ -50,7 +50,12 @@ function go_12211(){
     if(focus_i__type==6683) {
 
         //TEXT RESPONSE:
-        return x_respond();
+        return x_reply();
+
+    } else if (js_n___7712.includes(focus_i__type)){
+
+        //SELECT ONE/SOME
+        return x_select();
 
     } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
 
@@ -89,7 +94,7 @@ function select_answer(i__id){
 
     //Allow answer to be saved/updated:
     var i__type = parseInt($('.list-answers').attr('i__type'));
-    var current_status = parseInt($('.x_answer_'+i__id).attr('is-selected'));
+    var current_status = parseInt($('.x_select_'+i__id).attr('is-selected'));
 
     //Clear all if single selection:
     if(i__type == 6684){
@@ -103,15 +108,15 @@ function select_answer(i__id){
         //Previously Selected, delete selection:
         if(i__type == 7231){
             //Multi Selection
-            $('.x_answer_'+i__id).attr('is-selected', 0);
-            $('.x_answer_'+i__id+' .check-icon i').removeClass('fas').addClass('far');
+            $('.x_select_'+i__id).attr('is-selected', 0);
+            $('.x_select_'+i__id+' .check-icon i').removeClass('fas').addClass('far');
         }
 
     } else if(current_status==0){
 
         //Previously Selected, delete selection:
-        $('.x_answer_'+i__id).attr('is-selected', 1);
-        $('.x_answer_'+i__id+' .check-icon i').removeClass('far').addClass('fas');
+        $('.x_select_'+i__id).attr('is-selected', 1);
+        $('.x_select_'+i__id+' .check-icon i').removeClass('far').addClass('fas');
 
     }
 
@@ -172,12 +177,12 @@ function x_upload(droppedFiles, uploadType) {
 }
 
 
-function x_respond(){
+function x_reply(){
     //Show Loading:
     $('.text_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    $.post("/x/x_respond", {
+    $.post("/x/x_reply", {
         i__id:focus_i__id,
-        x_respond:$('#x_respond').val(),
+        x_reply:$('#x_reply').val(),
     }, function (data) {
         if (data.status) {
             $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
@@ -191,7 +196,7 @@ function x_respond(){
     });
 }
 
-function x_answer(){
+function x_select(){
 
     //Check
     var answered_is = [];
@@ -203,7 +208,7 @@ function x_answer(){
 
     //Show Loading:
     $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
-    $.post("/x/x_answer", {
+    $.post("/x/x_select", {
         focus_i__id:focus_i__id,
         answered_is:answered_is
     }, function (data) {
