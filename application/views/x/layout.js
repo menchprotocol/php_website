@@ -206,20 +206,23 @@ function x_select(){
     });
 
     //Show Loading:
-    $('.result-update').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
+    $('.selection_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">SAVING...</span>');
     $.post("/x/x_select", {
         focus_i__id:focus_i__id,
         answered_is:answered_is
     }, function (data) {
+
+        //Remove loader:
+        $('.selection_result').html('');
+
         if (data.status) {
-            $('.result-update').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
-            setTimeout(function () {
-                //Go to redirect message:
-                window.location = '/x/x_next/'+focus_i__id;
-            }, 987);
+            //Go to redirect message:
+            window.location = '/x/x_next/'+focus_i__id;
         } else {
-            $('.result-update').html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><span class="discover montserrat">'+data.message+'</span>');
+            //Show error:
+            alert('ERROR: ' + data.message);
         }
+
     });
 }
 

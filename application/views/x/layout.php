@@ -494,7 +494,7 @@ if(!$in_my_x){
             echo '</div>';
 
 
-            echo '<div class="result-update margin-top-down"></div>';
+            echo '<div class="selection_result margin-top-down"></div>';
 
 
             //Button to submit selection:
