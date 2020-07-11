@@ -125,9 +125,10 @@ if($recipient_e['e__id']){
     }
 }
 
+$main_title = '<h1 class="block-one"><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
 
 //IDEA TITLE
-echo '<h1 class="block-one"><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
+echo $main_title;
 
 
 
@@ -581,12 +582,8 @@ if($in_my_x){
 
 
     //Discoveries
-    $i_level_up = 0;
-    $previous_level_id = 0; //The ID of the Idea one level up
+    $previous_level_id = 0; //The ID of the Idea one level up, if any
     $member_xy_ids = $this->X_model->ids($recipient_e['e__id']);
-    $x_list_ui = null;
-    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-    $e___12994 = $this->config->item('e___12994'); //DISCOVER LAYOUT
 
     if(!in_array($i_focus['i__id'], $member_xy_ids)){
 
@@ -596,9 +593,9 @@ if($in_my_x){
 
         foreach($recursive_parents as $grand_parent_ids) {
             foreach(array_intersect($grand_parent_ids, $member_xy_ids) as $intersect) {
-                foreach($grand_parent_ids as $previous_i__id) {
+                foreach($grand_parent_ids as $count => $previous_i__id) {
 
-                    if($i_level_up==0){
+                    if($count==0){
                         //Remember the first parent for the back button:
                         $previous_level_id = $previous_i__id;
                     }
@@ -609,8 +606,6 @@ if($in_my_x){
 
                     array_push($sitemap_items, view_i_x($is_this[0]));
 
-                    $i_level_up++;
-
                     if(in_array($previous_i__id, $member_xy_ids)){
                         //We reached the top-level discovery:
                         break;
@@ -618,20 +613,18 @@ if($in_my_x){
                 }
             }
         }
-
-        $x_list_ui .= '<div class="list-group">' . join('', array_reverse($sitemap_items)) . '</div>';
-
     }
 
 
     //Did We Find It?
-    $has_index = $previous_level_id > 0 && $x_list_ui;
-    if($has_index){
+    if($previous_level_id){
 
         echo '<div class="container load_12413 hidden">';
+        echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13510]['m_icon'].'</span>'.$e___11035[13510]['m_name'].'</div>';
         echo '<div class="list-group">';
-        echo $x_list_ui;
+        echo join('', array_reverse($sitemap_items));
         echo '</div>';
+        echo $main_title;
         echo '</div>';
 
     }
@@ -685,7 +678,7 @@ if($in_my_x){
             $url .= '</div>';
             $url .= '</div>';
 
-        } elseif($e__id==12413 && $has_index){
+        } elseif($e__id==12413 && $previous_level_id){
 
             //IDEA INDEX
             $url = '<a href="javascript:void(0);" onclick="$(\'.load_12413\').toggleClass(\'hidden\');" class="controller-nav">'.$m['m_icon'].'</a>';
