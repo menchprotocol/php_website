@@ -1226,10 +1226,17 @@ class E extends CI_Controller
             'x__down' => $_POST['selected_e__id'],
         ));
 
+
+        //HACK: Update Font size in session:
+        if($_POST['parent_e__id']==13491){
+            $this->session->set_userdata(array('var_13491' => intval($_POST['selected_e__id'])));
+        }
+
+
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => 'Updated', //Alert: NOT shown in UI
+            'message' => 'Updated', //NOT shown in UI
         ));
     }
 

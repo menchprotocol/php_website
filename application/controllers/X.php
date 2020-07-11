@@ -26,7 +26,6 @@ class X extends CI_Controller
 
     }
 
-
     function x_list(){
 
         /*

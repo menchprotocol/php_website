@@ -23,7 +23,7 @@ class E_model extends CI_Model
         //PROFILE
         $session_data = array(
             'session_profile' => $e,
-            'session_font_size' => null,
+            'var_13491' => null,
             'session_parent_ids' => array(),
             'session_superpowers_assigned' => array(),
             'session_superpowers_activated' => array(),
@@ -52,7 +52,7 @@ class E_model extends CI_Model
 
             //FONT SIZE?
             if(in_array($e_profile['e__id'], $this->config->item('n___13491'))){
-                $session_data['session_font_size'] = $e_profile['e__id'];
+                $session_data['var_13491'] = intval($e_profile['e__id']);
             }
 
             //Push to parent IDs:
