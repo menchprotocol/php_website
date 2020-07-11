@@ -184,15 +184,16 @@ function x_reply(){
         i__id:focus_i__id,
         x_reply:$('#x_reply').val(),
     }, function (data) {
+
+        //Remove loader:
+        $('.text_saving_result').html('');
+
         if (data.status) {
-            $('.text_saving_result').html('<span class="icon-block"><i class="fas fa-check-circle"></i></span><span class="montserrat">'+data.message+'</span>');
-            setTimeout(function () {
-                //Go to redirect message:
-                window.location = '/x/x_next/'+focus_i__id;
-            }, 987);
+            //Go to redirect message:
+            window.location = '/x/x_next/'+focus_i__id;
         } else {
-            alert('ERROR:' + data.message);
-            $('.text_saving_result').html('');
+            //Show error:
+            alert('ERROR: ' + data.message);
         }
     });
 }
