@@ -8,7 +8,7 @@
 
 <?php
 
-echo '<div class="container">';
+echo '<div class="container load_12413">';
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 
@@ -579,6 +579,72 @@ echo '</div>';
 //DISCOVERY CONTROLLER
 if($in_my_x){
 
+
+    //Discoveries
+    $i_level_up = 0;
+    $previous_level_id = 0; //The ID of the Idea one level up
+    $member_xy_ids = $this->X_model->ids($recipient_e['e__id']);
+    $x_list_ui = null;
+    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+    $e___12994 = $this->config->item('e___12994'); //DISCOVER LAYOUT
+
+    if(in_array($i__id, $member_xy_ids)){
+
+        //A discovering list item:
+        $is_this = $this->I_model->fetch(array(
+            'i__id' => $i__id,
+        ));
+
+    } else {
+
+        //Find it:
+        $recursive_parents = $this->I_model->recursive_parents($i__id, true, true);
+        $sitemap_items = array();
+
+        foreach($recursive_parents as $grand_parent_ids) {
+            foreach(array_intersect($grand_parent_ids, $member_xy_ids) as $intersect) {
+                foreach($grand_parent_ids as $previous_i__id) {
+
+                    if($i_level_up==0){
+                        //Remember the first parent for the back button:
+                        $previous_level_id = $previous_i__id;
+                    }
+
+                    $is_this = $this->I_model->fetch(array(
+                        'i__id' => $previous_i__id,
+                    ));
+
+                    $i_level_up++;
+
+                    if ($previous_i__id == $intersect) {
+                        //array_push($sitemap_items, '<div class="list-group-item no-side-padding itemdiscover full_sitemap"><a href="javascript:void(0);" onclick="$(\'.full_sitemap\').toggleClass(\'hidden\');"><span class="icon-block">'.$e___12994[12413]['m_icon'].'</span><span class="montserrat">'.$e___12994[12413]['m_name'].'</span></a></div><div class="list-group-item hidden">&nbsp;</div>');
+                    }
+
+                    array_push($sitemap_items, view_i_x($is_this[0], null, false, null, false, ( $previous_i__id!=$intersect ? ' full_sitemap hidden ' : '' )));
+
+                }
+            }
+        }
+
+        $x_list_ui .= '<div class="list-group">' . join('', array_reverse($sitemap_items)) . '</div>';
+
+    }
+
+
+    //Did We Find It?
+    if($previous_level_id > 0 && $x_list_ui){
+
+        echo '<div class="load_12413 container hidden">';
+        echo '<div class="list-group">';
+        echo $x_list_ui;
+        echo '</div>';
+        echo '</div>';
+
+    }
+
+
+
+
     $column_width = number_format(100/count($this->config->item('n___13289')), 2);
 
     echo '<div class="container fixed-bottom">';
@@ -604,7 +670,7 @@ if($in_my_x){
         } elseif($e__id==12991){
 
             //GO BACK
-            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : '/x/x_previous/0/'.$i_focus['i__id'] ).'">'.$m['m_icon'].'</a>';
+            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : '/' ) ).'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==12211){
 
@@ -628,7 +694,7 @@ if($in_my_x){
         } elseif($e__id==12413){
 
             //IDEA INDEX
-            $url = '<a href="javascript:void(0);" onclick="load_12413()" class="controller-nav">'.$m['m_icon'].'</a>';
+            $url = '<a href="javascript:void(0);" onclick="$(\'.load_12413\').toggleClass(\'hidden\');" class="controller-nav">'.$m['m_icon'].'</a>';
 
         }
 

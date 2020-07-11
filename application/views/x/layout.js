@@ -37,11 +37,6 @@ $(document).ready(function () {
 });
 
 
-function load_12413(){
-    alert('Loading Index');
-}
-
-
 function go_12211(){
     //Attempts to go next if no submissions:
     if(focus_i__type==6683) {
