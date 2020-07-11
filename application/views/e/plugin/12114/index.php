@@ -69,7 +69,7 @@ $interactions_x_growth_rate = format_percentage(($interactions_x_last_week[0]['t
 
 
 //Email Subject
-$subject = '🟡 '.$e___13355[12273]['m_name'].' '.( $i_coins_growth_rate > 0 ? '+' : ( $i_coins_growth_rate < 0 ? '-' : '' ) ).$i_coins_growth_rate.'% for the Week of '.date("M jS", $last_week_start_timestamp);
+$subject = '🔴 '.$e___13355[6255]['m_name'].' +'.$x_coins_growth_rate.'% for the Week of '.date("M jS", $last_week_start_timestamp);
 
 //Email Body
 $html_message = '<br />';
