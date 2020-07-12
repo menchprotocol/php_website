@@ -632,7 +632,7 @@ if($in_my_x){
     }
 
     //Current Idea:
-    echo '<div class="list-group-item no-side-padding itemdiscover">'.($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100 ? '<div class="progress-bg-list no-horizonal-margin" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '').$main_title.'</div>';
+    echo '<div class="list-group-item no-padding itemdiscover">'.($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100 ? '<div class="progress-bg-list no-horizonal-margin" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '').$main_title.'</div>';
 
 
     echo '</div>';
