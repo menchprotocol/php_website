@@ -73,7 +73,17 @@ class X extends CI_Controller
 
         //Display filter:
         if($total_items_loaded > 0){
-            $message .= '<div class="montserrat x-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
+
+            if($page_num==1){
+                //First page message:
+                $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+                $e___12467 = $this->config->item('e___12467'); //MENCH COINS
+                $message .= '<p>'.$e___11035[4341]['m_name'].' has '.number_format($x_count[0]['total_count'] , 0).' transactions tracking <span class="montserrat source">'.$e___12467[12273]['m_icon'].' '.number_format($this->config->item('s___12273'), 0).' '.$e___12467[12273]['m_name'].'</span> from <span class="montserrat source">'.$e___12467[12274]['m_icon'].' '.number_format($this->config->item('s___12274'), 0).' '.$e___12467[12274]['m_name'].'</span> that gave generated <span class="montserrat source">'.$e___12467[6255]['m_icon'].' '.number_format($this->config->item('s___6255'), 0).' '.$e___12467[6255]['m_name'].'</span>. Here are the most recent '.$total_items_loaded.' transactions:</p>';
+            } else {
+                //Subsequent messages:
+                $message .= '<div class="montserrat x-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
+            }
+
         }
 
 
