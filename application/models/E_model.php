@@ -5,7 +5,7 @@ class E_model extends CI_Model
 
     /*
      *
-     * Player related database functions
+     * Miner related database functions
      *
      * */
 
@@ -35,8 +35,8 @@ class E_model extends CI_Model
             $session_data['session_page_count'] = 0;
 
             $this->X_model->create(array(
-                'x__member' => $e['e__id'],
-                'x__type' => 7564, //PLAYER SIGN
+                'x__miner' => $e['e__id'],
+                'x__type' => 7564, //MINER SIGN
                 'x__metadata' => $e,
             ));
 
@@ -65,7 +65,7 @@ class E_model extends CI_Model
 
                 //Was the latest toggle to de-activate? If not, assume active:
                 $last_advance_settings = $this->X_model->fetch(array(
-                    'x__member' => $e['e__id'],
+                    'x__miner' => $e['e__id'],
                     'x__type' => 5007, //TOGGLE SUPERPOWER
                     'x__up' => $e_profile['e__id'],
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -87,11 +87,11 @@ class E_model extends CI_Model
 
 
 
-    function create($add_fields, $external_sync = false, $x__member = 0)
+    function create($add_fields, $external_sync = false, $x__miner = 0)
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('e__status', 'e__title'), $x__member)) {
+        if (detect_missing_columns($add_fields, array('e__status', 'e__title'), $x__miner)) {
             return false;
         }
 
@@ -116,7 +116,7 @@ class E_model extends CI_Model
 
             //Log link new source:
             $this->X_model->create(array(
-                'x__member' => ($x__member > 0 ? $x__member : $add_fields['e__id']),
+                'x__miner' => ($x__miner > 0 ? $x__miner : $add_fields['e__id']),
                 'x__down' => $add_fields['e__id'],
                 'x__type' => 4251, //New Source Created
                 'x__message' => $add_fields['e__title'],
@@ -138,10 +138,10 @@ class E_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->X_model->create(array(
-                'x__up' => $x__member,
+                'x__up' => $x__miner,
                 'x__message' => 'create() failed to create a new source',
                 'x__type' => 4246, //Platform Bug Reports
-                'x__member' => $x__member,
+                'x__miner' => $x__miner,
                 'x__metadata' => $add_fields,
             ));
             return false;
@@ -176,7 +176,7 @@ class E_model extends CI_Model
         return $q->result_array();
     }
 
-    function update($id, $update_columns, $external_sync = false, $x__member = 0)
+    function update($id, $update_columns, $external_sync = false, $x__miner = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -184,7 +184,7 @@ class E_model extends CI_Model
         }
 
         //Fetch current source filed values so we can compare later on after we've updated it:
-        if($x__member > 0){
+        if($x__miner > 0){
             $before_data = $this->E_model->fetch(array('e__id' => $id));
         }
 
@@ -204,7 +204,7 @@ class E_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $x__member > 0) {
+        if ($affected_rows > 0 && $x__miner > 0) {
 
             if($external_sync){
                 //Sync algolia:
@@ -223,7 +223,7 @@ class E_model extends CI_Model
 
                 if($key=='e__title') {
 
-                    $x__type = 10646; //Player Updated Name
+                    $x__type = 10646; //Miner Updated Name
                     $x__message = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='e__status') {
@@ -238,7 +238,7 @@ class E_model extends CI_Model
 
                 } elseif($key=='e__icon') {
 
-                    $x__type = 10653; //Player Updated Icon
+                    $x__type = 10653; //Miner Updated Icon
                     $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
@@ -250,7 +250,7 @@ class E_model extends CI_Model
 
                 //Value has changed, log link:
                 $this->X_model->create(array(
-                    'x__member' => ($x__member > 0 ? $x__member : $id),
+                    'x__miner' => ($x__miner > 0 ? $x__miner : $id),
                     'x__type' => $x__type,
                     'x__down' => $id,
                     'x__message' => $x__message,
@@ -270,7 +270,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__down' => $id,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__member' => $x__member,
+                'x__miner' => $x__miner,
                 'x__message' => 'update() Failed to update',
                 'x__metadata' => array(
                     'input' => $update_columns,
@@ -283,17 +283,17 @@ class E_model extends CI_Model
     }
 
 
-    function radio_set($e_profile_bucket_id, $set_e_child_id, $x__member)
+    function radio_set($e_profile_bucket_id, $set_e_child_id, $x__miner)
     {
 
         /*
          * Treats an source child group as a drop down menu where:
          *
          *  $e_profile_bucket_id is the parent of the drop down
-         *  $x__member is the user source ID that one of the children of $e_profile_bucket_id should be assigned (like a drop down)
+         *  $x__miner is the miner source ID that one of the children of $e_profile_bucket_id should be assigned (like a drop down)
          *  $set_e_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
-         * This function is helpful to manage things like User communication levels
+         * This function is helpful to manage things like Miner communication levels
          *
          * */
 
@@ -312,7 +312,7 @@ class E_model extends CI_Model
         $previously_assigned = ($set_e_child_id < 1);
         $updated_x__id = 0;
         foreach($this->X_model->fetch(array(
-            'x__down' => $x__member,
+            'x__down' => $x__miner,
             'x__up IN (' . join(',', $children) . ')' => null, //Current children
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), config_var(11064)) as $x) {
@@ -326,7 +326,7 @@ class E_model extends CI_Model
                 //Do not log update link here as we would log it further below:
                 $this->X_model->update($x['x__id'], array(
                     'x__status' => 6173, //Link Deleted
-                ), $x__member, 6224 /* User Account Updated */);
+                ), $x__miner, 6224 /* Miner Account Updated */);
             }
 
         }
@@ -336,8 +336,8 @@ class E_model extends CI_Model
         if (!$previously_assigned) {
             //Let's go ahead and add desired source as parent:
             $this->X_model->create(array(
-                'x__member' => $x__member,
-                'x__down' => $x__member,
+                'x__miner' => $x__miner,
+                'x__down' => $x__miner,
                 'x__up' => $set_e_child_id,
                 'x__type' => e_x__type(),
                 'x__reference' => $updated_x__id,
@@ -346,19 +346,19 @@ class E_model extends CI_Model
 
     }
 
-    function unlink($e__id, $x__member = 0, $merger_e__id = 0){
+    function unlink($e__id, $x__miner = 0, $merger_e__id = 0){
 
         //Fetch all SOURCE LINKS:
         $adjusted_count = 0;
         foreach(array_merge(
-                //Player references within IDEA NOTES:
+                //Miner references within IDEA NOTES:
                     $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
                         'x__up' => $e__id,
                     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')),
-                    //Player links:
+                    //Miner links:
                     $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -381,14 +381,14 @@ class E_model extends CI_Model
                 }
 
                 //Update Link:
-                $adjusted_count += $this->X_model->update($adjust_tr['x__id'], $updating_fields, $x__member, 10689 /* Player Link Merged */);
+                $adjusted_count += $this->X_model->update($adjust_tr['x__id'], $updating_fields, $x__miner, 10689 /* Miner Link Merged */);
 
             } else {
 
                 //Delete this link:
                 $adjusted_count += $this->X_model->update($adjust_tr['x__id'], array(
                     'x__status' => 6173, //Link Deleted
-                ), $x__member, 10673 /* Player Link Unpublished */);
+                ), $x__miner, 10673 /* Miner Link Unpublished */);
 
             }
         }
@@ -396,7 +396,7 @@ class E_model extends CI_Model
         return $adjusted_count;
     }
 
-    function assign_session_member($e__id){
+    function assign_session_miner($e__id){
 
         $session_e = superpower_assigned();
         if(!$session_e){
@@ -406,7 +406,7 @@ class E_model extends CI_Model
         //Assign to Creator:
         $this->X_model->create(array(
             'x__type' => e_x__type(),
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__up' => $session_e['e__id'],
             'x__down' => $e__id,
         ));
@@ -417,7 +417,7 @@ class E_model extends CI_Model
             //Add Pending Review:
             $this->X_model->create(array(
                 'x__type' => e_x__type(),
-                'x__member' => $session_e['e__id'],
+                'x__miner' => $session_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));
@@ -425,7 +425,7 @@ class E_model extends CI_Model
             //SOURCE PENDING MODERATION TYPE:
             $this->X_model->create(array(
                 'x__type' => 7504, //SOURCE PENDING MODERATION
-                'x__member' => $session_e['e__id'],
+                'x__miner' => $session_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));
@@ -434,12 +434,12 @@ class E_model extends CI_Model
 
     }
 
-    function domain($url, $x__member = 0, $page_title = null)
+    function domain($url, $x__miner = 0, $page_title = null)
     {
         /*
          *
          * Either finds/returns existing domains or adds it
-         * to the Domains source if $x__member > 0
+         * to the Domains source if $x__miner > 0
          *
          * */
 
@@ -462,7 +462,7 @@ class E_model extends CI_Model
             'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
-            'x__up' => 1326, //Domain Player
+            'x__up' => 1326, //Domain Miner
             'x__message' => $url_analysis['url_clean_domain'],
         ), array('x__down'));
 
@@ -473,17 +473,17 @@ class E_model extends CI_Model
             $domai_previously_existed = 1;
             $e_domain = $url_links[0];
 
-        } elseif ($x__member) {
+        } elseif ($x__miner) {
 
             //Yes, let's add a new source:
-            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__member, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
+            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__miner, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
             $e_domain = $added_e['new_e'];
 
             //And link source to the domains source:
             $this->X_model->create(array(
-                'x__member' => $x__member,
+                'x__miner' => $x__miner,
                 'x__type' => 4256, //Generic URL (Domains are always generic)
-                'x__up' => 1326, //Domain Player
+                'x__up' => 1326, //Domain Miner
                 'x__down' => $e_domain['e__id'],
                 'x__message' => $url_analysis['url_clean_domain'],
             ));
@@ -501,7 +501,7 @@ class E_model extends CI_Model
 
     }
 
-    function match_x_status($x__member, $query= array()){
+    function match_x_status($x__miner, $query= array()){
 
         //STATS
         $stats = array(
@@ -533,7 +533,7 @@ class E_model extends CI_Model
                 $stats['missing_creation_fix']++;
 
                 $this->X_model->create(array(
-                    'x__member' => $x__member,
+                    'x__miner' => $x__miner,
                     'x__down' => $e['e__id'],
                     'x__message' => $e['e__title'],
                     'x__type' => $stats['x__type'],
@@ -614,7 +614,7 @@ class E_model extends CI_Model
 
 
 
-    function url($url, $x__member = 0, $add_to_child_e__id = 0, $page_title = null)
+    function url($url, $x__miner = 0, $add_to_child_e__id = 0, $page_title = null)
     {
 
         /*
@@ -623,9 +623,9 @@ class E_model extends CI_Model
          * Input legend:
          *
          * - $url:                  Input URL
-         * - $x__member:       IF > 0 will save URL (if not previously there) and give credit to this source as the member
+         * - $x__miner:       IF > 0 will save URL (if not previously there) and give credit to this source as the miner
          * - $add_to_child_e__id:   IF > 0 Will also add URL to this child if present
-         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable members to edit auto generated title)
+         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable miners to edit auto generated title)
          *
          * */
 
@@ -636,14 +636,14 @@ class E_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid URL',
             );
-        } elseif ($add_to_child_e__id > 0 && $x__member < 1) {
+        } elseif ($add_to_child_e__id > 0 && $x__miner < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Parent source is required to add a parent URL',
             );
         }
 
-        //Remember if source name was passed:
+        //Reminer if source name was passed:
         $name_was_passed = ( $page_title ? true : false );
         $e___4537 = $this->config->item('e___4537');
         $e___4592 = $this->config->item('e___4592');
@@ -726,7 +726,7 @@ class E_model extends CI_Model
 
 
         //Fetch/Create domain source:
-        $url_e = $this->E_model->domain($url, $x__member, ( $url_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
+        $url_e = $this->E_model->domain($url, $x__miner, ( $url_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
         if(!$url_e['status']){
             //We had an issue:
             return $url_e;
@@ -750,7 +750,7 @@ class E_model extends CI_Model
             $url_links = $this->X_model->fetch(array(
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Player URL Links
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Miner URL Links
                 'x__message' => $url,
             ), array('x__down'));
 
@@ -762,7 +762,7 @@ class E_model extends CI_Model
                 $e_url = $url_links[0];
                 $url_previously_existed = 1;
 
-            } elseif($x__member) {
+            } elseif($x__miner) {
 
                 if(!$page_title){
                     //Assign a generic source name:
@@ -772,8 +772,8 @@ class E_model extends CI_Model
                 //Prefix type in name:
                 $page_title = $page_title;
 
-                //Create a new source for this URL ONLY If member source is provided...
-                $added_e = $this->E_model->verify_create($page_title, $x__member, 6181, $e___4592[$x__type]['m_icon']);
+                //Create a new source for this URL ONLY If miner source is provided...
+                $added_e = $this->E_model->verify_create($page_title, $x__miner, 6181, $e___4592[$x__type]['m_icon']);
                 if($added_e['status']){
 
                     //All good:
@@ -781,15 +781,15 @@ class E_model extends CI_Model
 
                     //Always link URL to its parent domain:
                     $this->X_model->create(array(
-                        'x__member' => $x__member,
+                        'x__miner' => $x__miner,
                         'x__type' => $x__type,
                         'x__up' => $url_e['e_domain']['e__id'],
                         'x__down' => $e_url['e__id'],
                         'x__message' => $url,
                     ));
 
-                    //Assign to Player:
-                    $this->E_model->assign_session_member($e_url['e__id']);
+                    //Assign to Miner:
+                    $this->E_model->assign_session_miner($e_url['e__id']);
 
                     //Update Search Index:
                     update_algolia(12274, $e_url['e__id']);
@@ -800,11 +800,11 @@ class E_model extends CI_Model
                     $this->X_model->create(array(
                         'x__message' => 'e_url['.$url.'] FAILED to create ['.$page_title.'] with message: '.$added_e['message'],
                         'x__type' => 4246, //Platform Bug Reports
-                        'x__member' => $x__member,
+                        'x__miner' => $x__miner,
                         'x__up' => $url_e['e_domain']['e__id'],
                         'x__metadata' => array(
                             'url' => $url,
-                            'x__member' => $x__member,
+                            'x__miner' => $x__miner,
                             'add_to_child_e__id' => $add_to_child_e__id,
                             'page_title' => $page_title,
                         ),
@@ -813,7 +813,7 @@ class E_model extends CI_Model
                 }
 
             } else {
-                //URL not found and no member source provided to create the URL:
+                //URL not found and no miner source provided to create the URL:
                 $e_url = array();
             }
         }
@@ -823,7 +823,7 @@ class E_model extends CI_Model
         if(!$url_previously_existed && $add_to_child_e__id){
             //Link URL to its parent domain?
             $this->X_model->create(array(
-                'x__member' => $x__member,
+                'x__miner' => $x__miner,
                 'x__type' => e_x__type(),
                 'x__up' => $e_url['e__id'],
                 'x__down' => $add_to_child_e__id,
@@ -837,8 +837,8 @@ class E_model extends CI_Model
             $url_analysis, //Make domain analysis data available as well...
 
             array(
-                'status' => ($url_previously_existed && !$x__member ? 0 : 1),
-                'message' => ($url_previously_existed && !$x__member ? 'URL already belongs to [' . $e_url['e__title'].'] with source ID @' . $e_url['e__id'] : 'Success'),
+                'status' => ($url_previously_existed && !$x__miner ? 0 : 1),
+                'message' => ($url_previously_existed && !$x__miner ? 'URL already belongs to [' . $e_url['e__title'].'] with source ID @' . $e_url['e__id'] : 'Success'),
                 'url_previously_existed' => $url_previously_existed,
                 'clean_url' => $url,
                 'x__type' => $x__type,
@@ -849,7 +849,7 @@ class E_model extends CI_Model
         );
     }
 
-    function mass_update($e__id, $action_e__id, $action_command1, $action_command2, $x__member)
+    function mass_update($e__id, $action_e__id, $action_command1, $action_command2, $x__miner)
     {
 
         //Alert: Has a twin function called i_mass_update()
@@ -922,7 +922,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => $action_command1 . $x['e__title'],
-                ), true, $x__member);
+                ), true, $x__miner);
 
                 $applied_success++;
 
@@ -930,13 +930,13 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => $x['e__title'] . $action_command1,
-                ), true, $x__member);
+                ), true, $x__miner);
 
                 $applied_success++;
 
             } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
-                //What member searched for:
+                //What miner searched for:
                 $parent_e__id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
@@ -949,9 +949,9 @@ class E_model extends CI_Model
 
                 if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_es)==0) || ($action_e__id==12928 && view_coins_count_e(0,$x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_count_e(0,$x['e__id'],true))){
 
-                    //Parent Player Addition
+                    //Parent Miner Addition
                     $this->X_model->create(array(
-                        'x__member' => $x__member,
+                        'x__miner' => $x__miner,
                         'x__type' => e_x__type(),
                         'x__down' => $x['e__id'], //This child source
                         'x__up' => $parent_e__id,
@@ -964,19 +964,19 @@ class E_model extends CI_Model
                         //Since we're migrating we should remove from here:
                         $this->X_model->update($x['x__id'], array(
                             'x__status' => 6173, //Link Deleted
-                        ), $x__member, 10673 /* Player Link Unpublished  */);
+                        ), $x__miner, 10673 /* Miner Link Unpublished  */);
                     }
 
                 } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_es) > 0){
 
                     if($action_e__id==5982){
 
-                        //Parent Player Removal
+                        //Parent Miner Removal
                         foreach($child_parent_es as $delete_tr){
 
                             $this->X_model->update($delete_tr['x__id'], array(
                                 'x__status' => 6173, //Link Deleted
-                            ), $x__member, 10673 /* Player Link Unpublished  */);
+                            ), $x__miner, 10673 /* Miner Link Unpublished  */);
 
                             $applied_success++;
                         }
@@ -987,7 +987,7 @@ class E_model extends CI_Model
 
                         //Add as a parent because it meets the condition
                         $this->X_model->create(array(
-                            'x__member' => $x__member,
+                            'x__miner' => $x__miner,
                             'x__type' => e_x__type(),
                             'x__down' => $x['e__id'], //This child source
                             'x__up' => $parent_new_e__id,
@@ -999,35 +999,35 @@ class E_model extends CI_Model
 
                 }
 
-            } elseif ($action_e__id == 5943) { //Player Mass Update Player Icon
+            } elseif ($action_e__id == 5943) { //Miner Mass Update Miner Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__icon' => $action_command1,
-                ), true, $x__member);
+                ), true, $x__miner);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 12318 && !strlen($x['e__icon'])) { //Player Mass Update Player Icon
+            } elseif ($action_e__id == 12318 && !strlen($x['e__icon'])) { //Miner Mass Update Miner Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__icon' => $action_command1,
-                ), true, $x__member);
+                ), true, $x__miner);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5000 && substr_count($x['e__title'], strtoupper($action_command1)) > 0) { //Replace Player Matching Name
+            } elseif ($action_e__id == 5000 && substr_count($x['e__title'], strtoupper($action_command1)) > 0) { //Replace Miner Matching Name
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => str_replace(strtoupper($action_command1), strtoupper($action_command2), $x['e__title']),
-                ), true, $x__member);
+                ), true, $x__miner);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 10625 && substr_count($x['e__icon'], $action_command1) > 0) { //Replace Player Matching Icon
+            } elseif ($action_e__id == 10625 && substr_count($x['e__icon'], $action_command1) > 0) { //Replace Miner Matching Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__icon' => str_replace($action_command1, $action_command2, $x['e__icon']),
-                ), true, $x__member);
+                ), true, $x__miner);
 
                 $applied_success++;
 
@@ -1035,7 +1035,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => str_replace($action_command1, $action_command2, $x['x__message']),
-                ), $x__member, 10657 /* Player Link Updated Content  */);
+                ), $x__miner, 10657 /* Miner Link Updated Content  */);
 
                 $applied_success++;
 
@@ -1043,13 +1043,13 @@ class E_model extends CI_Model
 
                 //Being deleted? Unlink as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('n___7358'))){
-                    $this->E_model->unlink($x['e__id'], $x__member);
+                    $this->E_model->unlink($x['e__id'], $x__miner);
                 }
 
-                //Update Matching Player Status:
+                //Update Matching Miner Status:
                 $this->E_model->update($x['e__id'], array(
                     'e__status' => $action_command2,
-                ), true, $x__member);
+                ), true, $x__miner);
 
                 $applied_success++;
 
@@ -1057,7 +1057,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__status' => $action_command2,
-                ), $x__member, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Player Link Updated Status */ : 10673 /* Player Link Unpublished */ ));
+                ), $x__miner, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Miner Link Updated Status */ : 10673 /* Miner Link Unpublished */ ));
 
                 $applied_success++;
 
@@ -1067,7 +1067,7 @@ class E_model extends CI_Model
 
         //Log mass source edit link:
         $this->X_model->create(array(
-            'x__member' => $x__member,
+            'x__miner' => $x__miner,
             'x__type' => $action_e__id,
             'x__down' => $e__id,
             'x__metadata' => array(
@@ -1109,7 +1109,7 @@ class E_model extends CI_Model
     }
 
 
-    function verify_create($e__title, $x__member = 0, $e__status = 6181, $e__icon = null){
+    function verify_create($e__title, $x__miner = 0, $e__status = 6181, $e__icon = null){
 
         if(!in_array($e__status, $this->config->item('n___6177'))){
             //Invalid Status ID
@@ -1130,7 +1130,7 @@ class E_model extends CI_Model
             'e__title' => $e__title_validate['e__title_clean'],
             'e__icon' => $e__icon,
             'e__status' => $e__status,
-        ), true, $x__member);
+        ), true, $x__miner);
 
         //Return success:
         return array(

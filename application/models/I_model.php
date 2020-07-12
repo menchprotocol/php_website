@@ -15,11 +15,11 @@ class I_model extends CI_Model
     }
 
 
-    function create($add_fields, $x__member = 0)
+    function create($add_fields, $x__miner = 0)
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('i__title', 'i__type', 'i__status'), $x__member)) {
+        if (detect_missing_columns($add_fields, array('i__title', 'i__type', 'i__status'), $x__miner)) {
             return false;
         }
 
@@ -37,11 +37,11 @@ class I_model extends CI_Model
 
         if ($add_fields['i__id'] > 0) {
 
-            if ($x__member > 0) {
+            if ($x__miner > 0) {
 
                 //Log link new Idea:
                 $this->X_model->create(array(
-                    'x__member' => $x__member,
+                    'x__miner' => $x__miner,
                     'x__right' => $add_fields['i__id'],
                     'x__message' => $add_fields['i__title'],
                     'x__type' => 4250, //New Idea Created
@@ -49,10 +49,10 @@ class I_model extends CI_Model
 
                 //Also add as source:
                 $this->X_model->create(array(
-                    'x__member' => $x__member,
-                    'x__up' => $x__member,
+                    'x__miner' => $x__miner,
+                    'x__up' => $x__miner,
                     'x__type' => 4983, //IDEA COIN
-                    'x__message' => '@'.$x__member,
+                    'x__message' => '@'.$x__miner,
                     'x__right' => $add_fields['i__id'],
                 ), true);
 
@@ -79,7 +79,7 @@ class I_model extends CI_Model
             $this->X_model->create(array(
                 'x__message' => 'i_create() failed to create a new idea',
                 'x__type' => 4246, //Platform Bug Reports
-                'x__member' => $x__member,
+                'x__miner' => $x__miner,
                 'x__metadata' => $add_fields,
             ));
             return false;
@@ -113,7 +113,7 @@ class I_model extends CI_Model
         return $q->result_array();
     }
 
-    function update($id, $update_columns, $external_sync = false, $x__member = 0)
+    function update($id, $update_columns, $external_sync = false, $x__miner = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -121,7 +121,7 @@ class I_model extends CI_Model
         }
 
         //Fetch current Idea filed values so we can compare later on after we've updated it:
-        if($x__member > 0){
+        if($x__miner > 0){
             $before_data = $this->I_model->fetch(array('i__id' => $id));
         }
 
@@ -136,9 +136,9 @@ class I_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $x__member > 0) {
+        if ($affected_rows > 0 && $x__miner > 0) {
 
-            //Unlike source modification, we require a member source ID to log the modification link:
+            //Unlike source modification, we require a miner source ID to log the modification link:
             //Log modification link for every field changed:
             foreach($update_columns as $key => $value) {
 
@@ -192,7 +192,7 @@ class I_model extends CI_Model
 
                 //Value has changed, log link:
                 $this->X_model->create(array(
-                    'x__member' => $x__member,
+                    'x__miner' => $x__miner,
                     'x__type' => $x__type,
                     'x__right' => $id,
                     'x__down' => $x__down,
@@ -219,7 +219,7 @@ class I_model extends CI_Model
             $this->X_model->create(array(
                 'x__right' => $id,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__member' => $x__member,
+                'x__miner' => $x__miner,
                 'x__message' => 'update() Failed to update',
                 'x__metadata' => array(
                     'input' => $update_columns,
@@ -231,7 +231,7 @@ class I_model extends CI_Model
         return $affected_rows;
     }
 
-    function unlink($i__id, $x__member = 0){
+    function unlink($i__id, $x__miner = 0){
 
         //REMOVE IDEA LINKS
         $links_deleted = 0;
@@ -243,7 +243,7 @@ class I_model extends CI_Model
             //Delete this link:
             $links_deleted += $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //Link Deleted
-            ), $x__member, 10686 /* Idea Link Unpublished */);
+            ), $x__miner, 10686 /* Idea Link Unpublished */);
         }
 
 
@@ -257,7 +257,7 @@ class I_model extends CI_Model
             //Delete this link:
             $links_deleted += $this->X_model->update($i_note['x__id'], array(
                 'x__status' => 6173, //Link Deleted
-            ), $x__member, 10686 /* Idea Link Unpublished */);
+            ), $x__miner, 10686 /* Idea Link Unpublished */);
         }
 
 
@@ -265,7 +265,7 @@ class I_model extends CI_Model
         return $links_deleted;
     }
 
-    function match_x_status($x__member, $query = array()){
+    function match_x_status($x__miner, $query = array()){
 
         //STATS
         $stats = array(
@@ -298,7 +298,7 @@ class I_model extends CI_Model
                 $stats['missing_creation_fix']++;
 
                 $this->X_model->create(array(
-                    'x__member' => $x__member,
+                    'x__miner' => $x__miner,
                     'x__right' => $i['i__id'],
                     'x__message' => $i['i__title'],
                     'x__type' => $stats['x__type'],
@@ -319,7 +319,7 @@ class I_model extends CI_Model
         return $stats;
     }
 
-    function link_or_create($i__title, $x__member, $link_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $link_i__id = 0)
+    function link_or_create($i__title, $x__miner, $link_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $link_i__id = 0)
     {
 
         /*
@@ -458,7 +458,7 @@ class I_model extends CI_Model
                 'i__title' => $i__title_validation['i_clean_title'],
                 'i__type' => $i__type,
                 'i__status' => $new_i_status,
-            ), $x__member);
+            ), $x__miner);
 
         }
 
@@ -467,7 +467,7 @@ class I_model extends CI_Model
         if($link_to_i__id > 0){
 
             $relation = $this->X_model->create(array(
-                'x__member' => $x__member,
+                'x__miner' => $x__miner,
                 'x__type' => 4228, //Idea Link Regular Discovery
                 ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
@@ -520,13 +520,13 @@ class I_model extends CI_Model
 
 
         //Go ahead and delete from Discoveries:
-        $member_is = $this->X_model->fetch(array(
+        $miner_is = $this->X_model->fetch(array(
             'x__type' => 10573, //MY IDEAS
             'x__up' => $e__id,
             'x__right' => $i__id,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
-        if(count($member_is) < 1){
+        if(count($miner_is) < 1){
             return array(
                 'status' => 0,
                 'message' => 'Could not locate Idea',
@@ -534,7 +534,7 @@ class I_model extends CI_Model
         }
 
         //Delete:
-        foreach($member_is as $x){
+        foreach($miner_is as $x){
             $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //DELETED
             ), $e__id, $x__type);
@@ -589,7 +589,7 @@ class I_model extends CI_Model
 
             //Now we must break down the array:
             $recursive_parents = array();
-            $start_i__id = config_var(13405);
+            $start_i__id = config_var(13427);
             $index = 0;
             foreach($grand_parents as $grand_parent_ids) {
                 foreach($grand_parent_ids as $grand_parent_id) {
@@ -654,9 +654,9 @@ class I_model extends CI_Model
         $select_some_children = array(); //To be populated only if $focus_in is select some
         $conditional_x = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
-            'p___6168' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
+            'p___6168' => array(), //The idea structure that would be shared with all miners regardless of their quick replies (OR Idea Answers)
             'p___6228' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
-            'p___12885' => array(), //Ideas that allows members to select one or more
+            'p___12885' => array(), //Ideas that allows miners to select one or more
             'p___6283' => array(), //Ideas that may exist as a link to expand Discovery via Conditional Idea links
         );
 
@@ -760,7 +760,7 @@ class I_model extends CI_Model
 
     }
 
-    function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__member)
+    function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__miner)
     {
 
         //Alert: Has a twin function called e_mass_update()
@@ -826,7 +826,7 @@ class I_model extends CI_Model
 
                     //Missing & Must be Added:
                     $this->X_model->create(array(
-                        'x__member' => $x__member,
+                        'x__miner' => $x__miner,
                         'x__up' => $e__profile_id,
                         'x__type' => 4983, //IDEA COIN
                         'x__message' => '@'.$e__profile_id,
@@ -840,7 +840,7 @@ class I_model extends CI_Model
                     //Has and must be deleted:
                     $this->X_model->update($i_has_es[0]['x__id'], array(
                         'x__status' => 6173,
-                    ), $x__member, 10678 /* IDEA NOTES Unpublished */);
+                    ), $x__miner, 10678 /* IDEA NOTES Unpublished */);
 
                     $applied_success++;
 
@@ -861,7 +861,7 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->link_or_create('', $x__member, $adjust_i__id, false, 6184, 6677, $next_i['i__id']);
+                    $this->I_model->link_or_create('', $x__miner, $adjust_i__id, false, 6184, 6677, $next_i['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;
@@ -871,7 +871,7 @@ class I_model extends CI_Model
                     //Remove Source:
                     $this->X_model->update($is_previous[0]['x__id'], array(
                         'x__status' => 6173,
-                    ), $x__member, 10686 /* IDEA NOTES Unpublished */);
+                    ), $x__miner, 10686 /* IDEA NOTES Unpublished */);
 
                     $applied_success++;
 
@@ -884,7 +884,7 @@ class I_model extends CI_Model
 
         //Log mass source edit link:
         $this->X_model->create(array(
-            'x__member' => $x__member,
+            'x__miner' => $x__miner,
             'x__type' => $action_e__id,
             'x__right' => $i__id,
             'x__metadata' => array(
@@ -996,16 +996,16 @@ class I_model extends CI_Model
                 }
             }
 
-            //PLAYERS:
-            if (!isset($metadata_this['p___13202'][$fetched_e['x__member']])) {
-                //Fetch Player:
+            //MINERS:
+            if (!isset($metadata_this['p___13202'][$fetched_e['x__miner']])) {
+                //Fetch Miner:
                 foreach($this->X_model->fetch(array(
-                    'x__up' => 4430, //MENCH PLAYERS
-                    'x__down' => $fetched_e['x__member'],
+                    'x__up' => 4430, //MENCH MINERS
+                    'x__down' => $fetched_e['x__miner'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array('x__down'), 1) as $member){
-                    $metadata_this['p___13202'][$fetched_e['x__member']] = $member;
+                ), array('x__down'), 1) as $miner){
+                    $metadata_this['p___13202'][$fetched_e['x__miner']] = $miner;
                 }
             }
 
@@ -1040,16 +1040,16 @@ class I_model extends CI_Model
             'x__left' => $i['i__id'],
         ), array('x__right'), 0) as $is_next){
 
-            //Players
-            if (!isset($metadata_this['p___13202'][$is_next['x__member']])) {
-                //Fetch Player:
+            //Miners
+            if (!isset($metadata_this['p___13202'][$is_next['x__miner']])) {
+                //Fetch Miner:
                 foreach($this->X_model->fetch(array(
-                    'x__up' => 4430, //MENCH PLAYERS
-                    'x__down' => $is_next['x__member'],
+                    'x__up' => 4430, //MENCH MINERS
+                    'x__down' => $is_next['x__miner'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array('x__down'), 1) as $member){
-                    $metadata_this['p___13202'][$is_next['x__member']] = $member;
+                ), array('x__down'), 1) as $miner){
+                    $metadata_this['p___13202'][$is_next['x__miner']] = $miner;
                 }
             }
 
@@ -1109,7 +1109,7 @@ class I_model extends CI_Model
             }
 
 
-            //PLAYERS
+            //MINERS
             foreach($metadata_recursion['p___13202'] as $e__id => $e) {
                 if (!isset($metadata_this['p___13202'][$e__id])) {
                     $metadata_this['p___13202'][$e__id] = $e;
@@ -1210,7 +1210,7 @@ class I_model extends CI_Model
         }
 
 
-        //Discovery 2: Are there any locked link parents that the user might be able to unlock?
+        //Discovery 2: Are there any locked link parents that the miner might be able to unlock?
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC

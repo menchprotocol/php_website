@@ -27,7 +27,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($add_fields, $required_columns, $x__member)
+function detect_missing_columns($add_fields, $required_columns, $x__miner)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
@@ -41,7 +41,7 @@ function detect_missing_columns($add_fields, $required_columns, $x__member)
                     'required_columns' => $required_columns,
                 ),
                 'x__type' => 4246, //Platform Bug Reports
-                'x__member' => $x__member,
+                'x__miner' => $x__miner,
             ));
 
             return true; //We have an issue
@@ -86,7 +86,7 @@ function extract_e_references($x__message)
     //Replace non-ascii characters with space:
     $x__message = preg_replace('/[[:^print:]]/', ' ', $x__message);
 
-    //Analyze the message to find referencing URLs and Players in the message text:
+    //Analyze the message to find referencing URLs and Miners in the message text:
     $string_references = array(
         'ref_urls' => array(),
         'ref_es' => array(),
@@ -384,7 +384,7 @@ function e_count_connections($e__id, $return_html = true){
         4737 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status=',
         7585 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status IN ('.join(',', $CI->config->item('n___7355')).') AND i__type=',
         6177 => 'SELECT count(e__id) as totals FROM mench__e WHERE e__status=',
-        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__member=',
+        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__miner=',
         6186 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status=',
         4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
     ) as $e_app_id => $query){
@@ -488,7 +488,7 @@ function e__weight_calculator($e){
 
     $count_x = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__member='.$e['e__id'].')' => null,
+        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__miner='.$e['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
@@ -583,7 +583,7 @@ function i_is_unlockable($i){
 
 function redirect_message($url, $message = null)
 {
-    //An error handling function that would redirect user to $url with optional $message
+    //An error handling function that would redirect miner to $url with optional $message
     //Do we have a Message?
     if ($message) {
         $CI =& get_instance();
@@ -647,7 +647,7 @@ function current_mench(){
     /*
      *
      * Detects which of the Mench
-     * coins are in play based on
+     * coins is focused on based on
      * the URL which reflects the
      * logic in routes.php
      *
@@ -708,7 +708,7 @@ function x_coins_i($x__type, $i__id, $load_page = 0){
 
     } elseif($x__type==6255){
 
-        $join_objects = array('x__member');
+        $join_objects = array('x__miner');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
@@ -775,7 +775,7 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
             $query_filters = array(
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COINS
-                'x__member' => $e__id,
+                'x__miner' => $e__id,
             );
 
         } else {
@@ -817,15 +817,8 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
         );
         if($e__id > 0){
-            $query_filters['x__member'] = $e__id;
+            $query_filters['x__miner'] = $e__id;
         }
-
-    } elseif($x__type==13362){
-
-        //TRANSACTIONS
-        $order_columns = array(); //LATEST DISCOVERIES
-        $join_objects = array();
-        $query_filters = array( 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null );
 
     } else {
 
@@ -969,15 +962,15 @@ function i_stats($i__metadata){
 function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
 {
 
-    //Authenticates logged-in users with their session information
+    //Authenticates logged-in miners with their session information
     $CI =& get_instance();
     $session_e = $CI->session->userdata('session_profile');
     $has_session = ( is_array($session_e) && count($session_e) > 0 && $session_e );
 
-    //Let's start checking various ways we can give user access:
+    //Let's start checking various ways we can give miner access:
     if ($has_session && !$superpower_e__id) {
 
-        //No minimum level required, grant access IF user is logged in:
+        //No minimum level required, grant access IF miner is logged in:
         return $session_e;
 
     } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_assigned'))) {
@@ -988,7 +981,7 @@ function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
     }
 
     //Still here?!
-    //We could not find a reason to give user access, so block them:
+    //We could not find a reason to give miner access, so block them:
     if (!$force_redirect) {
 
         return false;
@@ -1090,7 +1083,7 @@ function i_calc_common_prefix($child_list, $child_field){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $x__member = 0, $x__metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -1124,7 +1117,7 @@ function upload_to_cdn($file_url, $x__member = 0, $x__metadata = null, $is_local
     if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__member' => $x__member,
+            'x__miner' => $x__miner,
             'x__message' => 'upload_to_cdn() Failed to load AWS S3',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1160,7 +1153,7 @@ function upload_to_cdn($file_url, $x__member = 0, $x__metadata = null, $is_local
     if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__member' => $x__member,
+            'x__miner' => $x__miner,
             'x__message' => 'upload_to_cdn() Failed to upload file to Mench CDN',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1181,7 +1174,7 @@ function upload_to_cdn($file_url, $x__member = 0, $x__metadata = null, $is_local
     //Define new URL:
     $cdn_new_url = trim($result['ObjectURL']);
 
-    if($x__member < 1){
+    if($x__miner < 1){
         //Just return URL:
         return array(
             'status' => 1,
@@ -1190,7 +1183,7 @@ function upload_to_cdn($file_url, $x__member = 0, $x__metadata = null, $is_local
     }
 
     //Create and link new source to CDN and uploader:
-    $url_e = $CI->E_model->url($cdn_new_url, $x__member, 0, $page_title);
+    $url_e = $CI->E_model->url($cdn_new_url, $x__miner, 0, $page_title);
 
     if(isset($url_e['e_url']['e__id']) && $url_e['e_url']['e__id'] > 0){
 
@@ -1205,7 +1198,7 @@ function upload_to_cdn($file_url, $x__member = 0, $x__metadata = null, $is_local
 
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__member' => $x__member,
+            'x__miner' => $x__miner,
             'x__message' => 'upload_to_cdn() Failed to create new source from CDN file',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1392,7 +1385,7 @@ function e__title_validate($string, $x__type = 0){
 
 
 
-function member_is_e($e__id, $session_e = array()){
+function miner_is_e($e__id, $session_e = array()){
 
 
     if(!$session_e){
@@ -1404,27 +1397,27 @@ function member_is_e($e__id, $session_e = array()){
         return false;
     }
 
-    //Ways a member can modify a source:
+    //Ways a miner can modify a source:
     $CI =& get_instance();
     return (
 
-        //Player is the source
+        //Miner is the source
         $e__id==$session_e['e__id']
 
 
-        //Player created the source
+        //Miner created the source
         || count($CI->X_model->fetch(array(
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__down' => $e__id,
             'x__type' => 4251, //New Source Created
         )))
 
         /*
 
-        //Player has Advance source editing superpower
+        //Miner has Advance source editing superpower
         || superpower_active(13422, true)
 
-        //Player has source in their portfolio
+        //Miner has source in their portfolio
         || count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1448,17 +1441,17 @@ function e_owns_i($i__id, $session_e = array()){
         return false;
     }
 
-    //Ways a member can modify an idea:
+    //Ways a miner can modify an idea:
     $CI =& get_instance();
     return (
         superpower_active(10984, true) || //COLLABORATIVE IDEATION
         (
             superpower_active(10939, true) && //PUBLISHING PEN
                 (
-                count($CI->X_model->fetch(array( //Player created the idea
+                count($CI->X_model->fetch(array( //Miner created the idea
                     'x__type' => 4250, //IDEA CREATOR
                     'x__right' => $i__id,
-                    'x__member' => $session_e['e__id'],
+                    'x__miner' => $session_e['e__id'],
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1680,8 +1673,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__duration'] = null;
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_e_' . $db_row['x__member']);
-                if($db_row['x__member']!=$db_row['e__id']){
+                array_push($export_row['_tags'], 'alg_e_' . $db_row['x__miner']);
+                if($db_row['x__miner']!=$db_row['e__id']){
                     //Also give access to source themselves, in case they can login:
                     array_push($export_row['_tags'], 'alg_e_' . $db_row['e__id']);
                 }
@@ -1791,7 +1784,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be deleted?
-        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* Player Deleted */, 6182 /* Idea Deleted */))) {
+        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* Miner Deleted */, 6182 /* Idea Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1879,7 +1872,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 }
 
-function update_metadata($object__type, $object__id, $new_fields, $x__member = 0)
+function update_metadata($object__type, $object__id, $new_fields, $x__miner = 0)
 {
 
     $CI =& get_instance();
@@ -1890,7 +1883,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__member = 0
      *
      * $object__type:           DISCOVER, SOURCE OR IDEA
      *
-     * $obj:                    The Player, Idea or Link itself.
+     * $obj:                    The Miner, Idea or Link itself.
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,
@@ -1943,7 +1936,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__member = 0
         //We are doing an absolute adjustment if needed:
         if (is_null($metadata_value)) {
 
-            //User asked to delete this value:
+            //Miner asked to delete this value:
             unset($metadata[$metadata_key]);
 
         } else {
@@ -1959,13 +1952,13 @@ function update_metadata($object__type, $object__id, $new_fields, $x__member = 0
 
         $affected_rows = $CI->I_model->update($object__id, array(
             'i__metadata' => $metadata,
-        ), false, $x__member);
+        ), false, $x__miner);
 
     } elseif ($object__type == 12274) {
 
         $affected_rows = $CI->E_model->update($object__id, array(
             'e__metadata' => $metadata,
-        ), false, $x__member);
+        ), false, $x__miner);
 
     } elseif ($object__type == 6255) {
 

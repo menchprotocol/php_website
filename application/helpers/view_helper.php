@@ -156,7 +156,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
             //This should be an integer!
             if (intval($video_id) == $video_id) {
                 $clean_url = 'https://vimeo.com/' . $video_id;
-                $embed_html_code = '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://member.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
+                $embed_html_code = '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://miner.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
             }
 
         } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
@@ -279,7 +279,7 @@ function view_i_notes($x, $note_is_e = false)
 
 function view_e__icon($e__icon = null)
 {
-    //A simple function to display the Player Icon OR the default icon if not available:
+    //A simple function to display the Miner Icon OR the default icon if not available:
     if (strlen($e__icon) > 0) {
 
         return $e__icon;
@@ -397,7 +397,7 @@ function view_interaction($x, $is_parent_tr = false)
 
 
     //Hide Sensitive Details?
-    if(in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$session_e || $x['x__member']!=$session_e['e__id']) && !superpower_active(12701, true)){
+    if(in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$session_e || $x['x__miner']!=$session_e['e__id']) && !superpower_active(12701, true)){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -422,10 +422,10 @@ function view_interaction($x, $is_parent_tr = false)
 
 
         //Creator (Do not repeat)
-        if($x['x__member'] > 0 && $x['x__member']!=$x['x__up'] && $x['x__member']!=$x['x__down']){
+        if($x['x__miner'] > 0 && $x['x__miner']!=$x['x__up'] && $x['x__miner']!=$x['x__down']){
 
             $add_es = $CI->E_model->fetch(array(
-                'e__id' => $x['x__member'],
+                'e__id' => $x['x__miner'],
             ));
 
             $ui .= '<div class="simple-line"><a href="/@'.$add_es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($add_es[0]['e__icon']).'"><span class="img-block">'.view_e__icon($add_es[0]['e__icon']) . '</span> ' . $add_es[0]['e__title'] . '</span></a></div>';
@@ -451,7 +451,7 @@ function view_interaction($x, $is_parent_tr = false)
                 //SOURCE
                 $es = $CI->E_model->fetch(array('e__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $x[$var_index[$e__id]]==$x['x__member'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($es[0]['e__icon']).' img-block">'.view_e__icon($es[0]['e__icon']). '&nbsp;'.$es[0]['e__title'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $x[$var_index[$e__id]]==$x['x__miner'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($es[0]['e__icon']).' img-block">'.view_e__icon($es[0]['e__icon']). '&nbsp;'.$es[0]['e__title'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
@@ -561,11 +561,11 @@ function view_coins_count_x($i__id = 0, $e__id = 0){
     $query_filters = array(
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null,
-        ( $i__id > 0 ? 'x__left' : 'x__member' ) => ( $i__id > 0 ? $i__id : $e__id ),
+        ( $i__id > 0 ? 'x__left' : 'x__miner' ) => ( $i__id > 0 ? $i__id : $e__id ),
     );
 
     if(isset($_GET['focus__e'])){
-        $query_filters['x__member'] = intval($_GET['focus__e']);
+        $query_filters['x__miner'] = intval($_GET['focus__e']);
     }
 
     $x_coins = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
@@ -632,7 +632,7 @@ function view_x_icon_legend($can_click, $completion_percentage){
 function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_e = false, $extra_class = null)
 {
 
-    //See if user is logged-in:
+    //See if miner is logged-in:
     $CI =& get_instance();
     if(!$recipient_e){
         $recipient_e = superpower_assigned();
@@ -1080,7 +1080,7 @@ function view_i_note_mix($x__type, $i_notes){
 
     //List current notes:
     foreach($i_notes as $i_notes) {
-        $ui .= view_i_notes($i_notes, ($i_notes['x__member']==$session_e['e__id']));
+        $ui .= view_i_notes($i_notes, ($i_notes['x__miner']==$session_e['e__id']));
     }
 
     //ADD NEW:
@@ -1287,7 +1287,7 @@ function view_e_basic($e)
 
 
 
-function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = false, $member_is_e = false, $common_prefix = null)
+function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = false, $miner_is_e = false, $common_prefix = null)
 {
 
     $CI =& get_instance();
@@ -1310,6 +1310,13 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
     ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
+
+    $e__portfolio_count = $CI->X_model->fetch(array(
+        'x__up' => $e['e__id'],
+        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+    ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
     $is_public = in_array($e['e__status'], $CI->config->item('n___7357'));
     $is_link_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
@@ -1348,12 +1355,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     if($superpower_12706){
         $child_counter = '';
         if($superpower_10939){
-            $e__portfolio_count = $CI->X_model->fetch(array(
-                'x__up' => $e['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
-            ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
             if($e__portfolio_count[0]['totals'] > 0){
                 $child_counter .= '<span class="pull-right" '.( $inline_editing ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($e__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($e__portfolio_count[0]['totals']).'</span></span>';
                 $child_counter .= '<div class="doclear">&nbsp;</div>';
@@ -1381,7 +1382,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     //SOURCE TOOLBAR?
     if($inline_editing){
 
-        $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $member_is_e, 0, false, null, extract_icon_color($e['e__icon']));
+        $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $miner_is_e, 0, false, null, extract_icon_color($e['e__icon']));
 
         if($superpower_12706){
             $ui .= $child_counter;
@@ -1393,7 +1394,10 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         //SOURCE NAME
         $ui .= '<a href="'.$e_url.'" class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'">';
         $ui .= $box_items_list;
-        $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) :  $e['e__title'] ).'</span>';
+        if($e__portfolio_count[0]['totals'] > 0){
+            $ui .= $e__portfolio_count[0]['totals'].' ';
+        }
+        $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
         if($superpower_12706){
             $ui .= $child_counter;
         }
@@ -1414,7 +1418,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $ui .= '<div class="note-editor edit-off">';
     $ui .= '<span class="show-on-hover">';
 
-    if($control_enabled && $member_is_e){
+    if($control_enabled && $miner_is_e){
         if($is_link_e){
 
             //Sort

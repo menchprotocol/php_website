@@ -204,7 +204,7 @@ $(document).ready(function () {
     //load_intercom();
 
     if(js_pl_id > 1){
-        //For any logged in member except shervin:
+        //For any logged in miner except shervin:
         load_fullstory();
     }
 
@@ -272,7 +272,7 @@ $(document).ready(function () {
             {
                 source: function (q, cb) {
 
-                    //Players can filter search with first word:
+                    //Miners can filter search with first word:
                     var search_only_e = $("#mench_search").val().charAt(0) == '@';
                     var search_only_in = $("#mench_search").val().charAt(0) == '#';
 
@@ -293,7 +293,7 @@ $(document).ready(function () {
 
                         if(js_pl_id > 0){
 
-                            //For Players:
+                            //For Miners:
                             if(!js_session_superpowers_assigned.includes(12701)){
                                 //Can view limited sources:
                                 if(search_filters.length>0){
@@ -472,7 +472,7 @@ function i_save(i__id){
             alert(data.message);
             $('.toggle_saved').toggleClass('hidden');
         } else if (data.is_first_save) {
-            //To keep members informed of what just happened:
+            //To keep miners informed of what just happened:
             alert(data.first_save_message);
         }
     });
@@ -1202,7 +1202,7 @@ function x_remove(x__type){
         if (r == true) {
             //Save changes:
             $.post("/x/x_remove", { x__type:x__type, i__id:i__id }, function (data) {
-                //Update UI to confirm with user:
+                //Update UI to confirm with miner:
                 if (!data.status) {
 
                     //There was some sort of an error returned!
@@ -1257,7 +1257,7 @@ function x_sort(x__type) {
     //Update order:
     if(sort_rank > 0){
         $.post("/x/x_sort", { new_x_order:new_x_order, x__type:x__type }, function (data) {
-            //Update UI to confirm with user:
+            //Update UI to confirm with miner:
             if (!data.status) {
                 //There was some sort of an error returned!
                 alert(data.message);

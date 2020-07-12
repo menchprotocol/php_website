@@ -51,9 +51,9 @@ class I extends CI_Controller {
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 10573, //MY IDEAS
-            'x__up' => $session_e['e__id'], //For this member
-        ), array(), 0, 0, array('x__sort' => 'ASC')) as $member_i){
-            $this->X_model->update($member_i['x__id'], array(
+            'x__up' => $session_e['e__id'], //For this miner
+        ), array(), 0, 0, array('x__sort' => 'ASC')) as $miner_i){
+            $this->X_model->update($miner_i['x__id'], array(
                 'x__sort' => $x__sort,
             ), $session_e['e__id']);
             $x__sort++;
@@ -62,7 +62,7 @@ class I extends CI_Controller {
         //Add to my ideas:
         $this->X_model->create(array(
             'x__type' => 10573, //MY IDEAS
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__right' => $i['new_i__id'],
             'x__up' => $session_e['e__id'],
             'x__message' => '@'.$session_e['e__id'],
@@ -142,8 +142,8 @@ class I extends CI_Controller {
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
-                'x__member' => $session_e['e__id'],
-                'x__type' => 4993, //Player Opened Idea
+                'x__miner' => $session_e['e__id'],
+                'x__type' => 4993, //Miner Opened Idea
                 'x__right' => $i__id,
                 'x__sort' => $new_order,
             ));
@@ -168,13 +168,13 @@ class I extends CI_Controller {
 
     function i_e_request($i__id){
 
-        //Make sure it's a logged in member:
+        //Make sure it's a logged in miner:
         $session_e = superpower_assigned(null, true);
 
         if(count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 12450,
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__right' => $i__id,
         )))){
             return redirect_message('/~'.$i__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
@@ -184,7 +184,7 @@ class I extends CI_Controller {
         //Inform moderators:
         $this->X_model->create(array(
             'x__type' => 12450,
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__right' => $i__id,
         ));
 
@@ -195,13 +195,13 @@ class I extends CI_Controller {
 
     function i_e_add($i__id){
 
-        //Make sure it's a logged in member:
+        //Make sure it's a logged in miner:
         $session_e = superpower_assigned(10984, true);
 
         //Idea Source:
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA COIN
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__up' => $session_e['e__id'],
             'x__message' => '@'.$session_e['e__id'],
             'x__right' => $i__id,
@@ -262,7 +262,7 @@ class I extends CI_Controller {
         $deletion_redirect = null;
         $delete_element = null;
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned();
         if (!$session_e) {
             return view_json(array(
@@ -364,13 +364,13 @@ class I extends CI_Controller {
                 } elseif(in_array($_POST['new_e__id'], $this->config->item('n___12138')) && !superpower_assigned(10984) && !count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 12453, //Idea Feature Request
-                        'x__member' => $session_e['e__id'],
+                        'x__miner' => $session_e['e__id'],
                         'x__right' => $_POST['i__id'],
                     )))){
 
                     $this->X_model->create(array(
                         'x__type' => 12453, //Idea Feature Request
-                        'x__member' => $session_e['e__id'],
+                        'x__miner' => $session_e['e__id'],
                         'x__right' => $_POST['i__id'],
                     ));
 
@@ -395,7 +395,7 @@ class I extends CI_Controller {
 
     function i_unlink(){
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned();
         if (!$session_e) {
             return view_json(array(
@@ -438,7 +438,7 @@ class I extends CI_Controller {
          *
          * */
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned(10939);
         if (!$session_e) {
             return view_json(array(
@@ -505,7 +505,7 @@ class I extends CI_Controller {
     function i_sort_save()
     {
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned(10939);
         if (!$session_e) {
             view_json(array(
@@ -539,7 +539,7 @@ class I extends CI_Controller {
                 foreach($_POST['new_x__sorts'] as $rank => $x__id) {
                     $this->X_model->update(intval($x__id), array(
                         'x__sort' => intval($rank),
-                    ), $session_e['e__id'], 10675 /* Ideas Ordered by Player */);
+                    ), $session_e['e__id'], 10675 /* Ideas Ordered by Miner */);
                 }
 
                 //Display message:
@@ -554,7 +554,7 @@ class I extends CI_Controller {
     function i_note_text()
     {
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned();
 
         if (!$session_e) {
@@ -603,7 +603,7 @@ class I extends CI_Controller {
 
         //Create Message:
         $x = $this->X_model->create(array(
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__sort' => 1 + $this->X_model->max_sort(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type' => intval($_POST['note_type_id']),
@@ -634,7 +634,7 @@ class I extends CI_Controller {
 
         //TODO: MERGE WITH FUNCTION x_upload()
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned();
         if (!$session_e) {
 
@@ -714,7 +714,7 @@ class I extends CI_Controller {
 
         //Create message:
         $x = $this->X_model->create(array(
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__type' => $_POST['note_type_id'],
             'x__up' => $cdn_status['cdn_e']['e__id'],
             'x__right' => intval($_POST['i__id']),
@@ -748,7 +748,7 @@ class I extends CI_Controller {
     function i_note_sort()
     {
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned(10939);
         if (!$session_e) {
 
@@ -772,7 +772,7 @@ class I extends CI_Controller {
         foreach($_POST['new_x__sorts'] as $x__sort => $x__id) {
             if (intval($x__id) > 0) {
                 $sort_count++;
-                //Log update and give credit to the session Player:
+                //Log update and give credit to the session Miner:
                 $this->X_model->update($x__id, array(
                     'x__sort' => intval($x__sort),
                 ), $session_e['e__id'], 10676 /* IDEA NOTES Ordered */);
@@ -789,7 +789,7 @@ class I extends CI_Controller {
     function i_note_edit()
     {
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned();
         if (!$session_e) {
             return view_json(array(

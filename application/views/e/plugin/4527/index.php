@@ -30,8 +30,8 @@ echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
 
 
 
-//MEMORY STAT COUNTS
-foreach($this->config->item('e___13478') as $x__type => $m) {
+//CACHE MENCH COINS COUNT:
+foreach($this->config->item('e___12467') as $x__type => $m) {
     echo '$config[\'s___'.$x__type.'\'] = '.x_stats_count($x__type).'; //'.$m['m_name'].'<br />';
 }
 
@@ -49,7 +49,7 @@ foreach($config_es as $en){
 
 
     //Find common base, if allowed:
-    $common_prefix = ( in_array($en['x__down'], $this->config->item('n___12588')) ? null : i_calc_common_prefix($children, 'e__title') );
+    $common_prefix = i_calc_common_prefix($children, 'e__title');
 
     //Generate raw IDs:
     $child_ids = array();

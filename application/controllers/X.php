@@ -136,7 +136,7 @@ class X extends CI_Controller
             ));
         }
 
-        //Will Contain every possible Player Link Connector:
+        //Will Contain every possible Miner Link Connector:
         $e___4592 = $this->config->item('e___4592');
 
         //See what this is:
@@ -154,7 +154,7 @@ class X extends CI_Controller
             //See if this is duplicate to either link:
             $e_x = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Player URL Links
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Miner URL Links
             ));
 
             //Are they both different?
@@ -180,7 +180,7 @@ class X extends CI_Controller
 
     function x_set_text(){
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned();
         $e___12112 = $this->config->item('e___12112');
 
@@ -260,7 +260,7 @@ class X extends CI_Controller
                 'e__title' => $e__title_validate['e__title_clean'],
             ), true, $session_e['e__id']);
 
-            //Reset user session data if this data belongs to the logged-in user:
+            //Reset miner session data if this data belongs to the logged-in miner:
             if ($es[0]['e__id'] == $session_e['e__id']) {
                 //Re-activate Session with new data:
                 $es[0]['e__title'] = $e__title_validate['e__title_clean'];
@@ -426,12 +426,12 @@ class X extends CI_Controller
 
     function x_start($i__id){
 
-        //Adds Idea to the Players Discovery
+        //Adds Idea to the Miners Discovery
 
         $session_e = superpower_assigned();
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
-        //Check to see if added to Discovery for logged-in users:
+        //Check to see if added to Discovery for logged-in miners:
         if(!$session_e){
             return redirect_message('/e/signin/'.$i__id);
         }
@@ -477,14 +477,14 @@ class X extends CI_Controller
                 $x_completes = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-                    'x__member' => $session_e['e__id'],
+                    'x__miner' => $session_e['e__id'],
                     'x__left' => $is[0]['i__id'],
                 ));
 
                 if(!count($x_completes)){
                     $this->X_model->mark_complete($is[0], array(
                         'x__type' => 4559, //DISCOVER MESSAGES
-                        'x__member' => $session_e['e__id'],
+                        'x__miner' => $session_e['e__id'],
                         'x__left' => $is[0]['i__id'],
                     ));
                 }
@@ -542,12 +542,12 @@ class X extends CI_Controller
 
         /*
          *
-         * Enables a Player to DISCOVER a IDEA
+         * Enables a Miner to DISCOVER a IDEA
          * on the public web
          *
          * */
 
-        if($i__id==config_var(13405)){
+        if($i__id==config_var(13427)){
             return redirect_message('/');
         }
 
@@ -597,7 +597,7 @@ class X extends CI_Controller
 
         //TODO: MERGE WITH FUNCTION i_note_file()
 
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned();
         if (!$session_e) {
 
@@ -674,7 +674,7 @@ class X extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $is[0]['i__id'],
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Interaction Removed
@@ -686,7 +686,7 @@ class X extends CI_Controller
         $this->X_model->mark_complete($is[0], array(
             'x__type' => 12117,
             'x__left' => $is[0]['i__id'],
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__message' => $new_message,
             'x__up' => $cdn_status['cdn_e']['e__id'],
         ));
@@ -739,7 +739,7 @@ class X extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $is[0]['i__id'],
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Interaction Removed
@@ -750,7 +750,7 @@ class X extends CI_Controller
         $this->X_model->mark_complete($is[0], array(
             'x__type' => 6144,
             'x__left' => $is[0]['i__id'],
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
             'x__message' => $_POST['x_reply'],
         ));
 
@@ -799,7 +799,7 @@ class X extends CI_Controller
         $progress_links = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
-            'x__member' => $session_e['e__id'],
+            'x__miner' => $session_e['e__id'],
         ), array(), 0);
 
         if(count($progress_links) > 0){
@@ -811,7 +811,7 @@ class X extends CI_Controller
             $clear_all_link = $this->X_model->create(array(
                 'x__message' => $message,
                 'x__type' => 6415,
-                'x__member' => $session_e['e__id'],
+                'x__miner' => $session_e['e__id'],
             ));
 
             //Delete all progressions:
@@ -838,7 +838,7 @@ class X extends CI_Controller
     function i_save(){
 
         //See if we need to add or remove a highlight:
-        //Authenticate Player:
+        //Authenticate Miner:
         $session_e = superpower_assigned();
         if (!$session_e) {
 
@@ -885,7 +885,7 @@ class X extends CI_Controller
         if(!$removed){
             //Then we must add:
             $this->X_model->create(array(
-                'x__member' => $session_e['e__id'],
+                'x__miner' => $session_e['e__id'],
                 'x__up' => $session_e['e__id'],
                 'x__message' => '@'.$session_e['e__id'],
                 'x__right' => $_POST['i__id'],
@@ -913,7 +913,7 @@ class X extends CI_Controller
 
         /*
          *
-         * When users indicate they want to stop
+         * When miners indicate they want to stop
          * a IDEA this function saves the changes
          * necessary and delete the idea from their
          * Discoveries.
@@ -967,7 +967,7 @@ class X extends CI_Controller
         /*
          *
          * Saves the order of discover ideas based on
-         * user preferences.
+         * miner preferences.
          *
          * */
 

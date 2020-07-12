@@ -13,7 +13,7 @@ $is_active = in_array($e['e__status'], $this->config->item('n___7358'));
 $superpower_10939 = superpower_active(10939, true);
 $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 $superpower_any = ( $session_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-$member_is_e = member_is_e($e['e__id']);
+$miner_is_e = miner_is_e($e['e__id']);
 
 ?>
 
@@ -35,7 +35,7 @@ $member_is_e = member_is_e($e['e__id']);
 
     <?php
     //SOURCE NAME
-    echo '<div class="itemsource">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($member_is_e && $is_active), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
+    echo '<div class="itemsource">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($miner_is_e && $is_active), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
 
     ?>
 
@@ -51,7 +51,7 @@ $member_is_e = member_is_e($e['e__id']);
                 <div class="col-md-6">
                     <div class="inline-box">
 
-                        <!-- Player Status -->
+                        <!-- Miner Status -->
                         <span class="mini-header"><?= $e___6206[6177]['m_icon'].' '.$e___6206[6177]['m_name'] ?></span>
                         <select class="form-control border" id="e__status">
                             <?php
@@ -72,7 +72,7 @@ $member_is_e = member_is_e($e['e__id']);
 
 
 
-                        <!-- Player Name -->
+                        <!-- Miner Name -->
                         <span class="mini-header" style="margin-top:20px;"><?= $e___6206[6197]['m_icon'].' '.$e___6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
                         <span class="white-wrapper">
                                 <textarea class="form-control text-edit border montserrat doupper" id="e__title"
@@ -83,7 +83,7 @@ $member_is_e = member_is_e($e['e__id']);
 
 
 
-                        <!-- Player Icon -->
+                        <!-- Miner Icon -->
                         <span class="mini-header"><?= $e___6206[6198]['m_icon'].' '.$e___6206[6198]['m_name'] ?>
 
                                 <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
@@ -367,14 +367,14 @@ $member_is_e = member_is_e($e['e__id']);
 
                 } elseif ($acc_e__id == 3288 /* Email */) {
 
-                    $user_emails = $this->X_model->fetch(array(
+                    $miner_emails = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__down' => $session_e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__up' => 3288, //Mench Email
                     ));
 
-                    $this_tab .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($user_emails) > 0 ? $user_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
+                    $this_tab .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($miner_emails) > 0 ? $miner_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
                 <a href="javascript:void(0)" onclick="e_update_email()" class="btn btn-e">Save</a>
                 <span class="saving-account save_email"></span>';
 
@@ -415,7 +415,7 @@ $member_is_e = member_is_e($e['e__id']);
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach($e__profiles as $e_profile) {
-                $this_tab .= view_e($e_profile,true, null, true, ($member_is_e || ($session_e && ($session_e['e__id']==$e_profile['x__member']))));
+                $this_tab .= view_e($e_profile,true, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_profile['x__miner']))));
             }
 
             //Input to add new parents:
@@ -502,7 +502,7 @@ $member_is_e = member_is_e($e['e__id']);
 
                     } elseif(in_array($action_e__id, array(5981, 12928, 12930, 5982, 13441))){
 
-                        //Player search box:
+                        //Miner search box:
 
                         //String command:
                         $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
@@ -522,7 +522,7 @@ $member_is_e = member_is_e($e['e__id']);
 
                     } elseif($action_e__id == 5003){
 
-                        //Player Status update:
+                        //Miner Status update:
 
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
@@ -653,7 +653,7 @@ $member_is_e = member_is_e($e['e__id']);
             $common_prefix = i_calc_common_prefix($e__portfolios, 'e__title');
 
             foreach($e__portfolios as $e_portfolio) {
-                $this_tab .= view_e($e_portfolio,false, null, true, ($member_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__member']))), $common_prefix);
+                $this_tab .= view_e($e_portfolio,false, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__miner']))), $common_prefix);
             }
             if ($counter > count($e__portfolios)) {
                 $this_tab .= view_e_load_more(1, config_var(11064), $counter);
@@ -755,13 +755,13 @@ $member_is_e = member_is_e($e['e__id']);
         } elseif($x__type == 12969 /* MY DISCOVERIES */){
 
             $i_x_filters = array(
-                'x__member' => $e['e__id'],
+                'x__miner' => $e['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             );
-            $member_x = $this->X_model->fetch($i_x_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
-            $counter = $member_x[0]['totals'];
+            $miner_x = $this->X_model->fetch($i_x_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
+            $counter = $miner_x[0]['totals'];
 
             if($counter > 0){
                 $i_x_query = $this->X_model->fetch($i_x_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));

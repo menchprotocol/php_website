@@ -277,7 +277,7 @@ function i_sort_save(i__id) {
     if (sort_rank > 0 && i__id) {
         //Update backend:
         $.post("/i/i_sort_save", {i__id: i__id, new_x__sorts: new_x__sorts}, function (data) {
-            //Update UI to confirm with user:
+            //Update UI to confirm with miner:
             if (!data.status) {
                 //There was some sort of an error returned!
                 alert(data.message);

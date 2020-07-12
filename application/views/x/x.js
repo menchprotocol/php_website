@@ -17,8 +17,8 @@ $(document).ready(function () {
 
 
 function check_i_e__status(){
-    //Checks to see if the Idea/Player status filter should be visible
-    //Would only make visible if Link type is Created Idea/Player
+    //Checks to see if the Idea/Miner status filter should be visible
+    //Would only make visible if Link type is Created Idea/Miner
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');
