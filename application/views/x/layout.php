@@ -125,7 +125,7 @@ if($recipient_e['e__id']){
     }
 }
 
-$main_title = '<h1 class="block-one"><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage']>0 , $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
+$main_title = '<h1 class="block-one"><span class="icon-block top-icon">'.view_x_icon_legend( $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
 
 //IDEA TITLE
 echo $main_title;

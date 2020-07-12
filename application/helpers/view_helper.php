@@ -609,12 +609,12 @@ function view_coins_count_e($i__id = 0, $e__id = 0, $number_only = false){
     }
 }
 
-function view_x_icon_legend($can_click, $completion_percentage){
+function view_x_icon_legend($completion_percentage){
 
     $CI =& get_instance();
     $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
     $recipient_e = superpower_assigned();
-    if(!$recipient_e || !$can_click){
+    if(!$recipient_e){
         //DISCOVER GUEST
         $x_legend = 13511;
     } elseif($completion_percentage==0){
@@ -672,7 +672,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
         $ui .= '<div class="progress-bg-list" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
-    $ui .= '<span class="icon-block">'.view_x_icon_legend($can_click, $completion_rate['completion_percentage']).'</span>';
+    $ui .= '<span class="icon-block">'.view_x_icon_legend($completion_rate['completion_percentage']).'</span>';
 
     $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
