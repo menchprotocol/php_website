@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 20:23:52 PST
+//Generated 2020-07-11 20:29:21 PST
 $config['s___12274'] = 5009; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 121949; //DISCOVERIES
@@ -5939,7 +5939,7 @@ $config['e___6287'] = array(
     13369 => array(
         'm_icon' => '<i class="fas fa-book idea"></i>',
         'm_name' => 'IDEA COVER UI',
-        'm_desc' => 'Quickly make a new idea using Font Awesome icons',
+        'm_desc' => 'Quickly screenshot an idea cover using Font Awesome icons',
         'm_parents' => array(6287,4527,6768),
     ),
     4356 => array(
