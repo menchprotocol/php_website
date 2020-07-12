@@ -63,7 +63,7 @@ $miner_is_e = miner_is_e($e['e__id']);
                         <div class="notify_e_delete hidden">
 
                             <input type="hidden" id="e_x_count" value="0" />
-                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and REMOVE ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> transactions</div>
+                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> transactions</div>
 
                             <span class="mini-header"><span class="tr_i_x_title"></span> Merge Source Into:</span>
                             <input style="padding-left:3px;" type="text" class="form-control algolia_search border e_text_search" id="e_merge" value="" placeholder="Search source to merge..." />
@@ -640,7 +640,7 @@ $miner_is_e = miner_is_e($e['e__id']);
                         foreach($child_e_filters as $c_c) {
                             $st = $e___6177[$c_c['e__status']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
-                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['e__status'] . '" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
+                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['e__status'] . '" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
                         }
 
                         $this_tab .= '</div>';

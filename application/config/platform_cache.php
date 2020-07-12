@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 13:46:24 PST
-$config['s___12274'] = 5011; //SOURCES
+//Generated 2020-07-12 13:59:21 PST
+$config['s___12274'] = 5012; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 122054; //DISCOVERIES
 
@@ -686,7 +686,7 @@ $config['e___13207'] = array(
     ),
 );
 
-//RECURRING DONATIONS:
+//MONTHLY DONATIONS:
 $config['n___13037'] = array(13038,13039,13040,13041);
 $config['e___13037'] = array(
     13038 => array(
@@ -4258,7 +4258,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(6225,10956,12279,11081,7704,5967,12326,12446,6255,12994,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,12229,13289,10876,13438,6150,3000,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,2738,12467,6404,12079,13488,6201,4341,4527,11054,12687,11035,6206,12112,10869,6212,7277,12500,13479,12969,10573,12741,6287,12577,4755,13439,13365,13037,13414,13510,12761,13023,4269,6204,13413,4251,13424,12571,13004,12574,13425,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,6194,12274,6177,7358,12575,7357,12401,11089,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480);
+$config['n___4527'] = array(6225,10956,12279,11081,7704,5967,12326,12446,6255,12994,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,12229,13289,10876,13438,6150,3000,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,2738,12467,6404,12079,13488,6201,4341,4527,11054,12687,11035,6206,12112,10869,6212,7277,12500,13479,13037,12969,10573,12741,6287,12577,4755,13439,13365,13414,13510,12761,13023,4269,6204,13413,4251,13424,12571,13004,12574,13425,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,6194,12274,6177,7358,12575,7357,12401,11089,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480);
 $config['e___4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4770,6 +4770,12 @@ $config['e___4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,13451,13357),
     ),
+    13037 => array(
+        'm_icon' => '<i class="fas fa-usd-circle"></i>',
+        'm_name' => 'MONTHLY DONATIONS',
+        'm_desc' => '',
+        'm_parents' => array(13518,4527,6204,6225),
+    ),
     12969 => array(
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
         'm_name' => 'MY DISCOVERIES',
@@ -4817,12 +4823,6 @@ $config['e___4527'] = array(
         'm_name' => 'RANK BY IDEAS',
         'm_desc' => '',
         'm_parents' => array(13446,4527,4758),
-    ),
-    13037 => array(
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_name' => 'RECURRING DONATIONS',
-        'm_desc' => '',
-        'm_parents' => array(13518,4527,6204,6225),
     ),
     13414 => array(
         'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
@@ -5451,7 +5451,7 @@ $config['e___6201'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['n___6204'] = array(13491,4737,7585,10602,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,13037,3290,6177,12968,6186,4593);
+$config['n___6204'] = array(13491,4737,7585,10602,13037,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,12968,6186,4593);
 $config['e___6204'] = array(
     13491 => array(
         'm_icon' => '<i class="fas fa-text-size"></i>',
@@ -5476,6 +5476,12 @@ $config['e___6204'] = array(
         'm_name' => 'IDEA TYPE GROUPS',
         'm_desc' => '',
         'm_parents' => array(10893,6204),
+    ),
+    13037 => array(
+        'm_icon' => '<i class="fas fa-usd-circle"></i>',
+        'm_name' => 'MONTHLY DONATIONS',
+        'm_desc' => '',
+        'm_parents' => array(13518,4527,6204,6225),
     ),
     13158 => array(
         'm_icon' => '<i class="fas fa-star"></i>',
@@ -5614,12 +5620,6 @@ $config['e___6204'] = array(
         'm_name' => 'RATE VUE.JS',
         'm_desc' => '',
         'm_parents' => array(6204,13151),
-    ),
-    13037 => array(
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_name' => 'RECURRING DONATIONS',
-        'm_desc' => '',
-        'm_parents' => array(13518,4527,6204,6225),
     ),
     3290 => array(
         'm_icon' => '<i class="far fa-transgender source" aria-hidden="true"></i>',
@@ -6436,7 +6436,7 @@ $config['e___4986'] = array(
 );
 
 //ACCOUNT SETTINGS:
-$config['n___6225'] = array(12289,10869,10957,3288,3286,13037);
+$config['n___6225'] = array(12289,10869,10957,3288,3286,13037,13519);
 $config['e___6225'] = array(
     12289 => array(
         'm_icon' => '<i class="fas fa-paw" aria-hidden="true"></i>',
@@ -6470,9 +6470,15 @@ $config['e___6225'] = array(
     ),
     13037 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_name' => 'RECURRING DONATIONS',
+        'm_name' => 'MONTHLY DONATIONS',
         'm_desc' => 'Donations fund weekly Miner payouts while also maintaining & growing the Mench infrastructure.',
         'm_parents' => array(13518,4527,6204,6225),
+    ),
+    13519 => array(
+        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
+        'm_name' => 'WEEKLY PAYOUTS',
+        'm_desc' => 'Miners earn weekly payouts based on the discoveries generated from their ideas. Email shervin@mench.com with subject line "Weekly Payouts Setup" to get started.',
+        'm_parents' => array(6225),
     ),
 );
 
