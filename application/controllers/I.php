@@ -43,7 +43,7 @@ class I extends CI_Controller {
 
 
         //Create Idea:
-        $i = $this->I_model->link_or_create($i__title_validation['i_clean_title'], $session_e['e__id']);
+        $i = $this->I_model->x_or_create($i__title_validation['i_clean_title'], $session_e['e__id']);
 
 
         //Move Existing Bookmarks by one:
@@ -283,7 +283,7 @@ class I extends CI_Controller {
         } elseif (!isset($_POST['x__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Link ID',
+                'message' => 'Missing Transaction ID',
             ));
         } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $var_index) || !count($this->config->item('n___'.$_POST['element_id']))) {
             return view_json(array(
@@ -299,7 +299,7 @@ class I extends CI_Controller {
 
         if($_POST['x__id'] > 0){
 
-            //Validate the link update Type ID:
+            //Validate the transaction update Type ID:
             $e___4527 = $this->config->item('e___4527');
             if(!is_array($e___4527[$_POST['element_id']]['m_parents']) || !count($e___4527[$_POST['element_id']]['m_parents'])){
                 return view_json(array(
@@ -308,19 +308,19 @@ class I extends CI_Controller {
                 ));
             }
 
-            //Find the single discover type in parent links:
-            $link_update_types = array_intersect($this->config->item('n___4593'), $e___4527[$_POST['element_id']]['m_parents']);
-            if(count($link_update_types)!=1){
+            //Find the single discover type in parent transactions:
+            $x_update_types = array_intersect($this->config->item('n___4593'), $e___4527[$_POST['element_id']]['m_parents']);
+            if(count($x_update_types)!=1){
                 return view_json(array(
                     'status' => 0,
-                    'message' => '@'.$_POST['element_id'].' has '.count($link_update_types).' parents that belog to @4593 [Should be exactly 1]',
+                    'message' => '@'.$_POST['element_id'].' has '.count($x_update_types).' parents that belog to @4593 [Should be exactly 1]',
                 ));
             }
 
-            //All good, Update Link:
+            //All good, Update Transaction:
             $this->X_model->update($_POST['x__id'], array(
                 $var_index[$_POST['element_id']] => $_POST['new_e__id'],
-            ), $session_e['e__id'], end($link_update_types));
+            ), $session_e['e__id'], end($x_update_types));
 
         } else {
 
@@ -328,7 +328,7 @@ class I extends CI_Controller {
             //See if Idea is being deleted:
             if($_POST['element_id']==4737){
 
-                //Delete all idea links?
+                //Delete all idea transactions?
                 if(!in_array($_POST['new_e__id'], $this->config->item('n___7356'))){
 
                     //Determine what to do after deleted:
@@ -358,8 +358,8 @@ class I extends CI_Controller {
 
                     }
 
-                    //Delete all links:
-                    $this->I_model->unlink($_POST['i__id'] , $session_e['e__id']);
+                    //Delete all transactions:
+                    $this->I_model->remove($_POST['i__id'] , $session_e['e__id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
                 } elseif(in_array($_POST['new_e__id'], $this->config->item('n___12138')) && !superpower_assigned(10984) && !count($this->X_model->fetch(array(
@@ -394,7 +394,7 @@ class I extends CI_Controller {
 
     }
 
-    function i_unlink(){
+    function i_remove(){
 
         //Authenticate Miner:
         $session_e = superpower_assigned();
@@ -411,14 +411,14 @@ class I extends CI_Controller {
         } elseif (!isset($_POST['x__id']) || intval($_POST['x__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Link ID',
+                'message' => 'Missing Transaction ID',
             ));
         }
 
-        //Delete this link:
+        //Delete this transaction:
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173, //Transaction Removed
-        ), $session_e['e__id'], 10686 /* Idea Link Unpublished */);
+        ), $session_e['e__id'], 10686 /* Idea Transaction Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -433,9 +433,9 @@ class I extends CI_Controller {
 
         /*
          *
-         * Either creates a IDEA link between i_linked_id & i_link_child_id
-         * OR will create a new idea with outcome i__title and then link it
-         * to i_linked_id (In this case i_link_child_id=0)
+         * Either creates a IDEA transaction between i_x_id & i_x_child_id
+         * OR will create a new idea with outcome i__title and then transaction it
+         * to i_x_id (In this case i_x_child_id=0)
          *
          * */
 
@@ -446,7 +446,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['i_linked_id']) || intval($_POST['i_linked_id']) < 1) {
+        } elseif (!isset($_POST['i_x_id']) || intval($_POST['i_x_id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Idea ID',
@@ -456,7 +456,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Is Parent setting',
             ));
-        } elseif (!isset($_POST['i__title']) || !isset($_POST['i_link_child_id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['i_link_child_id']) < 1)) {
+        } elseif (!isset($_POST['i__title']) || !isset($_POST['i_x_child_id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['i_x_child_id']) < 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing either Idea Outcome OR Child Idea ID',
@@ -466,7 +466,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Idea outcome cannot be longer than '.config_var(4736).' characters',
             ));
-        } elseif($_POST['i_link_child_id'] >= 2147483647){
+        } elseif($_POST['i_x_child_id'] >= 2147483647){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Value must be less than 2147483647',
@@ -475,31 +475,31 @@ class I extends CI_Controller {
 
 
         $new_i_type = 6677; //Idea Read & Next
-        $linked_is = array();
+        $x_is = array();
 
-        if($_POST['i_link_child_id'] > 0){
+        if($_POST['i_x_child_id'] > 0){
 
-            //Fetch link idea to determine idea type:
-            $linked_is = $this->I_model->fetch(array(
-                'i__id' => intval($_POST['i_link_child_id']),
+            //Fetch transaction idea to determine idea type:
+            $x_is = $this->I_model->fetch(array(
+                'i__id' => intval($_POST['i_x_child_id']),
                 'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
-            if(count($linked_is)==0){
-                //validate linked Idea:
+            if(count($x_is)==0){
+                //validate Idea:
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Idea #'.$_POST['i_link_child_id'].' is not active',
+                    'message' => 'Idea #'.$_POST['i_x_child_id'].' is not active',
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($linked_is[0]['i__type'], $this->config->item('n___7712'))){
+            if(!intval($_POST['is_parent']) && in_array($x_is[0]['i__type'], $this->config->item('n___7712'))){
                 $new_i_type = 6914; //Require All
             }
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->I_model->link_or_create(trim($_POST['i__title']), $session_e['e__id'], $_POST['i_linked_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_link_child_id']));
+        return view_json($this->I_model->x_or_create(trim($_POST['i__title']), $session_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_x_child_id']));
 
     }
 
@@ -768,7 +768,7 @@ class I extends CI_Controller {
 
         }
 
-        //Update all link orders:
+        //Update all transaction orders:
         $sort_count = 0;
         foreach($_POST['new_x__sorts'] as $x__sort => $x__id) {
             if (intval($x__id) > 0) {
@@ -871,7 +871,7 @@ class I extends CI_Controller {
             //Are we deleting this message?
             if(in_array($_POST['message_x__status'], $this->config->item('n___7360') /* ACTIVE */)){
 
-                //If making the link public, all referenced sources must also be public...
+                //If making the transaction public, all referenced sources must also be public...
                 if(in_array($_POST['message_x__status'], $this->config->item('n___7359') /* PUBLIC */)){
 
                     //We're publishing, make sure potential source references are also published:

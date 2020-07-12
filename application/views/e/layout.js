@@ -63,13 +63,13 @@ $(document).ready(function () {
         update_demo_icon();
     });
 
-    //Lookout for idea link related changes:
+    //Lookout for idea transaction related changes:
     $('#x__status').change(function () {
         if (parseInt($('#x__status').find(":selected").val()) == 6173 /* DELETED */ ) {
             //About to delete? Notify them:
-            $('.notify_unlink_e').removeClass('hidden');
+            $('.notify_unx_e').removeClass('hidden');
         } else {
-            $('.notify_unlink_e').addClass('hidden');
+            $('.notify_unx_e').addClass('hidden');
         }
     });
 
@@ -81,12 +81,12 @@ $(document).ready(function () {
             $('.notify_e_delete').removeClass('hidden');
             $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-            //About to delete... Fetch total links:
+            //About to delete... Fetch total transactions:
             $.post("/e/e_count_deletion", { e__id: parseInt($('#modifybox').attr('e-id')) }, function (data) {
 
                 if(data.status){
-                    $('.e_delete_stats').html('<b>'+data.e_link_count+'</b>');
-                    $('#e_link_count').val(data.e_link_count); //This would require a confirmation upon saving...
+                    $('.e_delete_stats').html('<b>'+data.e_x_count+'</b>');
+                    $('#e_x_count').val(data.e_x_count); //This would require a confirmation upon saving...
                 }
 
             });
@@ -95,7 +95,7 @@ $(document).ready(function () {
 
             $('.notify_e_delete').addClass('hidden');
             $('.e_delete_stats').html('');
-            $('#e_link_count').val('0');
+            $('#e_x_count').val('0');
 
         }
     });
@@ -264,11 +264,11 @@ function e_toggle_superpower(superpower_id){
 
 
 
-//Adds OR links sources to sources
+//Adds OR transactions sources to sources
 function e__add(e_existing_id, is_parent) {
 
-    //if e_existing_id>0 it means we're linking to an existing source, in which case e_new_string should be null
-    //If e_existing_id=0 it means we are creating a new source and then linking it, in which case e_new_string is required
+    //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
+    //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
 
     if (is_parent) {
         var input = $('#new-parent .add-input');
@@ -408,7 +408,7 @@ function e_modify_load(e__id, x__id) {
     $('#modifybox').attr('e-id', e__id);
 
     //Cannot be deleted OR Unpublished as this would not load, so delete them:
-    $('.notify_e_delete, .notify_unlink_e').addClass('hidden');
+    $('.notify_e_delete, .notify_unx_e').addClass('hidden');
 
     //Set opacity:
     delete_all_saved();
@@ -435,15 +435,15 @@ function e_modify_load(e__id, x__id) {
     e__title_word_count();
     update_demo_icon();
 
-    //Only show unlink button if not level 1
+    //Only show remove button if not level 1
     if (parseInt(x__id) > 0) {
 
         $('#x__status').val($(".e__id_" + e__id + ":first").attr('x-status'));
-        $('#e_link_count').val('0');
+        $('#e_x_count').val('0');
 
 
-        //Make the UI link and the ideas in the edit box:
-        $('.unlink-e, .en-has-tr').removeClass('hidden');
+        //Make the UI transaction and the ideas in the edit box:
+        $('.remove-e, .en-has-tr').removeClass('hidden');
 
         //Assign value:
         $('#x__message').val($(".x__message_val_" + x__id + ":first").text());
@@ -454,19 +454,19 @@ function e_modify_load(e__id, x__id) {
     } else {
 
         //Hide the section and clear it:
-        $('.unlink-e, .en-has-tr').addClass('hidden');
+        $('.remove-e, .en-has-tr').addClass('hidden');
 
     }
 }
 
-function e_link_form_lock(){
+function e_x_form_lock(){
     $('#x__message').prop("disabled", true).css('background-color','#999999');
 
     $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Uploading');
 
 }
 
-function e_link_form_unlock(result){
+function e_x_form_unlock(result){
 
     //What was the result?
     if (!result.status) {
@@ -496,7 +496,7 @@ function e_upload_file(droppedFiles, uploadType) {
     var current_value = $('#x__message').val();
     if(current_value.length > 0){
         //There is something in the input field, notify the miner:
-        var r = confirm("Current link content [" + current_value + "] will be deleted. Continue?");
+        var r = confirm("Current transaction content [" + current_value + "] will be deleted. Continue?");
         if (r == false) {
             return false;
         }
@@ -506,7 +506,7 @@ function e_upload_file(droppedFiles, uploadType) {
     if (isAdvancedUpload) {
 
         //Lock message:
-        e_link_form_lock();
+        e_x_form_lock();
 
         var ajaxData = new FormData($('.drag-box').get(0));
         if (droppedFiles) {
@@ -544,14 +544,14 @@ function e_upload_file(droppedFiles, uploadType) {
                 }
 
                 //Unlock form:
-                e_link_form_unlock(data);
+                e_x_form_unlock(data);
 
             },
             error: function (data) {
                 var result = [];
                 result.status = 0;
                 result.message = data.responseText;
-                e_link_form_unlock(result);
+                e_x_form_unlock(result);
             }
         });
     } else {
@@ -644,11 +644,11 @@ function e_update() {
         return false;
     }
 
-    //Are we about to delete an source with a lot of links?
-    var link_count= parseInt($('#e_link_count').val());
-    if(link_count >= 3){
+    //Are we about to delete an source with a lot of transactions?
+    var x_count= parseInt($('#e_x_count').val());
+    if(x_count >= 3){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("Delete source & "+( $('#e_merge').val().length > 0 ? 'merge' : 'unlink' )+" "+link_count+" links?! Type \"delete\" to confirm.", "");
+        var confirm_removal = prompt("Delete source & "+( $('#e_merge').val().length > 0 ? 'merge' : 'remove' )+" "+x_count+" transactions?! Type \"delete\" to confirm.", "");
 
         if (!(confirm_removal == 'delete')) {
             //Abandon process:
@@ -665,7 +665,7 @@ function e_update() {
         e__icon: $('#e__icon').val(),
         e__status: $('#e__status').val(), //The new status (might not have changed too)
         e_merge: $('#e_merge').val(),
-        //Link data:
+        //Transaction data:
         x__id: parseInt($('#modifybox').attr('e-x-id')),
         x__message: $('#x__message').val(),
         x__status: $('#x__status').val(),

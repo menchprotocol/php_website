@@ -24,7 +24,7 @@ echo '</tr>';
 //Add some empty space:
 echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="4">&nbsp;</td></tr>';
 
-//Show each link type:
+//Show each transaction type:
 foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___12141')) . ')' => null, //Full
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

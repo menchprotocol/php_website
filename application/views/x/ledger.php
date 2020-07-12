@@ -183,7 +183,7 @@ if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
 
 
 
-//Fetch unique link types recorded so far:
+//Fetch unique transaction types recorded so far:
 $ini_filter = array();
 foreach($filters as $key => $value){
     if(!includes_any($key, array('i__status', 'i__type', 'e__status'))){
@@ -212,8 +212,8 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 ?>
 
 <script>
-    var link_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
-    var link_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
+    var x_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
+    var x_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
     var x__message_search = '<?= ( isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0 ? $_GET['x__message_search'] : '' ) ?>';
     var x__message_replace = '<?= ( isset($_GET['x__message_replace']) && strlen($_GET['x__message_replace']) > 0 ? $_GET['x__message_replace'] : '' ) ?>';
 </script>
@@ -345,7 +345,7 @@ echo '</div></td>';
 
     if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
 
-        //We have multiple predefined link types, so we must use a text input:
+        //We have multiple predefined transaction types, so we must use a text input:
         echo '<input type="text" name="x__type" value="' . $_GET['x__type'] . '" class="form-control border">';
 
     } else {
@@ -355,16 +355,16 @@ echo '</div></td>';
         if(isset($_GET['x__miner'])) {
 
             //Fetch details for this miner:
-            $all_link_count = 0;
+            $all_x_count = 0;
             $select_ui = '';
             foreach($this->X_model->fetch($ini_filter, array('x__type'), 0, 0, array('e__title' => 'ASC'), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $x) {
                 //Echo drop down:
                 $select_ui .= '<option value="' . $x['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $x['x__type']) ? 'selected="selected"' : '') . '>' . $x['e__title'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
-                $all_link_count += $x['total_count'];
+                $all_x_count += $x['total_count'];
             }
 
             //Now that we know the total show:
-            echo '<option value="0">All ('  . number_format($all_link_count, 0) . ')</option>';
+            echo '<option value="0">All ('  . number_format($all_x_count, 0) . ')</option>';
             echo $select_ui;
 
         } else {
@@ -416,5 +416,5 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
 
 
     //AJAX Would load content here:
-    echo '<div id="link_page_1"></div>';
+    echo '<div id="x_page_1"></div>';
 echo '</div>';

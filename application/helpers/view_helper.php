@@ -30,7 +30,7 @@ function view_x__message($x__message, $x__type, $full_message = null)
 
     /*
      *
-     * Displays Source Links @4592
+     * Displays Source Transactions @4592
      *
      * $full_message Would be the entire message
      * in an idea message that would be passed down
@@ -41,7 +41,7 @@ function view_x__message($x__message, $x__type, $full_message = null)
 
     if ($x__type == 4256 /* Generic URL */) {
 
-        return '<div class="block"><a href="' . $x__message . '" target="_blank"><span class="icon-block-xs inline-block"><i class="far fa-external-link"></i></span><span class="url_truncate">' . view_url_clean($x__message) . '</span></a></div>';
+        return '<div class="block"><a href="' . $x__message . '" target="_blank"><span class="icon-block-xs inline-block"><i class="far fa-external-x"></i></span><span class="url_truncate">' . view_url_clean($x__message) . '</span></a></div>';
 
     } elseif ($x__type == 4257 /* Embed Widget URL? */) {
 
@@ -93,7 +93,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
      *
      * Alert: Changes to this function requires us to re-calculate all current
      *       values for x__type as this could change the equation for those
-     *       link types. Change with care...
+     *       transaction types. Change with care...
      *
      * */
 
@@ -255,7 +255,7 @@ function view_i_notes($x, $note_is_e = false)
         //Cancel Edit:
         $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-i white-third" href="javascript:i_note_edit_cancel(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
-        //Show drop down for message link status:
+        //Show drop down for message transaction status:
         $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 5px 0 0; display: block;">';
         $ui .= '<select id="message_status_' . $x['x__id'] . '"  class="form-control border" style="margin-bottom:0;">';
         foreach($CI->config->item('e___12012') as $e__id => $m){
@@ -343,8 +343,8 @@ function view_x($x, $is_parent_tr = false)
 {
 
     $CI =& get_instance();
-    $e___4593 = $CI->config->item('e___4593'); //Link Type
-    $e___4341 = $CI->config->item('e___4341'); //Link Table
+    $e___4593 = $CI->config->item('e___4593'); //Transaction Type
+    $e___4341 = $CI->config->item('e___4341'); //Transaction Table
     $e___12467 = $CI->config->item('e___12467');
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $session_e = superpower_assigned();
@@ -355,7 +355,7 @@ function view_x($x, $is_parent_tr = false)
         //We've probably have not yet updated php cache, set error:
         $e___4593[$x['x__type']] = array(
             'm_icon' => '<i class="fas fa-exclamation-circle"></i>',
-            'm_name' => 'Link Type Not Synced in PHP Cache',
+            'm_name' => 'Transaction Type Not Synced in PHP Cache',
             'm_desc' => '',
             'm_parents' => array(),
         );
@@ -748,7 +748,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$e___4486[$i_x['x__type']]['m_name'].'">'. $e___4486[$i_x['x__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Type: '.$e___4486[$i_x['x__type']]['m_name'].'">'. $e___4486[$i_x['x__type']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Status: '.$e___6186[$i_x['x__status']]['m_name'].'">'. $e___6186[$i_x['x__status']]['m_icon'] . '</span>';
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___7585[$i_x['i__type']]['m_name'].'">'. $e___7585[$i_x['i__type']]['m_icon'] . '</span>';
@@ -834,7 +834,7 @@ function view_i_marks($i_x){
 }
 
 
-function view_i($i, $i_linked_id = 0, $is_parent = false, $e_owns_i = false, $message_input = null, $extra_class = null, $control_enabled = true)
+function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message_input = null, $extra_class = null, $control_enabled = true)
 {
 
     $CI =& get_instance();
@@ -849,12 +849,12 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $e_owns_i = false, $me
 
     //DISCOVER
     $x__id = ( isset($i['x__id']) ? $i['x__id'] : 0 );
-    $is_i_link = ($x__id && in_array($i['x__type'], $CI->config->item('n___4486')));
+    $is_i_x = ($x__id && in_array($i['x__type'], $CI->config->item('n___4486')));
 
     //IDEA
     $i_stats = i_stats($i['i__metadata']);
     $is_public = in_array($i['i__status'], $CI->config->item('n___7355'));
-    $e_owns_i = ( !$is_i_link ? false : $e_owns_i ); //Disable Edits on Idea List Page
+    $e_owns_i = ( !$is_i_x ? false : $e_owns_i ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
 
@@ -877,20 +877,20 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $e_owns_i = false, $me
     $ui .= '<td class="MENCHcolumn1">';
         $ui .= '<div class="block">';
 
-            //IDAE Link:
-            $i_link = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
+            //IDAE Transaction:
+            $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
 
             //IDEA STATUS:
-            $ui .= '<span class="icon-block"><a href="'.$i_link.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a></span>';
+            $ui .= '<span class="icon-block"><a href="'.$i_x.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a></span>';
 
             //IDEA TITLE
-            if($is_i_link && superpower_active(13354, true)){
+            if($is_i_x && superpower_active(13354, true)){
 
                 $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_owns_i, (($i['x__sort']*100)+1));
 
             } else {
 
-                $ui .= '<a href="'.$i_link.'" class="title-block montserrat">';
+                $ui .= '<a href="'.$i_x.'" class="title-block montserrat">';
                 $ui .= $box_items_list;
                 $ui .= view_i_title($i); //IDEA TITLE
                 $ui .= '</a>';
@@ -909,7 +909,7 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $e_owns_i = false, $me
 
     //SOURCE
     $ui .= '<td class="MENCHcolumn3 source">';
-    if($is_i_link && $control_enabled && $e_owns_i){
+    if($is_i_x && $control_enabled && $e_owns_i){
 
         //RIGHT EDITING:
         $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
@@ -920,8 +920,8 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $e_owns_i = false, $me
             $ui .= '<span title="SORT"><i class="fas fa-bars black i-sort-handle"></i></span>';
         }
 
-        //Unlink:
-        $ui .= '<span title="UNLINK"><a href="javascript:void(0);" onclick="i_unlink('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
+        //Remove:
+        $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
@@ -971,13 +971,13 @@ function view_i($i, $i_linked_id = 0, $is_parent = false, $e_owns_i = false, $me
             $ui .= view_input_dropdown(4486, $i['x__type'], null, $e_owns_i, false, $i['i__id'], $i['x__id']);
 
             //LINK MARKS
-            $ui .= '<span class="link_marks settings_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
+            $ui .= '<span class="x_marks settings_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
             $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $e_owns_i, ($i['x__sort']*10)+2 );
             $ui .='</span>';
 
 
             //LINK CONDITIONAL RANGE
-            $ui .= '<span class="link_marks settings_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
+            $ui .= '<span class="x_marks settings_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
             //MIN
             $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $e_owns_i, ($i['x__sort']*10)+3);
             //MAX
@@ -1032,7 +1032,7 @@ function view_caret($e__id, $m, $object__id){
     $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m_parents']);
 
     $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_name'].'" data-toggle="tooltip" data-placement="top">';
-    $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
+    $ui .= '<a class="nav-x dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach($CI->config->item('e___'.$e__id) as $e__id2 => $m2){
         $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $object__id . '"><span class="icon-block">'.view_e__icon($m2['m_icon']).'</span> '.$m2['m_name'].'</a>';
@@ -1291,10 +1291,10 @@ function view_e_basic($e)
     $e__title = '<span '.( isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' class="underdot" title="'.$e['x__message'].'" data-toggle="tooltip" data-placement="top" ' : '' ).'>'.$e['e__title'].'</span>';
 
     if(superpower_active(10939, true)){
-        //Give Link:
+        //Give Transaction:
         $ui .= '<a class="title-block title-no-right montserrat" href="/@'.$e['e__id'].'">'.$e__title.'</a>';
     } else {
-        //No Link:
+        //Basic
         $ui .= '<span class="title-block title-no-right">'.$e__title.'</span>';
     }
 
@@ -1314,7 +1314,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
 
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
-    $is_link_e = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
+    $is_x_e = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
     $is_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
     $is_e_only = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___7551')));
     $inline_editing = $control_enabled && superpower_active(13402, true);
@@ -1336,10 +1336,10 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
     $is_public = in_array($e['e__status'], $CI->config->item('n___7357'));
-    $is_link_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
+    $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
     $is_hidden = filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755'));
 
-    if(!$session_e && (!$is_public || !$is_link_published)){
+    if(!$session_e && (!$is_public || !$is_x_published)){
         //Not logged in, so should only see published:
         return false;
     } elseif($is_hidden && !superpower_assigned(12701)){
@@ -1361,7 +1361,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     //DISCOVER STATUS
     if($x__id){
-        if(!$is_link_published){
+        if(!$is_x_published){
             $box_items_list .= '<span class="inline-block x__status_' . $x__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$e['x__status']]['m_name'].' @'.$e['x__status'].'">' . $e___6186[$e['x__status']]['m_icon'] . '</span>&nbsp;</span>';
         }
     }
@@ -1393,7 +1393,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $e_url = ( $is_x_progress ? '/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'] : '/@'.$e['e__id'] );
 
     //SOURCE ICON
-    $ui .= '<a href="'.$e_url.'" '.( $is_link_e ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
+    $ui .= '<a href="'.$e_url.'" '.( $is_x_e ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
 
     //SOURCE TOOLBAR?
@@ -1436,21 +1436,21 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $ui .= '<span class="show-on-hover">';
 
     if($control_enabled && $miner_is_e){
-        if($is_link_e){
+        if($is_x_e){
 
             //Sort
             if(!$is_parent && $superpower_10939){
                 $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
             }
 
-            //Manage source link:
+            //Manage source transaction:
             $ui .= '<span class="'.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
 
 
         } elseif($is_e_only){
 
             //Allow to remove:
-            $ui .= '<span><a href="javascript:void(0);" onclick="e_only_unlink(' . $x__id . ', '.$e['x__type'].')"><i class="fas fa-times black"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" onclick="e_only_remove(' . $x__id . ', '.$e['x__type'].')"><i class="fas fa-times black"></i></a></span>';
 
         }
     }
@@ -1493,7 +1493,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     //MESSAGE
     if ($x__id > 0) {
-        if($is_link_e){
+        if($is_x_e){
 
             $ui .= '<span class="message_content paddingup x__message hideIfEmpty x__message_' . $x__id . '">' . view_x__message($e['x__message'] , $e['x__type']) . '</span>';
 
@@ -1587,7 +1587,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_owns_
         //What type of URL?
         if($is_url_desc){
 
-            //Basic link:
+            //Basic transaction:
             $anchor_url = ( $e__id==$selected_e__id ? 'href="javascript:void();"' : 'href="'.$m['m_desc'].'"' );
 
         } else{

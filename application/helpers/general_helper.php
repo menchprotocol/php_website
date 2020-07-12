@@ -266,10 +266,10 @@ function x_detect_type($string)
 
     } else {
 
-        //Regular text link:
+        //Regular text transaction:
         return array(
             'status' => 1,
-            'x__type' => 4255, //Text Link
+            'x__type' => 4255, //Text Transaction
         );
 
     }
@@ -1169,7 +1169,7 @@ function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local 
 
 
     //Delete local file:
-    @unlink(($is_local ? $file_url : $file_path . $file_name));
+    @remove(($is_local ? $file_url : $file_path . $file_name));
 
     //Define new URL:
     $cdn_new_url = trim($result['ObjectURL']);
@@ -1182,7 +1182,7 @@ function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local 
         );
     }
 
-    //Create and link new source to CDN and uploader:
+    //Create and transaction new source to CDN and uploader:
     $url_e = $CI->E_model->url($cdn_new_url, $x__miner, 0, $page_title);
 
     if(isset($url_e['e_url']['e__id']) && $url_e['e_url']['e__id'] > 0){
@@ -1883,7 +1883,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__miner = 0)
      *
      * $object__type:           DISCOVER, SOURCE OR IDEA
      *
-     * $obj:                    The Miner, Idea or Link itself.
+     * $obj:                    The Miner, Idea or Transaction itself.
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,
@@ -1947,7 +1947,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__miner = 0)
         }
     }
 
-    //Now update DB without logging any links as this is considered a back-end update:
+    //Now update DB without logging any transactions as this is considered a back-end update:
     if ($object__type == 12273) {
 
         $affected_rows = $CI->I_model->update($object__id, array(

@@ -69,7 +69,7 @@ class E extends CI_Controller
         } else {
 
             //No mass action, just viewing...
-            //Update session count and log link:
+            //Update session count and log transaction:
             $message = null; //No mass-action message to be appended...
 
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
@@ -303,7 +303,7 @@ class E extends CI_Controller
 
     }
 
-    function e_only_unlink(){
+    function e_only_remove(){
 
         //Auth miner and check required variables:
         $session_e = superpower_assigned(10939);
@@ -325,7 +325,7 @@ class E extends CI_Controller
             ));
         }
 
-        //Archive Link:
+        //Archive Transaction:
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173,
         ), $session_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
@@ -381,7 +381,7 @@ class E extends CI_Controller
         //Set some variables:
         $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
 
-        //Are we linking to an existing source?
+        //Are we adding an existing source?
         if ($_POST['e_existing_id'] > 0) {
 
             //Validate this existing source:
@@ -396,7 +396,7 @@ class E extends CI_Controller
                 ));
             }
 
-            //Make sure not linked:
+            //Make sure not already there:
             if(count($this->X_model->fetch(array(
                 'x__right' => $is[0]['i__id'],
                 'x__up' => $_POST['e_existing_id'],
@@ -443,7 +443,7 @@ class E extends CI_Controller
             'x__message' => '@'.$focus_e['e__id'],
         ));
 
-        //Return newly added or linked source:
+        //Return source:
         return view_json(array(
             'status' => 1,
             'e_new_echo' => view_e(array_merge($focus_e, $new_note), 0, null, true, true),
@@ -471,7 +471,7 @@ class E extends CI_Controller
         } elseif (!isset($_POST['is_parent'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Source Link Direction',
+                'message' => 'Missing Source Transaction Direction',
             ));
         } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (intval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
             return view_json(array(
@@ -497,7 +497,7 @@ class E extends CI_Controller
         $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
         $is_url_input = false;
 
-        //Are we linking to an existing source?
+        //Are we adding an existing source?
         if (intval($_POST['e_existing_id']) > 0) {
 
             //Validate this existing source:
@@ -532,7 +532,7 @@ class E extends CI_Controller
                 //Is this a root domain? Add to domains if so:
                 if($url_e['url_is_root']){
 
-                    //Link to domains parent:
+                    //Domain
                     $focus_e = array('e__id' => 1326);
 
                     //Update domain to stay synced:
@@ -543,7 +543,7 @@ class E extends CI_Controller
                     //Let's first find/add the domain:
                     $url_domain = $this->E_model->domain($_POST['e_new_string'], $session_e['e__id']);
 
-                    //Link to this source:
+                    //Add this source:
                     $focus_e = $url_domain['e_domain'];
                 }
 
@@ -564,12 +564,12 @@ class E extends CI_Controller
         }
 
 
-        //We need to check to ensure this is not a duplicate link if linking to an existing source:
+        //We need to check to ensure this is not a duplicate transaction if adding an existing source:
         $ur2 = array();
 
         if (!$is_url_input) {
 
-            //Add links only if not previously added by the URL function:
+            //Add transactions only if not previously added by the URL function:
             if ($_POST['is_parent']) {
 
                 //Profile
@@ -618,7 +618,7 @@ class E extends CI_Controller
 
             }
 
-            // Link to new OR existing source:
+            //Create transaction:
             $ur2 = $this->X_model->create(array(
                 'x__miner' => $session_e['e__id'],
                 'x__type' => $x__type,
@@ -641,7 +641,7 @@ class E extends CI_Controller
             ));
         }
 
-        //Return newly added or linked source:
+        //Return source:
         return view_json(array(
             'status' => 1,
             'e_new_echo' => view_e(array_merge($es_latest[0], $ur2), $_POST['is_parent'], null, true, true),
@@ -659,8 +659,8 @@ class E extends CI_Controller
             ));
         }
 
-        //Simply counts the links for a given source:
-        $all_e_links = $this->X_model->fetch(array(
+        //Simply counts the transactions for a given source:
+        $all_e_x = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             '(x__down = ' . $_POST['e__id'] . ' OR x__up = ' . $_POST['e__id'] . ')' => null,
@@ -669,7 +669,7 @@ class E extends CI_Controller
         return view_json(array(
             'status' => 1,
             'message' => 'Success',
-            'e_link_count' => count($all_e_links),
+            'e_x_count' => count($all_e_x),
         ));
 
     }
@@ -718,7 +718,7 @@ class E extends CI_Controller
         $this->session->set_userdata($session_data);
 
 
-        //Log Link:
+        //Log Transaction:
         $this->X_model->create(array(
             'x__miner' => $session_e['e__id'],
             'x__type' => 5007, //TOGGLE SUPERPOWER
@@ -778,7 +778,7 @@ class E extends CI_Controller
         } elseif (!isset($_POST['x__id']) || !isset($_POST['x__message']) || !isset($_POST['x__status'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing source link data',
+                'message' => 'Missing source transaction data',
             ));
         } elseif(!$is_valid_icon['status']){
             //Check if valid icon:
@@ -790,7 +790,7 @@ class E extends CI_Controller
 
         $delete_redirect_url = null;
         $delete_from_ui = 0;
-        $js_x__type = 0; //Detect link type based on content
+        $js_x__type = 0; //Detect transaction type based on content
 
         //Prepare data to be updated:
         $e_update = array(
@@ -840,7 +840,7 @@ class E extends CI_Controller
 
                 //Yes, validate this source:
 
-                //Validate the input for updating linked Idea:
+                //Validate input:
                 $merger_e__id = 0;
                 if (substr($_POST['e_merge'], 0, 1) == '@') {
                     $parts = explode(' ', $_POST['e_merge']);
@@ -901,10 +901,10 @@ class E extends CI_Controller
             }
 
 
-            $_POST['x__id'] = 0; //Do not consider the link as the source is being Deleted
+            $_POST['x__id'] = 0; //Do not consider the transaction as the source is being Deleted
             $delete_from_ui = 1; //Removing source
             $merger_e__id = (count($merged_es) > 0 ? $merged_es[0]['e__id'] : 0);
-            $links_adjusted = $this->E_model->unlink($_POST['e__id'], $session_e['e__id'], $merger_e__id);
+            $x_adjusted = $this->E_model->remove($_POST['e__id'], $session_e['e__id'], $merger_e__id);
 
             //Show appropriate message based on action:
             if ($merger_e__id > 0) {
@@ -914,7 +914,7 @@ class E extends CI_Controller
                     $delete_redirect_url = '/@' . $merged_es[0]['e__id'];
                 }
 
-                $success_message = 'Source deleted & merged its ' . $links_adjusted . ' links here';
+                $success_message = 'Source deleted & merged its ' . $x_adjusted . ' transactions here';
 
             } else {
 
@@ -928,16 +928,16 @@ class E extends CI_Controller
                 }
 
                 //Display proper message:
-                $success_message = 'Source deleted & its ' . $links_adjusted . ' links have been Unpublished.';
+                $success_message = 'Source deleted & its ' . $x_adjusted . ' transactions have been Unpublished.';
 
             }
 
         }
 
 
-        if (intval($_POST['x__id']) > 0) { //DO we have a link to update?
+        if (intval($_POST['x__id']) > 0) { //DO we have a transaction to update?
 
-            //Yes, first validate source link:
+            //Yes, first validate source transaction:
             $e_x = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -954,10 +954,10 @@ class E extends CI_Controller
             if($e_x[0]['x__status']!=$_POST['x__status']){
 
                 if (in_array($_POST['x__status'], $this->config->item('n___7360') /* ACTIVE */)) {
-                    $x__status = 10656; //Miner Link updated Status
+                    $x__status = 10656; //Miner Transaction updated Status
                 } else {
                     $delete_from_ui = 1;
-                    $x__status = 10673; //Miner Link Unpublished
+                    $x__status = 10673; //Miner Transaction Unpublished
                 }
 
                 $this->X_model->update($_POST['x__id'], array(
@@ -966,16 +966,16 @@ class E extends CI_Controller
             }
 
 
-            //Link content change?
+            //Transaction content change?
             if ($e_x[0]['x__message'] == $_POST['x__message']) {
 
-                //Link content has not changed:
+                //Transaction content has not changed:
                 $js_x__type = $e_x[0]['x__type'];
                 $x__message = $e_x[0]['x__message'];
 
             } else {
 
-                //Link content has changed:
+                //Transaction content has changed:
                 $detected_x_type = x_detect_type($_POST['x__message']);
 
                 if (!$detected_x_type['status']) {
@@ -998,7 +998,7 @@ class E extends CI_Controller
                             //Domains can only be added to the domain source:
                             return view_json(array(
                                 'status' => 0,
-                                'message' => 'Domain URLs must link to <b>@1326 Domains</b> as source profile',
+                                'message' => 'Domain URLs requires <b>@1326 Domains</b> in profile',
                             ));
 
                         }
@@ -1009,7 +1009,7 @@ class E extends CI_Controller
 
                             return view_json(array(
                                 'status' => 0,
-                                'message' => 'Only domain URLs can be linked to Domain source.',
+                                'message' => 'Only domain URLs can be connected to Domain source.',
                             ));
 
                         } elseif ($detected_x_type['e_domain']) {
@@ -1017,7 +1017,7 @@ class E extends CI_Controller
                             if ($detected_x_type['e_domain']['e__id'] != $e_x[0]['x__up']) {
                                 return view_json(array(
                                     'status' => 0,
-                                    'message' => 'Must link to <b>@' . $detected_x_type['e_domain']['e__id'] . ' ' . $detected_x_type['e_domain']['e__title'] . '</b> as source profile',
+                                    'message' => 'Must have <b>@' . $detected_x_type['e_domain']['e__id'] . ' ' . $detected_x_type['e_domain']['e__title'] . '</b> in profile',
                                 ));
                             }
                         } else {
@@ -1039,14 +1039,14 @@ class E extends CI_Controller
 
                 $this->X_model->update($_POST['x__id'], array(
                     'x__message' => $x__message,
-                ), $session_e['e__id'], 10657 /* Miner Link updated Content */);
+                ), $session_e['e__id'], 10657 /* Miner Transaction updated Content */);
 
 
-                //Also, did the link type change based on the content change?
+                //Also, did the transaction type change based on the content change?
                 if($js_x__type!=$e_x[0]['x__type']){
                     $this->X_model->update($_POST['x__id'], array(
                         'x__type' => $js_x__type,
-                    ), $session_e['e__id'], 10659 /* Miner Link updated Type */);
+                    ), $session_e['e__id'], 10659 /* Miner Transaction updated Type */);
                 }
             }
         }
@@ -1078,7 +1078,7 @@ class E extends CI_Controller
 
         if (intval($_POST['x__id']) > 0) {
 
-            //Fetch source link:
+            //Fetch source transaction:
             $x = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
             ), array('x__miner'));
@@ -1215,8 +1215,8 @@ class E extends CI_Controller
         }
 
 
-        //Log Account Update link type:
-        $_POST['account_update_function'] = 'e_update_radio'; //Add this variable to indicate which My Account function created this link
+        //Log Account Update transaction type:
+        $_POST['account_update_function'] = 'e_update_radio'; //Add this variable to indicate which My Account function created this transaction
         $this->X_model->create(array(
             'x__miner' => $session_e['e__id'],
             'x__type' => 6224, //My Account updated
@@ -1390,7 +1390,7 @@ class E extends CI_Controller
 
         } elseif (strlen($_POST['e_email']) > 0) {
 
-            //Create new link:
+            //Create new transaction:
             $this->X_model->create(array(
                 'x__miner' => $session_e['e__id'],
                 'x__down' => $session_e['e__id'],
@@ -1415,8 +1415,8 @@ class E extends CI_Controller
 
 
         if($return['status']){
-            //Log Account Update link type:
-            $_POST['account_update_function'] = 'e_update_email'; //Add this variable to indicate which My Account function created this link
+            //Log Account Update transaction type:
+            $_POST['account_update_function'] = 'e_update_email'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
                 'x__miner' => $session_e['e__id'],
                 'x__type' => 6224, //My Account updated
@@ -1486,7 +1486,7 @@ class E extends CI_Controller
 
         } else {
 
-            //Create new link:
+            //Create new transaction:
             $this->X_model->create(array(
                 'x__type' => e_x__type($hashed_password),
                 'x__up' => 3286, //Password
@@ -1503,9 +1503,9 @@ class E extends CI_Controller
         }
 
 
-        //Log Account Update link type:
+        //Log Account Update transaction type:
         if($return['status']){
-            $_POST['account_update_function'] = 'e_update_password'; //Add this variable to indicate which My Account function created this link
+            $_POST['account_update_function'] = 'e_update_password'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
                 'x__miner' => $session_e['e__id'],
                 'x__type' => 6224, //My Account Updated
@@ -1720,7 +1720,7 @@ class E extends CI_Controller
 
 
         //Log Miner Signin Joined Mench
-        $invite_link = $this->X_model->create(array(
+        $invite_x = $this->X_model->create(array(
             'x__type' => 7562, //Miner Signin Joined Mench
             'x__miner' => $added_e['new_e']['e__id'],
             'x__left' => intval($_POST['sign_i__id']),
@@ -1729,7 +1729,7 @@ class E extends CI_Controller
             ),
         ));
 
-        //Assign session & log login link:
+        //Assign session & log login transaction:
         $this->E_model->activate_session($added_e['new_e']);
 
 
@@ -1852,7 +1852,7 @@ class E extends CI_Controller
             //They do not have a password assigned yet!
             return view_json(array(
                 'status' => 0,
-                'message' => 'Password link is not public. Contact us to adjust your account.',
+                'message' => 'Password transaction is not public. Contact us to adjust your account.',
             ));
         } elseif ($miner_passwords[0]['x__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $es[0]['e__id'])) {
 
@@ -1873,7 +1873,7 @@ class E extends CI_Controller
         }
 
 
-        //Assign session & log link:
+        //Assign session & log transaction:
         $this->E_model->activate_session($es[0]);
 
 
@@ -1930,8 +1930,8 @@ class E extends CI_Controller
         }
 
         //Log email search attempt:
-        $reset_link = $this->X_model->create(array(
-            'x__type' => 7563, //Miner Signin Magic Link Email
+        $reset_x = $this->X_model->create(array(
+            'x__type' => 7563, //Miner Signin Magic Email
             'x__message' => $_POST['input_email'],
             'x__miner' => $miner_emails[0]['e__id'], //Miner making request
             'x__left' => intval($_POST['sign_i__id']),
@@ -1946,9 +1946,9 @@ class E extends CI_Controller
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$miner_emails[0]['e__title']).' 👋</div><br /><br />';
 
-        $magic_link_expiry_hours = (config_var(11065)/3600);
-        $html_message .= '<div>Login within the next '.$magic_link_expiry_hours.' hour'.view__s($magic_link_expiry_hours).':</div>';
-        $magic_url = $this->config->item('base_url').'/e/e_magic_sign/' . $reset_link['x__id'] . '?email='.$_POST['input_email'];
+        $magic_x_expiry_hours = (config_var(11065)/3600);
+        $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).':</div>';
+        $magic_url = $this->config->item('base_url').'/e/e_magic_sign/' . $reset_x['x__id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
@@ -1975,22 +1975,22 @@ class E extends CI_Controller
         }
 
         //Validate DISCOVER ID and matching email:
-        $validate_links = $this->X_model->fetch(array(
+        $validate_x = $this->X_model->fetch(array(
             'x__id' => $x__id,
             'x__message' => $_GET['email'],
-            'x__type' => 7563, //Miner Signin Magic Link Email
+            'x__type' => 7563, //Miner Signin Magic Email
         )); //The miner making the request
-        if(count($validate_links) < 1){
+        if(count($validate_x) < 1){
             //Probably previously completed the reset password:
             return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
-        } elseif(strtotime($validate_links[0]['x__time']) + config_var(11065) < time()){
+        } elseif(strtotime($validate_x[0]['x__time']) + config_var(11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic link has expired. Try again.</div>');
+            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
         }
 
         //Fetch source:
         $es = $this->E_model->fetch(array(
-            'e__id' => $validate_links[0]['x__miner'],
+            'e__id' => $validate_x[0]['x__miner'],
         ));
         if(count($es) < 1){
             return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Miner not found</div>');

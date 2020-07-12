@@ -144,7 +144,7 @@ if(!isset($hide_header)){
                     if(intval(config_var(12678))){
 
                         //Search button
-                        echo '<td class="block-link"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m_icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m_name'].'">'.$e___11035[13401]['m_icon'].'</span></a></td>';
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m_icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m_name'].'">'.$e___11035[13401]['m_icon'].'</span></a></td>';
 
                     }
 
@@ -158,10 +158,10 @@ if(!isset($hide_header)){
                         //GUESTS
 
                         //FEEDBACK SUPPORT
-                        //echo '<td class="block-link"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m_name'].'">'.$e___11035[12899]['m_icon'].'</a></td>';
+                        //echo '<td class="block-x"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m_name'].'">'.$e___11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-link"><a href="/e/signin" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-x"><a href="/e/signin" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
 
                     } else {
 

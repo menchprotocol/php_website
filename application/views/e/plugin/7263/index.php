@@ -2,10 +2,10 @@
 
 //IDEA MARKS LIST ALL
 
-echo '<p>Below are all the Conditional Step Links:</p>';
+echo '<p>Below are all the Conditional Step Transactions:</p>';
 echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
 
-$e___6103 = $this->config->item('e___6103'); //Link Metadata
+$e___6103 = $this->config->item('e___6103'); //Transaction Metadata
 $e___6186 = $this->config->item('e___6186'); //Transaction Status
 
 echo '<tr style="font-weight: bold;">';
@@ -60,7 +60,7 @@ foreach($this->X_model->fetch(array(
 
         } else {
 
-            //Update miner progression link type:
+            //Update miner progression transaction type:
             $miner_x = $this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__left' => $i_x['i__id'],
@@ -85,7 +85,7 @@ echo '</table>';
 echo 'TOTALS: '.$total_count;
 
 if(1){
-    echo '<p>Below are all the fixed step links that award/subtract Completion Marks:</p>';
+    echo '<p>Below are all the fixed step transactions that award/subtract Completion Marks:</p>';
     echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
 
     echo '<tr style="font-weight: bold;">';

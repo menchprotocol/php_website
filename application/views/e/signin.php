@@ -33,7 +33,7 @@ if(is_array($current_sign_i_attempts) && count($current_sign_i_attempts) > 0){
 //See what to do based on current matches:
 if(count($current_sign_i_attempt) == 0){
 
-    //Log link:
+    //Log transaction:
     $current_sign_i_attempt = $this->X_model->create($this_attempt);
 
     //Grow the array:

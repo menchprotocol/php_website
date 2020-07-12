@@ -30,9 +30,9 @@ class X extends CI_Controller
 
         /*
          *
-         * List all Links on reverse chronological order
+         * List all Transactions on reverse chronological order
          * and Display Status for ideas, sources and
-         * links.
+         * transactions.
          *
          * */
 
@@ -50,13 +50,13 @@ class X extends CI_Controller
     function x_load(){
 
         /*
-         * Loads the list of links based on the
+         * Loads the list of transactions based on the
          * filters passed on.
          *
          * */
 
-        $filters = unserialize($_POST['link_filters']);
-        $joined_by = unserialize($_POST['link_joined_by']);
+        $filters = unserialize($_POST['x_filters']);
+        $joined_by = unserialize($_POST['x_joined_by']);
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
         $query_offset = (($page_num-1)*config_var(11064));
@@ -64,11 +64,11 @@ class X extends CI_Controller
 
         $message = '';
 
-        //Fetch links and total link counts:
+        //Fetch transactions and total transaction counts:
         $x = $this->X_model->fetch($filters, $joined_by, config_var(11064), $query_offset);
         $x_count = $this->X_model->fetch($filters, $joined_by, 0, 0, array(), 'COUNT(x__id) as total_count');
         $total_items_loaded = ($query_offset+count($x));
-        $has_more_links = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
+        $has_more_x = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
 
 
         //Display filter:
@@ -81,7 +81,7 @@ class X extends CI_Controller
                 $message .= '<div class="montserrat x-info">'.$e___11035[4341]['m_icon'].' '.$e___11035[4341]['m_name'].' has '.number_format($x_count[0]['total_count'] , 0).' TRANSACTIONS indexing <span class="idea inline-block">'.$e___12467[12273]['m_icon'].' '.number_format($this->config->item('s___12273'), 0).' '.$e___12467[12273]['m_name'].'</span> from <span class="source inline-block">'.$e___12467[12274]['m_icon'].' '.number_format($this->config->item('s___12274'), 0).' '.$e___12467[12274]['m_name'].'</span> with <span class="discover inline-block">'.$e___12467[6255]['m_icon'].' '.number_format($this->config->item('s___6255'), 0).' '.$e___12467[6255]['m_name'].'</span>. Here are the latest '.$total_items_loaded.' transactions:</div>';
             } else {
                 //Subsequent messages:
-                $message .= '<div class="montserrat x-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
+                $message .= '<div class="montserrat x-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
             }
 
         }
@@ -110,18 +110,18 @@ class X extends CI_Controller
             $message .= '</div>';
 
             //Do we have more to show?
-            if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-x" onclick="x_load(link_filters, link_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
+            if($has_more_x){
+                $message .= '<div id="x_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-x" onclick="x_load(x_filters, x_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$x_count[0]['total_count'].' link'.view__s($x_count[0]['total_count']).' have been loaded</div>';
+                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$x_count[0]['total_count'].' transaction'.view__s($x_count[0]['total_count']).' have been loaded</div>';
 
             }
 
         } else {
 
-            //Show no link warning:
-            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Links found with the selected filters. Modify filters and try again.</div>';
+            //Show no transaction warning:
+            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Transactions found with the selected filters. Modify filters and try again.</div>';
 
         }
 
@@ -146,7 +146,7 @@ class X extends CI_Controller
             ));
         }
 
-        //Will Contain every possible Miner Link Connector:
+        //Will Contain every possible Miner Transaction Connector:
         $e___4592 = $this->config->item('e___4592');
 
         //See what this is:
@@ -161,10 +161,10 @@ class X extends CI_Controller
 
         } elseif (!$detected_x_type['status'] && isset($detected_x_type['url_previously_existed']) && $detected_x_type['url_previously_existed']) {
 
-            //See if this is duplicate to either link:
+            //See if this is duplicate to either transaction:
             $e_x = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Miner URL Links
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Miner URL Transactions
             ));
 
             //Are they both different?
@@ -180,7 +180,7 @@ class X extends CI_Controller
         return view_json(array(
             'status' => 1,
             'html_ui' => '<b class="montserrat doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m_icon']).'">' . $e___4592[$detected_x_type['x__type']]['m_icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m_name'] . '</b>',
-            'e_link_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup inline-block">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
+            'e_x_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup inline-block">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
         ));
 
     }
@@ -336,7 +336,7 @@ class X extends CI_Controller
 
         } elseif($_POST['cache_e__id']==4358 /* DISCOVER MARKS */){
 
-            //Fetch/Validate Link:
+            //Fetch/Validate Transaction:
             $x = $this->X_model->fetch(array(
                 'x__id' => $_POST['object__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -351,7 +351,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Link ID.',
+                    'message' => 'Invalid Transaction ID.',
                     'original_val' => '',
                 ));
 
@@ -370,7 +370,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $session_e['e__id'], 10663 /* Idea Link updated Marks */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $session_e['e__id'], 10663 /* Idea Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return view_json(array(
                     'status' => 1,
@@ -380,7 +380,7 @@ class X extends CI_Controller
 
         } elseif($_POST['cache_e__id']==4735 /* UNLOCK MIN SCORE */ || $_POST['cache_e__id']==4739 /* UNLOCK MAX SCORE */){
 
-            //Fetch/Validate Link:
+            //Fetch/Validate Transaction:
             $x = $this->X_model->fetch(array(
                 'x__id' => $_POST['object__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -393,7 +393,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Link ID.',
+                    'message' => 'Invalid Transaction ID.',
                     'original_val' => '',
                 ));
 
@@ -412,7 +412,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $session_e['e__id'], 10664 /* Idea Link updated Score */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $session_e['e__id'], 10664 /* Idea Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return view_json(array(
                     'status' => 1,
@@ -805,30 +805,30 @@ class X extends CI_Controller
 
         $session_e = superpower_assigned(null, true);
 
-        //Fetch their current progress links:
-        $progress_links = $this->X_model->fetch(array(
+        //Fetch their current progress transactions:
+        $progress_x = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
             'x__miner' => $session_e['e__id'],
         ), array(), 0);
 
-        if(count($progress_links) > 0){
+        if(count($progress_x) > 0){
 
             //Yes they did have some:
-            $message = 'Removed '.count($progress_links).' idea'.view__s(count($progress_links));
+            $message = 'Removed '.count($progress_x).' idea'.view__s(count($progress_x));
 
-            //Log link:
-            $clear_all_link = $this->X_model->create(array(
+            //Log transaction:
+            $clear_all_x = $this->X_model->create(array(
                 'x__message' => $message,
                 'x__type' => 6415,
                 'x__miner' => $session_e['e__id'],
             ));
 
             //Delete all progressions:
-            foreach($progress_links as $progress_link){
-                $this->X_model->update($progress_link['x__id'], array(
+            foreach($progress_x as $progress_x){
+                $this->X_model->update($progress_x['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
-                    'x__reference' => $clear_all_link['x__id'], //To indicate when it was deleted
+                    'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
                 ), $session_e['e__id'], 6415 /* Reset All Discoveries */);
             }
 
@@ -1004,7 +1004,7 @@ class X extends CI_Controller
         $results = array();
         foreach($_POST['new_x_order'] as $x__sort => $x__id){
             if(intval($x__id) > 0 && intval($x__sort) > 0){
-                //Update order of this link:
+                //Update order of this transaction:
                 $results[$x__sort] = $this->X_model->update(intval($x__id), array(
                     'x__sort' => $x__sort,
                 ), $session_e['e__id'], intval($_POST['x__type']));

@@ -120,7 +120,7 @@ foreach($messages as $message) {
         'node_status' => $message['x__status'],
     ));
 
-    //Add child idea link:
+    //Add child idea transaction:
     $this->db->insert('gephi_edges', array(
         'source' => $message['x__id'],
         'target' => $id_prefix[12273].$message['x__right'],
@@ -128,7 +128,7 @@ foreach($messages as $message) {
         'weight' => 1,
     ));
 
-    //Add parent idea link?
+    //Add parent idea transaction?
     if ($message['x__left'] > 0) {
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[12273].$message['x__left'],
@@ -138,7 +138,7 @@ foreach($messages as $message) {
         ));
     }
 
-    //Add parent source link?
+    //Add parent source transaction?
     if ($message['x__up'] > 0) {
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[12274].$message['x__up'],

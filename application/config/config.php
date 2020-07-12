@@ -47,7 +47,7 @@ $config['index_page'] = 'index.php';
 |
 | This item determines which server global should be used to retrieve the
 | URI string.  The default setting of 'REQUEST_URI' works for most servers.
-| If your links do not seem to work, try one of the other delicious flavors:
+| If your transactions do not seem to work, try one of the other delicious flavors:
 |
 | 'REQUEST_URI'    Uses $_SERVER['REQUEST_URI']
 | 'QUERY_STRING'   Uses $_SERVER['QUERY_STRING']

@@ -39,7 +39,7 @@ class I_model extends CI_Model
 
             if ($x__miner > 0) {
 
-                //Log link new Idea:
+                //Log transaction new Idea:
                 $this->X_model->create(array(
                     'x__miner' => $x__miner,
                     'x__right' => $add_fields['i__id'],
@@ -138,8 +138,8 @@ class I_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $x__miner > 0) {
 
-            //Unlike source modification, we require a miner source ID to log the modification link:
-            //Log modification link for every field changed:
+            //Unlike source modification, we require a miner source ID to log the modification transaction:
+            //Log modification transaction for every field changed:
             foreach($update_columns as $key => $value) {
 
                 if ($before_data[0][$key] == $value){
@@ -190,7 +190,7 @@ class I_model extends CI_Model
                 }
 
 
-                //Value has changed, log link:
+                //Value has changed, log transaction:
                 $this->X_model->create(array(
                     'x__miner' => $x__miner,
                     'x__type' => $x__type,
@@ -231,38 +231,38 @@ class I_model extends CI_Model
         return $affected_rows;
     }
 
-    function unlink($i__id, $x__miner = 0){
+    function remove($i__id, $x__miner = 0){
 
         //REMOVE IDEA LINKS
-        $links_deleted = 0;
-        foreach($this->X_model->fetch(array( //Idea Links
+        $x_deleted = 0;
+        foreach($this->X_model->fetch(array( //Idea Transactions
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
         ), array(), 0) as $x){
-            //Delete this link:
-            $links_deleted += $this->X_model->update($x['x__id'], array(
-                'x__status' => 6173, //Link Deleted
-            ), $x__miner, 10686 /* Idea Link Unpublished */);
+            //Delete this transaction:
+            $x_deleted += $this->X_model->update($x['x__id'], array(
+                'x__status' => 6173, //Transaction Deleted
+            ), $x__miner, 10686 /* Idea Transaction Unpublished */);
         }
 
 
         //REMOVE NOTES:
-        $i_notes = $this->X_model->fetch(array( //Idea Links
+        $i_notes = $this->X_model->fetch(array( //Idea Transactions
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
             'x__right' => $i__id,
         ), array(), 0);
         foreach($i_notes as $i_note){
-            //Delete this link:
-            $links_deleted += $this->X_model->update($i_note['x__id'], array(
-                'x__status' => 6173, //Link Deleted
-            ), $x__miner, 10686 /* Idea Link Unpublished */);
+            //Delete this transaction:
+            $x_deleted += $this->X_model->update($i_note['x__id'], array(
+                'x__status' => 6173, //Transaction Deleted
+            ), $x__miner, 10686 /* Idea Transaction Unpublished */);
         }
 
 
-        //Return links deleted:
-        return $links_deleted;
+        //Return transactions deleted:
+        return $x_deleted;
     }
 
     function match_x_status($x__miner, $query = array()){
@@ -319,56 +319,56 @@ class I_model extends CI_Model
         return $stats;
     }
 
-    function link_or_create($i__title, $x__miner, $link_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $link_i__id = 0)
+    function x_or_create($i__title, $x__miner, $x_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $x_i__id = 0)
     {
 
         /*
          *
          * The main idea creation function that would create
-         * appropriate links and return the idea view.
+         * appropriate transactions and return the idea view.
          *
-         * Either creates an IDEA link between $link_to_i__id & $link_i__id
-         * (IF $link_i__id>0) OR will create a new idea with outcome $i__title
-         * and link it to $link_to_i__id (In this case $link_i__id will be 0)
+         * Either creates an IDEA transaction between $x_to_i__id & $x_i__id
+         * (IF $x_i__id>0) OR will create a new idea with outcome $i__title
+         * and transaction it to $x_to_i__id (In this case $x_i__id will be 0)
          *
          * p.s. Inputs have previously been validated via ideas/i_add() function
          *
          * */
 
         //Validate Original idea:
-        if($link_to_i__id > 0){
-            $linked_is = $this->I_model->fetch(array(
-                'i__id' => intval($link_to_i__id),
+        if($x_to_i__id > 0){
+            $x_is = $this->I_model->fetch(array(
+                'i__id' => intval($x_to_i__id),
             ));
 
-            if (count($linked_is) < 1) {
+            if (count($x_is) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Idea ID',
                 );
-            } elseif (!in_array($linked_is[0]['i__status'], $this->config->item('n___7356')) /* ACTIVE */) {
+            } elseif (!in_array($x_is[0]['i__status'], $this->config->item('n___7356')) /* ACTIVE */) {
                 return array(
                     'status' => 0,
-                    'message' => 'You can only link to active ideas. This idea is not active.',
+                    'message' => 'You can only transaction to active ideas. This idea is not active.',
                 );
             }
         }
 
 
-        if ($link_i__id > 0) {
+        if ($x_i__id > 0) {
 
-            //We are linking to $link_i__id, We are NOT creating any new ideas...
+            //We are adding $x_i__id, We are NOT creating any new ideas...
 
-            //Fetch more details on the child idea we're about to link:
+            //Fetch more details on the child idea we're about to transaction:
             $is = $this->I_model->fetch(array(
-                'i__id' => $link_i__id,
+                'i__id' => $x_i__id,
             ));
 
             //Determine which is parent Idea, and which is child
             if($is_parent){
 
                 $previous_i = $is[0];
-                $next_i = $linked_is[0];
+                $next_i = $x_is[0];
 
                 /*
                 //Prevent child duplicates:
@@ -383,7 +383,7 @@ class I_model extends CI_Model
 
             } else {
 
-                $previous_i = $linked_is[0];
+                $previous_i = $x_is[0];
                 $next_i = $is[0];
 
                 //Prevent parent duplicate:
@@ -402,20 +402,20 @@ class I_model extends CI_Model
             if (count($is) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'Invalid Linked Idea ID',
+                    'message' => 'Invalid Idea ID',
                 );
             } elseif (!in_array($is[0]['i__status'], $this->config->item('n___7356') /* ACTIVE */)) {
                 return array(
                     'status' => 0,
-                    'message' => 'You can only link to active ideas. This idea is not active.',
+                    'message' => 'You can only transaction to active ideas. This idea is not active.',
                 );
             }
 
-            //All good so far, continue with linking:
+            //All good so far, continue with adding:
             $i_new = $is[0];
 
             //Make sure this is not a duplicate Idea for its parent:
-            $dup_links = $this->X_model->fetch(array(
+            $dup_x = $this->X_model->fetch(array(
                 'x__left' => $previous_i['i__id'],
                 'x__right' => $next_i['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
@@ -423,15 +423,15 @@ class I_model extends CI_Model
             ));
 
             //Check for issues:
-            if (count($dup_links) > 0) {
+            if (count($dup_x) > 0) {
 
                 //Ooopsi, this is a duplicate!
                 return array(
                     'status' => 0,
-                    'message' => '[' . $i_new['i__title'] . '] is previously linked here.',
+                    'message' => '[' . $i_new['i__title'] . '] is already here.',
                 );
 
-            } elseif ($link_to_i__id > 0 && $link_i__id == $link_to_i__id) {
+            } elseif ($x_to_i__id > 0 && $x_i__id == $x_to_i__id) {
 
                 //Make sure none of the parents are the same:
                 return array(
@@ -443,7 +443,7 @@ class I_model extends CI_Model
 
         } else {
 
-            //We are NOT linking to an existing Idea, but instead, we're creating a new Idea
+            //We are NOT adding an existing Idea, but instead, we're creating a new Idea
 
             //Validate Idea Outcome:
             $i__title_validation = i__title_validate($i__title);
@@ -463,24 +463,24 @@ class I_model extends CI_Model
         }
 
 
-        //Create Idea Link:
-        if($link_to_i__id > 0){
+        //Create Idea Transaction:
+        if($x_to_i__id > 0){
 
             $relation = $this->X_model->create(array(
                 'x__miner' => $x__miner,
-                'x__type' => 4228, //Idea Link Regular Discovery
-                ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
+                'x__type' => 4228, //Idea Transaction Regular Discovery
+                ( $is_parent ? 'x__right' : 'x__left' ) => $x_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__sort' => 1 + $this->X_model->max_sort(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                        'x__left' => ( $is_parent ? $i_new['i__id'] : $link_to_i__id ),
+                        'x__left' => ( $is_parent ? $i_new['i__id'] : $x_to_i__id ),
                     )),
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the view_i() function
             $new_is = $this->X_model->fetch(array(
-                ( $is_parent ? 'x__right' : 'x__left' ) => $link_to_i__id,
+                ( $is_parent ? 'x__right' : 'x__left' ) => $x_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -488,7 +488,7 @@ class I_model extends CI_Model
             ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $next_i_html = view_i($new_is[0], $link_to_i__id, $is_parent, true /* Since they added it! */);
+            $next_i_html = view_i($new_is[0], $x_to_i__id, $is_parent, true /* Since they added it! */);
 
         } else {
 
@@ -647,7 +647,7 @@ class I_model extends CI_Model
     function metadata_common_base($focus_in){
 
         //Set variables:
-        $is_first_in = ( !isset($focus_in['x__id']) ); //First idea does not have a link, just the idea
+        $is_first_in = ( !isset($focus_in['x__id']) ); //First idea does not have a transaction, just the idea
         $select_one = in_array($focus_in['i__type'] , $this->config->item('n___12883')); //IDEA TYPE SELECT ONE
         $select_some = in_array($focus_in['i__type'] , $this->config->item('n___12884')); //IDEA TYPE SELECT SOME
         $select_one_children = array(); //To be populated only if $focus_in is select one
@@ -655,9 +655,9 @@ class I_model extends CI_Model
         $conditional_x = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
             'p___6168' => array(), //The idea structure that would be shared with all miners regardless of their quick replies (OR Idea Answers)
-            'p___6228' => array(), //Ideas that may exist as a link to expand Discovery by answering OR ideas
+            'p___6228' => array(), //Ideas that may exist as a transaction to expand Discovery by answering OR ideas
             'p___12885' => array(), //Ideas that allows miners to select one or more
-            'p___6283' => array(), //Ideas that may exist as a link to expand Discovery via Conditional Idea links
+            'p___6283' => array(), //Ideas that may exist as a transaction to expand Discovery via Conditional Idea transactions
         );
 
         //Fetch children:
@@ -671,22 +671,22 @@ class I_model extends CI_Model
             //Determine action based on parent idea type:
             if(in_array($next_i['x__type'], $this->config->item('n___12842'))){
 
-                //Conditional Idea Link:
+                //Conditional Idea Transaction:
                 array_push($conditional_x, intval($next_i['i__id']));
 
             } elseif($select_one){
 
-                //OR parent Idea with Fixed Idea Link:
+                //OR parent Idea with Fixed Idea Transaction:
                 array_push($select_one_children, intval($next_i['i__id']));
 
             } elseif($select_some){
 
-                //OR parent Idea with Fixed Idea Link:
+                //OR parent Idea with Fixed Idea Transaction:
                 array_push($select_some_children, intval($next_i['i__id']));
 
             } else {
 
-                //AND parent Idea with Fixed Idea Link:
+                //AND parent Idea with Fixed Idea Transaction:
                 array_push($metadata_this['p___6168'], intval($next_i['i__id']));
 
                 //Go recursively down:
@@ -861,7 +861,7 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->link_or_create('', $x__miner, $adjust_i__id, false, 6184, 6677, $next_i['i__id']);
+                    $this->I_model->x_or_create('', $x__miner, $adjust_i__id, false, 6184, 6677, $next_i['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;
@@ -882,7 +882,7 @@ class I_model extends CI_Model
         }
 
 
-        //Log mass source edit link:
+        //Log mass source edit transaction:
         $this->X_model->create(array(
             'x__miner' => $x__miner,
             'x__type' => $action_e__id,
@@ -1210,7 +1210,7 @@ class I_model extends CI_Model
         }
 
 
-        //Discovery 2: Are there any locked link parents that the miner might be able to unlock?
+        //Discovery 2: Are there any locked transaction parents that the miner might be able to unlock?
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC

@@ -31,7 +31,7 @@ foreach($this->I_model->fetch() as $in) {
         'x__right' => $in['i__id'],
     ), array(), 0, 0, array('x__id' => 'ASC')); //Order in case we have extra & need to remove
 
-    $i_notes = $this->X_model->fetch(array( //Idea Links
+    $i_notes = $this->X_model->fetch(array( //Idea Transactions
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
         'x__right' => $in['i__id'],
@@ -75,10 +75,10 @@ foreach($this->I_model->fetch() as $in) {
 
         //Extra SOURCES
         foreach($i_notes as $i_note){
-            //Delete this link:
+            //Delete this transaction:
             $stats['note_deleted'] += $this->X_model->update($i_note['x__id'], array(
-                'x__status' => 6173, //Link Deleted
-            ), $session_e['e__id'], 10686 /* Idea Link Unpublished */);
+                'x__status' => 6173, //Transaction Deleted
+            ), $session_e['e__id'], 10686 /* Idea Transaction Unpublished */);
         }
 
     }

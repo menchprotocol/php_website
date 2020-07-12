@@ -402,7 +402,7 @@ function x_type_preview_load(){
 function x_type_preview() {
 
     /*
-     * Updates the type of link based on the link content
+     * Updates the type of transaction based on the transaction content
      *
      * */
 
@@ -417,10 +417,10 @@ function x_type_preview() {
         //All good, let's load the data into the Modify Widget...
         $('#x__type_preview').html((data.status ? data.html_ui : '<b class="discover">' + data.message+'</b>'));
 
-        if(data.status && data.e_link_preview.length > 0){
-            $('#e_link_preview').html(data.e_link_preview);
+        if(data.status && data.e_x_preview.length > 0){
+            $('#e_x_preview').html(data.e_x_preview);
         } else {
-            $('#e_link_preview').html('');
+            $('#e_x_preview').html('');
         }
 
         //Reload Tooltip again:
@@ -578,9 +578,9 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
     $(element_focus).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            if(is_add_mode=='link_in') {
+            if(is_add_mode=='x_in') {
                 return i_add($(this).attr('i-id'), is_i_previous, 0);
-            } else if(is_add_mode=='link_my_in') {
+            } else if(is_add_mode=='x_my_in') {
                 return i_create();
             }
             e.preventDefault();
@@ -595,7 +595,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
     //Not yet loaded, continue with loading it:
     $(element_focus).on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        if(is_add_mode=='link_in'){
+        if(is_add_mode=='x_in'){
             i_add($(this).attr('i-id'), is_i_previous, suggestion.object__id);
         } else {
             //Go to idea:
@@ -633,16 +633,16 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
                 return view_search_result(suggestion);
             },
             header: function (data) {
-                if (is_add_mode=='link_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
+                if (is_add_mode=='x_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
                     return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
-                } else if(is_add_mode=='link_my_in'){
+                } else if(is_add_mode=='x_my_in'){
                     return '<a href="javascript:i_create()" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                if(is_add_mode=='link_in'){
+                if(is_add_mode=='x_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
                     } else {
                         return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
@@ -1247,10 +1247,10 @@ function x_sort(x__type) {
     var sort_rank = 0;
     var new_x_order = [];
     $("#i_covers .home_sort").each(function () {
-        var link_id = parseInt($(this).attr('sort-x-id'));
-        if(link_id > 0){
+        var x_id = parseInt($(this).attr('sort-x-id'));
+        if(x_id > 0){
             sort_rank++;
-            new_x_order[sort_rank] = link_id;
+            new_x_order[sort_rank] = x_id;
         }
     });
 

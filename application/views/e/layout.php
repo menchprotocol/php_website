@@ -2,7 +2,7 @@
 <?php
 
 $e___6206 = $this->config->item('e___6206'); //MENCH SOURCE
-$e___4341 = $this->config->item('e___4341'); //Link Table
+$e___4341 = $this->config->item('e___4341'); //Transaction Table
 $e___12467 = $this->config->item('e___12467'); //MENCH
 $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
@@ -62,10 +62,10 @@ $miner_is_e = miner_is_e($e['e__id']);
                         </select>
                         <div class="notify_e_delete hidden">
 
-                            <input type="hidden" id="e_link_count" value="0" />
-                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
+                            <input type="hidden" id="e_x_count" value="0" />
+                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and REMOVE ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> transactions</div>
 
-                            <span class="mini-header"><span class="tr_i_link_title"></span> Merge Source Into:</span>
+                            <span class="mini-header"><span class="tr_i_x_title"></span> Merge Source Into:</span>
                             <input style="padding-left:3px;" type="text" class="form-control algolia_search border e_text_search" id="e_merge" value="" placeholder="Search source to merge..." />
 
                         </div>
@@ -88,7 +88,7 @@ $miner_is_e = miner_is_e($e['e__id']);
 
                                 <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
 
-                                <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-link"></i></a>
+                                <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-x"></i></a>
 
                             </span>
                         <div class="form-group label-floating is-empty"
@@ -122,8 +122,8 @@ $miner_is_e = miner_is_e($e['e__id']);
                                 ?>
                             </select>
 
-                            <div class="notify_unlink_e hidden">
-                                <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will unlink source</div>
+                            <div class="notify_unx_e hidden">
+                                <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will remove source</div>
                             </div>
 
 
@@ -145,7 +145,7 @@ $miner_is_e = miner_is_e($e['e__id']);
 
                             <span class="mini-header"><?= $e___4341[4593]['m_icon'].' '.$e___4341[4593]['m_name'] ?></span>
                             <span id="x__type_preview"></span>
-                            <p id="e_link_preview" class="hideIfEmpty"></p>
+                            <p id="e_x_preview" class="hideIfEmpty"></p>
 
 
 
@@ -233,7 +233,7 @@ $miner_is_e = miner_is_e($e['e__id']);
         $this_tab = x_stats_count($x__type, $e['e__id'], 1);
         $default_active = in_array($x__type, $this->config->item('n___12571'));
 
-        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
+        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
 
 
         $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
@@ -634,13 +634,13 @@ $miner_is_e = miner_is_e($e['e__id']);
                         $this_tab .= '<div class="nav nav-pills nav-sm">';
 
                         //Show fixed All button:
-                        $this_tab .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-link en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
+                        $this_tab .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-x en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
 
                         //Show each specific filter based on DB counts:
                         foreach($child_e_filters as $c_c) {
                             $st = $e___6177[$c_c['e__status']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
-                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['e__status'] . '" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
+                            $this_tab .= '<li class="nav-item"><a href="#status-' . $c_c['e__status'] . '" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
                         }
 
                         $this_tab .= '</div>';

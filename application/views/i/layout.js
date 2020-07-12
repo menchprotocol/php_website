@@ -31,8 +31,8 @@ $(document).ready(function () {
     });
 
     //Load top/bottom idea searches:
-    i_load_search(".IdeaAddPrevious",1, 'q', 'link_in');
-    i_load_search(".ideaadder-level-2-child",0, 'w', 'link_in');
+    i_load_search(".IdeaAddPrevious",1, 'q', 'x_in');
+    i_load_search(".ideaadder-level-2-child",0, 'w', 'x_in');
 
     //Expand selections:
     prep_search_pad();
@@ -43,11 +43,11 @@ $(document).ready(function () {
 });
 
 
-function e_only_unlink(x__id, note_type_id) {
+function e_only_remove(x__id, note_type_id) {
 
     var r = confirm("Remove this source?");
     if (r == true) {
-        $.post("/e/e_only_unlink", {
+        $.post("/e/e_only_remove", {
 
             i__id: focus_i__id,
             x__id: x__id,
@@ -73,8 +73,8 @@ function e_only_unlink(x__id, note_type_id) {
 function e_only_add(e_existing_id, note_type_id) {
 
 
-    //if e_existing_id>0 it means we're linking to an existing source, in which case e_new_string should be null
-    //If e_existing_id=0 it means we are creating a new source and then linking it, in which case e_new_string is required
+    //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
+    //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
 
     var e_new_string = null;
     var input = $('.e-i-'+note_type_id+' .add-input');
@@ -196,16 +196,16 @@ function x_preview(){
     }
 }
 
-function i_unlink(i__id, x__id, is_parent){
+function i_remove(i__id, x__id, is_parent){
     var i__title = $('.text__4736_'+i__id).text();
     if(!i__title.length){
         i__title = $('.text__4736_'+i__id).val();
     }
-    var r = confirm("Unlink ["+i__title+"]?");
+    var r = confirm("Remove ["+i__title+"]?");
     if (r == true) {
 
         //Fetch Idea Data to load modify widget:
-        $.post("/i/i_unlink", {
+        $.post("/i/i_remove", {
             i__id: i__id,
             x__id: x__id,
         }, function (data) {
@@ -306,20 +306,20 @@ function i_sort_load(i__id) {
     });
 }
 
-function i_add(i_linked_id, is_parent, i_link_child_id) {
+function i_add(i_x_id, is_parent, i_x_child_id) {
 
     /*
      *
-     * Either creates an IDEA link between i_linked_id & i_link_child_id
-     * OR will create a new idea based on input text and then link it
-     * to i_linked_id (In this case i_link_child_id=0)
+     * Either creates an IDEA transaction between i_x_id & i_x_child_id
+     * OR will create a new idea based on input text and then transaction it
+     * to i_x_id (In this case i_x_child_id=0)
      *
      * */
 
 
     var sort_handler = ".i_sortable";
     var sort_list_id = "list-in-" + focus_i__id + '-' + is_parent;
-    var input_field = $('#addi-c-' + i_linked_id + '-' + is_parent);
+    var input_field = $('#addi-c-' + i_x_id + '-' + is_parent);
     var i__title = input_field.val();
 
 
@@ -329,15 +329,15 @@ function i_add(i_linked_id, is_parent, i_link_child_id) {
             return false;
         } else {
             //Update the references:
-            i_link_child_id = parseInt(i__title.substr(1));
-            i__title = i_link_child_id; //As if we were just linking
+            i_x_child_id = parseInt(i__title.substr(1));
+            i__title = i_x_child_id; //As if we were just adding
         }
     }
 
 
 
-    //We either need the idea name (to create a new idea) or the i_link_child_id>0 to create an IDEA link:
-    if (!i_link_child_id && i__title.length < 1) {
+    //We either need the idea name (to create a new idea) or the i_x_child_id>0 to create an IDEA transaction:
+    if (!i_x_child_id && i__title.length < 1) {
         alert('Enter something');
         input_field.focus();
         return false;
@@ -350,10 +350,10 @@ function i_add(i_linked_id, is_parent, i_link_child_id) {
 
     //Update backend:
     $.post("/i/i_add", {
-        i_linked_id: i_linked_id,
+        i_x_id: i_x_id,
         is_parent:is_parent,
         i__title: i__title,
-        i_link_child_id: i_link_child_id
+        i_x_child_id: i_x_child_id
     }, function (data) {
 
         //Delete loader:
@@ -371,7 +371,7 @@ function i_add(i_linked_id, is_parent, i_link_child_id) {
             add_to_list(sort_list_id, sort_handler, data.next_i_html);
 
             //Reload sorting to enable sorting for the newly added idea:
-            i_sort_load(i_linked_id);
+            i_sort_load(i_x_id);
 
             //Lookout for textinput updates
             x_set_text_start();
@@ -425,7 +425,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         //Deleting?
         if(!is_i_active){
             //Seems to be deleting, confirm:
-            var r = confirm("Delete this idea AND unlink all its links to other ideas?");
+            var r = confirm("Delete this idea AND remove all its transactions to other ideas?");
             if (r == false) {
                 return false;
             }
@@ -497,7 +497,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
             }
 
             if(element_id==4486){
-                $('.i__tr_'+x__id+' .link_marks').addClass('hidden');
+                $('.i__tr_'+x__id+' .x_marks').addClass('hidden');
                 $('.i__tr_'+x__id+' .settings_' + new_e__id).removeClass('hidden');
             }
 

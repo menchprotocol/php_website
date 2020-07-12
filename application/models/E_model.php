@@ -114,7 +114,7 @@ class E_model extends CI_Model
 
         if ($add_fields['e__id'] > 0) {
 
-            //Log link new source:
+            //Log transaction new source:
             $this->X_model->create(array(
                 'x__miner' => ($x__miner > 0 ? $x__miner : $add_fields['e__id']),
                 'x__down' => $add_fields['e__id'],
@@ -211,7 +211,7 @@ class E_model extends CI_Model
                 update_algolia(12274, $id);
             }
 
-            //Log modification link for every field changed:
+            //Log modification transaction for every field changed:
             foreach($update_columns as $key => $value) {
 
                 if ($before_data[0][$key] == $value){
@@ -248,7 +248,7 @@ class E_model extends CI_Model
 
                 }
 
-                //Value has changed, log link:
+                //Value has changed, log transaction:
                 $this->X_model->create(array(
                     'x__miner' => ($x__miner > 0 ? $x__miner : $id),
                     'x__type' => $x__type,
@@ -308,7 +308,7 @@ class E_model extends CI_Model
             return false;
         }
 
-        //First delete existing parent/child links for this drop down:
+        //First delete existing parent/child transactions for this drop down:
         $previously_assigned = ($set_e_child_id < 1);
         $updated_x__id = 0;
         foreach($this->X_model->fetch(array(
@@ -323,9 +323,9 @@ class E_model extends CI_Model
                 //Delete assignment:
                 $updated_x__id = $x['x__id'];
 
-                //Do not log update link here as we would log it further below:
+                //Do not log update transaction here as we would log it further below:
                 $this->X_model->update($x['x__id'], array(
-                    'x__status' => 6173, //Link Deleted
+                    'x__status' => 6173, //Transaction Deleted
                 ), $x__miner, 6224 /* Miner Account Updated */);
             }
 
@@ -346,7 +346,7 @@ class E_model extends CI_Model
 
     }
 
-    function unlink($e__id, $x__miner = 0, $merger_e__id = 0){
+    function remove($e__id, $x__miner = 0, $merger_e__id = 0){
 
         //Fetch all SOURCE LINKS:
         $adjusted_count = 0;
@@ -358,7 +358,7 @@ class E_model extends CI_Model
                         'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
                         'x__up' => $e__id,
                     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')),
-                    //Miner links:
+                    //Miner transactions:
                     $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -366,7 +366,7 @@ class E_model extends CI_Model
                     ), array(), 0)
                 ) as $adjust_tr){
 
-            //Merge only if merger ID provided and link not related to original link:
+            //Merge only if merger ID provided and transaction not related to original transaction:
             if($merger_e__id > 0 && $adjust_tr['x__up']!=$merger_e__id && $adjust_tr['x__down']!=$merger_e__id){
 
                 //Update core field:
@@ -380,15 +380,15 @@ class E_model extends CI_Model
                     $updating_fields['x__message'] = str_replace('@'.$adjust_tr[$target_field],'@'.$merger_e__id, $adjust_tr['x__message']);
                 }
 
-                //Update Link:
-                $adjusted_count += $this->X_model->update($adjust_tr['x__id'], $updating_fields, $x__miner, 10689 /* Miner Link Merged */);
+                //Update Transaction:
+                $adjusted_count += $this->X_model->update($adjust_tr['x__id'], $updating_fields, $x__miner, 10689 /* Miner Transaction Merged */);
 
             } else {
 
-                //Delete this link:
+                //Delete this transaction:
                 $adjusted_count += $this->X_model->update($adjust_tr['x__id'], array(
-                    'x__status' => 6173, //Link Deleted
-                ), $x__miner, 10673 /* Miner Link Unpublished */);
+                    'x__status' => 6173, //Transaction Deleted
+                ), $x__miner, 10673 /* Miner Transaction Unpublished */);
 
             }
         }
@@ -457,8 +457,8 @@ class E_model extends CI_Model
         $e_domain = false; //Have an empty placeholder:
 
 
-        //Check to see if we have domain linked previously:
-        $url_links = $this->X_model->fetch(array(
+        //Check to see if we have domain:
+        $url_x = $this->X_model->fetch(array(
             'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
@@ -468,10 +468,10 @@ class E_model extends CI_Model
 
 
         //Do we need to create an source for this domain?
-        if (count($url_links) > 0) {
+        if (count($url_x) > 0) {
 
             $domai_previously_existed = 1;
-            $e_domain = $url_links[0];
+            $e_domain = $url_x[0];
 
         } elseif ($x__miner) {
 
@@ -479,7 +479,7 @@ class E_model extends CI_Model
             $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__miner, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
             $e_domain = $added_e['new_e'];
 
-            //And link source to the domains source:
+            //And transaction source to the domains source:
             $this->X_model->create(array(
                 'x__miner' => $x__miner,
                 'x__type' => 4256, //Generic URL (Domains are always generic)
@@ -747,19 +747,19 @@ class E_model extends CI_Model
         } else {
 
             //Check to see if URL previously exists:
-            $url_links = $this->X_model->fetch(array(
+            $url_x = $this->X_model->fetch(array(
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Miner URL Links
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Miner URL Transactions
                 'x__message' => $url,
             ), array('x__down'));
 
 
             //Do we need to create an source for this URL?
-            if (count($url_links) > 0) {
+            if (count($url_x) > 0) {
 
                 //Nope, source previously exists:
-                $e_url = $url_links[0];
+                $e_url = $url_x[0];
                 $url_previously_existed = 1;
 
             } elseif($x__miner) {
@@ -779,7 +779,7 @@ class E_model extends CI_Model
                     //All good:
                     $e_url = $added_e['new_e'];
 
-                    //Always link URL to its parent domain:
+                    //Always transaction URL to its parent domain:
                     $this->X_model->create(array(
                         'x__miner' => $x__miner,
                         'x__type' => $x__type,
@@ -821,7 +821,7 @@ class E_model extends CI_Model
 
         //Have we been asked to also add URL to another parent or child?
         if(!$url_previously_existed && $add_to_child_e__id){
-            //Link URL to its parent domain?
+            //Transaction URL to its parent domain?
             $this->X_model->create(array(
                 'x__miner' => $x__miner,
                 'x__type' => e_x__type(),
@@ -963,8 +963,8 @@ class E_model extends CI_Model
                     if($action_e__id==13441){
                         //Since we're migrating we should remove from here:
                         $this->X_model->update($x['x__id'], array(
-                            'x__status' => 6173, //Link Deleted
-                        ), $x__miner, 10673 /* Miner Link Unpublished  */);
+                            'x__status' => 6173, //Transaction Deleted
+                        ), $x__miner, 10673 /* Miner Transaction Unpublished  */);
                     }
 
                 } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_es) > 0){
@@ -975,8 +975,8 @@ class E_model extends CI_Model
                         foreach($child_parent_es as $delete_tr){
 
                             $this->X_model->update($delete_tr['x__id'], array(
-                                'x__status' => 6173, //Link Deleted
-                            ), $x__miner, 10673 /* Miner Link Unpublished  */);
+                                'x__status' => 6173, //Transaction Deleted
+                            ), $x__miner, 10673 /* Miner Transaction Unpublished  */);
 
                             $applied_success++;
                         }
@@ -1031,19 +1031,19 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5001 && substr_count($x['x__message'], $action_command1) > 0) { //Replace Link Matching String
+            } elseif ($action_e__id == 5001 && substr_count($x['x__message'], $action_command1) > 0) { //Replace Transaction Matching String
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => str_replace($action_command1, $action_command2, $x['x__message']),
-                ), $x__miner, 10657 /* Miner Link Updated Content  */);
+                ), $x__miner, 10657 /* Miner Transaction Updated Content  */);
 
                 $applied_success++;
 
             } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__status']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
 
-                //Being deleted? Unlink as well if that's the case:
+                //Being deleted? Remove as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('n___7358'))){
-                    $this->E_model->unlink($x['e__id'], $x__miner);
+                    $this->E_model->remove($x['e__id'], $x__miner);
                 }
 
                 //Update Matching Miner Status:
@@ -1057,7 +1057,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__status' => $action_command2,
-                ), $x__miner, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Miner Link Updated Status */ : 10673 /* Miner Link Unpublished */ ));
+                ), $x__miner, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Miner Transaction Updated Status */ : 10673 /* Miner Transaction Unpublished */ ));
 
                 $applied_success++;
 
@@ -1065,7 +1065,7 @@ class E_model extends CI_Model
         }
 
 
-        //Log mass source edit link:
+        //Log mass source edit transaction:
         $this->X_model->create(array(
             'x__miner' => $x__miner,
             'x__type' => $action_e__id,

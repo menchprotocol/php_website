@@ -23,7 +23,7 @@ class X_model extends CI_Model
             $add_fields['x__miner'] = 0;
         }
 
-        //Only require link type:
+        //Only require transaction type:
         if (detect_missing_columns($add_fields, array('x__type'), $add_fields['x__miner'])) {
             return false;
         }
@@ -50,7 +50,7 @@ class X_model extends CI_Model
         }
 
         if (!isset($add_fields['x__status'])|| is_null($add_fields['x__status'])) {
-            $add_fields['x__status'] = 6176; //Link Published
+            $add_fields['x__status'] = 6176; //Transaction Published
         }
 
         //Set some zero defaults if not set:
@@ -213,48 +213,48 @@ class X_model extends CI_Model
                 )) as $x_tag){
 
                     //Generate stats:
-                    $links_added = 0;
-                    $links_edited = 0;
-                    $links_deleted = 0;
+                    $x_added = 0;
+                    $x_edited = 0;
+                    $x_deleted = 0;
 
 
-                    //Assign tag if parent/child link NOT previously assigned:
-                    $existing_links = $this->X_model->fetch(array(
+                    //Assign tag if parent/child transaction NOT previously assigned:
+                    $existing_x = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
                         'x__down' => $add_fields['x__miner'],
                     ));
 
-                    if(count($existing_links)){
+                    if(count($existing_x)){
 
-                        //Link previously exists, see if content value is the same:
-                        if($existing_links[0]['x__message'] == $add_fields['x__message'] && $existing_links[0]['x__type'] == $detected_x_type['x__type']){
+                        //Transaction previously exists, see if content value is the same:
+                        if($existing_x[0]['x__message'] == $add_fields['x__message'] && $existing_x[0]['x__type'] == $detected_x_type['x__type']){
 
                             //Everything is the same, nothing to do here:
                             continue;
 
                         } else {
 
-                            $links_edited++;
+                            $x_edited++;
 
-                            //Content value has changed, update the link:
-                            $this->X_model->update($existing_links[0]['x__id'], array(
+                            //Content value has changed, update the transaction:
+                            $this->X_model->update($existing_x[0]['x__id'], array(
                                 'x__message' => $add_fields['x__message'],
-                            ), $add_fields['x__miner'], 10657 /* Miner Link Updated Content  */);
+                            ), $add_fields['x__miner'], 10657 /* Miner Transaction Updated Content  */);
 
-                            //Also, did the link type change based on the content change?
-                            if($existing_links[0]['x__type'] != $detected_x_type['x__type']){
-                                $this->X_model->update($existing_links[0]['x__id'], array(
+                            //Also, did the transaction type change based on the content change?
+                            if($existing_x[0]['x__type'] != $detected_x_type['x__type']){
+                                $this->X_model->update($existing_x[0]['x__id'], array(
                                     'x__type' => $detected_x_type['x__type'],
-                                ), $add_fields['x__miner'], 10659 /* Miner Link Updated Type */);
+                                ), $add_fields['x__miner'], 10659 /* Miner Transaction Updated Type */);
                             }
 
                         }
 
                     } else {
 
-                        //See if we need to delete single selectable links:
+                        //See if we need to delete single selectable transactions:
                         foreach($this->config->item('n___6204') as $single_select_e__id){
                             $single_selectable = $this->config->item('n___'.$single_select_e__id);
                             if(is_array($single_selectable) && count($single_selectable) && in_array($x_tag['x__up'], $single_selectable)){
@@ -266,15 +266,15 @@ class X_model extends CI_Model
                                     'x__up !=' => $x_tag['x__up'],
                                     'x__down' => $add_fields['x__miner'],
                                 )) as $single_selectable_siblings_preset){
-                                    $links_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
-                                        'x__status' => 6173, //Link Deleted
-                                    ), $add_fields['x__miner'], 10673 /* Miner Link Unpublished */);
+                                    $x_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
+                                        'x__status' => 6173, //Transaction Deleted
+                                    ), $add_fields['x__miner'], 10673 /* Miner Transaction Unpublished */);
                                 }
                             }
                         }
 
-                        //Create link:
-                        $links_added++;
+                        //Create transaction:
+                        $x_added++;
                         $this->X_model->create(array(
                             'x__type' => $detected_x_type['x__type'],
                             'x__message' => $add_fields['x__message'],
@@ -292,10 +292,10 @@ class X_model extends CI_Model
                         'x__up' => $x_tag['x__up'],
                         'x__down' => $add_fields['x__miner'],
                         'x__left' => $is[0]['i__id'],
-                        'x__message' => $links_added.' added, '.$links_edited.' edited & '.$links_deleted.' deleted with new content ['.$add_fields['x__message'].']',
+                        'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
                     ));
 
-                    if($links_added>0 || $links_edited>0 || $links_deleted>0){
+                    if($x_added>0 || $x_edited>0 || $x_deleted>0){
                         //See if Session needs to be updated:
                         $session_e = superpower_assigned();
                         if($session_e && $session_e['e__id']==$add_fields['x__miner']){
@@ -308,7 +308,7 @@ class X_model extends CI_Model
         }
 
 
-        //See if this link type has any subscribers:
+        //See if this transaction type has any subscribers:
         if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
 
             //Try to fetch subscribers:
@@ -364,12 +364,12 @@ class X_model extends CI_Model
                 //Email Subject:
                 $subject = 'Notification: '  . $miner_name . ' ' . $e___5967[$add_fields['x__type']]['m_name'];
 
-                //Compose email body, start with link content:
-                $html_message = '<div>' . ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '<i>No link content</i>') . '</div><br />';
+                //Compose email body, start with transaction content:
+                $html_message = '<div>' . ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '<i>No transaction content</i>') . '</div><br />';
 
                 $var_index = var_index();
 
-                //Append link object links:
+                //Append transaction object transactions:
                 foreach($this->config->item('e___11081') as $e__id => $m) {
 
                     if(!array_key_exists($e__id, $var_index) || !intval($add_fields[$var_index[$e__id]])){
@@ -409,12 +409,12 @@ class X_model extends CI_Model
                 //Log emails sent:
                 foreach($sub_e__ids as $to_e__id){
                     $this->X_model->create(array(
-                        'x__type' => 5967, //Link Carbon Copy Email
+                        'x__type' => 5967, //Transaction Carbon Copy Email
                         'x__miner' => $to_e__id, //Sent to this miner
                         'x__metadata' => $dispatched_email, //Save a copy of email
-                        'x__reference' => $add_fields['x__id'], //Save link
+                        'x__reference' => $add_fields['x__id'], //Save transaction
 
-                        //Import potential Idea/source connections from link:
+                        //Import potential Idea/source connections from transaction:
                         'x__right' => $add_fields['x__right'],
                         'x__left' => $add_fields['x__left'],
                         'x__down' => $add_fields['x__down'],
@@ -486,7 +486,7 @@ class X_model extends CI_Model
         }
 
         if($x__miner > 0){
-            //Fetch link before updating:
+            //Fetch transaction before updating:
             $before_data = $this->X_model->fetch(array(
                 'x__id' => $id,
             ));
@@ -520,7 +520,7 @@ class X_model extends CI_Model
 
                 } else {
 
-                    //Log modification link for every field changed:
+                    //Log modification transaction for every field changed:
                     foreach($update_columns as $key => $value) {
                         if($before_data[0][$key]==$value){
                             continue;
@@ -534,7 +534,7 @@ class X_model extends CI_Model
 
                         } elseif($key=='x__type'){
 
-                            $e___4593 = $this->config->item('e___4593'); //Link Types
+                            $e___4593 = $this->config->item('e___4593'); //Transaction Types
                             $x__message .= view_db_field($key) . ' updated from [' . $e___4593[$before_data[0][$key]]['m_name'] . '] to [' . $e___4593[$value]['m_name'] . ']'."\n";
 
                         } elseif(in_array($key, array('x__up', 'x__down'))) {
@@ -588,9 +588,9 @@ class X_model extends CI_Model
             }
 
             if(strlen($x__message) > 0 && count($fields_changed) > 0){
-                //Value has changed, log link:
+                //Value has changed, log transaction:
                 $this->X_model->create(array(
-                    'x__reference' => $id, //Link Reference
+                    'x__reference' => $id, //Transaction Reference
                     'x__miner' => $x__miner,
                     'x__type' => $x__type,
                     'x__message' => $x__message,
@@ -721,7 +721,7 @@ class X_model extends CI_Model
         //Did we have ane error in message validation?
         if (!$msg_validation['status'] || !isset($msg_validation['output_messages'])) {
 
-            //Log Error Link:
+            //Log Error Transaction:
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
                 'x__miner' => (isset($recipient_e['e__id']) ? $recipient_e['e__id'] : 0),
@@ -872,7 +872,7 @@ class X_model extends CI_Model
 
             foreach($string_references['ref_urls'] as $url_key => $input_url) {
 
-                //No source linked, but we have a URL that we should turn into an source if not previously:
+                //No source, but we have a URL that we should turn into an source if not previously:
                 $url_e = $this->E_model->url($input_url, ( isset($recipient_e['e__id']) ? $recipient_e['e__id'] : 0 ));
 
                 //Did we have an error?
@@ -937,7 +937,7 @@ class X_model extends CI_Model
             //Set as source reference:
             $e_reference_fields[$e_reference_keys[$referenced_key]] = intval($referenced_e);
 
-            //See if this source has any parent links to be shown in this appendix
+            //See if this source has any parent transactions to be shown in this appendix
             $e_urls = array();
             $e_media_count = 0;
             $e_count = 0;
@@ -1058,7 +1058,7 @@ class X_model extends CI_Model
 
 
             $is_or_i = in_array($i['i__type'], $this->config->item('n___6193'));
-            $is_fixed_link = in_array($next_i['x__type'], $this->config->item('n___12840'));
+            $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
             $is_complete = count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
@@ -1078,7 +1078,7 @@ class X_model extends CI_Model
             }
 
 
-            if (!$is_complete && $is_fixed_link && ( !$is_or_i || $is_selected )) {
+            if (!$is_complete && $is_fixed_x && ( !$is_or_i || $is_selected )) {
 
                 //FIXED LINK, or Selected OR IDEA, that is NOT COMPLETE, It's This:
                 return intval($next_i['i__id']);
@@ -1297,11 +1297,11 @@ class X_model extends CI_Model
         }
 
 
-        //Look at Conditional Idea Links ONLY at this level:
+        //Look at Conditional Idea Transactions ONLY at this level:
         $i__metadata = unserialize($i['i__metadata']);
         if(isset($i__metadata['i___6283'][$i['i__id']]) && count($i__metadata['i___6283'][$i['i__id']]) > 0){
 
-            //Make sure previous link unlocks have NOT happened before:
+            //Make sure previous transaction unlocks have NOT happened before:
             $existing_expansions = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 6140, //DISCOVER UNLOCK LINK
@@ -1342,7 +1342,7 @@ class X_model extends CI_Model
 
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
-            $locked_links = $this->X_model->fetch(array(
+            $locked_x = $this->X_model->fetch(array(
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
@@ -1351,10 +1351,10 @@ class X_model extends CI_Model
             ), array('x__right'), 0, 0);
 
 
-            foreach($locked_links as $locked_link) {
+            foreach($locked_x as $locked_x) {
 
                 //See if it unlocks any of these ranges defined in the metadata:
-                $x__metadata = unserialize($locked_link['x__metadata']);
+                $x__metadata = unserialize($locked_x['x__metadata']);
 
                 //Defines ranges:
                 if(!isset($x__metadata['tr__conditional_score_min'])){
@@ -1375,11 +1375,11 @@ class X_model extends CI_Model
                         'x__type' => 6140, //DISCOVER UNLOCK LINK
                         'x__miner' => $e__id,
                         'x__left' => $i['i__id'],
-                        'x__right' => $locked_link['i__id'],
+                        'x__right' => $locked_x['i__id'],
                         'x__metadata' => array(
                             'completion_rate' => $completion_rate,
                             'miner_marks' => $miner_marks,
-                            'condition_ranges' => $locked_links,
+                            'condition_ranges' => $locked_x,
                         ),
                     ));
 
@@ -1396,7 +1396,7 @@ class X_model extends CI_Model
                     'x__metadata' => array(
                         'completion_rate' => $completion_rate,
                         'miner_marks' => $miner_marks,
-                        'conditional_ranges' => $locked_links,
+                        'conditional_ranges' => $locked_x,
                     ),
                 ));
             }
@@ -1583,13 +1583,13 @@ class X_model extends CI_Model
 
     function mark_complete($i, $add_fields){
 
-        //Log completion link:
-        $new_link = $this->X_model->create($add_fields);
+        //Log completion transaction:
+        $new_x = $this->X_model->create($add_fields);
 
         //Process completion automations:
         $this->X_model->completion_recursive_up($add_fields['x__miner'], $i);
 
-        return $new_link;
+        return $new_x;
 
     }
 
@@ -1656,7 +1656,7 @@ class X_model extends CI_Model
                     'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
                 ), array('x__right')) as $i_answer){
 
-                    //Extract Link Metadata:
+                    //Extract Transaction Metadata:
                     $possible_answer_metadata = unserialize($i_answer['x__metadata']);
 
                     //Assign to this question:
@@ -1738,7 +1738,7 @@ class X_model extends CI_Model
                     'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
                 ), array('x__right')) as $i_answer){
 
-                    //Extract Link Metadata:
+                    //Extract Transaction Metadata:
                     $possible_answer_metadata = unserialize($i_answer['x__metadata']);
 
                     //Assign to this question:
@@ -2009,7 +2009,7 @@ class X_model extends CI_Model
         }
 
 
-        //Define completion links for each answer:
+        //Define completion transactions for each answer:
         if($is[0]['i__type'] == 6684){
 
             //ONE ANSWER
@@ -2032,7 +2032,7 @@ class X_model extends CI_Model
             'x__left' => $is[0]['i__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
-                'x__status' => 6173, //Link Deleted
+                'x__status' => 6173, //Transaction Deleted
             ), $e__id, 12129 /* DISCOVER ANSWER DELETED */);
         }
 
