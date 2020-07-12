@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 13:36:12 PST
+//Generated 2020-07-12 13:38:55 PST
 $config['s___12274'] = 5011; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 122054; //DISCOVERIES
@@ -43,7 +43,7 @@ $config['e___13289'] = array(
         'm_icon' => '<i class="fas fa-text-size"></i>',
         'm_name' => 'FONT SIZE',
         'm_desc' => '',
-        'm_parents' => array(6225,13289,4527,6204),
+        'm_parents' => array(13289,4527,6204),
     ),
     12413 => array(
         'm_icon' => '<i class="fas fa-sitemap" aria-hidden="true"></i>',
@@ -4444,7 +4444,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-text-size"></i>',
         'm_name' => 'FONT SIZE',
         'm_desc' => '',
-        'm_parents' => array(6225,13289,4527,6204),
+        'm_parents' => array(13289,4527,6204),
     ),
     13369 => array(
         'm_icon' => '<i class="fas fa-book idea"></i>',
@@ -5469,7 +5469,7 @@ $config['e___6204'] = array(
         'm_icon' => '<i class="fas fa-text-size"></i>',
         'm_name' => 'FONT SIZE',
         'm_desc' => '',
-        'm_parents' => array(6225,13289,4527,6204),
+        'm_parents' => array(13289,4527,6204),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h idea" aria-hidden="true"></i>',
@@ -6442,7 +6442,7 @@ $config['e___4986'] = array(
 );
 
 //ACCOUNT SETTINGS:
-$config['n___6225'] = array(12289,10869,10957,3288,3286,13491,13037);
+$config['n___6225'] = array(12289,10869,10957,3288,3286,13037);
 $config['e___6225'] = array(
     12289 => array(
         'm_icon' => '<i class="fas fa-paw" aria-hidden="true"></i>',
@@ -6473,12 +6473,6 @@ $config['e___6225'] = array(
         'm_name' => 'PASSWORD',
         'm_desc' => '',
         'm_parents' => array(13014,4269,7578,6225,4755),
-    ),
-    13491 => array(
-        'm_icon' => '<i class="fas fa-text-size"></i>',
-        'm_name' => 'FONT SIZE',
-        'm_desc' => '',
-        'm_parents' => array(6225,13289,4527,6204),
     ),
     13037 => array(
         'm_icon' => '<i class="fas fa-hand-holding-heart"></i>',
