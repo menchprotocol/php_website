@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 11:41:53 PST
-$config['s___12274'] = 5010; //SOURCES
-$config['s___12273'] = 3921; //IDEAS
+//Generated 2020-07-12 12:47:27 PST
+$config['s___12274'] = 5011; //SOURCES
+$config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 122054; //DISCOVERIES
 
 //SAVED IDEAS:
@@ -72,19 +72,19 @@ $config['e___13491'] = array(
         'm_icon' => '<i class="fas fa-h1"></i>',
         'm_name' => 'LARGE FONT',
         'm_desc' => ' ',
-        'm_parents' => array(13491),
+        'm_parents' => array(4755,13491),
     ),
     13493 => array(
         'm_icon' => '<i class="fas fa-h2"></i>',
         'm_name' => 'MEDIUM FONT',
         'm_desc' => ' ',
-        'm_parents' => array(13491),
+        'm_parents' => array(4755,13491),
     ),
     13492 => array(
         'm_icon' => '<i class="fas fa-h3"></i>',
         'm_name' => 'SMALL FONT',
         'm_desc' => ' ',
-        'm_parents' => array(13491),
+        'm_parents' => array(4755,13491),
     ),
 );
 
@@ -132,7 +132,7 @@ $config['e___13479'] = array(
         'm_parents' => array(13479,10876,4527,11035),
     ),
     12500 => array(
-        'm_icon' => '<i class="fas fa-ellipsis-v" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat"></i>',
         'm_name' => 'MINER MENU',
         'm_desc' => 'For signed-in members',
         'm_parents' => array(13451,13479,12079,12823,4527),
@@ -1393,10 +1393,10 @@ $config['e___12677'] = array(
 );
 
 //MINER MENU:
-$config['n___12500'] = array(13449,13207,6415,4341,6287,7291);
+$config['n___12500'] = array(13449,13207,4341,6287,7291);
 $config['e___12500'] = array(
     13449 => array(
-        'm_icon' => '<i class="fas fa-user source"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat source"></i>',
         'm_name' => 'MY SOURCE',
         'm_desc' => '',
         'm_parents' => array(12500),
@@ -1406,12 +1406,6 @@ $config['e___12500'] = array(
         'm_name' => 'TOP SOURCES',
         'm_desc' => '',
         'm_parents' => array(12500,13488,10876,10939,4527),
-    ),
-    6415 => array(
-        'm_icon' => '<i class="far fa-trash-alt discover" aria-hidden="true"></i>',
-        'm_name' => 'RESET DISCOVERIES',
-        'm_desc' => '',
-        'm_parents' => array(13455,12500,4755,4593),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
@@ -2854,7 +2848,7 @@ $config['e___12079'] = array(
         'm_parents' => array(2738,12079,6225,6122,4527),
     ),
     12500 => array(
-        'm_icon' => '<i class="fas fa-ellipsis-v" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat"></i>',
         'm_name' => 'MINER MENU',
         'm_desc' => '',
         'm_parents' => array(13451,13479,12079,12823,4527),
@@ -3077,10 +3071,10 @@ $config['e___6404'] = array(
         'm_parents' => array(6404,13023,4269,12103,6225,4755),
     ),
     13427 => array(
-        'm_icon' => '<i class="fas fa-star idea"></i>',
-        'm_name' => 'FEATURED IDEAS',
+        'm_icon' => '<i class="fas fa-star discover"></i>',
+        'm_name' => 'FEATURED DISCOVERIES',
         'm_desc' => '7766',
-        'm_parents' => array(6404,13210,11035),
+        'm_parents' => array(13455,6404,13210,11035),
     ),
     12176 => array(
         'm_icon' => '<i class="fad fa-clock idea" aria-hidden="true"></i>',
@@ -3386,10 +3380,10 @@ $config['e___11035'] = array(
         'm_parents' => array(11035),
     ),
     13427 => array(
-        'm_icon' => '<i class="fas fa-star idea"></i>',
-        'm_name' => 'FEATURED IDEAS',
+        'm_icon' => '<i class="fas fa-star discover"></i>',
+        'm_name' => 'FEATURED DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(6404,13210,11035),
+        'm_parents' => array(13455,6404,13210,11035),
     ),
     12707 => array(
         'm_icon' => '<i class="far fa-filter" aria-hidden="true"></i>',
@@ -4777,7 +4771,7 @@ $config['e___4527'] = array(
         'm_parents' => array(4527,6287,12741,7287,7274),
     ),
     12500 => array(
-        'm_icon' => '<i class="fas fa-ellipsis-v" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat"></i>',
         'm_name' => 'MINER MENU',
         'm_desc' => '',
         'm_parents' => array(13451,13479,12079,12823,4527),
@@ -6659,7 +6653,7 @@ $config['e___4997'] = array(
 );
 
 //PRIVATE TRANSACTION:
-$config['n___4755'] = array(13039,13040,13041,13038,12336,12334,12197,4554,7757,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,3288,4235,12773,12453,10681,12450,4527,11054,13367,13042,3286,4783,4755,7495,6155,13415,6415,12896,7563,6132,13412,6157,7489,4246,4559,12117,7504,6144,7485,7486,6997,12489,12906);
+$config['n___4755'] = array(13039,13040,13041,13038,12336,12334,12197,4554,7757,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,13367,13042,3286,4783,4755,7495,6155,13415,6415,12896,7563,13492,6132,13412,6157,7489,4246,4559,12117,7504,6144,7485,7486,6997,12489,12906);
 $config['e___4755'] = array(
     13039 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
@@ -7015,6 +7009,18 @@ $config['e___4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4593,4755,5967),
     ),
+    13494 => array(
+        'm_icon' => '<i class="fas fa-h1"></i>',
+        'm_name' => 'LARGE FONT',
+        'm_desc' => ' ',
+        'm_parents' => array(4755,13491),
+    ),
+    13493 => array(
+        'm_icon' => '<i class="fas fa-h2"></i>',
+        'm_name' => 'MEDIUM FONT',
+        'm_desc' => ' ',
+        'm_parents' => array(4755,13491),
+    ),
     4527 => array(
         'm_icon' => '<i class="fas fa-memory" aria-hidden="true"></i>',
         'm_name' => 'MENCH MEMORY',
@@ -7079,7 +7085,7 @@ $config['e___4755'] = array(
         'm_icon' => '<i class="far fa-trash-alt discover" aria-hidden="true"></i>',
         'm_name' => 'RESET DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(13455,12500,4755,4593),
+        'm_parents' => array(13455,4755,4593),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
@@ -7092,6 +7098,12 @@ $config['e___4755'] = array(
         'm_name' => 'SIGN-IN MAGIC LINK',
         'm_desc' => '',
         'm_parents' => array(4755,7569,4593),
+    ),
+    13492 => array(
+        'm_icon' => '<i class="fas fa-h3"></i>',
+        'm_name' => 'SMALL FONT',
+        'm_desc' => ' ',
+        'm_parents' => array(4755,13491),
     ),
     6132 => array(
         'm_icon' => '<i class="fas fa-arrows"></i>',
@@ -7804,7 +7816,7 @@ $config['e___4593'] = array(
         'm_icon' => '<i class="far fa-trash-alt discover" aria-hidden="true"></i>',
         'm_name' => 'RESET DISCOVERIES',
         'm_desc' => 'Removes all player read coins so everything is reset to 0% again.',
-        'm_parents' => array(13455,12500,4755,4593),
+        'm_parents' => array(13455,4755,4593),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',

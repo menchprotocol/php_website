@@ -182,9 +182,6 @@ if(!isset($hide_header)){
                             //Skip superpowers if not assigned
                             if($x__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
                                 continue;
-                            } elseif($x__type==6415 && !$is_home){
-                                //Deleting discovers only available on Discoveries home
-                                continue;
                             }
 
                             $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
@@ -210,11 +207,6 @@ if(!isset($hide_header)){
                                 //FEEDBACK SUPPORT
                                 $page_url = 'href="javascript:void(0);"';
                                 $extra_class = ' icon_12899 ';
-
-                            } elseif($x__type==6415) {
-
-                                //CLEAR DISCOVERIES
-                                $page_url = 'href="javascript:void(0)" onclick="$(\'.clear-xy-list\').toggleClass(\'hidden\')"';
 
                             } else {
 

@@ -6,9 +6,9 @@ $(document).ready(function () {
 
 });
 
-function x_clear_all(){
+function reset_6415(){
 
-    $('.clear-xy-list').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL...</b>');
+    $('.reset_6415').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL...</b>');
 
     //Redirect:
     window.location = '/x/x_clear_coins';
