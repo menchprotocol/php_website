@@ -217,7 +217,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
     var x__message_search = '<?= ( isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0 ? $_GET['x__message_search'] : '' ) ?>';
     var x__message_replace = '<?= ( isset($_GET['x__message_replace']) && strlen($_GET['x__message_replace']) > 0 ? $_GET['x__message_replace'] : '' ) ?>';
 </script>
-<script src="/application/views/x/x.js?v=<?= config_var(11060) ?>"
+<script src="/application/views/x/ledger.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php
@@ -408,7 +408,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
     echo '<input type="submit" class="btn btn-x" value="Apply" />';
 
     if($has_filters){
-        echo ' &nbsp;<a href="/x" style="font-size: 0.8em;">Remove Filters</a>';
+        echo ' &nbsp;<a href="/ledger" style="font-size: 0.8em;">Remove Filters</a>';
     }
 
     echo '</form>';

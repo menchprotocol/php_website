@@ -42,7 +42,7 @@ class X extends CI_Controller
         $this->load->view('header', array(
             'title' => $e___11035[4341]['m_name'],
         ));
-        $this->load->view('x/x');
+        $this->load->view('x/ledger');
         $this->load->view('footer');
 
     }

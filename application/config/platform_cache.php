@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 19:38:37 PST
+//Generated 2020-07-11 20:23:52 PST
 $config['s___12274'] = 5009; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 121949; //DISCOVERIES
@@ -346,7 +346,7 @@ $config['e___13439'] = array(
 $config['n___13438'] = array(4430);
 $config['e___13438'] = array(
     4430 => array(
-        'm_icon' => '<i class="fad fa-users source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat" aria-hidden="true"></i>',
         'm_name' => 'MENCH MINERS',
         'm_desc' => '',
         'm_parents' => array(2738,13451,13438,13202,4364,10573),
@@ -650,7 +650,7 @@ $config['e___13291'] = array(
 $config['n___13202'] = array(4430);
 $config['e___13202'] = array(
     4430 => array(
-        'm_icon' => '<i class="fad fa-users source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat" aria-hidden="true"></i>',
         'm_name' => 'MENCH MINERS',
         'm_desc' => '',
         'm_parents' => array(2738,13451,13438,13202,4364,10573),
@@ -1079,7 +1079,7 @@ $config['e___12887'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
-        'm_desc' => '/x?any_e__id=',
+        'm_desc' => '/ledger?any_e__id=',
         'm_parents' => array(13456,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     12888 => array(
@@ -1215,7 +1215,7 @@ $config['e___12822'] = array(
 $config['n___10573'] = array(4430);
 $config['e___10573'] = array(
     4430 => array(
-        'm_icon' => '<i class="fad fa-users source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat" aria-hidden="true"></i>',
         'm_name' => 'MENCH MINERS',
         'm_desc' => '',
         'm_parents' => array(2738,13451,13438,13202,4364,10573),
@@ -1761,7 +1761,7 @@ $config['e___10876'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
-        'm_desc' => 'https://mench.com/x',
+        'm_desc' => 'https://mench.com/ledger',
         'm_parents' => array(13456,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     6287 => array(
@@ -3335,7 +3335,7 @@ $config['e___11047'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
-        'm_desc' => '/x?any_i__id=',
+        'm_desc' => '/ledger?any_i__id=',
         'm_parents' => array(13456,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     7279 => array(
@@ -4161,7 +4161,7 @@ $config['e___2738'] = array(
         'm_parents' => array(13369,10939,13507,12030,2738,13296,4527),
     ),
     4430 => array(
-        'm_icon' => '<i class="fad fa-users source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat" aria-hidden="true"></i>',
         'm_name' => 'MENCH MINERS',
         'm_desc' => '',
         'm_parents' => array(2738,13451,13438,13202,4364,10573),
@@ -4450,7 +4450,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-book idea"></i>',
         'm_name' => 'IDEA COVER UI',
         'm_desc' => '',
-        'm_parents' => array(4527,6768),
+        'm_parents' => array(6287,4527,6768),
     ),
     4229 => array(
         'm_icon' => '<i class="fad fa-question-circle idea" aria-hidden="true"></i>',
@@ -5904,7 +5904,7 @@ $config['e___7309'] = array(
 );
 
 //PLUGINS:
-$config['n___6287'] = array(7274,12739,12733,12722,7264,4356,7261,12731,12734,7260,7263,11049,7259,12138,7275,7276,12735,7712,4527,12114,7277,12710,12709,12729,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12569);
+$config['n___6287'] = array(7274,12739,12733,12722,7264,13369,4356,7261,12731,12734,7260,7263,11049,7259,12138,7275,7276,12735,7712,4527,12114,7277,12710,12709,12729,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12569);
 $config['e___6287'] = array(
     7274 => array(
         'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
@@ -5935,6 +5935,12 @@ $config['e___6287'] = array(
         'm_name' => 'IDEA BIRDS EYE MARKS',
         'm_desc' => '',
         'm_parents' => array(11047,6287),
+    ),
+    13369 => array(
+        'm_icon' => '<i class="fas fa-book idea"></i>',
+        'm_name' => 'IDEA COVER UI',
+        'm_desc' => 'Quickly make a new idea using Font Awesome icons',
+        'm_parents' => array(6287,4527,6768),
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch idea" aria-hidden="true"></i>',
