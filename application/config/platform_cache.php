@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 14:04:49 PST
+//Generated 2020-07-12 14:06:07 PST
 $config['s___12274'] = 5013; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 122054; //DISCOVERIES
@@ -6477,7 +6477,7 @@ $config['e___6225'] = array(
     13037 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
         'm_name' => 'MONTHLY DONATIONS',
-        'm_desc' => 'Fund weekly Miner payouts & building the Mench infrastructure:',
+        'm_desc' => 'Monthly donations help fund the weekly Miner payouts & building the Mench infrastructure:',
         'm_parents' => array(13518,4527,6204,6225),
     ),
     13519 => array(
