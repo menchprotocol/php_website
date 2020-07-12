@@ -82,7 +82,7 @@ class X extends CI_Controller
             $message .= '<div class="list-group list-grey">';
             foreach($x as $x) {
 
-                $message .= view_interaction($x);
+                $message .= view_x($x);
 
                 if($session_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_search'])>0){
 

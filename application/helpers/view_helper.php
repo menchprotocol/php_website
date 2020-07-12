@@ -339,7 +339,7 @@ function view_number($number)
 }
 
 
-function view_interaction($x, $is_parent_tr = false)
+function view_x($x, $is_parent_tr = false)
 {
 
     $CI =& get_instance();
@@ -465,7 +465,7 @@ function view_interaction($x, $is_parent_tr = false)
                 //PARENT DISCOVER
                 $x = $CI->X_model->fetch(array('x__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'">'.$e___4341[$e__id]['m_icon']. '</span><div class="x-ref">'.view_interaction($x[0], true).'</div></div>';
+                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'">'.$e___4341[$e__id]['m_icon']. '</span><div class="x-ref">'.view_x($x[0], true).'</div></div>';
 
             }
         }
@@ -609,7 +609,7 @@ function view_coins_count_e($i__id = 0, $e__id = 0, $number_only = false){
     }
 }
 
-function view_x_icon_legend($completion_percentage){
+function view_i_x_icon($completion_percentage){
 
     $CI =& get_instance();
     $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
@@ -654,6 +654,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
     $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $recipient_e );
     $first_segment = $CI->uri->segment(1);
+    $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
@@ -662,20 +663,31 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $ui .= ( $can_click ? '<a href="/'. $i['i__id'] .'" class="itemdiscover">' : '' );
 
 
-    //Right Stats:
-    if($i_stats['i___13292'] || $i_stats['i___13443']){
-        $ui .= '<div class="pull-right montserrat x_info hidden" style="'.( $has_completion ? ' padding-top:4px;' : '' ).'"><span style="width:53px; display: inline-block;">'.( $i_stats['i___13443'] ? '<i class="fas fa-circle idea"></i><span style="padding-left:3px;" class="idea">'.$i_stats['i___13443'].'</span>' : '' ).'</span>'.( $i_stats['i___13292'] ? '<span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span>': '' ).'</div>';
-    }
-
-
     if($has_completion){
         $ui .= '<div class="progress-bg-list" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
-    $ui .= '<span class="icon-block">'.view_x_icon_legend($completion_rate['completion_percentage']).'</span>';
+    $ui .= '<span class="icon-block">'.view_i_x_icon($completion_rate['completion_percentage']).'</span>';
 
     $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
+
+    //Extra Stats
+    $ui .= '<div class="montserrat handler_13509 hidden hideIfEmpty">';
+
+    if($i_stats['e_count']){
+        $ui .= $e___12467[12274]['m_icon'].'<span style="padding:0 21px 0 3px;" class="source">'.$i_stats['e_count'].'</span>';
+    }
+
+    if($i_stats['i___13443']){
+        $ui .= $e___12467[12273]['m_icon'].'<span style="padding:0 21px 0 3px;" class="idea">'.$i_stats['i___13443'].'</span>';
+    }
+
+    if($i_stats['i___13292']){
+        $ui .= '<span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span>';
+    }
+
+    $ui .= '</div>';
 
     //Search for Idea Image:
     if($show_editor){
@@ -689,6 +701,8 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
         }
     }
+
+
 
     $ui .= ( $can_click ? '</a>' : '' );
     $ui .= '</div>';
@@ -1046,7 +1060,7 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null){
     echo '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
     //Toogle for extra info:
-    echo '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.x_info\').toggleClass(\'hidden\');" class="icon-block grey" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13509]['m_name'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
+    echo '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="icon-block grey" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13509]['m_name'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
 
     echo '<div class="doclear">&nbsp;</div>';
 
