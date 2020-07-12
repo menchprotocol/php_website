@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 12:55:45 PST
+//Generated 2020-07-12 12:57:02 PST
 $config['s___12274'] = 5011; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 122054; //DISCOVERIES
@@ -104,7 +104,7 @@ $config['e___13488'] = array(
         'm_parents' => array(10876,13488),
     ),
     13207 => array(
-        'm_icon' => '<i class="fas fa-medal"></i>',
+        'm_icon' => '<i class="fas fa-medal source"></i>',
         'm_name' => 'TOP SOURCES',
         'm_desc' => '',
         'm_parents' => array(12500,13488,10876,10939,4527),
@@ -1396,13 +1396,13 @@ $config['e___12677'] = array(
 $config['n___12500'] = array(13449,13207,4341,6287,7291);
 $config['e___12500'] = array(
     13449 => array(
-        'm_icon' => '<i class="fad fa-user-hard-hat"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat source"></i>',
         'm_name' => 'MY SOURCE',
         'm_desc' => '',
         'm_parents' => array(12500),
     ),
     13207 => array(
-        'm_icon' => '<i class="fas fa-medal"></i>',
+        'm_icon' => '<i class="fas fa-medal source"></i>',
         'm_name' => 'TOP SOURCES',
         'm_desc' => '',
         'm_parents' => array(12500,13488,10876,10939,4527),
@@ -1421,7 +1421,7 @@ $config['e___12500'] = array(
     ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
-        'm_name' => 'SIGNOUT',
+        'm_name' => 'LOGOUT',
         'm_desc' => '',
         'm_parents' => array(12500,10876),
     ),
@@ -1744,7 +1744,7 @@ $config['e___12413'] = array(
 );
 
 //DISCOVERY HOME:
-$config['n___10876'] = array(13210,13405,4341,6287,4269,7291,13207);
+$config['n___10876'] = array(13210,13405,7291,4341,6287,4269,13207);
 $config['e___10876'] = array(
     13210 => array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
@@ -1757,6 +1757,12 @@ $config['e___10876'] = array(
         'm_name' => 'IDEA HOME',
         'm_desc' => 'https://mench.com/~',
         'm_parents' => array(10876,13488),
+    ),
+    7291 => array(
+        'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
+        'm_name' => 'LOGOUT',
+        'm_desc' => 'https://mench.com/e/signout',
+        'm_parents' => array(12500,10876),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
@@ -1776,14 +1782,8 @@ $config['e___10876'] = array(
         'm_desc' => 'https://mench.com/e/signin',
         'm_parents' => array(13479,10876,4527,11035),
     ),
-    7291 => array(
-        'm_icon' => '<i class="fas fa-power-off" aria-hidden="true"></i>',
-        'm_name' => 'SIGNOUT',
-        'm_desc' => 'https://mench.com/e/signout',
-        'm_parents' => array(12500,10876),
-    ),
     13207 => array(
-        'm_icon' => '<i class="fas fa-medal"></i>',
+        'm_icon' => '<i class="fas fa-medal source"></i>',
         'm_name' => 'TOP SOURCES',
         'm_desc' => 'https://mench.com/@',
         'm_parents' => array(12500,13488,10876,10939,4527),
@@ -5041,7 +5041,7 @@ $config['e___4527'] = array(
         'm_parents' => array(4527,6771),
     ),
     13207 => array(
-        'm_icon' => '<i class="fas fa-medal"></i>',
+        'm_icon' => '<i class="fas fa-medal source"></i>',
         'm_name' => 'TOP SOURCES',
         'm_desc' => '',
         'm_parents' => array(12500,13488,10876,10939,4527),
