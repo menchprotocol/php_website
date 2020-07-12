@@ -155,6 +155,7 @@ class I extends CI_Controller {
         //Load views:
         $this->load->view('header', array(
             'title' => $is[0]['i__title'],
+            'i_focus' => $is[0],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('i/layout', array(

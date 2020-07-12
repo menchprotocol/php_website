@@ -95,9 +95,6 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_in
 //IDEA TIME
 echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_owns_i && $is_active, 0).'</div>';
 
-//IDEA DISCOVER (IF PUBLIC)
-echo '<div class="inline-block pull-right both-margin left-half-margin i-x '.( $is_public ? '' : ' hidden ' ).'" style="margin-top:17px; margin-bottom:-12px;"><a class="btn btn-x btn-circle" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[12750]['m_name'].'">'.$e___11035[12750]['m_icon'].'</a></div>';
-
 echo '<div class="doclear">&nbsp;</div>';
 
 

@@ -111,12 +111,13 @@ if(!isset($hide_header)){
 
                         //MENCH COINS
                         foreach($this->config->item('e___12467') as $x__type => $m) {
+
                             if($x__type==12274){
                                 $page_url = 'href="/@'.$session_e['e__id'].'"';
                             } elseif($x__type==12273){
                                 $page_url = 'href="/~'.( is_numeric($first_segment) && e_owns_i($first_segment) ? $first_segment : '' ).'"';
                             } elseif($x__type==6255){
-                                $page_url = 'href="/"';
+                                $page_url = 'href="/'.( isset($i_focus['i__id']) ? $i_focus['i__id'] : '' ).'"';
                             }
 
                             $class = trim(extract_icon_color($m['m_icon']));

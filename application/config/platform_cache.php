@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 20:29:21 PST
-$config['s___12274'] = 5009; //SOURCES
-$config['s___12273'] = 3920; //IDEAS
+//Generated 2020-07-12 00:13:28 PST
+$config['s___12274'] = 5010; //SOURCES
+$config['s___12273'] = 3921; //IDEAS
 $config['s___6255'] = 121949; //DISCOVERIES
 
 //SAVED IDEAS:
@@ -3347,7 +3347,7 @@ $config['e___11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(6225,13502,13401,12750,10876,13495,13427,12707,4235,12991,12211,12413,11068,4341,12969,10573,6287,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
+$config['n___11035'] = array(6225,13502,13401,10876,13495,13427,12707,4235,12991,12211,12413,11068,4341,12969,10573,6287,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
 $config['e___11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3366,12 +3366,6 @@ $config['e___11035'] = array(
         'm_name' => 'CLOSE SEARCH',
         'm_desc' => '',
         'm_parents' => array(11035,7256),
-    ),
-    12750 => array(
-        'm_icon' => '<i class="fas fa-step-forward discover"></i>',
-        'm_name' => 'DISCOVER THIS IDEA',
-        'm_desc' => '',
-        'm_parents' => array(13295,11035),
     ),
     10876 => array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',

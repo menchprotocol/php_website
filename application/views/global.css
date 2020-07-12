@@ -514,7 +514,7 @@ img.no-radius {
 .grey, .grey i { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
-.btn-e i, .btn-x i, .btn-i i, .btn-circle i { color: #000000 !important; }
+.btn-e i, .btn-x i, .btn-i i { color: #000000 !important; }
 
 .table-condense{
     margin-bottom: 5px;
@@ -1538,14 +1538,6 @@ label {
 .share-this .icon-block{
     font-size: 1.3em;
     cursor: pointer;
-}
-.btn-circle{
-    margin:0 10px;
-    border-radius: 50% !important;
-    font-size: 2.5em !important;
-    width: 70px;
-    height: 70px;
-    padding: 15px 12px 0px 13px !important;
 }
 .mirror-v{
     -moz-transform: scale(1, -1);
