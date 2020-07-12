@@ -115,7 +115,8 @@ h1 {
 }
 
 .list-group-item h1 {
-    margin-bottom:8px;
+    margin-bottom:0;
+    margin-top: -8px;
 }
 
 h1 i {
