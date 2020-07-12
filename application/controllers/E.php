@@ -316,7 +316,7 @@ class E extends CI_Controller
         } elseif (!isset($_POST['x__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Interaction ID',
+                'message' => 'Invalid Transaction ID',
             ));
         } elseif (!isset($_POST['i__id']) || !e_owns_i($_POST['i__id'])) {
             return view_json(array(
@@ -1198,7 +1198,7 @@ class E extends CI_Controller
             )) as $delete){
                 //Should usually delete a single option:
                 $this->X_model->update($delete['x__id'], array(
-                    'x__status' => 6173, //Interaction Removed
+                    'x__status' => 6173, //Transaction Removed
                 ), $session_e['e__id'], 6224 /* Miner Account Updated */);
             }
 
@@ -1359,7 +1359,7 @@ class E extends CI_Controller
 
                 //Delete email:
                 $this->X_model->update($miner_emails[0]['x__id'], array(
-                    'x__status' => 6173, //Interaction Removed
+                    'x__status' => 6173, //Transaction Removed
                 ), $session_e['e__id'], 6224 /* Miner Account Updated */);
 
                 $return = array(

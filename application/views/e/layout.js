@@ -744,7 +744,7 @@ function e_update() {
                         $("#x__message").val(data.x__message_final).hide().fadeIn('slow');
                     }
 
-                    //Interaction Status:
+                    //Transaction Status:
                     $(".e__id_" + modify_data['e__id']).attr('x-status', modify_data['x__status'])
                     $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m_name"] + ': ' + js_e___6186[modify_data['x__status']]["m_desc"] + '">' + js_e___6186[modify_data['x__status']]["m_icon"] + '</span>');
 

@@ -73,7 +73,7 @@ class X extends CI_Controller
 
         //Display filter:
         if($total_items_loaded > 0){
-            $message .= '<div class="montserrat x-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' INTERACTIONS:</div>';
+            $message .= '<div class="montserrat x-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
         }
 
 
@@ -677,7 +677,7 @@ class X extends CI_Controller
             'x__miner' => $session_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
-                'x__status' => 6173, //Interaction Removed
+                'x__status' => 6173, //Transaction Removed
             ), $session_e['e__id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
 
@@ -742,7 +742,7 @@ class X extends CI_Controller
             'x__miner' => $session_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
-                'x__status' => 6173, //Interaction Removed
+                'x__status' => 6173, //Transaction Removed
             ), $session_e['e__id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
 
@@ -817,7 +817,7 @@ class X extends CI_Controller
             //Delete all progressions:
             foreach($progress_links as $progress_link){
                 $this->X_model->update($progress_link['x__id'], array(
-                    'x__status' => 6173, //Interaction Removed
+                    'x__status' => 6173, //Transaction Removed
                     'x__reference' => $clear_all_link['x__id'], //To indicate when it was deleted
                 ), $session_e['e__id'], 6415 /* Reset All Discoveries */);
             }
@@ -877,7 +877,7 @@ class X extends CI_Controller
         )) as $remove_saved){
             $removed++;
             $this->X_model->update($remove_saved['x__id'], array(
-                'x__status' => 6173, //Interaction Removed
+                'x__status' => 6173, //Transaction Removed
             ), $session_e['e__id'], 12906 /* UNSAVED */);
         }
 
@@ -935,7 +935,7 @@ class X extends CI_Controller
         } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___13414'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Interaction Type',
+                'message' => 'Invalid Transaction Type',
             ));
         }
 
@@ -986,7 +986,7 @@ class X extends CI_Controller
         } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___13413'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Interaction Type',
+                'message' => 'Invalid Transaction Type',
             ));
         }
 

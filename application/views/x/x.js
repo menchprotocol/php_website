@@ -11,7 +11,7 @@ $(document).ready(function () {
     });
 
     //Load first page of links:
-    interactions_load(link_filters, link_joined_by, 1);
+    x_load(link_filters, link_joined_by, 1);
 
 });
 
@@ -32,7 +32,7 @@ function check_i_e__status(){
 }
 
 
-function interactions_load(link_filters, link_joined_by, page_num){
+function x_load(link_filters, link_joined_by, page_num){
 
     //Show spinner:
     $('#link_page_'+page_num).html('<div class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12694) +  '</div>').hide().fadeIn();

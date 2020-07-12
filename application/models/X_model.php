@@ -398,7 +398,7 @@ class X_model extends CI_Model
                 }
 
                 //Finally append DISCOVER ID:
-                $html_message .= '<div>INTERACTION ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields['x__id'] . '">' . $add_fields['x__id'] . '</a></div>';
+                $html_message .= '<div>TRANSACTION ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields['x__id'] . '">' . $add_fields['x__id'] . '</a></div>';
 
                 //Inform how to change settings:
                 $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'/@5967" target="_blank">@5967</a></div>';
@@ -529,7 +529,7 @@ class X_model extends CI_Model
                         //Now determine what type is this:
                         if($key=='x__status'){
 
-                            $e___6186 = $this->config->item('e___6186'); //Interaction Status
+                            $e___6186 = $this->config->item('e___6186'); //Transaction Status
                             $x__message .= view_db_field($key) . ' updated from [' . $e___6186[$before_data[0][$key]]['m_name'] . '] to [' . $e___6186[$value]['m_name'] . ']'."\n";
 
                         } elseif($key=='x__type'){

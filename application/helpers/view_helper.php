@@ -210,7 +210,7 @@ function view_i_notes($x, $note_is_e = false)
     $CI =& get_instance();
     $session_e = superpower_assigned();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
-    $e___6186 = $CI->config->item('e___6186'); //Interaction Status
+    $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $note_is_e = ( $note_is_e || superpower_active(10984, true) );
 
 
@@ -346,7 +346,7 @@ function view_x($x, $is_parent_tr = false)
     $e___4593 = $CI->config->item('e___4593'); //Link Type
     $e___4341 = $CI->config->item('e___4341'); //Link Table
     $e___12467 = $CI->config->item('e___12467');
-    $e___6186 = $CI->config->item('e___6186'); //Interaction Status
+    $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $session_e = superpower_assigned();
 
 
@@ -369,7 +369,7 @@ function view_x($x, $is_parent_tr = false)
     $ui = '<div class="x-list">';
 
 
-    //Interaction ID
+    //Transaction ID
     $ui .= '<div class="simple-line"><a href="/x?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[4367]['m_icon']. '</span>'.$x['x__id'].'</a></div>';
 
 
@@ -392,7 +392,7 @@ function view_x($x, $is_parent_tr = false)
         $coins_type = null;
     }
 
-    //Interaction Type & Coins
+    //Transaction Type & Coins
     $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_name'].( strlen($e___4593[$x['x__type']]['m_desc']) ? ': '.$e___4593[$x['x__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'">'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;' . $e___4593[$x['x__type']]['m_name'] . '</span>'.($coins_type ? '&nbsp;<span title="'.$coins_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coins_type.'"></i></span>' : '').'</a></div>';
 
 
@@ -723,7 +723,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
 
     //Go down recursively:
     $CI =& get_instance();
-    $e___6186 = $CI->config->item('e___6186'); //Interaction Status
+    $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___4486 = $CI->config->item('e___4486');
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $e___7585 = $CI->config->item('e___7585'); // Idea Subtypes
@@ -749,7 +749,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Link Type: '.$e___4486[$i_x['x__type']]['m_name'].'">'. $e___4486[$i_x['x__type']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Interaction Status: '.$e___6186[$i_x['x__status']]['m_name'].'">'. $e___6186[$i_x['x__status']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Status: '.$e___6186[$i_x['x__status']]['m_name'].'">'. $e___6186[$i_x['x__status']]['m_icon'] . '</span>';
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___7585[$i_x['i__type']]['m_name'].'">'. $e___7585[$i_x['i__type']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_x['i__status']]['m_name'].'">'. $e___4737[$i_x['i__status']]['m_icon']. '</span>';
@@ -1311,7 +1311,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $session_e = superpower_assigned();
     $e___6177 = $CI->config->item('e___6177'); //Source Status
     $e___4592 = $CI->config->item('e___4592');
-    $e___6186 = $CI->config->item('e___6186'); //Interaction Status
+    $e___6186 = $CI->config->item('e___6186'); //Transaction Status
 
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $is_link_e = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
@@ -1393,7 +1393,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $e_url = ( $is_x_progress ? '/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'] : '/@'.$e['e__id'] );
 
     //SOURCE ICON
-    $ui .= '<a href="'.$e_url.'" '.( $is_link_e ? ' title="INTERACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
+    $ui .= '<a href="'.$e_url.'" '.( $is_link_e ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
 
     //SOURCE TOOLBAR?

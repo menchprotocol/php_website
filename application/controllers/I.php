@@ -416,7 +416,7 @@ class I extends CI_Controller {
 
         //Delete this link:
         $this->X_model->update($_POST['x__id'], array(
-            'x__status' => 6173, //Interaction Removed
+            'x__status' => 6173, //Transaction Removed
         ), $session_e['e__id'], 10686 /* Idea Link Unpublished */);
 
         return view_json(array(

@@ -282,15 +282,15 @@ echo '<div class="container">';
 
     //ANY DISCOVER
     echo '<td><div style="padding-right:5px;">';
-    echo '<span class="mini-header">ANY INTERACTION:</span>';
+    echo '<span class="mini-header">ANY TRANSACTION:</span>';
     echo '<input type="text" name="any_x__id" value="' . ((isset($_GET['any_x__id'])) ? $_GET['any_x__id'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">INTERACTION ID:</span><input type="text" name="x__id" value="' . ((isset($_GET['x__id'])) ? $_GET['x__id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">TRANSACTION ID:</span><input type="text" name="x__id" value="' . ((isset($_GET['x__id'])) ? $_GET['x__id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">PARENT INTERACTION:</span><input type="text" name="x__reference" value="' . ((isset($_GET['x__reference'])) ? $_GET['x__reference'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">PARENT TRANSACTION:</span><input type="text" name="x__reference" value="' . ((isset($_GET['x__reference'])) ? $_GET['x__reference'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">INTERACTION STATUS:</span><input type="text" name="x__status" value="' . ((isset($_GET['x__status'])) ? $_GET['x__status'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">TRANSACTION STATUS:</span><input type="text" name="x__status" value="' . ((isset($_GET['x__status'])) ? $_GET['x__status'] : '') . '" class="form-control border"></td>';
 
     echo '</tr></table>';
 
@@ -304,14 +304,14 @@ echo '<div class="container">';
 
     //Search
     echo '<td><div style="padding-right:5px;">';
-    echo '<span class="mini-header">INTERACTION MESSAGE SEARCH:</span>';
+    echo '<span class="mini-header">TRANSACTION MESSAGE SEARCH:</span>';
     echo '<input type="text" name="x__message_search" value="' . ((isset($_GET['x__message_search'])) ? $_GET['x__message_search'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
     if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0){
         //Give Option to Replace:
         echo '<td class="' . superpower_active(12705) . '"><div style="padding-right:5px;">';
-        echo '<span class="mini-header">INTERACTION MESSAGE REPLACE:</span>';
+        echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
         echo '<input type="text" name="x__message_replace" value="' . ((isset($_GET['x__message_replace'])) ? $_GET['x__message_replace'] : '') . '" class="form-control border">';
         echo '</div></td>';
     }
@@ -341,7 +341,7 @@ echo '</div></td>';
 
     echo '<td>';
     echo '<div>';
-    echo '<span class="mini-header">INTERACTION TYPE:</span>';
+    echo '<span class="mini-header">TRANSACTION TYPE:</span>';
 
     if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
 
@@ -370,7 +370,7 @@ echo '</div></td>';
         } else {
 
             //Load all fast:
-            echo '<option value="0">ALL INTERACTION TYPES</option>';
+            echo '<option value="0">ALL TRANSACTION TYPES</option>';
             foreach($this->config->item('e___4593') /* DISCOVER Types */ as $e__id => $m){
                 //Echo drop down:
                 echo '<option value="' . $e__id . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $e__id) ? 'selected="selected"' : '') . '>' . $m['m_name'] . '</option>';

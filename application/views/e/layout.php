@@ -116,7 +116,7 @@ $miner_is_e = miner_is_e($e['e__id']);
                             <span class="mini-header"><?= $e___4341[6186]['m_icon'].' '.$e___4341[6186]['m_name'] ?></span>
                             <select class="form-control border" id="x__status">
                                 <?php
-                                foreach($this->config->item('e___6186') /* Interaction Status */ as $x__type => $m){
+                                foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
                                     echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                                 }
                                 ?>
@@ -543,12 +543,12 @@ $miner_is_e = miner_is_e($e['e__id']);
 
                     } elseif($action_e__id == 5865){
 
-                        //Interaction Status update:
+                        //Transaction Status update:
 
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
-                        foreach($this->config->item('e___6186') /* Interaction Status */ as $x__type3 => $m3){
+                        foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
                             $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';
@@ -556,7 +556,7 @@ $miner_is_e = miner_is_e($e['e__id']);
                         //Replace:
                         $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
-                        foreach($this->config->item('e___6186') /* Interaction Status */ as $x__type3 => $m3){
+                        foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
                             $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m_name'].'</option>';
                         }
                         $input_options .= '</select>';

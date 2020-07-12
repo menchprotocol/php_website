@@ -1,6 +1,6 @@
 <?php
 
-//Update Idea Interaction Time:
+//Update Idea Transaction Time:
 $i__id = ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 );
 $total_time = 0;
 $total_scanned = 0;

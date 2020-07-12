@@ -23,5 +23,5 @@ $route['@(:num)']                   = "e/e_coin/$1";
 $route['~(:num)']                   = "i/i_coin/$1";
 
 //OTHER
-$route['x']                         = "x/x_list"; //Interactions
+$route['x']                         = "x/x_list"; //Transactions
 $route['404_override']              = 'e/e_404'; //Page not found, etc...

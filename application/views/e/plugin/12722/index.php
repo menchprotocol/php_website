@@ -2,7 +2,7 @@
 
 if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
 
-    echo 'Missing DISCOVER ID (Append ?x__id=INTERACTION_ID in URL)';
+    echo 'Missing DISCOVER ID (Append ?x__id=TRANSACTION_ID in URL)';
 
 } else {
 
@@ -16,7 +16,7 @@ if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
 
     if (count($x) < 1) {
 
-        echo 'Invalid Interaction ID';
+        echo 'Invalid Transaction ID';
 
     } elseif(!superpower_assigned(12701)) {
 

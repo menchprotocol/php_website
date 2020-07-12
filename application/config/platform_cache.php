@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 19:22:50 PST
+//Generated 2020-07-11 19:38:37 PST
 $config['s___12274'] = 5009; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 121949; //DISCOVERIES
@@ -49,7 +49,7 @@ $config['e___13289'] = array(
         'm_icon' => '<i class="fas fa-sitemap discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
-        'm_parents' => array(11035,13453,13289,13408,6768,4527),
+        'm_parents' => array(11035,13289,13408,6768,4527),
     ),
     13510 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
@@ -257,7 +257,7 @@ $config['e___6159'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MINERS WHO IDEATE',
         'm_desc' => 'i___13202',
-        'm_parents' => array(13451,6159,4251,13365,4527,13207),
+        'm_parents' => array(13453,13451,6159,4251,13365,4527,13207),
     ),
 );
 
@@ -289,7 +289,7 @@ $config['e___6212'] = array(
         'm_parents' => array(7277,4527,6212,6206),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
         'm_parents' => array(13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -315,7 +315,7 @@ $config['e___4251'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MINERS WHO IDEATE',
         'm_desc' => '',
-        'm_parents' => array(13451,6159,4251,13365,4527,13207),
+        'm_parents' => array(13453,13451,6159,4251,13365,4527,13207),
     ),
     3000 => array(
         'm_icon' => '<i class="fad fa-file-certificate source"></i>',
@@ -458,7 +458,7 @@ $config['e___13408'] = array(
         'm_icon' => '<i class="fas fa-sitemap discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
-        'm_parents' => array(11035,13453,13289,13408,6768,4527),
+        'm_parents' => array(11035,13289,13408,6768,4527),
     ),
 );
 
@@ -533,7 +533,7 @@ $config['e___13365'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MINERS WHO IDEATE',
         'm_desc' => '',
-        'm_parents' => array(13451,6159,4251,13365,4527,13207),
+        'm_parents' => array(13453,13451,6159,4251,13365,4527,13207),
     ),
 );
 
@@ -664,7 +664,7 @@ $config['e___13207'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MINERS WHO IDEATE',
         'm_desc' => '',
-        'm_parents' => array(13451,6159,4251,13365,4527,13207),
+        'm_parents' => array(13453,13451,6159,4251,13365,4527,13207),
     ),
     13438 => array(
         'm_icon' => '<i class="fas fa-map-marker-check discover"></i>',
@@ -1077,7 +1077,7 @@ $config['e___12887'] = array(
         'm_parents' => array(12891,12887,3088),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '/x?any_e__id=',
         'm_parents' => array(13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -1759,7 +1759,7 @@ $config['e___10876'] = array(
         'm_parents' => array(10876,13488),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => 'https://mench.com/x',
         'm_parents' => array(13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -3333,7 +3333,7 @@ $config['e___11047'] = array(
         'm_parents' => array(11047,12741,12701,6287),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '/x?any_i__id=',
         'm_parents' => array(13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -3419,7 +3419,7 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-sitemap discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
-        'm_parents' => array(11035,13453,13289,13408,6768,4527),
+        'm_parents' => array(11035,13289,13408,6768,4527),
     ),
     11068 => array(
         'm_icon' => '<i class="far fa-envelope-open" aria-hidden="true"></i>',
@@ -3428,7 +3428,7 @@ $config['e___11035'] = array(
         'm_parents' => array(11035,11065),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
         'm_parents' => array(13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -3618,7 +3618,7 @@ $config['n___10957'] = array(10939,13354,12673,13403,10984,10986,13420,12700,134
 $config['e___10957'] = array(
     10939 => array(
         'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA MINING',
+        'm_name' => 'IDEATION',
         'm_desc' => 'Add & Organize Ideas',
         'm_parents' => array(13453,10957),
     ),
@@ -3660,7 +3660,7 @@ $config['e___10957'] = array(
     ),
     12700 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
-        'm_name' => 'ADVANCE IDEA MINING',
+        'm_name' => 'ADVANCE IDEATION',
         'm_desc' => 'Advance Idea Linking',
         'm_parents' => array(13453,10957),
     ),
@@ -4618,7 +4618,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-sitemap discover" aria-hidden="true"></i>',
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
-        'm_parents' => array(11035,13453,13289,13408,6768,4527),
+        'm_parents' => array(11035,13289,13408,6768,4527),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-shapes idea" aria-hidden="true"></i>',
@@ -4705,7 +4705,7 @@ $config['e___4527'] = array(
         'm_parents' => array(6212,11054,4527,7735),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
         'm_parents' => array(13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -4786,7 +4786,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_name' => 'MINERS WHO IDEATE',
         'm_desc' => '',
-        'm_parents' => array(13451,6159,4251,13365,4527,13207),
+        'm_parents' => array(13453,13451,6159,4251,13365,4527,13207),
     ),
     12969 => array(
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
