@@ -8,11 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 18:01:39 PST
-$config['s___12273'] = 3920; //IDEAS
+//Generated 2020-07-11 18:03:00 PST
 $config['s___12274'] = 5007; //SOURCES
+$config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 121935; //DISCOVERIES
-$config['s___13362'] = 1172267; //TRANSACTIONS
 
 //SAVED IDEAS:
 $config['n___13510'] = array(12896,12906);
@@ -5291,79 +5290,79 @@ $config['n___4341'] = array(4367,6186,4362,4593,4364,4372,4371,4370,6103,4366,44
 $config['e___4341'] = array(
     4367 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION ID',
+        'm_name' => 'ID',
         'm_desc' => 'x__id',
         'm_parents' => array(13456,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION STATUS',
+        'm_name' => 'STATUS',
         'm_desc' => 'x__status',
         'm_parents' => array(11054,10677,10656,6204,5865,6160,7304,4527,6194,4341),
     ),
     4362 => array(
         'm_icon' => '<i class="fas fa-clock" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION TIME',
+        'm_name' => 'TIME',
         'm_desc' => 'x__time',
         'm_parents' => array(4341),
     ),
     4593 => array(
         'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION TYPE',
+        'm_name' => 'TYPE',
         'm_desc' => 'x__type',
         'm_parents' => array(6204,11081,10659,6160,6194,4527,4341),
     ),
     4364 => array(
         'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION MINER',
+        'm_name' => 'MINER',
         'm_desc' => 'x__miner',
         'm_parents' => array(13451,11081,6160,6194,4341),
     ),
     4372 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION MESSAGE',
+        'm_name' => 'MESSAGE',
         'm_desc' => 'x__message',
         'm_parents' => array(13410,7578,10679,10657,5001,4341),
     ),
     4371 => array(
         'm_icon' => '<i class="far fa-atlas" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION REFERENCE',
+        'm_name' => 'REFERENCE',
         'm_desc' => 'x__reference',
         'm_parents' => array(11081,10692,4367,4341),
     ),
     4370 => array(
         'm_icon' => '<i class="fas fa-bars" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION SORT',
+        'm_name' => 'SORT',
         'm_desc' => 'x__sort',
         'm_parents' => array(13007,13006,10676,10675,4341),
     ),
     6103 => array(
         'm_icon' => '<i class="fas fa-lambda"></i>',
-        'm_name' => 'TRANSACTION METADATA',
+        'm_name' => 'METADATA',
         'm_desc' => 'x__metadata',
         'm_parents' => array(6212,4527,4341),
     ),
     4366 => array(
         'm_icon' => '<i class="fas fa-triangle" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION UP',
+        'm_name' => 'UP',
         'm_desc' => 'x__up',
         'm_parents' => array(11081,10692,6160,4341),
     ),
     4429 => array(
         'm_icon' => '<i class="fas fa-triangle rotate180" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION DOWN',
+        'm_name' => 'DOWN',
         'm_desc' => 'x__down',
         'm_parents' => array(11081,10692,6160,4341),
     ),
     4368 => array(
         'm_icon' => '<i class="fas fa-triangle rotate270" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION LEFT',
+        'm_name' => 'LEFT',
         'm_desc' => 'x__left',
         'm_parents' => array(11081,10692,6202,4341),
     ),
     4369 => array(
         'm_icon' => '<i class="fas fa-triangle rotate90" aria-hidden="true"></i>',
-        'm_name' => 'TRANSACTION RIGHT',
+        'm_name' => 'RIGHT',
         'm_desc' => 'x__right',
         'm_parents' => array(11081,10692,6202,4341),
     ),
