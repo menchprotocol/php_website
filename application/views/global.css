@@ -447,8 +447,8 @@ img.no-radius {
 .x-info{
     background-color: #000000;
     color: #FFFFFF;
-    padding: 5px 0;
-    margin: 0 0 0 33px;
+    padding: 5px 0 5px 34px;
+    margin:0;
     line-height: 144%;
 }
 .message_content{
