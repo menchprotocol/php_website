@@ -8,25 +8,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 12:47:27 PST
+//Generated 2020-07-12 12:55:45 PST
 $config['s___12274'] = 5011; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 122054; //DISCOVERIES
 
-//SAVED IDEAS:
+//SAVED DISCOVERIES:
 $config['n___13510'] = array(12896,12906);
 $config['e___13510'] = array(
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVE IDEA',
+        'm_name' => 'SAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
+        'm_parents' => array(13459,13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
     ),
     12906 => array(
         'm_icon' => '<i class="fal fa-bookmark discover"></i>',
-        'm_name' => 'UNSAVE IDEA',
+        'm_name' => 'UNSAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,4755,4593),
+        'm_parents' => array(13459,13510,4755,4593),
     ),
 );
 
@@ -53,9 +53,9 @@ $config['e___13289'] = array(
     ),
     13510 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVED IDEAS',
+        'm_name' => 'SAVED DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(13289,13210,4527,11035),
+        'm_parents' => array(13455,13289,13210,4527,11035),
     ),
     12211 => array(
         'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
@@ -104,7 +104,7 @@ $config['e___13488'] = array(
         'm_parents' => array(10876,13488),
     ),
     13207 => array(
-        'm_icon' => '<i class="fas fa-medal source"></i>',
+        'm_icon' => '<i class="fas fa-medal"></i>',
         'm_name' => 'TOP SOURCES',
         'm_desc' => '',
         'm_parents' => array(12500,13488,10876,10939,4527),
@@ -370,9 +370,9 @@ $config['e___13424'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVE IDEA',
+        'm_name' => 'SAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
+        'm_parents' => array(13459,13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
     ),
 );
 
@@ -1386,9 +1386,9 @@ $config['e___12677'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVE IDEA',
+        'm_name' => 'SAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
+        'm_parents' => array(13459,13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
     ),
 );
 
@@ -1396,13 +1396,13 @@ $config['e___12677'] = array(
 $config['n___12500'] = array(13449,13207,4341,6287,7291);
 $config['e___12500'] = array(
     13449 => array(
-        'm_icon' => '<i class="fad fa-user-hard-hat source"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat"></i>',
         'm_name' => 'MY SOURCE',
         'm_desc' => '',
         'm_parents' => array(12500),
     ),
     13207 => array(
-        'm_icon' => '<i class="fas fa-medal source"></i>',
+        'm_icon' => '<i class="fas fa-medal"></i>',
         'm_name' => 'TOP SOURCES',
         'm_desc' => '',
         'm_parents' => array(12500,13488,10876,10939,4527),
@@ -1783,7 +1783,7 @@ $config['e___10876'] = array(
         'm_parents' => array(12500,10876),
     ),
     13207 => array(
-        'm_icon' => '<i class="fas fa-medal source"></i>',
+        'm_icon' => '<i class="fas fa-medal"></i>',
         'm_name' => 'TOP SOURCES',
         'm_desc' => 'https://mench.com/@',
         'm_parents' => array(12500,13488,10876,10939,4527),
@@ -2902,9 +2902,9 @@ $config['e___11089'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVE IDEA',
+        'm_name' => 'SAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
+        'm_parents' => array(13459,13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
     ),
 );
 
@@ -3447,9 +3447,9 @@ $config['e___11035'] = array(
     ),
     13510 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVED IDEAS',
+        'm_name' => 'SAVED DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(13289,13210,4527,11035),
+        'm_parents' => array(13455,13289,13210,4527,11035),
     ),
     13503 => array(
         'm_icon' => '<i class="fas fa-check discover"></i>',
@@ -3560,9 +3560,9 @@ $config['e___11018'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVE IDEA',
+        'm_name' => 'SAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
+        'm_parents' => array(13459,13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
@@ -4838,9 +4838,9 @@ $config['e___4527'] = array(
     ),
     13510 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVED IDEAS',
+        'm_name' => 'SAVED DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(13289,13210,4527,11035),
+        'm_parents' => array(13455,13289,13210,4527,11035),
     ),
     12761 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
@@ -5041,7 +5041,7 @@ $config['e___4527'] = array(
         'm_parents' => array(4527,6771),
     ),
     13207 => array(
-        'm_icon' => '<i class="fas fa-medal source"></i>',
+        'm_icon' => '<i class="fas fa-medal"></i>',
         'm_name' => 'TOP SOURCES',
         'm_desc' => '',
         'm_parents' => array(12500,13488,10876,10939,4527),
@@ -5874,9 +5874,9 @@ $config['e___7551'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVE IDEA',
+        'm_name' => 'SAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
+        'm_parents' => array(13459,13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
     ),
 );
 
@@ -7089,9 +7089,9 @@ $config['e___4755'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVE IDEA',
+        'm_name' => 'SAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
+        'm_parents' => array(13459,13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
     ),
     7563 => array(
         'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
@@ -7185,9 +7185,9 @@ $config['e___4755'] = array(
     ),
     12906 => array(
         'm_icon' => '<i class="fal fa-bookmark discover"></i>',
-        'm_name' => 'UNSAVE IDEA',
+        'm_name' => 'UNSAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,4755,4593),
+        'm_parents' => array(13459,13510,4755,4593),
     ),
 );
 
@@ -7820,9 +7820,9 @@ $config['e___4593'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVE IDEA',
+        'm_name' => 'SAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
+        'm_parents' => array(13459,13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
     ),
     7563 => array(
         'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
@@ -8066,9 +8066,9 @@ $config['e___4593'] = array(
     ),
     12906 => array(
         'm_icon' => '<i class="fal fa-bookmark discover"></i>',
-        'm_name' => 'UNSAVE IDEA',
+        'm_name' => 'UNSAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,4755,4593),
+        'm_parents' => array(13459,13510,4755,4593),
     ),
 );
 
@@ -8190,9 +8190,9 @@ $config['e___4485'] = array(
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_name' => 'SAVE IDEA',
+        'm_name' => 'SAVE DISCOVERY',
         'm_desc' => '',
-        'm_parents' => array(13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
+        'm_parents' => array(13459,13510,13424,12677,4485,12701,7551,11089,11018,4755,4593),
     ),
 );
 
