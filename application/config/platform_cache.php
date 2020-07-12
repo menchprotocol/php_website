@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-11 18:03:00 PST
-$config['s___12274'] = 5007; //SOURCES
+//Generated 2020-07-11 18:39:10 PST
+$config['s___12274'] = 5008; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
-$config['s___6255'] = 121935; //DISCOVERIES
+$config['s___6255'] = 121946; //DISCOVERIES
 
 //SAVED IDEAS:
 $config['n___13510'] = array(12896,12906);
@@ -1687,23 +1687,29 @@ $config['e___12523'] = array(
 );
 
 //DISCOVER ICON LEGEND:
-$config['n___12446'] = array(12448,12447,13338);
+$config['n___12446'] = array(13511,12448,12447,13338);
 $config['e___12446'] = array(
+    13511 => array(
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
+        'm_name' => 'GUEST',
+        'm_desc' => '',
+        'm_parents' => array(12446),
+    ),
     12448 => array(
         'm_icon' => '<i class="fal fa-stop-circle discover"></i>',
-        'm_name' => 'DISCOVERY NOT STARTED',
+        'm_name' => 'NOT STARTED',
         'm_desc' => '',
         'm_parents' => array(13459,12446),
     ),
     12447 => array(
         'm_icon' => '<i class="far fa-play-circle discover" aria-hidden="true"></i>',
-        'm_name' => 'DISCOVERY IN PROGRESS',
+        'm_name' => 'IN PROGRESS',
         'm_desc' => '',
         'm_parents' => array(13459,12446),
     ),
     13338 => array(
         'm_icon' => '<i class="fas fa-check-circle discover"></i>',
-        'm_name' => 'DISCOVER COMPLETED',
+        'm_name' => 'COMPLETED',
         'm_desc' => '',
         'm_parents' => array(12446),
     ),

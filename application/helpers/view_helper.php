@@ -613,8 +613,11 @@ function view_x_icon_legend($can_click, $completion_percentage){
 
     $CI =& get_instance();
     $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
-
-    if(!$can_click || $completion_percentage==0){
+    $recipient_e = superpower_assigned();
+    if(!$recipient_e || !$can_click){
+        //DISCOVER GUEST
+        $x_legend = 13511;
+    } elseif($completion_percentage==0){
         //DISCOVER NOT STARTED
         $x_legend = 12448;
     } elseif($completion_percentage<100){
