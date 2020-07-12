@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 12:57:02 PST
+//Generated 2020-07-12 12:59:47 PST
 $config['s___12274'] = 5011; //SOURCES
 $config['s___12273'] = 3920; //IDEAS
 $config['s___6255'] = 122054; //DISCOVERIES
@@ -3466,7 +3466,7 @@ $config['e___11035'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
-        'm_desc' => 'Mench is a non-profit & open-source network for exchanging ideas that matter.',
+        'm_desc' => 'Mench is non-profit, open-source & on a mission to spread ideas that matter.',
         'm_parents' => array(13479,10876,4527,11035),
     ),
     4997 => array(
