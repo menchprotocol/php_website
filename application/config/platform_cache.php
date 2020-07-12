@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 10:56:10 PST
-$config['s___12274'] = 5011; //SOURCES
+//Generated 2020-07-12 11:41:53 PST
+$config['s___12274'] = 5010; //SOURCES
 $config['s___12273'] = 3921; //IDEAS
 $config['s___6255'] = 122054; //DISCOVERIES
 
@@ -242,7 +242,7 @@ $config['e___6159'] = array(
         'm_parents' => array(13292,4735,6159),
     ),
     13202 => array(
-        'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA MINERS',
         'm_desc' => 'i___13202',
         'm_parents' => array(13451,6159,4251,13365,4527,13207),
@@ -312,7 +312,7 @@ $config['e___6212'] = array(
 $config['n___4251'] = array(13202,3000,13339);
 $config['e___4251'] = array(
     13202 => array(
-        'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA MINERS',
         'm_desc' => '',
         'm_parents' => array(13451,6159,4251,13365,4527,13207),
@@ -335,14 +335,14 @@ $config['e___4251'] = array(
 $config['n___13439'] = array(13438);
 $config['e___13439'] = array(
     13438 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check discover"></i>',
-        'm_name' => 'MINERS WHO DISCOVER',
+        'm_icon' => '<i class="fad fa-user-hard-hat discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY MINERS',
         'm_desc' => '',
         'm_parents' => array(13451,13207,4527,13439),
     ),
 );
 
-//MINERS WHO DISCOVER:
+//DISCOVERY MINERS:
 $config['n___13438'] = array(4430);
 $config['e___13438'] = array(
     4430 => array(
@@ -530,7 +530,7 @@ $config['e___13365'] = array(
         'm_parents' => array(6159,4251,13428,13365,13207,4527),
     ),
     13202 => array(
-        'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA MINERS',
         'm_desc' => '',
         'm_parents' => array(13451,6159,4251,13365,4527,13207),
@@ -661,14 +661,14 @@ $config['e___13202'] = array(
 $config['n___13207'] = array(13202,13438,13339,3000);
 $config['e___13207'] = array(
     13202 => array(
-        'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA MINERS',
         'm_desc' => '',
         'm_parents' => array(13451,6159,4251,13365,4527,13207),
     ),
     13438 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check discover"></i>',
-        'm_name' => 'MINERS WHO DISCOVER',
+        'm_icon' => '<i class="fad fa-user-hard-hat discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY MINERS',
         'm_desc' => '',
         'm_parents' => array(13451,13207,4527,13439),
     ),
@@ -2930,7 +2930,7 @@ $config['e___11081'] = array(
         'm_parents' => array(11081,10692,6202,4341),
     ),
     4364 => array(
-        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat" aria-hidden="true"></i>',
         'm_name' => 'MINER',
         'm_desc' => '',
         'm_parents' => array(13451,11081,6160,6194,4341),
@@ -3617,10 +3617,10 @@ $config['e___10990'] = array(
 $config['n___10957'] = array(10939,13354,12673,13403,10984,10986,13420,12700,13402,12706,12703,13422,13421,12699,12701,12705);
 $config['e___10957'] = array(
     10939 => array(
-        'm_icon' => '<i class="fas fa-map-marker-alt idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEATION',
+        'm_icon' => '<i class="fad fa-user-hard-hat idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA MINING',
         'm_desc' => 'Add & Organize Ideas',
-        'm_parents' => array(13453,10957),
+        'm_parents' => array(13451,10957),
     ),
     13354 => array(
         'm_icon' => '<i class="fas fa-money-check-edit idea"></i>',
@@ -3659,10 +3659,10 @@ $config['e___10957'] = array(
         'm_parents' => array(10957),
     ),
     12700 => array(
-        'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
-        'm_name' => 'ADVANCE IDEATION',
+        'm_icon' => '<i class="fad fa-user-shield idea" aria-hidden="true"></i>',
+        'm_name' => 'ADVANCE IDEA MINING',
         'm_desc' => 'Advance Idea Linking',
-        'm_parents' => array(13453,10957),
+        'm_parents' => array(13451,10957),
     ),
     13402 => array(
         'm_icon' => '<i class="fas fa-money-check-edit source"></i>',
@@ -4270,7 +4270,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(6225,10956,12279,11081,7704,5967,12326,12446,6255,12994,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,12229,13289,10876,6150,13037,3000,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,2738,12467,6404,12079,13488,6201,4341,4527,11054,12687,11035,6206,12112,10869,6212,7277,12500,13479,13438,12969,10573,12741,6287,12577,4755,13439,13365,13414,13510,12761,13023,4269,6204,13413,4251,13424,12571,13004,12574,13425,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,6194,12274,6177,7358,12575,7357,12401,11089,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480);
+$config['n___4527'] = array(6225,10956,12279,11081,7704,5967,12326,12446,6255,12994,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,12229,13289,10876,13438,6150,13037,3000,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,2738,12467,6404,12079,13488,6201,4341,4527,11054,12687,11035,6206,12112,10869,6212,7277,12500,13479,12969,10573,12741,6287,12577,4755,13439,13365,13414,13510,12761,13023,4269,6204,13413,4251,13424,12571,13004,12574,13425,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,6194,12274,6177,7358,12575,7357,12401,11089,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480);
 $config['e___4527'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -4422,6 +4422,12 @@ $config['e___4527'] = array(
         'm_desc' => '',
         'm_parents' => array(13459,11035,13488,2738,4527,1326),
     ),
+    13438 => array(
+        'm_icon' => '<i class="fad fa-user-hard-hat discover" aria-hidden="true"></i>',
+        'm_name' => 'DISCOVERY MINERS',
+        'm_desc' => '',
+        'm_parents' => array(13451,13207,4527,13439),
+    ),
     6150 => array(
         'm_icon' => '<i class="far fa-bookmark discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERY REMOVED',
@@ -4495,7 +4501,7 @@ $config['e___4527'] = array(
         'm_parents' => array(7277,4527,6212,11049,6201),
     ),
     13202 => array(
-        'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA MINERS',
         'm_desc' => '',
         'm_parents' => array(13451,6159,4251,13365,4527,13207),
@@ -4777,16 +4783,10 @@ $config['e___4527'] = array(
         'm_parents' => array(13451,13479,12079,12823,4527),
     ),
     13479 => array(
-        'm_icon' => '<i class="fad fa-user"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat" aria-hidden="true"></i>',
         'm_name' => 'MINER NAVIGATION',
         'm_desc' => '',
         'm_parents' => array(4527,13451,13357),
-    ),
-    13438 => array(
-        'm_icon' => '<i class="fas fa-map-marker-check discover"></i>',
-        'm_name' => 'MINERS WHO DISCOVER',
-        'm_desc' => '',
-        'm_parents' => array(13451,13207,4527,13439),
     ),
     12969 => array(
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
@@ -5319,7 +5319,7 @@ $config['e___4341'] = array(
         'm_parents' => array(6204,11081,10659,6160,6194,4527,4341),
     ),
     4364 => array(
-        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat" aria-hidden="true"></i>',
         'm_name' => 'MINER',
         'm_desc' => 'x__miner',
         'm_parents' => array(13451,11081,6160,6194,4341),
@@ -6111,7 +6111,7 @@ $config['e___6287'] = array(
         'm_parents' => array(6287),
     ),
     12736 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fad fa-user-hard-hat source" aria-hidden="true"></i>',
         'm_name' => 'SOURCE SYNC & FIX MINERS',
         'm_desc' => '',
         'm_parents' => array(13451,6287),
@@ -6341,7 +6341,7 @@ $config['e___6194'] = array(
         'm_parents' => array(12766,11054,6204,5003,6160,6194,6206,4527),
     ),
     4364 => array(
-        'm_icon' => '<i class="fas fa-user" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fad fa-user-hard-hat" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION MINER',
         'm_desc' => '',
         'm_parents' => array(13451,11081,6160,6194,4341),
