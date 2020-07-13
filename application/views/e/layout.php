@@ -1,5 +1,4 @@
 <?php
-
 $e___6206 = $this->config->item('e___6206'); //MENCH SOURCE
 $e___4341 = $this->config->item('e___4341'); //Transaction Table
 $e___6177 = $this->config->item('e___6177'); //Source Status
@@ -7,7 +6,6 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $miner_is_e = miner_is_e($e['e__id']);
 
 ?>
-
 
 <style>
     /* For a cleaner UI hide the current focused source parent */
@@ -162,31 +160,19 @@ $miner_is_e = miner_is_e($e['e__id']);
     <?php
 
 
-
     //FOR EDITING ONLY:
     echo '<div class="hidden">'.view_e($e).'</div>';
-
 
 
     //NAME & STATUS
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;">';
 
+        //SOURCE DRAFTING?
+        echo '<span class="icon-block e__status_' . $e['e__id'] . ( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_name'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span>';
 
-    //SOURCE DRAFTING?
-    echo '<span class="icon-block e__status_' . $e['e__id'] . ( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_name'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span>';
-
-    //Modify
-    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a>';
-
-
-    //ADMIN MENU
-    if(superpower_assigned(12703)){
-        $e___4527 = $this->config->item('e___4527'); //Platform Memory
-        echo '<ul class="nav nav-tabs nav-sm" style="display: inline-block; border: 0; margin: 0;">';
-        echo view_caret(12887, $e___4527[12887], $e['e__id']);
-        echo '</ul>';
-    }
+        //Modify
+        echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a>';
 
 
     echo '</div>';
