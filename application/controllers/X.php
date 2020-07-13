@@ -784,7 +784,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing idea id.',
             ));
-        } elseif (!isset($_POST['answered_is']) || !is_array($_POST['answered_is']) || !count($_POST['answered_is'])) {
+        } elseif (!isset($_POST['selection_i__id']) || !is_array($_POST['selection_i__id']) || !count($_POST['selection_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Select an answer before going next.',
@@ -792,7 +792,7 @@ class X extends CI_Controller
         }
 
         //Save answer:
-        return view_json($this->X_model->answer($session_e['e__id'], $_POST['focus_i__id'], $_POST['answered_is']));
+        return view_json($this->X_model->answer($session_e['e__id'], $_POST['focus_i__id'], $_POST['selection_i__id']));
 
     }
 

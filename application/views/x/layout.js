@@ -86,28 +86,25 @@ function select_answer(i__id){
 
     //Allow answer to be saved/updated:
     var i__type = parseInt($('.list-answers').attr('i__type'));
-    var current_status = parseInt($('.x_select_'+i__id).attr('is-selected'));
 
     //Clear all if single selection:
     if(i__type == 6684){
         //Single Selection, clear all:
-        $('.answer-item').attr('is-selected', 0);
         $('.check-icon i').removeClass('fas').addClass('far');
     }
 
-    if(current_status==1){
+    //Is setected?
+    if($('.x_select_'+i__id+' .fa-circle').hasClass('fas')){
 
         //Previously Selected, delete selection:
         if(i__type == 7231){
             //Multi Selection
-            $('.x_select_'+i__id).attr('is-selected', 0);
             $('.x_select_'+i__id+' .check-icon i').removeClass('fas').addClass('far');
         }
 
-    } else if(current_status==0){
+    } else {
 
         //Previously Selected, delete selection:
-        $('.x_select_'+i__id).attr('is-selected', 1);
         $('.x_select_'+i__id+' .check-icon i').removeClass('far').addClass('fas');
 
     }
@@ -187,17 +184,18 @@ function x_reply(){
 function x_select(){
 
     //Check
-    var answered_is = [];
+    var selection_i__id = [];
     $(".answer-item").each(function () {
-        if ($(this).attr('is-selected')=='1') {
-            answered_is.push(parseInt($(this).attr('answered_is')));
+        var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
+        if ($('.x_select_'+selection_i__id_this+' .fa-circle').hasClass('fas')) {
+            selection_i__id.push(selection_i__id_this);
         }
     });
 
     //Show Loading:
     $.post("/x/x_select", {
         focus_i__id:focus_i__id,
-        answered_is:answered_is
+        selection_i__id:selection_i__id
     }, function (data) {
         if (data.status) {
             //Go to redirect message:

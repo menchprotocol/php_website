@@ -449,11 +449,12 @@ if(!$in_my_x){
             //HTML:
             if ($i_focus['i__type'] == 6684) {
 
-                echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
+                echo '<div class="headline" style="padding-left: 34px;">SELECT ONE:</div>';
 
             } elseif ($i_focus['i__type'] == 7231) {
 
-                echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</div>';
+                //Give option to Select None/All
+                echo '<div class="headline" style="padding-left: 34px;">SELECT ONE OR MORE:<br />SELECT <a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline; font-weight: bold;">ALL</a> / <a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline; font-weight: bold;">NONE</a></div>';
 
             }
 
@@ -474,7 +475,7 @@ if(!$in_my_x){
                     'x__miner' => $recipient_e['e__id'],
                 )));
 
-                echo '<a href="javascript:void(0);" onclick="select_answer('.$next_i['i__id'].')" is-selected="'.( $previously_selected ? 1 : 0 ).'" answered_is="'.$next_i['i__id'].'" class="x_select_'.$next_i['i__id'].' answer-item list-group-item itemdiscover no-left-padding">';
+                echo '<a href="javascript:void(0);" onclick="select_answer('.$next_i['i__id'].')" selection_i__id="'.$next_i['i__id'].'" class="x_select_'.$next_i['i__id'].' answer-item list-group-item itemdiscover no-left-padding">';
 
 
                 echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';

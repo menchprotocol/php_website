@@ -45,16 +45,6 @@ foreach($this->I_model->fetch() as $in) {
             'x__message' => $in['i__title'],
             'x__type' => 4250, //New Idea Created
         ));
-    } elseif(count($i_creators) >= 2) {
-        //Remove extra:
-        foreach($i_creators as $count => $i_e_tr){
-            if($count == 0){
-                continue; //Keep first one
-            } else {
-                $stats['creator_extra']++;
-                $this->db->query("DELETE FROM mench__x WHERE x__id=".$i_e_tr['x__id']);
-            }
-        }
     }
 
 
