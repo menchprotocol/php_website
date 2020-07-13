@@ -173,8 +173,8 @@ $miner_is_e = miner_is_e($e['e__id']);
 
 
     //Display Both tabs:
-    view_e_tabs(11089, $e, $session_e, $miner_is_e);
     view_e_tabs(13522, $e, $session_e, $miner_is_e);
+    view_e_tabs(11089, $e, $session_e, $miner_is_e);
 
     ?>
 
