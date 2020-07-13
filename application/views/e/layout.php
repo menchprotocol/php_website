@@ -793,22 +793,6 @@ $miner_is_e = miner_is_e($e['e__id']);
         $tab_content .= $this_tab;
         $tab_content .= '</div>';
 
-
-        /*
-        //HEADER
-        echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-
-        echo '<div class="headline"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$x__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$x__type.( $default_active ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$x__type.( $default_active ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($x__type, $this->config->item('n___13004')) ? superpower_active(13422) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$x__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
-
-        //BODY
-        echo '<div class="contentTab'.$x__type.( $default_active ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
-        if($this_tab) {
-            echo $this_tab;
-        }
-        echo '</div>';
-        echo '</div>';
-        */
-
     }
 
     if($tab_nav){
