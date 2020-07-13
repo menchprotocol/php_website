@@ -26,7 +26,7 @@
             echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_name'].'</div>';
 
 
-            echo '<div class="reset_6415">';
+            echo '<div>';
             echo '<div id="i_covers" class="cover-list">';
             foreach($miner_x as $x) {
                 array_push($miner_xy_ids, $x['i__id']);
@@ -39,12 +39,12 @@
 
 
             //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-            echo '<div class="reset_6415 '.( !isset($_GET['reset']) ? 'hidden' : '' ).' margin-top-down">';
+            echo '<div class="'.( !isset($_GET['reset']) ? 'hidden' : '' ).' margin-top-down">';
             echo '<div class="alert alert-danger" role="alert">';
             echo '<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><b class="discover montserrat">DELETE ALL DISCOVERIES?</b>';
             echo '<br /><span class="icon-block">&nbsp;</span>Action cannot be undone.';
             echo '</div>';
-            echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="javascript:void(0)" onclick="$(\'.reset_6415\').toggleClass(\'hidden\')" style="text-decoration: underline;">Cancel</a></p>';
+            echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
             echo '</div>';
 
             echo '<div class="doclear">&nbsp;</div>';
