@@ -1346,7 +1346,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
             if(!$counter){
                 continue;
             }
-            $focus_tab = '<div class="left-margin">Source referenced as <span class="montserrat">'.$m['m_icon'].' '.$m['m_name'].'</span> '.number_format($counter, 0).' times.</div>';
+            $focus_tab = '<div class="left-margin">Source referenced as '.$m['m_icon'].' '.$m['m_name'].' '.number_format($counter, 0).' times.</div>';
 
         } elseif(in_array($x__type, $CI->config->item('n___12467'))){
 
@@ -1860,7 +1860,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
         }
 
 
-        $default_active = !$previously_activated && in_array($x__type, $CI->config->item('n___12571'));
+        $default_active = !$previously_activated && $counter > 0 && in_array($x__type, $CI->config->item('n___12571'));
         if(!$previously_activated && $default_active){
             $previously_activated = true;
         }
