@@ -2,7 +2,7 @@
 
 $transaction__id = 0;
 
-foreach($this->X_model->fetch(array(), array(), 0, 0, array('x__id' => 'ASC')) as $x){
+foreach($this->X_model->fetch(array(), array(), 0, 0, array('x__time' => 'ASC')) as $x){
 
     //Update ID
     $transaction__id++;
