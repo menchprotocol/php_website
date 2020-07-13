@@ -1333,7 +1333,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
 
         $counter = null;
-        $tab_content = null;
+        $focus_tab = null;
 
         //Is this a caret menu?
         if(in_array(11040 , $m['m_parents'])){
@@ -1349,7 +1349,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
             if(!$counter){
                 continue;
             }
-            $tab_content = 'Source referenced as '.$m['m_icon'].' '.number_format($counter, 0).' times.';
+            $focus_tab = 'Source referenced as '.$m['m_icon'].' '.number_format($counter, 0).' times.';
 
         } elseif(in_array($x__type, $CI->config->item('n___12467'))){
 
@@ -1358,12 +1358,12 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
             if(!$counter){
                 continue;
             }
-            $tab_content = x_stats_count($x__type, $e['e__id'], 1);
+            $focus_tab = x_stats_count($x__type, $e['e__id'], 1);
 
         } elseif($x__type==6225){
 
             //ACCOUNT SETTING
-            $tab_content .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
+            $focus_tab = '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
 
             //Display account fields ordered with their SOURCE LINKS:
             foreach($CI->config->item('e___6225') as $acc_e__id => $acc_detail) {
@@ -1374,7 +1374,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                 }
 
                 //Print header:
-                $tab_content .= '<div class="card">
+                $focus_tab .= '<div class="card">
 <div class="card-header" id="heading' . $acc_e__id . '">
 <button class="btn btn-block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_e__id . '" aria-expanded="false" aria-controls="openEn' . $acc_e__id . '">
   <span class="icon-block">' . $acc_detail['m_icon'] . '</span><b class="montserrat doupper ' . extract_icon_color($acc_detail['m_icon']) . '">' . $acc_detail['m_name'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
@@ -1388,7 +1388,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
 
                 //Show description if any:
-                $tab_content .= (strlen($acc_detail['m_desc']) > 0 ? '<p>' . $acc_detail['m_desc'] . '</p>' : '');
+                $focus_tab .= (strlen($acc_detail['m_desc']) > 0 ? '<p>' . $acc_detail['m_desc'] . '</p>' : '');
 
 
                 //Print account fields that are either Single Selectable or Multi Selectable:
@@ -1399,7 +1399,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
                     $e__icon_parts = explode(' ',one_two_explode('class="', '"', $session_e['e__icon']));
 
-                    $tab_content .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">
+                    $focus_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $e__icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
                   <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fad\')" class="btn btn-fad '.( $e__icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw source"></i></a>
                   <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fas\')" class="btn btn-fas '.( $e__icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw source"></i></a>
@@ -1413,9 +1413,9 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                         $avatar_type_match = ($e__icon_parts[0] == $avatar_icon_parts[0]);
                         $superpower_actives3 = array_intersect($CI->config->item('n___10957'), $m3['m_parents']);
 
-                        $tab_content .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
-                        $tab_content .= '<a href="javascript:void(0);" onclick="e_update_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';
-                        $tab_content .= '</span>';
+                        $focus_tab .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
+                        $focus_tab .= '<a href="javascript:void(0);" onclick="e_update_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';
+                        $focus_tab .= '</span>';
 
                     }
 
@@ -1423,7 +1423,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
                     if($superpower_any >= 2){
                         //Mass Toggle Option:
-                        $tab_content .= '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
+                        $focus_tab .= '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_toggle_all(1)" class="btn btn-far"><i class="fas fa-toggle-on"></i></a>
                   <a href="javascript:void(0)" onclick="account_toggle_all(0)" class="btn btn-fad"><i class="fas fa-toggle-off"></i></a>
                 </div><div class="doclear">&nbsp;</div>';
@@ -1431,7 +1431,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
 
                     //List avatars:
-                    $tab_content .= '<div class="list-group">';
+                    $focus_tab .= '<div class="list-group">';
                     foreach($CI->config->item('e___10957') as $superpower_e__id => $m3){
 
                         //What is the superpower requirement?
@@ -1440,10 +1440,10 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                         }
 
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
-                        $tab_content .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $CI->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_e__id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                        $focus_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $CI->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_e__id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
 
                     }
-                    $tab_content .= '</div>';
+                    $focus_tab .= '</div>';
 
                 } elseif ($acc_e__id == 3288 /* Email */) {
 
@@ -1454,29 +1454,29 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                         'x__up' => 3288, //Mench Email
                     ));
 
-                    $tab_content .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($miner_emails) > 0 ? $miner_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
+                    $focus_tab .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($miner_emails) > 0 ? $miner_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
                 <a href="javascript:void(0)" onclick="e_update_email()" class="btn btn-e">Save</a>
                 <span class="saving-account save_email"></span>';
 
                 } elseif ($acc_e__id == 3286 /* Password */) {
 
-                    $tab_content .= '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
+                    $focus_tab .= '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
                 <a href="javascript:void(0)" onclick="e_update_password()" class="btn btn-e">Save</a>
                 <span class="saving-account save_password"></span>';
 
                 } elseif ($is_multi_selectable || $is_single_selectable) {
 
-                    $tab_content .= view_radio_es($acc_e__id, $session_e['e__id'], ($is_multi_selectable ? 1 : 0));
+                    $focus_tab .= view_radio_es($acc_e__id, $session_e['e__id'], ($is_multi_selectable ? 1 : 0));
 
                 }
 
                 //Print footer:
-                $tab_content .= '<div class="doclear">&nbsp;</div>';
-                $tab_content .= '</div></div></div>';
+                $focus_tab .= '<div class="doclear">&nbsp;</div>';
+                $focus_tab .= '</div></div></div>';
 
             }
 
-            $tab_content .= '</div>'; //End of accordion
+            $focus_tab .= '</div>'; //End of accordion
 
         } elseif($x__type==11030){ //SOURCE PROFILE
 
@@ -1493,13 +1493,13 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                 continue;
             }
 
-            $tab_content .= '<div id="list-parent" class="list-group ">';
+            $focus_tab .= '<div id="list-parent" class="list-group ">';
             foreach($e__profiles as $e_profile) {
-                $tab_content .= view_e($e_profile,true, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_profile['x__miner']))));
+                $focus_tab .= view_e($e_profile,true, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_profile['x__miner']))));
             }
 
             //Input to add new parents:
-            $tab_content .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
+            $focus_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                     <input type="text"
@@ -1508,7 +1508,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                            placeholder="SOURCE TITLE/URL">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
-            $tab_content .= '</div>';
+            $focus_tab .= '</div>';
 
         } elseif($x__type==11029){
 
@@ -1657,35 +1657,35 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                 }
 
 
-                $tab_content .= '<div class="pull-right grey" style="margin:-35px 55Zpx 0 0;">'.( superpower_active(13422, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
+                $focus_tab .= '<div class="pull-right grey" style="margin:-35px 55Zpx 0 0;">'.( superpower_active(13422, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
 
 
 
-                $tab_content .= '<div class="doclear">&nbsp;</div>';
-                $tab_content .= '<div class="e_editor hidden">';
-                $tab_content .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
-                $tab_content .= '<div class="inline-box">';
+                $focus_tab .= '<div class="doclear">&nbsp;</div>';
+                $focus_tab .= '<div class="e_editor hidden">';
+                $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+                $focus_tab .= '<div class="inline-box">';
 
                 //Drop Down
-                $tab_content .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
-                $tab_content .= $dropdown_options;
-                $tab_content .= '</select>';
+                $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
+                $focus_tab .= $dropdown_options;
+                $focus_tab .= '</select>';
 
-                $tab_content .= $input_options;
+                $focus_tab .= $input_options;
 
-                $tab_content .= '<div><input type="submit" value="APPLY" class="btn btn-e inline-block"></div>';
+                $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-e inline-block"></div>';
 
-                $tab_content .= '</div>';
-                $tab_content .= '</form>';
+                $focus_tab .= '</div>';
+                $focus_tab .= '</form>';
 
                 //Also add invisible child IDs for quick copy/pasting:
-                $tab_content .= '<div style="color:transparent;" class="hideIfEmpty">';
+                $focus_tab .= '<div style="color:transparent;" class="hideIfEmpty">';
                 foreach($e__portfolios as $e_portfolio) {
-                    $tab_content .= $e_portfolio['e__id'].',';
+                    $focus_tab .= $e_portfolio['e__id'].',';
                 }
-                $tab_content .= '</div>';
+                $focus_tab .= '</div>';
 
-                $tab_content .= '</div>';
+                $focus_tab .= '</div>';
 
 
 
@@ -1711,36 +1711,36 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                         $e___6177 = $CI->config->item('e___6177'); //Source Status
 
                         //Add 2nd Navigation to UI
-                        $tab_content .= '<div class="nav nav-pills nav-sm">';
+                        $focus_tab .= '<div class="nav nav-pills nav-sm">';
 
                         //Show fixed All button:
-                        $tab_content .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-x en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
+                        $focus_tab .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-x en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
 
                         //Show each specific filter based on DB counts:
                         foreach($child_e_filters as $c_c) {
                             $st = $e___6177[$c_c['e__status']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
-                            $tab_content .= '<li class="nav-item"><a href="#status-' . $c_c['e__status'] . '" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
+                            $focus_tab .= '<li class="nav-item"><a href="#status-' . $c_c['e__status'] . '" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
                         }
 
-                        $tab_content .= '</div>';
+                        $focus_tab .= '</div>';
 
                     }
                 }
             }
 
-            $tab_content .= '<div id="e__portfolio" class="list-group">';
+            $focus_tab .= '<div id="e__portfolio" class="list-group">';
             $common_prefix = i_calc_common_prefix($e__portfolios, 'e__title');
 
             foreach($e__portfolios as $e_portfolio) {
-                $tab_content .= view_e($e_portfolio,false, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__miner']))), $common_prefix);
+                $focus_tab .= view_e($e_portfolio,false, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__miner']))), $common_prefix);
             }
             if ($counter > count($e__portfolios)) {
-                $tab_content .= view_e_load_more(1, config_var(11064), $counter);
+                $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
             }
 
             //Input to add new child:
-            $tab_content .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
+            $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                     <input type="text"
@@ -1749,7 +1749,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                            placeholder="SOURCE TITLE/URL">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
-            $tab_content .= '</div>';
+            $focus_tab .= '</div>';
 
         } elseif($x__type==13046){
 
@@ -1789,7 +1789,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                                 'e__id' => $fetched_e[$e_ref_field],
                             ));
 
-                            $tab_content .= view_e($ref_es[0]);
+                            $focus_tab .= view_e($ref_es[0]);
 
                         }
                     }
@@ -1797,7 +1797,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
                 if($counter > 0){
                     //Wrap list:
-                    $tab_content = '<div class="list-group">' . $tab_content . '</div>';
+                    $focus_tab = '<div class="list-group">' . $focus_tab . '</div>';
                 }
 
             }
@@ -1820,15 +1820,15 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
             if($counter>0){
 
                 $i_notes_query = $CI->X_model->fetch($i_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
-                $tab_content .= '<div class="list-group">';
+                $focus_tab .= '<div class="list-group">';
                 foreach($i_notes_query as $count => $i_notes) {
-                    $tab_content .= view_i($i_notes, 0, false, false, $i_notes['x__message'], null, false);
+                    $focus_tab .= view_i($i_notes, 0, false, false, $i_notes['x__message'], null, false);
                 }
-                $tab_content .= '</div>';
+                $focus_tab .= '</div>';
 
             } else {
 
-                $tab_content .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_name'].' yet</div>';
+                $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_name'].' yet</div>';
 
             }
 
@@ -1845,13 +1845,13 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
             if($counter > 0){
                 $i_x_query = $CI->X_model->fetch($i_x_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
-                $tab_content .= '<div class="list-group">';
+                $focus_tab .= '<div class="list-group">';
                 foreach($i_x_query as $count => $i_notes) {
-                    $tab_content .= view_i($i_notes);
+                    $focus_tab .= view_i($i_notes);
                 }
-                $tab_content .= '</div>';
+                $focus_tab .= '</div>';
             } else {
-                $tab_content .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___11089[$x__type]['m_name'].' yet</div>';
+                $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___11089[$x__type]['m_name'].' yet</div>';
             }
 
         }
@@ -1869,7 +1869,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
 
         $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
-        $tab_content .= $tab_content;
+        $tab_content .= $focus_tab;
         $tab_content .= '</div>';
 
     }
