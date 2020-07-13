@@ -454,7 +454,7 @@ if(!$in_my_x){
             } elseif ($i_focus['i__type'] == 7231) {
 
                 //Give option to Select None/All
-                echo '<div class="headline" style="padding-left: 34px;">SELECT ONE OR MORE:[<a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">/</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a>]</div>';
+                echo '<div class="headline" style="padding-left: 34px;">SELECT ONE OR MORE:<span class="inline-block" style="padding-left: 5px;">[<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">/</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</span></div>';
 
             }
 
