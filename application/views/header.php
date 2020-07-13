@@ -115,7 +115,7 @@ if(!isset($hide_header)){
                             if($x__type==12274){
                                 $page_url = 'href="/@'.$session_e['e__id'].'"';
                             } elseif($x__type==12273){
-                                $page_url = 'href="/~'.( is_numeric($first_segment) && e_owns_i($first_segment) ? $first_segment : '' ).'"';
+                                $page_url = 'href="/~'.( is_numeric($first_segment) ? $first_segment : '' ).'"';
                             } elseif($x__type==6255){
                                 $page_url = 'href="/'.( isset($i_focus['i__id']) ? $i_focus['i__id'] : '' ).'"';
                             }
