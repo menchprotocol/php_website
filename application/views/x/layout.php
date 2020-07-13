@@ -153,7 +153,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     }
 
     $counter = null; //Assume no counters
-    $tab_content = '';
+    $focus_tab = '';
 
     if($x__type==4231){
 
@@ -165,17 +165,17 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array(), 0, 0, array('x__sort' => 'ASC'));
         $counter = count($messages);
 
-        $tab_content .= '<div style="margin-bottom:34px;">';
+        $focus_tab .= '<div style="margin-bottom:34px;">';
         if($counter){
             foreach($messages as $message_x) {
                 $counter++;
-                $tab_content .= $this->X_model->message_send(
+                $focus_tab .= $this->X_model->message_send(
                     $message_x['x__message'],
                     $recipient_e
                 );
             }
         }
-        $tab_content .= '</div>';
+        $focus_tab .= '</div>';
 
     } elseif($x__type==12273 && $i_stats['i___13443']>1){
 
@@ -186,27 +186,27 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($i_stats['i___6169']!=$i_stats['i___6170'] || $i_stats['i___6161']!=$i_stats['i___6162']){
 
             //Variable time range:
-            $tab_content .= '<p class="space-content">The number of ideas you discover (and the time it takes to discover them) depends on the choices you make interactively along the way:</p>';
-            $tab_content .= '<p class="space-content" style="margin-bottom:34px;">';
-            $tab_content .= '<span class="discovering-paths">Minimum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i___6169'].'</span><span class="mono-space">'.view_time_hours($i_stats['i___6161']).'</span><br />';
-            $tab_content .= '<span class="discovering-paths">Average:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i___13443'].'</span><span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span><br />';
-            $tab_content .= '<span class="discovering-paths">Maximum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i___6170'].'</span><span class="mono-space">'.view_time_hours($i_stats['i___6162']).'</span>';
-            $tab_content .= '</p>';
+            $focus_tab .= '<p class="space-content">The number of ideas you discover (and the time it takes to discover them) depends on the choices you make interactively along the way:</p>';
+            $focus_tab .= '<p class="space-content" style="margin-bottom:34px;">';
+            $focus_tab .= '<span class="discovering-paths">Minimum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i___6169'].'</span><span class="mono-space">'.view_time_hours($i_stats['i___6161']).'</span><br />';
+            $focus_tab .= '<span class="discovering-paths">Average:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i___13443'].'</span><span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span><br />';
+            $focus_tab .= '<span class="discovering-paths">Maximum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i___6170'].'</span><span class="mono-space">'.view_time_hours($i_stats['i___6162']).'</span>';
+            $focus_tab .= '</p>';
 
         } else {
 
             //Single Time range:
-            $tab_content .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.$counter.' idea'.view__s($counter).':</p>';
+            $focus_tab .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.$counter.' idea'.view__s($counter).':</p>';
 
         }
 
         //NEXT IDEAS
         if(!$in_my_x && $chapters){
-            $tab_content .= '<div class="list-group" style="margin-bottom:34px;">';
+            $focus_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($is_next as $key => $next_i){
-                $tab_content .= view_i_x($next_i, i_calc_common_prefix($is_next, 'i__title'));
+                $focus_tab .= view_i_x($next_i, i_calc_common_prefix($is_next, 'i__title'));
             }
-            $tab_content .= '</div>';
+            $focus_tab .= '</div>';
         }
 
         //IDEA PREVIOUS
@@ -218,12 +218,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__left !=' => config_var(13427),
         ), array('x__left'), 0);
         if(count($is_previous)){
-            $tab_content .= '<p class="space-content">'.view_i_title($i_focus).' Helps you:</p>';
-            $tab_content .= '<div class="list-group" style="margin-bottom:34px;">';
+            $focus_tab .= '<p class="space-content">'.view_i_title($i_focus).' Helps you:</p>';
+            $focus_tab .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach($is_previous as $key => $previous_i){
-                $tab_content .= view_i_x($previous_i, null, false, array('completion_percentage' => 0));
+                $focus_tab .= view_i_x($previous_i, null, false, array('completion_percentage' => 0));
             }
-            $tab_content .= '</div>';
+            $focus_tab .= '</div>';
         }
 
     } elseif($x__type==12274){
@@ -233,12 +233,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //List Sources:
         foreach($this->config->item('e___4251') as $e__id2 => $m2){
             if($i_stats['count_'.$e__id2]>0){
-                $tab_content .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id2].' '.$m2['m_name'].':</div>';
-                $tab_content .= '<div class="list-group" style="margin-bottom:34px;">';
+                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id2].' '.$m2['m_name'].':</div>';
+                $focus_tab .= '<div class="list-group" style="margin-bottom:34px;">';
                 foreach ($i_stats['array_'.$e__id2] as $e) {
-                    $tab_content .= view_e_basic($e);
+                    $focus_tab .= view_e_basic($e);
                 }
-                $tab_content .= '</div>';
+                $focus_tab .= '</div>';
             }
         }
 
@@ -246,13 +246,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //CERTIFICATES
         $counter = $i_stats['count_7545'];
-        $tab_content .= '<p class="space-content">Completion could earn you some of the following certificates:</p>';
-        $tab_content .= '<div class="list-group" style="margin-bottom:34px;">';
+        $focus_tab .= '<p class="space-content">Completion could earn you some of the following certificates:</p>';
+        $focus_tab .= '<div class="list-group" style="margin-bottom:34px;">';
         foreach ($i_stats['array_7545'] as $e) {
             $e['x__message'] = ''; //Remove for this
-            $tab_content .= view_e_basic($e);
+            $focus_tab .= view_e_basic($e);
         }
-        $tab_content .= '</div>';
+        $focus_tab .= '</div>';
 
     } elseif($x__type==12419){
 
@@ -264,28 +264,28 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__miner'), 0, 0, array('x__sort' => 'ASC'));
         $counter = count($comments);
 
-        $tab_content .= '<div style="margin-bottom:34px;">';
-        $tab_content .= view_i_note_mix($x__type, $comments);
-        $tab_content .= '</div>';
+        $focus_tab .= '<div style="margin-bottom:34px;">';
+        $focus_tab .= view_i_note_mix($x__type, $comments);
+        $focus_tab .= '</div>';
 
     } elseif($x__type==6255){
 
         $counter = x_coins_i(6255, $i_focus['i__id']);
-        $tab_content .= '<p class="space-content">This idea has been discovered '.$counter.' times.</p>';
+        $focus_tab .= '<p class="space-content">This idea has been discovered '.$counter.' times.</p>';
 
     } elseif($x__type==13023){
 
         //SHARE
         $this_url = $this->config->item('base_url').'/'.$i_focus['i__id'];
 
-        $tab_content .= '<div class="share-this space-content" style="margin-bottom:34px;">';
-        $tab_content .= '<div style="margin-bottom:13px;">Share URL:</div>';
-        $tab_content .= '<input style="margin-bottom:13px;" type="url" value="' .$this_url . '" class="form-control border">';
-        $tab_content .= '<div style="margin-bottom:13px;">Or share using:</div>';
+        $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
+        $focus_tab .= '<div style="margin-bottom:13px;">Share URL:</div>';
+        $focus_tab .= '<input style="margin-bottom:13px;" type="url" value="' .$this_url . '" class="form-control border">';
+        $focus_tab .= '<div style="margin-bottom:13px;">Or share using:</div>';
         foreach($this->config->item('e___13023') as $m2) {
-            $tab_content .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
+            $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
         }
-        $tab_content .= '</div>';
+        $focus_tab .= '</div>';
 
     } else {
 
@@ -312,7 +312,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $tab_pills .= '<li class="nav-item"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
-    $tab_content .= $tab_content;
+    $tab_content .= $focus_tab;
     $tab_content .= '</div>';
 
 }
