@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-13 01:30:27 PST
+//Generated 2020-07-13 01:34:11 PST
 $config['s___12274'] = 5013; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122013; //DISCOVERIES
@@ -2838,19 +2838,19 @@ $config['e___12079'] = array(
 );
 
 //SOURCE TABS:
-$config['n___11089'] = array(11030,11029,6225,12419,7545,10573,12969,12896);
+$config['n___11089'] = array(11029,11030,6225,12419,7545,10573,12969,12896);
 $config['e___11089'] = array(
-    11030 => array(
-        'm_icon' => '<i class="fas fa-sitemap rotate180 source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE',
-        'm_desc' => '',
-        'm_parents' => array(7545,13411,13004,12574,11089,11028),
-    ),
     11029 => array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(12574,12571,11089,11028),
+    ),
+    11030 => array(
+        'm_icon' => '<i class="fas fa-sitemap rotate180 source" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE',
+        'm_desc' => '',
+        'm_parents' => array(7545,13411,13004,12574,11089,11028),
     ),
     6225 => array(
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
