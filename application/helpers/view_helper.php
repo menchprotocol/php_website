@@ -1311,6 +1311,8 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
     $superpower_any = ( $session_e ? count($CI->session->userdata('session_superpowers_assigned')) : 0 );
     $e___12467 = $CI->config->item('e___12467'); //MENCH
     $e___11089 = $CI->config->item('e___11089'); //SOURCE LAYOUT
+    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+
 
     $tab_nav = '';
     $tab_content = '';
