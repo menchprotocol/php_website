@@ -1331,8 +1331,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $e__portfolio_count = $CI->X_model->fetch(array(
         'x__up' => $e['e__id'],
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
     ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
     $is_public = in_array($e['e__status'], $CI->config->item('n___7357'));
