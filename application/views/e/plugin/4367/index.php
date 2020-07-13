@@ -1,10 +1,11 @@
 <?php
 
-$transaction__id = 1;
+$transaction__id = 0;
 
-foreach($this->X_model->fetch(array('x__id' => 1174126), array(), 0, 0, array('x__id' => 'ASC')) as $x){
+foreach($this->X_model->fetch(array(), array(), 0, 0, array('x__id' => 'ASC')) as $x){
 
     //Update ID
+    $transaction__id++;
     $this->db->where('x__id', $x['x__id']);
     $this->db->update('mench__x', array(
         'x__id' => $transaction__id,
@@ -16,9 +17,6 @@ foreach($this->X_model->fetch(array('x__id' => 1174126), array(), 0, 0, array('x
         'x__reference' => $transaction__id,
     ));
 
-
-    $transaction__id++;
-    break;
 }
 
-echo 'Updated '.$transaction__id.' TRANSACTIONS with a new ID';
+echo 'SUCCESS: Updated '.$transaction__id.' TRANSACTIONS with a new ID';
