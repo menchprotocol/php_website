@@ -622,6 +622,7 @@ img.no-radius {
     left: 0;
     border-bottom: 2px solid #FC1B44;
     width: 9px;
+    border-bottom-left-radius: 8px;
 }
 
 .fixed-bottom{
