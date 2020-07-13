@@ -616,7 +616,7 @@ function view_i_x_icon($completion_percentage){
     $recipient_e = superpower_assigned();
     if(!$recipient_e){
         //DISCOVER GUEST
-        $x_legend = 13511;
+        $x_legend = 12273;
     } elseif($completion_percentage==0){
         //DISCOVER NOT STARTED
         $x_legend = 12448;
