@@ -28,8 +28,8 @@
 
             //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
             echo '<div class="'.( !isset($_GET['reset']) ? 'hidden' : '' ).' margin-top-down left-margin inline-block">';
-                echo '<p>'.$e___11035[13510]['m_icon'].'</p>';
-                echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[13510]['m_icon'].' '.$e___11035[13510]['m_name'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
+                echo '<p>'.$e___11035[6415]['m_desc'].'</p>';
+                echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_name'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
             echo '</div>';
 
             echo '<div class="doclear">&nbsp;</div>';
