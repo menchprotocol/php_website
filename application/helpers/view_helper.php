@@ -676,11 +676,11 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $ui .= '<div class="montserrat handler_13509 hidden hideIfEmpty margin-top-down">';
 
     if($i_stats['e_count']){
-        $ui .= $e___12467[12274]['m_icon'].'<span style="padding:0 0 0 34px;" class="source">'.$i_stats['e_count'].'</span>';
+        $ui .= '<span style="padding:0 0 0 34px;" class="source">'.$e___12467[12274]['m_icon'].' '.$i_stats['e_count'].'</span>';
     }
 
     if($i_stats['i___13443']){
-        $ui .= $e___12467[12273]['m_icon'].'<span style="padding:0 0 0 34px;" class="idea">'.$i_stats['i___13443'].'</span>';
+        $ui .= '<span style="padding:0 0 0 34px;" class="idea">'.$e___12467[12273]['m_icon'].' '.$i_stats['i___13443'].'</span>';
     }
 
     if($i_stats['i___13292']){
