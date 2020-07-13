@@ -1174,7 +1174,7 @@ function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local 
 
 
     //Delete local file:
-    @remove(($is_local ? $file_url : $file_path . $file_name));
+    @unlink(($is_local ? $file_url : $file_path . $file_name));
 
     //Define new URL:
     $cdn_new_url = trim($result['ObjectURL']);
