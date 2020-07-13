@@ -611,7 +611,7 @@ img.no-radius {
 }
 .progress-connector{
     border-left: 4px solid #FC1B44;
-    height: 25px;
+    height: 24px;
     display: block;
     position: absolute;
     top: 0;
