@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 22:03:45 PST
+//Generated 2020-07-12 22:05:27 PST
 $config['s___12274'] = 5013; //SOURCES
 $config['s___12273'] = 3932; //IDEAS
 $config['s___6255'] = 122067; //DISCOVERIES
@@ -40,7 +40,7 @@ $config['e___13289'] = array(
         'm_parents' => array(13289,11035),
     ),
     13491 => array(
-        'm_icon' => '<i class="fas fa-font discover"></i>',
+        'm_icon' => '<i class="fas fa-text-width discover"></i>',
         'm_name' => 'FONT SIZE',
         'm_desc' => '',
         'm_parents' => array(13289,4527,6204),
@@ -4435,7 +4435,7 @@ $config['e___4527'] = array(
         'm_parents' => array(6159,4251,13428,13365,13207,4527),
     ),
     13491 => array(
-        'm_icon' => '<i class="fas fa-font discover"></i>',
+        'm_icon' => '<i class="fas fa-text-width discover"></i>',
         'm_name' => 'FONT SIZE',
         'm_desc' => '',
         'm_parents' => array(13289,4527,6204),
@@ -5460,7 +5460,7 @@ $config['e___6201'] = array(
 $config['n___6204'] = array(13491,4737,7585,10602,13037,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,12968,6186,4593);
 $config['e___6204'] = array(
     13491 => array(
-        'm_icon' => '<i class="fas fa-font discover"></i>',
+        'm_icon' => '<i class="fas fa-text-width discover"></i>',
         'm_name' => 'FONT SIZE',
         'm_desc' => '',
         'm_parents' => array(13289,4527,6204),
