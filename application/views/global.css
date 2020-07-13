@@ -721,12 +721,6 @@ img.no-radius {
     font-family: 'Montserrat', sans-serif;
 }
 
-.nav-x.active {
-    color: #fff;
-    background-color: #000000;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
 .nav-pills .nav-x.active, .nav-pills .show>.nav-x {
     color: #fff;
     background-color: #000000;
@@ -801,8 +795,8 @@ img.no-radius {
 }
 
 .nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
-    border-color:#000000 !important;
-    border-bottom: 1px solid #f0f0f0 !important;
+    border: 1px solid #000000 !important;
+    border-bottom-color: #f0f0f0 !important;
     background-color: #f0f0f0 !important;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
