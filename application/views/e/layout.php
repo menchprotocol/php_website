@@ -23,6 +23,10 @@ $miner_is_e = miner_is_e($e['e__id']);
 <div class="container e-ui">
 
     <?php
+
+    //SOURCE DRAFTING?
+    echo '<div class="'.( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span class="icon-block e__status_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_name'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span></div>';
+
     //SOURCE NAME
     echo '<div class="itemsource">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($miner_is_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
 
@@ -160,22 +164,13 @@ $miner_is_e = miner_is_e($e['e__id']);
     <?php
 
 
-    //FOR EDITING ONLY:
+    //FOR EDITING ONLY, OTHERSWISE HIDDEN:
     echo '<div class="hidden">'.view_e($e).'</div>';
 
 
-    //NAME & STATUS
+    //SOURCE MODIFY BUTTON
     echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;">';
-
-        //SOURCE DRAFTING?
-        echo '<span class="icon-block e__status_' . $e['e__id'] . ( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_name'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span>';
-
-        //Modify
-        echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a>';
-
-
-    echo '</div>';
+    echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a></div>';
     echo '<div class="doclear">&nbsp;</div>';
 
     //Display Both tabs:
