@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-13 01:17:07 PST
+//Generated 2020-07-13 01:30:27 PST
 $config['s___12274'] = 5013; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
-$config['s___6255'] = 122080; //DISCOVERIES
+$config['s___6255'] = 122013; //DISCOVERIES
 
 //SAVED DISCOVERIES:
 $config['n___13510'] = array(12896,12906);
@@ -380,7 +380,7 @@ $config['e___13424'] = array(
 $config['n___13425'] = array(6225);
 $config['e___13425'] = array(
     6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'MY SETTINGS',
         'm_desc' => '',
         'm_parents' => array(13425,12574,11089,11035,4527),
@@ -940,14 +940,8 @@ $config['e___13022'] = array(
 );
 
 //SOURCE LAYOUT RESTRICT COUNTS:
-$config['n___13004'] = array(11029,11030);
+$config['n___13004'] = array(11030);
 $config['e___13004'] = array(
-    11029 => array(
-        'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
-        'm_name' => 'PORTFOLIO',
-        'm_desc' => '',
-        'm_parents' => array(13004,12574,12571,11089,11028),
-    ),
     11030 => array(
         'm_icon' => '<i class="fas fa-sitemap rotate180 source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
@@ -1581,7 +1575,7 @@ $config['e___12577'] = array(
 $config['n___12574'] = array(6225,11029,11030);
 $config['e___12574'] = array(
     6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'MY SETTINGS',
         'm_desc' => '',
         'm_parents' => array(13425,12574,11089,11035,4527),
@@ -1590,7 +1584,7 @@ $config['e___12574'] = array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(13004,12574,12571,11089,11028),
+        'm_parents' => array(12574,12571,11089,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-sitemap rotate180 source" aria-hidden="true"></i>',
@@ -1624,7 +1618,7 @@ $config['e___12571'] = array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(13004,12574,12571,11089,11028),
+        'm_parents' => array(12574,12571,11089,11028),
     ),
 );
 
@@ -2856,10 +2850,10 @@ $config['e___11089'] = array(
         'm_icon' => '<i class="fad fa-sitemap source" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(13004,12574,12571,11089,11028),
+        'm_parents' => array(12574,12571,11089,11028),
     ),
     6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'MY SETTINGS',
         'm_desc' => '',
         'm_parents' => array(13425,12574,11089,11035,4527),
@@ -3133,7 +3127,7 @@ $config['e___6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH VERSION',
-        'm_desc' => 'v1.4692',
+        'm_desc' => 'v1.469',
         'm_parents' => array(6404),
     ),
     11066 => array(
@@ -3422,7 +3416,7 @@ $config['e___11035'] = array(
         'm_parents' => array(11035,13405,13424,11054,4527,10984,11018,11089,4593,7551,4485),
     ),
     6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'MY SETTINGS',
         'm_desc' => 'Manage avatar, superpowers, subscription & name',
         'm_parents' => array(13425,12574,11089,11035,4527),
@@ -4783,7 +4777,7 @@ $config['e___4527'] = array(
         'm_parents' => array(11035,13405,13424,11054,4527,10984,11018,11089,4593,7551,4485),
     ),
     6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
         'm_name' => 'MY SETTINGS',
         'm_desc' => '',
         'm_parents' => array(13425,12574,11089,11035,4527),
