@@ -1345,7 +1345,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
             //SOURCE REFERENCE:
             $e_count_connections = e_count_connections($e['e__id'], $x__type);
-            $counter = $e_count_connections[$x__type];
+            $counter = ( isset($e_count_connections[$x__type]) ? $e_count_connections[$x__type] : 0 );
             if(!$counter){
                 continue;
             }
