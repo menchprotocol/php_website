@@ -6,7 +6,7 @@
 
     $session_e = superpower_assigned();
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-    $miner_xy_ids = array();
+    $my_x_ids = array();
 
 
     if($session_e){
