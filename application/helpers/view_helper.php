@@ -1828,7 +1828,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
             } else {
 
-                $tab_content .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___11089[$x__type]['m_name'].' yet</div>';
+                $tab_content .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_name'].' yet</div>';
 
             }
 
