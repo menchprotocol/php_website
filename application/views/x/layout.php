@@ -8,7 +8,7 @@
 
 <?php
 
-echo '<div class="container load_10876">';
+echo '<div class="container load_13210">';
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 
@@ -617,11 +617,11 @@ if($in_my_x){
 
 
 
-    echo '<div class="container load_10876 hidden">';
+    echo '<div class="container load_13210 hidden">';
     echo '<div class="list-group">';
 
     //My Discoveries:
-    echo '<div class="list-group-item no-side-padding itemdiscover"><a href="/"><span class="icon-block">'.$e___11035[10876]['m_icon'].'</span><span class="montserrat">'.$e___11035[10876]['m_name'].'</span></a></div>';
+    echo '<div class="list-group-item no-side-padding itemdiscover"><a href="/"><span class="icon-block">'.$e___11035[13210]['m_icon'].'</span><span class="montserrat">'.$e___11035[13210]['m_name'].'</span></a></div>';
 
     //Did We Find It?
     if($previous_level_id){
@@ -685,10 +685,10 @@ if($in_my_x){
             $url .= '</div>';
             $url .= '</div>';
 
-        } elseif($e__id==10876){
+        } elseif($e__id==13210){
 
             //IDEA INDEX
-            $url = '<a href="javascript:void(0);" onclick="$(\'.load_10876\').toggleClass(\'hidden\');" class="controller-nav">'.$m['m_icon'].'</a>';
+            $url = '<a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');" class="controller-nav">'.$m['m_icon'].'</a>';
 
         }
 

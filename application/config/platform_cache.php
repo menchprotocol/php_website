@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 22:05:27 PST
+//Generated 2020-07-12 22:12:50 PST
 $config['s___12274'] = 5013; //SOURCES
 $config['s___12273'] = 3932; //IDEAS
 $config['s___6255'] = 122067; //DISCOVERIES
@@ -31,7 +31,7 @@ $config['e___13510'] = array(
 );
 
 //DISCOVERY CONTROLLER:
-$config['n___13289'] = array(12991,13491,10876,13510,12211);
+$config['n___13289'] = array(12991,13491,13210,13510,12211);
 $config['e___13289'] = array(
     12991 => array(
         'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
@@ -45,11 +45,11 @@ $config['e___13289'] = array(
         'm_desc' => '',
         'm_parents' => array(13289,4527,6204),
     ),
-    10876 => array(
+    13210 => array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
-        'm_name' => 'DISCOVERY HOME',
+        'm_name' => 'DISCOVERY MAP',
         'm_desc' => '',
-        'm_parents' => array(13289,13459,11035,13488,2738,4527,1326),
+        'm_parents' => array(11035,13289,13459,10876,6771),
     ),
     13510 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
@@ -95,7 +95,7 @@ $config['e___13488'] = array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
         'm_name' => 'DISCOVERY HOME',
         'm_desc' => '',
-        'm_parents' => array(13289,13459,11035,13488,2738,4527,1326),
+        'm_parents' => array(13459,11035,13488,2738,4527,1326),
     ),
     13405 => array(
         'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
@@ -1742,9 +1742,9 @@ $config['n___10876'] = array(13210,13405,7291,4341,6287,4269,13207);
 $config['e___10876'] = array(
     13210 => array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
-        'm_name' => 'DISCOVERY HOME LAYOUT',
+        'm_name' => 'DISCOVERY MAP',
         'm_desc' => '',
-        'm_parents' => array(13459,10876,6771),
+        'm_parents' => array(11035,13289,13459,10876,6771),
     ),
     13405 => array(
         'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
@@ -3341,7 +3341,7 @@ $config['e___11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(6225,13502,13401,10876,13495,13427,12707,4235,12991,12211,12413,11068,4341,12969,10573,6287,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
+$config['n___11035'] = array(6225,13502,13401,10876,13210,13495,13427,12707,4235,12991,12211,12413,11068,4341,12969,10573,6287,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
 $config['e___11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3365,7 +3365,13 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
         'm_name' => 'DISCOVERY HOME',
         'm_desc' => '',
-        'm_parents' => array(13289,13459,11035,13488,2738,4527,1326),
+        'm_parents' => array(13459,11035,13488,2738,4527,1326),
+    ),
+    13210 => array(
+        'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
+        'm_name' => 'DISCOVERY MAP',
+        'm_desc' => '',
+        'm_parents' => array(11035,13289,13459,10876,6771),
     ),
     13495 => array(
         'm_icon' => '<i class="fas fa-pen discover"></i>',
@@ -4212,7 +4218,7 @@ $config['e___2738'] = array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
         'm_name' => 'DISCOVERY HOME',
         'm_desc' => '',
-        'm_parents' => array(13289,13459,11035,13488,2738,4527,1326),
+        'm_parents' => array(13459,11035,13488,2738,4527,1326),
     ),
     10869 => array(
         'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
@@ -4408,7 +4414,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
         'm_name' => 'DISCOVERY HOME',
         'm_desc' => '',
-        'm_parents' => array(13289,13459,11035,13488,2738,4527,1326),
+        'm_parents' => array(13459,11035,13488,2738,4527,1326),
     ),
     12446 => array(
         'm_icon' => '<i class="fad fa-question-circle discover"></i>',
