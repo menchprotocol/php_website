@@ -211,53 +211,6 @@ $miner_is_e = miner_is_e($e['e__id']);
 
 
 
-    //MENCH COINS
-    $tab_group = 12467;
-    $tab_nav = '';
-    $tab_content = '';
-    foreach($this->config->item('e___'.$tab_group) as $x__type => $m) {
-
-        //Has required Superpowers
-        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
-        if(count($superpower_actives) && !superpower_assigned(end($superpower_actives))){
-            continue;
-        }
-
-        //Does have 1 or more coins
-        $counter = x_stats_count($x__type, $e['e__id']);
-        if(!$counter){
-            //Hide since Zero:
-            continue;
-        }
-
-        $this_tab = x_stats_count($x__type, $e['e__id'], 1);
-        $default_active = in_array($x__type, $this->config->item('n___12571'));
-
-        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
-
-
-        $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
-        $tab_content .= $this_tab;
-        $tab_content .= '</div>';
-
-    }
-
-    if($tab_nav){
-
-        echo '<ul class="nav nav-tabs nav-sm">';
-        echo $tab_nav;
-        echo '</ul>';
-
-        //Show All Tab Content:
-        echo $tab_content;
-
-    }
-
-
-
-
-
-
     //SOURCE TABS
     $tab_group = 11089;
     $tab_nav = '';
@@ -787,6 +740,57 @@ $miner_is_e = miner_is_e($e['e__id']);
         $default_active = in_array($x__type, $this->config->item('n___12571'));
 
         $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.( in_array($x__type, $this->config->item('n___13004')) ? superpower_active(13422) : '' ).'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
+
+
+        $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
+        $tab_content .= $this_tab;
+        $tab_content .= '</div>';
+
+    }
+
+    if($tab_nav){
+
+        echo '<ul class="nav nav-tabs nav-sm">';
+        echo $tab_nav;
+        echo '</ul>';
+
+        //Show All Tab Content:
+        echo $tab_content;
+
+    }
+
+
+
+
+
+
+
+
+
+    //MENCH COINS
+    echo '<div class="doclear">&nbsp;</div>';
+    $tab_group = 12467;
+    $tab_nav = '';
+    $tab_content = '';
+    foreach($this->config->item('e___'.$tab_group) as $x__type => $m) {
+
+        //Has required Superpowers
+        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
+        if(count($superpower_actives) && !superpower_assigned(end($superpower_actives))){
+            continue;
+        }
+
+        //Does have 1 or more coins
+        $counter = x_stats_count($x__type, $e['e__id']);
+        if(!$counter){
+            //Hide since Zero:
+            continue;
+        }
+
+        $this_tab = x_stats_count($x__type, $e['e__id'], 1);
+        $default_active = in_array($x__type, $this->config->item('n___12571'));
+
+        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
 
 
         $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
