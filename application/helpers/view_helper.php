@@ -1341,8 +1341,8 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
         } elseif(in_array($x__type, $CI->config->item('n___6194'))){
 
             //SOURCE REFERENCE:
-            $e_count_connections = e_count_connections($e['e__id'], $x__type);
-            $counter = ( isset($e_count_connections[$x__type]) ? $e_count_connections[$x__type] : 0 );
+            $e_count_6194 = e_count_6194($e['e__id'], $x__type);
+            $counter = ( isset($e_count_6194[$x__type]) ? $e_count_6194[$x__type] : 0 );
             if(!$counter){
                 continue;
             }

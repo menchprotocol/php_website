@@ -804,14 +804,14 @@ class E extends CI_Controller
 
 
             //Make sure source is not referenced in key DB reference fields:
-            $e_count_connections = e_count_connections($_POST['e__id']);
-            if(count($e_count_connections) > 0){
+            $e_count_6194 = e_count_6194($_POST['e__id']);
+            if(count($e_count_6194) > 0){
 
                 $e___6194 = $this->config->item('e___6194');
 
                 //Construct the message:
                 $error_message = 'Cannot be deleted because source is referenced as ';
-                foreach($e_count_connections as $e__id=>$e_count){
+                foreach($e_count_6194 as $e__id=>$e_count){
                     $error_message .= $e___6194[$e__id]['m_name'].' '.view_number($e_count).' times ';
                 }
 
