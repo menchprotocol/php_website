@@ -673,18 +673,18 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
 
     //Extra Stats
-    $ui .= '<div class="montserrat handler_13509 hidden hideIfEmpty left-margin margin-top-down">';
+    $ui .= '<div class="montserrat handler_13509 hidden hideIfEmpty margin-top-down">';
 
     if($i_stats['e_count']){
-        $ui .= $e___12467[12274]['m_icon'].'<span style="padding:0 21px 0 3px;" class="source">'.$i_stats['e_count'].'</span>';
+        $ui .= $e___12467[12274]['m_icon'].'<span style="padding:0 0 0 34px;" class="source">'.$i_stats['e_count'].'</span>';
     }
 
     if($i_stats['i___13443']){
-        $ui .= $e___12467[12273]['m_icon'].'<span style="padding:0 21px 0 3px;" class="idea">'.$i_stats['i___13443'].'</span>';
+        $ui .= $e___12467[12273]['m_icon'].'<span style="padding:0 0 0 34px;" class="idea">'.$i_stats['i___13443'].'</span>';
     }
 
     if($i_stats['i___13292']){
-        $ui .= '<span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span>';
+        $ui .= '<span class="mono-space" style="padding:0 0 0 34px;">'.view_time_hours($i_stats['i___13292']).'</span>';
     }
 
     $ui .= '</div>';
