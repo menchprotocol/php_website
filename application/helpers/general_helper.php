@@ -380,7 +380,6 @@ function e_count_6194($e__id, $specific_id = 0){
     $CI =& get_instance();
     $e___6194 = $CI->config->item('e___6194');
     $query_index = array(
-        7585 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status IN ('.join(',', $CI->config->item('n___7355')).') AND i__type=',
         4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__miner=',
         4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
     );
