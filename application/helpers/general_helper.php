@@ -371,7 +371,7 @@ function is_valid_icon($string){
 }
 
 
-function e_count_connections($e__id, $return_html = true){
+function e_count_connections($e__id, $specific_id = 0){
 
     //NOTE HERE
 
@@ -379,29 +379,34 @@ function e_count_connections($e__id, $return_html = true){
     $e_count_connections = array(); //Holds return values
     $CI =& get_instance();
     $e___6194 = $CI->config->item('e___6194');
-
-    foreach(array(
+    $query_index = array(
         4737 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status=',
         7585 => 'SELECT count(i__id) as totals FROM mench__i WHERE i__status IN ('.join(',', $CI->config->item('n___7355')).') AND i__type=',
         6177 => 'SELECT count(e__id) as totals FROM mench__e WHERE e__status=',
         4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__miner=',
         6186 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status=',
         4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
-    ) as $e_app_id => $query){
+    );
+
+    foreach($query_index as $e_app_id => $query){
+
+        if($specific_id && $specific_id!=$e_app_id){
+            continue;
+        }
 
         $query = $CI->db->query( $query . $e__id );
         foreach($query->result() as $row)
         {
             if($row->totals > 0){
-                $e_count_connections[$e_app_id] = ( $return_html ? '<span class="montserrat doupper '.extract_icon_color($e___6194[$e_app_id]['m_icon']).'" data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$e___6194[$e_app_id]['m_name'].' '.number_format($row->totals, 0).' times">'.$e___6194[$e_app_id]['m_icon'] . ' '. view_number($row->totals).'</span>&nbsp;' : $row->totals );
+                $e_count_connections[$e_app_id] = $row->totals;
             }
         }
 
     }
 
     //Plugin?
-    if(superpower_active(12699, true) && in_array($e__id, $CI->config->item('n___6287'))){
-        $e_count_connections[6287] = ( $return_html ? '<a href="/e/plugin/'.$e__id.'" class="icon-block" data-toggle="tooltip" data-placement="bottom" title="'.$e___6194[6287]['m_name'].'">'.$e___6194[6287]['m_icon'].'</a>' : 1 );
+    if((!$specific_id || $specific_id==6287) && superpower_active(12699, true) && in_array($e__id, $CI->config->item('n___6287'))){
+        $e_count_connections[6287] = 1;
     }
 
     return $e_count_connections;

@@ -804,7 +804,7 @@ class E extends CI_Controller
 
 
             //Make sure source is not referenced in key DB reference fields:
-            $e_count_connections = e_count_connections($_POST['e__id'], false);
+            $e_count_connections = e_count_connections($_POST['e__id']);
             if(count($e_count_connections) > 0){
 
                 $e___6194 = $this->config->item('e___6194');

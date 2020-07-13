@@ -610,13 +610,13 @@ img.no-radius {
     background-color: #CCCCCC;
 }
 .progress-connector{
-    border-left: 4px solid #FC1B44;
+    border-left: 3px solid #FC1B44;
     height: 24px;
     display: block;
     position: absolute;
     top: 0;
     left: 0;
-    border-bottom: 3px solid #FC1B44;
+    border-bottom: 2px solid #FC1B44;
     width: 9px;
 }
 

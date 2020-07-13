@@ -123,7 +123,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     $disable_manual_add = in_array($x__type, $this->config->item('n___12677'));
     $counter = null; //Assume no counters
-    $this_tab = '';
+    $tab_content = '';
 
 
     if($x__type==11020){
@@ -139,13 +139,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //CHILD IDEAS
         $counter = count($is_next);
 
-        $this_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_is">';
+        $tab_content .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_is">';
         foreach($is_next as $next_i) {
-            $this_tab .= view_i($next_i, $i_focus['i__id'], false, $e_owns_i);
+            $tab_content .= view_i($next_i, $i_focus['i__id'], false, $e_owns_i);
         }
 
         if($e_owns_i && $is_active){
-            $this_tab .= '<div class="list-group-item list-adder itemidea '.superpower_active(10939).'">
+            $tab_content .= '<div class="list-group-item list-adder itemidea '.superpower_active(10939).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                     <input type="text"
@@ -157,7 +157,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 </div><div class="algolia_pad_search hidden i_pad_bottom"></div></div>';
         }
 
-        $this_tab .= '</div>';
+        $tab_content .= '</div>';
 
     } elseif(in_array($x__type, $this->config->item('n___7551'))){
 
@@ -170,14 +170,14 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = count($i_notes);
 
-        $this_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder">';
+        $tab_content .= '<div id="add-e-' .$x__type . '" class="list-group e-adder">';
 
         foreach($i_notes as $i_note) {
-            $this_tab .= view_e($i_note, 0, null, $e_owns_i && $is_active, $e_owns_i);
+            $tab_content .= view_e($i_note, 0, null, $e_owns_i && $is_active, $e_owns_i);
         }
 
         if($e_owns_i && $is_active && !$disable_manual_add) {
-            $this_tab .= '<div class="list-group-item list-adder itemsource no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
+            $tab_content .= '<div class="list-group-item list-adder itemsource no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___12467[12274]['m_icon'] . '</span></span>
                     <input type="text"
@@ -187,13 +187,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '"></div></div>';
         }
 
-        $this_tab .= '</div>';
+        $tab_content .= '</div>';
 
     } elseif(in_array($x__type, $this->config->item('n___12467'))){
 
         //MENCH COINS
         $counter = x_coins_i($x__type, $i_focus['i__id']);
-        $this_tab = x_coins_i($x__type, $i_focus['i__id'], 1);
+        $tab_content = x_coins_i($x__type, $i_focus['i__id'], 1);
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
@@ -205,7 +205,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__miner'), 0, 0, array('x__sort' => 'ASC'));
 
         $counter = count($i_notes);
-        $this_tab .= view_i_note_mix($x__type, $i_notes);
+        $tab_content .= view_i_note_mix($x__type, $i_notes);
 
     } elseif($x__type==12969){
 
@@ -217,15 +217,15 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = $miner_x[0]['totals'];
         if($counter > 0){
 
-            $this_tab .= '<div class="list-group">';
+            $tab_content .= '<div class="list-group">';
             foreach($this->X_model->fetch(array(
                 'x__left' => $i_focus['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__miner')) as $miner){
-                $this_tab .= view_e($miner);
+                $tab_content .= view_e($miner);
             }
-            $this_tab .= '</div>';
+            $tab_content .= '</div>';
 
         }
 
@@ -270,20 +270,20 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $counter = null;
-        $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
-        $this_tab .= '<div class="inline-box">';
+        $tab_content .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+        $tab_content .= '<div class="inline-box">';
 
         //Drop Down
-        $this_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
-        $this_tab .= $dropdown_options;
-        $this_tab .= '</select>';
+        $tab_content .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
+        $tab_content .= $dropdown_options;
+        $tab_content .= '</select>';
 
-        $this_tab .= $input_options;
+        $tab_content .= $input_options;
 
-        $this_tab .= '<div><input type="submit" value="APPLY" class="btn btn-i inline-block"></div>';
+        $tab_content .= '<div><input type="submit" value="APPLY" class="btn btn-i inline-block"></div>';
 
-        $this_tab .= '</div>';
-        $this_tab .= '</form>';
+        $tab_content .= '</div>';
+        $tab_content .= '</form>';
 
     } else {
 
@@ -305,7 +305,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
-    $tab_content .= $this_tab;
+    $tab_content .= $tab_content;
     $tab_content .= '</div>';
 
 }
