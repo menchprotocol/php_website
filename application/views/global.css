@@ -1574,8 +1574,6 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
-    .active .show-max-active {display:none !important;}
-
     .mini-hidden{
         display: none;
     }
