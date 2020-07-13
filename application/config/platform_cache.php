@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-13 01:00:33 PST
+//Generated 2020-07-13 01:08:26 PST
 $config['s___12274'] = 5013; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122080; //DISCOVERIES
@@ -949,7 +949,7 @@ $config['e___13004'] = array(
         'm_parents' => array(13004,12574,12571,11089,11028),
     ),
     11030 => array(
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-sitemap rotate180 source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(7545,13411,13004,12574,11089,11028),
@@ -1593,7 +1593,7 @@ $config['e___12574'] = array(
         'm_parents' => array(13004,12574,12571,11089,11028),
     ),
     11030 => array(
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-sitemap rotate180 source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(7545,13411,13004,12574,11089,11028),
@@ -2847,7 +2847,7 @@ $config['e___12079'] = array(
 $config['n___11089'] = array(11030,11029,6225,12419,7545,10573,12969,12896);
 $config['e___11089'] = array(
     11030 => array(
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-sitemap rotate180 source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(7545,13411,13004,12574,11089,11028),
