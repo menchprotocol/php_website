@@ -1413,7 +1413,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= $box_items_list;
         $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
         if($e__portfolio_count[0]['totals'] > 0){
-            $ui .= ' ['.$e__portfolio_count[0]['totals'].']';
+            $ui .= ' ['.view_number($e__portfolio_count[0]['totals']).']';
         }
         if($superpower_12706){
             $ui .= $child_counter;
