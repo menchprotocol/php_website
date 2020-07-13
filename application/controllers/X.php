@@ -19,7 +19,7 @@ class X extends CI_Controller
         //Load header:
         $e___13488 = $this->config->item('e___13488');
         $this->load->view('header', array(
-            'title' => $e___13488[10876]['m_name'],
+            'title' => $e___13488[13210]['m_name'],
         ));
         $this->load->view('x/home');
         $this->load->view('footer');
@@ -907,7 +907,7 @@ class X extends CI_Controller
         $e___13488 = $this->config->item('e___13488');
         return view_json(array(
             'status' => 1,
-            'first_save_message' => 'Saved this idea in '.$e___13488[10876]['m_name'],
+            'first_save_message' => 'Saved this idea in '.$e___13488[13210]['m_name'],
             'is_first_save' => ( !$removed && count($this->X_model->fetch(array(
                     'x__up' => $session_e['e__id'],
                     'x__type' => 12896, //SAVED

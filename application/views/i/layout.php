@@ -103,7 +103,7 @@ echo '<div class="doclear">&nbsp;</div>';
 //IDEA LAYOUT
 $tab_group = 11018;
 $tab_content = '';
-echo '<ul class="nav nav-pills nav-sm">';
+echo '<ul class="nav nav-tabs nav-sm">';
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 

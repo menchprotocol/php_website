@@ -196,7 +196,7 @@ $miner_is_e = miner_is_e($e['e__id']);
     //ADMIN MENU
     if(superpower_assigned(12703)){
         $e___4527 = $this->config->item('e___4527'); //Platform Memory
-        echo '<ul class="nav nav-pills nav-sm" style="display: inline-block; border: 0; margin: 0;">';
+        echo '<ul class="nav nav-tabs nav-sm" style="display: inline-block; border: 0; margin: 0;">';
         echo view_caret(12887, $e___4527[12887], $e['e__id']);
         echo '</ul>';
     }
@@ -244,7 +244,7 @@ $miner_is_e = miner_is_e($e['e__id']);
 
     if($tab_nav){
 
-        echo '<ul class="nav nav-pills nav-sm">';
+        echo '<ul class="nav nav-tabs nav-sm">';
         echo $tab_nav;
         echo '</ul>';
 
@@ -631,7 +631,7 @@ $miner_is_e = miner_is_e($e['e__id']);
                         $e___6177 = $this->config->item('e___6177'); //Source Status
 
                         //Add 2nd Navigation to UI
-                        $this_tab .= '<div class="nav nav-pills nav-sm">';
+                        $this_tab .= '<div class="nav nav-tabs nav-sm">';
 
                         //Show fixed All button:
                         $this_tab .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-x en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
