@@ -1,8 +1,8 @@
 <?php
 
-$transaction__id = 0;
+$transaction__id = 4000000;
 
-foreach($this->X_model->fetch(array(), array(), 0, 0, array('x__time' => 'ASC')) as $x){
+foreach($this->X_model->fetch(array('x__id <' => 44000), array(), 0, 0, array('x__time' => 'ASC')) as $x){
 
     //Update ID
     $transaction__id++;
