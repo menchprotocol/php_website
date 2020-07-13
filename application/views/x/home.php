@@ -26,15 +26,15 @@
             echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_name'].'</div>';
 
 
-            //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-            echo '<div class="'.( !isset($_GET['reset']) ? 'hidden' : '' ).' margin-top-down left-margin inline-block">';
+            if(isset($_GET['reset'])){
+                //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
+                echo '<div class="margin-top-down left-margin inline-block">';
                 echo '<p>'.$e___11035[6415]['m_desc'].'</p>';
                 echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_name'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
-            echo '</div>';
+                echo '</div>';
 
-            echo '<div class="doclear">&nbsp;</div>';
-
-
+                echo '<div class="doclear">&nbsp;</div>';
+            }
 
 
             echo '<div id="i_covers" class="cover-list">';
