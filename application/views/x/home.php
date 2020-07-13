@@ -12,24 +12,24 @@
     if($session_e){
 
         //MY DISCOVERIES
-        $miner_x = $this->X_model->fetch(array(
+        $my_x = $this->X_model->fetch(array(
             'x__miner' => $session_e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__left'), 0, 0, array('x__sort' => 'ASC'));
 
-        echo ( count($miner_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+        echo ( count($my_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
 
-        if(count($miner_x)){
+        if(count($my_x)){
 
             echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_name'].'</div>';
 
 
             echo '<div>';
             echo '<div id="i_covers" class="cover-list">';
-            foreach($miner_x as $x) {
-                array_push($miner_xy_ids, $x['i__id']);
+            foreach($my_x as $x) {
+                array_push($my_x_ids, $x['i__id']);
                 echo view_i_cover($x, true);
             }
             echo '</div>';
@@ -39,7 +39,7 @@
 
 
             //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-            echo '<div class="'.( !isset($_GET['reset']) ? 'hidden' : '' ).' margin-top-down">';
+            echo '<div class="'.( !isset($_GET['remove']) ? 'hidden' : '' ).' margin-top-down">';
             echo '<div class="alert alert-danger" role="alert">';
             echo '<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><b class="discover montserrat">DELETE ALL DISCOVERIES?</b>';
             echo '<br /><span class="icon-block">&nbsp;</span>Action cannot be undone.';
@@ -110,7 +110,7 @@
     echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13427]['m_icon'].'</span>'.$e___11035[13427]['m_name'].'</div>';
     echo '<div class="cover-list">';
     foreach($featured_is as $key => $x){
-        if(!in_array($x['i__id'], $miner_xy_ids)){
+        if(!in_array($x['i__id'], $my_x_ids)){
             //Show only if not in discovering list:
             echo view_i_cover($x, false);
         }
