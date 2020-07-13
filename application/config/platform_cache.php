@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-13 00:13:33 PST
+//Generated 2020-07-13 01:00:33 PST
 $config['s___12274'] = 5013; //SOURCES
-$config['s___12273'] = 3932; //IDEAS
+$config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122080; //DISCOVERIES
 
 //SAVED DISCOVERIES:
@@ -2844,14 +2844,8 @@ $config['e___12079'] = array(
 );
 
 //SOURCE TABS:
-$config['n___11089'] = array(6225,11030,11029,12419,7545,10573,12969,12896);
+$config['n___11089'] = array(11030,11029,6225,12419,7545,10573,12969,12896);
 $config['e___11089'] = array(
-    6225 => array(
-        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
-        'm_name' => 'ACCOUNT SETTINGS',
-        'm_desc' => '',
-        'm_parents' => array(13425,12574,11089,11035,4527),
-    ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
         'm_name' => 'PROFILE',
@@ -2863,6 +2857,12 @@ $config['e___11089'] = array(
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(13004,12574,12571,11089,11028),
+    ),
+    6225 => array(
+        'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
+        'm_name' => 'ACCOUNT SETTINGS',
+        'm_desc' => '',
+        'm_parents' => array(13425,12574,11089,11035,4527),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',

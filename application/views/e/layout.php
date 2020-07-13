@@ -278,7 +278,7 @@ $miner_is_e = miner_is_e($e['e__id']);
             continue;
         }
 
-        $counter = 0;
+        $counter = null;
         $this_tab = null;
 
 
