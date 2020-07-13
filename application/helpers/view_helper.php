@@ -137,8 +137,6 @@ function view_url_embed($url, $full_message = null, $return_array = false)
                 //Set the Clean URL:
                 $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-                //($end_time ? '<span class="media-info mid-right" title="Clip from '.view_time_hours($start_time).' to '.view_time_hours($end_time).'" data-toggle="tooltip" data-placement="top">'.view_time_hours($end_time - $start_time).'</span>' : '')
-
                 //Header For Time
                 if($end_time){
                     $embed_html_code .= '<div class="headline" style="padding-bottom: 0;"><span class="img-block icon-block-xs"><i class="fas fa-cut"></i></span>FROM '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).'</div>';
@@ -1259,7 +1257,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     if($show_editor){
 
         //SORT
-        $ui .= '<span class="media-info bottom-left x-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
+        $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
 
         //IDEA STATUS?
         if(!$x_mode && !in_array($i['i__status'], $CI->config->item('n___7355'))){
@@ -1267,7 +1265,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
         }
 
         //REMOVE
-        $ui .= '<span class="media-info bottom-right x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
+        $ui .= '<span class="media-info click-info bottom-right x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
 
     }
     $ui .= '</div>';

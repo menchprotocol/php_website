@@ -569,6 +569,10 @@ img.no-radius {
     font-family: 'Montserrat', sans-serif;
 }
 
+.click-info {
+    padding: 3px 5px;
+}
+
 .media-info.bottom-left{
     left: 4px;
     bottom: 5px;
