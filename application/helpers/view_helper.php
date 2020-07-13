@@ -673,7 +673,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
 
     //Extra Stats
-    $ui .= '<div class="montserrat handler_13509 hidden hideIfEmpty margin-top-down">';
+    $ui .= '<div class="montserrat handler_13509 hidden hideIfEmpty">';
 
     if($i_stats['e_count']){
         $ui .= '<span style="padding:0 0 0 34px;" class="source">'.$e___12467[12274]['m_icon'].' '.$i_stats['e_count'].'</span>';
