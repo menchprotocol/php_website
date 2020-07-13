@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-12 23:15:24 PST
+//Generated 2020-07-13 00:13:33 PST
 $config['s___12274'] = 5013; //SOURCES
 $config['s___12273'] = 3932; //IDEAS
 $config['s___6255'] = 122080; //DISCOVERIES
@@ -3026,7 +3026,7 @@ $config['e___6404'] = array(
         'm_icon' => '<i class="fad fa-book" aria-hidden="true"></i>',
         'm_name' => 'DEFAULT BOOK COVER',
         'm_desc' => '//s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg',
-        'm_parents' => array(6404,1,7524),
+        'm_parents' => array(6404,7524),
     ),
     11057 => array(
         'm_icon' => '',
@@ -3235,7 +3235,7 @@ $config['e___11054'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
-        'm_parents' => array(13507,13436,12891,2,11054,12041,4527,1,7312),
+        'm_parents' => array(2,1,13507,13436,12891,11054,12041,4527,7312),
     ),
     6404 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
@@ -3335,7 +3335,7 @@ $config['e___11047'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(6225,13502,13401,13210,13495,13427,12707,4235,12991,12211,12413,11068,4341,12969,10573,6287,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
+$config['n___11035'] = array(6225,13502,13401,13210,13495,13427,12707,4235,12991,12211,12413,11068,4341,12969,10573,6287,6415,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
 $config['e___11035'] = array(
     6225 => array(
         'm_icon' => '<i class="fad fa-cog source" aria-hidden="true"></i>',
@@ -3432,6 +3432,12 @@ $config['e___11035'] = array(
         'm_name' => 'PLUGINS',
         'm_desc' => '',
         'm_parents' => array(13297,6405,6194,12699,12500,10876,11035,4527),
+    ),
+    6415 => array(
+        'm_icon' => '<i class="far fa-trash-alt discover" aria-hidden="true"></i>',
+        'm_name' => 'RESET ALL DISCOVERIES',
+        'm_desc' => 'Resetting your discoveries will remove all the discovery coins you mined so you can start from scratch again.',
+        'm_parents' => array(11035,13455,4755,4593),
     ),
     13510 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
@@ -4654,7 +4660,7 @@ $config['e___4527'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
         'm_name' => 'MENCH',
         'm_desc' => '',
-        'm_parents' => array(13507,13436,12891,2,11054,12041,4527,1,7312),
+        'm_parents' => array(2,1,13507,13436,12891,11054,12041,4527,7312),
     ),
     12467 => array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
@@ -7071,9 +7077,9 @@ $config['e___4755'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-trash-alt discover" aria-hidden="true"></i>',
-        'm_name' => 'RESET DISCOVERIES',
+        'm_name' => 'RESET ALL DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(13455,4755,4593),
+        'm_parents' => array(11035,13455,4755,4593),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
@@ -7802,9 +7808,9 @@ $config['e___4593'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-trash-alt discover" aria-hidden="true"></i>',
-        'm_name' => 'RESET DISCOVERIES',
+        'm_name' => 'RESET ALL DISCOVERIES',
         'm_desc' => 'Removes all player read coins so everything is reset to 0% again.',
-        'm_parents' => array(13455,4755,4593),
+        'm_parents' => array(11035,13455,4755,4593),
     ),
     12896 => array(
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',

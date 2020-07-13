@@ -27,12 +27,9 @@
 
 
             //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-            echo '<div class="'.( !isset($_GET['reset']) ? 'hidden' : '' ).' margin-top-down">';
-            echo '<div class="alert alert-danger" role="alert">';
-            echo '<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span><b class="discover montserrat">DELETE ALL DISCOVERIES?</b>';
-            echo '<br /><span class="icon-block">&nbsp;</span>Action cannot be undone.';
-            echo '</div>';
-            echo '<p style="margin-top:20px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x"><i class="far fa-trash-alt"></i> DELETE ALL</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
+            echo '<div class="'.( !isset($_GET['reset']) ? 'hidden' : '' ).' margin-top-down left-margin inline-block">';
+                echo '<p>'.$e___11035[13510]['m_icon'].'</p>';
+                echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[13510]['m_icon'].' '.$e___11035[13510]['m_name'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
             echo '</div>';
 
             echo '<div class="doclear">&nbsp;</div>';
