@@ -258,11 +258,12 @@ $miner_is_e = miner_is_e($e['e__id']);
 
 
 
-
-
-
     //SOURCE TABS
-    foreach($e___11089 as $x__type => $m){
+    $tab_group = 11089;
+    $tab_nav = '';
+    $tab_content = '';
+    foreach($this->config->item('e___'.$tab_group) as $x__type => $m) {
+
 
         //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
@@ -783,22 +784,47 @@ $miner_is_e = miner_is_e($e['e__id']);
         }
 
 
-        $auto_expand_tab = in_array($x__type, $this->config->item('n___12571'));
+        $default_active = in_array($x__type, $this->config->item('n___12571'));
 
+
+        /*
         //HEADER
         echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
 
-        echo '<div class="headline"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$x__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$x__type.( $auto_expand_tab ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($x__type, $this->config->item('n___13004')) ? superpower_active(13422) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$x__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
+        echo '<div class="headline"><a href="javascript:void(0);" onclick="$(\'.contentTab'.$x__type.'\').toggleClass(\'hidden\')" title="'.number_format($counter, 0).' '.$m['m_name'].'"><span class="icon-block"><i class="far fa-plus-circle contentTab'.$x__type.( $default_active ? ' hidden ' : '' ).'"></i><i class="far fa-minus-circle contentTab'.$x__type.( $default_active ? '' : ' hidden ' ).'"></i></span>'.( $counter>0 ? '<span class="'.( in_array($x__type, $this->config->item('n___13004')) ? superpower_active(13422) : '' ).'" title="'.number_format($counter, 0).'"><span class="counter_'.$x__type.'">'.view_number($counter).'</span>&nbsp;</span>' : '' ).$m['m_name'].'</a></div>';
 
         //BODY
-        echo '<div class="contentTab'.$x__type.( $auto_expand_tab ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
+        echo '<div class="contentTab'.$x__type.( $default_active ? '' : ' hidden ' ).'" style="padding-bottom:34px;">';
         if($this_tab) {
             echo $this_tab;
         }
         echo '</div>';
         echo '</div>';
+        */
+
+
+
+
+        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
+
+
+        $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
+        $tab_content .= $this_tab;
+        $tab_content .= '</div>';
 
     }
+
+    if($tab_nav){
+
+        echo '<ul class="nav nav-tabs nav-sm">';
+        echo $tab_nav;
+        echo '</ul>';
+
+        //Show All Tab Content:
+        echo $tab_content;
+
+    }
+
 
     ?>
 

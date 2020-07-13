@@ -685,7 +685,7 @@ if($in_my_x){
             $url .= '</div>';
             $url .= '</div>';
 
-        } elseif($e__id==13210 && $previous_level_id){
+        } elseif($e__id==13210){
 
             //IDEA INDEX
             $url = '<a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');" class="controller-nav">'.$m['m_icon'].'</a>';
