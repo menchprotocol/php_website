@@ -1338,7 +1338,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
         //Is this a caret menu?
         if(in_array(11040 , $m['m_parents'])){
 
-            echo view_caret($x__type, $m, $e['e__id']);
+            $tab_nav .= view_caret($x__type, $m, $e['e__id']);
             continue;
 
         } elseif(in_array($x__type, $CI->config->item('n___6194'))){
