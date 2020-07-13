@@ -520,7 +520,7 @@ if(!$in_my_x){
 
         echo '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR ANSWER:</div>';
 
-        echo '<textarea class="border i_content padded x_input" placeholder="Write here..." id="x_reply">'.( count($x_completes) ? trim($x_completes[0]['x__message']) : '' ).'</textarea>';
+        echo '<textarea class="border i_content padded x_input" placeholder="Write your answer or write `skip` to go to the next idea..." id="x_reply">'.( count($x_completes) ? trim($x_completes[0]['x__message']) : '' ).'</textarea>';
 
         if(count($x_completes)){
             //Next Ideas:
