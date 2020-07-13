@@ -453,9 +453,7 @@ class X extends CI_Controller
 
         if(!$in_my_x){
             $i__id_added = $this->X_model->start($session_e['e__id'], $i__id);
-            if($i__id_added){
-                $success_message = '<div class="alert alert-info" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>Added to '.$e___11035[12969]['m_name'].'. Continue below:</div>';
-            } else {
+            if(!$i__id_added){
                 //Failed to add to Discovery:
                 return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>FAILED to add to '.$e___11035[12969]['m_name'].'.</div>');
             }

@@ -179,7 +179,7 @@ $miner_is_e = miner_is_e($e['e__id']);
 
     //NAME & STATUS
     echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="pull-right inline-block" style="margin:0 0 -28px 0;">';
+    echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;">';
 
     //REFERENCES
     if(superpower_active(12701, true)){
@@ -578,7 +578,7 @@ $miner_is_e = miner_is_e($e['e__id']);
                 }
 
 
-                $this_tab .= '<div class="pull-right grey" style="margin:-25px 3px 0 0;">'.( superpower_active(13422, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
+                $this_tab .= '<div class="pull-right grey" style="margin:-35px 0 0 0;">'.( superpower_active(13422, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
 
 
 
