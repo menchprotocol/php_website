@@ -1310,7 +1310,6 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
     $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
     $superpower_any = ( $session_e ? count($CI->session->userdata('session_superpowers_assigned')) : 0 );
     $e___12467 = $CI->config->item('e___12467'); //MENCH
-    $e___11089 = $CI->config->item('e___11089'); //SOURCE LAYOUT
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
 
 
@@ -1851,7 +1850,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                 }
                 $focus_tab .= '</div>';
             } else {
-                $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___11089[$x__type]['m_name'].' yet</div>';
+                $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_name'].' yet</div>';
             }
 
         }
