@@ -1309,7 +1309,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
     $superpower_any = ( $session_e ? count($CI->session->userdata('session_superpowers_assigned')) : 0 );
     $e___12467 = $CI->config->item('e___12467'); //MENCH
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-
+    $previously_activated = false;
 
     $tab_nav = '';
     $tab_content = '';
@@ -1860,7 +1860,10 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
         }
 
 
-        $default_active = in_array($x__type, $CI->config->item('n___12571'));
+        $default_active = !$previously_activated && in_array($x__type, $CI->config->item('n___12571'));
+        if(!$previously_activated && $default_active){
+            $previously_activated = true;
+        }
 
         $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.( in_array($x__type, $CI->config->item('n___13004')) ? superpower_active(13422) : '' ).'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
 

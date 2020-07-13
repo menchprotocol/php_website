@@ -143,12 +143,10 @@ $miner_is_e = miner_is_e($e['e__id']);
 
 
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
+
 
             <table>
                 <tr>
@@ -157,12 +155,12 @@ $miner_is_e = miner_is_e($e['e__id']);
                 </tr>
             </table>
 
+
         </div>
 
     </div>
 
     <?php
-
 
     //FOR EDITING ONLY, OTHERSWISE HIDDEN:
     echo '<div class="hidden">'.view_e($e).'</div>';
@@ -172,6 +170,7 @@ $miner_is_e = miner_is_e($e['e__id']);
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a></div>';
     echo '<div class="doclear">&nbsp;</div>';
+
 
     //Display Both tabs:
     view_e_tabs(11089, $e, $session_e, $miner_is_e);
