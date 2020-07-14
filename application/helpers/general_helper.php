@@ -1651,6 +1651,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             //Now build object-specific index:
             if ($loop_obj == 12274) {
 
+                //SOURCES
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['e__id']);
                 $export_row['object__url'] = '/@' . $db_row['e__id'];
@@ -1695,6 +1696,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
             } elseif ($loop_obj == 12273) {
 
+                //IDEAS
                 //See if this idea has a time-range:
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['i__id']);

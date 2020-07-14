@@ -58,9 +58,6 @@ $miner_is_e = miner_is_e($e['e__id']);
                             <input type="hidden" id="e_x_count" value="0" />
                             <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> transactions</div>
 
-                            <span class="mini-header"><span class="tr_i_x_title"></span> Merge Source Into:</span>
-                            <input style="padding-left:3px;" type="text" class="form-control algolia_search border e_text_search" id="e_merge" value="" placeholder="Search source to merge..." />
-
                         </div>
 
 

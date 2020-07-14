@@ -654,7 +654,7 @@ function e_update() {
     var x_count= parseInt($('#e_x_count').val());
     if(x_count >= 3){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("Delete source & "+( $('#e_merge').val().length > 0 ? 'merge' : 'remove' )+" "+x_count+" transactions?! Type \"delete\" to confirm.", "");
+        var confirm_removal = prompt("Delete source & remove "+x_count+" links?! Type \"delete\" to confirm.", "");
 
         if (!(confirm_removal == 'delete')) {
             //Abandon process:
@@ -670,7 +670,6 @@ function e_update() {
         e__title: $('#e__title').val().toUpperCase(),
         e__icon: $('#e__icon').val(),
         e__status: $('#e__status').val(), //The new status (might not have changed too)
-        e_merge: $('#e_merge').val(),
         //Transaction data:
         x__id: parseInt($('#modifybox').attr('e-x-id')),
         x__message: $('#x__message').val(),

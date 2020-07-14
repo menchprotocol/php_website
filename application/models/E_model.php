@@ -346,7 +346,7 @@ class E_model extends CI_Model
 
     }
 
-    function remove($e__id, $x__miner = 0, $merger_e__id = 0){
+    function remove($e__id, $x__miner = 0){
 
         //Fetch all SOURCE LINKS:
         $adjusted_count = 0;
@@ -366,31 +366,11 @@ class E_model extends CI_Model
                     ), array(), 0)
                 ) as $adjust_tr){
 
-            //Merge only if merger ID provided and transaction not related to original transaction:
-            if($merger_e__id > 0 && $adjust_tr['x__up']!=$merger_e__id && $adjust_tr['x__down']!=$merger_e__id){
+            //Delete this transaction:
+            $adjusted_count += $this->X_model->update($adjust_tr['x__id'], array(
+                'x__status' => 6173, //Transaction Deleted
+            ), $x__miner, 10673 /* Miner Transaction Unpublished */);
 
-                //Update core field:
-                $target_field = ($adjust_tr['x__down'] == $e__id ? 'x__down' : 'x__up');
-                $updating_fields = array(
-                    $target_field => $merger_e__id,
-                );
-
-                //Also update possible source references within IDEA NOTES content:
-                if(substr_count($adjust_tr['x__message'], '@'.$adjust_tr[$target_field]) == 1){
-                    $updating_fields['x__message'] = str_replace('@'.$adjust_tr[$target_field],'@'.$merger_e__id, $adjust_tr['x__message']);
-                }
-
-                //Update Transaction:
-                $adjusted_count += $this->X_model->update($adjust_tr['x__id'], $updating_fields, $x__miner, 10689 /* Miner Transaction Merged */);
-
-            } else {
-
-                //Delete this transaction:
-                $adjusted_count += $this->X_model->update($adjust_tr['x__id'], array(
-                    'x__status' => 6173, //Transaction Deleted
-                ), $x__miner, 10673 /* Miner Transaction Unpublished */);
-
-            }
         }
 
         return $adjusted_count;

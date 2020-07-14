@@ -22,7 +22,7 @@ class E extends CI_Controller
         //Log View:
         if($session_e){
             $this->X_model->create(array(
-                'x__type' => 12489, //Opened source
+                'x__type' => 12489, //Opened Leaderboard
                 'x__miner' => $session_e['e__id'],
             ));
         }
@@ -76,7 +76,7 @@ class E extends CI_Controller
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
                 'x__miner' => $session_e['e__id'],
-                'x__type' => 4994, //Miner Opened Miner
+                'x__type' => 4994, //Miner Viewed Source
                 'x__down' => $e__id,
                 'x__sort' => $new_order,
             ));
@@ -825,69 +825,21 @@ class E extends CI_Controller
 
 
             //Count source references in IDEA NOTES:
-            $messages = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
-                'x__up' => $_POST['e__id'],
-            ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
-
-            //Assume no merge:
-            $merged_es = array();
-
-            //See if we have merger source:
-            if (strlen($_POST['e_merge']) > 0) {
-
-                //Yes, validate this source:
-
-                //Validate input:
-                $merger_e__id = 0;
-                if (substr($_POST['e_merge'], 0, 1) == '@') {
-                    $parts = explode(' ', $_POST['e_merge']);
-                    $merger_e__id = intval(str_replace('@', '', $parts[0]));
-                }
-
-                if ($merger_e__id < 1) {
-
-                    return view_json(array(
-                        'status' => 0,
-                        'message' => 'Unrecognized merger source [' . $_POST['e_merge'] . ']',
-                    ));
-
-                } elseif ($merger_e__id == $_POST['e__id']) {
-
-                    return view_json(array(
-                        'status' => 0,
-                        'message' => 'Cannot merge source into itself',
-                    ));
-
-                } else {
-
-                    //Finally validate merger source:
-                    $merged_es = $this->E_model->fetch(array(
-                        'e__id' => $merger_e__id,
-                        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                    ));
-                    if (count($merged_es) == 0) {
-                        return view_json(array(
-                            'status' => 0,
-                            'message' => 'Could not find source @' . $merger_e__id,
-                        ));
-                    }
-
-                }
-
-            } elseif(count($messages) > 0){
+            if(count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                    'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
+                    'x__up' => $_POST['e__id'],
+                ), array('x__right'), 0, 0, array('x__sort' => 'ASC')))){
 
                 //Cannot delete this source until Idea references are deleted:
                 return view_json(array(
                     'status' => 0,
                     'message' => 'You can delete source after removing all its IDEA NOTES references',
                 ));
-
             }
 
-            //Delete/merge SOURCE LINKS:
+            //Delete SOURCE LINKS:
             if($_POST['e__id'] == $_POST['e_focus_id']){
 
                 //Fetch parents to redirect to:
@@ -903,34 +855,20 @@ class E extends CI_Controller
 
             $_POST['x__id'] = 0; //Do not consider the transaction as the source is being Deleted
             $delete_from_ui = 1; //Removing source
-            $merger_e__id = (count($merged_es) > 0 ? $merged_es[0]['e__id'] : 0);
-            $x_adjusted = $this->E_model->remove($_POST['e__id'], $session_e['e__id'], $merger_e__id);
+            $x_adjusted = $this->E_model->remove($_POST['e__id'], $session_e['e__id']);
 
             //Show appropriate message based on action:
-            if ($merger_e__id > 0) {
-
-                if($_POST['e__id'] == $_POST['e_focus_id'] || $merged_es[0]['e__id'] == $_POST['e_focus_id']){
-                    //Miner is being Deleted and merged into another source:
-                    $delete_redirect_url = '/@' . $merged_es[0]['e__id'];
+            if($_POST['e__id'] == $_POST['e_focus_id']){
+                if(count($e__profiles)){
+                    $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
+                } else {
+                    //Is the plugin activated?
+                    $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/e/plugin/7269' : '/@' );
                 }
-
-                $success_message = 'Source deleted & merged its ' . $x_adjusted . ' transactions here';
-
-            } else {
-
-                if($_POST['e__id'] == $_POST['e_focus_id']){
-                    if(count($e__profiles)){
-                        $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
-                    } else {
-                        //Is the plugin activated?
-                        $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/e/plugin/7269' : '/@' );
-                    }
-                }
-
-                //Display proper message:
-                $success_message = 'Source deleted & its ' . $x_adjusted . ' transactions have been Unpublished.';
-
             }
+
+            //Display proper message:
+            $success_message = 'Source deleted & its ' . $x_adjusted . ' links have been Unpublished.';
 
         }
 
