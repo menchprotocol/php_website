@@ -28,7 +28,7 @@
 
             if(isset($_GET['reset'])){
                 //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-                echo '<div class="margin-top-down left-margin inline-block">';
+                echo '<div class="margin-top-down left-margin">';
                 echo '<p>'.$e___11035[6415]['m_desc'].'</p>';
                 echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_name'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
                 echo '</div>';

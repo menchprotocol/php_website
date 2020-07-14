@@ -987,6 +987,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 .left-margin{
     margin-left: 33px;
+    display: inline-block;
 }
 .left-half-margin{
     margin-left:10px;

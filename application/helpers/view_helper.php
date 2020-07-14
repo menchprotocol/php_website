@@ -1346,7 +1346,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
             if(!$counter){
                 continue;
             }
-            $focus_tab = '<div class="left-margin">Source referenced as '.$m['m_icon'].' '.$m['m_name'].' '.number_format($counter, 0).' times.</div>';
+            $focus_tab = '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m_icon'].' '.$m['m_name'].' '.number_format($counter, 0).' times.</div>';
 
         } elseif(in_array($x__type, $CI->config->item('n___12467'))){
 

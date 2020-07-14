@@ -87,7 +87,7 @@ echo view_i_note_mix(4231, $this->X_model->fetch(array(
 
 
 //IDEA TYPE
-echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-i', $e_owns_i && $is_active, true, $i_focus['i__id']).'</div>';
+echo '<div class="pull-left both-margin left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-i', $e_owns_i && $is_active, true, $i_focus['i__id']).'</div>';
 
 //IDEA STATUS
 echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-i', $e_owns_i, true, $i_focus['i__id']).'</div>';

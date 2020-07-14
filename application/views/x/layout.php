@@ -352,7 +352,7 @@ echo $tab_content;
 if(!$in_my_x){
 
     //GET STARTED
-    echo '<div class="margin-top-down left-margin inline-block"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_name'].'</a></div>';
+    echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_name'].'</a></div>';
 
 } else {
 
@@ -455,7 +455,7 @@ if(!$in_my_x){
 
 
                 //EDIT ANSWER:
-                echo '<div class="inline-block margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_name'].'</a></div>';
+                echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_name'].'</a></div>';
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -518,7 +518,7 @@ if(!$in_my_x){
             if(count($x_selects)>0){
 
                 //Save Answers:
-                echo '<div class="inline-block margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">'.$e___11035[13503]['m_icon'].' '.$e___11035[13503]['m_name'].'</a></div>';
+                echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">'.$e___11035[13503]['m_icon'].' '.$e___11035[13503]['m_name'].'</a></div>';
 
                 //Cancel:
                 echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="'.$e___11035[13502]['m_name'].'">'.$e___11035[13502]['m_icon'].'</a></div>';
@@ -588,7 +588,7 @@ if(!$in_my_x){
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="inline-block margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13498]['m_icon'].' '.$e___11035[13498]['m_name'].'</label></div>';
+        echo '<div class="margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13498]['m_icon'].' '.$e___11035[13498]['m_name'].'</label></div>';
 
 
         echo '<div class="doclear">&nbsp;</div>';
