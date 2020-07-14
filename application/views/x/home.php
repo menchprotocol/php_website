@@ -70,6 +70,7 @@
             //None for now:
             echo '<div class="alert alert-info no-margin"><span class="icon-block">&nbsp;</span>You have no '.$e___11035[13510]['m_icon'].' '.$e___11035[13510]['m_name'].' yet.</div>';
         }
+        echo '<div class="doclear">&nbsp;</div>';
 
 
     } else {
@@ -114,7 +115,7 @@
         }
     }
     echo '</div>';
-
+    echo '<div class="doclear">&nbsp;</div>';
     echo '<div class="alert alert-info no-margin margin-top-down"><span class="icon-block">'.$e___11035[7256]['m_icon'].'</span>Tip: '.$e___11035[7256]['m_name'].' to find '.$e___12467[12274]['m_name'].' and '.$e___12467[12273]['m_name'].'.</div>';
 
 
