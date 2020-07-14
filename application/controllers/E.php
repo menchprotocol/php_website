@@ -180,7 +180,7 @@ class E extends CI_Controller
             ));
 
             //Count Portfolio:
-            $e__portfolio_count = $this->X_model->fetch(array(
+            $list_11029_count = $this->X_model->fetch(array(
                 'x__up' => $_POST['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -194,7 +194,7 @@ class E extends CI_Controller
                     'message' => 'Invalid e__id',
                 ));
 
-            } elseif($e__portfolio_count[0]['totals'] > config_var(13005)){
+            } elseif($list_11029_count[0]['totals'] > config_var(13005)){
 
                 view_json(array(
                     'status' => 0,

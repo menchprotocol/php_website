@@ -17,8 +17,11 @@ $(document).ready(function () {
         e_sort_portfolio_load();
     }
 
-    //Update Porfile count to what's visible:
-    $('.en-type-counter-11030').text($('#list-parent .en-item').not(".hidden").length);
+
+    //Update Profile & Portfolio counters to account for sources that miner may not be able to see due to missing permissions...
+    $('.en-type-counter-11030').text($('#list_11030 .en-item').not(".hidden").length);
+    $('.en-type-counter-11029').text($('#list_11029 .en-item').not(".hidden").length);
+
 
     //Lookout for textinput updates
     x_set_text_start();
@@ -275,10 +278,10 @@ function e__add(e_existing_id, is_parent) {
 
     if (is_parent) {
         var input = $('#new-parent .add-input');
-        var list_id = 'list-parent';
+        var list_id = 'list_11030';
     } else {
         var input = $('#new_portfolio .add-input');
-        var list_id = 'e__portfolio';
+        var list_id = 'list_11029';
     }
 
     var e_new_string = null;
@@ -356,7 +359,7 @@ function e_load_page(page, load_new_filter) {
         //Replace load more with spinner:
         var append_div = $('#new_portfolio').html();
         //The padding-bottom would delete the scrolling effect on the left side!
-        $('#e__portfolio').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+        $('#list_11029').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
@@ -372,7 +375,7 @@ function e_load_page(page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#e__portfolio').html(data + '<div id="new_portfolio" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#list_11029').html(data + '<div id="new_portfolio" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             e_load_search("#new_portfolio", 0, 'w');
         } else {
@@ -568,7 +571,7 @@ function e_sort_save() {
     var new_x__sorts = [];
     var sort_rank = 0;
 
-    $("#e__portfolio .en-item").each(function () {
+    $("#list_11029 .en-item").each(function () {
         //Fetch variables for this idea:
         var e__id = parseInt($(this).attr('e-id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -620,7 +623,7 @@ function e_sort_reset(){
 function e_sort_portfolio_load() {
 
     var element_key = null;
-    var theobject = document.getElementById("e__portfolio");
+    var theobject = document.getElementById("list_11029");
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
         return false;

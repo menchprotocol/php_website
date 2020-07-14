@@ -1091,21 +1091,21 @@ class E_model extends CI_Model
     {
 
         //Count the active children of source:
-        $e__portfolio_count = 0;
+        $list_11029_count = 0;
 
         //Do a child count:
-        $e__portfolio_count = $this->X_model->fetch(array(
+        $list_11029_count = $this->X_model->fetch(array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__status IN (' . join(',', $e_statuses) . ')' => null,
         ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
-        if (count($e__portfolio_count) > 0) {
-            $e__portfolio_count = intval($e__portfolio_count[0]['totals']);
+        if (count($list_11029_count) > 0) {
+            $list_11029_count = intval($list_11029_count[0]['totals']);
         }
 
-        return $e__portfolio_count;
+        return $list_11029_count;
     }
 
 

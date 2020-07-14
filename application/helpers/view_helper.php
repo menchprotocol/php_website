@@ -1,6 +1,6 @@
 <?php
 
-function view_e_load_more($page, $limit, $e__portfolio_count)
+function view_e_load_more($page, $limit, $list_11029_count)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
@@ -10,7 +10,7 @@ function view_e_load_more($page, $limit, $e__portfolio_count)
 
     //Regular section:
     $max_es = (($page + 1) * $limit);
-    $max_es = ($max_es > $e__portfolio_count ? $e__portfolio_count : $max_es);
+    $max_es = ($max_es > $list_11029_count ? $list_11029_count : $max_es);
     $ui .= '<span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source">SEE MORE</b>';
     $ui .= '</a></div>';
 
@@ -1490,7 +1490,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                 continue;
             }
 
-            $focus_tab .= '<div id="list-parent" class="list-group ">';
+            $focus_tab .= '<div id="list_11030" class="list-group ">';
             foreach($e__profiles as $e_profile) {
                 $focus_tab .= view_e($e_profile,true, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_profile['x__miner']))));
             }
@@ -1510,14 +1510,14 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
         } elseif($x__type==11029){
 
             //SOURCE PORTFOLIO
-            $e__portfolio_count = $CI->X_model->fetch(array(
+            $list_11029_count = $CI->X_model->fetch(array(
                 'x__up' => $e['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                 'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
             ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
-            $counter = $e__portfolio_count[0]['totals'];
-            $e__portfolios = array(); //Fetch some
+            $counter = $list_11029_count[0]['totals'];
+            $list_11029s = array(); //Fetch some
 
 
             if(!$counter && !$superpower_10939){
@@ -1534,7 +1534,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                 }
 
                 //Fetch Portfolios
-                $e__portfolios = $CI->X_model->fetch(array(
+                $list_11029s = $CI->X_model->fetch(array(
                     'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -1677,7 +1677,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
                 //Also add invisible child IDs for quick copy/pasting:
                 $focus_tab .= '<div style="color:transparent;" class="hideIfEmpty">';
-                foreach($e__portfolios as $e_portfolio) {
+                foreach($list_11029s as $e_portfolio) {
                     $focus_tab .= $e_portfolio['e__id'].',';
                 }
                 $focus_tab .= '</div>';
@@ -1726,13 +1726,13 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
                 }
             }
 
-            $focus_tab .= '<div id="e__portfolio" class="list-group">';
-            $common_prefix = i_calc_common_prefix($e__portfolios, 'e__title');
+            $focus_tab .= '<div id="list_11029" class="list-group">';
+            $common_prefix = i_calc_common_prefix($list_11029s, 'e__title');
 
-            foreach($e__portfolios as $e_portfolio) {
+            foreach($list_11029s as $e_portfolio) {
                 $focus_tab .= view_e($e_portfolio,false, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__miner']))), $common_prefix);
             }
-            if ($counter > count($e__portfolios)) {
+            if ($counter > count($list_11029s)) {
                 $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
             }
 
@@ -1913,7 +1913,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
     ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
 
-    $e__portfolio_count = $CI->X_model->fetch(array(
+    $list_11029_count = $CI->X_model->fetch(array(
         'x__up' => $e['e__id'],
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1957,8 +1957,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     if($superpower_12706){
         $child_counter = '';
         if($superpower_10939){
-            if($e__portfolio_count[0]['totals'] > 0){
-                $child_counter .= '<span class="pull-right" '.( $inline_editing ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($e__portfolio_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($e__portfolio_count[0]['totals']).'</span></span>';
+            if($list_11029_count[0]['totals'] > 0){
+                $child_counter .= '<span class="pull-right" '.( $inline_editing ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($list_11029_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($list_11029_count[0]['totals']).'</span></span>';
                 $child_counter .= '<div class="doclear">&nbsp;</div>';
             }
         }
@@ -1997,8 +1997,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<a href="'.$e_url.'" class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'">';
         $ui .= $box_items_list;
         $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
-        if($e__portfolio_count[0]['totals'] > 0){
-            $ui .= ' ['.view_number($e__portfolio_count[0]['totals']).']';
+        if($list_11029_count[0]['totals'] > 0){
+            $ui .= ' ['.view_number($list_11029_count[0]['totals']).']';
         }
         if($superpower_12706){
             $ui .= $child_counter;
