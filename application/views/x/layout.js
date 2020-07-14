@@ -85,7 +85,7 @@ function set_13491(font_size_e__id){
 function select_answer(i__id){
 
     //Allow answer to be saved/updated:
-    var i__type = BigInt($('.list-answers').attr('i__type'));
+    var i__type = parseInt($('.list-answers').attr('i__type'));
 
     //Clear all if single selection:
     if(i__type == 6684){
@@ -186,7 +186,7 @@ function x_select(){
     //Check
     var selection_i__id = [];
     $(".answer-item").each(function () {
-        var selection_i__id_this = BigInt($(this).attr('selection_i__id'));
+        var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
         if ($('.x_select_'+selection_i__id_this+' .fa-circle').hasClass('fas')) {
             selection_i__id.push(selection_i__id_this);
         }

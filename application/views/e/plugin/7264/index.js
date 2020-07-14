@@ -7,8 +7,8 @@ $(document).ready(function () {
 
     //Load report based on input fields:
     $.post("/e/plugin_7264", {
-        i__id: BigInt($('#i__id').val()),
-        depth_levels: BigInt($('#depth_levels').val()),
+        i__id: parseInt($('#i__id').val()),
+        depth_levels: parseInt($('#depth_levels').val()),
     }, function (data) {
         if (!data.status) {
             //Show Errors:

@@ -12,8 +12,8 @@ var $input = $('.drag-box').find('input[type="file"]'),
 $(document).ready(function () {
 
     //Source Loader:
-    var portfolio_count = BigInt($('#new_portfolio').attr('current-count'));
-    if(portfolio_count>0 && portfolio_count<BigInt(js_e___6404[13005]['m_desc'])){
+    var portfolio_count = parseInt($('#new_portfolio').attr('current-count'));
+    if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m_desc'])){
         e_sort_portfolio_load();
     }
 
@@ -65,7 +65,7 @@ $(document).ready(function () {
 
     //Lookout for idea transaction related changes:
     $('#x__status').change(function () {
-        if (BigInt($('#x__status').find(":selected").val()) == 6173 /* DELETED */ ) {
+        if (parseInt($('#x__status').find(":selected").val()) == 6173 /* DELETED */ ) {
             //About to delete? Notify them:
             $('.notify_unx_e').removeClass('hidden');
         } else {
@@ -75,14 +75,14 @@ $(document).ready(function () {
 
     $('#e__status').change(function () {
 
-        if (BigInt($('#e__status').find(":selected").val()) == 6178 /* Miner Deleted */) {
+        if (parseInt($('#e__status').find(":selected").val()) == 6178 /* Miner Deleted */) {
 
             //Notify Miner:
             $('.notify_e_delete').removeClass('hidden');
             $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total transactions:
-            $.post("/e/e_count_deletion", { e__id: BigInt($('#modifybox').attr('e-id')) }, function (data) {
+            $.post("/e/e_count_deletion", { e__id: parseInt($('#modifybox').attr('e-id')) }, function (data) {
 
                 if(data.status){
                     $('.e_delete_stats').html('<b>'+data.e_x_count+'</b>');
@@ -101,7 +101,7 @@ $(document).ready(function () {
     });
 
     //Adjust height of the messaging windows:
-    $('.grey-box').css('max-height', (BigInt($(window).height()) - 130) + 'px');
+    $('.grey-box').css('max-height', (parseInt($(window).height()) - 130) + 'px');
 
     //Make editing frames Sticky for scrolling longer lists
     $(".main-panel").scroll(function () {
@@ -173,7 +173,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
     });
 
-    if(BigInt(js_e___6404[12678]['m_desc'])){
+    if(parseInt(js_e___6404[12678]['m_desc'])){
 
             $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -216,7 +216,7 @@ function account_toggle_all(is_enabled){
     //Turn all superpowers on/off:
     $(".btn-superpower").each(function () {
         if ((is_enabled && !$(this).hasClass('active')) || (!is_enabled && $(this).hasClass('active'))) {
-            e_toggle_superpower(BigInt($(this).attr('en-id')));
+            e_toggle_superpower(parseInt($(this).attr('en-id')));
         }
     });
 }
@@ -225,7 +225,7 @@ function account_toggle_all(is_enabled){
 
 function e_toggle_superpower(superpower_id){
 
-    superpower_id = BigInt(superpower_id);
+    superpower_id = parseInt(superpower_id);
 
     var superpower_icon = $('.superpower-frame-'+superpower_id).html();
     $('.superpower-frame-'+superpower_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
@@ -331,7 +331,7 @@ function e_filter_status(new_val) {
     //Delete active class:
     $('.en-status-filter').removeClass('active');
     //We do have a filter:
-    e_focus_filter = BigInt(new_val);
+    e_focus_filter = parseInt(new_val);
     $('.en-status-' + new_val).addClass('active');
     e_load_page(0, 1);
 }
@@ -425,7 +425,7 @@ function e_modify_load(e__id, x__id) {
     $('.save_e_changes').html('');
     $('.e_delete_stats').html('');
 
-    if (BigInt($('.e__icon_' + e__id).attr('en-is-set')) > 0) {
+    if (parseInt($('.e__icon_' + e__id).attr('en-is-set')) > 0) {
         $('#e__icon').val($('.e__icon_' + e__id).html());
     } else {
         //Clear out input:
@@ -436,7 +436,7 @@ function e_modify_load(e__id, x__id) {
     update_demo_icon();
 
     //Only show remove button if not level 1
-    if (BigInt(x__id) > 0) {
+    if (parseInt(x__id) > 0) {
 
         $('#x__status').val($(".e__id_" + e__id + ":first").attr('x-status'));
         $('#e_x_count').val('0');
@@ -567,8 +567,8 @@ function e_sort_save() {
 
     $("#e__portfolio .en-item").each(function () {
         //Fetch variables for this idea:
-        var e__id = BigInt($(this).attr('e-id'));
-        var x__id = BigInt($(this).attr('x__id'));
+        var e__id = parseInt($(this).attr('e-id'));
+        var x__id = parseInt($(this).attr('x__id'));
 
         sort_rank++;
 
@@ -639,13 +639,13 @@ function e_sort_portfolio_load() {
 function e_update() {
 
     //Validate that we have all we need:
-    if ($('#modifybox').hasClass('hidden') || !BigInt($('#modifybox').attr('e-id'))) {
+    if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('e-id'))) {
         //Oops, this should not happen!
         return false;
     }
 
     //Are we about to delete an source with a lot of transactions?
-    var x_count= BigInt($('#e_x_count').val());
+    var x_count= parseInt($('#e_x_count').val());
     if(x_count >= 3){
         //Yes, confirm before doing so:
         var confirm_removal = prompt("Delete source & "+( $('#e_merge').val().length > 0 ? 'merge' : 'remove' )+" "+x_count+" transactions?! Type \"delete\" to confirm.", "");
@@ -660,13 +660,13 @@ function e_update() {
     //Prepare data to be modified for this idea:
     var modify_data = {
         e_focus_id: e_focus_id, //Determines if we need to change location upon removing...
-        e__id: BigInt($('#modifybox').attr('e-id')),
+        e__id: parseInt($('#modifybox').attr('e-id')),
         e__title: $('#e__title').val().toUpperCase(),
         e__icon: $('#e__icon').val(),
         e__status: $('#e__status').val(), //The new status (might not have changed too)
         e_merge: $('#e_merge').val(),
         //Transaction data:
-        x__id: BigInt($('#modifybox').attr('e-x-id')),
+        x__id: parseInt($('#modifybox').attr('e-x-id')),
         x__message: $('#x__message').val(),
         x__status: $('#x__status').val(),
     };
