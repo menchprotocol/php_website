@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-13 18:17:58 PST
+//Generated 2020-07-13 18:25:11 PST
 $config['s___12274'] = 5015; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
-$config['s___6255'] = 121995; //DISCOVERIES
+$config['s___6255'] = 121996; //DISCOVERIES
 
 //SOURCE BOTTOM TABS:
 $config['n___13522'] = array(10573,12273,6255,12969,12896,12419,7545);
@@ -106,9 +106,9 @@ $config['e___13289'] = array(
     ),
     12211 => array(
         'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
-        'm_name' => 'GO NEXT',
+        'm_name' => 'MARK READ & GO NEXT',
         'm_desc' => '',
-        'm_parents' => array(13289,11035),
+        'm_parents' => array(13289,4527,11035),
     ),
 );
 
@@ -970,7 +970,7 @@ $config['e___13022'] = array(
         'm_icon' => '<i class="fas fa-eye idea" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => '',
-        'm_parents' => array(13524,13022,12330,7585,6192,4559),
+        'm_parents' => array(13524,13022,12211,12330,7585,6192,4559),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-keyboard idea" aria-hidden="true"></i>',
@@ -1894,6 +1894,28 @@ $config['e___12400'] = array(
     ),
 );
 
+//MARK READ & GO NEXT:
+$config['n___12211'] = array(6677);
+$config['e___12211'] = array(
+    6677 => array(
+        'm_icon' => '<i class="fas fa-eye idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ & NEXT',
+        'm_desc' => '',
+        'm_parents' => array(13524,13022,12211,12330,7585,6192,4559),
+    ),
+);
+
+//MARK AS READ:
+$config['n___13524'] = array(6677);
+$config['e___13524'] = array(
+    6677 => array(
+        'm_icon' => '<i class="fas fa-eye idea" aria-hidden="true"></i>',
+        'm_name' => 'IDEA READ & NEXT',
+        'm_desc' => '',
+        'm_parents' => array(13524,13022,12211,12330,7585,6192,4559),
+    ),
+);
+
 //IDEA TYPE COMPLETE IF EMPTY:
 $config['n___12330'] = array(6677,6914,6907);
 $config['e___12330'] = array(
@@ -1901,7 +1923,7 @@ $config['e___12330'] = array(
         'm_icon' => '<i class="fas fa-eye idea" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => '',
-        'm_parents' => array(13524,13022,12330,7585,6192,4559),
+        'm_parents' => array(13524,13022,12211,12330,7585,6192,4559),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
@@ -1960,17 +1982,6 @@ $config['e___12326'] = array(
         'm_name' => 'UNLOCK CONDITION LINK',
         'm_desc' => '',
         'm_parents' => array(12326,12227,6410,4229,4755,4593),
-    ),
-);
-
-//MARK AS READ:
-$config['n___13524'] = array(6677);
-$config['e___13524'] = array(
-    6677 => array(
-        'm_icon' => '<i class="fas fa-eye idea" aria-hidden="true"></i>',
-        'm_name' => 'IDEA READ & NEXT',
-        'm_desc' => '',
-        'm_parents' => array(13524,13022,12330,7585,6192,4559),
     ),
 );
 
@@ -3232,7 +3243,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,13210,13495,13427,12707,4235,12991,12211,12413,11068,13524,4341,12969,10573,6225,6287,6415,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
+$config['n___11035'] = array(13502,13401,13210,13495,13427,12707,4235,12991,12413,11068,13524,12211,4341,12969,10573,6225,6287,6415,13510,13503,7256,4269,4997,12275,13007,10957,7540,13509,13498);
 $config['e___11035'] = array(
     13502 => array(
         'm_icon' => '<i class="fas fa-times discover"></i>',
@@ -3282,12 +3293,6 @@ $config['e___11035'] = array(
         'm_desc' => '',
         'm_parents' => array(13289,11035),
     ),
-    12211 => array(
-        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
-        'm_name' => 'GO NEXT',
-        'm_desc' => '',
-        'm_parents' => array(13289,11035),
-    ),
     12413 => array(
         'm_icon' => '<i class="fas fa-sitemap" aria-hidden="true"></i>',
         'm_name' => 'IDEA TREE',
@@ -3305,6 +3310,12 @@ $config['e___11035'] = array(
         'm_name' => 'MARK AS READ',
         'm_desc' => '',
         'm_parents' => array(11035,4527,4559),
+    ),
+    12211 => array(
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'MARK READ & GO NEXT',
+        'm_desc' => '',
+        'm_parents' => array(13289,4527,11035),
     ),
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
@@ -3996,7 +4007,7 @@ $config['e___7585'] = array(
         'm_icon' => '<i class="fas fa-eye idea" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => 'Read messages & go next',
-        'm_parents' => array(13524,13022,12330,7585,6192,4559),
+        'm_parents' => array(13524,13022,12211,12330,7585,6192,4559),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-keyboard idea" aria-hidden="true"></i>',
@@ -4855,7 +4866,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(10956,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,12229,13289,12446,13438,6150,3000,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,13524,2738,12467,6404,12079,10876,13488,6201,4341,4527,11054,12687,11035,6206,12112,10869,6212,7277,12500,13479,13037,12969,10573,6225,12741,6287,12577,4755,13439,13365,13414,13510,12761,13023,4269,6204,13413,4251,13522,11089,6194,13424,12571,13004,12574,13425,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12274,6177,7358,12575,7357,12401,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480);
+$config['n___4527'] = array(10956,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,12229,13289,12446,13438,6150,3000,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,13524,12211,2738,12467,6404,12079,10876,13488,6201,4341,4527,11054,12687,11035,6206,12112,10869,6212,7277,12500,13479,13037,12969,10573,6225,12741,6287,12577,4755,13439,13365,13414,13510,12761,13023,4269,6204,13413,4251,13522,11089,6194,13424,12571,13004,12574,13425,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12274,6177,7358,12575,7357,12401,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480);
 $config['e___4527'] = array(
     10956 => array(
         'm_icon' => '<i class="fad fa-paw-alt source" aria-hidden="true"></i>',
@@ -5252,6 +5263,12 @@ $config['e___4527'] = array(
         'm_name' => 'MARK AS READ',
         'm_desc' => '',
         'm_parents' => array(11035,4527,4559),
+    ),
+    12211 => array(
+        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
+        'm_name' => 'MARK READ & GO NEXT',
+        'm_desc' => '',
+        'm_parents' => array(13289,4527,11035),
     ),
     2738 => array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',

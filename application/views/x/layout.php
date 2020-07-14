@@ -63,7 +63,7 @@ if($recipient_e['e__id']){
         ));
 
         //No message, so automatically mark as read:
-        if(!count($messages) && in_array($i_focus['i__type'], $this->config->item('n___13524'))){
+        if(!count($messages) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                 'x__type' => 4559, //DISCOVER MESSAGES
                 'x__miner' => $recipient_e['e__id'],
@@ -190,9 +190,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
         $focus_tab .= '</div>';
 
-        if(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___13524'))){
+
+        if(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             //Give option to mark as read:
-            $focus_tab .= '<div class="margin-top-down left-margin block" id="x_13524"><a class="btn btn-x" href="/x/x_13524/'.$i_focus['i__id'].'">'.$e___11035[13524]['m_icon'].' '.$e___11035[13524]['m_name'].'</a></div>';
+            $focus_tab .= '<div class="margin-top-down left-margin block"><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_icon'].' '.$e___11035[12211]['m_name'].'</a></div>';
         }
 
     } elseif($x__type==12273 && $i_stats['i___13443']>1){
