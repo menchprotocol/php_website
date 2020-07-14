@@ -67,7 +67,7 @@
             echo '</div>';
         } else {
             //None for now:
-            echo '<div class="alert alert-danger no-margin"><span class="icon-block">&nbsp;</span>None for now.</div>';
+            echo '<div class="alert alert-info no-margin"><span class="icon-block">&nbsp;</span>None for now.</div>';
         }
 
 
