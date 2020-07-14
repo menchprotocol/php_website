@@ -61,7 +61,7 @@ function load_editor(){
         mass_action_ui();
     });
 
-    if(parseInt(js_e___6404[12678]['m_desc'])){
+    if(BigInt(js_e___6404[12678]['m_desc'])){
         $('.e_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('@' + suggestion.object__id + ' ' + suggestion.object__title);
@@ -146,8 +146,8 @@ function js_extract_icon_color(e__icon){
 function view_search_result(algolia_object){
 
     //Determine object type:
-    var is_i = (parseInt(algolia_object.object__type)==12273);
-    var is_public = ( parseInt(algolia_object.object__status) in ( is_i ? js_e___7355 : js_e___7357 ));
+    var is_i = (BigInt(algolia_object.object__type)==12273);
+    var is_public = ( BigInt(algolia_object.object__status) in ( is_i ? js_e___7355 : js_e___7357 ));
     var obj_icon = ( is_i ? '<i class="fas fa-circle idea"></i>' : algolia_object.object__icon );
     var obj_full_name = ( algolia_object._highlightResult && algolia_object._highlightResult.object__title.value ? algolia_object._highlightResult.object__title.value : algolia_object.object__title );
 
@@ -226,7 +226,7 @@ $(document).ready(function () {
 
     //Load Algolia on Focus:
     $(".algolia_search").focus(function () {
-        if(!algolia_index && parseInt(js_e___6404[12678]['m_desc'])){
+        if(!algolia_index && BigInt(js_e___6404[12678]['m_desc'])){
             //Loadup Algolia once:
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
             algolia_index = client.initIndex('alg_index');
@@ -260,7 +260,7 @@ $(document).ready(function () {
     });
 
 
-    if(parseInt(js_e___6404[12678]['m_desc'])){
+    if(BigInt(js_e___6404[12678]['m_desc'])){
 
         $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -411,7 +411,7 @@ function x_type_preview() {
     //Fetch Idea Data to load modify widget:
     $.post("/x/x_type_preview", {
         x__message: $('#x__message').val(),
-        x__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('e-x-id')) : 0 ),
+        x__id: ( $( "#modifybox" ).length ? BigInt($('#modifybox').attr('e-x-id')) : 0 ),
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
@@ -587,7 +587,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
         }
     });
 
-    if(!parseInt(js_e___6404[12678]['m_desc'])){
+    if(!BigInt(js_e___6404[12678]['m_desc'])){
         //Previously loaded:
         return false;
     }
@@ -634,7 +634,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             },
             header: function (data) {
                 if (is_add_mode=='x_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:i_add(' + BigInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='x_my_in'){
                     return '<a href="javascript:i_create()" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
@@ -642,9 +642,9 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             empty: function (data) {
                 if(is_add_mode=='x_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:i_add(' + BigInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:i_add(' + BigInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },
@@ -698,8 +698,8 @@ function update_text_name(cache_e__id, e__id, e__title){
 function x_set_text(this_handler){
 
     var modify_data = {
-        object__id: parseInt($(this_handler).attr('object__id')),
-        cache_e__id: parseInt($(this_handler).attr('cache_e__id')),
+        object__id: BigInt($(this_handler).attr('object__id')),
+        cache_e__id: BigInt($(this_handler).attr('cache_e__id')),
         field_value: $(this_handler).val().trim()
     };
 
@@ -750,7 +750,7 @@ function i_note_activate(){
     //Loop through all new idea inboxes:
     $(".new-note").each(function () {
 
-        var note_type_id = parseInt($(this).attr('note-type-id'));
+        var note_type_id = BigInt($(this).attr('note-type-id'));
 
         //Initiate @ search for all idea text areas:
         i_note_e_search($(this));
@@ -815,7 +815,7 @@ function i_note_activate(){
 }
 
 function i_note_counter(note_type_id, adjustment_count){
-    var current_count = parseInt($('.en-type-counter-'+note_type_id).text());
+    var current_count = BigInt($('.en-type-counter-'+note_type_id).text());
     var new_count = current_count + adjustment_count;
     $('.en-type-counter-'+note_type_id).text(new_count);
 }
@@ -862,7 +862,7 @@ function i_note_edit_count(x__id) {
 
 function i_note_e_search(obj) {
 
-    if(parseInt(js_e___6404[12678]['m_desc'])){
+    if(BigInt(js_e___6404[12678]['m_desc'])){
         obj.textcomplete([
             {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
@@ -898,7 +898,7 @@ function i_note_sort_apply(note_type_id) {
     var this_x__id = 0;
 
     $(".msg_e_type_" + note_type_id).each(function () {
-        this_x__id = parseInt($(this).attr('x__id'));
+        this_x__id = BigInt($(this).attr('x__id'));
         if (this_x__id > 0) {
             sort_rank++;
             new_x__sorts[sort_rank] = this_x__id;
@@ -990,9 +990,9 @@ function i_note_edit(x__id, note_type_id) {
 
 
     var modify_data = {
-        x__id: parseInt(x__id),
-        message_x__status: parseInt($("#message_status_" + x__id).val()),
-        i__id: parseInt(focus_i__id),
+        x__id: BigInt(x__id),
+        message_x__status: BigInt($("#message_status_" + x__id).val()),
+        i__id: BigInt(focus_i__id),
         x__message: $("#ul-nav-" + x__id + " textarea").val(),
     };
 
@@ -1247,7 +1247,7 @@ function x_sort(x__type) {
     var sort_rank = 0;
     var new_x_order = [];
     $("#i_covers .home_sort").each(function () {
-        var x_id = parseInt($(this).attr('sort-x-id'));
+        var x_id = BigInt($(this).attr('sort-x-id'));
         if(x_id > 0){
             sort_rank++;
             new_x_order[sort_rank] = x_id;

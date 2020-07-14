@@ -148,7 +148,7 @@ function e_e_only_search(note_type_id) {
         }
     });
 
-    if(parseInt(js_e___6404[12678]['m_desc'])){
+    if(BigInt(js_e___6404[12678]['m_desc'])){
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -187,7 +187,7 @@ function e_e_only_search(note_type_id) {
 }
 
 function x_preview(){
-    if(parseInt($('.dropi_4737_'+focus_i__id+'_0.active').attr('new-en-id')) in js_e___7355){
+    if(BigInt($('.dropi_4737_'+focus_i__id+'_0.active').attr('new-en-id')) in js_e___7355){
         //Idea is public, go to preview:
         window.location = '/' + focus_i__id;
     } else {
@@ -264,8 +264,8 @@ function i_sort_save(i__id) {
 
     $("#list-in-" + focus_i__id + "-0 .i_sortable").each(function () {
         //Fetch variables for this idea:
-        var i__id = parseInt($(this).attr('i-id'));
-        var x__id = parseInt($(this).attr('x__id'));
+        var i__id = BigInt($(this).attr('i-id'));
+        var x__id = BigInt($(this).attr('x__id'));
 
         sort_rank++;
 
@@ -329,7 +329,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
             return false;
         } else {
             //Update the references:
-            i_x_child_id = parseInt(i__title.substr(1));
+            i_x_child_id = BigInt(i__title.substr(1));
             i__title = i_x_child_id; //As if we were just adding
         }
     }
@@ -408,8 +408,8 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
     *
     * */
 
-    var current_selected = parseInt($('.dropi_'+element_id+'_'+i__id+'_'+x__id+'.active').attr('new-en-id'));
-    new_e__id = parseInt(new_e__id);
+    var current_selected = BigInt($('.dropi_'+element_id+'_'+i__id+'_'+x__id+'.active').attr('new-en-id'));
+    new_e__id = BigInt(new_e__id);
     if(current_selected == new_e__id){
         //Nothing changed:
         return false;
