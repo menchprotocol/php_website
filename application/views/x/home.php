@@ -115,9 +115,7 @@
     }
     echo '</div>';
 
-    echo '<div class="alert alert-info no-margin"><span class="icon-block">'.$e___11035[7256]['m_icon'].'</span>Tip: '.$e___11035[7256]['m_name'].' to find '.$e___12467[12274]['m_icon'].' and '.$e___12467[12273]['m_icon'].'.</div>';
-
-    echo '<div></div>';
+    echo '<div class="alert alert-info no-margin margin-top-down"><span class="icon-block">'.$e___11035[7256]['m_icon'].'</span>Tip: '.$e___11035[7256]['m_name'].' to find '.$e___12467[12274]['m_name'].' and '.$e___12467[12273]['m_name'].'.</div>';
 
 
     ?>
