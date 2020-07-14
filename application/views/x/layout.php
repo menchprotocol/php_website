@@ -27,6 +27,13 @@ $is_next = $this->X_model->fetch(array(
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
+//Messages:
+$messages = $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type' => 4231, //IDEA NOTES Messages
+    'x__right' => $i_focus['i__id'],
+), array(), 0, 0, array('x__sort' => 'ASC'));
+
 $chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
 $in_my_x = ( $recipient_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $recipient_e) : false );
@@ -55,6 +62,14 @@ if($recipient_e['e__id']){
             'x__left' => $i_focus['i__id'],
         ));
 
+        //No message, so automatically mark as read:
+        if(!count($messages) && in_array($i_focus['i__type'], $this->config->item('n___13524'))){
+            array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
+                'x__type' => 4559, //DISCOVER MESSAGES
+                'x__miner' => $recipient_e['e__id'],
+                'x__left' => $i_focus['i__id'],
+            )));
+        }
 
 
         if($i_type_meet_requirement){
@@ -161,11 +176,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     if($x__type==4231){
 
         //MESSAGES
-        $messages = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $i_focus['i__id'],
-        ), array(), 0, 0, array('x__sort' => 'ASC'));
         $counter = count($messages);
 
         $focus_tab .= '<div style="margin-bottom:34px;">';
@@ -180,15 +190,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
         $focus_tab .= '</div>';
 
-        if(!count($x_completes)){
-            //If not completed, offer the option to complete:
-            echo '<div class="margin-top-down left-margin block" id="x_13524"><a class="btn btn-x" href="javascript:void(0);" onclick="x_13524()">'.$e___11035[13524]['m_icon'].' '.$e___11035[13524]['m_name'].'</a></div>';
-        } else {
-            //Show completion time:
-            $e___12467 = $this->config->item('e___12467');
-            echo '<div><span class="montserrat discover"><span class="icon-block">'.$e___12467[6255]['m_icon'].'</span>'.number_format(x_stats_count(6255, $recipient_e['e__id']), 0).' '.$e___12467[6255]['m_name'].'</span> ['.substr($x_completes[0]['x__time'], 0, 19).' PST]</div>';
+        if(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___13524'))){
+            //Give option to mark as read:
+            echo '<div class="margin-top-down left-margin block" id="x_13524"><a class="btn btn-x" href="/x/x_13524/'.$i_focus['i__id'].'">'.$e___11035[13524]['m_icon'].' '.$e___11035[13524]['m_name'].'</a></div>';
         }
-
 
     } elseif($x__type==12273 && $i_stats['i___13443']>1){
 

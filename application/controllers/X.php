@@ -709,7 +709,7 @@ class X extends CI_Controller
     }
 
 
-    function x_13524(){
+    function x_13524($i__id){
 
         $session_e = superpower_assigned();
         if (!$session_e) {
@@ -717,7 +717,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
+        } elseif (!$i__id) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea ID.',
@@ -727,7 +727,7 @@ class X extends CI_Controller
 
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
+            'i__id' => $i__id,
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
         if(count($is) < 1){
@@ -736,7 +736,6 @@ class X extends CI_Controller
                 'message' => 'Idea not published.',
             ));
         }
-
 
         //Mark as complete:
         $this->X_model->mark_complete($is[0], array(
@@ -747,10 +746,7 @@ class X extends CI_Controller
 
         //Return Total Discovery Coins:
         $e___12467 = $this->config->item('e___12467');
-        return view_json(array(
-            'status' => 1,
-            'message' => '<div class="montserrat discover"><span class="icon-block">'.$e___12467[6255]['m_icon'].'</span>'.number_format(x_stats_count(6255, $session_e['e__id']), 0).' '.$e___12467[6255]['m_name'].'</div>',
-        ));
+        return redirect_message('/'.$is[0]['i__id'], '<div class="alert alert-info" role="alert"><span class="icon-block">'.$e___12467[6255]['m_icon'].'</span><span class="montserrat discover">'.number_format(x_stats_count(6255, $session_e['e__id']), 0).' '.$e___12467[6255]['m_name'].'</span> made so far, keep it up!</div>');
 
     }
 
