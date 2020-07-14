@@ -468,12 +468,12 @@ if(!$in_my_x){
             //HTML:
             if ($i_focus['i__type'] == 6684) {
 
-                echo '<div class="headline" style="padding-left: 34px;">SELECT ONE:</div>';
+                echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
 
             } elseif ($i_focus['i__type'] == 7231) {
 
                 //Give option to Select None/All
-                echo '<div class="headline"><span class="left-margin block">SELECT ONE OR MORE:<span class="inline-block" style="padding-left: 5px;">[<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">|</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</span></span></div>';
+                echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">|</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
 
             }
 
