@@ -1002,15 +1002,17 @@ class X_model extends CI_Model
 
                 } else {
 
+                    $words = explode(' ',$es[0]['e__title']);
+
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class=""><span class="icon-block-xs img-block">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_' . $es[0]['e__id']  . '">' . $es[0]['e__title']  . '</span></span></span>'.' ', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="inline-block"><span class="icon-block-xs img-block">'.view_e__icon($es[0]['e__icon']).'</span>' .$words[0].'</span>'. ( count($words)>1 ? ' '.join(' ',array_shift($words)) : '' ) . '</span>'.'&nbsp;', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="img-block icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_' . $es[0]['e__id']  . '">' . $es[0]['e__title']  . '</span></a></span>'.' ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="img-block icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_' . $es[0]['e__id']  . '">' . $es[0]['e__title']  . '</span></a></span>'.'&nbsp;', $output_body_message);
 
             }
 
