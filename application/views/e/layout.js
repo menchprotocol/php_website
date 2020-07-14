@@ -18,7 +18,7 @@ $(document).ready(function () {
     }
 
     //Update Porfile count to what's visible:
-    $('.e_profile_count').text($('#list-parent .list-group-item').not(".hidden").length);
+    $('.e_profile_count').text($('#list-parent .en-item').not(".hidden").length);
 
     //Lookout for textinput updates
     x_set_text_start();
