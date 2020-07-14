@@ -1,7 +1,7 @@
 <?php
 
 //Update Idea Transaction Time:
-$i__id = ( isset($_GET['i__id']) ? bigintval($_GET['i__id']) : 0 );
+$i__id = ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 );
 $total_time = 0;
 $total_scanned = 0;
 $total_updated = 0;
@@ -40,7 +40,7 @@ foreach($this->I_model->fetch($filters) as $in){
     //Idea Type Has Time?
     if(array_key_exists($in['i__type'], $e___12955)){
         //Yes, add Extra Time:
-        $extra_time = bigintval($e___12955[$in['i__type']]['m_desc']);
+        $extra_time = intval($e___12955[$in['i__type']]['m_desc']);
         $estimated_time += $extra_time;
         if($i__id){
             //Show details:

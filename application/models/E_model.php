@@ -52,16 +52,16 @@ class E_model extends CI_Model
 
             //FONT SIZE?
             if(in_array($e_profile['e__id'], $this->config->item('n___13491'))){
-                $session_data['session_var_13491'] = bigintval($e_profile['e__id']);
+                $session_data['session_var_13491'] = intval($e_profile['e__id']);
             }
 
             //Push to parent IDs:
-            array_push($session_data['session_parent_ids'], bigintval($e_profile['e__id']));
+            array_push($session_data['session_parent_ids'], intval($e_profile['e__id']));
 
             if(in_array($e_profile['e__id'], $this->config->item('n___10957'))){
 
                 //It's assigned!
-                array_push($session_data['session_superpowers_assigned'], bigintval($e_profile['e__id']));
+                array_push($session_data['session_superpowers_assigned'], intval($e_profile['e__id']));
 
                 //Was the latest toggle to de-activate? If not, assume active:
                 $last_advance_settings = $this->X_model->fetch(array(
@@ -71,7 +71,7 @@ class E_model extends CI_Model
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1); //Fetch the single most recent supoerpower toggle only
                 if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['x__message'] , ' DEACTIVATED')){
-                    array_push($session_data['session_superpowers_activated'], bigintval($e_profile['e__id']));
+                    array_push($session_data['session_superpowers_activated'], intval($e_profile['e__id']));
                 }
 
             }
@@ -937,7 +937,7 @@ class E_model extends CI_Model
             } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
                 //What miner searched for:
-                $parent_e__id = bigintval(one_two_explode('@',' ',$action_command1));
+                $parent_e__id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
                 $child_parent_es = $this->X_model->fetch(array(
@@ -983,7 +983,7 @@ class E_model extends CI_Model
 
                     } elseif($action_e__id==11956) {
 
-                        $parent_new_e__id = bigintval(one_two_explode('@',' ',$action_command2));
+                        $parent_new_e__id = intval(one_two_explode('@',' ',$action_command2));
 
                         //Add as a parent because it meets the condition
                         $this->X_model->create(array(
@@ -1102,7 +1102,7 @@ class E_model extends CI_Model
         ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
         if (count($e__portfolio_count) > 0) {
-            $e__portfolio_count = bigintval($e__portfolio_count[0]['totals']);
+            $e__portfolio_count = intval($e__portfolio_count[0]['totals']);
         }
 
         return $e__portfolio_count;

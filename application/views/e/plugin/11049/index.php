@@ -1,11 +1,11 @@
 <?php
 
-if(!isset($_GET['i__id']) || !bigintval($_GET['i__id'])){
+if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     echo 'Missing Idea ID (Append ?i__id=IDEA_ID in URL)';
 } else {
     //Fetch Idea:
     $is = $this->I_model->fetch(array(
-        'i__id' => bigintval($_GET['i__id']),
+        'i__id' => intval($_GET['i__id']),
     ));
     if(count($is) > 0){
 
@@ -16,6 +16,6 @@ if(!isset($_GET['i__id']) || !bigintval($_GET['i__id'])){
         view_json($is[0]);
 
     } else {
-        echo 'Source @'.bigintval($_GET['i__id']).' not found!';
+        echo 'Source @'.intval($_GET['i__id']).' not found!';
     }
 }

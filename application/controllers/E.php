@@ -61,7 +61,7 @@ class E extends CI_Controller
         if (superpower_assigned(12703) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->E_model->mass_update($e__id, bigintval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_e['e__id']);
+            $process_mass_action = $this->E_model->mass_update($e__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_e['e__id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>';
@@ -123,7 +123,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(13422),
             ));
-        } elseif (!isset($_POST['e__id']) || bigintval($_POST['e__id']) < 1 || count($es) < 1) {
+        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || count($es) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Invalid e__id',
@@ -161,7 +161,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['e__id']) || bigintval($_POST['e__id']) < 1) {
+        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Invalid e__id',
@@ -206,7 +206,7 @@ class E extends CI_Controller
                 //Update them all:
                 foreach($_POST['new_x__sorts'] as $rank => $x__id) {
                     $this->X_model->update($x__id, array(
-                        'x__sort' => bigintval($rank),
+                        'x__sort' => intval($rank),
                     ), $session_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
@@ -236,7 +236,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Unknown upload type.',
             ));
-        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || bigintval($_FILES[$_POST['upload_type']]['size']) == 0) {
+        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Unknown error 3 while trying to save file.',
@@ -272,10 +272,10 @@ class E extends CI_Controller
     {
 
         $items_per_page = config_var(11064);
-        $parent_e__id = bigintval($_POST['parent_e__id']);
-        $e_focus_filter = bigintval($_POST['e_focus_filter']);
+        $parent_e__id = intval($_POST['parent_e__id']);
+        $e_focus_filter = intval($_POST['e_focus_filter']);
         $miner_is_e = miner_is_e($parent_e__id);
-        $page = bigintval($_POST['page']);
+        $page = intval($_POST['page']);
         $filters = array(
             'x__up' => $parent_e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -347,7 +347,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (bigintval($_POST['i__id']) < 1) {
+        } elseif (intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
@@ -357,7 +357,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Idea Note Type ID',
             ));
-        } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (bigintval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
+        } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (intval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Either New Source ID or Source Name',
@@ -379,7 +379,7 @@ class E extends CI_Controller
 
 
         //Set some variables:
-        $_POST['e_existing_id'] = bigintval($_POST['e_existing_id']);
+        $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
 
         //Are we adding an existing source?
         if ($_POST['e_existing_id'] > 0) {
@@ -463,7 +463,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (bigintval($_POST['e__id']) < 1) {
+        } elseif (intval($_POST['e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Parent Source',
@@ -473,7 +473,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Source Transaction Direction',
             ));
-        } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (bigintval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
+        } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (intval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Either New Source ID or Source Name',
@@ -493,12 +493,12 @@ class E extends CI_Controller
 
 
         //Set some variables:
-        $_POST['is_parent'] = bigintval($_POST['is_parent']);
-        $_POST['e_existing_id'] = bigintval($_POST['e_existing_id']);
+        $_POST['is_parent'] = intval($_POST['is_parent']);
+        $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
         $is_url_input = false;
 
         //Are we adding an existing source?
-        if (bigintval($_POST['e_existing_id']) > 0) {
+        if (intval($_POST['e_existing_id']) > 0) {
 
             //Validate this existing source:
             $es = $this->E_model->fetch(array(
@@ -652,7 +652,7 @@ class E extends CI_Controller
     function e_count_deletion()
     {
 
-        if (!isset($_POST['e__id']) || bigintval($_POST['e__id']) < 1) {
+        if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source ID',
@@ -680,7 +680,7 @@ class E extends CI_Controller
 
         //Toggles the advance session variable for the miner on/off for logged-in miners:
         $session_e = superpower_assigned(10939);
-        $superpower_e__id = bigintval($superpower_e__id);
+        $superpower_e__id = intval($superpower_e__id);
         $e___10957 = $this->config->item('e___10957');
 
         if(!$session_e){
@@ -746,7 +746,7 @@ class E extends CI_Controller
 
         //Fetch current data:
         $es = $this->E_model->fetch(array(
-            'e__id' => bigintval($_POST['e__id']),
+            'e__id' => intval($_POST['e__id']),
         ));
 
 
@@ -760,12 +760,12 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['e__id']) || bigintval($_POST['e__id']) < 1 || !(count($es) == 1)) {
+        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !(count($es) == 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid ID',
             ));
-        } elseif (!isset($_POST['e_focus_id']) || bigintval($_POST['e_focus_id']) < 1) {
+        } elseif (!isset($_POST['e_focus_id']) || intval($_POST['e_focus_id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Focus ID',
@@ -796,7 +796,7 @@ class E extends CI_Controller
         $e_update = array(
             'e__title' => $e__title_validate['e__title_clean'],
             'e__icon' => trim($_POST['e__icon']),
-            'e__status' => bigintval($_POST['e__status']),
+            'e__status' => intval($_POST['e__status']),
         );
 
         //Is this being deleted?
@@ -844,7 +844,7 @@ class E extends CI_Controller
                 $merger_e__id = 0;
                 if (substr($_POST['e_merge'], 0, 1) == '@') {
                     $parts = explode(' ', $_POST['e_merge']);
-                    $merger_e__id = bigintval(str_replace('@', '', $parts[0]));
+                    $merger_e__id = intval(str_replace('@', '', $parts[0]));
                 }
 
                 if ($merger_e__id < 1) {
@@ -923,7 +923,7 @@ class E extends CI_Controller
                         $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
                     } else {
                         //Is the plugin activated?
-                        $delete_redirect_url = ( bigintval($this->session->userdata('session_time_7269')) ? '/e/plugin/7269' : '/@' );
+                        $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/e/plugin/7269' : '/@' );
                     }
                 }
 
@@ -935,7 +935,7 @@ class E extends CI_Controller
         }
 
 
-        if (bigintval($_POST['x__id']) > 0) { //DO we have a transaction to update?
+        if (intval($_POST['x__id']) > 0) { //DO we have a transaction to update?
 
             //Yes, first validate source transaction:
             $e_x = $this->X_model->fetch(array(
@@ -961,7 +961,7 @@ class E extends CI_Controller
                 }
 
                 $this->X_model->update($_POST['x__id'], array(
-                    'x__status' => bigintval($_POST['x__status']),
+                    'x__status' => intval($_POST['x__status']),
                 ), $session_e['e__id'], $x__status);
             }
 
@@ -1052,7 +1052,7 @@ class E extends CI_Controller
         }
 
         //Now update the DB:
-        $this->E_model->update(bigintval($_POST['e__id']), $e_update, true, $session_e['e__id']);
+        $this->E_model->update(intval($_POST['e__id']), $e_update, true, $session_e['e__id']);
 
 
         //Reset miner session data if this data belongs to the logged-in miner:
@@ -1073,10 +1073,10 @@ class E extends CI_Controller
             'message' => '<i class="fas fa-check-circle"></i> ' . $success_message,
             'delete_from_ui' => $delete_from_ui,
             'delete_redirect_url' => $delete_redirect_url,
-            'js_x__type' => bigintval($js_x__type),
+            'js_x__type' => intval($js_x__type),
         );
 
-        if (bigintval($_POST['x__id']) > 0) {
+        if (intval($_POST['x__id']) > 0) {
 
             //Fetch source transaction:
             $x = $this->X_model->fetch(array(
@@ -1149,12 +1149,12 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['parent_e__id']) || bigintval($_POST['parent_e__id']) < 1) {
+        } elseif (!isset($_POST['parent_e__id']) || intval($_POST['parent_e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing parent source',
             ));
-        } elseif (!isset($_POST['selected_e__id']) || bigintval($_POST['selected_e__id']) < 1) {
+        } elseif (!isset($_POST['selected_e__id']) || intval($_POST['selected_e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing selected source',
@@ -1229,7 +1229,7 @@ class E extends CI_Controller
 
         //HACK: Update Font size in session:
         if($_POST['parent_e__id']==13491){
-            $this->session->set_userdata(array('session_var_13491' => bigintval($_POST['selected_e__id'])));
+            $this->session->set_userdata(array('session_var_13491' => intval($_POST['selected_e__id'])));
         }
 
 
@@ -1684,7 +1684,7 @@ class E extends CI_Controller
         update_algolia(12274,  $added_e['new_e']['e__id']);
 
         //Fetch referral Idea, if any:
-        if(bigintval($_POST['sign_i__id']) > 0){
+        if(intval($_POST['sign_i__id']) > 0){
 
             //Fetch the Idea:
             $referrer_is = $this->I_model->fetch(array(
@@ -1723,7 +1723,7 @@ class E extends CI_Controller
         $invite_x = $this->X_model->create(array(
             'x__type' => 7562, //Miner Signin Joined Mench
             'x__miner' => $added_e['new_e']['e__id'],
-            'x__left' => bigintval($_POST['sign_i__id']),
+            'x__left' => intval($_POST['sign_i__id']),
             'x__metadata' => array(
                 'email_log' => $email_log,
             ),
@@ -1735,7 +1735,7 @@ class E extends CI_Controller
 
         if (strlen($_POST['referrer_url']) > 0) {
             $sign_url = urldecode($_POST['referrer_url']);
-        } elseif(bigintval($_POST['sign_i__id']) > 0) {
+        } elseif(intval($_POST['sign_i__id']) > 0) {
             $sign_url = '/i/i_go/'.$_POST['sign_i__id'];
         } else {
             //Go to home page and let them continue from there:
@@ -1799,7 +1799,7 @@ class E extends CI_Controller
 
     function e_signin_password(){
 
-        if (!isset($_POST['sign_e__id']) || bigintval($_POST['sign_e__id'])<1) {
+        if (!isset($_POST['sign_e__id']) || intval($_POST['sign_e__id'])<1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing miner ID',
@@ -1877,7 +1877,7 @@ class E extends CI_Controller
         $this->E_model->activate_session($es[0]);
 
 
-        if (bigintval($_POST['sign_i__id']) > 0) {
+        if (intval($_POST['sign_i__id']) > 0) {
 
             $sign_url = '/x/x_start/'.$_POST['sign_i__id'];
 
@@ -1934,7 +1934,7 @@ class E extends CI_Controller
             'x__type' => 7563, //Miner Signin Magic Email
             'x__message' => $_POST['input_email'],
             'x__miner' => $miner_emails[0]['e__id'], //Miner making request
-            'x__left' => bigintval($_POST['sign_i__id']),
+            'x__left' => intval($_POST['sign_i__id']),
         ));
 
         //This is a new email, send invitation to join:
@@ -2023,7 +2023,7 @@ class E extends CI_Controller
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
 
 
-        if(bigintval($_POST['sign_i__id']) > 0){
+        if(intval($_POST['sign_i__id']) > 0){
             //Fetch the idea:
             $referrer_is = $this->I_model->fetch(array(
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -2137,12 +2137,12 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(12700),
             ));
-        } elseif (!isset($_POST['i__id']) || bigintval($_POST['i__id']) < 1) {
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Starting Idea',
             ));
-        } elseif (!isset($_POST['depth_levels']) || bigintval($_POST['depth_levels']) < 1) {
+        } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Depth',

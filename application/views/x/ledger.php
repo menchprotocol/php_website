@@ -20,7 +20,7 @@ if(isset($_GET['i__status']) && strlen($_GET['i__status']) > 0){
             //This is multiple:
             $filters['( i__status IN (' . $_GET['i__status'] . '))'] = null;
         } else {
-            $filters['i__status'] = bigintval($_GET['i__status']);
+            $filters['i__status'] = intval($_GET['i__status']);
         }
     } else {
         unset($_GET['i__status']);
@@ -37,7 +37,7 @@ if(isset($_GET['i__type']) && strlen($_GET['i__type']) > 0){
             //This is multiple:
             $filters['( i__type IN (' . $_GET['i__type'] . '))'] = null;
         } else {
-            $filters['i__type'] = bigintval($_GET['i__type']);
+            $filters['i__type'] = intval($_GET['i__type']);
         }
     } else {
         unset($_GET['i__type']);
@@ -54,7 +54,7 @@ if(isset($_GET['e__status']) && strlen($_GET['e__status']) > 0){
             //This is multiple:
             $filters['( e__status IN (' . $_GET['e__status'] . '))'] = null;
         } else {
-            $filters['e__status'] = bigintval($_GET['e__status']);
+            $filters['e__status'] = intval($_GET['e__status']);
         }
     } else {
         unset($_GET['e__status']);
@@ -66,7 +66,7 @@ if(isset($_GET['x__status']) && strlen($_GET['x__status']) > 0){
         //This is multiple:
         $filters['( x__status IN (' . $_GET['x__status'] . '))'] = null;
     } else {
-        $filters['x__status'] = bigintval($_GET['x__status']);
+        $filters['x__status'] = intval($_GET['x__status']);
     }
 }
 
@@ -74,7 +74,7 @@ if(isset($_GET['x__miner']) && strlen($_GET['x__miner']) > 0){
     if (substr_count($_GET['x__miner'], ',') > 0) {
         //This is multiple:
         $filters['( x__miner IN (' . $_GET['x__miner'] . '))'] = null;
-    } elseif (bigintval($_GET['x__miner']) > 0) {
+    } elseif (intval($_GET['x__miner']) > 0) {
         $filters['x__miner'] = $_GET['x__miner'];
     }
 }
@@ -84,7 +84,7 @@ if(isset($_GET['x__up']) && strlen($_GET['x__up']) > 0){
     if (substr_count($_GET['x__up'], ',') > 0) {
         //This is multiple:
         $filters['( x__up IN (' . $_GET['x__up'] . '))'] = null;
-    } elseif (bigintval($_GET['x__up']) > 0) {
+    } elseif (intval($_GET['x__up']) > 0) {
         $filters['x__up'] = $_GET['x__up'];
     }
 }
@@ -93,7 +93,7 @@ if(isset($_GET['x__down']) && strlen($_GET['x__down']) > 0){
     if (substr_count($_GET['x__down'], ',') > 0) {
         //This is multiple:
         $filters['( x__down IN (' . $_GET['x__down'] . '))'] = null;
-    } elseif (bigintval($_GET['x__down']) > 0) {
+    } elseif (intval($_GET['x__down']) > 0) {
         $filters['x__down'] = $_GET['x__down'];
     }
 }
@@ -102,7 +102,7 @@ if(isset($_GET['x__left']) && strlen($_GET['x__left']) > 0){
     if (substr_count($_GET['x__left'], ',') > 0) {
         //This is multiple:
         $filters['( x__left IN (' . $_GET['x__left'] . '))'] = null;
-    } elseif (bigintval($_GET['x__left']) > 0) {
+    } elseif (intval($_GET['x__left']) > 0) {
         $filters['x__left'] = $_GET['x__left'];
     }
 }
@@ -111,7 +111,7 @@ if(isset($_GET['x__right']) && strlen($_GET['x__right']) > 0){
     if (substr_count($_GET['x__right'], ',') > 0) {
         //This is multiple:
         $filters['( x__right IN (' . $_GET['x__right'] . '))'] = null;
-    } elseif (bigintval($_GET['x__right']) > 0) {
+    } elseif (intval($_GET['x__right']) > 0) {
         $filters['x__right'] = $_GET['x__right'];
     }
 }
@@ -120,7 +120,7 @@ if(isset($_GET['x__reference']) && strlen($_GET['x__reference']) > 0 && !$any_i_
     if (substr_count($_GET['x__reference'], ',') > 0) {
         //This is multiple:
         $filters['( x__reference IN (' . $_GET['x__reference'] . '))'] = null;
-    } elseif (bigintval($_GET['x__reference']) > 0) {
+    } elseif (intval($_GET['x__reference']) > 0) {
         $filters['x__reference'] = $_GET['x__reference'];
     }
 }
@@ -129,7 +129,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0){
     if (substr_count($_GET['x__id'], ',') > 0) {
         //This is multiple:
         $filters['( x__id IN (' . $_GET['x__id'] . '))'] = null;
-    } elseif (bigintval($_GET['x__id']) > 0) {
+    } elseif (intval($_GET['x__id']) > 0) {
         $filters['x__id'] = $_GET['x__id'];
     }
 }
@@ -139,7 +139,7 @@ if(isset($_GET['any_e__id']) && strlen($_GET['any_e__id']) > 0){
     if (substr_count($_GET['any_e__id'], ',') > 0) {
         //This is multiple:
         $filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__miner IN (' . $_GET['any_e__id'] . ') ' . $parent_tr_filter . ' )'] = null;
-    } elseif (bigintval($_GET['any_e__id']) > 0) {
+    } elseif (intval($_GET['any_e__id']) > 0) {
         $filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__miner = ' . $_GET['any_e__id'] . $parent_tr_filter . ' )'] = null;
     }
 }
@@ -149,7 +149,7 @@ if(isset($_GET['any_i__id']) && strlen($_GET['any_i__id']) > 0){
     if (substr_count($_GET['any_i__id'], ',') > 0) {
         //This is multiple:
         $filters['( x__right IN (' . $_GET['any_i__id'] . ') OR x__left IN (' . $_GET['any_i__id'] . ') ' . $parent_tr_filter . ' )'] = null;
-    } elseif (bigintval($_GET['any_i__id']) > 0) {
+    } elseif (intval($_GET['any_i__id']) > 0) {
         $filters['( x__right = ' . $_GET['any_i__id'] . ' OR x__left = ' . $_GET['any_i__id'] . $parent_tr_filter . ')'] = null;
     }
 }
@@ -159,7 +159,7 @@ if(isset($_GET['any_x__id']) && strlen($_GET['any_x__id']) > 0){
     if (substr_count($_GET['any_x__id'], ',') > 0) {
         //This is multiple:
         $filters['( x__id IN (' . $_GET['any_x__id'] . ') OR x__reference IN (' . $_GET['any_x__id'] . '))'] = null;
-    } elseif (bigintval($_GET['any_x__id']) > 0) {
+    } elseif (intval($_GET['any_x__id']) > 0) {
         $filters['( x__id = ' . $_GET['any_x__id'] . ' OR x__reference = ' . $_GET['any_x__id'] . ')'] = null;
     }
 }
@@ -199,8 +199,8 @@ if(isset($_GET['x__type'])){
     if (substr_count($_GET['x__type'], ',') > 0) {
         //This is multiple:
         $filters['x__type IN (' . $_GET['x__type'] . ')'] = null;
-    } elseif (bigintval($_GET['x__type']) > 0) {
-        $filters['x__type'] = bigintval($_GET['x__type']);
+    } elseif (intval($_GET['x__type']) > 0) {
+        $filters['x__type'] = intval($_GET['x__type']);
     }
 
 }

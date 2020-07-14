@@ -9,7 +9,7 @@
 
 if(isset($_GET['i__id'])){
     $query_filters = array(
-        'i__id' => bigintval($_GET['i__id']),
+        'i__id' => intval($_GET['i__id']),
     );
 } else {
     //All Orphans:

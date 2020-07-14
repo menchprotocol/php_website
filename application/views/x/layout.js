@@ -181,6 +181,22 @@ function x_reply(){
     });
 }
 
+function x_13524(){
+    //GOT IT
+    $('#x_13524').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $.post("/x/x_13524", {
+        i__id:focus_i__id,
+    }, function (data) {
+        if (data.status) {
+            $('#x_13524').html(data.message);
+        } else {
+            //Show error:
+            alert(data.message);
+            $('#x_13524').html('Refresh to try again...');
+        }
+    });
+}
+
 function x_select(){
 
     //Check

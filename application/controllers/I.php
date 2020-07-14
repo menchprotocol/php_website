@@ -130,7 +130,7 @@ class I extends CI_Controller {
         if (superpower_active(13403, true) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->I_model->mass_update($i__id, bigintval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_e['e__id']);
+            $process_mass_action = $this->I_model->mass_update($i__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_e['e__id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>';
@@ -270,12 +270,12 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['i__id']) || bigintval($_POST['i__id']) < 1) {
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Target Idea ID',
             ));
-        } elseif (!isset($_POST['focus_i__id']) || bigintval($_POST['focus_i__id']) < 1) {
+        } elseif (!isset($_POST['focus_i__id']) || intval($_POST['focus_i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Loaded Idea ID',
@@ -285,12 +285,12 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Transaction ID',
             ));
-        } elseif (!isset($_POST['element_id']) || bigintval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $var_index) || !count($this->config->item('n___'.$_POST['element_id']))) {
+        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !array_key_exists($_POST['element_id'], $var_index) || !count($this->config->item('n___'.$_POST['element_id']))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Variable ID ['.$_POST['element_id'].']',
             ));
-        } elseif (!isset($_POST['new_e__id']) || bigintval($_POST['new_e__id']) < 1 || !in_array($_POST['new_e__id'], $this->config->item('n___'.$_POST['element_id']))) {
+        } elseif (!isset($_POST['new_e__id']) || intval($_POST['new_e__id']) < 1 || !in_array($_POST['new_e__id'], $this->config->item('n___'.$_POST['element_id']))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Value ID',
@@ -344,7 +344,7 @@ class I extends CI_Controller {
 
                         //Go to main page if no parent found:
                         if(!$deletion_redirect){
-                            $deletion_redirect = ( bigintval($this->session->userdata('session_time_7260')) ? '/e/plugin/7260' : '/~' );
+                            $deletion_redirect = ( intval($this->session->userdata('session_time_7260')) ? '/e/plugin/7260' : '/~' );
                         }
 
                     } else {
@@ -403,12 +403,12 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['i__id']) || bigintval($_POST['i__id']) < 1) {
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Idea ID',
             ));
-        } elseif (!isset($_POST['x__id']) || bigintval($_POST['x__id']) < 1) {
+        } elseif (!isset($_POST['x__id']) || intval($_POST['x__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Transaction ID',
@@ -446,17 +446,17 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['i_x_id']) || bigintval($_POST['i_x_id']) < 1) {
+        } elseif (!isset($_POST['i_x_id']) || intval($_POST['i_x_id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Idea ID',
             ));
-        } elseif (!isset($_POST['is_parent']) || !in_array(bigintval($_POST['is_parent']), array(0,1))) {
+        } elseif (!isset($_POST['is_parent']) || !in_array(intval($_POST['is_parent']), array(0,1))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Is Parent setting',
             ));
-        } elseif (!isset($_POST['i__title']) || !isset($_POST['i_x_child_id']) || ( strlen($_POST['i__title']) < 1 && bigintval($_POST['i_x_child_id']) < 1)) {
+        } elseif (!isset($_POST['i__title']) || !isset($_POST['i_x_child_id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['i_x_child_id']) < 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing either Idea Outcome OR Child Idea ID',
@@ -481,7 +481,7 @@ class I extends CI_Controller {
 
             //Fetch transaction idea to determine idea type:
             $x_is = $this->I_model->fetch(array(
-                'i__id' => bigintval($_POST['i_x_child_id']),
+                'i__id' => intval($_POST['i_x_child_id']),
                 'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
@@ -493,13 +493,13 @@ class I extends CI_Controller {
                 ));
             }
 
-            if(!bigintval($_POST['is_parent']) && in_array($x_is[0]['i__type'], $this->config->item('n___7712'))){
+            if(!intval($_POST['is_parent']) && in_array($x_is[0]['i__type'], $this->config->item('n___7712'))){
                 $new_i_type = 6914; //Require All
             }
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->I_model->x_or_create(trim($_POST['i__title']), $session_e['e__id'], $_POST['i_x_id'], bigintval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_x_child_id']));
+        return view_json($this->I_model->x_or_create(trim($_POST['i__title']), $session_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_x_child_id']));
 
     }
 
@@ -513,7 +513,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['i__id']) || bigintval($_POST['i__id']) < 1) {
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Invalid i__id',
@@ -527,7 +527,7 @@ class I extends CI_Controller {
 
             //Validate Parent Idea:
             $previous_is = $this->I_model->fetch(array(
-                'i__id' => bigintval($_POST['i__id']),
+                'i__id' => intval($_POST['i__id']),
             ));
             if (count($previous_is) < 1) {
                 view_json(array(
@@ -538,8 +538,8 @@ class I extends CI_Controller {
 
                 //Update them all:
                 foreach($_POST['new_x__sorts'] as $rank => $x__id) {
-                    $this->X_model->update(bigintval($x__id), array(
-                        'x__sort' => bigintval($rank),
+                    $this->X_model->update(intval($x__id), array(
+                        'x__sort' => intval($rank),
                     ), $session_e['e__id'], 10675 /* Ideas Ordered by Miner */);
                 }
 
@@ -565,7 +565,7 @@ class I extends CI_Controller {
                 'message' => view_unauthorized_message(),
             ));
 
-        } elseif (!isset($_POST['i__id']) || bigintval($_POST['i__id']) < 1) {
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
 
             return view_json(array(
                 'status' => 0,
@@ -584,7 +584,7 @@ class I extends CI_Controller {
 
         //Fetch/Validate the idea:
         $is = $this->I_model->fetch(array(
-            'i__id' => bigintval($_POST['i__id']),
+            'i__id' => intval($_POST['i__id']),
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if(count($is)<1){
@@ -607,12 +607,12 @@ class I extends CI_Controller {
             'x__miner' => $session_e['e__id'],
             'x__sort' => 1 + $this->X_model->max_sort(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type' => bigintval($_POST['note_type_id']),
-                    'x__right' => bigintval($_POST['i__id']),
+                    'x__type' => intval($_POST['note_type_id']),
+                    'x__right' => intval($_POST['i__id']),
                 )),
             //Referencing attributes:
-            'x__type' => bigintval($_POST['note_type_id']),
-            'x__right' => bigintval($_POST['i__id']),
+            'x__type' => intval($_POST['note_type_id']),
+            'x__right' => intval($_POST['i__id']),
             'x__message' => $msg_validation['input_message'],
             //Source References:
             'x__up' => $msg_validation['x__up'],
@@ -665,7 +665,7 @@ class I extends CI_Controller {
                 'message' => 'Unknown upload type.',
             ));
 
-        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || bigintval($_FILES[$_POST['upload_type']]['size']) == 0) {
+        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
 
             return view_json(array(
                 'status' => 0,
@@ -718,7 +718,7 @@ class I extends CI_Controller {
             'x__miner' => $session_e['e__id'],
             'x__type' => $_POST['note_type_id'],
             'x__up' => $cdn_status['cdn_e']['e__id'],
-            'x__right' => bigintval($_POST['i__id']),
+            'x__right' => intval($_POST['i__id']),
             'x__message' => '@' . $cdn_status['cdn_e']['e__id'],
             'x__sort' => 1 + $this->X_model->max_sort(array(
                     'x__type' => $_POST['note_type_id'],
@@ -771,11 +771,11 @@ class I extends CI_Controller {
         //Update all transaction orders:
         $sort_count = 0;
         foreach($_POST['new_x__sorts'] as $x__sort => $x__id) {
-            if (bigintval($x__id) > 0) {
+            if (intval($x__id) > 0) {
                 $sort_count++;
                 //Log update and give credit to the session Miner:
                 $this->X_model->update($x__id, array(
-                    'x__sort' => bigintval($x__sort),
+                    'x__sort' => intval($x__sort),
                 ), $session_e['e__id'], 10676 /* IDEA NOTES Ordered */);
             }
         }
@@ -797,7 +797,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['x__id']) || bigintval($_POST['x__id']) < 1) {
+        } elseif (!isset($_POST['x__id']) || intval($_POST['x__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing DISCOVER ID',
@@ -812,7 +812,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Message',
             ));
-        } elseif (!isset($_POST['i__id']) || bigintval($_POST['i__id']) < 1) {
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
@@ -832,7 +832,7 @@ class I extends CI_Controller {
 
         //Validate Message:
         $messages = $this->X_model->fetch(array(
-            'x__id' => bigintval($_POST['x__id']),
+            'x__id' => intval($_POST['x__id']),
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ));
         if (count($messages) < 1) {
@@ -852,7 +852,7 @@ class I extends CI_Controller {
         } elseif($messages[0]['x__message'] != $msg_validation['input_message']) {
 
             //Now update the DB:
-            $this->X_model->update(bigintval($_POST['x__id']), array(
+            $this->X_model->update(intval($_POST['x__id']), array(
 
                 'x__message' => $msg_validation['input_message'],
 
@@ -894,14 +894,14 @@ class I extends CI_Controller {
                 }
 
                 //yes, do so and return results:
-                $affected_rows = $this->X_model->update(bigintval($_POST['x__id']), array(
+                $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
                     'x__status' => $_POST['message_x__status'],
                 ), $session_e['e__id'], 10677 /* IDEA NOTES updated Status */);
 
             } else {
 
                 //New status is no longer active, so delete the IDEA NOTES:
-                $affected_rows = $this->X_model->update(bigintval($_POST['x__id']), array(
+                $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
                     'x__status' => $_POST['message_x__status'],
                 ), $session_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
 

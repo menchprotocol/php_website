@@ -1,6 +1,6 @@
 <?php
 
-if(!isset($_GET['e__id']) || !bigintval($_GET['e__id'])){
+if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
     echo 'Missing source ID (Append ?e__id=SOURCE_ID in URL)';
 
@@ -8,7 +8,7 @@ if(!isset($_GET['e__id']) || !bigintval($_GET['e__id'])){
 
     //Fetch Source:
     $es = $this->E_model->fetch(array(
-        'e__id' => bigintval($_GET['e__id']),
+        'e__id' => intval($_GET['e__id']),
     ));
     if(count($es) > 0){
 
@@ -16,7 +16,7 @@ if(!isset($_GET['e__id']) || !bigintval($_GET['e__id'])){
         view_json($this->E_model->metadata_experts($es[0]));
 
     } else {
-        echo 'Source @'.bigintval($_GET['e__id']).' not found!';
+        echo 'Source @'.intval($_GET['e__id']).' not found!';
     }
 }
 

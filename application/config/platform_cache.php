@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-13 17:22:52 PST
+//Generated 2020-07-13 17:56:24 PST
 $config['s___12274'] = 5015; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 121994; //DISCOVERIES
@@ -2591,7 +2591,7 @@ $config['e___12273'] = array(
 );
 
 //DISCOVERY COMPLETED:
-$config['n___12229'] = array(7492,6157,7489,4559,12117,6144,7485,7486,6997);
+$config['n___12229'] = array(7492,6157,7489,12117,4559,6144,7485,7486,6997);
 $config['e___12229'] = array(
     7492 => array(
         'm_icon' => '<i class="fas fa-times-octagon discover" aria-hidden="true"></i>',
@@ -2611,17 +2611,17 @@ $config['e___12229'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,7704,4755,6255,4593),
     ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye discover"></i>',
-        'm_name' => 'SOURCE DISCOVER MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
-    ),
     12117 => array(
         'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE READ MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,13524,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
@@ -2650,7 +2650,7 @@ $config['e___12229'] = array(
 );
 
 //DISCOVER PROGRESS:
-$config['n___12227'] = array(12336,12334,7492,6140,4235,7495,6157,7489,4559,12117,6144,7485,7486,6997);
+$config['n___12227'] = array(12336,12334,7492,6140,4235,7495,6157,7489,12117,4559,6144,7485,7486,6997);
 $config['e___12227'] = array(
     12336 => array(
         'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
@@ -2700,17 +2700,17 @@ $config['e___12227'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,7704,4755,6255,4593),
     ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye discover"></i>',
-        'm_name' => 'SOURCE DISCOVER MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
-    ),
     12117 => array(
         'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE READ MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,13524,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
@@ -2739,7 +2739,7 @@ $config['e___12227'] = array(
 );
 
 //DISCOVER TYPE COIN AWARD:
-$config['n___12141'] = array(4983,4251,6157,7489,4559,12117,6144,7485,7486,6997);
+$config['n___12141'] = array(4983,4251,6157,7489,12117,4559,6144,7485,7486,6997);
 $config['e___12141'] = array(
     4983 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -2765,17 +2765,17 @@ $config['e___12141'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,7704,4755,6255,4593),
     ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye discover"></i>',
-        'm_name' => 'SOURCE DISCOVER MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
-    ),
     12117 => array(
         'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE READ MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,13524,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
@@ -6876,7 +6876,7 @@ $config['e___6146'] = array(
 );
 
 //DISCOVERIES:
-$config['n___6255'] = array(6157,7489,4559,12117,6144,7485,7486,6997);
+$config['n___6255'] = array(6157,7489,12117,4559,6144,7485,7486,6997);
 $config['e___6255'] = array(
     6157 => array(
         'm_icon' => '<i class="fas fa-check-circle discover" aria-hidden="true"></i>',
@@ -6890,17 +6890,17 @@ $config['e___6255'] = array(
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,7704,4755,6255,4593),
     ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye discover"></i>',
-        'm_name' => 'DISCOVER MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
-    ),
     12117 => array(
         'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'FILE UPLOAD',
         'm_desc' => '',
         'm_parents' => array(12229,12227,12141,4593,4755,6255),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'READ MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,13524,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
@@ -6929,7 +6929,7 @@ $config['e___6255'] = array(
 );
 
 //PRIVATE TRANSACTION:
-$config['n___4755'] = array(13039,13040,13520,13041,13038,10773,10809,13036,12336,12334,12197,4554,7757,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,3288,10735,10782,10774,4235,10719,12773,12453,10681,12450,13494,10738,10721,13034,11125,10739,13493,4527,11054,10781,10769,7325,13042,3286,4783,4755,10712,7495,10737,10775,6155,13415,6415,12896,13031,10711,7563,13492,13033,6132,13412,6157,7489,4246,4559,12117,7504,6144,7485,7486,6997,12489,12906);
+$config['n___4755'] = array(13039,13040,13520,13041,13038,10773,10809,13036,12336,12334,12197,4554,7757,5967,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,3288,10735,10782,10774,4235,10719,12773,12453,10681,12450,13494,10738,10721,13034,11125,10739,13493,4527,11054,10781,10769,7325,13042,3286,4783,4755,10712,7495,10737,10775,6155,13415,6415,12896,13031,10711,7563,13492,13033,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,12489,12906);
 $config['e___4755'] = array(
     13039 => array(
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
@@ -7537,12 +7537,6 @@ $config['e___4755'] = array(
         'm_desc' => '',
         'm_parents' => array(5967,4755,4593),
     ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye discover"></i>',
-        'm_name' => 'SOURCE DISCOVER MESSAGES',
-        'm_desc' => '',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
-    ),
     12117 => array(
         'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
@@ -7554,6 +7548,12 @@ $config['e___4755'] = array(
         'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => '',
         'm_parents' => array(5967,4755,4593),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE READ MESSAGES',
+        'm_desc' => '',
+        'm_parents' => array(12229,12227,12141,13524,6255,4755,4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-keyboard discover" aria-hidden="true"></i>',
@@ -7594,7 +7594,7 @@ $config['e___4755'] = array(
 );
 
 //TRANSACTION TYPE:
-$config['n___4593'] = array(7545,12419,12129,12336,12334,12197,4554,7757,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,12360,10690,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,13481,4235,12773,4250,12453,4229,4228,10686,10663,10664,12611,12612,12591,12592,6226,10676,10678,10679,10677,6182,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,10573,5001,10625,5943,12318,5865,4999,4998,5000,11956,5981,13441,5982,5003,7495,6155,13415,6415,12896,7563,6132,13412,4251,6157,7489,4246,4559,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,6178,13006,13007,10654,6144,5007,7485,7486,6997,12489,4994,12906);
+$config['n___4593'] = array(7545,12419,12129,12336,12334,12197,4554,7757,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,12360,10690,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7560,7561,7564,7559,7558,7492,4552,6140,6224,12328,7578,4553,7562,13481,4235,12773,4250,12453,4229,4228,10686,10663,10664,12611,12612,12591,12592,6226,10676,10678,10679,10677,6182,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,10573,5001,10625,5943,12318,5865,4999,4998,5000,11956,5981,13441,5982,5003,7495,6155,13415,6415,12896,7563,6132,13412,4251,6157,7489,4246,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,10673,4256,4258,12827,10689,10646,7504,4559,6178,13006,13007,10654,6144,5007,7485,7486,6997,12489,4994,12906);
 $config['e___4593'] = array(
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
@@ -8268,12 +8268,6 @@ $config['e___4593'] = array(
         'm_desc' => '',
         'm_parents' => array(5967,4755,4593),
     ),
-    4559 => array(
-        'm_icon' => '<i class="far fa-eye discover"></i>',
-        'm_name' => 'SOURCE DISCOVER MESSAGES',
-        'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
-        'm_parents' => array(12229,12227,12141,6255,4755,4593),
-    ),
     12117 => array(
         'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
         'm_name' => 'SOURCE FILE UPLOAD',
@@ -8399,6 +8393,12 @@ $config['e___4593'] = array(
         'm_name' => 'SOURCE PENDING MODERATION',
         'm_desc' => 'Certain links that match an unknown behavior would require an admin to review and ensure it\'s all good',
         'm_parents' => array(5967,4755,4593),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_name' => 'SOURCE READ MESSAGES',
+        'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
+        'm_parents' => array(12229,12227,12141,13524,6255,4755,4593),
     ),
     6178 => array(
         'm_icon' => '<i class="far fa-trash-alt source" aria-hidden="true"></i>',

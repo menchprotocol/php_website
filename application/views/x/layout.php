@@ -56,6 +56,7 @@ if($recipient_e['e__id']){
         ));
 
 
+
         if($i_type_meet_requirement){
 
             //Reverse check answers to see if they have previously unlocked a path:
@@ -178,6 +179,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             }
         }
         $focus_tab .= '</div>';
+
+        if(!count($x_completes)){
+            //If not completed, offer the option to complete:
+            echo '<div class="margin-top-down left-margin block" id="x_13524"><a class="btn btn-x" href="javascript:void(0);" onclick="x_13524()">'.$e___11035[13524]['m_icon'].' '.$e___11035[13524]['m_name'].'</a></div>';
+        } else {
+            //Show completion time:
+            $e___12467 = $this->config->item('e___12467');
+            echo '<div><span class="montserrat discover"><span class="icon-block">'.$e___12467[6255]['m_icon'].'</span>'.number_format(x_stats_count(6255, $recipient_e['e__id']), 0).' '.$e___12467[6255]['m_name'].'</span> ['.substr($x_completes[0]['x__time'], 0, 19).' PST]</div>';
+        }
+
 
     } elseif($x__type==12273 && $i_stats['i___13443']>1){
 
@@ -335,7 +346,7 @@ echo $tab_content;
 if(!$in_my_x){
 
     //GET STARTED
-    echo '<div class="margin-top-down x-add left-margin inline-block"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_name'].'</a></div>';
+    echo '<div class="margin-top-down left-margin inline-block"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_name'].'</a></div>';
 
 } else {
 

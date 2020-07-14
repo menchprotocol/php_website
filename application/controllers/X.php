@@ -26,6 +26,7 @@ class X extends CI_Controller
 
     }
 
+
     function x_list(){
 
         /*
@@ -57,7 +58,7 @@ class X extends CI_Controller
 
         $filters = unserialize($_POST['x_filters']);
         $joined_by = unserialize($_POST['x_joined_by']);
-        $page_num = ( isset($_POST['page_num']) && bigintval($_POST['page_num'])>=2 ? bigintval($_POST['page_num']) : 1 );
+        $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
         $query_offset = (($page_num-1)*config_var(11064));
         $session_e = superpower_assigned();
@@ -368,7 +369,7 @@ class X extends CI_Controller
                 //All good, go ahead and update:
                 $this->X_model->update($_POST['object__id'], array(
                     'x__metadata' => array_merge($x__metadata, array(
-                        'tr__assessment_points' => bigintval($_POST['field_value']),
+                        'tr__assessment_points' => intval($_POST['field_value']),
                     )),
                 ), $session_e['e__id'], 10663 /* Idea Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
@@ -410,7 +411,7 @@ class X extends CI_Controller
                 //All good, go ahead and update:
                 $this->X_model->update($_POST['object__id'], array(
                     'x__metadata' => array_merge($x__metadata, array(
-                        $field_name => bigintval($_POST['field_value']),
+                        $field_name => intval($_POST['field_value']),
                     )),
                 ), $session_e['e__id'], 10664 /* Idea Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
@@ -628,7 +629,7 @@ class X extends CI_Controller
                 'message' => 'Unknown upload type.',
             ));
 
-        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || bigintval($_FILES[$_POST['upload_type']]['size']) == 0) {
+        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
 
             return view_json(array(
                 'status' => 0,
@@ -708,6 +709,50 @@ class X extends CI_Controller
     }
 
 
+    function x_13524(){
+
+        $session_e = superpower_assigned();
+        if (!$session_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing idea ID.',
+            ));
+        }
+
+
+        //Validate/Fetch idea:
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        ));
+        if(count($is) < 1){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea not published.',
+            ));
+        }
+
+
+        //Mark as complete:
+        $this->X_model->mark_complete($is[0], array(
+            'x__type' => 4559, //DISCOVER MESSAGES
+            'x__miner' => $session_e['e__id'],
+            'x__left' => $is[0]['i__id'],
+        ));
+
+        //Return Total Discovery Coins:
+        $e___12467 = $this->config->item('e___12467');
+        return view_json(array(
+            'status' => 1,
+            'message' => '<div class="montserrat discover"><span class="icon-block">'.$e___12467[6255]['m_icon'].'</span>'.number_format(x_stats_count(6255, $session_e['e__id']), 0).' '.$e___12467[6255]['m_name'].'</div>',
+        ));
+
+    }
 
 
     function x_reply(){
@@ -718,7 +763,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['i__id']) || !bigintval($_POST['i__id'])) {
+        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea ID.',
@@ -935,7 +980,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['i__id']) || bigintval($_POST['i__id']) < 1) {
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea ID',
@@ -1001,11 +1046,11 @@ class X extends CI_Controller
         //Update the order of their Discoveries:
         $results = array();
         foreach($_POST['new_x_order'] as $x__sort => $x__id){
-            if(bigintval($x__id) > 0 && bigintval($x__sort) > 0){
+            if(intval($x__id) > 0 && intval($x__sort) > 0){
                 //Update order of this transaction:
-                $results[$x__sort] = $this->X_model->update(bigintval($x__id), array(
+                $results[$x__sort] = $this->X_model->update(intval($x__id), array(
                     'x__sort' => $x__sort,
-                ), $session_e['e__id'], bigintval($_POST['x__type']));
+                ), $session_e['e__id'], intval($_POST['x__type']));
             }
         }
 

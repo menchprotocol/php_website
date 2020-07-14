@@ -1,6 +1,6 @@
 <?php
 
-if(!isset($_GET['x__id']) || !bigintval($_GET['x__id'])){
+if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
 
     echo 'Missing DISCOVER ID (Append ?x__id=TRANSACTION_ID in URL)';
 

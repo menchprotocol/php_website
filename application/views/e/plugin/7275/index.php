@@ -11,7 +11,7 @@ $filters = array(
     'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
 );
 if(isset($_GET['i__id'])){
-    $filters['i__id'] = bigintval($_GET['i__id']);
+    $filters['i__id'] = intval($_GET['i__id']);
 }
 
 $published_is = $this->I_model->fetch($filters);

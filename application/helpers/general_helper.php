@@ -104,8 +104,8 @@ function extract_e_references($x__message)
                 $times = explode(':',$word);
                 if(is_numeric($times[2]) && is_numeric($times[3]) && $word==$times[0].':'.$times[1].':'.$times[2].':'.$times[3]){
                     $string_references['ref_time_found'] = true;
-                    $string_references['ref_time_start'] = bigintval($times[2]);
-                    $string_references['ref_time_end'] = bigintval($times[3]);
+                    $string_references['ref_time_start'] = intval($times[2]);
+                    $string_references['ref_time_end'] = intval($times[3]);
                     $word = $times[0].':'.$times[1];
                 }
             }
@@ -114,7 +114,7 @@ function extract_e_references($x__message)
 
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
 
-            $e__id = bigintval(substr($word, 1));
+            $e__id = intval(substr($word, 1));
             array_push($string_references['ref_es'], $e__id);
 
             if(substr_count($word,':')==2){
@@ -155,9 +155,9 @@ function extract_e_references($x__message)
 function second_calc($string){
     if(substr_count($string, '.')==1){
         $parts = explode('.',$string,2);
-        return (bigintval($parts[0]) * 60) + bigintval($parts[1]);
+        return (intval($parts[0]) * 60) + intval($parts[1]);
     } else {
-        return bigintval($string);
+        return intval($string);
     }
 }
 
@@ -175,19 +175,6 @@ function is_valid_date($string)
     } catch (\Exception $e) {
         return false;
     }
-}
-
-
-function bigintval($value) {
-    $value = trim($value);
-    if (ctype_digit($value)) {
-        return $value;
-    }
-    $value = preg_replace("/[^0-9](.*)$/", '', $value);
-    if (ctype_digit($value)) {
-        return $value;
-    }
-    return 0;
 }
 
 
@@ -228,7 +215,7 @@ function x_detect_type($string)
             'x__type' => 4230, //Raw
         );
 
-    } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (bigintval($string) != 0 || $string == '0')) {
+    } elseif ((strlen(intval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(intval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(
             'status' => 1,
@@ -610,10 +597,10 @@ function sortByWeight($a, $b) {
 
 function superpower_active($superpower_e__id, $boolean_only = false){
 
-    if( bigintval($superpower_e__id)>0 ){
+    if( intval($superpower_e__id)>0 ){
 
         $CI =& get_instance();
-        $is_match = (superpower_assigned() ? in_array(bigintval($superpower_e__id), $CI->session->userdata('session_superpowers_activated')) : false);
+        $is_match = (superpower_assigned() ? in_array(intval($superpower_e__id), $CI->session->userdata('session_superpowers_activated')) : false);
 
         if($boolean_only){
             return $is_match;
@@ -832,7 +819,7 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
     $query = $CI->X_model->fetch($query_filters, $join_objects, config_var(11064), ( $load_page > 0 ? ($load_page-1)*config_var(11064) : 0 ), ( !$load_page ? array() : $order_columns ), ( !$load_page ? 'COUNT(x__id) as totals' : '*' ));
 
     if(!$load_page){
-        return bigintval($query[0]['totals']);
+        return intval($query[0]['totals']);
     }
 
     if(count($query)){
@@ -1009,7 +996,7 @@ function fetch_cookie_order($cookie_name){
 
     $CI =& get_instance();
     $current_cookie = get_cookie($cookie_name);
-    $new_order_value = (is_null($current_cookie) ? 0 : bigintval($current_cookie)+1 );
+    $new_order_value = (is_null($current_cookie) ? 0 : intval($current_cookie)+1 );
 
     //Set or update the cookie:
     $CI->input->set_cookie(array(
@@ -1501,7 +1488,7 @@ function sources_currently_sorted($e__id){
 function update_algolia($object__type = null, $object__id = 0, $return_row_only = false)
 {
 
-    if(!bigintval(config_var(12678))){
+    if(!intval(config_var(12678))){
         return false;
     }
 
@@ -1529,7 +1516,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
     $e___7585 = $CI->config->item('e___7585'); // Idea Subtypes
 
     //Define the support objects indexed on algolia:
-    $object__id = bigintval($object__id);
+    $object__id = intval($object__id);
     $limits = array();
 
 
@@ -1642,9 +1629,9 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                     //We have a metadata, so we might have the Algolia ID stored. Let's check:
                     $metadata = unserialize($db_row[$loop_filed_name]);
-                    if (isset($metadata['algolia__id']) && bigintval($metadata['algolia__id']) > 0) {
+                    if (isset($metadata['algolia__id']) && intval($metadata['algolia__id']) > 0) {
                         //We found it! Let's just update existing algolia record
-                        $export_row['objectID'] = bigintval($metadata['algolia__id']);
+                        $export_row['objectID'] = intval($metadata['algolia__id']);
                     }
 
                 }
@@ -1665,12 +1652,12 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             if ($loop_obj == 12274) {
 
                 $export_row['object__type'] = $loop_obj;
-                $export_row['object__id'] = bigintval($db_row['e__id']);
+                $export_row['object__id'] = intval($db_row['e__id']);
                 $export_row['object__url'] = '/@' . $db_row['e__id'];
-                $export_row['object__status'] = bigintval($db_row['e__status']);
+                $export_row['object__status'] = intval($db_row['e__status']);
                 $export_row['object__icon'] = view_e__icon($db_row['e__icon']);
                 $export_row['object__title'] = $db_row['e__title'];
-                $export_row['object__weight'] = bigintval($db_row['e__weight']);
+                $export_row['object__weight'] = intval($db_row['e__weight']);
                 $export_row['object__is'] = x_stats_count(12273, $db_row['e__id']);
                 $export_row['object__duration'] = null;
 
@@ -1710,12 +1697,12 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 //See if this idea has a time-range:
                 $export_row['object__type'] = $loop_obj;
-                $export_row['object__id'] = bigintval($db_row['i__id']);
+                $export_row['object__id'] = intval($db_row['i__id']);
                 $export_row['object__url'] = '/i/i_go/' . $db_row['i__id'];
-                $export_row['object__status'] = bigintval($db_row['i__status']);
+                $export_row['object__status'] = intval($db_row['i__status']);
                 $export_row['object__icon'] = i_fetch_cover($db_row['i__id']);
                 $export_row['object__title'] = $db_row['i__title'];
-                $export_row['object__weight'] = bigintval($db_row['i__weight']);
+                $export_row['object__weight'] = intval($db_row['i__weight']);
 
                 //Idea Stats:
                 $i_stats = i_stats($db_row['i__metadata']);
@@ -1855,7 +1842,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
 
                 update_metadata(( isset($all_db_rows[$key]['i__id']) ? 12273 : 12274), $all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
-                    'algolia__id' => bigintval($algolia_id),
+                    'algolia__id' => intval($algolia_id),
                 ));
             }
         }
