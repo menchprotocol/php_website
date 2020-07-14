@@ -192,7 +192,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         if(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___13524'))){
             //Give option to mark as read:
-            echo '<div class="margin-top-down left-margin block" id="x_13524"><a class="btn btn-x" href="/x/x_13524/'.$i_focus['i__id'].'">'.$e___11035[13524]['m_icon'].' '.$e___11035[13524]['m_name'].'</a></div>';
+            $focus_tab .= '<div class="margin-top-down left-margin block" id="x_13524"><a class="btn btn-x" href="/x/x_13524/'.$i_focus['i__id'].'">'.$e___11035[13524]['m_icon'].' '.$e___11035[13524]['m_name'].'</a></div>';
         }
 
     } elseif($x__type==12273 && $i_stats['i___13443']>1){
