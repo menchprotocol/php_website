@@ -191,7 +191,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $focus_tab .= '</div>';
 
 
-        if(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
+        if($in_my_x && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             //Give option to mark as read:
             $focus_tab .= '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_name'].' '.$e___11035[12211]['m_icon'].'</a></div>';
         }
@@ -550,7 +550,7 @@ if(!$in_my_x){
         if(count($x_completes)){
             //Next Ideas:
             view_i_list($i_focus, $is_next, $recipient_e);
-        } else {
+        } elseif($in_my_x) {
             //Give Button option:
             echo '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
         }
