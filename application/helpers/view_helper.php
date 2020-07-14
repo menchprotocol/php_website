@@ -1230,7 +1230,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['i___13443'].' '.$e___12467[12273]['m_name'].' FROM '.$i_stats['e_count'].' '.$e___12467[12274]['m_name'].'">';
 
     //SOURCES:
-    if(superpower_active(10939, true)){
+    if($recipient_e){
         $ui .= $e___12467[12274]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['e_count']).'</span><br />';
     }
 
