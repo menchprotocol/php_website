@@ -523,6 +523,11 @@ if(!$in_my_x){
                 //Cancel:
                 echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="'.$e___11035[13502]['m_name'].'">'.$e___11035[13502]['m_icon'].'</a></div>';
 
+            } else {
+
+                //Give option to save:
+                echo '<div class="left-margin block margin-top-down"><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+
             }
 
             echo '</div>';
