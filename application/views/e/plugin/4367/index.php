@@ -1,8 +1,10 @@
 <?php
 
-$transaction__id = 1000000000;
+die('Retired for now');
 
-foreach($this->X_model->fetch(array('x__id >=' => 1100000000), array(), 0, 0, array('x__id' => 'ASC')) as $x){
+$transaction__id = 0;
+
+foreach($this->X_model->fetch(array(), array(), 0, 0, array('x__id' => 'ASC')) as $x){
 
     //Update ID
     $transaction__id++;
