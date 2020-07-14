@@ -420,8 +420,6 @@ if(!$in_my_x){
 
             }
 
-            echo 'No selection.';
-
         } else {
 
             //First fetch answers based on correct order:
