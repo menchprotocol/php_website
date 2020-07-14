@@ -420,7 +420,7 @@ if(!$in_my_x){
 
             }
 
-            return true;
+            echo 'No selection.';
 
         } else {
 
@@ -550,7 +550,7 @@ if(!$in_my_x){
         if(count($x_completes)){
             //Next Ideas:
             view_i_list($i_focus, $is_next, $recipient_e);
-        } elseif($in_my_x) {
+        } else {
             //Give Button option:
             echo '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
         }
