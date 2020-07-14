@@ -144,8 +144,6 @@ if($recipient_e['e__id']){
 
 $main_title = '<div style="position: relative; display: block;">' . ( $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100 ? '<div class="progress-bg-list no-horizonal-margin" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '' ) . '<h1 class="block-one"><span class="icon-block top-icon">'.view_i_x_icon( $completion_rate['completion_percentage'] ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
-$main_title = '';
-
 //IDEA TITLE
 echo $main_title;
 
@@ -194,7 +192,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         if(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             //Give option to mark as read:
-            $focus_tab .= '<div class="margin-top-down"><a class="btn btn-x left-margin" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_name'].' '.$e___11035[12211]['m_icon'].'</a></div>';
+            $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_name'].' '.$e___11035[12211]['m_icon'].'</a></div>';
         }
 
     } elseif($x__type==12273 && $i_stats['i___13443']>1){
