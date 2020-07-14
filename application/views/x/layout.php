@@ -547,7 +547,7 @@ if(!$in_my_x){
             view_i_list($i_focus, $is_next, $recipient_e);
         } else {
             //Give Button option:
-            echo '<div class="margin-top-down left-margin block"><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+            echo '<div class="left-margin block"><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
