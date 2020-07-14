@@ -39,7 +39,6 @@ $chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
 $in_my_x = ( $recipient_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $recipient_e) : false );
 
-
 if($recipient_e['e__id']){
 
     //VIEW DISCOVER

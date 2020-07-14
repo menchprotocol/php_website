@@ -44,7 +44,7 @@ function go_12211(){
         //TEXT RESPONSE:
         return x_reply();
 
-    } else if (js_n___7712.includes(focus_i__type)){
+    } else if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
 
         //SELECT ONE/SOME
         return x_select();
