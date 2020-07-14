@@ -41,7 +41,7 @@ function view_x__message($x__message, $x__type, $full_message = null)
 
     if ($x__type == 4256 /* Generic URL */) {
 
-        return '<div class="block"><a href="' . $x__message . '" target="_blank"><span class="icon-block-xs inline-block"><i class="far fa-external-x"></i></span><span class="url_truncate">' . view_url_clean($x__message) . '</span></a></div>';
+        return '<div class="block"><a href="' . $x__message . '" target="_blank"><span class="icon-block-xs inline-block"><i class="far fa-external-link"></i></span><span class="url_truncate">' . view_url_clean($x__message) . '</span></a></div>';
 
     } elseif ($x__type == 4257 /* Embed Widget URL? */) {
 
