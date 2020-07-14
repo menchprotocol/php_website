@@ -12,6 +12,7 @@ echo '<div class="container load_13210">';
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 
+$x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 $recipient_e = superpower_assigned();
 if(!isset($recipient_e['e__id']) ){
