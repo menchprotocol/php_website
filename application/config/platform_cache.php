@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-13 17:21:30 PST
+//Generated 2020-07-13 17:22:52 PST
 $config['s___12274'] = 5015; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 121994; //DISCOVERIES
@@ -5966,7 +5966,7 @@ $config['e___4341'] = array(
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'ID',
         'm_desc' => 'x__id',
-        'm_parents' => array(13456,4341),
+        'm_parents' => array(6287,13456,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h" aria-hidden="true"></i>',
@@ -6489,7 +6489,7 @@ $config['e___7309'] = array(
 );
 
 //PLUGINS:
-$config['n___6287'] = array(7274,12739,12722,12733,7264,13369,4356,7261,12731,12734,7260,7263,11049,7259,12138,7275,7276,12735,7712,4527,12114,7277,12710,12709,12729,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,12569);
+$config['n___6287'] = array(7274,12739,12722,12733,7264,13369,4356,7261,12731,12734,7260,7263,11049,7259,12138,7275,7276,12735,7712,4527,12114,7277,12710,12709,12729,12888,7267,12732,7268,7269,12730,12738,12712,12737,12736,7278,12967,7279,4367,12569);
 $config['e___6287'] = array(
     7274 => array(
         'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
@@ -6718,6 +6718,12 @@ $config['e___6287'] = array(
         'm_name' => 'SYNC SEARCH INDEX',
         'm_desc' => '',
         'm_parents' => array(6287,12741,12887,11047,3323,7287),
+    ),
+    4367 => array(
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
+        'm_name' => 'TRANSACTION ID',
+        'm_desc' => '',
+        'm_parents' => array(6287,13456,4341),
     ),
     12569 => array(
         'm_icon' => '<i class="fad fa-weight"></i>',
