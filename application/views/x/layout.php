@@ -51,9 +51,6 @@ if($recipient_e['e__id']){
 
     if ($in_my_x) {
 
-        // % DONE
-        $completion_rate = $this->X_model->completion_progress($recipient_e['e__id'], $i_focus);
-
         //Fetch progress history:
         $x_completes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -63,7 +60,7 @@ if($recipient_e['e__id']){
         ));
 
         //No message, so automatically mark as read:
-        if(!count($messages) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
+        if(!count($x_completes) && !count($messages) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                 'x__type' => 4559, //DISCOVER MESSAGES
                 'x__miner' => $recipient_e['e__id'],
@@ -71,6 +68,8 @@ if($recipient_e['e__id']){
             )));
         }
 
+        // % DONE
+        $completion_rate = $this->X_model->completion_progress($recipient_e['e__id'], $i_focus);
 
         if($i_type_meet_requirement){
 
