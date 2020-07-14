@@ -479,6 +479,7 @@ class X_model extends CI_Model
     function update($id, $update_columns, $x__miner = 0, $x__type = 0, $x__message = '')
     {
 
+        $id = intval($id);
         if (count($update_columns) == 0) {
             return false;
         } elseif ($x__type>0 && !in_array($x__type, $this->config->item('n___4593'))) {

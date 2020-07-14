@@ -1669,11 +1669,9 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     array_push($export_row['_tags'], 'alg_e_' . $db_row['e__id']);
                 }
 
-                if(in_array($db_row['e__status'], $CI->config->item('n___12575'))){
-                    array_push($export_row['_tags'], 'is_featured');
-                }
 
                 //Fetch Profiles:
+                $profile_ids = array();
                 $export_row['object__keywords'] = '';
                 foreach($CI->X_model->fetch(array(
                     'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1683,12 +1681,20 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $x) {
 
                     //Always add to tags:
+                    array_push($profile_ids, intval($x['e__id']));
                     array_push($export_row['_tags'], 'alg_e_' . $x['e__id']);
 
                     //Add content to keywords if any:
                     if (strlen($x['x__message']) > 0) {
                         $export_row['object__keywords'] .= $x['x__message'] . ' ';
                     }
+
+                }
+
+                if(in_array($db_row['e__status'], $CI->config->item('n___12575'))){
+                    array_push($export_row['_tags'], 'is_featured');
+                } elseif(array_intersect($profile_ids, $CI->config->item('n___12563'))){
+                    //Featured parent source:
 
                 }
 

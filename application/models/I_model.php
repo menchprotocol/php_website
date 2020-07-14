@@ -116,6 +116,7 @@ class I_model extends CI_Model
     function update($id, $update_columns, $external_sync = false, $x__miner = 0)
     {
 
+        $id = intval($id);
         if (count($update_columns) == 0) {
             return false;
         }
