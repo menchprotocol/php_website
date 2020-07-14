@@ -193,7 +193,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         if(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             //Give option to mark as read:
-            $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_name'].' '.$e___11035[12211]['m_icon'].'</a></div>';
+            $focus_tab .= '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_name'].' '.$e___11035[12211]['m_icon'].'</a></div>';
         }
 
     } elseif($x__type==12273 && $i_stats['i___13443']>1){
@@ -340,11 +340,11 @@ $tab_pills .= '</ul>';
 
 if($tab_pill_count > 1){
     //DISCOVER TABS
-    //echo $tab_pills;
+    echo $tab_pills;
 }
 
 //Show All Tab Content:
-//echo $tab_content;
+echo $tab_content;
 
 
 
@@ -526,7 +526,7 @@ if(!$in_my_x){
             } else {
 
                 //Give option to save:
-                echo '<div class="left-margin block margin-top-down"><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+                echo '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
 
             }
 
@@ -552,7 +552,7 @@ if(!$in_my_x){
             view_i_list($i_focus, $is_next, $recipient_e);
         } else {
             //Give Button option:
-            echo '<div class="left-margin block"><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+            echo '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
