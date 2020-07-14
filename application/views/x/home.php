@@ -52,24 +52,24 @@
 
 
         //Saved
+        echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13510]['m_icon'].'</span>'.$e___11035[13510]['m_name'].'</div>';
         $miner_saved = $this->X_model->fetch(array(
             'x__up' => $session_e['e__id'],
             'x__type' => 12896, //SAVED
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__right'), 0, 0, array('x__id' => 'DESC'));
-
         if(count($miner_saved)){
-
-            echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13510]['m_icon'].'</span>'.$e___11035[13510]['m_name'].'</div>';
-
             echo '<div class="list-group no-side-padding">';
             foreach($miner_saved as $priority => $x) {
                 echo view_i_x($x, null, true);
             }
             echo '</div>';
-
+        } else {
+            //None for now:
+            echo '<div class="alert alert-info no-margin"><span class="icon-block">'.$e___11035[13510]['m_icon'].'</span>No '.$e___11035[13510]['m_name'].' at this tim.</div>';
         }
+
 
     } else {
 
