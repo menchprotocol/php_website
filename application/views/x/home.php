@@ -6,6 +6,7 @@
 
     $session_e = superpower_assigned();
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+    $e___12467 = $this->config->item('e___12467'); //MENCH COINS
     $my_x_ids = array();
 
 
@@ -113,6 +114,10 @@
         }
     }
     echo '</div>';
+
+    echo '<div class="alert alert-info no-margin"><span class="icon-block">'.$e___11035[7256]['m_icon'].'</span>Tip: '.$e___11035[7256]['m_name'].' to find '.$e___12467[12274]['m_icon'].' and '.$e___12467[12273]['m_icon'].'.</div>';
+
+    echo '<div></div>';
 
 
     ?>
