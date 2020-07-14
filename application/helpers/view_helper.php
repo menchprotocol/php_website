@@ -1860,7 +1860,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
         }
 
 
-        $default_active = !$previously_activated && $counter > 0 && in_array($x__type, $CI->config->item('n___12571'));
+        $default_active = !$previously_activated && ($counter > 0 || in_array($x__type, $CI->config->item('n___12574'))) && in_array($x__type, $CI->config->item('n___12571'));
         if(!$previously_activated && $default_active){
             $previously_activated = true;
         }

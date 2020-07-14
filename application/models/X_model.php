@@ -1006,7 +1006,7 @@ class X_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="inline-block"><span class="icon-block-xs img-block">'.view_e__icon($es[0]['e__icon']).'</span>' .$first_word.'</span>'. ( count($words) ? ' '.join(' ',$words) : '' ) . '</span>'.'&nbsp;', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="inline-block"><span class="icon-block-xs img-block">'.view_e__icon($es[0]['e__icon']).'</span>' .$first_word.'</span>'. ( count($words) ? ' '.join(' ',$wordsx) : '' ) . '</span>'.'&nbsp;', $output_body_message);
 
                 }
 
