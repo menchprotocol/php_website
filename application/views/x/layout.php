@@ -655,7 +655,7 @@ if($in_my_x){
     }
 
     //Current Idea:
-    echo '<div class="list-group-item no-padding itemdiscover">'.$main_title.'</div>';
+    echo '<div class="list-group-item no-padding itemdiscover"><a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');">'.$main_title.'</a></div>';
 
 
     echo '</div>';
@@ -684,22 +684,22 @@ if($in_my_x){
             )));
 
             $e___13510 = $this->config->item('e___13510'); //SAVED IDEAS
-            $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
+            $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')" title="'.$e___13510[12906]['m_name'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
 
         } elseif($e__id==12991){
 
             //GO BACK
-            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : '/' ) ).'">'.$m['m_icon'].'</a>';
+            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : '/' ) ).'" title="'.$m['m_name'].'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==12211){
 
             //GO NEXT
-            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()">'.$m['m_icon'].'</a>';
+            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()" title="'.$m['m_name'].'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==13491){
 
             //FONT SIZE
-            $url .= '<div class="dropdown inline-block">';
+            $url .= '<div class="dropdown inline-block" title="'.$m['m_name'].'">';
             $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
             $url .= '</button>';
@@ -713,7 +713,7 @@ if($in_my_x){
         } elseif($e__id==13210){
 
             //IDEA INDEX
-            $url = '<a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');" class="controller-nav">'.$m['m_icon'].'</a>';
+            $url = '<a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');" class="controller-nav" title="'.$m['m_name'].'">'.$m['m_icon'].'</a>';
 
         }
 
