@@ -116,8 +116,7 @@
     }
     echo '</div>';
     echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="alert alert-info no-margin margin-top-down"><span class="icon-block">'.$e___11035[7256]['m_icon'].'</span>'.$e___11035[7256]['m_name'].' to find Featured '.$e___12467[12274]['m_name'].' & '.$e___12467[12273]['m_name'].'.</div>';
-
+    echo '<div class="alert alert-info no-margin margin-top-down"><a href="javascript:void(0);" onclick="toggle_search()"><span class="icon-block">'.$e___11035[7256]['m_icon'].'</span>'.$e___11035[7256]['m_name'].' to find Featured '.$e___12467[12274]['m_name'].' & '.$e___12467[12273]['m_name'].'.</a></div>';
 
     ?>
 </div>
