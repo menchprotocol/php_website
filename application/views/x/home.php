@@ -67,7 +67,7 @@
             echo '</div>';
         } else {
             //None for now:
-            echo '<div class="alert alert-danger no-margin"><span class="icon-block">'.$e___11035[12906]['m_icon'].'</span>Nothing yet.</div>';
+            echo '<div class="alert alert-danger no-margin"><span class="icon-block">&nbsp;</span>Your '.$e___11035[13510]['m_icon'].' '.$e___11035[13510]['m_name'].' will show up here.</div>';
         }
 
 
