@@ -14,7 +14,7 @@ if(is_array($current_sign_i_attempts) && count($current_sign_i_attempts) > 0){
     foreach($current_sign_i_attempts as $sign_i_attempt){
         $all_match = true;
         foreach(array('x__left') as $sign_i_attempt_field){
-            if(intval($this_attempt[$sign_i_attempt_field]) != intval($sign_i_attempt[$sign_i_attempt_field])){
+            if(bigintval($this_attempt[$sign_i_attempt_field]) != bigintval($sign_i_attempt[$sign_i_attempt_field])){
                 $all_match = false;
                 break;
             }

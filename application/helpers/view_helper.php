@@ -127,10 +127,10 @@ function view_url_embed($url, $full_message = null, $return_array = false)
                 } elseif($is_embed){
 
                     if(is_numeric(one_two_explode('start=','&',$url))){
-                        $start_time = intval(one_two_explode('start=','&',$url));
+                        $start_time = bigintval(one_two_explode('start=','&',$url));
                     }
                     if(is_numeric(one_two_explode('end=','&',$url))){
-                        $end_time = intval(one_two_explode('end=','&',$url));
+                        $end_time = bigintval(one_two_explode('end=','&',$url));
                     }
                 }
 
@@ -152,7 +152,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
             $video_id = trim(one_two_explode('vimeo.com/', '?', $url));
 
             //This should be an integer!
-            if (intval($video_id) == $video_id) {
+            if (bigintval($video_id) == $video_id) {
                 $clean_url = 'https://vimeo.com/' . $video_id;
                 $embed_html_code = '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://miner.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
             }
@@ -297,7 +297,7 @@ function view_number($number)
     //Round & format numbers
 
     if ($number < 950) {
-        return intval($number);
+        return bigintval($number);
     }
 
     if ($number >= 950000000) {
@@ -440,7 +440,7 @@ function view_x($x, $is_parent_tr = false)
         foreach($CI->config->item('e___10692') as $e__id => $m) {
 
             //Do we have this set?
-            if(!array_key_exists($e__id, $var_index) || !intval($x[$var_index[$e__id]])){
+            if(!array_key_exists($e__id, $var_index) || !bigintval($x[$var_index[$e__id]])){
                 continue;
             }
 
@@ -563,7 +563,7 @@ function view_coins_count_x($i__id = 0, $e__id = 0){
     );
 
     if(isset($_GET['focus__e'])){
-        $query_filters['x__miner'] = intval($_GET['focus__e']);
+        $query_filters['x__miner'] = bigintval($_GET['focus__e']);
     }
 
     $x_coins = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
@@ -876,7 +876,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
         $ui .= '<div class="block">';
 
             //IDAE Transaction:
-            $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
+            $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.bigintval($_GET['focus__e']) : '' );
 
             //IDEA STATUS:
             $ui .= '<span class="icon-block"><a href="'.$i_x.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a></span>';
@@ -2178,7 +2178,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_owns_
         } else{
 
             //Idea Dropdown updater:
-            $anchor_url = 'href="javascript:void();" new-en-id="'.$e__id.'" onclick="i_set_dropdown('.$cache_e__id.', '.$e__id.', '.$i__id.', '.$x__id.', '.intval($show_full_name).')"';
+            $anchor_url = 'href="javascript:void();" new-en-id="'.$e__id.'" onclick="i_set_dropdown('.$cache_e__id.', '.$e__id.', '.$i__id.', '.$x__id.', '.bigintval($show_full_name).')"';
 
         }
 
@@ -2214,6 +2214,6 @@ function view_ordinal($number)
 function view__s($count, $is_es = 0)
 {
     //A cute little function to either display the plural "s" or not based on $count
-    return ( intval($count) == 1 ? '' : ($is_es ? 'es' : 's'));
+    return ( bigintval($count) == 1 ? '' : ($is_es ? 'es' : 's'));
 }
 

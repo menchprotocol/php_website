@@ -76,7 +76,7 @@ foreach($config_es as $en){
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         ), array('x__up'), 0);
         foreach($child_parents as $cp_en){
-            array_push($child_parent_ids, intval($cp_en['e__id']));
+            array_push($child_parent_ids, bigintval($cp_en['e__id']));
         }
 
         echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['e__id'].' => array(<br />';

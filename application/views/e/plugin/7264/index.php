@@ -3,7 +3,7 @@
 
 <?php
 
-if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
+if(!isset($_GET['i__id']) || !bigintval($_GET['i__id'])){
 
     echo 'Missing Idea ID (Append ?i__id=IDEA_ID in URL)';
 
@@ -12,7 +12,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     //IDEA MARKS BIRDS EYE
 
     //Give an overview of the point transactions in a hierchial format to enable miners to overview:
-    $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
+    $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && bigintval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
 
     echo '<form method="GET" action="">';
 

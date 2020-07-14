@@ -338,7 +338,7 @@ class I_model extends CI_Model
         //Validate Original idea:
         if($x_to_i__id > 0){
             $x_is = $this->I_model->fetch(array(
-                'i__id' => intval($x_to_i__id),
+                'i__id' => bigintval($x_to_i__id),
             ));
 
             if (count($x_is) < 1) {
@@ -561,7 +561,7 @@ class I_model extends CI_Model
         ), array('x__left')) as $i_previous) {
 
             //Prep ID:
-            $p_id = intval($i_previous['i__id']);
+            $p_id = bigintval($i_previous['i__id']);
 
             //Add to appropriate array:
             if (!$first_level) {
@@ -596,7 +596,7 @@ class I_model extends CI_Model
                     if (!isset($recursive_parents[$index])) {
                         $recursive_parents[$index] = array();
                     }
-                    array_push($recursive_parents[$index], intval($grand_parent_id));
+                    array_push($recursive_parents[$index], bigintval($grand_parent_id));
                     if ($grand_parent_id == $start_i__id) {
                         $index++;
                     }
@@ -624,7 +624,7 @@ class I_model extends CI_Model
             'x__left' => $i__id,
         ), array('x__right')) as $next_i){
 
-            array_push($child_ids, intval($next_i['i__id']));
+            array_push($child_ids, bigintval($next_i['i__id']));
 
             //Fetch parents of parents:
             $recursive_children = $this->I_model->recursive_child_ids($next_i['i__id'], false);
@@ -672,22 +672,22 @@ class I_model extends CI_Model
             if(in_array($next_i['x__type'], $this->config->item('n___12842'))){
 
                 //Conditional Idea Transaction:
-                array_push($conditional_x, intval($next_i['i__id']));
+                array_push($conditional_x, bigintval($next_i['i__id']));
 
             } elseif($select_one){
 
                 //OR parent Idea with Fixed Idea Transaction:
-                array_push($select_one_children, intval($next_i['i__id']));
+                array_push($select_one_children, bigintval($next_i['i__id']));
 
             } elseif($select_some){
 
                 //OR parent Idea with Fixed Idea Transaction:
-                array_push($select_some_children, intval($next_i['i__id']));
+                array_push($select_some_children, bigintval($next_i['i__id']));
 
             } else {
 
                 //AND parent Idea with Fixed Idea Transaction:
-                array_push($metadata_this['p___6168'], intval($next_i['i__id']));
+                array_push($metadata_this['p___6168'], bigintval($next_i['i__id']));
 
                 //Go recursively down:
                 $child_recursion = $this->I_model->metadata_common_base($next_i);
@@ -741,9 +741,9 @@ class I_model extends CI_Model
 
             //Make sure to add main idea to common idea:
             if(count($metadata_this['p___6168']) > 0){
-                $metadata_this['p___6168'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['p___6168']));
+                $metadata_this['p___6168'] = array_merge( array(bigintval($focus_in['i__id'])) , array($metadata_this['p___6168']));
             } else {
-                $metadata_this['p___6168'] = array(intval($focus_in['i__id']));
+                $metadata_this['p___6168'] = array(bigintval($focus_in['i__id']));
             }
 
             update_metadata(12273, $focus_in['i__id'], array(
@@ -814,7 +814,7 @@ class I_model extends CI_Model
             if(in_array($action_e__id , array(12591, 12592))){
 
                 //Check if it hs this item:
-                $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
+                $e__profile_id = bigintval(one_two_explode('@',' ',$action_command1));
                 $i_has_es = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
@@ -849,7 +849,7 @@ class I_model extends CI_Model
             } elseif(in_array($action_e__id , array(12611, 12612))){
 
                 //Check if it hs this item:
-                $adjust_i__id = intval(one_two_explode('#',' ',$action_command1));
+                $adjust_i__id = bigintval(one_two_explode('#',' ',$action_command1));
 
                 $is_previous = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1091,20 +1091,20 @@ class I_model extends CI_Model
                 }
 
                 //MAX
-                $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
-                $metadata_this['p___6162'] += intval($metadata_recursion['p___6162']);
+                $metadata_this['p___6170'] += bigintval($metadata_recursion['p___6170']);
+                $metadata_this['p___6162'] += bigintval($metadata_recursion['p___6162']);
 
             } else {
 
                 //ALL
 
                 //MIN
-                $metadata_this['p___6169'] += intval($metadata_recursion['p___6169']);
-                $metadata_this['p___6161'] += intval($metadata_recursion['p___6161']);
+                $metadata_this['p___6169'] += bigintval($metadata_recursion['p___6169']);
+                $metadata_this['p___6161'] += bigintval($metadata_recursion['p___6161']);
 
                 //MAX
-                $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
-                $metadata_this['p___6162'] += intval($metadata_recursion['p___6162']);
+                $metadata_this['p___6170'] += bigintval($metadata_recursion['p___6170']);
+                $metadata_this['p___6162'] += bigintval($metadata_recursion['p___6162']);
 
             }
 
@@ -1139,8 +1139,8 @@ class I_model extends CI_Model
 
             //AGGREGATE IDS
             foreach($metadata_recursion['p___ids'] as $i__id) {
-                if (!in_array(intval($i__id), $metadata_this['p___ids'])) {
-                    array_push($metadata_this['p___ids'], intval($i__id));
+                if (!in_array(bigintval($i__id), $metadata_this['p___ids'])) {
+                    array_push($metadata_this['p___ids'], bigintval($i__id));
                 }
             }
         }
@@ -1148,24 +1148,24 @@ class I_model extends CI_Model
 
         //ADD LOCAL MIN/MAX
         if(!is_null($metadata_local['localp___6169'])){
-            $metadata_this['p___6169'] += intval($metadata_local['localp___6169']);
+            $metadata_this['p___6169'] += bigintval($metadata_local['localp___6169']);
         }
         if(!is_null($metadata_local['localp___6170'])){
-            $metadata_this['p___6170'] += intval($metadata_local['localp___6170']);
+            $metadata_this['p___6170'] += bigintval($metadata_local['localp___6170']);
         }
         if(!is_null($metadata_local['localp___6161'])){
-            $metadata_this['p___6161'] += intval($metadata_local['localp___6161']);
+            $metadata_this['p___6161'] += bigintval($metadata_local['localp___6161']);
         }
         if(!is_null($metadata_local['localp___6162'])){
-            $metadata_this['p___6162'] += intval($metadata_local['localp___6162']);
+            $metadata_this['p___6162'] += bigintval($metadata_local['localp___6162']);
         }
 
         //Save to DB
         update_metadata(12273, $i['i__id'], array(
-            'i___6169' => intval($metadata_this['p___6169']),
-            'i___6170' => intval($metadata_this['p___6170']),
-            'i___6161' => intval($metadata_this['p___6161']),
-            'i___6162' => intval($metadata_this['p___6162']),
+            'i___6169' => bigintval($metadata_this['p___6169']),
+            'i___6170' => bigintval($metadata_this['p___6170']),
+            'i___6161' => bigintval($metadata_this['p___6161']),
+            'i___6162' => bigintval($metadata_this['p___6162']),
             'i___13202' => $metadata_this['p___13202'], //Mench Ideators
             'i___13339' => $metadata_this['p___13339'], //Expert Authors
             'i___3000' => $metadata_this['p___3000'], //Expert Content

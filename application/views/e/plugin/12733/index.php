@@ -1,10 +1,10 @@
 <?php
 
-if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
+if(!isset($_GET['e__id']) || !bigintval($_GET['e__id'])){
     $_GET['e__id'] = $session_e['e__id'];
 }
 
-if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
+if(!isset($_GET['i__id']) || !bigintval($_GET['i__id'])) {
 
     //List this miners Discoveries so they can choose:
     echo '<div>Choose one of your Discoveries to debug:</div><br />';

@@ -19,7 +19,7 @@ class X_model extends CI_Model
     {
 
         //Set some defaults:
-        if (!isset($add_fields['x__miner']) || intval($add_fields['x__miner']) < 1) {
+        if (!isset($add_fields['x__miner']) || bigintval($add_fields['x__miner']) < 1) {
             $add_fields['x__miner'] = 0;
         }
 
@@ -372,7 +372,7 @@ class X_model extends CI_Model
                 //Append transaction object transactions:
                 foreach($this->config->item('e___11081') as $e__id => $m) {
 
-                    if(!array_key_exists($e__id, $var_index) || !intval($add_fields[$var_index[$e__id]])){
+                    if(!array_key_exists($e__id, $var_index) || !bigintval($add_fields[$var_index[$e__id]])){
                         continue;
                     }
 
@@ -621,7 +621,7 @@ class X_model extends CI_Model
         }
         $q = $this->db->get();
         $stats = $q->row_array();
-        return ( count($stats) > 0 ? intval($stats['largest_order']) : 0 );
+        return ( count($stats) > 0 ? bigintval($stats['largest_order']) : 0 );
 
     }
 
@@ -876,14 +876,14 @@ class X_model extends CI_Model
                 $url_e = $this->E_model->url($input_url, ( isset($recipient_e['e__id']) ? $recipient_e['e__id'] : 0 ));
 
                 //Did we have an error?
-                if (!$url_e['status'] || !isset($url_e['e_url']['e__id']) || intval($url_e['e_url']['e__id']) < 1) {
+                if (!$url_e['status'] || !isset($url_e['e_url']['e__id']) || bigintval($url_e['e_url']['e__id']) < 1) {
                     return $url_e;
                 }
 
                 //Transform URL into a source:
-                if(intval($url_e['e_url']['e__id']) > 0){
+                if(bigintval($url_e['e_url']['e__id']) > 0){
 
-                    array_push($string_references['ref_es'], intval($url_e['e_url']['e__id']));
+                    array_push($string_references['ref_es'], bigintval($url_e['e_url']['e__id']));
 
                     //Replace the URL with this new @source in message.
                     //This is the only valid modification we can do to $message_input before storing it in the DB:
@@ -935,7 +935,7 @@ class X_model extends CI_Model
             }
 
             //Set as source reference:
-            $e_reference_fields[$e_reference_keys[$referenced_key]] = intval($referenced_e);
+            $e_reference_fields[$e_reference_keys[$referenced_key]] = bigintval($referenced_e);
 
             //See if this source has any parent transactions to be shown in this appendix
             $e_urls = array();
@@ -1081,7 +1081,7 @@ class X_model extends CI_Model
             if (!$is_complete && $is_fixed_x && ( !$is_or_i || $is_selected )) {
 
                 //FIXED LINK, or Selected OR IDEA, that is NOT COMPLETE, It's This:
-                return intval($next_i['i__id']);
+                return bigintval($next_i['i__id']);
 
             } elseif ($is_complete) {
 
@@ -1660,7 +1660,7 @@ class X_model extends CI_Model
                     $possible_answer_metadata = unserialize($i_answer['x__metadata']);
 
                     //Assign to this question:
-                    $answer_marks_index[$i_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
+                    $answer_marks_index[$i_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? bigintval($possible_answer_metadata['tr__assessment_points']) : 0 );
 
                     //Addup local min/max marks:
                     if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){
@@ -1742,7 +1742,7 @@ class X_model extends CI_Model
                     $possible_answer_metadata = unserialize($i_answer['x__metadata']);
 
                     //Assign to this question:
-                    $answer_marks_index[$i_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
+                    $answer_marks_index[$i_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? bigintval($possible_answer_metadata['tr__assessment_points']) : 0 );
 
                     //Addup local min/max marks:
                     if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){
@@ -1853,10 +1853,10 @@ class X_model extends CI_Model
 
         //Calculate common steps and expansion steps recursively for this miner:
         $metadata_this = array(
-            'steps_total' => intval($common_totals[0]['total_x']),
-            'steps_completed' => intval($common_completed[0]['completed_x']),
-            'seconds_total' => intval($common_totals[0]['total_seconds']),
-            'seconds_completed' => intval($common_completed[0]['completed_seconds']),
+            'steps_total' => bigintval($common_totals[0]['total_x']),
+            'steps_completed' => bigintval($common_completed[0]['completed_x']),
+            'seconds_total' => bigintval($common_totals[0]['total_seconds']),
+            'seconds_completed' => bigintval($common_completed[0]['completed_seconds']),
         );
 
 
@@ -1942,7 +1942,7 @@ class X_model extends CI_Model
 
             //Calculate completion rate based on estimated time cost:
             if($metadata_this['steps_total'] > 0 || $metadata_this['seconds_total'] > 0){
-                $metadata_this['completion_percentage'] = intval(ceil( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 ));
+                $metadata_this['completion_percentage'] = bigintval(ceil( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 ));
             }
 
 
@@ -1968,7 +1968,7 @@ class X_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ), array('x__left'), 0) as $miner_in){
-            array_push($miner_xy_ids, intval($miner_in['i__id']));
+            array_push($miner_xy_ids, bigintval($miner_in['i__id']));
         }
         return $miner_xy_ids;
     }

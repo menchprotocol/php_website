@@ -141,7 +141,7 @@ if(!isset($hide_header)){
 
 
 
-                    if(intval(config_var(12678))){
+                    if(bigintval(config_var(12678))){
 
                         //Search button
                         echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m_icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m_name'].'">'.$e___11035[13401]['m_icon'].'</span></a></td>';
