@@ -340,11 +340,11 @@ $tab_pills .= '</ul>';
 
 if($tab_pill_count > 1){
     //DISCOVER TABS
-    echo $tab_pills;
+    //echo $tab_pills;
 }
 
 //Show All Tab Content:
-echo $tab_content;
+//echo $tab_content;
 
 
 
@@ -473,12 +473,12 @@ if(!$in_my_x){
             } elseif ($i_focus['i__type'] == 7231) {
 
                 //Give option to Select None/All
-                //echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">|</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
+                echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">|</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
 
             }
 
             //Open for list to be printed:
-            echo '<div class="list-group list-answers hidden" i__type="'.$i_focus['i__type'].'">';
+            echo '<div class="list-group list-answers" i__type="'.$i_focus['i__type'].'">';
 
 
             //List children to choose from:
