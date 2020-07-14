@@ -990,7 +990,9 @@ class X_model extends CI_Model
             $text_tooltip = ( strlen($text_tooltip) ? ' title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
             $output_body_message .= $e_appendix;
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
+
             $words = explode(' ',$es[0]['e__title']);
+            $first_word = array_shift($words);
 
             //MINER REFERENCE
             if(($current_mench['x_name']=='discover' && !superpower_active(10939, true)) || $is_current_e){
@@ -1004,14 +1006,14 @@ class X_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="inline-block"><span class="icon-block-xs img-block">'.view_e__icon($es[0]['e__icon']).'</span>' .$words[0].'</span>'. ( count($words)>1 ? ' '.join(' ',array_shift($words)) : '' ) . '</span>'.'&nbsp;', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><span class="inline-block"><span class="icon-block-xs img-block">'.view_e__icon($es[0]['e__icon']).'</span>' .$first_word.'</span>'. ( count($words) ? ' '.join(' ',$words) : '' ) . '</span>'.'&nbsp;', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat" href="/@' . $es[0]['e__id'] . '"><span class="inline-block">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="img-block icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($es[0]['e__icon']).'</span>' . $words[0].'</span>'. ( count($words)>1 ? ' '.join(' ',array_shift($words)) : '' )  . '</a></span>'.'&nbsp;', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$text_tooltip.'><a class="montserrat" href="/@' . $es[0]['e__id'] . '"><span class="inline-block">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="img-block icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="img-block icon-block-xs">'.view_e__icon($es[0]['e__icon']).'</span>' . $first_word.'</span>'. ( count($words) ? ' '.join(' ',$words) : '' )  . '</a></span>'.'&nbsp;', $output_body_message);
 
             }
 
