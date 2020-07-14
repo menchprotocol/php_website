@@ -478,7 +478,7 @@ if(!$in_my_x){
             }
 
             //Open for list to be printed:
-            echo '<div class="list-group list-answers" i__type="'.$i_focus['i__type'].'">';
+            echo '<div class="list-group list-answers hidden" i__type="'.$i_focus['i__type'].'">';
 
 
             //List children to choose from:
