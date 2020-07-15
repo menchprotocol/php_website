@@ -1030,7 +1030,7 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null){
+function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null, $show_toggle = false){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -1045,13 +1045,14 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null){
 
     echo '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
-    //Toogle for extra info:
-    echo '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="icon-block grey" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13509]['m_name'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
+
+    if($show_toggle){
+        //Toogle for extra info:
+        echo '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="icon-block grey" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13509]['m_name'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
+    }
 
     echo '<div class="doclear">&nbsp;</div>';
-
-
-    echo '<div class="list-group">';
+    echo '<div class="list-group" style="margin-bottom:34px;">';
     foreach($is_next as $key => $next_i){
         echo view_i_x($next_i, $common_prefix);
     }

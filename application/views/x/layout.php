@@ -218,31 +218,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         }
 
-        //NEXT IDEAS
-        if(!$in_my_x && $chapters){
-            $focus_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-            foreach($is_next as $key => $next_i){
-                $focus_tab .= view_i_x($next_i, i_calc_common_prefix($is_next, 'i__title'));
-            }
-            $focus_tab .= '</div>';
-        }
 
         //IDEA PREVIOUS
-        $is_previous = $this->X_model->fetch(array(
+        view_i_list($i_focus, $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i_focus['i__id'],
             'x__left !=' => config_var(13427),
-        ), array('x__left'), 0);
-        if(count($is_previous)){
-            $focus_tab .= '<p class="space-content">'.view_i_title($i_focus).' Helps you:</p>';
-            $focus_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-            foreach($is_previous as $key => $previous_i){
-                $focus_tab .= view_i_x($previous_i, null, false, array('completion_percentage' => 0));
-            }
-            $focus_tab .= '</div>';
-        }
+        ), array('x__left'), 0), $recipient_e, 'THIS IDEA HELPS YOU:');
+
 
     } elseif($x__type==12274){
 
@@ -353,6 +338,9 @@ if(!$in_my_x){
     //GET STARTED
     echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_name'].'</a></div>';
 
+    //NEXT IDEAS
+    view_i_list($i_focus, $is_next, $recipient_e);
+
 } else {
 
     //PREVIOUSLY UNLOCKED:
@@ -446,7 +434,7 @@ if(!$in_my_x){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_i_list($i_focus, $x_selects, $recipient_e, 'YOU SELECTED:');
+                view_i_list($i_focus, $x_selects, $recipient_e, 'YOU SELECTED:', true);
 
                 echo '<div class="doclear">&nbsp;</div>';
 
