@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-15 14:00:15 PST
+//Generated 2020-07-15 14:01:35 PST
 $config['s___12274'] = 5010; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122149; //DISCOVERIES
@@ -3298,7 +3298,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,13210,13495,13427,12707,4235,12991,12413,11068,12211,4341,12969,10573,6225,6287,6415,13510,13524,7256,4269,4997,12275,13007,10957,13509,12906,13498);
+$config['n___11035'] = array(13502,13401,13210,13495,13427,12707,4235,12991,12413,13509,11068,12211,4341,12969,10573,6225,6287,6415,13510,13524,7256,4269,4997,12275,13007,10957,12906,13498);
 $config['e___11035'] = array(
     13502 => array(
         'm_icon' => '<i class="fas fa-times discover"></i>',
@@ -3353,6 +3353,12 @@ $config['e___11035'] = array(
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
         'm_parents' => array(11035,13408,6768,4527),
+    ),
+    13509 => array(
+        'm_icon' => '<i class="fas fa-info-circle"></i>',
+        'm_name' => 'LEARN MORE',
+        'm_desc' => '',
+        'm_parents' => array(11035),
     ),
     11068 => array(
         'm_icon' => '<i class="far fa-envelope-open" aria-hidden="true"></i>',
@@ -3449,12 +3455,6 @@ $config['e___11035'] = array(
         'm_name' => 'SUPERPOWERS',
         'm_desc' => '',
         'm_parents' => array(6225,11035,5007,4527),
-    ),
-    13509 => array(
-        'm_icon' => '<i class="fas fa-info-circle"></i>',
-        'm_name' => 'TOGGLE COINS',
-        'm_desc' => '',
-        'm_parents' => array(11035),
     ),
     12906 => array(
         'm_icon' => '<i class="fal fa-bookmark discover"></i>',
