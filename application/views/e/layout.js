@@ -18,9 +18,8 @@ $(document).ready(function () {
     }
 
 
-    //Update Profile & Portfolio counters to account for sources that miner may not be able to see due to missing permissions...
+    //Update Profile counters to account for sources that miner may not be able to see due to missing permissions...
     $('.en-type-counter-11030').text($('#list_11030 .en-item').not(".hidden").length);
-    $('.en-type-counter-11029').text($('#list_11029 .en-item').not(".hidden").length);
 
 
     //Lookout for textinput updates
@@ -652,11 +651,13 @@ function e_update() {
 
     //Are we about to delete an source with a lot of transactions?
     var x_count= parseInt($('#e_x_count').val());
+    var do_13527 = 0;
     if(x_count >= 3){
         //Yes, confirm before doing so:
         var confirm_removal = prompt("Delete source & remove "+x_count+" links?! Type \"delete\" to confirm.", "");
+        do_13527 = ( confirm_removal=='destroy' ? 1 : 0 );
 
-        if (!(confirm_removal == 'delete')) {
+        if (!(confirm_removal == 'delete') && !do_13527) {
             //Abandon process:
             alert('Source will not be deleted.');
             return false;
@@ -666,6 +667,7 @@ function e_update() {
     //Prepare data to be modified for this idea:
     var modify_data = {
         e_focus_id: e_focus_id, //Determines if we need to change location upon removing...
+        do_13527:do_13527,
         e__id: parseInt($('#modifybox').attr('e-id')),
         e__title: $('#e__title').val().toUpperCase(),
         e__icon: $('#e__icon').val(),

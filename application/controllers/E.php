@@ -786,7 +786,14 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => $is_valid_icon['message'],
             ));
+        } elseif($_POST['do_13527'] && !superpower_active(13422, true)){
+            //Check if valid icon:
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(13422),
+            ));
         }
+
 
         $delete_redirect_url = null;
         $delete_from_ui = 0;
@@ -825,18 +832,26 @@ class E extends CI_Controller
 
 
             //Count source references in IDEA NOTES:
-            if(count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
-                    'x__up' => $_POST['e__id'],
-                ), array('x__right'), 0, 0, array('x__sort' => 'ASC')))){
+            $i_notes = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
+                'x__up' => $_POST['e__id'],
+            ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-                //Cannot delete this source until Idea references are deleted:
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'You can delete source after removing all its IDEA NOTES references',
-                ));
+
+            if(count($i_notes)){
+
+                if($_POST['do_13527']){
+                    //Remove them:
+
+                } else {
+                    //Cannot delete this source until Idea references are deleted:
+                    return view_json(array(
+                        'status' => 0,
+                        'message' => 'You can delete source after removing all its IDEA NOTES references',
+                    ));
+                }
             }
 
             //Delete SOURCE LINKS:
