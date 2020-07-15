@@ -426,7 +426,7 @@ if(!$in_my_x){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                echo view_i_list($i_focus, $x_selects, $recipient_e, 'YOU SELECTED:', true);
+                echo view_i_list($i_focus, $x_selects, $recipient_e, 'YOU SELECTED:');
 
                 echo '<div class="doclear">&nbsp;</div>';
 

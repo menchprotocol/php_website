@@ -1031,7 +1031,7 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null, $show_toggle = false){
+function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -1048,10 +1048,8 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null, $show
     $ui .= '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
 
-    if($show_toggle){
-        //Toogle for extra info:
-        $ui .= '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="icon-block grey" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13509]['m_name'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
-    }
+    //Toogle for extra info:
+    $ui .= '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="icon-block grey">'.$e___11035[13509]['m_icon'].' '.$e___11035[13509]['m_name'].'</a></div>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
     $ui .= '<div class="list-group" style="margin-bottom:34px;">';
@@ -1891,7 +1889,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $e___4592 = $CI->config->item('e___4592');
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
 
-    $loaded_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
+    $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $is_x_e = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
     $is_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
@@ -1902,7 +1900,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__up !=' => $loaded_e__id, //Do Not Fetch Current Source
+        'x__up !=' => $focus_e__id, //Do Not Fetch Current Source
         'x__down' => $e['e__id'], //This child source
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -1918,7 +1916,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $is_public = in_array($e['e__status'], $CI->config->item('n___7357'));
     $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
     //Allow source to see all their own transactions:
-    $is_hidden = (!$session_e || $session_e['e__id']!=$loaded_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
+    $is_hidden = (!$session_e || $session_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
 
     if(!$session_e && (!$is_public || !$is_x_published)){
         //Not logged in, so should only see published:
