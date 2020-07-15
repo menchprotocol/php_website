@@ -1043,22 +1043,24 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null, $show
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
 
 
-    echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
+    $ui = '<div class="doclear">&nbsp;</div>';
+    $ui .= '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
 
     if($show_toggle){
         //Toogle for extra info:
-        echo '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="icon-block grey" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13509]['m_name'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
+        $ui .= '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="icon-block grey" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13509]['m_name'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
     }
 
-    echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="list-group" style="margin-bottom:34px;">';
+    $ui .= '<div class="doclear">&nbsp;</div>';
+    $ui .= '<div class="list-group" style="margin-bottom:34px;">';
     foreach($is_next as $key => $next_i){
-        echo view_i_x($next_i, $common_prefix);
+        $ui .= view_i_x($next_i, $common_prefix);
     }
-    echo '</div>';
-    echo '<div class="doclear">&nbsp;</div>';
+    $ui .= '</div>';
+    $ui .= '<div class="doclear">&nbsp;</div>';
+
+    return $ui;
 
 }
 

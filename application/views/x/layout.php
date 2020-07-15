@@ -220,7 +220,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
         //IDEA PREVIOUS
-        view_i_list($i_focus, $this->X_model->fetch(array(
+        $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
@@ -339,7 +339,7 @@ if(!$in_my_x){
     echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_name'].'</a></div>';
 
     //NEXT IDEAS
-    view_i_list($i_focus, $is_next, $recipient_e);
+    echo view_i_list($i_focus, $is_next, $recipient_e);
 
 } else {
 
@@ -354,7 +354,7 @@ if(!$in_my_x){
 
     //Did we have any steps unlocked?
     if(count($unlocked_x) > 0){
-        view_i_list($i_focus, $unlocked_x, $recipient_e, 'UNLOCKED:');
+        echo view_i_list($i_focus, $unlocked_x, $recipient_e, 'UNLOCKED:');
     }
 
 
@@ -376,12 +376,12 @@ if(!$in_my_x){
         if(!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)){
 
             //List Unlock paths:
-            view_i_list($i_focus, $unlock_paths, $recipient_e, 'SUGGESTED IDEAS:');
+            echo view_i_list($i_focus, $unlock_paths, $recipient_e, 'SUGGESTED IDEAS:');
 
         }
 
         //List Children if any:
-        view_i_list($i_focus, $is_next, $recipient_e);
+        echo view_i_list($i_focus, $is_next, $recipient_e);
 
 
     } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))){
@@ -434,7 +434,7 @@ if(!$in_my_x){
                 echo '<div class="edit_select_answer">';
 
                 //List answers:
-                view_i_list($i_focus, $x_selects, $recipient_e, 'YOU SELECTED:', true);
+                echo view_i_list($i_focus, $x_selects, $recipient_e, 'YOU SELECTED:', true);
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -522,7 +522,7 @@ if(!$in_my_x){
     } elseif ($i_focus['i__type'] == 6677) {
 
         //DISCOVER ONLY
-        view_i_list($i_focus, $is_next, $recipient_e);
+        echo view_i_list($i_focus, $is_next, $recipient_e);
 
     } elseif ($i_focus['i__type'] == 6683) {
 
@@ -534,7 +534,7 @@ if(!$in_my_x){
 
         if(count($x_completes)){
             //Next Ideas:
-            view_i_list($i_focus, $is_next, $recipient_e);
+            echo view_i_list($i_focus, $is_next, $recipient_e);
         } else {
             //Give Button option:
             echo '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
@@ -563,7 +563,7 @@ if(!$in_my_x){
             echo '</div>';
 
             //Any child ideas?
-            view_i_list($i_focus, $is_next, $recipient_e);
+            echo view_i_list($i_focus, $is_next, $recipient_e);
 
         } else {
 
