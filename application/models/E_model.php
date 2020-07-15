@@ -930,14 +930,20 @@ class E_model extends CI_Model
 
                 if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_es)==0) || ($action_e__id==12928 && view_coins_count_e(0,$x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_count_e(0,$x['e__id'],true))){
 
-                    //Parent Miner Addition
-                    $this->X_model->create(array(
+                    $add_fields = array(
                         'x__miner' => $x__miner,
                         'x__type' => e_x__type(),
                         'x__down' => $x['e__id'], //This child source
                         'x__up' => $parent_e__id,
-                        'x__message' => $x['x__message'], //Move message
-                    ));
+                    );
+
+                    if($action_e__id==13441){
+                        //Copy message only if moving:
+                        $add_fields['x__message'] = $x['x__message'];
+                    }
+
+                    //Parent Miner Addition
+                    $this->X_model->create($add_fields);
 
                     $applied_success++;
 
