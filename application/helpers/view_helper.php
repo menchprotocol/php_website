@@ -378,20 +378,8 @@ function view_x($x, $is_parent_tr = false)
     $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $e___4341[4362]['m_name'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$e___4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' ago</span></div>';
 
 
-
-    //COINS AWARDED?
-    if(in_array($x['x__type'], $CI->config->item('n___6255'))){
-        $coins_type = 'discover';
-    } elseif(in_array($x['x__type'], $CI->config->item('n___12274'))){
-        $coins_type = 'source';
-    } elseif(in_array($x['x__type'], $CI->config->item('n___12273')) && ($x['x__up']>0 || $x['x__down']>0)){
-        $coins_type = 'idea';
-    } else {
-        $coins_type = null;
-    }
-
     //Transaction Type & Coins
-    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_name'].( strlen($e___4593[$x['x__type']]['m_desc']) ? ': '.$e___4593[$x['x__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'">'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;' . $e___4593[$x['x__type']]['m_name'] . '</span>'.($coins_type ? '&nbsp;<span title="'.$coins_type.' coin awarded" data-toggle="tooltip" data-placement="top"><i class="fas fa-circle '.$coins_type.'"></i></span>' : '').'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_name'].( strlen($e___4593[$x['x__type']]['m_desc']) ? ': '.$e___4593[$x['x__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'">'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;' . $e___4593[$x['x__type']]['m_name'] . '</span></a></div>';
 
 
     //Hide Sensitive Details?

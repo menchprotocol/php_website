@@ -771,10 +771,12 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
 
         } else {
 
-            //PUBLIC SOURCE COINS
+            //PUBLIC SOURCES
             $query_filters = array(
+                'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCES
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COINS
+                'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+
             );
 
         }
@@ -830,7 +832,7 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
         $ui = '<div class="list-group">';
         if($x__type==12274){
 
-            //SOURCE COIN
+            //SOURCES
             foreach($query as $item){
                 $ui .= view_e($item);
             }

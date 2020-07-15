@@ -45,13 +45,13 @@ $x_coins_growth_rate = format_percentage(( $x_coins_last_week[0]['totals'] / ( $
 //SOURCE
 $e_coins_new_last_week = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___12274')) . ')' => null, //SOURCE COIN
+    'x__type IN (' . join(',', $this->config->item('n___12274')) . ')' => null, //SOURCES
     'x__time >=' => $last_week_start,
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $e_coins_last_week = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___12274')) . ')' => null, //SOURCE COIN
+    'x__type IN (' . join(',', $this->config->item('n___12274')) . ')' => null, //SOURCES
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $e_coins_growth_rate = format_percentage( ($e_coins_last_week[0]['totals'] / ( $e_coins_last_week[0]['totals'] - $e_coins_new_last_week[0]['totals'] ) * 100)-100);
