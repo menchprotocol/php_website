@@ -1915,7 +1915,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     $is_public = in_array($e['e__status'], $CI->config->item('n___7357'));
     $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
-    $is_hidden = $e['e__id']!=$session_e['en_id'] && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
+    $is_hidden = (!$session_e || $e['e__id']!=$session_e['en_id']) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
 
     if(!$session_e && (!$is_public || !$is_x_published)){
         //Not logged in, so should only see published:
