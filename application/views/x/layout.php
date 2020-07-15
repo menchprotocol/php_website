@@ -180,7 +180,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $focus_tab .= '<div style="margin-bottom:34px;">';
         if($counter){
             foreach($messages as $message_x) {
-                $counter++;
                 $focus_tab .= $this->X_model->message_send(
                     $message_x['x__message'],
                     $recipient_e
@@ -195,7 +194,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_name'].' '.$e___11035[12211]['m_icon'].'</a></div>';
         }
 
-    } elseif($x__type==12273 && $i_stats['i___13443']>1){
+    } elseif($x__type==12273){
 
         //IDEAS
         $counter = $i_stats['i___13443'];
@@ -214,10 +213,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //Single Time range:
-            $focus_tab .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.$counter.' idea'.view__s($counter).':</p>';
+            $focus_tab .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.( $counter<=1 ? 'this idea' : 'all '.$counter.' ideas' ).'.</p>';
 
         }
-
 
         //IDEA PREVIOUS
         $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(
@@ -227,7 +225,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__right' => $i_focus['i__id'],
             'x__left !=' => config_var(13427),
         ), array('x__left'), 0), $recipient_e, 'THIS IDEA HELPS YOU:');
-
 
     } elseif($x__type==12274){
 
@@ -312,7 +309,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('n___13300'));
     $tab_pill_count++;
 
-    $tab_pills .= '<li class="nav-item"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) || $default_active ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
+    $tab_pills .= '<li class="nav-item"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $focus_tab;
@@ -458,7 +455,7 @@ if(!$in_my_x){
             } elseif ($i_focus['i__type'] == 7231) {
 
                 //Give option to Select None/All
-                echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">|</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
+                echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">/</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
 
             }
 
