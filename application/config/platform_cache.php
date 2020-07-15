@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-14 17:16:08 PST
+//Generated 2020-07-14 17:17:38 PST
 $config['s___12274'] = 5013; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122149; //DISCOVERIES
@@ -1718,7 +1718,7 @@ $config['e___12574'] = array(
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE SOURCES',
+        'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(12571,7545,13411,12574,11089,11028),
     ),
@@ -1758,7 +1758,7 @@ $config['e___12571'] = array(
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE SOURCES',
+        'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(12571,7545,13411,12574,11089,11028),
     ),
@@ -3220,7 +3220,7 @@ $config['e___11089'] = array(
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_name' => 'PROFILE SOURCES',
+        'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(12571,7545,13411,12574,11089,11028),
     ),
