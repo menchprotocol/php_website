@@ -441,18 +441,23 @@ if(!$in_my_x){
 
 
             echo '<div class="edit_select_answer '.( count($x_selects)>0 ? 'hidden' : '' ).'">';
+            echo '<div class="doclear">&nbsp;</div>';
 
             //HTML:
             if ($i_focus['i__type'] == 6684) {
 
-                echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
+                echo '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
 
             } elseif ($i_focus['i__type'] == 7231) {
 
                 //Give option to Select None/All
-                echo '<div class="headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">/</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
+                echo '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">/</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
 
             }
+
+            echo '<div class="pull-right inline-block" style="margin:5px 0 0 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="grey montserrat"><u>'.$e___11035[13509]['m_name'].'</u> '.$e___11035[13509]['m_icon'].'</a></div>';
+            echo '<div class="doclear">&nbsp;</div>';
+
 
             //Open for list to be printed:
             echo '<div class="list-group list-answers" i__type="'.$i_focus['i__type'].'">';
