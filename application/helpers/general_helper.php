@@ -761,10 +761,12 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
 
         if($e__id > 0){
 
+            //PORTFOLIO COUNT
             $query_filters = array(
+                'x__up' => $e__id,
+                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___12274')) . ')' => null, //SOURCE COINS
-                'x__miner' => $e__id,
+                'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
             );
 
         } else {
@@ -1691,11 +1693,9 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
                 }
 
-                if(in_array($db_row['e__status'], $CI->config->item('n___12575'))){
+                //Feature source? Only if it's featured or belong to a featured parent:
+                if(in_array($db_row['e__status'], $CI->config->item('n___12575')) || (count($profile_ids) && array_intersect($profile_ids, $CI->config->item('n___12563')))){
                     array_push($export_row['_tags'], 'is_featured');
-                } elseif(array_intersect($profile_ids, $CI->config->item('n___12563'))){
-                    //Featured parent source:
-
                 }
 
                 $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
