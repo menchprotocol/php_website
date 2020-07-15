@@ -2062,7 +2062,9 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         //PROFILE SOURCES:
         $ui .= '<span class="paddingup inline-block hideIfEmpty">';
         foreach($e__profiles as $e_profile) {
-            $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" data-toggle="tooltip" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '" data-placement="bottom">' . view_e__icon($e_profile['e__icon']) . '</a></span> ';
+            if('@'.$e_profile['e__id'] != $CI->uri->segment(1)){
+                $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" data-toggle="tooltip" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '" data-placement="bottom">' . view_e__icon($e_profile['e__icon']) . '</a></span> ';
+            }
         }
         $ui .= '</span>';
         $ui .= '</div>';

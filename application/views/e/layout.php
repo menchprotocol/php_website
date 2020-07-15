@@ -7,11 +7,6 @@ $miner_is_e = miner_is_e($e['e__id']);
 
 ?>
 
-<style>
-    /* For a cleaner UI hide the current focused source parent */
-    .e_child_icon_<?= $e['e__id'] ?>{ display:none; }
-</style>
-
 <script>
     //Set global variables:
     var e_focus_filter = -1; //No filter, show all
