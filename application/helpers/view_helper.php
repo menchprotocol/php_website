@@ -383,7 +383,7 @@ function view_x($x, $is_parent_tr = false)
 
 
     //Hide Sensitive Details?
-    if(in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$session_e || $x['x__miner']!=$session_e['e__id']) && !superpower_active(12701, true)){
+    if(in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$session_e || $x['x__source']!=$session_e['e__id']) && !superpower_active(12701, true)){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -408,10 +408,10 @@ function view_x($x, $is_parent_tr = false)
 
 
         //Creator (Do not repeat)
-        if($x['x__miner'] > 0 && $x['x__miner']!=$x['x__up'] && $x['x__miner']!=$x['x__down']){
+        if($x['x__source'] > 0 && $x['x__source']!=$x['x__up'] && $x['x__source']!=$x['x__down']){
 
             $add_es = $CI->E_model->fetch(array(
-                'e__id' => $x['x__miner'],
+                'e__id' => $x['x__source'],
             ));
 
             $ui .= '<div class="simple-line"><a href="/@'.$add_es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($add_es[0]['e__icon']).'"><span class="img-block">'.view_e__icon($add_es[0]['e__icon']) . '</span> ' . $add_es[0]['e__title'] . '</span></a></div>';
@@ -437,7 +437,7 @@ function view_x($x, $is_parent_tr = false)
                 //SOURCE
                 $es = $CI->E_model->fetch(array('e__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $x[$var_index[$e__id]]==$x['x__miner'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($es[0]['e__icon']).' img-block">'.view_e__icon($es[0]['e__icon']). '&nbsp;'.$es[0]['e__title'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $x[$var_index[$e__id]]==$x['x__source'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($es[0]['e__icon']).' img-block">'.view_e__icon($es[0]['e__icon']). '&nbsp;'.$es[0]['e__title'].'</span></a></div>';
 
             } elseif(in_array(6202 , $m['m_parents'])){
 
@@ -548,11 +548,11 @@ function view_coins_count_x($i__id = 0, $e__id = 0){
     $query_filters = array(
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null,
-        ( $i__id > 0 ? 'x__left' : 'x__miner' ) => ( $i__id > 0 ? $i__id : $e__id ),
+        ( $i__id > 0 ? 'x__left' : 'x__source' ) => ( $i__id > 0 ? $i__id : $e__id ),
     );
 
     if(isset($_GET['focus__e'])){
-        $query_filters['x__miner'] = intval($_GET['focus__e']);
+        $query_filters['x__source'] = intval($_GET['focus__e']);
     }
 
     $x_coins = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
@@ -1086,7 +1086,7 @@ function view_i_note_mix($x__type, $i_notes){
 
     //List current notes:
     foreach($i_notes as $i_notes) {
-        $ui .= view_i_notes($i_notes, ($i_notes['x__miner']==$session_e['e__id']));
+        $ui .= view_i_notes($i_notes, ($i_notes['x__source']==$session_e['e__id']));
     }
 
     //ADD NEW:
@@ -1483,7 +1483,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
 
             $focus_tab .= '<div id="list_11030" class="list-group ">';
             foreach($e__profiles as $e_profile) {
-                $focus_tab .= view_e($e_profile,true, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_profile['x__miner']))));
+                $focus_tab .= view_e($e_profile,true, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_profile['x__source']))));
             }
 
             //Input to add new parents:
@@ -1721,7 +1721,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
             $common_prefix = i_calc_common_prefix($list_11029s, 'e__title');
 
             foreach($list_11029s as $e_portfolio) {
-                $focus_tab .= view_e($e_portfolio,false, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__miner']))), $common_prefix);
+                $focus_tab .= view_e($e_portfolio,false, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
             }
             if ($counter > count($list_11029s)) {
                 $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
@@ -1823,7 +1823,7 @@ function view_e_tabs($tab_group, $e, $session_e, $miner_is_e){
         } elseif($x__type == 12969 /* MY DISCOVERIES */){
 
             $i_x_filters = array(
-                'x__miner' => $e['e__id'],
+                'x__source' => $e['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'i__status IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC

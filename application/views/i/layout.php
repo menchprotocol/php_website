@@ -83,7 +83,7 @@ echo view_i_note_mix(4231, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 4231,
     'x__right' => $i_focus['i__id'],
-), array('x__miner'), 0, 0, array('x__sort' => 'ASC')));
+), array('x__source'), 0, 0, array('x__sort' => 'ASC')));
 
 
 //IDEA TYPE
@@ -202,7 +202,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => $x__type,
             'x__right' => $i_focus['i__id'],
-        ), array('x__miner'), 0, 0, array('x__sort' => 'ASC'));
+        ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
 
         $counter = count($i_notes);
         $focus_tab .= view_i_note_mix($x__type, $i_notes);
@@ -213,7 +213,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__left' => $i_focus['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array('x__miner'), 0, 0, array(), 'COUNT(x__id) as totals');
+        ), array('x__source'), 0, 0, array(), 'COUNT(x__id) as totals');
         $counter = $miner_x[0]['totals'];
         if($counter > 0){
 
@@ -222,7 +222,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__left' => $i_focus['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__miner')) as $miner){
+            ), array('x__source')) as $miner){
                 $focus_tab .= view_e($miner);
             }
             $focus_tab .= '</div>';

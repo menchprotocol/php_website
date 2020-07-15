@@ -27,7 +27,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($add_fields, $required_columns, $x__miner)
+function detect_missing_columns($add_fields, $required_columns, $x__source)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
@@ -41,7 +41,7 @@ function detect_missing_columns($add_fields, $required_columns, $x__miner)
                     'required_columns' => $required_columns,
                 ),
                 'x__type' => 4246, //Platform Bug Reports
-                'x__miner' => $x__miner,
+                'x__source' => $x__source,
             ));
 
             return true; //We have an issue
@@ -368,7 +368,7 @@ function e_count_6194($e__id, $specific_id = 0){
     $CI =& get_instance();
     $e___6194 = $CI->config->item('e___6194');
     $query_index = array(
-        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__miner=',
+        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__source=',
         4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
     );
 
@@ -477,7 +477,7 @@ function e__weight_calculator($e){
 
     $count_x = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__miner='.$e['e__id'].')' => null,
+        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__source='.$e['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //IDEAS
@@ -697,7 +697,7 @@ function x_coins_i($x__type, $i__id, $load_page = 0){
 
     } elseif($x__type==6255){
 
-        $join_objects = array('x__miner');
+        $join_objects = array('x__source');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
@@ -810,7 +810,7 @@ function x_stats_count($x__type, $e__id = 0, $load_page = 0){
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
         );
         if($e__id > 0){
-            $query_filters['x__miner'] = $e__id;
+            $query_filters['x__source'] = $e__id;
         }
 
     } else {
@@ -1076,7 +1076,7 @@ function i_calc_common_prefix($child_list, $child_field){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -1110,7 +1110,7 @@ function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local 
     if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__miner' => $x__miner,
+            'x__source' => $x__source,
             'x__message' => 'upload_to_cdn() Failed to load AWS S3',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1146,7 +1146,7 @@ function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local 
     if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__miner' => $x__miner,
+            'x__source' => $x__source,
             'x__message' => 'upload_to_cdn() Failed to upload file to Mench CDN',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1167,7 +1167,7 @@ function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local 
     //Define new URL:
     $cdn_new_url = trim($result['ObjectURL']);
 
-    if($x__miner < 1){
+    if($x__source < 1){
         //Just return URL:
         return array(
             'status' => 1,
@@ -1176,7 +1176,7 @@ function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local 
     }
 
     //Create and transaction new source to CDN and uploader:
-    $url_e = $CI->E_model->url($cdn_new_url, $x__miner, 0, $page_title);
+    $url_e = $CI->E_model->url($cdn_new_url, $x__source, 0, $page_title);
 
     if(isset($url_e['e_url']['e__id']) && $url_e['e_url']['e__id'] > 0){
 
@@ -1191,7 +1191,7 @@ function upload_to_cdn($file_url, $x__miner = 0, $x__metadata = null, $is_local 
 
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__miner' => $x__miner,
+            'x__source' => $x__source,
             'x__message' => 'upload_to_cdn() Failed to create new source from CDN file',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1400,7 +1400,7 @@ function miner_is_e($e__id, $session_e = array()){
 
         //Miner created the source
         || count($CI->X_model->fetch(array(
-            'x__miner' => $session_e['e__id'],
+            'x__source' => $session_e['e__id'],
             'x__down' => $e__id,
             'x__type' => 4251, //New Source Created
         )))
@@ -1444,7 +1444,7 @@ function e_owns_i($i__id, $session_e = array()){
                 count($CI->X_model->fetch(array( //Miner created the idea
                     'x__type' => 4250, //IDEA CREATOR
                     'x__right' => $i__id,
-                    'x__miner' => $session_e['e__id'],
+                    'x__source' => $session_e['e__id'],
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1667,8 +1667,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__duration'] = null;
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_e_' . $db_row['x__miner']);
-                if($db_row['x__miner']!=$db_row['e__id']){
+                array_push($export_row['_tags'], 'alg_e_' . $db_row['x__source']);
+                if($db_row['x__source']!=$db_row['e__id']){
                     //Also give access to source themselves, in case they can login:
                     array_push($export_row['_tags'], 'alg_e_' . $db_row['e__id']);
                 }
@@ -1871,7 +1871,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 }
 
-function update_metadata($object__type, $object__id, $new_fields, $x__miner = 0)
+function update_metadata($object__type, $object__id, $new_fields, $x__source = 0)
 {
 
     $CI =& get_instance();
@@ -1951,13 +1951,13 @@ function update_metadata($object__type, $object__id, $new_fields, $x__miner = 0)
 
         $affected_rows = $CI->I_model->update($object__id, array(
             'i__metadata' => $metadata,
-        ), false, $x__miner);
+        ), false, $x__source);
 
     } elseif ($object__type == 12274) {
 
         $affected_rows = $CI->E_model->update($object__id, array(
             'e__metadata' => $metadata,
-        ), false, $x__miner);
+        ), false, $x__source);
 
     } elseif ($object__type == 6255) {
 

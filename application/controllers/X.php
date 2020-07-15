@@ -486,14 +486,14 @@ class X extends CI_Controller
                 $x_completes = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-                    'x__miner' => $session_e['e__id'],
+                    'x__source' => $session_e['e__id'],
                     'x__left' => $is[0]['i__id'],
                 ));
 
                 if(!count($x_completes)){
                     $this->X_model->mark_complete($is[0], array(
                         'x__type' => 4559, //DISCOVER MESSAGES
-                        'x__miner' => $session_e['e__id'],
+                        'x__source' => $session_e['e__id'],
                         'x__left' => $is[0]['i__id'],
                     ));
                 }
@@ -683,7 +683,7 @@ class X extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $is[0]['i__id'],
-            'x__miner' => $session_e['e__id'],
+            'x__source' => $session_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Removed
@@ -695,7 +695,7 @@ class X extends CI_Controller
         $this->X_model->mark_complete($is[0], array(
             'x__type' => 12117,
             'x__left' => $is[0]['i__id'],
-            'x__miner' => $session_e['e__id'],
+            'x__source' => $session_e['e__id'],
             'x__message' => $new_message,
             'x__up' => $cdn_status['cdn_e']['e__id'],
         ));
@@ -746,7 +746,7 @@ class X extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $is[0]['i__id'],
-            'x__miner' => $session_e['e__id'],
+            'x__source' => $session_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Removed
@@ -757,7 +757,7 @@ class X extends CI_Controller
         $this->X_model->mark_complete($is[0], array(
             'x__type' => 6144,
             'x__left' => $is[0]['i__id'],
-            'x__miner' => $session_e['e__id'],
+            'x__source' => $session_e['e__id'],
             'x__message' => $_POST['x_reply'],
         ));
 
@@ -806,7 +806,7 @@ class X extends CI_Controller
         $progress_x = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
-            'x__miner' => $session_e['e__id'],
+            'x__source' => $session_e['e__id'],
         ), array(), 0);
 
         if(count($progress_x) > 0){
@@ -818,7 +818,7 @@ class X extends CI_Controller
             $clear_all_x = $this->X_model->create(array(
                 'x__message' => $message,
                 'x__type' => 6415,
-                'x__miner' => $session_e['e__id'],
+                'x__source' => $session_e['e__id'],
             ));
 
             //Delete all progressions:
@@ -892,7 +892,7 @@ class X extends CI_Controller
         if(!$removed){
             //Then we must add:
             $this->X_model->create(array(
-                'x__miner' => $session_e['e__id'],
+                'x__source' => $session_e['e__id'],
                 'x__up' => $session_e['e__id'],
                 'x__message' => '@'.$session_e['e__id'],
                 'x__right' => $_POST['i__id'],

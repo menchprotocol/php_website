@@ -70,12 +70,12 @@ if(isset($_GET['x__status']) && strlen($_GET['x__status']) > 0){
     }
 }
 
-if(isset($_GET['x__miner']) && strlen($_GET['x__miner']) > 0){
-    if (substr_count($_GET['x__miner'], ',') > 0) {
+if(isset($_GET['x__source']) && strlen($_GET['x__source']) > 0){
+    if (substr_count($_GET['x__source'], ',') > 0) {
         //This is multiple:
-        $filters['( x__miner IN (' . $_GET['x__miner'] . '))'] = null;
-    } elseif (intval($_GET['x__miner']) > 0) {
-        $filters['x__miner'] = $_GET['x__miner'];
+        $filters['( x__source IN (' . $_GET['x__source'] . '))'] = null;
+    } elseif (intval($_GET['x__source']) > 0) {
+        $filters['x__source'] = $_GET['x__source'];
     }
 }
 
@@ -138,9 +138,9 @@ if(isset($_GET['any_e__id']) && strlen($_GET['any_e__id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_e__id'], ',') > 0) {
         //This is multiple:
-        $filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__miner IN (' . $_GET['any_e__id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__source IN (' . $_GET['any_e__id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_e__id']) > 0) {
-        $filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__miner = ' . $_GET['any_e__id'] . $parent_tr_filter . ' )'] = null;
+        $filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__source = ' . $_GET['any_e__id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -266,7 +266,7 @@ echo '<div class="container">';
     echo '<input type="text" name="any_e__id" value="' . ((isset($_GET['any_e__id'])) ? $_GET['any_e__id'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__miner" value="' . ((isset($_GET['x__miner'])) ? $_GET['x__miner'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__source" value="' . ((isset($_GET['x__source'])) ? $_GET['x__source'] : '') . '" class="form-control border"></td>';
 
     echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="x__up" value="' . ((isset($_GET['x__up'])) ? $_GET['x__up'] : '') . '" class="form-control border"></td>';
 
@@ -352,7 +352,7 @@ echo '</div></td>';
 
         echo '<select class="form-control border" name="x__type" id="x__type" class="border" style="width: 100% !important;">';
 
-        if(isset($_GET['x__miner'])) {
+        if(isset($_GET['x__source'])) {
 
             //Fetch details for this miner:
             $all_x_count = 0;

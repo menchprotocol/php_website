@@ -40,7 +40,7 @@ foreach($this->I_model->fetch() as $in) {
     if(!count($i_creators)) {
         $stats['creator_missing']++;
         $this->X_model->create(array(
-            'x__miner' => $session_e['e__id'],
+            'x__source' => $session_e['e__id'],
             'x__right' => $in['i__id'],
             'x__message' => $in['i__title'],
             'x__type' => 4250, //New Idea Created
@@ -52,10 +52,10 @@ foreach($this->I_model->fetch() as $in) {
 
         //Missing SOURCE
         $stats['e_missing']++;
-        $creator_id = ( count($i_es) ? $i_es[0]['x__miner'] : $session_e['x__up'] );
+        $creator_id = ( count($i_es) ? $i_es[0]['x__source'] : $session_e['x__up'] );
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA COIN
-            'x__miner' => $creator_id,
+            'x__source' => $creator_id,
             'x__up' => $creator_id,
             'x__message' => '@'.$creator_id,
             'x__right' => $in['i__id'],

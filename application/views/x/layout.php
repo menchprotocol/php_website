@@ -43,7 +43,7 @@ if($recipient_e['e__id']){
 
     //VIEW DISCOVER
     $this->X_model->create(array(
-        'x__miner' => $recipient_e['e__id'],
+        'x__source' => $recipient_e['e__id'],
         'x__type' => 7610, //MINER VIEWED IDEA
         'x__left' => $i_focus['i__id'],
         'x__sort' => fetch_cookie_order('7610_'.$i_focus['i__id']),
@@ -55,7 +55,7 @@ if($recipient_e['e__id']){
         $x_completes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-            'x__miner' => $recipient_e['e__id'],
+            'x__source' => $recipient_e['e__id'],
             'x__left' => $i_focus['i__id'],
         ));
 
@@ -63,7 +63,7 @@ if($recipient_e['e__id']){
         if(!count($x_completes) && !count($messages) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                 'x__type' => 4559, //DISCOVER MESSAGES
-                'x__miner' => $recipient_e['e__id'],
+                'x__source' => $recipient_e['e__id'],
                 'x__left' => $i_focus['i__id'],
             )));
         }
@@ -79,7 +79,7 @@ if($recipient_e['e__id']){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'x__right' => $i_focus['i__id'],
-                'x__miner' => $recipient_e['e__id'],
+                'x__source' => $recipient_e['e__id'],
             ), array('x__left'), 1);
 
             if(count($unlocked_connections) > 0){
@@ -101,7 +101,7 @@ if($recipient_e['e__id']){
                     //Yes, Issue coin:
                     array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                         'x__type' => $x_completion_type_id,
-                        'x__miner' => $recipient_e['e__id'],
+                        'x__source' => $recipient_e['e__id'],
                         'x__left' => $i_focus['i__id'],
                     )));
 
@@ -110,7 +110,7 @@ if($recipient_e['e__id']){
                     //Oooops, we could not find it, report bug:
                     $this->X_model->create(array(
                         'x__type' => 4246, //Platform Bug Reports
-                        'x__miner' => $recipient_e['e__id'],
+                        'x__source' => $recipient_e['e__id'],
                         'x__message' => 'x_coin() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
                         'x__left' => $i_focus['i__id'],
                         'x__reference' => $unlocked_connections[0]['x__id'],
@@ -129,7 +129,7 @@ if($recipient_e['e__id']){
                     //No path found:
                     array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                         'x__type' => 7492, //TERMINATE
-                        'x__miner' => $recipient_e['e__id'],
+                        'x__source' => $recipient_e['e__id'],
                         'x__left' => $i_focus['i__id'],
                     )));
 
@@ -261,7 +261,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 12419, //COMMENTS
             'x__right' => $i_focus['i__id'],
-        ), array('x__miner'), 0, 0, array('x__sort' => 'ASC'));
+        ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
         $counter = count($comments);
 
         $focus_tab .= '<div style="margin-bottom:34px;">';
@@ -340,7 +340,7 @@ if(!$in_my_x){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type' => 6140, //DISCOVER UNLOCK LINK
-        'x__miner' => $recipient_e['e__id'],
+        'x__source' => $recipient_e['e__id'],
         'x__left' => $i_focus['i__id'],
     ), array('x__right'), 0);
 
@@ -387,13 +387,13 @@ if(!$in_my_x){
             if(!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',' , $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-                'x__miner' => $recipient_e['e__id'],
+                'x__source' => $recipient_e['e__id'],
                 'x__left' => $i_focus['i__id'],
             )))){
 
                 array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                     'x__type' => 4559, //DISCOVER MESSAGES
-                    'x__miner' => $recipient_e['e__id'],
+                    'x__source' => $recipient_e['e__id'],
                     'x__left' => $i_focus['i__id'],
                 )));
 
@@ -415,7 +415,7 @@ if(!$in_my_x){
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINK
                     'x__left' => $i_focus['i__id'],
                     'x__right' => $x['i__id'],
-                    'x__miner' => $recipient_e['e__id'],
+                    'x__source' => $recipient_e['e__id'],
                 )))){
                     array_push($x_selects, $x);
                 }
@@ -473,7 +473,7 @@ if(!$in_my_x){
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                     'x__left' => $i_focus['i__id'],
                     'x__right' => $next_i['i__id'],
-                    'x__miner' => $recipient_e['e__id'],
+                    'x__source' => $recipient_e['e__id'],
                 )));
 
                 echo '<a href="javascript:void(0);" onclick="select_answer('.$next_i['i__id'].')" selection_i__id="'.$next_i['i__id'].'" class="x_select_'.$next_i['i__id'].' answer-item list-group-item itemdiscover no-left-padding">';

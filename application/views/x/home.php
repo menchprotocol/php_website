@@ -14,7 +14,7 @@
 
         //MY DISCOVERIES
         $my_x = $this->X_model->fetch(array(
-            'x__miner' => $session_e['e__id'],
+            'x__source' => $session_e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

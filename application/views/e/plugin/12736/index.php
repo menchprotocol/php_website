@@ -20,7 +20,7 @@ foreach($this->E_model->fetch() as $en) {
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array(), 1));
     $is_x = count($this->X_model->fetch(array(
-        'x__miner' => $en['e__id'],
+        'x__source' => $en['e__id'],
     ), array(), 1));
 
     if($is_miner){
@@ -38,7 +38,7 @@ foreach($this->E_model->fetch() as $en) {
         $this->X_model->create(array(
             'x__type' => e_x__type(),
             'x__up' => 4430, //MENCH MINERS
-            'x__miner' => $en['e__id'],
+            'x__source' => $en['e__id'],
             'x__down' => $en['e__id'],
         ));
     }
