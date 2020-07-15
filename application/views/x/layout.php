@@ -158,8 +158,8 @@ $tab_pill_count = 0;
 
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
-    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
-    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+    if(!$recipient_e['e__id'] && in_array($x__type, $this->config->item('n___13304'))){
+        //Hide since Not logged in:
         continue;
     }
 
@@ -298,11 +298,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     if(!$counter && in_array($x__type, $this->config->item('n___13298'))){
         //Hide since Zero count:
-        continue;
-    }
-
-    if(!$recipient_e['e__id'] && in_array($x__type, $this->config->item('n___13304'))){
-        //Hide since Not logged in:
         continue;
     }
 

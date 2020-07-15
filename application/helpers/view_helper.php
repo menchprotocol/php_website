@@ -1231,7 +1231,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     $ui .= $e___12467[12273]['m_icon'].'<span style="padding-left: 2px;">'.view_number($i_stats['i___13443']).'</span><br />';
 
     //DISCOVERIES:
-    if(superpower_active(12701, true)){
+    if($recipient_e){
         $x_coins = x_coins_i(6255, $i['i__id']);
         if($x_coins > 0){
             $ui .= $e___12467[6255]['m_icon'].'<span style="padding-left: 2px;">'.view_number($x_coins).'</span>';
