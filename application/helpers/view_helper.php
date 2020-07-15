@@ -1043,6 +1043,7 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null, $show
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
 
 
+    echo '<div class="doclear">&nbsp;</div>';
     echo '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
 
 
