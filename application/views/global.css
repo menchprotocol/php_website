@@ -1576,8 +1576,6 @@ label {
 .list-radio-select .list-group-item.active {
     color:#000000 !important;
 }
-.show-max-active {display: none !important;}
-.active .show-max-active {display: inline-block !important;}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
