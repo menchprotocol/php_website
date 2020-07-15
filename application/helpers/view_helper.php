@@ -1049,7 +1049,7 @@ function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null){
 
 
     //Toogle for extra info:
-    $ui .= '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="icon-block grey">'.$e___11035[13509]['m_icon'].' '.$e___11035[13509]['m_name'].'</a></div>';
+    $ui .= '<div class="pull-right inline-block" style="margin:0 0 -28px 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="grey montserrat">'.$e___11035[13509]['m_icon'].' '.$e___11035[13509]['m_name'].'</a></div>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
     $ui .= '<div class="list-group" style="margin-bottom:34px;">';
