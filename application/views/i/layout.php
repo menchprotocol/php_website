@@ -127,7 +127,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     if($x__type==11020){
 
-        //IDEA NEXT
+        //IDEA TREE
+
+        //IDEA TREE
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE

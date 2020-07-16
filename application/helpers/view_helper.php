@@ -369,12 +369,14 @@ function view_x($x, $is_parent_tr = false)
     //ID
     $ui .= '<div class="simple-line"><a href="/ledger?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m_name'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m_icon']. '</span>'.$x['x__id'].'</a></div>';
 
-
-    //STATUS
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_name'].( strlen($e___6186[$x['x__status']]['m_desc']) ? ': '.$e___6186[$x['x__status']]['m_desc'] : '' ).'"><span class="icon-block">'.$e___6186[$x['x__status']]['m_icon'].'</span>'.$e___6186[$x['x__status']]['m_name'].'</span></div>';
-
     //TIME
     $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $e___4341[4362]['m_name'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$e___4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' ago</span></div>';
+
+
+    //STATUS
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_name'].( strlen($e___6186[$x['x__status']]['m_desc']) ? ': '.$e___6186[$x['x__status']]['m_desc'] : '' ).'"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;'.$e___6186[$x['x__status']]['m_name'].'</span></div>';
+
+
 
     //TYPE
     $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_name'].( strlen($e___4593[$x['x__type']]['m_desc']) ? ': '.$e___4593[$x['x__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span><span class="'.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'">'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;' . $e___4593[$x['x__type']]['m_name'] . '</span></a></div>';
@@ -846,7 +848,6 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
     $e___7585 = $CI->config->item('e___7585');
     $e___4486 = $CI->config->item('e___4486');
     $e___12467 = $CI->config->item('e___12467');
-    $e___12413 = $CI->config->item('e___12413');
     $e___13408 = $CI->config->item('e___13408');
 
     //DISCOVER
