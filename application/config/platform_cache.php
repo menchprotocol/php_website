@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-16 10:34:41 PST
+//Generated 2020-07-16 10:47:41 PST
 $config['s___12274'] = 4984; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122136; //DISCOVERIES
@@ -465,7 +465,7 @@ $config['e___6212'] = array(
         'm_parents' => array(7277,4527,6212,6206),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
         'm_parents' => array(12701,12500,13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -1063,7 +1063,7 @@ $config['e___12887'] = array(
         'm_parents' => array(12891,12887,3088),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '/ledger?any_e__id=',
         'm_parents' => array(12701,12500,13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -1400,7 +1400,7 @@ $config['e___12500'] = array(
         'm_parents' => array(4367,12701,13297,6405,12699,12500,10876,11035,4527),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
         'm_parents' => array(12701,12500,13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -1717,7 +1717,7 @@ $config['e___10876'] = array(
         'm_parents' => array(12500,10876),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => 'https://mench.com/ledger',
         'm_parents' => array(12701,12500,13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -3023,7 +3023,7 @@ $config['e___11018'] = array(
 $config['n___11089'] = array(4593,4364,6225,11030,11029,12273,6255,12969,12896,10573,7545,12419,12887);
 $config['e___11089'] = array(
     4593 => array(
-        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes discover" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION TYPE',
         'm_desc' => '',
         'm_parents' => array(11089,12701,6194,6204,11081,10659,6160,4341,4527),
@@ -3219,7 +3219,7 @@ $config['e___11035'] = array(
         'm_parents' => array(4527,13289,11035),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
         'm_parents' => array(12701,12500,13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -3538,7 +3538,7 @@ $config['e___11081'] = array(
         'm_parents' => array(11089,12701,6194,11081,6160,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes discover" aria-hidden="true"></i>',
         'm_name' => 'TYPE',
         'm_desc' => '',
         'm_parents' => array(11089,12701,6194,6204,11081,10659,6160,4341,4527),
@@ -3888,7 +3888,7 @@ $config['e___11054'] = array(
         'm_parents' => array(12572,11054,4527),
     ),
     6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-sliders-h discover" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION STATUS',
         'm_desc' => '',
         'm_parents' => array(12701,4527,11054,10677,10656,6204,5865,6160,7304,4341),
@@ -3976,7 +3976,7 @@ $config['e___11047'] = array(
         'm_parents' => array(11047,12741,12701,6287),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '/ledger?any_i__id=',
         'm_parents' => array(12701,12500,13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -5166,7 +5166,7 @@ $config['e___4527'] = array(
         'm_parents' => array(6212,11054,4527,7735),
     ),
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_name' => 'MENCH LEDGER',
         'm_desc' => '',
         'm_parents' => array(12701,12500,13456,6212,12887,11047,12707,10876,11035,4527,7735),
@@ -5526,13 +5526,13 @@ $config['e___4527'] = array(
         'm_parents' => array(6212,4527,4341),
     ),
     6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-sliders-h discover" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION STATUS',
         'm_desc' => '',
         'm_parents' => array(12701,4527,11054,10677,10656,6204,5865,6160,7304,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes discover" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION TYPE',
         'm_desc' => '',
         'm_parents' => array(11089,12701,6194,6204,11081,10659,6160,4341,4527),
@@ -5810,7 +5810,7 @@ $config['e___6194'] = array(
         'm_parents' => array(11089,12701,6194,11081,6160,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes discover" aria-hidden="true"></i>',
         'm_name' => 'TYPE',
         'm_desc' => '',
         'm_parents' => array(11089,12701,6194,6204,11081,10659,6160,4341,4527),
@@ -5880,13 +5880,13 @@ $config['e___4341'] = array(
         'm_parents' => array(6212,4527,4341),
     ),
     6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-sliders-h discover" aria-hidden="true"></i>',
         'm_name' => 'STATUS',
         'm_desc' => 'x__status',
         'm_parents' => array(12701,4527,11054,10677,10656,6204,5865,6160,7304,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes discover" aria-hidden="true"></i>',
         'm_name' => 'TYPE',
         'm_desc' => 'x__type',
         'm_parents' => array(11089,12701,6194,6204,11081,10659,6160,4341,4527),
@@ -5974,7 +5974,7 @@ $config['e___6201'] = array(
 $config['n___7304'] = array(6186);
 $config['e___7304'] = array(
     6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-sliders-h discover" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION STATUS',
         'm_desc' => '',
         'm_parents' => array(12701,4527,11054,10677,10656,6204,5865,6160,7304,4341),
@@ -6171,13 +6171,13 @@ $config['e___6204'] = array(
         'm_parents' => array(6204,4527,12967),
     ),
     6186 => array(
-        'm_icon' => '<i class="far fa-sliders-h source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-sliders-h discover" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION STATUS',
         'm_desc' => '',
         'm_parents' => array(12701,4527,11054,10677,10656,6204,5865,6160,7304,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes discover" aria-hidden="true"></i>',
         'm_name' => 'TRANSACTION TYPE',
         'm_desc' => '',
         'm_parents' => array(11089,12701,6194,6204,11081,10659,6160,4341,4527),
