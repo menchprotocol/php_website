@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-15 18:27:58 PST
+//Generated 2020-07-15 19:01:40 PST
 $config['s___12274'] = 4986; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122124; //DISCOVERIES
