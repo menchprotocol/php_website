@@ -388,11 +388,6 @@ function e_count_6194($e__id, $specific_id = 0){
 
     }
 
-    //Plugin?
-    if((!$specific_id || $specific_id==6287) && superpower_active(12699, true) && in_array($e__id, $CI->config->item('n___6287'))){
-        $e_count_6194[6287] = 1;
-    }
-
     return $e_count_6194;
 
 }
