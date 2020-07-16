@@ -273,8 +273,8 @@ $miner_is_e = miner_is_e($e['e__id']);
 
 
                     $focus_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">';
-                    foreach($this->config->item('e___13533') as $e__id => $m) {
-                        $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m['m_desc'].'\')" class="btn btn-'.$m['m_desc'].' '.( $e__icon_parts[0]==$m['m_desc'] ? ' active ' : '' ).'" title="'.$m['m_name'].'">'.$m['m_icon'].'</a>';
+                    foreach($this->config->item('e___13533') as $m3) {
+                        $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m_desc'].'\')" class="btn btn-'.$m3['m_desc'].' '.( $e__icon_parts[0]==$m3['m_desc'] ? ' active ' : '' ).'" title="'.$m3['m_name'].'">'.$m3['m_icon'].'</a>';
                     }
                     $focus_tab .= '</div>';
                     $focus_tab .= '<div class="doclear">&nbsp;</div>';
