@@ -894,7 +894,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
 
 
     $ui .= '<div class="row">';
-    $ui .= '<div class="col-md-6">';
+    $ui .= '<div class="col-sm-6">';
 
     //IDAE Transaction:
     $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
@@ -917,7 +917,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
     }
 
     $ui .= '</div>';
-    $ui .= '<div class="col-md-6">';
+    $ui .= '<div class="col-sm-6">';
 
         $ui .= '<div class="row">';
             $ui .= '<div class="col-4">'.view_coins_count_x($i['i__id']).'</div>';
