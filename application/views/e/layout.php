@@ -177,7 +177,6 @@ $miner_is_e = miner_is_e($e['e__id']);
     $tab_content = '';
     foreach($this->config->item('e___'.$tab_group) as $x__type => $m) {
 
-        //Don't show empty tabs:
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             //Missing Superpower:
