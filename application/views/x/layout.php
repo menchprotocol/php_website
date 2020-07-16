@@ -275,20 +275,38 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==13023){
 
+
         //SHARE
         $this_url = $this->config->item('base_url').'/'.$i_focus['i__id'];
+        $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13023]['m_icon'].'</span>'.$e___11035[13023]['m_name'].':</div>';
 
+        //Share Options:
         $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
-        $focus_tab .= '<div style="margin-bottom:13px;">Share URL:</div>';
-        $focus_tab .= '<input style="margin-bottom:13px;" type="url" value="' .$this_url . '" class="form-control border">';
-        $focus_tab .= '<div style="margin-bottom:13px;">Or share using:</div>';
+        $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border">';
+        $focus_tab .= '<div style="margin-top:13px;">Or share using:</div>';
         foreach($this->config->item('e___13023') as $m2) {
             $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
         }
         $focus_tab .= '</div>';
 
-        //Show Any keywords:
 
+        //Keywords?
+        $keywords = $CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4601, //IDEA NOTES Messages
+            'x__right' => $i_focus['i__id'],
+        ), array(), 0);
+        if(count($keywords)){
+            $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[4601]['m_icon'].'</span>'.$e___11035[4601]['m_name'].':</div>';
+            $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
+            foreach($keywords as $count => $keyword) {
+                if($count > 0){
+                    $focus_tab .= ', ';
+                }
+                $focus_tab .= $keyword['x__message'];
+            }
+            $focus_tab .= '</div>';
+        }
 
 
     } else {
