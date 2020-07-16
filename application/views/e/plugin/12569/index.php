@@ -24,7 +24,7 @@ if(!$obj || $obj==12273){
     }
 
     //Now addup weights starting from primary Idea:
-    $stats['i_total_weights'] = $this->I_model->weight(config_var(13427));
+    $stats['i_total_weights'] = $this->I_model->weight(config_var(12137));
 
 }
 

@@ -556,7 +556,7 @@ class X extends CI_Controller
          *
          * */
 
-        if($i__id==config_var(13427)){
+        if($i__id==config_var(12137)){
             return redirect_message('/');
         }
 

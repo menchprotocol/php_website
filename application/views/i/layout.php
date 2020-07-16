@@ -54,7 +54,7 @@ echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group previous_i
 foreach($is_previous as $previous_i) {
     echo view_i($previous_i, $i_focus['i__id'], true, e_owns_i($previous_i['i__id']));
 }
-if( $e_owns_i && $is_active && $i_focus['i__id']!=config_var(13427)){
+if( $e_owns_i && $is_active && $i_focus['i__id']!=config_var(12137)){
     echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>

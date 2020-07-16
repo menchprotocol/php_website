@@ -223,7 +223,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i_focus['i__id'],
-            'x__left !=' => config_var(13427),
+            'x__left !=' => config_var(12137),
         ), array('x__left'), 0), $recipient_e, 'THIS IDEA HELPS YOU:');
 
     } elseif($x__type==12274){

@@ -590,7 +590,7 @@ class I_model extends CI_Model
 
             //Now we must break down the array:
             $recursive_parents = array();
-            $start_i__id = config_var(13427);
+            $start_i__id = config_var(12137);
             $index = 0;
             foreach($grand_parents as $grand_parent_ids) {
                 foreach($grand_parent_ids as $grand_parent_id) {
