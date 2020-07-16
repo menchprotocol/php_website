@@ -271,17 +271,11 @@ $miner_is_e = miner_is_e($e['e__id']);
 
                     $e__icon_parts = explode(' ',one_two_explode('class="', '"', $session_e['e__icon']));
 
+
                     $focus_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">';
-
                     foreach($CI->config->item('e___13533') as $e__id => $m) {
-
+                        $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m['m_desc'].'\')" class="btn btn-'.$m['m_desc'].' '.( $e__icon_parts[0]==$m['m_desc'] ? ' active ' : '' ).'" title="'.$m['m_name'].'">'.$m['m_icon'].'</a>';
                     }
-
-                    $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $e__icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fad\')" class="btn btn-fad '.( $e__icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw source"></i></a>
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fas\')" class="btn btn-fas '.( $e__icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw source"></i></a>';
-
-
                     $focus_tab .= '</div>';
                     $focus_tab .= '<div class="doclear">&nbsp;</div>';
                     $focus_tab .= '</div>';
