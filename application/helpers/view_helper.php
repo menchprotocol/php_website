@@ -20,7 +20,7 @@ function view_e_load_more($page, $limit, $list_11029_count)
 function view_db_field($field_name){
 
     //Takes a database field name and returns a human-friendly version
-    return ucwords(str_replace('__', ' ', $field_name));
+    return ucwords(str_replace('i__', '', str_replace('e__', '', str_replace('x__', '', $field_name))));
 
 }
 
