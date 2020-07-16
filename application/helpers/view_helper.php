@@ -549,7 +549,7 @@ function view_coins_i($i__id){
         'x__left' => $i__id,
         'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-    ), array(), 0, 0, array(), 'COUNT(x__id) as total_is');
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
     if($next_is[0]['totals'] > 0){
         return '<span class="montserrat discover"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($next_is[0]['totals']).'</span>';
     } else {
