@@ -2105,7 +2105,7 @@ function view_input_text($cache_e__id, $current_value, $object__id, $e_owns_i, $
 
         $focus_element = '<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
         $character_counter = ''; //None
-        $icon = '<span class="icon-block">'.$e__icon.'</span>';
+        $icon = $e__icon;
 
     }
 
