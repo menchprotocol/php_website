@@ -163,8 +163,23 @@ $miner_is_e = miner_is_e($e['e__id']);
     echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a></div>';
     echo '<div class="doclear">&nbsp;</div>';
 
-    
-    
+
+
+    //Determine Focus Tab:
+    $list_11029_count = $this->X_model->fetch(array(
+        'x__up' => $e['e__id'],
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
+    $counter__11029 = $list_11029_count[0]['totals'];
+
+
+
+    $counter__12273 = x_stats_count($x__type, $e['e__id']);
+
+
+
     $superpower_10939 = superpower_active(10939, true);
     $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
     $superpower_any = ( $session_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
@@ -257,11 +272,20 @@ $miner_is_e = miner_is_e($e['e__id']);
 
                     $e__icon_parts = explode(' ',one_two_explode('class="', '"', $session_e['e__icon']));
 
-                    $focus_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $e__icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
+                    $focus_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">';
+
+                    foreach($CI->config->item('e___13533') as $e__id => $m) {
+
+                    }
+
+                    $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\'far\')" class="btn btn-far '.( $e__icon_parts[0]=='far' ? ' active ' : '' ).'"><i class="far fa-paw source"></i></a>
                   <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fad\')" class="btn btn-fad '.( $e__icon_parts[0]=='fad' ? ' active ' : '' ).'"><i class="fad fa-paw source"></i></a>
-                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fas\')" class="btn btn-fas '.( $e__icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw source"></i></a>
-                </div><div class="doclear">&nbsp;</div></div>';
+                  <a href="javascript:void(0)" onclick="account_update_avatar_type(\'fas\')" class="btn btn-fas '.( $e__icon_parts[0]=='fas' ? ' active ' : '' ).'"><i class="fas fa-paw source"></i></a>';
+
+
+                    $focus_tab .= '</div>';
+                    $focus_tab .= '<div class="doclear">&nbsp;</div>';
+                    $focus_tab .= '</div>';
 
 
                     //List avatars:
@@ -371,19 +395,7 @@ $miner_is_e = miner_is_e($e['e__id']);
         } elseif($x__type==11029){
 
             //SOURCE PORTFOLIO
-            $list_11029_count = $this->X_model->fetch(array(
-                'x__up' => $e['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
-            $counter = $list_11029_count[0]['totals'];
-            $list_11029s = array(); //Fetch some
-
-
-            if(!$counter && !$superpower_10939){
-                continue;
-            }
+            $counter = $counter__11029;
 
             if($counter){
 
@@ -401,6 +413,11 @@ $miner_is_e = miner_is_e($e['e__id']);
                     'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                     'x__up' => $e['e__id'],
                 ), array('x__down'), config_var(11064), 0, $order_columns);
+
+            } else {
+
+                //Maybe we allow them to be created:
+                $list_11029s = array(); //Fetch some
 
             }
 
@@ -598,7 +615,7 @@ $miner_is_e = miner_is_e($e['e__id']);
             }
 
             //Input to add new child:
-            $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
+            $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                     <input type="text"

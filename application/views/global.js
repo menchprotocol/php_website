@@ -1072,7 +1072,7 @@ function i_note_end_adding(result, note_type_id) {
     //Update UI to unlock:
     $('.save_notes_' + note_type_id).html('<i class="fas fa-plus"></i>').attr('href', 'javascript:i_note_text('+note_type_id+');');
     $('.add_notes_' + note_type_id).removeClass('is-working');
-    $("#x__message" + note_type_id).prop("disabled", false).focus();
+    $('#x__message' + note_type_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
 
     //What was the result?
@@ -1176,8 +1176,8 @@ function i_note_text(note_type_id) {
         if (data.status) {
 
             //Reset input field:
-            $("#x__message" + note_type_id).val("");
-            autosize.update($("#x__message" + note_type_id));
+            $('#x__message' + note_type_id).val("");
+            autosize.update($('#x__message' + note_type_id));
 
             i_note_count_new(note_type_id);
             i_note_counter(note_type_id, +1);

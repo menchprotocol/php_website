@@ -451,7 +451,7 @@ function e_modify_load(e__id, x__id) {
         $('.remove-e, .en-has-tr').removeClass('hidden');
 
         //Assign value:
-        $('#x__message').val($(".x__message_val_" + x__id + ":first").text());
+        $('#x__message').val($(".x__message_val_" + x__id + ":first").text().trim());
 
         //Also update type:
         x_type_preview();
@@ -748,7 +748,7 @@ function e_update() {
 
                     //Did the content get modified? (Likely for a domain URL):
                     if(!(data.x__message_final==modify_data['x__message'])){
-                        $("#x__message").val(data.x__message_final).hide().fadeIn('slow');
+                        $('#x__message').val(data.x__message_final).hide().fadeIn('slow');
                     }
 
                     //Transaction Status:
