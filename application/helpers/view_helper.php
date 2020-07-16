@@ -2099,17 +2099,13 @@ function view_input_text($cache_e__id, $current_value, $object__id, $e_owns_i, $
 
         $focus_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="view_input_text_count('.$cache_e__id.','.$object__id.')" placeholder="'.$e___12112[$cache_e__id]['m_name'].'" '.$attributes.'>'.$current_value.'</textarea>';
         $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$object__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$object__id.'">0</span>/'.config_var($cache_e__id).' CHARACTERS</div>';
-        $icon = '<span class="icon-block title-icon">'.( $e__icon ? $e__icon : $e___12112[12273]['m_icon'] ).'</span>';
+        $icon = '<span class="icon-block title-icon">'.$e__icon.'</span>';
 
     } else {
 
         $focus_element = '<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
         $character_counter = ''; //None
-        if(in_array($cache_e__id, $CI->config->item('n___12420'))){ //IDEA TEXT INPUT SHOW ICON
-            $icon = '<span class="icon-block">'.( $e__icon ? $e__icon : $e___12112[$cache_e__id]['m_icon'] ).'</span>';
-        } else {
-            $icon = $e__icon;
-        }
+        $icon = '<span class="icon-block">'.$e__icon.'</span>';
 
     }
 
