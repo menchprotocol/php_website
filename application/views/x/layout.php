@@ -282,7 +282,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //Share Options:
         $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
-        $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border margin-top-down">';
+        $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin:8px 0 21px;">';
         foreach($this->config->item('e___13023') as $m2) {
             $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
         }
