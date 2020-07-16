@@ -283,7 +283,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 //MENCH URL
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</div>';
-                $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin:8px 0 21px;">';
+                $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin:5px 0 34px 34px;">';
 
             } elseif($x__type2==13531){
 

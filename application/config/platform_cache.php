@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-16 10:32:29 PST
+//Generated 2020-07-16 10:34:41 PST
 $config['s___12274'] = 4984; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122136; //DISCOVERIES
@@ -918,7 +918,7 @@ $config['e___13023'] = array(
         'm_parents' => array(13023,6403,4527,1326),
     ),
     13531 => array(
-        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_icon' => '<i class="fas fa-share-alt"></i>',
         'm_name' => 'SHARE ON SOCIAL MEDIA',
         'm_desc' => ' ',
         'm_parents' => array(13023,4527),
@@ -5328,7 +5328,7 @@ $config['e___4527'] = array(
         'm_parents' => array(13291,4527,13024),
     ),
     13531 => array(
-        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_icon' => '<i class="fas fa-share-alt"></i>',
         'm_name' => 'SHARE ON SOCIAL MEDIA',
         'm_desc' => '',
         'm_parents' => array(13023,4527),
