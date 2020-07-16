@@ -278,7 +278,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //SHARE
         $this_url = $this->config->item('base_url').'/'.$i_focus['i__id'];
-        $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13023]['m_icon'].'</span>'.$e___11035[13023]['m_name'].'</div>';
 
         //Share Options:
         $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
