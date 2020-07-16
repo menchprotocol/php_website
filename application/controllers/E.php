@@ -838,21 +838,15 @@ class E extends CI_Controller
                 'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
                 'x__up' => $_POST['e__id'],
             ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
-
-
-            if(count($i_notes)){
-
-                if($_POST['do_13527']){
-                    //Remove them:
-
-                } else {
-                    //Cannot delete this source until Idea references are deleted:
-                    return view_json(array(
-                        'status' => 0,
-                        'message' => 'You can delete source after removing all its IDEA NOTES references',
-                    ));
-                }
+            if(count($i_notes) && !$_POST['do_13527']){
+                //Cannot delete this source until Idea references are deleted:
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'You can delete source after removing all its IDEA NOTES references',
+                ));
             }
+
+
 
             //Delete SOURCE LINKS:
             if($_POST['e__id'] == $_POST['e_focus_id']){
@@ -883,7 +877,7 @@ class E extends CI_Controller
             }
 
             //Display proper message:
-            $success_message = 'Source deleted & its ' . $x_adjusted . ' links have been Unpublished.';
+            $success_message = 'Source deleted & removed ' . $x_adjusted . ' Links.';
 
         }
 

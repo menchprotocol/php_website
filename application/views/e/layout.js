@@ -652,7 +652,7 @@ function e_update() {
     //Are we about to delete an source with a lot of transactions?
     var x_count= parseInt($('#e_x_count').val());
     var do_13527 = 0;
-    if(x_count >= 3){
+    if(x_count >= 1){
         //Yes, confirm before doing so:
         var confirm_removal = prompt("Delete source & remove "+x_count+" links?! Type \"delete\" to confirm.", "");
         do_13527 = ( confirm_removal=='destroy' ? 1 : 0 );
