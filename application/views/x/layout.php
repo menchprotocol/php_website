@@ -275,37 +275,47 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==13023){
 
-
-        //SHARE
         $this_url = $this->config->item('base_url').'/'.$i_focus['i__id'];
 
-        //Share Options:
-        $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
-        $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin:8px 0 21px;">';
-        foreach($this->config->item('e___13023') as $m2) {
-            $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
-        }
-        $focus_tab .= '</div>';
+        foreach($this->config->item('e___13023') as $x__type2 => $m2) {
 
+            if($x__type2==10876){
 
-        //Keywords?
-        $keywords = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4601, //IDEA NOTES Messages
-            'x__right' => $i_focus['i__id'],
-        ), array(), 0);
-        if(count($keywords)){
-            $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[4601]['m_icon'].'</span>'.$e___11035[4601]['m_name'].'</div>';
-            $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
-            foreach($keywords as $count => $keyword) {
-                if($count > 0){
-                    $focus_tab .= ', ';
+                //MENCH URL
+                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</div>';
+                $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin:8px 0 21px;">';
+
+            } elseif($x__type2==13531){
+
+                //SHARE ON SOCIAL MEDIA
+                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</div>';
+                $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
+                foreach($this->config->item('e___13531') as $m2) {
+                    $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
                 }
-                $focus_tab .= $keyword['x__message'];
-            }
-            $focus_tab .= '</div>';
-        }
+                $focus_tab .= '</div>';
 
+            } elseif($x__type2==4601){
+
+                //KEYWORDS
+                $keywords = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type' => 4601, //IDEA NOTES Messages
+                    'x__right' => $i_focus['i__id'],
+                ), array(), 0);
+                if(count($keywords)){
+                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</div>';
+                    $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
+                    foreach($keywords as $count => $keyword) {
+                        if($count > 0){
+                            $focus_tab .= ', ';
+                        }
+                        $focus_tab .= $keyword['x__message'];
+                    }
+                    $focus_tab .= '</div>';
+                }
+            }
+        }
 
     } else {
 

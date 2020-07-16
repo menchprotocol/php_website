@@ -8,10 +8,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-16 10:19:25 PST
-$config['s___12274'] = 4983; //SOURCES
+//Generated 2020-07-16 10:32:29 PST
+$config['s___12274'] = 4984; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122136; //DISCOVERIES
+
+//SHARE ON SOCIAL MEDIA:
+$config['n___13531'] = array(3288,12889,3302,12890,3099,3300,13026);
+$config['e___13531'] = array(
+    3288 => array(
+        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
+        'm_name' => 'EMAIL',
+        'm_desc' => 'email',
+        'm_parents' => array(13531,6404,4269,12103,6225,4755),
+    ),
+    12889 => array(
+        'm_icon' => '<i class="fab fa-facebook source"></i>',
+        'm_name' => 'FACEBOOK',
+        'm_desc' => 'facebook',
+        'm_parents' => array(13531,12891),
+    ),
+    3302 => array(
+        'm_icon' => '<i class="fab fa-linkedin source" aria-hidden="true"></i>',
+        'm_name' => 'LINKEDIN',
+        'm_desc' => 'linkedin',
+        'm_parents' => array(13531,12891,1326),
+    ),
+    12890 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger source" aria-hidden="true"></i>',
+        'm_name' => 'MESSENGER',
+        'm_desc' => 'messenger',
+        'm_parents' => array(13531,12889),
+    ),
+    3099 => array(
+        'm_icon' => '<i class="fab fa-reddit"></i>',
+        'm_name' => 'REDDIT',
+        'm_desc' => 'reddit',
+        'm_parents' => array(13531,12891,1326),
+    ),
+    3300 => array(
+        'm_icon' => '<i class="fab fa-twitter source" aria-hidden="true"></i>',
+        'm_name' => 'TWITTER',
+        'm_desc' => 'twitter',
+        'm_parents' => array(13531,12891,1326),
+    ),
+    13026 => array(
+        'm_icon' => '<i class="fab fa-whatsapp-square isgreen"></i>',
+        'm_name' => 'WHATSAPP',
+        'm_desc' => 'whatsapp',
+        'm_parents' => array(13531,12891),
+    ),
+);
 
 //IDEA TAB SHOW EVEN IF ZERO:
 $config['n___13530'] = array(4983,11020,6255,12419,4601,7545,12589,11047);
@@ -44,7 +91,7 @@ $config['e___13530'] = array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(11035,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13023,13530,10984,11018,4485,10593,4593),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
@@ -747,7 +794,7 @@ $config['e___13291'] = array(
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
-        'm_parents' => array(11035,13291,4527,13024),
+        'm_parents' => array(13291,4527,13024),
     ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -862,49 +909,25 @@ $config['e___12761'] = array(
 );
 
 //SHARE:
-$config['n___13023'] = array(12889,12890,3300,3302,3288,13026,3099);
+$config['n___13023'] = array(10876,13531,4601);
 $config['e___13023'] = array(
-    12889 => array(
-        'm_icon' => '<i class="fab fa-facebook source"></i>',
-        'm_name' => 'FACEBOOK',
-        'm_desc' => 'facebook',
-        'm_parents' => array(13023,12891),
+    10876 => array(
+        'm_icon' => '<i class="fas fa-link"></i>',
+        'm_name' => 'MENCH URL',
+        'm_desc' => '',
+        'm_parents' => array(13023,6403,4527,1326),
     ),
-    12890 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger source" aria-hidden="true"></i>',
-        'm_name' => 'MESSENGER',
-        'm_desc' => 'messenger',
-        'm_parents' => array(13023,12889),
+    13531 => array(
+        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_name' => 'SHARE ON SOCIAL MEDIA',
+        'm_desc' => ' ',
+        'm_parents' => array(13023,4527),
     ),
-    3300 => array(
-        'm_icon' => '<i class="fab fa-twitter source" aria-hidden="true"></i>',
-        'm_name' => 'TWITTER',
-        'm_desc' => 'twitter',
-        'm_parents' => array(13023,12891,1326),
-    ),
-    3302 => array(
-        'm_icon' => '<i class="fab fa-linkedin source" aria-hidden="true"></i>',
-        'm_name' => 'LINKEDIN',
-        'm_desc' => 'linkedin',
-        'm_parents' => array(13023,12891,1326),
-    ),
-    3288 => array(
-        'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_name' => 'EMAIL',
-        'm_desc' => 'email',
-        'm_parents' => array(6404,13023,4269,12103,6225,4755),
-    ),
-    13026 => array(
-        'm_icon' => '<i class="fab fa-whatsapp-square isgreen"></i>',
-        'm_name' => 'WHATSAPP',
-        'm_desc' => 'whatsapp',
-        'm_parents' => array(12891,13023),
-    ),
-    3099 => array(
-        'm_icon' => '<i class="fab fa-reddit"></i>',
-        'm_name' => 'REDDIT',
-        'm_desc' => 'reddit',
-        'm_parents' => array(12891,13023,1326),
+    4601 => array(
+        'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
+        'm_name' => 'KEYWORDS',
+        'm_desc' => '',
+        'm_parents' => array(13023,13530,10984,11018,4485,10593,4593),
     ),
 );
 
@@ -1466,7 +1489,7 @@ $config['e___4269'] = array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
         'm_name' => 'EMAIL',
         'm_desc' => '',
-        'm_parents' => array(6404,13023,4269,12103,6225,4755),
+        'm_parents' => array(13531,6404,4269,12103,6225,4755),
     ),
     13025 => array(
         'm_icon' => '<i class="fad fa-fingerprint source" aria-hidden="true"></i>',
@@ -1678,7 +1701,7 @@ $config['e___12413'] = array(
     ),
 );
 
-//MENCH HOME:
+//MENCH URL:
 $config['n___10876'] = array(13405,7291,4341,6287,4269,13207);
 $config['e___10876'] = array(
     13405 => array(
@@ -2980,7 +3003,7 @@ $config['e___11018'] = array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(11035,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13023,13530,10984,11018,4485,10593,4593),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
@@ -3098,7 +3121,7 @@ $config['e___6225'] = array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
         'm_name' => 'EMAIL',
         'm_desc' => '',
-        'm_parents' => array(6404,13023,4269,12103,6225,4755),
+        'm_parents' => array(13531,6404,4269,12103,6225,4755),
     ),
     3286 => array(
         'm_icon' => '<i class="fas fa-key" aria-hidden="true"></i>',
@@ -3121,7 +3144,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,13509,13210,13495,13427,12707,4235,12991,12413,4601,11068,12211,4341,12969,10573,6225,6287,6415,13510,13524,7256,13023,4269,4997,12275,13007,10957,12906,13498);
+$config['n___11035'] = array(13502,13401,13509,13210,13495,13427,12707,4235,12991,12413,11068,12211,4341,12969,10573,6225,6287,6415,13510,13524,7256,4269,4997,12275,13007,10957,12906,13498);
 $config['e___11035'] = array(
     13502 => array(
         'm_icon' => '<i class="fas fa-times discover"></i>',
@@ -3182,12 +3205,6 @@ $config['e___11035'] = array(
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
         'm_parents' => array(11035,13408,6768,4527),
-    ),
-    4601 => array(
-        'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
-        'm_name' => 'KEYWORDS',
-        'm_desc' => '',
-        'm_parents' => array(11035,13530,10984,11018,4485,10593,4593),
     ),
     11068 => array(
         'm_icon' => '<i class="far fa-envelope-open" aria-hidden="true"></i>',
@@ -3254,12 +3271,6 @@ $config['e___11035'] = array(
         'm_name' => 'SEARCH MENCH',
         'm_desc' => '',
         'm_parents' => array(12678,13357,12701,11035,3323),
-    ),
-    13023 => array(
-        'm_icon' => '<i class="fas fa-share"></i>',
-        'm_name' => 'SHARE',
-        'm_desc' => '',
-        'm_parents' => array(11035,13291,4527,13024),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
@@ -3653,7 +3664,7 @@ $config['e___6404'] = array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
         'm_name' => 'EMAIL',
         'm_desc' => 'support@mench.com',
-        'm_parents' => array(6404,13023,4269,12103,6225,4755),
+        'm_parents' => array(13531,6404,4269,12103,6225,4755),
     ),
     13427 => array(
         'm_icon' => '<i class="fas fa-star discover"></i>',
@@ -4138,7 +4149,7 @@ $config['e___4485'] = array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(11035,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13023,13530,10984,11018,4485,10593,4593),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
@@ -4726,7 +4737,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(10956,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,13438,6150,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,12211,2738,12467,6404,12079,10876,13488,6201,4341,4527,11054,12687,11035,6206,12112,6212,7277,12500,13479,13037,12969,10573,6225,3000,12741,6287,12577,4755,13439,13365,13414,13510,12761,13023,4269,6204,13413,4251,6194,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12274,12563,6177,7358,12575,7357,12401,13424,11089,12574,13425,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480);
+$config['n___4527'] = array(10956,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,13438,6150,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,12211,2738,12467,6404,12079,13488,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,12500,13479,13037,12969,10573,6225,3000,12741,6287,12577,4755,13439,13365,13414,13510,12761,13023,13531,4269,6204,13413,4251,6194,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12274,12563,6177,7358,12575,7357,12401,13424,11089,12574,13425,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480);
 $config['e___4527'] = array(
     10956 => array(
         'm_icon' => '<i class="fad fa-paw-alt source" aria-hidden="true"></i>',
@@ -5142,12 +5153,6 @@ $config['e___4527'] = array(
         'm_desc' => '',
         'm_parents' => array(12829,6403,4527),
     ),
-    10876 => array(
-        'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
-        'm_name' => 'MENCH HOME',
-        'm_desc' => '',
-        'm_parents' => array(6403,4527,1326),
-    ),
     13488 => array(
         'm_icon' => '<i class="fas fa-home"></i>',
         'm_name' => 'MENCH HOME PAGES',
@@ -5201,6 +5206,12 @@ $config['e___4527'] = array(
         'm_name' => 'MENCH TEXT INPUTS',
         'm_desc' => '',
         'm_parents' => array(12829,6403,4527),
+    ),
+    10876 => array(
+        'm_icon' => '<i class="fas fa-link"></i>',
+        'm_name' => 'MENCH URL',
+        'm_desc' => '',
+        'm_parents' => array(13023,6403,4527,1326),
     ),
     6212 => array(
         'm_icon' => '<i class="fas fa-subscript" aria-hidden="true"></i>',
@@ -5314,7 +5325,13 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
-        'm_parents' => array(11035,13291,4527,13024),
+        'm_parents' => array(13291,4527,13024),
+    ),
+    13531 => array(
+        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_name' => 'SHARE ON SOCIAL MEDIA',
+        'm_desc' => '',
+        'm_parents' => array(13023,4527),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
@@ -5649,7 +5666,7 @@ $config['e___10593'] = array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(11035,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13023,13530,10984,11018,4485,10593,4593),
     ),
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
@@ -7093,7 +7110,7 @@ $config['e___4755'] = array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
         'm_name' => 'EMAIL',
         'm_desc' => '',
-        'm_parents' => array(6404,13023,4269,12103,6225,4755),
+        'm_parents' => array(13531,6404,4269,12103,6225,4755),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
@@ -7818,7 +7835,7 @@ $config['e___4593'] = array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(11035,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13023,13530,10984,11018,4485,10593,4593),
     ),
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
