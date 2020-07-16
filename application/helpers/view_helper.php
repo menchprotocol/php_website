@@ -343,7 +343,6 @@ function view_x($x, $is_parent_tr = false)
     $CI =& get_instance();
     $e___4593 = $CI->config->item('e___4593'); //Transaction Type
     $e___4341 = $CI->config->item('e___4341'); //Transaction Table
-    $e___12467 = $CI->config->item('e___12467');
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $session_e = superpower_assigned();
 
@@ -442,7 +441,7 @@ function view_x($x, $is_parent_tr = false)
                 //IDEA
                 $is = $CI->I_model->fetch(array('i__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.$e___12467[12273]['m_icon']. '&nbsp;'.view_i_title($is[0]).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.view_cache(4737 /* Idea Status */, $is[0]['i__status'], true, 'right', $is[0]['i__id']). '&nbsp;'.view_i_title($is[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_parents'])){
 
