@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-15 22:27:18 PST
+//Generated 2020-07-15 22:56:56 PST
 $config['s___12274'] = 4983; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
-$config['s___6255'] = 122127; //DISCOVERIES
+$config['s___6255'] = 122136; //DISCOVERIES
 
 //IDEA TAB SHOW EVEN IF ZERO:
 $config['n___13530'] = array(4983,11020,6255,12419,4601,7545,12589,11047);
@@ -684,19 +684,13 @@ $config['e___4603'] = array(
 );
 
 //DISCOVER TAB SHOW IF LOGGED-IN:
-$config['n___13304'] = array(12419,13023);
+$config['n___13304'] = array(12419);
 $config['e___13304'] = array(
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
         'm_name' => 'COMMENTS',
         'm_desc' => '',
         'm_parents' => array(11089,13530,13304,13291,11018,12359,5967,10593,4986,4593,4485),
-    ),
-    13023 => array(
-        'm_icon' => '<i class="fas fa-share"></i>',
-        'm_name' => 'SHARE',
-        'm_desc' => '',
-        'm_parents' => array(13304,13291,4527,13024),
     ),
 );
 
@@ -753,7 +747,7 @@ $config['e___13291'] = array(
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
-        'm_parents' => array(13304,13291,4527,13024),
+        'm_parents' => array(13291,4527,13024),
     ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -3127,7 +3121,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,13210,13495,13427,12707,4235,12991,12413,13509,11068,12211,4341,12969,10573,6225,6287,6415,13510,13524,7256,4269,4997,12275,13007,10957,12906,13498);
+$config['n___11035'] = array(13502,13401,13509,13210,13495,13427,12707,4235,12991,12413,11068,12211,4341,12969,10573,6225,6287,6415,13510,13524,7256,4269,4997,12275,13007,10957,12906,13498);
 $config['e___11035'] = array(
     13502 => array(
         'm_icon' => '<i class="fas fa-times discover"></i>',
@@ -3140,6 +3134,12 @@ $config['e___11035'] = array(
         'm_name' => 'CLOSE SEARCH',
         'm_desc' => '',
         'm_parents' => array(11035,7256),
+    ),
+    13509 => array(
+        'm_icon' => '<i class="fas fa-eye"></i>',
+        'm_name' => 'COINS',
+        'm_desc' => '',
+        'm_parents' => array(11035),
     ),
     13210 => array(
         'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
@@ -3182,12 +3182,6 @@ $config['e___11035'] = array(
         'm_name' => 'IDEA TREE',
         'm_desc' => '',
         'm_parents' => array(11035,13408,6768,4527),
-    ),
-    13509 => array(
-        'm_icon' => '<i class="fas fa-info-circle"></i>',
-        'm_name' => 'LEARN MORE',
-        'm_desc' => '',
-        'm_parents' => array(11035),
     ),
     11068 => array(
         'm_icon' => '<i class="far fa-envelope-open" aria-hidden="true"></i>',
@@ -3724,7 +3718,7 @@ $config['e___6404'] = array(
     11060 => array(
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_name' => 'MENCH VERSION',
-        'm_desc' => 'v1.469',
+        'm_desc' => 'v1.47',
         'm_parents' => array(6404),
     ),
     11066 => array(
@@ -5308,7 +5302,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_name' => 'SHARE',
         'm_desc' => '',
-        'm_parents' => array(13304,13291,4527,13024),
+        'm_parents' => array(13291,4527,13024),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',

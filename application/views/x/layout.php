@@ -287,6 +287,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
         $focus_tab .= '</div>';
 
+        //Show Any keywords:
+
+
+
     } else {
 
         //Not supported via here:
