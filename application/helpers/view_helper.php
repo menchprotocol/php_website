@@ -530,13 +530,13 @@ function view_cache($config_var_id, $e__id, $micro_status = true, $data_placemen
     //We have two skins for displaying Status:
     if (is_null($data_placement)) {
         if($micro_status){
-            return $cache['m_icon'].' ';
+            return '<span class="icon-block">'.$cache['m_icon'].'</span>';
         } else {
-            return $cache['m_icon'].' '.$cache['m_name'].' ';
+            return '<span class="icon-block">'.$cache['m_icon'].'</span>'.$cache['m_name'].' ';
         }
     } else {
         //data-toggle="tooltip" data-placement="' . $data_placement . '"
-        return '<span class="'.( $micro_status ? 'cache_micro_'.$config_var_id.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m_name'] : '') . (strlen($cache['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_name']) . '</span>';
+        return '<span class="icon-block '.( $micro_status ? 'cache_micro_'.$config_var_id.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m_name'] : '') . (strlen($cache['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_name']) . '</span>';
     }
 }
 
@@ -906,7 +906,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
         $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
 
         //IDEA STATUS:
-        $ui .= '<a href="'.$i_x.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a>';
+        $ui .= '<a href="'.$i_x.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="inline-block">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a>';
 
         //IDEA TITLE
         if($is_i_x && superpower_active(13354, true)){
