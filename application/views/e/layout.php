@@ -120,8 +120,7 @@ $miner_is_e = miner_is_e($e['e__id']);
                                     <textarea class="form-control text-edit border" id="x__message"
                                               data-lpignore="true"
                                               placeholder="Write, Drop a File or Paste URL"
-                                              style="height:126px; min-height:126px;">
-                                    </textarea>
+                                              style="height:126px; min-height:126px;"></textarea>
                                 </span>
 
                                 <span><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="Upload files up to <?= config_var(11063) ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></span>
