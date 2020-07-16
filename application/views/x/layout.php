@@ -455,7 +455,6 @@ if(!$in_my_x){
 
             }
 
-            echo '<div class="pull-right inline-block" style="margin:5px 0 0 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="grey montserrat"><u>'.$e___11035[13509]['m_name'].'</u> '.$e___11035[13509]['m_icon'].'</a></div>';
             echo '<div class="doclear">&nbsp;</div>';
 
 

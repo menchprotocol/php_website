@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-15 22:11:47 PST
+//Generated 2020-07-15 22:27:18 PST
 $config['s___12274'] = 4983; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
-$config['s___6255'] = 122124; //DISCOVERIES
+$config['s___6255'] = 122127; //DISCOVERIES
 
 //IDEA TAB SHOW EVEN IF ZERO:
 $config['n___13530'] = array(4983,11020,6255,12419,4601,7545,12589,11047);
@@ -44,13 +44,13 @@ $config['e___13530'] = array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(13291,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13530,10984,11018,4485,10593,4593),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
         'm_desc' => '',
-        'm_parents' => array(11089,13530,6159,13421,13298,13291,12197,11018,4485,7551,4593),
+        'm_parents' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     12589 => array(
         'm_icon' => '<i class="fas fa-list idea" aria-hidden="true"></i>',
@@ -314,7 +314,7 @@ $config['e___6159'] = array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
         'm_desc' => 'i___7545',
-        'm_parents' => array(11089,13530,6159,13421,13298,13291,12197,11018,4485,7551,4593),
+        'm_parents' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     13339 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
@@ -707,7 +707,7 @@ $config['e___13298'] = array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
         'm_desc' => '',
-        'm_parents' => array(11089,13530,6159,13421,13298,13291,12197,11018,4485,7551,4593),
+        'm_parents' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -735,25 +735,13 @@ $config['e___13300'] = array(
 );
 
 //DISCOVER TABS:
-$config['n___13291'] = array(4231,7545,4601,12419,13023,12274,12273,6255);
+$config['n___13291'] = array(4231,12419,13023,12274,12273,6255);
 $config['e___13291'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
         'm_name' => 'MESSAGES',
         'm_desc' => '',
         'm_parents' => array(13300,13294,13291,12273,12359,4485,10593,4986,4603,4593),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
-        'm_name' => 'CERTIFICATES',
-        'm_desc' => '',
-        'm_parents' => array(11089,13530,6159,13421,13298,13291,12197,11018,4485,7551,4593),
-    ),
-    4601 => array(
-        'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
-        'm_name' => 'KEYWORDS',
-        'm_desc' => '',
-        'm_parents' => array(13291,13530,10984,11018,4485,10593,4593),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
@@ -2992,13 +2980,13 @@ $config['e___11018'] = array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
         'm_desc' => '',
-        'm_parents' => array(11089,13530,6159,13421,13298,13291,12197,11018,4485,7551,4593),
+        'm_parents' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(13291,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13530,10984,11018,4485,10593,4593),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
@@ -3015,7 +3003,7 @@ $config['e___11018'] = array(
 );
 
 //SOURCE TABS:
-$config['n___11089'] = array(4593,4364,6225,11030,11029,12273,6255,12969,12896,10573,12419,7545,12887);
+$config['n___11089'] = array(4593,4364,6225,11030,11029,12273,6255,12969,12896,10573,7545,12419,12887);
 $config['e___11089'] = array(
     4593 => array(
         'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
@@ -3077,17 +3065,17 @@ $config['e___11089'] = array(
         'm_desc' => '',
         'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
     ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
+        'm_name' => 'CERTIFICATES',
+        'm_desc' => '',
+        'm_parents' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
+    ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
         'm_name' => 'COMMENTS',
         'm_desc' => '',
         'm_parents' => array(11089,13530,13304,13291,11018,12359,5967,10593,4986,4593,4485),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
-        'm_name' => 'CERTIFICATES',
-        'm_desc' => '',
-        'm_parents' => array(11089,13530,6159,13421,13298,13291,12197,11018,4485,7551,4593),
     ),
     12887 => array(
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
@@ -4144,7 +4132,7 @@ $config['e___4485'] = array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(13291,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13530,10984,11018,4485,10593,4593),
     ),
     4983 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -4156,7 +4144,7 @@ $config['e___4485'] = array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
         'm_desc' => '',
-        'm_parents' => array(11089,13530,6159,13421,13298,13291,12197,11018,4485,7551,4593),
+        'm_parents' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     10573 => array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
@@ -5655,7 +5643,7 @@ $config['e___10593'] = array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(13291,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13530,10984,11018,4485,10593,4593),
     ),
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
@@ -6302,7 +6290,7 @@ $config['e___7551'] = array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
         'm_desc' => '',
-        'm_parents' => array(11089,13530,6159,13421,13298,13291,12197,11018,4485,7551,4593),
+        'm_parents' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     4983 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
@@ -7350,7 +7338,7 @@ $config['e___4593'] = array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_name' => 'CERTIFICATES',
         'm_desc' => '',
-        'm_parents' => array(11089,13530,6159,13421,13298,13291,12197,11018,4485,7551,4593),
+        'm_parents' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
@@ -7824,7 +7812,7 @@ $config['e___4593'] = array(
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
         'm_name' => 'KEYWORDS',
         'm_desc' => '',
-        'm_parents' => array(13291,13530,10984,11018,4485,10593,4593),
+        'm_parents' => array(13530,10984,11018,4485,10593,4593),
     ),
     4231 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
