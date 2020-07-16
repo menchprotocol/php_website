@@ -906,7 +906,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
         $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
 
         //IDEA STATUS:
-        $ui .= '<span class="icon-block"><a href="'.$i_x.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a></span>';
+        $ui .= '<a href="'.$i_x.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a>';
 
         //IDEA TITLE
         if($is_i_x && superpower_active(13354, true)){
