@@ -291,7 +291,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
         //Keywords?
-        $keywords = $CI->X_model->fetch(array(
+        $keywords = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4601, //IDEA NOTES Messages
             'x__right' => $i_focus['i__id'],
