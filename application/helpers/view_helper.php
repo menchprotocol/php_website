@@ -376,6 +376,25 @@ function view_x($x, $is_parent_tr = false)
     $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $e___4341[4362]['m_name'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$e___4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' ago</span></div>';
 
 
+    //Order
+    if($x['x__sort'] > 0){
+        $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[4370]['m_name']. '"><span class="icon-block">'.$e___4341[4370]['m_icon']. '</span>'.view_ordinal($x['x__sort']).'</span></div>';
+    }
+
+
+    if(!$hide_sensitive){
+        //Metadata
+        if(strlen($x['x__metadata']) > 0){
+            $ui .= '<div class="simple-line"><a href="/e/plugin/12722?x__id=' . $x['x__id'] . '"><span class="icon-block">'.$e___4341[6103]['m_icon']. '</span><u>'.$e___4341[6103]['m_name']. '</u></a></div>';
+        }
+
+        //Message
+        if(strlen($x['x__message']) > 0 && $x['x__message']!='@'.$x['x__up']){
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4372]['m_name'].'"><span class="icon-block">'.$e___4341[4372]['m_icon'].'</span><div class="title-block x-msg">'.htmlentities($x['x__message']).'</div></div>';
+        }
+    }
+
+
     //STATUS
     $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_name'].( strlen($e___6186[$x['x__status']]['m_desc']) ? ': '.$e___6186[$x['x__status']]['m_desc'] : '' ).'" class="montserrat '.extract_icon_color($e___6186[$x['x__status']]['m_icon']).'"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;'.$e___6186[$x['x__status']]['m_name'].'</span></div>';
 
@@ -384,10 +403,6 @@ function view_x($x, $is_parent_tr = false)
     //TYPE
     $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_name'].( strlen($e___4593[$x['x__type']]['m_desc']) ? ': '.$e___4593[$x['x__type']]['m_desc'] : '' ).'" class="montserrat '.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span>'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;' . $e___4593[$x['x__type']]['m_name'] . '</a></div>';
 
-    //Order
-    if($x['x__sort'] > 0){
-        $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[4370]['m_name']. '"><span class="icon-block">'.$e___4341[4370]['m_icon']. '</span>'.view_ordinal($x['x__sort']).'</span></div>';
-    }
 
     //Hide Sensitive Details?
     if($hide_sensitive){
@@ -396,18 +411,6 @@ function view_x($x, $is_parent_tr = false)
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
 
     } else {
-
-        //Metadata
-        if(strlen($x['x__metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="/e/plugin/12722?x__id=' . $x['x__id'] . '"><span class="icon-block">'.$e___4341[6103]['m_icon']. '</span><u>'.$e___4341[6103]['m_name']. '</u></a></div>';
-        }
-
-
-        //Message
-        if(strlen($x['x__message']) > 0 && $x['x__message']!='@'.$x['x__up']){
-            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4372]['m_name'].'"><span class="icon-block">'.$e___4341[4372]['m_icon'].'</span><div class="title-block x-msg">'.htmlentities($x['x__message']).'</div></div>';
-        }
-
 
         //Creator (Do not repeat)
         if($x['x__source'] > 0 && $x['x__source']!=$x['x__up'] && $x['x__source']!=$x['x__down']){
