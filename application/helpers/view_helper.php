@@ -527,13 +527,13 @@ function view_cache($config_var_id, $e__id, $micro_status = true, $data_placemen
     //We have two skins for displaying Status:
     if (is_null($data_placement)) {
         if($micro_status){
-            return '<span class="icon-block">'.$cache['m_icon'].'</span>';
+            return $cache['m_icon'];
         } else {
-            return '<span class="icon-block">'.$cache['m_icon'].'</span>'.$cache['m_name'].' ';
+            return $cache['m_icon'].' '.$cache['m_name'];
         }
     } else {
         //data-toggle="tooltip" data-placement="' . $data_placement . '"
-        return '<span class="icon-block '.( $micro_status ? 'cache_micro_'.$config_var_id.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m_name'] : '') . (strlen($cache['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_name']) . '</span>';
+        return '<span class="'.( $micro_status ? 'cache_micro_'.$config_var_id.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m_name'] : '') . (strlen($cache['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_name']) . '</span>';
     }
 }
 
