@@ -345,6 +345,7 @@ function view_x($x, $is_parent_tr = false)
     $e___4341 = $CI->config->item('e___4341'); //Transaction Table
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $session_e = superpower_assigned();
+    $hide_sensitive = (in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$session_e || $x['x__source']!=$session_e['e__id']) && !superpower_active(12701, true));
 
 
 
@@ -357,6 +358,8 @@ function view_x($x, $is_parent_tr = false)
             'm_parents' => array(),
         );
     }
+
+
 
 
 
@@ -381,9 +384,13 @@ function view_x($x, $is_parent_tr = false)
     //TYPE
     $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_name'].( strlen($e___4593[$x['x__type']]['m_desc']) ? ': '.$e___4593[$x['x__type']]['m_desc'] : '' ).'" class="montserrat '.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span>'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;' . $e___4593[$x['x__type']]['m_name'] . '</a></div>';
 
+    //Order
+    if($x['x__sort'] > 0){
+        $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[4370]['m_name']. '"><span class="icon-block">'.$e___4341[4370]['m_icon']. '</span>'.view_ordinal($x['x__sort']).'</span></div>';
+    }
 
     //Hide Sensitive Details?
-    if(in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$session_e || $x['x__source']!=$session_e['e__id']) && !superpower_active(12701, true)){
+    if($hide_sensitive){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="montserrat" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -392,12 +399,7 @@ function view_x($x, $is_parent_tr = false)
 
         //Metadata
         if(strlen($x['x__metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="/e/plugin/12722?x__id=' . $x['x__id'] . '" class="montserrat"><span class="icon-block">'.$e___4341[6103]['m_icon']. '</span>'.$e___4341[6103]['m_name']. '</a></div>';
-        }
-
-        //Order
-        if($x['x__sort'] > 0){
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[4370]['m_name']. '"><span class="icon-block">'.$e___4341[4370]['m_icon']. '</span>'.view_ordinal($x['x__sort']).'</span></div>';
+            $ui .= '<div class="simple-line"><a href="/e/plugin/12722?x__id=' . $x['x__id'] . '"><span class="icon-block">'.$e___4341[6103]['m_icon']. '</span><u>'.$e___4341[6103]['m_name']. '</u></a></div>';
         }
 
 
