@@ -396,7 +396,7 @@ function view_x($x, $is_parent_tr = false)
 
 
     //STATUS
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_name'].( strlen($e___6186[$x['x__status']]['m_desc']) ? ': '.$e___6186[$x['x__status']]['m_desc'] : '' ).'" class="montserrat '.extract_icon_color($e___6186[$x['x__status']]['m_icon']).'"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;'.$e___6186[$x['x__status']]['m_name'].'</span></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_name'].( strlen($e___6186[$x['x__status']]['m_desc']) ? ': '.$e___6186[$x['x__status']]['m_desc'] : '' ).'" class="montserrat '.extract_icon_color($e___6186[$x['x__status']]['m_icon']).'"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;'.$e___6186[$x['x__status']]['m_name'].'</a></div>';
 
 
 
