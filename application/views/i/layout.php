@@ -121,7 +121,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
 
-    $disable_manual_add = in_array($x__type, $this->config->item('n___12677'));
     $counter = null; //Assume no counters
     $focus_tab = '';
 
@@ -176,7 +175,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= view_e($i_note, 0, null, $e_owns_i && $is_active, $e_owns_i);
         }
 
-        if($e_owns_i && $is_active && !$disable_manual_add) {
+        if($e_owns_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
             $focus_tab .= '<div class="list-group-item list-adder itemsource no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___12467[12274]['m_icon'] . '</span></span>
@@ -293,11 +292,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     }
 
 
-    if(!$counter && $disable_manual_add){
+    if(!$counter && !in_array($x__type, $this->config->item('n___13530'))){
         //Hide since Zero:
         continue;
     }
-
 
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
