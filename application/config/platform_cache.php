@@ -8,85 +8,67 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-15 14:01:35 PST
-$config['s___12274'] = 5010; //SOURCES
+//Generated 2020-07-15 17:30:03 PST
+$config['s___12274'] = 4985; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
-$config['s___6255'] = 122149; //DISCOVERIES
+$config['s___6255'] = 122124; //DISCOVERIES
 
 //SOURCES FEATURED:
-$config['n___12563'] = array(2997,4446,13339,3005,4763,3147,13466,12891,13218,13350,3192,2998,10984);
+$config['n___12563'] = array(13339,2997,4446,3005,3147,13218,13350,3192,2998,10984);
 $config['e___12563'] = array(
-    2997 => array(
-        'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT ARTICLES',
-        'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
-    ),
-    4446 => array(
-        'm_icon' => '<i class="fas fa-tachometer source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT ASSESSMENTS',
-        'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
-    ),
     13339 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207,12864),
+        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207),
+    ),
+    2997 => array(
+        'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
+        'm_name' => 'NONFICTION ARTICLES',
+        'm_desc' => '',
+        'm_parents' => array(12563,12968,3000),
+    ),
+    4446 => array(
+        'm_icon' => '<i class="fas fa-tachometer source" aria-hidden="true"></i>',
+        'm_name' => 'NONFICTION ASSESSMENTS',
+        'm_desc' => '',
+        'm_parents' => array(12563,12968,3000),
     ),
     3005 => array(
         'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT BOOKS',
+        'm_name' => 'NONFICTION BOOKS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
-    ),
-    4763 => array(
-        'm_icon' => '<i class="fad fa-mail-bulk source"></i>',
-        'm_name' => 'EXPERT CHANNELS',
-        'm_desc' => '',
-        'm_parents' => array(12563,12864),
+        'm_parents' => array(12563,12968,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fas fa-presentation source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT COURSES',
+        'm_name' => 'NONFICTION COURSES',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
-    ),
-    13466 => array(
-        'm_icon' => '<i class="fad fa-calendar-star source"></i>',
-        'm_name' => 'EXPERT EVENTS',
-        'm_desc' => '',
-        'm_parents' => array(12563,12968,12864),
-    ),
-    12891 => array(
-        'm_icon' => '<i class="fas fa-layer-group source"></i>',
-        'm_name' => 'EXPERT PLATFORMS',
-        'm_desc' => '',
-        'm_parents' => array(12563,12864),
+        'm_parents' => array(12563,12968,3000),
     ),
     13218 => array(
         'm_icon' => '<i class="fas fa-microphone source"></i>',
-        'm_name' => 'EXPERT PODCASTS',
+        'm_name' => 'NONFICTION PODCASTS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,3000),
+        'm_parents' => array(12563,3000),
     ),
     13350 => array(
         'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
-        'm_name' => 'EXPERT REPORTS',
+        'm_name' => 'NONFICTION REPORTS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
-        'm_name' => 'EXPERT TOOLS',
+        'm_name' => 'NONFICTION TOOLS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     2998 => array(
         'm_icon' => '<i class="fas fa-play-circle source"></i>',
-        'm_name' => 'EXPERT VIDEOS',
+        'm_name' => 'NONFICTION VIDEOS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     10984 => array(
         'm_icon' => '<i class="fas fa-walkie-talkie idea" aria-hidden="true"></i>',
@@ -320,7 +302,7 @@ $config['e___13442'] = array(
 );
 
 //IDEA METADATA:
-$config['n___6159'] = array(7545,13339,3000,6208,6168,6283,12885,6228,6162,6161,13202,6170,6169);
+$config['n___6159'] = array(7545,13339,6208,6168,6283,12885,6228,6162,6161,13202,6170,6169,3000);
 $config['e___6159'] = array(
     7545 => array(
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
@@ -332,13 +314,7 @@ $config['e___6159'] = array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT AUTHORS',
         'm_desc' => 'i___13339',
-        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207,12864),
-    ),
-    3000 => array(
-        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
-        'm_name' => 'EXPERT CONTENT',
-        'm_desc' => 'i___3000',
-        'm_parents' => array(6159,4251,13428,13365,13207,4527),
+        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207),
     ),
     6208 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -400,6 +376,12 @@ $config['e___6159'] = array(
         'm_desc' => 'i___6169',
         'm_parents' => array(13443,13409,6159),
     ),
+    3000 => array(
+        'm_icon' => '<i class="fas fa-info-square source"></i><i class="fas fa-"></i>',
+        'm_name' => 'NONFICTION SOURCES',
+        'm_desc' => 'i___3000',
+        'm_parents' => array(6159,4251,13428,13365,13207,4527),
+    ),
 );
 
 //MENCH VARIABLES:
@@ -459,8 +441,8 @@ $config['e___4251'] = array(
         'm_parents' => array(13451,6159,4251,13365,4527,13207),
     ),
     3000 => array(
-        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
-        'm_name' => 'EXPERT CONTENT',
+        'm_icon' => '<i class="fas fa-info-square source"></i><i class="fas fa-"></i>',
+        'm_name' => 'NONFICTION SOURCES',
         'm_desc' => '',
         'm_parents' => array(6159,4251,13428,13365,13207,4527),
     ),
@@ -468,7 +450,7 @@ $config['e___4251'] = array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207,12864),
+        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207),
     ),
 );
 
@@ -656,25 +638,25 @@ $config['e___13369'] = array(
 );
 
 //RANK BY IDEAS:
-$config['n___13365'] = array(13339,3000,13202);
+$config['n___13365'] = array(13339,13202,3000);
 $config['e___13365'] = array(
     13339 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207,12864),
-    ),
-    3000 => array(
-        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
-        'm_name' => 'EXPERT CONTENT',
-        'm_desc' => '',
-        'm_parents' => array(6159,4251,13428,13365,13207,4527),
+        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207),
     ),
     13202 => array(
         'm_icon' => '<i class="fad fa-user-hard-hat idea" aria-hidden="true"></i>',
         'm_name' => 'IDEA MINERS',
         'm_desc' => '',
         'm_parents' => array(13451,6159,4251,13365,4527,13207),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="fas fa-info-square source"></i><i class="fas fa-"></i>',
+        'm_name' => 'NONFICTION SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(6159,4251,13428,13365,13207,4527),
     ),
 );
 
@@ -817,11 +799,11 @@ $config['e___13207'] = array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_name' => 'EXPERT AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207,12864),
+        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207),
     ),
     3000 => array(
-        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
-        'm_name' => 'EXPERT CONTENT',
+        'm_icon' => '<i class="fas fa-info-square source"></i><i class="fas fa-"></i>',
+        'm_name' => 'NONFICTION SOURCES',
         'm_desc' => '',
         'm_parents' => array(6159,4251,13428,13365,13207,4527),
     ),
@@ -859,137 +841,6 @@ $config['e___13037'] = array(
         'm_name' => '$233 USD PER MONTH',
         'm_desc' => '',
         'm_parents' => array(4755,13037),
-    ),
-);
-
-//TOPICS OF INTEREST:
-$config['n___10869'] = array(10712,13033,10735,10739,10809,10719,13031,10711,10781,10774,10782,10775,10769,10721,10737,13034,10738,11125,10773,7325,13036);
-$config['e___10869'] = array(
-    10712 => array(
-        'm_icon' => '<i class="fas fa-chart-line" aria-hidden="true"></i>',
-        'm_name' => 'PROFESSIONAL SKILLS',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    13033 => array(
-        'm_icon' => '<i class="fas fa-code"></i>',
-        'm_name' => 'SOFTWARE & TECHNOLOGY',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10735 => array(
-        'm_icon' => '<i class="fas fa-usd-circle mench-spin"></i>',
-        'm_name' => 'FINANCE & INVESTMENTS',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10739 => array(
-        'm_icon' => '<i class="fas fa-bullseye-arrow mench-spin" aria-hidden="true"></i>',
-        'm_name' => 'MARKETING & SALES',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10809 => array(
-        'm_icon' => '<i class="fad fa-camera" aria-hidden="true"></i>',
-        'm_name' => 'CONTENT CREATION',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10719 => array(
-        'm_icon' => '<i class="fas fa-pencil-ruler mench-spin" aria-hidden="true"></i>',
-        'm_name' => 'GRAPHICS & DESIGN',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    13031 => array(
-        'm_icon' => '<i class="fas fa-atom mench-spin"></i>',
-        'm_name' => 'SCIENCE & ACADEMICS',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10711 => array(
-        'm_icon' => '<i class="fas fa-yin-yang mench-spin" aria-hidden="true"></i>',
-        'm_name' => 'SELF CARE',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10781 => array(
-        'm_icon' => '<i class="far fa-head-side-brain mirror-h" aria-hidden="true"></i>',
-        'm_name' => 'MINDFULNESS & CREATIVITY',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10774 => array(
-        'm_icon' => '<i class="fas fa-egg"></i>',
-        'm_name' => 'FOOD & NUTRITIONS',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10782 => array(
-        'm_icon' => '<i class="far fa-futbol mench-spin"></i>',
-        'm_name' => 'FITNESS & SPORTS',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10775 => array(
-        'm_icon' => '<i class="far fa-pray" aria-hidden="true"></i>',
-        'm_name' => 'RELIGION & SPIRITUALITY',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10769 => array(
-        'm_icon' => '<i class="fas fa-spade"></i>',
-        'm_name' => 'MUSIC & GAMING',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10721 => array(
-        'm_icon' => '<i class="fas fa-plane mench-spin" aria-hidden="true"></i>',
-        'm_name' => 'LIFESTYLE & TRAVEL',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10737 => array(
-        'm_icon' => '<i class="fas fa-user-friends mirror-h"></i>',
-        'm_name' => 'RELATIONSHIPS',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    13034 => array(
-        'm_icon' => '<i class="fas fa-comments"></i>',
-        'm_name' => 'LISTENING & COMMUNICATION',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10738 => array(
-        'm_icon' => '<i class="fas fa-location-circle mench-spin"></i>',
-        'm_name' => 'LEADERSHIP & TEAMWORK',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    11125 => array(
-        'm_icon' => '<i class="fas fa-heart-circle mench-spin"></i>',
-        'm_name' => 'LOVE & FAMILY',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    10773 => array(
-        'm_icon' => '<i class="fas fa-child" aria-hidden="true"></i>',
-        'm_name' => 'CHILDREN & PARENTING',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    7325 => array(
-        'm_icon' => '<i class="fas fa-users"></i>',
-        'm_name' => 'NETWORKING & RECRUITEMENT',
-        'm_desc' => '',
-        'm_parents' => array(10869),
-    ),
-    13036 => array(
-        'm_icon' => '<i class="fas fa-suitcase"></i>',
-        'm_name' => 'CORPORATE CULTURE',
-        'm_desc' => '',
-        'm_parents' => array(10869),
     ),
 );
 
@@ -1098,61 +949,55 @@ $config['e___12969'] = array(
 );
 
 //SYNC ICONS IF DIFFERENT:
-$config['n___12968'] = array(13339,13466,2997,4446,3005,3147,13350,3192,2998);
+$config['n___12968'] = array(13339,2997,4446,3005,3147,13350,3192,2998);
 $config['e___12968'] = array(
     13339 => array(
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'AUTHORS',
+        'm_name' => 'EXPERT AUTHORS',
         'm_desc' => '',
-        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207,12864),
-    ),
-    13466 => array(
-        'm_icon' => '<i class="fad fa-calendar-star source"></i>',
-        'm_name' => 'EVENTS',
-        'm_desc' => '',
-        'm_parents' => array(12563,12968,12864),
+        'm_parents' => array(12563,6159,4251,12968,13428,13365,13207),
     ),
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
-        'm_name' => 'ARTICLES',
+        'm_name' => 'NONFICTION ARTICLES',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     4446 => array(
         'm_icon' => '<i class="fas fa-tachometer source" aria-hidden="true"></i>',
-        'm_name' => 'ASSESSMENTS',
+        'm_name' => 'NONFICTION ASSESSMENTS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     3005 => array(
         'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
-        'm_name' => 'BOOKS',
+        'm_name' => 'NONFICTION BOOKS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fas fa-presentation source" aria-hidden="true"></i>',
-        'm_name' => 'COURSES',
+        'm_name' => 'NONFICTION COURSES',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     13350 => array(
         'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
-        'm_name' => 'REPORTS',
+        'm_name' => 'NONFICTION REPORTS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
-        'm_name' => 'TOOLS',
+        'm_name' => 'NONFICTION TOOLS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     2998 => array(
         'm_icon' => '<i class="fas fa-play-circle source"></i>',
-        'm_name' => 'VIDEOS',
+        'm_name' => 'NONFICTION VIDEOS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
 );
 
@@ -1815,8 +1660,8 @@ $config['e___12523'] = array(
         'm_parents' => array(12523,12891,1326),
     ),
     13450 => array(
-        'm_icon' => '<i class="fas fa-text"></i>',
-        'm_name' => 'MENCH GLOSSARY TERMS',
+        'm_icon' => '<i class="fas fa-font"></i>',
+        'm_name' => 'MENCH GLOSSARY',
         'm_desc' => '',
         'm_parents' => array(2738,12523),
     ),
@@ -2945,7 +2790,7 @@ $config['e___12112'] = array(
 );
 
 //MENCH DROPDOWN MENUS:
-$config['n___12079'] = array(4486,4737,7585,10869,12500);
+$config['n___12079'] = array(4486,4737,7585,12500);
 $config['e___12079'] = array(
     4486 => array(
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
@@ -2964,12 +2809,6 @@ $config['e___12079'] = array(
         'm_name' => 'IDEA TYPE',
         'm_desc' => '',
         'm_parents' => array(12701,13408,13295,11054,12079,6201,4527,6204,10651,6160),
-    ),
-    10869 => array(
-        'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
-        'm_name' => 'TOPICS OF INTEREST',
-        'm_desc' => '',
-        'm_parents' => array(2738,12079,6225,6122,4527),
     ),
     12500 => array(
         'm_icon' => '<i class="fad fa-user-hard-hat"></i>',
@@ -3251,19 +3090,13 @@ $config['e___11089'] = array(
 );
 
 //MY SETTINGS:
-$config['n___6225'] = array(12289,10869,10957,3288,3286,13037,13519);
+$config['n___6225'] = array(12289,10957,3288,3286,13037,13519);
 $config['e___6225'] = array(
     12289 => array(
         'm_icon' => '<i class="fas fa-paw" aria-hidden="true"></i>',
         'm_name' => 'AVATAR',
         'm_desc' => '',
         'm_parents' => array(6225),
-    ),
-    10869 => array(
-        'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
-        'm_name' => 'TOPICS OF INTEREST',
-        'm_desc' => '',
-        'm_parents' => array(2738,12079,6225,6122,4527),
     ),
     10957 => array(
         'm_icon' => '<i class="fas fa-bolt" aria-hidden="true"></i>',
@@ -4769,83 +4602,59 @@ $config['e___10956'] = array(
 );
 
 //MENCH:
-$config['n___2738'] = array(13518,12467,4430,12864,12024,7555,6403,11035,7254,7146,13450,10869,13150);
+$config['n___2738'] = array(13518,12467,4430,12024,6403,7254,7146,13450,13150);
 $config['e___2738'] = array(
     13518 => array(
         'm_icon' => '<i class="fad fa-hand-holding-heart"></i>',
-        'm_name' => 'MENCH DONATIONS',
+        'm_name' => 'DONATIONS',
         'm_desc' => '',
         'm_parents' => array(2738),
     ),
     12467 => array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
-        'm_name' => 'MENCH COINS',
+        'm_name' => 'COINS',
         'm_desc' => '',
         'm_parents' => array(13369,10939,13507,12030,2738,4527),
     ),
     4430 => array(
         'm_icon' => '<i class="fad fa-user-hard-hat" aria-hidden="true"></i>',
-        'm_name' => 'MENCH MINERS',
+        'm_name' => 'MINERS',
         'm_desc' => '',
         'm_parents' => array(2738,13451,13438,13202,4364,10573),
     ),
-    12864 => array(
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_name' => 'EXPERT SOURCES',
-        'm_desc' => '',
-        'm_parents' => array(2738),
-    ),
     12024 => array(
         'm_icon' => '<i class="fas fa-flag" aria-hidden="true"></i>',
-        'm_name' => 'MENCH MILESTONES',
-        'm_desc' => '',
-        'm_parents' => array(2738),
-    ),
-    7555 => array(
-        'm_icon' => '<i class="fas fa-paper-plane" aria-hidden="true"></i>',
-        'm_name' => 'MENCH CHANNELS',
+        'm_name' => 'MILESTONES',
         'm_desc' => '',
         'm_parents' => array(2738),
     ),
     6403 => array(
         'm_icon' => '<i class="fas fa-code" aria-hidden="true"></i>',
-        'm_name' => 'MENCH CODE',
+        'm_name' => 'CODE',
         'm_desc' => '',
         'm_parents' => array(2738),
     ),
-    11035 => array(
-        'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
-        'm_name' => 'MENCH NAVIGATION',
-        'm_desc' => '',
-        'm_parents' => array(2738,4527),
-    ),
     7254 => array(
         'm_icon' => '<i class="fas fa-cog" aria-hidden="true"></i>',
-        'm_name' => 'MENCH SETTINGS',
+        'm_name' => 'SETTINGS',
         'm_desc' => '',
         'm_parents' => array(2738),
     ),
     7146 => array(
         'm_icon' => '<i class="fas fa-share-alt"></i>',
-        'm_name' => 'MENCH SOCIAL PROFILES',
+        'm_name' => 'SOCIAL PROFILES',
         'm_desc' => '',
         'm_parents' => array(2738),
     ),
     13450 => array(
-        'm_icon' => '<i class="fas fa-text"></i>',
-        'm_name' => 'MENCH GLOSSARY TERMS',
+        'm_icon' => '<i class="fas fa-font"></i>',
+        'm_name' => 'GLOSSARY',
         'm_desc' => '',
         'm_parents' => array(2738,12523),
     ),
-    10869 => array(
-        'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
-        'm_name' => 'TOPICS OF INTEREST',
-        'm_desc' => '',
-        'm_parents' => array(2738,12079,6225,6122,4527),
-    ),
     13150 => array(
         'm_icon' => '<i class="fas fa-weight"></i>',
-        'm_name' => 'MENCH RATING LEVELS',
+        'm_name' => 'RATING LEVELS',
         'm_desc' => '',
         'm_parents' => array(2738),
     ),
@@ -4915,7 +4724,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(10956,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,12229,13289,12446,13438,6150,3000,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,12211,2738,12467,6404,12079,10876,13488,6201,4341,4527,11054,12687,11035,6206,12112,6212,7277,12500,13479,13037,12969,10573,6225,12741,6287,12577,4755,13439,13365,13414,13510,12761,13023,4269,6204,13413,4251,11089,13522,6194,13424,12571,12574,13425,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12274,12563,6177,7358,12575,7357,12401,10957,12968,12523,10692,10869,13207,6103,6186,4593,13442,6146,13480);
+$config['n___4527'] = array(10956,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13291,13300,13298,13304,10593,12141,12327,12229,13289,12446,13438,6150,13491,13369,4229,12842,4486,12840,12589,11047,6159,13202,4485,7551,4986,12359,4603,12012,6193,10990,12273,4983,4737,7356,12138,7355,12400,11018,12675,12677,12420,13408,12413,7585,13022,12330,7309,7712,12883,12884,12955,12211,2738,12467,6404,12079,10876,13488,6201,4341,4527,11054,12687,11035,6206,12112,6212,7277,12500,13479,13037,12969,10573,6225,3000,12741,6287,12577,4755,13439,13365,13414,13510,12761,13023,4269,6204,13413,4251,11089,13522,6194,13424,12571,12574,13425,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12274,12563,6177,7358,12575,7357,12401,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480);
 $config['e___4527'] = array(
     10956 => array(
         'm_icon' => '<i class="fad fa-paw-alt source" aria-hidden="true"></i>',
@@ -5066,12 +4875,6 @@ $config['e___4527'] = array(
         'm_name' => 'DISCOVERY REMOVED',
         'm_desc' => '',
         'm_parents' => array(13459,6771,4527),
-    ),
-    3000 => array(
-        'm_icon' => '<i class="fad fa-file-certificate source"></i>',
-        'm_name' => 'EXPERT CONTENT',
-        'm_desc' => '',
-        'm_parents' => array(6159,4251,13428,13365,13207,4527),
     ),
     13491 => array(
         'm_icon' => '<i class="fas fa-text-size discover"></i>',
@@ -5383,7 +5186,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
         'm_name' => 'MENCH NAVIGATION',
         'm_desc' => '',
-        'm_parents' => array(2738,4527),
+        'm_parents' => array(6403,4527),
     ),
     6206 => array(
         'm_icon' => '<i class="fas fa-table source" aria-hidden="true"></i>',
@@ -5444,6 +5247,12 @@ $config['e___4527'] = array(
         'm_name' => 'MY SETTINGS',
         'm_desc' => '',
         'm_parents' => array(12571,13425,12574,11089,4527,11035),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="fas fa-info-square source"></i><i class="fas fa-"></i>',
+        'm_name' => 'NONFICTION SOURCES',
+        'm_desc' => '',
+        'm_parents' => array(6159,4251,13428,13365,13207,4527),
     ),
     12741 => array(
         'm_icon' => '<i class="fas fa-code"></i>',
@@ -5697,12 +5506,6 @@ $config['e___4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6771),
     ),
-    10869 => array(
-        'm_icon' => '<i class="fas fa-star" aria-hidden="true"></i>',
-        'm_name' => 'TOPICS OF INTEREST',
-        'm_desc' => '',
-        'm_parents' => array(2738,12079,6225,6122,4527),
-    ),
     13207 => array(
         'm_icon' => '<i class="fas fa-medal source"></i>',
         'm_name' => 'TOP SOURCES',
@@ -5937,56 +5740,56 @@ $config['e___6193'] = array(
     ),
 );
 
-//EXPERT CONTENT:
+//NONFICTION SOURCES:
 $config['n___3000'] = array(3005,2998,2997,13218,3147,4446,13350,3192);
 $config['e___3000'] = array(
     3005 => array(
         'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
         'm_name' => 'BOOKS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     2998 => array(
         'm_icon' => '<i class="fas fa-play-circle source"></i>',
         'm_name' => 'VIDEOS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
         'm_name' => 'ARTICLES',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     13218 => array(
         'm_icon' => '<i class="fas fa-microphone source"></i>',
         'm_name' => 'PODCASTS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,3000),
+        'm_parents' => array(12563,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fas fa-presentation source" aria-hidden="true"></i>',
         'm_name' => 'COURSES',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     4446 => array(
         'm_icon' => '<i class="fas fa-tachometer source" aria-hidden="true"></i>',
         'm_name' => 'ASSESSMENTS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     13350 => array(
         'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
         'm_name' => 'REPORTS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
         'm_name' => 'TOOLS',
         'm_desc' => '',
-        'm_parents' => array(12563,12864,12968,3000),
+        'm_parents' => array(12563,12968,3000),
     ),
 );
 
