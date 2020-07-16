@@ -271,7 +271,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==6255){
 
         $counter = x_coins_i(6255, $i_focus['i__id']);
-        $focus_tab .= '<p class="space-content">This idea has been discovered '.$counter.' times.</p>';
+        $focus_tab .= '<p class="space-content">This idea has been discovered by '.$counter.' miners.</p>';
 
     } elseif($x__type==13023){
 
