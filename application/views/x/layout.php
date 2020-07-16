@@ -283,13 +283,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 //MENCH URL
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</div>';
-                $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin:5px 0 34px 34px;">';
+                $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin: 5px 0 34px 34px; width: 233px; padding-left: 8px;">';
 
             } elseif($x__type2==13531){
 
                 //SHARE ON SOCIAL MEDIA
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</div>';
-                $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
+                $focus_tab .= '<div class="share-this space-content" style="margin:5px 0 34px;">';
                 foreach($this->config->item('e___13531') as $m2) {
                     $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share This Idea Using '.$m2['m_name'].'">'.$m2['m_icon'].'</div></div>';
                 }
