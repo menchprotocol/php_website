@@ -18,7 +18,7 @@ function view_e_load_more($page, $limit, $list_11029_count)
 }
 
 
-function w($i_stats){
+function view_i_tree_stats($i_stats){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
