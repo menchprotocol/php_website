@@ -1437,9 +1437,6 @@ label {
 }
 
 
-.top-icon{
-    vertical-align: top;
-}
 
 .i-left {
     display: block;
@@ -1577,11 +1574,16 @@ label {
 .show-max-active {display: none !important;}
 .active .show-max-active {display: inline-block !important;}
 
+.top-icon{
+    vertical-align: top;
+    margin-top: -6px;
+}
+
 /* RESPONSIVE */
 @media (max-width:767px) {
 
     .title-block-lg{
-        margin-top: -26px;
+        margin-top: -26px !important;
     }
     .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
