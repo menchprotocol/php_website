@@ -201,7 +201,7 @@ class I extends CI_Controller {
 
         //Idea Source:
         $this->X_model->create(array(
-            'x__type' => 4983, //IDEA COIN
+            'x__type' => 4983, //IDEA SOURCES
             'x__source' => $session_e['e__id'],
             'x__up' => $session_e['e__id'],
             'x__message' => '@'.$session_e['e__id'],

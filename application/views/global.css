@@ -1481,11 +1481,11 @@ label {
 }
 .texttype__lg {
     background-color: transparent;
-    font-size: 1.4em;
+    font-size: 2.4em;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     color:#000000;
-    padding:7px 0 0 0;
+    padding:0;
     margin-bottom: 5px;
 }
 .title-icon{

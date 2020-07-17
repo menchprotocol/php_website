@@ -196,26 +196,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12273){
 
-        //IDEAS
+        //COUNTER: Average Ideas
         $counter = $i_stats['i___13443'];
 
-        //IDEA or TIME difference?
-        if($i_stats['i___6169']!=$i_stats['i___6170'] || $i_stats['i___6161']!=$i_stats['i___6162']){
-
-            //Variable time range:
-            $focus_tab .= '<p class="space-content">The number of ideas you discover (and the time it takes to discover them) depends on the choices you make interactively along the way:</p>';
-            $focus_tab .= '<p class="space-content" style="margin-bottom:34px;">';
-            $focus_tab .= '<span class="discovering-paths">Minimum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i___6169'].'</span><span class="mono-space">'.view_time_hours($i_stats['i___6161']).'</span><br />';
-            $focus_tab .= '<span class="discovering-paths">Average:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i___13443'].'</span><span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span><br />';
-            $focus_tab .= '<span class="discovering-paths">Maximum:</span>'.$e___13291[12273]['m_icon'].' <span class="discovering-count montserrat idea">'.$i_stats['i___6170'].'</span><span class="mono-space">'.view_time_hours($i_stats['i___6162']).'</span>';
-            $focus_tab .= '</p>';
-
-        } else {
-
-            //Single Time range:
-            $focus_tab .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.( $counter<=1 ? 'this idea' : 'all '.$counter.' ideas' ).'.</p>';
-
-        }
+        //IDEA TREE STATS
+        $focus_tab .= view_i_tree_stats($i_stats);
 
         //IDEA PREVIOUS
         $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(

@@ -17,6 +17,44 @@ function view_e_load_more($page, $limit, $list_11029_count)
     return $ui;
 }
 
+
+function view_i_tree_stats($i_stats){
+
+    //IDEA STATUS BAR
+    $CI =& get_instance();
+    $ui = '';
+
+    //IDEA or TIME difference?
+    if($i_stats['i___6169']!=$i_stats['i___6170'] || $i_stats['i___6161']!=$i_stats['i___6162']){
+
+        //Variable time range:
+        $ui .= '<p class="space-content">Idea discovery depends on the choices made interactively along the way:</p>';
+        $ui .= '<p class="space-content" style="margin-bottom:34px;">';
+
+        foreach($CI->config->item('e___13544') as $e__id => $m){
+
+            $ui .= '<span class="discovering-paths">'.$m['m_name'].':</span>';
+            $ui .= $m['m_icon'].' <span class="discovering-count montserrat '.extract_icon_color($m['m_icon']).'">'.$i_stats['i___'.$e__id].'</span>';
+
+            //Print correlating Time Field:
+            foreach($CI->config->item('e___'.$e__id) as $e__id2 => $m2){
+                $ui .= '<span class="mono-space">'.view_time_hours($i_stats['i___'.$e__id2]).'</span><br />';
+            }
+
+        }
+
+        $ui .= '</p>';
+
+    } else {
+
+        //Single Time range:
+        $ui .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.( $i_stats['i___13443']<=1 ? 'this idea' : 'all '.$i_stats['i___13443'].' ideas' ).'.</p>';
+
+    }
+
+    return $ui;
+}
+
 function view_db_field($field_name){
 
     //Takes a database field name and returns a human-friendly version

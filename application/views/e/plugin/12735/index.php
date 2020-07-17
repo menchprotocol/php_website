@@ -54,7 +54,7 @@ foreach($this->I_model->fetch() as $in) {
         $stats['e_missing']++;
         $creator_id = ( count($i_es) ? $i_es[0]['x__source'] : $session_e['x__up'] );
         $this->X_model->create(array(
-            'x__type' => 4983, //IDEA COIN
+            'x__type' => 4983, //IDEA SOURCES
             'x__source' => $creator_id,
             'x__up' => $creator_id,
             'x__message' => '@'.$creator_id,

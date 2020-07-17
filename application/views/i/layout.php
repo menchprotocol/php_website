@@ -101,6 +101,7 @@ echo '<div class="doclear">&nbsp;</div>';
 
 
 //IDEA LAYOUT
+$i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 11018;
 $tab_content = '';
 echo '<ul class="nav nav-tabs nav-sm">';
@@ -129,7 +130,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //IDEA TREE
 
-        //IDEA TREE
+        //IDEA TREE NEXT
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -139,6 +140,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //CHILD IDEAS
         $counter = count($is_next);
+
+
+        //IDEA TREE STATS
+        $focus_tab .= view_i_tree_stats($i_stats);
+
 
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_is">';
         foreach($is_next as $next_i) {
@@ -195,6 +201,21 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //MENCH COINS
         $counter = x_coins_i($x__type, $i_focus['i__id']);
         $focus_tab = x_coins_i($x__type, $i_focus['i__id'], 1);
+
+    } elseif($x__type==13543) {
+
+        //IDEA SOURCES
+        $i_notes = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4983, //IDEA AUTHORS
+            'x__right' => $i_focus['i__id'],
+        ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
+        $focus_tab .= view_i_note_mix($x__type, $i_notes);
+
+        //Append More Sources:
+        $focus_tab .= view_i_note_mix($x__type, $i_notes);
+
+        //TODO
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 

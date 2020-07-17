@@ -51,7 +51,7 @@ class I_model extends CI_Model
                 $this->X_model->create(array(
                     'x__source' => $x__source,
                     'x__up' => $x__source,
-                    'x__type' => 4983, //IDEA COIN
+                    'x__type' => 4983, //IDEA SOURCES
                     'x__message' => '@'.$x__source,
                     'x__right' => $add_fields['i__id'],
                 ), true);
@@ -829,7 +829,7 @@ class I_model extends CI_Model
                     $this->X_model->create(array(
                         'x__source' => $x__source,
                         'x__up' => $e__profile_id,
-                        'x__type' => 4983, //IDEA COIN
+                        'x__type' => 4983, //IDEA SOURCES
                         'x__message' => '@'.$e__profile_id,
                         'x__right' => $next_i['i__id'],
                     ), true);
