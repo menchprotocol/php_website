@@ -21,13 +21,13 @@ $current_mench = current_mench();
     <?php
     //MINER VARIABLES
     echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_e && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
-    echo ' var js_pl_id = ' . ( $session_e ? $session_e['e__id'] : 0 ) . '; ';
+    echo ' var js_pl_id = ' . ( isset($session_e['e__id']) ? $session_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_name = \'' . ( $session_e ? $session_e['e__title'] : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
     //JAVASCRIPT PLATFORM MEMORY
     foreach($this->config->item('e___11054') as $x__type => $m){
-        if(count($this->config->item('e___'.$x__type))){
+        if(is_array($this->config->item('e___'.$x__type)) && count($this->config->item('e___'.$x__type))){
             echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
             echo ' var js_n___'.$x__type.' = ' . json_encode($this->config->item('n___'.$x__type)) . ';';
         }
