@@ -1580,6 +1580,9 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .title-block-lg{
+        margin-top: -26px;
+    }
     .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
         font-size:0.667em !important;
