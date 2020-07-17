@@ -1655,25 +1655,21 @@ class E extends CI_Controller
 
         ##Email Subject
         $subject = 'Welcome to Mench 👐';
-        $profile_url = $this->config->item('base_url').'@'.$added_e['new_e']['e__id'];
+        $profile_url = $this->config->item('base_url').'/@'.$added_e['new_e']['e__id'];
 
         ##Email Body
-        $html_message = '<div>Hi, '.$name_parts[0].'! 👋</div>';
-        $html_message .= '<div>'.view_12687(7562).'</div>';
-        $html_message .= '<br />';
-        $html_message .= 'You can manage your profile here: <a href="'.$profile_url.'">'.$profile_url.'</a>';
-        $html_message .= '<br />';
+        $html_message  = '<div>Hi, '.$name_parts[0].'! 👋</div><br />';
+        $html_message .= '<div>'.view_12687(7562).'</div><br />';
+        $html_message .= '<div>You can manage your profile here: <a href="'.$profile_url.'">'.$profile_url.'</a></div><br />';
         $html_message .= '<div>'.view_12687(12691).'</div><br />';
         $html_message .= '<div>MENCH</div>';
 
         //Send & Log Email:
+        $this->X_model->email_sent(array($_POST['input_email']), $subject, $html_message);
         $invite_x = $this->X_model->create(array(
             'x__type' => 7562, //Miner Signin Joined Mench
             'x__source' => $added_e['new_e']['e__id'],
             'x__left' => intval($_POST['sign_i__id']),
-            'x__metadata' => array(
-                'email_log' => $this->X_model->email_sent(array($_POST['input_email']), $subject, $html_message),
-            ),
         ));
 
         //Assign session & log login transaction:

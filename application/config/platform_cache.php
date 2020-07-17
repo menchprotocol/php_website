@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-17 15:09:14 PST
-$config['s___12274'] = 4989; //SOURCES
+//Generated 2020-07-17 15:27:47 PST
+$config['s___12274'] = 4990; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122140; //DISCOVERIES
 
@@ -413,7 +413,7 @@ $config['e___13479'] = array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => 'For guests',
-        'm_parents' => array(13479,10876,4527,11035),
+        'm_parents' => array(12687,13479,10876,4527,11035),
     ),
     12500 => array(
         'm_icon' => '<i class="fad fa-user-hard-hat"></i>',
@@ -1436,7 +1436,7 @@ $config['e___12741'] = array(
 );
 
 //MENCH MESSAGES:
-$config['n___12687'] = array(12691,12694,7562,12695);
+$config['n___12687'] = array(12691,12694,7562,12695,4269);
 $config['e___12687'] = array(
     12691 => array(
         'm_icon' => '',
@@ -1461,6 +1461,12 @@ $config['e___12687'] = array(
         'm_name' => 'SAVING MESSAGE',
         'm_desc' => 'Learning everyday 😎 | Growing with you 🌸 | Getting smarter ^~^',
         'm_parents' => array(12687),
+    ),
+    4269 => array(
+        'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_name' => 'SIGN IN/UP',
+        'm_desc' => 'Mench is an open-source crypto-game for discovering ideas that matter.',
+        'm_parents' => array(12687,13479,10876,4527,11035),
     ),
 );
 
@@ -1835,7 +1841,7 @@ $config['e___10876'] = array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => 'https://mench.com/e/signin',
-        'm_parents' => array(13479,10876,4527,11035),
+        'm_parents' => array(12687,13479,10876,4527,11035),
     ),
     13207 => array(
         'm_icon' => '<i class="fas fa-medal source"></i>',
@@ -3372,8 +3378,8 @@ $config['e___11035'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
-        'm_desc' => 'Mench is a non-profit & open-source Social Ideation Network for spreading ideas that matter.',
-        'm_parents' => array(13479,10876,4527,11035),
+        'm_desc' => '',
+        'm_parents' => array(12687,13479,10876,4527,11035),
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-list source" aria-hidden="true"></i>',
@@ -5424,7 +5430,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_name' => 'SIGN IN/UP',
         'm_desc' => '',
-        'm_parents' => array(13479,10876,4527,11035),
+        'm_parents' => array(12687,13479,10876,4527,11035),
     ),
     6204 => array(
         'm_icon' => '<i class="fas fa-check" aria-hidden="true"></i>',

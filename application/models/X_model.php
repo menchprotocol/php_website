@@ -404,14 +404,13 @@ class X_model extends CI_Model
                 $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'/@5967" target="_blank">@5967</a></div>';
 
                 //Send email:
-                $dispatched_email = $this->X_model->email_sent($sub_emails, $subject, $html_message);
+                $this->X_model->email_sent($sub_emails, $subject, $html_message);
 
                 //Log emails sent:
                 foreach($sub_e__ids as $to_e__id){
                     $this->X_model->create(array(
                         'x__type' => 5967, //Transaction Carbon Copy Email
                         'x__source' => $to_e__id, //Sent to this miner
-                        'x__metadata' => $dispatched_email, //Save a copy of email
                         'x__reference' => $add_fields['x__id'], //Save transaction
 
                         //Import potential Idea/source connections from transaction:
@@ -645,7 +644,7 @@ class X_model extends CI_Model
             'credentials' => $this->config->item('cred_aws'),
         ]);
 
-        return htmlentities($this->CLIENT->sendEmail(array(
+        $this->CLIENT->sendEmail(array(
             // Source is required
             'Source' => config_var(3288),
             // Destination is required
@@ -678,7 +677,10 @@ class X_model extends CI_Model
             ),
             'ReplyToAddresses' => array(config_var(3288)),
             'ReturnPath' => config_var(3288),
-        )));
+        ));
+
+        return true;
+
     }
 
 
