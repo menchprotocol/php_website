@@ -52,7 +52,7 @@
         } else {
 
             //None for now:
-            echo '<div class="alert alert-info no-margin"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>Nothing added to '.$e___11035[12969]['m_name'].' just yet.</div>';
+            echo '<div class="alert alert-info no-margin"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>No '.$e___11035[12969]['m_name'].' just yet.</div>';
 
         }
 
