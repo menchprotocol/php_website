@@ -1,11 +1,5 @@
 <?php
 
-function is_dev_environment()
-{
-    //Determines if our development environment is development or not
-    return (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'local.mench.co');
-}
-
 function includes_any($string, $items)
 {
     //Determines if any of the items in array $items includes $string

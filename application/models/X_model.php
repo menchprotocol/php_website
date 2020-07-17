@@ -309,7 +309,7 @@ class X_model extends CI_Model
 
 
         //See if this transaction type has any subscribers:
-        if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
+        if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */){
 
             //Try to fetch subscribers:
             $e___5967 = $this->config->item('e___5967'); //Include subscription details
@@ -637,10 +637,6 @@ class X_model extends CI_Model
          *
          * */
 
-        if (is_dev_environment()) {
-            return false; //We cannot send emails on Dev server
-        }
-
         //Loadup amazon SES:
         require_once('application/libraries/aws/aws-autoloader.php');
         $this->CLIENT = new Aws\Ses\SesClient([
@@ -649,7 +645,7 @@ class X_model extends CI_Model
             'credentials' => $this->config->item('cred_aws'),
         ]);
 
-        return $this->CLIENT->sendEmail(array(
+        return objectToArray($this->CLIENT->sendEmail(array(
             // Source is required
             'Source' => config_var(3288),
             // Destination is required
@@ -682,7 +678,7 @@ class X_model extends CI_Model
             ),
             'ReplyToAddresses' => array(config_var(3288)),
             'ReturnPath' => config_var(3288),
-        ));
+        )));
     }
 
 
