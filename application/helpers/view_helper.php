@@ -1389,19 +1389,19 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     }
 
 
-
     //ROW
     $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ( $is_parent ? ' parent-e ' : '' ) . ' '. $extra_class  . '" e-id="' . $e['e__id'] . '" en-status="' . $e['e__status'] . '" x__id="'.$x__id.'" x-status="'.( $x__id ? $e['x__status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
 
 
-    //RIGHT EDITING:
-    $ui .= '<div class="pull-right inline-block">';
-    $ui .= '<div class="note-editor edit-off">';
-    $ui .= '<span class="show-on-hover">';
-
     if($control_enabled && $miner_is_e){
+
+        //RIGHT EDITING:
+        $ui .= '<div class="pull-right inline-block">';
+        $ui .= '<div class="note-editor edit-off">';
+        $ui .= '<span class="show-on-hover">';
+
         if($is_x_e){
 
             //Sort
@@ -1419,11 +1419,12 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             $ui .= '<span><a href="javascript:void(0);" onclick="e_only_remove(' . $x__id . ', '.$e['x__type'].')"><i class="fas fa-times black"></i></a></span>';
 
         }
-    }
 
-    $ui .= '</span>';
-    $ui .= '</div>';
-    $ui .= '</div>';
+        $ui .= '</span>';
+        $ui .= '</div>';
+        $ui .= '</div>';
+
+    }
 
 
 
@@ -1459,14 +1460,16 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         }
 
     $ui .= '</div>';
+
+
     $ui .= '<div class="col-sm-4 col2nd">';
-    //MENCH COINS
-    $ui .= '<div class="row">';
-    $ui .= '<div class="col-4"><span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($list_11029_count[0]['totals']).'</span></div>';
-    $ui .= '<div class="col-4">'.view_coins_e(0, $e['e__id']).'</div>';
-    $ui .= '<div class="col-4">'.view_coins_x(0, $e['e__id']).'</div>';
-    $ui .= '</div>';
-    $ui .= '</div>';
+        //MENCH COINS
+        $ui .= '<div class="row">';
+            $ui .= '<div class="col-4"><span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($list_11029_count[0]['totals']).'</span></div>';
+            $ui .= '<div class="col-4">'.view_coins_e(0, $e['e__id']).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_x(0, $e['e__id']).'</div>';
+            $ui .= '</div>';
+        $ui .= '</div>';
     $ui .= '</div>';
 
 
