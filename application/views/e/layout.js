@@ -680,7 +680,7 @@ function e_update() {
     };
 
     //Show spinner:
-    $('.save_e_changes').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12695) +  '').hide().fadeIn();
+    $('.save_e_changes').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695) +  '').hide().fadeIn();
 
 
     $.post("/e/e_update", modify_data, function (data) {
@@ -893,7 +893,7 @@ function e_update_radio(parent_e__id, selected_e__id, enable_mulitiselect){
 function e_update_email(){
 
     //Show spinner:
-    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12695)).hide().fadeIn();
+    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_update_email", {
@@ -924,7 +924,7 @@ function e_update_email(){
 function e_update_password(){
 
     //Show spinner:
-    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12695)).hide().fadeIn();
+    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_update_password", {

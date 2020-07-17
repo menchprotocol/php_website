@@ -345,7 +345,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
 
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item montserrat no-side-padding"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_view_platform_message(12695) +  '</div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item montserrat no-side-padding"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_view_12687(12695) +  '</div>');
 
 
     //Update backend:

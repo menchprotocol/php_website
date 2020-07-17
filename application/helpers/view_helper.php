@@ -1166,7 +1166,7 @@ function view_i_note_mix($x__type, $i_notes){
 
 }
 
-function view_platform_message($e__id){
+function view_12687($e__id){
     $CI =& get_instance();
     $e___12687 = $CI->config->item('e___12687');
     if(!substr_count($e___12687[$e__id]['m_desc'], " | ")){

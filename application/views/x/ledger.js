@@ -35,7 +35,7 @@ function check_i_e__status(){
 function x_load(x_filters, x_joined_by, page_num){
 
     //Show spinner:
-    $('#x_page_'+page_num).html('<div class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_platform_message(12694) +  '</div>').hide().fadeIn();
+    $('#x_page_'+page_num).html('<div class="montserrat"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12694) +  '</div>').hide().fadeIn();
 
     //Load report based on input fields:
     $.post("/x/x_load", {

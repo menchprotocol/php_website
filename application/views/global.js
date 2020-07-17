@@ -156,7 +156,7 @@ function view_search_result(algolia_object){
 }
 
 
-function js_view_platform_message(e__id){
+function js_view_12687(e__id){
     var messages = js_e___12687[e__id]['m_desc'].split(" | ");
     if(messages.length == 1){
         //Return message:

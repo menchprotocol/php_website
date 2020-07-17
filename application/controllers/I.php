@@ -910,7 +910,7 @@ class I extends CI_Controller {
                     return view_json(array(
                         'status' => 1,
                         'delete_from_ui' => 1,
-                        'message' => view_platform_message(12695),
+                        'message' => view_12687(12695),
                     ));
                 } else {
                     return view_json(array(

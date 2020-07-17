@@ -72,7 +72,7 @@ $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; te
 $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:30px; text-align: center; display: inline-block;">🔴</b><b style="min-width:55px; display: inline-block;">'.( $x_coins_growth_rate >= 0 ? '+' : '-' ).$x_coins_growth_rate.'%</b><span style="min-width:55px; display: inline-block;">(<span title="'.number_format($x_coins_last_week[0]['totals'], 0).'" style="border-bottom:1px dotted #999999;">'.view_number($x_coins_last_week[0]['totals']).'</span>)</span><a href="'.$this->config->item('base_url').'" target="_blank" style="color: #FF0000; font-weight:bold; text-decoration:none;">'.$e___12467[6255]['m_name'].' &raquo;</a></div>';
 
 $html_message .= '<br />';
-$html_message .= '<div>'.view_platform_message(12691).'</div>';
+$html_message .= '<div>'.view_12687(12691).'</div>';
 $html_message .= '<div>MENCH</div>';
 
 $subscriber_filters = array(
