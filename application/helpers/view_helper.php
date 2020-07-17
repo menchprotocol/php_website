@@ -1337,6 +1337,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $inline_editing = $control_enabled && superpower_active(13402, true);
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
+    $miner_is_e = ( superpower_active(13422, true) ? true : $miner_is_e );
 
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
