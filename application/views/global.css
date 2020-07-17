@@ -1456,6 +1456,7 @@ label {
     width:         calc(100% - 33px) !important;
 }
 .block-one {
+    padding-top: 10px;
     width: -webkit-calc(100% - 10px) !important;
     width:    -moz-calc(100% - 10px) !important;
     width:         calc(100% - 10px) !important;
@@ -1578,7 +1579,7 @@ label {
     margin-top: -12px;
 }
 .title-block-lg{
-    margin-top: -48px !important;
+    margin-top: -46px !important;
 }
 
 /* RESPONSIVE */
