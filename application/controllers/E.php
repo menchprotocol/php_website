@@ -1654,12 +1654,12 @@ class E extends CI_Controller
 
 
         ##Email Subject
-        $subject = 'Welcome to Mench '.$name_parts[0].' 👐';
+        $subject = 'Welcome to Mench 👐';
         $profile_url = $this->config->item('base_url').'@'.$added_e['new_e']['e__id'];
 
         ##Email Body
         $html_message = '<div>Hi, '.$name_parts[0].'! 👋</div>';
-        $html_message = '<div>'.view_12687(7562).'</div>';
+        $html_message .= '<div>'.view_12687(7562).'</div>';
         $html_message .= '<br />';
         $html_message .= 'You can manage your profile here: <a href="'.$profile_url.'">'.$profile_url.'</a>';
         $html_message .= '<br />';

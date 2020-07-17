@@ -100,8 +100,18 @@ foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscri
         'x__down' => $subscribed_miner['e__id'],
     )) as $e_email){
         if(filter_var($e_email['x__message'], FILTER_VALIDATE_EMAIL)){
+
             //Send Email
-            $this->X_model->email_sent(array($e_email['x__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_miner['e__title']).' 👋</div>'.$html_message);
+            $email_log = $this->X_model->email_sent(array($e_email['x__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_miner['e__title']).' 👋</div>'.$html_message);
+
+            $invite_x = $this->X_model->create(array(
+                'x__type' => 12114,
+                'x__source' => $subscribed_miner['e__id'],
+                'x__metadata' => array(
+                    'email_log' => $email_log,
+                ),
+            ));
+
             $email_recipients++;
         }
     }
