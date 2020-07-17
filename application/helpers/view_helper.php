@@ -18,7 +18,7 @@ function view_e_load_more($page, $limit, $list_11029_count)
 }
 
 
-function view_i_tree_stats($i_stats){
+function w($i_stats){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -963,7 +963,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
 
         }
     $ui .= '</div>';
-    $ui .= '<div class="col-sm-4">';
+    $ui .= '<div class="col-sm-4 col2nd">';
         //MENCH COINS
         $ui .= '<div class="row">';
             $ui .= '<div class="col-4">'.view_coins_e($i['i__id']).'</div>';
@@ -1357,6 +1357,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
     //Allow source to see all their own transactions:
     $is_hidden = (!$session_e || $session_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
+    $e_url = ( $is_x_progress ? '/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'] : '/@'.$e['e__id'] );
+
 
     if(!$session_e && (!$is_public || !$is_x_published)){
         //Not logged in, so should only see published:
@@ -1387,67 +1389,11 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
-    //PORTFOLIO COUNT (SYNC WITH NEXT IDEA COUNT)
-    if($superpower_12706){
-        $child_counter = '';
-        if($superpower_10939){
-            if($list_11029_count[0]['totals'] > 0){
-                $child_counter .= '<span class="pull-right" '.( $inline_editing ? ' style="margin-top: -19px;" ' : '' ).'><span class="icon-block doright montserrat source" title="'.number_format($list_11029_count[0]['totals'], 0).' PORTFOLIO SOURCES">'.view_number($list_11029_count[0]['totals']).'</span></span>';
-                $child_counter .= '<div class="doclear">&nbsp;</div>';
-            }
-        }
-    }
-
-
     //ROW
     $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ( $is_parent ? ' parent-e ' : '' ) . ' '. $extra_class  . '" e-id="' . $e['e__id'] . '" en-status="' . $e['e__status'] . '" x__id="'.$x__id.'" x-status="'.( $x__id ? $e['x__status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
-    $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
 
-
-    //SOURCE
-    $ui .= '<td class="MENCHcolumn1">';
-
-    $e_url = ( $is_x_progress ? '/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'] : '/@'.$e['e__id'] );
-
-    //SOURCE ICON
-    $ui .= '<a href="'.$e_url.'" '.( $is_x_e ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
-
-
-    //SOURCE TOOLBAR?
-    if($inline_editing){
-
-        $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $miner_is_e, 0, false, null, extract_icon_color($e['e__icon']));
-
-        if($superpower_12706){
-            $ui .= $child_counter;
-            $ui .= '<div class="space-content">'.$box_items_list.'</div>';
-        }
-
-    } else {
-
-        //SOURCE NAME
-        $ui .= '<a href="'.$e_url.'" class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'">';
-        $ui .= $box_items_list;
-        $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
-        if($list_11029_count[0]['totals'] > 0){
-            $ui .= ' ['.view_number($list_11029_count[0]['totals']).']';
-        }
-        if($superpower_12706){
-            $ui .= $child_counter;
-        }
-        $ui .= '</a>';
-
-    }
-
-    $ui .= '</td>';
-
-
-
-
-    //IDEA
-    $ui .= '<td class="MENCHcolumn2 source">';
 
     //RIGHT EDITING:
     $ui .= '<div class="pull-right inline-block">';
@@ -1478,21 +1424,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $ui .= '</div>';
     $ui .= '</div>';
 
-    $ui .= view_coins_e(0, $e['e__id']);
-    $ui .= '</td>';
 
-
-
-
-    //DISCOVER
-    $ui .= '<td class="MENCHcolumn3 discover">';
-    $ui .= view_coins_x(0, $e['e__id']);
-    $ui .= '</td>';
-
-
-
-
-    $ui .= '</tr></table>';
 
 
 
@@ -1507,6 +1439,53 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '</span>';
         $ui .= '</div>';
     }
+
+
+
+
+
+    $ui .= '<div class="row">';
+    $ui .= '<div class="col-sm-8">';
+
+        //SOURCE ICON
+        $ui .= '<a href="'.$e_url.'" '.( $is_x_e ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
+
+
+        //SOURCE TITLE TEXT EDITOR
+        if($inline_editing){
+
+            $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $miner_is_e, 0, false, null, extract_icon_color($e['e__icon']));
+
+            if($superpower_12706){
+                $ui .= '<div class="space-content">'.$box_items_list.'</div>';
+            }
+
+        } else {
+
+            //SOURCE NAME
+            $ui .= '<a href="'.$e_url.'" class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'">';
+            $ui .= $box_items_list;
+            $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
+            if($list_11029_count[0]['totals'] > 0){
+                $ui .= ' ['.view_number($list_11029_count[0]['totals']).']';
+            }
+            $ui .= '</a>';
+
+        }
+
+    $ui .= '</div>';
+    $ui .= '<div class="col-sm-4 col2nd">';
+    //MENCH COINS
+    $ui .= '<div class="row">';
+    $ui .= '<div class="col-4"><span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($list_11029_count[0]['totals']).'</span></div>';
+    $ui .= '<div class="col-4">'.view_coins_e(0, $e['e__id']).'</div>';
+    $ui .= '<div class="col-4">'.view_coins_x(0, $e['e__id']).'</div>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+
+
 
 
 
