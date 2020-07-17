@@ -645,7 +645,7 @@ class X_model extends CI_Model
             'credentials' => $this->config->item('cred_aws'),
         ]);
 
-        return objectToArray($this->CLIENT->sendEmail(array(
+        return htmlentities($this->CLIENT->sendEmail(array(
             // Source is required
             'Source' => config_var(3288),
             // Destination is required
