@@ -105,9 +105,13 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 
 table td { border: none !important; }
 
+.texttype__lg, h1{ font-size: 2.4em; }
+h1 i {
+    font-size:0.417em !important;
+}
+
 h1 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 2.4em;
     margin-top:0;
     margin-bottom:34px;
     margin-left: 0;
@@ -116,10 +120,6 @@ h1 {
 
 .list-group-item h1 {
     margin-bottom:8px;
-}
-
-h1 i {
-    font-size:0.417em !important;
 }
 
 h2 {
@@ -1480,7 +1480,6 @@ label {
 }
 .texttype__lg {
     background-color: transparent;
-    font-size: 2.4em;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     color:#000000;
@@ -1580,6 +1579,11 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .texttype__lg, h1{ font-size: 1.8em; }
+    h1 i {
+        font-size:0.556em !important;
+    }
 
     .active .show-max-active {display:none !important;}
     .mini-hidden{
