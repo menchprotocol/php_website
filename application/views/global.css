@@ -1580,9 +1580,9 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
-    .texttype__lg, h1{ font-size: 1.8em; }
+    .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
-        font-size:0.556em !important;
+        font-size:0.667em !important;
     }
 
     .active .show-max-active {display:none !important;}
