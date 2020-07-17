@@ -956,7 +956,6 @@ textarea.note-textarea{
     display: block;
     padding-left: 33px;
     padding-right:0;
-    margin-top: -37px !important;
     margin-bottom:0;
 }
 .title-no-right {
@@ -1576,14 +1575,20 @@ label {
 
 .top-icon{
     vertical-align: top;
-    margin-top: -6px;
+    margin-top: -12px;
+}
+.title-block-lg{
+    margin-top: -48px !important;
 }
 
 /* RESPONSIVE */
 @media (max-width:767px) {
 
     .title-block-lg{
-        margin-top: -26px !important;
+        margin-top: -32px !important;
+    }
+    .top-icon{
+        margin-top: -6px;
     }
     .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
