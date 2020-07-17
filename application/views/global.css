@@ -1456,7 +1456,7 @@ label {
     width:         calc(100% - 33px) !important;
 }
 .block-one {
-    padding-top: 10px;
+    padding-top: 5px;
     width: -webkit-calc(100% - 10px) !important;
     width:    -moz-calc(100% - 10px) !important;
     width:         calc(100% - 10px) !important;
