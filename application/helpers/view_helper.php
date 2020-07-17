@@ -1395,37 +1395,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
-    if($control_enabled && $miner_is_e){
-
-        //RIGHT EDITING:
-        $ui .= '<div class="pull-right inline-block">';
-        $ui .= '<div class="note-editor edit-off">';
-        $ui .= '<span class="show-on-hover">';
-
-        if($is_x_e){
-
-            //Sort
-            if(!$is_parent && $superpower_10939){
-                $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
-            }
-
-            //Manage source transaction:
-            $ui .= '<span class="'.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
-
-
-        } elseif($is_e_only){
-
-            //Allow to remove:
-            $ui .= '<span><a href="javascript:void(0);" onclick="e_only_remove(' . $x__id . ', '.$e['x__type'].')"><i class="fas fa-times black"></i></a></span>';
-
-        }
-
-        $ui .= '</span>';
-        $ui .= '</div>';
-        $ui .= '</div>';
-
-    }
-
 
 
 
@@ -1467,7 +1436,40 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="row">';
             $ui .= '<div class="col-4"><span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($list_11029_count[0]['totals']).'</span></div>';
             $ui .= '<div class="col-4">'.view_coins_e(0, $e['e__id']).'</div>';
-            $ui .= '<div class="col-4">'.view_coins_x(0, $e['e__id']).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_x(0, $e['e__id']);
+
+            if($control_enabled && $miner_is_e){
+
+                //RIGHT EDITING:
+                $ui .= '<div class="pull-right inline-block">';
+                $ui .= '<div class="note-editor edit-off">';
+                $ui .= '<span class="show-on-hover">';
+
+                if($is_x_e){
+
+                    //Sort
+                    if(!$is_parent && $superpower_10939){
+                        $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
+                    }
+
+                    //Manage source transaction:
+                    $ui .= '<span class="'.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+
+
+                } elseif($is_e_only){
+
+                    //Allow to remove:
+                    $ui .= '<span><a href="javascript:void(0);" onclick="e_only_remove(' . $x__id . ', '.$e['x__type'].')"><i class="fas fa-times black"></i></a></span>';
+
+                }
+
+                $ui .= '</span>';
+                $ui .= '</div>';
+                $ui .= '</div>';
+
+            }
+
+            $ui .='</div>';
             $ui .= '</div>';
         $ui .= '</div>';
     $ui .= '</div>';
