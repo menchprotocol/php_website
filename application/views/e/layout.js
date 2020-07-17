@@ -18,6 +18,8 @@ $(document).ready(function () {
     }
 
 
+    autosize($('.text__6197_'+e_focus_id));
+
     //Update Profile counters to account for sources that miner may not be able to see due to missing permissions...
     $('.en-type-counter-11030').text($('#list_11030 .en-item').not(".hidden").length);
 
