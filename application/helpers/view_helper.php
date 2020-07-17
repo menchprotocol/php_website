@@ -1442,7 +1442,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
                 //RIGHT EDITING:
                 $ui .= '<div class="pull-right inline-block">';
-                $ui .= '<div class="note-editor edit-off">';
+                $ui .= '<div class="note-editor note-editor-compact edit-off">';
                 $ui .= '<span class="show-on-hover">';
 
                 if($is_x_e){
