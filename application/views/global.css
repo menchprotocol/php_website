@@ -1580,7 +1580,7 @@ label {
 
 .top-icon{
     vertical-align: top;
-    margin-top: -17px;
+    margin-top: -8px;
 }
 .title-block-lg{
     margin-top: -46px !important;
@@ -1588,6 +1588,11 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .top-icon{
+        vertical-align: top;
+        margin-top: -17px;
+    }
 
     .col2nd .row { padding-left: 34px; }
 
