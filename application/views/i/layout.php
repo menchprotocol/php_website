@@ -198,6 +198,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==12274) {
 
         //SOURCES
+        $counter = view_coins_i(12274,  $i_focus, false);
+
         $direct_e_ids = array();
         $i_notes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE

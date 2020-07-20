@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-20 11:38:11 PST
+//Generated 2020-07-20 11:39:57 PST
 $config['s___12274'] = 4989; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122142; //DISCOVERIES
@@ -942,7 +942,7 @@ $config['e___13291'] = array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_name' => 'IDEA TREE IDEAS',
         'm_desc' => '',
-        'm_parents' => array(12273,13291,11018),
+        'm_parents' => array(12273,13291),
     ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -3070,14 +3070,8 @@ $config['e___4486'] = array(
 );
 
 //IDEA TABS:
-$config['n___11018'] = array(11020,12274,12273,6255,12969,12896,7545,4601,12419,10573,12589,11047);
+$config['n___11018'] = array(12274,12273,6255,12969,12896,7545,4601,12419,10573,12589,11047);
 $config['e___11018'] = array(
-    11020 => array(
-        'm_icon' => '<i class="fas fa-circle idea"></i>',
-        'm_name' => 'IDEA TREE IDEAS',
-        'm_desc' => '',
-        'm_parents' => array(12273,13291,11018),
-    ),
     12274 => array(
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_name' => 'SOURCES',
