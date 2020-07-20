@@ -1591,11 +1591,11 @@ label {
 
     .col2nd .row { padding-left: 34px; }
 
+    .top-icon{
+        margin-top: -12px;
+    }
     .title-block-lg{
         margin-top: -32px !important;
-    }
-    .top-icon{
-        margin-top: -6px;
     }
     .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
