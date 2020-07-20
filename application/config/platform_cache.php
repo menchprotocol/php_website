@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-20 11:39:57 PST
+//Generated 2020-07-20 12:22:47 PST
 $config['s___12274'] = 4989; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122142; //DISCOVERIES
@@ -203,7 +203,7 @@ $config['e___13530'] = array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(12574,13450,11089,13530,13291,12701,12677,10939,11018,12467,12228,4527),
+        'm_parents' => array(12574,13450,11089,13530,13291,12677,10939,11018,12467,12228,4527),
     ),
     12419 => array(
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
@@ -954,7 +954,7 @@ $config['e___13291'] = array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(12574,13450,11089,13530,13291,12701,12677,10939,11018,12467,12228,4527),
+        'm_parents' => array(12574,13450,11089,13530,13291,12677,10939,11018,12467,12228,4527),
     ),
 );
 
@@ -1516,7 +1516,7 @@ $config['e___12677'] = array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(12574,13450,11089,13530,13291,12701,12677,10939,11018,12467,12228,4527),
+        'm_parents' => array(12574,13450,11089,13530,13291,12677,10939,11018,12467,12228,4527),
     ),
     12969 => array(
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
@@ -1603,7 +1603,7 @@ $config['e___12467'] = array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(12574,13450,11089,13530,13291,12701,12677,10939,11018,12467,12228,4527),
+        'm_parents' => array(12574,13450,11089,13530,13291,12677,10939,11018,12467,12228,4527),
     ),
 );
 
@@ -1730,7 +1730,7 @@ $config['e___12574'] = array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(12574,13450,11089,13530,13291,12701,12677,10939,11018,12467,12228,4527),
+        'm_parents' => array(12574,13450,11089,13530,13291,12677,10939,11018,12467,12228,4527),
     ),
     12273 => array(
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
@@ -3088,7 +3088,7 @@ $config['e___11018'] = array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(12574,13450,11089,13530,13291,12701,12677,10939,11018,12467,12228,4527),
+        'm_parents' => array(12574,13450,11089,13530,13291,12677,10939,11018,12467,12228,4527),
     ),
     12969 => array(
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
@@ -3183,7 +3183,7 @@ $config['e___11089'] = array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(12574,13450,11089,13530,13291,12701,12677,10939,11018,12467,12228,4527),
+        'm_parents' => array(12574,13450,11089,13530,13291,12677,10939,11018,12467,12228,4527),
     ),
     12969 => array(
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
@@ -4872,7 +4872,7 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_parents' => array(12574,13450,11089,13530,13291,12701,12677,10939,11018,12467,12228,4527),
+        'm_parents' => array(12574,13450,11089,13530,13291,12677,10939,11018,12467,12228,4527),
     ),
     12994 => array(
         'm_icon' => '<i class="fad fa-crop-alt discover" aria-hidden="true"></i>',
