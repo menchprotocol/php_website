@@ -222,8 +222,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($counter){
 
             $query_filters = array(
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__left' => $i_focus['i__id'],
             );
             if(isset($_GET['filter__e'])){
@@ -231,7 +231,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             }
 
             //Fetch Results:
-            $query = $CI->X_model->fetch($query_filters, array('x__source'), config_var(11064), 0, array('x__id' => 'DESC'));
+            $query = $this->X_model->fetch($query_filters, array('x__source'), config_var(11064), 0, array('x__id' => 'DESC'));
 
             //Return UI:
             $focus_tab .= '<div class="list-group">';
@@ -243,7 +243,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //No Results:
-            $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
+            $e___12467 = $this->config->item('e___12467'); //MENCH COINS
             $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m_name'].' yet</div>';
 
         }

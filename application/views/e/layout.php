@@ -399,7 +399,7 @@ $superpower_any = ( $session_e ? count($this->session->userdata('session_superpo
 
                 if(strlen($item['x__message'])){
                     $boxbar_details .= '<div class="message_content">';
-                    $boxbar_details .= $CI->X_model->message_send($item['x__message']);
+                    $boxbar_details .= $this->X_model->message_send($item['x__message']);
                     $boxbar_details .= '</div>';
                     $string_references = extract_e_references($item['x__message']);
                 }
