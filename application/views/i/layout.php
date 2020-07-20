@@ -244,7 +244,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             //No Results:
             $e___12467 = $this->config->item('e___12467'); //MENCH COINS
-            $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m_name'].' yet</div>';
+            $focus_tab .= '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m_name'].' yet</div>';
 
         }
 
