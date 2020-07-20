@@ -11,6 +11,23 @@ $superpower_10939 = superpower_active(10939, true);
 $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 $superpower_any = ( $session_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
 
+//Determine Focus Tab:
+$counter__e = view_coins_e(12274, $e['e__id'], 0, false);
+$counter__i = view_coins_e(12273, $e['e__id'], 0, false);
+if($counter__e > 0 && $counter__e >= $counter__i){
+    //SOURCES
+    $active_x__type = 12274;
+} elseif($counter__i > 0){
+    //IDEAS
+    $active_x__type = 12273;
+} elseif($source_is_e){
+    //ACCOUNT SETTINGS
+    $active_x__type = 6225;
+} else {
+    //PROFILE
+    $active_x__type = 11030;
+}
+
 ?>
 
 <script>
@@ -167,25 +184,6 @@ $superpower_any = ( $session_e ? count($this->session->userdata('session_superpo
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a></div>';
     echo '<div class="doclear">&nbsp;</div>';
-
-
-
-    //Determine Focus Tab:
-    $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
-    $counter__i = view_coins_e(12273, $e['e__id'], 0, false);
-    if($counter__e > $counter__i){
-        //SOURCES
-        $active_x__type = 12274;
-    } elseif($counter__i > 0){
-        //IDEAS
-        $active_x__type = 12273;
-    } elseif($source_is_e){
-        //ACCOUNT SETTINGS
-        $active_x__type = 6225;
-    } else {
-        //PROFILE
-        $active_x__type = 11030;
-    }
 
 
 
