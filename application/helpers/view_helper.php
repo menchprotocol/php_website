@@ -773,10 +773,10 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
-        $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
+        $ui .= '<div class="col-sm-6 col-md-4 col2nd handler_13509 hidden">';
 
             //MENCH COINS
-            $ui .= '<div class="row handler_13509 hidden">';
+            $ui .= '<div class="row">';
                 $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
                 $ui .= '<div class="col-8"><span class="inline-block" style="width:64px;">'.view_coins_i(12273, $i).'</span>'.($i_stats['i___13292'] ? '<span class="mono-space inline-block">'.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
             $ui .= '</div>';
