@@ -982,7 +982,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
 
 
     $ui .= '<div class="row">';
-    $ui .= '<div class="col-sm-8 col-md-6">';
+    $ui .= '<div class="col-sm-6 col-md-8">';
 
         //IDAE Transaction:
         $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
@@ -1004,7 +1004,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
 
         }
     $ui .= '</div>';
-    $ui .= '<div class="col-sm-4 col-md-6 col2nd">';
+    $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
         //MENCH COINS
         $ui .= '<div class="row">';
             $ui .= '<div class="col-4">'.view_coins_i_e($i).'</div>';
@@ -1436,7 +1436,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $ui .= '<div class="row">';
 
 
-        $ui .= '<div class="col-sm-8 col-md-6">';
+        $ui .= '<div class="col-sm-6 col-md-8">';
             //SOURCE ICON
             $ui .= '<a href="'.$e_url.'" '.( $is_x_e ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
@@ -1462,7 +1462,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '</div>';
 
 
-        $ui .= '<div class="col-sm-4 col-md-6 col2nd">';
+        $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
 
             //MENCH COINS
             $ui .= '<div class="row">';
