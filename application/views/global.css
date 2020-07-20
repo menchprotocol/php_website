@@ -1678,7 +1678,7 @@ label {
         background-color:#b2defd !important;
     }
     .itemdiscover:hover {
-        background-color:#fbc4ce !important;
+        background-color: #f6e8e8 !important;
     }
 }
 .hideIfEmpty:empty {
