@@ -57,7 +57,9 @@ foreach($config_e as $en){
         array_push($child_ids , $child['e__id']);
     }
 
-    echo '$config[\'n___'.$en['x__down'].'\'] = array('.join(',',$child_ids).'); array( //'.$en['e__title'].'<br />';
+    echo '<br />//'.$en['e__title'].':<br />';
+    echo '$config[\'n___'.$en['x__down'].'\'] = array('.join(',',$child_ids).');<br />';
+    echo '$config[\'e___'.$en['x__down'].'\'] = array(<br />';
     foreach($children as $child){
 
         //Do we have an omit command?
@@ -77,9 +79,14 @@ foreach($config_e as $en){
             array_push($child_parent_ids, intval($cp_en['e__id']));
         }
 
-        echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['e__id'].' => array( \'m_name\' => \''.htmlentities(str_replace('\'','\\\'',$child['e__title'])).'\', \'m_desc\' => \''.htmlentities(str_replace('\'','\\\'',$child['x__message'])).'\', \'m_icon\' => \''.htmlentities($child['e__icon']).'\', \'m_parents\' => array('.join(',',$child_parent_ids).')),<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['e__id'].' => array(<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_name\' => \''.htmlentities(str_replace('\'','\\\'',$child['e__title'])).'\',<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.htmlentities(str_replace('\'','\\\'',$child['x__message'])).'\',<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['e__icon']).'\',<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_parents\' => array('.join(',',$child_parent_ids).'),<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp; ),<br />';
 
     }
-    echo '); ';
+    echo ');<br />';
 }
 
