@@ -781,22 +781,24 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
                 $ui .= '<div class="col-8"><span class="inline-block" style="width: 89px;">'.view_coins_i(12273, $i).'</span>'.($i_stats['i___13292'] ? '<span class="mono-space inline-block">'.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
             $ui .= '</div>';
 
-
-            //Give option to remove saved ideas:
-            if($show_editor && $is_saved){
-                $ui .= '<div class="note-editor edit-off">';
-                $ui .= '<span class="show-on-hover">';
-                $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$i['i__id'].');$(\'#i_saved_'.$i['i__id'].'\').remove();"><i class="fas fa-times" style="margin-top: 10px;"></i></a></span>';
-                $ui .= '</span>';
-                $ui .= '</div>';
-            }
-
         $ui .= '</div>';
     $ui .= '</div>';
 
 
 
     $ui .= ( $can_click ? '</a>' : '' );
+
+
+    //Give option to remove saved ideas:
+    if($show_editor && $is_saved){
+        $ui .= '<div class="note-editor edit-off">';
+        $ui .= '<span class="show-on-hover">';
+        $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$i['i__id'].');$(\'#i_saved_'.$i['i__id'].'\').remove();"><i class="fas fa-times"></i></a></span>';
+        $ui .= '</span>';
+        $ui .= '</div>';
+    }
+
+
     $ui .= '</div>';
 
     return $ui;
