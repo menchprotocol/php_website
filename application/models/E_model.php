@@ -921,14 +921,14 @@ class E_model extends CI_Model
                 $parent_e__id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
-                $child_parent_es = $this->X_model->fetch(array(
+                $child_parent_e = $this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $x['e__id'], //This child source
                     'x__up' => $parent_e__id,
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
-                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_es)==0) || ($action_e__id==12928 && view_coins_e_i($x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_e_i($x['e__id'],true))){
+                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_e)==0) || ($action_e__id==12928 && view_coins_e_i($x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_e_i($x['e__id'],true))){
 
                     $add_fields = array(
                         'x__source' => $x__source,
@@ -954,12 +954,12 @@ class E_model extends CI_Model
                         ), $x__source, 10673 /* Miner Transaction Unpublished  */);
                     }
 
-                } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_es) > 0){
+                } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_e) > 0){
 
                     if($action_e__id==5982){
 
                         //Parent Miner Removal
-                        foreach($child_parent_es as $delete_tr){
+                        foreach($child_parent_e as $delete_tr){
 
                             $this->X_model->update($delete_tr['x__id'], array(
                                 'x__status' => 6173, //Transaction Deleted
@@ -1078,21 +1078,21 @@ class E_model extends CI_Model
     {
 
         //Count the active children of source:
-        $list_11029_count = 0;
+        $list_e_count = 0;
 
         //Do a child count:
-        $list_11029_count = $this->X_model->fetch(array(
+        $list_e_count = $this->X_model->fetch(array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__status IN (' . join(',', $e_statuses) . ')' => null,
         ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
-        if (count($list_11029_count) > 0) {
-            $list_11029_count = intval($list_11029_count[0]['totals']);
+        if (count($list_e_count) > 0) {
+            $list_e_count = intval($list_e_count[0]['totals']);
         }
 
-        return $list_11029_count;
+        return $list_e_count;
     }
 
 

@@ -19,7 +19,7 @@ foreach($this->I_model->fetch() as $in) {
     $is_deleted = !in_array($in['i__status'], $this->config->item('n___7356'));
 
     //Scan sources:
-    $i_es = $this->X_model->fetch(array(
+    $i_e = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
         'x__right' => $in['i__id'],
@@ -48,11 +48,11 @@ foreach($this->I_model->fetch() as $in) {
     }
 
 
-    if(!$is_deleted && !count($i_es)){
+    if(!$is_deleted && !count($i_e)){
 
         //Missing SOURCE
         $stats['e_missing']++;
-        $creator_id = ( count($i_es) ? $i_es[0]['x__source'] : $session_e['x__up'] );
+        $creator_id = ( count($i_e) ? $i_e[0]['x__source'] : $session_e['x__up'] );
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA SOURCES
             'x__source' => $creator_id,

@@ -180,7 +180,7 @@ class E extends CI_Controller
             ));
 
             //Count Portfolio:
-            $list_11029_count = $this->X_model->fetch(array(
+            $list_e_count = $this->X_model->fetch(array(
                 'x__up' => $_POST['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -194,7 +194,7 @@ class E extends CI_Controller
                     'message' => 'Invalid e__id',
                 ));
 
-            } elseif($list_11029_count[0]['totals'] > config_var(13005)){
+            } elseif($list_e_count[0]['totals'] > config_var(13005)){
 
                 view_json(array(
                     'status' => 0,
@@ -284,12 +284,12 @@ class E extends CI_Controller
         );
 
         //Fetch & display next batch of children:
-        $child_es = $this->X_model->fetch($filters, array('x__down'), $items_per_page, ($page * $items_per_page), array(
+        $child_e = $this->X_model->fetch($filters, array('x__down'), $items_per_page, ($page * $items_per_page), array(
             'x__sort' => 'ASC',
             'e__title' => 'ASC'
         ));
 
-        foreach($child_es as $e) {
+        foreach($child_e as $e) {
             echo view_e($e,false, null, true, $miner_is_e);
         }
 
@@ -297,7 +297,7 @@ class E extends CI_Controller
         $child_e_count = $this->X_model->fetch($filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         //Do we need another load more button?
-        if ($child_e_count[0]['totals'] > (($page * $items_per_page) + count($child_es))) {
+        if ($child_e_count[0]['totals'] > (($page * $items_per_page) + count($child_e))) {
             echo view_e_load_more(($page + 1), $items_per_page, $child_e_count[0]['totals']);
         }
 
@@ -481,10 +481,10 @@ class E extends CI_Controller
         }
 
         //Validate parent source:
-        $fetch_es = $this->E_model->fetch(array(
+        $fetch_e = $this->E_model->fetch(array(
             'e__id' => $_POST['e__id'],
         ));
-        if (count($fetch_es) < 1) {
+        if (count($fetch_e) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid parent source ID',
@@ -573,14 +573,14 @@ class E extends CI_Controller
             if ($_POST['is_parent']) {
 
                 //Profile
-                $x__down = $fetch_es[0]['e__id'];
+                $x__down = $fetch_e[0]['e__id'];
                 $x__up = $focus_e['e__id'];
                 $x__sort = 0; //Never sort profiles, only sort portfolios
 
             } else {
 
                 //Portfolio
-                $x__up = $fetch_es[0]['e__id'];
+                $x__up = $fetch_e[0]['e__id'];
                 $x__down = $focus_e['e__id'];
 
                 if(sources_currently_sorted($x__up)){
@@ -1085,7 +1085,7 @@ class E extends CI_Controller
         /*
          *
          * Saves the radio selection of some account fields
-         * that are displayed using view_radio_es()
+         * that are displayed using view_radio_e()
          *
          * */
 

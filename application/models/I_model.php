@@ -816,14 +816,14 @@ class I_model extends CI_Model
 
                 //Check if it hs this item:
                 $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
-                $i_has_es = $this->X_model->fetch(array(
+                $i_has_e = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
                     'x__right' => $next_i['i__id'],
                     '(x__up = '.$e__profile_id.' OR x__down = '.$e__profile_id.')' => null,
                 ));
 
-                if($action_e__id==12591 && !count($i_has_es)){
+                if($action_e__id==12591 && !count($i_has_e)){
 
                     //Missing & Must be Added:
                     $this->X_model->create(array(
@@ -836,10 +836,10 @@ class I_model extends CI_Model
 
                     $applied_success++;
 
-                } elseif($action_e__id==12592 && count($i_has_es)){
+                } elseif($action_e__id==12592 && count($i_has_e)){
 
                     //Has and must be deleted:
-                    $this->X_model->update($i_has_es[0]['x__id'], array(
+                    $this->X_model->update($i_has_e[0]['x__id'], array(
                         'x__status' => 6173,
                     ), $x__source, 10678 /* IDEA NOTES Unpublished */);
 
@@ -975,11 +975,11 @@ class I_model extends CI_Model
             foreach(array('x__up','x__down') as $e_ref_field){
                 if($fetched_e[$e_ref_field] > 0){
 
-                    $ref_es = $this->E_model->fetch(array(
+                    $ref_e = $this->E_model->fetch(array(
                         'e__id' => $fetched_e[$e_ref_field],
                     ));
 
-                    $e_metadata_experts = $this->E_model->metadata_experts($ref_es[0]);
+                    $e_metadata_experts = $this->E_model->metadata_experts($ref_e[0]);
 
                     //CONTENT CHANNELS
                     foreach($e_metadata_experts['p___3000'] as $e__id => $e_content) {

@@ -347,11 +347,11 @@ class X_model extends CI_Model
                 if($add_fields['x__source'] > 0){
 
                     //Fetch miner details:
-                    $add_es = $this->E_model->fetch(array(
+                    $add_e = $this->E_model->fetch(array(
                         'e__id' => $add_fields['x__source'],
                     ));
 
-                    $miner_name = $add_es[0]['e__title'];
+                    $miner_name = $add_e[0]['e__title'];
 
                 } else {
 
@@ -543,11 +543,11 @@ class X_model extends CI_Model
                             $befores = $this->E_model->fetch(array(
                                 'e__id' => $before_data[0][$key],
                             ));
-                            $after_es = $this->E_model->fetch(array(
+                            $after_e = $this->E_model->fetch(array(
                                 'e__id' => $value,
                             ));
 
-                            $x__message .= view_db_field($key) . ' updated from [' . $befores[0]['e__title'] . '] to [' . $after_es[0]['e__title'] . ']' . "\n";
+                            $x__message .= view_db_field($key) . ' updated from [' . $befores[0]['e__title'] . '] to [' . $after_e[0]['e__title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('x__left', 'x__right'))) {
 
@@ -844,7 +844,7 @@ class X_model extends CI_Model
              * */
 
             //URLs are the same as a source:
-            $total_references = count($string_references['ref_es']) + count($string_references['ref_urls']);
+            $total_references = count($string_references['ref_e']) + count($string_references['ref_urls']);
 
             if($total_references<$min_e || $total_references>$max_e){
                 return array(
@@ -882,7 +882,7 @@ class X_model extends CI_Model
                 //Transform URL into a source:
                 if(intval($url_e['e_url']['e__id']) > 0){
 
-                    array_push($string_references['ref_es'], intval($url_e['e_url']['e__id']));
+                    array_push($string_references['ref_e'], intval($url_e['e_url']['e__id']));
 
                     //Replace the URL with this new @source in message.
                     //This is the only valid modification we can do to $message_input before storing it in the DB:
@@ -919,7 +919,7 @@ class X_model extends CI_Model
             'x__down' => 0,
         );
 
-        foreach($string_references['ref_es'] as $referenced_e){
+        foreach($string_references['ref_e'] as $referenced_e){
 
             //We have a reference within this message, let's fetch it to better understand it:
             $es = $this->E_model->fetch(array(

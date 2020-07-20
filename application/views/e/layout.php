@@ -165,13 +165,13 @@ $miner_is_e = miner_is_e($e['e__id']);
 
 
     //Determine Focus Tab:
-    $list_11029_count = $this->X_model->fetch(array(
+    $list_e_count = $this->X_model->fetch(array(
         'x__up' => $e['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
-    $counter__11029 = $list_11029_count[0]['totals'];
+    $counter__e = $list_e_count[0]['totals'];
 
 
 
@@ -341,7 +341,7 @@ $miner_is_e = miner_is_e($e['e__id']);
 
                 } elseif ($is_multi_selectable || $is_single_selectable) {
 
-                    $focus_tab .= view_radio_es($acc_e__id, $session_e['e__id'], ($is_multi_selectable ? 1 : 0));
+                    $focus_tab .= view_radio_e($acc_e__id, $session_e['e__id'], ($is_multi_selectable ? 1 : 0));
 
                 }
 
@@ -388,7 +388,7 @@ $miner_is_e = miner_is_e($e['e__id']);
         } elseif($x__type==11029){
 
             //SOURCE PORTFOLIO
-            $counter = $counter__11029;
+            $counter = $counter__e;
 
             if($counter){
 
@@ -400,7 +400,7 @@ $miner_is_e = miner_is_e($e['e__id']);
                 }
 
                 //Fetch Portfolios
-                $list_11029s = $this->X_model->fetch(array(
+                $list_e = $this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -410,7 +410,7 @@ $miner_is_e = miner_is_e($e['e__id']);
             } else {
 
                 //Maybe we allow them to be created:
-                $list_11029s = array(); //Fetch some
+                $list_e = array(); //Fetch some
 
             }
 
@@ -548,7 +548,7 @@ $miner_is_e = miner_is_e($e['e__id']);
 
                 //Also add invisible child IDs for quick copy/pasting:
                 $focus_tab .= '<div style="color:transparent;" class="hideIfEmpty">';
-                foreach($list_11029s as $e_portfolio) {
+                foreach($list_e as $e_portfolio) {
                     $focus_tab .= $e_portfolio['e__id'].',';
                 }
                 $focus_tab .= '</div>';
@@ -597,13 +597,13 @@ $miner_is_e = miner_is_e($e['e__id']);
                 }
             }
 
-            $focus_tab .= '<div id="list_11029" class="list-group">';
-            $common_prefix = i_calc_common_prefix($list_11029s, 'e__title');
+            $focus_tab .= '<div id="list_e" class="list-group">';
+            $common_prefix = i_calc_common_prefix($list_e, 'e__title');
 
-            foreach($list_11029s as $e_portfolio) {
+            foreach($list_e as $e_portfolio) {
                 $focus_tab .= view_e($e_portfolio,false, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
             }
-            if ($counter > count($list_11029s)) {
+            if ($counter > count($list_e)) {
                 $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
             }
 

@@ -281,7 +281,7 @@ function e__add(e_existing_id, is_parent) {
         var list_id = 'list_11030';
     } else {
         var input = $('#new_portfolio .add-input');
-        var list_id = 'list_11029';
+        var list_id = 'list_e';
     }
 
     var e_new_string = null;
@@ -359,7 +359,7 @@ function e_load_page(page, load_new_filter) {
         //Replace load more with spinner:
         var append_div = $('#new_portfolio').html();
         //The padding-bottom would delete the scrolling effect on the left side!
-        $('#list_11029').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+        $('#list_e').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
@@ -375,7 +375,7 @@ function e_load_page(page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#list_11029').html(data + '<div id="new_portfolio" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#list_e').html(data + '<div id="new_portfolio" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             e_load_search("#new_portfolio", 0, 'w');
         } else {
@@ -571,7 +571,7 @@ function e_sort_save() {
     var new_x__sorts = [];
     var sort_rank = 0;
 
-    $("#list_11029 .en-item").each(function () {
+    $("#list_e .en-item").each(function () {
         //Fetch variables for this idea:
         var e__id = parseInt($(this).attr('e-id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -623,7 +623,7 @@ function e_sort_reset(){
 function e_sort_portfolio_load() {
 
     var element_key = null;
-    var theobject = document.getElementById("list_11029");
+    var theobject = document.getElementById("list_e");
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
         return false;

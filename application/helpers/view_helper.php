@@ -1,6 +1,6 @@
 <?php
 
-function view_e_load_more($page, $limit, $list_11029_count)
+function view_e_load_more($page, $limit, $list_e_count)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
@@ -9,8 +9,8 @@ function view_e_load_more($page, $limit, $list_11029_count)
     $ui = '<div class="load-more montserrat list-group-item itemsource no-left-padding"><a href="javascript:void(0);" onclick="e_load_page(' . $page . ', 0)">';
 
     //Regular section:
-    $max_es = (($page + 1) * $limit);
-    $max_es = ($max_es > $list_11029_count ? $list_11029_count : $max_es);
+    $max_e = (($page + 1) * $limit);
+    $max_e = ($max_e > $list_e_count ? $list_e_count : $max_e);
     $ui .= '<span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source">SEE MORE</b>';
     $ui .= '</a></div>';
 
@@ -453,11 +453,11 @@ function view_x($x, $is_parent_tr = false)
         //Creator (Do not repeat)
         if($x['x__source'] > 0 && $x['x__source']!=$x['x__up'] && $x['x__source']!=$x['x__down']){
 
-            $add_es = $CI->E_model->fetch(array(
+            $add_e = $CI->E_model->fetch(array(
                 'e__id' => $x['x__source'],
             ));
 
-            $ui .= '<div class="simple-line"><a href="/@'.$add_es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($add_es[0]['e__icon']).'"><span class="img-block">'.view_e__icon($add_es[0]['e__icon']) . '</span> ' . $add_es[0]['e__title'] . '</span></a></div>';
+            $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m_name'].'" class="montserrat"><span class="icon-block">'.$e___4341[4364]['m_icon']. '</span><span class="'.extract_icon_color($add_e[0]['e__icon']).'"><span class="img-block">'.view_e__icon($add_e[0]['e__icon']) . '</span> ' . $add_e[0]['e__title'] . '</span></a></div>';
 
         }
 
@@ -868,7 +868,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
     return ($ui ? '<div class="inline-box">' . $ui . '</div>' : false);
 }
 
-function view_radio_es($parent_e__id, $child_e__id, $enable_mulitiselect, $show_max = 25){
+function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_max = 25){
 
     /*
      * Print UI for
@@ -1658,9 +1658,9 @@ function view_ordinal($number)
     }
 }
 
-function view__s($count, $is_es = 0)
+function view__s($count, $is_e = 0)
 {
     //A cute little function to either display the plural "s" or not based on $count
-    return ( intval($count) == 1 ? '' : ($is_es ? 'es' : 's'));
+    return ( intval($count) == 1 ? '' : ($is_e ? 'es' : 's'));
 }
 

@@ -877,14 +877,14 @@ class I extends CI_Controller {
                     //We're publishing, make sure potential source references are also published:
                     $string_references = extract_e_references($_POST['x__message']);
 
-                    if (count($string_references['ref_es']) > 0) {
+                    if (count($string_references['ref_e']) > 0) {
 
                         //We do have an source reference, what's its status?
-                        $ref_es = $this->E_model->fetch(array(
-                            'e__id' => $string_references['ref_es'][0],
+                        $ref_e = $this->E_model->fetch(array(
+                            'e__id' => $string_references['ref_e'][0],
                         ));
 
-                        if(count($ref_es)>0 && !in_array($ref_es[0]['e__status'], $this->config->item('n___7357') /* PUBLIC */)){
+                        if(count($ref_e)>0 && !in_array($ref_e[0]['e__status'], $this->config->item('n___7357') /* PUBLIC */)){
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'You cannot published this message because its referenced source is not yet public',

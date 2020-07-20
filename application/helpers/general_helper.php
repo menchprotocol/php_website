@@ -83,7 +83,7 @@ function extract_e_references($x__message)
     //Analyze the message to find referencing URLs and Miners in the message text:
     $string_references = array(
         'ref_urls' => array(),
-        'ref_es' => array(),
+        'ref_e' => array(),
         'ref_time_found' => false,
         'ref_time_start' => 0,
         'ref_time_end' => 0,
@@ -109,7 +109,7 @@ function extract_e_references($x__message)
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
 
             $e__id = intval(substr($word, 1));
-            array_push($string_references['ref_es'], $e__id);
+            array_push($string_references['ref_e'], $e__id);
 
             if(substr_count($word,':')==2){
                 //See if this is it:
@@ -135,7 +135,7 @@ function extract_e_references($x__message)
 
 
     //Slicing only supported with a single reference:
-    $total_references = count($string_references['ref_es']) + count($string_references['ref_urls']);
+    $total_references = count($string_references['ref_e']) + count($string_references['ref_urls']);
     if($total_references > 1){
         $string_references['ref_time_found'] = false;
         $string_references['ref_time_start'] = 0;
