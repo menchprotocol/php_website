@@ -73,7 +73,7 @@ echo '</div>';
 
 
 //IDEA TITLE
-echo '<div class="itemidea" style="padding-top:5px;">';
+echo '<div class="itemidea" style="padding-top:8px;">';
 echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_owns_i && $is_active), 0, true, view_cache(4737 /* Idea Status */, $i_focus['i__status'], true, 'top', $i_focus['i__id']));
 echo '</div>';
 
