@@ -8,13 +8,13 @@ echo '<div class="mini-header">Search String:</div>';
 echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
 
 
-$search_for_is_set = (isset($_GET['search_for']) && strlen($_GET['search_for'])>0);
-$replace_with_is_set = ((isset($_GET['replace_with']) && strlen($_GET['replace_with'])>0) || (isset($_GET['append_text']) && strlen($_GET['append_text'])>0));
+$search_for_set = (isset($_GET['search_for']) && strlen($_GET['search_for'])>0);
+$replace_with_set = ((isset($_GET['replace_with']) && strlen($_GET['replace_with'])>0) || (isset($_GET['append_text']) && strlen($_GET['append_text'])>0));
 $qualifying_replacements = 0;
 $completed_replacements = 0;
-$replace_with_is_confirmed = false;
+$replace_with_confirmed = false;
 
-if($search_for_is_set){
+if($search_for_set){
 
     $matching_results = $this->I_model->fetch(array(
         'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -32,25 +32,25 @@ if($search_for_is_set){
 
     if(count($matching_results) < 1){
 
-        $replace_with_is_set = false;
+        $replace_with_set = false;
         unset($_GET['confirm_statement']);
         unset($_GET['replace_with']);
 
     } else {
 
         $confirmation_keyword = 'Replace '.count($matching_results);
-        $replace_with_is_confirmed = (isset($_GET['confirm_statement']) && strtolower($_GET['confirm_statement'])==strtolower($confirmation_keyword));
+        $replace_with_confirmed = (isset($_GET['confirm_statement']) && strtolower($_GET['confirm_statement'])==strtolower($confirmation_keyword));
 
         echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
         echo '<td style="text-align: left;">#</td>';
         echo '<td style="text-align: left;">Matching Search</td>';
-        echo '<td style="text-align: left;">'.( $replace_with_is_set ? 'Replacement' : '' ).'</td>';
+        echo '<td style="text-align: left;">'.( $replace_with_set ? 'Replacement' : '' ).'</td>';
         echo '<td style="text-align: left;">&nbsp;</td>';
         echo '</tr>';
 
         foreach($matching_results as $count=>$in){
 
-            if($replace_with_is_set){
+            if($replace_with_set){
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
                 $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['i__title']).$append_text;
@@ -61,7 +61,7 @@ if($search_for_is_set){
                 }
             }
 
-            if($replace_with_is_confirmed && $i__title_validation['status']){
+            if($replace_with_confirmed && $i__title_validation['status']){
                 //Update idea:
                 $this->I_model->update($in['i__id'], array(
                     'i__title' => $i__title_validation['i_clean_title'],
@@ -72,10 +72,10 @@ if($search_for_is_set){
             echo '<td style="text-align: left;">'.($count+1).'</td>';
             echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__status'], true, 'right').' <a href="/i/i_go/'.$in['i__id'].'">'.$in['i__title'].'</a></td>';
 
-            if($replace_with_is_set){
+            if($replace_with_set){
 
                 echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                echo '<td style="text-align: left;">'.( !$i__title_validation['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i__title_validation['message'] : ( $replace_with_is_confirmed && $i__title_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                echo '<td style="text-align: left;">'.( !$i__title_validation['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i__title_validation['message'] : ( $replace_with_confirmed && $i__title_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
             } else {
                 //Show parents now:
                 echo '<td style="text-align: left;">';
@@ -106,7 +106,7 @@ if($search_for_is_set){
 }
 
 
-if($search_for_is_set && count($matching_results) > 0 && !$completed_replacements){
+if($search_for_set && count($matching_results) > 0 && !$completed_replacements){
     //now give option to replace with:
     echo '<div class="mini-header">Replace With:</div>';
     echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
@@ -116,7 +116,7 @@ if($search_for_is_set && count($matching_results) > 0 && !$completed_replacement
     echo '<input type="text" class="form-control border maxout" name="append_text" value="'.@$_GET['append_text'].'"><br />';
 }
 
-if($replace_with_is_set && !$completed_replacements){
+if($replace_with_set && !$completed_replacements){
     if($qualifying_replacements==count($matching_results) /*No Errors*/){
         //now give option to replace with:
         echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';

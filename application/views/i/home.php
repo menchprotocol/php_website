@@ -8,14 +8,14 @@
     $e___12467 = $this->config->item('e___12467'); //MENCH
 
 
-    $miner_is = $this->X_model->fetch(array(
+    $miner_i = $this->X_model->fetch(array(
         'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 10573, //MY IDEAS
         'x__up' => $session_e['e__id'], //For this miner
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-    echo ( count($miner_is) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+    echo ( count($miner_i) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
 
 
     //MY IDEAS
@@ -36,7 +36,7 @@
 
 
     echo '<div id="i_covers" class="cover-list">';
-    foreach($miner_is as $i){
+    foreach($miner_i as $i){
         echo view_i_cover($i, true, false);
     }
     echo '</div>';

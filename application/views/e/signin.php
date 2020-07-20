@@ -64,13 +64,13 @@ if(count($current_sign_i_attempt) == 0){
     <?php
     if($sign_i__id > 0){
 
-        $sign_is = $this->I_model->fetch(array(
+        $sign_i = $this->I_model->fetch(array(
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'i__id' => $sign_i__id,
         ));
 
-        if(count($sign_is)){
-            echo '<p style="margin-top:13px;">To <a href="/'.$sign_i__id.'" class="montserrat">'.$sign_is[0]['i__title'].'</a> for Free.</p>';
+        if(count($sign_i)){
+            echo '<p style="margin-top:13px;">To <a href="/'.$sign_i__id.'" class="montserrat">'.$sign_i[0]['i__title'].'</a> for Free.</p>';
         }
 
     }

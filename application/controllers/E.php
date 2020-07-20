@@ -274,7 +274,7 @@ class E extends CI_Controller
         $items_per_page = config_var(11064);
         $parent_e__id = intval($_POST['parent_e__id']);
         $e_focus_filter = intval($_POST['e_focus_filter']);
-        $miner_is_e = miner_is_e($parent_e__id);
+        $source_of_e = source_of_e($parent_e__id);
         $page = intval($_POST['page']);
         $filters = array(
             'x__up' => $parent_e__id,
@@ -290,7 +290,7 @@ class E extends CI_Controller
         ));
 
         foreach($child_e as $e) {
-            echo view_e($e,false, null, true, $miner_is_e);
+            echo view_e($e,false, null, true, $source_of_e);
         }
 
         //Count total children:
@@ -318,7 +318,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Transaction ID',
             ));
-        } elseif (!isset($_POST['i__id']) || !e_owns_i($_POST['i__id'])) {
+        } elseif (!isset($_POST['i__id']) || !e_of_i($_POST['i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are not the author of this source',
@@ -530,7 +530,7 @@ class E extends CI_Controller
                 }
 
                 //Is this a root domain? Add to domains if so:
-                if($url_e['url_is_root']){
+                if($url_e['url_root']){
 
                     //Domain
                     $focus_e = array('e__id' => 1326);
@@ -601,7 +601,7 @@ class E extends CI_Controller
             }
 
 
-            if (isset($url_e['url_is_root']) && $url_e['url_is_root']) {
+            if (isset($url_e['url_root']) && $url_e['url_root']) {
 
                 $x__message = $url_e['clean_url'];
                 $x__type = 4256; //Generic URL (Domains always are generic)
@@ -933,7 +933,7 @@ class E extends CI_Controller
 
                     //This is a URL, validate modification:
 
-                    if ($detected_x_type['url_is_root']) {
+                    if ($detected_x_type['url_root']) {
 
                         if ($e_x[0]['x__up'] == 1326) {
 
@@ -1634,12 +1634,12 @@ class E extends CI_Controller
         if(intval($_POST['sign_i__id']) > 0){
 
             //Fetch the Idea:
-            $referrer_is = $this->I_model->fetch(array(
+            $referrer_i = $this->I_model->fetch(array(
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'i__id' => $_POST['sign_i__id'],
             ));
 
-            if(count($referrer_is) > 0){
+            if(count($referrer_i) > 0){
                 //Add this Idea to their Discoveries:
                 $this->X_model->start($added_e['new_e']['e__id'], $_POST['sign_i__id']);
             } else {
@@ -1648,7 +1648,7 @@ class E extends CI_Controller
             }
 
         } else {
-            $referrer_is = array();
+            $referrer_i = array();
         }
 
 
@@ -1968,12 +1968,12 @@ class E extends CI_Controller
 
         if(intval($_POST['sign_i__id']) > 0){
             //Fetch the idea:
-            $referrer_is = $this->I_model->fetch(array(
+            $referrer_i = $this->I_model->fetch(array(
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'i__id' => $_POST['sign_i__id'],
             ));
         } else {
-            $referrer_is = array();
+            $referrer_i = array();
         }
 
 

@@ -1,10 +1,10 @@
 <?php
 
-$active_is = $this->I_model->fetch(array(
+$active_i = $this->I_model->fetch(array(
     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
 ), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ));
 $found = 0;
-foreach($active_is as $count=>$in){
+foreach($active_i as $count=>$in){
 
     $recursive_children = $this->I_model->recursive_child_ids($in['i__id'], false);
     if(count($recursive_children) > 0){

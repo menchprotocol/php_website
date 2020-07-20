@@ -2,7 +2,7 @@
 
 //IDEA LIST INVALID TITLES
 
-$active_is = $this->I_model->fetch(array(
+$active_i = $this->I_model->fetch(array(
     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
 ));
 
@@ -20,7 +20,7 @@ echo '<td style="text-align: left;">Invalid Outcome</td>';
 echo '</tr>';
 
 $invalid_outcomes = 0;
-foreach($active_is as $count=>$in){
+foreach($active_i as $count=>$in){
 
     $i__title_validation = i__title_validate($in['i__title']);
 

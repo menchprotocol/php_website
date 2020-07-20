@@ -12,14 +12,14 @@ $last_week_end = date("Y-m-d H:i:s", $last_week_end_timestamp);
 //IDEA
 $i_coins_new_last_week = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     'x__time >=' => $last_week_start,
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $i_coins_last_week = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -45,13 +45,13 @@ $x_coins_growth_rate = format_percentage(( $x_coins_last_week[0]['totals'] / ( $
 //SOURCE
 $e_coins_new_last_week = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___12274')) . ')' => null, //SOURCES
+    'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
     'x__time >=' => $last_week_start,
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $e_coins_last_week = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___12274')) . ')' => null, //SOURCES
+    'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
     'x__time <=' => $last_week_end,
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $e_coins_growth_rate = format_percentage( ($e_coins_last_week[0]['totals'] / ( $e_coins_last_week[0]['totals'] - $e_coins_new_last_week[0]['totals'] ) * 100)-100);

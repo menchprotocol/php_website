@@ -338,16 +338,16 @@ class I_model extends CI_Model
 
         //Validate Original idea:
         if($x_to_i__id > 0){
-            $x_is = $this->I_model->fetch(array(
+            $x_i = $this->I_model->fetch(array(
                 'i__id' => intval($x_to_i__id),
             ));
 
-            if (count($x_is) < 1) {
+            if (count($x_i) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Idea ID',
                 );
-            } elseif (!in_array($x_is[0]['i__status'], $this->config->item('n___7356')) /* ACTIVE */) {
+            } elseif (!in_array($x_i[0]['i__status'], $this->config->item('n___7356')) /* ACTIVE */) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only transaction to active ideas. This idea is not active.',
@@ -369,7 +369,7 @@ class I_model extends CI_Model
             if($is_parent){
 
                 $previous_i = $is[0];
-                $next_i = $x_is[0];
+                $next_i = $x_i[0];
 
                 /*
                 //Prevent child duplicates:
@@ -384,7 +384,7 @@ class I_model extends CI_Model
 
             } else {
 
-                $previous_i = $x_is[0];
+                $previous_i = $x_i[0];
                 $next_i = $is[0];
 
                 //Prevent parent duplicate:
@@ -480,7 +480,7 @@ class I_model extends CI_Model
             ), true);
 
             //Fetch and return full data to be properly shown on the UI using the view_i() function
-            $new_is = $this->X_model->fetch(array(
+            $new_i = $this->X_model->fetch(array(
                 ( $is_parent ? 'x__right' : 'x__left' ) => $x_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
@@ -489,7 +489,7 @@ class I_model extends CI_Model
             ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
-            $next_i_html = view_i($new_is[0], $x_to_i__id, $is_parent, true /* Since they added it! */);
+            $next_i_html = view_i($new_i[0], $x_to_i__id, $is_parent, true /* Since they added it! */);
 
         } else {
 
@@ -521,13 +521,13 @@ class I_model extends CI_Model
 
 
         //Go ahead and delete from Discoveries:
-        $miner_is = $this->X_model->fetch(array(
+        $miner_i = $this->X_model->fetch(array(
             'x__type' => 10573, //MY IDEAS
             'x__up' => $e__id,
             'x__right' => $i__id,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
-        if(count($miner_is) < 1){
+        if(count($miner_i) < 1){
             return array(
                 'status' => 0,
                 'message' => 'Could not locate Idea',
@@ -535,7 +535,7 @@ class I_model extends CI_Model
         }
 
         //Delete:
-        foreach($miner_is as $x){
+        foreach($miner_i as $x){
             $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //DELETED
             ), $e__id, $x__type);
@@ -818,7 +818,7 @@ class I_model extends CI_Model
                 $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
                 $i_has_e = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12273')) . ')' => null, //IDEA COIN
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $next_i['i__id'],
                     '(x__up = '.$e__profile_id.' OR x__down = '.$e__profile_id.')' => null,
                 ));
@@ -967,7 +967,7 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             //Already for for x__up & x__down
             'x__right' => $i['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___12273')).')' => null, //IDEA COIN
+            'x__type IN (' . join(',', $this->config->item('n___13550')).')' => null, //SOURCE IDEAS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $fetched_e) {
 
@@ -1190,7 +1190,7 @@ class I_model extends CI_Model
 
 
         //Validate this locked idea:
-        if(!i_is_unlockable($i)){
+        if(!i_unlockable($i)){
             return array();
         }
 
@@ -1218,7 +1218,7 @@ class I_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
             'x__right' => $i['i__id'],
         ), array('x__left'), 0) as $i_locked_parent){
-            if(i_is_unlockable($i_locked_parent)){
+            if(i_unlockable($i_locked_parent)){
                 //Need to check recursively:
                 foreach($this->I_model->unlock_paths($i_locked_parent) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $locked_path['i__id'])) {
@@ -1252,7 +1252,7 @@ class I_model extends CI_Model
 
         //Go through children to see if any/all can be completed:
         foreach($is_next as $next_i){
-            if(i_is_unlockable($next_i)){
+            if(i_unlockable($next_i)){
 
                 //Need to check recursively:
                 foreach($this->I_model->unlock_paths($next_i) as $locked_path){

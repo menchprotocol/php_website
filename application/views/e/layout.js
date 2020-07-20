@@ -730,12 +730,12 @@ function e_update() {
 
 
                 //Miner Icon:
-                var icon_is_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
-                if(!icon_is_set){
+                var icon_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
+                if(!icon_set){
                     //Set source default icon:
                     modify_data['e__icon'] = js_e___12467[12274]['m_icon'];
                 }
-                $('.e__icon_' + modify_data['e__id']).attr('en-is-set' , icon_is_set );
+                $('.e__icon_' + modify_data['e__id']).attr('en-is-set' , icon_set );
                 $('.e_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
                 $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
 

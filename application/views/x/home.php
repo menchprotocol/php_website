@@ -95,7 +95,7 @@
 
 
     //FEATURED IDEAS
-    $featured_is = $this->X_model->fetch(array(
+    $featured_i = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
@@ -104,7 +104,7 @@
 
     echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_name'].'</div>';
     echo '<div class="cover-list">';
-    foreach($featured_is as $key => $x){
+    foreach($featured_i as $key => $x){
         if(!in_array($x['i__id'], $my_x_ids)){
             //Show only if not in discovering list:
             echo view_i_cover($x, false);

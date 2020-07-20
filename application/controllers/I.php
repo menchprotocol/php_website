@@ -98,8 +98,8 @@ class I extends CI_Controller {
          * comes through /iID
          *
          * */
-        $e_owns_i = e_owns_i($i__id);
-        return redirect_message(( $e_owns_i ? '/~' : '/' ) . $i__id . ( $e_owns_i && isset($_GET['filter__e']) ? '?filter__e='.$_GET['filter__e'] : '' ) );
+        $e_of_i = e_of_i($i__id);
+        return redirect_message(( $e_of_i ? '/~' : '/' ) . $i__id . ( $e_of_i && isset($_GET['filter__e']) ? '?filter__e='.$_GET['filter__e'] : '' ) );
     }
 
 
@@ -475,17 +475,17 @@ class I extends CI_Controller {
 
 
         $new_i_type = 6677; //Idea Read & Next
-        $x_is = array();
+        $x_i = array();
 
         if($_POST['i_x_child_id'] > 0){
 
             //Fetch transaction idea to determine idea type:
-            $x_is = $this->I_model->fetch(array(
+            $x_i = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['i_x_child_id']),
                 'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
-            if(count($x_is)==0){
+            if(count($x_i)==0){
                 //validate Idea:
                 return view_json(array(
                     'status' => 0,
@@ -493,7 +493,7 @@ class I extends CI_Controller {
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($x_is[0]['i__type'], $this->config->item('n___7712'))){
+            if(!intval($_POST['is_parent']) && in_array($x_i[0]['i__type'], $this->config->item('n___7712'))){
                 $new_i_type = 6914; //Require All
             }
         }
@@ -526,10 +526,10 @@ class I extends CI_Controller {
         } else {
 
             //Validate Parent Idea:
-            $previous_is = $this->I_model->fetch(array(
+            $previous_i = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['i__id']),
             ));
-            if (count($previous_is) < 1) {
+            if (count($previous_i) < 1) {
                 view_json(array(
                     'status' => 0,
                     'message' => 'Invalid i__id',

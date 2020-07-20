@@ -195,7 +195,7 @@ $(document).ready(function () {
 
     //For the S shortcut to load search:
     $("#mench_search").focus(function() {
-        if(!search_is_on){
+        if(!search_on){
             toggle_search();
         }
     });
@@ -240,7 +240,7 @@ $(document).ready(function () {
         if (e.keyCode === 27) { //ESC
             modify_cancel();
 
-            if(search_is_on){
+            if(search_on){
                 toggle_search();
             }
         }
@@ -440,22 +440,22 @@ var isAdvancedUpload = function () {
 }();
 
 //Main navigation
-var search_is_on = false;
+var search_on = false;
 function toggle_search(){
 
     $('.left_nav').addClass('hidden');
     $('.search_icon').toggleClass('hidden');
 
-    if(search_is_on){
+    if(search_on){
 
         //Switch to Menu:
-        search_is_on = false; //Reverse
+        search_on = false; //Reverse
         $('.mench_nav').removeClass('hidden');
 
     } else {
 
         //Turn Search On:
-        search_is_on = true; //Reverse
+        search_on = true; //Reverse
         $('.search_nav').removeClass('hidden');
         $('#searchFrontForm input').focus();
 

@@ -25,7 +25,7 @@ foreach($this->X_model->fetch(array(
     if($mark){
 
         //Fetch parent Idea:
-        $previous_is = $this->I_model->fetch(array(
+        $previous_i = $this->I_model->fetch(array(
             'i__id' => $i_x['x__left'],
         ));
 
@@ -37,8 +37,8 @@ foreach($this->X_model->fetch(array(
         echo '<td style="text-align: left;">';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_is[0]['i__status']]['m_icon'].'</span>';
-        echo '<a href="/i/i_go/'.$previous_is[0]['i__id'].'">'.$previous_is[0]['i__title'].'</a>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__status']]['m_icon'].'</span>';
+        echo '<a href="/i/i_go/'.$previous_i[0]['i__id'].'">'.$previous_i[0]['i__title'].'</a>';
         echo '</div>';
 
         echo '<div>';
@@ -105,7 +105,7 @@ if(1){
         if($tr__assessment_points!=0){
 
             //Fetch parent Idea:
-            $previous_is = $this->I_model->fetch(array(
+            $previous_i = $this->I_model->fetch(array(
                 'i__id' => $i_x['x__left'],
             ));
 
@@ -116,8 +116,8 @@ if(1){
             echo '<td>'.$e___6186[$i_x['x__status']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_is[0]['i__status']]['m_icon'].'</span>';
-            echo '<a href="/i/i_go/'.$previous_is[0]['i__id'].'">'.$previous_is[0]['i__title'].'</a>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__status']]['m_icon'].'</span>';
+            echo '<a href="/i/i_go/'.$previous_i[0]['i__id'].'">'.$previous_i[0]['i__title'].'</a>';
             echo '</div>';
 
             echo '<div>';

@@ -216,16 +216,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = $i_stats['e_count'];
 
         //List Sources:
-        foreach($this->config->item('e___4251') as $e__id2 => $m2){
-            if($i_stats['count_'.$e__id2]>0){
-                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id2].' '.$m2['m_name'].':</div>';
-                $focus_tab .= '<div class="list-group" style="margin-bottom:34px;">';
-                foreach ($i_stats['array_'.$e__id2] as $e) {
-                    $focus_tab .= view_e_basic($e);
-                }
-                $focus_tab .= '</div>';
-            }
-        }
+        $focus_tab .= view_i_tree_e($i_focus);
 
     } elseif($x__type==7545){
 
@@ -255,8 +246,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==6255){
 
-        $counter = x_coins_i(6255, $i_focus['i__id']);
-        $focus_tab .= '<p class="space-content">This idea has been discovered by '.$counter.' miners.</p>';
+        $counter = view_coins_i(6255,  $i_focus, false);
+        $focus_tab .= '<p class="space-content">This idea has been discovered '.$counter.' times.</p>';
 
     } elseif($x__type==13023){
 

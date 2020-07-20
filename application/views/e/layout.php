@@ -2,8 +2,14 @@
 $e___6206 = $this->config->item('e___6206'); //MENCH SOURCE
 $e___4341 = $this->config->item('e___4341'); //Transaction Table
 $e___6177 = $this->config->item('e___6177'); //Source Status
-$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-$miner_is_e = miner_is_e($e['e__id']);
+$e___12467 = $this->config->item('e___12467'); //MENCH
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+
+$source_of_e = source_of_e($e['e__id']);
+$source_is_e = $e['e__id']==$session_e['e__id'];
+$superpower_10939 = superpower_active(10939, true);
+$superpower_13422 = superpower_active(13422, true); //Advance Sourcing
+$superpower_any = ( $session_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
 
 ?>
 
@@ -23,7 +29,7 @@ $miner_is_e = miner_is_e($e['e__id']);
     echo '<div class="'.( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span class="icon-block e__status_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_name'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span></div>';
 
     //SOURCE NAME
-    echo '<div class="itemsource">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($miner_is_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
+    echo '<div class="itemsource">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
 
     ?>
 
@@ -165,27 +171,26 @@ $miner_is_e = miner_is_e($e['e__id']);
 
 
     //Determine Focus Tab:
-    $list_e_count = $this->X_model->fetch(array(
-        'x__up' => $e['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
-    $counter__e = $list_e_count[0]['totals'];
+    $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
+    $counter__i = view_coins_e(12273, $e['e__id'], 0, false);
+    if($counter__e > $counter__i){
+        //SOURCES
+        $active_x__type = 12274;
+    } elseif($counter__i > 0){
+        //IDEAS
+        $active_x__type = 12273;
+    } elseif($source_is_e){
+        //ACCOUNT SETTINGS
+        $active_x__type = 6225;
+    } else {
+        //PROFILE
+        $active_x__type = 11030;
+    }
 
 
 
-    $counter__12273 = x_stats_count($x__type, $e['e__id']);
 
 
-
-    $superpower_10939 = superpower_active(10939, true);
-    $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
-    $superpower_any = ( $session_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-    $e___12467 = $this->config->item('e___12467'); //MENCH
-    $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-
-    $active_x__type = 11030;
     $tab_group = 11089;
     $tab_nav = '';
     $tab_content = '';
@@ -195,10 +200,10 @@ $miner_is_e = miner_is_e($e['e__id']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             //Missing Superpower:
             continue;
-        } elseif(in_array($x__type, $this->config->item('n___13424')) && $e['e__id']==$session_e['e__id']){
+        } elseif(in_array($x__type, $this->config->item('n___13424')) && $source_is_e){
             //SOURCE LAYOUT HIDE IF SOURCE:
             continue;
-        } elseif(in_array($x__type, $this->config->item('n___13425')) && $e['e__id']!=$session_e['e__id']){
+        } elseif(in_array($x__type, $this->config->item('n___13425')) && !$source_is_e){
             //SOURCE LAYOUT SHOW IF SOURCE:
             continue;
         }
@@ -222,15 +227,6 @@ $miner_is_e = miner_is_e($e['e__id']);
                 continue;
             }
             $focus_tab = '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m_icon'].' '.$m['m_name'].' '.number_format($counter, 0).' times.</div>';
-
-        } elseif(in_array($x__type, $this->config->item('n___12467'))){
-
-            //MENCH COINS
-            $counter = x_stats_count($x__type, $e['e__id']);
-            if(!$counter){
-                continue;
-            }
-            $focus_tab = x_stats_count($x__type, $e['e__id'], 1);
 
         } elseif($x__type==6225){
 
@@ -370,7 +366,7 @@ $miner_is_e = miner_is_e($e['e__id']);
 
             $focus_tab .= '<div id="list_11030" class="list-group ">';
             foreach($e__profiles as $e_profile) {
-                $focus_tab .= view_e($e_profile,true, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_profile['x__source']))));
+                $focus_tab .= view_e($e_profile,true, null, true, ($source_of_e || ($session_e && ($session_e['e__id']==$e_profile['x__source']))));
             }
 
             //Input to add new parents:
@@ -385,35 +381,48 @@ $miner_is_e = miner_is_e($e['e__id']);
 
             $focus_tab .= '</div>';
 
-        } elseif($x__type==11029){
+        } elseif($x__type==12273){
 
-            //SOURCE PORTFOLIO
-            $counter = $counter__e;
+            //IDEAS
+            $counter = $counter__i;
+            $list_i = view_coins_e(12273, $e['e__id'], 1);
 
-            if($counter){
+            //SMART SHOW/HIDE LIST LOGIC
+            $previous_do_hide = true;
+            $bold_upto_weight = i_calc_bold_upto_weight($list_i);
+            $show_max = config_var(11986);
+            $focus_tab .= '<div id="list_i" class="list-group">';
+            foreach($list_i as $count => $item){
 
-                //Determine how to order:
-                if($counter > config_var(11064)){
-                    $order_columns = array('e__weight' => 'DESC');
-                } else {
-                    $order_columns = array('x__sort' => 'ASC', 'e__title' => 'ASC');
+                $boxbar_details = null;
+                $string_references['ref_time_found'] = false;
+
+                if(strlen($item['x__message'])){
+                    $boxbar_details .= '<div class="message_content">';
+                    $boxbar_details .= $CI->X_model->message_send($item['x__message']);
+                    $boxbar_details .= '</div>';
+                    $string_references = extract_e_references($item['x__message']);
                 }
 
-                //Fetch Portfolios
-                $list_e = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                    'x__up' => $e['e__id'],
-                ), array('x__down'), config_var(11064), 0, $order_columns);
+                $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['i__weight']) || ($count >= $show_max)));
 
-            } else {
+                if(!$previous_do_hide && $do_hide){
+                    $focus_tab .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                    $focus_tab .= '<div class="see_mores"></div>';
+                }
 
-                //Maybe we allow them to be created:
-                $list_e = array(); //Fetch some
+                $focus_tab .= view_i($item, 0, false, false, $item['x__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+
+                $previous_do_hide = $do_hide;
 
             }
+            $focus_tab .= '</div>';
 
+        } elseif($x__type==12274){
+
+            //SOURCES
+            $counter = $counter__e;
+            $list_e = view_coins_e(12274, $e['e__id'], 1);
 
             //SOURCE MASS EDITOR
             if($superpower_13422){
@@ -601,7 +610,7 @@ $miner_is_e = miner_is_e($e['e__id']);
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
 
             foreach($list_e as $e_portfolio) {
-                $focus_tab .= view_e($e_portfolio,false, null, true, ($miner_is_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
+                $focus_tab .= view_e($e_portfolio,false, null, true, ($source_of_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
             }
             if ($counter > count($list_e)) {
                 $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
@@ -617,6 +626,18 @@ $miner_is_e = miner_is_e($e['e__id']);
                            placeholder="SOURCE TITLE/URL">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
+            $focus_tab .= '</div>';
+
+        } elseif($x__type==6255){
+
+            //DISCOVERIES
+            $counter = view_coins_e(6255, $e['e__id'], 0, false);
+            $list_x  = view_coins_e(6255, $e['e__id'], 1);
+
+            $focus_tab .= '<div id="list_x" class="list-group">';
+            foreach($list_x as $item){
+                $focus_tab .= view_i($item, 0, false, false, null, null, false);
+            }
             $focus_tab .= '</div>';
 
         } elseif(in_array($x__type, $this->config->item('n___4485'))){

@@ -552,14 +552,14 @@ class X_model extends CI_Model
                         } elseif(in_array($key, array('x__left', 'x__right'))) {
 
                             //Fetch new/old Idea outcomes:
-                            $before_is = $this->I_model->fetch(array(
+                            $before_i = $this->I_model->fetch(array(
                                 'i__id' => $before_data[0][$key],
                             ));
-                            $after_is = $this->I_model->fetch(array(
+                            $after_i = $this->I_model->fetch(array(
                                 'i__id' => $value,
                             ));
 
-                            $x__message .= view_db_field($key) . ' updated from [' . $before_is[0]['i__title'] . '] to [' . $after_is[0]['i__title'] . ']' . "\n";
+                            $x__message .= view_db_field($key) . ' updated from [' . $before_i[0]['i__title'] . '] to [' . $after_i[0]['i__title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('x__message', 'x__sort'))){
 
@@ -1228,13 +1228,13 @@ class X_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__source' => $e__id, //Belongs to this Miner
-            ), array(), 0, 0, array('x__sort' => 'ASC')) as $current_is){
+            ), array(), 0, 0, array('x__sort' => 'ASC')) as $current_i){
 
                 //Increase rank:
                 $i_rank++;
 
                 //Update order:
-                $this->X_model->update($current_is['x__id'], array(
+                $this->X_model->update($current_i['x__id'], array(
                     'x__sort' => $i_rank,
                 ), $e__id, 10681 /* Ideas Ordered Automatically  */);
 
@@ -1435,16 +1435,16 @@ class X_model extends CI_Model
                     array_push($parents_checked, $p_id);
 
                     //Fetch parent idea:
-                    $previous_is = $this->I_model->fetch(array(
+                    $previous_i = $this->I_model->fetch(array(
                         'i__id' => $p_id,
                         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     ));
 
                     //Now see if this child completion resulted in a full parent completion:
-                    if(count($previous_is) > 0){
+                    if(count($previous_i) > 0){
 
                         //Fetch parent completion:
-                        $this->X_model->completion_recursive_up($e__id, $previous_is[0], false);
+                        $this->X_model->completion_recursive_up($e__id, $previous_i[0], false);
 
                     }
 
@@ -1471,7 +1471,7 @@ class X_model extends CI_Model
          *
          * */
 
-        if(!i_is_unlockable($i)){
+        if(!i_unlockable($i)){
             return array(
                 'status' => 0,
                 'message' => 'Not a valid locked idea type and status',

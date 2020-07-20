@@ -642,7 +642,7 @@ class E_model extends CI_Model
         $url_analysis = analyze_domain($url);
 
         //Now let's analyze further based on type:
-        if ($url_analysis['url_is_root']) {
+        if ($url_analysis['url_root']) {
 
             //Update URL to keep synced:
             $url = $url_analysis['url_clean_domain'];
@@ -707,7 +707,7 @@ class E_model extends CI_Model
 
 
         //Fetch/Create domain source:
-        $url_e = $this->E_model->domain($url, $x__source, ( $url_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
+        $url_e = $this->E_model->domain($url, $x__source, ( $url_analysis['url_root'] && $name_was_passed ? $page_title : null ));
         if(!$url_e['status']){
             //We had an issue:
             return $url_e;
@@ -715,7 +715,7 @@ class E_model extends CI_Model
 
 
         //Was this not a root domain? If so, also check to see if URL exists:
-        if ($url_analysis['url_is_root']) {
+        if ($url_analysis['url_root']) {
 
             //URL is the domain in this case:
             $e_url = $url_e['e_domain'];
@@ -928,7 +928,7 @@ class E_model extends CI_Model
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
-                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_e)==0) || ($action_e__id==12928 && view_coins_e_i($x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_e_i($x['e__id'],true))){
+                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_e)==0) || ($action_e__id==12928 && view_coins_e(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_coins_e(12273, $x['e__id'],0, false))){
 
                     $add_fields = array(
                         'x__source' => $x__source,

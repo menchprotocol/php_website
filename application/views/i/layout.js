@@ -212,7 +212,7 @@ function i_remove(i__id, x__id, is_parent){
             if (data.status) {
                 i_ui_delete(i__id,x__id);
                 if(!is_parent){
-                    i_note_counter(11020, -1);
+                    i_note_counter(12273, -1);
                 }
             }
         });
@@ -363,7 +363,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
 
             if(!is_parent){
                 //Only children have a counter:
-                i_note_counter(11020, +1);
+                i_note_counter(12273, +1);
             }
 
 
