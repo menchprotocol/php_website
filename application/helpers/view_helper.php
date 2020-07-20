@@ -583,80 +583,121 @@ function view_cache($config_var_id, $e__id, $micro_status = true, $data_placemen
 }
 
 
-function view_coins_i($i__id){
+
+function view_coins_e_e($e__id, $return_count_only = false){
 
     $CI =& get_instance();
-    //Just count next ideas:
-    $next_is = $CI->X_model->fetch(array(
-        'x__left' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-    if($next_is[0]['totals'] > 0){
-        return '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($next_is[0]['totals']).'</span>';
+
+    $e_coins = $this->X_model->fetch(array(
+        'x__up' => $e__id, //PORTFOLIO
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
+
+    if($return_count_only){
+        return $e_coins[0]['totals'];
     } else {
-        return false;
+        return ($e_coins[0]['totals'] > 0 ? '<span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($e_coins[0]['totals']).'</span>' : null);
+    }
+}
+
+function view_coins_e_i($e__id, $return_count_only = false){
+
+    $CI =& get_instance();
+    $e_coins = $CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
+        '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
+    if($return_count_only){
+        return $e_coins[0]['totals'];
+    } else {
+        return ($e_coins[0]['totals'] > 0 ? '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($e_coins[0]['totals']).'</span>' : null);
     }
 
 }
 
-
-function view_coins_x($i__id = 0, $e__id = 0){
+function view_coins_e_x($e__id, $return_count_only = false){
 
     $CI =& get_instance();
     $query_filters = array(
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null,
-        ( $i__id > 0 ? 'x__left' : 'x__source' ) => ( $i__id > 0 ? $i__id : $e__id ),
+        'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+        'x__source' => $e__id,
     );
 
-    if(isset($_GET['focus__e'])){
-        $query_filters['x__source'] = intval($_GET['focus__e']);
+    if(isset($_GET['filter__e'])){
+        $query_filters['x__source'] = intval($_GET['filter__e']);
     }
 
     $x_coins = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
 
-    if($x_coins[0]['totals'] > 0){
-        return '<span class="montserrat discover"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($x_coins[0]['totals']).'</span>';
+    if($return_count_only){
+        return $x_coins[0]['totals'];
     } else {
-        return false;
+        return ( $x_coins[0]['totals'] > 0 ? '<span class="montserrat discover"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($x_coins[0]['totals']).'</span>' : null);
     }
 
 }
 
 
-function view_coins_e($i__id = 0, $e__id = 0, $number_only = false){
+
+function view_coins_i_e($i, $return_count_only = false){
 
     $CI =& get_instance();
 
-    if($i__id){
-        $mench = 'source';
-        $coins_filter = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
-            'x__right' => $i__id,
-            '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-        );
-    } elseif($e__id){
-        $mench = 'idea';
-        $coins_filter = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___12273')) . ')' => null, //IDEA COIN
-            '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
-        );
-    }
+    $i_stats = i_stats($i['i__metadata']);
 
-    $e_coins = $CI->X_model->fetch($coins_filter, array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-    if($number_only){
-        return $e_coins[0]['totals'];
+    if($return_count_only){
+        return $i_stats['e_count'];
     } else {
-        return ($e_coins[0]['totals'] > 0 ? '<span class="montserrat '.$mench.'"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($e_coins[0]['totals']).'</span>' : null);
+        return ($i_stats['e_count'] > 0 ? '<span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($i_stats['e_count']).'</span>' : null);
     }
 }
 
+function view_coins_i_i($i, $return_count_only = false){
 
-function view_i_x_icon($completion_percentage){
+    $CI =& get_instance();
+
+    //Average Ideas in Tree:
+    $i_stats = i_stats($i['i__metadata']);
+
+    if($return_count_only){
+        return $i_stats['i___13443'];
+    } else {
+        return ( $i_stats['i___13443'] > 0 ? '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($i_stats['i___13443']).'</span>' : null);
+    }
+
+}
+
+function view_coins_i_x($i, $return_count_only = false){
+
+    $CI =& get_instance();
+    $query_filters = array(
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+        'x__left' => $i['i__id'],
+    );
+
+    if(isset($_GET['filter__e'])){
+        $query_filters['x__source'] = intval($_GET['filter__e']);
+    }
+
+    $x_coins = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
+
+    if($return_count_only){
+        return $x_coins[0]['totals'];
+    } else {
+        return ($x_coins[0]['totals'] > 0 ? '<span class="montserrat discover"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($x_coins[0]['totals']).'</span>' : null);
+    }
+
+}
+
+
+
+function view_icon_i_x($completion_percentage){
 
     $CI =& get_instance();
     $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
@@ -714,7 +755,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
         $ui .= '<div class="progress-bg-list" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
     }
 
-    $ui .= '<span class="icon-block">'.view_i_x_icon($completion_rate['completion_percentage']).'</span>';
+    $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage']).'</span>';
 
     $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
@@ -944,7 +985,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
     $ui .= '<div class="col-sm-8">';
 
         //IDAE Transaction:
-        $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
+        $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
 
         //IDEA STATUS:
         $ui .= '<a href="'.$i_x.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a>';
@@ -966,9 +1007,9 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_owns_i = false, $message
     $ui .= '<div class="col-sm-4 col2nd">';
         //MENCH COINS
         $ui .= '<div class="row">';
-            $ui .= '<div class="col-4">'.view_coins_e($i['i__id']).'</div>';
-            $ui .= '<div class="col-4">'.view_coins_i($i['i__id']).'</div>';
-            $ui .= '<div class="col-4">'.view_coins_x($i['i__id']).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_i_e($i).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_i_i($i).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_i_x($i).'</div>';
         $ui .= '</div>';
     $ui .= '</div>';
     $ui .= '</div>';
@@ -1347,18 +1388,11 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
     ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
 
-    $list_11029_count = $CI->X_model->fetch(array(
-        'x__up' => $e['e__id'],
-        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
-
     $is_public = in_array($e['e__status'], $CI->config->item('n___7357'));
     $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
     //Allow source to see all their own transactions:
     $is_hidden = (!$session_e || $session_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
-    $e_url = ( $is_x_progress ? '/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'] : '/@'.$e['e__id'] );
+    $e_url = ( $is_x_progress ? '/'.$CI->uri->segment(1).'?filter__e='.$e['e__id'] : '/@'.$e['e__id'] );
 
 
     if(!$session_e && (!$is_public || !$is_x_published)){
@@ -1400,43 +1434,42 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
     $ui .= '<div class="row">';
-    $ui .= '<div class="col-sm-8">';
-
-        //SOURCE ICON
-        $ui .= '<a href="'.$e_url.'" '.( $is_x_e ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
 
-        //SOURCE TITLE TEXT EDITOR
-        if($inline_editing){
+        $ui .= '<div class="col-sm-8">';
+            //SOURCE ICON
+            $ui .= '<a href="'.$e_url.'" '.( $is_x_e ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
-            $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $miner_is_e, 0, false, null, extract_icon_color($e['e__icon']));
 
-            if($superpower_12706){
-                $ui .= '<div class="space-content">'.$box_items_list.'</div>';
+            //SOURCE TITLE TEXT EDITOR
+            if($inline_editing){
+
+                $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $miner_is_e, 0, false, null, extract_icon_color($e['e__icon']));
+
+                if($superpower_12706){
+                    $ui .= '<div class="space-content">'.$box_items_list.'</div>';
+                }
+
+            } else {
+
+                //SOURCE NAME
+                $ui .= '<a href="'.$e_url.'" class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'">';
+                $ui .= $box_items_list;
+                $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
+                $ui .= '</a>';
+
             }
-
-        } else {
-
-            //SOURCE NAME
-            $ui .= '<a href="'.$e_url.'" class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'">';
-            $ui .= $box_items_list;
-            $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
-            if($list_11029_count[0]['totals'] > 0){
-                $ui .= ' ['.view_number($list_11029_count[0]['totals']).']';
-            }
-            $ui .= '</a>';
-
-        }
-
-    $ui .= '</div>';
+        $ui .= '</div>';
 
 
-    $ui .= '<div class="col-sm-4 col2nd">';
-        //MENCH COINS
-        $ui .= '<div class="row">';
-            $ui .= '<div class="col-4"><span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($list_11029_count[0]['totals']).'</span></div>';
-            $ui .= '<div class="col-4">'.view_coins_e(0, $e['e__id']).'</div>';
-            $ui .= '<div class="col-4">'.view_coins_x(0, $e['e__id']);
+        $ui .= '<div class="col-sm-4 col2nd">';
+
+            //MENCH COINS
+            $ui .= '<div class="row">';
+                $ui .= '<div class="col-4">'.view_coins_e_e($e['e__id']).'</div>';
+                $ui .= '<div class="col-4">'.view_coins_e_i($e['e__id']).'</div>';
+                $ui .= '<div class="col-4">'.view_coins_e_x($e['e__id']).'</div>';
+            $ui .= '</div>';
 
             if($control_enabled && $miner_is_e){
 
@@ -1469,9 +1502,10 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
             }
 
-            $ui .='</div>';
-            $ui .= '</div>';
         $ui .= '</div>';
+
+
+
     $ui .= '</div>';
 
 

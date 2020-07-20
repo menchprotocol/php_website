@@ -928,7 +928,7 @@ class E_model extends CI_Model
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
-                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_es)==0) || ($action_e__id==12928 && view_coins_e(0,$x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_e(0,$x['e__id'],true))){
+                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_es)==0) || ($action_e__id==12928 && view_coins_e_i($x['e__id'],true) > 0) || ($action_e__id==12930 && !view_coins_e_i($x['e__id'],true))){
 
                     $add_fields = array(
                         'x__source' => $x__source,

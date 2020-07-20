@@ -77,7 +77,7 @@
         ));
 
         //IDEA TITLE
-        echo '<h1 class="block-one"><span class="icon-block top-icon">'.view_i_x_icon( 0 ).'</span><span class="title-block-lg">' . view_i_title($is[0]) . '</span></h1>';
+        echo '<h1 class="block-one"><span class="icon-block top-icon">'.view_icon_i_x( 0 ).'</span><span class="title-block-lg">' . view_i_title($is[0]) . '</span></h1>';
 
         //IDEA MESSAGES
         echo '<div style="margin-bottom:34px;">';

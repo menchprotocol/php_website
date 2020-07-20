@@ -23,7 +23,7 @@ foreach($this->I_model->fetch(array(
 
         $x_coins = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null,
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $child_or['i__id'],
         ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
 

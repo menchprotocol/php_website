@@ -1590,7 +1590,6 @@ label {
 @media (max-width:767px) {
 
     .top-icon{
-        vertical-align: top;
         margin-top: -17px;
     }
 
