@@ -632,13 +632,22 @@ $superpower_any = ( $session_e ? count($this->session->userdata('session_superpo
 
             //DISCOVERIES
             $counter = view_coins_e(6255, $e['e__id'], 0, false);
-            $list_x  = view_coins_e(6255, $e['e__id'], 1);
 
-            $focus_tab .= '<div id="list_x" class="list-group">';
-            foreach($list_x as $item){
-                $focus_tab .= view_i($item, 0, false, false, null, null, false);
+            if($counter){
+                $list_x  = view_coins_e(6255, $e['e__id'], 1);
+                $focus_tab .= '<div id="list_x" class="list-group">';
+                foreach($list_x as $item){
+                    $focus_tab .= view_i($item, 0, false, false, null, null, false);
+                }
+                $focus_tab .= '</div>';
+            } else {
+
+                //No Results:
+                $e___12467 = $this->config->item('e___12467'); //MENCH COINS
+                $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m_name'].' yet</div>';
+
             }
-            $focus_tab .= '</div>';
+
 
         } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
