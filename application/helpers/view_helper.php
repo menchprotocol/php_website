@@ -598,7 +598,7 @@ function view_coins_e_e($e__id, $return_count_only = false){
     if($return_count_only){
         return $e_coins[0]['totals'];
     } else {
-        return ($e_coins[0]['totals'] > 0 ? '<span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($e_coins[0]['totals']).'</span>' : null);
+        return ($e_coins[0]['totals'] > 0 ? '<span class="montserrat source"><i class="fas fa-circle"></i>&nbsp;'.view_number($e_coins[0]['totals']).'</span>' : null);
     }
 }
 
@@ -614,7 +614,7 @@ function view_coins_e_i($e__id, $return_count_only = false){
     if($return_count_only){
         return $e_coins[0]['totals'];
     } else {
-        return ($e_coins[0]['totals'] > 0 ? '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($e_coins[0]['totals']).'</span>' : null);
+        return ($e_coins[0]['totals'] > 0 ? '<span class="montserrat idea"><i class="fas fa-circle"></i>&nbsp;'.view_number($e_coins[0]['totals']).'</span>' : null);
     }
 
 }
@@ -637,7 +637,7 @@ function view_coins_e_x($e__id, $return_count_only = false){
     if($return_count_only){
         return $x_coins[0]['totals'];
     } else {
-        return ( $x_coins[0]['totals'] > 0 ? '<span class="montserrat discover"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($x_coins[0]['totals']).'</span>' : null);
+        return ( $x_coins[0]['totals'] > 0 ? '<span class="montserrat discover"><i class="fas fa-circle"></i>&nbsp;'.view_number($x_coins[0]['totals']).'</span>' : null);
     }
 
 }
@@ -653,7 +653,7 @@ function view_coins_i_e($i, $return_count_only = false){
     if($return_count_only){
         return $i_stats['e_count'];
     } else {
-        return ($i_stats['e_count'] > 0 ? '<span class="montserrat source"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($i_stats['e_count']).'</span>' : null);
+        return ($i_stats['e_count'] > 0 ? '<span class="montserrat source"><i class="fas fa-circle"></i>&nbsp;'.view_number($i_stats['e_count']).'</span>' : null);
     }
 }
 
@@ -667,7 +667,7 @@ function view_coins_i_i($i, $return_count_only = false){
     if($return_count_only){
         return $i_stats['i___13443'];
     } else {
-        return ( $i_stats['i___13443'] > 0 ? '<span class="montserrat idea"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($i_stats['i___13443']).'</span>' : null);
+        return ( $i_stats['i___13443'] > 0 ? '<span class="montserrat idea"><i class="fas fa-circle"></i>&nbsp;'.view_number($i_stats['i___13443']).'</span>' : null);
     }
 
 }
@@ -690,7 +690,7 @@ function view_coins_i_x($i, $return_count_only = false){
     if($return_count_only){
         return $x_coins[0]['totals'];
     } else {
-        return ($x_coins[0]['totals'] > 0 ? '<span class="montserrat discover"><span class="icon-block"><i class="fas fa-circle"></i></span>'.view_number($x_coins[0]['totals']).'</span>' : null);
+        return ($x_coins[0]['totals'] > 0 ? '<span class="montserrat discover"><i class="fas fa-circle"></i>&nbsp;'.view_number($x_coins[0]['totals']).'</span>' : null);
     }
 
 }
