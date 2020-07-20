@@ -347,9 +347,9 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             $focus_tab .= '</div>'; //End of accordion
 
-        } elseif($x__type==11030){ //SOURCE PROFILE
+        } elseif($x__type==11030){
 
-            //FETCH ALL PARENTS
+            //PROFILE
             $e__profiles = $this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -377,43 +377,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                            placeholder="SOURCE TITLE/URL">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
-            $focus_tab .= '</div>';
-
-        } elseif($x__type==12273){
-
-            //IDEAS
-            $counter = $counter__i;
-            $list_i = view_coins_e(12273, $e['e__id'], 1);
-
-            //SMART SHOW/HIDE LIST LOGIC
-            $previous_do_hide = true;
-            $bold_upto_weight = i_calc_bold_upto_weight($list_i);
-            $show_max = config_var(11986);
-            $focus_tab .= '<div id="list_i" class="list-group">';
-            foreach($list_i as $count => $item){
-
-                $boxbar_details = null;
-                $string_references['ref_time_found'] = false;
-
-                if(strlen($item['x__message'])){
-                    $boxbar_details .= '<div class="message_content">';
-                    $boxbar_details .= $this->X_model->message_send($item['x__message']);
-                    $boxbar_details .= '</div>';
-                    $string_references = extract_e_references($item['x__message']);
-                }
-
-                $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['i__weight']) || ($count >= $show_max)));
-
-                if(!$previous_do_hide && $do_hide){
-                    $focus_tab .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
-                    $focus_tab .= '<div class="see_mores"></div>';
-                }
-
-                $focus_tab .= view_i($item, 0, false, false, $item['x__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
-
-                $previous_do_hide = $do_hide;
-
-            }
             $focus_tab .= '</div>';
 
         } elseif($x__type==12274){
@@ -624,6 +587,43 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                            placeholder="SOURCE TITLE/URL">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
+            $focus_tab .= '</div>';
+
+        } elseif($x__type==12273){
+
+            //IDEAS
+            $counter = $counter__i;
+            $list_i = view_coins_e(12273, $e['e__id'], 1);
+
+            //SMART SHOW/HIDE LIST LOGIC
+            $previous_do_hide = true;
+            $bold_upto_weight = i_calc_bold_upto_weight($list_i);
+            $show_max = config_var(11986);
+            $focus_tab .= '<div id="list_i" class="list-group">';
+            foreach($list_i as $count => $item){
+
+                $boxbar_details = null;
+                $string_references['ref_time_found'] = false;
+
+                if(strlen($item['x__message'])){
+                    $boxbar_details .= '<div class="message_content">';
+                    $boxbar_details .= $this->X_model->message_send($item['x__message']);
+                    $boxbar_details .= '</div>';
+                    $string_references = extract_e_references($item['x__message']);
+                }
+
+                $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['i__weight']) || ($count >= $show_max)));
+
+                if(!$previous_do_hide && $do_hide){
+                    $focus_tab .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                    $focus_tab .= '<div class="see_mores"></div>';
+                }
+
+                $focus_tab .= view_i($item, 0, false, false, $item['x__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+
+                $previous_do_hide = $do_hide;
+
+            }
             $focus_tab .= '</div>';
 
         } elseif($x__type==6255){

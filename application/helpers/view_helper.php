@@ -776,7 +776,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
         $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
 
             //MENCH COINS
-            $ui .= '<div class="row">';
+            $ui .= '<div class="row handler_13509 hidden">';
                 $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
                 $ui .= '<div class="col-8"><span class="inline-block" style="width:64px;">'.view_coins_i(12273, $i).'</span>'.($i_stats['i___13292'] ? '<span class="mono-space inline-block">'.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
             $ui .= '</div>';
