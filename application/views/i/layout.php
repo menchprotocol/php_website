@@ -159,6 +159,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==12273){
 
         //IDEAS
+        $counter = view_coins_i(12273,  $i_focus, false);
 
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -167,13 +168,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__left' => $i_focus['i__id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-        //CHILD IDEAS
-        $counter = count($is_next);
-
 
         //IDEA TREE STATS
         $focus_tab .= view_i_tree_stats($i_stats);
-
 
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
         foreach($is_next as $next_i) {
