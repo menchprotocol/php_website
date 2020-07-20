@@ -588,11 +588,11 @@ function view_coins_e_e($e__id, $return_count_only = false){
 
     $CI =& get_instance();
 
-    $e_coins = $this->X_model->fetch(array(
+    $e_coins = $CI->X_model->fetch(array(
         'x__up' => $e__id, //PORTFOLIO
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
     ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
     if($return_count_only){
