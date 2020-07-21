@@ -147,7 +147,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         }
 
-        $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder">';
+        $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:34px;">';
 
         $direct_e_ids = array();
         foreach($i_notes as $i_note) {
