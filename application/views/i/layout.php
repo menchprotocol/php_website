@@ -135,12 +135,24 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__right' => $i_focus['i__id'],
         ), array('x__up'), 0, 0, array('x__sort' => 'ASC'));
 
-        $counter = count($i_notes);
+
+        if($x__type==12274) {
+
+            //SOURCES
+            $counter = view_coins_i(12274,  $i_focus, false);
+
+        } else {
+
+            $counter = count($i_notes);
+
+        }
 
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder">';
 
+        $direct_e_ids = array();
         foreach($i_notes as $i_note) {
             $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
+            array_push($direct_e_ids, intval($i_note['e__id']));
         }
 
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
@@ -155,6 +167,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $focus_tab .= '</div>';
+
+        if($x__type==12274){
+            //Add Tree Sources
+            $focus_tab .= view_i_tree_e($i_focus, $direct_e_ids);
+        }
 
     } elseif($x__type==12273){
 
@@ -191,27 +208,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $focus_tab .= '</div>';
-
-    } elseif($x__type==12274) {
-
-        //SOURCES
-        $counter = view_coins_i(12274,  $i_focus, false);
-
-        $direct_e_ids = array();
-        $i_notes = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4983, //IDEA AUTHORS
-            'x__right' => $i_focus['i__id'],
-        ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
-        foreach($i_notes as $i_note){
-            array_push($direct_e_ids, intval($i_note['e__id']));
-        }
-
-        //Idea Sources
-        $focus_tab .= view_i_note_mix(12274, $i_notes);
-
-        //Add Tree Sources
-        $focus_tab .= view_i_tree_e($i_focus, $direct_e_ids);
 
     } elseif($x__type==6255) {
 
