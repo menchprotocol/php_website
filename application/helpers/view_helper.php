@@ -767,7 +767,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
 
     $ui .= '<div class="row">';
-        $ui .= '<div class="">';
+        $ui .= '<div class="col-sm col-md">';
 
             $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage']).'</span>';
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
