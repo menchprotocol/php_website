@@ -57,6 +57,7 @@ function htmlentitiesjs(rawStr){
 
 function load_editor(){
 
+
     $('#set_mass_action').change(function () {
         mass_action_ui();
     });
