@@ -523,7 +523,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 } else {
 
-                    $focus_tab .= '<div class="alert alert-info" role="alert">'.$e['e__name'].' has discovered '.$counter.' ideas so far.</div>';
+                    $focus_tab .= '<div class="alert alert-info" role="alert">'.$e['e__title'].' has discovered '.$counter.' ideas so far.</div>';
 
                 }
 
