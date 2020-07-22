@@ -523,7 +523,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 } else {
 
-                    $focus_tab .= '<div class="alert alert-info" role="alert">'.$e['e__title'].' has discovered '.$counter.' ideas so far.</div>';
+                    $focus_tab .= '<div class="alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>'.$e['e__title'].' has discovered '.$counter.' ideas so far.</div>';
 
                 }
 
@@ -532,7 +532,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 //No Results:
                 $e___12467 = $this->config->item('e___12467'); //MENCH COINS
-                $focus_tab .= '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m_name'].' yet</div>';
+                $focus_tab .= '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No '.$e___12467[6255]['m_name'].' yet</div>';
 
             }
 
