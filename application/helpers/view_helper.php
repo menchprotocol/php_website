@@ -1370,13 +1370,8 @@ function view_e_basic($e)
 
     $e__title = '<span '.( isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' class="underdot" title="'.$e['x__message'].'" data-toggle="tooltip" data-placement="top" ' : '' ).'>'.$e['e__title'].'</span>';
 
-    if(superpower_assigned()){
-        //Give Transaction:
-        $ui .= '<a class="title-block title-no-right montserrat" href="/@'.$e['e__id'].'">'.$e__title.'</a>';
-    } else {
-        //Basic
-        $ui .= '<span class="title-block title-no-right">'.$e__title.'</span>';
-    }
+    //Give Transaction:
+    $ui .= '<a class="title-block title-no-right montserrat" href="/@'.$e['e__id'].'">'.$e__title.'</a>';
 
     $ui .= '</div>';
     return $ui;
