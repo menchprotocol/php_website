@@ -136,23 +136,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__up'), 0, 0, array('x__sort' => 'ASC'));
 
 
-        if($x__type==12274) {
-
-            //SOURCES
-            $counter = view_coins_i(12274,  $i_focus, false);
-
-        } else {
-
-            $counter = count($i_notes);
-
-        }
+        //SOURCES
+        $counter = ( $x__type==12274 ? view_coins_i(12274,  $i_focus, false) : count($i_notes) );
 
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:34px;">';
-
-        $direct_e_ids = array();
         foreach($i_notes as $i_note) {
             $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
-            array_push($direct_e_ids, intval($i_note['e__id']));
         }
 
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
@@ -170,7 +159,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         if($x__type==12274){
             //Add Tree Sources
-            $focus_tab .= view_i_tree_e($i_focus, $direct_e_ids);
+            $focus_tab .= view_i_tree_e($i_focus);
         }
 
     } elseif($x__type==12273){

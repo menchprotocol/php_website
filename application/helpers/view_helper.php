@@ -805,7 +805,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 }
 
 
-function view_i_tree_e($i, $exclude_sources = array()){
+function view_i_tree_e($i){
     $CI =& get_instance();
     $i_stats = i_stats($i['i__metadata']);
     $ui = '';
@@ -815,9 +815,7 @@ function view_i_tree_e($i, $exclude_sources = array()){
             $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m_name'].':</div>';
             $ui .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
-                if(!in_array($e['e__id'], $exclude_sources)){
-                    $ui .= view_e_basic($e);
-                }
+                $ui .= view_e_basic($e);
             }
             $ui .= '</div>';
         }
@@ -982,26 +980,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
     $ui = '<div x__id="' . $x__id . '" i-id="' . $i['i__id'] . '" class="list-group-item no-side-padding itemidea itemidealist i_sortable paddingup level2_in object_saved saved_i_'.$i['i__id'] . ' i_line_' . $i['i__id'] . ( $is_parent ? ' parent-i ' : '' ) . ' i__tr_'.$x__id.' '.$extra_class.'" style="padding-left:0;">';
 
 
-    //EDITING TOOLBAR
-    if($is_i_x && $control_enabled && $e_of_i){
 
-        //RIGHT EDITING:
-        $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-        $ui .= '<div class="note-editor edit-off">';
-        $ui .= '<span class="show-on-hover">';
-
-        if(!$is_parent){
-            $ui .= '<span title="SORT"><i class="fas fa-bars black i-sort-handle"></i></span>';
-        }
-
-        //Remove:
-        $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
-
-        $ui .= '</span>';
-        $ui .= '</div>';
-        $ui .= '</div>';
-
-    }
 
 
 
@@ -1037,6 +1016,28 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
             $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
             $ui .= '<div class="col-4">'.view_coins_i(6255,  $i).'</div>';
         $ui .= '</div>';
+
+        //EDITING TOOLBAR
+        if($is_i_x && $control_enabled && $e_of_i){
+
+            //RIGHT EDITING:
+            $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
+            $ui .= '<div class="note-editor edit-off">';
+            $ui .= '<span class="show-on-hover">';
+
+            if(!$is_parent){
+                $ui .= '<span title="SORT"><i class="fas fa-bars black i-sort-handle"></i></span>';
+            }
+
+            //Remove:
+            $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
+
+            $ui .= '</span>';
+            $ui .= '</div>';
+            $ui .= '</div>';
+
+        }
+
     $ui .= '</div>';
     $ui .= '</div>';
 
