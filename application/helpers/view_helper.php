@@ -812,7 +812,7 @@ function view_i_tree_e($i){
 
     foreach($CI->config->item('e___4251') as $e__id => $m2){
         if($i_stats['count_'.$e__id]>0){
-            $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m_name'].':'.( strlen($m2['m_desc']) ? '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$m2['m_desc'].'"><i class="fas fa-info-circle"></i></span>' : '' ).'</div>';
+            $ui .= '<div class="headline" '.( strlen($m2['m_desc']) ? ' data-toggle="tooltip" data-placement="top" title="'.$m2['m_desc'].'" ' : '' ).'><span class="icon-block">'.$m2['m_icon'].'</span><span '.( strlen($m2['m_desc']) ? ' class="underdot" ' : '' ).'>'.$i_stats['count_'.$e__id].' '.$m2['m_name'].'</span>:</div>';
             $ui .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
                 $ui .= view_e_basic($e);
