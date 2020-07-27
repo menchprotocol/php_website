@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-22 10:36:32 PST
-$config['s___12274'] = 4990; //SOURCES
-$config['s___12273'] = 3927; //IDEAS
-$config['s___6255'] = 122154; //DISCOVERIES
+//Generated 2020-07-27 13:13:20 PST
+$config['s___12274'] = 4993; //SOURCES
+$config['s___12273'] = 3926; //IDEAS
+$config['s___6255'] = 122157; //DISCOVERIES
 
 //SOURCE IDEAS:
 $config['n___13550'] = array(4983,4231);
@@ -625,19 +625,19 @@ $config['n___4251'] = array(13202,3000,13339);
 $config['e___4251'] = array(
     13202 => array(
         'm_name' => 'SUMMARIZERS',
-        'm_desc' => '',
+        'm_desc' => 'Key ideas summarized by these Mench users',
         'm_icon' => '<i class="fad fa-user-edit idea" aria-hidden="true"></i>',
         'm_parents' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
         'm_name' => 'NONFICTION SOURCES',
-        'm_desc' => '',
+        'm_desc' => 'Key ideas summarized from these nonfiction sources',
         'm_icon' => '<i class="fas fa-info-circle source" aria-hidden="true"></i>',
         'm_parents' => array(13543,6159,4251,13428,13365,13207,4527),
     ),
     13339 => array(
         'm_name' => 'EXPERTS',
-        'm_desc' => '',
+        'm_desc' => 'Nonfiction sources published by these expert authors',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_parents' => array(13543,12563,6159,4251,12968,13428,13365,13207),
     ),
@@ -3843,7 +3843,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_name' => 'MENCH VERSION',
-        'm_desc' => 'v1.47',
+        'm_desc' => 'v1.48',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_parents' => array(6404),
     ),

@@ -51,9 +51,9 @@ class I extends CI_Controller {
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 10573, //MY IDEAS
-            'x__up' => $session_e['e__id'], //For this miner
-        ), array(), 0, 0, array('x__sort' => 'ASC')) as $miner_i){
-            $this->X_model->update($miner_i['x__id'], array(
+            'x__up' => $session_e['e__id'], //For this user
+        ), array(), 0, 0, array('x__sort' => 'ASC')) as $u_i){
+            $this->X_model->update($u_i['x__id'], array(
                 'x__sort' => $x__sort,
             ), $session_e['e__id']);
             $x__sort++;
@@ -143,7 +143,7 @@ class I extends CI_Controller {
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
                 'x__source' => $session_e['e__id'],
-                'x__type' => 4993, //Miner Opened Idea
+                'x__type' => 4993, //User Opened Idea
                 'x__right' => $i__id,
                 'x__sort' => $new_order,
             ));
@@ -169,7 +169,7 @@ class I extends CI_Controller {
 
     function i_e_request($i__id){
 
-        //Make sure it's a logged in miner:
+        //Make sure it's a logged in user:
         $session_e = superpower_assigned(null, true);
 
         if(count($this->X_model->fetch(array(
@@ -196,7 +196,7 @@ class I extends CI_Controller {
 
     function i_e_add($i__id){
 
-        //Make sure it's a logged in miner:
+        //Make sure it's a logged in user:
         $session_e = superpower_assigned(10984, true);
 
         //Idea Source:
@@ -263,7 +263,7 @@ class I extends CI_Controller {
         $deletion_redirect = null;
         $delete_element = null;
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned();
         if (!$session_e) {
             return view_json(array(
@@ -396,7 +396,7 @@ class I extends CI_Controller {
 
     function i_remove(){
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned();
         if (!$session_e) {
             return view_json(array(
@@ -439,7 +439,7 @@ class I extends CI_Controller {
          *
          * */
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned(10939);
         if (!$session_e) {
             return view_json(array(
@@ -506,7 +506,7 @@ class I extends CI_Controller {
     function i_sort_save()
     {
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned(10939);
         if (!$session_e) {
             view_json(array(
@@ -540,7 +540,7 @@ class I extends CI_Controller {
                 foreach($_POST['new_x__sorts'] as $rank => $x__id) {
                     $this->X_model->update(intval($x__id), array(
                         'x__sort' => intval($rank),
-                    ), $session_e['e__id'], 10675 /* Ideas Ordered by Miner */);
+                    ), $session_e['e__id'], 10675 /* Ideas Ordered by User */);
                 }
 
                 //Display message:
@@ -555,7 +555,7 @@ class I extends CI_Controller {
     function i_note_text()
     {
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned();
 
         if (!$session_e) {
@@ -635,7 +635,7 @@ class I extends CI_Controller {
 
         //TODO: MERGE WITH FUNCTION x_upload()
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned();
         if (!$session_e) {
 
@@ -749,7 +749,7 @@ class I extends CI_Controller {
     function i_note_sort()
     {
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned(10939);
         if (!$session_e) {
 
@@ -773,7 +773,7 @@ class I extends CI_Controller {
         foreach($_POST['new_x__sorts'] as $x__sort => $x__id) {
             if (intval($x__id) > 0) {
                 $sort_count++;
-                //Log update and give credit to the session Miner:
+                //Log update and give credit to the session User:
                 $this->X_model->update($x__id, array(
                     'x__sort' => intval($x__sort),
                 ), $session_e['e__id'], 10676 /* IDEA NOTES Ordered */);
@@ -790,7 +790,7 @@ class I extends CI_Controller {
     function i_note_edit()
     {
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned();
         if (!$session_e) {
             return view_json(array(

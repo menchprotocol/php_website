@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     autosize($('.texttype__lg.text__6197_'+e_focus_id));
 
-    //Update Profile counters to account for sources that miner may not be able to see due to missing permissions...
+    //Update Profile counters to account for sources that user may not be able to see due to missing permissions...
     $('.en-type-counter-11030').text($('#list_11030 .en-item').not(".hidden").length);
 
 
@@ -81,9 +81,9 @@ $(document).ready(function () {
 
     $('#e__status').change(function () {
 
-        if (parseInt($('#e__status').find(":selected").val()) == 6178 /* Miner Deleted */) {
+        if (parseInt($('#e__status').find(":selected").val()) == 6178 /* User Deleted */) {
 
-            //Notify Miner:
+            //Notify User:
             $('.notify_e_delete').removeClass('hidden');
             $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
@@ -379,7 +379,7 @@ function e_load_page(page, load_new_filter) {
             //Reset search engine:
             e_load_search("#new_portfolio", 0, 'w');
         } else {
-            //Update UI to confirm with miner:
+            //Update UI to confirm with user:
             $(data).insertBefore('#new_portfolio');
         }
 
@@ -501,7 +501,7 @@ function e_upload_file(droppedFiles, uploadType) {
 
     var current_value = $('#x__message').val();
     if(current_value.length > 0){
-        //There is something in the input field, notify the miner:
+        //There is something in the input field, notify the user:
         var r = confirm("Current transaction content [" + current_value + "] will be deleted. Continue?");
         if (r == false) {
             return false;
@@ -586,7 +586,7 @@ function e_sort_save() {
     if (sort_rank > 0) {
         //Update backend:
         $.post("/e/e_sort_save", {e__id: e_focus_id, new_x__sorts: new_x__sorts}, function (data) {
-            //Update UI to confirm with miner:
+            //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
                 alert(data.message);
@@ -724,12 +724,12 @@ function e_update() {
                 update_text_name(6197, modify_data['e__id'], modify_data['e__title']);
 
 
-                //Miner Status:
+                //User Status:
                 $(".e__id_" + modify_data['e__id']).attr('en-status', modify_data['e__status']);
                 $('.e__status_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__status']]["m_name"] + ': ' + js_e___6177[modify_data['e__status']]["m_desc"] + '">' + js_e___6177[modify_data['e__status']]["m_icon"] + '</span>');
 
 
-                //Miner Icon:
+                //User Icon:
                 var icon_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
                 if(!icon_set){
                     //Set source default icon:

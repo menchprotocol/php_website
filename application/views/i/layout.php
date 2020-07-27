@@ -246,12 +246,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12969){
 
-        $miner_x = $this->X_model->fetch(array(
+        $u_x = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__source'), 0, 0, array(), 'COUNT(x__id) as totals');
-        $counter = $miner_x[0]['totals'];
+        $counter = $u_x[0]['totals'];
         if($counter > 0){
 
             $focus_tab .= '<div class="list-group">';
@@ -259,8 +259,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__left' => $i_focus['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__source')) as $miner){
-                $focus_tab .= view_e($miner);
+            ), array('x__source')) as $u){
+                $focus_tab .= view_e($u);
             }
             $focus_tab .= '</div>';
 

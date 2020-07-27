@@ -79,7 +79,7 @@ foreach($es as $en){
         'id' => $id_prefix[12274].$en['e__id'],
         'label' => $en['e__title'],
         'size' => $node_size[12274] ,
-        'node_type' => 2, //Miner
+        'node_type' => 2, //User
         'node_status' => $en['e__status'],
     ));
 

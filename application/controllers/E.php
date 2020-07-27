@@ -76,7 +76,7 @@ class E extends CI_Controller
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
                 'x__source' => $session_e['e__id'],
-                'x__type' => 4994, //Miner Viewed Source
+                'x__type' => 4994, //User Viewed Source
                 'x__down' => $e__id,
                 'x__sort' => $new_order,
             ));
@@ -109,7 +109,7 @@ class E extends CI_Controller
     function e_sort_reset()
     {
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned(13422);
 
         //Validate Source:
@@ -154,7 +154,7 @@ class E extends CI_Controller
     function e_sort_save()
     {
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned(10939);
         if (!$session_e) {
             view_json(array(
@@ -224,7 +224,7 @@ class E extends CI_Controller
     function e_upload_file()
     {
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned(10939);
         if (!$session_e) {
             return view_json(array(
@@ -305,7 +305,7 @@ class E extends CI_Controller
 
     function e_only_remove(){
 
-        //Auth miner and check required variables:
+        //Auth user and check required variables:
         $session_e = superpower_assigned(10939);
 
         if (!$session_e) {
@@ -339,7 +339,7 @@ class E extends CI_Controller
     function e_only_add()
     {
 
-        //Auth miner and check required variables:
+        //Auth user and check required variables:
         $session_e = superpower_assigned(10939);
 
         if (!$session_e) {
@@ -426,8 +426,8 @@ class E extends CI_Controller
             //Assign new source:
             $focus_e = $added_e['new_e'];
 
-            //Assign to Miner:
-            $this->E_model->assign_session_miner($focus_e['e__id']);
+            //Assign to User:
+            $this->E_model->create_session($focus_e['e__id']);
 
             //Update Algolia:
             update_algolia(12274, $focus_e['e__id']);
@@ -455,7 +455,7 @@ class E extends CI_Controller
     function e__add()
     {
 
-        //Auth miner and check required variables:
+        //Auth user and check required variables:
         $session_e = superpower_assigned(10939);
 
         if (!$session_e) {
@@ -678,7 +678,7 @@ class E extends CI_Controller
 
     function e_toggle_superpower($superpower_e__id){
 
-        //Toggles the advance session variable for the miner on/off for logged-in miners:
+        //Toggles the advance session variable for the user on/off for logged-in users:
         $session_e = superpower_assigned(10939);
         $superpower_e__id = intval($superpower_e__id);
         $e___10957 = $this->config->item('e___10957');
@@ -723,7 +723,7 @@ class E extends CI_Controller
             'x__source' => $session_e['e__id'],
             'x__type' => 5007, //TOGGLE SUPERPOWER
             'x__up' => $superpower_e__id,
-            'x__message' => 'SUPERPOWER '.$toggled_setting, //To be used when miner logs in again
+            'x__message' => 'SUPERPOWER '.$toggled_setting, //To be used when user logs in again
         ));
 
         //Return to JS function:
@@ -739,7 +739,7 @@ class E extends CI_Controller
     function e_update()
     {
 
-        //Auth miner and check required variables:
+        //Auth user and check required variables:
         $session_e = superpower_assigned(10939);
         $success_message = 'Saved'; //Default, might change based on what we do...
         $is_valid_icon = is_valid_icon($_POST['e__icon']);
@@ -901,10 +901,10 @@ class E extends CI_Controller
             if($e_x[0]['x__status']!=$_POST['x__status']){
 
                 if (in_array($_POST['x__status'], $this->config->item('n___7360') /* ACTIVE */)) {
-                    $x__status = 10656; //Miner Transaction updated Status
+                    $x__status = 10656; //User Transaction updated Status
                 } else {
                     $delete_from_ui = 1;
-                    $x__status = 10673; //Miner Transaction Unpublished
+                    $x__status = 10673; //User Transaction Unpublished
                 }
 
                 $this->X_model->update($_POST['x__id'], array(
@@ -986,14 +986,14 @@ class E extends CI_Controller
 
                 $this->X_model->update($_POST['x__id'], array(
                     'x__message' => $x__message,
-                ), $session_e['e__id'], 10657 /* Miner Transaction updated Content */);
+                ), $session_e['e__id'], 10657 /* User Transaction updated Content */);
 
 
                 //Also, did the transaction type change based on the content change?
                 if($js_x__type!=$e_x[0]['x__type']){
                     $this->X_model->update($_POST['x__id'], array(
                         'x__type' => $js_x__type,
-                    ), $session_e['e__id'], 10659 /* Miner Transaction updated Type */);
+                    ), $session_e['e__id'], 10659 /* User Transaction updated Type */);
                 }
             }
         }
@@ -1002,7 +1002,7 @@ class E extends CI_Controller
         $this->E_model->update(intval($_POST['e__id']), $e_update, true, $session_e['e__id']);
 
 
-        //Reset miner session data if this data belongs to the logged-in miner:
+        //Reset user session data if this data belongs to the logged-in user:
         if ($_POST['e__id'] == $session_e['e__id']) {
             //Re-activate Session with new data:
             $this->E_model->activate_session($session_e, true);
@@ -1044,7 +1044,7 @@ class E extends CI_Controller
 
     function e_fetch_canonical(){
 
-        //Auth miner and check required variables:
+        //Auth user and check required variables:
         $session_e = superpower_assigned();
 
         if (!$session_e) {
@@ -1136,7 +1136,7 @@ class E extends CI_Controller
                 array_push($possible_answers, $answer_e['e__id']);
             }
 
-            //Delete selected options for this miner:
+            //Delete selected options for this user:
             foreach($this->X_model->fetch(array(
                 'x__up IN (' . join(',', $possible_answers) . ')' => null,
                 'x__down' => $session_e['e__id'],
@@ -1146,7 +1146,7 @@ class E extends CI_Controller
                 //Should usually delete a single option:
                 $this->X_model->update($delete['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
-                ), $session_e['e__id'], 6224 /* Miner Account Updated */);
+                ), $session_e['e__id'], 6224 /* User Account Updated */);
             }
 
         }
@@ -1294,32 +1294,32 @@ class E extends CI_Controller
 
 
         //Fetch existing email:
-        $miner_emails = $this->X_model->fetch(array(
+        $u_emails = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $session_e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Mench Email
         ));
-        if (count($miner_emails) > 0) {
+        if (count($u_emails) > 0) {
 
             if (strlen($_POST['e_email']) == 0) {
 
                 //Delete email:
-                $this->X_model->update($miner_emails[0]['x__id'], array(
+                $this->X_model->update($u_emails[0]['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
-                ), $session_e['e__id'], 6224 /* Miner Account Updated */);
+                ), $session_e['e__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
                     'message' => 'Email deleted',
                 );
 
-            } elseif ($miner_emails[0]['x__message'] != $_POST['e_email']) {
+            } elseif ($u_emails[0]['x__message'] != $_POST['e_email']) {
 
                 //Update if not duplicate:
-                $this->X_model->update($miner_emails[0]['x__id'], array(
+                $this->X_model->update($u_emails[0]['x__id'], array(
                     'x__message' => $_POST['e_email'],
-                ), $session_e['e__id'], 6224 /* Miner Account Updated */);
+                ), $session_e['e__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1398,7 +1398,7 @@ class E extends CI_Controller
         }
 
         //Fetch existing password:
-        $miner_passwords = $this->X_model->fetch(array(
+        $u_passwords = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3286, //Password
@@ -1408,9 +1408,9 @@ class E extends CI_Controller
         $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_e['e__id']));
 
 
-        if (count($miner_passwords) > 0) {
+        if (count($u_passwords) > 0) {
 
-            if ($hashed_password == $miner_passwords[0]['x__message']) {
+            if ($hashed_password == $u_passwords[0]['x__message']) {
 
                 $return = array(
                     'status' => 0,
@@ -1420,9 +1420,9 @@ class E extends CI_Controller
             } else {
 
                 //Update password:
-                $this->X_model->update($miner_passwords[0]['x__id'], array(
+                $this->X_model->update($u_passwords[0]['x__id'], array(
                     'x__message' => $hashed_password,
-                ), $session_e['e__id'], 7578 /* Miner Updated Password  */);
+                ), $session_e['e__id'], 7578 /* User Updated Password  */);
 
                 $return = array(
                     'status' => 1,
@@ -1491,7 +1491,7 @@ class E extends CI_Controller
 
         //Check to see if they are previously logged in?
         if(superpower_assigned()) {
-            //Lead miner and above, go to console:
+            //Lead user and above, go to console:
             if($i__id > 0){
                 return redirect_message(( superpower_assigned(10939) ? '/i/i_go/' : '/' ) . $i__id);
             } else {
@@ -1603,9 +1603,9 @@ class E extends CI_Controller
         }
 
 
-        //Add Miner:
+        //Add User:
         $this->X_model->create(array(
-            'x__up' => 4430, //MENCH MINERS
+            'x__up' => 4430, //MENCH USERS
             'x__type' => e_x__type(),
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
@@ -1667,7 +1667,7 @@ class E extends CI_Controller
         //Send & Log Email:
         $this->X_model->email_sent(array($_POST['input_email']), $subject, $html_message);
         $invite_x = $this->X_model->create(array(
-            'x__type' => 7562, //Miner Signin Joined Mench
+            'x__type' => 7562, //User Signin Joined Mench
             'x__source' => $added_e['new_e']['e__id'],
             'x__left' => intval($_POST['sign_i__id']),
         ));
@@ -1745,7 +1745,7 @@ class E extends CI_Controller
         if (!isset($_POST['sign_e__id']) || intval($_POST['sign_e__id'])<1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing miner ID',
+                'message' => 'Missing user ID',
             ));
         } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
             return view_json(array(
@@ -1766,7 +1766,7 @@ class E extends CI_Controller
 
 
 
-        //Validaye miner ID
+        //Validaye user ID
         $es = $this->E_model->fetch(array(
             'e__id' => $_POST['sign_e__id'],
         ));
@@ -1779,25 +1779,25 @@ class E extends CI_Controller
 
         //Authenticate password:
         $es[0]['is_masterpass_login'] = 0;
-        $miner_passwords = $this->X_model->fetch(array(
+        $u_passwords = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3286, //Password
             'x__down' => $es[0]['e__id'],
         ));
-        if (count($miner_passwords) == 0) {
+        if (count($u_passwords) == 0) {
             //They do not have a password assigned yet!
             return view_json(array(
                 'status' => 0,
                 'message' => 'An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.',
             ));
-        } elseif (!in_array($miner_passwords[0]['x__status'], $this->config->item('n___7359') /* PUBLIC */)) {
+        } elseif (!in_array($u_passwords[0]['x__status'], $this->config->item('n___7359') /* PUBLIC */)) {
             //They do not have a password assigned yet!
             return view_json(array(
                 'status' => 0,
                 'message' => 'Password transaction is not public. Contact us to adjust your account.',
             ));
-        } elseif ($miner_passwords[0]['x__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $es[0]['e__id'])) {
+        } elseif ($u_passwords[0]['x__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $es[0]['e__id'])) {
 
             //Is this the master password?
             if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == config_var(13014)){
@@ -1859,13 +1859,13 @@ class E extends CI_Controller
 
         //Cleanup/validate email:
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
-        $miner_emails = $this->X_model->fetch(array(
+        $u_emails = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Mench Email
         ), array('x__down'));
-        if(count($miner_emails) < 1){
+        if(count($u_emails) < 1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Email not associated with a registered account',
@@ -1874,9 +1874,9 @@ class E extends CI_Controller
 
         //Log email search attempt:
         $reset_x = $this->X_model->create(array(
-            'x__type' => 7563, //Miner Signin Magic Email
+            'x__type' => 7563, //User Signin Magic Email
             'x__message' => $_POST['input_email'],
-            'x__source' => $miner_emails[0]['e__id'], //Miner making request
+            'x__source' => $u_emails[0]['e__id'], //User making request
             'x__left' => intval($_POST['sign_i__id']),
         ));
 
@@ -1887,7 +1887,7 @@ class E extends CI_Controller
         $subject = 'MENCH '.$e___11035[11068]['m_name'];
 
         ##Email Body
-        $html_message = '<div>Hi '.one_two_explode('',' ',$miner_emails[0]['e__title']).' 👋</div><br /><br />';
+        $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';
 
         $magic_x_expiry_hours = (config_var(11065)/3600);
         $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).':</div>';
@@ -1921,8 +1921,8 @@ class E extends CI_Controller
         $validate_x = $this->X_model->fetch(array(
             'x__id' => $x__id,
             'x__message' => $_GET['email'],
-            'x__type' => 7563, //Miner Signin Magic Email
-        )); //The miner making the request
+            'x__type' => 7563, //User Signin Magic Email
+        )); //The user making the request
         if(count($validate_x) < 1){
             //Probably previously completed the reset password:
             return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
@@ -1936,7 +1936,7 @@ class E extends CI_Controller
             'e__id' => $validate_x[0]['x__source'],
         ));
         if(count($es) < 1){
-            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Miner not found</div>');
+            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
         }
 
         //Log them in:
@@ -1978,19 +1978,19 @@ class E extends CI_Controller
 
 
         //Search for email to see if it exists...
-        $miner_emails = $this->X_model->fetch(array(
+        $u_emails = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Mench Email
         ), array('x__down'));
 
-        if(count($miner_emails) > 0){
+        if(count($u_emails) > 0){
 
             return view_json(array(
                 'status' => 1,
                 'email_existed_previously' => 1,
-                'sign_e__id' => $miner_emails[0]['e__id'],
+                'sign_e__id' => $u_emails[0]['e__id'],
                 'clean_input_email' => $_POST['input_email'],
             ));
 
@@ -2028,8 +2028,8 @@ class E extends CI_Controller
             }
 
             //Running from browser? If so, authenticate:
-            $is_miner_request = isset($_SERVER['SERVER_NAME']);
-            if($is_miner_request){
+            $is_u_request = isset($_SERVER['SERVER_NAME']);
+            if($is_u_request){
                 $session_e = superpower_assigned(12699, true);
             } else {
                 $session_e = false;
@@ -2039,7 +2039,7 @@ class E extends CI_Controller
             boost_power();
             $e___6287 = $this->config->item('e___6287'); //MENCH PLUGIN
             $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$plugin_e__id]['m_parents']);
-            if($is_miner_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+            if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
             }
 
@@ -2048,7 +2048,7 @@ class E extends CI_Controller
             $view_data = array(
                 'plugin_e__id' => $plugin_e__id,
                 'session_e' => $session_e,
-                'is_miner_request' => $is_miner_request,
+                'is_u_request' => $is_u_request,
             );
 
             if(in_array($plugin_e__id, $this->config->item('n___12741'))){
@@ -2072,7 +2072,7 @@ class E extends CI_Controller
 
     function plugin_7264(){
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned(12700);
 
         if (!$session_e) {

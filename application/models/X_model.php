@@ -5,7 +5,7 @@ class X_model extends CI_Model
 
     /*
      *
-     * Miner related database functions
+     * User related database functions
      *
      * */
 
@@ -241,13 +241,13 @@ class X_model extends CI_Model
                             //Content value has changed, update the transaction:
                             $this->X_model->update($existing_x[0]['x__id'], array(
                                 'x__message' => $add_fields['x__message'],
-                            ), $add_fields['x__source'], 10657 /* Miner Transaction Updated Content  */);
+                            ), $add_fields['x__source'], 10657 /* User Transaction Updated Content  */);
 
                             //Also, did the transaction type change based on the content change?
                             if($existing_x[0]['x__type'] != $detected_x_type['x__type']){
                                 $this->X_model->update($existing_x[0]['x__id'], array(
                                     'x__type' => $detected_x_type['x__type'],
-                                ), $add_fields['x__source'], 10659 /* Miner Transaction Updated Type */);
+                                ), $add_fields['x__source'], 10659 /* User Transaction Updated Type */);
                             }
 
                         }
@@ -268,7 +268,7 @@ class X_model extends CI_Model
                                 )) as $single_selectable_siblings_preset){
                                     $x_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
                                         'x__status' => 6173, //Transaction Deleted
-                                    ), $add_fields['x__source'], 10673 /* Miner Transaction Unpublished */);
+                                    ), $add_fields['x__source'], 10673 /* User Transaction Unpublished */);
                                 }
                             }
                         }
@@ -287,7 +287,7 @@ class X_model extends CI_Model
 
                     //Track Tag:
                     $this->X_model->create(array(
-                        'x__type' => 12197, //Tag Miner
+                        'x__type' => 12197, //Tag User
                         'x__source' => $add_fields['x__source'],
                         'x__up' => $x_tag['x__up'],
                         'x__down' => $add_fields['x__source'],
@@ -317,7 +317,7 @@ class X_model extends CI_Model
             $sub_e__ids = array();
             foreach(explode(',', $e___5967[$add_fields['x__type']]['m_desc']) as $subscriber_e__id){
 
-                //Do not inform the miner who just took the action:
+                //Do not inform the user who just took the action:
                 if($subscriber_e__id==$add_fields['x__source']){
                     continue;
                 }
@@ -346,23 +346,23 @@ class X_model extends CI_Model
 
                 if($add_fields['x__source'] > 0){
 
-                    //Fetch miner details:
+                    //Fetch user details:
                     $add_e = $this->E_model->fetch(array(
                         'e__id' => $add_fields['x__source'],
                     ));
 
-                    $miner_name = $add_e[0]['e__title'];
+                    $u_name = $add_e[0]['e__title'];
 
                 } else {
 
-                    //No miner:
-                    $miner_name = 'MENCH';
+                    //No u:
+                    $u_name = 'MENCH';
 
                 }
 
 
                 //Email Subject:
-                $subject = 'Notification: '  . $miner_name . ' ' . $e___5967[$add_fields['x__type']]['m_name'];
+                $subject = 'Notification: '  . $u_name . ' ' . $e___5967[$add_fields['x__type']]['m_name'];
 
                 //Compose email body, start with transaction content:
                 $html_message = '<div>' . ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '<i>No transaction content</i>') . '</div><br />';
@@ -410,7 +410,7 @@ class X_model extends CI_Model
                 foreach($sub_e__ids as $to_e__id){
                     $this->X_model->create(array(
                         'x__type' => 5967, //Transaction Carbon Copy Email
-                        'x__source' => $to_e__id, //Sent to this miner
+                        'x__source' => $to_e__id, //Sent to this u
                         'x__reference' => $add_fields['x__id'], //Save transaction
 
                         //Import potential Idea/source connections from transaction:
@@ -993,7 +993,7 @@ class X_model extends CI_Model
             $words = explode(' ',$es[0]['e__title']);
             $first_word = array_shift($words);
 
-            //MINER REFERENCE
+            //USER REFERENCE
             if(($current_mench['x_name']=='discover' && !superpower_active(10939, true)) || $is_current_e){
 
                 //NO LINK so we can maintain focus...
@@ -1026,7 +1026,7 @@ class X_model extends CI_Model
             'input_message' => trim($message_input),
             'output_messages' => array(
                 array(
-                    'message_type_e__id' => 4570, //Miner Received Email Message
+                    'message_type_e__id' => 4570, //User Received Email Message
                     'message_body' => ( strlen($output_body_message) ? '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>' : null ),
                 ),
             ),
@@ -1102,10 +1102,10 @@ class X_model extends CI_Model
 
             //Check Previous/Up
             $current_previous = $i['i__id'];
-            $miner_xy_ids = $this->X_model->ids($e__id);
+            $u_x_ids = $this->X_model->ids($e__id);
             $recursive_parents = $this->I_model->recursive_parents($i['i__id'], true, true);
             foreach ($recursive_parents as $grand_parent_ids) {
-                foreach (array_intersect($grand_parent_ids, $miner_xy_ids) as $intersect) {
+                foreach (array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
                     foreach ($grand_parent_ids as $previous_i__id) {
 
                         //Find the next siblings:
@@ -1166,13 +1166,13 @@ class X_model extends CI_Model
         }
 
         //Go ahead and delete from Discoveries:
-        $miner_x = $this->X_model->fetch(array(
+        $u_x = $this->X_model->fetch(array(
             'x__source' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__left' => $i__id,
         ));
-        if(count($miner_x) < 1){
+        if(count($u_x) < 1){
             return array(
                 'status' => 0,
                 'message' => 'Could not locate Discovery',
@@ -1180,7 +1180,7 @@ class X_model extends CI_Model
         }
 
         //Delete:
-        foreach($miner_x as $x){
+        foreach($u_x as $x){
             $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //DELETED
             ), $e__id, $x__type);
@@ -1204,7 +1204,7 @@ class X_model extends CI_Model
             return 0;
         }
 
-        //Make sure not previously added to this Miner's Discoveries:
+        //Make sure not previously added to this User's Discoveries:
         if(!count($this->X_model->fetch(array(
                 'x__source' => $e__id,
                 'x__left' => $i__id,
@@ -1215,8 +1215,8 @@ class X_model extends CI_Model
             //Not added to their Discoveries so far, let's go ahead and add it:
             $i_rank = 1;
             $home = $this->X_model->create(array(
-                'x__type' => ( $recommender_i__id > 0 ? 7495 /* Miner Idea Recommended */ : 4235 /* Miner Idea Set */ ),
-                'x__source' => $e__id, //Belongs to this Miner
+                'x__type' => ( $recommender_i__id > 0 ? 7495 /* User Idea Recommended */ : 4235 /* User Idea Set */ ),
+                'x__source' => $e__id, //Belongs to this User
                 'x__left' => $is[0]['i__id'], //The Idea they are adding
                 'x__right' => $recommender_i__id, //Store the recommended idea
                 'x__sort' => $i_rank, //Always place at the top of their Discoveries
@@ -1227,7 +1227,7 @@ class X_model extends CI_Model
                 'x__id !=' => $home['x__id'], //Not the newly added idea
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__source' => $e__id, //Belongs to this Miner
+                'x__source' => $e__id, //Belongs to this User
             ), array(), 0, 0, array('x__sort' => 'ASC')) as $current_i){
 
                 //Increase rank:
@@ -1289,7 +1289,7 @@ class X_model extends CI_Model
          * */
 
 
-        //First let's make sure this entire Idea completed by the miner:
+        //First let's make sure this entire Idea completed by the u:
         $completion_rate = $this->X_model->completion_progress($e__id, $i);
 
 
@@ -1335,8 +1335,8 @@ class X_model extends CI_Model
             }
 
 
-            //Yes, Let's calculate miner's score for this idea:
-            $miner_marks = $this->X_model->completion_marks($e__id, $i);
+            //Yes, Let's calculate u's score for this idea:
+            $u_marks = $this->X_model->completion_marks($e__id, $i);
 
 
 
@@ -1367,7 +1367,7 @@ class X_model extends CI_Model
                 }
 
 
-                if($miner_marks['steps_answered_score']>=$x__metadata['tr__conditional_score_min'] && $miner_marks['steps_answered_score']<=$x__metadata['tr__conditional_score_max']){
+                if($u_marks['steps_answered_score']>=$x__metadata['tr__conditional_score_min'] && $u_marks['steps_answered_score']<=$x__metadata['tr__conditional_score_max']){
 
                     //Found a match:
                     $found_match++;
@@ -1380,7 +1380,7 @@ class X_model extends CI_Model
                         'x__right' => $locked_x['i__id'],
                         'x__metadata' => array(
                             'completion_rate' => $completion_rate,
-                            'miner_marks' => $miner_marks,
+                            'u_marks' => $u_marks,
                             'condition_ranges' => $locked_x,
                         ),
                     ));
@@ -1397,7 +1397,7 @@ class X_model extends CI_Model
                     'x__left' => $i['i__id'],
                     'x__metadata' => array(
                         'completion_rate' => $completion_rate,
-                        'miner_marks' => $miner_marks,
+                        'u_marks' => $u_marks,
                         'conditional_ranges' => $locked_x,
                     ),
                 ));
@@ -1409,17 +1409,17 @@ class X_model extends CI_Model
         //Now go up since we know there are more levels...
         if($is_bottom_level){
 
-            //Fetch miner ideas:
-            $miner_xy_ids = $this->X_model->ids($e__id);
+            //Fetch user ideas:
+            $u_x_ids = $this->X_model->ids($e__id);
 
             //Prevent duplicate processes even if on multiple parent ideas:
             $parents_checked = array();
 
-            //Go through parents ideas and detect intersects with miner ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+            //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
             foreach($this->I_model->recursive_parents($i['i__id']) as $grand_parent_ids) {
 
-                //Does this parent and its grandparents have an intersection with the miner ideas?
-                if(!array_intersect($grand_parent_ids, $miner_xy_ids)){
+                //Does this parent and its grandparents have an intersection with the user ideas?
+                if(!array_intersect($grand_parent_ids, $u_x_ids)){
                     //Parent idea is NOT part of their Discoveries:
                     continue;
                 }
@@ -1449,7 +1449,7 @@ class X_model extends CI_Model
                     }
 
                     //Terminate if we reached the Top Discovery:
-                    if(in_array($p_id , $miner_xy_ids)){
+                    if(in_array($p_id , $u_x_ids)){
                         break;
                     }
                 }
@@ -1466,7 +1466,7 @@ class X_model extends CI_Model
         /*
          * A function that starts from a locked idea and checks:
          *
-         * 1. List miners who have completed ALL/ANY (Depending on AND/OR Lock) of its children
+         * 1. List users who have completed ALL/ANY (Depending on AND/OR Lock) of its children
          * 2. If > 0, then goes up recursively to see if these completions unlock other completions
          *
          * */
@@ -1507,24 +1507,24 @@ class X_model extends CI_Model
          * */
         $requires_all_children = ( $i['i__type'] == 6914 /* AND Lock, meaning all children are needed */ );
 
-        //Generate list of miners who have completed it:
-        $qualified_completed_miners = array();
+        //Generate list of users who have completed it:
+        $qualified_completed = array();
 
         //Go through children and see how many completed:
         foreach($is_next as $count => $next_i){
 
-            //Fetch miners who completed this:
+            //Fetch users who completed this:
             if($count==0){
 
-                //Always add all the first miners to the full list:
-                $qualified_completed_miners = $this->X_model->fetch(array(
+                //Always add all the first users to the full list:
+                $qualified_completed = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                     'x__left' => $next_i['i__id'],
                 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                if($requires_all_children && count($qualified_completed_miners)==0){
-                    //No miners found that would meet all children requirements:
+                if($requires_all_children && count($qualified_completed)==0){
+                    //No users found that would meet all children requirements:
                     break;
                 }
 
@@ -1533,8 +1533,8 @@ class X_model extends CI_Model
                 //2nd Update onwards, by now we must have a base:
                 if($requires_all_children){
 
-                    //Update list of qualified miners:
-                    $qualified_completed_miners = $this->X_model->fetch(array(
+                    //Update list of qualified users:
+                    $qualified_completed = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                         'x__left' => $next_i['i__id'],
@@ -1545,10 +1545,10 @@ class X_model extends CI_Model
             }
         }
 
-        if(count($qualified_completed_miners) > 0){
+        if(count($qualified_completed) > 0){
             return array(
                 'status' => 0,
-                'message' => 'No miners found to have completed',
+                'message' => 'No users found to have completed',
             );
         }
 
@@ -1562,14 +1562,14 @@ class X_model extends CI_Model
         if($recipient_e['e__id'] > 0){
 
             //Fetch entire Discoveries:
-            $miner_xy_ids = $this->X_model->ids($recipient_e['e__id']);
-            $in_my_x = in_array($i__id, $miner_xy_ids);
+            $u_x_ids = $this->X_model->ids($recipient_e['e__id']);
+            $in_my_x = in_array($i__id, $u_x_ids);
 
             if(!$in_my_x){
-                //Go through parents ideas and detect intersects with miner ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+                //Go through parents ideas and detect intersects with user ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
                 foreach($this->I_model->recursive_parents($i__id) as $grand_parent_ids) {
-                    //Does this parent and its grandparents have an intersection with the miner ideas?
-                    if (array_intersect($grand_parent_ids, $miner_xy_ids)) {
+                    //Does this parent and its grandparents have an intersection with the user ideas?
+                    if (array_intersect($grand_parent_ids, $u_x_ids)) {
                         //Idea is part of their Discoveries:
                         $in_my_x = true;
                         break;
@@ -1604,7 +1604,7 @@ class X_model extends CI_Model
 
             //Should not happen, log error:
             $this->X_model->create(array(
-                'x__message' => 'completion_marks() Detected miner Discoveries without i___6168 value!',
+                'x__message' => 'completion_marks() Detected user Discoveries without i___6168 value!',
                 'x__type' => 4246, //Platform Bug Reports
                 'x__source' => $e__id,
                 'x__left' => $i['i__id'],
@@ -1616,14 +1616,14 @@ class X_model extends CI_Model
         //Generate flat steps:
         $flat_common_x = array_flatten($i__metadata['i___6168']);
 
-        //Calculate common steps and expansion steps recursively for this miner:
+        //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
             //Generic assessment marks stats:
             'steps_question_count' => 0, //The parent idea
             'steps_marks_min' => 0,
             'steps_marks_max' => 0,
 
-            //Miner answer stats:
+            //User answer stats:
             'steps_answered_count' => 0, //How many they have answered so far
             'steps_answered_marks' => 0, //Indicates completion score
 
@@ -1684,9 +1684,9 @@ class X_model extends CI_Model
 
 
 
-            //Now let's check miner answers to see what they have done:
+            //Now let's check user answers to see what they have done:
             $total_completion = $this->X_model->fetch(array(
-                'x__source' => $e__id, //Belongs to this Miner
+                'x__source' => $e__id, //Belongs to this User
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1697,7 +1697,7 @@ class X_model extends CI_Model
 
             //Go through answers:
             foreach($this->X_model->fetch(array(
-                'x__source' => $e__id, //Belongs to this Miner
+                'x__source' => $e__id, //Belongs to this User
                 'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1764,9 +1764,9 @@ class X_model extends CI_Model
 
 
 
-            //Now let's check miner answers to see what they have done:
+            //Now let's check user answers to see what they have done:
             $total_completion = $this->X_model->fetch(array(
-                'x__source' => $e__id, //Belongs to this Miner
+                'x__source' => $e__id, //Belongs to this User
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1777,7 +1777,7 @@ class X_model extends CI_Model
 
             //Go through answers:
             foreach($this->X_model->fetch(array(
-                'x__source' => $e__id, //Belongs to this Miner
+                'x__source' => $e__id, //Belongs to this User
                 'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1843,17 +1843,17 @@ class X_model extends CI_Model
         ), 0, 0, array(), 'COUNT(i__id) as total_x, SUM(i__duration) as total_seconds');
 
 
-        //Count completed for miner:
+        //Count completed for u:
         $common_completed = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-            'x__source' => $e__id, //Belongs to this Miner
+            'x__source' => $e__id, //Belongs to this User
             'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ), array('x__left'), 0, 0, array(), 'COUNT(i__id) as completed_x, SUM(i__duration) as completed_seconds');
 
 
-        //Calculate common steps and expansion steps recursively for this miner:
+        //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
             'steps_total' => intval($common_totals[0]['total_x']),
             'steps_completed' => intval($common_completed[0]['completed_x']),
@@ -1873,10 +1873,10 @@ class X_model extends CI_Model
 
         if(count($answer_array)){
 
-            //Now let's check miner answers to see what they have done:
+            //Now let's check user answers to see what they have done:
             foreach($this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
-                'x__source' => $e__id, //Belongs to this Miner
+                'x__source' => $e__id, //Belongs to this User
                 'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
                 'x__right IN (' . join(',', $answer_array) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1898,10 +1898,10 @@ class X_model extends CI_Model
         //Expansion steps Recursive
         if(isset($i__metadata['i___6283']) && count($i__metadata['i___6283']) > 0){
 
-            //Now let's check if miner has unlocked any Miletones:
+            //Now let's check if user has unlocked any Miletones:
             foreach($this->X_model->fetch(array(
                 'x__type' => 6140, //DISCOVER UNLOCK LINK
-                'x__source' => $e__id, //Belongs to this Miner
+                'x__source' => $e__id, //Belongs to this User
                 'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
                 'x__right IN (' . join(',', array_flatten($i__metadata['i___6283'])) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1962,17 +1962,17 @@ class X_model extends CI_Model
 
 
     function ids($e__id){
-        //Simply returns all the idea IDs for a miner's Discoveries:
-        $miner_xy_ids = array();
+        //Simply returns all the idea IDs for a u's Discoveries:
+        $u_x_ids = array();
         foreach($this->X_model->fetch(array(
             'x__source' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), array('x__left'), 0) as $miner_in){
-            array_push($miner_xy_ids, intval($miner_in['i__id']));
+        ), array('x__left'), 0) as $u_in){
+            array_push($u_x_ids, intval($u_in['i__id']));
         }
-        return $miner_xy_ids;
+        return $u_x_ids;
     }
 
 

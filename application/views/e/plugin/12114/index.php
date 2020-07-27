@@ -83,7 +83,7 @@ $subscriber_filters = array(
 );
 
 //Should we limit the scope?
-if($is_miner_request){
+if($is_u_request){
     $session_e = superpower_assigned();
     $subscriber_filters['x__down'] = $session_e['e__id'];
 }
@@ -91,22 +91,22 @@ if($is_miner_request){
 
 $email_recipients = 0;
 //Send email to all subscribers:
-foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscribed_miner){
+foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscribed_u){
     //Try fetching subscribers email:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => 3288, //Mench Email
-        'x__down' => $subscribed_miner['e__id'],
+        'x__down' => $subscribed_u['e__id'],
     )) as $e_email){
         if(filter_var($e_email['x__message'], FILTER_VALIDATE_EMAIL)){
 
-            $this->X_model->email_sent(array($e_email['x__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_miner['e__title']).' 👋</div>'.$html_message);
+            $this->X_model->email_sent(array($e_email['x__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_u['e__title']).' 👋</div>'.$html_message);
 
             //Send & Log Email
             $invite_x = $this->X_model->create(array(
                 'x__type' => 12114,
-                'x__source' => $subscribed_miner['e__id'],
+                'x__source' => $subscribed_u['e__id'],
             ));
 
             $email_recipients++;
@@ -116,4 +116,4 @@ foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscri
     }
 }
 
-echo 'Emailed Growth Reports to '.$email_recipients.' Miners';
+echo 'Emailed Growth Reports to '.$email_recipients.' Users';

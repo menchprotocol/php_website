@@ -80,7 +80,7 @@ function extract_e_references($x__message)
     //Replace non-ascii characters with space:
     $x__message = preg_replace('/[[:^print:]]/', ' ', $x__message);
 
-    //Analyze the message to find referencing URLs and Miners in the message text:
+    //Analyze the message to find referencing URLs and Users in the message text:
     $string_references = array(
         'ref_urls' => array(),
         'ref_e' => array(),
@@ -561,7 +561,7 @@ function i_unlockable($i){
 
 function redirect_message($url, $message = null)
 {
-    //An error handling function that would redirect miner to $url with optional $message
+    //An error handling function that would redirect user to $url with optional $message
     //Do we have a Message?
     if ($message) {
         $CI =& get_instance();
@@ -776,15 +776,15 @@ function i_stats($i__metadata){
 function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
 {
 
-    //Authenticates logged-in miners with their session information
+    //Authenticates logged-in users with their session information
     $CI =& get_instance();
     $session_e = $CI->session->userdata('session_profile');
     $has_session = ( is_array($session_e) && count($session_e) > 0 && $session_e );
 
-    //Let's start checking various ways we can give miner access:
+    //Let's start checking various ways we can give user access:
     if ($has_session && !$superpower_e__id) {
 
-        //No minimum level required, grant access IF miner is logged in:
+        //No minimum level required, grant access IF user is logged in:
         return $session_e;
 
     } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_assigned'))) {
@@ -795,7 +795,7 @@ function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
     }
 
     //Still here?!
-    //We could not find a reason to give miner access, so block them:
+    //We could not find a reason to give user access, so block them:
     if (!$force_redirect) {
 
         return false;
@@ -1211,15 +1211,15 @@ function source_of_e($e__id, $session_e = array()){
         return false;
     }
 
-    //Ways a miner can modify a source:
+    //Ways a user can modify a source:
     $CI =& get_instance();
     return (
 
-        //Miner is the source
+        //User is the source
         $e__id==$session_e['e__id']
 
 
-        //Miner created the source
+        //User created the source
         || count($CI->X_model->fetch(array(
             'x__source' => $session_e['e__id'],
             'x__down' => $e__id,
@@ -1228,10 +1228,10 @@ function source_of_e($e__id, $session_e = array()){
 
         /*
 
-        //Miner has Advance source editing superpower
+        //User has Advance source editing superpower
         || superpower_active(13422, true)
 
-        //Miner has source in their portfolio
+        //User has source in their portfolio
         || count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1255,14 +1255,14 @@ function e_of_i($i__id, $session_e = array()){
         return false;
     }
 
-    //Ways a miner can modify an idea:
+    //Ways a user can modify an idea:
     $CI =& get_instance();
     return (
         superpower_active(10984, true) || //COLLABORATIVE IDEATION
         (
             superpower_active(10939, true) && //PUBLISHING PEN
                 (
-                count($CI->X_model->fetch(array( //Miner created the idea
+                count($CI->X_model->fetch(array( //User created the idea
                     'x__type' => 4250, //IDEA CREATOR
                     'x__right' => $i__id,
                     'x__source' => $session_e['e__id'],
@@ -1597,7 +1597,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be deleted?
-        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* Miner Deleted */, 6182 /* Idea Deleted */))) {
+        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* User Deleted */, 6182 /* Idea Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1696,7 +1696,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__source = 0
      *
      * $object__type:           DISCOVER, SOURCE OR IDEA
      *
-     * $obj:                    The Miner, Idea or Transaction itself.
+     * $obj:                    The User, Idea or Transaction itself.
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,
@@ -1749,7 +1749,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__source = 0
         //We are doing an absolute adjustment if needed:
         if (is_null($metadata_value)) {
 
-            //Miner asked to delete this value:
+            //User asked to delete this value:
             unset($metadata[$metadata_key]);
 
         } else {

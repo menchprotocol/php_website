@@ -139,7 +139,7 @@ class I_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $x__source > 0) {
 
-            //Unlike source modification, we require a miner source ID to log the modification transaction:
+            //Unlike source modification, we require a user source ID to log the modification transaction:
             //Log modification transaction for every field changed:
             foreach($update_columns as $key => $value) {
 
@@ -521,13 +521,13 @@ class I_model extends CI_Model
 
 
         //Go ahead and delete from Discoveries:
-        $miner_i = $this->X_model->fetch(array(
+        $u_i = $this->X_model->fetch(array(
             'x__type' => 10573, //MY IDEAS
             'x__up' => $e__id,
             'x__right' => $i__id,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
-        if(count($miner_i) < 1){
+        if(count($u_i) < 1){
             return array(
                 'status' => 0,
                 'message' => 'Could not locate Idea',
@@ -535,7 +535,7 @@ class I_model extends CI_Model
         }
 
         //Delete:
-        foreach($miner_i as $x){
+        foreach($u_i as $x){
             $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //DELETED
             ), $e__id, $x__type);
@@ -655,9 +655,9 @@ class I_model extends CI_Model
         $select_some_children = array(); //To be populated only if $focus_in is select some
         $conditional_x = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
-            'p___6168' => array(), //The idea structure that would be shared with all miners regardless of their quick replies (OR Idea Answers)
+            'p___6168' => array(), //The idea structure that would be shared with all users regardless of their quick replies (OR Idea Answers)
             'p___6228' => array(), //Ideas that may exist as a transaction to expand Discovery by answering OR ideas
-            'p___12885' => array(), //Ideas that allows miners to select one or more
+            'p___12885' => array(), //Ideas that allows users to select one or more
             'p___6283' => array(), //Ideas that may exist as a transaction to expand Discovery via Conditional Idea transactions
         );
 
@@ -997,16 +997,16 @@ class I_model extends CI_Model
                 }
             }
 
-            //MINERS:
+            //USERS:
             if (!isset($metadata_this['p___13202'][$fetched_e['x__source']])) {
-                //Fetch Miner:
+                //Fetch User:
                 foreach($this->X_model->fetch(array(
-                    'x__up' => 4430, //MENCH MINERS
+                    'x__up' => 4430, //MENCH USERS
                     'x__down' => $fetched_e['x__source'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array('x__down'), 1) as $miner){
-                    $metadata_this['p___13202'][$fetched_e['x__source']] = $miner;
+                ), array('x__down'), 1) as $u){
+                    $metadata_this['p___13202'][$fetched_e['x__source']] = $u;
                 }
             }
 
@@ -1041,16 +1041,16 @@ class I_model extends CI_Model
             'x__left' => $i['i__id'],
         ), array('x__right'), 0) as $is_next){
 
-            //Miners
+            //Users
             if (!isset($metadata_this['p___13202'][$is_next['x__source']])) {
-                //Fetch Miner:
+                //Fetch User:
                 foreach($this->X_model->fetch(array(
-                    'x__up' => 4430, //MENCH MINERS
+                    'x__up' => 4430, //MENCH USERS
                     'x__down' => $is_next['x__source'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array('x__down'), 1) as $miner){
-                    $metadata_this['p___13202'][$is_next['x__source']] = $miner;
+                ), array('x__down'), 1) as $u){
+                    $metadata_this['p___13202'][$is_next['x__source']] = $u;
                 }
             }
 
@@ -1110,7 +1110,7 @@ class I_model extends CI_Model
             }
 
 
-            //MINERS
+            //USERS
             foreach($metadata_recursion['p___13202'] as $e__id => $e) {
                 if (!isset($metadata_this['p___13202'][$e__id])) {
                     $metadata_this['p___13202'][$e__id] = $e;
@@ -1211,7 +1211,7 @@ class I_model extends CI_Model
         }
 
 
-        //Discovery 2: Are there any locked transaction parents that the miner might be able to unlock?
+        //Discovery 2: Are there any locked transaction parents that the user might be able to unlock?
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC

@@ -11,7 +11,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
 
     //IDEA MARKS BIRDS EYE
 
-    //Give an overview of the point transactions in a hierchial format to enable miners to overview:
+    //Give an overview of the point transactions in a hierchial format to enable users to overview:
     $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
 
     echo '<form method="GET" action="">';

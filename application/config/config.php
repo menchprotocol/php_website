@@ -472,7 +472,7 @@ $config['compress_output'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
-| Miner Time Reference
+| User Time Reference
 |--------------------------------------------------------------------------
 |
 | Options are 'local' or any PHP supported timezone. This preference tells

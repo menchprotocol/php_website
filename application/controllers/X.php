@@ -147,7 +147,7 @@ class X extends CI_Controller
             ));
         }
 
-        //Will Contain every possible Miner Transaction Connector:
+        //Will Contain every possible User Transaction Connector:
         $e___4592 = $this->config->item('e___4592');
 
         //See what this is:
@@ -165,7 +165,7 @@ class X extends CI_Controller
             //See if this is duplicate to either transaction:
             $e_x = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Miner URL Transactions
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
             ));
 
             //Are they both different?
@@ -191,7 +191,7 @@ class X extends CI_Controller
 
     function x_set_text(){
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned();
         $e___12112 = $this->config->item('e___12112');
 
@@ -271,7 +271,7 @@ class X extends CI_Controller
                 'e__title' => $e__title_validate['e__title_clean'],
             ), true, $session_e['e__id']);
 
-            //Reset miner session data if this data belongs to the logged-in miner:
+            //Reset user session data if this data belongs to the logged-in user:
             if ($es[0]['e__id'] == $session_e['e__id']) {
                 //Re-activate Session with new data:
                 $es[0]['e__title'] = $e__title_validate['e__title_clean'];
@@ -437,12 +437,12 @@ class X extends CI_Controller
 
     function x_start($i__id){
 
-        //Adds Idea to the Miners Discovery
+        //Adds Idea to the Users Discovery
 
         $session_e = superpower_assigned();
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
-        //Check to see if added to Discovery for logged-in miners:
+        //Check to see if added to Discovery for logged-in users:
         if(!$session_e){
             return redirect_message('/e/signin/'.$i__id);
         }
@@ -551,7 +551,7 @@ class X extends CI_Controller
 
         /*
          *
-         * Enables a Miner to DISCOVER a IDEA
+         * Enables a User to DISCOVER a IDEA
          * on the public web
          *
          * */
@@ -606,7 +606,7 @@ class X extends CI_Controller
 
         //TODO: MERGE WITH FUNCTION i_note_file()
 
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned();
         if (!$session_e) {
 
@@ -845,7 +845,7 @@ class X extends CI_Controller
     function i_save(){
 
         //See if we need to add or remove a highlight:
-        //Authenticate Miner:
+        //Authenticate User:
         $session_e = superpower_assigned();
         if (!$session_e) {
 
@@ -920,7 +920,7 @@ class X extends CI_Controller
 
         /*
          *
-         * When miners indicate they want to stop
+         * When users indicate they want to stop
          * a IDEA this function saves the changes
          * necessary and delete the idea from their
          * Discoveries.
@@ -974,7 +974,7 @@ class X extends CI_Controller
         /*
          *
          * Saves the order of discover ideas based on
-         * miner preferences.
+         * user preferences.
          *
          * */
 

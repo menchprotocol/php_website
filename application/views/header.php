@@ -19,7 +19,7 @@ $current_mench = current_mench();
 
     <script type="text/javascript">
     <?php
-    //MINER VARIABLES
+    //USER VARIABLES
     echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_e && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( isset($session_e['e__id']) ? $session_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_name = \'' . ( $session_e ? $session_e['e__title'] : '' ) . '\'; ';
@@ -153,7 +153,7 @@ if(!isset($hide_header)){
 
 
 
-                    //miner NAVIGATION:
+                    //u NAVIGATION:
                     if (!$session_e) {
 
                         //GUESTS
@@ -165,8 +165,6 @@ if(!isset($hide_header)){
                         echo '<td class="block-x"><a href="/e/signin" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
 
                     } else {
-
-                        //minerS
 
                         $e___10876 = $this->config->item('e___10876'); //Mench Website
                         $load_menu = 12500;
@@ -196,7 +194,7 @@ if(!isset($hide_header)){
 
                             } elseif($x__type==13449) {
 
-                                //SET SOURCE TO MINER
+                                //SET SOURCE TO USER
                                 $x__type = $session_e['e__id'];
                                 $page_url = 'href="/@'.$x__type.'"';
                                 $m['m_name'] = $session_e['e__title'];

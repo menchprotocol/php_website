@@ -17,8 +17,8 @@ $(document).ready(function () {
 
 
 function check_i_e__status(){
-    //Checks to see if the Idea/Miner status filter should be visible
-    //Would only make visible if Transaction type is Created Idea/Miner
+    //Checks to see if the Idea/Source status filter should be visible
+    //Would only make visible if Transaction type is Created Idea/User
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');

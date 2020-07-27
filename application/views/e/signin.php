@@ -3,7 +3,7 @@ $e___4269 = $this->config->item('e___4269');
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 $this_attempt = array(
-    'x__type' => ( $sign_i__id > 0 ? 7560 /* Miner Signin Idea Channel Choose */ : 7561 /* Miner Signin on Website */ ),
+    'x__type' => ( $sign_i__id > 0 ? 7560 /* User Signin Idea Channel Choose */ : 7561 /* User Signin on Website */ ),
     'x__left' => $sign_i__id,
 );
 

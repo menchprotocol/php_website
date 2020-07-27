@@ -22,10 +22,10 @@ $(document).ready(function () {
             e.stopPropagation();
         })
         .on('dragover dragenter', function () {
-            $('.minerUploader').addClass('is-working');
+            $('.userUploader').addClass('is-working');
         })
         .on('dragleave dragend drop', function () {
-            $('.minerUploader').removeClass('is-working');
+            $('.userUploader').removeClass('is-working');
         })
         .on('drop', function (e) {
             droppedFiles = e.originalEvent.dataTransfer.files;

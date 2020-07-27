@@ -5,7 +5,7 @@ class E_model extends CI_Model
 
     /*
      *
-     * Miner related database functions
+     * User related database functions
      *
      * */
 
@@ -36,7 +36,7 @@ class E_model extends CI_Model
 
             $this->X_model->create(array(
                 'x__source' => $e['e__id'],
-                'x__type' => 7564, //MINER SIGN
+                'x__type' => 7564, //USER SIGN
                 'x__metadata' => $e,
             ));
 
@@ -224,7 +224,7 @@ class E_model extends CI_Model
 
                 if($key=='e__title') {
 
-                    $x__type = 10646; //Miner Updated Name
+                    $x__type = 10646; //User Updated Name
                     $x__message = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='e__status') {
@@ -239,7 +239,7 @@ class E_model extends CI_Model
 
                 } elseif($key=='e__icon') {
 
-                    $x__type = 10653; //Miner Updated Icon
+                    $x__type = 10653; //User Updated Icon
                     $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
@@ -291,10 +291,10 @@ class E_model extends CI_Model
          * Treats an source child group as a drop down menu where:
          *
          *  $e_profile_bucket_id is the parent of the drop down
-         *  $x__source is the miner source ID that one of the children of $e_profile_bucket_id should be assigned (like a drop down)
+         *  $x__source is the user source ID that one of the children of $e_profile_bucket_id should be assigned (like a drop down)
          *  $set_e_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
-         * This function is helpful to manage things like Miner communication levels
+         * This function is helpful to manage things like User communication levels
          *
          * */
 
@@ -327,7 +327,7 @@ class E_model extends CI_Model
                 //Do not log update transaction here as we would log it further below:
                 $this->X_model->update($x['x__id'], array(
                     'x__status' => 6173, //Transaction Deleted
-                ), $x__source, 6224 /* Miner Account Updated */);
+                ), $x__source, 6224 /* User Account Updated */);
             }
 
         }
@@ -352,14 +352,14 @@ class E_model extends CI_Model
         //Fetch all SOURCE LINKS:
         $adjusted_count = 0;
         foreach(array_merge(
-                //Miner references within IDEA NOTES:
+                //User references within IDEA NOTES:
                     $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
                         'x__up' => $e__id,
                     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')),
-                    //Miner transactions:
+                    //User transactions:
                     $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -370,14 +370,14 @@ class E_model extends CI_Model
             //Delete this transaction:
             $adjusted_count += $this->X_model->update($adjust_tr['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
-            ), $x__source, 10673 /* Miner Transaction Unpublished */);
+            ), $x__source, 10673 /* User Transaction Unpublished */);
 
         }
 
         return $adjusted_count;
     }
 
-    function assign_session_miner($e__id){
+    function create_session($e__id){
 
         $session_e = superpower_assigned();
         if(!$session_e){
@@ -443,7 +443,7 @@ class E_model extends CI_Model
             'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
-            'x__up' => 1326, //Domain Miner
+            'x__up' => 1326, //Domain User
             'x__message' => $url_analysis['url_clean_domain'],
         ), array('x__down'));
 
@@ -464,7 +464,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__source' => $x__source,
                 'x__type' => 4256, //Generic URL (Domains are always generic)
-                'x__up' => 1326, //Domain Miner
+                'x__up' => 1326, //Domain User
                 'x__down' => $e_domain['e__id'],
                 'x__message' => $url_analysis['url_clean_domain'],
             ));
@@ -604,9 +604,9 @@ class E_model extends CI_Model
          * Input legend:
          *
          * - $url:                  Input URL
-         * - $x__source:       IF > 0 will save URL (if not previously there) and give credit to this source as the miner
+         * - $x__source:       IF > 0 will save URL (if not previously there) and give credit to this source as the user
          * - $add_to_child_e__id:   IF > 0 Will also add URL to this child if present
-         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable miners to edit auto generated title)
+         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable users to edit auto generated title)
          *
          * */
 
@@ -624,7 +624,7 @@ class E_model extends CI_Model
             );
         }
 
-        //Reminer if source name was passed:
+        //Reuser if source name was passed:
         $name_was_passed = ( $page_title ? true : false );
         $e___4537 = $this->config->item('e___4537');
         $e___4592 = $this->config->item('e___4592');
@@ -731,7 +731,7 @@ class E_model extends CI_Model
             $url_x = $this->X_model->fetch(array(
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Miner URL Transactions
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
                 'x__message' => $url,
             ), array('x__down'));
 
@@ -753,7 +753,7 @@ class E_model extends CI_Model
                 //Prefix type in name:
                 $page_title = $page_title;
 
-                //Create a new source for this URL ONLY If miner source is provided...
+                //Create a new source for this URL ONLY If user source is provided...
                 $added_e = $this->E_model->verify_create($page_title, $x__source, 6181, $e___4592[$x__type]['m_icon']);
                 if($added_e['status']){
 
@@ -769,8 +769,8 @@ class E_model extends CI_Model
                         'x__message' => $url,
                     ));
 
-                    //Assign to Miner:
-                    $this->E_model->assign_session_miner($e_url['e__id']);
+                    //Assign to User:
+                    $this->E_model->create_session($e_url['e__id']);
 
                     //Update Search Index:
                     update_algolia(12274, $e_url['e__id']);
@@ -794,7 +794,7 @@ class E_model extends CI_Model
                 }
 
             } else {
-                //URL not found and no miner source provided to create the URL:
+                //URL not found and no user source provided to create the URL:
                 $e_url = array();
             }
         }
@@ -917,7 +917,7 @@ class E_model extends CI_Model
 
             } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
-                //What miner searched for:
+                //What user searched for:
                 $parent_e__id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
@@ -942,7 +942,7 @@ class E_model extends CI_Model
                         $add_fields['x__message'] = $x['x__message'];
                     }
 
-                    //Parent Miner Addition
+                    //Parent User Addition
                     $this->X_model->create($add_fields);
 
                     $applied_success++;
@@ -951,19 +951,19 @@ class E_model extends CI_Model
                         //Since we're migrating we should remove from here:
                         $this->X_model->update($x['x__id'], array(
                             'x__status' => 6173, //Transaction Deleted
-                        ), $x__source, 10673 /* Miner Transaction Unpublished  */);
+                        ), $x__source, 10673 /* User Transaction Unpublished  */);
                     }
 
                 } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_e) > 0){
 
                     if($action_e__id==5982){
 
-                        //Parent Miner Removal
+                        //Parent User Removal
                         foreach($child_parent_e as $delete_tr){
 
                             $this->X_model->update($delete_tr['x__id'], array(
                                 'x__status' => 6173, //Transaction Deleted
-                            ), $x__source, 10673 /* Miner Transaction Unpublished  */);
+                            ), $x__source, 10673 /* User Transaction Unpublished  */);
 
                             $applied_success++;
                         }
@@ -986,7 +986,7 @@ class E_model extends CI_Model
 
                 }
 
-            } elseif ($action_e__id == 5943) { //Miner Mass Update Miner Icon
+            } elseif ($action_e__id == 5943) { //User Mass Update User Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__icon' => $action_command1,
@@ -994,7 +994,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 12318 && !strlen($x['e__icon'])) { //Miner Mass Update Miner Icon
+            } elseif ($action_e__id == 12318 && !strlen($x['e__icon'])) { //User Mass Update User Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__icon' => $action_command1,
@@ -1002,7 +1002,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5000 && substr_count($x['e__title'], strtoupper($action_command1)) > 0) { //Replace Miner Matching Name
+            } elseif ($action_e__id == 5000 && substr_count($x['e__title'], strtoupper($action_command1)) > 0) { //Replace User Matching Name
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => str_replace(strtoupper($action_command1), strtoupper($action_command2), $x['e__title']),
@@ -1010,7 +1010,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 10625 && substr_count($x['e__icon'], $action_command1) > 0) { //Replace Miner Matching Icon
+            } elseif ($action_e__id == 10625 && substr_count($x['e__icon'], $action_command1) > 0) { //Replace User Matching Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__icon' => str_replace($action_command1, $action_command2, $x['e__icon']),
@@ -1022,7 +1022,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => str_replace($action_command1, $action_command2, $x['x__message']),
-                ), $x__source, 10657 /* Miner Transaction Updated Content  */);
+                ), $x__source, 10657 /* User Transaction Updated Content  */);
 
                 $applied_success++;
 
@@ -1033,7 +1033,7 @@ class E_model extends CI_Model
                     $this->E_model->remove($x['e__id'], $x__source);
                 }
 
-                //Update Matching Miner Status:
+                //Update Matching User Status:
                 $this->E_model->update($x['e__id'], array(
                     'e__status' => $action_command2,
                 ), true, $x__source);
@@ -1044,7 +1044,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__status' => $action_command2,
-                ), $x__source, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Miner Transaction Updated Status */ : 10673 /* Miner Transaction Unpublished */ ));
+                ), $x__source, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* User Transaction Updated Status */ : 10673 /* User Transaction Unpublished */ ));
 
                 $applied_success++;
 

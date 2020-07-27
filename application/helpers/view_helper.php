@@ -192,7 +192,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
             //This should be an integer!
             if (intval($video_id) == $video_id) {
                 $clean_url = 'https://vimeo.com/' . $video_id;
-                $embed_html_code = '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://miner.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
+                $embed_html_code = '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
             }
 
         } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
@@ -315,7 +315,7 @@ function view_i_notes($x, $note_e = false)
 
 function view_e__icon($e__icon = null)
 {
-    //A simple function to display the Miner Icon OR the default icon if not available:
+    //A simple function to display the User Icon OR the default icon if not available:
     if (strlen($e__icon) > 0) {
 
         return $e__icon;
@@ -732,7 +732,7 @@ function view_icon_i_x($completion_percentage){
 function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_e = false, $extra_class = null)
 {
 
-    //See if miner is logged-in:
+    //See if user is logged-in:
     $CI =& get_instance();
     if(!$recipient_e){
         $recipient_e = superpower_assigned();
@@ -812,7 +812,7 @@ function view_i_tree_e($i){
 
     foreach($CI->config->item('e___4251') as $e__id => $m2){
         if($i_stats['count_'.$e__id]>0){
-            $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m_name'].':</div>';
+            $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m_name'].':'.( strlen($m2['m_desc']) ? '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$m2['m_desc'].'"><i class="fas fa-info-circle"></i></span>' : '' ).'</div>';
             $ui .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
                 $ui .= view_e_basic($e);

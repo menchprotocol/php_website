@@ -44,7 +44,7 @@ if($recipient_e['e__id']){
     //VIEW DISCOVER
     $this->X_model->create(array(
         'x__source' => $recipient_e['e__id'],
-        'x__type' => 7610, //MINER VIEWED IDEA
+        'x__type' => 7610, //USER VIEWED IDEA
         'x__left' => $i_focus['i__id'],
         'x__sort' => fetch_cookie_order('7610_'.$i_focus['i__id']),
     ));
@@ -361,7 +361,7 @@ if(!$in_my_x){
      * IDEA TYPE INPUT CONTROLLER
      * Now let's show the appropriate
      * inputs that correspond to the
-     * idea type that enable the miner
+     * idea type that enable the user
      * to move forward.
      *
      * */
@@ -548,7 +548,7 @@ if(!$in_my_x){
     } elseif ($i_focus['i__type'] == 7637) {
 
         //FILE UPLOAD
-        echo '<div class="minerUploader">';
+        echo '<div class="userUploader">';
         echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
         echo '<input class="inputfile" type="file" name="file" id="fileType'.$i_focus['i__type'].'" />';
@@ -598,20 +598,20 @@ if($in_my_x){
 
     //Discoveries
     $previous_level_id = 0; //The ID of the Idea one level up, if any
-    $miner_xy_ids = $this->X_model->ids($recipient_e['e__id']);
+    $u_x_ids = $this->X_model->ids($recipient_e['e__id']);
 
-    if(!in_array($i_focus['i__id'], $miner_xy_ids)){
+    if(!in_array($i_focus['i__id'], $u_x_ids)){
 
         //Find it:
         $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
         $sitemap_items = array();
 
         foreach($recursive_parents as $grand_parent_ids) {
-            foreach(array_intersect($grand_parent_ids, $miner_xy_ids) as $intersect) {
+            foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
                 foreach($grand_parent_ids as $count => $previous_i__id) {
 
                     if($count==0){
-                        //Reminer the first parent for the back button:
+                        //Reuser the first parent for the back button:
                         $previous_level_id = $previous_i__id;
                     }
 
@@ -621,7 +621,7 @@ if($in_my_x){
 
                     array_push($sitemap_items, view_i_x($is_this[0]));
 
-                    if(in_array($previous_i__id, $miner_xy_ids)){
+                    if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
                         break;
                     }

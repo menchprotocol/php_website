@@ -6,17 +6,17 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
 if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
-    //List this miners Discoveries so they can choose:
+    //List this users Discoveries so they can choose:
     echo '<div>Choose one of your Discoveries to debug:</div><br />';
 
-    $miner_x = $this->X_model->fetch(array(
+    $u_x = $this->X_model->fetch(array(
         'x__source' => $_GET['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     ), array('x__left'), 0, 0, array('x__sort' => 'ASC'));
 
-    foreach($miner_x as $priority => $x) {
+    foreach($u_x as $priority => $x) {
         echo '<div>' . ($priority + 1) . ') <a href="?i__id=' . $x['i__id'] . '&e__id=' . $_GET['e__id'] . '">' . view_i_title($x) . '</a></div>';
     }
 

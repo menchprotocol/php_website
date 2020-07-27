@@ -62,7 +62,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 <div class="col-md-6">
                     <div class="inline-box">
 
-                        <!-- Miner Status -->
+                        <!-- User Status -->
                         <span class="mini-header"><?= $e___6206[6177]['m_icon'].' '.$e___6206[6177]['m_name'] ?></span>
                         <select class="form-control border" id="e__status">
                             <?php
@@ -80,7 +80,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
 
-                        <!-- Miner Name -->
+                        <!-- User Name -->
                         <span class="mini-header" style="margin-top:20px;"><?= $e___6206[6197]['m_icon'].' '.$e___6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
                         <span class="white-wrapper">
                                 <textarea class="form-control text-edit border montserrat doupper" id="e__title"
@@ -91,7 +91,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
 
-                        <!-- Miner Icon -->
+                        <!-- User Icon -->
                         <span class="mini-header"><?= $e___6206[6198]['m_icon'].' '.$e___6206[6198]['m_name'] ?>
 
                                 <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
@@ -299,7 +299,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                     } elseif(in_array($action_e__id, array(5981, 12928, 12930, 5982, 13441))){
 
-                        //Miner search box:
+                        //User search box:
 
                         //String command:
                         $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
@@ -319,7 +319,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                     } elseif($action_e__id == 5003){
 
-                        //Miner Status update:
+                        //User Status update:
 
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
@@ -575,8 +575,8 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             );
-            $miner_x = $this->X_model->fetch($i_x_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
-            $counter = $miner_x[0]['totals'];
+            $u_x = $this->X_model->fetch($i_x_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
+            $counter = $u_x[0]['totals'];
 
             if($counter > 0){
                 $i_x_query = $this->X_model->fetch($i_x_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
@@ -679,14 +679,14 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 } elseif ($acc_e__id == 3288 /* Email */) {
 
-                    $miner_emails = $this->X_model->fetch(array(
+                    $u_emails = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__down' => $session_e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__up' => 3288, //Mench Email
                     ));
 
-                    $focus_tab .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($miner_emails) > 0 ? $miner_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
+                    $focus_tab .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
                 <a href="javascript:void(0)" onclick="e_update_email()" class="btn btn-e">Save</a>
                 <span class="saving-account save_email"></span>';
 

@@ -17,7 +17,7 @@ echo '<div class="container">';
     $this->load->view('e/plugin/'.$plugin_e__id.'/index', array(
         'plugin_e__id' => $plugin_e__id,
         'session_e' => $session_e,
-        'is_miner_request' => $is_miner_request,
+        'is_u_request' => $is_u_request,
     ));
 
 echo '</div>';
