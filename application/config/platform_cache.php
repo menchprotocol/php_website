@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-27 13:13:20 PST
+//Generated 2020-07-27 13:33:16 PST
 $config['s___12274'] = 4993; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122157; //DISCOVERIES
@@ -109,13 +109,13 @@ $config['e___13543'] = array(
     13202 => array(
         'm_name' => 'SUMMARIZERS',
         'm_desc' => '',
-        'm_icon' => '<i class="fad fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_parents' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
         'm_name' => 'NONFICTION SOURCES',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-info-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_parents' => array(13543,6159,4251,13428,13365,13207,4527),
     ),
     13339 => array(
@@ -562,13 +562,13 @@ $config['e___6159'] = array(
     3000 => array(
         'm_name' => 'NONFICTION SOURCES',
         'm_desc' => 'i___3000',
-        'm_icon' => '<i class="fas fa-info-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_parents' => array(13543,6159,4251,13428,13365,13207,4527),
     ),
     13202 => array(
         'm_name' => 'SUMMARIZERS',
         'm_desc' => 'i___13202',
-        'm_icon' => '<i class="fad fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_parents' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
 );
@@ -626,13 +626,13 @@ $config['e___4251'] = array(
     13202 => array(
         'm_name' => 'SUMMARIZERS',
         'm_desc' => 'Key ideas summarized by these Mench users',
-        'm_icon' => '<i class="fad fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_parents' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
         'm_name' => 'NONFICTION SOURCES',
         'm_desc' => 'Key ideas summarized from these nonfiction sources',
-        'm_icon' => '<i class="fas fa-info-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_parents' => array(13543,6159,4251,13428,13365,13207,4527),
     ),
     13339 => array(
@@ -649,7 +649,7 @@ $config['e___13439'] = array(
     13438 => array(
         'm_name' => 'READERS',
         'm_desc' => '',
-        'm_icon' => '<i class="fad fa-book-reader discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-book-reader discover" aria-hidden="true"></i>',
         'm_parents' => array(13450,13207,4527,13439),
     ),
 );
@@ -838,13 +838,13 @@ $config['e___13365'] = array(
     3000 => array(
         'm_name' => 'NONFICTION SOURCES',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-info-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_parents' => array(13543,6159,4251,13428,13365,13207,4527),
     ),
     13202 => array(
         'm_name' => 'SUMMARIZERS',
         'm_desc' => '',
-        'm_icon' => '<i class="fad fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_parents' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
 );
@@ -963,13 +963,13 @@ $config['e___13207'] = array(
     13202 => array(
         'm_name' => 'SUMMARIZERS',
         'm_desc' => '',
-        'm_icon' => '<i class="fad fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_parents' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     13438 => array(
         'm_name' => 'READERS',
         'm_desc' => '',
-        'm_icon' => '<i class="fad fa-book-reader discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-book-reader discover" aria-hidden="true"></i>',
         'm_parents' => array(13450,13207,4527,13439),
     ),
     13339 => array(
@@ -981,7 +981,7 @@ $config['e___13207'] = array(
     3000 => array(
         'm_name' => 'NONFICTION SOURCES',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-info-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_parents' => array(13543,6159,4251,13428,13365,13207,4527),
     ),
 );
@@ -5327,7 +5327,7 @@ $config['e___4527'] = array(
     3000 => array(
         'm_name' => 'NONFICTION SOURCES',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-info-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_parents' => array(13543,6159,4251,13428,13365,13207,4527),
     ),
     12741 => array(
@@ -5375,7 +5375,7 @@ $config['e___4527'] = array(
     13438 => array(
         'm_name' => 'READERS',
         'm_desc' => '',
-        'm_icon' => '<i class="fad fa-book-reader discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-book-reader discover" aria-hidden="true"></i>',
         'm_parents' => array(13450,13207,4527,13439),
     ),
     13414 => array(
@@ -5561,7 +5561,7 @@ $config['e___4527'] = array(
     13202 => array(
         'm_name' => 'SUMMARIZERS',
         'm_desc' => '',
-        'm_icon' => '<i class="fad fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_parents' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     10957 => array(
