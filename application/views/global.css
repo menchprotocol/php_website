@@ -1592,11 +1592,11 @@ label {
     }
 
     .cover-list{
-        padding:0 5px;
+        padding:0 8px;
     }
 
     .feature-content>div{
-        margin:5px 0 0 5px !important;
+        margin:8px 0 0 8px !important;
     }
 
     .col2nd .row { padding-left: 34px; padding-top: 8px; }
