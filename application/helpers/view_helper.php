@@ -1313,7 +1313,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
             $ui .= '<div class="col-7 col-sm-8 col-md-9 feature-content">';
 
                 //Title
-                $ui .= '<h2><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
+                $ui .= '<div><h2><a href="'.$href.'">'.view_i_title($i).'</a></h2></div>';
 
                 //Newly added?
                 if($i['x__sort'] < 1){
