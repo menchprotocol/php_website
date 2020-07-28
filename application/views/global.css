@@ -1583,6 +1583,15 @@ label {
     margin-top: -17px;
 }
 
+.top-icon{
+    vertical-align: top;
+    margin-top: -17px;
+}
+
+.thin-top{
+    margin-top: -8px;
+}
+
 .title-block-lg{
     margin-top: -46px !important;
 }
