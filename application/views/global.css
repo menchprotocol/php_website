@@ -1574,6 +1574,13 @@ label {
     margin-bottom: 13px;
 }
 
+.feature-content{
+    padding-left: 13px;
+}
+.feature-content .padded{
+    margin: 0 !important;
+}
+
 .title-block-lg{
     margin-top: -46px !important;
 }

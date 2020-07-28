@@ -1310,10 +1310,10 @@ function view_i_cover($i, $show_editor, $x_mode = true){
 
         $ui .= '<div class="row">';
             $ui .= '<div class="col-5 col-sm-4 col-md-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
-            $ui .= '<div class="col-7 col-sm-8 col-md-9">';
+            $ui .= '<div class="col-7 col-sm-8 col-md-9 feature-content">';
 
                 //Title
-                $ui .= '<h1 class="inline-block"><a href="'.$href.'">'.view_i_title($i).'</a></h1>';
+                $ui .= '<h2><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
 
                 //Newly added?
                 if($i['x__sort'] < 1){
