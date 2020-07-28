@@ -1322,7 +1322,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
                 $ui .= '<div class="col-8">';
 
                     //Title
-                    $ui .= '<h1 class="block-one">'.view_i_title($i).'</h1>';
+                    $ui .= '<b class="montserrat">'.view_i_title($i).'</b>';
 
                     //Newly added?
                     if($i['x__sort'] < 1){
