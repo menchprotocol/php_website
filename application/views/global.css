@@ -1587,6 +1587,10 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    h2 {
+        font-size: 1.4em;
+    }
+
     .cover-list{
         padding:0 5px;
     }
