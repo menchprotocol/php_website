@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-28 09:37:45 PST
+//Generated 2020-07-28 10:16:54 PST
 $config['s___12274'] = 4994; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122157; //DISCOVERIES
@@ -3842,8 +3842,8 @@ $config['e___6404'] = array(
         'm_parents' => array(6404),
     ),
     13556 => array(
-        'm_name' => 'MESSAGE FEATURED MAXIMUM WORDS',
-        'm_desc' => '21',
+        'm_name' => 'MESSAGE FEATURED CAP WORDS',
+        'm_desc' => '34',
         'm_icon' => '',
         'm_parents' => array(6404),
     ),

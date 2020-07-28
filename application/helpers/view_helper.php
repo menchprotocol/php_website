@@ -1320,18 +1320,14 @@ function view_i_cover($i, $show_editor, $x_mode = true){
                     $ui .= '<div class="dorubik">⚠️ &nbsp;Newly Added</div>';
                 }
                 //Description, if any
-                $ui .= '<div class="inline-block">'.i_fetch_description($i['i__id']).'</div>';
+                $ui .= '<div class="inline-block hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
 
-                //Time
-                if($i_stats['i___13292']){
-                    $ui .= '<div><span title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span></div>';
-                }
 
                 //MENCH COINS
                 $ui .= '<div class="row">';
-                    $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
-                    $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
-                    $ui .= '<div class="col-4">'.view_coins_i(6255,  $i).'</div>';
+                    $ui .= '<div class="col-3">'.view_coins_i(12274, $i).'</div>';
+                    $ui .= '<div class="col-3">'.view_coins_i(12273, $i).'</div>';
+                    $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
                 $ui .= '</div>';
 
             $ui .= '</div>';
