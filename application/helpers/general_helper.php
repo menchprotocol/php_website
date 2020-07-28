@@ -422,7 +422,7 @@ function i_fetch_cover($i__id, $html_format = false){
 
     //Return something:
     $image_url = ( $i_fetch_cover ? $i_fetch_cover : config_var(12904) );
-    return ( $html_format ? '<img src="'.$image_url.'" />' : $image_url );
+    return ( $html_format ? '<img src="'.$image_url.'" class="cover-image" />' : $image_url );
 
 }
 

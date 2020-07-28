@@ -533,20 +533,8 @@ img.no-radius {
     padding-left:34px;
 }
 
-.cover-image{
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    display: block;
-    width: 144px;
-    height: 209px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    position: relative;
-    border: 1px solid #000;
-}
-.cover-image img{
-    width: 100%;
-    height: 100%;
+.cover-image {
+    max-width: 100%;
 }
 .media-info {
     padding: 1px 4px;
