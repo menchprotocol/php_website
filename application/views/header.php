@@ -192,15 +192,6 @@ if(!isset($hide_header)){
                                 //Fetch URL:
                                 $page_url = 'href="'.$e___10876[$x__type]['m_desc'].'"';
 
-                            } elseif($x__type==13449) {
-
-                                //SET SOURCE TO USER
-                                $x__type = $session_e['e__id'];
-                                $page_url = 'href="/@'.$x__type.'"';
-                                $m['m_name'] = $session_e['e__title'];
-                                $m['m_icon'] = $session_e['e__icon'];
-                                $text_class = 'text__6197_'.$x__type;
-
                             } elseif($x__type==12899) {
 
                                 //FEEDBACK SUPPORT
