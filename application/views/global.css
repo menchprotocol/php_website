@@ -1570,6 +1570,9 @@ label {
 .thin-top{
     margin-top: -8px;
 }
+.big-cover{
+    margin-bottom: 13px;
+}
 
 .title-block-lg{
     margin-top: -46px !important;
