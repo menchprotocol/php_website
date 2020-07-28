@@ -526,6 +526,12 @@ img.no-radius {
     font-weight: normal !important;
 }
 
+.cover-list{
+    display: block;
+    width: 100%;
+    padding:0 5px;
+}
+
 .cover-image {
     max-width: 100%;
 }
