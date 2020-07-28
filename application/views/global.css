@@ -529,7 +529,7 @@ img.no-radius {
 .cover-list{
     display: block;
     width: 100%;
-    padding:0 8px;
+    padding:0;
 }
 
 .cover-image {
