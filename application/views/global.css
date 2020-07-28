@@ -529,7 +529,7 @@ img.no-radius {
 .cover-list{
     display: block;
     width: 100%;
-    padding:0 5px;
+    padding:0 8px;
 }
 
 .cover-image {
@@ -1586,6 +1586,10 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .cover-list{
+        padding:0 5px;
+    }
 
     .feature-content>div{
         margin:5px 0 0 5px !important;
