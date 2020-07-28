@@ -1309,7 +1309,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
 
         $ui .= '<div class="row">';
             $ui .= '<div class="col">'.i_fetch_cover($i['i__id'], true).'</div>';
-            $ui .= '<div class="col-xs-8 col-md-10">';
+            $ui .= '<div class="col-8 col-md-10">';
 
                 //Title
                 $ui .= '<b class="montserrat">'.view_i_title($i).'</b>';
