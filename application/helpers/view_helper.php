@@ -1312,14 +1312,14 @@ function view_i_cover($i, $show_editor, $x_mode = true){
             $ui .= '<div class="col-7 col-sm-8 col-md-9">';
 
                 //Title
-                $ui .= '<h1>'.view_i_title($i).'</h1>';
+                $ui .= '<h1 class="inline-block">'.view_i_title($i).'</h1>';
 
                 //Newly added?
                 if($i['x__sort'] < 1){
                     $ui .= '<div class="dorubik">⚠️ &nbsp;Newly Added</div>';
                 }
                 //Description, if any
-                $ui .= i_fetch_description($i['i__id']);
+                $ui .= '<div class="inline-block">'.i_fetch_description($i['i__id']).'</div>';
 
                 //Time
                 if($i_stats['i___13292']){
