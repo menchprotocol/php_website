@@ -1299,86 +1299,64 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     $ui  = '<a href="'.( $x_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] ) . '" id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="'.( $show_editor ? ' home_sort ' : '' ).'">';
 
 
-
-    if($recipient_e){
-
-        $completion_rate = $CI->X_model->completion_progress($recipient_e['e__id'], $i);
-
-        if($completion_rate['completion_percentage']>0){
-            $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        if($recipient_e){
+            $completion_rate = $CI->X_model->completion_progress($recipient_e['e__id'], $i);
+            if($completion_rate['completion_percentage']>0){
+                $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+            }
         }
 
-    }
 
+        $ui .= '<div class="row">';
+            $ui .= '<div class="col-4">'.i_fetch_cover($i['i__id'], true).'</div>';
+            $ui .= '<div class="col-8">';
 
+                //Title
+                $ui .= '<b class="montserrat">'.view_i_title($i).'</b>';
 
+                //Newly added?
+                if($i['x__sort'] < 1){
+                    $ui .= '<div class="dorubik">⚠️ &nbsp;Newly Added</div>';
+                }
 
-    $ui .= '<div class="row">';
+                //Description, if any
+                //$ui .= i_fetch_description($i['i__id']);
 
+                //Time
+                if($i_stats['i___13292']){
+                    $ui .= '<div><span title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span></div>';
+                }
 
-
-        //Left
-        $ui .= '<div class="col-sm col-md">';
-
-            $ui .= '<div class="row">';
-                $ui .= '<div class="col-4">'.i_fetch_cover($i['i__id'], true).'</div>';
-                $ui .= '<div class="col-8">';
-
-                    //Title
-                    $ui .= '<b class="montserrat">'.view_i_title($i).'</b>';
-
-                    //Newly added?
-                    if($i['x__sort'] < 1){
-                        $ui .= '<div class="dorubik">⚠️ &nbsp;Newly Added</div>';
-                    }
-
-                    //Description, if any
-                    //$ui .= i_fetch_description($i['i__id']);
-
-                    //Time
-                    if($i_stats['i___13292']){
-                        $ui .= '<div><span title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span></div>';
-                    }
-
+                //MENCH COINS
+                $ui .= '<div class="row">';
+                    $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
+                    $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
+                    $ui .= '<div class="col-4">'.view_coins_i(6255,  $i).'</div>';
                 $ui .= '</div>';
-            $ui .= '</div>';
 
+            $ui .= '</div>';
         $ui .= '</div>';
 
 
-        //Right
-        $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
+        //Search for Idea Image:
+        if($show_editor){
 
-            //MENCH COINS
-            $ui .= '<div class="row">';
-                $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
-                $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
-                $ui .= '<div class="col-4">'.view_coins_i(6255,  $i).'</div>';
+            //RIGHT EDITING:
+            $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
+            $ui .= '<div class="note-editor edit-off">';
+            $ui .= '<span class="show-on-hover">';
+
+            //SORT
+            $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
+
+            //Remove:
+            $ui .= '<span title="'.$e___13369[13414]['m_name'].'" class="x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
+
+            $ui .= '</span>';
+            $ui .= '</div>';
             $ui .= '</div>';
 
-
-            //Search for Idea Image:
-            if($show_editor){
-
-                //RIGHT EDITING:
-                $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-                $ui .= '<div class="note-editor edit-off">';
-                $ui .= '<span class="show-on-hover">';
-
-                //SORT
-                $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
-
-                //Remove:
-                $ui .= '<span title="'.$e___13369[13414]['m_name'].'" class="x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
-
-                $ui .= '</span>';
-                $ui .= '</div>';
-                $ui .= '</div>';
-
-            }
-
-        $ui .= '</div>';
-    $ui .= '</div>';
+        }
 
 
     $ui .= '</a>';
