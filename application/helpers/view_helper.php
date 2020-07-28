@@ -697,7 +697,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     //Return Results:
     if($append_coin_icon){
         $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-        return ( $count_query > 0 ? '<span class="montserrat '.extract_icon_color($e___12467[$x__type]['m_icon']).'" title="'.$e___12467[$x__type]['m_name'].'">'.$e___12467[$x__type]['m_icon'].'&nbsp;'.view_number($count_query).'</span>' : null);
+        return ( $count_query > 0 ? '<span data-toggle="tooltip" title="'.$e___12467[$x__type]['m_name'].'" data-placement="top" class="montserrat '.extract_icon_color($e___12467[$x__type]['m_icon']).'">'.$e___12467[$x__type]['m_icon'].'&nbsp;'.view_number($count_query).'</span>' : null);
     } else {
         return intval($count_query);
     }
@@ -968,7 +968,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
     $e_of_i = ( !$is_i_x ? false : $e_of_i ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
-    //IDAE INFO BAR
+    //IDEA INFO BAR
     $box_items_list = '';
 
     //DISCOVER STATUS
@@ -989,7 +989,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
     $ui .= '<div class="row">';
     $ui .= '<div class="col-sm col-md">';
 
-        //IDAE Transaction:
+        //IDEA Transaction:
         $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
 
         //IDEA STATUS:
@@ -1296,9 +1296,10 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     $recipient_e = superpower_assigned();
     $i_stats = i_stats($i['i__metadata']);
 
-    $ui  = '<a href="'.( $x_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] ) . '" id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="cover-block '.( $show_editor ? ' home_sort ' : '' ).'">';
+    $ui  = '<a href="'.( $x_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] ) . '" id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="'.( $show_editor ? ' home_sort ' : '' ).'">';
 
-    $ui .= '<div class="cover-image">';
+
+
     if($recipient_e){
 
         $completion_rate = $CI->X_model->completion_progress($recipient_e['e__id'], $i);
@@ -1309,52 +1310,73 @@ function view_i_cover($i, $show_editor, $x_mode = true){
 
     }
 
-    $ui .= i_fetch_cover($i['i__id'], true);
-
-    //TOP LEFT
-    $ui .= '<span class="media-info top-left" data-toggle="tooltip" data-placement="bottom" title="'.$i_stats['i___13443'].' '.$e___12467[12273]['m_name'].' FROM '.$i_stats['e_count'].' '.$e___12467[12274]['m_name'].'">';
-
-    //SOURCES:
-    if($recipient_e){
-        $ui .= view_coins_i(12274,  $i).'<br />';
-    }
-
-    //IDEAS:
-    $ui .= view_coins_i(12273,  $i).'<br />';
-
-    //DISCOVERIES:
-    if($recipient_e){
-        $ui .= view_coins_i(6255,  $i);
-    }
 
 
-    $ui .= '</span>';
 
-    //TOP RIGHT
-    if($i_stats['i___13292']){
-        $ui .= '<span class="media-info top-right" title="'.$e___13369[13292]['m_name'].'">'.view_time_hours($i_stats['i___13292']).'</span>';
-    }
+    $ui .= '<div class="row">';
 
-    //Search for Idea Image:
-    if($show_editor){
+        $ui .= '<div class="col-sm col-md">';
 
-        //SORT
-        $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
+            $ui .= '<div class="row">';
+                $ui .= '<div class="col-4">'.i_fetch_cover($i['i__id'], true).'</div>';
+                $ui .= '<div class="col-8">';
 
-        //IDEA STATUS?
-        if(!$x_mode && !in_array($i['i__status'], $CI->config->item('n___7355'))){
-            $ui .= '<span class="media-info bottom-center">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'top').'</span>';
-        }
+                    //Title
+                    $ui .= '<h1 class="block-one">'.view_i_title($i).'</h1>';
 
-        //REMOVE
-        $ui .= '<span class="media-info click-info bottom-right x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
+                    //Newly added?
+                    if($i['x__sort'] < 1){
+                        $ui .= '<div class="dorubik">⚠️ &nbsp;Newly Added</div>';
+                    }
 
-    }
+                    //Description, if any
+                    $ui .= i_fetch_description($i['i__id']);
+
+                    //Time
+                    if($i_stats['i___13292']){
+                        $ui .= '<div><span title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span></div>';
+                    }
+
+            $ui .= '</div>';
+            $ui .= '</div>';
+
+        $ui .= '</div>';
+
+
+        //Right
+        $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
+
+            //MENCH COINS
+            $ui .= '<div class="row">';
+            $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_i(6255,  $i).'</div>';
+            $ui .= '</div>';
+
+
+            //Search for Idea Image:
+            if($show_editor){
+
+                //RIGHT EDITING:
+                $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
+                $ui .= '<div class="note-editor edit-off">';
+                $ui .= '<span class="show-on-hover">';
+
+                //SORT
+                $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
+
+                //Remove:
+                $ui .= '<span title="'.$e___13369[13414]['m_name'].'" class="x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
+
+                $ui .= '</span>';
+                $ui .= '</div>';
+                $ui .= '</div>';
+
+            }
+
+        $ui .= '</div>';
     $ui .= '</div>';
 
-
-    //Title + Drafting?
-    $ui .= '<b class="montserrat" style="font-size: 0.9em;">'.view_i_title($i).($i['x__sort'] < 1 ? '<div class="dorubik">⚠️ &nbsp;Newly Added</div>' : '').'</b>';
 
     $ui .= '</a>';
 

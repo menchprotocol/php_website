@@ -533,15 +533,6 @@ img.no-radius {
     padding-left:34px;
 }
 
-.cover-block{
-    display: block;
-    width: 162px;
-    height: 305px;
-    overflow: hidden;
-    float: left;
-    margin-right: 18px;
-}
-
 .cover-image{
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -1618,10 +1609,6 @@ label {
     .active .show-max-active {display:none !important;}
     .mini-hidden{
         display: none;
-    }
-
-    .cover-block{
-        margin-right: 5px;
     }
 
     .icon-block-lg img {

@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-27 13:33:16 PST
-$config['s___12274'] = 4993; //SOURCES
+//Generated 2020-07-28 09:37:45 PST
+$config['s___12274'] = 4994; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122157; //DISCOVERIES
 
@@ -416,10 +416,10 @@ $config['e___13488'] = array(
         'm_parents' => array(10876,13488),
     ),
     13207 => array(
-        'm_name' => 'TOP SOURCES',
+        'm_name' => 'LEADERBOARD',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_parents' => array(12489,12500,13488,10876,10939,4527),
+        'm_parents' => array(12489,12500,13488,10876,4527),
     ),
 );
 
@@ -722,13 +722,13 @@ $config['e___13413'] = array(
     6132 => array(
         'm_name' => 'DISCOVERIES',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-arrows"></i>',
+        'm_icon' => '<i class="fas fa-sort"></i>',
         'm_parents' => array(13450,13413,6153,4593,4755),
     ),
     13412 => array(
         'm_name' => 'IDEAS',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-arrows"></i>',
+        'm_icon' => '<i class="fas fa-sort"></i>',
         'm_parents' => array(13413,4755,4593),
     ),
 );
@@ -815,7 +815,7 @@ $config['e___13369'] = array(
     13413 => array(
         'm_name' => 'SORT IDEA',
         'm_desc' => 'SORT from LEFT to RIGHT, TOP to BOTTOM ',
-        'm_icon' => '<i class="fas fa-arrows"></i>',
+        'm_icon' => '<i class="fas fa-sort"></i>',
         'm_parents' => array(4527,13369),
     ),
     13414 => array(
@@ -957,7 +957,7 @@ $config['e___13202'] = array(
     ),
 );
 
-//TOP SOURCES:
+//LEADERBOARD:
 $config['n___13207'] = array(13202,13438,13339,3000);
 $config['e___13207'] = array(
     13202 => array(
@@ -1521,19 +1521,13 @@ $config['e___12677'] = array(
 );
 
 //USER MENU:
-$config['n___12500'] = array(13449,13207,6287,4341,7291);
+$config['n___12500'] = array(13207,6287,4341,7291);
 $config['e___12500'] = array(
-    13449 => array(
-        'm_name' => 'MY SOURCE',
-        'm_desc' => '',
-        'm_icon' => '<i class="fad fa-user source"></i>',
-        'm_parents' => array(12500),
-    ),
     13207 => array(
-        'm_name' => 'TOP SOURCES',
+        'm_name' => 'LEADERBOARD',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_parents' => array(12489,12500,13488,10876,10939,4527),
+        'm_parents' => array(12489,12500,13488,10876,4527),
     ),
     6287 => array(
         'm_name' => 'PLUGINS',
@@ -1839,13 +1833,19 @@ $config['e___12446'] = array(
 );
 
 //MENCH URL:
-$config['n___10876'] = array(13405,7291,4341,6287,4269,13207);
+$config['n___10876'] = array(13405,13207,7291,4341,6287,4269);
 $config['e___10876'] = array(
     13405 => array(
         'm_name' => 'IDEA HOME',
         'm_desc' => 'https://mench.com/~',
         'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
         'm_parents' => array(10876,13488),
+    ),
+    13207 => array(
+        'm_name' => 'LEADERBOARD',
+        'm_desc' => 'https://mench.com/@',
+        'm_icon' => '<i class="fas fa-medal source"></i>',
+        'm_parents' => array(12489,12500,13488,10876,4527),
     ),
     7291 => array(
         'm_name' => 'LOGOUT',
@@ -1870,12 +1870,6 @@ $config['e___10876'] = array(
         'm_desc' => 'https://mench.com/e/signin',
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_parents' => array(12687,13479,10876,4527,11035),
-    ),
-    13207 => array(
-        'm_name' => 'TOP SOURCES',
-        'm_desc' => 'https://mench.com/@',
-        'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_parents' => array(12489,12500,13488,10876,10939,4527),
     ),
 );
 
@@ -3719,7 +3713,7 @@ $config['e___11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,4485,12137,4736,13406,11064,11065,13014,11063,13005,11079,11060,13545,11066,12088,13206,11986,12232,6197,12565,12568);
+$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,4485,12137,4736,13406,11064,11065,13014,11063,13005,11079,11060,13556,13555,13545,11066,12088,13206,11986,12232,6197,12565,12568);
 $config['e___6404'] = array(
     12678 => array(
         'm_name' => 'ALGOLIA SEARCH ENABLED (0 OR 1)',
@@ -3843,8 +3837,20 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_name' => 'MENCH VERSION',
-        'm_desc' => 'v1.482',
+        'm_desc' => 'v1.48',
         'm_icon' => '<i class="fad fa-code"></i>',
+        'm_parents' => array(6404),
+    ),
+    13556 => array(
+        'm_name' => 'MESSAGE FEATURED MAXIMUM WORDS',
+        'm_desc' => '21',
+        'm_icon' => '',
+        'm_parents' => array(6404),
+    ),
+    13555 => array(
+        'm_name' => 'MESSAGE FEATURED MINIMUM WORDS',
+        'm_desc' => '3',
+        'm_icon' => '',
         'm_parents' => array(6404),
     ),
     13545 => array(
@@ -4812,7 +4818,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(10956,13533,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,13369,4229,12842,4486,12840,12589,11047,6159,4485,7551,4986,12359,4603,12012,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13443,6170,6169,13543,13544,7585,13022,12330,7309,7712,12883,12884,12955,12211,2738,12467,6404,12079,13488,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,13037,12969,10573,6225,3000,12741,6287,12577,4755,13531,13439,13365,13438,13414,13510,12761,13023,4269,6204,13413,6194,4251,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,13424,11089,12574,13425,13202,10957,12968,12523,10692,13207,6103,6186,4593,13442,6146,13480,13548,12500,13479);
+$config['n___4527'] = array(10956,13533,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,13369,4229,12842,4486,12840,12589,11047,6159,4485,7551,4986,12359,4603,12012,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13443,6170,6169,13543,13544,7585,13022,12330,7309,7712,12883,12884,12955,13207,12211,2738,12467,6404,12079,13488,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,13037,12969,10573,6225,3000,12741,6287,12577,4755,13531,13439,13365,13438,13414,13510,12761,13023,4269,6204,13413,6194,4251,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,13424,11089,12574,13425,13202,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,12500,13479);
 $config['e___4527'] = array(
     10956 => array(
         'm_name' => 'AVATARS BASIC',
@@ -5198,6 +5204,12 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-stopwatch idea"></i>',
         'm_parents' => array(4527,10893),
     ),
+    13207 => array(
+        'm_name' => 'LEADERBOARD',
+        'm_desc' => '',
+        'm_icon' => '<i class="fas fa-medal source"></i>',
+        'm_parents' => array(12489,12500,13488,10876,4527),
+    ),
     12211 => array(
         'm_name' => 'MARK AS READ & NEXT',
         'm_desc' => '',
@@ -5417,7 +5429,7 @@ $config['e___4527'] = array(
     13413 => array(
         'm_name' => 'SORT IDEA',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-arrows"></i>',
+        'm_icon' => '<i class="fas fa-sort"></i>',
         'm_parents' => array(4527,13369),
     ),
     6194 => array(
@@ -5587,12 +5599,6 @@ $config['e___4527'] = array(
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-bezier-curve"></i>',
         'm_parents' => array(4527,6771),
-    ),
-    13207 => array(
-        'm_name' => 'TOP SOURCES',
-        'm_desc' => '',
-        'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_parents' => array(12489,12500,13488,10876,10939,4527),
     ),
     6103 => array(
         'm_name' => 'TRANSACTION METADATA',
@@ -7352,13 +7358,13 @@ $config['e___4755'] = array(
     6132 => array(
         'm_name' => 'SORT DISCOVERIES',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-arrows"></i>',
+        'm_icon' => '<i class="fas fa-sort"></i>',
         'm_parents' => array(13450,13413,6153,4593,4755),
     ),
     13412 => array(
         'm_name' => 'SORT IDEAS',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-arrows"></i>',
+        'm_icon' => '<i class="fas fa-sort"></i>',
         'm_parents' => array(13413,4755,4593),
     ),
     6157 => array(
@@ -8077,13 +8083,13 @@ $config['e___4593'] = array(
     6132 => array(
         'm_name' => 'SORT DISCOVERIES',
         'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
-        'm_icon' => '<i class="fas fa-arrows"></i>',
+        'm_icon' => '<i class="fas fa-sort"></i>',
         'm_parents' => array(13450,13413,6153,4593,4755),
     ),
     13412 => array(
         'm_name' => 'SORT IDEAS',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-arrows"></i>',
+        'm_icon' => '<i class="fas fa-sort"></i>',
         'm_parents' => array(13413,4755,4593),
     ),
     6157 => array(

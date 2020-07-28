@@ -427,6 +427,31 @@ function i_fetch_cover($i__id, $html_format = false){
 }
 
 
+
+function i_fetch_description($i__id){
+
+
+    $CI =& get_instance();
+    foreach($CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 4231, //IDEA NOTES Messages
+        'x__right' => $i__id,
+    ), array(), 0, 0, array('x__sort' => 'ASC')) as $fetched_e){
+        if(substr_count($fetched_e['x__message'], ' ')>=(config_var(13555)-1)){ //Minimum Number of Words
+            //This is it, return:
+            return $this->X_model->message_send(
+                join(' ', array_slice(explode(' ', $fetched_e['x__message']), 0, config_var(13555))), //Limit Length
+                superpower_assigned()
+            );
+        }
+    }
+
+    //Return something:
+    return null;
+
+}
+
+
 function i__weight_calculator($i){
 
     //DISCOVERIES
@@ -1339,6 +1364,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 
     $e___7585 = $CI->config->item('e___7585'); // Idea Subtypes
+    $e___4737 = $CI->config->item('e___4737'); //Idea Status
 
     //Define the support objects indexed on algolia:
     $object__id = intval($object__id);
@@ -1529,7 +1555,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__id'] = intval($db_row['i__id']);
                 $export_row['object__url'] = '/i/i_go/' . $db_row['i__id'];
                 $export_row['object__status'] = intval($db_row['i__status']);
-                $export_row['object__icon'] = i_fetch_cover($db_row['i__id']);
+                $export_row['object__icon'] = $e___4737[$db_row['i__status']]['m_icon']; //Based on status
                 $export_row['object__title'] = $db_row['i__title'];
                 $export_row['object__weight'] = intval($db_row['i__weight']);
 

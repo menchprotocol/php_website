@@ -268,7 +268,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12589){
 
-        //IDAE LIST EDITOR
+        //IDEA LIST EDITOR
         $dropdown_options = '';
         $input_options = '';
         $counter = 0;
