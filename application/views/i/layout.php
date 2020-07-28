@@ -151,7 +151,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
-                           placeholder="SOURCE TITLE/URL">
+                           placeholder="NEW SOURCE URL OR TITLE">
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '"></div></div>';
         }
 

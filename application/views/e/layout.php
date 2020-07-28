@@ -253,7 +253,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           placeholder="SOURCE TITLE/URL">
+                           placeholder="NEW SOURCE URL OR TITLE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $focus_tab .= '</div>';
@@ -463,7 +463,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           placeholder="SOURCE TITLE/URL">
+                           placeholder="NEW SOURCE URL OR TITLE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $focus_tab .= '</div>';
