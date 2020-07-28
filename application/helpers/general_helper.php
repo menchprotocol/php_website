@@ -439,7 +439,7 @@ function i_fetch_description($i__id){
     ), array(), 0, 0, array('x__sort' => 'ASC')) as $fetched_e){
         if(substr_count($fetched_e['x__message'], ' ')>=(config_var(13555)-1)){ //Minimum Number of Words
             //This is it, return:
-            return $this->X_model->message_send(
+            return $CI->X_model->message_send(
                 join(' ', array_slice(explode(' ', $fetched_e['x__message']), 0, config_var(13555))), //Limit Length
                 superpower_assigned()
             );
