@@ -1599,7 +1599,7 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
-    .col2nd .row { padding-left: 34px; padding-top: 13px; }
+    .col2nd .row { padding-left: 34px; padding-top: 8px; }
 
     .top-icon{
         margin-top: -12px;
