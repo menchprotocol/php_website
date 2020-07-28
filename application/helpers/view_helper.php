@@ -1295,8 +1295,9 @@ function view_i_cover($i, $show_editor, $x_mode = true){
 
     $recipient_e = superpower_assigned();
     $i_stats = i_stats($i['i__metadata']);
+    $href = ( $x_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] );
 
-    $ui  = '<a href="'.( $x_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] ) . '" id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="big-cover '.( $show_editor ? ' home_sort ' : '' ).'">';
+    $ui  = '<div id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="big-cover '.( $show_editor ? ' home_sort ' : '' ).'">';
 
 
         if($recipient_e){
@@ -1308,11 +1309,11 @@ function view_i_cover($i, $show_editor, $x_mode = true){
 
 
         $ui .= '<div class="row">';
-            $ui .= '<div class="col-5 col-sm-4 col-md-3">'.i_fetch_cover($i['i__id'], true).'</div>';
+            $ui .= '<div class="col-5 col-sm-4 col-md-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
             $ui .= '<div class="col-7 col-sm-8 col-md-9">';
 
                 //Title
-                $ui .= '<h1 class="inline-block">'.view_i_title($i).'</h1>';
+                $ui .= '<h1 class="inline-block"><a href="'.$href.'">'.view_i_title($i).'</a></h1>';
 
                 //Newly added?
                 if($i['x__sort'] < 1){
@@ -1358,7 +1359,9 @@ function view_i_cover($i, $show_editor, $x_mode = true){
         }
 
 
-    $ui .= '</a>';
+    $ui .= '</div>';
+    $ui .= '<div class="doclear">&nbsp;</div>';
+
 
     return $ui;
 
