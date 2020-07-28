@@ -3843,7 +3843,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_name' => 'MENCH VERSION',
-        'm_desc' => 'v1.48',
+        'm_desc' => 'v1.481',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_parents' => array(6404),
     ),
