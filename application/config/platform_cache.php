@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-28 10:16:54 PST
+//Generated 2020-07-28 11:00:36 PST
 $config['s___12274'] = 4994; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122157; //DISCOVERIES
@@ -58,7 +58,7 @@ $config['e___13443'] = array(
     13292 => array(
         'm_name' => 'AVERAGE DISCOVERY TIME',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-stopwatch"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch discover"></i>',
         'm_parents' => array(13443,13369,4356),
     ),
 );
@@ -809,7 +809,7 @@ $config['e___13369'] = array(
     13292 => array(
         'm_name' => 'AVERAGE DISCOVERY TIME',
         'm_desc' => '',
-        'm_icon' => '<i class="fas fa-stopwatch"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch discover"></i>',
         'm_parents' => array(13443,13369,4356),
     ),
     13413 => array(
@@ -3837,7 +3837,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_name' => 'MENCH VERSION',
-        'm_desc' => 'v1.4813',
+        'm_desc' => 'v1.48',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_parents' => array(6404),
     ),

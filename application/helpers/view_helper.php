@@ -1327,7 +1327,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
                 $ui .= '<div class="row">';
                     $ui .= '<div class="col-3 col-md-4">'.view_coins_i(12274, $i).'<span class="show-max montserrat source">&nbsp'.$e___12467[12274]['m_name'].'</span></div>';
                     $ui .= '<div class="col-3 col-md-4">'.view_coins_i(12273, $i).'<span class="show-max montserrat idea">&nbsp'.$e___12467[12273]['m_name'].'</span></div>';
-                    $ui .= '<div class="col-6 col-md-4">'.($i_stats['i___13292'] ? '<span title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
+                    $ui .= '<div class="col-6 col-md-4">'.($i_stats['i___13292'] ? '<span class="montserrat discover" title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
                 $ui .= '</div>';
 
             $ui .= '</div>';
