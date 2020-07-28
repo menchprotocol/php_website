@@ -684,7 +684,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_send($message_input, $recipient_e = array(), $message_i__id = 0)
+    function message_send($message_input, $recipient_e = array(), $message_i__id = 0, $simple_version = false)
     {
 
         /*
@@ -714,7 +714,7 @@ class X_model extends CI_Model
         }
 
         //Validate message:
-        $msg_validation = $this->X_model->message_compile($message_input, $recipient_e, 0, $message_i__id, false);
+        $msg_validation = $this->X_model->message_compile($message_input, $recipient_e, 0, $message_i__id, false, $simple_version);
 
 
         //Did we have ane error in message validation?
@@ -745,7 +745,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_compile($message_input, $recipient_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true)
+    function message_compile($message_input, $recipient_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
     {
 
         /*
@@ -946,7 +946,7 @@ class X_model extends CI_Model
 
 
             //Determine what type of Media this reference has:
-            if(!$is_current_e || $string_references['ref_time_found']){
+            if(!$simple_version && (!$is_current_e || $string_references['ref_time_found'])){
 
                 foreach($this->X_model->fetch(array(
                     'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
@@ -994,7 +994,7 @@ class X_model extends CI_Model
             $first_word = array_shift($words);
 
             //USER REFERENCE
-            if(($current_mench['x_name']=='discover' && !superpower_active(10939, true)) || $is_current_e){
+            if(($current_mench['x_name']=='discover' && !superpower_active(10939, true)) || $is_current_e || $simple_version){
 
                 //NO LINK so we can maintain focus...
                 if((!$has_text && $is_current_e) || ($current_mench['x_name']=='discover' && $e_count==1 && $e_media_count==$e_count /* All media */)){

@@ -441,7 +441,9 @@ function i_fetch_description($i__id){
             //This is it, return:
             return $CI->X_model->message_send(
                 join(' ', array_slice(explode(' ', $fetched_e['x__message']), 0, config_var(13555))), //Limit Length
-                superpower_assigned()
+                superpower_assigned(),
+                0,
+                true
             );
         }
     }
