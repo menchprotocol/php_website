@@ -124,7 +124,7 @@ h1 {
 
 h2 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.2em;
+    font-size: 1.8em;
     color:#000000 !important;
     padding:10px 0 0;
 }
@@ -1571,14 +1571,14 @@ label {
     margin-top: -8px;
 }
 .big-cover{
-    margin-bottom: 13px;
+    margin-bottom: 21px;
 }
 
 .feature-content .padded{
     margin: 0 !important;
 }
 .feature-content>div{
-    margin:0 0 8px 13px !important;
+    margin:0 0 13px 13px !important;
 }
 
 .title-block-lg{
