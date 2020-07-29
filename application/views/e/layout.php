@@ -578,28 +578,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             }
 
-        } elseif($x__type == 12969 /* MY DISCOVERIES */){
-
-            $i_x_filters = array(
-                'x__source' => $e['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            );
-            $u_x = $this->X_model->fetch($i_x_filters, array('x__left'), 1, 0, array(), 'COUNT(x__id) as totals');
-            $counter = $u_x[0]['totals'];
-
-            if($counter > 0){
-                $i_x_query = $this->X_model->fetch($i_x_filters, array('x__left'), config_var(11064), 0, array('x__sort' => 'ASC'));
-                $focus_tab .= '<div class="list-group">';
-                foreach($i_x_query as $count => $i_notes) {
-                    $focus_tab .= view_i($i_notes);
-                }
-                $focus_tab .= '</div>';
-            } else {
-                $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_name'].' yet</div>';
-            }
-
         } elseif($x__type==6225){
 
             //ACCOUNT SETTING

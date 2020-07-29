@@ -1366,30 +1366,30 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
                     $ui .= '<div class="col-6 col-md-4">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
                 $ui .= '</div>';
 
+
+                //Search for Idea Image:
+                if($show_editor){
+
+                    //RIGHT EDITING:
+                    $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
+                    $ui .= '<div class="note-editor edit-off">';
+                    $ui .= '<span class="show-on-hover">';
+
+                    //SORT
+                    $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
+
+                    //Remove:
+                    $ui .= '<span title="'.$e___13369[13414]['m_name'].'" class="x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
+
+                    $ui .= '</span>';
+                    $ui .= '</div>';
+                    $ui .= '</div>';
+
+                }
+
+
             $ui .= '</div>';
         $ui .= '</div>';
-
-
-        //Search for Idea Image:
-        if($show_editor){
-
-            //RIGHT EDITING:
-            $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-            $ui .= '<div class="note-editor edit-off">';
-            $ui .= '<span class="show-on-hover">';
-
-            //SORT
-            $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_name'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
-
-            //Remove:
-            $ui .= '<span title="'.$e___13369[13414]['m_name'].'" class="x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_name'].'">'.$e___13369[13414]['m_icon'].'</span>';
-
-            $ui .= '</span>';
-            $ui .= '</div>';
-            $ui .= '</div>';
-
-        }
-
 
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
