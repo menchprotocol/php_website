@@ -753,6 +753,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $recipient_e );
     $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
+    $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
@@ -778,8 +779,9 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
             //MENCH COINS
             $ui .= '<div class="row">';
-                $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
-                $ui .= '<div class="col-8"><span class="inline-block" style="width:64px;">'.view_coins_i(12273, $i).'</span>'.($i_stats['i___13292'] ? '<span class="mono-space inline-block">'.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
+                $ui .= '<div class="col-3">'.view_coins_i(12274, $i).'</div>';
+                $ui .= '<div class="col-3">'.view_coins_i(12273, $i).'</div>';
+                $ui .= '<div class="col-6">'.( $i_stats['i___13292'] ? '<span class="mono-space">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
             $ui .= '</div>';
 
         $ui .= '</div>';
