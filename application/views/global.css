@@ -1578,7 +1578,7 @@ label {
     margin: 0 !important;
 }
 .feature-content>div{
-    margin:0 0 8px 13px !important;
+    margin:0 0 13px 13px !important;
 }
 
 .title-block-lg{
@@ -1597,7 +1597,7 @@ label {
     }
 
     .feature-content>div{
-        margin:0 0 5px 8px !important;
+        margin:0 0 5px 5px !important;
     }
 
     .col2nd .row { padding-left: 34px; padding-top: 8px; }
