@@ -535,7 +535,6 @@ img.no-radius {
 .cover-image {
     width: 100%;
     border:1px solid #000;
-    border-radius: 10px;
 }
 .media-info {
     padding: 1px 4px;
