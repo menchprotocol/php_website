@@ -412,7 +412,7 @@ function x_type_preview() {
     //Fetch Idea Data to load modify widget:
     $.post("/x/x_type_preview", {
         x__message: $('#x__message').val(),
-        x__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('e-x-id')) : 0 ),
+        x__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('x-id')) : 0 ),
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
@@ -1248,7 +1248,7 @@ function x_sort(x__type) {
     var sort_rank = 0;
     var new_x_order = [];
     $("#i_covers .home_sort").each(function () {
-        var x_id = parseInt($(this).attr('sort-x-id'));
+        var x_id = parseInt($(this).attr('x-id'));
         if(x_id > 0){
             sort_rank++;
             new_x_order[sort_rank] = x_id;

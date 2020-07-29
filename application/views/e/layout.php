@@ -50,7 +50,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
     ?>
 
-    <div id="modifybox" class="fixed-box hidden" e-id="0" e-x-id="0" style="padding: 5px;">
+    <div id="modifybox" class="fixed-box hidden" e-id="0" x-id="0" style="padding: 5px;">
 
         <h5 class="badge badge-h edit-header"><i class="fas fa-pen-square"></i> Modify</h5>
         <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
@@ -472,6 +472,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             //IDEAS
             $counter = $counter__i;
+
             $list_i = view_coins_e(12273, $e['e__id'], 1);
 
             //SMART SHOW/HIDE LIST LOGIC
@@ -481,13 +482,13 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             $focus_tab .= '<div id="list_i" class="list-group">';
             foreach($list_i as $count => $item){
 
-                $boxbar_details = null;
+                $message_input = null;
                 $string_references['ref_time_found'] = false;
 
                 if(strlen($item['x__message'])){
-                    $boxbar_details .= '<div class="message_content">';
-                    $boxbar_details .= $this->X_model->message_send($item['x__message']);
-                    $boxbar_details .= '</div>';
+                    $message_input .= '<div class="message_content">';
+                    $message_input .= $this->X_model->message_send($item['x__message']);
+                    $message_input .= '</div>';
                     $string_references = extract_e_references($item['x__message']);
                 }
 
@@ -498,7 +499,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     $focus_tab .= '<div class="see_mores"></div>';
                 }
 
-                $focus_tab .= view_i($item, 0, false, false, $item['x__message'], ( $do_hide ? ' nonbold_hide hidden ' : '' ), false);
+                $focus_tab .= view_i_cover($item, true, ( $do_hide ? ' nonbold_hide hidden ' : '' ), $message_input);
 
                 $previous_do_hide = $do_hide;
 
@@ -515,18 +516,28 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 if($source_is_e || superpower_active(12701, true)){
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
-                    $focus_tab .= '<div id="list_x" class="list-group">';
-                    foreach($list_x as $item){
-                        $focus_tab .= view_i($item, 0, false, false, null, null, false);
+
+                    if(count($list_x)){
+
+                        $focus_tab .= '<div id="list_x" class="list-group">';
+                        foreach($list_x as $item){
+                            $focus_tab .= view_i_cover($item, true);
+                        }
+                        $focus_tab .= '</div>';
+
+                    } else {
+
+                        //No Discoveries:
+                        $focus_tab .= '<div class="alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>Nothing here...</div>';
+
                     }
-                    $focus_tab .= '</div>';
+
 
                 } else {
 
                     $focus_tab .= '<div class="alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>'.$e['e__title'].' has discovered '.$counter.' ideas so far.</div>';
 
                 }
-
 
             } else {
 

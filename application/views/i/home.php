@@ -37,7 +37,7 @@
 
     echo '<div id="i_covers" class="cover-list">';
     foreach($u_i as $i){
-        echo view_i_cover($i, true, false);
+        echo view_i_cover($i, true);
     }
     echo '</div>';
     echo '<div class="doclear">&nbsp;</div>';

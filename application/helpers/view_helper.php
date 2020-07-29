@@ -619,28 +619,52 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         //IDEAS
         $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
         $join_objects = array('x__right');
-        $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
-        );
+
+        if($page_num > 0){
+            $query_filters = array(
+                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 10573, //MY IDEAS
+                'x__up' => $e__id, //For this user
+            );
+        } else {
+            $query_filters = array(
+                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
+            );
+        }
 
     } elseif($x__type==6255){
 
         //DISCOVERIES
         $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
         $join_objects = array('x__left');
-        $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
-            'x__source' => $e__id,
-        );
+
+        if($page_num > 0){
+            $query_filters = array(
+                'x__source' => $e__id,
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            );
+        } else {
+            $query_filters = array(
+                'x__source' => $e__id,
+                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            );
+        }
 
     }
 
     //Return Results:
     if($page_num > 0){
+
         return $CI->X_model->fetch($query_filters, $join_objects, config_var(11064), ($page_num-1)*config_var(11064), $order_columns);
+
     } else {
         $count_query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         if($append_coin_icon){
@@ -757,7 +781,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="i_saved_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
+    $ui  = '<div id="i_saved_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? 'home_sort' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
 
     $ui .= ( $can_click ? '<a href="/'. $i['i__id'] .'" class="itemdiscover">' : '' );
 
@@ -993,10 +1017,10 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
     $ui .= '<div class="col-sm col-md">';
 
         //IDEA Transaction:
-        $i_x = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
+        $href = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
 
         //IDEA STATUS:
-        $ui .= '<a href="'.$i_x.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a>';
+        $ui .= '<a href="'.$href.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a>';
 
         //IDEA TITLE
         if($is_i_x && superpower_active(13354, true)){
@@ -1005,7 +1029,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
         } else {
 
-            $ui .= '<a href="'.$i_x.'" class="title-block montserrat">';
+            $ui .= '<a href="'.$href.'" class="title-block montserrat">';
             $ui .= $box_items_list;
             $ui .= view_i_title($i); //IDEA TITLE
             $ui .= '</a>';
@@ -1289,7 +1313,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
     return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
-function view_i_cover($i, $show_editor, $x_mode = true){
+function view_i_cover($i, $show_editor, $extra_class = null, $message_input = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1298,10 +1322,10 @@ function view_i_cover($i, $show_editor, $x_mode = true){
 
     $recipient_e = superpower_assigned();
     $i_stats = i_stats($i['i__metadata']);
-    $href = ( $x_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] );
+    $href = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
     $start_reading = false;
 
-    $ui  = '<div id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="big-cover '.( $show_editor ? ' home_sort ' : '' ).'">';
+    $ui  = '<div id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
 
         if($recipient_e){
@@ -1324,14 +1348,21 @@ function view_i_cover($i, $show_editor, $x_mode = true){
                 if($i['x__sort'] < 1){
                     $ui .= '<div class="dorubik">⚠️ &nbsp;Newly Added</div>';
                 }
-                //Description, if any
-                $ui .= '<div class="inline-block hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
+
+                if($message_input){
+                    //Description, if any
+                    $ui .= '<div class="inline-block">'.$message_input.'</div>';
+                } else {
+                    //Description, if any
+                    $ui .= '<div class="inline-block hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
+                }
+
 
 
                 //MENCH COINS
                 $ui .= '<div class="row">';
-                    $ui .= '<div class="col-3 col-md-4">'.view_coins_i(12274, $i).'<span class="show-max montserrat source">&nbsp'.$e___12467[12274]['m_name'].'</span></div>';
-                    $ui .= '<div class="col-3 col-md-4">'.view_coins_i(12273, $i).'<span class="show-max montserrat idea">&nbsp'.$e___12467[12273]['m_name'].'</span></div>';
+                    $ui .= '<div class="col-3 col-md-4 show-max">'.view_coins_i(12274, $i).'<span class="montserrat source">&nbsp'.$e___12467[12274]['m_name'].'</span></div>';
+                    $ui .= '<div class="col col-md">'.view_coins_i(12273, $i).'<span class="montserrat idea">&nbsp'.$e___12467[12273]['m_name'].'</span></div>';
                     $ui .= '<div class="col-6 col-md-4">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
                 $ui .= '</div>';
 
