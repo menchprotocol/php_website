@@ -1296,13 +1296,15 @@ function view_i_cover($i, $show_editor, $x_mode = true){
     $recipient_e = superpower_assigned();
     $i_stats = i_stats($i['i__metadata']);
     $href = ( $x_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] );
+    $start_reading = false;
 
     $ui  = '<div id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' sort-x-id="'.$i['x__id'].'" ' : '' ).' class="big-cover '.( $show_editor ? ' home_sort ' : '' ).'">';
 
 
         if($recipient_e){
             $completion_rate = $CI->X_model->completion_progress($recipient_e['e__id'], $i);
-            if($completion_rate['completion_percentage']>0){
+            $start_reading = $completion_rate['completion_percentage']>0;
+            if($start_reading){
                 $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
             }
         }
@@ -1324,7 +1326,7 @@ function view_i_cover($i, $show_editor, $x_mode = true){
 
 
                 //MENCH COINS
-                $ui .= '<div class="row">';
+                $ui .= '<div class="row" '.( $start_reading ? ' style="padding-top:8px;" ' : '' ).'>';
                     $ui .= '<div class="col-3 col-md-4">'.view_coins_i(12274, $i).'<span class="show-max montserrat source">&nbsp'.$e___12467[12274]['m_name'].'</span></div>';
                     $ui .= '<div class="col-3 col-md-4">'.view_coins_i(12273, $i).'<span class="show-max montserrat idea">&nbsp'.$e___12467[12273]['m_name'].'</span></div>';
                     $ui .= '<div class="col-6 col-md-4">'.($i_stats['i___13292'] ? '<span class="montserrat" title="'.$e___13369[13292]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
