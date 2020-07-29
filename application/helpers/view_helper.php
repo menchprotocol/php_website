@@ -622,14 +622,14 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
 
         if($page_num > 0){
             $query_filters = array(
-                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 10573, //MY IDEAS
                 'x__up' => $e__id, //For this user
             );
         } else {
             $query_filters = array(
-                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__status IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
@@ -645,16 +645,16 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         if($page_num > 0){
             $query_filters = array(
                 'x__source' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             );
         } else {
             $query_filters = array(
                 'x__source' => $e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             );
         }
 
