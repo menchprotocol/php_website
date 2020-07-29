@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-28 19:17:50 PST
+//Generated 2020-07-29 12:55:17 PST
 $config['s___12274'] = 4995; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
-$config['s___6255'] = 122162; //DISCOVERIES
+$config['s___6255'] = 122163; //DISCOVERIES
 
 //SOURCE IDEAS:
 $config['n___13550'] = array(4983,4231);
@@ -666,20 +666,8 @@ $config['e___13438'] = array(
 );
 
 //SOURCE TAB HIDE IF SOURCE:
-$config['n___13424'] = array(12969,10573,12896);
+$config['n___13424'] = array(12896);
 $config['e___13424'] = array(
-    12969 => array(
-        'm_name' => 'MY DISCOVERIES',
-        'm_desc' => '',
-        'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_parents' => array(13450,11089,13424,13210,12228,11035,11018,12677,12701,4527),
-    ),
-    10573 => array(
-        'm_name' => 'MY IDEAS',
-        'm_desc' => '',
-        'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
-        'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
-    ),
     12896 => array(
         'm_name' => 'SAVE IDEA',
         'm_desc' => '',
@@ -1468,7 +1456,7 @@ $config['e___12687'] = array(
     ),
     7562 => array(
         'm_name' => 'MINER WELCOME EMAIL',
-        'm_desc' => 'Welcome to Mench, an open-source crypto-game where anyone can summarize or discover key ideas in nonfiction sources. We hope to empower you to learn faster, and maybe collaborate on summarizing your favourite nonfiction books, podcasts, videos or articles.',
+        'm_desc' => 'Welcome to Mench, a Social Ideation Network where anyone can summarize or discover key ideas in nonfiction sources. Our mission is to empower you to learn faster! Let us know if you\'d like to collaborate on summarizing your favourite nonfiction books, podcasts, videos or articles.',
         'm_icon' => '<i class="fad fa-envelope-open discover"></i>',
         'm_parents' => array(12687,4755,7569,4593),
     ),
@@ -1480,7 +1468,7 @@ $config['e___12687'] = array(
     ),
     4269 => array(
         'm_name' => 'SIGN IN/UP',
-        'm_desc' => 'Mench is an open-source crypto-game for discovering ideas that matter.',
+        'm_desc' => 'Mench is an open-source Social Ideation Network for discovering ideas that matter.',
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_parents' => array(12687,13479,10876,4527,11035),
     ),
@@ -1510,7 +1498,7 @@ $config['e___12677'] = array(
         'm_name' => 'MY DISCOVERIES',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_parents' => array(13450,11089,13424,13210,12228,11035,11018,12677,12701,4527),
+        'm_parents' => array(13450,13210,12228,11035,11018,12677,12701,4527),
     ),
     12896 => array(
         'm_name' => 'SAVE IDEA',
@@ -3076,7 +3064,7 @@ $config['e___11018'] = array(
         'm_name' => 'MY DISCOVERIES',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_parents' => array(13450,11089,13424,13210,12228,11035,11018,12677,12701,4527),
+        'm_parents' => array(13450,13210,12228,11035,11018,12677,12701,4527),
     ),
     12896 => array(
         'm_name' => 'SAVE IDEA',
@@ -3106,7 +3094,7 @@ $config['e___11018'] = array(
         'm_name' => 'MY IDEAS',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
-        'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
+        'm_parents' => array(11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     12589 => array(
         'm_name' => 'IDEA LIST EDITOR',
@@ -3123,7 +3111,7 @@ $config['e___11018'] = array(
 );
 
 //SOURCE TABS:
-$config['n___11089'] = array(6225,4593,4364,11030,12274,12273,6255,12969,12896,10573,7545,12419,12887);
+$config['n___11089'] = array(6225,4593,4364,11030,12274,12273,6255,12896,7545,12419,12887);
 $config['e___11089'] = array(
     6225 => array(
         'm_name' => 'MY SETTINGS',
@@ -3167,23 +3155,11 @@ $config['e___11089'] = array(
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_parents' => array(12574,13450,11089,13530,13291,12677,11018,12467,12228,4527),
     ),
-    12969 => array(
-        'm_name' => 'MY DISCOVERIES',
-        'm_desc' => '',
-        'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_parents' => array(13450,11089,13424,13210,12228,11035,11018,12677,12701,4527),
-    ),
     12896 => array(
         'm_name' => 'SAVE IDEA',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_parents' => array(11089,13510,13424,12677,4485,12701,7551,11018,4755,4593),
-    ),
-    10573 => array(
-        'm_name' => 'MY IDEAS',
-        'm_desc' => '',
-        'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
-        'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
     ),
     7545 => array(
         'm_name' => 'CERTIFICATES',
@@ -3325,13 +3301,13 @@ $config['e___11035'] = array(
         'm_name' => 'MY DISCOVERIES',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_parents' => array(13450,11089,13424,13210,12228,11035,11018,12677,12701,4527),
+        'm_parents' => array(13450,13210,12228,11035,11018,12677,12701,4527),
     ),
     10573 => array(
         'm_name' => 'MY IDEAS',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
-        'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
+        'm_parents' => array(11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     6225 => array(
         'm_name' => 'MY SETTINGS',
@@ -3982,7 +3958,7 @@ $config['e___11054'] = array(
         'm_name' => 'MY IDEAS',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
-        'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
+        'm_parents' => array(11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     4592 => array(
         'm_name' => 'SOURCE LINKS',
@@ -4259,7 +4235,7 @@ $config['e___4485'] = array(
         'm_name' => 'MY IDEAS',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
-        'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
+        'm_parents' => array(11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     12896 => array(
         'm_name' => 'SAVE IDEA',
@@ -5328,13 +5304,13 @@ $config['e___4527'] = array(
         'm_name' => 'MY DISCOVERIES',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_parents' => array(13450,11089,13424,13210,12228,11035,11018,12677,12701,4527),
+        'm_parents' => array(13450,13210,12228,11035,11018,12677,12701,4527),
     ),
     10573 => array(
         'm_name' => 'MY IDEAS',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
-        'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
+        'm_parents' => array(11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     6225 => array(
         'm_name' => 'MY SETTINGS',
@@ -6418,7 +6394,7 @@ $config['e___7551'] = array(
         'm_name' => 'MY IDEAS',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
-        'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
+        'm_parents' => array(11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     12896 => array(
         'm_name' => 'SAVE IDEA',
@@ -7964,7 +7940,7 @@ $config['e___4593'] = array(
         'm_name' => 'MY IDEAS',
         'm_desc' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
-        'm_parents' => array(11089,11035,13405,13424,11054,4527,10984,11018,4485,4593,7551),
+        'm_parents' => array(11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     5001 => array(
         'm_name' => 'PORTFOLIO EDITOR CONTENT REPLACE',
