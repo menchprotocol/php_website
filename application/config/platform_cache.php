@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-28 11:00:36 PST
-$config['s___12274'] = 4994; //SOURCES
+//Generated 2020-07-28 18:18:35 PST
+$config['s___12274'] = 4995; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
-$config['s___6255'] = 122157; //DISCOVERIES
+$config['s___6255'] = 122160; //DISCOVERIES
 
 //SOURCE IDEAS:
 $config['n___13550'] = array(4983,4231);
@@ -3728,9 +3728,9 @@ $config['e___6404'] = array(
         'm_parents' => array(6404,6287,6403,12999),
     ),
     12904 => array(
-        'm_name' => 'DEFAULT BOOK COVER',
-        'm_desc' => '//s3foundation.s3-us-west-2.amazonaws.com/4981b7cace14d274a4865e2a416b372b.jpg',
-        'm_icon' => '<i class="fad fa-book" aria-hidden="true"></i>',
+        'm_name' => 'DEFAULT IDEA COVER',
+        'm_desc' => '//s3foundation.s3-us-west-2.amazonaws.com/a7aea066ff79ab42937c92bf2519bbd7.png',
+        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
         'm_parents' => array(6404,7524),
     ),
     11057 => array(
