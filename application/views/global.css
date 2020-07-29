@@ -533,7 +533,7 @@ img.no-radius {
 }
 
 .cover-image {
-    max-width: 100%;
+    width: 100%;
 }
 .media-info {
     padding: 1px 4px;
