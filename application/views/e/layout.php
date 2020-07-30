@@ -479,7 +479,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             $previous_do_hide = true;
             $bold_upto_weight = i_calc_bold_upto_weight($list_i);
             $show_max = config_var(11986);
-            $focus_tab .= '<div id="list_i" class="list-group">';
+            $focus_tab .= '<div id="list_i" class="list-group space-left">';
             foreach($list_i as $count => $item){
 
                 $message_input = null;
@@ -519,7 +519,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                     if(count($list_x)){
 
-                        $focus_tab .= '<div id="list_x" class="list-group">';
+                        $focus_tab .= '<div id="list_x" class="list-group space-left">';
                         foreach($list_x as $item){
                             $focus_tab .= view_i_cover($item, true);
                         }

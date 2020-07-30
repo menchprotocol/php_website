@@ -1325,7 +1325,7 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
     $href = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
     $start_reading = false;
 
-    $ui  = '<div id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
 
         if($recipient_e){
