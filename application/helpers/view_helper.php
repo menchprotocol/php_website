@@ -1361,33 +1361,30 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
 
                 //MENCH COINS
                 $ui .= '<div class="row">';
+
                     $ui .= '<div class="col-3 col-md-4 show-max">'.view_coins_i(12274, $i).'<span class="montserrat source">&nbsp'.$e___12467[12274]['m_title'].'</span></div>';
                     $ui .= '<div class="col col-md">'.view_coins_i(12273, $i).'<span class="montserrat idea">&nbsp'.$e___12467[12273]['m_title'].'</span></div>';
                     $ui .= '<div class="col-6 col-md-4">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
+
                 $ui .= '</div>';
 
 
+                //Search for Idea Image:
+                if($show_editor){
 
-            //Search for Idea Image:
-            if($show_editor){
+                    //RIGHT EDITING:
+                    $ui .= '<div class="row '.superpower_active(10939).'">';
 
-                //RIGHT EDITING:
-                $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-                $ui .= '<div class="note-editor edit-off">';
-                $ui .= '<span class="show-on-hover">';
+                    //SORT
+                    $ui .= '<div class="col-6"><span class="media-info click-info bottom-left x-sorter">'.$e___13369[13413]['m_icon'].' '.$e___13369[13413]['m_title'].'</span></div>';
 
-                //SORT
-                $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_title'].': '.$e___13369[13413]['m_message'].'">'.$e___13369[13413]['m_icon'].'</span>';
+                    //Remove:
+                    $ui .= '<div class="col-6"><span class="x_remove" i__id="'.$i['i__id'].'">'.$e___13369[13414]['m_icon'].' '.$e___13369[13414]['m_title'].'</span></div>';
 
-                //Remove:
-                $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_title'].'">'.$e___13369[13414]['m_icon'].'</span>';
+                    $ui .= '</div>';
 
-                $ui .= '</span>';
-                $ui .= '</div>';
-                $ui .= '</div>';
-                $ui .= '<div class="doclear">&nbsp;</div>';
+                }
 
-            }
 
 
             $ui .= '</div>';
