@@ -33,7 +33,7 @@
     echo '</div>';
 
 
-    echo '<div id="i_covers" class="cover-list">';
+    echo '<div class="cover-list">';
     foreach($u_i as $i){
         echo view_i_cover($i, true);
     }
