@@ -1336,34 +1336,13 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
             }
         }
 
-        //Search for Idea Image:
-        if($show_editor){
-
-            //RIGHT EDITING:
-            $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-            $ui .= '<div class="note-editor edit-off">';
-            $ui .= '<span class="show-on-hover">';
-
-            //SORT
-            $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_title'].': '.$e___13369[13413]['m_message'].'">'.$e___13369[13413]['m_icon'].'</span>';
-
-            //Remove:
-            $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_title'].'">'.$e___13369[13414]['m_icon'].'</span>';
-
-            $ui .= '</span>';
-            $ui .= '</div>';
-            $ui .= '</div>';
-            $ui .= '<div class="doclear">&nbsp;</div>';
-
-        }
-
 
         $ui .= '<div class="row">';
             $ui .= '<div class="col-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
             $ui .= '<div class="col-9 feature-content">';
 
                 //Title
-                $ui .= '<div '.( $start_reading ? ' style="padding-top:8px;" ' : '' ).'><h2><a href="'.$href.'">'.view_i_title($i).'</a></h2></div>';
+                $ui .= '<div style="padding-top:8px;"><h2><a href="'.$href.'">'.view_i_title($i).'</a></h2></div>';
 
                 //Newly added?
                 if($i['x__sort'] < 1){
@@ -1386,6 +1365,29 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
                     $ui .= '<div class="col col-md">'.view_coins_i(12273, $i).'<span class="montserrat idea">&nbsp'.$e___12467[12273]['m_title'].'</span></div>';
                     $ui .= '<div class="col-6 col-md-4">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
                 $ui .= '</div>';
+
+
+
+            //Search for Idea Image:
+            if($show_editor){
+
+                //RIGHT EDITING:
+                $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
+                $ui .= '<div class="note-editor edit-off">';
+                $ui .= '<span class="show-on-hover">';
+
+                //SORT
+                $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_title'].': '.$e___13369[13413]['m_message'].'">'.$e___13369[13413]['m_icon'].'</span>';
+
+                //Remove:
+                $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_title'].'">'.$e___13369[13414]['m_icon'].'</span>';
+
+                $ui .= '</span>';
+                $ui .= '</div>';
+                $ui .= '</div>';
+                $ui .= '<div class="doclear">&nbsp;</div>';
+
+            }
 
 
             $ui .= '</div>';
