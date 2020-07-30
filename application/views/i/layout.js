@@ -197,9 +197,9 @@ function x_preview(){
 }
 
 function i_remove(i__id, x__id, is_parent){
-    var i__title = $('.text__4736_'+i__id).text();
+    var i__title = $('.text__4736_'+i__id+':first').text();
     if(!i__title.length){
-        i__title = $('.text__4736_'+i__id).val();
+        i__title = $('.text__4736_'+i__id+':first').val();
     }
     var r = confirm("Remove ["+i__title+"]?");
     if (r == true) {

@@ -1199,7 +1199,7 @@ function x_remove(x__type){
     $('.x_remove').on('click', function(e) {
 
         var i__id = $(this).attr('i__id');
-        var r = confirm("Remove "+$('.text__4736_'+i__id).text()+"?");
+        var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
         if (r == true) {
             //Save changes:
             $.post("/x/x_remove", { x__type:x__type, i__id:i__id }, function (data) {
@@ -1235,7 +1235,7 @@ function x_sort_load(x__type){
     var sort = Sortable.create(document.getElementById('i_covers'), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".home_sort", // Specifies which items inside the element should be sortable
-        handle: ".x-sorter", // Restricts sort start click/touch to the specified element
+        handle: "#list_"+x__type+" .x-sorter", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             x_sort(x__type);
         }
