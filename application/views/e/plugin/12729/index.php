@@ -16,7 +16,7 @@ $full_coins = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ), array(), 0, 0, array(), 'COUNT(x__id) as total_x');
 echo '<tr class="panel-title down-border" style="font-weight: bold;">';
-echo '<td style="text-align: left;" class="montserrat doupper">'.$e___12140[12141]['m_icon'].' '.$e___12140[12141]['m_name'].'</td>';
+echo '<td style="text-align: left;" class="montserrat doupper">'.$e___12140[12141]['m_icon'].' '.$e___12140[12141]['m_title'].'</td>';
 echo '<td style="text-align: left;">'.number_format($full_coins[0]['total_x'], 0).'</td>';
 echo '</tr>';
 

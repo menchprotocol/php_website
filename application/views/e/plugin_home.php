@@ -5,7 +5,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 //List Plugins:
 echo '<div class="container">';
 
-echo '<h1 style="padding-top:5px;"><span class="icon-block">'.view_e__icon($e___11035[6287]['m_icon']).'</span>'.count($this->config->item('e___6287')).' '.$e___11035[6287]['m_name'].'</h1>';
+echo '<h1 style="padding-top:5px;"><span class="icon-block">'.view_e__icon($e___11035[6287]['m_icon']).'</span>'.count($this->config->item('e___6287')).' '.$e___11035[6287]['m_title'].'</h1>';
 
 echo '<div class="list-group">';
 foreach($this->config->item('e___6287') as $e__id => $m) {
@@ -14,7 +14,7 @@ foreach($this->config->item('e___6287') as $e__id => $m) {
 
     //SOURCE
     echo '<span class="icon-block">' . view_e__icon($m['m_icon']) . '</span>';
-    echo '<b class="montserrat '.extract_icon_color($m['m_icon']).'">'.$m['m_name'].'</b>';
+    echo '<b class="montserrat '.extract_icon_color($m['m_icon']).'">'.$m['m_title'].'</b>';
     echo ( strlen($m['m_desc']) ? '&nbsp;'.$m['m_desc'] : '' );
 
 

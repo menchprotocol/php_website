@@ -44,7 +44,7 @@ foreach($this->I_model->fetch($filters) as $in){
         $estimated_time += $extra_time;
         if($i__id){
             //Show details:
-            echo $extra_time.' Seconds For being '.$e___12955[$in['i__type']]['m_name'].'<hr />';
+            echo $extra_time.' Seconds For being '.$e___12955[$in['i__type']]['m_title'].'<hr />';
         }
     }
 
@@ -127,7 +127,7 @@ foreach($this->I_model->fetch($filters) as $in){
                 $estimated_time += $this_time;
                 if($i__id){
                     //Show details:
-                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$e___12822[$e_profile['x__type']]['m_name'].']: '.$e_profile['x__message'].'<hr />';
+                    echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$e___12822[$e_profile['x__type']]['m_title'].']: '.$e_profile['x__message'].'<hr />';
                 }
             }
         }

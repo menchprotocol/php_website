@@ -469,7 +469,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         if (data.status) {
 
             //Update on page:
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m_icon']+'</span><span class="show-max">' + ( show_full_name ? data_object[new_e__id]['m_name'] : '' ) + '</span>');
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m_icon']+'</span><span class="show-max">' + ( show_full_name ? data_object[new_e__id]['m_title'] : '' ) + '</span>');
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .dropi_' + element_id +'_'+i__id+ '_' + x__id).removeClass('active');
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .optiond_' + new_e__id+'_'+i__id+ '_' + x__id).addClass('active');
 
@@ -504,7 +504,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         } else {
 
             //Reset to default:
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m_name'] : '' ));
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m_title'] : '' ));
 
             //Show error:
             alert(data.message);

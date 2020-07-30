@@ -862,24 +862,6 @@ function fetch_cookie_order($cookie_name){
     return $new_order_value;
 }
 
-function i_calc_bold_upto_weight($child_list){
-    $bold_upto_weight = 0;
-    $previous_weight = null;
-    foreach($child_list as $count => $child_item) {
-
-        if(!is_null($previous_weight)){
-            if($previous_weight<1000){
-                break;
-            } elseif($previous_weight/$child_item['i__weight'] >= 2){
-                $bold_upto_weight = $child_item['i__weight'];
-                break;
-            }
-        }
-
-        $previous_weight = $child_item['i__weight'];
-    }
-    return $bold_upto_weight;
-}
 
 function i_calc_common_prefix($child_list, $child_field){
 
@@ -1160,7 +1142,7 @@ function e__title_validate($string, $x__type = 0){
     if(!strlen(trim($string))){
 
         if($x__type){
-            $e__title_clean = $e___4592[$x__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+            $e__title_clean = $e___4592[$x__type]['m_title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1171,7 +1153,7 @@ function e__title_validate($string, $x__type = 0){
     } elseif(strlen(trim($string)) < config_var(12232)){
 
         if($x__type){
-            $e__title_clean = $e___4592[$x__type]['m_name'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+            $e__title_clean = $e___4592[$x__type]['m_title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(

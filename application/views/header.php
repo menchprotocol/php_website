@@ -2,8 +2,8 @@
 
 $session_e = superpower_assigned();
 $first_segment = $this->uri->segment(1);
-$is_home = !strlen($first_segment);
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+$e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
 $current_mench = current_mench();
 
@@ -50,9 +50,7 @@ $current_mench = current_mench();
 
     <script src="/application/views/global.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
-    <?php if($current_mench['x_name']=='discover'){ ?>
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=custom-share-buttons&cms=website' async='async'></script>
-    <?php } ?>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
@@ -103,40 +101,48 @@ if(!isset($hide_header)){
 
                     echo '<td><div class="mench_nav left_nav">';
 
-                    if(!superpower_assigned(10939)){
+                    if(!$session_e){
 
                         //LOGO ONLY
                         echo '<span class="inline-block pull-left"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span>';
 
                     } else {
 
-                        //MENCH COINS
-                        foreach($this->config->item('e___12467') as $x__type => $m) {
+                        //HORIZONTAL MENU
+                        foreach($this->config->item('e___13561') as $x__type => $m) {
 
-                            if($x__type==12274){
-                                $page_url = 'href="/@'.$session_e['e__id'].'"';
-                            } elseif($x__type==12273){
-                                $page_url = 'href="/~'.( is_numeric($first_segment) ? $first_segment : '' ).'"';
-                            } elseif($x__type==6255){
-                                $page_url = 'href="/'.( isset($i_focus['i__id']) ? $i_focus['i__id'] : '' ).'"';
+                            if($x__type==13560){
+
+                                $m['m_icon'] = $session_e['e__icon'];
+                                $m['m_title'] = $session_e['e__title'];
+                                $href = 'href="/@'.$session_e['e__id'].'"';
+                                $is_active = ( $first_segment=='@'.$session_e['e__id'] );
+
+                            } elseif(in_array($x__type, $this->config->item('n___10876'))){
+
+                                $href = 'href="'.$e___10876[$x__type]['m_desc'].'"';
+                                $is_active = ( $this->config->item('base_url').'/'.$first_segment == $e___10876[$x__type]['m_desc'] );
+
+                            } else {
+                                continue;
                             }
 
+                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
                             $class = trim(extract_icon_color($m['m_icon']));
-                            $is_active = ($current_mench['x_name']==$class);
-                            echo '<div class="btn-group pull-left mench_coin '.$class.' border-' . $class.( $is_active ? ' active ' : '' ).'">';
-                            echo '<a class="btn ' . $class . '" '.$page_url.'>';
+                            echo '<div class="btn-group pull-left mench_coin '.$class.' border-' . $class.( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+                            echo '<a class="btn ' . $class . '" '.$href.'>';
                             echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                            echo view_number($this->config->item('s___'.$x__type)).' ';
-                            echo '<span class="montserrat ' . $class . '_name show-max">' . $m['m_name'] . '</span>';
+                            echo '<span class="montserrat ' . $class . '_name show-max">' . $m['m_title'] . '</span>';
                             echo '</a>';
                             echo '</div>';
+
                         }
                     }
 
                     echo '</div>';
 
                     //SEARCH INPUT
-                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m_name'].'"></form></div>';
+                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m_title'].'"></form></div>';
 
                     echo '</td>';
 
@@ -145,12 +151,9 @@ if(!isset($hide_header)){
                     if(intval(config_var(12678))){
 
                         //Search button
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m_icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m_name'].'">'.$e___11035[13401]['m_icon'].'</span></a></td>';
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m_icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m_title'].'">'.$e___11035[13401]['m_icon'].'</span></a></td>';
 
                     }
-
-
-
 
 
                     //u NAVIGATION:
@@ -159,14 +162,13 @@ if(!isset($hide_header)){
                         //GUESTS
 
                         //FEEDBACK SUPPORT
-                        //echo '<td class="block-x"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m_name'].'">'.$e___11035[12899]['m_icon'].'</a></td>';
+                        //echo '<td class="block-x"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m_title'].'">'.$e___11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
                         echo '<td class="block-x"><a href="/e/signin" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
 
                     } else {
 
-                        $e___10876 = $this->config->item('e___10876'); //Mench Website
                         $load_menu = 12500;
 
                         echo '<td class="block-menu">';
@@ -190,12 +192,12 @@ if(!isset($hide_header)){
                             if(in_array($x__type, $this->config->item('n___10876'))){
 
                                 //Fetch URL:
-                                $page_url = 'href="'.$e___10876[$x__type]['m_desc'].'"';
+                                $href = 'href="'.$e___10876[$x__type]['m_desc'].'"';
 
                             } elseif($x__type==12899) {
 
                                 //FEEDBACK SUPPORT
-                                $page_url = 'href="javascript:void(0);"';
+                                $href = 'href="javascript:void(0);"';
                                 $extra_class = ' icon_12899 ';
 
                             } else {
@@ -205,7 +207,7 @@ if(!isset($hide_header)){
                             }
 
                             //Navigation
-                            echo '<a '.$page_url.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m_icon'].'</span><span class="'.$text_class.'">'.$m['m_name'].'</span></a>';
+                            echo '<a '.$href.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m_icon'].'</span><span class="'.$text_class.'">'.$m['m_title'].'</span></a>';
 
                         }
 

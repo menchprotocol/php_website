@@ -32,7 +32,7 @@ echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
 
 //CACHE MENCH COINS COUNT:
 foreach($this->config->item('e___12467') as $x__type => $m) {
-    echo '$config[\'s___'.$x__type.'\'] = '.count_unique_coins($x__type).'; //'.$m['m_name'].'<br />';
+    echo '$config[\'s___'.$x__type.'\'] = '.count_unique_coins($x__type).'; //'.$m['m_title'].'<br />';
 }
 
 
@@ -80,7 +80,7 @@ foreach($config_e as $en){
         }
 
         echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['e__id'].' => array(<br />';
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_name\' => \''.htmlentities(str_replace('\'','\\\'',$child['e__title'])).'\',<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_title\' => \''.htmlentities(str_replace('\'','\\\'',$child['e__title'])).'\',<br />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.htmlentities(str_replace('\'','\\\'',$child['x__message'])).'\',<br />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['e__icon']).'\',<br />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_parents\' => array('.join(',',$child_parent_ids).'),<br />';

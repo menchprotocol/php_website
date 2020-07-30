@@ -166,7 +166,7 @@ class I_model extends CI_Model
                         $x__type = 6182; //Idea Deleted
                     }
                     $e___4737 = $this->config->item('e___4737'); //Idea Status
-                    $x__message = view_db_field($key) . ' updated from [' . $e___4737[$before_data[0][$key]]['m_name'] . '] to [' . $e___4737[$value]['m_name'] . ']';
+                    $x__message = view_db_field($key) . ' updated from [' . $e___4737[$before_data[0][$key]]['m_title'] . '] to [' . $e___4737[$value]['m_title'] . ']';
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
 
@@ -174,7 +174,7 @@ class I_model extends CI_Model
 
                     $x__type = 10651; //Idea updated Subtype
                     $e___7585 = $this->config->item('e___7585'); //Idea Subtypes
-                    $x__message = view_db_field($key) . ' updated from [' . $e___7585[$before_data[0][$key]]['m_name'] . '] to [' . $e___7585[$value]['m_name'] . ']';
+                    $x__message = view_db_field($key) . ' updated from [' . $e___7585[$before_data[0][$key]]['m_title'] . '] to [' . $e___7585[$value]['m_title'] . ']';
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
 

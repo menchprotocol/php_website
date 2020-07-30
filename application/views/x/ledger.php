@@ -224,9 +224,9 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 echo '<div class="container">';
 
-    echo '<h1 class="'.extract_icon_color($e___11035[4341]['m_icon']).' inline-block"><span class="icon-block">'.$e___11035[4341]['m_icon'].'</span>'.$e___11035[4341]['m_name'].'</h1>';
+    echo '<h1 class="'.extract_icon_color($e___11035[4341]['m_icon']).' inline-block"><span class="icon-block">'.$e___11035[4341]['m_icon'].'</span>'.$e___11035[4341]['m_title'].'</h1>';
 
-    echo '<div class="inline-block margin-top-down '.superpower_active(12701).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m_icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$e___11035[12707]['m_name'].'</a></div>';
+    echo '<div class="inline-block margin-top-down '.superpower_active(12701).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m_icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$e___11035[12707]['m_title'].'</a></div>';
 
 
     echo '<div class="inline-box show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
@@ -373,7 +373,7 @@ echo '</div></td>';
             echo '<option value="0">ALL TRANSACTION TYPES</option>';
             foreach($this->config->item('e___4593') /* DISCOVER Types */ as $e__id => $m){
                 //Echo drop down:
-                echo '<option value="' . $e__id . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $e__id) ? 'selected="selected"' : '') . '>' . $m['m_name'] . '</option>';
+                echo '<option value="' . $e__id . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $e__id) ? 'selected="selected"' : '') . '>' . $m['m_title'] . '</option>';
             }
 
         }

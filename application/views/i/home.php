@@ -19,7 +19,7 @@
 
 
     //MY IDEAS
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_name'].'</div>';
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_title'].'</div>';
 
     //ADD IDEAS
     echo '<div class="list-group">';

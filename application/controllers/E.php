@@ -29,7 +29,7 @@ class E extends CI_Controller
 
         $e___13488 = $this->config->item('e___13488');
         $this->load->view('header', array(
-            'title' => $e___13488[13207]['m_name'],
+            'title' => $e___13488[13207]['m_title'],
         ));
         $this->load->view('e/home', array(
             'session_e' => $session_e,
@@ -406,7 +406,7 @@ class E extends CI_Controller
                 $e___7551 = $this->config->item('e___7551');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m_name'],
+                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m_title'],
                 ));
             }
 
@@ -695,7 +695,7 @@ class E extends CI_Controller
             //Access not authorized:
             return view_json(array(
                 'status' => 0,
-                'message' => 'You have not yet unlocked the superpower of '.$e___10957[$superpower_e__id]['m_name'],
+                'message' => 'You have not yet unlocked the superpower of '.$e___10957[$superpower_e__id]['m_title'],
             ));
 
         }
@@ -819,7 +819,7 @@ class E extends CI_Controller
                 //Construct the message:
                 $error_message = 'Cannot be deleted because source is referenced as ';
                 foreach($e_count_6194 as $e__id=>$e_count){
-                    $error_message .= $e___6194[$e__id]['m_name'].' '.view_number($e_count).' times ';
+                    $error_message .= $e___6194[$e__id]['m_title'].' '.view_number($e_count).' times ';
                 }
 
                 return view_json(array(
@@ -1502,7 +1502,7 @@ class E extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
             'hide_header' => 1,
-            'title' => $e___11035[4269]['m_name'],
+            'title' => $e___11035[4269]['m_title'],
         ));
         $this->load->view('e/signin', array(
             'sign_i__id' => $i__id,
@@ -1884,7 +1884,7 @@ class E extends CI_Controller
 
         ##Email Subject
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $subject = 'MENCH '.$e___11035[11068]['m_name'];
+        $subject = 'MENCH '.$e___11035[11068]['m_title'];
 
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';
@@ -2014,7 +2014,7 @@ class E extends CI_Controller
             //List Plugins to choose from:
             $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
             $this->load->view('header', array(
-                'title' => $e___11035[6287]['m_name'],
+                'title' => $e___11035[6287]['m_title'],
             ));
             $this->load->view('e/plugin_home');
             $this->load->view('footer');
@@ -2061,7 +2061,7 @@ class E extends CI_Controller
                 //Regular UI:
                 //Load Plugin:
                 $this->load->view('header', array(
-                    'title' => strip_tags($e___6287[$plugin_e__id]['m_icon']).$e___6287[$plugin_e__id]['m_name'].' | PLUGIN',
+                    'title' => strip_tags($e___6287[$plugin_e__id]['m_icon']).$e___6287[$plugin_e__id]['m_title'].' | PLUGIN',
                 ));
                 $this->load->view('e/plugin_frame', $view_data);
                 $this->load->view('footer');

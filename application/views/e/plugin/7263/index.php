@@ -9,7 +9,7 @@ $e___6103 = $this->config->item('e___6103'); //Transaction Metadata
 $e___6186 = $this->config->item('e___6186'); //Transaction Status
 
 echo '<tr style="font-weight: bold;">';
-echo '<td colspan="4" style="text-align: left;">'.$e___6103[6402]['m_icon'].' '.$e___6103[6402]['m_name'].'</td>';
+echo '<td colspan="4" style="text-align: left;">'.$e___6103[6402]['m_icon'].' '.$e___6103[6402]['m_title'].'</td>';
 echo '</tr>';
 $counter = 0;
 $total_count = 0;

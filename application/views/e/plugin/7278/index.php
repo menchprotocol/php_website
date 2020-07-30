@@ -58,7 +58,7 @@ foreach($is as $in){
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[12273].$next_i['x__left'],
             'target' => $id_prefix[12273].$next_i['x__right'],
-            'label' => $e___4593[$next_i['x__type']]['m_name'], //TODO maybe give visibility to condition here?
+            'label' => $e___4593[$next_i['x__type']]['m_title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $next_i['x__type'],
             'edge_status' => $next_i['x__status'],
@@ -94,7 +94,7 @@ foreach($es as $en){
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[12274].$e_child['x__up'],
             'target' => $id_prefix[12274].$e_child['x__down'],
-            'label' => $e___4593[$e_child['x__type']]['m_name'].': '.$e_child['x__message'],
+            'label' => $e___4593[$e_child['x__type']]['m_title'].': '.$e_child['x__message'],
             'weight' => 1,
             'edge_type' => $e_child['x__type'],
             'edge_status' => $e_child['x__status'],
@@ -114,7 +114,7 @@ foreach($messages as $message) {
     //Add message node:
     $this->db->insert('gephi_nodes', array(
         'id' => $message['x__id'],
-        'label' => $e___4593[$message['x__type']]['m_name'] . ': ' . $message['x__message'],
+        'label' => $e___4593[$message['x__type']]['m_title'] . ': ' . $message['x__message'],
         'size' => $node_size['msg'],
         'node_type' => $message['x__type'], //Message type
         'node_status' => $message['x__status'],

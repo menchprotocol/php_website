@@ -362,7 +362,7 @@ class X_model extends CI_Model
 
 
                 //Email Subject:
-                $subject = 'Notification: '  . $u_name . ' ' . $e___5967[$add_fields['x__type']]['m_name'];
+                $subject = 'Notification: '  . $u_name . ' ' . $e___5967[$add_fields['x__type']]['m_title'];
 
                 //Compose email body, start with transaction content:
                 $html_message = '<div>' . ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '<i>No transaction content</i>') . '</div><br />';
@@ -380,18 +380,18 @@ class X_model extends CI_Model
 
                         //IDEA
                         $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id'] . '" target="_parent">#'.$is[0]['i__id'].' '.$is[0]['i__title'].'</a></div>';
+                        $html_message .= '<div>' . $m['m_title'] . ': <a href="'.$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id'] . '" target="_parent">#'.$is[0]['i__id'].' '.$is[0]['i__title'].'</a></div>';
 
                     } elseif (in_array(6160 , $m['m_parents'])) {
 
                         //SOURCE
                         $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
-                        $html_message .= '<div>' . $m['m_name'] . ': <a href="'.$this->config->item('base_url').'/@' . $es[0]['e__id'] . '" target="_parent">@'.$es[0]['e__id'].' '.$es[0]['e__title'].'</a></div>';
+                        $html_message .= '<div>' . $m['m_title'] . ': <a href="'.$this->config->item('base_url').'/@' . $es[0]['e__id'] . '" target="_parent">@'.$es[0]['e__id'].' '.$es[0]['e__title'].'</a></div>';
 
                     } elseif (in_array(4367 , $m['m_parents'])) {
 
                         //DISCOVER
-                        $html_message .= '<div>' . $m['m_name'] . ' ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields[$var_index[$e__id]] . '" target="_parent">'.$add_fields[$var_index[$e__id]].'</a></div>';
+                        $html_message .= '<div>' . $m['m_title'] . ' ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields[$var_index[$e__id]] . '" target="_parent">'.$add_fields[$var_index[$e__id]].'</a></div>';
 
                     }
 
@@ -530,12 +530,12 @@ class X_model extends CI_Model
                         if($key=='x__status'){
 
                             $e___6186 = $this->config->item('e___6186'); //Transaction Status
-                            $x__message .= view_db_field($key) . ' updated from [' . $e___6186[$before_data[0][$key]]['m_name'] . '] to [' . $e___6186[$value]['m_name'] . ']'."\n";
+                            $x__message .= view_db_field($key) . ' updated from [' . $e___6186[$before_data[0][$key]]['m_title'] . '] to [' . $e___6186[$value]['m_title'] . ']'."\n";
 
                         } elseif($key=='x__type'){
 
                             $e___4593 = $this->config->item('e___4593'); //Transaction Types
-                            $x__message .= view_db_field($key) . ' updated from [' . $e___4593[$before_data[0][$key]]['m_name'] . '] to [' . $e___4593[$value]['m_name'] . ']'."\n";
+                            $x__message .= view_db_field($key) . ' updated from [' . $e___4593[$before_data[0][$key]]['m_title'] . '] to [' . $e___4593[$value]['m_title'] . ']'."\n";
 
                         } elseif(in_array($key, array('x__up', 'x__down'))) {
 

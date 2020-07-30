@@ -17,7 +17,7 @@ if(count($duplicates) > 0){
             $prev_title = $en['e__title'];
         }
 
-        echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__status']]['m_name'].': '.$e___6177[$en['e__status']]['m_desc'].'">' . $e___6177[$en['e__status']]['m_icon'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
+        echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__status']]['m_title'].': '.$e___6177[$en['e__status']]['m_desc'].'">' . $e___6177[$en['e__status']]['m_icon'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
     }
 
 } else {

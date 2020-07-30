@@ -191,7 +191,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         if($in_my_x && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             //Give option to mark as read:
-            $focus_tab .= '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_name'].' '.$e___11035[12211]['m_icon'].'</a></div>';
+            $focus_tab .= '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_title'].' '.$e___11035[12211]['m_icon'].'</a></div>';
         }
 
     } elseif($x__type==12273){
@@ -258,16 +258,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             if($x__type2==10876){
 
                 //MENCH URL
-                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</div>';
+                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
                 $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin: 5px 0 34px 34px; width: 233px; padding-left: 8px;">';
 
             } elseif($x__type2==13531){
 
                 //SHARE ON SOCIAL MEDIA
-                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</div>';
+                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
                 $focus_tab .= '<div class="share-this space-content" style="margin:5px 0 34px;">';
                 foreach($this->config->item('e___13531') as $m2) {
-                    $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share with '.$m2['m_name'].'" data-toggle="tooltip" data-placement="top">'.$m2['m_icon'].'</div></div>';
+                    $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share with '.$m2['m_title'].'" data-toggle="tooltip" data-placement="top">'.$m2['m_icon'].'</div></div>';
                 }
                 $focus_tab .= '</div>';
 
@@ -280,7 +280,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     'x__right' => $i_focus['i__id'],
                 ), array(), 0);
                 if(count($keywords)){
-                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</div>';
+                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
                     $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
                     foreach($keywords as $count => $keyword) {
                         if($count > 0){
@@ -310,7 +310,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('n___13300'));
     $tab_pill_count++;
 
-    $tab_pills .= '<li class="nav-item"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
+    $tab_pills .= '<li class="nav-item"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_title'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $focus_tab;
@@ -334,7 +334,7 @@ echo $tab_content;
 if(!$in_my_x){
 
     //GET STARTED
-    echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_name'].'</a></div>';
+    echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
 
     //NEXT IDEAS
     echo view_i_list($i_focus, $is_next, $recipient_e);
@@ -438,7 +438,7 @@ if(!$in_my_x){
 
 
                 //EDIT ANSWER:
-                echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_name'].'</a></div>';
+                echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_title'].'</a></div>';
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -505,15 +505,15 @@ if(!$in_my_x){
             if(count($x_selects)>0){
 
                 //Save Answers:
-                echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">'.$e___11035[13524]['m_icon'].' '.$e___11035[13524]['m_name'].'</a></div>';
+                echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">'.$e___11035[13524]['m_icon'].' '.$e___11035[13524]['m_title'].'</a></div>';
 
                 //Cancel:
-                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="'.$e___11035[13502]['m_name'].'">'.$e___11035[13502]['m_icon'].'</a></div>';
+                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="'.$e___11035[13502]['m_title'].'">'.$e___11035[13502]['m_icon'].'</a></div>';
 
             } else {
 
                 //Give option to save:
-                echo '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+                echo '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
 
             }
 
@@ -539,7 +539,7 @@ if(!$in_my_x){
             echo view_i_list($i_focus, $is_next, $recipient_e);
         } else {
             //Give Button option:
-            echo '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_name'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+            echo '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -575,7 +575,7 @@ if(!$in_my_x){
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13498]['m_icon'].' '.$e___11035[13498]['m_name'].'</label></div>';
+        echo '<div class="margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13498]['m_icon'].' '.$e___11035[13498]['m_title'].'</label></div>';
 
 
         echo '<div class="doclear">&nbsp;</div>';
@@ -636,7 +636,7 @@ if($in_my_x){
     echo '<div class="list-group">';
 
     //My Discoveries:
-    echo '<div class="list-group-item no-side-padding itemdiscover"><a href="/"><span class="icon-block">'.$e___11035[13210]['m_icon'].'</span><span class="montserrat">'.$e___11035[13210]['m_name'].'</span></a></div>';
+    echo '<div class="list-group-item no-side-padding itemdiscover"><a href="/"><span class="icon-block">'.$e___11035[13210]['m_icon'].'</span><span class="montserrat">'.$e___11035[13210]['m_title'].'</span></a></div>';
 
     //Did We Find It?
     if($previous_level_id){
@@ -674,28 +674,28 @@ if($in_my_x){
             )));
 
             $e___13510 = $this->config->item('e___13510'); //SAVED IDEAS
-            $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')" title="'.$m['m_name'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
+            $url = '<a href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')" title="'.$m['m_title'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
 
         } elseif($e__id==12991){
 
             //GO BACK
-            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : '/' ) ).'" title="'.$m['m_name'].'">'.$m['m_icon'].'</a>';
+            $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : '/' ) ).'" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==12211){
 
             //GO NEXT
-            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()" title="'.$m['m_name'].'">'.$m['m_icon'].'</a>';
+            $url = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==13491){
 
             //FONT SIZE
-            $url .= '<div class="dropdown inline-block" title="'.$m['m_name'].'">';
+            $url .= '<div class="dropdown inline-block" title="'.$m['m_title'].'">';
             $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
             $url .= '</button>';
             $url .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$e__id.'">';
             foreach($this->config->item('e___'.$e__id) as $x__type2 => $m2) {
-                $url .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat font_items font_item_'.$x__type2.' '.( $this->session->userdata('session_var_13491')==$x__type2 ? ' active ' : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_name'].'</a>';
+                $url .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat font_items font_item_'.$x__type2.' '.( $this->session->userdata('session_var_13491')==$x__type2 ? ' active ' : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</a>';
             }
             $url .= '</div>';
             $url .= '</div>';
@@ -703,7 +703,7 @@ if($in_my_x){
         } elseif($e__id==13210){
 
             //IDEA INDEX
-            $url = '<a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');" class="controller-nav" title="'.$m['m_name'].'">'.$m['m_icon'].'</a>';
+            $url = '<a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');" class="controller-nav" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
         }
 

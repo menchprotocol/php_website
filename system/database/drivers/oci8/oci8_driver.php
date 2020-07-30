@@ -311,7 +311,7 @@ class CI_DB_oci8_driver extends CI_DB {
 	 * params array keys
 	 *
 	 * KEY      OPTIONAL  NOTES
-	 * name     no        the name of the parameter should be in :<param_name> format
+	 * name     no        the name of the parameter should be in :<param_title> format
 	 * value    no        the value of the parameter.  If this is an OUT or IN OUT parameter,
 	 *                    this should be a reference to a variable
 	 * type     yes       the type of the parameter

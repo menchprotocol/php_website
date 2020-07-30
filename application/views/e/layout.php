@@ -43,7 +43,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
     <?php
 
     //SOURCE DRAFTING?
-    echo '<div class="'.( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span class="icon-block e__status_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_name'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span></div>';
+    echo '<div class="'.( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span class="icon-block e__status_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_title'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span></div>';
 
     //SOURCE NAME
     echo '<div class="itemsource" style="padding: 8px 0;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
@@ -63,11 +63,11 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     <div class="inline-box">
 
                         <!-- User Status -->
-                        <span class="mini-header"><?= $e___6206[6177]['m_icon'].' '.$e___6206[6177]['m_name'] ?></span>
+                        <span class="mini-header"><?= $e___6206[6177]['m_icon'].' '.$e___6206[6177]['m_title'] ?></span>
                         <select class="form-control border" id="e__status">
                             <?php
                             foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
-                                echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
+                                echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_title'] . '</option>';
                             }
                             ?>
                         </select>
@@ -81,7 +81,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
                         <!-- User Name -->
-                        <span class="mini-header" style="margin-top:20px;"><?= $e___6206[6197]['m_icon'].' '.$e___6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
+                        <span class="mini-header" style="margin-top:20px;"><?= $e___6206[6197]['m_icon'].' '.$e___6206[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
                         <span class="white-wrapper">
                                 <textarea class="form-control text-edit border montserrat doupper" id="e__title"
                                           onkeyup="e__title_word_count()" data-lpignore="true"
@@ -92,7 +92,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
                         <!-- User Icon -->
-                        <span class="mini-header"><?= $e___6206[6198]['m_icon'].' '.$e___6206[6198]['m_name'] ?>
+                        <span class="mini-header"><?= $e___6206[6198]['m_icon'].' '.$e___6206[6198]['m_title'] ?>
 
                                 <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
 
@@ -121,11 +121,11 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         <div class="inline-box">
 
 
-                            <span class="mini-header"><?= $e___4341[6186]['m_icon'].' '.$e___4341[6186]['m_name'] ?></span>
+                            <span class="mini-header"><?= $e___4341[6186]['m_icon'].' '.$e___4341[6186]['m_title'] ?></span>
                             <select class="form-control border" id="x__status">
                                 <?php
                                 foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
-                                    echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
+                                    echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_title'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -138,7 +138,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
                             <form class="drag-box" method="post" enctype="multipart/form-data">
-                                <span class="mini-header" style="margin-top: 20px;"><?= $e___4341[4372]['m_icon'].' '.$e___4341[4372]['m_name'] ?></span>
+                                <span class="mini-header" style="margin-top: 20px;"><?= $e___4341[4372]['m_icon'].' '.$e___4341[4372]['m_title'] ?></span>
                                 <span class="white-wrapper">
                                     <textarea class="form-control text-edit border" id="x__message"
                                               data-lpignore="true"
@@ -150,7 +150,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                             </form>
 
 
-                            <span class="mini-header"><?= $e___4341[4593]['m_icon'].' '.$e___4341[4593]['m_name'] ?></span>
+                            <span class="mini-header"><?= $e___4341[4593]['m_icon'].' '.$e___4341[4593]['m_title'] ?></span>
                             <span id="x__type_preview"></span>
                             <p id="e_x_preview" class="hideIfEmpty"></p>
 
@@ -182,7 +182,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
     //SOURCE MODIFY BUTTON
     echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_name'].'">'.$e___11035[12275]['m_icon'].'</a></div>';
+    echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_title'].'">'.$e___11035[12275]['m_icon'].'</a></div>';
     echo '<div class="doclear">&nbsp;</div>';
 
 
@@ -197,9 +197,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             //Missing Superpower:
-            continue;
-        } elseif(in_array($x__type, $this->config->item('n___13424')) && $source_is_e){
-            //SOURCE LAYOUT HIDE IF SOURCE:
             continue;
         } elseif(in_array($x__type, $this->config->item('n___13425')) && !$source_is_e){
             //SOURCE LAYOUT SHOW IF SOURCE:
@@ -224,7 +221,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             if(!$counter){
                 continue;
             }
-            $focus_tab = '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m_icon'].' '.$m['m_name'].' '.number_format($counter, 0).' times.</div>';
+            $focus_tab = '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m_icon'].' '.$m['m_title'].' '.number_format($counter, 0).' times.</div>';
 
         } elseif($x__type==11030){
 
@@ -276,7 +273,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
                     $editor_counter++;
-                    $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m_name'] . '</option>';
+                    $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m_title'] . '</option>';
                     $is_upper = ( in_array($action_e__id, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' montserrat doupper ' : false );
 
 
@@ -325,7 +322,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
                         foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
-                            $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m_name'].'</option>';
+                            $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m_title'].'</option>';
                         }
                         $input_options .= '</select>';
 
@@ -333,7 +330,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
                         foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
-                            $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m_name'].'</option>';
+                            $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m_title'].'</option>';
                         }
                         $input_options .= '</select>';
 
@@ -346,7 +343,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="*">Update All Statuses</option>';
                         foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
-                            $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m_name'].'</option>';
+                            $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m_title'].'</option>';
                         }
                         $input_options .= '</select>';
 
@@ -354,7 +351,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                         $input_options .= '<option value="">Set New Status...</option>';
                         foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
-                            $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m_name'].'</option>';
+                            $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m_title'].'</option>';
                         }
                         $input_options .= '</select>';
 
@@ -374,7 +371,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 }
 
 
-                $focus_tab .= '<div class="pull-right grey" style="margin:-35px 34px 0 0;">'.( superpower_active(13422, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_name'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_name'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
+                $focus_tab .= '<div class="pull-right grey" style="margin:-35px 34px 0 0;">'.( superpower_active(13422, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_title'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
 
 
 
@@ -437,7 +434,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         foreach($child_e_filters as $c_c) {
                             $st = $e___6177[$c_c['e__status']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
-                            $focus_tab .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_name'] . '</span></a></li>';
+                            $focus_tab .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_title'] . '</span></a></li>';
                         }
 
                         $focus_tab .= '</div>';
@@ -475,10 +472,21 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             $list_i = view_coins_e(12273, $e['e__id'], 1);
 
+            $show_editor = true; //To manage idea bookmarks
+
+            if($counter>0 && !count($list_i)){
+                //Load Flat List since this source has ideas but nothing bookmarked:
+                $list_i = $this->X_model->fetch(array(
+                    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    '(x__up = '.$e['e__id'].' OR x__down = '.$e['e__id'].')' => null,
+                ), array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
+                $show_editor = false; //Since it's a flat list, not bookmarks!
+            }
+
+
             //SMART SHOW/HIDE LIST LOGIC
-            $previous_do_hide = true;
-            $bold_upto_weight = i_calc_bold_upto_weight($list_i);
-            $show_max = config_var(11986);
             $focus_tab .= '<div id="list_i" class="list-group space-left">';
             foreach($list_i as $count => $item){
 
@@ -492,16 +500,8 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     $string_references = extract_e_references($item['x__message']);
                 }
 
-                $do_hide = (!$string_references['ref_time_found'] && (($bold_upto_weight && $bold_upto_weight>=$item['i__weight']) || ($count >= $show_max)));
+                $focus_tab .= view_i_cover($item, $show_editor, null, $message_input);
 
-                if(!$previous_do_hide && $do_hide){
-                    $focus_tab .= '<div class="list-group-item nonbold_hide no-side-padding montserrat"><span class="icon-block"><i class="far fa-plus-circle idea"></i></span><a href="javascript:void(0);" onclick="$(\'.nonbold_hide\').toggleClass(\'hidden\')"><b style="text-decoration: none !important;">SEE MORE</b></a></div>';
-                    $focus_tab .= '<div class="see_mores"></div>';
-                }
-
-                $focus_tab .= view_i_cover($item, true, ( $do_hide ? ' nonbold_hide hidden ' : '' ), $message_input);
-
-                $previous_do_hide = $do_hide;
 
             }
             $focus_tab .= '</div>';
@@ -510,12 +510,26 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             //DISCOVERIES
             $counter = view_coins_e(6255, $e['e__id'], 0, false);
+            $my_x_ids = array();
 
             if($counter){
 
                 if($source_is_e || superpower_active(12701, true)){
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
+
+                    $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+
+                    if(isset($_GET['reset'])){
+                        //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
+                        $focus_tab .= '<div class="margin-top-down left-margin">';
+                        $focus_tab .= '<p>'.$e___11035[6415]['m_desc'].'</p>';
+                        $focus_tab .= '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
+                        $focus_tab .= '</div>';
+
+                        $focus_tab .= '<div class="doclear">&nbsp;</div>';
+                    }
+
 
                     if(count($list_x)){
 
@@ -543,9 +557,30 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 //No Results:
                 $e___12467 = $this->config->item('e___12467'); //MENCH COINS
-                $focus_tab .= '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No '.$e___12467[6255]['m_name'].' yet</div>';
+                $focus_tab .= '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No '.$e___12467[6255]['m_title'].' yet</div>';
 
             }
+
+
+
+
+            //FEATURED IDEAS
+            $featured_i = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'x__left' => config_var(12137),
+            ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+
+            echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
+            echo '<div class="cover-list">';
+            foreach($featured_i as $key => $x){
+                if(!in_array($x['i__id'], $my_x_ids)){
+                    //Show only if not in discovering list:
+                    echo view_i_cover($x, false);
+                }
+            }
+            echo '</div>';
 
 
         } elseif(in_array($x__type, $this->config->item('n___4485'))){
@@ -574,7 +609,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             } else {
 
-                $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_name'].' yet</div>';
+                $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_title'].' yet</div>';
 
             }
 
@@ -595,7 +630,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 $focus_tab .= '<div class="card">
 <div class="card-header" id="heading' . $acc_e__id . '">
 <button class="btn btn-block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_e__id . '" aria-expanded="false" aria-controls="openEn' . $acc_e__id . '">
-  <span class="icon-block">' . $acc_detail['m_icon'] . '</span><b class="montserrat doupper ' . extract_icon_color($acc_detail['m_icon']) . '">' . $acc_detail['m_name'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
+  <span class="icon-block">' . $acc_detail['m_icon'] . '</span><b class="montserrat doupper ' . extract_icon_color($acc_detail['m_icon']) . '">' . $acc_detail['m_title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
 </button>
 </div>
 
@@ -620,7 +655,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                     $focus_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">';
                     foreach($this->config->item('e___13533') as $m3) {
-                        $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m_desc'].'\')" class="btn btn-'.$m3['m_desc'].' '.( $e__icon_parts[0]==$m3['m_desc'] ? ' active ' : '' ).'" title="'.$m3['m_name'].'">'.$m3['m_icon'].'</a>';
+                        $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m_desc'].'\')" class="btn btn-'.$m3['m_desc'].' '.( $e__icon_parts[0]==$m3['m_desc'] ? ' active ' : '' ).'" title="'.$m3['m_title'].'">'.$m3['m_icon'].'</a>';
                     }
                     $focus_tab .= '</div>';
                     $focus_tab .= '<div class="doclear">&nbsp;</div>';
@@ -661,7 +696,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         }
 
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
-                        $focus_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_e__id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_name'].'</b> '.$m3['m_desc'].'</a>';
+                        $focus_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_e__id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_title'].'</b> '.$m3['m_desc'].'</a>';
 
                     }
                     $focus_tab .= '</div>';
@@ -709,7 +744,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
         $default_active = ($x__type==$active_x__type);
 
-        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_name'].'</span></a></li>';
+        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_title'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
 
 
         $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';

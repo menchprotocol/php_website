@@ -235,7 +235,7 @@ class E_model extends CI_Model
                         $x__type = 6178; //Source Deleted
                     }
                     $e___6177 = $this->config->item('e___6177'); //Source Status
-                    $x__message = view_db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m_name'] . '] to [' . $e___6177[$value]['m_name'] . ']';
+                    $x__message = view_db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m_title'] . '] to [' . $e___6177[$value]['m_title'] . ']';
 
                 } elseif($key=='e__icon') {
 
@@ -747,7 +747,7 @@ class E_model extends CI_Model
 
                 if(!$page_title){
                     //Assign a generic source name:
-                    $page_title = $e___4592[$x__type]['m_name'].' '.substr(md5($url), 0, 8);
+                    $page_title = $e___4592[$x__type]['m_title'].' '.substr(md5($url), 0, 8);
                 }
 
                 //Prefix type in name:

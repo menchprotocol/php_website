@@ -11,6 +11,20 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
+    //Load Idea Search:
+    $('#newIdeaTitle').focus(function() {
+        $('.algolia_pad_search').removeClass('hidden');
+    }).focusout(function() {
+        $('.algolia_pad_search').addClass('hidden');
+    });
+    i_load_search("#newIdeaTitle",0, 'a', 'x_my_in');
+
+    if(e_focus_id==js_pl_id){
+
+        //User loaded their own source:
+        x_remove(13415);
+    }
+
     //Source Loader:
     var portfolio_count = parseInt($('#new_portfolio').attr('current-count'));
     if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m_desc'])){
@@ -157,6 +171,58 @@ $(document).ready(function () {
 });
 
 
+
+function reset_6415(){
+
+    $('.reset_6415').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL...</b>');
+
+    //Redirect:
+    window.location = '/x/x_clear_coins';
+
+}
+
+
+
+
+var saving_i = false;
+function i_create(){
+
+    if(saving_i){
+        alert('Idea currently being saved, Be patient...');
+        return false;
+    } else {
+        saving_i = true;
+    }
+
+    //Lockdown:
+    $('#newIdeaTitle').prop('disabled', true);
+    $('#tempLoader').remove();
+
+    //Set processing status:
+    add_to_list('myIdeas', '.itemidealist', '<div id="tempLoader" class="list-group-item no-side-padding montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving Idea...</div>');
+
+    //Process this:
+    $.post("/i/i_create", {
+        newIdeaTitle: $('#newIdeaTitle').val(),
+    }, function (data) {
+        if (data.status) {
+
+            //Redirect:
+            $('#tempLoader').html(data.message);
+            window.location = '/~' + data.i__id;
+
+        } else {
+
+            //Unlock:
+            $('#tempLoader').html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
+            $('#newIdeaTitle').prop('disabled', false).focus();
+
+        }
+
+        saving_i = false;
+    });
+
+}
 
 
 function e_load_search(element_focus, is_e_parent, shortcut) {
@@ -726,7 +792,7 @@ function e_update() {
 
                 //User Status:
                 $(".e__id_" + modify_data['e__id']).attr('en-status', modify_data['e__status']);
-                $('.e__status_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__status']]["m_name"] + ': ' + js_e___6177[modify_data['e__status']]["m_desc"] + '">' + js_e___6177[modify_data['e__status']]["m_icon"] + '</span>');
+                $('.e__status_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__status']]["m_title"] + ': ' + js_e___6177[modify_data['e__status']]["m_desc"] + '">' + js_e___6177[modify_data['e__status']]["m_icon"] + '</span>');
 
 
                 //User Icon:
@@ -754,7 +820,7 @@ function e_update() {
 
                     //Transaction Status:
                     $(".e__id_" + modify_data['e__id']).attr('x-status', modify_data['x__status'])
-                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m_name"] + ': ' + js_e___6186[modify_data['x__status']]["m_desc"] + '">' + js_e___6186[modify_data['x__status']]["m_icon"] + '</span>');
+                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m_title"] + ': ' + js_e___6186[modify_data['x__status']]["m_desc"] + '">' + js_e___6186[modify_data['x__status']]["m_icon"] + '</span>');
 
                 }
 

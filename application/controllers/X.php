@@ -16,10 +16,15 @@ class X extends CI_Controller
 
     function index(){
 
+        $session_e = superpower_assigned();
+        if($session_e){
+            redirect_message('/@'.$session_e['e__id']);
+        }
+
         //Load header:
         $e___13488 = $this->config->item('e___13488');
         $this->load->view('header', array(
-            'title' => $e___13488[13210]['m_name'],
+            'title' => $e___13488[13210]['m_title'],
         ));
         $this->load->view('x/home');
         $this->load->view('footer');
@@ -41,7 +46,7 @@ class X extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
         $this->load->view('header', array(
-            'title' => $e___11035[4341]['m_name'],
+            'title' => $e___11035[4341]['m_title'],
         ));
         $this->load->view('x/ledger');
         $this->load->view('footer');
@@ -79,7 +84,7 @@ class X extends CI_Controller
                 //First page message:
                 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
                 $e___12467 = $this->config->item('e___12467'); //MENCH COINS
-                $message .= '<div class="montserrat x-info">'.$e___11035[4341]['m_icon'].' '.$e___11035[4341]['m_name'].' has '.number_format($x_count[0]['total_count'] , 0).' TRANSACTIONS indexing <span class="source inline-block">'.$e___12467[12274]['m_icon'].' '.number_format($this->config->item('s___12274'), 0).' '.$e___12467[12274]['m_name'].'</span> & <span class="idea inline-block">'.$e___12467[12273]['m_icon'].' '.number_format($this->config->item('s___12273'), 0).' '.$e___12467[12273]['m_name'].'</span> with <span class="discover inline-block">'.$e___12467[6255]['m_icon'].' '.number_format($this->config->item('s___6255'), 0).' '.$e___12467[6255]['m_name'].'</span>. Here are the last '.$total_items_loaded.' TRANSACTIONS:</div>';
+                $message .= '<div class="montserrat x-info">'.$e___11035[4341]['m_icon'].' '.$e___11035[4341]['m_title'].' has '.number_format($x_count[0]['total_count'] , 0).' TRANSACTIONS indexing <span class="source inline-block">'.$e___12467[12274]['m_icon'].' '.number_format($this->config->item('s___12274'), 0).' '.$e___12467[12274]['m_title'].'</span> & <span class="idea inline-block">'.$e___12467[12273]['m_icon'].' '.number_format($this->config->item('s___12273'), 0).' '.$e___12467[12273]['m_title'].'</span> with <span class="discover inline-block">'.$e___12467[6255]['m_icon'].' '.number_format($this->config->item('s___6255'), 0).' '.$e___12467[6255]['m_title'].'</span>. Here are the last '.$total_items_loaded.' TRANSACTIONS:</div>';
             } else {
                 //Subsequent messages:
                 $message .= '<div class="montserrat x-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
@@ -180,7 +185,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'html_ui' => '<b class="montserrat doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m_icon']).'">' . $e___4592[$detected_x_type['x__type']]['m_icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m_name'] . '</b>',
+            'html_ui' => '<b class="montserrat doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m_icon']).'">' . $e___4592[$detected_x_type['x__type']]['m_icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m_title'] . '</b>',
             'e_x_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup inline-block">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
         ));
 
@@ -301,7 +306,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' must be a number greater than zero.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' must be a number greater than zero.',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -310,7 +315,7 @@ class X extends CI_Controller
                 $hours = rtrim(number_format((config_var(4356)/3600), 1), '.0');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -318,7 +323,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -360,7 +365,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
                     'original_val' => ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : 0 ),
                 ));
 
@@ -371,7 +376,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $session_e['e__id'], 10663 /* Idea Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $session_e['e__id'], 10663 /* Idea Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m_title'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return view_json(array(
                     'status' => 1,
@@ -402,7 +407,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_name'].' must be an integer between 0 and 100.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' must be an integer between 0 and 100.',
                     'original_val' => ( isset($x__metadata[$field_name]) ? $x__metadata[$field_name] : '' ),
                 ));
 
@@ -413,7 +418,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $session_e['e__id'], 10664 /* Idea Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m_name'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $session_e['e__id'], 10664 /* Idea Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m_title'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return view_json(array(
                     'status' => 1,
@@ -456,7 +461,7 @@ class X extends CI_Controller
             $i__id_added = $this->X_model->start($session_e['e__id'], $i__id);
             if(!$i__id_added){
                 //Failed to add to Discovery:
-                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>FAILED to add to '.$e___11035[12969]['m_name'].'.</div>');
+                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>FAILED to add to '.$e___11035[12969]['m_title'].'.</div>');
             }
         }
 
@@ -506,7 +511,7 @@ class X extends CI_Controller
             return redirect_message('/'.$next_i__id.'?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ));
         } else {
             $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-            return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed everything in '.$e___11035[12969]['m_name'].'.</div></div>');
+            return redirect_message('/', '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed everything in '.$e___11035[12969]['m_title'].'.</div></div>');
         }
 
     }
@@ -904,7 +909,7 @@ class X extends CI_Controller
         $e___13488 = $this->config->item('e___13488');
         return view_json(array(
             'status' => 1,
-            'first_save_message' => 'Saved this idea in '.$e___13488[13210]['m_name'],
+            'first_save_message' => 'Saved this idea in '.$e___13488[13210]['m_title'],
             'is_first_save' => ( !$removed && count($this->X_model->fetch(array(
                     'x__up' => $session_e['e__id'],
                     'x__type' => 12896, //SAVED

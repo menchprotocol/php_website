@@ -29,7 +29,7 @@ class I extends CI_Controller {
             //Do not treat this case as error as it could happen in moving Messages between types:
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing '.$e___6201[4736]['m_name'],
+                'message' => 'Missing '.$e___6201[4736]['m_title'],
             ));
 
         }
@@ -82,7 +82,7 @@ class I extends CI_Controller {
         $session_e = superpower_assigned(10939, true);
         $e___13488 = $this->config->item('e___13488'); //MENCH HOME PAGES
         $this->load->view('header', array(
-            'title' => $e___13488[13405]['m_name'],
+            'title' => $e___13488[13405]['m_title'],
             'session_e' => $session_e,
         ));
         $this->load->view('i/home');
@@ -929,7 +929,7 @@ class I extends CI_Controller {
             'status' => 1,
             'delete_from_ui' => 0,
             'message' => $this->X_model->message_send($msg_validation['input_message'], $session_e, $_POST['i__id']),
-            'message_new_status_icon' => '<span title="' . $e___6186[$_POST['message_x__status']]['m_name'] . ': ' . $e___6186[$_POST['message_x__status']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $e___6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
+            'message_new_status_icon' => '<span title="' . $e___6186[$_POST['message_x__status']]['m_title'] . ': ' . $e___6186[$_POST['message_x__status']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $e___6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check-circle"></i> Saved</span>',
         ));
 
