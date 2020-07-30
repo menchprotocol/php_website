@@ -127,7 +127,7 @@ if(!isset($hide_header)){
                                 continue;
                             }
 
-                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
+                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
                             $class = trim(extract_icon_color($m['m_icon']));
                             echo '<div class="btn-group pull-left mench_coin '.$class.' border-' . $class.( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
                             echo '<a class="btn ' . $class . '" '.$href.'>';
@@ -185,7 +185,7 @@ if(!isset($hide_header)){
                                 continue;
                             }
 
-                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
+                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
                             $extra_class = null;
                             $text_class = null;
 

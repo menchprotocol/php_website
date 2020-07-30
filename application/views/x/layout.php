@@ -89,7 +89,7 @@ if($recipient_e['e__id']){
                 //Determine DISCOVER COIN type based on it's connection type's parents that will hold the appropriate discover coin.
                 $x_completion_type_id = 0;
                 foreach($this->config->item('e___12327') /* DISCOVER UNLOCKS */ as $e__id => $m){
-                    if(in_array($unlocked_connections[0]['x__type'], $m['m_parents'])){
+                    if(in_array($unlocked_connections[0]['x__type'], $m['m_profile'])){
                         $x_completion_type_id = $e__id;
                         break;
                     }
@@ -164,7 +164,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     }
 
     //Is this a caret menu?
-    if(in_array(11040 , $m['m_parents'])){
+    if(in_array(11040 , $m['m_profile'])){
         echo view_caret($x__type, $m, $i_focus['i__id']);
         continue;
     }

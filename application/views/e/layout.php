@@ -194,7 +194,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
     $tab_content = '';
     foreach($this->config->item('e___'.$tab_group) as $x__type => $m) {
 
-        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_parents']);
+        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             //Missing Superpower:
             continue;
@@ -208,7 +208,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
         $focus_tab = null;
 
         //Is this a caret menu?
-        if(in_array(11040 , $m['m_parents'])){
+        if(in_array(11040 , $m['m_profile'])){
 
             $tab_nav .= view_caret($x__type, $m, $e['e__id']);
             continue;
@@ -645,8 +645,8 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
                 //Print account fields that are either Single Selectable or Multi Selectable:
-                $is_multi_selectable = in_array(6122, $acc_detail['m_parents']);
-                $is_single_selectable = in_array(6204, $acc_detail['m_parents']);
+                $is_multi_selectable = in_array(6122, $acc_detail['m_profile']);
+                $is_single_selectable = in_array(6204, $acc_detail['m_profile']);
 
                 if ($acc_e__id == 12289) {
 
@@ -667,7 +667,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                         $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m_icon']));
                         $avatar_type_match = ($e__icon_parts[0] == $avatar_icon_parts[0]);
-                        $superpower_actives3 = array_intersect($this->config->item('n___10957'), $m3['m_parents']);
+                        $superpower_actives3 = array_intersect($this->config->item('n___10957'), $m3['m_profile']);
 
                         $focus_tab .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
                         $focus_tab .= '<a href="javascript:void(0);" onclick="e_update_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';

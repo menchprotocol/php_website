@@ -301,7 +301,7 @@ class I extends CI_Controller {
 
             //Validate the transaction update Type ID:
             $e___4527 = $this->config->item('e___4527');
-            if(!is_array($e___4527[$_POST['element_id']]['m_parents']) || !count($e___4527[$_POST['element_id']]['m_parents'])){
+            if(!is_array($e___4527[$_POST['element_id']]['m_profile']) || !count($e___4527[$_POST['element_id']]['m_profile'])){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Missing @'.$_POST['element_id'].' in @4527',
@@ -309,7 +309,7 @@ class I extends CI_Controller {
             }
 
             //Find the single discover type in parent transactions:
-            $x_update_types = array_intersect($this->config->item('n___4593'), $e___4527[$_POST['element_id']]['m_parents']);
+            $x_update_types = array_intersect($this->config->item('n___4593'), $e___4527[$_POST['element_id']]['m_profile']);
             if(count($x_update_types)!=1){
                 return view_json(array(
                     'status' => 0,

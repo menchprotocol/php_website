@@ -376,19 +376,19 @@ class X_model extends CI_Model
                         continue;
                     }
 
-                    if (in_array(6202 , $m['m_parents'])) {
+                    if (in_array(6202 , $m['m_profile'])) {
 
                         //IDEA
                         $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
                         $html_message .= '<div>' . $m['m_title'] . ': <a href="'.$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id'] . '" target="_parent">#'.$is[0]['i__id'].' '.$is[0]['i__title'].'</a></div>';
 
-                    } elseif (in_array(6160 , $m['m_parents'])) {
+                    } elseif (in_array(6160 , $m['m_profile'])) {
 
                         //SOURCE
                         $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
                         $html_message .= '<div>' . $m['m_title'] . ': <a href="'.$this->config->item('base_url').'/@' . $es[0]['e__id'] . '" target="_parent">@'.$es[0]['e__id'].' '.$es[0]['e__title'].'</a></div>';
 
-                    } elseif (in_array(4367 , $m['m_parents'])) {
+                    } elseif (in_array(4367 , $m['m_profile'])) {
 
                         //DISCOVER
                         $html_message .= '<div>' . $m['m_title'] . ' ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields[$var_index[$e__id]] . '" target="_parent">'.$add_fields[$var_index[$e__id]].'</a></div>';

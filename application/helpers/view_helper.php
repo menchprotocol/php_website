@@ -394,7 +394,7 @@ function view_x($x, $is_parent_tr = false)
             'm_icon' => '<i class="fas fa-exclamation-circle"></i>',
             'm_title' => 'Transaction Type Not Synced in PHP Cache',
             'm_message' => '',
-            'm_parents' => array(),
+            'm_profile' => array(),
         );
     }
 
@@ -475,21 +475,21 @@ function view_x($x, $is_parent_tr = false)
                 continue;
             }
 
-            if(in_array(6160 , $m['m_parents'])){
+            if(in_array(6160 , $m['m_profile'])){
 
                 //SOURCE
                 $es = $CI->E_model->fetch(array('e__id' => $x[$var_index[$e__id]]));
 
                 $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_title'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.( $x[$var_index[$e__id]]==$x['x__source'] ? $e___4341[4364]['m_icon']. '&nbsp;' : '' ).'<span class="'.extract_icon_color($es[0]['e__icon']).' img-block">'.view_e__icon($es[0]['e__icon']). '&nbsp;'.$es[0]['e__title'].'</span></a></div>';
 
-            } elseif(in_array(6202 , $m['m_parents'])){
+            } elseif(in_array(6202 , $m['m_profile'])){
 
                 //IDEA
                 $is = $CI->I_model->fetch(array('i__id' => $x[$var_index[$e__id]]));
 
                 $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_title'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.view_cache(4737 /* Idea Status */, $is[0]['i__status'], true, 'right', $is[0]['i__id']).view_i_title($is[0]).'</a></div>';
 
-            } elseif(in_array(4367 , $m['m_parents'])){
+            } elseif(in_array(4367 , $m['m_profile'])){
 
                 //PARENT DISCOVER
                 $x = $CI->X_model->fetch(array('x__id' => $x[$var_index[$e__id]]));
@@ -1137,7 +1137,7 @@ function view_caret($e__id, $m, $object__id){
     //Display drop down menu:
     $CI =& get_instance();
 
-    $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m_parents']);
+    $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m_profile']);
 
     $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_title'].'" data-toggle="tooltip" data-placement="top">';
     $ui .= '<a class="nav-x dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
@@ -1669,7 +1669,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
     foreach($e___this as $e__id => $m) {
 
-        $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m_parents']);
+        $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m_profile']);
         $is_url_desc = ( substr($m['m_message'], 0, 1)=='/' );
 
         //What type of URL?
