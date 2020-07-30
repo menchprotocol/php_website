@@ -675,7 +675,7 @@ class E_model extends CI_Model
 
                 $detected_extension = false;
                 foreach($this->config->item('e___11080') as $e__id => $m){
-                    if(in_array($url_analysis['url_file_extension'], explode('|' , $m['m_desc']))){
+                    if(in_array($url_analysis['url_file_extension'], explode('|' , $m['m_message']))){
                         $x__type = $e__id;
                         $detected_extension = true;
                         break;

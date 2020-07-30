@@ -267,7 +267,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
                 $focus_tab .= '<div class="share-this space-content" style="margin:5px 0 34px;">';
                 foreach($this->config->item('e___13531') as $m2) {
-                    $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_desc'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share with '.$m2['m_title'].'" data-toggle="tooltip" data-placement="top">'.$m2['m_icon'].'</div></div>';
+                    $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_message'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share with '.$m2['m_title'].'" data-toggle="tooltip" data-placement="top">'.$m2['m_icon'].'</div></div>';
                 }
                 $focus_tab .= '</div>';
 

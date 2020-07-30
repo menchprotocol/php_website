@@ -15,7 +15,7 @@ foreach($this->config->item('e___6287') as $e__id => $m) {
     //SOURCE
     echo '<span class="icon-block">' . view_e__icon($m['m_icon']) . '</span>';
     echo '<b class="montserrat '.extract_icon_color($m['m_icon']).'">'.$m['m_title'].'</b>';
-    echo ( strlen($m['m_desc']) ? '&nbsp;'.$m['m_desc'] : '' );
+    echo ( strlen($m['m_message']) ? '&nbsp;'.$m['m_message'] : '' );
 
 
     //PROFILE

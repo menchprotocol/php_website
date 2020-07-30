@@ -130,7 +130,7 @@ if(count($current_sign_i_attempt) == 0){
             <!-- Full Name -->
             <div class="margin-top-down">
                 <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.str_replace(' source','',$e___4269[13025]['m_icon']).'</span>'.$e___4269[13025]['m_title'] ?>:</span>
-                <div class="form-group is-empty"><input type="text" placeholder="<?= $e___4269[13025]['m_desc'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat"></div>
+                <div class="form-group is-empty"><input type="text" placeholder="<?= $e___4269[13025]['m_message'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat"></div>
             </div>
 
             <!-- New Password -->

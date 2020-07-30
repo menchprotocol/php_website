@@ -534,7 +534,7 @@ function filter_cache_group($search_e__id, $cache_e__id){
 function config_var($e__id){
     $CI =& get_instance();
     $e___6404 = $CI->config->item('e___6404');
-    return $e___6404[$e__id]['m_desc'];
+    return $e___6404[$e__id]['m_message'];
 }
 
 function update_description($before_string, $after_string){
@@ -746,8 +746,8 @@ function var_index(){
     $var_index = array();
     foreach($CI->config->item('e___6212') as $e__id => $m){
         foreach($CI->config->item('e___'.$e__id) as $e__id2 => $m2){
-            if(strlen($m2['m_desc']) > 0){
-                $var_index[$e__id2] = $m2['m_desc'];
+            if(strlen($m2['m_message']) > 0){
+                $var_index[$e__id2] = $m2['m_message'];
             }
         }
     }

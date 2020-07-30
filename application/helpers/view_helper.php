@@ -393,7 +393,7 @@ function view_x($x, $is_parent_tr = false)
         $e___4593[$x['x__type']] = array(
             'm_icon' => '<i class="fas fa-exclamation-circle"></i>',
             'm_title' => 'Transaction Type Not Synced in PHP Cache',
-            'm_desc' => '',
+            'm_message' => '',
             'm_parents' => array(),
         );
     }
@@ -435,12 +435,12 @@ function view_x($x, $is_parent_tr = false)
 
 
     //STATUS
-    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_title'].( strlen($e___6186[$x['x__status']]['m_desc']) ? ': '.$e___6186[$x['x__status']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;<span class="'.extract_icon_color($e___6186[$x['x__status']]['m_icon']).'">'.$e___6186[$x['x__status']]['m_title'].'</span></a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_title'].( strlen($e___6186[$x['x__status']]['m_message']) ? ': '.$e___6186[$x['x__status']]['m_message'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;<span class="'.extract_icon_color($e___6186[$x['x__status']]['m_icon']).'">'.$e___6186[$x['x__status']]['m_title'].'</span></a></div>';
 
 
 
     //TYPE
-    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_title'].( strlen($e___4593[$x['x__type']]['m_desc']) ? ': '.$e___4593[$x['x__type']]['m_desc'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span>'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;<span class="'.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'">' . $e___4593[$x['x__type']]['m_title'] . '</span></a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_title'].( strlen($e___4593[$x['x__type']]['m_message']) ? ': '.$e___4593[$x['x__type']]['m_message'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span>'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;<span class="'.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'">' . $e___4593[$x['x__type']]['m_title'] . '</span></a></div>';
 
 
     //Hide Sensitive Details?
@@ -579,7 +579,7 @@ function view_cache($config_var_id, $e__id, $micro_status = true, $data_placemen
         }
     } else {
         //data-toggle="tooltip" data-placement="' . $data_placement . '"
-        return '<span class="'.( $micro_status ? 'cache_micro_'.$config_var_id.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m_title'] : '') . (strlen($cache['m_desc']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_desc'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_title']) . '</span>';
+        return '<span class="'.( $micro_status ? 'cache_micro_'.$config_var_id.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m_title'] : '') . (strlen($cache['m_message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_title']) . '</span>';
     }
 }
 
@@ -839,7 +839,7 @@ function view_i_tree_e($i){
 
     foreach($CI->config->item('e___4251') as $e__id => $m2){
         if($i_stats['count_'.$e__id]>0){
-            $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span><span '.( strlen($m2['m_desc']) ? ' data-toggle="tooltip" data-placement="top" title="'.$m2['m_desc'].'" class="underdot" ' : '' ).'>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].'</span>:</div>';
+            $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span><span '.( strlen($m2['m_message']) ? ' data-toggle="tooltip" data-placement="top" title="'.$m2['m_message'].'" class="underdot" ' : '' ).'>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].'</span>:</div>';
             $ui .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
                 $ui .= view_e_basic($e);
@@ -1143,7 +1143,7 @@ function view_caret($e__id, $m, $object__id){
     $ui .= '<a class="nav-x dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach($CI->config->item('e___'.$e__id) as $e__id => $m2){
-        $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_desc'] . $object__id . '"><span class="icon-block">'.view_e__icon($m2['m_icon']).'</span> '.$m2['m_title'].'</a>';
+        $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).'" href="' . $m2['m_message'] . $object__id . '"><span class="icon-block">'.view_e__icon($m2['m_icon']).'</span> '.$m2['m_title'].'</a>';
     }
     $ui .= '</div>';
     $ui .= '</li>';
@@ -1264,12 +1264,12 @@ function view_i_note_mix($x__type, $i_notes){
 function view_12687($e__id){
     $CI =& get_instance();
     $e___12687 = $CI->config->item('e___12687');
-    if(!substr_count($e___12687[$e__id]['m_desc'], " | ")){
+    if(!substr_count($e___12687[$e__id]['m_message'], " | ")){
         //Single message:
-        return $e___12687[$e__id]['m_desc'];
+        return $e___12687[$e__id]['m_message'];
     } else {
         //Random message:
-        $line_messages = explode(" | ", $e___12687[$e__id]['m_desc']);
+        $line_messages = explode(" | ", $e___12687[$e__id]['m_message']);
         return $line_messages[rand(0, (count($line_messages) - 1))];
     }
 }
@@ -1345,7 +1345,7 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
             $ui .= '<span class="show-on-hover">';
 
             //SORT
-            $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_title'].': '.$e___13369[13413]['m_desc'].'">'.$e___13369[13413]['m_icon'].'</span>';
+            $ui .= '<span class="media-info click-info bottom-left x-sorter" title="'.$e___13369[13413]['m_title'].': '.$e___13369[13413]['m_message'].'">'.$e___13369[13413]['m_icon'].'</span>';
 
             //Remove:
             $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" title="'.$e___13369[13414]['m_title'].'">'.$e___13369[13414]['m_icon'].'</span>';
@@ -1670,13 +1670,13 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
     foreach($e___this as $e__id => $m) {
 
         $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m_parents']);
-        $is_url_desc = ( substr($m['m_desc'], 0, 1)=='/' );
+        $is_url_desc = ( substr($m['m_message'], 0, 1)=='/' );
 
         //What type of URL?
         if($is_url_desc){
 
             //Basic transaction:
-            $anchor_url = ( $e__id==$selected_e__id ? 'href="javascript:void();"' : 'href="'.$m['m_desc'].'"' );
+            $anchor_url = ( $e__id==$selected_e__id ? 'href="javascript:void();"' : 'href="'.$m['m_message'].'"' );
 
         } else{
 
@@ -1685,7 +1685,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
         }
 
-        $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' montserrat optiond_'.$e__id.'_'.$i__id.'_'.$x__id.' doupper '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</a>'; //Used to show desc but caused JS click conflict sp retired for now: ( strlen($m['m_desc']) && !$is_url_desc ? 'title="'.$m['m_desc'].'" data-toggle="tooltip" data-placement="right"' : '' )
+        $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' montserrat optiond_'.$e__id.'_'.$i__id.'_'.$x__id.' doupper '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</a>'; //Used to show desc but caused JS click conflict sp retired for now: ( strlen($m['m_message']) && !$is_url_desc ? 'title="'.$m['m_message'].'" data-toggle="tooltip" data-placement="right"' : '' )
 
     }
 

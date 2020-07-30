@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     //Source Loader:
     var portfolio_count = parseInt($('#new_portfolio').attr('current-count'));
-    if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m_desc'])){
+    if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m_message'])){
         e_sort_portfolio_load();
     }
 
@@ -245,7 +245,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
     });
 
-    if(parseInt(js_e___6404[12678]['m_desc'])){
+    if(parseInt(js_e___6404[12678]['m_message'])){
 
             $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -410,7 +410,7 @@ function e_filter_status(new_val) {
 
 function e__title_word_count() {
     var len = $('#e__title').val().length;
-    if (len > js_e___6404[6197]['m_desc']) {
+    if (len > js_e___6404[6197]['m_message']) {
         $('#charEnNum').addClass('overload').text(len);
     } else {
         $('#charEnNum').removeClass('overload').text(len);
@@ -792,7 +792,7 @@ function e_update() {
 
                 //User Status:
                 $(".e__id_" + modify_data['e__id']).attr('en-status', modify_data['e__status']);
-                $('.e__status_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__status']]["m_title"] + ': ' + js_e___6177[modify_data['e__status']]["m_desc"] + '">' + js_e___6177[modify_data['e__status']]["m_icon"] + '</span>');
+                $('.e__status_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__status']]["m_title"] + ': ' + js_e___6177[modify_data['e__status']]["m_message"] + '">' + js_e___6177[modify_data['e__status']]["m_icon"] + '</span>');
 
 
                 //User Icon:
@@ -820,7 +820,7 @@ function e_update() {
 
                     //Transaction Status:
                     $(".e__id_" + modify_data['e__id']).attr('x-status', modify_data['x__status'])
-                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m_title"] + ': ' + js_e___6186[modify_data['x__status']]["m_desc"] + '">' + js_e___6186[modify_data['x__status']]["m_icon"] + '</span>');
+                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m_title"] + ': ' + js_e___6186[modify_data['x__status']]["m_message"] + '">' + js_e___6186[modify_data['x__status']]["m_icon"] + '</span>');
 
                 }
 

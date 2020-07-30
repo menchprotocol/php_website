@@ -83,7 +83,7 @@ if(strlen($flash_message) > 0) {
     //Delete from Flash:
     $this->session->unmark_flash('flash_message');
 
-    echo '<div class="container '.( isset($hide_header) ? ' center-info ' : '' ).'" id="custom_message" style="padding-bottom: 0;">'.$flash_message.'</div>';
+    echo '<div class="container '.( isset($hide_header) ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 0;">'.$flash_message.'</div>';
 }
 
 
@@ -120,8 +120,8 @@ if(!isset($hide_header)){
 
                             } elseif(in_array($x__type, $this->config->item('n___10876'))){
 
-                                $href = 'href="'.$e___10876[$x__type]['m_desc'].'"';
-                                $is_active = ( $this->config->item('base_url').'/'.$first_segment == $e___10876[$x__type]['m_desc'] );
+                                $href = 'href="'.$e___10876[$x__type]['m_message'].'"';
+                                $is_active = ( $this->config->item('base_url').'/'.$first_segment == $e___10876[$x__type]['m_message'] );
 
                             } else {
                                 continue;
@@ -192,7 +192,7 @@ if(!isset($hide_header)){
                             if(in_array($x__type, $this->config->item('n___10876'))){
 
                                 //Fetch URL:
-                                $href = 'href="'.$e___10876[$x__type]['m_desc'].'"';
+                                $href = 'href="'.$e___10876[$x__type]['m_message'].'"';
 
                             } elseif($x__type==12899) {
 

@@ -81,7 +81,7 @@ foreach($config_e as $en){
 
         echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['e__id'].' => array(<br />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_title\' => \''.htmlentities(str_replace('\'','\\\'',$child['e__title'])).'\',<br />';
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.htmlentities(str_replace('\'','\\\'',$child['x__message'])).'\',<br />';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_message\' => \''.htmlentities(str_replace('\'','\\\'',$child['x__message'])).'\',<br />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['e__icon']).'\',<br />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_parents\' => array('.join(',',$child_parent_ids).'),<br />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp; ),<br />';

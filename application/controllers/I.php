@@ -929,7 +929,7 @@ class I extends CI_Controller {
             'status' => 1,
             'delete_from_ui' => 0,
             'message' => $this->X_model->message_send($msg_validation['input_message'], $session_e, $_POST['i__id']),
-            'message_new_status_icon' => '<span title="' . $e___6186[$_POST['message_x__status']]['m_title'] . ': ' . $e___6186[$_POST['message_x__status']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $e___6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
+            'message_new_status_icon' => '<span title="' . $e___6186[$_POST['message_x__status']]['m_title'] . ': ' . $e___6186[$_POST['message_x__status']]['m_message'] . '" data-toggle="tooltip" data-placement="top">' . $e___6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check-circle"></i> Saved</span>',
         ));
 

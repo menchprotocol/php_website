@@ -43,7 +43,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
     <?php
 
     //SOURCE DRAFTING?
-    echo '<div class="'.( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span class="icon-block e__status_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_title'].': '.$e___6177[$e['e__status']]['m_desc'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span></div>';
+    echo '<div class="'.( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span class="icon-block e__status_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_title'].': '.$e___6177[$e['e__status']]['m_message'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span></div>';
 
     //SOURCE NAME
     echo '<div class="itemsource" style="padding: 8px 0;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
@@ -67,7 +67,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         <select class="form-control border" id="e__status">
                             <?php
                             foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
-                                echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_title'] . '</option>';
+                                echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
                             }
                             ?>
                         </select>
@@ -125,7 +125,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                             <select class="form-control border" id="x__status">
                                 <?php
                                 foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
-                                    echo '<option value="' . $x__type . '" title="' . $m['m_desc'] . '">' . $m['m_title'] . '</option>';
+                                    echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -278,7 +278,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
                     //Start with the input wrapper:
-                    $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m_desc'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                    $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m_message'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
 
 
@@ -434,7 +434,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         foreach($child_e_filters as $c_c) {
                             $st = $e___6177[$c_c['e__status']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
-                            $focus_tab .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_title'] . '</span></a></li>';
+                            $focus_tab .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_message'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_title'] . '</span></a></li>';
                         }
 
                         $focus_tab .= '</div>';
@@ -523,7 +523,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     if(isset($_GET['reset'])){
                         //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
                         $focus_tab .= '<div class="margin-top-down left-margin">';
-                        $focus_tab .= '<p>'.$e___11035[6415]['m_desc'].'</p>';
+                        $focus_tab .= '<p>'.$e___11035[6415]['m_message'].'</p>';
                         $focus_tab .= '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
                         $focus_tab .= '</div>';
 
@@ -641,7 +641,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
                 //Show description if any:
-                $focus_tab .= (strlen($acc_detail['m_desc']) > 0 ? '<p>' . $acc_detail['m_desc'] . '</p>' : '');
+                $focus_tab .= (strlen($acc_detail['m_message']) > 0 ? '<p>' . $acc_detail['m_message'] . '</p>' : '');
 
 
                 //Print account fields that are either Single Selectable or Multi Selectable:
@@ -655,7 +655,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                     $focus_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">';
                     foreach($this->config->item('e___13533') as $m3) {
-                        $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m_desc'].'\')" class="btn btn-'.$m3['m_desc'].' '.( $e__icon_parts[0]==$m3['m_desc'] ? ' active ' : '' ).'" title="'.$m3['m_title'].'">'.$m3['m_icon'].'</a>';
+                        $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m_message'].'\')" class="btn btn-'.$m3['m_message'].' '.( $e__icon_parts[0]==$m3['m_message'] ? ' active ' : '' ).'" title="'.$m3['m_title'].'">'.$m3['m_icon'].'</a>';
                     }
                     $focus_tab .= '</div>';
                     $focus_tab .= '<div class="doclear">&nbsp;</div>';
@@ -696,7 +696,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         }
 
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
-                        $focus_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_e__id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_title'].'</b> '.$m3['m_desc'].'</a>';
+                        $focus_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_e__id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_title'].'</b> '.$m3['m_message'].'</a>';
 
                     }
                     $focus_tab .= '</div>';

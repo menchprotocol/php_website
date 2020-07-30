@@ -315,7 +315,7 @@ class X_model extends CI_Model
             $e___5967 = $this->config->item('e___5967'); //Include subscription details
             $sub_emails = array();
             $sub_e__ids = array();
-            foreach(explode(',', $e___5967[$add_fields['x__type']]['m_desc']) as $subscriber_e__id){
+            foreach(explode(',', $e___5967[$add_fields['x__type']]['m_message']) as $subscriber_e__id){
 
                 //Do not inform the user who just took the action:
                 if($subscriber_e__id==$add_fields['x__source']){

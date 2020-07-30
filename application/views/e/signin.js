@@ -48,7 +48,7 @@ function search_email(){
     $('#email_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
     $('#input_email').prop('disabled', true).css('background-color','#f0f0f0');
     $('#password_errors').html('');
-    $('#custom_message').html(''); //Delete previous errors, if any
+    $('#flash_message').html(''); //Delete previous errors, if any
 
     //Check email and validate:
     $.post("/e/e_signin_email", {

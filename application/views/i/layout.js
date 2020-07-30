@@ -148,7 +148,7 @@ function e_e_only_search(note_type_id) {
         }
     });
 
-    if(parseInt(js_e___6404[12678]['m_desc'])){
+    if(parseInt(js_e___6404[12678]['m_message'])){
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
