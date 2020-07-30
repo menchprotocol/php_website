@@ -572,15 +572,15 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 'x__left' => config_var(12137),
             ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-            echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
-            echo '<div class="cover-list">';
+            $focus_tab .= '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
+            $focus_tab .= '<div class="cover-list">';
             foreach($featured_i as $key => $x){
                 if(!in_array($x['i__id'], $my_x_ids)){
                     //Show only if not in discovering list:
-                    echo view_i_cover($x, false);
+                    $focus_tab .= view_i_cover($x, false);
                 }
             }
-            echo '</div>';
+            $focus_tab .= '</div>';
 
 
         } elseif(in_array($x__type, $this->config->item('n___4485'))){
