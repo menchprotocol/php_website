@@ -897,7 +897,9 @@ textarea.note-textarea{
     width: 100%;
     margin-bottom: 0;
 }
-
+.x-sorter{
+    cursor: grab;
+}
 .space-left{
     padding-left: 33px;
 }
