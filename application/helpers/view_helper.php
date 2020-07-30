@@ -1362,9 +1362,9 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
                 //MENCH COINS
                 $ui .= '<div class="row">';
 
-                    $ui .= '<div class="col-3 col-md-4 show-max">'.view_coins_i(12274, $i).'<span class="montserrat source">&nbsp'.$e___12467[12274]['m_title'].'</span></div>';
-                    $ui .= '<div class="col col-md">'.view_coins_i(12273, $i).'<span class="montserrat idea">&nbsp'.$e___12467[12273]['m_title'].'</span></div>';
-                    $ui .= '<div class="col-6 col-md-4">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
+                    //$ui .= '<div class="col-3 col-md-4 show-max">'.view_coins_i(12274, $i).'<span class="montserrat source">&nbsp'.$e___12467[12274]['m_title'].'</span></div>';
+                    $ui .= '<div class="col-6">'.view_coins_i(12273, $i).'<span class="montserrat idea">&nbsp'.$e___12467[12273]['m_title'].'</span></div>';
+                    $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
 
                 $ui .= '</div>';
 
