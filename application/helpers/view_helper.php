@@ -1376,7 +1376,7 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
                     $ui .= '<div class="row '.superpower_active(10939).'">';
 
                     //SORT
-                    $ui .= '<div class="col-6"><span class="media-info click-info bottom-left x-sorter">'.$e___13369[13413]['m_icon'].' '.$e___13369[13413]['m_title'].'</span></div>';
+                    $ui .= '<div class="col-6"><span class="x-sorter">'.$e___13369[13413]['m_icon'].' '.$e___13369[13413]['m_title'].'</span></div>';
 
                     //Remove:
                     $ui .= '<div class="col-6"><span class="x_remove" i__id="'.$i['i__id'].'">'.$e___13369[13414]['m_icon'].' '.$e___13369[13414]['m_title'].'</span></div>';

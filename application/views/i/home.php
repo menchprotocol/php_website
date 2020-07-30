@@ -15,8 +15,6 @@
         'x__up' => $session_e['e__id'], //For this user
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-    echo ( count($u_i) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
-
 
     //MY IDEAS
     echo '<div class="headline"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_title'].'</div>';
