@@ -110,7 +110,7 @@ if(!isset($hide_header)){
                         //HORIZONTAL MENU
                         foreach($this->config->item('e___13561') as $x__type => $m) {
 
-                            if($x__type==13560){
+                            if($x__type==6225){
 
                                 $m['m_icon'] = $user_e['e__icon'];
                                 $m['m_title'] = $user_e['e__title'];
