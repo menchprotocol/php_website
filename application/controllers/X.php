@@ -1003,6 +1003,7 @@ class X extends CI_Controller
         }
 
         //Update the order of their Discoveries:
+        $updated = 0;
         $results = array();
         foreach($_POST['new_x_order'] as $x__sort => $x__id){
             if(intval($x__id) > 0 && intval($x__sort) > 0){
@@ -1010,13 +1011,14 @@ class X extends CI_Controller
                 $results[$x__sort] = $this->X_model->update(intval($x__id), array(
                     'x__sort' => $x__sort,
                 ), $session_e['e__id'], intval($_POST['x__type']));
+                $updated++;
             }
         }
 
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => count($_POST['new_x_order']).' Ideas Sorted',
+            'message' => $updated.' Ideas Sorted',
         ));
     }
 

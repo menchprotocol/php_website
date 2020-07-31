@@ -1385,14 +1385,9 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
 
                 }
 
-
-
             $ui .= '</div>';
         $ui .= '</div>';
-
     $ui .= '</div>';
-    $ui .= '<div class="doclear">&nbsp;</div>';
-
 
     return $ui;
 
