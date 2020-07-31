@@ -1,20 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
 $route['translate_uri_dashes']      = FALSE;
-
-/*
- *
- * The main routing logic of Mench
- * Changes below must also reflect
- * within function current_mench()
- *
- * */
 
 //Home
 $route['default_controller']        = "x/index"; //Home page
-$route['~']                         = "i/index"; //Idea home
 $route['@']                         = "e/index"; //Source home
 
 //COINS

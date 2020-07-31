@@ -88,12 +88,7 @@ function view_x__message($x__message, $x__type, $full_message = null)
 
     } elseif ($x__type == 4260 /* Image URL */) {
 
-        $current_mench = current_mench();
-        if($current_mench['x_name']=='source'){
-            return '<a href="' . $x__message . '"><img data-src="' . $x__message . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" /></a>';
-        } else {
-            return '<img data-src="' . $x__message . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" />';
-        }
+        return '<img data-src="' . $x__message . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" />';
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 

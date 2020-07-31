@@ -2,8 +2,6 @@
 <div class="container">
     <?php
 
-    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-
     $is = $this->I_model->fetch(array(
         'i__id' => config_var(12137),
     ));
@@ -23,10 +21,6 @@
     echo '</div>';
 
 
-
-
-
-
     //FEATURED IDEAS
     $featured_i = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -41,8 +35,6 @@
         echo view_i_cover($x, false);
     }
     echo '</div>';
-
-
 
     ?>
 </div>

@@ -459,7 +459,7 @@ if($source_is_e && $counter__x > 0){
             }
 
             //Input to add new child:
-            $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
+            $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.( $source_is_e ? '' : superpower_active(13422) ).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                     <input type="text"
@@ -606,17 +606,33 @@ if($source_is_e && $counter__x > 0){
             $item_counters = $this->X_model->fetch($i_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
             $counter = $item_counters[0]['totals'];
 
-            //SHOW LASTEST 100
+            $focus_tab .= '<div class="list-group">';
             if($counter>0){
 
                 $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
-                $focus_tab .= '<div class="list-group">';
                 foreach($i_notes_query as $count => $i_notes) {
                     $focus_tab .= view_i($i_notes, 0, false, false, $i_notes['x__message'], null, false);
                 }
-                $focus_tab .= '</div>';
 
-            } else {
+            }
+
+            //ADD IDEAS
+            $focus_tab .= '<div class="list-group-item list-adder itemidea">
+                <div class="input-group border">
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
+                    <input type="text"
+                           class="form-control form-control-thick montserrat algolia_search dotransparent add-input"
+                           maxlength="' . config_var(4736) . '"
+                           id="newIdeaTitle"
+                           placeholder="NEW IDEA">
+                </div><div class="algolia_pad_search hidden"></div></div>';
+
+
+            $focus_tab .= '</div>';
+
+
+            //SHOW LASTEST 100
+            if(!$counter){
 
                 $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_title'].' yet</div>';
 

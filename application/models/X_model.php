@@ -908,7 +908,6 @@ class X_model extends CI_Model
         $message_input .= ' ';//Helps with accurate source reference replacement
         $output_body_message = htmlentities($message_input);
         $string_references = extract_e_references($message_input); //Do it again since it may be updated
-        $current_mench = current_mench();
         $referenced_key = 0;
         $e_reference_keys = array(
             0 => 'x__up',
@@ -942,7 +941,7 @@ class X_model extends CI_Model
             $e_count = 0;
             $e_appendix = null;
             $text_tooltip = null;
-            $is_current_e = $current_mench['x_name']=='source' && substr($this->uri->segment(1), 1)==$referenced_e;
+            $is_current_e = $this->uri->segment(1)=='@'.$referenced_e;
 
 
             //Determine what type of Media this reference has:
@@ -989,12 +988,13 @@ class X_model extends CI_Model
             $text_tooltip = ( strlen($text_tooltip) ? ' title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
             $output_body_message .= $e_appendix;
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
+            $is_discovery_mode = is_numeric($this->uri->segment(1));
 
             //USER REFERENCE
-            if(($current_mench['x_name']=='discover' && !superpower_active(10939, true)) || $is_current_e || $simple_version){
+            if(( $is_discovery_mode && !superpower_active(10939, true)) || $is_current_e || $simple_version){
 
                 //NO LINK so we can maintain focus...
-                if((!$has_text && $is_current_e) || ($current_mench['x_name']=='discover' && $e_count==1 && $e_media_count==$e_count /* All media */)){
+                if((!$has_text && $is_current_e) || ($is_discovery_mode && $e_count==1 && $e_media_count==$e_count /* All media */)){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, ' ', $output_body_message);

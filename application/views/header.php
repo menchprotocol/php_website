@@ -5,14 +5,13 @@ $first_segment = $this->uri->segment(1);
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
-$current_mench = current_mench();
 
 ?><!doctype html>
 <html lang="en" >
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment && !$session_e ? 'mench' : $current_mench['x_name'] ) ?>.png">
+    <link rel="icon" type="image/png" href="/img/mench.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : '' ) ?></title>
 
@@ -69,7 +68,7 @@ $current_mench = current_mench();
 
 </head>
 
-<body id="<?= 'font_size_'.$this->session->userdata('session_var_13491') ?>" class="<?= 'to'.$current_mench['x_name'] ?>">
+<body id="<?= 'font_size_'.$this->session->userdata('session_var_13491') ?>">
 
 <?php
 //Any message we need to show here?
