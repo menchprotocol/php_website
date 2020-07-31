@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-30 12:27:51 PST
+//Generated 2020-07-31 09:28:10 PST
 $config['s___12274'] = 4997; //SOURCES
-$config['s___12273'] = 3926; //IDEAS
+$config['s___12273'] = 3925; //IDEAS
 $config['s___6255'] = 122185; //DISCOVERIES
 
 //HORIZONTAL MENU:
@@ -26,13 +26,13 @@ $config['e___13561'] = array(
         'm_title' => 'LEADERBOARD',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_profile' => array(13561,12489,13488,10876,4527),
+        'm_profile' => array(12500,13561,12489,13488,10876,4527),
     ),
     6287 => array(
         'm_title' => 'PLUGINS',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-plug source" aria-hidden="true"></i>',
-        'm_profile' => array(13561,4367,12701,6405,12699,10876,11035,4527),
+        'm_profile' => array(12500,13561,4367,12701,6405,12699,10876,11035,4527),
     ),
 );
 
@@ -442,7 +442,7 @@ $config['e___13488'] = array(
         'm_title' => 'LEADERBOARD',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_profile' => array(13561,12489,13488,10876,4527),
+        'm_profile' => array(12500,13561,12489,13488,10876,4527),
     ),
 );
 
@@ -699,7 +699,7 @@ $config['e___13425'] = array(
     ),
 );
 
-//REMOVE IDEA:
+//REMOVE:
 $config['n___13414'] = array(6155,13415);
 $config['e___13414'] = array(
     6155 => array(
@@ -716,7 +716,7 @@ $config['e___13414'] = array(
     ),
 );
 
-//SORT IDEA:
+//SORT:
 $config['n___13413'] = array(6132,13412);
 $config['e___13413'] = array(
     6132 => array(
@@ -813,13 +813,13 @@ $config['e___13369'] = array(
         'm_profile' => array(13443,13369,4356),
     ),
     13413 => array(
-        'm_title' => 'SORT IDEA',
+        'm_title' => 'SORT',
         'm_message' => 'SORT from LEFT to RIGHT, TOP to BOTTOM ',
         'm_icon' => '<i class="fas fa-sort"></i>',
         'm_profile' => array(4527,13369),
     ),
     13414 => array(
-        'm_title' => 'REMOVE IDEA',
+        'm_title' => 'REMOVE',
         'm_message' => '',
         'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
         'm_profile' => array(4527,13369),
@@ -1521,8 +1521,20 @@ $config['e___12677'] = array(
 );
 
 //VERTICAL MENU:
-$config['n___12500'] = array(4341,7291);
+$config['n___12500'] = array(13207,6287,4341,7291);
 $config['e___12500'] = array(
+    13207 => array(
+        'm_title' => 'LEADERBOARD',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-medal source"></i>',
+        'm_profile' => array(12500,13561,12489,13488,10876,4527),
+    ),
+    6287 => array(
+        'm_title' => 'PLUGINS',
+        'm_message' => '',
+        'm_icon' => '<i class="fad fa-plug source" aria-hidden="true"></i>',
+        'm_profile' => array(12500,13561,4367,12701,6405,12699,10876,11035,4527),
+    ),
     4341 => array(
         'm_title' => 'MENCH LEDGER',
         'm_message' => '',
@@ -1833,7 +1845,7 @@ $config['e___10876'] = array(
         'm_title' => 'LEADERBOARD',
         'm_message' => 'https://mench.com/@',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_profile' => array(13561,12489,13488,10876,4527),
+        'm_profile' => array(12500,13561,12489,13488,10876,4527),
     ),
     7291 => array(
         'm_title' => 'LOGOUT',
@@ -1851,7 +1863,7 @@ $config['e___10876'] = array(
         'm_title' => 'PLUGINS',
         'm_message' => 'https://mench.com/e/plugin',
         'm_icon' => '<i class="fad fa-plug source" aria-hidden="true"></i>',
-        'm_profile' => array(13561,4367,12701,6405,12699,10876,11035,4527),
+        'm_profile' => array(12500,13561,4367,12701,6405,12699,10876,11035,4527),
     ),
     4269 => array(
         'm_title' => 'SIGN IN/UP',
@@ -3319,7 +3331,7 @@ $config['e___11035'] = array(
         'm_title' => 'PLUGINS',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-plug source" aria-hidden="true"></i>',
-        'm_profile' => array(13561,4367,12701,6405,12699,10876,11035,4527),
+        'm_profile' => array(12500,13561,4367,12701,6405,12699,10876,11035,4527),
     ),
     6415 => array(
         'm_title' => 'RESET ALL DISCOVERIES',
@@ -5190,7 +5202,7 @@ $config['e___4527'] = array(
         'm_title' => 'LEADERBOARD',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_profile' => array(13561,12489,13488,10876,4527),
+        'm_profile' => array(12500,13561,12489,13488,10876,4527),
     ),
     12211 => array(
         'm_title' => 'MARK AS READ & NEXT',
@@ -5334,7 +5346,7 @@ $config['e___4527'] = array(
         'm_title' => 'PLUGINS',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-plug source" aria-hidden="true"></i>',
-        'm_profile' => array(13561,4367,12701,6405,12699,10876,11035,4527),
+        'm_profile' => array(12500,13561,4367,12701,6405,12699,10876,11035,4527),
     ),
     12577 => array(
         'm_title' => 'PORTFOLIO EDITOR UPPERCASE',
@@ -5373,7 +5385,7 @@ $config['e___4527'] = array(
         'm_profile' => array(13450,13207,4527,13439),
     ),
     13414 => array(
-        'm_title' => 'REMOVE IDEA',
+        'm_title' => 'REMOVE',
         'm_message' => '',
         'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
         'm_profile' => array(4527,13369),
@@ -5409,7 +5421,7 @@ $config['e___4527'] = array(
         'm_profile' => array(4758,4527),
     ),
     13413 => array(
-        'm_title' => 'SORT IDEA',
+        'm_title' => 'SORT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sort"></i>',
         'm_profile' => array(4527,13369),
