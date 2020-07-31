@@ -26,10 +26,11 @@ $(document).ready(function () {
         $('.x_remove').on('click', function(e) {
 
             var i__id = $(this).attr('i__id');
+            var x__type = parseInt($(this).attr('x__type'));
             var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
             if (r == true) {
                 //Save changes:
-                $.post("/x/x_remove", { x__type:parseInt($(this).attr('x__type')), i__id:i__id }, function (data) {
+                $.post("/x/x_remove", { x__type:x__type, i__id:i__id }, function (data) {
                     //Update UI to confirm with user:
                     if (!data.status) {
 
@@ -39,12 +40,12 @@ $(document).ready(function () {
                     } else {
 
                         //REMOVE BOOKMARK from UI:
-                        $('#i_cover_'+i__id).fadeOut();
+                        $('.i_class_'+x__type+'_'+i__id).fadeOut();
 
                         setTimeout(function () {
 
                             //Delete from body:
-                            $('#i_cover_'+i__id).remove();
+                            $('.i_class_'+x__type+'_'+i__id).remove();
 
                         }, 233);
                     }

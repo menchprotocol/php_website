@@ -1321,7 +1321,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $href = ( $x__type == 6255 ? '/'.$i['i__id'] : '/~'.$i['i__id'] ).( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
     $start_reading = false;
 
-    $ui  = '<div id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' list-group-item no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
 
         if($user_e){
