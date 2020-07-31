@@ -35,14 +35,12 @@
         'x__left' => config_var(12137),
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-    echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
     echo '<div class="cover-list space-left">';
     foreach($featured_i as $key => $x){
         //Show only if not in discovering list:
         echo view_i_cover($x, false);
     }
     echo '</div>';
-
 
 
 

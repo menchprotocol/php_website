@@ -101,10 +101,10 @@ if(!isset($hide_header)){
 
                     echo '<td><div class="mench_nav left_nav">';
 
-                    if(!$session_e){
+                    if(!$session_e || 1){
 
                         //LOGO ONLY
-                        echo '<span class="inline-block pull-left"><a href="/"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span>';
+                        echo '<span class="inline-block pull-left"><a href="'.( $session_e ? '/@'.$session_e['e__id'] : '/' ).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span>';
 
                     } else {
 
