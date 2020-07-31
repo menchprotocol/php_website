@@ -551,7 +551,7 @@ if($source_is_e && $counter__x > 0){
                     } else {
 
                         //No Discoveries:
-                        $focus_tab .= '<div class="alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>No ideas in your discovery list so far.</div>';
+                        $focus_tab .= '<div class="alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>No ideas in discovery list.</div>';
 
                     }
 
