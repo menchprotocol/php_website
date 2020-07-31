@@ -544,6 +544,7 @@ if($source_is_e && $counter__x > 0){
                         $focus_tab .= '<div id="list_6132" class="list-group space-left">';
                         foreach($list_x as $item){
                             $focus_tab .= view_i_cover($item, $source_is_e);
+                            array_push($my_x_ids, $item['i__id']);
                         }
                         $focus_tab .= '</div>';
 
