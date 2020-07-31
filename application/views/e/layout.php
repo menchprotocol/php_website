@@ -582,7 +582,7 @@ if($source_is_e && $counter__x > 0){
             ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
             $focus_tab .= '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
-            $focus_tab .= '<div class="cover-list space-left">';
+            $focus_tab .= '<div class="list-group cover-list space-left">';
             foreach($featured_i as $key => $x){
                 if(!in_array($x['i__id'], $my_x_ids)){
                     //Show only if not in discovering list:

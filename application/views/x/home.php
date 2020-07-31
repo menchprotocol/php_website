@@ -35,7 +35,7 @@
         'x__left' => config_var(12137),
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-    echo '<div class="cover-list space-left">';
+    echo '<div class="list-group cover-list space-left">';
     foreach($featured_i as $key => $x){
         //Show only if not in discovering list:
         echo view_i_cover($x, false);

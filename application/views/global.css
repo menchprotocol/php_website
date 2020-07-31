@@ -1594,6 +1594,10 @@ label {
         font-size: 1.3em;
     }
 
+    .cover-list{
+        padding: 0 13px;
+    }
+
     .feature-content>div{
         margin:0 0 5px 5px !important;
     }
