@@ -16,7 +16,7 @@ $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
 $counter__i = view_coins_e(12273, $e['e__id'], 0, false);
 $counter__x = view_coins_e( 6255, $e['e__id'], 0, false);
 
-if($source_is_e && $counter__x > 0 && !$superpower_10939){
+if($source_is_e && $counter__x > 0){
     //DISCOVERIES
     $active_x__type = 6255;
 } elseif($counter__e > 0 && $counter__e >= $counter__i){
