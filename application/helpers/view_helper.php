@@ -800,8 +800,8 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
             //MENCH COINS
             $ui .= '<div class="row">';
-                $ui .= '<div class="col-6">'.view_coins_i(12273, $i).' '.$e___12467[12273]['m_title'].'</div>';
-                $ui .= '<div class="col-6">'.( $i_stats['i___13292'] ? '<span class="mono-space">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
+                $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
+                $ui .= '<div class="col-8">'.( $i_stats['i___13292'] ? '<span class="mono-space">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
             $ui .= '</div>';
 
         $ui .= '</div>';
