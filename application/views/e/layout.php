@@ -472,7 +472,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             $list_i = view_coins_e(12273, $e['e__id'], 1);
 
-            $show_editor = true; //To manage idea bookmarks
+            $show_editor = $source_is_e; //To manage idea bookmarks
 
             if($counter>0 && !count($list_i)){
                 //Load Flat List since this source has ideas but nothing bookmarked:
@@ -538,7 +538,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                         $focus_tab .= '<div id="list_6132" class="list-group space-left">';
                         foreach($list_x as $item){
-                            $focus_tab .= view_i_cover($item, true);
+                            $focus_tab .= view_i_cover($item, $source_is_e);
                         }
                         $focus_tab .= '</div>';
 
