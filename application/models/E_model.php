@@ -379,16 +379,16 @@ class E_model extends CI_Model
 
     function create_session($e__id){
 
-        $session_e = superpower_assigned();
-        if(!$session_e){
+        $user_e = superpower_assigned();
+        if(!$user_e){
             return false;
         }
 
         //Assign to Creator:
         $this->X_model->create(array(
             'x__type' => e_x__type(),
-            'x__source' => $session_e['e__id'],
-            'x__up' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
+            'x__up' => $user_e['e__id'],
             'x__down' => $e__id,
         ));
 
@@ -398,7 +398,7 @@ class E_model extends CI_Model
             //Add Pending Review:
             $this->X_model->create(array(
                 'x__type' => e_x__type(),
-                'x__source' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));
@@ -406,7 +406,7 @@ class E_model extends CI_Model
             //SOURCE PENDING MODERATION TYPE:
             $this->X_model->create(array(
                 'x__type' => 7504, //SOURCE PENDING MODERATION
-                'x__source' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));

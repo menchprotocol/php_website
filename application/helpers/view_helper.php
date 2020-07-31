@@ -240,7 +240,7 @@ function view_i_notes($x, $note_e = false)
 
 
     $CI =& get_instance();
-    $session_e = superpower_assigned();
+    $user_e = superpower_assigned();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $note_e = ( $note_e || superpower_active(10984, true) );
@@ -253,7 +253,7 @@ function view_i_notes($x, $note_e = false)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $x['x__id'] . '">';
-    $ui .= $CI->X_model->message_send($x['x__message'], $session_e, $x['x__right']);
+    $ui .= $CI->X_model->message_send($x['x__message'], $user_e, $x['x__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -378,8 +378,8 @@ function view_x($x, $is_parent_tr = false)
     $e___4593 = $CI->config->item('e___4593'); //Transaction Type
     $e___4341 = $CI->config->item('e___4341'); //Transaction Table
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
-    $session_e = superpower_assigned();
-    $hide_sensitive = (in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$session_e || $x['x__source']!=$session_e['e__id']) && !superpower_active(12701, true));
+    $user_e = superpower_assigned();
+    $hide_sensitive = (in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$user_e || $x['x__source']!=$user_e['e__id']) && !superpower_active(12701, true));
 
 
 
@@ -732,8 +732,8 @@ function view_icon_i_x($completion_percentage){
 
     $CI =& get_instance();
     $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
-    $recipient_e = superpower_assigned();
-    if(!$recipient_e){
+    $user_e = superpower_assigned();
+    if(!$user_e){
         //DISCOVER GUEST
         $x_legend = 12273;
     } elseif($completion_percentage==0){
@@ -751,19 +751,19 @@ function view_icon_i_x($completion_percentage){
 
 }
 
-function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_rate = null, $recipient_e = false, $extra_class = null)
+function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_rate = null, $user_e = false, $extra_class = null)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
-    if(!$recipient_e){
-        $recipient_e = superpower_assigned();
+    if(!$user_e){
+        $user_e = superpower_assigned();
     }
 
 
     if(!$completion_rate){
-        if($recipient_e){
-            $completion_rate = $CI->X_model->completion_progress($recipient_e['e__id'], $i);
+        if($user_e){
+            $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
         } else {
             $completion_rate['completion_percentage'] = 0;
         }
@@ -771,7 +771,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
     $i_stats = i_stats($i['i__metadata']);
     $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
-    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $recipient_e );
+    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $user_e );
     $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
@@ -973,7 +973,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 {
 
     $CI =& get_instance();
-    $session_e = superpower_assigned();
+    $user_e = superpower_assigned();
     $e___6186 = $CI->config->item('e___6186');
     $e___4737 = $CI->config->item('e___4737'); //IDEA STATUS
     $e___7585 = $CI->config->item('e___7585');
@@ -1067,7 +1067,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
 
     if($message_input && trim($message_input)!=$CI->uri->segment(1)){
-        $ui .= '<div class="i-footer hideIfEmpty">' . $CI->X_model->message_send($message_input, $session_e) . '</div>';
+        $ui .= '<div class="i-footer hideIfEmpty">' . $CI->X_model->message_send($message_input, $user_e) . '</div>';
     }
 
 
@@ -1148,7 +1148,7 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($i, $is_next, $recipient_e, $prefix_statement = null){
+function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -1187,7 +1187,7 @@ function view_i_note_mix($x__type, $i_notes){
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $handles_url = (in_array($x__type, $CI->config->item('n___7551')) || in_array($x__type, $CI->config->item('n___4986')));
-    $session_e = superpower_assigned();
+    $user_e = superpower_assigned();
     $ui = '';
 
 
@@ -1203,7 +1203,7 @@ function view_i_note_mix($x__type, $i_notes){
 
     //List current notes:
     foreach($i_notes as $i_notes) {
-        $ui .= view_i_notes($i_notes, ($i_notes['x__source']==$session_e['e__id']));
+        $ui .= view_i_notes($i_notes, ($i_notes['x__source']==$user_e['e__id']));
     }
 
     //ADD NEW:
@@ -1272,9 +1272,9 @@ function view_12687($e__id){
 
 function view_unauthorized_message($superpower_e__id = 0){
 
-    $session_e = superpower_assigned($superpower_e__id);
+    $user_e = superpower_assigned($superpower_e__id);
 
-    if(!$session_e){
+    if(!$user_e){
         if(!$superpower_e__id){
 
             //Missing Session
@@ -1316,7 +1316,7 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
 
-    $recipient_e = superpower_assigned();
+    $user_e = superpower_assigned();
     $i_stats = i_stats($i['i__metadata']);
     $href = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
     $start_reading = false;
@@ -1324,8 +1324,8 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
     $ui  = '<div id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
 
-        if($recipient_e){
-            $completion_rate = $CI->X_model->completion_progress($recipient_e['e__id'], $i);
+        if($user_e){
+            $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
             $start_reading = $completion_rate['completion_percentage']>0;
             if($start_reading){
                 $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
@@ -1411,7 +1411,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 {
 
     $CI =& get_instance();
-    $session_e = superpower_assigned();
+    $user_e = superpower_assigned();
     $e___6177 = $CI->config->item('e___6177'); //Source Status
     $e___4592 = $CI->config->item('e___4592');
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
@@ -1437,11 +1437,11 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $is_public = in_array($e['e__status'], $CI->config->item('n___7357'));
     $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
     //Allow source to see all their own transactions:
-    $is_hidden = (!$session_e || $session_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
+    $is_hidden = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $e_url = ( $is_x_progress ? '/'.$CI->uri->segment(1).'?filter__e='.$e['e__id'] : '/@'.$e['e__id'] );
 
 
-    if(!$session_e && (!$is_public || !$is_x_published)){
+    if(!$user_e && (!$is_public || !$is_x_published)){
         //Not logged in, so should only see published:
         return false;
     } elseif($is_hidden && !superpower_assigned(12701)){

@@ -65,7 +65,7 @@ if($search_for_set){
                 //Update idea:
                 $this->I_model->update($in['i__id'], array(
                     'i__title' => $i__title_validation['i_clean_title'],
-                ), true, $session_e['e__id']);
+                ), true, $user_e['e__id']);
             }
 
             echo '<tr class="panel-title down-border">';

@@ -1,6 +1,6 @@
 <?php
 
-$session_e = superpower_assigned();
+$user_e = superpower_assigned();
 $first_segment = $this->uri->segment(1);
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
@@ -19,9 +19,9 @@ $e___13479 = $this->config->item('e___13479');
     <script type="text/javascript">
     <?php
     //USER VARIABLES
-    echo ' var js_session_superpowers_assigned = ' . json_encode( ($session_e && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
-    echo ' var js_pl_id = ' . ( isset($session_e['e__id']) ? $session_e['e__id'] : '0' ) . '; ';
-    echo ' var js_pl_name = \'' . ( $session_e ? $session_e['e__title'] : '' ) . '\'; ';
+    echo ' var js_session_superpowers_assigned = ' . json_encode( ($user_e && count($this->session->userdata('session_superpowers_assigned'))) ? $this->session->userdata('session_superpowers_assigned') : array() ) . '; ';
+    echo ' var js_pl_id = ' . ( isset($user_e['e__id']) ? $user_e['e__id'] : '0' ) . '; ';
+    echo ' var js_pl_name = \'' . ( $user_e ? $user_e['e__title'] : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
     //JAVASCRIPT PLATFORM MEMORY
@@ -100,10 +100,10 @@ if(!isset($hide_header)){
 
                     echo '<td><div class="mench_nav left_nav">';
 
-                    if(!$session_e || 1){
+                    if(!$user_e || 1){
 
                         //LOGO ONLY
-                        echo '<span class="inline-block pull-left"><a href="'.( $session_e ? '/@'.$session_e['e__id'] : '/' ).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span>';
+                        echo '<span class="inline-block pull-left"><a href="'.( $user_e ? '/@'.$user_e['e__id'] : '/' ).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span>';
 
                     } else {
 
@@ -112,10 +112,10 @@ if(!isset($hide_header)){
 
                             if($x__type==13560){
 
-                                $m['m_icon'] = $session_e['e__icon'];
-                                $m['m_title'] = $session_e['e__title'];
-                                $href = 'href="/@'.$session_e['e__id'].'"';
-                                $is_active = ( $first_segment=='@'.$session_e['e__id'] );
+                                $m['m_icon'] = $user_e['e__icon'];
+                                $m['m_title'] = $user_e['e__title'];
+                                $href = 'href="/@'.$user_e['e__id'].'"';
+                                $is_active = ( $first_segment=='@'.$user_e['e__id'] );
 
                             } elseif(in_array($x__type, $this->config->item('n___10876'))){
 
@@ -156,7 +156,7 @@ if(!isset($hide_header)){
 
 
                     //u NAVIGATION:
-                    if (!$session_e) {
+                    if (!$user_e) {
 
                         //GUESTS
 

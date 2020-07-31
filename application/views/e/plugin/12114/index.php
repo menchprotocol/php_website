@@ -84,8 +84,8 @@ $subscriber_filters = array(
 
 //Should we limit the scope?
 if($is_u_request){
-    $session_e = superpower_assigned();
-    $subscriber_filters['x__down'] = $session_e['e__id'];
+    $user_e = superpower_assigned();
+    $subscriber_filters['x__down'] = $user_e['e__id'];
 }
 
 

@@ -37,7 +37,7 @@ if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
                 $replaced += $this->E_model->update($en['e__id'], array(
                     'e__icon' => str_ireplace($_GET['search_for'], $_GET['replace_with'], $en['e__icon']),
-                ), false, $session_e['e__id']);
+                ), false, $user_e['e__id']);
 
             }
 

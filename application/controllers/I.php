@@ -16,8 +16,8 @@ class I extends CI_Controller {
     function i_create(){
 
         $e___6201 = $this->config->item('e___6201'); //Idea Table
-        $session_e = superpower_assigned(10939);
-        if (!$session_e) {
+        $user_e = superpower_assigned(10939);
+        if (!$user_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -43,7 +43,7 @@ class I extends CI_Controller {
 
 
         //Create Idea:
-        $i = $this->I_model->x_or_create($i__title_validation['i_clean_title'], $session_e['e__id']);
+        $i = $this->I_model->x_or_create($i__title_validation['i_clean_title'], $user_e['e__id']);
 
 
         //Move Existing Bookmarks by one:
@@ -51,21 +51,21 @@ class I extends CI_Controller {
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 10573, //MY IDEAS
-            'x__up' => $session_e['e__id'], //For this user
+            'x__up' => $user_e['e__id'], //For this user
         ), array(), 0, 0, array('x__sort' => 'ASC')) as $u_i){
             $this->X_model->update($u_i['x__id'], array(
                 'x__sort' => $x__sort,
-            ), $session_e['e__id']);
+            ), $user_e['e__id']);
             $x__sort++;
         }
 
         //Add to my ideas:
         $this->X_model->create(array(
             'x__type' => 10573, //MY IDEAS
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__right' => $i['new_i__id'],
-            'x__up' => $session_e['e__id'],
-            'x__message' => '@'.$session_e['e__id'],
+            'x__up' => $user_e['e__id'],
+            'x__message' => '@'.$user_e['e__id'],
             'x__sort' => 1, //Top of the list
         ), true);
 
@@ -102,10 +102,10 @@ class I extends CI_Controller {
         }
 
 
-        $session_e = superpower_assigned(10939); //Idea Pen?
+        $user_e = superpower_assigned(10939); //Idea Pen?
         $is_public = in_array($is[0]['i__status'], $this->config->item('n___7355'));
 
-        if(!$session_e){
+        if(!$user_e){
             if($is_public){
                 return redirect_message('/'.$i__id);
             } else {
@@ -118,7 +118,7 @@ class I extends CI_Controller {
         if (superpower_active(13403, true) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->I_model->mass_update($i__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_e['e__id']);
+            $process_mass_action = $this->I_model->mass_update($i__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $user_e['e__id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>';
@@ -130,7 +130,7 @@ class I extends CI_Controller {
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
-                'x__source' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
                 'x__type' => 4993, //User Opened Idea
                 'x__right' => $i__id,
                 'x__sort' => $new_order,
@@ -148,7 +148,7 @@ class I extends CI_Controller {
         ));
         $this->load->view('i/layout', array(
             'i_focus' => $is[0],
-            'session_e' => $session_e,
+            'user_e' => $user_e,
         ));
         $this->load->view('footer');
 
@@ -158,12 +158,12 @@ class I extends CI_Controller {
     function i_e_request($i__id){
 
         //Make sure it's a logged in user:
-        $session_e = superpower_assigned(null, true);
+        $user_e = superpower_assigned(null, true);
 
         if(count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 12450,
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__right' => $i__id,
         )))){
             return redirect_message('/~'.$i__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
@@ -173,7 +173,7 @@ class I extends CI_Controller {
         //Inform moderators:
         $this->X_model->create(array(
             'x__type' => 12450,
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__right' => $i__id,
         ));
 
@@ -185,14 +185,14 @@ class I extends CI_Controller {
     function i_e_add($i__id){
 
         //Make sure it's a logged in user:
-        $session_e = superpower_assigned(10984, true);
+        $user_e = superpower_assigned(10984, true);
 
         //Idea Source:
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA SOURCES
-            'x__source' => $session_e['e__id'],
-            'x__up' => $session_e['e__id'],
-            'x__message' => '@'.$session_e['e__id'],
+            'x__source' => $user_e['e__id'],
+            'x__up' => $user_e['e__id'],
+            'x__message' => '@'.$user_e['e__id'],
             'x__right' => $i__id,
         ));
 
@@ -252,8 +252,8 @@ class I extends CI_Controller {
         $delete_element = null;
 
         //Authenticate User:
-        $session_e = superpower_assigned();
-        if (!$session_e) {
+        $user_e = superpower_assigned();
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -308,7 +308,7 @@ class I extends CI_Controller {
             //All good, Update Transaction:
             $this->X_model->update($_POST['x__id'], array(
                 $var_index[$_POST['element_id']] => $_POST['new_e__id'],
-            ), $session_e['e__id'], end($x_update_types));
+            ), $user_e['e__id'], end($x_update_types));
 
         } else {
 
@@ -347,19 +347,19 @@ class I extends CI_Controller {
                     }
 
                     //Delete all transactions:
-                    $this->I_model->remove($_POST['i__id'] , $session_e['e__id']);
+                    $this->I_model->remove($_POST['i__id'] , $user_e['e__id']);
 
                 //Notify moderators of Feature request? Only if they don't have the powers themselves:
                 } elseif(in_array($_POST['new_e__id'], $this->config->item('n___12138')) && !superpower_assigned(10984) && !count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 12453, //Idea Feature Request
-                        'x__source' => $session_e['e__id'],
+                        'x__source' => $user_e['e__id'],
                         'x__right' => $_POST['i__id'],
                     )))){
 
                     $this->X_model->create(array(
                         'x__type' => 12453, //Idea Feature Request
-                        'x__source' => $session_e['e__id'],
+                        'x__source' => $user_e['e__id'],
                         'x__right' => $_POST['i__id'],
                     ));
 
@@ -369,7 +369,7 @@ class I extends CI_Controller {
             //Update Idea:
             $this->I_model->update($_POST['i__id'], array(
                 $var_index[$_POST['element_id']] => $_POST['new_e__id'],
-            ), true, $session_e['e__id']);
+            ), true, $user_e['e__id']);
 
         }
 
@@ -385,8 +385,8 @@ class I extends CI_Controller {
     function i_remove(){
 
         //Authenticate User:
-        $session_e = superpower_assigned();
-        if (!$session_e) {
+        $user_e = superpower_assigned();
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -406,7 +406,7 @@ class I extends CI_Controller {
         //Delete this transaction:
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173, //Transaction Removed
-        ), $session_e['e__id'], 10686 /* Idea Transaction Unpublished */);
+        ), $user_e['e__id'], 10686 /* Idea Transaction Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -428,8 +428,8 @@ class I extends CI_Controller {
          * */
 
         //Authenticate User:
-        $session_e = superpower_assigned(10939);
-        if (!$session_e) {
+        $user_e = superpower_assigned(10939);
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -487,7 +487,7 @@ class I extends CI_Controller {
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->I_model->x_or_create(trim($_POST['i__title']), $session_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_x_child_id']));
+        return view_json($this->I_model->x_or_create(trim($_POST['i__title']), $user_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_x_child_id']));
 
     }
 
@@ -495,8 +495,8 @@ class I extends CI_Controller {
     {
 
         //Authenticate User:
-        $session_e = superpower_assigned(10939);
-        if (!$session_e) {
+        $user_e = superpower_assigned(10939);
+        if (!$user_e) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -528,7 +528,7 @@ class I extends CI_Controller {
                 foreach($_POST['new_x__sorts'] as $rank => $x__id) {
                     $this->X_model->update(intval($x__id), array(
                         'x__sort' => intval($rank),
-                    ), $session_e['e__id'], 10675 /* Ideas Ordered by User */);
+                    ), $user_e['e__id'], 10675 /* Ideas Ordered by User */);
                 }
 
                 //Display message:
@@ -544,9 +544,9 @@ class I extends CI_Controller {
     {
 
         //Authenticate User:
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
 
-        if (!$session_e) {
+        if (!$user_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -583,7 +583,7 @@ class I extends CI_Controller {
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $session_e, $_POST['note_type_id'], $_POST['i__id']);
+        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $user_e, $_POST['note_type_id'], $_POST['i__id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -592,7 +592,7 @@ class I extends CI_Controller {
 
         //Create Message:
         $x = $this->X_model->create(array(
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__sort' => 1 + $this->X_model->max_sort(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type' => intval($_POST['note_type_id']),
@@ -611,8 +611,8 @@ class I extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'message' => view_i_notes(array_merge($session_e, $x, array(
-                'x__down' => $session_e['e__id'],
+            'message' => view_i_notes(array_merge($user_e, $x, array(
+                'x__down' => $user_e['e__id'],
             )), true),
         ));
     }
@@ -624,8 +624,8 @@ class I extends CI_Controller {
         //TODO: MERGE WITH FUNCTION x_upload()
 
         //Authenticate User:
-        $session_e = superpower_assigned();
-        if (!$session_e) {
+        $user_e = superpower_assigned();
+        if (!$user_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -694,7 +694,7 @@ class I extends CI_Controller {
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $session_e['e__id'], $_FILES[$_POST['upload_type']], true);
+        $cdn_status = upload_to_cdn($temp_local, $user_e['e__id'], $_FILES[$_POST['upload_type']], true);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -703,7 +703,7 @@ class I extends CI_Controller {
 
         //Create message:
         $x = $this->X_model->create(array(
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__type' => $_POST['note_type_id'],
             'x__up' => $cdn_status['cdn_e']['e__id'],
             'x__right' => intval($_POST['i__id']),
@@ -724,8 +724,8 @@ class I extends CI_Controller {
         //Echo message:
         view_json(array(
             'status' => 1,
-            'message' => view_i_notes(array_merge($session_e, $new_messages[0], array(
-                'x__down' => $session_e['e__id'],
+            'message' => view_i_notes(array_merge($user_e, $new_messages[0], array(
+                'x__down' => $user_e['e__id'],
             )), true),
         ));
 
@@ -738,8 +738,8 @@ class I extends CI_Controller {
     {
 
         //Authenticate User:
-        $session_e = superpower_assigned(10939);
-        if (!$session_e) {
+        $user_e = superpower_assigned(10939);
+        if (!$user_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -764,7 +764,7 @@ class I extends CI_Controller {
                 //Log update and give credit to the session User:
                 $this->X_model->update($x__id, array(
                     'x__sort' => intval($x__sort),
-                ), $session_e['e__id'], 10676 /* IDEA NOTES Ordered */);
+                ), $user_e['e__id'], 10676 /* IDEA NOTES Ordered */);
             }
         }
 
@@ -779,8 +779,8 @@ class I extends CI_Controller {
     {
 
         //Authenticate User:
-        $session_e = superpower_assigned();
-        if (!$session_e) {
+        $user_e = superpower_assigned();
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -831,7 +831,7 @@ class I extends CI_Controller {
         }
 
         //Validate new message:
-        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $session_e, $messages[0]['x__type'], $_POST['i__id']);
+        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $user_e, $messages[0]['x__type'], $_POST['i__id']);
         if (!$msg_validation['status']) {
 
             //There was some sort of an error:
@@ -848,7 +848,7 @@ class I extends CI_Controller {
                 'x__up' => $msg_validation['x__up'],
                 'x__down' => $msg_validation['x__down'],
 
-            ), $session_e['e__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['input_message']));
+            ), $user_e['e__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['input_message']));
 
         }
 
@@ -884,14 +884,14 @@ class I extends CI_Controller {
                 //yes, do so and return results:
                 $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
                     'x__status' => $_POST['message_x__status'],
-                ), $session_e['e__id'], 10677 /* IDEA NOTES updated Status */);
+                ), $user_e['e__id'], 10677 /* IDEA NOTES updated Status */);
 
             } else {
 
                 //New status is no longer active, so delete the IDEA NOTES:
                 $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
                     'x__status' => $_POST['message_x__status'],
-                ), $session_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
+                ), $user_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
 
                 //Return success:
                 if($affected_rows > 0){
@@ -916,7 +916,7 @@ class I extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'delete_from_ui' => 0,
-            'message' => $this->X_model->message_send($msg_validation['input_message'], $session_e, $_POST['i__id']),
+            'message' => $this->X_model->message_send($msg_validation['input_message'], $user_e, $_POST['i__id']),
             'message_new_status_icon' => '<span title="' . $e___6186[$_POST['message_x__status']]['m_title'] . ': ' . $e___6186[$_POST['message_x__status']]['m_message'] . '" data-toggle="tooltip" data-placement="top">' . $e___6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check-circle"></i> Saved</span>',
         ));

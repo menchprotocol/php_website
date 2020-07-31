@@ -297,10 +297,10 @@ class X_model extends CI_Model
 
                     if($x_added>0 || $x_edited>0 || $x_deleted>0){
                         //See if Session needs to be updated:
-                        $session_e = superpower_assigned();
-                        if($session_e && $session_e['e__id']==$add_fields['x__source']){
+                        $user_e = superpower_assigned();
+                        if($user_e && $user_e['e__id']==$add_fields['x__source']){
                             //Yes, update session:
-                            $this->E_model->activate_session($session_e, true);
+                            $this->E_model->activate_session($user_e, true);
                         }
                     }
                 }
@@ -684,7 +684,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_send($message_input, $recipient_e = array(), $message_i__id = 0, $simple_version = false)
+    function message_send($message_input, $user_e = array(), $message_i__id = 0, $simple_version = false)
     {
 
         /*
@@ -698,7 +698,7 @@ class X_model extends CI_Model
          *                          source and then referenced within a message.
          *
          *
-         * - $recipient_e:         The source object that this message is supposed
+         * - $user_e:         The source object that this message is supposed
          *                          to be delivered to. May be an empty array for
          *                          when we want to show these messages to guests,
          *                          and it may contain the full source object or it
@@ -714,7 +714,7 @@ class X_model extends CI_Model
         }
 
         //Validate message:
-        $msg_validation = $this->X_model->message_compile($message_input, $recipient_e, 0, $message_i__id, false, $simple_version);
+        $msg_validation = $this->X_model->message_compile($message_input, $user_e, 0, $message_i__id, false, $simple_version);
 
 
         //Did we have ane error in message validation?
@@ -723,11 +723,11 @@ class X_model extends CI_Model
             //Log Error Transaction:
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__source' => (isset($recipient_e['e__id']) ? $recipient_e['e__id'] : 0),
+                'x__source' => (isset($user_e['e__id']) ? $user_e['e__id'] : 0),
                 'x__message' => 'message_compile() returned error [' . $msg_validation['message'] . '] for input message [' . $message_input . ']',
                 'x__metadata' => array(
                     'input_message' => $message_input,
-                    'recipient_e' => $recipient_e,
+                    'user_e' => $user_e,
                     'message_i__id' => $message_i__id
                 ),
             ));
@@ -745,7 +745,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_compile($message_input, $recipient_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
+    function message_compile($message_input, $user_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
     {
 
         /*
@@ -758,8 +758,8 @@ class X_model extends CI_Model
 
 
         //Try to fetch session if recipient not provided:
-        if(!isset($recipient_e['e__id'])){
-            $recipient_e = superpower_assigned();
+        if(!isset($user_e['e__id'])){
+            $user_e = superpower_assigned();
         }
 
         $e___6177 = $this->config->item('e___6177');
@@ -802,7 +802,7 @@ class X_model extends CI_Model
         if($strict_validation && substr_count($message_input, '@')==1 && substr_count($message_input, '|')==1){
             //We Seem to have a creation mode:
             $e__title = one_two_explode('@','|',$message_input);
-            $added_e = $this->E_model->verify_create($e__title, $recipient_e['e__id']);
+            $added_e = $this->E_model->verify_create($e__title, $user_e['e__id']);
             if(!$added_e['status']){
                 return $added_e;
             } else {
@@ -872,7 +872,7 @@ class X_model extends CI_Model
             foreach($string_references['ref_urls'] as $url_key => $input_url) {
 
                 //No source, but we have a URL that we should turn into an source if not previously:
-                $url_e = $this->E_model->url($input_url, ( isset($recipient_e['e__id']) ? $recipient_e['e__id'] : 0 ));
+                $url_e = $this->E_model->url($input_url, ( isset($user_e['e__id']) ? $user_e['e__id'] : 0 ));
 
                 //Did we have an error?
                 if (!$url_e['status'] || !isset($url_e['e_url']['e__id']) || intval($url_e['e_url']['e__id']) < 1) {
@@ -1552,14 +1552,14 @@ class X_model extends CI_Model
     }
 
 
-    function i_home($i__id, $recipient_e){
+    function i_home($i__id, $user_e){
 
         $in_my_x = false;
 
-        if($recipient_e['e__id'] > 0){
+        if($user_e['e__id'] > 0){
 
             //Fetch entire Discoveries:
-            $u_x_ids = $this->X_model->ids($recipient_e['e__id']);
+            $u_x_ids = $this->X_model->ids($user_e['e__id']);
             $in_my_x = in_array($i__id, $u_x_ids);
 
             if(!$in_my_x){

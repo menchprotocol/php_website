@@ -56,7 +56,7 @@ if($search_for_set){
                     //Update idea:
                     $this->E_model->update($en['e__id'], array(
                         'e__title' => $new_outcome,
-                    ), true, $session_e['e__id']);
+                    ), true, $user_e['e__id']);
                 }
             }
 

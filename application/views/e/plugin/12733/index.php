@@ -1,7 +1,7 @@
 <?php
 
 if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
-    $_GET['e__id'] = $session_e['e__id'];
+    $_GET['e__id'] = $user_e['e__id'];
 }
 
 if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {

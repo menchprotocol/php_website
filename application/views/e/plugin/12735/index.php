@@ -40,7 +40,7 @@ foreach($this->I_model->fetch() as $in) {
     if(!count($i_creators)) {
         $stats['creator_missing']++;
         $this->X_model->create(array(
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__right' => $in['i__id'],
             'x__message' => $in['i__title'],
             'x__type' => 4250, //New Idea Created
@@ -52,7 +52,7 @@ foreach($this->I_model->fetch() as $in) {
 
         //Missing SOURCE
         $stats['e_missing']++;
-        $creator_id = ( count($i_e) ? $i_e[0]['x__source'] : $session_e['x__up'] );
+        $creator_id = ( count($i_e) ? $i_e[0]['x__source'] : $user_e['x__up'] );
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA SOURCES
             'x__source' => $creator_id,
@@ -68,7 +68,7 @@ foreach($this->I_model->fetch() as $in) {
             //Delete this transaction:
             $stats['note_deleted'] += $this->X_model->update($i_note['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
-            ), $session_e['e__id'], 10686 /* Idea Transaction Unpublished */);
+            ), $user_e['e__id'], 10686 /* Idea Transaction Unpublished */);
         }
 
     }

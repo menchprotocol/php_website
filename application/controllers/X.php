@@ -16,9 +16,9 @@ class X extends CI_Controller
 
     function index(){
 
-        $session_e = superpower_assigned();
-        if($session_e){
-            redirect_message('/@'.$session_e['e__id']);
+        $user_e = superpower_assigned();
+        if($user_e){
+            redirect_message('/@'.$user_e['e__id']);
         }
 
         //Load header:
@@ -66,7 +66,7 @@ class X extends CI_Controller
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
         $query_offset = (($page_num-1)*config_var(11064));
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
 
         $message = '';
 
@@ -100,13 +100,13 @@ class X extends CI_Controller
 
                 $message .= view_x($x);
 
-                if($session_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_search'])>0){
+                if($user_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_search'])>0){
 
                     $new_content = str_replace($_POST['x__message_search'],trim($_POST['x__message_replace']),$x['x__message']);
 
                     $this->X_model->update($x['x__id'], array(
                         'x__message' => $new_content,
-                    ), $session_e['e__id'], 12360, update_description($x['x__message'], $new_content));
+                    ), $user_e['e__id'], 12360, update_description($x['x__message'], $new_content));
 
                     $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_search'].'] with ['.trim($_POST['x__message_replace']).']</div>';
 
@@ -197,10 +197,10 @@ class X extends CI_Controller
     function x_set_text(){
 
         //Authenticate User:
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
         $e___12112 = $this->config->item('e___12112');
 
-        if (!$session_e) {
+        if (!$user_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -243,7 +243,7 @@ class X extends CI_Controller
             //All good, go ahead and update:
             $this->I_model->update($_POST['object__id'], array(
                 'i__title' => trim($_POST['field_value']),
-            ), true, $session_e['e__id']);
+            ), true, $user_e['e__id']);
 
             return view_json(array(
                 'status' => 1,
@@ -274,10 +274,10 @@ class X extends CI_Controller
             //All good, go ahead and update:
             $this->E_model->update($es[0]['e__id'], array(
                 'e__title' => $e__title_validate['e__title_clean'],
-            ), true, $session_e['e__id']);
+            ), true, $user_e['e__id']);
 
             //Reset user session data if this data belongs to the logged-in user:
-            if ($es[0]['e__id'] == $session_e['e__id']) {
+            if ($es[0]['e__id'] == $user_e['e__id']) {
                 //Re-activate Session with new data:
                 $es[0]['e__title'] = $e__title_validate['e__title_clean'];
                 $this->E_model->activate_session($es[0], true);
@@ -332,7 +332,7 @@ class X extends CI_Controller
                 //All good, go ahead and update:
                 $this->I_model->update($_POST['object__id'], array(
                     'i__duration' => $_POST['field_value'],
-                ), true, $session_e['e__id']);
+                ), true, $user_e['e__id']);
 
                 return view_json(array(
                     'status' => 1,
@@ -376,7 +376,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $session_e['e__id'], 10663 /* Idea Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m_title'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $user_e['e__id'], 10663 /* Idea Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m_title'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return view_json(array(
                     'status' => 1,
@@ -418,7 +418,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $session_e['e__id'], 10664 /* Idea Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m_title'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $user_e['e__id'], 10664 /* Idea Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m_title'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return view_json(array(
                     'status' => 1,
@@ -444,21 +444,21 @@ class X extends CI_Controller
 
         //Adds Idea to the Users Discovery
 
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
         //Check to see if added to Discovery for logged-in users:
-        if(!$session_e){
+        if(!$user_e){
             return redirect_message('/e/signin/'.$i__id);
         }
 
         //Add this Idea to their Discovery If not there:
         $i__id_added = $i__id;
         $success_message = null;
-        $in_my_x = $this->X_model->i_home($i__id, $session_e);
+        $in_my_x = $this->X_model->i_home($i__id, $user_e);
 
         if(!$in_my_x){
-            $i__id_added = $this->X_model->start($session_e['e__id'], $i__id);
+            $i__id_added = $this->X_model->start($user_e['e__id'], $i__id);
             if(!$i__id_added){
                 //Failed to add to Discovery:
                 return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>FAILED to add to '.$e___11035[12969]['m_title'].'.</div>');
@@ -472,8 +472,8 @@ class X extends CI_Controller
 
     function x_next($i__id = 0){
 
-        $session_e = superpower_assigned();
-        if(!$session_e){
+        $user_e = superpower_assigned();
+        if(!$user_e){
             return redirect_message('/e/signin/');
         }
 
@@ -491,14 +491,14 @@ class X extends CI_Controller
                 $x_completes = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-                    'x__source' => $session_e['e__id'],
+                    'x__source' => $user_e['e__id'],
                     'x__left' => $is[0]['i__id'],
                 ));
 
                 if(!count($x_completes)){
                     $this->X_model->mark_complete($is[0], array(
                         'x__type' => 4559, //DISCOVER MESSAGES
-                        'x__source' => $session_e['e__id'],
+                        'x__source' => $user_e['e__id'],
                         'x__left' => $is[0]['i__id'],
                     ));
                 }
@@ -506,7 +506,7 @@ class X extends CI_Controller
         }
 
         //Go to Next Idea:
-        $next_i__id = $this->X_model->find_next($session_e['e__id'], $is[0]);
+        $next_i__id = $this->X_model->find_next($user_e['e__id'], $is[0]);
         if($next_i__id > 0){
             return redirect_message('/'.$next_i__id.'?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ));
         } else {
@@ -612,8 +612,8 @@ class X extends CI_Controller
         //TODO: MERGE WITH FUNCTION i_note_file()
 
         //Authenticate User:
-        $session_e = superpower_assigned();
-        if (!$session_e) {
+        $user_e = superpower_assigned();
+        if (!$user_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -676,7 +676,7 @@ class X extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $session_e['e__id'], $_FILES[$_POST['upload_type']], true, $is[0]['i__title'].' BY '.$session_e['e__title']);
+        $cdn_status = upload_to_cdn($temp_local, $user_e['e__id'], $_FILES[$_POST['upload_type']], true, $is[0]['i__title'].' BY '.$user_e['e__title']);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -688,11 +688,11 @@ class X extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $is[0]['i__id'],
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Removed
-            ), $session_e['e__id'], 12129 /* DISCOVER ANSWER DELETED */);
+            ), $user_e['e__id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
 
         //Save new answer:
@@ -700,7 +700,7 @@ class X extends CI_Controller
         $this->X_model->mark_complete($is[0], array(
             'x__type' => 12117,
             'x__left' => $is[0]['i__id'],
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__message' => $new_message,
             'x__up' => $cdn_status['cdn_e']['e__id'],
         ));
@@ -716,8 +716,8 @@ class X extends CI_Controller
 
     function x_reply(){
 
-        $session_e = superpower_assigned();
-        if (!$session_e) {
+        $user_e = superpower_assigned();
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -751,18 +751,18 @@ class X extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
             'x__left' => $is[0]['i__id'],
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Removed
-            ), $session_e['e__id'], 12129 /* DISCOVER ANSWER DELETED */);
+            ), $user_e['e__id'], 12129 /* DISCOVER ANSWER DELETED */);
         }
 
         //Save new answer:
         $this->X_model->mark_complete($is[0], array(
             'x__type' => 6144,
             'x__left' => $is[0]['i__id'],
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__message' => $_POST['x_reply'],
         ));
 
@@ -777,8 +777,8 @@ class X extends CI_Controller
 
     function x_select(){
 
-        $session_e = superpower_assigned();
-        if (!$session_e) {
+        $user_e = superpower_assigned();
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -796,7 +796,7 @@ class X extends CI_Controller
         }
 
         //Save answer:
-        return view_json($this->X_model->answer($session_e['e__id'], $_POST['focus_i__id'], $_POST['selection_i__id']));
+        return view_json($this->X_model->answer($user_e['e__id'], $_POST['focus_i__id'], $_POST['selection_i__id']));
 
     }
 
@@ -805,13 +805,13 @@ class X extends CI_Controller
 
     function x_clear_coins(){
 
-        $session_e = superpower_assigned(null, true);
+        $user_e = superpower_assigned(null, true);
 
         //Fetch their current progress transactions:
         $progress_x = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
         ), array(), 0);
 
         if(count($progress_x) > 0){
@@ -823,7 +823,7 @@ class X extends CI_Controller
             $clear_all_x = $this->X_model->create(array(
                 'x__message' => $message,
                 'x__type' => 6415,
-                'x__source' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
             ));
 
             //Delete all progressions:
@@ -831,7 +831,7 @@ class X extends CI_Controller
                 $this->X_model->update($progress_x['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
                     'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
-                ), $session_e['e__id'], 6415 /* Reset All Discoveries */);
+                ), $user_e['e__id'], 6415 /* Reset All Discoveries */);
             }
 
         } else {
@@ -851,8 +851,8 @@ class X extends CI_Controller
 
         //See if we need to add or remove a highlight:
         //Authenticate User:
-        $session_e = superpower_assigned();
-        if (!$session_e) {
+        $user_e = superpower_assigned();
+        if (!$user_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -882,7 +882,7 @@ class X extends CI_Controller
         //First try to remove:
         $removed = 0;
         foreach($this->X_model->fetch(array(
-            'x__up' => $session_e['e__id'],
+            'x__up' => $user_e['e__id'],
             'x__right' => $_POST['i__id'],
             'x__type' => 12896, //SAVED
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -890,16 +890,16 @@ class X extends CI_Controller
             $removed++;
             $this->X_model->update($remove_saved['x__id'], array(
                 'x__status' => 6173, //Transaction Removed
-            ), $session_e['e__id'], 12906 /* UNSAVED */);
+            ), $user_e['e__id'], 12906 /* UNSAVED */);
         }
 
         //Need to add?
         if(!$removed){
             //Then we must add:
             $this->X_model->create(array(
-                'x__source' => $session_e['e__id'],
-                'x__up' => $session_e['e__id'],
-                'x__message' => '@'.$session_e['e__id'],
+                'x__source' => $user_e['e__id'],
+                'x__up' => $user_e['e__id'],
+                'x__message' => '@'.$user_e['e__id'],
                 'x__right' => $_POST['i__id'],
                 'x__type' => 12896, //SAVED
             ));
@@ -911,7 +911,7 @@ class X extends CI_Controller
             'status' => 1,
             'first_save_message' => 'Saved this idea in '.$e___13488[13210]['m_title'],
             'is_first_save' => ( !$removed && count($this->X_model->fetch(array(
-                    'x__up' => $session_e['e__id'],
+                    'x__up' => $user_e['e__id'],
                     'x__type' => 12896, //SAVED
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))==1 ),
@@ -932,9 +932,9 @@ class X extends CI_Controller
          *
          * */
 
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -955,10 +955,10 @@ class X extends CI_Controller
         //Call function to delete form Discoveries:
         if($_POST['x__type']==6155){
             //Delete Discovery
-            $delete_result = $this->X_model->delete($session_e['e__id'], $_POST['i__id'], $_POST['x__type']);
+            $delete_result = $this->X_model->delete($user_e['e__id'], $_POST['i__id'], $_POST['x__type']);
         } elseif($_POST['x__type']==13415){
             //Delete IDEAS
-            $delete_result = $this->I_model->delete($session_e['e__id'], $_POST['i__id'], $_POST['x__type']);
+            $delete_result = $this->I_model->delete($user_e['e__id'], $_POST['i__id'], $_POST['x__type']);
         }
 
         if(!$delete_result['status']){
@@ -983,9 +983,9 @@ class X extends CI_Controller
          *
          * */
 
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1010,7 +1010,7 @@ class X extends CI_Controller
                 //Update order of this transaction:
                 $results[$x__sort] = $this->X_model->update(intval($x__id), array(
                     'x__sort' => $x__sort,
-                ), $session_e['e__id'], intval($_POST['x__type']));
+                ), $user_e['e__id'], intval($_POST['x__type']));
                 $updated++;
             }
         }

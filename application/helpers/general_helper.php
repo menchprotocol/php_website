@@ -75,7 +75,7 @@ function extract_e_references($x__message)
 
     //Analyzes a message text to extract Source References (Like @123) and URLs
     $CI =& get_instance();
-    $session_e = superpower_assigned();
+    $user_e = superpower_assigned();
 
     //Replace non-ascii characters with space:
     $x__message = preg_replace('/[[:^print:]]/', ' ', $x__message);
@@ -763,19 +763,19 @@ function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
 
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
-    $session_e = $CI->session->userdata('session_profile');
-    $has_session = ( is_array($session_e) && count($session_e) > 0 && $session_e );
+    $user_e = $CI->session->userdata('session_profile');
+    $has_session = ( is_array($user_e) && count($user_e) > 0 && $user_e );
 
     //Let's start checking various ways we can give user access:
     if ($has_session && !$superpower_e__id) {
 
         //No minimum level required, grant access IF user is logged in:
-        return $session_e;
+        return $user_e;
 
     } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_assigned'))) {
 
         //They are part of one of the levels assigned to them:
-        return $session_e;
+        return $user_e;
 
     }
 
@@ -789,7 +789,7 @@ function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/@'.$session_e['e__id'];
+            $goto_url = '/@'.$user_e['e__id'];
         } else {
             $goto_url = '/e/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
@@ -1166,15 +1166,15 @@ function e__title_validate($string, $x__type = 0){
 
 
 
-function source_of_e($e__id, $session_e = array()){
+function source_of_e($e__id, $user_e = array()){
 
 
-    if(!$session_e){
+    if(!$user_e){
         //Fetch from session:
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
     }
 
-    if(!$session_e || $e__id < 1){
+    if(!$user_e || $e__id < 1){
         return false;
     }
 
@@ -1183,12 +1183,12 @@ function source_of_e($e__id, $session_e = array()){
     return (
 
         //User is the source
-        $e__id==$session_e['e__id']
+        $e__id==$user_e['e__id']
 
 
         //User created the source
         || count($CI->X_model->fetch(array(
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__down' => $e__id,
             'x__type' => 4251, //New Source Created
         )))
@@ -1202,7 +1202,7 @@ function source_of_e($e__id, $session_e = array()){
         || count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__up' => $session_e['e__id'],
+            'x__up' => $user_e['e__id'],
             'x__down' => $e__id,
         )))
 
@@ -1211,14 +1211,14 @@ function source_of_e($e__id, $session_e = array()){
 
 }
 
-function e_of_i($i__id, $session_e = array()){
+function e_of_i($i__id, $user_e = array()){
 
-    if(!$session_e){
+    if(!$user_e){
         //Fetch from session:
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
     }
 
-    if(!$session_e || $i__id < 1){
+    if(!$user_e || $i__id < 1){
         return false;
     }
 
@@ -1232,13 +1232,13 @@ function e_of_i($i__id, $session_e = array()){
                 count($CI->X_model->fetch(array( //User created the idea
                     'x__type' => 4250, //IDEA CREATOR
                     'x__right' => $i__id,
-                    'x__source' => $session_e['e__id'],
+                    'x__source' => $user_e['e__id'],
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i__id,
-                    '(x__up = '.$session_e['e__id'].' OR x__down = '.$session_e['e__id'].')' => null,
+                    '(x__up = '.$user_e['e__id'].' OR x__down = '.$user_e['e__id'].')' => null,
                 )))
             )
         )

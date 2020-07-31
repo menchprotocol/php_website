@@ -6,10 +6,10 @@ $e___12467 = $this->config->item('e___12467'); //MENCH
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
 $source_of_e = source_of_e($e['e__id']);
-$source_is_e = $e['e__id']==$session_e['e__id'];
+$source_is_e = $e['e__id']==$user_e['e__id'];
 $superpower_10939 = superpower_active(10939, true);
 $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
-$superpower_any = ( $session_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
+$superpower_any = ( $user_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
 
 //Determine Focus Tab:
 $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
@@ -245,7 +245,7 @@ if($source_is_e && $counter__x > 0){
 
             $focus_tab .= '<div id="list_11030" class="list-group ">';
             foreach($e__profiles as $e_profile) {
-                $focus_tab .= view_e($e_profile,true, null, true, ($source_of_e || ($session_e && ($session_e['e__id']==$e_profile['x__source']))));
+                $focus_tab .= view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
             }
 
             //Input to add new parents:
@@ -452,7 +452,7 @@ if($source_is_e && $counter__x > 0){
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
 
             foreach($list_e as $e_portfolio) {
-                $focus_tab .= view_e($e_portfolio,false, null, true, ($source_of_e || ($session_e && ($session_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
+                $focus_tab .= view_e($e_portfolio,false, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
             }
             if ($counter > count($list_e)) {
                 $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
@@ -675,7 +675,7 @@ if($source_is_e && $counter__x > 0){
 
                 if ($acc_e__id == 12289) {
 
-                    $e__icon_parts = explode(' ',one_two_explode('class="', '"', $session_e['e__icon']));
+                    $e__icon_parts = explode(' ',one_two_explode('class="', '"', $user_e['e__icon']));
 
 
                     $focus_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">';
@@ -730,7 +730,7 @@ if($source_is_e && $counter__x > 0){
 
                     $u_emails = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__down' => $session_e['e__id'],
+                        'x__down' => $user_e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__up' => 3288, //Mench Email
                     ));
@@ -747,7 +747,7 @@ if($source_is_e && $counter__x > 0){
 
                 } elseif ($is_multi_selectable || $is_single_selectable) {
 
-                    $focus_tab .= view_radio_e($acc_e__id, $session_e['e__id'], ($is_multi_selectable ? 1 : 0));
+                    $focus_tab .= view_radio_e($acc_e__id, $user_e['e__id'], ($is_multi_selectable ? 1 : 0));
 
                 }
 
@@ -761,7 +761,7 @@ if($source_is_e && $counter__x > 0){
 
         }
 
-        if(!$counter && (!in_array($x__type, $this->config->item('n___12574')) || !$session_e)){
+        if(!$counter && (!in_array($x__type, $this->config->item('n___12574')) || !$user_e)){
             //Hide since Zero without exception @12574:
             continue;
         }

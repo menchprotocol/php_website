@@ -17,13 +17,13 @@ class E extends CI_Controller
     function index()
     {
         //source:
-        $session_e = superpower_assigned(null);
+        $user_e = superpower_assigned(null);
 
         //Log View:
-        if($session_e){
+        if($user_e){
             $this->X_model->create(array(
                 'x__type' => 12489, //Opened Leaderboard
-                'x__source' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
             ));
         }
 
@@ -32,7 +32,7 @@ class E extends CI_Controller
             'title' => $e___13488[13207]['m_title'],
         ));
         $this->load->view('e/home', array(
-            'session_e' => $session_e,
+            'user_e' => $user_e,
         ));
         $this->load->view('footer');
     }
@@ -52,16 +52,16 @@ class E extends CI_Controller
 
         //Make sure not a private discover:
         if(in_array($e__id, $this->config->item('n___4755'))){
-            $session_e = superpower_assigned(12701, true);
+            $user_e = superpower_assigned(12701, true);
         } else {
-            $session_e = superpower_assigned();
+            $user_e = superpower_assigned();
         }
 
         //Do we have any mass action to process here?
         if (superpower_assigned(12703) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->E_model->mass_update($e__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $session_e['e__id']);
+            $process_mass_action = $this->E_model->mass_update($e__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $user_e['e__id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>';
@@ -75,7 +75,7 @@ class E extends CI_Controller
             $new_order = ( $this->session->userdata('session_page_count') + 1 );
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
-                'x__source' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
                 'x__type' => 4994, //User Viewed Source
                 'x__down' => $e__id,
                 'x__sort' => $new_order,
@@ -99,7 +99,7 @@ class E extends CI_Controller
         ));
         $this->load->view('e/layout', array(
             'e' => $es[0],
-            'session_e' => $session_e,
+            'user_e' => $user_e,
         ));
         $this->load->view('footer');
 
@@ -110,7 +110,7 @@ class E extends CI_Controller
     {
 
         //Authenticate User:
-        $session_e = superpower_assigned(13422);
+        $user_e = superpower_assigned(13422);
 
         //Validate Source:
         $es = $this->E_model->fetch(array(
@@ -118,7 +118,7 @@ class E extends CI_Controller
             'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
 
-        if (!$session_e) {
+        if (!$user_e) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(13422),
@@ -141,7 +141,7 @@ class E extends CI_Controller
         ), array('x__down'), 0, 0, array(), 'x__id') as $x) {
             $this->X_model->update($x['x__id'], array(
                 'x__sort' => 0,
-            ), $session_e['e__id'], 13007 /* SOURCE SORT RESET */);
+            ), $user_e['e__id'], 13007 /* SOURCE SORT RESET */);
         }
 
         //Display message:
@@ -155,8 +155,8 @@ class E extends CI_Controller
     {
 
         //Authenticate User:
-        $session_e = superpower_assigned(10939);
-        if (!$session_e) {
+        $user_e = superpower_assigned(10939);
+        if (!$user_e) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -207,7 +207,7 @@ class E extends CI_Controller
                 foreach($_POST['new_x__sorts'] as $rank => $x__id) {
                     $this->X_model->update($x__id, array(
                         'x__sort' => intval($rank),
-                    ), $session_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
+                    ), $user_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
                 //Display message:
@@ -225,8 +225,8 @@ class E extends CI_Controller
     {
 
         //Authenticate User:
-        $session_e = superpower_assigned(10939);
-        if (!$session_e) {
+        $user_e = superpower_assigned(10939);
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -306,9 +306,9 @@ class E extends CI_Controller
     function e_only_remove(){
 
         //Auth user and check required variables:
-        $session_e = superpower_assigned(10939);
+        $user_e = superpower_assigned(10939);
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -328,7 +328,7 @@ class E extends CI_Controller
         //Archive Transaction:
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173,
-        ), $session_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
+        ), $user_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -340,9 +340,9 @@ class E extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_e = superpower_assigned(10939);
+        $user_e = superpower_assigned(10939);
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -417,7 +417,7 @@ class E extends CI_Controller
         } else {
 
             //Create source:
-            $added_e = $this->E_model->verify_create($_POST['e_new_string'], $session_e['e__id']);
+            $added_e = $this->E_model->verify_create($_POST['e_new_string'], $user_e['e__id']);
             if(!$added_e['status']){
                 //We had an error, return it:
                 return view_json($added_e);
@@ -436,7 +436,7 @@ class E extends CI_Controller
 
         //Create Note:
         $new_note = $this->X_model->create(array(
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__type' => $_POST['note_type_id'],
             'x__right' => $is[0]['i__id'],
             'x__up' => $focus_e['e__id'],
@@ -456,9 +456,9 @@ class E extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_e = superpower_assigned(10939);
+        $user_e = superpower_assigned(10939);
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -541,7 +541,7 @@ class E extends CI_Controller
                 } else {
 
                     //Let's first find/add the domain:
-                    $url_domain = $this->E_model->domain($_POST['e_new_string'], $session_e['e__id']);
+                    $url_domain = $this->E_model->domain($_POST['e_new_string'], $user_e['e__id']);
 
                     //Add this source:
                     $focus_e = $url_domain['e_domain'];
@@ -550,7 +550,7 @@ class E extends CI_Controller
             } else {
 
                 //Create source:
-                $added_e = $this->E_model->verify_create($_POST['e_new_string'], $session_e['e__id']);
+                $added_e = $this->E_model->verify_create($_POST['e_new_string'], $user_e['e__id']);
                 if(!$added_e['status']){
                     //We had an error, return it:
                     return view_json($added_e);
@@ -620,7 +620,7 @@ class E extends CI_Controller
 
             //Create transaction:
             $ur2 = $this->X_model->create(array(
-                'x__source' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
                 'x__type' => $x__type,
                 'x__message' => $x__message,
                 'x__down' => $x__down,
@@ -679,11 +679,11 @@ class E extends CI_Controller
     function e_toggle_superpower($superpower_e__id){
 
         //Toggles the advance session variable for the user on/off for logged-in users:
-        $session_e = superpower_assigned(10939);
+        $user_e = superpower_assigned(10939);
         $superpower_e__id = intval($superpower_e__id);
         $e___10957 = $this->config->item('e___10957');
 
-        if(!$session_e){
+        if(!$user_e){
 
             return view_json(array(
                 'status' => 0,
@@ -720,7 +720,7 @@ class E extends CI_Controller
 
         //Log Transaction:
         $this->X_model->create(array(
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__type' => 5007, //TOGGLE SUPERPOWER
             'x__up' => $superpower_e__id,
             'x__message' => 'SUPERPOWER '.$toggled_setting, //To be used when user logs in again
@@ -740,7 +740,7 @@ class E extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_e = superpower_assigned(10939);
+        $user_e = superpower_assigned(10939);
         $success_message = 'Saved'; //Default, might change based on what we do...
         $is_valid_icon = is_valid_icon($_POST['e__icon']);
 
@@ -755,7 +755,7 @@ class E extends CI_Controller
             return view_json($e__title_validate);
         }
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -864,7 +864,7 @@ class E extends CI_Controller
 
             $_POST['x__id'] = 0; //Do not consider the transaction as the source is being Deleted
             $delete_from_ui = 1; //Removing source
-            $x_adjusted = $this->E_model->remove($_POST['e__id'], $session_e['e__id']);
+            $x_adjusted = $this->E_model->remove($_POST['e__id'], $user_e['e__id']);
 
             //Show appropriate message based on action:
             if($_POST['e__id'] == $_POST['e_focus_id']){
@@ -909,7 +909,7 @@ class E extends CI_Controller
 
                 $this->X_model->update($_POST['x__id'], array(
                     'x__status' => intval($_POST['x__status']),
-                ), $session_e['e__id'], $x__status);
+                ), $user_e['e__id'], $x__status);
             }
 
 
@@ -986,26 +986,26 @@ class E extends CI_Controller
 
                 $this->X_model->update($_POST['x__id'], array(
                     'x__message' => $x__message,
-                ), $session_e['e__id'], 10657 /* User Transaction updated Content */);
+                ), $user_e['e__id'], 10657 /* User Transaction updated Content */);
 
 
                 //Also, did the transaction type change based on the content change?
                 if($js_x__type!=$e_x[0]['x__type']){
                     $this->X_model->update($_POST['x__id'], array(
                         'x__type' => $js_x__type,
-                    ), $session_e['e__id'], 10659 /* User Transaction updated Type */);
+                    ), $user_e['e__id'], 10659 /* User Transaction updated Type */);
                 }
             }
         }
 
         //Now update the DB:
-        $this->E_model->update(intval($_POST['e__id']), $e_update, true, $session_e['e__id']);
+        $this->E_model->update(intval($_POST['e__id']), $e_update, true, $user_e['e__id']);
 
 
         //Reset user session data if this data belongs to the logged-in user:
-        if ($_POST['e__id'] == $session_e['e__id']) {
+        if ($_POST['e__id'] == $user_e['e__id']) {
             //Re-activate Session with new data:
-            $this->E_model->activate_session($session_e, true);
+            $this->E_model->activate_session($user_e, true);
         }
 
 
@@ -1045,9 +1045,9 @@ class E extends CI_Controller
     function e_fetch_canonical(){
 
         //Auth user and check required variables:
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1089,9 +1089,9 @@ class E extends CI_Controller
          *
          * */
 
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1139,14 +1139,14 @@ class E extends CI_Controller
             //Delete selected options for this user:
             foreach($this->X_model->fetch(array(
                 'x__up IN (' . join(',', $possible_answers) . ')' => null,
-                'x__down' => $session_e['e__id'],
+                'x__down' => $user_e['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )) as $delete){
                 //Should usually delete a single option:
                 $this->X_model->update($delete['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
-                ), $session_e['e__id'], 6224 /* User Account Updated */);
+                ), $user_e['e__id'], 6224 /* User Account Updated */);
             }
 
         }
@@ -1155,8 +1155,8 @@ class E extends CI_Controller
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_previously_selected']){
             $this->X_model->create(array(
                 'x__up' => $_POST['selected_e__id'],
-                'x__down' => $session_e['e__id'],
-                'x__source' => $session_e['e__id'],
+                'x__down' => $user_e['e__id'],
+                'x__source' => $user_e['e__id'],
                 'x__type' => e_x__type(),
             ));
         }
@@ -1165,7 +1165,7 @@ class E extends CI_Controller
         //Log Account Update transaction type:
         $_POST['account_update_function'] = 'e_update_radio'; //Add this variable to indicate which My Account function created this transaction
         $this->X_model->create(array(
-            'x__source' => $session_e['e__id'],
+            'x__source' => $user_e['e__id'],
             'x__type' => 6224, //My Account updated
             'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
             'x__metadata' => $_POST,
@@ -1195,9 +1195,9 @@ class E extends CI_Controller
     function e_update_avatar()
     {
 
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1233,14 +1233,14 @@ class E extends CI_Controller
 
         //Update icon:
         $new_avatar = '<i class="'.$icon_new_css.'"></i>';
-        $this->E_model->update($session_e['e__id'], array(
+        $this->E_model->update($user_e['e__id'], array(
             'e__icon' => $new_avatar,
-        ), true, $session_e['e__id']);
+        ), true, $user_e['e__id']);
 
 
         //Update Session:
-        $session_e['e__icon'] = $new_avatar;
-        $this->E_model->activate_session($session_e, true);
+        $user_e['e__icon'] = $new_avatar;
+        $this->E_model->activate_session($user_e, true);
 
 
         return view_json(array(
@@ -1255,9 +1255,9 @@ class E extends CI_Controller
     function e_update_email()
     {
 
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1280,7 +1280,7 @@ class E extends CI_Controller
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Mench Email
-                'x__down !=' => $session_e['e__id'],
+                'x__down !=' => $user_e['e__id'],
                 'LOWER(x__message)' => $_POST['e_email'],
             ));
             if (count($duplicates) > 0) {
@@ -1296,7 +1296,7 @@ class E extends CI_Controller
         //Fetch existing email:
         $u_emails = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $session_e['e__id'],
+            'x__down' => $user_e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Mench Email
         ));
@@ -1307,7 +1307,7 @@ class E extends CI_Controller
                 //Delete email:
                 $this->X_model->update($u_emails[0]['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
-                ), $session_e['e__id'], 6224 /* User Account Updated */);
+                ), $user_e['e__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1319,7 +1319,7 @@ class E extends CI_Controller
                 //Update if not duplicate:
                 $this->X_model->update($u_emails[0]['x__id'], array(
                     'x__message' => $_POST['e_email'],
-                ), $session_e['e__id'], 6224 /* User Account Updated */);
+                ), $user_e['e__id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1339,8 +1339,8 @@ class E extends CI_Controller
 
             //Create new transaction:
             $this->X_model->create(array(
-                'x__source' => $session_e['e__id'],
-                'x__down' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
+                'x__down' => $user_e['e__id'],
                 'x__type' => e_x__type($_POST['e_email']),
                 'x__up' => 3288, //Mench Email
                 'x__message' => $_POST['e_email'],
@@ -1365,7 +1365,7 @@ class E extends CI_Controller
             //Log Account Update transaction type:
             $_POST['account_update_function'] = 'e_update_email'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
-                'x__source' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
                 'x__type' => 6224, //My Account updated
                 'x__message' => 'My Account '.$return['message']. ( strlen($_POST['e_email']) > 0 ? ': '.$_POST['e_email'] : ''),
                 'x__metadata' => $_POST,
@@ -1383,9 +1383,9 @@ class E extends CI_Controller
     function e_update_password()
     {
 
-        $session_e = superpower_assigned();
+        $user_e = superpower_assigned();
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1402,10 +1402,10 @@ class E extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3286, //Password
-            'x__down' => $session_e['e__id'],
+            'x__down' => $user_e['e__id'],
         ));
 
-        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $session_e['e__id']));
+        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $user_e['e__id']));
 
 
         if (count($u_passwords) > 0) {
@@ -1422,7 +1422,7 @@ class E extends CI_Controller
                 //Update password:
                 $this->X_model->update($u_passwords[0]['x__id'], array(
                     'x__message' => $hashed_password,
-                ), $session_e['e__id'], 7578 /* User Updated Password  */);
+                ), $user_e['e__id'], 7578 /* User Updated Password  */);
 
                 $return = array(
                     'status' => 1,
@@ -1437,8 +1437,8 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__type' => e_x__type($hashed_password),
                 'x__up' => 3286, //Password
-                'x__source' => $session_e['e__id'],
-                'x__down' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
+                'x__down' => $user_e['e__id'],
                 'x__message' => $hashed_password,
             ), true);
 
@@ -1454,7 +1454,7 @@ class E extends CI_Controller
         if($return['status']){
             $_POST['account_update_function'] = 'e_update_password'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
-                'x__source' => $session_e['e__id'],
+                'x__source' => $user_e['e__id'],
                 'x__type' => 6224, //My Account Updated
                 'x__message' => 'My Account '.$return['message'],
                 'x__metadata' => $_POST,
@@ -2030,9 +2030,9 @@ class E extends CI_Controller
             //Running from browser? If so, authenticate:
             $is_u_request = isset($_SERVER['SERVER_NAME']);
             if($is_u_request){
-                $session_e = superpower_assigned(12699, true);
+                $user_e = superpower_assigned(12699, true);
             } else {
-                $session_e = false;
+                $user_e = false;
             }
 
             //Needs extra superpowers?
@@ -2047,7 +2047,7 @@ class E extends CI_Controller
             //This is also duplicated in plugin_frame to pass-on to plugin file:
             $view_data = array(
                 'plugin_e__id' => $plugin_e__id,
-                'session_e' => $session_e,
+                'user_e' => $user_e,
                 'is_u_request' => $is_u_request,
             );
 
@@ -2073,9 +2073,9 @@ class E extends CI_Controller
     function plugin_7264(){
 
         //Authenticate User:
-        $session_e = superpower_assigned(12700);
+        $user_e = superpower_assigned(12700);
 
-        if (!$session_e) {
+        if (!$user_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(12700),

@@ -16,7 +16,7 @@ echo '<div class="container">';
     //Load Plugin:
     $this->load->view('e/plugin/'.$plugin_e__id.'/index', array(
         'plugin_e__id' => $plugin_e__id,
-        'session_e' => $session_e,
+        'user_e' => $user_e,
         'is_u_request' => $is_u_request,
     ));
 
