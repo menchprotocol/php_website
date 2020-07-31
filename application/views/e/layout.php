@@ -14,10 +14,15 @@ $superpower_any = ( $session_e ? count($this->session->userdata('session_superpo
 //Determine Focus Tab:
 $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
 $counter__i = view_coins_e(12273, $e['e__id'], 0, false);
-if($counter__e > 0 && $counter__e >= $counter__i){
+$counter__x = view_coins_e( 6255, $e['e__id'], 0, false);
+
+if($source_is_e && $counter__x > 0 && !$superpower_10939){
+    //DISCOVERIES
+    $active_x__type = 6255;
+} elseif($counter__e > 0 && $counter__e >= $counter__i){
     //SOURCES
     $active_x__type = 12274;
-} elseif($counter__i > 0){
+} elseif($counter__i > 0 || ($source_is_e && $superpower_10939)){
     //IDEAS
     $active_x__type = 12273;
 } elseif($source_is_e){
@@ -511,7 +516,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
         } elseif($x__type==6255){
 
             //DISCOVERIES
-            $counter = view_coins_e(6255, $e['e__id'], 0, false);
+            $counter = $counter__x;
             $my_x_ids = array();
 
             if($counter){
