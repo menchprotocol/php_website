@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-31 11:56:49 PST
-$config['s___12274'] = 4997; //SOURCES
+//Generated 2020-07-31 12:06:40 PST
+$config['s___12274'] = 4998; //SOURCES
 $config['s___12273'] = 3925; //IDEAS
 $config['s___6255'] = 122185; //DISCOVERIES
 
@@ -894,7 +894,7 @@ $config['e___13300'] = array(
 );
 
 //DISCOVER TABS:
-$config['n___13291'] = array(4231,12419,13023,13543,12274,11020,12273,6255);
+$config['n___13291'] = array(4231,12419,13023,13563,13543,12274,11020,12273,6255);
 $config['e___13291'] = array(
     4231 => array(
         'm_title' => 'MESSAGES',
@@ -913,6 +913,12 @@ $config['e___13291'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_profile' => array(13291,4527,13024),
+    ),
+    13563 => array(
+        'm_title' => 'MODIFY IDEA',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-pen"></i>',
+        'm_profile' => array(13291),
     ),
     13543 => array(
         'm_title' => 'IDEA TREE SOURCES',

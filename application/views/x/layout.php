@@ -171,6 +171,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     $counter = null; //Assume no counters
     $focus_tab = '';
+    $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
 
     if($x__type==4231){
 
@@ -193,6 +194,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //Give option to mark as read:
             $focus_tab .= '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_title'].' '.$e___11035[12211]['m_icon'].'</a></div>';
         }
+
+    } elseif($x__type==13563){
+
+        $href = 'href="/~'.$i_focus['i__id'].'"';
 
     } elseif($x__type==12273){
 
@@ -310,7 +315,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('n___13300'));
     $tab_pill_count++;
 
-    $tab_pills .= '<li class="nav-item"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_title'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
+    $tab_pills .= '<li class="nav-item"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'"  data-toggle="tooltip" data-placement="top" title="'.$m['m_title'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $focus_tab;
