@@ -646,7 +646,7 @@ if($in_my_x){
     echo '<div class="list-group">';
 
     //My Discoveries:
-    echo '<div class="list-group-item no-side-padding itemdiscover"><a href="/"><span class="icon-block">'.$e___11035[13210]['m_icon'].'</span><span class="montserrat">'.$e___11035[13210]['m_title'].'</span></a></div>';
+    echo '<div class="list-group-item no-side-padding itemsource"><a href="/@'.$user_e['e__id'].'"><span class="icon-block">'.$user_e['e__icon'].'</span><span class="montserrat">'.$user_e['e__title'].'</span></a></div>';
 
     //Did We Find It?
     if($previous_level_id){
