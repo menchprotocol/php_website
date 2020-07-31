@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-31 12:06:40 PST
+//Generated 2020-07-31 14:44:31 PST
 $config['s___12274'] = 4998; //SOURCES
 $config['s___12273'] = 3925; //IDEAS
-$config['s___6255'] = 122185; //DISCOVERIES
+$config['s___6255'] = 122188; //DISCOVERIES
 
 //HORIZONTAL MENU:
 $config['n___13561'] = array(13560,13207,6287);
@@ -366,19 +366,13 @@ $config['e___13510'] = array(
 );
 
 //DISCOVERY CONTROLLER:
-$config['n___13289'] = array(12991,13491,13210,13510,12211);
+$config['n___13289'] = array(12991,13210,13510,12211);
 $config['e___13289'] = array(
     12991 => array(
         'm_title' => 'GO BACK',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,11035),
-    ),
-    13491 => array(
-        'm_title' => 'FONT SIZE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-text-size discover"></i>',
-        'm_profile' => array(13289,4527,6204),
     ),
     13210 => array(
         'm_title' => 'DISCOVERY HOME',
@@ -3200,7 +3194,7 @@ $config['e___11089'] = array(
 );
 
 //MY SETTINGS:
-$config['n___6225'] = array(12289,10957,3288,3286,13037,13519);
+$config['n___6225'] = array(12289,10957,13491,3288,3286,13037,13519);
 $config['e___6225'] = array(
     12289 => array(
         'm_title' => 'AVATAR',
@@ -3213,6 +3207,12 @@ $config['e___6225'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bolt" aria-hidden="true"></i>',
         'm_profile' => array(6225,11035,5007,4527),
+    ),
+    13491 => array(
+        'm_title' => 'FONT SIZE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-text-size"></i>',
+        'm_profile' => array(6225,4527,6204),
     ),
     3288 => array(
         'm_title' => 'EMAIL',
@@ -3358,7 +3358,7 @@ $config['e___11035'] = array(
         'm_profile' => array(13450,13289,13210,4527,11035),
     ),
     13524 => array(
-        'm_title' => 'SAVE & GO NEXT',
+        'm_title' => 'SAVE & NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
         'm_profile' => array(11035),
@@ -4973,8 +4973,8 @@ $config['e___4527'] = array(
     13491 => array(
         'm_title' => 'FONT SIZE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-text-size discover"></i>',
-        'm_profile' => array(13289,4527,6204),
+        'm_icon' => '<i class="fas fa-text-size"></i>',
+        'm_profile' => array(6225,4527,6204),
     ),
     13561 => array(
         'm_title' => 'HORIZONTAL MENU',
@@ -6086,8 +6086,8 @@ $config['e___6204'] = array(
     13491 => array(
         'm_title' => 'FONT SIZE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-text-size discover"></i>',
-        'm_profile' => array(13289,4527,6204),
+        'm_icon' => '<i class="fas fa-text-size"></i>',
+        'm_profile' => array(6225,4527,6204),
     ),
     4737 => array(
         'm_title' => 'IDEA STATUS',
