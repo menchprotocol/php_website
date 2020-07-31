@@ -1060,7 +1060,7 @@ td.MENCHcolumn3  { width: 13%; }
     padding-bottom:0 !important;
 }
 .big-cover .i_content {
-    padding-left: 5px !important;
+    padding-right: 5px !important;
     font-size: 0.89em !important;
 }
 .no-height{
