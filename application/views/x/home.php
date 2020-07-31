@@ -32,7 +32,7 @@
     echo '<div class="list-group cover-list space-left">';
     foreach($featured_i as $key => $x){
         //Show only if not in discovering list:
-        echo view_i_cover($x, false);
+        echo view_i_cover(6255, $x, false);
     }
     echo '</div>';
 

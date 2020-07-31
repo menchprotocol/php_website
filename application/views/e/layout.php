@@ -507,7 +507,7 @@ if($source_is_e && $counter__x > 0){
                     $string_references = extract_e_references($item['x__message']);
                 }
 
-                $focus_tab .= view_i_cover($item, $show_editor, null, $message_input);
+                $focus_tab .= view_i_cover(12273, $item, $show_editor, null, $message_input);
 
 
             }
@@ -543,7 +543,7 @@ if($source_is_e && $counter__x > 0){
 
                         $focus_tab .= '<div id="list_6132" class="list-group space-left">';
                         foreach($list_x as $item){
-                            $focus_tab .= view_i_cover($item, $source_is_e);
+                            $focus_tab .= view_i_cover(6255, $item, $source_is_e);
                             array_push($my_x_ids, $item['i__id']);
                         }
                         $focus_tab .= '</div>';
@@ -586,7 +586,7 @@ if($source_is_e && $counter__x > 0){
                 foreach($featured_i as $key => $x){
                     if(!in_array($x['i__id'], $my_x_ids)){
                         //Show only if not in discovering list:
-                        $focus_tab .= view_i_cover($x, false);
+                        $focus_tab .= view_i_cover(6255, $x, false);
                     }
                 }
                 $focus_tab .= '</div>';

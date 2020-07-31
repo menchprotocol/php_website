@@ -1193,43 +1193,6 @@ function i_note_text(note_type_id) {
 }
 
 
-function x_remove(x__type){
-
-    //Watch for Discovery removal click:
-    $('.x_remove').on('click', function(e) {
-
-        var i__id = $(this).attr('i__id');
-        var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
-        if (r == true) {
-            //Save changes:
-            $.post("/x/x_remove", { x__type:x__type, i__id:i__id }, function (data) {
-                //Update UI to confirm with user:
-                if (!data.status) {
-
-                    //There was some sort of an error returned!
-                    alert(data.message);
-
-                } else {
-
-                    //REMOVE BOOKMARK from UI:
-                    $('#i_cover_'+i__id).fadeOut();
-
-                    setTimeout(function () {
-
-                        //Delete from body:
-                        $('#i_cover_'+i__id).remove();
-
-                    }, 233);
-                }
-            });
-        }
-
-        return false;
-
-    });
-
-}
-
 function x_sort_load(x__type){
     //Load sorter:
     var sort = Sortable.create(document.getElementById('list_'+x__type), {

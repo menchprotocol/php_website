@@ -944,21 +944,21 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing idea ID',
             ));
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___13414'))) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___12467'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Transaction Type',
+                'message' => 'Invalid Mench Coin ID',
             ));
         }
 
 
         //Call function to delete form Discoveries:
-        if($_POST['x__type']==6155){
+        if($_POST['x__type']==6255){
             //Delete Discovery
-            $delete_result = $this->X_model->delete($user_e['e__id'], $_POST['i__id'], $_POST['x__type']);
-        } elseif($_POST['x__type']==13415){
+            $delete_result = $this->X_model->delete($user_e['e__id'], $_POST['i__id'], 6155);
+        } elseif($_POST['x__type']==12273){
             //Delete IDEAS
-            $delete_result = $this->I_model->delete($user_e['e__id'], $_POST['i__id'], $_POST['x__type']);
+            $delete_result = $this->I_model->delete($user_e['e__id'], $_POST['i__id'], 13415);
         }
 
         if(!$delete_result['status']){

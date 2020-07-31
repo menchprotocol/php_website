@@ -1309,7 +1309,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
     return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
-function view_i_cover($i, $show_editor, $extra_class = null, $message_input = null){
+function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_input = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1318,7 +1318,7 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
 
     $user_e = superpower_assigned();
     $i_stats = i_stats($i['i__metadata']);
-    $href = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
+    $href = ( $x__type == 6255 ? '/'.$i['i__id'] : '/~'.$i['i__id'] ).( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
     $start_reading = false;
 
     $ui  = '<div id="i_cover_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
@@ -1375,7 +1375,7 @@ function view_i_cover($i, $show_editor, $extra_class = null, $message_input = nu
                     $ui .= '<div class="col-6"><span class="x-sorter">'.$e___13369[13413]['m_icon'].' '.$e___13369[13413]['m_title'].'</span></div>';
 
                     //Remove:
-                    $ui .= '<div class="col-6"><span class="x_remove" i__id="'.$i['i__id'].'">'.$e___13369[13414]['m_icon'].' '.$e___13369[13414]['m_title'].'</span></div>';
+                    $ui .= '<div class="col-6"><span class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' '.$e___13369[13414]['m_title'].'</span></div>';
 
                     $ui .= '</div>';
 
