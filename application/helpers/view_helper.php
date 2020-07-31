@@ -262,7 +262,7 @@ function view_i_notes($x, $note_e = false)
 
         //Sorting allowed?
         if(in_array($x['x__type'], $CI->config->item('n___4603'))){
-            $ui .= '<span title="SORT"><i class="fas fa-bars i_note_sorting"></i></span>';
+            $ui .= '<span title="SORT"><i class="fas fa-sort i_note_sorting"></i></span>';
         }
 
         //Modify:
@@ -1049,7 +1049,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
             $ui .= '<span class="show-on-hover">';
 
             if(!$is_parent){
-                $ui .= '<span title="SORT"><i class="fas fa-bars black i-sort-handle"></i></span>';
+                $ui .= '<span title="SORT"><i class="fas fa-sort black i-sort-handle"></i></span>';
             }
 
             //Remove:
@@ -1340,11 +1340,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 //Title
                 $ui .= '<div style="padding-top:8px;"><h2><a href="'.$href.'">'.view_i_title($i).'</a></h2></div>';
 
-                //Newly added?
-                if($i['x__sort'] < 1){
-                    $ui .= '<div class="dorubik">⚠️ &nbsp;Newly Added</div>';
-                }
-
                 if($message_input){
                     //Description, if any
                     $ui .= '<div class="inline-block">'.$message_input.'</div>';
@@ -1528,7 +1523,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
                     //Sort
                     if(!$is_parent && $superpower_10939){
-                        $ui .= '<span title="SORT"><i class="fas fa-bars hidden black"></i></span>';
+                        $ui .= '<span title="SORT"><i class="fas fa-sort hidden black"></i></span>';
                     }
 
                     //Manage source transaction:

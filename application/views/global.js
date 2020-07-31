@@ -936,7 +936,7 @@ function i_note_sort_load(note_type_id) {
             var x__id = $(evt.item).attr('x__id');
             if ($('#ul-nav-' + x__id).find('.video-sorting').length !== 0) {
                 inner_content = $('#msgbody_' + x__id).html();
-                $('#msgbody_' + x__id).css('height', $('#msgbody_' + x__id).height()).html('<i class="fas fa-bars"></i> SORT VIDEO');
+                $('#msgbody_' + x__id).css('height', $('#msgbody_' + x__id).height()).html('<i class="fas fa-sort"></i> SORT VIDEO');
             } else {
                 inner_content = null;
             }

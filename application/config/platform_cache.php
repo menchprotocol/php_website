@@ -751,7 +751,7 @@ $config['e___12994'] = array(
     13291 => array(
         'm_title' => 'DISCOVER TABS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-bars discover"></i>',
+        'm_icon' => '<i class="fas fa-sort discover"></i>',
         'm_profile' => array(4527,12994),
     ),
     13299 => array(
@@ -4896,7 +4896,7 @@ $config['e___4527'] = array(
     13291 => array(
         'm_title' => 'DISCOVER TABS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-bars discover"></i>',
+        'm_icon' => '<i class="fas fa-sort discover"></i>',
         'm_profile' => array(4527,12994),
     ),
     13304 => array(
@@ -5088,7 +5088,7 @@ $config['e___4527'] = array(
     11018 => array(
         'm_title' => 'IDEA TABS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-bars idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-sort idea" aria-hidden="true"></i>',
         'm_profile' => array(13294,4527),
     ),
     13530 => array(
@@ -5526,7 +5526,7 @@ $config['e___4527'] = array(
     11089 => array(
         'm_title' => 'SOURCE TABS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-bars source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-sort source" aria-hidden="true"></i>',
         'm_profile' => array(13296,4527),
     ),
     12574 => array(
