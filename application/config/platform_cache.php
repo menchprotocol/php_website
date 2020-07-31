@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-31 14:44:31 PST
+//Generated 2020-07-31 14:46:27 PST
 $config['s___12274'] = 4998; //SOURCES
 $config['s___12273'] = 3925; //IDEAS
 $config['s___6255'] = 122188; //DISCOVERIES
@@ -377,7 +377,7 @@ $config['e___13289'] = array(
     13210 => array(
         'm_title' => 'DISCOVERY HOME',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
+        'm_icon' => '<i class="fas fa-list discover"></i>',
         'm_profile' => array(13450,13488,11035,13289),
     ),
     13510 => array(
@@ -423,7 +423,7 @@ $config['e___13488'] = array(
     13210 => array(
         'm_title' => 'DISCOVERY HOME',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
+        'm_icon' => '<i class="fas fa-list discover"></i>',
         'm_profile' => array(13450,13488,11035,13289),
     ),
     13405 => array(
@@ -3258,7 +3258,7 @@ $config['e___11035'] = array(
     13210 => array(
         'm_title' => 'DISCOVERY HOME',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-location-arrow discover"></i>',
+        'm_icon' => '<i class="fas fa-list discover"></i>',
         'm_profile' => array(13450,13488,11035,13289),
     ),
     13495 => array(
