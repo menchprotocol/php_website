@@ -498,9 +498,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
             //SMART SHOW/HIDE LIST LOGIC
-            $focus_tab .= '<div id="list_13412" class="list-group space-left">';
-
-            //ADD IDEAS
+            $focus_tab .= '<div class="list-group">';
             $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
@@ -510,8 +508,10 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                            id="newIdeaTitle"
                            placeholder="NEW IDEA">
                 </div><div class="algolia_pad_search hidden"></div></div>';
+            $focus_tab .= '</div>';
 
 
+            $focus_tab .= '<div id="list_13412" class="list-group space-left">';
             foreach($list_i as $count => $item){
 
                 $message_input = null;
