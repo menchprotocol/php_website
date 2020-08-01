@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-01 14:06:35 PST
-$config['s___12274'] = 4996; //SOURCES
+//Generated 2020-08-01 15:36:42 PST
+$config['s___12274'] = 4997; //SOURCES
 $config['s___12273'] = 3925; //IDEAS
-$config['s___6255'] = 122173; //DISCOVERIES
+$config['s___6255'] = 122244; //DISCOVERIES
 
 //SOURCE IDEAS:
 $config['n___13550'] = array(4983,4231);
@@ -3771,8 +3771,8 @@ $config['e___6404'] = array(
         'm_profile' => array(13407,13294,12994,6404,12112,10644,6201),
     ),
     13406 => array(
-        'm_title' => 'INTRODUCTION IDEA ID',
-        'm_message' => '13804',
+        'm_title' => 'INTRODUCTION IDEA [DISABLED]',
+        'm_message' => '0',
         'm_icon' => '<i class="fas fa-info-circle idea"></i>',
         'm_profile' => array(6404),
     ),

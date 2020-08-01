@@ -1239,7 +1239,7 @@ class X_model extends CI_Model
             }
 
             //Do we need to add the starting idea?
-            if($i__id != config_var(13406)){
+            if(config_var(13406) > 0 && $i__id != config_var(13406)){
 
                 //Is this their first idea?
                 if(!count($this->X_model->fetch(array(

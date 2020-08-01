@@ -303,6 +303,22 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
                     return view_search_result(suggestion);
                 },
                 header: function (data) {
+                    if(validURL(data.query)){
+
+                        return '<a href="javascript:x__add('+is_e_parent+')" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+
+                    } else if($("#mench_search").val().charAt(0)=='#' || $("#mench_search").val().charAt(0)=='@'){
+
+                        //See what follows the @/# sign to determine if we should create OR redirect:
+                        var search_body = $("#mench_search").val().substr(1);
+                        if(!isNaN(search_body)){
+                            //Valid Integer, Give option to go there:
+                            return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/i/i_go/' : '/@' ) + search_body + '" class="suggestion montserrat"><span class="icon-block"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
+                        }
+
+                    }
+
+
                     if (!data.isEmpty) {
                         return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
