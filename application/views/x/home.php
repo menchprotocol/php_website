@@ -7,7 +7,7 @@
     ));
 
     //IDEA TITLE
-    echo '<h1 class="block-one"><span class="title-block-lg">' . view_i_title($is[0]) . '</span></h1>';
+    echo '<h1>' . view_i_title($is[0]) . '</h1>';
 
     //IDEA MESSAGES
     echo '<div class="big-cover">';
