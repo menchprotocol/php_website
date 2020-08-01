@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-07-31 22:03:05 PST
+//Generated 2020-08-01 14:06:35 PST
 $config['s___12274'] = 4996; //SOURCES
-$config['s___12273'] = 3925; //KEY IDEAS
+$config['s___12273'] = 3925; //IDEAS
 $config['s___6255'] = 122173; //DISCOVERIES
 
 //SOURCE IDEAS:
@@ -1707,7 +1707,7 @@ $config['e___12574'] = array(
         'm_title' => 'PROFILE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13422,13296,7545,13411,12574,11089,11028),
+        'm_profile' => array(13296,7545,13411,12574,11089,11028),
     ),
     12274 => array(
         'm_title' => 'SOURCES',
@@ -1776,7 +1776,7 @@ $config['e___12523'] = array(
         'm_title' => 'GLOSSARY',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-font"></i>',
-        'm_profile' => array(1,2738,12523),
+        'm_profile' => array(2738,12523),
     ),
 );
 
@@ -3124,7 +3124,7 @@ $config['e___11089'] = array(
         'm_title' => 'PROFILE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13422,13296,7545,13411,12574,11089,11028),
+        'm_profile' => array(13296,7545,13411,12574,11089,11028),
     ),
     12274 => array(
         'm_title' => 'SOURCES',
@@ -3484,9 +3484,9 @@ $config['e___10957'] = array(
         'm_profile' => array(13450,10957),
     ),
     12705 => array(
-        'm_title' => 'DISCOVER LIST EDIT',
+        'm_title' => 'LEDGER FILTER',
         'm_message' => 'Mass Edit Reads',
-        'm_icon' => '<i class="fas fa-list discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-filter discover" aria-hidden="true"></i>',
         'm_profile' => array(10957),
     ),
 );
@@ -4732,7 +4732,7 @@ $config['e___2738'] = array(
         'm_title' => 'GLOSSARY',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-font"></i>',
-        'm_profile' => array(1,2738,12523),
+        'm_profile' => array(2738,12523),
     ),
     13150 => array(
         'm_title' => 'MENCH RATING LEVELS',

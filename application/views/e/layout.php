@@ -230,6 +230,10 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
         } elseif($x__type==11030){
 
+            if($source_is_e && !$superpower_13422){
+                continue;
+            }
+
             //PROFILE
             $e__profiles = $this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
