@@ -22,12 +22,9 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 } elseif($counter__i > 0 || ($source_is_e && $superpower_10939)){
     //IDEAS
     $active_x__type = 12273;
-} elseif($source_is_e && $counter__x > 0){
+} elseif($source_is_e){
     //DISCOVERIES
     $active_x__type = 6255;
-} elseif($source_is_e){
-    //ACCOUNT SETTINGS
-    $active_x__type = 6225;
 } else {
     //PROFILE
     $active_x__type = 11030;
