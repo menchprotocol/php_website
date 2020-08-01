@@ -1066,6 +1066,9 @@ td.MENCHcolumn3  { width: 13%; }
     padding-right: 5px !important;
     font-size: 0.89em !important;
 }
+.big-cover .message_content {
+    margin-left: 0 !important;
+}
 .no-height{
     height: 0;
     padding: 0;
