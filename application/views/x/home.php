@@ -2,15 +2,17 @@
 <div class="container">
     <?php
 
+    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+
     $is = $this->I_model->fetch(array(
         'i__id' => config_var(12137),
     ));
 
     //IDEA TITLE
-    echo '<h1>' . view_i_title($is[0]) . '</h1>';
+    echo '<h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( 0 ).'</span><span class="title-block-lg">' . view_i_title($is[0]) . '</span></h1>';
 
     //IDEA MESSAGES
-    echo '<div class="big-cover">';
+    echo '<div style="margin-bottom:34px;">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
@@ -21,6 +23,10 @@
     echo '</div>';
 
 
+
+
+
+
     //FEATURED IDEAS
     $featured_i = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -29,12 +35,16 @@
         'x__left' => config_var(12137),
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
+    echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
     echo '<div class="list-group cover-list space-left">';
     foreach($featured_i as $key => $x){
         //Show only if not in discovering list:
-        echo view_i_cover(6255, $x, false);
+        echo view_i_cover($x, false);
     }
     echo '</div>';
+
+
+
 
     ?>
 </div>
