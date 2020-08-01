@@ -16,15 +16,15 @@ $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
 $counter__i = view_coins_e(12273, $e['e__id'], 0, false);
 $counter__x = view_coins_e( 6255, $e['e__id'], 0, false);
 
-if($source_is_e && $counter__x > 0){
-    //DISCOVERIES
-    $active_x__type = 6255;
-} elseif($counter__e > 0 && $counter__e >= $counter__i){
+if($counter__e > 0 && $counter__e >= $counter__i){
     //SOURCES
     $active_x__type = 12274;
 } elseif($counter__i > 0 || ($source_is_e && $superpower_10939)){
     //IDEAS
     $active_x__type = 12273;
+} elseif($source_is_e && $counter__x > 0){
+    //DISCOVERIES
+    $active_x__type = 6255;
 } elseif($source_is_e){
     //ACCOUNT SETTINGS
     $active_x__type = 6225;
@@ -497,7 +497,7 @@ if($source_is_e && $counter__x > 0){
             $focus_tab .= '<div id="list_13412" class="list-group space-left">';
 
             //ADD IDEAS
-            $focus_tab .= '<div class="list-group-item list-adder itemidea">
+            $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                     <input type="text"
