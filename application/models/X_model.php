@@ -988,7 +988,7 @@ class X_model extends CI_Model
             $text_tooltip = ( strlen($text_tooltip) ? ' title="'.$text_tooltip.'" data-toggle="tooltip" data-placement="top" ' : '' );
             $output_body_message .= $e_appendix;
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
-            $is_discovery_mode = is_numeric($this->uri->segment(1));
+            $is_discovery_mode = is_numeric($this->uri->segment(1)) || !strlen($this->uri->segment(1));
 
             //USER REFERENCE
             if(( $is_discovery_mode && !superpower_active(10939, true)) || $is_current_e || $simple_version){
