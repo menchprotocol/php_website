@@ -686,7 +686,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
                 //Show description if any:
-                $focus_tab .= (strlen($acc_detail['m_message']) > 0 ? '<p>' . $acc_detail['m_message'] . '</p>' : '');
+                $focus_tab .= (strlen($acc_detail['m_message']) > 0 ? '<div class="i_content padded"><div class="msg">' . $acc_detail['m_message'] . '</div></div>' : '');
 
 
                 //Print account fields that are either Single Selectable or Multi Selectable:
