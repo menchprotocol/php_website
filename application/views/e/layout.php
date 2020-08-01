@@ -497,7 +497,7 @@ if($source_is_e && $counter__x > 0){
             $focus_tab .= '<div id="list_13412" class="list-group space-left">';
 
             //ADD IDEAS
-            echo '<div class="list-group-item list-adder itemidea">
+            $focus_tab .= '<div class="list-group-item list-adder itemidea">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                     <input type="text"
