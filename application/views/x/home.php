@@ -7,10 +7,10 @@
     ));
 
     //IDEA TITLE
-    echo '<h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( 0 ).'</span><span class="title-block-lg">' . view_i_title($is[0]) . '</span></h1>';
+    echo '<h1 class="block-one"><span class="title-block-lg">' . view_i_title($is[0]) . '</span></h1>';
 
     //IDEA MESSAGES
-    echo '<div style="margin-bottom:34px;">';
+    echo '<div class="big-cover">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
