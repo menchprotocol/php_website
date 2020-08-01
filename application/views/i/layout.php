@@ -5,6 +5,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e_of_i = e_of_i($i_focus['i__id']);
 $is_active = in_array($i_focus['i__status'], $this->config->item('n___7356'));
 $is_public = in_array($i_focus['i__status'], $this->config->item('n___7355'));
+$superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 
 ?>
 
@@ -151,10 +152,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= '<div class="list-group-item list-adder itemsource no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___12467[12274]['m_icon'] . '</span></span>
-                    <input type="text"
+                    <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
-                           placeholder="NEW SOURCE URL OR TITLE">
+                           placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '"></div></div>';
         }
 

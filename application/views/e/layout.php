@@ -252,10 +252,10 @@ if($source_is_e && $counter__x > 0){
             $focus_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
-                    <input type="text"
+                    <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           placeholder="NEW SOURCE URL OR TITLE">
+                           placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $focus_tab .= '</div>';
@@ -462,10 +462,10 @@ if($source_is_e && $counter__x > 0){
             $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.( $source_is_e ? '' : superpower_active(13422) ).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
-                    <input type="text"
+                    <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           placeholder="NEW SOURCE URL OR TITLE">
+                           placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $focus_tab .= '</div>';
