@@ -11,12 +11,7 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
-    //Load Idea Search:
-    $('#newIdeaTitle').focus(function() {
-        $('.algolia_pad_search').removeClass('hidden');
-    }).focusout(function() {
-        $('.algolia_pad_search').addClass('hidden');
-    });
+    //Load Idea Search
     i_load_search("#newIdeaTitle",0, 'a', 'x_my_in');
     i_load_search("#searchiTitle",0, 'd', '');
 
