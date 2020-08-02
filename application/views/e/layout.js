@@ -18,6 +18,7 @@ $(document).ready(function () {
         $('.algolia_pad_search').addClass('hidden');
     });
     i_load_search("#newIdeaTitle",0, 'a', 'x_my_in');
+    i_load_search("#searchiTitle",0, 'd', false);
 
     if(e_focus_id==js_pl_id){
 
