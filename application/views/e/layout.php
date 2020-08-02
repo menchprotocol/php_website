@@ -211,7 +211,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
         $focus_tab = null;
 
         if($source_is_e && strlen($m['m_message']) > 0){
-            $focus_tab .= '<div><span class="icon-block"><i class="fas fa-info-circle grey"></i></span>'.$m['m_message'].'</div>';
+            $focus_tab .= '<div style="padding-bottom: 13px;"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>'.$m['m_message'].'</div>';
         }
 
         //Is this a caret menu?
