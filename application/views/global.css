@@ -1005,6 +1005,15 @@ td.MENCHcolumn3  { width: 13%; }
     padding:0;
     vertical-align: top;
 }
+
+.modal-content {
+    background-color: #f0f0f0;
+}
+.modal-content .form-control{
+    background-color: #FFFFFF;
+    border: 1px solid #000;
+    border-radius: 10px;
+}
 .mench-navigation .block-x, .mench-navigation .block-menu {
     width:40px;
     margin: 0;

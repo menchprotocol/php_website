@@ -210,6 +210,10 @@ if($counter__e > 0 && $counter__e >= $counter__i){
         $counter = null;
         $focus_tab = null;
 
+        if($source_is_e && strlen($m['m_message']) > 0){
+            $focus_tab .= '<div><span class="icon-block"><i class="fas fa-info-circle grey"></i></span>'.$m['m_message'].'</div>';
+        }
+
         //Is this a caret menu?
         if(in_array(11040 , $m['m_profile'])){
 
@@ -224,7 +228,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             if(!$counter){
                 continue;
             }
-            $focus_tab = '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m_icon'].' '.$m['m_title'].' '.number_format($counter, 0).' times.</div>';
+            $focus_tab .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m_icon'].' '.$m['m_title'].' '.number_format($counter, 0).' times.</div>';
 
         } elseif($x__type==11030){
 
@@ -590,19 +594,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             if($source_is_e){
 
-                //Search Featured
-                $focus_tab .= '<div class="list-group">';
-                $focus_tab .= '<div class="list-group-item list-adder itemdiscover big-cover">
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[6255]['m_icon'].'</span></span>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="searchiTitle"
-                               placeholder="SEARCH FEATURED IDEAS">
-                    </div><div class="algolia_pad_search hidden"></div></div>';
-                $focus_tab .= '</div>';
-
-
                 //FEATURED IDEAS
                 $featured_i = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -831,7 +822,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal13428Label">Manage Source</h5>
+                <h5 class="modal-title montserrat" id="modal13428Label"><?= $e___11035[13428]['m_icon'].' '.$e___11035[13428]['m_title'] ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -840,20 +831,22 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 <!-- URL -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[13433]['m_icon'] ?></span><?= $e___13428[13433]['m_title'] ?></div>
-                <input type="url" id="input_13433" value="" class="form-control border" />
+                <input type="url" id="input__13433" value="" class="form-control border" />
 
                 <!-- TITLE -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[6197]['m_icon'] ?></span><?= $e___13428[6197]['m_title'] ?></div>
-                <input type="text" maxlength="<?= config_var(6197) ?>" id="input_6197" value="" class="form-control border" />
+                <input type="text" maxlength="<?= config_var(6197) ?>" id="input__6197" value="" class="form-control border" />
 
                 <!-- NONFICTION SOURCES -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[3000]['m_icon'] ?></span><?= $e___13428[3000]['m_title'] ?></div>
-                <?= view_input_dropdown(3000, 3005, 'source') ?>
-
-                <!-- EXPERTS -->
-                <div class="headline"><span class="icon-block"><?= $e___13428[13339]['m_icon'] ?></span><?= $e___13428[13339]['m_title'] ?></div>
-                <input type="text" maxlength="<?= config_var(6197) ?>" id="input_13339[]" value="" class="form-control border algolia_search " />
-                <a href="javascript:void(0);" onclick="add_expert()" class="btn btn-e">Add Expert Author</a>
+                <select class="form-control border" id="input__3000">
+                    <?php
+                    echo '<option value="0">SELECT '.$e___13428[3000]['m_title'].'...</option>';
+                    foreach($this->config->item('e___3000') as $e__id => $m) {
+                        echo '<option value="'.$e__id.'">'.$m['m_title'].'</option>';
+                    }
+                    ?>
+                </select>
 
             </div>
             <div class="modal-footer">

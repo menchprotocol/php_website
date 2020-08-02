@@ -1534,10 +1534,10 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
                     } else {
 
                         //Allow to remove:
-                        $ui .= '<span><a href="javascript:void(0);" onclick="e_unlink(' . $x__id . ', '.$e['x__type'].')"><i class="fas fa-times black"></i></a></span>';
+                        $ui .= '<span><a href="javascript:void(0);" onclick="e_10678(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10678]['m_title'].'">'.$e___11035[10678]['m_icon'].'</a></span>';
 
                         //Allow to modify via Modal:
-                        $ui .= '<span><a data-toggle="modal" data-target="#modal13428">'.$e___11035[13428]['m_icon'].'</a></span>';
+                        $ui .= '<span><a href="javascript:void(0);" onclick="load_13428(' . $e['e__id'] . ', \'\')" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>';
 
                     }
 

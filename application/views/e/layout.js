@@ -13,7 +13,6 @@ $(document).ready(function () {
 
     //Load Idea Search
     i_load_search("#newIdeaTitle",0, 'a', 'x_my_in');
-    i_load_search("#searchiTitle",0, 'd', '');
 
     if(e_focus_id==js_pl_id){
 
@@ -210,6 +209,41 @@ function reset_6415(){
 }
 
 
+
+function apply_url_13428(){
+    //Whe the URL is changed this tries to update the title & nonfiction source type
+
+}
+
+
+
+//Load Nonfiction Source Wizard:
+function load_13428(e__id, new_string){
+
+    //Load Data:
+    if(e__id > 0){
+
+        //Load current Source:
+
+
+    } else if(new_string.length > 0) {
+
+        //Load New Source
+        if(validURL(new_string)) {
+
+
+
+            //Try to fetch more data:
+            apply_url_13428();
+
+        } else {
+
+        }
+    }
+
+    $('#modal13428').modal('hide').modal('show');
+
+}
 
 
 var saving_i = false;
