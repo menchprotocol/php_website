@@ -1413,9 +1413,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
-    $is_x_e = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
+    $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
     $is_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
-    $is_e_only = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___7551')));
     $inline_editing = $control_enabled && superpower_active(13402, true);
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
@@ -1479,7 +1478,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
         $ui .= '<div class="col-sm col-md">';
             //SOURCE ICON
-            $ui .= '<a href="'.$e_url.'" '.( $is_x_e ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
+            $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
 
             //SOURCE TITLE TEXT EDITOR
@@ -1519,21 +1518,27 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
                 $ui .= '<div class="note-editor note-editor-compact edit-off">';
                 $ui .= '<span class="show-on-hover">';
 
-                if($is_x_e){
+                if($is_e_link){
 
                     //Sort
                     if(!$is_parent && $superpower_10939){
                         $ui .= '<span title="SORT"><i class="fas fa-sort hidden black"></i></span>';
                     }
 
-                    //Manage source transaction:
-                    $ui .= '<span class="'.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+                    if(superpower_active(13422, true)){
 
+                        //Edit Raw Source
+                        $ui .= '<span><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
 
-                } elseif($is_e_only){
+                    } else {
 
-                    //Allow to remove:
-                    $ui .= '<span><a href="javascript:void(0);" onclick="e_only_remove(' . $x__id . ', '.$e['x__type'].')"><i class="fas fa-times black"></i></a></span>';
+                        //Allow to remove:
+                        $ui .= '<span><a href="javascript:void(0);" onclick="e_unlink(' . $x__id . ', '.$e['x__type'].')"><i class="fas fa-times black"></i></a></span>';
+
+                        //Allow to modify via Modal:
+                        $ui .= '<span><a data-toggle="modal" data-target="#modal13428"><i class="fas fa-pen black"></i></a></span>';
+
+                    }
 
                 }
 
@@ -1570,7 +1575,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     //MESSAGE
     if ($x__id > 0) {
-        if($is_x_e){
+        if($is_e_link){
 
             $ui .= '<span class="message_content paddingup x__message hideIfEmpty x__message_' . $x__id . '">' . view_x__message($e['x__message'] , $e['x__type']) . '</span>';
 

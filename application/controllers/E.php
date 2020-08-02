@@ -303,7 +303,7 @@ class E extends CI_Controller
 
     }
 
-    function e_only_remove(){
+    function e_unlink(){
 
         //Auth user and check required variables:
         $user_e = superpower_assigned(10939);

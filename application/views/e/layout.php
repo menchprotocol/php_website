@@ -246,6 +246,10 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             $focus_tab .= '<div id="list_11030" class="list-group ">';
 
+            foreach($e__profiles as $e_profile) {
+                $focus_tab .= view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+            }
+
             //Input to add new parents:
             $focus_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
                 <div class="input-group border">
@@ -255,10 +259,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                            maxlength="' . config_var(6197) . '"
                            placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
-
-            foreach($e__profiles as $e_profile) {
-                $focus_tab .= view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
-            }
 
             $focus_tab .= '</div>';
 
@@ -452,6 +452,15 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             $focus_tab .= '<div id="list_e" class="list-group">';
 
+            $common_prefix = i_calc_common_prefix($list_e, 'e__title');
+
+            foreach($list_e as $e_portfolio) {
+                $focus_tab .= view_e($e_portfolio,false, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
+            }
+            if ($counter > count($list_e)) {
+                $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
+            }
+
             //Input to add new child:
             $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.( $source_is_e ? '' : superpower_active(13422) ).'">
                 <div class="input-group border">
@@ -461,16 +470,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                            maxlength="' . config_var(6197) . '"
                            placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
-
-
-            $common_prefix = i_calc_common_prefix($list_e, 'e__title');
-
-            foreach($list_e as $e_portfolio) {
-                $focus_tab .= view_e($e_portfolio,false, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
-            }
-            if ($counter > count($list_e)) {
-                $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
-            }
 
             $focus_tab .= '</div>';
 
@@ -497,21 +496,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             $focus_tab .= ( count($list_i) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> #list_13412 .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
 
 
-            //SMART SHOW/HIDE LIST LOGIC
-            if($source_of_e){
-                $focus_tab .= '<div class="list-group">';
-                $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               maxlength="' . config_var(4736) . '"
-                               id="newIdeaTitle"
-                               placeholder="NEW IDEA TITLE">
-                    </div><div class="algolia_pad_search hidden"></div></div>';
-                $focus_tab .= '</div>';
-            }
-
 
 
             $focus_tab .= '<div id="list_13412" class="list-group space-left">';
@@ -533,26 +517,27 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             }
             $focus_tab .= '</div>';
 
+
+            //SMART SHOW/HIDE LIST LOGIC
+            if($source_of_e){
+                $focus_tab .= '<div class="list-group">';
+                $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               maxlength="' . config_var(4736) . '"
+                               id="newIdeaTitle"
+                               placeholder="NEW IDEA TITLE">
+                    </div><div class="algolia_pad_search hidden"></div></div>';
+                $focus_tab .= '</div>';
+            }
+
         } elseif($x__type==6255){
 
             //DISCOVERIES
             $counter = $counter__x;
             $my_x_ids = array();
-
-
-
-            if($source_of_e){
-                $focus_tab .= '<div class="list-group">';
-                $focus_tab .= '<div class="list-group-item list-adder itemdiscover big-cover">
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[6255]['m_icon'].'</span></span>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="searchiTitle"
-                               placeholder="SEARCH FEATURED IDEAS">
-                    </div><div class="algolia_pad_search hidden"></div></div>';
-                $focus_tab .= '</div>';
-            }
 
 
             if($counter){
@@ -603,6 +588,20 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
             if($source_is_e){
+
+                //Search Featured
+                $focus_tab .= '<div class="list-group">';
+                $focus_tab .= '<div class="list-group-item list-adder itemdiscover big-cover">
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[6255]['m_icon'].'</span></span>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               id="searchiTitle"
+                               placeholder="SEARCH FEATURED IDEAS">
+                    </div><div class="algolia_pad_search hidden"></div></div>';
+                $focus_tab .= '</div>';
+
+
                 //FEATURED IDEAS
                 $featured_i = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -824,4 +823,29 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
     ?>
 
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal13428" tabindex="-1" role="dialog" aria-labelledby="modal13428Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal13428Label">Manage Source</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?php
+                foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
+                    echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
+                }
+                ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>

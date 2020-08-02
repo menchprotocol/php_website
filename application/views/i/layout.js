@@ -43,11 +43,11 @@ $(document).ready(function () {
 });
 
 
-function e_only_remove(x__id, note_type_id) {
+function e_unlink(x__id, note_type_id) {
 
     var r = confirm("Remove this source?");
     if (r == true) {
-        $.post("/e/e_only_remove", {
+        $.post("/e/e_unlink", {
 
             i__id: focus_i__id,
             x__id: x__id,
