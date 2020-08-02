@@ -603,6 +603,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 $focus_tab .= '</div>';
             }
 
+
         } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
             //IDEA NOTES
@@ -622,7 +623,19 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
                 foreach($i_notes_query as $count => $i_notes) {
-                    $focus_tab .= view_i($i_notes, 0, false, false, $i_notes['x__message'], null, false);
+
+                    if($x__type==12896){
+
+                        //Saved IDEA
+                        $focus_tab .= view_i_x($i_notes, null, true);
+
+
+                    } else {
+
+                        $focus_tab .= view_i($i_notes, 0, false, false, $i_notes['x__message'], null, false);
+
+                    }
+
                 }
 
             }
