@@ -245,9 +245,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             }
 
             $focus_tab .= '<div id="list_11030" class="list-group ">';
-            foreach($e__profiles as $e_profile) {
-                $focus_tab .= view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
-            }
 
             //Input to add new parents:
             $focus_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
@@ -258,6 +255,10 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                            maxlength="' . config_var(6197) . '"
                            placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+
+            foreach($e__profiles as $e_profile) {
+                $focus_tab .= view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+            }
 
             $focus_tab .= '</div>';
 
@@ -450,14 +451,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             }
 
             $focus_tab .= '<div id="list_e" class="list-group">';
-            $common_prefix = i_calc_common_prefix($list_e, 'e__title');
-
-            foreach($list_e as $e_portfolio) {
-                $focus_tab .= view_e($e_portfolio,false, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
-            }
-            if ($counter > count($list_e)) {
-                $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
-            }
 
             //Input to add new child:
             $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.( $source_is_e ? '' : superpower_active(13422) ).'">
@@ -468,6 +461,16 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                            maxlength="' . config_var(6197) . '"
                            placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+
+
+            $common_prefix = i_calc_common_prefix($list_e, 'e__title');
+
+            foreach($list_e as $e_portfolio) {
+                $focus_tab .= view_e($e_portfolio,false, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
+            }
+            if ($counter > count($list_e)) {
+                $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
+            }
 
             $focus_tab .= '</div>';
 
@@ -501,7 +504,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                         <input type="text"
-                               class="form-control form-control-thick montserrat algolia_search dotransparent add-input"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . config_var(4736) . '"
                                id="newIdeaTitle"
                                placeholder="NEW IDEA TITLE">
@@ -639,20 +642,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 }
 
             }
-
-            //ADD IDEAS
-            if($x__type!=12896){
-                $focus_tab .= '<div class="list-group-item list-adder itemidea">
-                <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
-                    <input type="text"
-                           class="form-control form-control-thick montserrat algolia_search dotransparent add-input"
-                           maxlength="' . config_var(4736) . '"
-                           id="newIdeaTitle"
-                           placeholder="NEW IDEA TITLE">
-                </div><div class="algolia_pad_search hidden"></div></div>';
-            }
-
 
 
             $focus_tab .= '</div>';
