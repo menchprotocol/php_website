@@ -1521,12 +1521,12 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
                 if($is_e_link){
 
-                    //Sort
-                    if(!$is_parent && $superpower_10939){
-                        $ui .= '<span title="SORT"><i class="fas fa-sort hidden black"></i></span>';
-                    }
-
                     if(superpower_active(13422, true)){
+
+                        //Sort
+                        if(!$is_parent && $superpower_10939){
+                            $ui .= '<span title="SORT"><i class="fas fa-sort hidden black"></i></span>';
+                        }
 
                         //Edit Raw Source
                         $ui .= '<span><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';

@@ -839,19 +839,19 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             <div class="modal-body">
 
                 <!-- URL -->
-                <div class="headline"><span class="icon-block"><?= $e___13428[13433]['m_icon'] ?></span><?= $e___13428[13433]['m_name'] ?></div>
+                <div class="headline"><span class="icon-block"><?= $e___13428[13433]['m_icon'] ?></span><?= $e___13428[13433]['m_title'] ?></div>
                 <input type="url" id="input_13433" value="" class="form-control border" />
 
                 <!-- TITLE -->
-                <div class="headline"><span class="icon-block"><?= $e___13428[6197]['m_icon'] ?></span><?= $e___13428[6197]['m_name'] ?></div>
+                <div class="headline"><span class="icon-block"><?= $e___13428[6197]['m_icon'] ?></span><?= $e___13428[6197]['m_title'] ?></div>
                 <input type="text" maxlength="<?= config_var(6197) ?>" id="input_6197" value="" class="form-control border" />
 
                 <!-- NONFICTION SOURCES -->
-                <div class="headline"><span class="icon-block"><?= $e___13428[3000]['m_icon'] ?></span><?= $e___13428[3000]['m_name'] ?></div>
+                <div class="headline"><span class="icon-block"><?= $e___13428[3000]['m_icon'] ?></span><?= $e___13428[3000]['m_title'] ?></div>
                 <?= view_input_dropdown(3000, 3005, 'source') ?>
 
                 <!-- EXPERTS -->
-                <div class="headline"><span class="icon-block"><?= $e___13428[13339]['m_icon'] ?></span><?= $e___13428[13339]['m_name'] ?></div>
+                <div class="headline"><span class="icon-block"><?= $e___13428[13339]['m_icon'] ?></span><?= $e___13428[13339]['m_title'] ?></div>
                 <input type="text" maxlength="<?= config_var(6197) ?>" id="input_13339[]" value="" class="form-control border algolia_search " />
                 <a href="javascript:void(0);" onclick="add_expert()" class="btn btn-e">Add Expert Author</a>
 
