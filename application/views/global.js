@@ -575,6 +575,16 @@ jQuery.fn.extend({
 
 function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
 
+    $(element_focus + ' .add-input').focus(function() {
+
+        $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
+
+    }).focusout(function() {
+
+        $(element_focus + ' .algolia_pad_search' ).addClass('hidden');
+
+    });
+
     //Idea Search
     $(element_focus).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
