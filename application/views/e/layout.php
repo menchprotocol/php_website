@@ -4,6 +4,7 @@ $e___4341 = $this->config->item('e___4341'); //Transaction Table
 $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___12467 = $this->config->item('e___12467'); //MENCH
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___13428 = $this->config->item('e___13428'); //SOURCE WIZARD
 
 $source_of_e = source_of_e($e['e__id']);
 $source_is_e = $e['e__id']==$user_e['e__id'];
@@ -836,15 +837,28 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 </button>
             </div>
             <div class="modal-body">
-                <?php
-                foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
-                    echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
-                }
-                ?>
+
+                <!-- URL -->
+                <div class="headline"><span class="icon-block"><?= $e___13428[13433]['m_icon'] ?></span><?= $e___13428[13433]['m_name'] ?></div>
+                <input type="url" id="input_13433" value="" class="form-control border" />
+
+                <!-- TITLE -->
+                <div class="headline"><span class="icon-block"><?= $e___13428[6197]['m_icon'] ?></span><?= $e___13428[6197]['m_name'] ?></div>
+                <input type="text" maxlength="<?= config_var(6197) ?>" id="input_6197" value="" class="form-control border" />
+
+                <!-- NONFICTION SOURCES -->
+                <div class="headline"><span class="icon-block"><?= $e___13428[3000]['m_icon'] ?></span><?= $e___13428[3000]['m_name'] ?></div>
+                <?= view_input_dropdown(3000, 3005, 'source') ?>
+
+                <!-- EXPERTS -->
+                <div class="headline"><span class="icon-block"><?= $e___13428[13339]['m_icon'] ?></span><?= $e___13428[13339]['m_name'] ?></div>
+                <input type="text" maxlength="<?= config_var(6197) ?>" id="input_13339[]" value="" class="form-control border algolia_search " />
+                <a href="javascript:void(0);" onclick="add_expert()" class="btn btn-e">Add Expert Author</a>
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">&times;</button>
+                <button type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>

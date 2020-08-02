@@ -1410,6 +1410,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $e___6177 = $CI->config->item('e___6177'); //Source Status
     $e___4592 = $CI->config->item('e___4592');
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
 
     $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
@@ -1536,7 +1537,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
                         $ui .= '<span><a href="javascript:void(0);" onclick="e_unlink(' . $x__id . ', '.$e['x__type'].')"><i class="fas fa-times black"></i></a></span>';
 
                         //Allow to modify via Modal:
-                        $ui .= '<span><a data-toggle="modal" data-target="#modal13428"><i class="fas fa-pen black"></i></a></span>';
+                        $ui .= '<span><a data-toggle="modal" data-target="#modal13428">'.$e___11035[13428]['m_icon'].'</a></span>';
 
                     }
 
