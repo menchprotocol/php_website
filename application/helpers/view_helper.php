@@ -676,7 +676,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
 
 
 
-function view_coins_i($x__type, $i, $append_coin_icon = true){
+function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = false){
 
     /*
      *
@@ -719,7 +719,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     //Return Results:
     if($append_coin_icon){
         $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-        return ( $count_query > 1 ? '<span data-toggle="tooltip" title="'.$e___12467[$x__type]['m_title'].'" data-placement="top" class="montserrat '.extract_icon_color($e___12467[$x__type]['m_icon']).'">'.$e___12467[$x__type]['m_icon'].'&nbsp;'.view_number($count_query).'</span>' : null);
+        return ( $count_query > 1 ? '<span data-toggle="tooltip" title="'.$e___12467[$x__type]['m_title'].'" data-placement="top" class="montserrat '.extract_icon_color($e___12467[$x__type]['m_icon']).'">'.$e___12467[$x__type]['m_icon'].'&nbsp;'.view_number($count_query).( $append_name ? '&nbsp'.$e___12467[$x__type]['m_title'] : '' ).'</span>' : null);
     } else {
         return intval($count_query);
     }
@@ -1353,8 +1353,8 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 //MENCH COINS
                 $ui .= '<div class="row">';
 
-                    //$ui .= '<div class="col-3 col-md-4 show-max">'.view_coins_i(12274, $i).'<span class="montserrat source">&nbsp'.$e___12467[12274]['m_title'].'</span></div>';
-                    $ui .= '<div class="col-6">'.view_coins_i(12273, $i).'<span class="montserrat idea">&nbsp'.$e___12467[12273]['m_title'].'</span></div>';
+                    //$ui .= '<div class="col-3 col-md-4 show-max">'.view_coins_i(12274, $i, true, true).'</div>';
+                    $ui .= '<div class="col-6">'.view_coins_i(12273, $i, true, true).'</div>';
                     $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
 
                 $ui .= '</div>';
