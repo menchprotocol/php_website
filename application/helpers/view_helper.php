@@ -1350,7 +1350,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
                 //DRAFTING?
-                if(in_array($i['i__status'], $CI->config->item('n___7355'))){
+                if(!in_array($i['i__status'], $CI->config->item('n___7355'))){
                     $ui .= view_cache(4737 /* Idea Status */, $i['i__status'], false, null, $i['i__id']);
                 }
 
