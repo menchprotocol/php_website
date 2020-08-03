@@ -238,13 +238,8 @@ function e_13428(){
         //Update Error Section
         $("#error_box").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
 
-        if(!parseInt($('#input__3000 option:selected').val())){
-            $("#input__3000").val(data.input__3000);
-        }
-
-        if($('#input__6197').val().length <= 0){
-            $('#input__6197').val(data.input__6197);
-        }
+        $('#input__6197').val(data.input__6197);
+        $("#input__3000").val(data.input__3000);
 
         //Reload Tooltip again:
         $('[data-toggle="tooltip"]').tooltip();
