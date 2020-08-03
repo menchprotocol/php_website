@@ -175,11 +175,11 @@ function e_e_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
