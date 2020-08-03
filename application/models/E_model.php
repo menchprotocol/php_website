@@ -703,6 +703,9 @@ class E_model extends CI_Model
             //Only fetch URL content in certain situations:
             $url_content = ( in_array($x__type, $this->config->item('n___11059')) /* not a direct file type */ ? null : @file_get_contents($url) );
             $page_title = e__title_validate(( $url_content ? one_two_explode('>', '', one_two_explode('<title', '</title', $url_content)) : $page_title ), $x__type);
+            if(!$url_content || !substr_count($url_content, '<title')){
+                $url_previously_existed = 1;
+            }
 
         }
 
