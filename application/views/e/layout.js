@@ -370,7 +370,11 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            e__add(0, is_e_parent);
+            if(validURL(data.query) || !js_session_superpowers_assigned.includes(13422)){
+                load_13428(0, data.query);
+            } else {
+                e__add(0, is_e_parent);
+            }
             return true;
         }
 
