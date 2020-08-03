@@ -814,6 +814,7 @@ class E_model extends CI_Model
             ));
         }
 
+        $url_already_linked = $url_previously_existed && !$x__source && isset($e_url['e__id']);
 
         //Return results:
         return array_merge(
@@ -821,8 +822,8 @@ class E_model extends CI_Model
             $url_analysis, //Make domain analysis data available as well...
 
             array(
-                'status' => ($url_previously_existed && !$x__source ? 0 : 1),
-                'message' => ($url_previously_existed && !$x__source ? 'URL already added to <a href="/@'.$e_url['e__id'].'">'.$e_url['e__title'].'</a>' : 'Success'),
+                'status' => ( $url_already_linked ? 0 : 1),
+                'message' => ( $url_already_linked ? 'URL already added to <a href="/@'.$e_url['e__id'].'">'.$e_url['e__title'].'</a>' : 'Success'),
                 'url_previously_existed' => $url_previously_existed,
                 'clean_url' => $url,
                 'x__type' => $x__type,
