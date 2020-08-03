@@ -2140,21 +2140,9 @@ class E extends CI_Controller
         }
 
         //See what this is:
-        $detected_x_type = x_detect_type($_POST['input__13433']);
-        if(!in_array($detected_x_type['x__type'], $this->config->item('n___4537'))){
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid URL',
-            ));
-
-        } elseif (!$detected_x_type['status']) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => $detected_x_type['message'],
-            ));
-
+        $detected_x_type = $this->E_model->url($_POST['input__13433']);
+        if (!$detected_x_type['status']) {
+            return view_json($detected_x_type);
         }
 
 
@@ -2165,7 +2153,7 @@ class E extends CI_Controller
             //Videos
             $input__3000 = 2998;
 
-        } elseif(substr_count($_POST['input__13433'], 'amazon.') && substr_count($_POST['input__13433'], '/dp/')){
+        } elseif(substr_count($_POST['input__13433'], 'goodreads.com/') || (substr_count($_POST['input__13433'], 'amazon.') && substr_count($_POST['input__13433'], '/dp/'))){
 
             //Books
             $input__3000 = 3005;
@@ -2185,7 +2173,7 @@ class E extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'input__6197' => $detected_x_type['page_title'],
+            'input__6197' => ( !$detected_x_type['page_title_generic'] ? $detected_x_type['page_title'] : '' ),
             'input__3000' => $input__3000,
         ));
 

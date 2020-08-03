@@ -625,6 +625,7 @@ class E_model extends CI_Model
         }
 
         //Reuser if source name was passed:
+        $page_title_generic = 0;
         $name_was_passed = ( $page_title ? true : false );
         $e___4537 = $this->config->item('e___4537');
         $e___4592 = $this->config->item('e___4592');
@@ -748,10 +749,8 @@ class E_model extends CI_Model
                 if(!$page_title){
                     //Assign a generic source name:
                     $page_title = $e___4592[$x__type]['m_title'].' '.substr(md5($url), 0, 8);
+                    $page_title_generic = 1;
                 }
-
-                //Prefix type in name:
-                $page_title = $page_title;
 
                 //Create a new source for this URL ONLY If user source is provided...
                 $added_e = $this->E_model->verify_create($page_title, $x__source, 6181, $e___4592[$x__type]['m_icon']);
@@ -788,6 +787,7 @@ class E_model extends CI_Model
                             'x__source' => $x__source,
                             'add_to_child_e__id' => $add_to_child_e__id,
                             'page_title' => $page_title,
+                            'page_title_generic' => $page_title_generic,
                         ),
                     ));
 
@@ -824,6 +824,7 @@ class E_model extends CI_Model
                 'clean_url' => $url,
                 'x__type' => $x__type,
                 'page_title' => html_entity_decode($page_title, ENT_QUOTES),
+                'page_title_generic' => $page_title_generic,
                 'e_domain' => $url_e['e_domain'],
                 'e_url' => $e_url,
             )
