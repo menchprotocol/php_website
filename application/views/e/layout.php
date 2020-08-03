@@ -258,7 +258,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             //Input to add new parents:
             $focus_tab .= '<div id="new-parent" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><a href="javascript:void(0)" class="icon-block" data-toggle="modal" data-target="#modal13428">'.$e___12467[12274]['m_icon'].'</a></span>
                     <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
