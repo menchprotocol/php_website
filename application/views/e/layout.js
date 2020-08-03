@@ -12,21 +12,9 @@ var $input = $('.drag-box').find('input[type="file"]'),
 $(document).ready(function () {
 
     //Listen for keystroke events
-
-    $('#input__13433').onkeyup = function (e) {
-
-        // Clear the timeout if it has previously been set.
-        // This will prevent the previous step from executing
-        // if it has been less than <MILLISECONDS>
-        clearTimeout(null);
-
-        // Make a new timeout set to go off in 800ms
-        setTimeout(function () {
-            //update type:
-            e_13428();
-        }, 610);
-
-    };
+    $( "#input__13433" ).change(function() {
+        e_13428();
+    });
 
     //Load Idea Search
     i_load_search("#newIdeaTitle",0, 'a', 'x_my_in');
@@ -76,6 +64,10 @@ $(document).ready(function () {
     }
 
     autosize($('.texttype__lg.text__6197_'+e_focus_id));
+
+    $("#input__6197").click(function(event) {
+        event.preventDefault();
+    });
 
     //Update Profile counters to account for sources that user may not be able to see due to missing permissions...
     $('.en-type-counter-11030').text($('#list_11030 .en-item').not(".hidden").length);
@@ -228,6 +220,10 @@ function reset_6415(){
 
 
 function e_13428(){
+
+    if(!$('#input__13433').val().length){
+        return false;
+    }
 
     //Whe the URL is changed this tries to update the title & nonfiction source type
 
