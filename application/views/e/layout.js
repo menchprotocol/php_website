@@ -449,7 +449,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
                         var return_string = ( validURL(data.query) ? data.query : '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' );
 
-                        return (js_session_superpowers_assigned.includes(13422) ? '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + return_string + '</a>' : '') + '<a href="javascript:load_13428(0, \''+data.query+'\')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-pen-square source"></i></span>' + return_string + '</a>';
+                        return (js_session_superpowers_assigned.includes(13422) ? '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + return_string + '</a>' : '') + '<a href="javascript:load_13428(0, \''+data.query+'\')" class="suggestion">' + '<span class="icon-block">'+js_e___11035[13428]['m_icon']+'</span>' + return_string + '</a>';
 
                     }
                 },

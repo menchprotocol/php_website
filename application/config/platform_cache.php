@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-03 09:26:25 PST
+//Generated 2020-08-03 09:40:24 PST
 $config['s___12274'] = 4998; //SOURCES
 $config['s___12273'] = 3925; //IDEAS
 $config['s___6255'] = 122261; //DISCOVERIES
@@ -3934,7 +3934,7 @@ $config['e___6404'] = array(
 );
 
 //MENCH MEMORY JAVASCRIPT:
-$config['n___11054'] = array(4486,4737,7356,7355,7585,7712,2738,12467,6404,6201,12687,10573,4592,6177,7357,6186);
+$config['n___11054'] = array(4486,4737,7356,7355,7585,7712,2738,12467,6404,6201,12687,11035,10573,4592,6177,7357,6186);
 $config['e___11054'] = array(
     4486 => array(
         'm_title' => 'IDEA LINKS',
@@ -4001,6 +4001,12 @@ $config['e___11054'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-comments-alt" aria-hidden="true"></i>',
         'm_profile' => array(6403,11054,4527),
+    ),
+    11035 => array(
+        'm_title' => 'MENCH NAVIGATION',
+        'm_message' => '',
+        'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
+        'm_profile' => array(11054,6403,4527),
     ),
     10573 => array(
         'm_title' => 'MY IDEAS',
@@ -5304,7 +5310,7 @@ $config['e___4527'] = array(
         'm_title' => 'MENCH NAVIGATION',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
-        'm_profile' => array(6403,4527),
+        'm_profile' => array(11054,6403,4527),
     ),
     6206 => array(
         'm_title' => 'MENCH SOURCES',
