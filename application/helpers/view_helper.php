@@ -1340,6 +1340,13 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 //Title
                 $ui .= '<div style="padding-top:8px;"><h2><a href="'.$href.'">'.view_i_title($i).'</a></h2></div>';
 
+
+                //DRAFTING?
+                if(!in_array($i['i__status'], $CI->config->item('n___7355'))){
+                    $ui .= '<div class="montserrat">'.view_cache(4737 /* Idea Status */, $i['i__status'], false, null, $i['i__id']).'</div>';
+                }
+
+
                 if($message_input){
                     //Description, if any
                     $ui .= '<div class="inline-block">'.$message_input.'</div>';
@@ -1349,10 +1356,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 }
 
 
-                //DRAFTING?
-                if(!in_array($i['i__status'], $CI->config->item('n___7355'))){
-                    $ui .= '<div class="montserrat">'.view_cache(4737 /* Idea Status */, $i['i__status'], false, null, $i['i__id']).'</div>';
-                }
 
 
                 //MENCH COINS
