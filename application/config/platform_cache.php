@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-02 13:42:36 PST
+//Generated 2020-08-02 18:37:08 PST
 $config['s___12274'] = 4998; //SOURCES
 $config['s___12273'] = 3925; //IDEAS
 $config['s___6255'] = 122257; //DISCOVERIES
@@ -3146,7 +3146,7 @@ $config['e___11089'] = array(
     4364 => array(
         'm_title' => 'TRANSACTION SOURCE',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-user source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag source" aria-hidden="true"></i>',
         'm_profile' => array(11089,12701,6194,11081,6160,4341),
     ),
     11030 => array(
@@ -3157,19 +3157,19 @@ $config['e___11089'] = array(
     ),
     12274 => array(
         'm_title' => 'SOURCES',
-        'm_message' => 'Add a nonfiction source (Book, Video, Article, Podcast, Course, etc...) only if you want to summarize its ideas. No need to add a source if summarizing your own ideas, since you\'re the source.',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(7551,13530,11018,12574,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
-        'm_message' => 'Specific intentions or outcomes that can usually start with a verb: Get Hired, Get a Promotion, Learn English, etc...',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12675,13530,11018,12574,11089,12446,12761,12112,13291,12467,12228),
     ),
     6255 => array(
         'm_title' => 'DISCOVERIES',
-        'm_message' => 'A record of your reading history and the ideas you\'ve discovered on Mench.',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(12574,13450,11089,13530,13291,12677,11018,12467,12228,4527),
     ),
@@ -3649,7 +3649,7 @@ $config['e___11081'] = array(
     4364 => array(
         'm_title' => 'SOURCE',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-user source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag source" aria-hidden="true"></i>',
         'm_profile' => array(11089,12701,6194,11081,6160,4341),
     ),
     4593 => array(
@@ -5923,7 +5923,7 @@ $config['e___6194'] = array(
     4364 => array(
         'm_title' => 'SOURCE',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-user source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag source" aria-hidden="true"></i>',
         'm_profile' => array(11089,12701,6194,11081,6160,4341),
     ),
     4593 => array(
@@ -6011,7 +6011,7 @@ $config['e___4341'] = array(
     4364 => array(
         'm_title' => 'SOURCE',
         'm_message' => 'x__source',
-        'm_icon' => '<i class="fad fa-user source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-user-tag source" aria-hidden="true"></i>',
         'm_profile' => array(11089,12701,6194,11081,6160,4341),
     ),
     4366 => array(
