@@ -191,6 +191,48 @@ function e_x__type($string = null){
     return 0;
 }
 
+function current_mench(){
+
+    /*
+     *
+     * Detects which of the Mench
+     * coins is focused on based on
+     * the URL which reflects the
+     * logic in routes.php
+     *
+     * */
+
+    $CI =& get_instance();
+    $first_segment = $CI->uri->segment(1);
+    $first_letter = substr($first_segment, 0, 1);
+
+    if($first_letter=='@' || $first_segment=='e' || $first_segment=='source'){
+
+        return array(
+            'x_id' => 12274,
+            'x_name' => 'source',
+        );
+
+    } elseif($first_letter=='~' || $first_segment=='i' || $first_segment=='idea'){
+
+        return array(
+            'x_id' => 12273,
+            'x_name' => 'idea',
+        );
+
+    } else {
+
+        return array(
+            'x_id' => 6255,
+            'x_name' => 'discover',
+        );
+
+    }
+
+}
+
+
+
 function x_detect_type($string)
 {
 

@@ -5,13 +5,14 @@ $first_segment = $this->uri->segment(1);
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
+$current_mench = current_mench();
 
 ?><!doctype html>
 <html lang="en" >
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/mench.png">
+    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['x_name'] ) ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : '' ) ?></title>
 
