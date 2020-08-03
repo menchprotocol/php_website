@@ -819,7 +819,7 @@ class E_model extends CI_Model
 
             array(
                 'status' => ($url_previously_existed && !$x__source ? 0 : 1),
-                'message' => ($url_previously_existed && !$x__source ? 'URL already belongs to [' . $e_url['e__title'].'] with source ID @' . $e_url['e__id'] : 'Success'),
+                'message' => ($url_previously_existed && !$x__source ? 'URL already added to <a href="/@'.$e_url['e__id'].'">'.$e_url['e__title'].'</a>' : 'Success'),
                 'url_previously_existed' => $url_previously_existed,
                 'clean_url' => $url,
                 'x__type' => $x__type,

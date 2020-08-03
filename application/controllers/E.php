@@ -2148,13 +2148,6 @@ class E extends CI_Controller
                 'message' => 'Invalid URL',
             ));
 
-        } elseif (isset($detected_x_type['url_previously_existed']) && $detected_x_type['url_previously_existed'] && $detected_x_type['e_url']['e__id']!=$_POST['e__id']) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'URL Already belongs to @'.$detected_x_type['e_url']['e__id'].' '.$detected_x_type['e_url']['e__title'],
-            ));
-
         } elseif (!$detected_x_type['status']) {
 
             return view_json(array(
