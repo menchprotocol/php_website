@@ -850,7 +850,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     ?>
                 </select>
 
-                <div id="error_box margin-top-down"></div>
+                <div id="error_box" class="margin-top-down"></div>
 
             </div>
             <div class="modal-footer">

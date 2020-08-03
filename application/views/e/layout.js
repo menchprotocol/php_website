@@ -228,6 +228,8 @@ function e_13428(){
     //Whe the URL is changed this tries to update the title & nonfiction source type
 
     $('#error_box').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('#input__6197').val('LOADING...');
+    $("#input__3000").val(0);
 
     //Fetch Idea Data to load modify widget:
     $.post("/e/e_13428", {
