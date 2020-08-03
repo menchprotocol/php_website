@@ -348,6 +348,9 @@ function load_13428(e__id, new_string){
         }
     }
 
+    //Adjust text input size
+    autosize($('#input__6197'));
+
 }
 
 

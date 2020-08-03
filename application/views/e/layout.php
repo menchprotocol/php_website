@@ -469,7 +469,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             //Input to add new child:
             $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.( $source_is_e ? '' : superpower_active(13422) ).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><a href="javascript:void(0)" class="icon-block" data-toggle="modal" data-target="#modal13428">'.$e___12467[12274]['m_icon'].'</a></span>
+                    <span class="input-group-addon addon-lean icon-adder"><a href="javascript:void(0)" class="icon-block" data-toggle="modal" data-target="#modal13428" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>
                     <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
@@ -822,12 +822,12 @@ if($counter__e > 0 && $counter__e >= $counter__i){
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title montserrat" id="modal13428Label"><?= $e___11035[13428]['m_icon'].' '.$e___11035[13428]['m_title'] ?></h5>
+                <h5 class="modal-title montserrat <?= extract_icon_color($e___11035[13428]['m_icon']) ?>" id="modal13428Label"><?= $e___11035[13428]['m_icon'].' '.$e___11035[13428]['m_title'] ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <textarea class="modal-body">
 
                 <input type="hidden" id="modal_e__id" value="0" />
 
@@ -837,13 +837,13 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 <!-- TITLE -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[6197]['m_icon'] ?></span><?= $e___13428[6197]['m_title'] ?></div>
-                <input type="text" maxlength="<?= config_var(6197) ?>" id="input__6197" value="" class="form-control border" />
+                <textarea id="input__6197" class="form-control border"></textarea>
 
                 <!-- NONFICTION SOURCES -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[3000]['m_icon'] ?></span><?= $e___13428[3000]['m_title'] ?></div>
                 <select class="form-control border" id="input__3000">
                     <?php
-                    echo '<option value="0">SELECT '.$e___13428[3000]['m_title'].'...</option>';
+                    echo '<option value="0">SELECT ONE...</option>';
                     foreach($this->config->item('e___3000') as $e__id => $m) {
                         echo '<option value="'.$e__id.'">'.$m['m_title'].'</option>';
                     }

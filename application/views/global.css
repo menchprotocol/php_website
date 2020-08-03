@@ -1013,6 +1013,7 @@ td.MENCHcolumn3  { width: 13%; }
     background-color: #FFFFFF;
     border: 1px solid #000;
     border-radius: 10px;
+    margin-bottom: 13px;
 }
 .mench-navigation .block-x, .mench-navigation .block-menu {
     width:40px;
