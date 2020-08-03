@@ -2070,6 +2070,17 @@ class E extends CI_Controller
         }
     }
 
+    function add_13428(){
+
+
+
+        return view_json(array(
+            'status' => 1,
+            'e_new_echo' => view_e(array_merge($es_latest[0], $ur2), $_POST['is_parent'], null, true, true),
+        ));
+
+    }
+
     function load_13428(){
 
         if (!isset($_POST['e__id'])) {

@@ -606,7 +606,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         );
 
     } elseif($x__type==12273){

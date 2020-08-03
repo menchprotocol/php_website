@@ -257,7 +257,43 @@ function e_13428(){
 
 }
 
+var is_adding = false;
+function add_13428(){
 
+    if(is_adding){
+        $('#save_btn').hide().fadeIn();
+        return false;
+    }
+
+    //Show Modal:
+    $('#error_box').html('');
+    $('#save_btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    is_adding = true;
+
+    //Load current Source:
+    $.post("/e/add_13428", {
+
+        e__id: $('#modal_e__id').val(),
+        input__13433: $('#input__13433').val(),
+        input__6197: $('#input__6197').val(),
+        input__13433: $('#input__3000 option:selected').val(),
+
+    }, function (data) {
+
+        is_adding = false;
+        $('#save_btn').html('SAVE');
+        $("#error_box").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
+
+        if (data.status) {
+
+            $('#modal13428').modal('hide');
+
+            //Add to List:
+            add_to_list('list_e', '.en-item', data.e_new_echo);
+
+        }
+    });
+}
 
 //Load Nonfiction Source Wizard:
 function load_13428(e__id, new_string){

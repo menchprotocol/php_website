@@ -855,7 +855,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">&times;</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" onclick="add_13428()" id="save_btn" class="btn btn-e">SAVE</button>
             </div>
         </div>
     </div>
