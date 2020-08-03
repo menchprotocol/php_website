@@ -829,6 +829,8 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             </div>
             <div class="modal-body">
 
+                <input type="hidden" id="modal_e__id" value="0" />
+
                 <!-- URL -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[13433]['m_icon'] ?></span><?= $e___13428[13433]['m_title'] ?></div>
                 <input type="url" id="input__13433" value="" class="form-control border" />
@@ -847,6 +849,8 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     }
                     ?>
                 </select>
+
+                <div id="error_box margin-top-down"></div>
 
             </div>
             <div class="modal-footer">

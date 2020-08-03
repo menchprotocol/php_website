@@ -2070,6 +2070,123 @@ class E extends CI_Controller
         }
     }
 
+    function load_13428(){
+
+        if (!isset($_POST['e__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing core inputs',
+            ));
+        }
+
+        $es = $this->E_model->fetch(array(
+            'e__id' => $_POST['e__id'],
+        ));
+        if(!count($es)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source ID',
+            ));
+        }
+
+        //Also Find URL:
+        $input__13433 = '';
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
+            'x__down' => $_POST['e__id'],
+        ), array(), 1, 0, array('x__type' => 'ASC' /* Generic URL first */)) as $url){
+            $input__13433 = $url['x__message'];
+        }
+
+        //Find Expert Content:
+        $input__3000 = 0;
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
+            'x__up IN (' . join(',', $this->config->item('n___3000')) . ')' => null,
+            'x__down' => $_POST['e__id'],
+        ), array(), 1) as $url){
+            $input__3000 = $url['x__up'];
+        }
+
+        return view_json(array(
+            'status' => 1,
+            'input__13433' => $input__13433,
+            'input__6197' => $es[0]['e__title'],
+            'input__3000' => $input__3000,
+        ));
+
+    }
+
+    function e_13428(){
+
+        if (!isset($_POST['input__13433']) || !isset($_POST['e__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing core inputs',
+            ));
+        }
+
+        //See what this is:
+        $detected_x_type = x_detect_type($_POST['input__13433']);
+        if(!in_array($detected_x_type['x__type'], $this->config->item('n___4537'))){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid URL',
+            ));
+
+        } elseif (isset($detected_x_type['url_previously_existed']) && $detected_x_type['url_previously_existed'] && $detected_x_type['e_url']['e__id']!=$_POST['e__id']) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'URL Already belongs to @'.$detected_x_type['e_url']['e__id'].' '.$detected_x_type['e_url']['e__title'],
+            ));
+
+        } elseif (!$detected_x_type['status']) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => $detected_x_type['message'],
+            ));
+
+        }
+
+
+        //Try to determine URL type:
+        $input__3000 = 0;
+        if(substr_count($_POST['input__13433'], 'youtube.') || substr_count($_POST['input__13433'], 'vimeo.')){
+
+            //Videos
+            $input__3000 = 2998;
+
+        } elseif(substr_count($_POST['input__13433'], 'amazon.') && substr_count($_POST['input__13433'], '/dp/')){
+
+            //Books
+            $input__3000 = 3005;
+
+        } elseif(substr_count($_POST['input__13433'], 'medium.com/') || substr_count($_POST['input__13433'], 'nytimes.com/')){
+
+            //Articles
+            $input__3000 = 2997;
+
+        } elseif(substr_count($_POST['input__13433'], 'udemy.com/') || substr_count($_POST['input__13433'], 'coursera.com/') || substr_count($_POST['input__13433'], 'udacity.com/')){
+
+            //Courses
+            $input__3000 = 3147;
+
+        }
+
+
+        return view_json(array(
+            'status' => 1,
+            'input__6197' => $detected_x_type['page_title'],
+            'input__3000' => $input__3000,
+        ));
+
+    }
+
     function plugin_7264(){
 
         //Authenticate User:

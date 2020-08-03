@@ -11,6 +11,23 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
+    //Listen for keystroke events
+
+    $('#input__13433').onkeyup = function (e) {
+
+        // Clear the timeout if it has previously been set.
+        // This will prevent the previous step from executing
+        // if it has been less than <MILLISECONDS>
+        clearTimeout(null);
+
+        // Make a new timeout set to go off in 800ms
+        setTimeout(function () {
+            //update type:
+            e_13428();
+        }, 610);
+
+    };
+
     //Load Idea Search
     i_load_search("#newIdeaTitle",0, 'a', 'x_my_in');
 
@@ -210,8 +227,33 @@ function reset_6415(){
 
 
 
-function apply_url_13428(){
+function e_13428(){
+
     //Whe the URL is changed this tries to update the title & nonfiction source type
+
+    $('#error_box').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+
+    //Fetch Idea Data to load modify widget:
+    $.post("/e/e_13428", {
+        input__13433: $('#input__13433').val(),
+        e__id: $('#modal_e__id').val(),
+    }, function (data) {
+
+        //Update Error Section
+        $("#error_box").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
+
+        if(!parseInt($('#input__3000 option:selected').val())){
+            $("#input__3000").val(data.input__3000);
+        }
+
+        if($('#input__6197').val().length <= 0){
+            $('#input__6197').val(data.input__6197);
+        }
+
+        //Reload Tooltip again:
+        $('[data-toggle="tooltip"]').tooltip();
+
+    });
 
 }
 
@@ -220,28 +262,55 @@ function apply_url_13428(){
 //Load Nonfiction Source Wizard:
 function load_13428(e__id, new_string){
 
+    //Reset Values:
+    $('#modal_e__id').val(e__id);
+    $('#input__13433').val(''); //URL
+    $('#input__6197').val(''); //TITLE
+    $('#input__3000').val(0); //TITLE
+
+    //Show Modal:
+    $('#modal13428').modal('show');
+    $('#error_box').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+
     //Load Data:
     if(e__id > 0){
 
         //Load current Source:
+        $.post("/e/load_13428", {
 
+            e__id: e__id,
+
+        }, function (data) {
+
+            $("#error_box").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
+
+            if (data.status) {
+
+                $('#input__13433').val(data.input__13433);
+                $('#input__6197').val(data.input__6197);
+                $('#input__3000').val(data.input__3000);
+
+            }
+
+        });
 
     } else if(new_string.length > 0) {
 
         //Load New Source
         if(validURL(new_string)) {
 
-
+            $('#input__13433').val(new_string);
 
             //Try to fetch more data:
-            apply_url_13428();
+            e_13428();
 
         } else {
 
+            //If not URL then it's Title:
+            $('#input__6197').val(new_string);
+
         }
     }
-
-    $('#modal13428').modal('hide').modal('show');
 
 }
 
@@ -333,24 +402,12 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
                     return view_search_result(suggestion);
                 },
                 header: function (data) {
-                    if(validURL(data.query)){
-
-                        return '<a href="javascript:x__add('+is_e_parent+')" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
-
-                    } else if($("#mench_search").val().charAt(0)=='#' || $("#mench_search").val().charAt(0)=='@'){
-
-                        //See what follows the @/# sign to determine if we should create OR redirect:
-                        var search_body = $("#mench_search").val().substr(1);
-                        if(!isNaN(search_body)){
-                            //Valid Integer, Give option to go there:
-                            return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/i/i_go/' : '/@' ) + search_body + '" class="suggestion montserrat"><span class="icon-block"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
-                        }
-
-                    }
-
-
                     if (!data.isEmpty) {
-                        return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+
+                        var return_string = ( validURL(data.query) ? data.query : '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' );
+
+                        return (js_session_superpowers_assigned.includes(13422) ? '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + return_string + '</a>' : '') + '<a href="javascript:load_13428(0, \''+data.query+'\')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-pen-square source"></i></span>' + return_string + '</a>';
+
                     }
                 },
                 empty: function (data) {
