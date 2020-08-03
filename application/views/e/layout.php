@@ -827,7 +827,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <textarea class="modal-body">
+            <div class="modal-body">
 
                 <input type="hidden" id="modal_e__id" value="0" />
 
