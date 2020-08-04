@@ -1477,6 +1477,43 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
+    if($control_enabled && $source_of_e){
+
+        //RIGHT EDITING:
+        $ui .= '<div class="note-editor edit-off">';
+        $ui .= '<span class="show-on-hover">';
+
+        if($is_e_link){
+
+            if(superpower_active(13422, true)){
+
+                //Sort
+                if(!$is_parent && $superpower_10939){
+                    $ui .= '<span title="SORT"><i class="fas fa-sort hidden black"></i></span>';
+                }
+
+                //Edit Raw Source
+                $ui .= '<span><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+
+            } elseif(superpower_active(10939, true)){
+
+                //Allow to remove:
+                $ui .= '<span><a href="javascript:void(0);" onclick="e_10678(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10678]['m_title'].'">'.$e___11035[10678]['m_icon'].'</a></span>';
+
+                //Allow to modify via Modal:
+                if(editable_by_13428($e['e__id'])){
+                    $ui .= '<span><a href="javascript:void(0);" onclick="load_13428(' . $e['e__id'] . ', \'\')" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>';
+                }
+
+            }
+
+        }
+
+        $ui .= '</span>';
+        $ui .= '</div>';
+
+    }
+
 
 
 
@@ -1517,43 +1554,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
                 $ui .= '<div class="col-4">'.view_coins_e(12273, $e['e__id']).'</div>';
                 $ui .= '<div class="col-4">'.view_coins_e(6255, $e['e__id']).'</div>';
             $ui .= '</div>';
-
-            if($control_enabled && $source_of_e){
-
-                //RIGHT EDITING:
-                $ui .= '<div class="note-editor edit-off">';
-                $ui .= '<span class="show-on-hover">';
-
-                if($is_e_link){
-
-                    if(superpower_active(13422, true)){
-
-                        //Sort
-                        if(!$is_parent && $superpower_10939){
-                            $ui .= '<span title="SORT"><i class="fas fa-sort hidden black"></i></span>';
-                        }
-
-                        //Edit Raw Source
-                        $ui .= '<span><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
-
-                    } elseif(superpower_active(10939, true)){
-
-                        //Allow to remove:
-                        $ui .= '<span><a href="javascript:void(0);" onclick="e_10678(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10678]['m_title'].'">'.$e___11035[10678]['m_icon'].'</a></span>';
-
-                        //Allow to modify via Modal:
-                        if(editable_by_13428($e['e__id'])){
-                            $ui .= '<span><a href="javascript:void(0);" onclick="load_13428(' . $e['e__id'] . ', \'\')" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>';
-                        }
-
-                    }
-
-                }
-
-                $ui .= '</span>';
-                $ui .= '</div>';
-
-            }
 
         $ui .= '</div>';
 
