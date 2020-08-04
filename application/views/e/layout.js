@@ -269,7 +269,7 @@ function add_13428(){
         e__id: $('#modal_e__id').val(),
         x__id: $('#modal_x__id').val(),
         input__13433: $('#input__13433').val(),
-        input__6197: $('#input__6197').val(),
+        input__6197: $('#input__6197').val().toUpperCase(),
         input__3000: $('#input__3000 option:selected').val(),
 
     }, function (data) {

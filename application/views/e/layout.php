@@ -864,7 +864,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 <!-- TITLE -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[6197]['m_icon'] ?></span><?= $e___13428[6197]['m_title'] ?></div>
-                <textarea id="input__6197" class="form-control border"></textarea>
+                <textarea id="input__6197" class="form-control border montserrat doupper"></textarea>
 
                 <!-- NONFICTION SOURCES -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[3000]['m_icon'] ?></span><?= $e___13428[3000]['m_title'] ?></div>
