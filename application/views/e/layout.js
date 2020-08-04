@@ -290,10 +290,7 @@ function add_13428(){
             } else {
 
                 //Go to new source:
-                //window.location = '/@' + data.new_e__id;
-
-                //Add to List:
-                add_to_list('list_e', '.en-item', data.e_new_echo);
+                window.location = '/@' + data.new_e__id;
 
             }
 
@@ -381,7 +378,10 @@ function i_create(){
 
     //Process this:
     $.post("/i/i_create", {
+
+        e_focus_id: e_focus_id,
         newIdeaTitle: $('#newIdeaTitle').val(),
+
     }, function (data) {
         if (data.status) {
 

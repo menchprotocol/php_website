@@ -467,10 +467,9 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             }
 
             //Input to add new child:
-            if($source_is_e){
-                if($superpower_10939){
+            if($source_is_e || $superpower_13422){
 
-                    $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.( $source_is_e ? '' : superpower_active(13422) ).'">
+                $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean icon-adder"><a href="javascript:void(0)" class="icon-block" data-toggle="modal" data-target="#modal13428" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>
                             <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
@@ -479,14 +478,12 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                                    placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                         </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
-                } else {
+            } elseif($source_is_e && !$superpower_10939){
 
-                    //Give option to unlock superpower:
-                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>START ADDING SOURCES &raquo;</a></div>';
+                //Give option to unlock superpower:
+                $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>START ADDING SOURCES &raquo;</a></div>';
 
-                }
             }
-
 
             $focus_tab .= '</div>';
 

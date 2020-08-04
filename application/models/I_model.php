@@ -320,7 +320,7 @@ class I_model extends CI_Model
         return $stats;
     }
 
-    function x_or_create($i__title, $x__source, $x_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $x_i__id = 0)
+    function create_or_link($i__title, $x__source, $x_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $x_i__id = 0)
     {
 
         /*
@@ -862,7 +862,7 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->x_or_create('', $x__source, $adjust_i__id, false, 6184, 6677, $next_i['i__id']);
+                    $this->I_model->create_or_link('', $x__source, $adjust_i__id, false, 6184, 6677, $next_i['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;

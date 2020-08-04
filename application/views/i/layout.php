@@ -130,7 +130,40 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $focus_tab = '';
 
 
-    if(in_array($x__type, $this->config->item('n___7551'))){
+    if($x__type==12274){
+
+        //Reference Sources Only:
+        $i_notes = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4983, //IDEA SOURCES
+            'x__right' => $i_focus['i__id'],
+        ), array('x__up'), 0, 0, array('x__sort' => 'ASC'));
+
+        //SOURCES
+        $counter = view_coins_i(12274,  $i_focus, false);
+
+        $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:34px;">';
+        foreach($i_notes as $i_note) {
+            $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
+        }
+
+        if($e_of_i && $is_active) {
+            $focus_tab .= '<div class="list-group-item list-adder itemsource no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
+                <div class="input-group border">
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___12467[12274]['m_icon'] . '</span></span>
+                    <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
+                           class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
+                           maxlength="' . config_var(6197) . '"                          
+                           placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
+                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '"></div></div>';
+        }
+
+        $focus_tab .= '</div>';
+
+        //Add Tree Sources
+        $focus_tab .= view_i_tree_e($i_focus);
+
+    } elseif(in_array($x__type, $this->config->item('n___7551'))){
 
         //Reference Sources Only:
         $i_notes = $this->X_model->fetch(array(
@@ -140,8 +173,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__up'), 0, 0, array('x__sort' => 'ASC'));
 
 
-        //SOURCES
-        $counter = ( $x__type==12274 ? view_coins_i(12274,  $i_focus, false) : count($i_notes) );
+        $counter = count($i_notes);
 
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:34px;">';
         foreach($i_notes as $i_note) {
@@ -160,11 +192,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $focus_tab .= '</div>';
-
-        if($x__type==12274){
-            //Add Tree Sources
-            $focus_tab .= view_i_tree_e($i_focus);
-        }
 
     } elseif($x__type==12273){
 

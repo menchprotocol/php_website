@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-04 14:46:32 PST
-$config['s___12274'] = 4998; //SOURCES
-$config['s___12273'] = 3925; //IDEAS
+//Generated 2020-08-04 15:28:16 PST
+$config['s___12274'] = 4999; //SOURCES
+$config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122262; //DISCOVERIES
 
 //SOURCE WIZARD:
@@ -3408,7 +3408,7 @@ $config['e___11035'] = array(
     13428 => array(
         'm_title' => 'SOURCE WIZARD',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-plus-circle source"></i>',
+        'm_icon' => '<i class="fas fa-comment-edit source"></i>',
         'm_profile' => array(4527,11035,13566,11029),
     ),
     10957 => array(
@@ -5597,7 +5597,7 @@ $config['e___4527'] = array(
     13428 => array(
         'm_title' => 'SOURCE WIZARD',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-plus-circle source"></i>',
+        'm_icon' => '<i class="fas fa-comment-edit source"></i>',
         'm_profile' => array(4527,11035,13566,11029),
     ),
     13202 => array(

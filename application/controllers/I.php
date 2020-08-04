@@ -43,8 +43,19 @@ class I extends CI_Controller {
 
 
         //Create Idea:
-        $i = $this->I_model->x_or_create($i__title_validation['i_clean_title'], $user_e['e__id']);
+        $i = $this->I_model->create_or_link($i__title_validation['i_clean_title'], $user_e['e__id']);
 
+
+        //Add additional source if different than user:
+        if($user_e['e__id']!=$_POST['e_focus_id']){
+            $this->X_model->create(array(
+                'x__type' => 4983, //IDEA SOURCES
+                'x__source' => $user_e['e__id'],
+                'x__up' => $_POST['e_focus_id'],
+                'x__message' => '@'.$_POST['e_focus_id'],
+                'x__right' => $i['i__id'],
+            ));
+        }
 
         //Move Existing Bookmarks by one:
         $x__sort = 2;
@@ -59,7 +70,7 @@ class I extends CI_Controller {
             $x__sort++;
         }
 
-        //Add to my ideas:
+        //Add to top of my ideas:
         $this->X_model->create(array(
             'x__type' => 10573, //MY IDEAS
             'x__source' => $user_e['e__id'],
@@ -487,7 +498,7 @@ class I extends CI_Controller {
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->I_model->x_or_create(trim($_POST['i__title']), $user_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_x_child_id']));
+        return view_json($this->I_model->create_or_link(trim($_POST['i__title']), $user_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_x_child_id']));
 
     }
 
