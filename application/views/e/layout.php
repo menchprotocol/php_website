@@ -270,8 +270,8 @@ if($counter__e > 0 && $counter__e >= $counter__i){
         } elseif($x__type==12274){
 
             //SOURCES
+            $counter = $counter__e;
             $list_e = view_coins_e(12274, $e['e__id'], 1);
-            $counter = ( count($list_e) > $counter__e ? count($list_e) : $counter__e );
 
             //SOURCE MASS EDITOR
             if($superpower_13422){

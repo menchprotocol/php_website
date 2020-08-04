@@ -132,15 +132,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     if($x__type==12274){
 
-        //Reference Sources Only:
+        //SOURCES
         $i_notes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4983, //IDEA SOURCES
             'x__right' => $i_focus['i__id'],
         ), array('x__up'), 0, 0, array('x__sort' => 'ASC'));
 
-        //SOURCES
         $counter = view_coins_i(12274,  $i_focus, false);
+        $counter = ( count($i_notes) > $counter ? count($i_notes) : $counter );
+
 
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:34px;">';
         foreach($i_notes as $i_note) {
