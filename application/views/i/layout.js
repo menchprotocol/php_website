@@ -43,32 +43,6 @@ $(document).ready(function () {
 });
 
 
-function e_10678(x__id, note_type_id) {
-
-    var r = confirm("Remove this source?");
-    if (r == true) {
-        $.post("/e/e_10678", {
-
-            i__id: focus_i__id,
-            x__id: x__id,
-
-        }, function (data) {
-            if (data.status) {
-
-                i_note_counter(note_type_id, -1);
-                $(".tr_" + x__id).fadeOut();
-                setTimeout(function () {
-                    $(".tr_" + x__id).remove();
-                }, 610);
-
-            } else {
-                //We had an error:
-                alert(data.message);
-            }
-        });
-    }
-
-}
 
 function e_only_add(e_existing_id, note_type_id) {
 

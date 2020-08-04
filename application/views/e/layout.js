@@ -285,7 +285,8 @@ function add_13428(){
             if( parseInt($('#modal_e__id').val()) > 0 ){
 
                 //Editing Update the view:
-                $( ".e__id_"+$('#modal_e__id').val()).after( data.e_new_echo ).remove();
+                $( data.e_new_echo ).insertBefore( ".e__id_"+$('#modal_e__id').val() );
+                $( ".e__id_"+$('#modal_e__id').val() ).remove();
 
             } else {
 
@@ -297,6 +298,9 @@ function add_13428(){
         }
     });
 }
+
+
+
 
 //Load Nonfiction Source Wizard:
 function load_13428(e__id, new_string){
