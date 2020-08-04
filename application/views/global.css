@@ -831,10 +831,6 @@ textarea.note-textarea{
     padding:13px 0 0;
 }
 
-.note-editor-compact>span{
-    padding:0 0 5px;
-}
-
 /* ROTATIONS */
 .rotate30 {
     -webkit-transform: rotate(30deg); /* Chrome and other webkit browsers */

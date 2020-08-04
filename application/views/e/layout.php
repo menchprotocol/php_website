@@ -46,7 +46,9 @@ if($counter__e > 0 && $counter__e >= $counter__i){
     <?php
 
     //SOURCE DRAFTING?
-    echo '<div class="'.( in_array($e['e__status'], $this->config->item('n___7357')) ? ' hidden ' : '' ).'"><span class="icon-block e__status_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="bottom" title="'.$e___6177[$e['e__status']]['m_title'].': '.$e___6177[$e['e__status']]['m_message'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span></span></div>';
+    if(!in_array($e['e__status'], $this->config->item('n___7357'))){
+        echo '<div>' . $e___6177[$e['e__status']]['m_icon'] . ' '.$e___6177[$e['e__status']]['m_title'].'</div>';
+    }
 
     //SOURCE NAME
     echo '<div class="itemsource" style="padding: 8px 0;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
@@ -185,7 +187,16 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
     //SOURCE MODIFY BUTTON
     echo '<div class="doclear">&nbsp;</div>';
-    echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_title'].'">'.$e___11035[12275]['m_icon'].'</a></div>';
+    echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;">';
+
+    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_title'].'">'.$e___11035[12275]['m_icon'].'</a>';
+
+    if(editable_by_13428($e['e__id'])){
+        echo '<a href="javascript:void(0);" onclick="load_13428('.$e['e__id'].', \'\')" class="icon-block grey '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a>';
+    }
+
+
+    echo '</div>';
     echo '<div class="doclear">&nbsp;</div>';
 
 

@@ -1044,8 +1044,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         if($is_i_x && $control_enabled && $e_of_i){
 
             //RIGHT EDITING:
-            $ui .= '<div class="pull-right inline-block '.superpower_active(10939).'">';
-            $ui .= '<div class="note-editor edit-off">';
+            $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'">';
             $ui .= '<span class="show-on-hover">';
 
             if(!$is_parent){
@@ -1056,7 +1055,6 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
             $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
 
             $ui .= '</span>';
-            $ui .= '</div>';
             $ui .= '</div>';
 
         }
@@ -1523,8 +1521,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             if($control_enabled && $source_of_e){
 
                 //RIGHT EDITING:
-                $ui .= '<div class="pull-right inline-block">';
-                $ui .= '<div class="note-editor note-editor-compact edit-off">';
+                $ui .= '<div class="note-editor edit-off">';
                 $ui .= '<span class="show-on-hover">';
 
                 if($is_e_link){
@@ -1552,7 +1549,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
                 }
 
                 $ui .= '</span>';
-                $ui .= '</div>';
                 $ui .= '</div>';
 
             }
