@@ -53,7 +53,7 @@ class I extends CI_Controller {
                 'x__source' => $user_e['e__id'],
                 'x__up' => $_POST['e_focus_id'],
                 'x__message' => '@'.$_POST['e_focus_id'],
-                'x__right' => $i['i__id'],
+                'x__right' => $i['new_i__id'],
             ));
         }
 
