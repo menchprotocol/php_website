@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-03 09:40:24 PST
+//Generated 2020-08-03 16:49:33 PST
 $config['s___12274'] = 4998; //SOURCES
 $config['s___12273'] = 3925; //IDEAS
-$config['s___6255'] = 122261; //DISCOVERIES
+$config['s___6255'] = 122262; //DISCOVERIES
 
 //SOURCE WIZARD:
 $config['n___13428'] = array(13433,6197,3000);
@@ -3210,7 +3210,7 @@ $config['n___6225'] = array(12289,10957,13491,3288,3286,13037,13519);
 $config['e___6225'] = array(
     12289 => array(
         'm_title' => 'AVATAR',
-        'm_message' => 'Welcome to the jungle 🙊',
+        'm_message' => 'Welcome to the jungle 🙊 Pick your animal:',
         'm_icon' => '<i class="fas fa-paw-claws" aria-hidden="true"></i>',
         'm_profile' => array(6225),
     ),
@@ -3222,13 +3222,13 @@ $config['e___6225'] = array(
     ),
     13491 => array(
         'm_title' => 'FONT SIZE',
-        'm_message' => 'Here is the current font size. Adjust accordingly :)',
+        'm_message' => 'Here is the current font size, or you can set it to:',
         'm_icon' => '<i class="fas fa-text-size"></i>',
         'm_profile' => array(6225,4527,6204),
     ),
     3288 => array(
         'm_title' => 'EMAIL',
-        'm_message' => 'We\'ll never spam or share your email with a third party 🙏',
+        'm_message' => 'Used for notifications & your account login:',
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
         'm_profile' => array(13531,6404,4269,12103,6225,4755),
     ),
@@ -3240,13 +3240,13 @@ $config['e___6225'] = array(
     ),
     13037 => array(
         'm_title' => 'MONTHLY DONATIONS',
-        'm_message' => 'Donations go towards weekly summarizer payouts & development of the Mench platform:',
+        'm_message' => 'Support weekly summarizer payouts & development of the Mench platform:',
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
         'm_profile' => array(13518,4527,6204,6225),
     ),
     13519 => array(
         'm_title' => 'WEEKLY PAYOUTS',
-        'm_message' => 'Users who summarize earn weekly payouts based on the discoveries generated from their ideas. Email shervin@mench.com with subject line "Weekly Payouts Setup" to get started.',
+        'm_message' => 'Earn weekly payouts based on the 🔴 DISCOVERIES generated from your 🟡 IDEAS.',
         'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
         'm_profile' => array(6225),
     ),

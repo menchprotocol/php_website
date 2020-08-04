@@ -267,9 +267,10 @@ function add_13428(){
     $.post("/e/add_13428", {
 
         e__id: $('#modal_e__id').val(),
+        x__id: $('#modal_x__id').val(),
         input__13433: $('#input__13433').val(),
         input__6197: $('#input__6197').val(),
-        input__13433: $('#input__3000 option:selected').val(),
+        input__3000: $('#input__3000 option:selected').val(),
 
     }, function (data) {
 
@@ -293,6 +294,7 @@ function load_13428(e__id, new_string){
 
     //Reset Values:
     $('#modal_e__id').val(e__id);
+    $('#modal_x__id').val(0);
     $('#input__13433').val(''); //URL
     $('#input__6197').val(''); //TITLE
     $('#input__3000').val(0); //TITLE
@@ -315,6 +317,7 @@ function load_13428(e__id, new_string){
 
             if (data.status) {
 
+                $('#modal_x__id').val(data.modal_x__id);
                 $('#input__13433').val(data.input__13433);
                 $('#input__6197').val(data.input__6197);
                 $('#input__3000').val(data.input__3000);

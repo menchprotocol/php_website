@@ -1027,7 +1027,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => str_replace($action_command1, $action_command2, $x['x__message']),
-                ), $x__source, 10657 /* User Transaction Updated Content  */);
+                ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
 

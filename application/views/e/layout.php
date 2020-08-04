@@ -467,14 +467,26 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             }
 
             //Input to add new child:
-            $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.( $source_is_e ? '' : superpower_active(13422) ).'">
-                <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><a href="javascript:void(0)" class="icon-block" data-toggle="modal" data-target="#modal13428" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>
-                    <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
-                           class="form-control form-control-thick algolia_search dotransparent add-input"
-                           maxlength="' . config_var(6197) . '"
-                           placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
-                </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+            if($source_is_e){
+                if($superpower_10939){
+
+                    $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.( $source_is_e ? '' : superpower_active(13422) ).'">
+                        <div class="input-group border">
+                            <span class="input-group-addon addon-lean icon-adder"><a href="javascript:void(0)" class="icon-block" data-toggle="modal" data-target="#modal13428" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>
+                            <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
+                                   class="form-control form-control-thick algolia_search dotransparent add-input"
+                                   maxlength="' . config_var(6197) . '"
+                                   placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
+                        </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+
+                } else {
+
+                    //Give option to unlock superpower:
+                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block">'.$e___11035[13428]['m_icon'].'</span>GET STARTED WITH ADDING SOURCES &raquo;</a></div>';
+
+                }
+            }
+
 
             $focus_tab .= '</div>';
 
@@ -523,10 +535,15 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             $focus_tab .= '</div>';
 
 
-            //SMART SHOW/HIDE LIST LOGIC
+
+
+
             if($source_of_e){
-                $focus_tab .= '<div class="list-group">';
-                $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
+                //SMART SHOW/HIDE LIST LOGIC
+                if($superpower_10939){
+
+                    $focus_tab .= '<div class="list-group">';
+                    $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                         <input type="text"
@@ -535,7 +552,15 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                                id="newIdeaTitle"
                                placeholder="NEW IDEA TITLE">
                     </div><div class="algolia_pad_search hidden"></div></div>';
-                $focus_tab .= '</div>';
+                    $focus_tab .= '</div>';
+
+                } else {
+
+                    //Give option to unlock superpower:
+                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block">'.$e___11035[13428]['m_icon'].'</span>GET STARTED WITH SUMMARIZING IDEAS &raquo;</a></div>';
+
+                }
+
             }
 
         } elseif($x__type==6255){
@@ -830,6 +855,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             <div class="modal-body">
 
                 <input type="hidden" id="modal_e__id" value="0" />
+                <input type="hidden" id="modal_x__id" value="0" />
 
                 <!-- URL -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[13433]['m_icon'] ?></span><?= $e___13428[13433]['m_title'] ?></div>

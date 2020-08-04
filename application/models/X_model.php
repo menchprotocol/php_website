@@ -241,7 +241,7 @@ class X_model extends CI_Model
                             //Content value has changed, update the transaction:
                             $this->X_model->update($existing_x[0]['x__id'], array(
                                 'x__message' => $add_fields['x__message'],
-                            ), $add_fields['x__source'], 10657 /* User Transaction Updated Content  */);
+                            ), $add_fields['x__source'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                             //Also, did the transaction type change based on the content change?
                             if($existing_x[0]['x__type'] != $detected_x_type['x__type']){
