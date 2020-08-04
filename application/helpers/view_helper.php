@@ -430,7 +430,7 @@ function view_x($x, $is_parent_tr = false)
 
 
     //STATUS
-    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_title'].( strlen($e___6186[$x['x__status']]['m_message']) ? ': '.$e___6186[$x['x__status']]['m_message'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;<span class="'.extract_icon_color($e___6186[$x['x__status']]['m_icon']).'">'.$e___6186[$x['x__status']]['m_title'].'</span></a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$x['x__status'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_title'].( strlen($e___6186[$x['x__status']]['m_message']) ? ': '.$e___6186[$x['x__status']]['m_message'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;<span class="'.extract_icon_color($e___6186[$x['x__status']]['m_icon']).'">'.$e___6186[$x['x__status']]['m_title'].'</span></a></div>';
 
 
 
