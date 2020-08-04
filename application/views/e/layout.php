@@ -535,7 +535,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             if($source_is_e && $counter > count($list_i)){
                 //Give option to browse all idea:
-                $focus_tab .= '<a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'" class="alert alert-warning margin-top-down" role="alert"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>List all my '.$counter.' ideas.</a>';
+                $focus_tab .= '<div class="alert alert-warning margin-top-down" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>List all my '.$counter.' ideas.</a></div>';
             }
 
 
