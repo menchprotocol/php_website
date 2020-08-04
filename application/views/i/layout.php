@@ -206,6 +206,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__left' => $i_focus['i__id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
+        $counter = ( count($is_next) > $counter ? count($is_next) : $counter );
 
         //IDEA TREE STATS
         $focus_tab .= view_i_tree_stats($i_stats);
