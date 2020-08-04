@@ -405,7 +405,6 @@ function e_10678(x__id, note_type_id) {
     if (r == true) {
         $.post("/e/e_10678", {
 
-            i__id: focus_i__id,
             x__id: x__id,
 
         }, function (data) {

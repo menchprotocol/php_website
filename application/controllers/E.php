@@ -318,11 +318,6 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Transaction ID',
             ));
-        } elseif (!isset($_POST['i__id']) || !e_of_i($_POST['i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'You are not the author of this source',
-            ));
         }
 
         //Archive Transaction:
