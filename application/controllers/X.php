@@ -80,11 +80,14 @@ class X extends CI_Controller
         //Display filter:
         if($total_items_loaded > 0){
 
-            if($page_num==1){
+            if($page_num==1 && !$filters){
+
                 //First page message:
                 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
                 $e___12467 = $this->config->item('e___12467'); //MENCH COINS
+
                 $message .= '<div class="montserrat x-info">'.$e___11035[4341]['m_icon'].' '.$e___11035[4341]['m_title'].' has '.number_format($x_count[0]['total_count'] , 0).' TRANSACTIONS indexing <span class="source inline-block">'.$e___12467[12274]['m_icon'].' '.number_format($this->config->item('s___12274'), 0).' '.$e___12467[12274]['m_title'].'</span> & <span class="idea inline-block">'.$e___12467[12273]['m_icon'].' '.number_format($this->config->item('s___12273'), 0).' '.$e___12467[12273]['m_title'].'</span> with <span class="discover inline-block">'.$e___12467[6255]['m_icon'].' '.number_format($this->config->item('s___6255'), 0).' '.$e___12467[6255]['m_title'].'</span>. Here are the last '.$total_items_loaded.' TRANSACTIONS:</div>';
+
             } else {
                 //Subsequent messages:
                 $message .= '<div class="montserrat x-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
