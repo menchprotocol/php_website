@@ -2070,11 +2070,12 @@ class E extends CI_Controller
         }
     }
 
+
     function add_13428(){
 
         $user_e = superpower_assigned(10939);
         $e___3000 = $this->config->item('e___3000');
-
+        $e___13428 = $this->config->item('e___13428'); //SOURCE WIZARD
 
         if(!$user_e){
 
@@ -2084,20 +2085,35 @@ class E extends CI_Controller
             ));
 
         } elseif (!isset($_POST['e__id']) || !isset($_POST['x__id']) || !isset($_POST['input__13433']) || !isset($_POST['input__6197']) || !isset($_POST['input__3000'])) {
+
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core inputs',
             ));
+
+        } elseif (!in_array($_POST['input__3000'], $this->config->item('n___3000'))) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid '.$e___13428[3000]['m_title'],
+            ));
+
+        } elseif ($_POST['e__id']>0 && !$_POST['x__id']) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Transaction ID ',
+            ));
+
         }
 
 
         //Validate URL
-        if(strlen($_POST['input__13433'])){
-            $url_e = $this->E_model->url($_POST['input__13433']);
-            if (!$url_e['status']) {
-                return view_json($url_e);
-            }
+        $url_e = $this->E_model->url($_POST['input__13433']);
+        if (!$url_e['status']) {
+            return view_json($url_e);
         }
+
 
         //Validate Title
         $e__title_validate = e__title_validate($_POST['input__6197']);
@@ -2107,89 +2123,117 @@ class E extends CI_Controller
 
 
 
-        if($_POST['e__id']>0){
+
+
+
+        //Fetch/Validate source:
+        if($_POST['e__id']>0) {
 
             //Fetch current source:
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e__id'],
                 'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
-            if(!count($es)){
+            if (!count($es)) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid Source ID',
                 ));
             }
 
-            //Update Title?
+            //Update Source if Different:
+            $update_columns = array();
+
+            //Title?
             if($es[0]['e__title']!=$e__title_validate['e__title_clean']){
-
-                $update_columns = array(
-                    'e__title' => $e__title_validate['e__title_clean'],
-                );
-
-                if($_POST['input__3000'] > 0){
-                    $update_columns['e__icon'] = $e___3000[$_POST['input__3000']]['m_icon'];
-                }
-
-                $this->E_model->update($es[0]['e__id'], $update_columns, true, $user_e['e__id']);
-
+                $update_columns['e__title'] = $e__title_validate['e__title_clean'];
             }
 
-        }
 
+            //Fetch current URL:
+            $xs = $this->X_model->fetch(array(
+                'x__id' => $_POST['x__id'],
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ));
+            if (!count($xs)) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Transaction ID',
+                ));
+            }
 
-
-        //Also Find URL:
-        $modal_x__id = 0;
-        $input__13433 = '';
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
-            'x__down' => $_POST['e__id'],
-        ), array(), 1, 0, array('x__type' => 'ASC' /* Generic URL first */)) as $url){
-            $input__13433 = $url['x__message'];
-            $modal_x__id = $url['x__id'];
-        }
-
-        //Find Expert Content:
-        $input__3000 = 0;
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
-            'x__up IN (' . join(',', $this->config->item('n___3000')) . ')' => null,
-            'x__down' => $_POST['e__id'],
-        ), array(), 1) as $url){
-            $input__3000 = $url['x__up'];
-        }
-
-
-        if($_POST['input__3000'] > 0){
-
-        } else {
-
-        }
-
-        //Update URL:
-        if($_POST['x__id']>0){
-
-            if(!strlen($_POST['input__13433'])){
-
-                //Archive URL:
-                $this->X_model->update($_POST['x__id'], array(
-                    'x__status' => 6173, //Transaction Deleted
-                ), $user_e['e__id'], 10673 /* User Transaction Unpublished */);
-
-            } else {
-
+            //Update URL only if different:
+            if($xs[0]['x_message'] != $_POST['input__13433']){
                 //Update URL:
                 $this->X_model->update($_POST['x__id'], array(
                     'x__message' => $_POST['input__13433'],
+                    'x__up' => $url_e['e_domain']['e__id'],
+                    'x__type' => $url_e['x__type'],
                 ), $user_e['e__id'], 10657 /* SOURCE LINK CONTENT UPDATE */);
+            }
+
+
+
+            //Fetch current type:
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
+                'x__up IN (' . join(',', $this->config->item('n___3000')) . ')' => null,
+                'x__down' => $_POST['e__id'],
+            ), array(), 1) as $url){
+                $input__3000 = $url['x__up'];
+            }
+
+            //Update Type only if different
+            if($_POST['input__3000']!=$input__3000){
+
+                //Remove OLD Links:
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
+                    'x__up IN (' . join(',', $this->config->item('n___3000')) . ')' => null,
+                    'x__down' => $_POST['e__id'],
+                )) as $url){
+                    $this->X_model->update($url['x__id'], array(
+                        'x__status' => 6173, //Transaction Deleted
+                    ), $user_e['e__id'], 10673 /* User Transaction Unpublished */);
+                }
+
+                //Add New:
+                $this->X_model->create(array(
+                    'x__type' => 4230, //RAW
+                    'x__source' => $user_e['e__id'],
+                    'x__up' => $_POST['input__3000'],
+                    'x__down' => $_POST['e__id'],
+                ));
+
+                //Update Icon;
+                $update_columns['e__icon'] = $e___3000[$_POST['input__3000']]['m_icon'];
 
             }
 
-        } elseif(strlen($_POST['input__13433'])){
+            //Anything to update?
+            if(count($update_columns)){
+                //Update Source:
+                $this->E_model->update($es[0]['e__id'], $update_columns, true, $user_e['e__id']);
+            }
+
+        } else {
+
+            //Create new source:
+            $es[0] = $this->E_model->create(array(
+                'e__status' => 6181, //Published
+                'e__title' => $e__title_validate['e__title_clean'],
+                'e__icon' => $e___3000[$_POST['input__3000']]['m_icon'],
+            ), true, $user_e['e__id']);
+
+            //Add user as source:
+            $this->X_model->create(array(
+                'x__type' => 4230, //RAW
+                'x__source' => $user_e['e__id'],
+                'x__up' => $user_e['e__id'],
+                'x__down' => $es[0]['e__id'],
+            ));
 
             //Create new URL
             $this->X_model->create(array(
@@ -2197,18 +2241,24 @@ class E extends CI_Controller
                 'x__message' => $_POST['input__13433'],
                 'x__source' => $user_e['e__id'],
                 'x__up' => $url_e['e_domain']['e__id'],
-                'x__down' => $_POST['e__id'],
+                'x__down' => $es[0]['e__id'],
+            ));
+
+            //Create new Type:
+            $this->X_model->create(array(
+                'x__type' => 4230, //RAW
+                'x__source' => $user_e['e__id'],
+                'x__up' => $_POST['input__3000'],
+                'x__down' => $es[0]['e__id'],
             ));
 
         }
 
 
-
-
-
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e(array_merge($es_latest[0], $ur2), $_POST['is_parent'], null, true, true),
+            'e_new_echo' => view_e($es[0], false, null, true, true),
+            'new_e__id' => $es[0]['e__id'],
         ));
 
     }

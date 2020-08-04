@@ -821,8 +821,8 @@ class I extends CI_Controller {
         //Validate Message:
         $messages = $this->X_model->fetch(array(
             'x__id' => intval($_POST['x__id']),
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ));
+`            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+`        ));
         if (count($messages) < 1) {
             return view_json(array(
                 'status' => 0,

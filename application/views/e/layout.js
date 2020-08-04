@@ -282,8 +282,20 @@ function add_13428(){
 
             $('#modal13428').modal('hide');
 
-            //Add to List:
-            add_to_list('list_e', '.en-item', data.e_new_echo);
+            if( parseInt($('#modal_e__id').val()) > 0 ){
+
+                //Editing Update the view:
+                $( ".e__id_"+$('#modal_e__id').val()).after( data.e_new_echo ).remove();
+
+            } else {
+
+                //Go to new source:
+                //window.location = '/@' + data.new_e__id;
+
+                //Add to List:
+                add_to_list('list_e', '.en-item', data.e_new_echo);
+
+            }
 
         }
     });
