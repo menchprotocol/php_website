@@ -471,7 +471,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 $focus_tab .= '<div id="new_portfolio" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
-                            <span class="input-group-addon addon-lean icon-adder"><a href="javascript:void(0)" class="icon-block" data-toggle="modal" data-target="#modal13428" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>
+                            <span class="input-group-addon addon-lean icon-adder"><a href="javascript:void(0)" class="icon-block" data-toggle="modal" data-target="#modal13428" title="'.$e___11035[13428]['m_title'].'">'.( $superpower_13422 ? $e___12467[12274]['m_icon'] : $e___11035[13428]['m_icon'] ).'</a></span>
                             <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    maxlength="' . config_var(6197) . '"
