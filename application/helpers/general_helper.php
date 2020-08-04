@@ -1133,19 +1133,20 @@ function i__title_validate($string){
 
 function editable_by_13428($e__id){
     //Determines if source is editable by the Source Wizard:
+    $CI =& get_instance();
     return
 
         //Must be Nonfiction
-        count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up IN (' . join(',', $this->config->item('n___3000')) . ')' => null,
+        count($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up IN (' . join(',', $CI->config->item('n___3000')) . ')' => null,
             'x__down' => $e__id,
         ), array(), 1))
 
-        && count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
+        && count($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___4537')) . ')' => null, //User URL Transactions
             'x__down' => $e__id,
         ), array(), 1));
 
