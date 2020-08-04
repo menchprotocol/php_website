@@ -2110,7 +2110,7 @@ class E extends CI_Controller
 
         //Validate URL
         $url_e = $this->E_model->url($_POST['input__13433']);
-        if (!$url_e['status']) {
+        if (!$url_e['status'] && !($url_e['url_previously_existed'] && $url_e['e_url']['e__id']==$_POST['e__id'])) {
             return view_json($url_e);
         }
 
