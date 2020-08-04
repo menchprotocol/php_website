@@ -2177,7 +2177,7 @@ class E extends CI_Controller
             //Fetch current type:
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up IN (' . join(',', $this->config->item('n___3000')) . ')' => null,
                 'x__down' => $_POST['e__id'],
             ), array(), 1) as $url){
@@ -2190,7 +2190,7 @@ class E extends CI_Controller
                 //Remove OLD Links:
                 foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__up IN (' . join(',', $this->config->item('n___3000')) . ')' => null,
                     'x__down' => $_POST['e__id'],
                 )) as $url){
@@ -2298,7 +2298,7 @@ class E extends CI_Controller
         $input__3000 = 0;
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up IN (' . join(',', $this->config->item('n___3000')) . ')' => null,
             'x__down' => $_POST['e__id'],
         ), array(), 1) as $url){
