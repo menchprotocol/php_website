@@ -541,7 +541,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             if($source_of_e){
                 //SMART SHOW/HIDE LIST LOGIC
-                if($superpower_10939){
+                if($superpower_10939 && ($source_is_e || count($list_i) <= 1)){
 
                     $focus_tab .= '<div class="list-group">';
                     $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
