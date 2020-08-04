@@ -482,7 +482,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 } else {
 
                     //Give option to unlock superpower:
-                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>GET STARTED WITH ADDING SOURCES &raquo;</a></div>';
+                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>START ADDING SOURCES &raquo;</a></div>';
 
                 }
             }
@@ -557,7 +557,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 } else {
 
                     //Give option to unlock superpower:
-                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>GET STARTED WITH SUMMARIZING IDEAS &raquo;</a></div>';
+                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>START SUMMARIZING IDEAS &raquo;</a></div>';
 
                 }
 
