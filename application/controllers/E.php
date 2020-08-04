@@ -2163,7 +2163,7 @@ class E extends CI_Controller
             }
 
             //Update URL only if different:
-            if($xs[0]['x_message'] != $_POST['input__13433']){
+            if($xs[0]['x__message'] != $_POST['input__13433']){
                 //Update URL:
                 $this->X_model->update($_POST['x__id'], array(
                     'x__message' => $_POST['input__13433'],

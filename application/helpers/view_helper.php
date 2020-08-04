@@ -135,7 +135,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
     $clean_url = null;
     $embed_html_code = null;
-    $prefix_message = null;
+    $prefix__message = null;
     $CI =& get_instance();
 
     if(is_https_url($url)){
