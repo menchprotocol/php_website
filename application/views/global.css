@@ -902,7 +902,6 @@ textarea.note-textarea{
 }
 .space-left{
     padding-left: 33px;
-    padding-right: 13px;
 }
 #e_x_preview{
     max-width: 377px;
@@ -1610,6 +1609,10 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .space-left{
+        padding-right: 13px;
+    }
 
     h2 {
         font-size: 1.3em;
