@@ -902,6 +902,7 @@ textarea.note-textarea{
 }
 .space-left{
     padding-left: 33px;
+    padding-right: 13px;
 }
 #e_x_preview{
     max-width: 377px;
