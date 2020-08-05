@@ -2250,9 +2250,25 @@ class E extends CI_Controller
         }
 
 
+        //Fetch Source from the Nonfiction Type:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up IN (' . join(',', $this->config->item('n___3000')) . ')' => null,
+            'x__down' => $es[0]['e__id'],
+        ), array('x__down')) as $e){
+            return view_json(array(
+                'status' => 1,
+                'e_new_echo' => view_e($e, false, null, true, source_of_e($e['e__id'])),
+                'new_e__id' => $es[0]['e__id'],
+            ));
+        }
+
+
+        //Did not fint? Return basic: (Should not happen)
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e($es[0], false, null, true, true),
+            'e_new_echo' => view_e($es[0], false, null, true, source_of_e($es[0]['e__id'])),
             'new_e__id' => $es[0]['e__id'],
         ));
 
