@@ -1148,7 +1148,9 @@ function editable_by_13428($e__id){
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___4537')) . ')' => null, //User URL Transactions
             'x__down' => $e__id,
-        ), array(), 1));
+        ), array(), 1))
+
+        && source_of_e($e__id);
 
 }
 
