@@ -1364,8 +1364,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 //MENCH COINS
                 $ui .= '<div class="row">';
 
-                    $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
-
 
                     $ui .= '<div class="col-6">';
 
@@ -1378,6 +1376,9 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                     }
 
                     $ui .= '</div>';
+
+                    //Time Estimate
+                    $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
 
                 $ui .= '</div>';
 
