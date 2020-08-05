@@ -1364,7 +1364,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 //MENCH COINS
                 $ui .= '<div class="row">';
 
-                    $ui .= '<div class="col-6">';
+                    $ui .= '<div class="col-6 hideIfEmpty">';
 
                     //IDEAS
                     $ui .= view_coins_i(12273, $i, true, true);
