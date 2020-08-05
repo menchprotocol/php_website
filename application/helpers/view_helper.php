@@ -18,7 +18,7 @@ function view_e_load_more($page, $limit, $list_e_count)
 }
 
 
-function view_i_tree_stats($i_stats){
+function view_i_tree_stats($i_stats, $show_info){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -46,7 +46,7 @@ function view_i_tree_stats($i_stats){
 
         $ui .= '</p>';
 
-    } else {
+    } elseif($show_info) {
 
         //Single Time range:
         $ui .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.( $i_stats['i___13443']<=1 ? 'this idea' : 'all '.$i_stats['i___13443'].' ideas' ).'.</p>';

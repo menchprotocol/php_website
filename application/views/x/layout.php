@@ -210,7 +210,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = $i_stats['i___13443'];
 
         //IDEA TREE STATS
-        $focus_tab .= view_i_tree_stats($i_stats);
+        $focus_tab .= view_i_tree_stats($i_stats, true);
 
         //IDEA PREVIOUS
         $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(
