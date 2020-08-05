@@ -1064,9 +1064,6 @@ function i_note_edit(x__id, note_type_id) {
                 //Update message status:
                 $("#ul-nav-" + x__id + " .message_status").html(data.message_new_status_icon);
 
-                //Show success here
-                $("#ul-nav-" + x__id + " .edit-updates").html('<b>' + data.success_icon + '</b>');
-
                 lazy_load();
 
             }
@@ -1078,11 +1075,6 @@ function i_note_edit(x__id, note_type_id) {
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
-
-        //Disapper in a while:
-        setTimeout(function () {
-            $("#ul-nav-" + x__id + " .edit-updates>b").fadeOut();
-        }, 4181);
 
     });
 

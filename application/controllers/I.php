@@ -189,7 +189,7 @@ class I extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/~'.$i__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>Successfully submitted your request to become a source for this idea. You will receive a confirmation once your request has been reviewed.</div>');
+        return redirect_message('/~'.$i__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>Successfully submitted your request to become a source for this idea. You will receive an update once your request has been reviewed.</div>');
 
     }
 
@@ -929,7 +929,6 @@ class I extends CI_Controller {
             'delete_from_ui' => 0,
             'message' => $this->X_model->message_send($msg_validation['input_message'], $user_e, $_POST['i__id']),
             'message_new_status_icon' => '<span title="' . $e___6186[$_POST['message_x__status']]['m_title'] . ': ' . $e___6186[$_POST['message_x__status']]['m_message'] . '" data-toggle="tooltip" data-placement="top">' . $e___6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
-            'success_icon' => '<span><i class="fas fa-check-circle"></i> Saved</span>',
         ));
 
     }
