@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-05 12:39:03 PST
+//Generated 2020-08-05 13:24:11 PST
 $config['s___12274'] = 4998; //SOURCES
 $config['s___12273'] = 3925; //IDEAS
 $config['s___6255'] = 122262; //DISCOVERIES
@@ -29,9 +29,9 @@ $config['e___13428'] = array(
         'm_profile' => array(13428,13296,13025,6404,12112,12232,10646,5000,4998,4999,6206),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION TYPE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
 );
@@ -136,9 +136,9 @@ $config['e___13543'] = array(
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
-        'm_title' => 'SOURCE NONFICTION',
+        'm_title' => 'SOURCE NONFICTION TYPE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13339 => array(
@@ -554,9 +554,9 @@ $config['e___6159'] = array(
         'm_profile' => array(4527,13544,6159),
     ),
     3000 => array(
-        'm_title' => 'SOURCE NONFICTION',
+        'm_title' => 'SOURCE NONFICTION TYPE',
         'm_message' => 'i___3000',
-        'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13202 => array(
@@ -624,9 +624,9 @@ $config['e___4251'] = array(
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
-        'm_title' => 'SOURCE NONFICTION',
+        'm_title' => 'SOURCE NONFICTION TYPE',
         'm_message' => 'Key ideas summarized from these nonfiction sources',
-        'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13339 => array(
@@ -676,13 +676,13 @@ $config['e___13414'] = array(
     6155 => array(
         'm_title' => 'DISCOVERY',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times"></i>',
         'm_profile' => array(13414,6150,4593,4755),
     ),
     13415 => array(
         'm_title' => 'IDEA',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times"></i>',
         'm_profile' => array(4755,4593,13414),
     ),
 );
@@ -792,7 +792,7 @@ $config['e___13369'] = array(
     13414 => array(
         'm_title' => 'UNLINK',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times"></i>',
         'm_profile' => array(4527,13369),
     ),
 );
@@ -807,9 +807,9 @@ $config['e___13365'] = array(
         'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
     ),
     3000 => array(
-        'm_title' => 'SOURCE NONFICTION',
+        'm_title' => 'SOURCE NONFICTION TYPE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13202 => array(
@@ -956,9 +956,9 @@ $config['e___13207'] = array(
         'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
     ),
     3000 => array(
-        'm_title' => 'SOURCE NONFICTION',
+        'm_title' => 'SOURCE NONFICTION TYPE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
 );
@@ -2856,9 +2856,9 @@ $config['e___12112'] = array(
 $config['n___12079'] = array(3000,4486,4737,7585,12500);
 $config['e___12079'] = array(
     3000 => array(
-        'm_title' => 'SOURCE NONFICTION',
+        'm_title' => 'SOURCE NONFICTION TYPE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     4486 => array(
@@ -3850,7 +3850,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.48123',
+        'm_message' => 'v1.48',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
@@ -5512,9 +5512,9 @@ $config['e___4527'] = array(
         'm_profile' => array(7277,4527,6212,6206),
     ),
     3000 => array(
-        'm_title' => 'SOURCE NONFICTION',
+        'm_title' => 'SOURCE NONFICTION TYPE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-shapes source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     12563 => array(
@@ -5652,7 +5652,7 @@ $config['e___4527'] = array(
     13414 => array(
         'm_title' => 'UNLINK',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times"></i>',
         'm_profile' => array(4527,13369),
     ),
     13479 => array(
@@ -5859,7 +5859,7 @@ $config['e___6193'] = array(
     ),
 );
 
-//SOURCE NONFICTION:
+//SOURCE NONFICTION TYPE:
 $config['n___3000'] = array(3005,2998,2997,13218,4446,3147,13350,3192);
 $config['e___3000'] = array(
     3005 => array(
@@ -6459,7 +6459,7 @@ $config['e___6150'] = array(
     6155 => array(
         'm_title' => 'UNLINK DISCOVERY',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times"></i>',
         'm_profile' => array(13414,6150,4593,4755),
     ),
 );
@@ -7431,13 +7431,13 @@ $config['e___4755'] = array(
     6155 => array(
         'm_title' => 'UNLINK DISCOVERY',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times"></i>',
         'm_profile' => array(13414,6150,4593,4755),
     ),
     13415 => array(
         'm_title' => 'UNLINK IDEA',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times"></i>',
         'm_profile' => array(4755,4593,13414),
     ),
     12906 => array(
@@ -8288,13 +8288,13 @@ $config['e___4593'] = array(
     6155 => array(
         'm_title' => 'UNLINK DISCOVERY',
         'm_message' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
-        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times"></i>',
         'm_profile' => array(13414,6150,4593,4755),
     ),
     13415 => array(
         'm_title' => 'UNLINK IDEA',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-times"></i>',
         'm_profile' => array(4755,4593,13414),
     ),
     10686 => array(

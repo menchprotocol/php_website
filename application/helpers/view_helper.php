@@ -1332,7 +1332,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
             $ui .= '<span class="show-on-hover">';
 
             //SORT
-            $ui .= '<span title="'.$e___13369[13413]['m_title'].'" class="x-sorter">'.$e___13369[13413]['m_icon'].'</span>';
+            $ui .= '<span title="'.$e___13369[13413]['m_title'].'" class="x_sort">'.$e___13369[13413]['m_icon'].'</span>';
 
             //Remove:
             $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' </span>';

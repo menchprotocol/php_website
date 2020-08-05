@@ -518,7 +518,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 $show_editor = false; //Since it's a flat list, not bookmarks!
             }
 
-            $focus_tab .= ( count($list_i) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> #list_13412 .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+            $focus_tab .= ( count($list_i) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> #list_13412 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
 
 
@@ -552,7 +552,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
             if($source_of_e){
                 //SMART SHOW/HIDE LIST LOGIC
-                if($superpower_10939 && ($source_is_e || count($list_i) <= 1)){
+                if($superpower_10939 && ($source_is_e || count($list_i) <= 1 || $superpower_13422)){
 
                     $focus_tab .= '<div class="list-group">';
                     $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
@@ -588,7 +588,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
 
-                    $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> #list_6132 .x-sorter {display:none !important;} </style>' ); //Need 2 or more to sort
+                    $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> #list_6132 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
 
                     if(isset($_GET['reset'])){
