@@ -264,7 +264,10 @@ function save_13428(){
     is_adding = true;
     var is_editing = parseInt($('#modal_e__id').val()) > 0;
     if(is_editing){
-        $( ".e__id_"+$('#modal_e__id').val() ).html('<i class="far fa-yin-yang fa-spin"></i>');
+        $( ".e__id_"+$('#modal_e__id').val() ).after('<div class="list-group-item update-new"><i class="far fa-yin-yang fa-spin"></i></div>');
+        setTimeout(function () {
+            $( ".e__id_"+$('#modal_e__id').val() ).remove();
+        }, 21);
     }
 
     //Load current Source:
@@ -289,7 +292,7 @@ function save_13428(){
             if( is_editing ){
 
                 //Editing Update the view:
-                $( ".e__id_"+$('#modal_e__id').val() ).html(data.e_new_echo);
+                $( ".update-new" ).html(data.e_new_echo);
 
             } else {
 
