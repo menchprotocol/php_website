@@ -292,7 +292,10 @@ function save_13428(){
             if( is_editing ){
 
                 //Editing Update the view:
-                $( ".update-new" ).html(data.e_new_echo);
+                $( ".update-new" ).after(data.e_new_echo);
+                setTimeout(function () {
+                    $( ".update-new" ).remove();
+                }, 21);
 
             } else {
 
