@@ -797,7 +797,7 @@ img.no-radius {
     top: -10px;
     overflow: hidden;
     margin-right: 3px;
-    z-index: 9999999 !important;
+    z-index: 999999 !important;
 }
 
 
@@ -1001,6 +1001,9 @@ td.MENCHcolumn3  { width: 13%; }
 .mench-navigation td {
     padding:0;
     vertical-align: top;
+}
+.modal{
+    z-index: 99999999 !important;
 }
 
 .modal-content {
