@@ -289,7 +289,7 @@ function save_13428(){
 
             $('#modal13428').modal('hide');
 
-            if( is_editing ){
+            if( is_editing && parseInt($('#modal_e__id').val()) != e_focus_id ){
 
                 //Editing Update the view:
                 $( ".update-new" ).after(data.e_new_echo);
@@ -299,7 +299,7 @@ function save_13428(){
 
             } else {
 
-                //Go to new source:
+                //Go to new source or refresh current source:
                 window.location = '/@' + data.new_e__id;
 
             }
