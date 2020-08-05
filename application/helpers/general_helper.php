@@ -777,13 +777,13 @@ function i_stats($i__metadata){
     return array(
 
         //IDEAS
-        'i___6169' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
+        'i___config_var(12427)' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
         'i___6170' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? $metadata['i___6170']-1 : 0 ),
         'i___13443' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? round(( ($metadata['i___6169']-1) + ($metadata['i___6170']-1) ) / 2) : 0 ),
 
-        'i___6161' => ( isset($metadata['i___6161']) ? $metadata['i___6161'] : 0 ),
-        'i___6162' => ( isset($metadata['i___6162']) ? $metadata['i___6162'] : 0 ),
-        'i___13292' => ( isset($metadata['i___6162']) ? round(($metadata['i___6161']+$metadata['i___6162'])/2) : 0 ),
+        'i___6161' => ( isset($metadata['i___6161']) ? $metadata['i___6161'] : config_var(12427) ),
+        'i___6162' => ( isset($metadata['i___6162']) ? $metadata['i___6162'] : config_var(12427) ),
+        'i___13292' => ( isset($metadata['i___6162']) ? round(($metadata['i___6161']+$metadata['i___6162'])/2) : config_var(12427) ),
 
         //SOURCES
         'e_count' => ( $e_count>0 ? $e_count : 1 ),
