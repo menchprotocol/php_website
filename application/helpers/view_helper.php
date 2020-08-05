@@ -1411,7 +1411,7 @@ function view_e_basic($e)
     $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
     $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
     if(isset($e['x__message']) && strlen($e['x__message']) > 0){
-        $ui .= '<div class="space-content hideIfEmpty">'.$e['x__message'].'</div>';
+        $ui .= '<div class="space-content" style="padding-top: 8px;">'.$e['x__message'].'</div>';
     }
     $ui .= '</div>';
     return $ui;
