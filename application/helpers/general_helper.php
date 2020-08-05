@@ -1256,8 +1256,6 @@ function source_of_e($e__id, $user_e = array()){
             'x__type' => 4251, //New Source Created
         )))
 
-        /*
-
         //User has Advance source editing superpower
         || superpower_active(13422, true)
 
@@ -1268,8 +1266,6 @@ function source_of_e($e__id, $user_e = array()){
             'x__up' => $user_e['e__id'],
             'x__down' => $e__id,
         )))
-
-        */
     );
 
 }
