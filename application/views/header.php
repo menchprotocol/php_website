@@ -99,49 +99,12 @@ if(!isset($hide_header)){
                 <tr>
                     <?php
 
-                    echo '<td><div class="mench_nav left_nav">';
+                    echo '<td>';
 
-                    if(!$user_e || 1){
+                    //MENCH LOGO
+                    echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.( $user_e ? '/@'.$user_e['e__id'] : '/' ).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
 
-                        //LOGO ONLY
-                        echo '<span class="inline-block pull-left"><a href="'.( $user_e ? '/@'.$user_e['e__id'] : '/' ).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span>';
-
-                    } else {
-
-                        //HORIZONTAL MENU
-                        foreach($this->config->item('e___13561') as $x__type => $m) {
-
-                            if($x__type==6225){
-
-                                $m['m_icon'] = $user_e['e__icon'];
-                                $m['m_title'] = $user_e['e__title'];
-                                $href = 'href="/@'.$user_e['e__id'].'"';
-                                $is_active = ( $first_segment=='@'.$user_e['e__id'] );
-
-                            } elseif(in_array($x__type, $this->config->item('n___10876'))){
-
-                                $href = 'href="'.$e___10876[$x__type]['m_message'].'"';
-                                $is_active = ( $this->config->item('base_url').'/'.$first_segment == $e___10876[$x__type]['m_message'] );
-
-                            } else {
-                                continue;
-                            }
-
-                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
-                            $class = trim(extract_icon_color($m['m_icon']));
-                            echo '<div class="btn-group pull-left mench_coin '.$class.' border-' . $class.( $is_active ? ' active ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-                            echo '<a class="btn ' . $class . '" '.$href.'>';
-                            echo '<span class="icon-block">' . $m['m_icon'] . '</span>';
-                            echo '<span class="montserrat ' . $class . '_name show-max">' . $m['m_title'] . '</span>';
-                            echo '</a>';
-                            echo '</div>';
-
-                        }
-                    }
-
-                    echo '</div>';
-
-                    //SEARCH INPUT
+                    //SEARCH BAR (initially hidden)
                     echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m_title'].'"></form></div>';
 
                     echo '</td>';
@@ -156,7 +119,6 @@ if(!isset($hide_header)){
                     }
 
 
-                    //u NAVIGATION:
                     if (!$user_e) {
 
                         //GUESTS
@@ -169,16 +131,15 @@ if(!isset($hide_header)){
 
                     } else {
 
-                        $load_menu = 12500;
-
+                        //USER LOGGED-IN
                         echo '<td class="block-menu">';
                         echo '<div class="dropdown inline-block">';
-                        echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$load_menu.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                        echo '<span class="icon-block">' .$e___13479[$load_menu]['m_icon'].'</span>';
+                        echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton12500" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                        echo '<span class="icon-block">' .$e___13479[12500]['m_icon'].'</span>';
                         echo '</button>';
 
-                        echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$load_menu.'">';
-                        foreach($this->config->item('e___'.$load_menu) as $x__type => $m) {
+                        echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
+                        foreach($this->config->item('e___12500') as $x__type => $m) {
 
                             //Skip superpowers if not assigned
                             if($x__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){

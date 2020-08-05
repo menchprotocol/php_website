@@ -1324,6 +1324,26 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $ui  = '<div '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' list-group-item no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).( $x__type==6255 ? ' itemdiscover ' : ' itemidea ' ).' '.$extra_class.'">';
 
 
+        //EDITING TOOLBAR
+        if($show_editor){
+
+            //RIGHT EDITING:
+            $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'">';
+            $ui .= '<span class="show-on-hover">';
+
+            //SORT
+            $ui .= '<span title="'.$e___13369[13413]['m_title'].'" class="i-sort-handle">'.$e___13369[13413]['m_icon'].'</span>';
+
+            //Remove:
+            $ui .= '<span title="'.$e___13369[13414]['m_title'].'"><span class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' </span></span>';
+
+            $ui .= '</span>';
+            $ui .= '</div>';
+
+        }
+
+
+
         if($user_e && $x__type==6255){
             $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
             $start_reading = $completion_rate['completion_percentage']>0;
@@ -1357,7 +1377,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
 
-
                 //MENCH COINS
                 $ui .= '<div class="row">';
 
@@ -1366,23 +1385,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                     $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
 
                 $ui .= '</div>';
-
-
-                //Search for Idea Image:
-                if($show_editor){
-
-                    //RIGHT EDITING:
-                    $ui .= '<div class="row '.superpower_active(10939).'">';
-
-                    //SORT
-                    $ui .= '<div class="col-6"><span class="x-sorter">'.$e___13369[13413]['m_icon'].' '.$e___13369[13413]['m_title'].'</span></div>';
-
-                    //Remove:
-                    $ui .= '<div class="col-6"><span class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' '.$e___13369[13414]['m_title'].'</span></div>';
-
-                    $ui .= '</div>';
-
-                }
 
             $ui .= '</div>';
         $ui .= '</div>';
