@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-05 15:42:04 PST
-$config['s___12274'] = 4998; //SOURCES
-$config['s___12273'] = 3926; //IDEAS
+//Generated 2020-08-05 16:59:03 PST
+$config['s___12274'] = 4999; //SOURCES
+$config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122262; //DISCOVERIES
 
 //SOURCE WIZARD:
@@ -238,7 +238,7 @@ $config['e___13530'] = array(
         'm_title' => 'KEYWORDS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
-        'm_profile' => array(13023,13530,10984,11018,4485,10593,4593),
+        'm_profile' => array(13023,13530,11018,4485,10593,4593),
     ),
     7545 => array(
         'm_title' => 'CERTIFICATES',
@@ -619,19 +619,19 @@ $config['n___4251'] = array(13202,3000,13339);
 $config['e___4251'] = array(
     13202 => array(
         'm_title' => 'SUMMARIZERS',
-        'm_message' => 'Key ideas summarized by these Mench users',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
         'm_title' => 'NONFICTION CONTENT',
-        'm_message' => 'Key ideas summarized from these nonfiction sources',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13339 => array(
         'm_title' => 'EXPERT AUTHORS',
-        'm_message' => 'Nonfiction sources published by these expert authors',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
     ),
@@ -1034,7 +1034,7 @@ $config['e___13023'] = array(
         'm_title' => 'KEYWORDS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
-        'm_profile' => array(13023,13530,10984,11018,4485,10593,4593),
+        'm_profile' => array(13023,13530,11018,4485,10593,4593),
     ),
 );
 
@@ -3083,7 +3083,7 @@ $config['e___11018'] = array(
         'm_title' => 'KEYWORDS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
-        'm_profile' => array(13023,13530,10984,11018,4485,10593,4593),
+        'm_profile' => array(13023,13530,11018,4485,10593,4593),
     ),
     12419 => array(
         'm_title' => 'COMMENTS',
@@ -3850,7 +3850,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.481341',
+        'm_message' => 'v1.50',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
@@ -4260,7 +4260,7 @@ $config['e___4485'] = array(
         'm_title' => 'KEYWORDS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
-        'm_profile' => array(13023,13530,10984,11018,4485,10593,4593),
+        'm_profile' => array(13023,13530,11018,4485,10593,4593),
     ),
     7545 => array(
         'm_title' => 'CERTIFICATES',
@@ -5778,7 +5778,7 @@ $config['e___10593'] = array(
         'm_title' => 'KEYWORDS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
-        'm_profile' => array(13023,13530,10984,11018,4485,10593,4593),
+        'm_profile' => array(13023,13530,11018,4485,10593,4593),
     ),
     4231 => array(
         'm_title' => 'MESSAGES',
@@ -7929,7 +7929,7 @@ $config['e___4593'] = array(
         'm_title' => 'KEYWORDS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-tags" aria-hidden="true"></i>',
-        'm_profile' => array(13023,13530,10984,11018,4485,10593,4593),
+        'm_profile' => array(13023,13530,11018,4485,10593,4593),
     ),
     4231 => array(
         'm_title' => 'MESSAGES',
