@@ -837,7 +837,7 @@ function view_i_tree_e($i){
 
     foreach($CI->config->item('e___4251') as $e__id => $m2){
         if($i_stats['count_'.$e__id]>0){
-            $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span><span '.( strlen($m2['m_message']) ? ' data-toggle="tooltip" data-placement="top" title="'.$m2['m_message'].'" class="underdot" ' : '' ).'>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].'</span>:</div>';
+            $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].':</div>';
             $ui .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
                 $ui .= view_e_basic($e);
@@ -1411,7 +1411,7 @@ function view_e_basic($e)
     $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
     $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
     if(isset($e['x__message']) && strlen($e['x__message']) > 0){
-        $ui .= '<div class="space-content" style="padding-top: 8px;">'.$e['x__message'].'</div>';
+        $ui .= '<div class="space-content" style="padding-top:5px;">'.$e['x__message'].'</div>';
     }
     $ui .= '</div>';
     return $ui;
