@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-05 15:39:20 PST
+//Generated 2020-08-05 15:40:39 PST
 $config['s___12274'] = 4998; //SOURCES
 $config['s___12273'] = 3926; //IDEAS
 $config['s___6255'] = 122262; //DISCOVERIES
@@ -29,7 +29,7 @@ $config['e___13428'] = array(
         'm_profile' => array(13428,13296,13025,6404,12112,12232,10646,5000,4998,4999,6206),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
@@ -136,7 +136,7 @@ $config['e___13543'] = array(
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
@@ -554,7 +554,7 @@ $config['e___6159'] = array(
         'm_profile' => array(4527,13544,6159),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION SOURCES',
         'm_message' => 'i___3000',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
@@ -624,7 +624,7 @@ $config['e___4251'] = array(
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION SOURCES',
         'm_message' => 'Key ideas summarized from these nonfiction sources',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
@@ -807,7 +807,7 @@ $config['e___13365'] = array(
         'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
@@ -956,7 +956,7 @@ $config['e___13207'] = array(
         'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
@@ -2856,7 +2856,7 @@ $config['e___12112'] = array(
 $config['n___12079'] = array(3000,4486,4737,7585,12500);
 $config['e___12079'] = array(
     3000 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
@@ -5350,7 +5350,7 @@ $config['e___4527'] = array(
         'm_profile' => array(11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
@@ -5859,7 +5859,7 @@ $config['e___6193'] = array(
     ),
 );
 
-//NONFICTION:
+//NONFICTION SOURCES:
 $config['n___3000'] = array(3005,2998,2997,13218,4446,3147,13350,3192);
 $config['e___3000'] = array(
     3005 => array(
