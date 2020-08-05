@@ -838,7 +838,7 @@ function view_i_tree_e($i){
             $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span><span '.( strlen($m2['m_message']) ? ' data-toggle="tooltip" data-placement="top" title="'.$m2['m_message'].'" class="underdot" ' : '' ).'>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].'</span>:</div>';
             $ui .= '<div class="list-group" style="margin-bottom:34px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
-                $ui .= view_e($e);
+                $ui .= view_e_basic($e);
             }
             $ui .= '</div>';
         }
@@ -1390,6 +1390,21 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
     return $ui;
 
+}
+
+
+function view_e_basic($e)
+{
+    $ui = '<div class="list-group-item no-side-padding">';
+    $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
+
+    $e__title = '<span '.( isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' class="underdot" title="'.$e['x__message'].'" data-toggle="tooltip" data-placement="top" ' : '' ).'>'.$e['e__title'].'</span>';
+
+    //Give Transaction:
+    $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e__title.'</a>';
+
+    $ui .= '</div>';
+    return $ui;
 }
 
 

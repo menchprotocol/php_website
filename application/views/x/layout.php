@@ -236,7 +236,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $focus_tab .= '<div class="list-group" style="margin-bottom:34px;">';
         foreach ($i_stats['array_7545'] as $e) {
             $e['x__message'] = ''; //Remove for this
-            $focus_tab .= view_e($e);
+            $focus_tab .= view_e_basic($e);
         }
         $focus_tab .= '</div>';
 
