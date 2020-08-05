@@ -197,8 +197,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==12273){
 
         //IDEAS
-        $counter = view_coins_i(12273,  $i_focus, false);
-        $counter = ( $counter<=1 ? 0 : $counter );
+        $counter = view_coins_i(12273,  $i_focus, false) - 1; //Exclude Idea
 
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
