@@ -16,6 +16,13 @@ $(document).ready(function () {
         e_13428();
     });
 
+    $("#input__6197").keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            e.preventDefault();
+        }
+    });
+
     //Load Idea Search
     i_load_search("#newIdeaTitle",0, 'a', 'x_my_in');
 
