@@ -777,7 +777,7 @@ function i_stats($i__metadata){
     return array(
 
         //IDEAS
-        'i___config_var(12427)' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
+        'i___6169' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
         'i___6170' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? $metadata['i___6170']-1 : 0 ),
         'i___13443' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? round(( ($metadata['i___6169']-1) + ($metadata['i___6170']-1) ) / 2) : 0 ),
 
