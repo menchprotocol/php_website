@@ -1590,10 +1590,7 @@ label {
 }
 
 .thin-top{
-    margin-top: -7px;
-}
-.percentange-top{
-    margin-top: -9px;
+    margin-top: -7px !important;
 }
 .big-cover{
     margin-bottom: 21px;
