@@ -20,7 +20,7 @@ $counter__x = view_coins_e( 6255, $e['e__id'], 0, false);
 if($counter__e > 0 && $counter__e >= $counter__i){
     //SOURCES
     $active_x__type = 12274;
-} elseif($counter__i > 0 || ($source_is_e && $superpower_10939)){
+} elseif($counter__i > 0){
     //IDEAS
     $active_x__type = 12273;
 } elseif($source_is_e){
