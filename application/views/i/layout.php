@@ -153,7 +153,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___12467[12274]['m_icon'] . '</span></span>
                     <input type="'.( $superpower_13422 ? 'text' : 'url' ).'"
-                           class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
+                           class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent"
                            maxlength="' . config_var(6197) . '"                          
                            placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '"></div></div>';
