@@ -1006,6 +1006,27 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
 
 
+    //EDITING TOOLBAR
+    if($is_i_x && $control_enabled && $e_of_i){
+
+        //RIGHT EDITING:
+        $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'">';
+        $ui .= '<span class="show-on-hover">';
+
+        if(!$is_parent){
+            $ui .= '<span title="SORT"><i class="fas fa-sort black i-sort-handle"></i></span>';
+        }
+
+        //Remove:
+        $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
+
+        $ui .= '</span>';
+        $ui .= '</div>';
+
+    }
+
+
+
 
 
 
@@ -1039,25 +1060,6 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
             $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
             $ui .= '<div class="col-4">'.view_coins_i(6255,  $i).'</div>';
         $ui .= '</div>';
-
-        //EDITING TOOLBAR
-        if($is_i_x && $control_enabled && $e_of_i){
-
-            //RIGHT EDITING:
-            $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'">';
-            $ui .= '<span class="show-on-hover">';
-
-            if(!$is_parent){
-                $ui .= '<span title="SORT"><i class="fas fa-sort black i-sort-handle"></i></span>';
-            }
-
-            //Remove:
-            $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
-
-            $ui .= '</span>';
-            $ui .= '</div>';
-
-        }
 
     $ui .= '</div>';
     $ui .= '</div>';
