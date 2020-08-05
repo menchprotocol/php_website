@@ -87,7 +87,9 @@ if(count($current_sign_i_attempt) == 0){
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
+
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-e btn-raised" title="<?= $e___11035[12211]['m_title'] ?>"><?= $e___11035[12211]['m_icon'] ?></a>
+
             </span>
         </div>
 

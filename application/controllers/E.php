@@ -1480,8 +1480,6 @@ class E extends CI_Controller
      * */
 
 
-
-
     function signin($i__id = 0){
 
         //Check to see if they are previously logged in?
@@ -2105,7 +2103,7 @@ class E extends CI_Controller
 
         //Validate URL
         $url_e = $this->E_model->url($_POST['input__13433']);
-        if (!$url_e['status'] && !($url_e['url_previously_existed'] && $url_e['e_url']['e__id']==$_POST['e__id'])) {
+        if (!$url_e['status'] && (!isset($url_e['url_previously_existed']) || !isset($url_e['e_url']) || !($url_e['url_previously_existed'] && $url_e['e_url']['e__id']==$_POST['e__id']))) {
             return view_json($url_e);
         }
 
