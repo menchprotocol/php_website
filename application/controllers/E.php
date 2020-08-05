@@ -422,7 +422,7 @@ class E extends CI_Controller
             $focus_e = $added_e['new_e'];
 
             //Assign to User:
-            $this->E_model->create_session($focus_e['e__id']);
+            $this->E_model->add_source($focus_e['e__id']);
 
             //Update Algolia:
             update_algolia(12274, $focus_e['e__id']);
@@ -599,7 +599,7 @@ class E extends CI_Controller
             if (isset($url_e['url_root']) && $url_e['url_root']) {
 
                 $x__message = $url_e['clean_url'];
-                $x__type = 4256; //Generic URL (Domains always are generic)
+                $x__type = e_x__type($x__message);
 
             } elseif (isset($url_e['e_domain']) && $url_e['e_domain']) {
 
@@ -609,7 +609,7 @@ class E extends CI_Controller
             } else {
 
                 $x__message = null;
-                $x__type = 4230; //Raw
+                $x__type = e_x__type($x__message);
 
             }
 
@@ -2194,7 +2194,7 @@ class E extends CI_Controller
 
                 //Add New:
                 $this->X_model->create(array(
-                    'x__type' => 4230, //RAW
+                    'x__type' => e_x__type(),
                     'x__source' => $user_e['e__id'],
                     'x__up' => $_POST['input__3000'],
                     'x__down' => $_POST['e__id'],
@@ -2220,14 +2220,6 @@ class E extends CI_Controller
                 'e__icon' => $e___3000[$_POST['input__3000']]['m_icon'],
             ), true, $user_e['e__id']);
 
-            //Add user as source:
-            $this->X_model->create(array(
-                'x__type' => 4230, //RAW
-                'x__source' => $user_e['e__id'],
-                'x__up' => $user_e['e__id'],
-                'x__down' => $es[0]['e__id'],
-            ));
-
             //Create new URL
             $this->X_model->create(array(
                 'x__type' => $url_e['x__type'],
@@ -2239,11 +2231,14 @@ class E extends CI_Controller
 
             //Create new Type:
             $this->X_model->create(array(
-                'x__type' => 4230, //RAW
+                'x__type' => e_x__type(),
                 'x__source' => $user_e['e__id'],
                 'x__up' => $_POST['input__3000'],
                 'x__down' => $es[0]['e__id'],
             ));
+
+            //Assign source:
+            $this->E_model->add_source($es[0]['e__id']);
 
         }
 

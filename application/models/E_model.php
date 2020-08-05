@@ -377,7 +377,7 @@ class E_model extends CI_Model
         return $adjusted_count;
     }
 
-    function create_session($e__id){
+    function add_source($e__id){
 
         $user_e = superpower_assigned();
         if(!$user_e){
@@ -772,7 +772,7 @@ class E_model extends CI_Model
                     ));
 
                     //Assign to User:
-                    $this->E_model->create_session($e_url['e__id']);
+                    $this->E_model->e_add_source($e_url['e__id']);
 
                     //Update Search Index:
                     update_algolia(12274, $e_url['e__id']);
