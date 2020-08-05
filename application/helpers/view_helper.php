@@ -1014,7 +1014,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $ui .= '<span class="show-on-hover">';
 
         if(!$is_parent){
-            $ui .= '<span title="SORT"><i class="fas fa-sort black i-sort-handle"></i></span>';
+            $ui .= '<span title="SORT"><i class="fas fa-sort black"></i></span>';
         }
 
         //Remove:
@@ -1332,10 +1332,10 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
             $ui .= '<span class="show-on-hover">';
 
             //SORT
-            $ui .= '<span title="'.$e___13369[13413]['m_title'].'" class="i-sort-handle">'.$e___13369[13413]['m_icon'].'</span>';
+            $ui .= '<span title="'.$e___13369[13413]['m_title'].'">'.$e___13369[13413]['m_icon'].'</span>';
 
             //Remove:
-            $ui .= '<span title="'.$e___13369[13414]['m_title'].'"><span class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' </span></span>';
+            $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' </span>';
 
             $ui .= '</span>';
             $ui .= '</div>';
