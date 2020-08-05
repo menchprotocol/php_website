@@ -251,7 +251,7 @@ function e_13428(){
 }
 
 var is_adding = false;
-function add_13428(){
+function save_13428(){
 
     if(is_adding){
         $('#save_btn').hide().fadeIn();
@@ -262,9 +262,13 @@ function add_13428(){
     $('#error_box').html('');
     $('#save_btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
     is_adding = true;
+    var is_editing = parseInt($('#modal_e__id').val()) > 0;
+    if(is_editing){
+        $( ".e__id_"+$('#modal_e__id').val() ).html('<i class="far fa-yin-yang fa-spin"></i>');
+    }
 
     //Load current Source:
-    $.post("/e/add_13428", {
+    $.post("/e/save_13428", {
 
         e__id: $('#modal_e__id').val(),
         x__id: $('#modal_x__id').val(),
@@ -282,11 +286,10 @@ function add_13428(){
 
             $('#modal13428').modal('hide');
 
-            if( parseInt($('#modal_e__id').val()) > 0 ){
+            if( is_editing ){
 
                 //Editing Update the view:
-                $( data.e_new_echo ).insertBefore( ".e__id_"+$('#modal_e__id').val() );
-                $( ".e__id_"+$('#modal_e__id').val() ).remove();
+                $( ".e__id_"+$('#modal_e__id').val() ).html(data.e_new_echo);
 
             } else {
 

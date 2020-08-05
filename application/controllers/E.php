@@ -2066,7 +2066,7 @@ class E extends CI_Controller
     }
 
 
-    function add_13428(){
+    function save_13428(){
 
         $user_e = superpower_assigned(10939);
         $e___3000 = $this->config->item('e___3000');
