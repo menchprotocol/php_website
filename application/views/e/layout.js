@@ -65,7 +65,7 @@ $(document).ready(function () {
     }
 
     //Source Loader:
-    var portfolio_count = parseInt($('#new_portfolio').attr('current-count'));
+    var portfolio_count = parseInt($('#new_11029').attr('current-count'));
     if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m_message'])){
         e_sort_portfolio_load();
     }
@@ -104,16 +104,16 @@ $(document).ready(function () {
 
 
 
-    $('#new-parent').focus(function() {
-        $('#new-parent .pad_expand').removeClass('hidden');
+    $('#new_11030').focus(function() {
+        $('#new_11030 .pad_expand').removeClass('hidden');
     }).focusout(function() {
-        $('#new-parent .pad_expand').addClass('hidden');
+        $('#new_11030 .pad_expand').addClass('hidden');
     });
 
-    $('#new_portfolio').focus(function() {
-        $('#new_portfolio .pad_expand').removeClass('hidden');
+    $('#new_11029').focus(function() {
+        $('#new_11029 .pad_expand').removeClass('hidden');
     }).focusout(function() {
-        $('#new_portfolio .pad_expand').addClass('hidden');
+        $('#new_11029 .pad_expand').addClass('hidden');
     });
 
 
@@ -177,8 +177,8 @@ $(document).ready(function () {
 
 
     //Loadup various search bars:
-    e_load_search("#new-parent", 1, 'q');
-    e_load_search("#new_portfolio", 0, 'w');
+    e_load_search("#new_11030", 1, 'q');
+    e_load_search("#new_11029", 0, 'w');
 
 
     //Watchout for file uplods:
@@ -437,8 +437,8 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            if(validURL(data.query) || !js_session_superpowers_assigned.includes(13422)){
-                load_13428(0, data.query);
+            if(validURL($(this).val()) || !js_session_superpowers_assigned.includes(13422)){
+                load_13428(0, $(this).val());
             } else {
                 e__add(0, is_e_parent);
             }
@@ -549,10 +549,10 @@ function e__add(e_existing_id, is_parent) {
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
 
     if (is_parent) {
-        var input = $('#new-parent .add-input');
+        var input = $('#new_11030 .add-input');
         var list_id = 'list_11030';
     } else {
-        var input = $('#new_portfolio .add-input');
+        var input = $('#new_11029 .add-input');
         var list_id = 'list_e';
     }
 
@@ -629,7 +629,7 @@ function e_load_page(page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
-        var append_div = $('#new_portfolio').html();
+        var append_div = $('#new_11029').html();
         //The padding-bottom would delete the scrolling effect on the left side!
         $('#list_e').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
@@ -647,12 +647,12 @@ function e_load_page(page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#list_e').html(data + '<div id="new_portfolio" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#list_e').html(data + '<div id="new_11029" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            e_load_search("#new_portfolio", 0, 'w');
+            e_load_search("#new_11029", 0, 'w');
         } else {
             //Update UI to confirm with user:
-            $(data).insertBefore('#new_portfolio');
+            $(data).insertBefore('#new_11029');
         }
 
         x_set_text_start();
