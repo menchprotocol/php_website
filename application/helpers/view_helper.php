@@ -1324,6 +1324,15 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $ui  = '<div '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' list-group-item no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).( $x__type==6255 ? ' itemdiscover ' : ' itemidea ' ).' '.$extra_class.'">';
 
 
+
+        if($user_e && $x__type==6255){
+            $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
+            $start_reading = $completion_rate['completion_percentage']>0;
+            if($start_reading){
+                $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+            }
+        }
+
         //EDITING TOOLBAR
         if($show_editor){
 
@@ -1343,28 +1352,12 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         }
 
 
-
-        if($user_e && $x__type==6255){
-            $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
-            $start_reading = $completion_rate['completion_percentage']>0;
-            if($start_reading){
-                $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
-            }
-        }
-
-
         $ui .= '<div class="row">';
             $ui .= '<div class="col-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
             $ui .= '<div class="col-9 feature-content">';
 
                 //Title
                 $ui .= '<div style="padding-top:8px;"><h2><a href="'.$href.'">'.view_i_title($i).'</a></h2></div>';
-
-
-                //DRAFTING?
-                if(!in_array($i['i__status'], $CI->config->item('n___7355'))){
-                    $ui .= '<div class="montserrat">'.view_cache(4737 /* Idea Status */, $i['i__status'], false, null, $i['i__id']).'</div>';
-                }
 
 
                 if($message_input){
@@ -1380,9 +1373,20 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 //MENCH COINS
                 $ui .= '<div class="row">';
 
-                    //$ui .= '<div class="col-3 col-md-4 show-max">'.view_coins_i(12274, $i, true, true).'</div>';
-                    $ui .= '<div class="col-6">'.view_coins_i(12273, $i, true, true).'</div>';
+                    $ui .= '<div class="col-6">';
+
+                    //IDEAS
+                    $ui .= view_coins_i(12273, $i, true, true);
+
+                    //DRAFTING?
+                    if(!in_array($i['i__status'], $CI->config->item('n___7355'))){
+                        $ui .= '<div class="montserrat">'.view_cache(4737 /* Idea Status */, $i['i__status'], false, null, $i['i__id']).'</div>';
+                    }
+
+                    $ui .= '</div>';
+
                     $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
+
 
                 $ui .= '</div>';
 
