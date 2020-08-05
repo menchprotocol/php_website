@@ -29,7 +29,7 @@ class E extends CI_Controller
 
         $e___11035 = $this->config->item('e___11035');
         $this->load->view('header', array(
-            'title' => $e___13488[13207]['m_title'],
+            'title' => $e___11035[13207]['m_title'],
         ));
         $this->load->view('e/home', array(
             'user_e' => $user_e,
