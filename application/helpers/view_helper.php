@@ -983,12 +983,12 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
     //DISCOVER
     $x__id = ( isset($i['x__id']) ? $i['x__id'] : 0 );
-    $is_i_x = ($x__id && in_array($i['x__type'], $CI->config->item('n___4486')));
+    $is_i_link = ($x__id && in_array($i['x__type'], $CI->config->item('n___4486')));
 
     //IDEA
     $i_stats = i_stats($i['i__metadata']);
     $is_public = in_array($i['i__status'], $CI->config->item('n___7355'));
-    $e_of_i = ( !$is_i_x ? false : $e_of_i ); //Disable Edits on Idea List Page
+    $e_of_i = ( !$is_i_link ? false : $e_of_i ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
     //IDEA INFO BAR
@@ -1007,7 +1007,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
 
     //EDITING TOOLBAR
-    if($is_i_x && $control_enabled && $e_of_i){
+    if($is_i_link && $control_enabled && $e_of_i){
 
         //RIGHT EDITING:
         $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'">';
@@ -1040,7 +1040,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $ui .= '<a href="'.$href.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a>';
 
         //IDEA TITLE
-        if($is_i_x && superpower_active(13354, true)){
+        if($is_i_link && superpower_active(13354, true)){
 
             $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__sort']*100)+1));
 
@@ -1436,7 +1436,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $inline_editing = $control_enabled && superpower_active(13402, true);
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
-    $source_of_e = ( superpower_active(13422, true) ? true : $source_of_e );
+    $superpower_13422 = superpower_active(13422, true);
+    $source_of_e = ( $superpower_13422 ? true : $source_of_e );
 
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1488,34 +1489,30 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
-    if($control_enabled && $source_of_e){
+    if($control_enabled && $source_of_e && $is_e_link){
 
         //RIGHT EDITING:
         $ui .= '<div class="note-editor edit-off">';
         $ui .= '<span class="show-on-hover">';
 
-        if($is_e_link){
+        if($superpower_13422){
 
-            if(superpower_active(13422, true)){
+            //Sort
+            if(!$is_parent && $superpower_10939){
+                $ui .= '<span title="SORT"><i class="fas fa-sort hidden black"></i></span>';
+            }
 
-                //Sort
-                if(!$is_parent && $superpower_10939){
-                    $ui .= '<span title="SORT"><i class="fas fa-sort hidden black"></i></span>';
-                }
+            //Edit Raw Source
+            $ui .= '<span><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
 
-                //Edit Raw Source
-                $ui .= '<span><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+        } elseif(!$is_parent && $source_of_e){
 
-            } elseif(superpower_active(10939, true)){
+            //Allow to remove:
+            $ui .= '<span><a href="javascript:void(0);" onclick="e_10678(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10678]['m_title'].'">'.$e___11035[10678]['m_icon'].'</a></span>';
 
-                //Allow to remove:
-                $ui .= '<span><a href="javascript:void(0);" onclick="e_10678(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10678]['m_title'].'">'.$e___11035[10678]['m_icon'].'</a></span>';
-
-                //Allow to modify via Modal:
-                if(editable_by_13428($e['e__id'])){
-                    $ui .= '<span><a href="javascript:void(0);" onclick="load_13428(' . $e['e__id'] . ', \'\')" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>';
-                }
-
+            //Allow to modify via Modal:
+            if(editable_by_13428($e['e__id'])){
+                $ui .= '<span><a href="javascript:void(0);" onclick="load_13428(' . $e['e__id'] . ', \'\')" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>';
             }
 
         }
