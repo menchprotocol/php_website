@@ -1360,15 +1360,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 $ui .= '<div style="padding-top:8px;"><h2><a href="'.$href.'">'.view_i_title($i).'</a></h2></div>';
 
 
-                if($message_input){
-                    //Description, if any
-                    $ui .= '<div class="inline-block">'.$message_input.'</div>';
-                } else {
-                    //Description, if any
-                    $ui .= '<div class="inline-block hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
-                }
-
-
 
                 //MENCH COINS
                 $ui .= '<div class="row">';
@@ -1389,6 +1380,18 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
                 $ui .= '</div>';
+
+
+
+
+                if($message_input){
+                    //Description, if any
+                    $ui .= '<div class="inline-block">'.$message_input.'</div>';
+                } else {
+                    //Description, if any
+                    $ui .= '<div class="inline-block hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
+                }
+
 
             $ui .= '</div>';
         $ui .= '</div>';
