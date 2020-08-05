@@ -26,7 +26,6 @@ class X extends CI_Controller
         ));
 
         //Load header:
-        $e___11035 = $this->config->item('e___11035');
         $this->load->view('header', array(
             'title' => $is[0]['i__title'],
         ));
