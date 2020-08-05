@@ -1409,12 +1409,10 @@ function view_e_basic($e)
 {
     $ui = '<div class="list-group-item no-side-padding">';
     $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
-
-    $e__title = '<span '.( isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' class="underdot" title="'.$e['x__message'].'" data-toggle="tooltip" data-placement="top" ' : '' ).'>'.$e['e__title'].'</span>';
-
-    //Give Transaction:
-    $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e__title.'</a>';
-
+    $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
+    if(isset($e['x__message']) && strlen($e['x__message']) > 0){
+        $ui .= '<div class="space-content hideIfEmpty">'.$e['x__message'].'</div>';
+    }
     $ui .= '</div>';
     return $ui;
 }
@@ -1532,6 +1530,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
         $ui .= '<div class="col-sm col-md">';
+
             //SOURCE ICON
             $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
