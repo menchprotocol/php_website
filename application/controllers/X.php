@@ -21,12 +21,18 @@ class X extends CI_Controller
             redirect_message('/@'.$user_e['e__id']);
         }
 
-        //Load header:
-        $e___13488 = $this->config->item('e___13488');
-        $this->load->view('header', array(
-            'title' => $e___13488[13210]['m_title'],
+        $is = $this->I_model->fetch(array(
+            'i__id' => config_var(12137),
         ));
-        $this->load->view('x/home');
+
+        //Load header:
+        $e___11035 = $this->config->item('e___11035');
+        $this->load->view('header', array(
+            'title' => $is[0]['i__title'],
+        ));
+        $this->load->view('x/home', array(
+            'i' => $is[0],
+        ));
         $this->load->view('footer');
 
     }
@@ -909,15 +915,8 @@ class X extends CI_Controller
         }
 
         //All Good:
-        $e___13488 = $this->config->item('e___13488');
         return view_json(array(
             'status' => 1,
-            'first_save_message' => 'Saved this idea in '.$e___13488[13210]['m_title'],
-            'is_first_save' => ( !$removed && count($this->X_model->fetch(array(
-                    'x__up' => $user_e['e__id'],
-                    'x__type' => 12896, //SAVED
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))==1 ),
         ));
 
     }

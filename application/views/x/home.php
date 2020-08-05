@@ -4,12 +4,8 @@
 
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
-    $is = $this->I_model->fetch(array(
-        'i__id' => config_var(12137),
-    ));
-
     //IDEA TITLE
-    echo '<h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( 0 ).'</span><span class="title-block-lg">' . view_i_title($is[0]) . '</span></h1>';
+    echo '<h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( 0 ).'</span><span class="title-block-lg">' . view_i_title($i) . '</span></h1>';
 
     //IDEA MESSAGES
     echo '<div style="margin-bottom:34px;">';
