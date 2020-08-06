@@ -772,7 +772,7 @@ class E_model extends CI_Model
                     ));
 
                     //Assign to User:
-                    $this->E_model->e_add_source($e_url['e__id']);
+                    $this->E_model->add_source($e_url['e__id']);
 
                     //Update Search Index:
                     update_algolia(12274, $e_url['e__id']);
