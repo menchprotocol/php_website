@@ -145,7 +145,7 @@ $(document).ready(function () {
             $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total transactions:
-            $.post("/e/e_count_deletion", { e__id: parseInt($('##modal13571 .modal_e__id').val()) }, function (data) {
+            $.post("/e/e_count_deletion", { e__id: parseInt($('#modal13571 .modal_e__id').val()) }, function (data) {
 
                 if(data.status){
                     $('.e_delete_stats').html('<b>'+data.e_x_count+'</b>');
