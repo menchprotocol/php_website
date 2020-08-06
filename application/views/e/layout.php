@@ -846,7 +846,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                         <div class="pull-left">
                             <div id="x__type_preview" class="hideIfEmpty"></div>
-                            <div id="x__message_preview" class="media-content hideIfEmpty"></div>
+                            <div id="x__message_preview" class="hideIfEmpty" style="width: 377px;"></div>
                         </div>
 
                         <div class="pull-right">
