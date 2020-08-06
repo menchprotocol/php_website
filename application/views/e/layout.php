@@ -781,91 +781,85 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 <input type="hidden" class="modal_x__id" value="0" />
                 <div class="save_results margin-top-down hideIfEmpty"></div>
 
-                <div class="row">
-                    <div class="col-md-6">
+                <!-- Source Status -->
+                <span class="mini-header"><?= $e___13571[6177]['m_icon'].' '.$e___13571[6177]['m_title'] ?></span>
+                <select class="form-control border" id="e__status">
+                    <?php
+                    foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
+                        echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
+                    }
+                    ?>
+                </select>
+                <div class="notify_e_delete hidden">
 
-                        <!-- User Status -->
-                        <span class="mini-header"><?= $e___13571[6177]['m_icon'].' '.$e___13571[6177]['m_title'] ?></span>
-                        <select class="form-control border" id="e__status">
-                            <?php
-                            foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
-                                echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                        <div class="notify_e_delete hidden">
+                    <input type="hidden" id="e_x_count" value="0" />
+                    <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> transactions</div>
 
-                            <input type="hidden" id="e_x_count" value="0" />
-                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> transactions</div>
-
-                        </div>
+                </div>
 
 
 
-                        <!-- User Name -->
-                        <span class="mini-header" style="margin-top:20px;"><?= $e___13571[6197]['m_icon'].' '.$e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
+                <!-- Source Title -->
+                <span class="mini-header" style="margin-top:20px;"><?= $e___13571[6197]['m_icon'].' '.$e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
+                <span class="white-wrapper">
+                    <textarea class="form-control text-edit border montserrat doupper" id="e__title"
+                              onkeyup="e__title_word_count()" data-lpignore="true"
+                              style="height:66px; min-height:66px;">
+                    </textarea>
+                </span>
+
+
+
+                <!-- Source Icon -->
+                <span class="mini-header"><?= $e___13571[6198]['m_icon'].' '.$e___13571[6198]['m_title'] ?>
+                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
+
+                    <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-link"></i></a>
+                </span>
+                <div class="form-group label-floating is-empty"
+                     style="margin:1px 0 10px;">
+                    <div class="input-group border">
+                        <input type="text" id="e__icon" value=""
+                               maxlength="<?= config_var(6197) ?>" data-lpignore="true" placeholder=""
+                               class="form-control">
+                        <span class="input-group-addon addon-lean addon-grey icon-demo icon-block"></span>
+                    </div>
+                </div>
+
+
+                <div class="en-has-tr">
+
+                    <span class="mini-header"><?= $e___13571[6186]['m_icon'].' '.$e___13571[6186]['m_title'] ?></span>
+                    <select class="form-control border" id="x__status">
+                        <?php
+                        foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
+                            echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
+                        }
+                        ?>
+                    </select>
+
+                    <div class="notify_unx_e hidden">
+                        <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will remove source</div>
+                    </div>
+
+
+                    <form class="drag-box" method="post" enctype="multipart/form-data">
+                        <span class="mini-header" style="margin-top: 20px;"><?= $e___13571[4372]['m_icon'].' '.$e___13571[4372]['m_title'] ?></span>
                         <span class="white-wrapper">
-                        <textarea class="form-control text-edit border montserrat doupper" id="e__title"
-                                  onkeyup="e__title_word_count()" data-lpignore="true"
-                                  style="height:66px; min-height:66px;">
-                        </textarea>
-                    </span>
+                    <textarea class="form-control text-edit border" id="x__message"
+                              data-lpignore="true"
+                              placeholder="Write, Drop a File or Paste URL"
+                              style="height:126px; min-height:126px;"></textarea>
+                </span>
+
+                        <span><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_desc'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'] ?></label></span>
+                    </form>
 
 
+                    <span class="mini-header"><?= $e___13571[4593]['m_icon'].' '.$e___13571[4593]['m_title'] ?></span>
+                    <span id="x__type_preview"></span>
+                    <p id="e_x_preview" class="hideIfEmpty"></p>
 
-                        <!-- User Icon -->
-                        <span class="mini-header"><?= $e___13571[6198]['m_icon'].' '.$e___13571[6198]['m_title'] ?>
-
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
-
-                        <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-link"></i></a>
-
-                    </span>
-                        <div class="form-group label-floating is-empty"
-                             style="margin:1px 0 10px;">
-                            <div class="input-group border">
-                                <input type="text" id="e__icon" value=""
-                                       maxlength="<?= config_var(6197) ?>" data-lpignore="true" placeholder=""
-                                       class="form-control">
-                                <span class="input-group-addon addon-lean addon-grey icon-demo icon-block"></span>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-6 en-has-tr">
-
-                        <span class="mini-header"><?= $e___13571[6186]['m_icon'].' '.$e___13571[6186]['m_title'] ?></span>
-                        <select class="form-control border" id="x__status">
-                            <?php
-                            foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
-                                echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
-                            }
-                            ?>
-                        </select>
-
-                        <div class="notify_unx_e hidden">
-                            <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will remove source</div>
-                        </div>
-
-
-                        <form class="drag-box" method="post" enctype="multipart/form-data">
-                            <span class="mini-header" style="margin-top: 20px;"><?= $e___13571[4372]['m_icon'].' '.$e___13571[4372]['m_title'] ?></span>
-                            <span class="white-wrapper">
-                        <textarea class="form-control text-edit border" id="x__message"
-                                  data-lpignore="true"
-                                  placeholder="Write, Drop a File or Paste URL"
-                                  style="height:126px; min-height:126px;"></textarea>
-                    </span>
-
-                            <span><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_desc'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'] ?></label></span>
-                        </form>
-
-
-                        <span class="mini-header"><?= $e___13571[4593]['m_icon'].' '.$e___13571[4593]['m_title'] ?></span>
-                        <span id="x__type_preview"></span>
-                        <p id="e_x_preview" class="hideIfEmpty"></p>
-
-                    </div>
                 </div>
 
             </div>
