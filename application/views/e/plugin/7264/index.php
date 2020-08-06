@@ -17,7 +17,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     echo '<form method="GET" action="">';
 
     echo '<div class="score_range_box">
-                <div class="form-group label-floating is-empty"
+                <div class="form-group"
                      style="max-width:550px; margin:1px 0 10px; display: inline-block;">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Start at #</span>

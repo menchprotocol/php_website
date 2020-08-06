@@ -84,7 +84,7 @@ if(count($current_sign_i_attempt) == 0){
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
             <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m_icon'].'</span>'.$e___4269[3288]['m_title'] ?></span>
-            <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
+            <div class="form-group"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
 
@@ -104,7 +104,7 @@ if(count($current_sign_i_attempt) == 0){
             <input type="hidden" id="sign_e__id" value="0" />
 
             <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m_icon'].'</span>'.$e___4269[3286]['m_title'] ?></span>
-            <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
+            <div class="form-group"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step3buttons">
                 <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-e transparent btn-raised " title="<?= $e___11035[12991]['m_title'] ?>"><?= $e___11035[12991]['m_icon'] ?></a>
@@ -132,13 +132,13 @@ if(count($current_sign_i_attempt) == 0){
             <!-- Full Name -->
             <div class="margin-top-down">
                 <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.str_replace(' source','',$e___4269[13025]['m_icon']).'</span>'.$e___4269[13025]['m_title'] ?>:</span>
-                <div class="form-group is-empty"><input type="text" placeholder="<?= $e___4269[13025]['m_message'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat"></div>
+                <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m_message'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat"></div>
             </div>
 
             <!-- New Password -->
             <div class="margin-top-down">
                 <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[3286]['m_icon'] ?></span>NEW PASSWORD:</span>
-                <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
+                <div class="form-group"><input type="password" id="new_password" class="form-control border"></div>
             </div>
 
 
