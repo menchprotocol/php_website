@@ -436,6 +436,7 @@ function x_type_preview() {
 
             $('#x__type_preview').html(data.x__type_preview);
             $('#x__message_preview').html(data.x__message_preview);
+            lazy_load();
             $('[data-toggle="tooltip"]').tooltip();
 
         } else {
