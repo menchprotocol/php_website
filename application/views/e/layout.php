@@ -782,7 +782,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 <div class="save_results margin-top-down hideIfEmpty"></div>
 
                 <!-- Source Status -->
-                <span class="mini-header"><?= $e___13571[6177]['m_icon'].' '.$e___13571[6177]['m_title'] ?></span>
+                <div class="headline"><?= $e___13571[6177]['m_icon'].' '.$e___13571[6177]['m_title'] ?></div>
                 <select class="form-control border" id="e__status">
                     <?php
                     foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
@@ -800,7 +800,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
                 <!-- Source Title -->
-                <span class="mini-header" style="margin-top:20px;"><?= $e___13571[6197]['m_icon'].' '.$e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
+                <div class="headline"><?= $e___13571[6197]['m_icon'].' '.$e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</div>
                 <span class="white-wrapper">
                     <textarea class="form-control text-edit border montserrat doupper" id="e__title"
                               onkeyup="e__title_word_count()" data-lpignore="true"
@@ -811,10 +811,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
                 <!-- Source Icon -->
-                <span class="mini-header"><?= $e___13571[6198]['m_icon'].' '.$e___13571[6198]['m_title'] ?>
+                <div class="headline"><?= $e___13571[6198]['m_icon'].' '.$e___13571[6198]['m_title'] ?>
                     <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
                     <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-link"></i></a>
-                </span>
+                </div>
                 <div class="form-group label-floating is-empty" style="margin:1px 0 10px;">
                     <div class="input-group border">
                         <input type="text" id="e__icon" value="" data-lpignore="true" placeholder="" class="form-control">
@@ -825,7 +825,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 <div class="e_has_link">
 
-                    <span class="mini-header"><?= $e___13571[6186]['m_icon'].' '.$e___13571[6186]['m_title'] ?></span>
+                    <div class="headline"><?= $e___13571[6186]['m_icon'].' '.$e___13571[6186]['m_title'] ?></div>
                     <select class="form-control border" id="x__status">
                         <?php
                         foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
@@ -852,7 +852,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     </form>
 
 
-                    <span class="mini-header"><?= $e___13571[4593]['m_icon'].' '.$e___13571[4593]['m_title'] ?></span>
+                    <div class="headline"><?= $e___13571[4593]['m_icon'].' '.$e___13571[4593]['m_title'] ?></div>
                     <span id="x__type_preview"></span>
                     <p id="e_x_preview" class="hideIfEmpty"></p>
 
