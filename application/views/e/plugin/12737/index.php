@@ -29,5 +29,5 @@ foreach($this->X_model->fetch(array(
 
 }
 
-echo $fixed.'/'.$scanned.' Transactions Fixed & '.$skipped.' Skipped.';
+echo $fixed.' of '.$scanned.' Transactions Fixed & '.$skipped.' Skipped.';
 

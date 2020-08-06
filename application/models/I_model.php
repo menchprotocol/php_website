@@ -900,7 +900,7 @@ class I_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => $applied_success . '/' . count($is_next) . ' ideas updated',
+            'message' => $applied_success . ' of ' . count($is_next) . ' ideas updated',
         );
 
     }

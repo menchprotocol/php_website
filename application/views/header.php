@@ -102,7 +102,7 @@ if(!isset($hide_header)){
                     echo '<td>';
 
                     //MENCH LOGO
-                    echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.( $user_e ? '/@'.$user_e['e__id'] : '/' ).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
+                    echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url().'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
 
                     //SEARCH BAR (initially hidden)
                     echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m_title'].'"></form></div>';

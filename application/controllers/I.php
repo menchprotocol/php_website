@@ -109,7 +109,7 @@ class I extends CI_Controller {
             'i__id' => $i__id,
         ));
         if ( count($is) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>IDEA #' . $i__id . ' Not Found</div>');
+            return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>IDEA #' . $i__id . ' Not Found</div>');
         }
 
 
@@ -120,7 +120,7 @@ class I extends CI_Controller {
             if($is_public){
                 return redirect_message('/'.$i__id);
             } else {
-                return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__id . ' is not published yet.</div>');
+                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__id . ' is not published yet.</div>');
             }
         }
 
@@ -343,7 +343,7 @@ class I extends CI_Controller {
 
                         //Go to main page if no parent found:
                         if(!$deletion_redirect){
-                            $deletion_redirect = ( intval($this->session->userdata('session_time_7260')) ? '/e/plugin/7260' : '/' );
+                            $deletion_redirect = ( intval($this->session->userdata('session_time_7260')) ? '/e/plugin/7260' : home_url() );
                         }
 
                     } else {

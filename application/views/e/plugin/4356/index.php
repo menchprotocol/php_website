@@ -151,4 +151,4 @@ foreach($this->I_model->fetch($filters) as $in){
 }
 
 //Return results:
-echo $total_updated.'/'.$total_scanned.' Ideas Updated with new estimated times totalling '.round(($total_time/3600), 1).' Hours.';
+echo $total_updated.' of '.$total_scanned.' Ideas Updated with new estimated times totalling '.round(($total_time/3600), 1).' Hours.';

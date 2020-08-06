@@ -1486,9 +1486,9 @@ class E extends CI_Controller
         if(superpower_assigned()) {
             //Lead user and above, go to console:
             if($i__id > 0){
-                return redirect_message(( superpower_assigned(10939) ? '/i/i_go/' : '/' ) . $i__id);
+                return redirect_message(( superpower_assigned(10939) ? '/i/i_go/' : home_url() ) . $i__id);
             } else {
-                return redirect_message('/');
+                return redirect_message(home_url());
             }
         }
 
@@ -1675,7 +1675,7 @@ class E extends CI_Controller
             $sign_url = '/i/i_go/'.$_POST['sign_i__id'];
         } else {
             //Go to home page and let them continue from there:
-            $sign_url = '/';
+            $sign_url = home_url();
         }
 
         return view_json(array(
@@ -1822,7 +1822,7 @@ class E extends CI_Controller
             $sign_url = urldecode($_POST['referrer_url']);
 
         } else {
-            $sign_url = '/';
+            $sign_url = home_url();
         }
 
         return view_json(array(
@@ -1904,7 +1904,7 @@ class E extends CI_Controller
 
         //Validate email:
         if(superpower_assigned()){
-            return redirect_message('/');
+            return redirect_message(home_url());
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
             return redirect_message('/e/signin/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
@@ -1936,7 +1936,7 @@ class E extends CI_Controller
         $this->E_model->activate_session($es[0]);
 
         //Take them to DISCOVER HOME
-        return redirect_message( '/' , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
+        return redirect_message( home_url() , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
 
     }
 

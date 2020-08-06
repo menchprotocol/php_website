@@ -800,6 +800,12 @@ function i_stats($i__metadata){
     );
 
 }
+
+function home_url(){
+    $user_e = superpower_assigned();
+    return ( $user_e ? '/@'.$user_e['e__id'] : '/' );
+}
+
 function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
 {
 

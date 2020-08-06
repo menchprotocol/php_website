@@ -1074,7 +1074,7 @@ class E_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => $applied_success . '/' . count($children) . ' sources updated',
+            'message' => $applied_success . ' of ' . count($children) . ' sources updated',
         );
 
     }
