@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-06 11:33:52 PST
+//Generated 2020-08-06 11:48:33 PST
 $config['s___12274'] = 5001; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122275; //DISCOVERIES
@@ -42,7 +42,7 @@ $config['e___13571'] = array(
     ),
     4372 => array(
         'm_title' => 'TRANSACTION MESSAGE',
-        'm_message' => '',
+        'm_message' => 'Write, Drop a File or Paste URL',
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
         'm_profile' => array(13571,7578,10679,10657,5001,4341),
     ),
