@@ -1011,12 +1011,11 @@ function i_note_edit_cancel(x__id) {
 
 function i_note_edit(x__id, note_type_id) {
 
-    //Show loader:
-    $("#ul-nav-" + x__id + " .edit-updates").html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>');
-
     //Revert View:
     i_note_edit_cancel(x__id);
 
+    //Clear Message:
+    $("#ul-nav-" + x__id + " .edit-updates").html('');
 
     var modify_data = {
         x__id: parseInt(x__id),
@@ -1063,9 +1062,6 @@ function i_note_edit(x__id, note_type_id) {
 
                 //Update message status:
                 $("#ul-nav-" + x__id + " .message_status").html(data.message_new_status_icon);
-
-                //Clear Message:
-                $("#ul-nav-" + x__id + " .edit-updates").html('');
 
                 lazy_load();
 
