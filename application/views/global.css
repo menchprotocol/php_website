@@ -269,6 +269,10 @@ img.no-radius {
     font-family: 'Montserrat', sans-serif;
 }
 
+#MyAccountAccordion .padded {
+    margin: 0 13px 13px 13px !important;
+}
+
 .alert{
     padding:10px 0 !important;
     border-radius: 0;
