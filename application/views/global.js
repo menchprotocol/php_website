@@ -423,11 +423,7 @@ function remove_10678(x__id, note_type_id) {
 
 function x_type_preview() {
 
-    /*
-     * Updates the type of transaction based on the transaction content
-     *
-     * */
-
+    //Shows the transaction type based on the transaction message
     $('#x__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Fetch Idea Data to load modify widget:
@@ -436,17 +432,18 @@ function x_type_preview() {
         x__id: $('#modal13571 .modal_x__id').val(),
     }, function (data) {
 
-        //All good, let's load the data into the Modify Widget...
-        $('#x__type_preview').html((data.status ? data.html_ui : '<b class="discover">' + data.message+'</b>'));
+        if(data.status){
 
-        if(data.status && data.e_x_preview.length > 0){
-            $('#e_x_preview').html(data.e_x_preview);
+            $('#x__type_preview').html(data.x__type_preview);
+            $('#x__message_preview').html(data.x__message_preview);
+            $('[data-toggle="tooltip"]').tooltip();
+
         } else {
-            $('#e_x_preview').html('');
-        }
 
-        //Reload Tooltip again:
-        $('[data-toggle="tooltip"]').tooltip();
+            //Show Error:
+            $('#x__type_preview').html('<b class="discover">' + data.message+'</b>');
+
+        }
 
     });
 

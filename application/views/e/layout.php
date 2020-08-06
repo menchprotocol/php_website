@@ -841,14 +841,17 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     <!-- Transaction Message -->
                     <div class="headline" style="margin-top: 20px;"><?= $e___13571[4372]['m_icon'].' '.$e___13571[4372]['m_title'] ?></div>
                     <form class="drag-box" method="post" enctype="multipart/form-data">
+
                         <textarea class="form-control text-edit border" id="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m_message'] ?>"></textarea>
 
                         <div class="pull-left">
                             <div id="x__type_preview" class="hideIfEmpty"></div>
-                            <div id="e_x_preview" class="hideIfEmpty"></div>
+                            <div id="x__message_preview" class="media-content hideIfEmpty"></div>
                         </div>
 
-                        <div class="pull-right"><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_message'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'] ?></label></div>
+                        <div class="pull-right">
+                            <input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_message'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'] ?></label>
+                        </div>
 
                         <div class="doclear">&nbsp;</div>
 
