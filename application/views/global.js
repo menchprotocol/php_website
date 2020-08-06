@@ -1064,6 +1064,9 @@ function i_note_edit(x__id, note_type_id) {
                 //Update message status:
                 $("#ul-nav-" + x__id + " .message_status").html(data.message_new_status_icon);
 
+                //Clear Message:
+                $("#ul-nav-" + x__id + " .edit-updates").html('');
+
                 lazy_load();
 
             }
