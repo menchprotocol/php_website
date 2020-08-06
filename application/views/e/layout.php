@@ -812,8 +812,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 </div>
                 <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
                     <div class="input-group border">
-                        <input type="text" id="e__icon" value="" data-lpignore="true" placeholder="" class="form-control">
-                        <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top: 5px;"></span>
+                        <input type="text" id="e__icon" value="" data-lpignore="true" placeholder="" class="form-control" style="margin-bottom: 0;">
+                        <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
                     </div>
                 </div>
 
