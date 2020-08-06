@@ -16,7 +16,7 @@ $(document).ready(function () {
         e_13428();
     });
 
-    $("#input__6197").keypress(function (e) {
+    $("#input__6197, #x__message").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
             e.preventDefault();
@@ -310,6 +310,7 @@ function save_13428(){
 function load_13428(e__id, new_string){
 
     //Reset Values:
+    $("#load_13428 .save_results").html('');
     $('#modal13428 .modal_e__id').val(e__id);
     $('#modal13428 .modal_x__id').val(0);
     $('#input__13433').val(''); //URL
@@ -318,7 +319,6 @@ function load_13428(e__id, new_string){
 
     //Show Modal:
     $('#modal13428').modal('show');
-    $('#modal13428 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Load Data:
     if(e__id > 0){
@@ -330,14 +330,16 @@ function load_13428(e__id, new_string){
 
         }, function (data) {
 
-            $("#modal13428 .save_results").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
-
             if (data.status) {
 
                 $('#modal13428 .modal_x__id').val(data.modal_x__id);
                 $('#input__13433').val(data.input__13433);
                 $('#input__6197').val(data.input__6197);
                 $('#input__3000').val(data.input__3000);
+
+            } else {
+
+                $("#modal13428 .save_results").html('<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>');
 
             }
 
@@ -659,8 +661,8 @@ function update_demo_icon(){
 
 function load_13571(e__id, x__id) {
 
+    $("#modal13571 .save_results").html('');
     $('#modal13571').modal('show');
-    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
     $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
 
     //Load current Source:
@@ -670,8 +672,6 @@ function load_13571(e__id, x__id) {
         x__id: x__id,
 
     }, function (data) {
-
-        $("#modal13571 .save_results").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
 
         if (data.status) {
 
@@ -705,6 +705,11 @@ function load_13571(e__id, x__id) {
                 $('.remove-e, .e_has_link').addClass('hidden');
 
             }
+
+        } else {
+
+            $("#modal13571 .save_results").html('<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>');
+
         }
     });
 }
