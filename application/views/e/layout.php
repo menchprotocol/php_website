@@ -813,21 +813,17 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 <!-- Source Icon -->
                 <span class="mini-header"><?= $e___13571[6198]['m_icon'].' '.$e___13571[6198]['m_title'] ?>
                     <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
-
                     <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-link"></i></a>
                 </span>
-                <div class="form-group label-floating is-empty"
-                     style="margin:1px 0 10px;">
+                <div class="form-group label-floating is-empty" style="margin:1px 0 10px;">
                     <div class="input-group border">
-                        <input type="text" id="e__icon" value=""
-                               maxlength="<?= config_var(6197) ?>" data-lpignore="true" placeholder=""
-                               class="form-control">
+                        <input type="text" id="e__icon" value="" data-lpignore="true" placeholder="" class="form-control">
                         <span class="input-group-addon addon-lean addon-grey icon-demo icon-block"></span>
                     </div>
                 </div>
 
 
-                <div class="en-has-tr">
+                <div class="e_has_link">
 
                     <span class="mini-header"><?= $e___13571[6186]['m_icon'].' '.$e___13571[6186]['m_title'] ?></span>
                     <select class="form-control border" id="x__status">
@@ -843,16 +839,16 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     </div>
 
 
+                    <!-- Upload -->
                     <form class="drag-box" method="post" enctype="multipart/form-data">
                         <span class="mini-header" style="margin-top: 20px;"><?= $e___13571[4372]['m_icon'].' '.$e___13571[4372]['m_title'] ?></span>
                         <span class="white-wrapper">
-                    <textarea class="form-control text-edit border" id="x__message"
-                              data-lpignore="true"
-                              placeholder="Write, Drop a File or Paste URL"
-                              style="height:126px; min-height:126px;"></textarea>
-                </span>
-
-                        <span><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_desc'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'] ?></label></span>
+                            <textarea class="form-control text-edit border" id="x__message"
+                                      data-lpignore="true"
+                                      placeholder="Write, Drop a File or Paste URL"
+                                      style="height:126px; min-height:126px;"></textarea>
+                        </span>
+                        <span><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_message'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'] ?></label></span>
                     </form>
 
 

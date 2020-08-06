@@ -185,10 +185,10 @@ $(document).ready(function () {
             e.stopPropagation();
         })
             .on('dragover dragenter', function () {
-                $('.en-has-tr').addClass('is-working');
+                $('.e_has_link').addClass('is-working');
             })
             .on('dragleave dragend drop', function () {
-                $('.en-has-tr').removeClass('is-working');
+                $('.e_has_link').removeClass('is-working');
             })
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
@@ -697,13 +697,13 @@ function load_13571(e__id, x__id) {
                 $('#x__status').val(data.x__status);
                 $('#x__message').val(data.x__message);
                 $('#e_x_count').val(0);
-                $('.remove-e, .en-has-tr').removeClass('hidden');
+                $('.remove-e, .e_has_link').removeClass('hidden');
                 x_type_preview();
 
             } else {
 
                 //Hide the section and clear it:
-                $('.remove-e, .en-has-tr').addClass('hidden');
+                $('.remove-e, .e_has_link').addClass('hidden');
 
             }
         }
