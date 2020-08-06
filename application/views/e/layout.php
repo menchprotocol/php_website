@@ -845,8 +845,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         <textarea class="form-control text-edit border" id="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m_message'] ?>"></textarea>
 
                         <div class="pull-left">
-                            <div id="x__type_preview"></div>
-                            <div id="x__message_preview" class="media-content"></div>
+                            <div id="x__type_preview" class="hideIfEmpty"></div>
+                            <div id="x__message_preview" class="media-content hideIfEmpty"></div>
                         </div>
 
                         <div class="pull-right">

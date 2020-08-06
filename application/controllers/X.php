@@ -194,7 +194,7 @@ class X extends CI_Controller
         return view_json(array(
             'status' => 1,
             'x__type_preview' => '<b class="montserrat doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m_icon']).'">' . $e___4592[$detected_x_type['x__type']]['m_icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m_title'] . '</b>',
-            'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup inline-block">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
+            'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
         ));
 
     }
