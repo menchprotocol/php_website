@@ -801,10 +801,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 <!-- Source Title -->
                 <div class="headline"><?= $e___13571[6197]['m_icon'].' '.$e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</div>
-                <textarea class="form-control text-edit border montserrat doupper" id="e__title"
-                      onkeyup="e__title_word_count()" data-lpignore="true"
-                      style="height:66px; min-height:66px;">
-                </textarea>
+                <textarea class="form-control text-edit border montserrat doupper" id="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
 
 
 
