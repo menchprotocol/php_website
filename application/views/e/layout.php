@@ -38,10 +38,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;">';
 
-        echo '<a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13571]['m_title'].'">'.$e___11035[13571]['m_icon'].'</a>';
+        echo '<a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',0)" class="icon-block '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13571]['m_title'].'">'.$e___11035[13571]['m_icon'].'</a>';
 
         if(editable_by_13428($e['e__id'])){
-            echo '<a href="javascript:void(0);" onclick="load_13428('.$e['e__id'].', \'\')" class="icon-block grey '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a>';
+            echo '<a href="javascript:void(0);" onclick="load_13428('.$e['e__id'].', \'\')" class="icon-block '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a>';
         }
 
     echo '</div>';
