@@ -10,7 +10,7 @@ $stats = array(
     'i_updated' => 0,
     'i_total_weights' => 0,
     'e_scanned' => 0,
-    'e_updated' => 0,
+    'e_changed' => 0,
 );
 
 if(!$obj || $obj==12273){
@@ -35,7 +35,7 @@ if(!$obj || $obj==12274){
         'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     )) as $en) {
         $stats['e_scanned']++;
-        $stats['e_updated'] += e__weight_calculator($en);
+        $stats['e_changed'] += e__weight_calculator($en);
     }
 }
 

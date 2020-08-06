@@ -229,7 +229,7 @@ echo '<div class="container">';
     echo '<div class="inline-block margin-top-down '.superpower_active(12701).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m_icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$e___11035[12707]['m_title'].'</a></div>';
 
 
-    echo '<div class="inline-box show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
+    echo '<div class="show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
     echo '<form action="" method="GET">';
 
 
@@ -391,7 +391,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
 
     echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(s)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
 
-    echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__status" value="' . ((isset($_GET['e__status'])) ? $_GET['e__status'] : '') . '" class="form-control border"></div>';
+    echo '<div class="filter-statuses e_status_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__status" value="' . ((isset($_GET['e__status'])) ? $_GET['e__status'] : '') . '" class="form-control border"></div>';
 
     echo '</td>';
 

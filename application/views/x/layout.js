@@ -69,7 +69,7 @@ function set_13491(font_size_e__id){
     html_13491(font_size_e__id);
 
     //Save to profile:
-    $.post("/e/e_update_radio", {
+    $.post("/e/e_radio", {
         parent_e__id: 13491,
         selected_e__id: font_size_e__id,
         enable_mulitiselect: 0,

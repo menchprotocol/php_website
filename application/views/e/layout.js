@@ -145,7 +145,7 @@ $(document).ready(function () {
             $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total transactions:
-            $.post("/e/e_count_deletion", { e__id: parseInt($('#modifybox').attr('e-id')) }, function (data) {
+            $.post("/e/e_count_deletion", { e__id: parseInt($('##modal13571 .modal_e__id').val()) }, function (data) {
 
                 if(data.status){
                     $('.e_delete_stats').html('<b>'+data.e_x_count+'</b>');
@@ -158,30 +158,18 @@ $(document).ready(function () {
 
             $('.notify_e_delete').addClass('hidden');
             $('.e_delete_stats').html('');
-            $('#e_x_count').val('0');
+            $('#e_x_count').val(0);
 
         }
     });
 
-    //Adjust height of the messaging windows:
-    $('.grey-box').css('max-height', (parseInt($(window).height()) - 130) + 'px');
 
-    //Make editing frames Sticky for scrolling longer lists
-    $(".main-panel").scroll(function () {
-        var top_position = $(this).scrollTop();
-        clearTimeout($.data(this, 'scrollTimer'));
-        $.data(this, 'scrollTimer', setTimeout(function () {
-            $(".fixed-box").css('top', (top_position - 0)); //PX also set in style.css for initial load
-        }, 34));
-    });
-
-
-    //Loadup various search bars:
+    //SEARCH
     e_load_search("#new_11030", 1, 'q');
     e_load_search("#new_11029", 0, 'w');
 
 
-    //Watchout for file uplods:
+    //UPLOAD
     $('.drag-box').find('input[type="file"]').change(function () {
         e_upload_file(droppedFiles, 'file');
     });
@@ -234,18 +222,18 @@ function e_13428(){
 
     //Whe the URL is changed this tries to update the title & nonfiction source type
 
-    $('#error_box').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('#modal13428 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
     $('#input__6197').val('LOADING...');
     $("#input__3000").val(0);
 
     //Fetch Idea Data to load modify widget:
     $.post("/e/e_13428", {
         input__13433: $('#input__13433').val(),
-        e__id: $('#modal_e__id').val(),
+        e__id: $('#modal13428 .modal_e__id').val(),
     }, function (data) {
 
         //Update Error Section
-        $("#error_box").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
+        $("#modal13428 .save_results").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
 
         $('#input__6197').val(data.input__6197);
         $("#input__3000").val(data.input__3000);
@@ -266,22 +254,22 @@ function save_13428(){
     }
 
     //Show Modal:
-    $('#error_box').html('');
+    $('#modal13428 .save_results').html('');
     $('#save_btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
     is_adding = true;
-    var is_editing = parseInt($('#modal_e__id').val()) > 0;
+    var is_editing = parseInt($('#modal13428 .modal_e__id').val()) > 0;
     if(is_editing){
-        $( ".e__id_"+$('#modal_e__id').val() ).after('<div class="list-group-item update-new"><i class="far fa-yin-yang fa-spin"></i></div>');
+        $( ".e__id_"+$('#modal13428 .modal_e__id').val() ).after('<div class="list-group-item update-new"><i class="far fa-yin-yang fa-spin"></i></div>');
         setTimeout(function () {
-            $( ".e__id_"+$('#modal_e__id').val() ).remove();
+            $( ".e__id_"+$('#modal13428 .modal_e__id').val() ).remove();
         }, 21);
     }
 
     //Load current Source:
     $.post("/e/save_13428", {
 
-        e__id: $('#modal_e__id').val(),
-        x__id: $('#modal_x__id').val(),
+        e__id: $('#modal13428 .modal_e__id').val(),
+        x__id: $('#modal13428 .modal_x__id').val(),
         input__13433: $('#input__13433').val(),
         input__6197: $('#input__6197').val().toUpperCase(),
         input__3000: $('#input__3000 option:selected').val(),
@@ -290,13 +278,13 @@ function save_13428(){
 
         is_adding = false;
         $('#save_btn').html('SAVE');
-        $("#error_box").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
+        $("#modal13428 .save_results").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
 
         if (data.status) {
 
             $('#modal13428').modal('hide');
 
-            if( is_editing && parseInt($('#modal_e__id').val()) != e_focus_id ){
+            if( is_editing && parseInt($('#modal13428 .modal_e__id').val()) != e_focus_id ){
 
                 //Editing Update the view:
                 $( ".update-new" ).after(data.e_new_echo);
@@ -322,15 +310,15 @@ function save_13428(){
 function load_13428(e__id, new_string){
 
     //Reset Values:
-    $('#modal_e__id').val(e__id);
-    $('#modal_x__id').val(0);
+    $('#modal13428 .modal_e__id').val(e__id);
+    $('#modal13428 .modal_x__id').val(0);
     $('#input__13433').val(''); //URL
     $('#input__6197').val(''); //TITLE
     $('#input__3000').val(0); //TITLE
 
     //Show Modal:
     $('#modal13428').modal('show');
-    $('#error_box').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('#modal13428 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Load Data:
     if(e__id > 0){
@@ -342,11 +330,11 @@ function load_13428(e__id, new_string){
 
         }, function (data) {
 
-            $("#error_box").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
+            $("#modal13428 .save_results").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
 
             if (data.status) {
 
-                $('#modal_x__id').val(data.modal_x__id);
+                $('#modal13428 .modal_x__id').val(data.modal_x__id);
                 $('#input__13433').val(data.input__13433);
                 $('#input__6197').val(data.input__6197);
                 $('#input__3000').val(data.input__3000);
@@ -607,10 +595,10 @@ function e__add(e_existing_id, is_parent) {
 
 function e_filter_status(new_val) {
     //Delete active class:
-    $('.en-status-filter').removeClass('active');
+    $('.e_filter_status').removeClass('active');
     //We do have a filter:
     e_focus_filter = parseInt(new_val);
-    $('.en-status-' + new_val).addClass('active');
+    $('.en_status_' + new_val).addClass('active');
     e_load_page(0, 1);
 }
 
@@ -669,72 +657,57 @@ function update_demo_icon(){
     $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___12467[12274]['m_icon'] ));
 }
 
-function e_modify_load(e__id, x__id) {
+function load_13571(e__id, x__id) {
 
-    //Make sure inputs are valid:
-    if (!$('.e__id_' + e__id).length) {
-        alert('Invalid Source ID');
-        return false;
-    }
+    $('#modal13571').modal('show');
+    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
 
-    //Make the frame visible:
-    $('.fixed-box').addClass('hidden');
-    $("#modifybox").removeClass('hidden').hide().fadeIn();
+    //Load current Source:
+    $.post("/e/load_13571", {
 
-    //Update variables:
-    $('#modifybox').attr('x-id', x__id);
-    $('#modifybox').attr('e-id', e__id);
+        e__id: e__id,
+        x__id: x__id,
 
-    //Cannot be deleted OR Unpublished as this would not load, so delete them:
-    $('.notify_e_delete, .notify_unx_e').addClass('hidden');
+    }, function (data) {
 
-    //Set opacity:
-    delete_all_saved();
-    $(".saved_e_"+e__id).addClass('e_saved');
+        $("#modal13571 .save_results").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
 
-    //Might be in an INPUT or a DIV based on active superpowers:
-    var e_full_name = $(".text__6197_" + e__id + ":first").val();
-    if(!e_full_name.length){
-        e_full_name = $(".text__6197_" + e__id + ":first").text();
-    }
-    $('#e__title').val(e_full_name.toUpperCase()).focus();
-    $('.edit-header').html('<i class="fas fa-pen-square"></i> ' + e_full_name);
-    $('#e__status').val($(".e__id_" + e__id + ":first").attr('en-status'));
-    $('.save_e_changes').html('');
-    $('.e_delete_stats').html('');
+        if (data.status) {
 
-    if (parseInt($('.e__icon_' + e__id).attr('en-is-set')) > 0) {
-        $('#e__icon').val($('.e__icon_' + e__id).html());
-    } else {
-        //Clear out input:
-        $('#e__icon').val('');
-    }
+            //Update variables:
+            $('#modal13571 .modal_x__id').val(x__id);
+            $('#modal13571 .modal_e__id').val(e__id);
 
-    e__title_word_count();
-    update_demo_icon();
-
-    //Only show remove button if not level 1
-    if (parseInt(x__id) > 0) {
-
-        $('#x__status').val($(".e__id_" + e__id + ":first").attr('x-status'));
-        $('#e_x_count').val('0');
+            $('.object_saved').removeClass('e_saved');
+            $(".saved_e_"+e__id).addClass('e_saved');
+            $('#modal13571 .save_results').html('');
+            $('.e_delete_stats').html('');
 
 
-        //Make the UI transaction and the ideas in the edit box:
-        $('.remove-e, .en-has-tr').removeClass('hidden');
+            $('#e__title').val(data.e__title).focus();
+            $('#e__status').val(data.e__status);
+            $('#e__icon').val(data.e__icon);
 
-        //Assign value:
-        $('#x__message').val($(".x__message_val_" + x__id + ":first").text().trim());
+            e__title_word_count();
+            update_demo_icon();
 
-        //Also update type:
-        x_type_preview();
+            if (x__id > 0) {
 
-    } else {
+                $('#x__status').val(data.x__status);
+                $('#x__message').val(data.x__message);
+                $('#e_x_count').val(0);
+                $('.remove-e, .en-has-tr').removeClass('hidden');
+                x_type_preview();
 
-        //Hide the section and clear it:
-        $('.remove-e, .en-has-tr').addClass('hidden');
+            } else {
 
-    }
+                //Hide the section and clear it:
+                $('.remove-e, .en-has-tr').addClass('hidden');
+
+            }
+        }
+    });
 }
 
 function e_x_form_lock(){
@@ -754,7 +727,7 @@ function e_x_form_unlock(result){
     //Unlock either way:
     $('#x__message').prop("disabled", false).css('background-color','#FFF');
 
-    $('.btn-save').removeClass('grey').attr('href', 'javascript:e_update();').html('Save');
+    $('.btn-save').removeClass('grey').attr('href', 'javascript:save_13571();').html('Save');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
@@ -845,7 +818,7 @@ function e_sort_save() {
 
     $("#list_e .en-item").each(function () {
         //Fetch variables for this idea:
-        var e__id = parseInt($(this).attr('e-id'));
+        var e__id = parseInt($(this).attr('e__id'));
         var x__id = parseInt($(this).attr('x__id'));
 
         sort_rank++;
@@ -914,13 +887,7 @@ function e_sort_portfolio_load() {
     });
 }
 
-function e_update() {
-
-    //Validate that we have all we need:
-    if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('e-id'))) {
-        //Oops, this should not happen!
-        return false;
-    }
+function save_13571() {
 
     //Are we about to delete an source with a lot of transactions?
     var x_count= parseInt($('#e_x_count').val());
@@ -941,23 +908,25 @@ function e_update() {
     var modify_data = {
         e_focus_id: e_focus_id, //Determines if we need to change location upon removing...
         do_13527:do_13527,
-        e__id: parseInt($('#modifybox').attr('e-id')),
+        e__id: $('#modal13571 .modal_e__id').val(),
         e__title: $('#e__title').val().toUpperCase(),
         e__icon: $('#e__icon').val(),
         e__status: $('#e__status').val(), //The new status (might not have changed too)
         //Transaction data:
-        x__id: parseInt($('#modifybox').attr('x-id')),
+        x__id: $('#modal13571 .modal_x__id').val(),
         x__message: $('#x__message').val(),
         x__status: $('#x__status').val(),
     };
 
     //Show spinner:
-    $('.save_e_changes').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695) +  '').hide().fadeIn();
+    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695) +  '').hide().fadeIn();
 
 
-    $.post("/e/e_update", modify_data, function (data) {
+    $.post("/e/save_13571", modify_data, function (data) {
 
         if (data.status) {
+
+            $('#modal13571').modal('hide');
 
             if(data.delete_from_ui){
 
@@ -971,7 +940,7 @@ function e_update() {
                 } else {
 
                     //Reset opacity:
-                    delete_all_saved();
+                    $('.object_saved').removeClass('e_saved');
 
                     //Delete from UI:
                     $('.tr_' + modify_data['x__id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();
@@ -981,9 +950,6 @@ function e_update() {
 
                         //Hide the editor & saving results:
                         $('.tr_' + modify_data['x__id']).remove();
-
-                        //Hide editing box:
-                        $('#modifybox').addClass('hidden');
 
                     }, 610);
 
@@ -997,7 +963,6 @@ function e_update() {
 
 
                 //User Status:
-                $(".e__id_" + modify_data['e__id']).attr('en-status', modify_data['e__status']);
                 $('.e__status_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__status']]["m_title"] + ': ' + js_e___6177[modify_data['e__status']]["m_message"] + '">' + js_e___6177[modify_data['e__status']]["m_icon"] + '</span>');
 
 
@@ -1007,7 +972,6 @@ function e_update() {
                     //Set source default icon:
                     modify_data['e__icon'] = js_e___12467[12274]['m_icon'];
                 }
-                $('.e__icon_' + modify_data['e__id']).attr('en-is-set' , icon_set );
                 $('.e_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
                 $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
 
@@ -1017,7 +981,6 @@ function e_update() {
 
                     //Yes, update the ideas:
                     $(".x__message_" + modify_data['x__id']).html(data.x__message);
-                    $(".x__message_val_" + modify_data['x__id']).text(data.x__message_final);
 
                     //Did the content get modified? (Likely for a domain URL):
                     if(!(data.x__message_final==modify_data['x__message'])){
@@ -1025,13 +988,12 @@ function e_update() {
                     }
 
                     //Transaction Status:
-                    $(".e__id_" + modify_data['e__id']).attr('x-status', modify_data['x__status'])
                     $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m_title"] + ': ' + js_e___6186[modify_data['x__status']]["m_message"] + '">' + js_e___6186[modify_data['x__status']]["m_icon"] + '</span>');
 
                 }
 
                 //Update source timestamp:
-                $('.save_e_changes').html(data.message);
+                $('#modal13571 .save_results').html(data.message);
 
                 //Reload Tooltip again:
                 $('[data-toggle="tooltip"]').tooltip();
@@ -1039,7 +1001,7 @@ function e_update() {
 
         } else {
             //Ooops there was an error!
-            $('.save_e_changes').html('<span class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
+            $('#modal13571 .save_results').html('<span class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
         }
 
     });
@@ -1067,11 +1029,11 @@ function account_update_avatar_type(type_css){
     $('.avatar-type-'+type_css+'.avatar-name-'+selected_avatar[1]).addClass('active');
 
     //Update Icon:
-    e_update_avatar(type_css, null);
+    e_avatar(type_css, null);
 
 }
 
-function e_update_avatar(type_css, icon_css){
+function e_avatar(type_css, icon_css){
 
     //Detect current icon type:
     if(!icon_css){
@@ -1085,7 +1047,7 @@ function e_update_avatar(type_css, icon_css){
     $('.e_ui_icon_'+js_pl_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Update via call:
-    $.post("/e/e_update_avatar", {
+    $.post("/e/e_avatar", {
         type_css: type_css,
         icon_css: icon_css,
     }, function (data) {
@@ -1106,7 +1068,7 @@ function e_update_avatar(type_css, icon_css){
 }
 
 
-function e_update_radio(parent_e__id, selected_e__id, enable_mulitiselect){
+function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
 
     var was_previously_selected = ( $('.radio-'+parent_e__id+' .item-'+selected_e__id).hasClass('active') ? 1 : 0 );
 
@@ -1138,7 +1100,7 @@ function e_update_radio(parent_e__id, selected_e__id, enable_mulitiselect){
         $('.radio-'+parent_e__id+' .item-'+selected_e__id).addClass('active');
     }
 
-    $.post("/e/e_update_radio", {
+    $.post("/e/e_radio", {
         parent_e__id: parent_e__id,
         selected_e__id: selected_e__id,
         enable_mulitiselect: enable_mulitiselect,
@@ -1162,13 +1124,13 @@ function e_update_radio(parent_e__id, selected_e__id, enable_mulitiselect){
 }
 
 
-function e_update_email(){
+function e_email(){
 
     //Show spinner:
     $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695)).hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/e/e_update_email", {
+    $.post("/e/e_email", {
         e_email: $('#e_email').val(),
     }, function (data) {
 
@@ -1193,13 +1155,13 @@ function e_update_email(){
 }
 
 
-function e_update_password(){
+function e_password(){
 
     //Show spinner:
     $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695)).hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/e/e_update_password", {
+    $.post("/e/e_password", {
         input_password: $('#input_password').val(),
     }, function (data) {
 

@@ -622,7 +622,7 @@ class I extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'message' => view_i_notes(array_merge($user_e, $x, array(
+            'message' => view_13574(array_merge($user_e, $x, array(
                 'x__down' => $user_e['e__id'],
             )), true),
         ));
@@ -671,11 +671,11 @@ class I extends CI_Controller {
                 'message' => 'Unknown error 1 while trying to save file.'.print_r($_FILES, true),
             ));
 
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(13572) * 1024 * 1024)) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . config_var(11063) . ' MB.',
+                'message' => 'File is larger than the maximum allowed file size of ' . config_var(13572) . ' MB.',
             ));
 
         }
@@ -735,7 +735,7 @@ class I extends CI_Controller {
         //Echo message:
         view_json(array(
             'status' => 1,
-            'message' => view_i_notes(array_merge($user_e, $new_messages[0], array(
+            'message' => view_13574(array_merge($user_e, $new_messages[0], array(
                 'x__down' => $user_e['e__id'],
             )), true),
         ));
@@ -786,7 +786,7 @@ class I extends CI_Controller {
         ));
     }
 
-    function i_note_edit()
+    function save_13574()
     {
 
         //Authenticate User:

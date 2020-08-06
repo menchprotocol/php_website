@@ -585,7 +585,7 @@ if(!$in_my_x){
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13498]['m_icon'].' '.$e___11035[13498]['m_title'].'</label></div>';
+        echo '<div class="margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'].'</label></div>';
 
 
         echo '<div class="doclear">&nbsp;</div>';

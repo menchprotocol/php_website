@@ -341,7 +341,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = null;
         $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
-        $focus_tab .= '<div class="inline-box">';
 
         //Drop Down
         $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
@@ -352,7 +351,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-i inline-block"></div>';
 
-        $focus_tab .= '</div>';
         $focus_tab .= '</form>';
 
     } else {

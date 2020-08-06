@@ -184,7 +184,21 @@ function i_remove(i__id, x__id, is_parent){
             x__id: x__id,
         }, function (data) {
             if (data.status) {
-                i_ui_delete(i__id,x__id);
+
+                //Delete from UI:
+                $('.i__tr_' + x__id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
+
+                //Hide the editor & saving results:
+                $('.i__tr_' + x__id).fadeOut();
+
+                //Disappear in a while:
+                setTimeout(function () {
+
+                    //Hide the editor & saving results:
+                    $('.i__tr_' + x__id).remove();
+
+                }, 610);
+
                 if(!is_parent){
                     i_note_counter(12273, -1);
                 }
@@ -193,26 +207,6 @@ function i_remove(i__id, x__id, is_parent){
     }
 }
 
-function i_ui_delete(i__id,x__id){
-
-    //Delete from UI:
-    $('.i__tr_' + x__id).html('<span style="color:#000000;"><i class="fas fa-trash-alt"></i></span>');
-
-    //Hide the editor & saving results:
-    $('.i__tr_' + x__id).fadeOut();
-
-    //Disappear in a while:
-    setTimeout(function () {
-
-        //Hide the editor & saving results:
-        $('.i__tr_' + x__id).remove();
-
-        //Hide editing box:
-        $('#modifybox').addClass('hidden');
-
-    }, 610);
-
-}
 
 function prep_search_pad(){
 

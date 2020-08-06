@@ -79,6 +79,7 @@ function view_x__message($x__message, $x__type, $full_message = null)
      *
      * */
 
+    $CI =& get_instance();
 
     if ($x__type == 4256 /* Generic URL */) {
 
@@ -102,7 +103,8 @@ function view_x__message($x__message, $x__type, $full_message = null)
 
     } elseif ($x__type == 4261 /* File URL */) {
 
-        return '<a href="' . $x__message . '" class="btn btn-i" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+        $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
+        return '<a href="' . $x__message . '" class="btn btn-i" target="_blank">'.$e___11035[13573]['m_icon'].' '.$e___11035[13573]['m_title'].'</a>';
 
     } elseif(strlen($x__message) > 0) {
 
@@ -229,7 +231,7 @@ function view_i_title($i, $common_prefix = null){
 }
 
 
-function view_i_notes($x, $note_e = false)
+function view_13574($x, $note_e = false)
 {
 
     /*
@@ -245,6 +247,7 @@ function view_i_notes($x, $note_e = false)
     $user_e = superpower_assigned();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
+    $e___11035 = $CI->config->item('e___11035');
     $note_e = ( $note_e || superpower_active(10984, true) );
 
 
@@ -268,13 +271,13 @@ function view_i_notes($x, $note_e = false)
         }
 
         //Modify:
-        $ui .= '<span title="MODIFY"><a href="javascript:i_note_edit_start(' . $x['x__id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="MODIFY"><a href="javascript:load_13574(' . $x['x__id'] . ');" title="'.$e___11035[13574]['m_title'].'">'.$e___11035[13574]['m_icon'].'</a></span>';
 
         $ui .= '</span></div>';
 
 
         //Text editing:
-        $ui .= '<textarea onkeyup="i_note_edit_count(' . $x['x__id'] . ')" name="x__message" id="message_body_' . $x['x__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($x['x__message']).'">' . $x['x__message'] . '</textarea>';
+        $ui .= '<textarea onkeyup="count_13574(' . $x['x__id'] . ')" name="x__message" id="message_body_' . $x['x__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($x['x__message']).'">' . $x['x__message'] . '</textarea>';
 
 
         //Editing menu:
@@ -284,10 +287,10 @@ function view_i_notes($x, $note_e = false)
         $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
 
         //Save Edit:
-        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-i white-third" href="javascript:i_note_edit(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
+        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-i white-third" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
         //Cancel Edit:
-        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-i white-third" href="javascript:i_note_edit_cancel(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
+        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-i white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
         //Show drop down for message transaction status:
         $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 5px 0 0; display: block;">';
@@ -780,7 +783,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="i_saved_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
+    $ui  = '<div id="i_saved_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
 
     $ui .= ( $can_click ? '<a href="/'. $i['i__id'] .'" class="itemdiscover">' : '' );
 
@@ -914,7 +917,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
     }
 
     //Return the wrapped UI if existed:
-    return ($ui ? '<div class="inline-box">' . $ui . '</div>' : false);
+    return ($ui ? $ui : false);
 }
 
 function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_max = 25){
@@ -933,7 +936,7 @@ function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_m
     }
 
     foreach($CI->config->item('e___'.$parent_e__id) as $e__id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="e_update_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( count($CI->X_model->fetch(array(
+        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( count($CI->X_model->fetch(array(
                 'x__up' => $e__id,
                 'x__down' => $child_e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1002,7 +1005,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
     }
 
 
-    $ui = '<div x__id="' . $x__id . '" i-id="' . $i['i__id'] . '" class="list-group-item no-side-padding itemidea itemidealist i_sortable paddingup level2_in object_saved saved_i_'.$i['i__id'] . ' i_line_' . $i['i__id'] . ( $is_parent ? ' parent-i ' : '' ) . ' i__tr_'.$x__id.' '.$extra_class.'" style="padding-left:0;">';
+    $ui = '<div x__id="' . $x__id . '" i-id="' . $i['i__id'] . '" class="list-group-item no-side-padding itemidea itemidealist i_sortable paddingup level2_in object_saved saved_i_'.$i['i__id'] . ' i_line_' . $i['i__id'] . ' i__tr_'.$x__id.' '.$extra_class.'" style="padding-left:0;">';
 
 
 
@@ -1187,6 +1190,7 @@ function view_i_note_mix($x__type, $i_notes){
 
     $CI =& get_instance();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
+    $e___11035 = $CI->config->item('e___11035');
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $handles_url = (in_array($x__type, $CI->config->item('n___7551')) || in_array($x__type, $CI->config->item('n___4986')));
     $user_e = superpower_assigned();
@@ -1205,7 +1209,7 @@ function view_i_note_mix($x__type, $i_notes){
 
     //List current notes:
     foreach($i_notes as $i_notes) {
-        $ui .= view_i_notes($i_notes, ($i_notes['x__source']==$user_e['e__id']));
+        $ui .= view_13574($i_notes, ($i_notes['x__source']==$user_e['e__id']));
     }
 
     //ADD NEW:
@@ -1216,7 +1220,7 @@ function view_i_note_mix($x__type, $i_notes){
 
 
 
-        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note-type-id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
 
@@ -1235,7 +1239,7 @@ function view_i_note_mix($x__type, $i_notes){
         if($handles_uploads){
             $ui .= '<td style="width:42px; padding: 10px 0 0 0;">';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
-            $ui .= '<label class="file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB, or upload elsewhere & paste URL here" data-placement="top"><span class="icon-block"><i class="far fa-paperclip"></i></span></label>';
+            $ui .= '<label class="file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m_desc'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m_icon'].'</span></label>';
             $ui .= '</td>';
         }
 
@@ -1323,7 +1327,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $href = ( $x__type == 6255 ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] ).( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
     $start_reading = false;
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x-id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' list-group-item no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).( $x__type==6255 ? ' itemdiscover ' : ' itemidea ' ).' '.$extra_class.'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' list-group-item no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).( $x__type==6255 ? ' itemdiscover ' : ' itemidea ' ).' '.$extra_class.'">';
 
 
 
@@ -1484,9 +1488,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
     //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ( $is_parent ? ' parent-e ' : '' ) . ' '. $extra_class  . '" e-id="' . $e['e__id'] . '" en-status="' . $e['e__status'] . '" x__id="'.$x__id.'" x-status="'.( $x__id ? $e['x__status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
-
-
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
 
 
 
@@ -1504,12 +1506,12 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             }
 
             //Edit Raw Source
-            $ui .= '<span><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><i class="fas fa-pen-square black"></i></a></span>';
+            $ui .= '<span><a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m_title'].'">'.$e___11035[13571]['m_icon'].'</a></span>';
 
         } elseif(!$is_parent && $source_of_e){
 
             //Allow to remove:
-            $ui .= '<span><a href="javascript:void(0);" onclick="e_10678(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10678]['m_title'].'">'.$e___11035[10678]['m_icon'].'</a></span>';
+            $ui .= '<span><a href="javascript:void(0);" onclick="remove_10678(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10678]['m_title'].'">'.$e___11035[10678]['m_icon'].'</a></span>';
 
             //Allow to modify via Modal:
             if(editable_by_13428($e['e__id'])){
@@ -1532,7 +1534,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="col-sm col-md">';
 
             //SOURCE ICON
-            $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'" en-is-set="'.( strlen($e['e__icon']) > 0 ? 1 : 0 ).'">' . view_e__icon($e['e__icon']) . '</span></a>';
+            $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
 
             //SOURCE TITLE TEXT EDITOR
@@ -1595,9 +1597,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         if($is_e_link){
 
             $ui .= '<span class="message_content paddingup x__message hideIfEmpty x__message_' . $x__id . '">' . view_x__message($e['x__message'] , $e['x__type']) . '</span>';
-
-            //For JS editing only (HACK):
-            $ui .= '<div class="x__message_val_' . $x__id . ' hidden overflowhide">' . $e['x__message'] . '</div>';
 
         } elseif($is_x_progress && strlen($e['x__message'])){
 

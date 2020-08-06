@@ -649,11 +649,11 @@ class X extends CI_Controller
                 'message' => 'Unknown error 2 while trying to save file.',
             ));
 
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(13572) * 1024 * 1024)) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . config_var(11063) . ' MB.',
+                'message' => 'File is larger than the maximum allowed file size of ' . config_var(13572) . ' MB.',
             ));
 
         }

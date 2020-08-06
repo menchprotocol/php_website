@@ -1,35 +1,15 @@
 <?php
-$e___6206 = $this->config->item('e___6206'); //MENCH SOURCE
-$e___4341 = $this->config->item('e___4341'); //Transaction Table
 $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___12467 = $this->config->item('e___12467'); //MENCH
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13428 = $this->config->item('e___13428'); //SOURCE WIZARD
+$e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
 
 $source_of_e = source_of_e($e['e__id']);
 $source_is_e = $e['e__id']==$user_e['e__id'];
 $superpower_10939 = superpower_active(10939, true);
 $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 $superpower_any = ( $user_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
-
-//Determine Focus Tab:
-$counter__e = view_coins_e(12274, $e['e__id'], 0, false);
-$counter__i = view_coins_e(12273, $e['e__id'], 0, false);
-$counter__x = view_coins_e( 6255, $e['e__id'], 0, false);
-
-if($counter__e > 0 && $counter__e >= $counter__i){
-    //SOURCES
-    $active_x__type = 12274;
-} elseif($counter__i > 0){
-    //IDEAS
-    $active_x__type = 12273;
-} elseif($source_is_e){
-    //DISCOVERIES
-    $active_x__type = 6255;
-} else {
-    //PROFILE
-    $active_x__type = 11030;
-}
 
 ?>
 
@@ -41,7 +21,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 <script src="/application/views/e/layout.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
-<div class="container e-ui">
+<div class="container">
 
     <?php
 
@@ -53,148 +33,16 @@ if($counter__e > 0 && $counter__e >= $counter__i){
     //SOURCE NAME
     echo '<div class="itemsource" style="padding: 8px 0;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
 
-    ?>
-
-    <div id="modifybox" class="fixed-box hidden" e-id="0" x-id="0" style="padding: 5px;">
-
-        <h5 class="badge badge-h edit-header"><i class="fas fa-pen-square"></i> Modify</h5>
-        <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
-            <a href="javascript:void(0);" onclick="modify_cancel()"><i class="fas fa-times"></i></a>
-        </div>
-
-        <div class="grey-box">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="inline-box">
-
-                        <!-- User Status -->
-                        <span class="mini-header"><?= $e___6206[6177]['m_icon'].' '.$e___6206[6177]['m_title'] ?></span>
-                        <select class="form-control border" id="e__status">
-                            <?php
-                            foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
-                                echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                        <div class="notify_e_delete hidden">
-
-                            <input type="hidden" id="e_x_count" value="0" />
-                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> transactions</div>
-
-                        </div>
-
-
-
-                        <!-- User Name -->
-                        <span class="mini-header" style="margin-top:20px;"><?= $e___6206[6197]['m_icon'].' '.$e___6206[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
-                        <span class="white-wrapper">
-                                <textarea class="form-control text-edit border montserrat doupper" id="e__title"
-                                          onkeyup="e__title_word_count()" data-lpignore="true"
-                                          style="height:66px; min-height:66px;">
-                                </textarea>
-                            </span>
-
-
-
-                        <!-- User Icon -->
-                        <span class="mini-header"><?= $e___6206[6198]['m_icon'].' '.$e___6206[6198]['m_title'] ?>
-
-                                <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
-
-                                <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-link"></i></a>
-
-                            </span>
-                        <div class="form-group label-floating is-empty"
-                             style="margin:1px 0 10px;">
-                            <div class="input-group border">
-                                <input type="text" id="e__icon" value=""
-                                       maxlength="<?= config_var(6197) ?>" data-lpignore="true" placeholder=""
-                                       class="form-control">
-                                <span class="input-group-addon addon-lean addon-grey icon-demo icon-block"></span>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-
-                </div>
-                <div class="col-md-6 en-has-tr">
-
-                    <div>
-
-                        <div class="inline-box">
-
-
-                            <span class="mini-header"><?= $e___4341[6186]['m_icon'].' '.$e___4341[6186]['m_title'] ?></span>
-                            <select class="form-control border" id="x__status">
-                                <?php
-                                foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
-                                    echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
-                                }
-                                ?>
-                            </select>
-
-                            <div class="notify_unx_e hidden">
-                                <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will remove source</div>
-                            </div>
-
-
-
-
-                            <form class="drag-box" method="post" enctype="multipart/form-data">
-                                <span class="mini-header" style="margin-top: 20px;"><?= $e___4341[4372]['m_icon'].' '.$e___4341[4372]['m_title'] ?></span>
-                                <span class="white-wrapper">
-                                    <textarea class="form-control text-edit border" id="x__message"
-                                              data-lpignore="true"
-                                              placeholder="Write, Drop a File or Paste URL"
-                                              style="height:126px; min-height:126px;"></textarea>
-                                </span>
-
-                                <span><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="Upload files up to <?= config_var(11063) ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></span>
-                            </form>
-
-
-                            <span class="mini-header"><?= $e___4341[4593]['m_icon'].' '.$e___4341[4593]['m_title'] ?></span>
-                            <span id="x__type_preview"></span>
-                            <p id="e_x_preview" class="hideIfEmpty"></p>
-
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <table>
-                <tr>
-                    <td class="save-td"><a href="javascript:e_update();" class="btn btn-e btn-save">Save</a></td>
-                    <td class="save-result-td"><span class="save_e_changes"></span></td>
-                </tr>
-            </table>
-
-
-        </div>
-
-    </div>
-
-    <?php
-
-    //FOR EDITING ONLY, OTHERSWISE HIDDEN:
-    echo '<div class="hidden">'.view_e($e).'</div>';
-
 
     //SOURCE MODIFY BUTTON
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;">';
 
-    echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[12275]['m_title'].'">'.$e___11035[12275]['m_icon'].'</a>';
+        echo '<a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',0)" class="icon-block grey '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13571]['m_title'].'">'.$e___11035[13571]['m_icon'].'</a>';
 
-    if(editable_by_13428($e['e__id'])){
-        echo '<a href="javascript:void(0);" onclick="load_13428('.$e['e__id'].', \'\')" class="icon-block grey '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a>';
-    }
-
+        if(editable_by_13428($e['e__id'])){
+            echo '<a href="javascript:void(0);" onclick="load_13428('.$e['e__id'].', \'\')" class="icon-block grey '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a>';
+        }
 
     echo '</div>';
     echo '<div class="doclear">&nbsp;</div>';
@@ -202,11 +50,29 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
 
 
+    //Determine Focus Tab:
+    $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
+    $counter__i = view_coins_e(12273, $e['e__id'], 0, false);
+    $counter__x = view_coins_e( 6255, $e['e__id'], 0, false);
 
-    $tab_group = 11089;
+    if($counter__e > 0 && $counter__e > $counter__i){
+        //SOURCES
+        $active_x__type = 12274;
+    } elseif($counter__i > 0){
+        //IDEAS
+        $active_x__type = 12273;
+    } elseif($source_is_e){
+        //DISCOVERIES
+        $active_x__type = 6255;
+    } else {
+        //PROFILE
+        $active_x__type = 11030;
+    }
+
+
     $tab_nav = '';
     $tab_content = '';
-    foreach($this->config->item('e___'.$tab_group) as $x__type => $m) {
+    foreach($this->config->item('e___11089') as $x__type => $m) {
 
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
@@ -401,7 +267,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 $focus_tab .= '<div class="doclear">&nbsp;</div>';
                 $focus_tab .= '<div class="e_editor hidden">';
                 $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
-                $focus_tab .= '<div class="inline-box">';
 
                 //Drop Down
                 $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
@@ -412,7 +277,6 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
                 $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-e inline-block"></div>';
 
-                $focus_tab .= '</div>';
                 $focus_tab .= '</form>';
 
                 //Also add invisible child IDs for quick copy/pasting:
@@ -444,20 +308,17 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
                     if (count($child_e_filters) > 0 && $child_e_filters[0]['totals'] < $e_count) {
 
-                        //Load status definitions:
-                        $e___6177 = $this->config->item('e___6177'); //Source Status
-
                         //Add 2nd Navigation to UI
                         $focus_tab .= '<div class="nav nav-pills nav-sm">';
 
                         //Show fixed All button:
-                        $focus_tab .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-x en-status-filter active en-status--1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
+                        $focus_tab .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-x e_filter_status active en_status_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
 
                         //Show each specific filter based on DB counts:
                         foreach($child_e_filters as $c_c) {
                             $st = $e___6177[$c_c['e__status']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
-                            $focus_tab .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x nav-link en-status-filter en-status-' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_message'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_title'] . '</span></a></li>';
+                            $focus_tab .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x nav-link e_filter_status en_status_' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_message'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_title'] . '</span></a></li>';
                         }
 
                         $focus_tab .= '</div>';
@@ -640,7 +501,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
                 $focus_tab .= '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
-                $focus_tab .= '<div class="list-group cover-list space-left">';
+                $focus_tab .= '<div class="list-group space-left">';
                 foreach($featured_i as $key => $x){
                     if(!in_array($x['i__id'], $my_x_ids)){
                         //Show only if not in discovering list:
@@ -755,7 +616,7 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                         $superpower_actives3 = array_intersect($this->config->item('n___10957'), $m3['m_profile']);
 
                         $focus_tab .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
-                        $focus_tab .= '<a href="javascript:void(0);" onclick="e_update_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';
+                        $focus_tab .= '<a href="javascript:void(0);" onclick="e_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item itemsource avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m_icon'] . '</div></a>';
                         $focus_tab .= '</span>';
 
                     }
@@ -796,13 +657,13 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     ));
 
                     $focus_tab .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
-                <a href="javascript:void(0)" onclick="e_update_email()" class="btn btn-e">Save</a>
+                <a href="javascript:void(0)" onclick="e_email()" class="btn btn-e">Save</a>
                 <span class="saving-account save_email"></span>';
 
                 } elseif ($acc_e__id == 3286 /* Password */) {
 
                     $focus_tab .= '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
-                <a href="javascript:void(0)" onclick="e_update_password()" class="btn btn-e">Save</a>
+                <a href="javascript:void(0)" onclick="e_password()" class="btn btn-e">Save</a>
                 <span class="saving-account save_password"></span>';
 
                 } elseif ($is_multi_selectable || $is_single_selectable) {
@@ -829,14 +690,15 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
         $default_active = ($x__type==$active_x__type);
 
-        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_title'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
+        $tab_nav .= '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_title'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
 
 
-        $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
+        $tab_content .= '<div class="tab-content tab-group-11089 tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
         $tab_content .= $focus_tab;
         $tab_content .= '</div>';
 
     }
+
 
     if($tab_nav){
 
@@ -849,12 +711,14 @@ if($counter__e > 0 && $counter__e >= $counter__i){
 
     }
 
-
     ?>
 
 </div>
 
-<!-- Modal -->
+
+
+
+<!-- Source Wizard Modal -->
 <div class="modal fade" id="modal13428" tabindex="-1" role="dialog" aria-labelledby="modal13428Label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -866,8 +730,9 @@ if($counter__e > 0 && $counter__e >= $counter__i){
             </div>
             <div class="modal-body">
 
-                <input type="hidden" id="modal_e__id" value="0" />
-                <input type="hidden" id="modal_x__id" value="0" />
+                <input type="hidden" class="modal_e__id" value="0" />
+                <input type="hidden" class="modal_x__id" value="0" />
+                <div class="save_results margin-top-down hideIfEmpty"></div>
 
                 <!-- URL -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[13433]['m_icon'] ?></span><?= $e___13428[13433]['m_title'] ?></div>
@@ -888,12 +753,124 @@ if($counter__e > 0 && $counter__e >= $counter__i){
                     ?>
                 </select>
 
-                <div id="error_box" class="margin-top-down"></div>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">&times;</button>
                 <button type="button" onclick="save_13428()" id="save_btn" class="btn btn-e">SAVE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Source Editor Modal -->
+<div class="modal fade" id="modal13571" tabindex="-1" role="dialog" aria-labelledby="modal13571Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title montserrat <?= extract_icon_color($e___11035[13571]['m_icon']) ?>" id="modal13571Label"><?= $e___11035[13571]['m_icon'].' '.$e___11035[13571]['m_title'] ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <input type="hidden" class="modal_e__id" value="0" />
+                <input type="hidden" class="modal_x__id" value="0" />
+                <div class="save_results margin-top-down hideIfEmpty"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <!-- User Status -->
+                        <span class="mini-header"><?= $e___13571[6177]['m_icon'].' '.$e___13571[6177]['m_title'] ?></span>
+                        <select class="form-control border" id="e__status">
+                            <?php
+                            foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
+                                echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                        <div class="notify_e_delete hidden">
+
+                            <input type="hidden" id="e_x_count" value="0" />
+                            <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete this source and UNLINK ALL <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> transactions</div>
+
+                        </div>
+
+
+
+                        <!-- User Name -->
+                        <span class="mini-header" style="margin-top:20px;"><?= $e___13571[6197]['m_icon'].' '.$e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</span>
+                        <span class="white-wrapper">
+                        <textarea class="form-control text-edit border montserrat doupper" id="e__title"
+                                  onkeyup="e__title_word_count()" data-lpignore="true"
+                                  style="height:66px; min-height:66px;">
+                        </textarea>
+                    </span>
+
+
+
+                        <!-- User Icon -->
+                        <span class="mini-header"><?= $e___13571[6198]['m_icon'].' '.$e___13571[6198]['m_title'] ?>
+
+                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
+
+                        <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-link"></i></a>
+
+                    </span>
+                        <div class="form-group label-floating is-empty"
+                             style="margin:1px 0 10px;">
+                            <div class="input-group border">
+                                <input type="text" id="e__icon" value=""
+                                       maxlength="<?= config_var(6197) ?>" data-lpignore="true" placeholder=""
+                                       class="form-control">
+                                <span class="input-group-addon addon-lean addon-grey icon-demo icon-block"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 en-has-tr">
+
+                        <span class="mini-header"><?= $e___13571[6186]['m_icon'].' '.$e___13571[6186]['m_title'] ?></span>
+                        <select class="form-control border" id="x__status">
+                            <?php
+                            foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
+                                echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';
+                            }
+                            ?>
+                        </select>
+
+                        <div class="notify_unx_e hidden">
+                            <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will remove source</div>
+                        </div>
+
+
+                        <form class="drag-box" method="post" enctype="multipart/form-data">
+                            <span class="mini-header" style="margin-top: 20px;"><?= $e___13571[4372]['m_icon'].' '.$e___13571[4372]['m_title'] ?></span>
+                            <span class="white-wrapper">
+                        <textarea class="form-control text-edit border" id="x__message"
+                                  data-lpignore="true"
+                                  placeholder="Write, Drop a File or Paste URL"
+                                  style="height:126px; min-height:126px;"></textarea>
+                    </span>
+
+                            <span><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_desc'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'] ?></label></span>
+                        </form>
+
+
+                        <span class="mini-header"><?= $e___13571[4593]['m_icon'].' '.$e___13571[4593]['m_title'] ?></span>
+                        <span id="x__type_preview"></span>
+                        <p id="e_x_preview" class="hideIfEmpty"></p>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="save_13571()" id="save_btn" class="btn btn-e">SAVE</button>
             </div>
         </div>
     </div>

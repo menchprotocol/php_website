@@ -27,7 +27,7 @@ function check_i_e__status(){
     if($("#x__type").val()==4250){
         $(".filter-in-status").removeClass('hidden');
     } else if($("#x__type").val()==4251){
-        $(".filter-en-status").removeClass('hidden');
+        $(".e_status_filter").removeClass('hidden');
     }
 }
 

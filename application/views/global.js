@@ -238,12 +238,8 @@ $(document).ready(function () {
     //General ESC cancel
     $(document).keyup(function (e) {
         //Watch for action keys:
-        if (e.keyCode === 27) { //ESC
-            modify_cancel();
-
-            if(search_on){
-                toggle_search();
-            }
+        if (e.keyCode === 27 && search_on) { //ESC
+            toggle_search();
         }
     });
 
@@ -399,11 +395,11 @@ function x_type_preview_load(){
 
 
 
-function e_10678(x__id, note_type_id) {
+function remove_10678(x__id, note_type_id) {
 
     var r = confirm("Unlink this source?");
     if (r == true) {
-        $.post("/e/e_10678", {
+        $.post("/e/remove_10678", {
 
             x__id: x__id,
 
@@ -437,7 +433,7 @@ function x_type_preview() {
     //Fetch Idea Data to load modify widget:
     $.post("/x/x_type_preview", {
         x__message: $('#x__message').val(),
-        x__id: ( $( "#modifybox" ).length ? parseInt($('#modifybox').attr('x-id')) : 0 ),
+        x__id: $('#modal13571 .modal_x__id').val(),
     }, function (data) {
 
         //All good, let's load the data into the Modify Widget...
@@ -508,18 +504,6 @@ function html_13491(font_size_e__id){
     $('.font_item_'+font_size_e__id).addClass('active');
 }
 
-
-function modify_cancel(){
-    $('.fixed-box').addClass('hidden');
-    delete_all_saved();
-    $("input").blur();
-    if(history.pushState) {
-        history.pushState(null, null, '#');
-    } else {
-        location.hash = '#';
-    }
-}
-
 function e_fetch_canonical(query_string, not_found){
 
     //Do a call to PHP to fetch canonical URL and see if that exists:
@@ -535,10 +519,6 @@ function e_fetch_canonical(query_string, not_found){
     return ( not_found ? '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> URL not found</div>' : '');
 }
 
-
-function delete_all_saved(){
-    $('.object_saved').removeClass('e_saved');
-}
 
 function validURL(str) {
     var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -779,7 +759,7 @@ function i_note_activate(){
     //Loop through all new idea inboxes:
     $(".new-note").each(function () {
 
-        var note_type_id = parseInt($(this).attr('note-type-id'));
+        var note_type_id = parseInt($(this).attr('note_type_id'));
 
         //Initiate @ search for all idea text areas:
         i_note_e_search($(this));
@@ -868,7 +848,7 @@ function i_note_count_new(note_type_id) {
 
 }
 
-function i_note_edit_count(x__id) {
+function count_13574(x__id) {
     //See if this is a valid text message editing:
     if (!($('#charEditingNum' + x__id).length)) {
         return false;
@@ -979,7 +959,7 @@ function i_note_sort_load(note_type_id) {
 
 }
 
-function i_note_edit_start(x__id) {
+function load_13574(x__id) {
 
     //Start editing:
     $("#ul-nav-" + x__id).addClass('in-editing');
@@ -997,11 +977,11 @@ function i_note_edit_start(x__id) {
     i_note_e_search(textinput);
 
     //Try to initiate the editor, which only applies to text messages:
-    i_note_edit_count(x__id);
+    count_13574(x__id);
 
 }
 
-function i_note_edit_cancel(x__id) {
+function cancel_13574(x__id) {
     //Revert editing:
     $("#ul-nav-" + x__id).removeClass('in-editing');
     $("#ul-nav-" + x__id + " .edit-off").removeClass('hidden');
@@ -1009,10 +989,10 @@ function i_note_edit_cancel(x__id) {
     $("#ul-nav-" + x__id + ">div").css('width', 'inherit');
 }
 
-function i_note_edit(x__id, note_type_id) {
+function save_13574(x__id, note_type_id) {
 
     //Revert View:
-    i_note_edit_cancel(x__id);
+    cancel_13574(x__id);
 
     //Clear Message:
     $("#ul-nav-" + x__id + " .edit-updates").html('');
@@ -1025,7 +1005,7 @@ function i_note_edit(x__id, note_type_id) {
     };
 
     //Update message:
-    $.post("/i/i_note_edit", modify_data, function (data) {
+    $.post("/i/save_13574", modify_data, function (data) {
 
         if (data.status) {
 
@@ -1163,7 +1143,7 @@ function i_note_file(droppedFiles, uploadType, note_type_id) {
                 i_note_end_adding(data, note_type_id);
 
                 //Adjust icon again:
-                $('.file_label_' + note_type_id).html('<span class="icon-block"><i class="far fa-paperclip"></i></span>');
+                $('.file_label_' + note_type_id).html('<span class="icon-block">'+js_e___11035[13572]['m_icon']+'</span>');
 
             },
             error: function (data) {
@@ -1230,7 +1210,7 @@ function x_sort(x__type) {
     var sort_rank = 0;
     var new_x_order = [];
     $("#list_"+x__type+" .home_sort").each(function () {
-        var x_id = parseInt($(this).attr('x-id'));
+        var x_id = parseInt($(this).attr('x__id'));
         if(x_id > 0){
             sort_rank++;
             new_x_order[sort_rank] = x_id;

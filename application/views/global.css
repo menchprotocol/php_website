@@ -427,13 +427,6 @@ img.no-radius {
 .featured-image img{
     width: 100%;
 }
-.grey-box {
-    padding:0;
-    margin: 25px 0;
-    display: block;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
 
 .nav-tabs {
     margin:5px 0 13px 0;
@@ -524,12 +517,6 @@ img.no-radius {
 .mono-space{
     font-family: 'Roboto Mono', monospace !important;
     font-weight: normal !important;
-}
-
-.cover-list{
-    display: block;
-    width: 100%;
-    padding:0;
 }
 
 .cover-image {
@@ -1616,10 +1603,6 @@ label {
 
     h2 {
         font-size: 1.3em;
-    }
-
-    .cover-list{
-        padding: 0 13px;
     }
 
     .feature-content>div{

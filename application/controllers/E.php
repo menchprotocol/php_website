@@ -241,10 +241,10 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Unknown error 3 while trying to save file.',
             ));
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(13572) * 1024 * 1024)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . config_var(11063) . ' MB.',
+                'message' => 'File is larger than the maximum file size of ' . config_var(13572) . ' MB.',
             ));
         }
 
@@ -303,7 +303,7 @@ class E extends CI_Controller
 
     }
 
-    function e_10678(){
+    function remove_10678(){
 
         //Auth user and check required variables:
         $user_e = superpower_assigned(10939);
@@ -731,7 +731,7 @@ class E extends CI_Controller
 
 
 
-    function e_update()
+    function save_13571()
     {
 
         //Auth user and check required variables:
@@ -795,14 +795,14 @@ class E extends CI_Controller
         $js_x__type = 0; //Detect transaction type based on content
 
         //Prepare data to be updated:
-        $e_update = array(
+        $e__update = array(
             'e__title' => $e__title_validate['e__title_clean'],
             'e__icon' => trim($_POST['e__icon']),
             'e__status' => intval($_POST['e__status']),
         );
 
         //Is this being deleted?
-        if (!in_array($e_update['e__status'], $this->config->item('n___7358') /* ACTIVE */) && !($e_update['e__status'] == $es[0]['e__status'])) {
+        if (!in_array($e__update['e__status'], $this->config->item('n___7358') /* ACTIVE */) && !($e__update['e__status'] == $es[0]['e__status'])) {
 
 
             //Make sure source is not referenced in key DB reference fields:
@@ -994,7 +994,7 @@ class E extends CI_Controller
         }
 
         //Now update the DB:
-        $this->E_model->update(intval($_POST['e__id']), $e_update, true, $user_e['e__id']);
+        $this->E_model->update(intval($_POST['e__id']), $e__update, true, $user_e['e__id']);
 
 
         //Reset user session data if this data belongs to the logged-in user:
@@ -1075,7 +1075,7 @@ class E extends CI_Controller
 
 
 
-    function e_update_radio()
+    function e_radio()
     {
         /*
          *
@@ -1158,7 +1158,7 @@ class E extends CI_Controller
 
 
         //Log Account Update transaction type:
-        $_POST['account_update_function'] = 'e_update_radio'; //Add this variable to indicate which My Account function created this transaction
+        $_POST['account_update_function'] = 'e_radio'; //Add this variable to indicate which My Account function created this transaction
         $this->X_model->create(array(
             'x__source' => $user_e['e__id'],
             'x__type' => 6224, //My Account updated
@@ -1187,7 +1187,7 @@ class E extends CI_Controller
 
 
 
-    function e_update_avatar()
+    function e_avatar()
     {
 
         $user_e = superpower_assigned();
@@ -1247,7 +1247,7 @@ class E extends CI_Controller
 
 
 
-    function e_update_email()
+    function e_email()
     {
 
         $user_e = superpower_assigned();
@@ -1358,7 +1358,7 @@ class E extends CI_Controller
 
         if($return['status']){
             //Log Account Update transaction type:
-            $_POST['account_update_function'] = 'e_update_email'; //Add this variable to indicate which My Account function created this transaction
+            $_POST['account_update_function'] = 'e_email'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
                 'x__source' => $user_e['e__id'],
                 'x__type' => 6224, //My Account updated
@@ -1375,7 +1375,7 @@ class E extends CI_Controller
     }
 
 
-    function e_update_password()
+    function e_password()
     {
 
         $user_e = superpower_assigned();
@@ -1447,7 +1447,7 @@ class E extends CI_Controller
 
         //Log Account Update transaction type:
         if($return['status']){
-            $_POST['account_update_function'] = 'e_update_password'; //Add this variable to indicate which My Account function created this transaction
+            $_POST['account_update_function'] = 'e_password'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
                 'x__source' => $user_e['e__id'],
                 'x__type' => 6224, //My Account Updated
@@ -2264,6 +2264,54 @@ class E extends CI_Controller
             'e_new_echo' => view_e($es[0], false, null, true, source_of_e($es[0]['e__id'])),
             'new_e__id' => $es[0]['e__id'],
         ));
+
+    }
+
+    function load_13571(){
+
+        if (!isset($_POST['e__id']) || !isset($_POST['x__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing core inputs',
+            ));
+        }
+
+        $es = $this->E_model->fetch(array(
+            'e__id' => $_POST['e__id'],
+        ));
+        if(!count($es)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source ID',
+            ));
+        }
+        $return_data = array(
+            'status' => 1,
+            'e__title' => $es[0]['e__title'],
+            'e__status' => $es[0]['e__status'],
+            'e__icon' => $es[0]['e__icon'],
+        );
+
+        if($_POST['x__id'] > 0){
+
+            $fetch_xs = $this->X_model->fetch(array(
+                'x__id' => $_POST['x__id'],
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ));
+            if(!count($fetch_xs)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Transaction ID',
+                ));
+            }
+
+            //Append more data:
+            $return_data['x__status'] = $fetch_xs[0]['x__status'];
+            $return_data['x__message'] = $fetch_xs[0]['x__message'];
+
+        }
+
+        return view_json($return_data);
 
     }
 
