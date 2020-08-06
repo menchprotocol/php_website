@@ -838,17 +838,18 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-                    <!-- Upload -->
+                    <!-- Transaction Message -->
+                    <div class="headline" style="margin-top: 20px;"><?= $e___13571[4372]['m_icon'].' '.$e___13571[4372]['m_title'] ?></div>
                     <form class="drag-box" method="post" enctype="multipart/form-data">
-                        <span class="mini-header" style="margin-top: 20px;"><?= $e___13571[4372]['m_icon'].' '.$e___13571[4372]['m_title'] ?></span>
                         <textarea class="form-control text-edit border" id="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m_message'] ?>"></textarea>
-                        <span><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_message'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'] ?></label></span>
+
+                        <div id="x__type_preview"></div>
+                        <div id="e_x_preview" class="hideIfEmpty"></div>
+
+                        <div class="pull-right"><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_message'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'] ?></label></div>
+                        <div class="doclear">&nbsp;</div>
+
                     </form>
-
-
-                    <div class="headline"><?= $e___13571[4593]['m_icon'].' '.$e___13571[4593]['m_title'] ?></div>
-                    <span id="x__type_preview"></span>
-                    <p id="e_x_preview" class="hideIfEmpty"></p>
 
                 </div>
 
