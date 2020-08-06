@@ -1388,15 +1388,6 @@ label {
     padding: 10px 10px 10px 0;
 }
 
-.i_saved, .i_saved:hover, .i_saved:focus{
-    background-color:#fff3a9 !important;
-}
-
-.e_saved, .e_saved:hover, .e_saved:focus{
-    background-color:#c1dffb !important;
-}
-
-
 
 /* FUNCTIONAL */
 .inline-block{ display: inline-block !important; }

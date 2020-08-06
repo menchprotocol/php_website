@@ -679,8 +679,6 @@ function load_13571(e__id, x__id) {
             $('#modal13571 .modal_x__id').val(x__id);
             $('#modal13571 .modal_e__id').val(e__id);
 
-            $('.object_saved').removeClass('e_saved');
-            $(".saved_e_"+e__id).addClass('e_saved');
             $('#modal13571 .save_results').html('');
             $('.e_delete_stats').html('');
 
@@ -939,9 +937,6 @@ function save_13571() {
                     window.location = data.delete_redirect_url;
 
                 } else {
-
-                    //Reset opacity:
-                    $('.object_saved').removeClass('e_saved');
 
                     //Delete from UI:
                     $('.tr_' + modify_data['x__id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();
