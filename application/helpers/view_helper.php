@@ -293,7 +293,7 @@ function view_13574($x, $note_e = false)
         $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-i white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
         //Show drop down for message transaction status:
-        $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 5px 0 0; display: block;">';
+        $ui .= '<li class="pull-right edit-on hidden"><span style="margin:-5px 5px 0 0; display: block;">';
         $ui .= '<select id="message_status_' . $x['x__id'] . '"  class="form-control border" style="margin-bottom:0;">';
         foreach($CI->config->item('e___12012') as $e__id => $m){
             $ui .= '<option value="' . $e__id . '" '.( $e__id==$x['x__status'] ? 'selected="selected"' : '' ).'>' . $m['m_title'] . '</option>';

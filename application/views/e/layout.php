@@ -656,13 +656,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         'x__up' => 3288, //Mench Email
                     ));
 
-                    $focus_tab .= '<span class="white-wrapper"><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
+                    $focus_tab .= '<span><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
                 <a href="javascript:void(0)" onclick="e_email()" class="btn btn-e">Save</a>
                 <span class="saving-account save_email"></span>';
 
                 } elseif ($acc_e__id == 3286 /* Password */) {
 
-                    $focus_tab .= '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
+                    $focus_tab .= '<span><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
                 <a href="javascript:void(0)" onclick="e_password()" class="btn btn-e">Save</a>
                 <span class="saving-account save_password"></span>';
 
@@ -801,12 +801,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 <!-- Source Title -->
                 <div class="headline"><?= $e___13571[6197]['m_icon'].' '.$e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</div>
-                <span class="white-wrapper">
-                    <textarea class="form-control text-edit border montserrat doupper" id="e__title"
-                              onkeyup="e__title_word_count()" data-lpignore="true"
-                              style="height:66px; min-height:66px;">
-                    </textarea>
-                </span>
+                <textarea class="form-control text-edit border montserrat doupper" id="e__title"
+                      onkeyup="e__title_word_count()" data-lpignore="true"
+                      style="height:66px; min-height:66px;">
+                </textarea>
 
 
 
@@ -839,15 +837,11 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     </div>
 
 
+
                     <!-- Upload -->
                     <form class="drag-box" method="post" enctype="multipart/form-data">
                         <span class="mini-header" style="margin-top: 20px;"><?= $e___13571[4372]['m_icon'].' '.$e___13571[4372]['m_title'] ?></span>
-                        <span class="white-wrapper">
-                            <textarea class="form-control text-edit border" id="x__message"
-                                      data-lpignore="true"
-                                      placeholder="Write, Drop a File or Paste URL"
-                                      style="height:126px; min-height:126px;"></textarea>
-                        </span>
+                        <textarea class="form-control text-edit border" id="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m_message'] ?>"></textarea>
                         <span><input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_message'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'] ?></label></span>
                     </form>
 

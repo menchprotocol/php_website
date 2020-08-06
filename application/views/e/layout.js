@@ -698,6 +698,7 @@ function load_13571(e__id, x__id) {
                 $('#x__message').val(data.x__message);
                 $('#e_x_count').val(0);
                 $('.remove-e, .e_has_link').removeClass('hidden');
+                autosize($('#x__message'));
                 x_type_preview();
 
             } else {
