@@ -167,8 +167,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //Show tree sources only if more than the sources for this idea:
         if( $counter > count($i_notes) ){
             //Add Tree Sources
-            $focus_tab .= '<div style="margin-bottom:34px;">';
-                $focus_tab .= '<div class="tree_sources"><a href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>View all '.$counter.' Sources referenced in all '.$counter_i.' Ideas.</a></div>';
+            $focus_tab .= '<div style="margin:21px 0 34px;">';
+                $focus_tab .= '<div class="tree_sources list-group"><a class="list-group-item montserrat doupper source itemsource" href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>View all '.$counter.' Sources referenced in all '.$counter_i.' Ideas.</a></div>';
                 $focus_tab .= '<div class="tree_sources hidden">'.view_i_tree_e($i_focus).'</div>';
             $focus_tab .= '</div>';
         }
