@@ -144,31 +144,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = ( count($i_notes) > $counter ? count($i_notes) : $counter );
         $focus_tab .= view_i_note_mix(4983, $i_notes);
 
-        /*
-        $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:34px;">';
-        foreach($i_notes as $i_note) {
-            $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
-        }
-
-        if($e_of_i && $is_active) {
-            $focus_tab .= '<div class="list-group-item list-adder itemsource no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
-                <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___12467[12274]['m_icon'] . '</span></span>
-                    <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent add-input"
-                           maxlength="' . config_var(6197) . '"                          
-                           placeholder="'.( $superpower_13422 ? 'ADD SOURCE' : 'ADD SOURCE (CONTENT/EXPERT/USER)' ).'">
-                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '"></div></div>';
-        }
-
-        $focus_tab .= '</div>';
-        */
-
         //Show tree sources only if more than the sources for this idea:
         if( $counter > count($i_notes) ){
             //Add Tree Sources
             $focus_tab .= '<div style="margin:21px 0 34px;">';
-                $focus_tab .= '<div class="tree_sources list-group"><a class="list-group-item montserrat doupper source itemsource" href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>View all '.$counter.' Sources referenced in all '.$counter_i.' Ideas.</a></div>';
+                $focus_tab .= '<div class="tree_sources list-group"><a class="list-group-item montserrat doupper source itemsource" href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>View all '.$counter.' Sources'.( $counter_i > 1 ? ' referenced in all '.$counter_i.' Ideas' : '' ).'.</a></div>';
                 $focus_tab .= '<div class="tree_sources hidden">'.view_i_tree_e($i_focus).'</div>';
             $focus_tab .= '</div>';
         }
