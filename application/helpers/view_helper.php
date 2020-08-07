@@ -1224,7 +1224,7 @@ function view_i_note_mix($x__type, $i_notes){
 
 
         //Response result:
-        $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty alert alert-danger" style="margin:13px 0;"></div>';
+        $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover alert alert-danger" style="margin:8px 0;"></div>';
 
 
         $ui .= '<table class="table table-condensed"><tr>';

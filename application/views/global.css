@@ -44,6 +44,9 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .margin-top-down{
     margin:30px 0;
 }
+.margin-top-down-half{
+    margin:13px 0;
+}
 .paddingup{
     padding:10px 0 0;
 }
@@ -1135,6 +1138,7 @@ td.MENCHcolumn3  { width: 13%; }
 
 .show-on-hover span {
     display: block;
+    margin-bottom: 2px;
 }
 .show-on-hover i {
     font-size: 0.8em;

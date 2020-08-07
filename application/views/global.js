@@ -1092,7 +1092,7 @@ function i_note_end_adding(result, note_type_id) {
 
     } else {
 
-        $(".note_error_"+note_type_id).html('<span class="discover">'+result.message+'</span>');
+        $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i>'+result.message);
 
     }
 }

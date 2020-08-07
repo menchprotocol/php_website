@@ -4,7 +4,7 @@ $e___12467 = $this->config->item('e___12467'); //MENCH
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13428 = $this->config->item('e___13428'); //SOURCE WIZARD
 $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
-
+$e___6198 = $this->config->item('e___6198'); //SOURCE ICON
 $source_of_e = source_of_e($e['e__id']);
 $source_is_e = $e['e__id']==$user_e['e__id'];
 $superpower_10939 = superpower_active(10939, true);
@@ -732,7 +732,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 <input type="hidden" class="modal_e__id" value="0" />
                 <input type="hidden" class="modal_x__id" value="0" />
-                <div class="save_results margin-top-down hideIfEmpty"></div>
+                <div class="save_results margin-top-down-half hideIfEmpty"></div>
 
                 <!-- URL -->
                 <div class="headline"><span class="icon-block"><?= $e___13428[13433]['m_icon'] ?></span><?= $e___13428[13433]['m_title'] ?></div>
@@ -779,7 +779,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 <input type="hidden" class="modal_e__id" value="0" />
                 <input type="hidden" class="modal_x__id" value="0" />
-                <div class="save_results margin-top-down hideIfEmpty"></div>
+                <div class="save_results margin-top-down-half hideIfEmpty"></div>
 
                 <!-- Source Status -->
                 <div class="headline"><?= $e___13571[6177]['m_icon'].' '.$e___13571[6177]['m_title'] ?></div>
@@ -807,8 +807,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 <!-- Source Icon -->
                 <div class="headline"><?= $e___13571[6198]['m_icon'].' '.$e___13571[6198]['m_title'] ?>
-                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val($('#e__icon').val() + '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="Insert blank Font-Awesome HTML code" data-placement="top"><i class="far fa-edit"></i><b>FA</b></a>
-                    <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Visit Font-Awesome website for a full list of icons and their HTML code" data-placement="top"><i class="fas fa-external-link"></i></a>
+
+                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;&quot; />' )" data-toggle="tooltip" title="<?= $e___6198[4260]['m_title'].': '.$e___6198[4260]['m_message'] ?>" data-placement="top"><?= $e___6198[4260]['m_icon'] ?></a>
+
+                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="<?= e___6198[13577]['m_title'].': '.$e___6198[13577]['m_message'] ?>" data-placement="top"><?= $e___6198[13577]['m_icon'] ?></a>
+
+                    <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="<?= $e___6198[13578]['m_title'].': '.$e___6198[13578]['m_message'] ?>" data-placement="top"><?= $e___6198[13578]['m_title'] ?></a>
+
                 </div>
                 <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
                     <div class="input-group border">

@@ -8,10 +8,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-07 08:48:05 PST
-$config['s___12274'] = 5002; //SOURCES
+//Generated 2020-08-07 09:41:39 PST
+$config['s___12274'] = 5004; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122275; //DISCOVERIES
+
+//SOURCE ICON:
+$config['n___6198'] = array(4260,13577,13578);
+$config['e___6198'] = array(
+    4260 => array(
+        'm_title' => 'SOURCE LINK IMAGE',
+        'm_message' => 'Insert HTML image code & paste image URL',
+        'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
+        'm_profile' => array(12822,12605,12524,11080,6198,11059,10593,4593,4592,4537),
+    ),
+    13577 => array(
+        'm_title' => 'ICON CODE',
+        'm_message' => 'Insert Font Awesome HTML code & add icon code',
+        'm_icon' => '<i class="fas fa-smile-plus"></i>',
+        'm_profile' => array(6198),
+    ),
+    13578 => array(
+        'm_title' => 'ICON LIBRARY',
+        'm_message' => 'Visit Font Awesome to browse all icons',
+        'm_icon' => '<i class="fas fa-icons"></i>',
+        'm_profile' => array(6198),
+    ),
+);
 
 //SOURCE EDITOR:
 $config['n___13571'] = array(6177,6197,6198,6186,4372,4593,13572);
@@ -31,8 +54,8 @@ $config['e___13571'] = array(
     6198 => array(
         'm_title' => 'SOURCE ICON',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13571,12605,10653,5943,10625,6206),
+        'm_icon' => '<i class="fas fa-image-polaroid source"></i>',
+        'm_profile' => array(4527,13571,12605,10653,5943,10625,6206),
     ),
     6186 => array(
         'm_title' => 'TRANSACTION STATUS',
@@ -3289,7 +3312,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,13573,13495,12707,4235,12991,13405,13210,12137,13509,13207,11068,12211,4341,6225,12969,10573,13574,6287,13562,6415,13510,13524,7256,4269,13571,4997,13007,13428,10957,10678,12906,13572);
+$config['n___11035'] = array(13502,13401,13573,13574,13495,12707,4235,12991,13405,13210,12137,13509,13207,11068,12211,4341,6225,12969,10573,6287,13562,6415,13510,13524,7256,4269,13571,4997,13007,13428,10957,10678,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3307,6 +3330,12 @@ $config['e___11035'] = array(
         'm_title' => 'DOWNLOAD',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cloud-download"></i>',
+        'm_profile' => array(11035),
+    ),
+    13574 => array(
+        'm_title' => 'EDIT NOTE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-pen-square"></i>',
         'm_profile' => array(11035),
     ),
     13495 => array(
@@ -3399,12 +3428,6 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_profile' => array(13530,11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
-    13574 => array(
-        'm_title' => 'NOTE EDITOR',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-pen-square"></i>',
-        'm_profile' => array(11035),
-    ),
     6287 => array(
         'm_title' => 'PLUGINS',
         'm_message' => '',
@@ -3478,7 +3501,7 @@ $config['e___11035'] = array(
         'm_profile' => array(6225,11035,5007,4527),
     ),
     10678 => array(
-        'm_title' => 'UNLINK NOTE',
+        'm_title' => 'UNLINK SOURCE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-times" aria-hidden="true"></i>',
         'm_profile' => array(11035,4593),
@@ -4295,8 +4318,8 @@ $config['e___6206'] = array(
     6198 => array(
         'm_title' => 'ICON',
         'm_message' => 'e__icon',
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13571,12605,10653,5943,10625,6206),
+        'm_icon' => '<i class="fas fa-image-polaroid source"></i>',
+        'm_profile' => array(4527,13571,12605,10653,5943,10625,6206),
     ),
     13030 => array(
         'm_title' => 'WEIGHT',
@@ -4908,7 +4931,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(10956,13533,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,13369,4229,12842,4486,12840,12589,11047,6159,4485,7551,4986,12359,4603,12012,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13443,6170,6169,13543,13544,7585,13022,12330,7309,7712,12883,12884,12955,13207,12211,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,13037,6225,12969,10573,3000,12741,6287,12577,4755,13531,13439,13365,13438,13510,12761,13023,4269,6204,13413,6194,4251,13571,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,13428,13202,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,13479,12500);
+$config['n___4527'] = array(10956,13533,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,13369,4229,12842,4486,12840,12589,11047,6159,4485,7551,4986,12359,4603,12012,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13443,6170,6169,13543,13544,7585,13022,12330,7309,7712,12883,12884,12955,13207,12211,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,13037,6225,12969,10573,3000,12741,6287,12577,4755,13531,13439,13365,13438,13510,12761,13023,4269,6204,13413,6194,4251,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,13428,13202,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,13479,12500);
 $config['e___4527'] = array(
     10956 => array(
         'm_title' => 'AVATARS BASIC',
@@ -5527,6 +5550,12 @@ $config['e___4527'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-pen-square source"></i>',
         'm_profile' => array(13297,11035,4527,13566),
+    ),
+    6198 => array(
+        'm_title' => 'SOURCE ICON',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-image-polaroid source"></i>',
+        'm_profile' => array(4527,13571,12605,10653,5943,10625,6206),
     ),
     13550 => array(
         'm_title' => 'SOURCE IDEAS',
@@ -8381,7 +8410,7 @@ $config['e___4593'] = array(
         'm_profile' => array(4593),
     ),
     10678 => array(
-        'm_title' => 'UNLINK NOTE',
+        'm_title' => 'UNLINK SOURCE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-times" aria-hidden="true"></i>',
         'm_profile' => array(11035,4593),
