@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-06 18:52:03 PST
+//Generated 2020-08-06 18:53:02 PST
 $config['s___12274'] = 5001; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122275; //DISCOVERIES
@@ -3915,7 +3915,7 @@ $config['e___6404'] = array(
     ),
     13556 => array(
         'm_title' => 'MESSAGE FEATURED CAP WORDS',
-        'm_message' => '21',
+        'm_message' => '34',
         'm_icon' => '',
         'm_profile' => array(6404),
     ),
