@@ -1554,6 +1554,10 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
+                if(count($profile_ids) && array_intersect($profile_ids, $CI->config->item('n___3000'))){
+                    array_push($export_row['_tags'], 'is_nonfiction');
+                }
+
                 $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
 
             } elseif ($loop_obj == 12273) {

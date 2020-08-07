@@ -38,10 +38,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;">';
 
-        echo '<a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',0)" class="icon-block '.superpower_active(13422).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13571]['m_title'].'">'.$e___11035[13571]['m_icon'].'</a>';
-
-        if(editable_by_13428($e['e__id'])){
-            echo '<a href="javascript:void(0);" onclick="load_13428('.$e['e__id'].', \'\')" class="icon-block '.superpower_active(10939).'" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a>';
+        if(editable_by_13428($e['e__id']) && $superpower_10939){
+            echo '<a href="javascript:void(0);" onclick="load_13428('.$e['e__id'].', \'\')" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a>';
+        } elseif($superpower_13422) {
+            echo '<a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',0)" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="bottom" title="'.$e___11035[13571]['m_title'].'">'.$e___11035[13571]['m_icon'].'</a>';
         }
 
     echo '</div>';
@@ -847,7 +847,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         </div>
 
                         <div class="pull-right">
-                            <input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" data-toggle="tooltip" title="<?= $e___11035[13572]['m_message'] ?>" data-placement="top"><?= $e___11035[13572]['m_icon'] ?></label>
+                            <input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" title="<?= $e___11035[13572]['m_message'] ?>"><?= $e___11035[13572]['m_icon'] ?></label>
                         </div>
 
                         <div class="doclear">&nbsp;</div>

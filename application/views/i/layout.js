@@ -132,7 +132,7 @@ function e_e_only_search(note_type_id) {
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'object__type=12274',
+                    filters: 'object__type=12274' + ( js_session_superpowers_assigned.includes(13422) ? '' : ' AND ( _tags:is_nonfiction OR _tags:alg_e_13339 OR _tags:alg_e_4430 ) ' ),
                     hitsPerPage: 21,
                 }, function (error, content) {
                     if (error) {
