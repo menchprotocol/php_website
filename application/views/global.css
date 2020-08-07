@@ -1418,6 +1418,9 @@ label {
     margin: -5px 0 -3px !important;
     border-radius: 50%;
 }
+.icon-demo img {
+    border-radius: 0% !important;
+}
 .icon-block-lg img {
     width: 38px !important;
     height: 38px !important;
