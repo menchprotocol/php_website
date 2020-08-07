@@ -339,7 +339,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             }
 
             //Input to add new child:
-            if($source_is_e || $superpower_13422){
+            if($source_is_e && $superpower_10939){
 
                 $focus_tab .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
@@ -350,10 +350,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                    placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
                         </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
-            } elseif($source_is_e && !$superpower_10939){
+            } elseif($source_is_e){
 
                 //Give option to unlock superpower:
-                $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>START ADDING SOURCES &raquo;</a></div>';
+                $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>LEARN HOW TO SOURCE IDEAS &raquo;</a></div>';
 
             }
 
@@ -430,7 +430,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 } else {
 
                     //Give option to unlock superpower:
-                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>START SUMMARIZING IDEAS &raquo;</a></div>';
+                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>LEARN HOW TO SUMMARIZE IDEAS &raquo;</a></div>';
 
                 }
 

@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-06 18:53:02 PST
+//Generated 2020-08-06 19:04:36 PST
 $config['s___12274'] = 5001; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122275; //DISCOVERIES
@@ -79,7 +79,7 @@ $config['e___13428'] = array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
-        'm_profile' => array(11054,12079,13543,6159,4251,13428,13365,13207,4527),
+        'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
 );
 
@@ -186,7 +186,7 @@ $config['e___13543'] = array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
-        'm_profile' => array(11054,12079,13543,6159,4251,13428,13365,13207,4527),
+        'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13339 => array(
         'm_title' => 'EXPERT AUTHORS',
@@ -610,7 +610,7 @@ $config['e___6159'] = array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => 'i___3000',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
-        'm_profile' => array(11054,12079,13543,6159,4251,13428,13365,13207,4527),
+        'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13202 => array(
         'm_title' => 'SUMMARIZERS',
@@ -680,7 +680,7 @@ $config['e___4251'] = array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
-        'm_profile' => array(11054,12079,13543,6159,4251,13428,13365,13207,4527),
+        'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13339 => array(
         'm_title' => 'EXPERT AUTHORS',
@@ -863,7 +863,7 @@ $config['e___13365'] = array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
-        'm_profile' => array(11054,12079,13543,6159,4251,13428,13365,13207,4527),
+        'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13202 => array(
         'm_title' => 'SUMMARIZERS',
@@ -1006,7 +1006,7 @@ $config['e___13207'] = array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
-        'm_profile' => array(11054,12079,13543,6159,4251,13428,13365,13207,4527),
+        'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     13339 => array(
         'm_title' => 'EXPERT AUTHORS',
@@ -2912,7 +2912,7 @@ $config['e___12079'] = array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
-        'm_profile' => array(11054,12079,13543,6159,4251,13428,13365,13207,4527),
+        'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     4486 => array(
         'm_title' => 'IDEA LINKS',
@@ -3909,7 +3909,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.50',
+        'm_message' => 'v1.501',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
@@ -3988,7 +3988,7 @@ $config['e___6404'] = array(
 );
 
 //MENCH MEMORY JAVASCRIPT:
-$config['n___11054'] = array(4486,4737,7356,7355,7585,7712,2738,12467,6404,6201,12687,11035,10573,3000,4592,6177,7357,6186);
+$config['n___11054'] = array(4486,4737,7356,7355,7585,7712,2738,12467,6404,6201,12687,11035,10573,4592,6177,7357,6186);
 $config['e___11054'] = array(
     4486 => array(
         'm_title' => 'IDEA LINKS',
@@ -4067,12 +4067,6 @@ $config['e___11054'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_profile' => array(13530,11035,13405,11054,4527,10984,11018,4485,4593,7551),
-    ),
-    3000 => array(
-        'm_title' => 'NONFICTION CONTENT',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
-        'm_profile' => array(11054,12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     4592 => array(
         'm_title' => 'SOURCE LINKS',
@@ -5424,7 +5418,7 @@ $config['e___4527'] = array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap source" aria-hidden="true"></i>',
-        'm_profile' => array(11054,12079,13543,6159,4251,13428,13365,13207,4527),
+        'm_profile' => array(12079,13543,6159,4251,13428,13365,13207,4527),
     ),
     12741 => array(
         'm_title' => 'PLUGIN RETURN CODE ONLY',
