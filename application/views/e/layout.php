@@ -810,7 +810,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                     <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;&quot; />' )" data-toggle="tooltip" title="<?= $e___6198[4260]['m_title'].': '.$e___6198[4260]['m_message'] ?>" data-placement="top"><?= $e___6198[4260]['m_icon'] ?></a>
 
-                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="<?= e___6198[13577]['m_title'].': '.$e___6198[13577]['m_message'] ?>" data-placement="top"><?= $e___6198[13577]['m_icon'] ?></a>
+                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<i class=&quot;fas fa-&quot;></i>' )" data-toggle="tooltip" title="<?= $e___6198[13577]['m_title'].': '.$e___6198[13577]['m_message'] ?>" data-placement="top"><?= $e___6198[13577]['m_icon'] ?></a>
 
                     <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="<?= $e___6198[13578]['m_title'].': '.$e___6198[13578]['m_message'] ?>" data-placement="top"><?= $e___6198[13578]['m_title'] ?></a>
 
