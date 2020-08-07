@@ -285,13 +285,13 @@ function view_13574($x, $note_e = false)
 
 
         //Editing menu:
-        $ui .= '<ul class="msg-nav">';
-
-            //CANCEL
-            $ui .= '<li class="edit-on hidden"><a class="btn btn-i white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
+        $ui .= '<ul class="msg-nav space-left">';
 
             //SAVE
             $ui .= '<li class="edit-on hidden"><a class="btn btn-i white-third" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
+
+            //CANCEL
+            $ui .= '<li class="edit-on hidden"><a class="btn btn-i white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
             //TEXT COUNTER
             $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
