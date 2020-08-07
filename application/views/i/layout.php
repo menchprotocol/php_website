@@ -155,7 +155,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
-                           placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
+                           placeholder="'.( $superpower_13422 ? 'ADD SOURCE' : 'ADD CONTENT/EXPERT/USER SOURCE' ).'">
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '"></div></div>';
         }
 
@@ -188,7 +188,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
-                           placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
+                           placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '"></div></div>';
         }
 

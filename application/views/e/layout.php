@@ -27,7 +27,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
     //SOURCE DRAFTING?
     if(!in_array($e['e__status'], $this->config->item('n___7357'))){
-        echo '<div>' . $e___6177[$e['e__status']]['m_icon'] . ' '.$e___6177[$e['e__status']]['m_title'].'</div>';
+        echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).'"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
     }
 
     //SOURCE NAME
@@ -139,7 +139,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
+                           placeholder="NEW SOURCE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
             $focus_tab .= '</div>';
