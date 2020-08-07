@@ -105,6 +105,7 @@ echo '<div class="doclear">&nbsp;</div>';
 
 
 //IDEA LAYOUT
+$counter_i = view_coins_i(12273,  $i_focus, false);
 $i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 11018;
 $tab_content = '';
@@ -141,8 +142,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = view_coins_i(12274,  $i_focus, false);
         $counter = ( count($i_notes) > $counter ? count($i_notes) : $counter );
+        $focus_tab .= view_i_note_mix($x__type, $i_notes);
 
-
+        /*
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:34px;">';
         foreach($i_notes as $i_note) {
             $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
@@ -160,9 +162,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $focus_tab .= '</div>';
+        */
 
-        //Add Tree Sources
-        $focus_tab .= view_i_tree_e($i_focus);
+        //Show tree sources only if more than the sources for this idea:
+        if( $counter > count($i_notes) ){
+            //Add Tree Sources
+            $focus_tab .= '<div style="margin-bottom:34px;">';
+                $focus_tab .= '<div class="tree_sources"><a href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>View all '.$counter.' Sources referenced in all '.$counter_i.' Ideas.</a></div>';
+                $focus_tab .= '<div class="tree_sources hidden">'.view_i_tree_e($i_focus).'</div>';
+            $focus_tab .= '</div>';
+        }
 
     } elseif(in_array($x__type, $this->config->item('n___7551'))){
 
@@ -197,7 +206,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==12273){
 
         //IDEAS
-        $counter = view_coins_i(12273,  $i_focus, false);
+        $counter = $counter_i;
 
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -233,7 +242,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==6255) {
 
-        //MENCH COINS
+        //DISCOVERIES
         $counter = view_coins_i(6255,  $i_focus, false);
 
         if($counter){

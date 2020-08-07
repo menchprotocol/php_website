@@ -849,7 +849,7 @@ class X_model extends CI_Model
             if($total_references<$min_e || $total_references>$max_e){
                 return array(
                     'status' => 0,
-                    'message' => 'You referenced '.$total_references.' sources where you can only have '.$min_e.( $max_e!=$min_e ? '-'.$max_e : '' ).' references.',
+                    'message' => 'You referenced '.$total_references.' source'.view__s($total_references).' but you must have '.$min_e.( $max_e!=$min_e ? '-'.$max_e : '' ).' source references.',
                 );
             }
         }
