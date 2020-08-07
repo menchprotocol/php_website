@@ -142,7 +142,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = view_coins_i(12274,  $i_focus, false);
         $counter = ( count($i_notes) > $counter ? count($i_notes) : $counter );
-        $focus_tab .= view_i_note_mix($x__type, $i_notes);
+        $focus_tab .= view_i_note_mix(4983, $i_notes);
 
         /*
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:34px;">';
