@@ -1223,9 +1223,11 @@ function view_i_note_mix($x__type, $i_notes){
         $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', @SOURCE, PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
+        //Response result:
+        $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty alert alert-danger" style="margin:13px 0;"></div>';
+
 
         $ui .= '<table class="table table-condensed"><tr>';
-
 
         //Save button:
         $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-i save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
@@ -1246,9 +1248,6 @@ function view_i_note_mix($x__type, $i_notes){
 
         $ui .= '</tr></table>';
 
-
-        //Response result:
-        $ui .= '<div class="note_error_'.$x__type.'"></div>';
 
 
         $ui .= '</form>';
