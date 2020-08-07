@@ -808,11 +808,11 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 <!-- Source Icon -->
                 <div class="headline"><?= $e___13571[6198]['m_icon'].' '.$e___13571[6198]['m_title'] ?>
 
-                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;&quot; />' );update_demo_icon();" data-toggle="tooltip" title="<?= $e___6198[4260]['m_title'].': '.$e___6198[4260]['m_message'] ?>" data-placement="top"><?= $e___6198[4260]['m_icon'] ?></a>
+                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;https://mench.com/img/mench.png&quot; />' );update_demo_icon();" title="<?= $e___6198[4260]['m_title'].': '.$e___6198[4260]['m_message'] ?>"><?= $e___6198[4260]['m_icon'] ?></a>
 
-                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" data-toggle="tooltip" title="<?= $e___6198[13577]['m_title'].': '.$e___6198[13577]['m_message'] ?>" data-placement="top"><?= $e___6198[13577]['m_icon'] ?></a>
+                    <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" title="<?= $e___6198[13577]['m_title'].': '.$e___6198[13577]['m_message'] ?>"><?= $e___6198[13577]['m_icon'] ?></a>
 
-                    <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="<?= $e___6198[13578]['m_title'].': '.$e___6198[13578]['m_message'] ?>" data-placement="top"><?= $e___6198[13578]['m_icon'] ?></a>
+                    <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" title="<?= $e___6198[13578]['m_title'].': '.$e___6198[13578]['m_message'] ?>"><?= $e___6198[13578]['m_icon'] ?></a>
 
                 </div>
                 <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
