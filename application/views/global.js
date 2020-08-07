@@ -997,7 +997,6 @@ function save_13574(x__id, note_type_id) {
 
     var modify_data = {
         x__id: parseInt(x__id),
-        message_x__status: parseInt($("#message_status_" + x__id).val()),
         i__id: parseInt(focus_i__id),
         x__message: $("#ul-nav-" + x__id + " textarea").val(),
     };
@@ -1007,47 +1006,16 @@ function save_13574(x__id, note_type_id) {
 
         if (data.status) {
 
-            //Did we delete this message?
-            if(data.delete_from_ui){
+            //Update text message:
+            $("#ul-nav-" + x__id + " .text_message").html(data.message);
 
-                i_note_counter(note_type_id, -1);
-
-                //Yes, message was deleted, adjust accordingly:
-                $("#ul-nav-" + x__id).html('<div>' + data.message + '</div>');
-
-                //Disapper in a while:
-                setTimeout(function ()
-                {
-                    $("#ul-nav-" + x__id).fadeOut();
-
-                    setTimeout(function () {
-
-                        //Delete first:
-                        $("#ul-nav-" + x__id).remove();
-
-                        //Adjust sort for this message type:
-                        i_note_sort_apply(note_type_id);
-
-                    }, 610);
-                }, 610);
-
-            } else {
-
-                //IDEA NOTE EDITED...
-
-                //Update text message:
-                $("#ul-nav-" + x__id + " .text_message").html(data.message);
-
-                //Update message status:
-                $("#ul-nav-" + x__id + " .message_status").html(data.message_new_status_icon);
-
-                lazy_load();
-
-            }
+            lazy_load();
 
         } else {
-            //Oops, some sort of an error, lets
+
+            //ERROR
             $("#ul-nav-" + x__id + " .edit-updates").html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+
         }
 
         //Tooltips:
@@ -1055,6 +1023,28 @@ function save_13574(x__id, note_type_id) {
 
     });
 
+}
+
+
+function remove_13579(x__id, note_type_id){
+    //REMOVE NOTE
+    $.post("/i/remove_13579", { x__id: parseInt(x__id) }, function (data) {
+        if (data.status) {
+
+            i_note_counter(note_type_id, -1);
+
+            $("#ul-nav-" + x__id).fadeOut();
+
+            setTimeout(function () {
+                $("#ul-nav-" + x__id).remove();
+            }, 610);
+
+        } else {
+
+            alert(data.message);
+
+        }
+    });
 }
 
 function i_note_start_adding(note_type_id) {

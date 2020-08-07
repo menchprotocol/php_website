@@ -786,6 +786,8 @@ class I extends CI_Controller {
         ));
     }
 
+
+
     function save_13574()
     {
 
@@ -800,11 +802,6 @@ class I extends CI_Controller {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing DISCOVER ID',
-            ));
-        } elseif (!isset($_POST['message_x__status'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Message Status',
             ));
         } elseif (!isset($_POST['x__message'])) {
             return view_json(array(
@@ -864,63 +861,6 @@ class I extends CI_Controller {
         }
 
 
-        //Did the message status change?
-        if($messages[0]['x__status'] != $_POST['message_x__status']){
-
-            //Are we deleting this message?
-            if(in_array($_POST['message_x__status'], $this->config->item('n___7360') /* ACTIVE */)){
-
-                //If making the transaction public, all referenced sources must also be public...
-                if(in_array($_POST['message_x__status'], $this->config->item('n___7359') /* PUBLIC */)){
-
-                    //We're publishing, make sure potential source references are also published:
-                    $string_references = extract_e_references($_POST['x__message']);
-
-                    if (count($string_references['ref_e']) > 0) {
-
-                        //We do have an source reference, what's its status?
-                        $ref_e = $this->E_model->fetch(array(
-                            'e__id' => $string_references['ref_e'][0],
-                        ));
-
-                        if(count($ref_e)>0 && !in_array($ref_e[0]['e__status'], $this->config->item('n___7357') /* PUBLIC */)){
-                            return view_json(array(
-                                'status' => 0,
-                                'message' => 'You cannot published this message because its referenced source is not yet public',
-                            ));
-                        }
-                    }
-                }
-
-                //yes, do so and return results:
-                $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
-                    'x__status' => $_POST['message_x__status'],
-                ), $user_e['e__id'], 10677 /* IDEA NOTES updated Status */);
-
-            } else {
-
-                //New status is no longer active, so delete the IDEA NOTES:
-                $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
-                    'x__status' => $_POST['message_x__status'],
-                ), $user_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
-
-                //Return success:
-                if($affected_rows > 0){
-                    return view_json(array(
-                        'status' => 1,
-                        'delete_from_ui' => 1,
-                        'message' => view_12687(12695),
-                    ));
-                } else {
-                    return view_json(array(
-                        'status' => 0,
-                        'message' => 'Error trying to delete message',
-                    ));
-                }
-            }
-        }
-
-
         $e___6186 = $this->config->item('e___6186');
 
         //Print the challenge:
@@ -928,11 +868,45 @@ class I extends CI_Controller {
             'status' => 1,
             'delete_from_ui' => 0,
             'message' => $this->X_model->message_send($msg_validation['input_message'], $user_e, $_POST['i__id']),
-            'message_new_status_icon' => '<span title="' . $e___6186[$_POST['message_x__status']]['m_title'] . ': ' . $e___6186[$_POST['message_x__status']]['m_message'] . '" data-toggle="tooltip" data-placement="top">' . $e___6186[$_POST['message_x__status']]['m_icon'] . '</span>', //This might have changed
         ));
 
     }
 
 
+
+    function remove_13579(){
+
+        //Authenticate User:
+        $user_e = superpower_assigned();
+        if (!$user_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['x__id']) || intval($_POST['x__id']) < 1) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing DISCOVER ID',
+            ));
+        }
+
+        //New status is no longer active, so delete the IDEA NOTES:
+        $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
+            'x__status' => 6173,
+        ), $user_e['e__id'], 13579);
+
+        //Return success:
+        if($affected_rows > 0){
+            return view_json(array(
+                'status' => 1,
+            ));
+        } else {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Error trying to delete this note',
+            ));
+        }
+
+    }
 
 }

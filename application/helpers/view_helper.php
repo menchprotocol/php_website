@@ -263,15 +263,19 @@ function view_13574($x, $note_e = false)
 
     //Editing menu:
     if($note_e){
+
         $ui .= '<div class="note-editor edit-off"><span class="show-on-hover">';
 
-        //Sorting allowed?
-        if(in_array($x['x__type'], $CI->config->item('n___4603'))){
-            $ui .= '<span title="SORT"><i class="fas fa-sort i_note_sorting"></i></span>';
-        }
+            //SORT NOTE
+            if(in_array($x['x__type'], $CI->config->item('n___4603'))){
+                $ui .= '<span title="SORT"><i class="fas fa-sort i_note_sorting"></i></span>';
+            }
 
-        //Modify:
-        $ui .= '<span title="MODIFY"><a href="javascript:load_13574(' . $x['x__id'] . ');" title="'.$e___11035[13574]['m_title'].'">'.$e___11035[13574]['m_icon'].'</a></span>';
+            //MODIFY NOTE
+            $ui .= '<span title="MODIFY"><a href="javascript:load_13574(' . $x['x__id'] . ');" title="'.$e___11035[13574]['m_title'].'">'.$e___11035[13574]['m_icon'].'</a></span>';
+
+            //REMOVE NOTE
+            $ui .= '<span><a href="javascript:void(0);" onclick="remove_13579(' . $x['x__id'] . ', '.$x['x__type'].')" title="'.$e___11035[13579]['m_title'].'">'.$e___11035[13579]['m_icon'].'</a></span>';
 
         $ui .= '</span></div>';
 
@@ -283,26 +287,17 @@ function view_13574($x, $note_e = false)
         //Editing menu:
         $ui .= '<ul class="msg-nav">';
 
-        //Counter:
-        $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
+            //CANCEL
+            $ui .= '<li class="edit-on hidden"><a class="btn btn-i white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
-        //Save Edit:
-        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-i white-third" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
+            //SAVE
+            $ui .= '<li class="edit-on hidden"><a class="btn btn-i white-third" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
-        //Cancel Edit:
-        $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-i white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
+            //TEXT COUNTER
+            $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
 
-        //Show drop down for message transaction status:
-        $ui .= '<li class="pull-right edit-on hidden"><span style="margin:-5px 5px 0 0; display: block;">';
-        $ui .= '<select id="message_status_' . $x['x__id'] . '"  class="form-control border" style="margin-bottom:0;">';
-        foreach($CI->config->item('e___12012') as $e__id => $m){
-            $ui .= '<option value="' . $e__id . '" '.( $e__id==$x['x__status'] ? 'selected="selected"' : '' ).'>' . $m['m_title'] . '</option>';
-        }
-        $ui .= '</select>';
-        $ui .= '</span></li>';
-
-        //Update result:
-        $ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
+            //Update result:
+            $ui .= '<li class="edit-updates hideIfEmpty"></li>'; //Show potential errors
 
         $ui .= '</ul>';
     }
@@ -1216,7 +1211,7 @@ function view_i_note_mix($x__type, $i_notes){
     if(!in_array($x__type, $CI->config->item('n___12677'))){
         $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $x__type .'">';
         $ui .= '<div class="add_notes_form">';
-        $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';      //Used for dropping files
+        $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
 
 
@@ -1509,7 +1504,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
         } elseif(!$is_parent && $source_of_e){
 
-            //Allow to remove:
+            //UNLINK SOURCE
             $ui .= '<span><a href="javascript:void(0);" onclick="remove_10678(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10678]['m_title'].'">'.$e___11035[10678]['m_icon'].'</a></span>';
 
             //Allow to modify via Modal:

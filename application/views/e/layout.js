@@ -660,7 +660,6 @@ function load_13571(e__id, x__id) {
     $("#modal13571 .save_results").html('');
     $('#modal13571').modal('show');
     $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
-    $('[data-toggle="tooltip"]').tooltip();
 
     //Load current Source:
     $.post("/e/load_13571", {
