@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-07 08:43:11 PST
+//Generated 2020-08-07 08:48:05 PST
 $config['s___12274'] = 5002; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122275; //DISCOVERIES
@@ -90,7 +90,7 @@ $config['e___13550'] = array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
+        'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     4231 => array(
         'm_title' => 'MESSAGES',
@@ -174,7 +174,7 @@ $config['e___13543'] = array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
+        'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     13202 => array(
         'm_title' => 'SUMMARIZERS',
@@ -1678,13 +1678,19 @@ $config['e___4269'] = array(
 );
 
 //IDEA NOTES FILE UPLOADING ALLOWED:
-$config['n___12359'] = array(12419,4231);
+$config['n___12359'] = array(12419,4983,4231);
 $config['e___12359'] = array(
     12419 => array(
         'm_title' => 'COMMENTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,13304,13291,11018,12359,5967,10593,4986,4593,4485),
+    ),
+    4983 => array(
+        'm_title' => 'IDEA SOURCES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     4231 => array(
         'm_title' => 'MESSAGES',
@@ -2789,7 +2795,7 @@ $config['e___12141'] = array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
+        'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     6157 => array(
         'm_title' => 'SOURCE ANSWER ONE',
@@ -4337,7 +4343,7 @@ $config['e___4485'] = array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
+        'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     10573 => array(
         'm_title' => 'MY IDEAS',
@@ -5837,7 +5843,7 @@ $config['e___10593'] = array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
+        'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     10644 => array(
         'm_title' => 'IDEA UPDATE TITLE',
@@ -6502,7 +6508,7 @@ $config['e___7551'] = array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
+        'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     10573 => array(
         'm_title' => 'MY IDEAS',
@@ -7958,7 +7964,7 @@ $config['e___4593'] = array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
+        'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     10662 => array(
         'm_title' => 'IDEA UPDATE LINK',
