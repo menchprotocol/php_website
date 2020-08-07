@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-06 19:04:36 PST
-$config['s___12274'] = 5001; //SOURCES
+//Generated 2020-08-07 08:43:11 PST
+$config['s___12274'] = 5002; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122275; //DISCOVERIES
 
@@ -3909,7 +3909,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.501',
+        'm_message' => 'v1.502',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
