@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-07 10:45:08 PST
+//Generated 2020-08-07 13:56:10 PST
 $config['s___12274'] = 5004; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122275; //DISCOVERIES
@@ -3316,7 +3316,7 @@ $config['e___11035'] = array(
         'm_profile' => array(11035),
     ),
     13574 => array(
-        'm_title' => 'EDIT NOTE',
+        'm_title' => 'EDITOR',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-pen-square"></i>',
         'm_profile' => array(11035),
@@ -3503,7 +3503,7 @@ $config['e___11035'] = array(
     ),
     13572 => array(
         'm_title' => 'UPLOAD',
-        'm_message' => 'Upload files up to 25 MB. Have a larger file? Use a 3rd-party platform & paste URL here.',
+        'm_message' => 'Upload files up to 25 MB. Larger files can be uploaded to a 3rd-party platform & paste URL here.',
         'm_icon' => '<i class="fas fa-cloud-upload"></i>',
         'm_profile' => array(6404,11035,13571),
     ),

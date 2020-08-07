@@ -676,7 +676,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
 
 
 
-function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = false){
+function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = false, $data_placement = 'top'){
 
     /*
      *
@@ -719,7 +719,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
     //Return Results:
     if($append_coin_icon){
         $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-        return ( $count_query > 0 ? '<span data-toggle="tooltip" title="'.$e___12467[$x__type]['m_title'].'" data-placement="top" class="montserrat '.extract_icon_color($e___12467[$x__type]['m_icon']).'">'.$e___12467[$x__type]['m_icon'].'&nbsp;'.view_number($count_query).( $append_name ? '&nbsp'.$e___12467[$x__type]['m_title'] : '' ).'</span>' : null);
+        return ( $count_query > 0 ? '<span title="'.$e___12467[$x__type]['m_title'].'" '.( $data_placement ? 'data-toggle="tooltip" data-placement="'.$data_placement.'"' : ''  ).' class="montserrat '.extract_icon_color($e___12467[$x__type]['m_icon']).'">'.$e___12467[$x__type]['m_icon'].'&nbsp;'.view_number($count_query).( $append_name ? '&nbsp'.$e___12467[$x__type]['m_title'] : '' ).'</span>' : null);
     } else {
         return intval($count_query);
     }
@@ -1368,7 +1368,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                     $ui .= '<div class="col-6">';
 
                     //IDEAS
-                    $ui .= view_coins_i(12273, $i, true, true);
+                    $ui .= view_coins_i(12273, $i, true, true, null);
 
                     //DRAFTING?
                     if(!in_array($i['i__status'], $CI->config->item('n___7355'))){
@@ -1378,7 +1378,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                     $ui .= '</div>';
 
                     //Time Estimate
-                    $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
+                    $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
 
                 $ui .= '</div>';
 
