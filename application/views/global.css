@@ -1609,7 +1609,7 @@ label {
     margin-top: -7px !important;
 }
 .big-cover{
-    margin:0 0 13px 0;
+    margin:0 0 21px 0;
     position: relative;
 }
 
@@ -1627,7 +1627,7 @@ label {
         padding-top: 6px;
     }
 
-    .big-cover{ margin:0 5px 5px 0; }
+    .big-cover{ margin-right:5px; }
 
     h2 {
         font-size: 1.3em;
