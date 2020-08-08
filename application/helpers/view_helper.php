@@ -1409,7 +1409,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                     $ui .= '<div class="inline-block">'.$message_input.'</div>';
                 } else {
                     //Description, if any
-                    $ui .= '<div class="inline-block hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
+                    $ui .= '<div class="inline-block hideIfEmpty">aaa'.i_fetch_description($i['i__id']).'</div>';
                 }
 
 
