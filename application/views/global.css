@@ -1138,7 +1138,7 @@ td.MENCHcolumn3  { width: 13%; }
 
 .show-on-hover span {
     display: block;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
 }
 .show-on-hover i {
     font-size: 0.8em;
