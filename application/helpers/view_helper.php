@@ -1368,7 +1368,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 }
 
 
-                $ui .= '<div class="row" style="padding-left: 33px; padding-top: 8px;">';
+                $ui .= '<div class="row space-left">';
 
                     //IDAES
                     $ui .= '<div class="col-6">'.view_coins_i(12273, $i, true, true, null).'</div>';
