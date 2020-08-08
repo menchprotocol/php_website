@@ -1379,23 +1379,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 $ui .= '</div>';
 
 
-                //MENCH COINS
-                $ui .= '<div class="row" style="padding-left: 34px; padding-top: 8px;">';
-
-
-                    $ui .= '<div class="col-6">';
-
-                    //IDEAS
-                    $ui .= view_coins_i(12273, $i, true, true, null);
-
-                    $ui .= '</div>';
-
-                    //Time Estimate
-                    $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
-
-                $ui .= '</div>';
-
-
 
                 if(strlen(strip_tags($message_input))){
                     //Description, if any
@@ -1404,6 +1387,17 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                     //Description, if any
                     $ui .= '<div class="inline-block space-left hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
                 }
+
+
+                $ui .= '<div class="row" style="padding-left: 34px; padding-top: 8px;">';
+
+                    //IDAES
+                    $ui .= '<div class="col-6">'.view_coins_i(12273, $i, true, true, null).'</div>';
+
+                    //TIME ESTIMATE
+                    $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
+
+                $ui .= '</div>';
 
 
             $ui .= '</div>';
