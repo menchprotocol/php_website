@@ -1375,8 +1375,8 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 //Title
                 $ui .= '<div>';
-                $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage']).'</span>';
-                $ui .= '<h2><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
+                $ui .= '<span class="icon-block">'.( $x__type == 6255 ? view_icon_i_x($completion_rate['completion_percentage']) : $e___12467[12273]['m_icon'] ).'</span>';
+                $ui .= '<h2 class="inline-block"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
                 $ui .= '</div>';
 
 
