@@ -1406,10 +1406,10 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 if(strlen($message_input) > 0){
                     //Description, if any
-                    $ui .= '<div class="inline-block">bbb'.$message_input.'</div>';
+                    $ui .= '<div class="inline-block space-left">'.strlen($message_input).'-'.$message_input.'</div>';
                 } else {
                     //Description, if any
-                    $ui .= '<div class="inline-block hideIfEmpty">aaa'.i_fetch_description($i['i__id']).'</div>';
+                    $ui .= '<div class="inline-block space-left hideIfEmpty">aaa'.i_fetch_description($i['i__id']).'</div>';
                 }
 
 
