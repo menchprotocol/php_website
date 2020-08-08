@@ -149,10 +149,9 @@ function view_search_result(algolia_object){
     //Determine object type:
     var is_i = (parseInt(algolia_object.object__type)==12273);
     var is_public = ( parseInt(algolia_object.object__status) in ( is_i ? js_e___7355 : js_e___7357 ));
-    var obj_icon = ( is_i ? '<i class="fas fa-circle idea"></i>' : algolia_object.object__icon );
     var obj_full_name = ( algolia_object._highlightResult && algolia_object._highlightResult.object__title.value ? algolia_object._highlightResult.object__title.value : algolia_object.object__title );
 
-    return '<span class="icon-block">'+ obj_icon +'</span><span class="montserrat '+ ( !is_i ? js_extract_icon_color(obj_icon) : '' ) +'">' + obj_full_name + '</span>' + ( is_public ? '' : '<span class="icon-block"><i class="far fa-spinner fa-spin"></i></span>' ); //htmlentitiesjs()
+    return '<span class="icon-block">'+ algolia_object.object__icon +'</span><span class="montserrat '+ ( !is_i ? js_extract_icon_color(algolia_object.object__icon) : '' ) +'">' + obj_full_name + '</span>' + ( is_public ? '' : '<span class="icon-block"><i class="far fa-spinner fa-spin"></i></span>' ); //htmlentitiesjs()
 
 }
 
