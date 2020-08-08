@@ -177,19 +177,15 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     if($x__type==4231){
 
         //MESSAGES
-        $counter = count($messages);
-
+        $counter = null; //Hide message count
         $focus_tab .= '<div style="margin-bottom:33px;">';
-        if($counter){
-            foreach($messages as $message_x) {
-                $focus_tab .= $this->X_model->message_send(
-                    $message_x['x__message'],
-                    $user_e
-                );
-            }
+        foreach($messages as $message_x) {
+            $focus_tab .= $this->X_model->message_send(
+                $message_x['x__message'],
+                $user_e
+            );
         }
         $focus_tab .= '</div>';
-
 
         if($in_my_x && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             //Give option to mark as read:
