@@ -1178,7 +1178,7 @@ td.MENCHcolumn3  { width: 13%; }
 .show-on-hover {
     display:none !important;
 }
-.list-group-item:hover .show-on-hover, .big-cover:hover .show-on-hover {
+.list-group-item:hover .show-on-hover {
     display:inline-block !important;
 }
 
@@ -1346,6 +1346,7 @@ label {
 }
 .cover-editor > span {
     padding: 0;
+    display: block !important;
 }
 .cover-editor > span > span {
     background-color: #000000 !important;
