@@ -59,6 +59,7 @@ $(document).ready(function () {
 
     //Source Loader:
     var portfolio_count = parseInt($('#new_11029').attr('current-count'));
+    alert('J'+portfolio_count);
     if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m_message'])){
         e_sort_portfolio_load();
     }
