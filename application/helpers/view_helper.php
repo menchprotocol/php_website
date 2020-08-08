@@ -1314,7 +1314,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
-    $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
 
     $user_e = superpower_assigned();
     $i_stats = i_stats($i['i__metadata']);
@@ -1375,7 +1374,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 //Title
                 $ui .= '<div>';
-                $ui .= '<span class="icon-block icon-title">'.( $x__type == 6255 ? view_icon_i_x($completion_rate['completion_percentage']) : $e___12467[12273]['m_icon'] ).'</span>';
+                $ui .= '<span class="icon-block icon-title">'.( $x__type == 6255 ? view_icon_i_x($completion_rate['completion_percentage']) : view_cache(4737 /* Idea Status */, $i['i__status'], true, null, $i['i__id']) ).'</span>';
                 $ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
                 $ui .= '</div>';
 
@@ -1388,11 +1387,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                     //IDEAS
                     $ui .= view_coins_i(12273, $i, true, true, null);
-
-                    //DRAFTING?
-                    if(!in_array($i['i__status'], $CI->config->item('n___7355'))){
-                        $ui .= '<div class="montserrat">'.view_cache(4737 /* Idea Status */, $i['i__status'], false, null, $i['i__id']).'</div>';
-                    }
 
                     $ui .= '</div>';
 
