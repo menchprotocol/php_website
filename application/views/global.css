@@ -1579,7 +1579,8 @@ label {
     margin-top: -7px !important;
 }
 .big-cover{
-    margin-bottom: 21px;
+    margin-bottom: 13px;
+    position: relative;
 }
 
 .feature-content .padded{
