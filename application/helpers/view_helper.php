@@ -1321,7 +1321,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $href = ( $x__type == 6255 ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] ).( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
     $start_reading = false;
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' list-group-item no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).( $x__type==6255 ? ' itemdiscover ' : ' itemidea ' ).' '.$extra_class.'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).( $x__type==6255 ? ' itemdiscover ' : ' itemidea ' ).' '.$extra_class.'">';
 
 
 
@@ -1353,11 +1353,10 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
         $ui .= '<div class="row">';
-            $ui .= '<div class="col-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
             $ui .= '<div class="col-9 feature-content">';
 
                 //Title
-                $ui .= '<div style="padding-top:8px;"><h2><a href="'.$href.'">'.view_i_title($i).'</a></h2></div>';
+                $ui .= '<h2><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
 
 
 
@@ -1395,6 +1394,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
             $ui .= '</div>';
+            $ui .= '<div class="col-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
         $ui .= '</div>';
     $ui .= '</div>';
 
