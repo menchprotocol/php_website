@@ -1351,6 +1351,7 @@ label {
     background-color: #000000 !important;
     border-radius: 10px;
     padding:5px 10px;
+    margin-bottom: 8px;
 }
 .cover-editor i {
     color: #FFFFFF !important;
