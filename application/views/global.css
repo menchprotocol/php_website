@@ -891,7 +891,7 @@ textarea.note-textarea{
 .x_remove{
     cursor: pointer;
 }
-.x_sort{
+.x_sort, .fa-sort{
     cursor: grab;
 }
 .space-left{
