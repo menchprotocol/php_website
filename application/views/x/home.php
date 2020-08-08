@@ -22,7 +22,6 @@
 
 
     //FEATURED IDEAS
-    echo '<div class="headline" style="margin-top: 33px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
     echo '<div>';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
