@@ -30,7 +30,7 @@ function view_i_tree_stats($i_stats, $show_info){
 
         //Variable time range:
         if($show_info){
-            $ui .= '<p class="space-content">The number of ideas you discover and the time it takes to discover them depends on the choices you make interactively along the way:</p>';
+            $ui .= '<div class="i_content padded"><div class="msg">The number of ideas you discover and the time it takes to discover them depends on the choices you make interactively along the way:</div></div>';
         }
         $ui .= '<p class="space-content" style="margin-bottom:33px;">';
 
@@ -51,7 +51,7 @@ function view_i_tree_stats($i_stats, $show_info){
     } elseif($show_info) {
 
         //Single Time range:
-        $ui .= '<p class="space-content" style="margin-bottom:33px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.( $i_stats['i___13443']<=1 ? 'this idea' : 'all '.$i_stats['i___13443'].' ideas' ).'.</p>';
+        $ui .= '<div class="i_content padded"><div class="msg">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.( $i_stats['i___13443']<=1 ? 'this idea' : 'all '.$i_stats['i___13443'].' ideas' ).'.</div></div>';
 
     }
 

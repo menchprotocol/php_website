@@ -228,7 +228,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //CERTIFICATES
         $counter = $i_stats['count_7545'];
-        $focus_tab .= '<p class="space-content">Completion could earn you some of the following certificates:</p>';
+        $focus_tab .= '<div class="i_content padded"><div class="msg">Completion could earn you some of the following certificates:</div></div>';
         $focus_tab .= '<div class="list-group" style="margin-bottom:33px;">';
         foreach ($i_stats['array_7545'] as $e) {
             $e['x__message'] = ''; //Remove for this
@@ -253,7 +253,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==6255){
 
         $counter = view_coins_i(6255,  $i_focus, false);
-        $focus_tab .= '<p class="space-content">This idea has been discovered by '.$counter.' users so far.</p>';
+        $focus_tab .= '<div class="i_content padded"><div class="msg">This idea has been discovered by '.$counter.' users.</div></div>';
 
     } elseif($x__type==13023){
 
