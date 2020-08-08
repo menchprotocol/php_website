@@ -1601,6 +1601,10 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .cover-title {
+        padding-top: 6px;
+    }
+
     .big-cover{ margin:0 5px 5px 0; }
 
     h2 {
