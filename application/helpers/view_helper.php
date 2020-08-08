@@ -1319,17 +1319,14 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $user_e = superpower_assigned();
     $i_stats = i_stats($i['i__metadata']);
     $href = ( $x__type == 6255 ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] ).( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
-    $start_reading = false;
+    $completion_rate['completion_percentage'] = 0; //Assume no progress
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
-
-
         if($user_e && $x__type==6255){
             $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
-            $start_reading = $completion_rate['completion_percentage']>0;
-            if($start_reading){
-                $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+            if($completion_rate['completion_percentage']>0){
+                $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
             }
         }
 
@@ -1351,16 +1348,40 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
         }
 
+/*
+    $ui .= '<div class="row">';
+    $ui .= '<div class="col-sm col-md">';
+
+    $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage']).'</span>';
+    $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
+
+    $ui .= '</div>';
+    $ui .= '<div class="col-sm-4 col-md-3 col2nd handler_13509 hidden">';
+
+    //MENCH COINS
+    $ui .= '<div class="row">';
+    $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
+    $ui .= '<div class="col-8">'.( $i_stats['i___13292'] ? '<span class="mono-space">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
+    $ui .= '</div>';
+
+    $ui .= '</div>';
+    $ui .= '</div>';
+    */
+
+
 
         $ui .= '<div class="row">';
             $ui .= '<div class="col-9 feature-content">';
 
                 //Title
-                $ui .= '<div><h2><a href="'.$href.'">'.view_i_title($i).'</a></h2></div>';
+                $ui .= '<div>';
+                $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage']).'</span>';
+                $ui .= '<h2><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
+                $ui .= '</div>';
 
 
                 //MENCH COINS
-                $ui .= '<div class="row">';
+                $ui .= '<div class="row" style="padding-left: 34px; padding-top: 8px;">';
 
 
                     $ui .= '<div class="col-6">';

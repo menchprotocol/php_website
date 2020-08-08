@@ -266,7 +266,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 $focus_tab .= '<div class="doclear">&nbsp;</div>';
                 $focus_tab .= '<div class="e_editor hidden">';
-                $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+                $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 34px;">';
 
                 //Drop Down
                 $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
@@ -384,7 +384,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-            $focus_tab .= '<div id="list_13412" class="space-left">';
+            $focus_tab .= '<div id="list_13412">';
             foreach($list_i as $count => $item){
 
                 $message_input = null;
@@ -465,7 +465,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                     if(count($list_x)){
 
-                        $focus_tab .= '<div id="list_6132" class="space-left">';
+                        $focus_tab .= '<div id="list_6132">';
                         foreach($list_x as $item){
                             $focus_tab .= view_i_cover(6255, $item, $source_is_e);
                             array_push($my_x_ids, $item['i__id']);
@@ -501,7 +501,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
                 $focus_tab .= '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
-                $focus_tab .= '<div class="space-left">';
+                $focus_tab .= '<div>';
                 foreach($featured_i as $key => $x){
                     if(!in_array($x['i__id'], $my_x_ids)){
                         //Show only if not in discovering list:

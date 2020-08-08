@@ -329,7 +329,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $counter = null;
-        $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+        $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 34px;">';
 
         //Drop Down
         $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';

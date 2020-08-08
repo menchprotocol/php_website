@@ -36,7 +36,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     padding:0 0 60px;
 }
 .padded {
-    margin: 0 33px 33px 33px;
+    margin: 0 34px 34px 34px;
 }
 .edit-off .padded, .edit-on .padded {
     margin-bottom: 0;
@@ -226,7 +226,7 @@ li a {
 }
 
 .form-control-thick{
-    padding:7px 10px 7px 33px;
+    padding:7px 10px 7px 34px;
     color: #000000 !important;
 }
 .bottom-x-line{
@@ -437,11 +437,11 @@ img.no-radius {
 
 .nav-tabs {
     margin:5px 0 13px 0;
-    margin-left: 33px;
+    margin-left: 34px;
 }
 .nav-pills {
     margin:0 0 10px;
-    margin-left: 33px;
+    margin-left: 34px;
 }
 
 .x-info{
@@ -452,7 +452,7 @@ img.no-radius {
     line-height: 144%;
 }
 .message_content{
-    margin-left: 33px;
+    margin-left: 34px;
 }
 .i-footer .message_content{
     margin-left:0;
@@ -796,7 +796,7 @@ img.no-radius {
 
 
 .add_notes_form{
-    margin-left: 33px;
+    margin-left: 34px;
 }
 
 
@@ -807,13 +807,13 @@ textarea.note-textarea{
     background-color: transparent !important;
     box-shadow: none;
     color: #000000;
-    padding: 0 33px 5px 0;
+    padding: 0 34px 5px 0;
     line-height: 144% !important;
 }
 
 .note-textarea.edit-on {
-    margin-left: 33px;
-    padding: 5px 33px 10px 0;
+    margin-left: 34px;
+    padding: 5px 34px 10px 0;
     line-height: 144% !important;
 }
 
@@ -895,7 +895,7 @@ textarea.note-textarea{
     cursor: grab;
 }
 .space-left{
-    padding-left: 33px;
+    padding-left: 34px;
 }
 .icon-white-block{
     background-color: #FFFFFF;
@@ -910,8 +910,8 @@ textarea.note-textarea{
     display: inline-block;
 }
 .space-content{
-    padding-left:33px;
-    padding-right:33px;
+    padding-left:34px;
+    padding-right:34px;
     display: block;
     line-height: 144%;
 }
@@ -923,16 +923,17 @@ textarea.note-textarea{
 }
 .title-block{
     display: block;
-    padding-left: 33px;
+    padding-left: 34px;
     padding-right:0;
     margin-top: -17px !important;
     margin-bottom:0;
 }
 .title-block-lg{
     display: block;
-    padding-left: 33px;
+    padding-left: 34px;
     padding-right:0;
     margin-bottom:0;
+    margin-top: -54px !important;
 }
 .title-no-right {
     padding-right:5px !important;
@@ -962,7 +963,7 @@ td.MENCHcolumn3  { width: 13%; }
     margin-bottom: 10px;
 }
 .left-margin{
-    margin-left: 33px;
+    margin-left: 34px;
     display: inline-block;
 }
 .left-half-margin{
@@ -1101,7 +1102,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .x_marks .form-control{
-    width: 33px;
+    width: 34px;
     display: inline-block;
     padding: 2px;
     text-align: center;
@@ -1159,7 +1160,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .url_truncate {
-    max-width: calc(100% - 33px);
+    max-width: calc(100% - 34px);
     overflow: hidden;
     display: inline-block;
 }
@@ -1403,7 +1404,7 @@ label {
 .block{ display: block !important; width: 100%; }
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
-.icon-block { width:33px !important; display: inline-block; text-align: center; vertical-align: top; }
+.icon-block { width:34px !important; display: inline-block; text-align: center; vertical-align: top; }
 .icon-block-xs{ width:22px; display: inline-block; text-align: center; vertical-align: top; }
 #font_size_13493 .icon-block-xs{ width:30px; }
 #font_size_13494 .icon-block-xs{ width:36px; }
@@ -1442,9 +1443,9 @@ label {
     width:         calc(100% - 68px);
 }
 .texttype__lg, #newIdeaTitle, .add_notes_form, .i-info, .note-textarea.edit-on {
-    width: -webkit-calc(100% - 33px) !important;
-    width:    -moz-calc(100% - 33px) !important;
-    width:         calc(100% - 33px) !important;
+    width: -webkit-calc(100% - 34px) !important;
+    width:    -moz-calc(100% - 34px) !important;
+    width:         calc(100% - 34px) !important;
 }
 .block-one {
     padding-top: 5px;
@@ -1491,7 +1492,7 @@ label {
     margin-bottom: 5px;
 }
 .text_e_4736, .text_e_6197{
-    width:calc(100% - 33px);
+    width:calc(100% - 34px);
     margin-bottom: 0;
 }
 
@@ -1579,7 +1580,7 @@ label {
     margin-top: -7px !important;
 }
 .big-cover{
-    margin-bottom: 13px;
+    margin:0 0 13px 0;
     position: relative;
 }
 
@@ -1590,16 +1591,10 @@ label {
     margin:0 0 13px 0 !important;
 }
 
-.title-block-lg{
-    margin-top: -46px !important;
-}
-
 /* RESPONSIVE */
 @media (max-width:767px) {
 
-    .space-left{
-        padding-right: 5px;
-    }
+    .big-cover{ margin:0 5px 5px 0; }
 
     h2 {
         font-size: 1.3em;
@@ -1618,7 +1613,7 @@ label {
         margin-top: -7px;
     }
     .title-block-lg{
-        margin-top: -32px !important;
+        margin-top: -36px !important;
     }
     .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
@@ -1631,9 +1626,9 @@ label {
     }
 
     .icon-block-lg img {
-        width: 33px !important;
+        width: 34px !important;
         margin: -13px 0 -8px -2px !important;
-        height: 33px !important;
+        height: 34px !important;
     }
     .container {
         max-width: none;
