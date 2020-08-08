@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-07 17:30:17 PST
-$config['s___12274'] = 5003; //SOURCES
+//Generated 2020-08-08 10:34:32 PST
+$config['s___12274'] = 5002; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
-$config['s___6255'] = 122275; //DISCOVERIES
+$config['s___6255'] = 122277; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -3809,7 +3809,7 @@ $config['e___11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,4485,12137,4736,13406,11064,11065,13014,13005,11079,11060,13556,13555,13545,11066,12088,13206,11986,6197,12232,13572,12565,12568);
+$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,4485,12137,4736,13406,11064,11065,13014,13005,11079,11060,13556,13545,11066,12088,13206,11986,6197,12232,13572,12565,12568);
 $config['e___6404'] = array(
     12678 => array(
         'm_title' => 'ALGOLIA SEARCH ENABLED (0 OR 1)',
@@ -3927,19 +3927,13 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.50211',
+        'm_message' => 'v1.503',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
     13556 => array(
         'm_title' => 'MESSAGE FEATURED CAP WORDS',
         'm_message' => '34',
-        'm_icon' => '',
-        'm_profile' => array(6404),
-    ),
-    13555 => array(
-        'm_title' => 'MESSAGE FEATURED MINIMUM WORDS',
-        'm_message' => '3',
         'm_icon' => '',
         'm_profile' => array(6404),
     ),
