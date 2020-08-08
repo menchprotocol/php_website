@@ -1454,8 +1454,11 @@ label {
     width:         calc(100% - 10px) !important;
 }
 
+.cover-title {
+    padding-top: 1px;
+}
 .icon-title{
-    padding-top: 7px;
+    padding-top: 9px;
 }
 
 
@@ -1597,10 +1600,6 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
-
-    .icon-title{
-        padding-top: 3px;
-    }
 
     .big-cover{ margin:0 5px 5px 0; }
 
