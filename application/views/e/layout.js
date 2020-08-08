@@ -193,6 +193,7 @@ $(document).ready(function () {
                 e.preventDefault();
                 e_upload_file(droppedFiles, 'drop');
             });
+
     }
 
     x_type_preview_load();
@@ -868,6 +869,8 @@ function e_sort_reset(){
 
 function e_sort_portfolio_load() {
 
+    alert('1');
+
     var element_key = null;
     var theobject = document.getElementById("list_e");
     if (!theobject) {
@@ -877,12 +880,14 @@ function e_sort_portfolio_load() {
 
     //Show sort icon:
     $('.fa-sort, .sort_reset').removeClass('hidden');
+    alert('2');
 
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".en-item", // Specifies which items inside the element should be sortable
         handle: ".fa-sort", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
+            alert('3');
             e_sort_save();
         }
     });

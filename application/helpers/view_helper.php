@@ -1496,7 +1496,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
             //Sort
             if(!$is_parent && $superpower_10939){
-                $ui .= '<span title="SORT"><i class="fas fa-sort source"></i></span>';
+                $ui .= '<span title="SORT"><i class="fas fa-sort source hidden"></i></span>';
             }
 
             //Edit Raw Source
