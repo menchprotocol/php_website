@@ -1351,7 +1351,7 @@ label {
 .cover-editor > span > span {
     background-color: #000000 !important;
     border-radius: 50%;
-    padding:5px 10px;
+    padding:5px;
     margin-bottom: 8px;
 }
 .cover-editor i {
