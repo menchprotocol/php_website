@@ -32,7 +32,7 @@ function view_i_tree_stats($i_stats, $show_info){
         if($show_info){
             $ui .= '<p class="space-content">The number of ideas you discover and the time it takes to discover them depends on the choices you make interactively along the way:</p>';
         }
-        $ui .= '<p class="space-content" style="margin-bottom:34px;">';
+        $ui .= '<p class="space-content" style="margin-bottom:33px;">';
 
         foreach($CI->config->item('e___13544') as $e__id => $m){
 
@@ -51,7 +51,7 @@ function view_i_tree_stats($i_stats, $show_info){
     } elseif($show_info) {
 
         //Single Time range:
-        $ui .= '<p class="space-content" style="margin-bottom:34px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.( $i_stats['i___13443']<=1 ? 'this idea' : 'all '.$i_stats['i___13443'].' ideas' ).'.</p>';
+        $ui .= '<p class="space-content" style="margin-bottom:33px;">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.( $i_stats['i___13443']<=1 ? 'this idea' : 'all '.$i_stats['i___13443'].' ideas' ).'.</p>';
 
     }
 
@@ -836,7 +836,7 @@ function view_i_tree_e($i){
     foreach($CI->config->item('e___4251') as $e__id => $m2){
         if($i_stats['count_'.$e__id]>0){
             $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].':</div>';
-            $ui .= '<div class="list-group" style="margin-bottom:34px;">';
+            $ui .= '<div class="list-group" style="margin-bottom:33px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
                 $ui .= view_e_basic($e);
             }
@@ -1169,7 +1169,7 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
     $ui .= '<div class="pull-right inline-block" style="margin:5px 5px 0 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="grey montserrat">'.$e___11035[13509]['m_icon'].' <u>'.$e___11035[13509]['m_title'].'</u></a></div>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
-    $ui .= '<div class="list-group" style="margin-bottom:34px;">';
+    $ui .= '<div class="list-group" style="margin-bottom:33px;">';
     foreach($is_next as $key => $next_i){
         $ui .= view_i_x($next_i, $common_prefix);
     }
@@ -1334,7 +1334,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
             //RIGHT EDITING:
             $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'">';
-            $ui .= '<span class="show-on-hover">';
+            $ui .= '<span class="show-on-hover cover-editor">';
 
             //SORT
             $ui .= '<span title="'.$e___13369[13413]['m_title'].'" class="x_sort">'.$e___13369[13413]['m_icon'].'</span>';
@@ -1346,27 +1346,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
             $ui .= '</div>';
 
         }
-
-/*
-    $ui .= '<div class="row">';
-    $ui .= '<div class="col-sm col-md">';
-
-    $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i).'</span>';
-    $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
-
-    $ui .= '</div>';
-    $ui .= '<div class="col-sm-4 col-md-3 col2nd handler_13509 hidden">';
-
-    //MENCH COINS
-    $ui .= '<div class="row">';
-    $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
-    $ui .= '<div class="col-8">'.( $i_stats['i___13292'] ? '<span class="mono-space">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
-    $ui .= '</div>';
-
-    $ui .= '</div>';
-    $ui .= '</div>';
-    */
-
 
 
         $ui .= '<div class="row">';
@@ -1389,7 +1368,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 }
 
 
-                $ui .= '<div class="row" style="padding-left: 34px; padding-top: 8px;">';
+                $ui .= '<div class="row" style="padding-left: 33px; padding-top: 8px;">';
 
                     //IDAES
                     $ui .= '<div class="col-6">'.view_coins_i(12273, $i, true, true, null).'</div>';

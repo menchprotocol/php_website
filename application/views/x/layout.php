@@ -179,7 +179,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //MESSAGES
         $counter = count($messages);
 
-        $focus_tab .= '<div style="margin-bottom:34px;">';
+        $focus_tab .= '<div style="margin-bottom:33px;">';
         if($counter){
             foreach($messages as $message_x) {
                 $focus_tab .= $this->X_model->message_send(
@@ -233,7 +233,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //CERTIFICATES
         $counter = $i_stats['count_7545'];
         $focus_tab .= '<p class="space-content">Completion could earn you some of the following certificates:</p>';
-        $focus_tab .= '<div class="list-group" style="margin-bottom:34px;">';
+        $focus_tab .= '<div class="list-group" style="margin-bottom:33px;">';
         foreach ($i_stats['array_7545'] as $e) {
             $e['x__message'] = ''; //Remove for this
             $focus_tab .= view_e_basic($e);
@@ -250,7 +250,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
         $counter = count($comments);
 
-        $focus_tab .= '<div style="margin-bottom:34px;">';
+        $focus_tab .= '<div style="margin-bottom:33px;">';
         $focus_tab .= view_i_note_mix($x__type, $comments);
         $focus_tab .= '</div>';
 
@@ -269,13 +269,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 //MENCH URL
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
-                $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin: 5px 0 34px 34px; width: 233px; padding-left: 8px;">';
+                $focus_tab .= '<input type="url" value="' .$this_url . '" class="form-control border" style="margin: 5px 0 33px 33px; width: 233px; padding-left: 8px;">';
 
             } elseif($x__type2==13531){
 
                 //SHARE ON SOCIAL MEDIA
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
-                $focus_tab .= '<div class="share-this space-content" style="margin:5px 0 34px;">';
+                $focus_tab .= '<div class="share-this space-content" style="margin:5px 0 33px;">';
                 foreach($this->config->item('e___13531') as $m2) {
                     $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_message'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share with '.$m2['m_title'].'" data-toggle="tooltip" data-placement="top">'.$m2['m_icon'].'</div></div>';
                 }
@@ -291,7 +291,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 ), array(), 0);
                 if(count($keywords)){
                     $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
-                    $focus_tab .= '<div class="share-this space-content" style="margin-bottom:34px;">';
+                    $focus_tab .= '<div class="share-this space-content" style="margin-bottom:33px;">';
                     foreach($keywords as $count => $keyword) {
                         if($count > 0){
                             $focus_tab .= ', ';

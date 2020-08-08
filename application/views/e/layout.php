@@ -260,13 +260,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 }
 
 
-                $focus_tab .= '<div class="pull-right grey" style="margin:-35px 34px 0 0;">'.( superpower_active(13422, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_title'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
+                $focus_tab .= '<div class="pull-right grey" style="margin:-35px 33px 0 0;">'.( superpower_active(13422, true) && sources_currently_sorted($e['e__id']) ? '<span class="sort_reset hidden icon-block" title="'.$e___11035[13007]['m_title'].'" data-toggle="tooltip" data-placement="top"><a href="javascript:void(0);" onclick="e_sort_reset()">'.$e___11035[13007]['m_icon'].'</a></span>' : '').'<a href="javascript:void(0);" onclick="$(\'.e_editor\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
 
 
 
                 $focus_tab .= '<div class="doclear">&nbsp;</div>';
                 $focus_tab .= '<div class="e_editor hidden">';
-                $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 34px;">';
+                $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
 
                 //Drop Down
                 $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
@@ -407,7 +407,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             if($source_is_e && $counter > count($list_i)){
                 //Give option to browse all idea:
-                $focus_tab .= '<div style="padding: 13px 0;"><div class="alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>List all my '.$counter.' ideas &raquo;</a></div></div>';
+                $focus_tab .= '<div style="padding: 13px 0;"><div class="alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>LIST ALL '.$counter.' IDEAS &raquo;</a></div></div>';
             }
 
 
@@ -500,7 +500,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     'x__left' => config_var(12137),
                 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-                $focus_tab .= '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
+                $focus_tab .= '<div class="headline" style="margin-top: 33px;"><span class="icon-block">'.$e___11035[12137]['m_icon'].'</span>'.$e___11035[12137]['m_title'].'</div>';
                 $focus_tab .= '<div>';
                 foreach($featured_i as $key => $x){
                     if(!in_array($x['i__id'], $my_x_ids)){
@@ -562,7 +562,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         } elseif($x__type==6225){
 
             //ACCOUNT SETTING
-            $focus_tab = '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:34px;">';
+            $focus_tab = '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:33px;">';
 
             //Display account fields ordered with their SOURCE LINKS:
             foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {

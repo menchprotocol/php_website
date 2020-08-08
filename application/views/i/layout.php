@@ -147,7 +147,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //Show tree sources only if more than the sources for this idea:
         if( $counter > count($i_notes) ){
             //Add Tree Sources
-            $focus_tab .= '<div style="margin:21px 0 34px;">';
+            $focus_tab .= '<div style="margin:21px 0 33px;">';
                 $focus_tab .= '<div class="tree_sources list-group"><a class="list-group-item montserrat doupper source itemsource" href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>LIST '.$counter.' SOURCES'.( $counter_i > 1 ? ' FOR ALL '.$counter_i.' IDEAS' : '' ).'</a></div>';
                 $focus_tab .= '<div class="tree_sources hidden">'.view_i_tree_e($i_focus).'</div>';
             $focus_tab .= '</div>';
@@ -165,7 +165,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = count($i_notes);
 
-        $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:34px;">';
+        $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:33px;">';
         foreach($i_notes as $i_note) {
             $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
         }
@@ -329,7 +329,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $counter = null;
-        $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 34px;">';
+        $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
 
         //Drop Down
         $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';

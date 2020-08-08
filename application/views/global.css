@@ -36,7 +36,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     padding:0 0 60px;
 }
 .padded {
-    margin: 0 34px 34px 34px;
+    margin: 0 33px 33px 33px;
 }
 .edit-off .padded, .edit-on .padded {
     margin-bottom: 0;
@@ -116,7 +116,7 @@ h1 i {
 h1 {
     font-family: 'Montserrat', sans-serif;
     margin-top:0;
-    margin-bottom:34px;
+    margin-bottom:33px;
     margin-left: 0;
     padding-left: 0;
 }
@@ -226,7 +226,7 @@ li a {
 }
 
 .form-control-thick{
-    padding:7px 10px 7px 34px;
+    padding:7px 10px 7px 33px;
     color: #000000 !important;
 }
 .bottom-x-line{
@@ -410,7 +410,7 @@ img.no-radius {
     width: 100%;
     max-width:380px !important;
     padding: 15px;
-    padding-top:34px;
+    padding-top:33px;
     margin: 0 auto;
 }
 .center{
@@ -437,22 +437,22 @@ img.no-radius {
 
 .nav-tabs {
     margin:5px 0 13px 0;
-    margin-left: 34px;
+    margin-left: 33px;
 }
 .nav-pills {
     margin:0 0 10px;
-    margin-left: 34px;
+    margin-left: 33px;
 }
 
 .x-info{
     background-color: #000000;
     color: #FFFFFF;
-    padding: 21px 5px 21px 34px;
+    padding: 21px 5px 21px 33px;
     margin:0;
     line-height: 144%;
 }
 .message_content{
-    margin-left: 34px;
+    margin-left: 33px;
 }
 .i-footer .message_content{
     margin-left:0;
@@ -647,7 +647,7 @@ img.no-radius {
 }
 .mench-large{
     width:128px;
-    margin-bottom: 34px;
+    margin-bottom: 33px;
 }
 
 @-webkit-keyframes mench-spin {
@@ -712,7 +712,7 @@ img.no-radius {
 
 .tab-content{
     padding:0;
-    margin-bottom: 34px;
+    margin-bottom: 33px;
 }
 
 .msg{
@@ -796,7 +796,7 @@ img.no-radius {
 
 
 .add_notes_form{
-    margin-left: 34px;
+    margin-left: 33px;
 }
 
 
@@ -807,13 +807,13 @@ textarea.note-textarea{
     background-color: transparent !important;
     box-shadow: none;
     color: #000000;
-    padding: 0 34px 5px 0;
+    padding: 0 33px 5px 0;
     line-height: 144% !important;
 }
 
 .note-textarea.edit-on {
-    margin-left: 34px;
-    padding: 5px 34px 10px 0;
+    margin-left: 33px;
+    padding: 5px 33px 10px 0;
     line-height: 144% !important;
 }
 
@@ -895,7 +895,7 @@ textarea.note-textarea{
     cursor: grab;
 }
 .space-left{
-    padding-left: 34px;
+    padding-left: 33px;
 }
 .icon-white-block{
     background-color: #FFFFFF;
@@ -910,8 +910,8 @@ textarea.note-textarea{
     display: inline-block;
 }
 .space-content{
-    padding-left:34px;
-    padding-right:34px;
+    padding-left:33px;
+    padding-right:33px;
     display: block;
     line-height: 144%;
 }
@@ -923,14 +923,14 @@ textarea.note-textarea{
 }
 .title-block{
     display: block;
-    padding-left: 34px;
+    padding-left: 33px;
     padding-right:0;
     margin-top: -17px !important;
     margin-bottom:0;
 }
 .title-block-lg{
     display: block;
-    padding-left: 34px;
+    padding-left: 33px;
     padding-right:0;
     margin-bottom:0;
     margin-top: -54px !important;
@@ -963,7 +963,7 @@ td.MENCHcolumn3  { width: 13%; }
     margin-bottom: 10px;
 }
 .left-margin{
-    margin-left: 34px;
+    margin-left: 33px;
     display: inline-block;
 }
 .left-half-margin{
@@ -1082,8 +1082,8 @@ td.MENCHcolumn3  { width: 13%; }
 .mench-logo{
     font-size: 1.44em;
     line-height: 100%;
-    width: 34px !important;
-    height: 34px !important;
+    width: 33px !important;
+    height: 33px !important;
     margin-left: 10px !important;
     margin-right: 4px !important;
     margin-bottom: 0 !important;
@@ -1102,7 +1102,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .x_marks .form-control{
-    width: 34px;
+    width: 33px;
     display: inline-block;
     padding: 2px;
     text-align: center;
@@ -1160,7 +1160,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .url_truncate {
-    max-width: calc(100% - 34px);
+    max-width: calc(100% - 33px);
     overflow: hidden;
     display: inline-block;
 }
@@ -1338,6 +1338,15 @@ label {
     background-color: #999999 !important;
 }
 
+.cover-editor > span {
+    background-color: #000000 !important;
+    border-radius: 5px;
+    padding: 3px;
+}
+.cover-editor i {
+    color: #FFFFFF !important;
+}
+
 .inputfile {
     width: 0.1px;
     height: 0.1px;
@@ -1404,7 +1413,7 @@ label {
 .block{ display: block !important; width: 100%; }
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
-.icon-block { width:34px !important; display: inline-block; text-align: center; vertical-align: top; }
+.icon-block { width:33px !important; display: inline-block; text-align: center; vertical-align: top; }
 .icon-block-xs{ width:22px; display: inline-block; text-align: center; vertical-align: top; }
 #font_size_13493 .icon-block-xs{ width:30px; }
 #font_size_13494 .icon-block-xs{ width:36px; }
@@ -1443,9 +1452,9 @@ label {
     width:         calc(100% - 68px);
 }
 .texttype__lg, #newIdeaTitle, .add_notes_form, .i-info, .note-textarea.edit-on, .cover-title {
-    width: -webkit-calc(100% - 34px) !important;
-    width:    -moz-calc(100% - 34px) !important;
-    width:         calc(100% - 34px) !important;
+    width: -webkit-calc(100% - 33px) !important;
+    width:    -moz-calc(100% - 33px) !important;
+    width:         calc(100% - 33px) !important;
 }
 .block-one {
     padding-top: 5px;
@@ -1501,7 +1510,7 @@ label {
     margin-bottom: 5px;
 }
 .text_e_4736, .text_e_6197{
-    width:calc(100% - 34px);
+    width:calc(100% - 33px);
     margin-bottom: 0;
 }
 
@@ -1617,7 +1626,7 @@ label {
         margin:0 0 5px 0 !important;
     }
 
-    .col2nd .row { padding-left: 34px; padding-top: 8px; }
+    .col2nd .row { padding-left: 33px; padding-top: 8px; }
 
     .top-icon{
         margin-top: -12px;
@@ -1639,9 +1648,9 @@ label {
     }
 
     .icon-block-lg img {
-        width: 34px !important;
+        width: 33px !important;
         margin: -13px 0 -8px -2px !important;
-        height: 34px !important;
+        height: 33px !important;
     }
     .container {
         max-width: none;
