@@ -728,14 +728,13 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
 
 
 
-function view_icon_i_x($completion_percentage){
+function view_icon_i_x($completion_percentage, $i){
 
     $CI =& get_instance();
-    $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
     $user_e = superpower_assigned();
     if(!$user_e){
         //DISCOVER GUEST
-        $x_legend = 12273;
+        return view_cache(4737 /* Idea Status */, $i['i__status'], true, null, $i['i__id']);
     } elseif($completion_percentage==0){
         //DISCOVER NOT STARTED
         $x_legend = 12448;
@@ -747,6 +746,7 @@ function view_icon_i_x($completion_percentage){
         $x_legend = 13338;
     }
 
+    $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
     return '<span title="'.$e___12446[$x_legend]['m_title'].'">'.$e___12446[$x_legend]['m_icon'].'</span>';
 
 }
@@ -792,7 +792,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $ui .= '<div class="row">';
         $ui .= '<div class="col-sm col-md">';
 
-            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage']).'</span>';
+            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i).'</span>';
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
@@ -1351,7 +1351,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $ui .= '<div class="row">';
     $ui .= '<div class="col-sm col-md">';
 
-    $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage']).'</span>';
+    $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i).'</span>';
     $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
     $ui .= '</div>';
@@ -1374,7 +1374,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 //Title
                 $ui .= '<div>';
-                $ui .= '<span class="icon-block icon-title">'.( $x__type == 6255 ? view_icon_i_x($completion_rate['completion_percentage']) : view_cache(4737 /* Idea Status */, $i['i__status'], true, null, $i['i__id']) ).'</span>';
+                $ui .= '<span class="icon-block icon-title">'.( $x__type == 6255 ? view_icon_i_x($completion_rate['completion_percentage'], $i) : view_cache(4737 /* Idea Status */, $i['i__status'], true, null, $i['i__id']) ).'</span>';
                 $ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
                 $ui .= '</div>';
 
