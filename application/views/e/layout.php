@@ -390,7 +390,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $message_input = null;
                 $string_references['ref_time_found'] = false;
 
-                if(strlen($item['x__message'])){
+                if(strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1)){
                     $message_input .= '<div class="message_content">';
                     $message_input .= $this->X_model->message_send($item['x__message']);
                     $message_input .= '</div>';

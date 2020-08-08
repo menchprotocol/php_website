@@ -1376,7 +1376,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 //Title
                 $ui .= '<div>';
                 $ui .= '<span class="icon-block icon-title">'.( $x__type == 6255 ? view_icon_i_x($completion_rate['completion_percentage']) : $e___12467[12273]['m_icon'] ).'</span>';
-                $ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
+                $ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).$CI->uri->segment(1).'</a></h2>';
                 $ui .= '</div>';
 
 
@@ -1409,7 +1409,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                     $ui .= '<div class="inline-block space-left">'.strlen($message_input).'-'.$message_input.'</div>';
                 } else {
                     //Description, if any
-                    $ui .= '<div class="inline-block space-left hideIfEmpty">aaa'.i_fetch_description($i['i__id']).'</div>';
+                    $ui .= '<div class="inline-block space-left hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
                 }
 
 
