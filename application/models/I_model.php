@@ -841,7 +841,7 @@ class I_model extends CI_Model
                     //Has and must be deleted:
                     $this->X_model->update($i_has_e[0]['x__id'], array(
                         'x__status' => 6173,
-                    ), $x__source, 10678 /* IDEA NOTES Unpublished */);
+                    ), $x__source, 10673 /* IDEA NOTES Unpublished */);
 
                     $applied_success++;
 

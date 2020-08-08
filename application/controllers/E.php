@@ -303,7 +303,7 @@ class E extends CI_Controller
 
     }
 
-    function remove_10678(){
+    function remove_10673(){
 
         //Auth user and check required variables:
         $user_e = superpower_assigned(10939);
@@ -323,7 +323,7 @@ class E extends CI_Controller
         //Archive Transaction:
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173,
-        ), $user_e['e__id'], 10678 /* IDEA NOTES Unpublished */);
+        ), $user_e['e__id'], 10673 /* IDEA NOTES Unpublished */);
 
         return view_json(array(
             'status' => 1,

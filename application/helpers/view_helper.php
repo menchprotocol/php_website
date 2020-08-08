@@ -1505,7 +1505,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         } elseif(!$is_parent && $source_of_e){
 
             //UNLINK SOURCE
-            $ui .= '<span><a href="javascript:void(0);" onclick="remove_10678(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10678]['m_title'].'">'.$e___11035[10678]['m_icon'].'</a></span>';
+            $ui .= '<span><a href="javascript:void(0);" onclick="remove_10673(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m_title'].'">'.$e___11035[10673]['m_icon'].'</a></span>';
 
             //Allow to modify via Modal:
             if(editable_by_13428($e['e__id'])){

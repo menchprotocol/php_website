@@ -395,11 +395,11 @@ function x_type_preview_load(){
 
 
 
-function remove_10678(x__id, note_type_id) {
+function remove_10673(x__id, note_type_id) {
 
     var r = confirm("Unlink this source?");
     if (r == true) {
-        $.post("/e/remove_10678", {
+        $.post("/e/remove_10673", {
 
             x__id: x__id,
 
