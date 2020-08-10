@@ -27,7 +27,7 @@ $(document).ready(function () {
 
             var i__id = $(this).attr('i__id');
             var x__type = parseInt($(this).attr('x__type'));
-            var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
+            var r = confirm("Unlink "+$('.text__4736_'+i__id+':first').text()+"?");
             if (r == true) {
                 //Save changes:
                 $.post("/x/x_remove", { x__type:x__type, i__id:i__id }, function (data) {
@@ -896,7 +896,7 @@ function save_13571() {
     var do_13527 = 0;
     if(x_count >= 1){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("Delete source & remove "+x_count+" links?! Type \"delete\" to confirm.", "");
+        var confirm_removal = prompt("Delete & unlink "+x_count+" links?! Type \"delete\" to confirm.", "");
         do_13527 = ( confirm_removal=='destroy' ? 1 : 0 );
 
         if (!(confirm_removal == 'delete') && !do_13527) {

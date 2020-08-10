@@ -356,7 +356,7 @@ img.no-radius {
     border-top: none;
     font-weight: normal;
     background-color: #FFFFFF;
-    z-index: 8 !important;
+    z-index: 99999 !important;
 }
 
 
@@ -604,7 +604,7 @@ img.no-radius {
     background-color: #f0f0f0;
 }
 .fixed-top, .fixed-bottom {
-    z-index: 5 !important;
+    z-index: 9999 !important;
 }
 
 
@@ -791,7 +791,7 @@ img.no-radius {
     top: -10px;
     overflow: hidden;
     margin-right: 3px;
-    z-index: 2 !important;
+    z-index: 999 !important;
 }
 
 
@@ -995,7 +995,7 @@ td.MENCHcolumn3  { width: 13%; }
     vertical-align: top;
 }
 .modal{
-    z-index: 8 !important;
+    z-index: 99999 !important;
 }
 
 .modal-content {
