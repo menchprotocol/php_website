@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-08 10:34:32 PST
+//Generated 2020-08-10 11:37:04 PST
 $config['s___12274'] = 5002; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122277; //DISCOVERIES
@@ -2865,7 +2865,7 @@ $config['e___12138'] = array(
     12137 => array(
         'm_title' => 'IDEAS FEATURED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,11035,13420,10648,12138,7356,7355,4737),
     ),
 );
@@ -3360,7 +3360,7 @@ $config['e___11035'] = array(
     12137 => array(
         'm_title' => 'IDEAS FEATURED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     13509 => array(
@@ -3674,7 +3674,7 @@ $config['e___4737'] = array(
     12137 => array(
         'm_title' => 'FEATURED',
         'm_message' => 'Searchable by all players',
-        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     6184 => array(
@@ -3880,7 +3880,7 @@ $config['e___6404'] = array(
     12137 => array(
         'm_title' => 'IDEAS FEATURED',
         'm_message' => '7766',
-        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     4736 => array(
@@ -3927,7 +3927,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.5032',
+        'm_message' => 'v1.51',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
@@ -6912,7 +6912,7 @@ $config['e___7356'] = array(
     12137 => array(
         'm_title' => 'FEATURED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     6184 => array(
@@ -6929,7 +6929,7 @@ $config['e___7355'] = array(
     12137 => array(
         'm_title' => 'FEATURED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     6184 => array(
