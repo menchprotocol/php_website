@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-10 11:39:32 PST
+//Generated 2020-08-10 14:11:10 PST
 $config['s___12274'] = 5002; //SOURCES
 $config['s___12273'] = 3927; //IDEAS
 $config['s___6255'] = 122277; //DISCOVERIES
@@ -1551,19 +1551,13 @@ $config['e___12675'] = array(
 );
 
 //IDEA TAB NO MANUAL ADD:
-$config['n___12677'] = array(6255,12969,12896);
+$config['n___12677'] = array(6255,12896);
 $config['e___12677'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(12574,13450,11089,13530,13291,12677,11018,12467,12228,4527),
-    ),
-    12969 => array(
-        'm_title' => 'MY DISCOVERIES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12228,11035,11018,12677,12701,4527),
     ),
     12896 => array(
         'm_title' => 'SAVE IDEA',
@@ -3106,7 +3100,7 @@ $config['e___4486'] = array(
 );
 
 //IDEA TABS:
-$config['n___11018'] = array(12274,12273,6255,12969,12896,7545,4601,12419,10573,12589,11047);
+$config['n___11018'] = array(12274,12273,6255,12896,7545,4601,12419,10573,12589,11047);
 $config['e___11018'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
@@ -3125,12 +3119,6 @@ $config['e___11018'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(12574,13450,11089,13530,13291,12677,11018,12467,12228,4527),
-    ),
-    12969 => array(
-        'm_title' => 'MY DISCOVERIES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12228,11035,11018,12677,12701,4527),
     ),
     12896 => array(
         'm_title' => 'SAVE IDEA',
@@ -3403,7 +3391,7 @@ $config['e___11035'] = array(
         'm_title' => 'MY DISCOVERIES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12228,11035,11018,12677,12701,4527),
+        'm_profile' => array(12228,11035,4527),
     ),
     10573 => array(
         'm_title' => 'MY IDEAS',
@@ -5412,7 +5400,7 @@ $config['e___4527'] = array(
         'm_title' => 'MY DISCOVERIES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12228,11035,11018,12677,12701,4527),
+        'm_profile' => array(12228,11035,4527),
     ),
     10573 => array(
         'm_title' => 'MY IDEAS',
