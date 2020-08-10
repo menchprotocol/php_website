@@ -108,7 +108,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 
 table td { border: none !important; }
 
-.texttype__lg, h1{ font-size: 2.4em; }
+.texttype__lg, h1{ font-size: 2.3em; }
 h1 i {
     font-size:0.417em !important;
 }
@@ -1670,7 +1670,7 @@ label {
     .show-on-hover { display:inline-block !important; }
     .form-control-thick { padding-left: 26px; }
     .avatar-item { width:110px !important; padding:10px 0 !important; }
-    .avatar-item .avatar-icon { font-size: 2.4em; }
+    .avatar-item .avatar-icon { font-size: 2.3em; }
 
     td.MENCHcolumn1  { width: 60%; }
     td.MENCHcolumn12  { width: 80%; }
