@@ -296,6 +296,8 @@ function save_13428(){
                 //Add New Source:
                 add_to_list('list_e', '.en-item', data.e_new_echo);
 
+                i_note_counter(12274, +1);
+
             }
 
         }
