@@ -2262,7 +2262,6 @@ class E extends CI_Controller
         return view_json(array(
             'status' => 1,
             'e_new_echo' => view_e($es[0], false, null, true, source_of_e($es[0]['e__id'])),
-            'new_e__id' => $es[0]['e__id'],
         ));
 
     }

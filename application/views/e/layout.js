@@ -293,8 +293,8 @@ function save_13428(){
 
             } else {
 
-                //Go to new source or refresh current source:
-                window.location = '/@' + data.new_e__id;
+                //Add New Source:
+                add_to_list('list_e', '.en-item', data.e_new_echo);
 
             }
 
