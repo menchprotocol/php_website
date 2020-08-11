@@ -333,15 +333,29 @@ class I extends CI_Controller {
                     //Determine what to do after deleted:
                     if($_POST['i__id'] == $_POST['focus_i__id']){
 
-                        //Since we're removing the FOCUS IDEA we need to move to the first parent idea:
-                        foreach($this->I_model->recursive_parents($_POST['i__id'], true, false) as $grand_parent_ids) {
-                            foreach($grand_parent_ids as $previous_i__id) {
-                                $deletion_redirect = '/~'.$previous_i__id; //First parent in first branch of parents
-                                break;
+                        //Find Published Parents:
+                        foreach($this->X_model->fetch(array(
+                            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                            'x__right' => $_POST['i__id'],
+                        ), array('x__left'), 1) as $previous_i) {
+                            $deletion_redirect = '/~'.$previous_i['i__id'];
+                        }
+
+                        //If not found, find active parents:
+                        if(!$deletion_redirect){
+                            foreach($this->X_model->fetch(array(
+                                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                                'x__right' => $_POST['i__id'],
+                            ), array('x__left'), 1) as $previous_i) {
+                                $deletion_redirect = '/~'.$previous_i['i__id'];
                             }
                         }
 
-                        //Go to main page if no parent found:
+                        //If still not found, go to main page if no parent found:
                         if(!$deletion_redirect){
                             $deletion_redirect = ( intval($this->session->userdata('session_time_7260')) ? '/e/plugin/7260' : home_url() );
                         }
