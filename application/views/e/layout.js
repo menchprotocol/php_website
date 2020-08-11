@@ -462,7 +462,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
                 header: function (data) {
                     if (!data.isEmpty) {
 
-                        return (js_session_superpowers_assigned.includes(13422) ? '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' + '</a>' : '') + '<a href="javascript:load_13428(0, \''+data.query+'\')" class="suggestion">' + '<span class="icon-block">'+js_e___11035[13428]['m_icon']+'</span><b class="source montserrat">LAUNCH ' + js_e___11035[13428]['m_title'] + ':</b></a>';
+                        return (js_session_superpowers_assigned.includes(13422) ? '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' + '</a>' : '') + '<a href="javascript:load_13428(0, \''+data.query+'\')" class="suggestion">' + '<span class="icon-block">'+js_e___11035[13428]['m_icon']+'</span><b class="source montserrat">ADD USING ' + js_e___11035[13428]['m_title'] + '</b></a>';
 
                     }
                 },
