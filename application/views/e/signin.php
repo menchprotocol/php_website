@@ -68,13 +68,12 @@ if(count($current_sign_i_attempt) == 0){
             'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'i__id' => $sign_i__id,
         ));
+        if(count($sign_i)){
+            echo '<p style="margin-top:13px;"><a href="/'.$sign_i__id.'" class="montserrat"><span class="icon-block"><i class="fas fa-arrow-left"></i></span>'.$sign_i[0]['i__title'].'</a></p>';
+        }
     }
 
-    if(count($sign_i)){
-        echo '<p style="margin-top:13px;">To <a href="/'.$sign_i__id.'" class="montserrat">'.$sign_i[0]['i__title'].'</a> for Free.</p>';
-    } else {
-        echo '<p style="margin-top:13px;">'.view_12687(4269).'</p>';
-    }
+    echo '<p style="margin-top:13px;">'.view_12687(4269).'</p>';
 
     ?>
 
