@@ -175,7 +175,7 @@ function i_remove(i__id, x__id, is_parent){
     if(!i__title.length){
         i__title = $('.text__4736_'+i__id+':first').val();
     }
-    var r = confirm("Remove ["+i__title+"]?");
+    var r = confirm("Unlink ["+i__title+"]?");
     if (r == true) {
 
         //Fetch Idea Data to load modify widget:
