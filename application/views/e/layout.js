@@ -412,82 +412,75 @@ function i_create(){
 
 function e_load_search(element_focus, is_e_parent, shortcut) {
 
-    if(validURL($(element_focus + ' .add-input').val())){
+    //Load Search:
+    $(element_focus + ' .add-input').focus(function() {
 
-        //Just enable Enter:
-        $(element_focus + ' .add-input').keypress(function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if ((code == 13) || (e.ctrlKey && code == 13)) {
+        $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
+
+    }).focusout(function() {
+
+        $(element_focus + ' .algolia_pad_search' ).addClass('hidden');
+
+    }).keypress(function (e) {
+
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+            if(validURL($(this).val()) || !js_session_superpowers_assigned.includes(13422)){
                 load_13428(0, $(this).val());
-                return true;
+            } else {
+                e__add(0, is_e_parent);
             }
-        });
-
-    } else {
-
-        //Load Search:
-        $(element_focus + ' .add-input').focus(function() {
-
-            $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
-
-        }).focusout(function() {
-
-            $(element_focus + ' .algolia_pad_search' ).addClass('hidden');
-
-        }).keypress(function (e) {
-
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if ((code == 13) || (e.ctrlKey && code == 13)) {
-                if(validURL($(this).val()) || !js_session_superpowers_assigned.includes(13422)){
-                    load_13428(0, $(this).val());
-                } else {
-                    e__add(0, is_e_parent);
-                }
-                return true;
-            }
-
-        });
-
-        if(parseInt(js_e___6404[12678]['m_message'])){
-
-            $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-                e__add(suggestion.object__id, is_e_parent);
-
-            }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_e_parent ? 'q' : 'a' )]}, [{
-
-                source: function (q, cb) {
-                    algolia_index.search(q, {
-                        filters: 'object__type=12274' + ( js_session_superpowers_assigned.includes(13422) ? '' : ' AND ( _tags:is_nonfiction ) ' ),
-                        hitsPerPage: 21,
-                    }, function (error, content) {
-                        if (error) {
-                            cb([]);
-                            return;
-                        }
-                        cb(content.hits, content);
-                    });
-                },
-                templates: {
-                    suggestion: function (suggestion) {
-                        //If clicked, would trigger the autocomplete:selected above which will trigger the e__add() function
-                        return view_search_result(suggestion);
-                    },
-                    header: function (data) {
-                        if (!data.isEmpty) {
-
-                            var return_string = ( validURL(data.query) ? data.query : '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' );
-
-                            return (js_session_superpowers_assigned.includes(13422) ? '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span>' + return_string + '</a>' : '') + '<a href="javascript:load_13428(0, \''+data.query+'\')" class="suggestion">' + '<span class="icon-block">'+js_e___11035[13428]['m_icon']+'</span><b class="source montserrat">' + js_e___11035[13428]['m_title'] + ':</b> ' + return_string + '</a>';
-
-                        }
-                    },
-                    empty: function (data) {
-                        return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
-                    },
-                }
-            }]);
+            return true;
         }
+
+    });
+
+    if(parseInt(js_e___6404[12678]['m_message'])){
+
+        $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+            e__add(suggestion.object__id, is_e_parent);
+
+        }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_e_parent ? 'q' : 'a' )]}, [{
+
+            source: function (q, cb) {
+                algolia_index.search(q, {
+                    filters: 'object__type=12274' + ( js_session_superpowers_assigned.includes(13422) ? '' : ' AND ( _tags:is_nonfiction ) ' ),
+                    hitsPerPage: 21,
+                }, function (error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            templates: {
+                suggestion: function (suggestion) {
+                    if(validURL(suggestion.query)){
+                        return false;
+                    }
+                    return view_search_result(suggestion);
+                },
+                header: function (data) {
+                    if (!data.isEmpty) {
+
+                        if(validURL(data.query)){
+                            return false;
+                        }
+                        var return_string = '<b class="source montserrat">' + data.query.toUpperCase() + '</b>';
+                        return (js_session_superpowers_assigned.includes(13422) ? '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span>' + return_string + '</a>' : '') + '<a href="javascript:load_13428(0, \''+data.query+'\')" class="suggestion">' + '<span class="icon-block">'+js_e___11035[13428]['m_icon']+'</span><b class="source montserrat">' + js_e___11035[13428]['m_title'] + ':</b> ' + return_string + '</a>';
+
+                    }
+                },
+                empty: function (data) {
+                    if(validURL(data.query)){
+                        return false;
+                    }
+                    return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                },
+            }
+        }]);
     }
 }
 
