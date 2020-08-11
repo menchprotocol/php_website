@@ -31,11 +31,8 @@ $(document).ready(function () {
     });
 
     //Load top/bottom idea searches:
-    i_load_search(".IdeaAddPrevious",1, 'q', 'x_in');
-    i_load_search(".ideaadder-level-2-child",0, 'w', 'x_in');
-
-    //Expand selections:
-    prep_search_pad();
+    i_load_search(".list_previous",1, 'q', 'x_in');
+    i_load_search(".list_next",0, 'w', 'x_in');
 
     //Load Sortable:
     i_sort_load(focus_i__id);
@@ -208,22 +205,6 @@ function i_remove(i__id, x__id, is_parent){
 }
 
 
-function prep_search_pad(){
-
-    //All level 2s:
-    $('.IdeaAddPrevious').focus(function() {
-        $('.i_pad_top' ).removeClass('hidden');
-    }).focusout(function() {
-        $('.i_pad_top' ).addClass('hidden');
-    });
-
-    $('.ideaadder-level-2-child').focus(function() {
-        $('.i_pad_bottom' ).removeClass('hidden');
-    }).focusout(function() {
-        $('.i_pad_bottom' ).addClass('hidden');
-    });
-
-}
 
 function i_sort_save(i__id) {
 
@@ -343,9 +324,6 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
 
             //Lookout for textinput updates
             x_set_text_start();
-
-            //Expand selections:
-            prep_search_pad();
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();

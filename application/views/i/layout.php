@@ -60,12 +60,12 @@ if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control IdeaAddPrevious form-control-thick montserrat add-input algolia_search dotransparent"
+                           class="form-control list_previous form-control-thick montserrat add-input algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-1"
                            placeholder="PREVIOUS IDEA">
-                </div><div class="algolia_pad_search hidden i_pad_top"></div></div>';
+                </div><div class="algolia_pad_search hidden"></div></div>';
 }
 echo '</div>';
 
@@ -210,12 +210,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control ideaadder-level-2-child form-control-thick add-input montserrat algolia_search dotransparent"
+                           class="form-control list_next form-control-thick add-input montserrat algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-0"
                            placeholder="NEXT IDEA">
-                </div><div class="algolia_pad_search hidden i_pad_bottom"></div></div>';
+                </div><div class="algolia_pad_search hidden"></div></div>';
         }
 
         $focus_tab .= '</div>';
