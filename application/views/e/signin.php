@@ -73,7 +73,7 @@ if(count($current_sign_i_attempt) == 0){
         }
     }
 
-    echo '<p style="margin-top:13px;">'.view_12687(4269).'</p>';
+    echo '<p style="margin-top:13px; text-align: center;">'.view_12687(4269).'</p>';
 
     ?>
 
