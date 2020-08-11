@@ -446,7 +446,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 'object__type=12274' + ( js_session_superpowers_assigned.includes(13422) ? '' : ' AND ( _tags:is_nonfiction ) ' ),
-                    hitsPerPage: 21,
+                    hitsPerPage: ( validURL(q) ? 0 : 21 ),
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -457,9 +457,6 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    if(validURL(suggestion.query)){
-                        return false;
-                    }
                     return view_search_result(suggestion);
                 },
                 header: function (data) {
