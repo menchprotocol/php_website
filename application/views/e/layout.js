@@ -17,7 +17,7 @@ $(document).ready(function () {
     });
 
     //Load Idea Search
-    i_load_search("#newIdeaTitle",0, 'a', 'x_my_in');
+    i_load_search(".add_e_idea",0, 'a', 'x_my_in');
 
     if(e_focus_id==js_pl_id){
 

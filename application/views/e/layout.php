@@ -415,7 +415,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 //SMART SHOW/HIDE LIST LOGIC
                 if($superpower_10939 && ($source_is_e || count($list_i) <= 1 || $superpower_13422)){
 
-                    $focus_tab .= '<div class="list-group">';
+                    $focus_tab .= '<div class="list-group add_e_idea">';
                     $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>

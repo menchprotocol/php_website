@@ -31,8 +31,8 @@ $(document).ready(function () {
     });
 
     //Load top/bottom idea searches:
-    i_load_search(".list_previous",1, 'q', 'x_in');
-    i_load_search(".list_next",0, 'w', 'x_in');
+    i_load_search(".previous_i",1, 'q', 'x_in');
+    i_load_search(".next_i",0, 'w', 'x_in');
 
     //Load Sortable:
     i_sort_load(focus_i__id);
