@@ -49,17 +49,14 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-    $tab_nav = '';
-    $tab_content = '';
-
     if(isset($_GET['reset'])){
         //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-        $tab_content .= '<div class="margin-top-down left-margin">';
-        $tab_content .= '<p>'.$e___11035[6415]['m_message'].'</p>';
-        $tab_content .= '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
-        $tab_content .= '</div>';
+        echo '<div class="margin-top-down left-margin">';
+        echo '<p>'.$e___11035[6415]['m_message'].'</p>';
+        echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
+        echo '</div>';
 
-        $tab_content .= '<div class="doclear">&nbsp;</div>';
+        echo '<div class="doclear">&nbsp;</div>';
     }
 
 
@@ -82,7 +79,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         $active_x__type = 11030;
     }
 
-
+    $tab_nav = '';
+    $tab_content = '';
     foreach($this->config->item('e___11089') as $x__type => $m) {
 
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
