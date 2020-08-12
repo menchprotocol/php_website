@@ -580,7 +580,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             if(is_add_mode=='x_in') {
-                return i_add($(this).attr('i-id'), is_i_previous, 0);
+                return i_add($(element_focus + ' .add-input').attr('i-id'), is_i_previous, 0);
             } else if(is_add_mode=='x_my_in') {
                 return i_create();
             }
@@ -597,7 +597,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
     $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='x_in'){
-            i_add($(this).attr('i-id'), is_i_previous, suggestion.object__id);
+            i_add($(element_focus + ' .add-input').attr('i-id'), is_i_previous, suggestion.object__id);
         } else {
             //Go to idea:
             window.location = suggestion.object__url;
@@ -635,7 +635,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             },
             header: function (data) {
                 if (is_add_mode=='x_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:i_add(' + parseInt($(element_focus + ' .add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='x_my_in'){
                     return '<a href="javascript:i_create()" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
@@ -643,9 +643,9 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             empty: function (data) {
                 if(is_add_mode=='x_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:i_add(' + parseInt($(element_focus + ' .add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:i_add(' + parseInt($(element_focus).attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:i_add(' + parseInt($(element_focus + ' .add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },

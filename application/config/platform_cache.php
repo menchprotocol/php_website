@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-11 10:47:53 PST
-$config['s___12274'] = 5002; //SOURCES
-$config['s___12273'] = 3927; //IDEAS
-$config['s___6255'] = 122282; //DISCOVERIES
+//Generated 2020-08-11 20:26:31 PST
+$config['s___12274'] = 5010; //SOURCES
+$config['s___12273'] = 3914; //IDEAS
+$config['s___6255'] = 122291; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -349,60 +349,48 @@ $config['e___13530'] = array(
 );
 
 //SOURCES FEATURED:
-$config['n___12563'] = array(13339,2997,4446,3005,3147,13218,13350,3192,2998,10984);
+$config['n___12563'] = array(4446,2997,3005,13339,3147,13218,13350,10984,3192,2998);
 $config['e___12563'] = array(
+    4446 => array(
+        'm_title' => 'ASSESSMENTS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-clipboard-check source" aria-hidden="true"></i>',
+        'm_profile' => array(12563,12968,3000),
+    ),
+    2997 => array(
+        'm_title' => 'BLOG POSTS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
+        'm_profile' => array(12563,12968,3000),
+    ),
+    3005 => array(
+        'm_title' => 'BOOKS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
+        'm_profile' => array(12563,12968,3000),
+    ),
     13339 => array(
         'm_title' => 'EXPERT AUTHORS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
     ),
-    2997 => array(
-        'm_title' => 'NONFICTION ARTICLES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
-        'm_profile' => array(12563,12968,3000),
-    ),
-    4446 => array(
-        'm_title' => 'NONFICTION ASSESSMENTS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-clipboard-check source" aria-hidden="true"></i>',
-        'm_profile' => array(12563,12968,3000),
-    ),
-    3005 => array(
-        'm_title' => 'NONFICTION BOOKS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
-        'm_profile' => array(12563,12968,3000),
-    ),
     3147 => array(
-        'm_title' => 'NONFICTION ONLINE COURSES',
+        'm_title' => 'ONLINE COURSES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-presentation source" aria-hidden="true"></i>',
         'm_profile' => array(12563,12968,3000),
     ),
     13218 => array(
-        'm_title' => 'NONFICTION PODCASTS',
+        'm_title' => 'PODCAST EPISODES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-microphone source"></i>',
         'm_profile' => array(12563,3000),
     ),
     13350 => array(
-        'm_title' => 'NONFICTION REPORTS',
+        'm_title' => 'REPORTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
-        'm_profile' => array(12563,12968,3000),
-    ),
-    3192 => array(
-        'm_title' => 'NONFICTION TOOLS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
-        'm_profile' => array(12563,12968,3000),
-    ),
-    2998 => array(
-        'm_title' => 'NONFICTION VIDEOS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-play-circle source"></i>',
         'm_profile' => array(12563,12968,3000),
     ),
     10984 => array(
@@ -410,6 +398,18 @@ $config['e___12563'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-walkie-talkie idea" aria-hidden="true"></i>',
         'm_profile' => array(12563,10957),
+    ),
+    3192 => array(
+        'm_title' => 'TOOLS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
+        'm_profile' => array(12563,12968,3000),
+    ),
+    2998 => array(
+        'm_title' => 'VIDEOS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-play-circle source"></i>',
+        'm_profile' => array(12563,12968,3000),
     ),
 );
 
@@ -1164,43 +1164,43 @@ $config['e___12968'] = array(
         'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
     ),
     2997 => array(
-        'm_title' => 'NONFICTION ARTICLES',
+        'm_title' => 'BLOG POSTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
         'm_profile' => array(12563,12968,3000),
     ),
     4446 => array(
-        'm_title' => 'NONFICTION ASSESSMENTS',
+        'm_title' => 'ASSESSMENTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-clipboard-check source" aria-hidden="true"></i>',
         'm_profile' => array(12563,12968,3000),
     ),
     3005 => array(
-        'm_title' => 'NONFICTION BOOKS',
+        'm_title' => 'BOOKS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
         'm_profile' => array(12563,12968,3000),
     ),
     3147 => array(
-        'm_title' => 'NONFICTION ONLINE COURSES',
+        'm_title' => 'ONLINE COURSES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-presentation source" aria-hidden="true"></i>',
         'm_profile' => array(12563,12968,3000),
     ),
     13350 => array(
-        'm_title' => 'NONFICTION REPORTS',
+        'm_title' => 'REPORTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
         'm_profile' => array(12563,12968,3000),
     ),
     3192 => array(
-        'm_title' => 'NONFICTION TOOLS',
+        'm_title' => 'TOOLS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-tools source" aria-hidden="true"></i>',
         'm_profile' => array(12563,12968,3000),
     ),
     2998 => array(
-        'm_title' => 'NONFICTION VIDEOS',
+        'm_title' => 'VIDEOS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-play-circle source"></i>',
         'm_profile' => array(12563,12968,3000),
@@ -3915,7 +3915,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.511',
+        'm_message' => 'v1.512',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
@@ -5946,13 +5946,13 @@ $config['e___3000'] = array(
         'm_profile' => array(12563,12968,3000),
     ),
     2997 => array(
-        'm_title' => 'ARTICLES',
+        'm_title' => 'BLOG POSTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-newspaper source" aria-hidden="true"></i>',
         'm_profile' => array(12563,12968,3000),
     ),
     13218 => array(
-        'm_title' => 'PODCASTS',
+        'm_title' => 'PODCAST EPISODES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-microphone source"></i>',
         'm_profile' => array(12563,3000),
