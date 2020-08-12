@@ -49,6 +49,19 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
+    $tab_nav = '';
+    $tab_content = '';
+
+    if(isset($_GET['reset'])){
+        //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
+        $tab_content .= '<div class="margin-top-down left-margin">';
+        $tab_content .= '<p>'.$e___11035[6415]['m_message'].'</p>';
+        $tab_content .= '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
+        $tab_content .= '</div>';
+
+        $tab_content .= '<div class="doclear">&nbsp;</div>';
+    }
+
 
     //Determine Focus Tab:
     $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
@@ -70,8 +83,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     }
 
 
-    $tab_nav = '';
-    $tab_content = '';
     foreach($this->config->item('e___11089') as $x__type => $m) {
 
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
@@ -450,17 +461,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
 
                     $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> #list_6132 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
-
-
-                    if(isset($_GET['reset'])){
-                        //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-                        $focus_tab .= '<div class="margin-top-down left-margin">';
-                        $focus_tab .= '<p>'.$e___11035[6415]['m_message'].'</p>';
-                        $focus_tab .= '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
-                        $focus_tab .= '</div>';
-
-                        $focus_tab .= '<div class="doclear">&nbsp;</div>';
-                    }
 
 
                     if(count($list_x)){
