@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-11 20:26:31 PST
-$config['s___12274'] = 5010; //SOURCES
-$config['s___12273'] = 3914; //IDEAS
-$config['s___6255'] = 122291; //DISCOVERIES
+//Generated 2020-08-12 11:34:12 PST
+$config['s___12274'] = 5014; //SOURCES
+$config['s___12273'] = 3918; //IDEAS
+$config['s___6255'] = 122272; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -215,7 +215,7 @@ $config['e___13543'] = array(
         'm_title' => 'EXPERT AUTHORS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
+        'm_profile' => array(12523,13543,12563,6159,4251,13365,13207),
     ),
 );
 
@@ -373,7 +373,7 @@ $config['e___12563'] = array(
         'm_title' => 'EXPERT AUTHORS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
+        'm_profile' => array(12523,13543,12563,6159,4251,13365,13207),
     ),
     3147 => array(
         'm_title' => 'ONLINE COURSES',
@@ -573,7 +573,7 @@ $config['e___6159'] = array(
         'm_title' => 'EXPERT AUTHORS',
         'm_message' => 'i___13339',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
+        'm_profile' => array(12523,13543,12563,6159,4251,13365,13207),
     ),
     6208 => array(
         'm_title' => 'IDEA METADATA ALGOLIA ID',
@@ -709,7 +709,7 @@ $config['e___4251'] = array(
         'm_title' => 'EXPERT AUTHORS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
+        'm_profile' => array(12523,13543,12563,6159,4251,13365,13207),
     ),
 );
 
@@ -880,7 +880,7 @@ $config['e___13365'] = array(
         'm_title' => 'EXPERT AUTHORS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
+        'm_profile' => array(12523,13543,12563,6159,4251,13365,13207),
     ),
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
@@ -1035,7 +1035,7 @@ $config['e___13207'] = array(
         'm_title' => 'EXPERT AUTHORS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
+        'm_profile' => array(12523,13543,12563,6159,4251,13365,13207),
     ),
 );
 
@@ -1155,14 +1155,8 @@ $config['e___12969'] = array(
 );
 
 //SYNC ICONS IF DIFFERENT:
-$config['n___12968'] = array(13339,2997,4446,3005,3147,13350,3192,2998);
+$config['n___12968'] = array(2997,4446,3005,3147,13350,3192,2998);
 $config['e___12968'] = array(
-    13339 => array(
-        'm_title' => 'EXPERT AUTHORS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_profile' => array(13543,12563,6159,4251,12968,13365,13207),
-    ),
     2997 => array(
         'm_title' => 'BLOG POSTS',
         'm_message' => '',
@@ -1829,8 +1823,14 @@ $config['e___12524'] = array(
 );
 
 //SYNC ICONS IF MISSING ICON:
-$config['n___12523'] = array(6293,13450);
+$config['n___12523'] = array(13339,6293,13450);
 $config['e___12523'] = array(
+    13339 => array(
+        'm_title' => 'EXPERT AUTHORS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_profile' => array(12523,13543,12563,6159,4251,13365,13207),
+    ),
     6293 => array(
         'm_title' => 'GIPHY GIFS',
         'm_message' => '',
