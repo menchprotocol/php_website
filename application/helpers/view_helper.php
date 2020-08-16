@@ -771,7 +771,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
 
     $i_stats = i_stats($i['i__metadata']);
     $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
-    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved || $user_e );
+    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved ); // || $user_e
     $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
