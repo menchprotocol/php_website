@@ -8,7 +8,38 @@ echo '<table>';
 foreach($this->config->item('e___12467') as $x__type => $m) {
     echo '<tr>';
     echo '<td class="montserrat doupper"><div class="col_name">'.$m['m_icon'].' '.$m['m_title'].'</div></td>';
-    echo '<td class="montserrat doupper">&nbsp;</td>';
+
+
+    if($x__type==12273){
+
+        //IDEAS
+        $unique = $this->X_model->fetch(array(
+            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
+        ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
+
+    } elseif($x__type==12274){
+
+        //SOURCE
+        $unique = $this->X_model->fetch(array(
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
+        ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
+
+    } elseif($x__type==6255){
+
+        //DISCOVER
+        $unique = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
+    }
+
+    echo '<td class="montserrat doupper">'.number_format($unique[0]['totals'], 0).'</td>';
+
     for($i=0;$i<1000;$i++){
 
         $time_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
@@ -32,8 +63,6 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
                 //'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                 //'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
-                'x__time >=' => $time_start,
-                'x__time <' => $time_end,
             ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         } elseif($x__type==6255){
