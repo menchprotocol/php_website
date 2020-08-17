@@ -679,11 +679,11 @@ function extract_icon_color($e__icon, $return_coin = false){
     //NOTE: Has a twin JS function
 
     if(substr_count($e__icon, 'discover')>0){
-        return ( $return_coin ? '🔵' : ' discover ' );
+        return ( $return_coin ? '🔴' : ' discover ' );
     } elseif(substr_count($e__icon, 'idea')>0){
         return ( $return_coin ? '🟡' : ' idea ' );
     } elseif(substr_count($e__icon, 'source')>0 || !$e__icon){
-        return ( $return_coin ? '🔴' : ' source ' );
+        return ( $return_coin ? '🔵' : ' source ' );
     } else {
         return '';
     }
