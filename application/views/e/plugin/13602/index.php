@@ -44,8 +44,7 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
             //IDEAS
             $query = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
                 'x__time >=' => $last_week_start,
                 'x__time <' => $last_week_end,
             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
