@@ -1333,6 +1333,12 @@ label {
     display: inline-block !important;
 }
 
+.col_name{
+    width: 200px;
+}
+.col_stat{
+    width: 89px;
+}
 
 .is-working {
     background-color: #999999 !important;
