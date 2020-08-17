@@ -49,12 +49,13 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
         }
 
         echo '<td style="font-size: 0.8em;"><div class="col_stat">'.( $query[0]['totals'] > 0 ? number_format($query[0]['totals'], 0) : '&nbsp;' ).'</div></td>';
+
+        if(date("Y-m", mktime(0, 0, 0, $start_month+$i, 1, $start_year))==date("Y-m")){
+            break;
+        }
+
     }
     echo '</tr>';
-
-    if(date("Y-m", mktime(0, 0, 0, $start_month+$i, 1, $start_year))==date("Y-m")){
-        break;
-    }
 }
 
 
