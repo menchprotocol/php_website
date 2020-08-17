@@ -8,22 +8,10 @@ $total_months = 48;
 echo '<table>';
 
 
-
-echo '<tr>';
-echo '<td><div class="col_name">&nbsp;</div></td>';
-for($i=0;$i<$total_months;$i++){
-
-    $last_week_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
-    $last_week_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i+1, 1, $start_year));
-
-    echo '<td style="font-size: 0.8em;" title="'.$last_week_start.' - '.$last_week_end.'"><div class="col_stat montserrat"><b>'.date("ym", mktime(0, 0, 0, $start_month+$i, date("j"), $start_year)).'</b></div></td>';
-}
-echo '</tr>';
-
-
 foreach($this->config->item('e___12467') as $x__type => $m) {
     echo '<tr>';
     echo '<td class="montserrat doupper"><div class="col_name">'.$m['m_icon'].' '.$m['m_title'].'</div></td>';
+    echo '<td class="montserrat doupper">&nbsp;</td>';
     for($i=0;$i<$total_months;$i++){
 
         $last_week_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
@@ -67,6 +55,19 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
     }
     echo '</tr>';
 }
+
+
+echo '<tr>';
+echo '<td><div class="col_name">&nbsp;</div></td>';
+echo '<td><div class="col_name">&nbsp;</div></td>';
+for($i=0;$i<$total_months;$i++){
+
+    $last_week_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
+    $last_week_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i+1, 1, $start_year));
+
+    echo '<td style="font-size: 0.8em;" title="'.$last_week_start.' - '.$last_week_end.'"><div class="col_stat montserrat"><b>'.date("ym", mktime(0, 0, 0, $start_month+$i, date("j"), $start_year)).'</b></div></td>';
+}
+echo '</tr>';
 
 
 echo '</table>';
