@@ -9,18 +9,18 @@ echo '<table>';
 
 
 echo '<tr>';
-echo '<td>Name</td>';
+echo '<td width="289px">Name</td>';
 for($i=0;$i<$total_months;$i++){
-    echo '<td style="width: 100px; font-size: 0.8em;">'.date("Y-m", mktime(0, 0, 0, $start_month+$i, date("j"), $start_year)).'</td>';
+    echo '<td width="144px" style="font-size: 0.8em;">'.date("ym", mktime(0, 0, 0, $start_month+$i, date("j"), $start_year)).'</td>';
 }
 echo '</tr>';
 
 
 foreach($this->config->item('e___12467') as $x__type => $m) {
     echo '<tr>';
-    echo '<td class="montserrat doupper">'.$m['m_icon'].' '.$m['m_title'].'</td>';
+    echo '<td width="289px" class="montserrat doupper">'.$m['m_icon'].' '.$m['m_title'].'</td>';
     for($i=0;$i<$total_months;$i++){
-        echo '<td style="width: 100px; font-size: 0.8em;">'.rand(0,2000).'</td>';
+        echo '<td width="144px" style="font-size: 0.8em;">'.rand(0,2000).'</td>';
     }
     echo '</tr>';
 }
