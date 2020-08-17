@@ -38,7 +38,7 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
 
     }
 
-    echo '<td class="montserrat doupper">'.number_format($unique[0]['totals'], 0).'</td>';
+    echo '<td>'.number_format($unique[0]['totals'], 0).'</td>';
 
     for($i=0;$i<1000;$i++){
 
