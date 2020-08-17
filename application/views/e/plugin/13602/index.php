@@ -6,9 +6,6 @@ $start_month = 01;
 echo '<table>';
 
 foreach($this->config->item('e___12467') as $x__type => $m) {
-    echo '<tr>';
-    echo '<td class="montserrat doupper"><div class="col_name">'.$m['m_icon'].' '.$m['m_title'].'</div></td>';
-
 
     if($x__type==12273){
 
@@ -38,7 +35,11 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
 
     }
 
+
+    echo '<tr>';
+    echo '<td class="montserrat doupper"><div class="col_name">'.extract_icon_color($m['m_icon'], true).' '.$m['m_title'].'</div></td>';
     echo '<td>'.number_format($unique[0]['totals'], 0).'</td>';
+
 
     for($i=0;$i<1000;$i++){
 
