@@ -12,7 +12,7 @@ echo '<table>';
 echo '<tr>';
 echo '<td><div class="col_name">&nbsp;</div></td>';
 for($i=0;$i<$total_months;$i++){
-    echo '<td style="font-size: 0.8em;"><div class="col_stat"><b>'.date("ym", mktime(0, 0, 0, $start_month+$i, date("j"), $start_year)).'</b></div></td>';
+    echo '<td style="font-size: 0.8em;"><div class="col_stat montserrat"><b>'.date("ym", mktime(0, 0, 0, $start_month+$i, date("j"), $start_year)).'</b></div></td>';
 }
 echo '</tr>';
 
