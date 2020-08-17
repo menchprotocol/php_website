@@ -2,7 +2,7 @@
 
 $start_year = 2017;
 $start_month = 01;
-$total_months = 48;
+$total_months = 46;
 
 
 echo '<table>';
