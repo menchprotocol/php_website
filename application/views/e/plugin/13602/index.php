@@ -63,6 +63,8 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
                 //'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                 //'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
+                'x__time >=' => $time_start,
+                'x__time <' => $time_end,
             ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         } elseif($x__type==6255){
