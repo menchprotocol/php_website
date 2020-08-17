@@ -2,20 +2,17 @@
 
 $start_year = 2017;
 $start_month = 01;
-$total_months = ( isset($_GET['months']) ? intval($_GET['months']) : 46 );
-
 
 echo '<table>';
-
 
 foreach($this->config->item('e___12467') as $x__type => $m) {
     echo '<tr>';
     echo '<td class="montserrat doupper"><div class="col_name">'.$m['m_icon'].' '.$m['m_title'].'</div></td>';
     echo '<td class="montserrat doupper">&nbsp;</td>';
-    for($i=0;$i<$total_months;$i++){
+    for($i=0;$i<1000;$i++){
 
-        $last_week_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
-        $last_week_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i+1, 1, $start_year));
+        $time_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
+        $time_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i+1, 1, $start_year));
 
         if($x__type==12273){
 
@@ -24,8 +21,8 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
-                'x__time >=' => $last_week_start,
-                'x__time <' => $last_week_end,
+                'x__time >=' => $time_start,
+                'x__time <' => $time_end,
             ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         } elseif($x__type==12274){
@@ -35,8 +32,8 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
                 'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
-                'x__time >=' => $last_week_start,
-                'x__time <' => $last_week_end,
+                'x__time >=' => $time_start,
+                'x__time <' => $time_end,
             ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         } elseif($x__type==6255){
@@ -45,27 +42,35 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
             $query = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
-                'x__time >=' => $last_week_start,
-                'x__time <' => $last_week_end,
+                'x__time >=' => $time_start,
+                'x__time <' => $time_end,
             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
         }
 
-        echo '<td style="font-size: 0.8em;"><div class="col_stat">'.number_format($query[0]['totals'], 0).'</div></td>';
+        echo '<td style="font-size: 0.8em;"><div class="col_stat">'.( $query[0]['totals'] > 0 ? number_format($query[0]['totals'], 0) : '&nbsp;' ).'</div></td>';
     }
     echo '</tr>';
+
+    if(date("Y-m", mktime(0, 0, 0, $start_month+$i, 1, $start_year))==date("Y-m")){
+        break;
+    }
 }
 
 
 echo '<tr>';
 echo '<td><div class="col_name">&nbsp;</div></td>';
 echo '<td><div class="col_name">&nbsp;</div></td>';
-for($i=0;$i<$total_months;$i++){
+for($i=0;$i<1000;$i++){
 
-    $last_week_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
-    $last_week_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i+1, 1, $start_year));
+    $time_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
+    $time_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i+1, 1, $start_year));
 
-    echo '<td style="font-size: 0.8em;" title="'.$last_week_start.' - '.$last_week_end.'"><div class="col_stat montserrat"><b>'.date("ym", mktime(0, 0, 0, $start_month+$i, date("j"), $start_year)).'</b></div></td>';
+    echo '<td style="font-size: 0.8em;" title="'.$time_start.' - '.$time_end.'"><div class="col_stat montserrat"><b>'.date("ym", mktime(0, 0, 0, $start_month+$i, date("j"), $start_year)).'</b></div></td>';
+
+    if(date("Y-m", mktime(0, 0, 0, $start_month+$i, 1, $start_year))==date("Y-m")){
+        break;
+    }
 }
 echo '</tr>';
 
