@@ -39,6 +39,9 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
     echo '<tr>';
     echo '<td class="montserrat doupper"><div class="col_name">'.extract_icon_color($m['m_icon'], true).' '.$m['m_title'].'</div></td>';
     echo '<td>'.number_format($unique[0]['totals'], 0).'</td>';
+    echo '<td>&nbsp;</td>';
+    echo '<td>&nbsp;</td>';
+    echo '<td>&nbsp;</td>';
 
 
     for($i=0;$i<1000;$i++){
@@ -50,8 +53,8 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
 
             //IDEAS
             $query = $this->X_model->fetch(array(
-                //'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                //'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
@@ -61,8 +64,8 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
 
             //SOURCE
             $query = $this->X_model->fetch(array(
-                //'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-                //'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
@@ -92,8 +95,11 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
 
 
 echo '<tr>';
-echo '<td><div class="col_name">&nbsp;</div></td>';
-echo '<td><div class="col_name">&nbsp;</div></td>';
+echo '<td>&nbsp;</td>';
+echo '<td>&nbsp;</td>';
+echo '<td>&nbsp;</td>';
+echo '<td>&nbsp;</td>';
+echo '<td>&nbsp;</td>';
 for($i=0;$i<1000;$i++){
 
     $time_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
