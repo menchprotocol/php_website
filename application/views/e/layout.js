@@ -11,11 +11,6 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
-    //Listen for keystroke events
-    $( "#input__13433" ).change(function() {
-        e_13428();
-    });
-
     //Load Idea Search
     i_load_search(".add_e_idea",0, 'a', 'x_my_in');
 
@@ -213,161 +208,6 @@ function reset_6415(){
 
 
 
-function e_13428(){
-
-    if(!$('#input__13433').val().length){
-        return false;
-    }
-
-    //Whe the URL is changed this tries to update the title & nonfiction source type
-
-    $('#modal13428 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-    $('#input__6197').val('LOADING...');
-    $("#input__3000").val(0);
-
-    //Fetch Idea Data to load modify widget:
-    $.post("/e/e_13428", {
-        input__13433: $('#input__13433').val(),
-        e__id: $('#modal13428 .modal_e__id').val(),
-    }, function (data) {
-
-        //Update Error Section
-        $("#modal13428 .save_results").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
-
-        $('#input__6197').val(data.input__6197);
-        $("#input__3000").val(data.input__3000);
-
-        //Reload Tooltip again:
-        $('[data-toggle="tooltip"]').tooltip();
-
-    });
-
-}
-
-var is_adding = false;
-function save_13428(){
-
-    if(is_adding){
-        $('#save_btn').hide().fadeIn();
-        return false;
-    }
-
-    //Show Modal:
-    $('#modal13428 .save_results').html('');
-    $('#save_btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-    is_adding = true;
-    var is_editing = parseInt($('#modal13428 .modal_e__id').val()) > 0;
-    if(is_editing){
-        $( ".e__id_"+$('#modal13428 .modal_e__id').val() ).after('<div class="list-group-item update-new"><i class="far fa-yin-yang fa-spin"></i></div>');
-        setTimeout(function () {
-            $( ".e__id_"+$('#modal13428 .modal_e__id').val() ).remove();
-        }, 21);
-    }
-
-    //Load current Source:
-    $.post("/e/save_13428", {
-
-        e__id: $('#modal13428 .modal_e__id').val(),
-        x__id: $('#modal13428 .modal_x__id').val(),
-        input__13433: $('#input__13433').val(),
-        input__6197: $('#input__6197').val().toUpperCase(),
-        input__3000: $('#input__3000 option:selected').val(),
-
-    }, function (data) {
-
-        is_adding = false;
-        $('#save_btn').html('SAVE');
-        $("#modal13428 .save_results").html((data.status ? '' : '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>'));
-
-        if (data.status) {
-
-            $('#modal13428').modal('hide');
-
-            if( is_editing && parseInt($('#modal13428 .modal_e__id').val()) != e_focus_id ){
-
-                //Editing Update the view:
-                $( ".update-new" ).after(data.e_new_echo);
-                setTimeout(function () {
-                    $( ".update-new" ).remove();
-                }, 21);
-
-            } else {
-
-                //Add New Source:
-                add_to_list('list_e', '.en-item', data.e_new_echo);
-
-                i_note_counter(12274, +1);
-
-            }
-
-        }
-    });
-}
-
-
-
-
-//Load Nonfiction Source Wizard:
-function load_13428(e__id, new_string){
-
-    //Reset Values:
-    $("#load_13428 .save_results").html('');
-    $('#modal13428 .modal_e__id').val(e__id);
-    $('#modal13428 .modal_x__id').val(0);
-    $('#input__13433').val(''); //URL
-    $('#input__6197').val(''); //TITLE
-    $('#input__3000').val(0); //TITLE
-    $('#modal13428').modal('show');
-
-    //Load Data:
-    if(e__id > 0){
-
-        //Load current Source:
-        $.post("/e/load_13428", {
-
-            e__id: e__id,
-
-        }, function (data) {
-
-            if (data.status) {
-
-                $('#modal13428 .modal_x__id').val(data.modal_x__id);
-                $('#input__13433').val(data.input__13433);
-                $('#input__6197').val(data.input__6197);
-                $('#input__3000').val(data.input__3000);
-
-            } else {
-
-                $("#modal13428 .save_results").html('<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>');
-
-            }
-
-        });
-
-    } else if(new_string.length > 0) {
-
-        //Load New Source
-        if(validURL(new_string)) {
-
-            $('#input__13433').val(new_string);
-
-            //Try to fetch more data:
-            e_13428();
-
-        } else {
-
-            //If not URL then it's Title:
-            $('#input__6197').val(new_string);
-
-        }
-    }
-
-    //Adjust text input size
-    autosize($('#input__6197'));
-
-}
-
-
 var saving_i = false;
 function i_create(){
 
@@ -427,9 +267,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            if(validURL($(this).val()) || !js_session_superpowers_assigned.includes(13422)){
-                load_13428(0, $(this).val());
-            } else {
+            if(js_session_superpowers_assigned.includes(13422)){
                 e__add(0, is_e_parent);
             }
             return true;
@@ -463,9 +301,11 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-
-                        return (js_session_superpowers_assigned.includes(13422) ? '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' + '</a>' : '') + '<a href="javascript:load_13428(0, \''+data.query+'\')" class="suggestion">' + '<span class="icon-block">'+js_e___11035[13428]['m_icon']+'</span><b class="source montserrat">ADD USING ' + js_e___11035[13428]['m_title'] + '</b></a>';
-
+                        if(js_session_superpowers_assigned.includes(13422)){
+                            return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' + '</a>';
+                        } else {
+                            return '';
+                        }
                     }
                 },
                 empty: function (data) {

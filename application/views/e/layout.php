@@ -2,7 +2,6 @@
 $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___12467 = $this->config->item('e___12467'); //MENCH
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$e___13428 = $this->config->item('e___13428'); //SOURCE WIZARD
 $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
 $e___6198 = $this->config->item('e___6198'); //SOURCE ICON
 $source_of_e = source_of_e($e['e__id']);
@@ -38,9 +37,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     echo '<div class="doclear">&nbsp;</div>';
     echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;">';
 
-        if(editable_by_13428($e['e__id']) && $superpower_10939){
-            echo '<a href="javascript:void(0);" onclick="load_13428('.$e['e__id'].', \'\')" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a>';
-        } elseif($superpower_13422) {
+        if($superpower_13422) {
             echo '<a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',0)" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m_title'].'">'.$e___11035[13571]['m_icon'].'</a>';
         }
 
@@ -352,7 +349,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 $focus_tab .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
-                            <span class="input-group-addon addon-lean icon-adder"><a href="javascript:void(0)" class="icon-block" data-toggle="modal" data-target="#modal13428" title="'.$e___11035[13428]['m_title'].'">'.( $superpower_13422 ? $e___12467[12274]['m_icon'] : $e___11035[13428]['m_icon'] ).'</a></span>
+                            <span class="input-group-addon addon-lean icon-adder">'.$e___12467[12274]['m_icon'].'</span>
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    maxlength="' . config_var(6197) . '"
@@ -712,55 +709,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     ?>
 
 </div>
-
-
-
-
-<!-- Source Wizard Modal -->
-<div class="modal fade" id="modal13428" tabindex="-1" role="dialog" aria-labelledby="modal13428Label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title montserrat <?= extract_icon_color($e___11035[13428]['m_icon']) ?>" id="modal13428Label"><?= $e___11035[13428]['m_icon'].' '.$e___11035[13428]['m_title'] ?></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <input type="hidden" class="modal_e__id" value="0" />
-                <input type="hidden" class="modal_x__id" value="0" />
-                <div class="save_results margin-top-down-half hideIfEmpty"></div>
-
-                <!-- URL -->
-                <div class="headline"><span class="icon-block"><?= $e___13428[13433]['m_icon'] ?></span><?= $e___13428[13433]['m_title'] ?></div>
-                <input type="url" id="input__13433" value="" class="form-control border" />
-
-                <!-- TITLE -->
-                <div class="headline"><span class="icon-block"><?= $e___13428[6197]['m_icon'] ?></span><?= $e___13428[6197]['m_title'] ?></div>
-                <textarea id="input__6197" class="form-control border montserrat doupper"></textarea>
-
-                <!-- NONFICTION SOURCES -->
-                <div class="headline"><span class="icon-block"><?= $e___13428[3000]['m_icon'] ?></span><?= $e___13428[3000]['m_title'] ?></div>
-                <select class="form-control border" id="input__3000">
-                    <?php
-                    echo '<option value="0">SELECT ONE...</option>';
-                    foreach($this->config->item('e___3000') as $e__id => $m) {
-                        echo '<option value="'.$e__id.'">'.$m['m_title'].'</option>';
-                    }
-                    ?>
-                </select>
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="save_13428()" id="save_btn" class="btn btn-e">SAVE</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 
 <!-- Source Editor Modal -->

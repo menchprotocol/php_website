@@ -1167,7 +1167,7 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
 
 
     //Toogle for extra info:
-    $ui .= '<div class="pull-right inline-block" style="margin:5px 5px 0 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="grey montserrat">'.$e___11035[13509]['m_icon'].' <u>'.$e___11035[13509]['m_title'].'</u></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="margin:5px 5px 0 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="grey montserrat" title="'.$e___11035[13509]['m_title'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
     $ui .= '<div class="list-group" style="margin-bottom:33px;">';
@@ -1493,11 +1493,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
             //UNLINK SOURCE
             $ui .= '<span><a href="javascript:void(0);" onclick="remove_10673(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m_title'].'">'.$e___11035[10673]['m_icon'].'</a></span>';
-
-            //Allow to modify via Modal:
-            if(editable_by_13428($e['e__id'])){
-                $ui .= '<span><a href="javascript:void(0);" onclick="load_13428(' . $e['e__id'] . ', \'\')" title="'.$e___11035[13428]['m_title'].'">'.$e___11035[13428]['m_icon'].'</a></span>';
-            }
 
         }
 
