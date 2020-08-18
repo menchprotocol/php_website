@@ -241,7 +241,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(!$in_my_x){
 
             //NEXT IDEAS
-            echo view_i_list($i_focus, $is_next, $user_e);
+            $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
 
         }
 
