@@ -29,7 +29,7 @@ function view_i_tree_stats($i_stats, $show_info){
     if($i_stats['i___6169']!=$i_stats['i___6170'] || $i_stats['i___6161']!=$i_stats['i___6162']){
 
         //Variable time range:
-        $ui .= '<p class="space-content" style="margin-bottom:33px;"><span '.($show_info ? ' data-toggle="tooltip" data-placement="left" title="The number of ideas you discover and the time it takes to discover them depends on the choices you make interactively along the way" ' : '').'>';
+        $ui .= '<p class="space-content" style="margin-bottom:33px;"><span '.($show_info ? ' data-toggle="tooltip" data-placement="left" title="The number of ideas you discover & the time it takes to discover them depends on the choices made interactively along the way" ' : '').'>';
 
         foreach($CI->config->item('e___13544') as $e__id => $m){
 
