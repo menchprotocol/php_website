@@ -674,13 +674,10 @@ function superpower_active($superpower_e__id, $boolean_only = false){
     }
 }
 
+
 function round_minutes($seconds){
     $minutes = round($seconds/60);
-    if($minutes <= 1){
-        return 1;
-    } else {
-        return $minutes;
-    }
+    return ($minutes <= 1 ? 1 : $minutes );
 }
 
 function extract_icon_color($e__icon, $return_coin = false){

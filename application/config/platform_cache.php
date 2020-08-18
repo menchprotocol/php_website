@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-18 10:48:42 PST
+//Generated 2020-08-18 16:14:59 PST
 $config['s___12274'] = 5044; //SOURCES
-$config['s___12273'] = 3975; //IDEAS
+$config['s___12273'] = 3979; //IDEAS
 $config['s___6255'] = 122270; //DISCOVERIES
 
 //SOURCE ICON:
@@ -821,7 +821,7 @@ $config['e___13369'] = array(
     ),
     13413 => array(
         'm_title' => 'SORT',
-        'm_message' => 'SORT from LEFT to RIGHT, TOP to BOTTOM ',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-sort"></i>',
         'm_profile' => array(4527,13369),
     ),

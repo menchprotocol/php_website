@@ -225,7 +225,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = $i_stats['i___6170'];
 
         //IDEA TREE STATS
-        $focus_tab .= view_i_tree_stats($i_stats, true);
+        $focus_tab .= '<div style="margin-bottom:13px;">'.view_i_tree_stats($i_stats).'</div>';
 
         if(!$in_my_x){
 

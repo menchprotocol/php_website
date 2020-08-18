@@ -18,29 +18,22 @@ function view_e_load_more($page, $limit, $list_e_count)
 }
 
 
-function view_i_tree_stats($i_stats, $show_info){
+function view_i_tree_stats($i_stats){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
-    $ui = '';
+    $ui = null;
 
     //IDEA or TIME difference?
     if($i_stats['i___6169']!=$i_stats['i___6170'] || $i_stats['i___6161']!=$i_stats['i___6162']){
 
         //Variable time range:
-        $ui .= '<div style="margin-bottom:13px;" '.($show_info ? ' data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the choices you make interactively along the way" ' : '').'>';
+        $ui .= '<span class="inline-block" data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the choices you make interactively along the way">';
 
-        //IDEA RANGE
-        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span>';
-        $ui .= '<span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'">'.$i_stats['i___6169'].' - '.$i_stats['i___6170'].' IDEAS</span>';
+        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'">'.view_number($i_stats['i___6169']).'<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']).'<span class="show-max">&nbsp;IDEAS</span></span>&nbsp;&nbsp;<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).'<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']).' MIN.</span>';
 
-        //TIME RANGE
-        $ui .= '&nbsp;&nbsp;&nbsp;';
-        $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span>';
-        $ui .= '<span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).' - '.round_minutes($i_stats['i___6162']).' MIN.</span>';
-
-        $ui .= '</div>';
+        $ui .= '</span>';
 
     }
 
@@ -166,8 +159,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
                 //Header For Time
                 if($end_time){
-                    //$embed_html_code .= '<div class="headline" style="padding-bottom: 0;"><span class="icon-block-xs"><i class="fas fa-cut"></i></span>FROM '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).'</div>';
-                    $embed_html_code .= '<div class="headline" style="padding-bottom: 0;"><span class="icon-block-xs"><i class="fas fa-film"></i></span>WATCH '.round_minutes($end_time-$start_time).' MINUTE VIDEO:</div>';
+                    $embed_html_code .= '<div class="headline" style="padding-bottom: 0;" title="FROM '.round_minutes($start_time).' TO '.round_minutes($end_time).' MIN."><span class="icon-block-xs"><i class="fas fa-film"></i></span>WATCH THIS '.round_minutes($end_time-$start_time).' MIN. CLIP:</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -788,11 +780,8 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
         $ui .= '</div>';
         $ui .= '<div class="col-sm-4 col-md-3 col2nd handler_13509 hidden">';
 
-            //MENCH COINS
-            $ui .= '<div class="row">';
-                $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
-                $ui .= '<div class="col-8">'.( $i_stats['i___13292'] ? '<span class="mono-space">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '' ).'</div>';
-            $ui .= '</div>';
+            //IDA STATS
+            $ui .= view_i_tree_stats($i_stats);
 
         $ui .= '</div>';
     $ui .= '</div>';
@@ -1351,7 +1340,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 $ui .= '</div>';
 
 
-
                 if(strlen(strip_tags($message_input))){
                     //Description, if any
                     $ui .= '<div class="inline-block space-left">'.$message_input.'</div>';
@@ -1361,15 +1349,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 }
 
 
-                $ui .= '<div class="row space-left">';
-
-                    //IDAES
-                    $ui .= '<div class="col-6">'.view_coins_i(12273, $i, true, true, null).'</div>';
-
-                    //TIME ESTIMATE
-                    $ui .= '<div class="col-6">'.($i_stats['i___13292'] ? '<span class="mono-space" title="'.$e___13369[13292]['m_title'].'">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___13292']).'</span>' : '').'</div>';
-
-                $ui .= '</div>';
+                $ui .= '<div class="space-left">'.view_i_tree_stats($i_stats).'</div>';
 
 
             $ui .= '</div>';
