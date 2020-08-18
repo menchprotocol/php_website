@@ -18,7 +18,7 @@ function view_e_load_more($page, $limit, $list_e_count)
 }
 
 
-function view_i_tree_stats($i_stats){
+function view_i_tree_stats($i_stats, $do_compact = false){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -31,7 +31,7 @@ function view_i_tree_stats($i_stats){
         //Variable time range:
         $ui .= '<span class="inline-block" data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the choices you make interactively along the way">';
 
-        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'">'.view_number($i_stats['i___6169']).'<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']).'<span class="show-max">&nbsp;IDEAS</span></span>&nbsp;&nbsp;<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).'<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']).' MIN.</span>';
+        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'">'.view_number($i_stats['i___6169']).'<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']).($do_compact ? '' : '<span class="show-max">&nbsp;IDEAS</span>').'</span>'.($do_compact ? '' : '&nbsp;&nbsp;').'<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).'<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']).($do_compact ? '' : '<span class="show-max">&nbsp;MIN.</span>').'</span>';
 
         $ui .= '</span>';
 
@@ -781,7 +781,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
         $ui .= '<div class="col-sm-4 col-md-3 col2nd handler_13509 hidden">';
 
             //IDA STATS
-            $ui .= view_i_tree_stats($i_stats);
+            $ui .= view_i_tree_stats($i_stats, true);
 
         $ui .= '</div>';
     $ui .= '</div>';
