@@ -246,7 +246,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__type' => 12419, //COMMENTS
             'x__right' => $i_focus['i__id'],
         ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
-        $counter = count($comments);
+        $counter = ( $comments > 0 ? count($comments) : null );
 
         $focus_tab .= '<div style="margin-bottom:33px;">';
         $focus_tab .= view_i_note_mix($x__type, $comments);
