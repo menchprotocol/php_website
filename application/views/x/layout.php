@@ -363,8 +363,6 @@ if($tab_pill_count > 1){
 //Show All Tab Content:
 echo $tab_content;
 
-echo '</div>';
-
 
 
 if($in_my_x){
@@ -613,6 +611,8 @@ if($in_my_x){
     }
 
 
+    echo '</div>'; //CLOSE CONTAINER
+
 
     //DISCOVERY CONTROLLER
 
@@ -735,6 +735,11 @@ if($in_my_x){
     echo '</tr></table>';
     echo '</div>';
     echo '</div>';
+
+} else {
+
+    echo '</div>'; //CLOSE CONTAINER
+
 }
 
 
