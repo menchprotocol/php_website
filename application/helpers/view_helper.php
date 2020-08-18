@@ -720,7 +720,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
     //Return Results:
     if($append_coin_icon){
         $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-        return ( $count_query > 0 ? '<span title="'.$e___12467[$x__type]['m_title'].'" '.( $data_placement ? 'data-toggle="tooltip" data-placement="'.$data_placement.'"' : ''  ).' class="montserrat '.extract_icon_color($e___12467[$x__type]['m_icon']).'">'.$e___12467[$x__type]['m_icon'].'&nbsp;'.view_number($count_query).( $append_name ? '&nbsp'.$e___12467[$x__type]['m_title'] : '' ).'</span>' : null);
+        return ( $count_query > 0 ? '<span title="'.$e___12467[$x__type]['m_title'].'" '.( $data_placement ? 'data-toggle="tooltip" data-placement="'.$data_placement.'"' : ''  ).' class="montserrat '.extract_icon_color($e___12467[$x__type]['m_icon']).'">'.( $append_name ? '' : $e___12467[$x__type]['m_icon'].'&nbsp;'  ).view_number($count_query).( $append_name ? '&nbsp'.$e___12467[$x__type]['m_title'] : '' ).'</span>' : null);
     } else {
         return intval($count_query);
     }
