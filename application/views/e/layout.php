@@ -345,11 +345,11 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             }
 
             //Input to add new child:
-            if(($source_is_e && $superpower_10939) || $superpower_13422){
+            if($superpower_13422){
 
                 $focus_tab .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
-                            <span class="input-group-addon addon-lean icon-adder">'.$e___12467[12274]['m_icon'].'</span>
+                            <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    maxlength="' . config_var(6197) . '"

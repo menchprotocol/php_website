@@ -222,7 +222,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==12273){
 
         //COUNTER: Average Ideas
-        $counter = $i_stats['i___13443'];
+        $counter = $i_stats['i___6170'];
 
         //IDEA TREE STATS
         $focus_tab .= view_i_tree_stats($i_stats, true);

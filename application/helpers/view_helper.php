@@ -22,28 +22,24 @@ function view_i_tree_stats($i_stats, $show_info){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
-    $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
+    $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = '';
 
     //IDEA or TIME difference?
     if($i_stats['i___6169']!=$i_stats['i___6170'] || $i_stats['i___6161']!=$i_stats['i___6162']){
 
         //Variable time range:
-        $ui .= '<p class="space-content" style="margin-bottom:33px;"><span '.($show_info ? ' data-toggle="tooltip" data-placement="left" title="The number of ideas you discover & the time it takes to discover them depends on the choices you make interactively along the way" ' : '').'>';
+        $ui .= '<div style="margin-bottom:33px;" '.($show_info ? ' data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the choices you make interactively along the way" ' : '').'>';
 
-        foreach($CI->config->item('e___13544') as $e__id => $m){
+        //IDEA RANGE
+        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span>';
+        $ui .= '<span class="discovering-paths montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'"> '.$i_stats['i___6169'].' - '.$i_stats['i___6170'].'</span>';
 
-            $ui .= '<span class="discovering-paths">'.$m['m_title'].':</span>';
-            $ui .= $m['m_icon'].' <span class="discovering-count montserrat '.extract_icon_color($m['m_icon']).'">'.$i_stats['i___'.$e__id].'</span>';
+        //TIME RANGE
+        $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span>';
+        $ui .= '<span class="discovering-paths montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'"> '.round_minutes($i_stats['i___6161']).' - '.round_minutes($i_stats['i___6162']).' MIN.</span>';
 
-            //Print correlating Time Field:
-            foreach($CI->config->item('e___'.$e__id) as $e__id2 => $m2){
-                $ui .= '<span class="mono-space">'.$e___13369[13292]['m_icon'].' '.view_time_hours($i_stats['i___'.$e__id2]).'</span><br />';
-            }
-
-        }
-
-        $ui .= '</span></p>';
+        $ui .= '</div>';
 
     }
 
@@ -689,7 +685,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
 
         //IDEAS
         $i_stats = i_stats($i['i__metadata']);
-        $count_query = $i_stats['i___13443'];
+        $count_query = $i_stats['i___6170'];
 
     } elseif($x__type==6255){
 
