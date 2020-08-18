@@ -45,11 +45,6 @@ function view_i_tree_stats($i_stats, $show_info){
 
         $ui .= '</span></p>';
 
-    } elseif($show_info) {
-
-        //Single Time range:
-        $ui .= '<div class="i_content padded"><div class="msg">It takes <span class="mono-space">'.view_time_hours($i_stats['i___13292']).'</span> to discover '.( $i_stats['i___13443']<=1 ? 'this idea' : 'all '.$i_stats['i___13443'].' ideas' ).'.</div></div>';
-
     }
 
     return $ui;

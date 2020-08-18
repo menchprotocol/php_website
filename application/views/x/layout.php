@@ -227,6 +227,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //IDEA TREE STATS
         $focus_tab .= view_i_tree_stats($i_stats, true);
 
+        if(!$in_my_x){
+            //NEXT IDEAS
+            $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+        }
+
         //IDEA PREVIOUS
         $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -235,16 +240,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__right' => $i_focus['i__id'],
             'x__left !=' => config_var(12137),
         ), array('x__left'), 0), $user_e, 'THIS IDEA HELPS YOU:');
-
-
-
-        if(!$in_my_x){
-
-            //NEXT IDEAS
-            $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
-
-        }
-
 
     } elseif($x__type==12274){
 
@@ -342,7 +337,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
-    $default_active = in_array($x__type, $this->config->item('n___13300'));
+    $default_active = ( $counter > 0 && in_array($x__type, $this->config->item('n___13300')));
     $tab_pill_count++;
 
     $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'"  data-toggle="tooltip" data-placement="top" title="'.$m['m_title'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
