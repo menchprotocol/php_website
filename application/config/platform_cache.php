@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-16 20:23:07 PST
-$config['s___12274'] = 5021; //SOURCES
-$config['s___12273'] = 3941; //IDEAS
+//Generated 2020-08-17 23:32:31 PST
+$config['s___12274'] = 5045; //SOURCES
+$config['s___12273'] = 3975; //IDEAS
 $config['s___6255'] = 122276; //DISCOVERIES
 
 //SOURCE ICON:
@@ -125,7 +125,7 @@ $config['e___13550'] = array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_profile' => array(13550,13300,13294,13291,12359,4485,10593,4986,4603,4593),
+        'm_profile' => array(13550,13294,12359,4485,10593,4986,4603,4593),
     ),
 );
 
@@ -909,7 +909,7 @@ $config['e___4603'] = array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_profile' => array(13550,13300,13294,13291,12359,4485,10593,4986,4603,4593),
+        'm_profile' => array(13550,13294,12359,4485,10593,4986,4603,4593),
     ),
 );
 
@@ -936,25 +936,13 @@ $config['e___13298'] = array(
 );
 
 //DISCOVER TAB OPEN BY DEFAULT:
-$config['n___13300'] = array(4231);
+$config['n___13300'] = array();
 $config['e___13300'] = array(
-    4231 => array(
-        'm_title' => 'MESSAGES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_profile' => array(13550,13300,13294,13291,12359,4485,10593,4986,4603,4593),
-    ),
 );
 
 //DISCOVER TABS:
-$config['n___13291'] = array(4231,12419,13023,13563,13543,12274,11020,12273,6255);
+$config['n___13291'] = array(12419,13023,13563,13543,12274,11020,12273,6255);
 $config['e___13291'] = array(
-    4231 => array(
-        'm_title' => 'MESSAGES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_profile' => array(13550,13300,13294,13291,12359,4485,10593,4986,4603,4593),
-    ),
     12419 => array(
         'm_title' => 'COMMENTS',
         'm_message' => '',
@@ -1702,7 +1690,7 @@ $config['e___12359'] = array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_profile' => array(13550,13300,13294,13291,12359,4485,10593,4986,4603,4593),
+        'm_profile' => array(13550,13294,12359,4485,10593,4986,4603,4593),
     ),
 );
 
@@ -4325,7 +4313,7 @@ $config['e___4485'] = array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_profile' => array(13550,13300,13294,13291,12359,4485,10593,4986,4603,4593),
+        'm_profile' => array(13550,13294,12359,4485,10593,4986,4603,4593),
     ),
     12419 => array(
         'm_title' => 'COMMENTS',
@@ -4874,7 +4862,7 @@ $config['e___4986'] = array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_profile' => array(13550,13300,13294,13291,12359,4485,10593,4986,4603,4593),
+        'm_profile' => array(13550,13294,12359,4485,10593,4986,4603,4593),
     ),
 );
 
@@ -5867,7 +5855,7 @@ $config['e___10593'] = array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_profile' => array(13550,13300,13294,13291,12359,4485,10593,4986,4603,4593),
+        'm_profile' => array(13550,13294,12359,4485,10593,4986,4603,4593),
     ),
     4251 => array(
         'm_title' => 'SOURCE CREATED',
@@ -8024,7 +8012,7 @@ $config['e___4593'] = array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_profile' => array(13550,13300,13294,13291,12359,4485,10593,4986,4603,4593),
+        'm_profile' => array(13550,13294,12359,4485,10593,4986,4603,4593),
     ),
     7561 => array(
         'm_title' => 'MINER SIGNIN NO IDEA',
