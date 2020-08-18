@@ -154,6 +154,30 @@ echo $main_title;
 
 
 
+
+//MESSAGES
+$counter = null; //Hide message count
+echo '<div style="margin-bottom:33px;">';
+foreach($messages as $message_x) {
+    echo $this->X_model->message_send(
+        $message_x['x__message'],
+        $user_e
+    );
+}
+echo '</div>';
+
+if($in_my_x && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
+    //Give option to mark as read:
+    //echo '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_title'].' '.$e___11035[12211]['m_icon'].'</a></div>';
+}
+
+
+
+
+
+
+
+
 //DISCOVER LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 13291;
@@ -325,23 +349,6 @@ echo $tab_content;
 
 
 
-
-
-//MESSAGES
-$counter = null; //Hide message count
-echo '<div style="margin-bottom:33px;">';
-foreach($messages as $message_x) {
-    echo $this->X_model->message_send(
-        $message_x['x__message'],
-        $user_e
-    );
-}
-echo '</div>';
-
-if($in_my_x && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
-    //Give option to mark as read:
-    //echo '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_title'].' '.$e___11035[12211]['m_icon'].'</a></div>';
-}
 
 
 
