@@ -1152,7 +1152,10 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
 
 
     $ui = '<div class="doclear">&nbsp;</div>';
-    $ui .= '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
+
+    if(is_null($prefix_statement) || strlen($prefix_statement)){
+        $ui .= '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
+    }
 
 
     //Toogle for extra info:
