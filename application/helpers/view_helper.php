@@ -1349,7 +1349,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 }
 
 
-                $ui .= '<div class="space-left">'.view_i_tree_stats($i_stats, true).'</div>';
+                $ui .= '<div class="space-left">'.view_i_tree_stats($i_stats).'</div>';
 
 
             $ui .= '</div>';
