@@ -778,7 +778,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
-        $ui .= '<div class="col-sm-6 col-md-5 col2nd handler_13509 hidden">';
+        $ui .= '<div class="col-sm-5 col-md-4 col2nd handler_13509 hidden">';
 
             //IDA STATS
             $ui .= view_i_tree_stats($i_stats);
