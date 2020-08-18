@@ -58,7 +58,7 @@ $e_coins_growth_rate = format_percentage( ($e_coins_last_week[0]['totals'] / ( $
 
 
 //Email Subject
-$subject = '🔴 '.$e___12467[6255]['m_title'].' +'.$x_coins_growth_rate.'% for the Week of '.date("M jS", $last_week_start_timestamp);
+$subject = extract_icon_color($e___12467[6255]['m_icon'], true).' '.$e___12467[6255]['m_title'].' +'.$x_coins_growth_rate.'% for the Week of '.date("M jS", $last_week_start_timestamp);
 
 //Email Body
 $html_message = '<br />';
