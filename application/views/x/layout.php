@@ -236,6 +236,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__left !=' => config_var(12137),
         ), array('x__left'), 0), $user_e, 'THIS IDEA HELPS YOU:');
 
+
+
+        if(!$in_my_x){
+
+            //NEXT IDEAS
+            echo view_i_list($i_focus, $is_next, $user_e);
+
+        }
+
+
     } elseif($x__type==12274){
 
         $counter = $i_stats['e_count'];
@@ -353,18 +363,11 @@ if($tab_pill_count > 1){
 //Show All Tab Content:
 echo $tab_content;
 
+echo '</div>';
 
 
 
-
-
-
-if(!$in_my_x){
-
-    //NEXT IDEAS
-    echo view_i_list($i_focus, $is_next, $user_e);
-
-} else {
+if($in_my_x){
 
     //PREVIOUSLY UNLOCKED:
     $unlocked_x = $this->X_model->fetch(array(
@@ -608,17 +611,10 @@ if(!$in_my_x){
         echo '</div>';
 
     }
-}
-
-echo '</div>';
 
 
 
-
-
-
-//DISCOVERY CONTROLLER
-if($in_my_x){
+    //DISCOVERY CONTROLLER
 
 
     //Discoveries
