@@ -677,9 +677,9 @@ function superpower_active($superpower_e__id, $boolean_only = false){
 function round_minutes($seconds){
     $minutes = round($seconds/60);
     if($minutes <= 1){
-        return '1 MINUTE';
+        return 1;
     } else {
-        return $minutes.' MINUTES';
+        return $minutes;
     }
 }
 
