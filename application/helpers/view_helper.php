@@ -18,7 +18,7 @@ function view_e_load_more($page, $limit, $list_e_count)
 }
 
 
-function view_i_tree_stats($i_stats, $do_compact = false){
+function view_i_tree_stats($i_stats){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -31,7 +31,7 @@ function view_i_tree_stats($i_stats, $do_compact = false){
         //Variable time range:
         $ui .= '<span class="inline-block" data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the choices you make interactively along the way">';
 
-        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'">'.( $do_compact ? '<span style="display: inline-block; min-width:42px;">'.view_number($i_stats['i___6170']).'</span>' : '<span style="display: inline-block; min-width:65px;">'.view_number($i_stats['i___6169']).'<span style="padding: 0 3px;">-</span>'.view_number($i_stats['i___6170']).'</span>' ).'</span>'.( $do_compact ? '' : '&nbsp;&nbsp;' ).$e___13544[13292]['m_icon'].'&nbsp;<span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.( $do_compact ? '' : round_minutes($i_stats['i___6161']).'<span style="padding: 0 3px;">-</span>' ).round_minutes($i_stats['i___6162']).'&nbsp;MIN.</span>';
+        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'">'.'<span style="display: inline-block; min-width:65px;">'.view_number($i_stats['i___6169']).'<span style="padding: 0 3px;">-</span>'.view_number($i_stats['i___6170']).'</span>'.'</span>'.$e___13544[13292]['m_icon'].'&nbsp;<span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).'<span style="padding: 0 3px;">-</span>'.round_minutes($i_stats['i___6162']).'&nbsp;MIN.</span>';
 
         $ui .= '</span>';
 
@@ -778,10 +778,10 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
-        $ui .= '<div class="col-sm-4 col-md-3 col2nd handler_13509 hidden">';
+        $ui .= '<div class="col-sm-6 col-md-5 col2nd handler_13509 hidden">';
 
             //IDA STATS
-            $ui .= view_i_tree_stats($i_stats, true);
+            $ui .= view_i_tree_stats($i_stats);
 
         $ui .= '</div>';
     $ui .= '</div>';
