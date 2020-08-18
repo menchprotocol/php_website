@@ -31,7 +31,7 @@ function view_i_tree_stats($i_stats, $do_compact = false){
         //Variable time range:
         $ui .= '<span class="inline-block" data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the choices you make interactively along the way">';
 
-        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'">'.( $do_compact ? '<span style="display: inline-block; min-width:42px;">'.view_number($i_stats['i___6170']).'</span>' : '<span style="display: inline-block; min-width:65px;">'.view_number($i_stats['i___6169']).'<span style="padding: 0 3px;">-</span>'.view_number($i_stats['i___6170']).'</span>' ).'</span>'.( $do_compact ? '' : '&nbsp;&nbsp;' ).$e___13544[13292]['m_icon'].'&nbsp;<span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.( $do_compact ? '' : round_minutes($i_stats['i___6161']).'<span style="padding: 0 3px;">-</span>' ).round_minutes($i_stats['i___6162']).'<span class="show-max">&nbsp;MIN.</span></span>';
+        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'">'.( $do_compact ? '<span style="display: inline-block; min-width:42px;">'.view_number($i_stats['i___6170']).'</span>' : '<span style="display: inline-block; min-width:65px;">'.view_number($i_stats['i___6169']).'<span style="padding: 0 3px;">-</span>'.view_number($i_stats['i___6170']).'</span>' ).'</span>'.( $do_compact ? '' : '&nbsp;&nbsp;' ).$e___13544[13292]['m_icon'].'&nbsp;<span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.( $do_compact ? '' : round_minutes($i_stats['i___6161']).'<span style="padding: 0 3px;">-</span>' ).round_minutes($i_stats['i___6162']).'&nbsp;MIN.</span>';
 
         $ui .= '</span>';
 
@@ -1349,7 +1349,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 }
 
 
-                $ui .= '<div class="space-left">'.view_i_tree_stats($i_stats).'</div>';
+                $ui .= '<div class="space-left">'.view_i_tree_stats($i_stats, true).'</div>';
 
 
             $ui .= '</div>';
