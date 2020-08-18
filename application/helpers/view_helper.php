@@ -33,11 +33,12 @@ function view_i_tree_stats($i_stats, $show_info){
 
         //IDEA RANGE
         $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span>';
-        $ui .= '<span class="discovering-paths montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'"> '.$i_stats['i___6169'].' - '.$i_stats['i___6170'].'</span>';
+        $ui .= '<span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'"> '.$i_stats['i___6169'].' - '.$i_stats['i___6170'].'</span>';
 
         //TIME RANGE
+        $ui .= '&nbsp;&nbsp;&nbsp;';
         $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span>';
-        $ui .= '<span class="discovering-paths montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'"> '.round_minutes($i_stats['i___6161']).' - '.round_minutes($i_stats['i___6162']).' MIN.</span>';
+        $ui .= '<span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'"> '.round_minutes($i_stats['i___6161']).' - '.round_minutes($i_stats['i___6162']).' MIN.</span>';
 
         $ui .= '</div>';
 
