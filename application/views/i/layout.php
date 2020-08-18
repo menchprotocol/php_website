@@ -105,8 +105,8 @@ echo '<div class="doclear">&nbsp;</div>';
 
 
 //IDEA LAYOUT
-$counter_i = view_coins_i(12273,  $i_focus, false);
 $i_stats = i_stats($i_focus['i__metadata']);
+$counter_i = $i_stats['i___6170'];
 $tab_group = 11018;
 $tab_content = '';
 echo '<ul class="nav nav-tabs nav-sm">';
