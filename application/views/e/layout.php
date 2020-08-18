@@ -353,13 +353,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    maxlength="' . config_var(6197) . '"
-                                   placeholder="'.( $superpower_13422 ? 'NEW SOURCE URL OR TITLE' : 'NEW SOURCE URL' ).'">
+                                   placeholder="NEW SOURCE URL OR TITLE">
                         </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
-
-            } elseif($source_is_e){
-
-                //Give option to unlock superpower:
-                $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>LEARN HOW TO SOURCE IDEAS &raquo;</a></div>';
 
             }
 
