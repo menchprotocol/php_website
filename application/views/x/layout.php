@@ -176,6 +176,15 @@ if($in_my_x && !count($x_completes) && in_array($i_focus['i__type'], $this->conf
 
 
 
+if(!$in_my_x){
+
+    //GET STARTED
+    echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
+
+}
+
+
+
 
 
 //DISCOVER LAYOUT
@@ -350,16 +359,7 @@ echo $tab_content;
 
 
 
-
-
-
-
-
-
 if(!$in_my_x){
-
-    //GET STARTED
-    echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
 
     //NEXT IDEAS
     echo view_i_list($i_focus, $is_next, $user_e);
