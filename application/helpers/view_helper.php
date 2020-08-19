@@ -46,7 +46,7 @@ function view_i_tree_stats($i_stats){
     $ui .= '</span>';
 
     //IDEA TREE STATS
-    $ui .= '<div>'.view_i_tree_stats($i_stats).'</div>';
+    //$ui .= '<div>'.view_i_tree_stats($i_stats).'</div>';
 
     return $ui;
 }
