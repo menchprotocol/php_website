@@ -81,7 +81,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     foreach($this->config->item('e___11089') as $x__type => $m) {
 
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
-        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true) && !$source_is_e){
             //Missing Superpower:
             continue;
         } elseif(in_array($x__type, $this->config->item('n___13425')) && !$source_is_e){
