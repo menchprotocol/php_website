@@ -22,8 +22,8 @@ function view_i_tree_stats($i_stats, $show_min = false){
     //IDEA STATUS BAR
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
-    $is_interactive = (  $i_stats['i___6169']!=$i_stats['i___6170']  ||  $i_stats['i___6161']!=$i_stats['i___6162']  );
-    $has_idea = (  $i_stats['i___6169'] && $i_stats['i___6170']  );
+    $is_interactive = ( $i_stats['i___6169']!=$i_stats['i___6170'] );
+    $has_idea = ( $i_stats['i___6169'] && $i_stats['i___6170'] );
 
     //Variable time range:
     $ui = '<span class="montserrat doupper" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="# of ideas discovered & discovery time depends on the interactive choices made along the way" ': '' ).'>';
