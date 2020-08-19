@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-19 10:24:25 PST
-$config['s___12274'] = 5044; //SOURCES
+//Generated 2020-08-19 12:53:19 PST
+$config['s___12274'] = 5042; //SOURCES
 $config['s___12273'] = 3980; //IDEAS
 $config['s___6255'] = 122266; //DISCOVERIES
 
@@ -145,7 +145,7 @@ $config['e___13544'] = array(
     13292 => array(
         'm_title' => 'TIME RANGE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-stopwatch"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch idea"></i>',
         'm_profile' => array(13544,13369,4356),
     ),
 );
@@ -816,7 +816,7 @@ $config['e___13369'] = array(
     13292 => array(
         'm_title' => 'DISCOVERY TIME RANGE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-stopwatch"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch idea"></i>',
         'm_profile' => array(13544,13369,4356),
     ),
     13413 => array(
