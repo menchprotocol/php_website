@@ -31,7 +31,7 @@ function view_i_tree_stats($i_stats, $show_min = false){
 
     //IDEA STATS
     if($i_stats['i___6169'] && $i_stats['i___6170']){
-        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:70px;">'.view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']).'<span class="icon-block"><i class="fas fa-random idea"></i></span>' : '' ).( $show_min ? '' : ' IDEA'.view__s($i_stats['i___6170']) ).'</span>';
+        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:70px;">'.view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']).'&nbsp;<i class="fas fa-random idea"></i>' : '' ).( $show_min ? '' : '&nbsp;IDEA'.view__s($i_stats['i___6170']) ).'</span>';
     }
 
 
