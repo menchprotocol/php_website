@@ -1156,7 +1156,7 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
 
 
     //Toogle for extra info:
-    $ui .= '<div class="pull-right inline-block" style="margin:5px 5px 0 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="grey montserrat" title="'.$e___11035[13509]['m_title'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
+    $ui .= '<div class="pull-right inline-block" style="margin:5px 21px 0 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="grey montserrat" title="'.$e___11035[13509]['m_title'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
     $ui .= '<div class="list-group" style="margin-bottom:33px;">';
