@@ -780,6 +780,7 @@ img.no-radius {
     background-color: #f0f0f0 !important;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    position: relative;
 }
 
 .note-editor{
@@ -942,7 +943,7 @@ textarea.note-textarea{
 .second-stats{
     position: absolute;
     left: 0;
-    top: 20px;
+    top: 34px;
 }
 .x__message {
     display:inline-block;
