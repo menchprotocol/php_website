@@ -18,6 +18,9 @@ function view_e_load_more($page, $limit, $list_e_count)
 }
 
 function view_i_range($i_stats){
+    if(!$i_stats['i___6169'] || !$i_stats['i___6170']){
+        return null;
+    }
     return view_number($i_stats['i___6169']).( view_number($i_stats['i___6169']) != view_number($i_stats['i___6170']) ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' );
 }
 
