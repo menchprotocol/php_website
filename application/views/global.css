@@ -939,6 +939,11 @@ textarea.note-textarea{
     padding-right:5px !important;
 }
 
+.second-stats{
+    position: absolute;
+    left: 0;
+    top: 20px;
+}
 .x__message {
     display:inline-block;
     overflow: hidden;
