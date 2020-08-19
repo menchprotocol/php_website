@@ -31,7 +31,7 @@ function view_i_tree_stats($i_stats, $show_min = false){
 
     //IDEA STATS
     if($i_stats['i___6169'] && $i_stats['i___6170']){
-        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:70px;">'.view_number($i_stats['i___6169']).( view_number($i_stats['i___6169']) != view_number($i_stats['i___6170']) ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']).'<span class="icon-block underdot" data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the interactive choices made along the way"><i class="fas fa-random rotate90 black"></i></span>' : '' ).'</span>';
+        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:70px;">'.view_number($i_stats['i___6169']).( view_number($i_stats['i___6169']) != view_number($i_stats['i___6170']) ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']).'<span class="icon-block underdot" data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the interactive choices made along the way"><i class="fas fa-random idea"></i></span>' : '' ).'</span>';
     }
 
 
