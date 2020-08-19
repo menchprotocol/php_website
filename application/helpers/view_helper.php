@@ -36,11 +36,11 @@ function view_i_tree_stats($i_stats){
 
     //IDEA STATS
     $view_i_range = view_i_range($i_stats);
-    $ui .= '<span class="icon-block">'.( $view_i_range ? $e___13544[13629]['m_icon'] : '&nbsp;' ).'</span>'.( $view_i_range ? $view_i_range : '' );
+    $ui .= '<span class="montserrat doupper"><span class="icon-block">'.( $view_i_range ? $e___13544[13629]['m_icon'] : '&nbsp;' ).'</span>'.( $view_i_range ? $view_i_range : '' );
 
 
     //TIME STATS
-    $ui .= '<span class="montserrat"> IN '.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+    $ui .= ' IDEA'.view__s($i_stats['i___6170']).' IN '.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
 
 
     $ui .= '</span>';
