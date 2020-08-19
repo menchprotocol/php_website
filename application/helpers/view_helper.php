@@ -36,7 +36,10 @@ function view_i_tree_stats($i_stats, $hide_i = false){
 
     if(!$hide_i){
         //IDEA STATS
-        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'" style="display: inline-block; min-width:74px;">'.view_i_range($i_stats).'</span>';
+        $view_i_range = view_i_range($i_stats);
+        if($view_i_range){
+            $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'" style="display: inline-block; min-width:74px;">'.$view_i_range.'</span>';
+        }
     }
 
     //TIME STATS
