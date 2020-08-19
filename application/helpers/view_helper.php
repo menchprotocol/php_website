@@ -1377,7 +1377,7 @@ function view_e_basic($e)
     if(superpower_active(10939, true)){
         $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
     } else {
-        $ui .= '<span class="title-block title-no-right">'.$e['e__title'].'</span>';
+        $ui .= '<b class="title-block title-no-right">'.$e['e__title'].'</b>';
     }
     if(isset($e['x__message']) && strlen($e['x__message']) > 0){
         $ui .= '<div class="space-content" style="padding-top:5px;">'.$e['x__message'].'</div>';
