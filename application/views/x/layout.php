@@ -198,6 +198,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
+    //Have Needed Superpowers?
+    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
+    if(count($superpower_actives) && !superpower_assigned(end($superpower_actives))){
+        continue;
+    }
+
     //Is this a caret menu?
     if(in_array(11040 , $m['m_profile'])){
         echo view_caret($x__type, $m, $i_focus['i__id']);
