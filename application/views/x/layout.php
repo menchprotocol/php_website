@@ -204,6 +204,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
+    $stats_append = null;
     $counter = null; //Assume no counters
     $focus_tab = '';
     $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
@@ -222,7 +223,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = ( count($is_next) > $i_stats['i___6170'] ? count($is_next) : view_i_range($i_stats) );
 
         //IDEA TREE STATS
-        $focus_tab .= '<div style="margin-bottom:13px;">'.view_i_tree_stats($i_stats, true).'</div>';
+        $stats_append = view_i_tree_stats($i_stats, true);
 
         if(!$in_my_x){
 
@@ -276,7 +277,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==6255){
 
         $counter = view_coins_i(6255,  $i_focus, false);
-        $focus_tab .= '<div class="i_content padded"><div class="msg">This idea has been discovered by '.$counter.' users.</div></div>';
+        $focus_tab .= '<div class="i_content padded"><div class="msg">This idea has been discovered by '.$counter.' other user'.view__s($counter).'.</div></div>';
 
     } elseif($x__type==13023){
 
@@ -339,7 +340,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = ( $counter > 0 && in_array($x__type, $this->config->item('n___13300')));
     $tab_pill_count++;
 
-    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'"  data-toggle="tooltip" data-placement="top" title="'.$m['m_title'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
+    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'"  data-toggle="tooltip" data-placement="top" title="'.$m['m_title'].' '.$m['m_message'].'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span>'.( $stats_append ? '<span class="show-max-active second-stats">'.$stats_append.'</span>' : '' ).'</a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $focus_tab;
