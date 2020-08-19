@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-18 20:44:55 PST
+//Generated 2020-08-18 20:57:43 PST
 $config['s___12274'] = 5044; //SOURCES
 $config['s___12273'] = 3980; //IDEAS
-$config['s___6255'] = 122263; //DISCOVERIES
+$config['s___6255'] = 122266; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -917,19 +917,19 @@ $config['n___13291'] = array(12419,13023,13563,12274,12273,6255);
 $config['e___13291'] = array(
     12419 => array(
         'm_title' => 'COMMENTS',
-        'm_message' => 'useful for sharing your thoughts & joining the conversation',
+        'm_message' => 'enable you to share your thoughts & join the conversation',
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,13304,13291,11018,12359,5967,10593,4986,4593,4485),
     ),
     13023 => array(
         'm_title' => 'SHARE',
-        'm_message' => 'this idea with friends',
+        'm_message' => 'with friends & those who need to discover this idea',
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_profile' => array(13291,4527,13024),
     ),
     13563 => array(
         'm_title' => 'MODIFY IDEA',
-        'm_message' => 'to make it better',
+        'm_message' => 'to make it better with your contribution',
         'm_icon' => '<i class="fas fa-pen"></i>',
         'm_profile' => array(13291),
     ),
@@ -947,7 +947,7 @@ $config['e___13291'] = array(
     ),
     6255 => array(
         'm_title' => 'DISCOVERIES',
-        'm_message' => 'so you know how many others have read this idea',
+        'm_message' => 'so you know how many other users have also discovered this idea',
         'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
         'm_profile' => array(13298,12574,13450,11089,13530,13291,12677,11018,12467,12228,4527),
     ),
@@ -3863,7 +3863,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.512',
+        'm_message' => 'v1.52',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
