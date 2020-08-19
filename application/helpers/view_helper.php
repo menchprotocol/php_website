@@ -31,7 +31,7 @@ function view_i_tree_stats($i_stats, $hide_i = false){
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
 
     //Variable time range:
-    $ui = '';
+    $ui = '<span data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the interactive choices made along the way">';
 
     if(!$hide_i){
         //IDEA STATS
@@ -41,6 +41,8 @@ function view_i_tree_stats($i_stats, $hide_i = false){
 
     //TIME STATS
     $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+
+    $ui .= '</span>';
 
     return $ui;
 }
