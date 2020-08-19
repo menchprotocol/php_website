@@ -1374,7 +1374,11 @@ function view_e_basic($e)
 {
     $ui = '<div class="list-group-item no-side-padding">';
     $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
-    $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
+    if(superpower_active(10939, true)){
+        $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
+    } else {
+        $ui .= '<span class="title-block title-no-right">'.$e['e__title'].'</span>';
+    }
     if(isset($e['x__message']) && strlen($e['x__message']) > 0){
         $ui .= '<div class="space-content" style="padding-top:5px;">'.$e['x__message'].'</div>';
     }
