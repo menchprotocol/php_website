@@ -1696,7 +1696,7 @@ label {
     }
 
     .show-max{display: none !important;}
-    .show-min{display: block !important;}
+    .show-min{display: inline-block !important;}
 
     .mench-navigation .block-sign-x{
         width:40px;
