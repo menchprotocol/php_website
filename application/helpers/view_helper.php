@@ -25,7 +25,7 @@ function view_i_tree_stats($i_stats, $show_min = false){
     $is_interactive = (  $i_stats['i___6169']!=$i_stats['i___6170']  ||  $i_stats['i___6161']!=$i_stats['i___6162']  );
 
     //Variable time range:
-    $ui = '<span class="montserrat doupper" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="top" title="The number of ideas discovered & the time it takes to discover them depends on your choices that you\'ll make interactively along the way" ' : '' ).'>';
+    $ui = '<span class="montserrat doupper" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="The ideas you discover & your discovery time depend on your personalized answers" ': '' ).'>';
 
     //random
 
