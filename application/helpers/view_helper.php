@@ -22,16 +22,16 @@ function view_i_tree_stats($i_stats, $show_min = false){
     //IDEA STATUS BAR
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
+    $is_interactive = (  $i_stats['i___6169']!=$i_stats['i___6170']  ||  $i_stats['i___6161']!=$i_stats['i___6162']  );
 
     //Variable time range:
-    $ui = '<span class="montserrat doupper">';
-
+    $ui = '<span class="montserrat doupper" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the interactive choices made along the way" ' : '' ).'>';
 
     //random
 
     //IDEA STATS
     if($i_stats['i___6169'] && $i_stats['i___6170']){
-        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:70px;">'.view_number($i_stats['i___6169']).( view_number($i_stats['i___6169']) != view_number($i_stats['i___6170']) ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']).'<span class="icon-block underdot" data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the interactive choices made along the way"><i class="fas fa-random idea"></i></span>' : '' ).'</span>';
+        $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:70px;">'.view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']).( $show_min ? '' : ' IDEA'.view__s($i_stats['i___6170']) ).'<span class="icon-block"><i class="fas fa-random idea"></i></span>' : '' ).'</span>';
     }
 
 
