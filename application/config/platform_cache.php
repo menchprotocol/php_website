@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-18 21:40:41 PST
+//Generated 2020-08-18 21:48:39 PST
 $config['s___12274'] = 5044; //SOURCES
 $config['s___12273'] = 3980; //IDEAS
 $config['s___6255'] = 122266; //DISCOVERIES
@@ -1817,7 +1817,7 @@ $config['e___12446'] = array(
     12448 => array(
         'm_title' => 'PENDING DISCOVERY',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="far fa-lock discover"></i>',
         'm_profile' => array(13450,12446),
     ),
     12447 => array(
