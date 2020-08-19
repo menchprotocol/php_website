@@ -195,9 +195,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = ( count($is_next) > $counter_i ? count($is_next) : view_i_range($i_stats) );
 
-        //IDEA TREE STATS
-        $focus_tab .= '<div style="margin-bottom: 13px;">'.view_i_tree_stats($i_stats, true).'</div>';
-
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
         foreach($is_next as $next_i) {
             $focus_tab .= view_i($next_i, $i_focus['i__id'], false, $e_of_i);
@@ -217,6 +214,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $focus_tab .= '</div>';
+
+        //IDEA TREE STATS
+        $focus_tab .= '<div>'.view_i_tree_stats($i_stats, true).'</div>';
 
     } elseif($x__type==6255) {
 
