@@ -24,7 +24,7 @@ function view_i_range($i_stats){
     return view_number($i_stats['i___6169']).( view_number($i_stats['i___6169']) != view_number($i_stats['i___6170']) ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' );
 }
 
-function view_i_tree_stats($i_stats, $hide_i = false){
+function view_i_tree_stats($i_stats){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -34,11 +34,9 @@ function view_i_tree_stats($i_stats, $hide_i = false){
     $ui = '<span data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the interactive choices made along the way">';
 
 
-    if(!$hide_i){
-        //IDEA STATS
-        $view_i_range = view_i_range($i_stats);
-        $ui .= '<span class="icon-block">'.( $view_i_range ? $e___13544[13629]['m_icon'] : '&nbsp;' ).'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'" style="display: inline-block; min-width:74px;">'.( $view_i_range ? $view_i_range : '&nbsp;' ).'</span>';
-    }
+    //IDEA STATS
+    $view_i_range = view_i_range($i_stats);
+    $ui .= '<span class="icon-block">'.( $view_i_range ? $e___13544[13629]['m_icon'] : '&nbsp;' ).'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'" style="display: inline-block; min-width:74px;">'.( $view_i_range ? $view_i_range : '&nbsp;' ).'</span>';
 
 
     //TIME STATS
@@ -46,6 +44,9 @@ function view_i_tree_stats($i_stats, $hide_i = false){
 
 
     $ui .= '</span>';
+
+    //IDEA TREE STATS
+    $ui .= '<div>'.view_i_tree_stats($i_stats).'</div>';
 
     return $ui;
 }
