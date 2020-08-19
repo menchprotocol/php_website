@@ -232,6 +232,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //NEXT IDEAS
             $focus_tab .= view_i_list($i_focus, $is_next, $user_e, 'UP NEXT:');
 
+            $focus_tab .= '<div>'.view_i_tree_stats($i_stats).'</div>';
+
             //IDEA PREVIOUS
             $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

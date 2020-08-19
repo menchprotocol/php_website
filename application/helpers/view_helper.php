@@ -24,7 +24,7 @@ function view_i_range($i_stats){
     return view_number($i_stats['i___6169']).( view_number($i_stats['i___6169']) != view_number($i_stats['i___6170']) ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' );
 }
 
-function view_i_tree_stats($i_stats){
+function view_i_tree_stats($i_stats, $show_min = false){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -40,13 +40,11 @@ function view_i_tree_stats($i_stats){
 
 
     //TIME STATS
-    $ui .= ' IDEA'.view__s($i_stats['i___6170']).' IN '.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+    $ui .= ( $show_min ? '' : '<span class="show-max">&nbsp;IDEA'.view__s($i_stats['i___6170']).'</span>' ).' IN '.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
 
 
     $ui .= '</span>';
 
-    //IDEA TREE STATS
-    //$ui .= '<div>'.view_i_tree_stats($i_stats).'</div>';
 
     return $ui;
 }
@@ -792,7 +790,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
         $ui .= '<div class="col-sm-5 col-md-4 col2nd handler_13509 hidden">';
 
             //IDA STATS
-            $ui .= view_i_tree_stats($i_stats);
+            $ui .= view_i_tree_stats($i_stats, true);
 
         $ui .= '</div>';
     $ui .= '</div>';
