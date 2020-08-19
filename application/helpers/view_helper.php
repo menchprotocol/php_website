@@ -40,7 +40,7 @@ function view_i_tree_stats($i_stats, $show_min = false){
 
 
     //TIME STATS
-    $ui .= ( $show_min ? '' : '<span class="show-max">&nbsp;IDEA'.view__s($i_stats['i___6170']).'</span>' ).' IN '.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+    $ui .= ( $show_min ? '' : '&nbsp;IDEA'.view__s($i_stats['i___6170']) ).' IN '.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
 
 
     $ui .= '</span>';
