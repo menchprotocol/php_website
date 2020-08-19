@@ -33,14 +33,17 @@ function view_i_tree_stats($i_stats, $hide_i = false){
     //Variable time range:
     $ui = '<span data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the interactive choices made along the way">';
 
+
     if(!$hide_i){
         //IDEA STATS
         $view_i_range = view_i_range($i_stats);
         $ui .= '<span class="icon-block">'.( $view_i_range ? $e___13544[13629]['m_icon'] : '&nbsp;' ).'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'" style="display: inline-block; min-width:74px;">'.( $view_i_range ? $view_i_range : '&nbsp;' ).'</span>';
     }
 
+
     //TIME STATS
     $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+
 
     $ui .= '</span>';
 

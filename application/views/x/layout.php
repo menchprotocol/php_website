@@ -233,6 +233,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= view_i_list($i_focus, $is_next, $user_e, 'UP NEXT:');
 
             //IDEA TREE STATS
+            $focus_tab .= '<div class="doclear">&nbsp;</div>';
             $focus_tab .= '<div>'.view_i_tree_stats($i_stats, true).'</div>';
 
             //IDEA PREVIOUS
