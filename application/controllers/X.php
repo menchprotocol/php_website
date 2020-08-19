@@ -507,7 +507,6 @@ class X extends CI_Controller
                     $this->X_model->mark_complete($is[0], array(
                         'x__type' => 4559, //DISCOVER MESSAGES
                         'x__source' => $user_e['e__id'],
-                        'x__left' => $is[0]['i__id'],
                     ));
                 }
             }
@@ -707,7 +706,6 @@ class X extends CI_Controller
         $new_message = '@'.$cdn_status['cdn_e']['e__id'];
         $this->X_model->mark_complete($is[0], array(
             'x__type' => 12117,
-            'x__left' => $is[0]['i__id'],
             'x__source' => $user_e['e__id'],
             'x__message' => $new_message,
             'x__up' => $cdn_status['cdn_e']['e__id'],
@@ -769,7 +767,6 @@ class X extends CI_Controller
         //Save new answer:
         $this->X_model->mark_complete($is[0], array(
             'x__type' => 6144,
-            'x__left' => $is[0]['i__id'],
             'x__source' => $user_e['e__id'],
             'x__message' => $_POST['x_reply'],
         ));

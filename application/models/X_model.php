@@ -195,7 +195,6 @@ class X_model extends CI_Model
                     $this->X_model->mark_complete($next_i, array(
                         'x__type' => 4559, //DISCOVER MESSAGES
                         'x__source' => $add_fields['x__source'],
-                        'x__left' => $next_i['i__id'],
                     ));
 
                 }
@@ -1220,6 +1219,14 @@ class X_model extends CI_Model
                 'x__sort' => $i_rank, //Always place at the top of their Discoveries
             ));
 
+            //Mark as complete if possible:
+            if(in_array($is[0]['i__type'], $this->config->item('n___12211'))){
+                $this->X_model->mark_complete($is[0], array(
+                    'x__type' => 4559, //DISCOVER MESSAGES
+                    'x__source' => $e__id,
+                ));
+            }
+
             //Move other ideas down in the Discovery List:
             foreach($this->X_model->fetch(array(
                 'x__id !=' => $home['x__id'], //Not the newly added idea
@@ -1237,37 +1244,6 @@ class X_model extends CI_Model
                 ), $e__id, 10681 /* Ideas Ordered Automatically  */);
 
             }
-
-            //Do we need to add the starting idea?
-            if(config_var(13406) > 0 && $i__id != config_var(13406)){
-
-                //Is this their first idea?
-                if(!count($this->X_model->fetch(array(
-                    'x__source' => $e__id,
-                    'x__left !=' => $i__id,
-                    'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
-
-                    //YES! Also add the starting idea:
-                    $this->X_model->start($e__id, config_var(13406), $i__id);
-
-                    return config_var(13406);
-
-                } else {
-
-                    //Mark as discover if possible:
-                    if($is[0]['i__type']==6677){
-                        $this->X_model->mark_complete($is[0], array(
-                            'x__type' => 4559, //DISCOVER MESSAGES
-                            'x__source' => $e__id,
-                            'x__left' => $is[0]['i__id'],
-                        ));
-                    }
-
-                }
-            }
-
 
         }
 
@@ -1581,7 +1557,10 @@ class X_model extends CI_Model
     }
 
 
-    function mark_complete($i, $add_fields){
+    function mark_complete($i, $add_fields) {
+
+        //Always add Idea to x__left
+        $add_fields['x__left'] = $i['i__id'];
 
         //Log completion transaction:
         $new_x = $this->X_model->create($add_fields);
@@ -2061,7 +2040,6 @@ class X_model extends CI_Model
         $this->X_model->mark_complete($is[0], array(
             'x__type' => $x__type,
             'x__source' => $e__id,
-            'x__left' => $is[0]['i__id'],
         ));
 
         //All good, something happened:

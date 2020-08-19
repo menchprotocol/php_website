@@ -65,7 +65,6 @@ if($user_e['e__id']){
             array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                 'x__type' => 4559, //DISCOVER MESSAGES
                 'x__source' => $user_e['e__id'],
-                'x__left' => $i_focus['i__id'],
             )));
         }
 
@@ -103,7 +102,6 @@ if($user_e['e__id']){
                     array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                         'x__type' => $x_completion_type_id,
                         'x__source' => $user_e['e__id'],
-                        'x__left' => $i_focus['i__id'],
                     )));
 
                 } else {
@@ -131,7 +129,6 @@ if($user_e['e__id']){
                     array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                         'x__type' => 7492, //TERMINATE
                         'x__source' => $user_e['e__id'],
-                        'x__left' => $i_focus['i__id'],
                     )));
 
 
@@ -423,7 +420,6 @@ if($in_my_x){
                 array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                     'x__type' => 4559, //DISCOVER MESSAGES
                     'x__source' => $user_e['e__id'],
-                    'x__left' => $i_focus['i__id'],
                 )));
 
             }
