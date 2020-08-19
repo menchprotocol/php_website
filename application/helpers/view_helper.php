@@ -31,19 +31,19 @@ function view_i_tree_stats($i_stats, $show_min = false){
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
 
     //Variable time range:
-    $ui = '<span data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the interactive choices made along the way">';
+    $ui = '<span data-toggle="tooltip" data-placement="top" title="The number of ideas & their discovery time depends on the interactive choices made along the way"><span class="montserrat doupper">';
 
 
     //IDEA STATS
     $view_i_range = view_i_range($i_stats);
-    $ui .= '<span class="montserrat doupper"><span class="icon-block">'.( $view_i_range ? $e___13544[13629]['m_icon'] : '&nbsp;' ).'</span>'.( $view_i_range ? '<span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:70px;">'.$view_i_range.'</span>' : '' );
+    $ui .= ( $view_i_range ? '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span>' : '' ).( $view_i_range ? '<span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:70px;">'.$view_i_range.'</span>' : '' );
 
 
     //TIME STATS
-    $ui .= $e___13544[13292]['m_icon'].'<span class="inline-block '.extract_icon_color($e___13544[13292]['m_icon']).'" style="padding-left: 5px;">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span></span>';
+    $ui .= $e___13544[13292]['m_icon'].'<span class="inline-block '.extract_icon_color($e___13544[13292]['m_icon']).'" style="padding-left: 5px;">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
 
 
-    $ui .= '</span>';
+    $ui .= '</span></span>';
 
 
     return $ui;
