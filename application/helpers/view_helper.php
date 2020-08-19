@@ -37,9 +37,7 @@ function view_i_tree_stats($i_stats, $hide_i = false){
     if(!$hide_i){
         //IDEA STATS
         $view_i_range = view_i_range($i_stats);
-        if($view_i_range){
-            $ui .= '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'" style="display: inline-block; min-width:74px;">'.$view_i_range.'</span>';
-        }
+        $ui .= '<span class="icon-block">'.( $view_i_range ? $e___13544[13629]['m_icon'] : '&nbsp;' ).'</span><span class="montserrat '.extract_icon_color($e___13544[13629]['m_icon']).'" style="display: inline-block; min-width:74px;">'.( $view_i_range ? $view_i_range : '&nbsp;' ).'</span>';
     }
 
     //TIME STATS
