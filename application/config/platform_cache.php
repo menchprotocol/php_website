@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-18 21:54:07 PST
+//Generated 2020-08-18 21:56:31 PST
 $config['s___12274'] = 5044; //SOURCES
 $config['s___12273'] = 3980; //IDEAS
 $config['s___6255'] = 122266; //DISCOVERIES
@@ -917,31 +917,31 @@ $config['n___13291'] = array(12419,13023,13563,12274,12273,6255);
 $config['e___13291'] = array(
     12419 => array(
         'm_title' => 'COMMENTS',
-        'm_message' => 'enable you to share your thoughts & join the conversation',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-comments" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,13304,13291,11018,12359,5967,10593,4986,4593,4485),
     ),
     13023 => array(
         'm_title' => 'SHARE',
-        'm_message' => 'with friends & those who need to discover this idea',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_profile' => array(13291,4527,13024),
     ),
     13563 => array(
         'm_title' => 'MODIFY IDEA',
-        'm_message' => 'to make it better with your contribution',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-pen"></i>',
         'm_profile' => array(13291),
     ),
     12274 => array(
         'm_title' => 'SOURCES',
-        'm_message' => 'that these Ideas have been summarized from',
+        'm_message' => 'that some ideas originated from',
         'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,12574,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
-        'm_message' => 'and discovery time depends on the interactive choices made along the way',
+        'm_message' => 'discovery time depends on the interactive choices made along the way',
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
         'm_profile' => array(13298,13300,12675,13530,11018,12574,11089,12446,12761,12112,13291,12467,12228),
     ),
