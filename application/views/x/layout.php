@@ -366,6 +366,8 @@ echo $tab_content;
 
 if($in_my_x){
 
+    echo 'aa';
+
     //PREVIOUSLY UNLOCKED:
     $unlocked_x = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -610,6 +612,10 @@ if($in_my_x){
 
 
     echo '</div>'; //CLOSE CONTAINER
+
+
+
+
 
 
     //DISCOVERY CONTROLLER
