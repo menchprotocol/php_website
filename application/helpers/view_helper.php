@@ -29,7 +29,7 @@ function view_i_tree_stats($i_stats, $show_min = false){
     $ui = '<span class="montserrat doupper '.( $is_interactive ? ' underdot ' : '' ).'" style="padding-right:8px;" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="# of ideas discovered & discovery time depends on the interactive choices made along the way" ': '' ).'>';
 
     //IDEA STATS
-    $ui .= '<span class="icon-block">'.( $has_idea ? ( $is_interactive ? '<i class="fas fa-random idea rotate270"></i>' : $e___13544[13629]['m_icon'] ) : '&nbsp;' ).'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="'.( $show_min ? 'min-width:70px;' : 'min-width:89px;' ).'">'.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' ).( $show_min ? '' : '&nbsp;IDEA'.view__s($i_stats['i___6170']) ) : '&nbsp;' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $has_idea ? ( $is_interactive ? '<i class="fas fa-random idea"></i>' : $e___13544[13629]['m_icon'] ) : '&nbsp;' ).'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="'.( $show_min ? 'min-width:70px;' : 'min-width:89px;' ).'">'.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' ).( $show_min ? '' : '&nbsp;IDEA'.view__s($i_stats['i___6170']) ) : '&nbsp;' ).'</span>';
 
 
     //TIME STATS
