@@ -1437,7 +1437,7 @@ label {
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .icon-block { width:33px !important; display: inline-block; text-align: center; vertical-align: top; }
-.icon-block-xs{ width:22px; display: inline-block; text-align: center; vertical-align: top; }
+.icon-block-xs{ width:25px; display: inline-block; text-align: center; vertical-align: top; }
 #font_size_13493 .icon-block-xs{ width:30px; }
 #font_size_13494 .icon-block-xs{ width:36px; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; vertical-align: top; }
