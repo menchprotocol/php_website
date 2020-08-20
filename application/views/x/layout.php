@@ -354,6 +354,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 $tab_pills .= '</ul>';
 
 
+
+
 if($tab_pill_count > 1){
     //DISCOVER TABS
     echo $tab_pills;
@@ -361,6 +363,10 @@ if($tab_pill_count > 1){
 
 //Show All Tab Content:
 echo $tab_content;
+
+
+
+
 
 
 
@@ -611,6 +617,7 @@ if($in_my_x){
 
 
 
+    echo '</div>'; //CLOSE CONTAINER
 
 
 
@@ -660,6 +667,7 @@ if($in_my_x){
     //My Discoveries:
     echo '<div class="list-group-item no-side-padding itemsource"><a href="/@'.$user_e['e__id'].'"><span class="icon-block">'.$user_e['e__icon'].'</span><span class="montserrat">'.$user_e['e__title'].'</span></a></div>';
 
+
     //Did We Find It?
     if($previous_level_id){
         //Idea Map:
@@ -676,12 +684,11 @@ if($in_my_x){
 
 
 
-    echo '</div>'; //CLOSE CONTAINER
 
 
     $column_width = number_format(100/count($this->config->item('n___13289')), 2);
 
-    echo '<div class="container fixed-bottom">';
+    echo "\n\n".'<div class="container fixed-bottom">'."\n\n";
     echo '<div class="row">';
     echo '<table class="discover-controller"><tr>';
 
