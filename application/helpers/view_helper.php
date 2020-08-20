@@ -28,8 +28,6 @@ function view_i_tree_stats($i_stats, $show_min = false){
     //Variable time range:
     $ui = '<span class="montserrat doupper" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="# of ideas discovered & discovery time depends on the interactive choices made along the way" ': '' ).'>';
 
-    //random
-
     //IDEA STATS
     $ui .= '<span class="icon-block">'.( $has_idea ? $e___13544[13629]['m_icon'] : '&nbsp;' ).'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="'.( $show_min ? 'min-width:70px;' : 'min-width:89px;' ).'">'.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' ).( $show_min ? '' : '&nbsp;IDEA'.view__s($i_stats['i___6170']) ) : '&nbsp;' ).'</span>';
 

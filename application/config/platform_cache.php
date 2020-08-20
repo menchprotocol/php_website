@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-19 13:14:31 PST
+//Generated 2020-08-20 09:00:10 PST
 $config['s___12274'] = 5042; //SOURCES
-$config['s___12273'] = 3980; //IDEAS
-$config['s___6255'] = 122266; //DISCOVERIES
+$config['s___12273'] = 3987; //IDEAS
+$config['s___6255'] = 122273; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -420,7 +420,7 @@ $config['e___13289'] = array(
         'm_title' => 'SAVED IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(13450,13289,4527,11035),
+        'm_profile' => array(12701,13450,13289,4527,11035),
     ),
     12211 => array(
         'm_title' => 'MARK AS READ & NEXT',
@@ -3387,7 +3387,7 @@ $config['e___11035'] = array(
         'm_title' => 'SAVED IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(13450,13289,4527,11035),
+        'm_profile' => array(12701,13450,13289,4527,11035),
     ),
     13524 => array(
         'm_title' => 'SAVE & NEXT',
@@ -5414,7 +5414,7 @@ $config['e___4527'] = array(
         'm_title' => 'SAVED IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(13450,13289,4527,11035),
+        'm_profile' => array(12701,13450,13289,4527,11035),
     ),
     12761 => array(
         'm_title' => 'SEARCH INDEX',
