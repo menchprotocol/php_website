@@ -216,7 +216,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $focus_tab .= '</div>';
 
         //IDEA TREE STATS
-        $focus_tab .= '<div style="padding-top: 8px;">'.view_i_tree_stats($i_stats).'</div>';
+        $focus_tab .= '<div style="padding-top: 5px;">'.view_i_tree_stats($i_stats).'</div>';
 
     } elseif($x__type==6255) {
 
