@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-20 10:15:45 PST
+//Generated 2020-08-20 10:47:35 PST
 $config['s___12274'] = 5042; //SOURCES
-$config['s___12273'] = 3987; //IDEAS
-$config['s___6255'] = 122273; //DISCOVERIES
+$config['s___12273'] = 3990; //IDEAS
+$config['s___6255'] = 122286; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -168,7 +168,7 @@ $config['e___13543'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     13339 => array(
@@ -598,7 +598,7 @@ $config['e___6159'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => 'i___3000',
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
 );
@@ -662,7 +662,7 @@ $config['e___4251'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     13339 => array(
@@ -851,7 +851,7 @@ $config['e___13365'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
 );
@@ -988,7 +988,7 @@ $config['e___13207'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
 );
@@ -2871,7 +2871,7 @@ $config['e___12079'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     4486 => array(
@@ -3761,7 +3761,7 @@ $config['e___6404'] = array(
     ),
     12904 => array(
         'm_title' => 'DEFAULT IDEA COVER',
-        'm_message' => '//s3foundation.s3-us-west-2.amazonaws.com/a7aea066ff79ab42937c92bf2519bbd7.png',
+        'm_message' => '//s3foundation.s3-us-west-2.amazonaws.com/b7f2539c61129478d3614c55a798b21a.png',
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,7524),
     ),
@@ -5353,7 +5353,7 @@ $config['e___4527'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     12741 => array(
