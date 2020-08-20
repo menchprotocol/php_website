@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-20 11:08:38 PST
+//Generated 2020-08-20 11:11:34 PST
 $config['s___12274'] = 5042; //SOURCES
 $config['s___12273'] = 3990; //IDEAS
 $config['s___6255'] = 122286; //DISCOVERIES
@@ -168,7 +168,7 @@ $config['e___13543'] = array(
     13202 => array(
         'm_title' => 'AUTHORS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
@@ -532,7 +532,7 @@ $config['e___6159'] = array(
     13202 => array(
         'm_title' => 'AUTHORS',
         'm_message' => 'i___13202',
-        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     7545 => array(
@@ -662,7 +662,7 @@ $config['e___4251'] = array(
     13202 => array(
         'm_title' => 'AUTHORS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
@@ -845,7 +845,7 @@ $config['e___13365'] = array(
     13202 => array(
         'm_title' => 'AUTHORS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     13339 => array(
@@ -976,7 +976,7 @@ $config['e___13207'] = array(
     13202 => array(
         'm_title' => 'AUTHORS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     13438 => array(
@@ -4849,7 +4849,7 @@ $config['e___4527'] = array(
     13202 => array(
         'm_title' => 'AUTHORS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     10956 => array(
