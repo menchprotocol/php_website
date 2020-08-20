@@ -1139,13 +1139,14 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
     //List children so they know what's ahead:
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
+    $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
 
 
     $ui = '<div class="doclear">&nbsp;</div>';
 
     if(is_null($prefix_statement) || strlen($prefix_statement)){
-        $ui .= '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
+        $ui .= '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block grey">'.$e___12467[12273]['m_icon'].'</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
     }
 
     $ui .= '<div class="doclear">&nbsp;</div>';
