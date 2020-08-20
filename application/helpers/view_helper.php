@@ -780,7 +780,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
-        $ui .= '<div class="col-sm-5 col-md-4 col2nd handler_13509 hidden">';
+        $ui .= '<div class="col-sm-5 col-md-4 col2nd">';
 
             //IDA STATS
             $ui .= view_i_tree_stats($i_stats, true);
@@ -1147,10 +1147,6 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
     if(is_null($prefix_statement) || strlen($prefix_statement)){
         $ui .= '<div class="pull-left headline">'.( strlen($prefix_statement) ? '<span class="icon-block">&nbsp;</span>'.$prefix_statement : '<span class="icon-block">&nbsp;</span>UP NEXT:'.( $common_prefix ? ' '.$common_prefix : '' ) ).'</div>';
     }
-
-
-    //Toogle for extra info:
-    $ui .= '<div class="pull-right inline-block" style="margin:5px 21px 0 0;"><a href="javascript:void(0);" onclick="$(\'.handler_13509\').toggleClass(\'hidden\');" class="grey montserrat" title="'.$e___11035[13509]['m_title'].'">'.$e___11035[13509]['m_icon'].'</a></div>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
     $ui .= '<div class="list-group">';

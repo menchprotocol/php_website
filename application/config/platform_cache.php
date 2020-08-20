@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-20 10:47:35 PST
-$config['s___12274'] = 5042; //SOURCES
+//Generated 2020-08-20 10:59:49 PST
+$config['s___12274'] = 5041; //SOURCES
 $config['s___12273'] = 3990; //IDEAS
 $config['s___6255'] = 122286; //DISCOVERIES
 
@@ -3237,7 +3237,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,13573,13574,13495,12707,4235,12991,13405,13210,13509,12137,13207,11068,12211,4341,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(13502,13401,13573,13574,13495,12707,4235,12991,13405,13210,12137,13207,11068,12211,4341,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3298,12 +3298,6 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-list discover"></i>',
         'm_profile' => array(13450,11035,13289),
-    ),
-    13509 => array(
-        'm_title' => 'IDEAS & DURATION',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-info-circle"></i>',
-        'm_profile' => array(11035),
     ),
     12137 => array(
         'm_title' => 'IDEAS FEATURED',
