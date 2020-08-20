@@ -366,8 +366,6 @@ echo $tab_content;
 
 if($in_my_x){
 
-    echo 'aa';
-
     //PREVIOUSLY UNLOCKED:
     $unlocked_x = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -611,7 +609,6 @@ if($in_my_x){
     }
 
 
-    echo '</div>'; //CLOSE CONTAINER
 
 
 
@@ -677,6 +674,9 @@ if($in_my_x){
     echo '</div>';
 
 
+
+
+    echo '</div>'; //CLOSE CONTAINER
 
 
     $column_width = number_format(100/count($this->config->item('n___13289')), 2);
