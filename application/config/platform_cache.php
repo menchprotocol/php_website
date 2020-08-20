@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-20 10:59:49 PST
-$config['s___12274'] = 5041; //SOURCES
+//Generated 2020-08-20 11:08:38 PST
+$config['s___12274'] = 5042; //SOURCES
 $config['s___12273'] = 3990; //IDEAS
 $config['s___6255'] = 122286; //DISCOVERIES
 
@@ -134,19 +134,25 @@ $config['e___6169'] = array(
 );
 
 //IDEA TREE STATS:
-$config['n___13544'] = array(13629,13292);
+$config['n___13544'] = array(13629,13292,13632);
 $config['e___13544'] = array(
     13629 => array(
-        'm_title' => 'IDEA RANGE',
+        'm_title' => 'DISCOVERY IDEA RANGE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
         'm_profile' => array(13544),
     ),
     13292 => array(
-        'm_title' => 'TIME RANGE',
+        'm_title' => 'DISCOVERY TIME RANGE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
         'm_profile' => array(13544,13369,4356),
+    ),
+    13632 => array(
+        'm_title' => 'INTERACTIVE IDEA TREE',
+        'm_message' => 'Number of ideas discovered & duration depends on interactive choices you\'ll make along the way 🔀',
+        'm_icon' => '<i class="fas fa-random idea"></i>',
+        'm_profile' => array(13544),
     ),
 );
 
