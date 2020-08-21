@@ -780,7 +780,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
-        $ui .= '<div class="col-sm-5 col-md-4 col2nd">';
+        $ui .= '<div class="col-sm-5 col-md-4 col2nd grey">';
 
             //IDA STATS
             $ui .= view_i_tree_stats($i_stats, true);
@@ -1348,7 +1348,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 }
 
 
-                $ui .= '<div class="space-left">'.view_i_tree_stats($i_stats).'</div>';
+                $ui .= '<div class="space-left grey">'.view_i_tree_stats($i_stats).'</div>';
 
 
             $ui .= '</div>';
