@@ -231,7 +231,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(!$in_my_x){
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list($i_focus, $is_next, $user_e, str_replace('<span class="icon-block">'.$e___13544[13632]['m_icon'].'</span>','',view_i_tree_stats($i_stats)));
+            $focus_tab .= '<div style="padding-bottom: 5px;" class="grey">'.view_i_tree_stats($i_stats).'</div>';
+
+            $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
 
             //IDEA PREVIOUS
             $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(
