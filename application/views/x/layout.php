@@ -230,9 +230,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(!$in_my_x){
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
-
-            $focus_tab .= '<div style="margin:8px 0 33px;">'.view_i_tree_stats($i_stats).'</div>';
+            $focus_tab .= view_i_list($i_focus, $is_next, $user_e, view_i_tree_stats($i_stats));
 
             //IDEA PREVIOUS
             $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(
