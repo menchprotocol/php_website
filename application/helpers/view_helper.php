@@ -1145,7 +1145,7 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
 
     $ui = '<div class="doclear">&nbsp;</div>';
 
-    if(strlen($prefix_statement) || strlen($common_prefix)){
+    if(strlen($prefix_statement)){
         $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>'.$prefix_statement.( $common_prefix ? ' '.$common_prefix : '' ).'</div>';
     }
 
