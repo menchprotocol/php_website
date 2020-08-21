@@ -512,7 +512,7 @@ img.no-radius {
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color12274, .info-item i.source:hover, .info-item a.source:hover, .headline.source, .headline.source a, .headline.source i  { color:#007AFD !important; }
 .idea, .idea .fas, .idea .far, .idea .fal, .idea .fad, .color12273, .info-item i.idea:hover, .info-item a.idea:hover, .headline.idea, .headline.idea a, .headline.idea i  { color:#ffc500 !important; }
 .discover, .discover .fas, .discover .far, .discover .fal, .discover .fad, .color6255, .info-item i.discover:hover, .info-item a.discover:hover, .fas.redalert, .headline.discover, .headline.discover a, .headline.discover i  { color:#FC1B44 !important; }
-.grey, .grey i, .grey .source, .grey .idea, .grey .discover { color:#999999 !important; }
+.grey, .grey i, .headline .source, .headline .idea, .headline .discover { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
 .btn-e i, .btn-x i, .btn-i i { color: #000000 !important; }

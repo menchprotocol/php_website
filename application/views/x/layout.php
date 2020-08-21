@@ -12,6 +12,7 @@ echo '<div class="container load_13210">';
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
+$e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
@@ -230,7 +231,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(!$in_my_x){
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list($i_focus, $is_next, $user_e, view_i_tree_stats($i_stats, true));
+            $focus_tab .= view_i_list($i_focus, $is_next, $user_e, str_replace('<span class="icon-block">'.$e___13544[13632]['m_icon'].'</span>','',view_i_tree_stats($i_stats)));
 
             //IDEA PREVIOUS
             $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(
