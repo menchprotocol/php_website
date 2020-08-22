@@ -373,6 +373,16 @@ echo $tab_content;
 
 if($in_my_x){
 
+    //Recommended to Save This Idea?
+    if(count($this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type' => 4983, //IDEA SOURCES
+        'x__up' => 12896, //SAVE THIS IDAE
+        'x__right' => $i_focus['i__id'],
+    )))){
+        echo '<div class="i_content padded"><div class="msg">You can <span class="icon-block-xs e__icon_12896"><i class="fas fa-bookmark discover"></i></span><span class="text__6197_12896">SAVE THIS IDEA</span> to easily access it later under your profile. </div></div>';
+    }
+
     //PREVIOUSLY UNLOCKED:
     $unlocked_x = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
