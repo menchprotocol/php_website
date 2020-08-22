@@ -1323,7 +1323,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
         if($user_e && $x__type==6255){
             $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
-            if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
+            if($completion_rate['completion_percentage']>0){
                 $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
             }
         }
