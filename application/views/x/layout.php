@@ -554,6 +554,9 @@ if($in_my_x){
 
     } elseif ($i_focus['i__type'] == 6677) {
 
+        //NEXT IDEAS
+        echo '<div style="padding:5px 0 8px;" class="grey">'.view_i_tree_stats($i_stats).'</div>';
+
         //DISCOVER ONLY
         echo view_i_list($i_focus, $is_next, $user_e);
 
