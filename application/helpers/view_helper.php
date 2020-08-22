@@ -26,7 +26,7 @@ function view_i_tree_stats($i_stats, $show_min = false){
     $has_idea = ( $i_stats['i___6169'] && $i_stats['i___6170'] );
 
     //Variable time range:
-    $ui = '<span class="montserrat doupper '.( $is_interactive ? ' underdot ' : '' ).'" style="padding-right:8px;" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="'.$e___13544[13632]['m_title'].': '.$e___13544[13632]['m_message'].'" ': '' ).'>';
+    $ui = '<span class="doupper '.( $is_interactive ? ' underdot ' : '' ).'" style="padding-right:8px;" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="'.$e___13544[13632]['m_title'].': '.$e___13544[13632]['m_message'].'" ': '' ).'>';
 
     //IDEA STATS
     $ui .= '<span class="icon-block">'.( $has_idea ? ( $is_interactive ? $e___13544[13632]['m_icon'] : $e___13544[13629]['m_icon'] ) : '&nbsp;' ).'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:60px;">'.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' ).( $show_min ? '' : '<span class="show-max">&nbsp;IDEA'.view__s($i_stats['i___6170']).'</span>' ) : '&nbsp;' ).'</span>';
