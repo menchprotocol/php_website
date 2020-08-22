@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-22 10:41:15 PST
+//Generated 2020-08-22 10:53:58 PST
 $config['s___12274'] = 5054; //SOURCES
 $config['s___12273'] = 4025; //IDEAS
 $config['s___6255'] = 122282; //DISCOVERIES
@@ -3558,7 +3558,7 @@ $config['e___6186'] = array(
     6176 => array(
         'm_title' => 'PUBLISHED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe discover" aria-hidden="true"></i>',
         'm_profile' => array(6186,7360,7359),
     ),
     6175 => array(
@@ -3587,7 +3587,7 @@ $config['e___6177'] = array(
     6181 => array(
         'm_title' => 'PUBLISHED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
         'm_profile' => array(10654,6177,7358,7357),
     ),
     6180 => array(
@@ -3616,7 +3616,7 @@ $config['e___4737'] = array(
     6184 => array(
         'm_title' => 'PUBLISHED',
         'm_message' => 'Ready to be Discovered',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
         'm_profile' => array(10648,4737,7355,7356),
     ),
     6183 => array(
@@ -6762,7 +6762,7 @@ $config['e___7360'] = array(
     6176 => array(
         'm_title' => 'PUBLISHED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe discover" aria-hidden="true"></i>',
         'm_profile' => array(6186,7360,7359),
     ),
 );
@@ -6779,7 +6779,7 @@ $config['e___7359'] = array(
     6176 => array(
         'm_title' => 'PUBLISHED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe discover" aria-hidden="true"></i>',
         'm_profile' => array(6186,7360,7359),
     ),
 );
@@ -6802,7 +6802,7 @@ $config['e___7358'] = array(
     6181 => array(
         'm_title' => 'PUBLISHED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
         'm_profile' => array(10654,6177,7358,7357),
     ),
 );
@@ -6819,7 +6819,7 @@ $config['e___7357'] = array(
     6181 => array(
         'm_title' => 'PUBLISHED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
         'm_profile' => array(10654,6177,7358,7357),
     ),
 );
@@ -6842,7 +6842,7 @@ $config['e___7356'] = array(
     6184 => array(
         'm_title' => 'PUBLISHED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
         'm_profile' => array(10648,4737,7355,7356),
     ),
 );
@@ -6859,7 +6859,7 @@ $config['e___7355'] = array(
     6184 => array(
         'm_title' => 'PUBLISHED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-globe idea" aria-hidden="true"></i>',
         'm_profile' => array(10648,4737,7355,7356),
     ),
 );
