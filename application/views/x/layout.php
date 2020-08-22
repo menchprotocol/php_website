@@ -231,7 +231,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(!$in_my_x){
 
             //NEXT IDEAS
-            $focus_tab .= '<div style="padding:5px 0 8px;" class="grey">'.view_i_tree_stats($i_stats).'</div>';
+            $focus_tab .= '<div style="padding:5px 0 13px;" class="grey">'.view_i_tree_stats($i_stats).'</div>';
 
             $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
 
