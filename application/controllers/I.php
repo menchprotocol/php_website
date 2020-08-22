@@ -323,7 +323,6 @@ class I extends CI_Controller {
 
         } else {
 
-
             //See if Idea is being deleted:
             if($_POST['element_id']==4737){
 
@@ -399,10 +398,16 @@ class I extends CI_Controller {
         }
 
 
+        //Fetch Idea Again:
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+        ));
+
         return view_json(array(
             'status' => 1,
             'deletion_redirect' => $deletion_redirect,
             'delete_element' => $delete_element,
+            'new_i__icon' => view_i_icon($is[0]),
         ));
 
     }

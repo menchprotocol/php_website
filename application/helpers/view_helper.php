@@ -714,15 +714,14 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
 
 function view_icon_i_x($completion_percentage, $i){
 
-    $CI =& get_instance();
     $user_e = superpower_assigned();
-    if(!$user_e){
-        //DISCOVER GUEST
-        return view_cache(4737 /* Idea Status */, $i['i__status'], true, null, $i['i__id']);
-    } elseif($completion_percentage==0){
-        //DISCOVER NOT STARTED
-        $x_legend = 12448;
-    } elseif($completion_percentage<100){
+    if(!$user_e || !$completion_percentage){
+        //IDAE Icon
+        return view_i_icon($i);
+    }
+
+    //See Which Legend to Use:
+    if($completion_percentage<100){
         //DISCOVER IN PROGRESS
         $x_legend = 12447;
     } else {
@@ -730,6 +729,7 @@ function view_icon_i_x($completion_percentage, $i){
         $x_legend = 13338;
     }
 
+    $CI =& get_instance();
     $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
     return '<span title="'.$e___12446[$x_legend]['m_title'].'">'.$e___12446[$x_legend]['m_icon'].'</span>';
 
@@ -762,7 +762,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="i_saved_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
+    $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
 
     $ui .= ( $can_click ? '<a href="/'. $i['i__id'] .'" class="itemdiscover">' : '' );
 
@@ -797,7 +797,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     if($show_editor && $is_saved){
         $ui .= '<div class="note-editor edit-off">';
         $ui .= '<span class="show-on-hover">';
-        $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="i_save('.$i['i__id'].');$(\'#i_saved_'.$i['i__id'].'\').remove();"><i class="fas fa-times"></i></a></span>';
+        $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="x_save('.$i['i__id'].');$(\'#x_save_'.$i['i__id'].'\').remove();"><i class="fas fa-times"></i></a></span>';
         $ui .= '</span>';
         $ui .= '</div>';
     }
@@ -950,6 +950,24 @@ function view_i_marks($i_x){
 }
 
 
+function view_i_icon($i){
+
+    $CI =& get_instance();
+
+    if(!in_array($i['i__status'], $CI->config->item('n___7355'))){
+        //Not Public, Show Drafting Icon:
+        $config_var_id = 4737; //Idea Status
+        $e__id = $i['i__status'];
+    } else {
+        $config_var_id = 7585; //Idea Type
+        $e__id = $i['i__type'];
+    }
+
+    return '<span class="this_i__icon_'.$i['i__id'].'">'.view_cache($config_var_id, $e__id, true, 'right', $i['i__id']).'</span>';
+
+}
+
+
 function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_input = null, $extra_class = null, $control_enabled = true)
 {
 
@@ -1018,7 +1036,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $href = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
 
         //IDEA STATUS:
-        $ui .= '<a href="'.$href.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_cache(4737 /* Idea Status */, $i['i__status'], true, 'right', $i['i__id']).'</a>';
+        $ui .= '<a href="'.$href.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
 
         //IDEA TITLE
         if($is_i_link && superpower_active(13354, true)){

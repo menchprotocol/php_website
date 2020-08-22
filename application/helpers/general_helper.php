@@ -1550,7 +1550,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__id'] = intval($db_row['i__id']);
                 $export_row['object__url'] = '/i/i_go/' . $db_row['i__id'];
                 $export_row['object__status'] = intval($db_row['i__status']);
-                $export_row['object__icon'] = $e___4737[$db_row['i__status']]['m_icon']; //Based on status
+                $export_row['object__icon'] = view_i_icon($db_row);
                 $export_row['object__title'] = $db_row['i__title'];
                 $export_row['object__weight'] = intval($db_row['i__weight']);
 

@@ -852,7 +852,7 @@ class X extends CI_Controller
     }
 
 
-    function i_save(){
+    function x_save(){
 
         //See if we need to add or remove a highlight:
         //Authenticate User:

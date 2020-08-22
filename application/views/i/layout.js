@@ -416,14 +416,14 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
             //Update on page:
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m_icon']+'</span><span class="show-max">' + ( show_full_name ? data_object[new_e__id]['m_title'] : '' ) + '</span>');
+
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .dropi_' + element_id +'_'+i__id+ '_' + x__id).removeClass('active');
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .optiond_' + new_e__id+'_'+i__id+ '_' + x__id).addClass('active');
 
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id).attr('selected-val' , new_e__id);
 
             //Update micro icons, if any: (Idea status has it)
-            $('.cache_micro_'+element_id+'_'+i__id).html(data_object[new_e__id]['m_icon']);
-
+            $('.this_i__icon__'+i__id+'>span').html(data.new_i__icon);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main idea page:
