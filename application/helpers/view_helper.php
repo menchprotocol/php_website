@@ -1352,7 +1352,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 //Title
                 $ui .= '<div>';
-                $ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.( $x__type == 6255 ? view_icon_i_x($completion_rate['completion_percentage'], $i) : view_cache(4737 /* Idea Status */, $i['i__status'], true, null, $i['i__id']) ).'</a></span>';
+                $ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i).'</a></span>';
                 $ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
                 $ui .= '</div>';
 
