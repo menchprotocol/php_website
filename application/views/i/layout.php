@@ -186,7 +186,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==12273){
 
         //IDEA TREE STATS
-        $focus_tab .= '<div style="padding:5px 0 8px;" class="grey montserrat">'.view_i_tree_stats($i_stats).'</div>';
+        $focus_tab .= '<div style="padding:5px 0 8px;" class="grey">'.view_i_tree_stats($i_stats).'</div>';
 
         //IDEAS
         $is_next = $this->X_model->fetch(array(
