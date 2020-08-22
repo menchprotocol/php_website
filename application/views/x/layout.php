@@ -173,7 +173,7 @@ if(count($this->X_model->fetch(array(
     'x__up' => 12896, //SAVE THIS IDAE
     'x__right' => $i_focus['i__id'],
 )))){
-    echo '<div class="i_content padded"><div class="msg">You can<span class="icon-block-xs e__icon_12896"><i class="fas fa-bookmark discover"></i></span><span class="text__6197_12896">SAVE THIS IDEA</span> to access it later in your profile.</div></div>';
+    echo '<div class="i_content padded"><div class="msg">Tip:<span class="icon-block-xs e__icon_12896"><i class="fas fa-bookmark discover"></i></span><span class="text__6197_12896">SAVE THIS IDEA</span> to access it later in your profile.</div></div>';
 }
 
 
