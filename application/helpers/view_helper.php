@@ -29,11 +29,11 @@ function view_i_tree_stats($i_stats, $show_min = false){
     $ui = '<span class="montserrat doupper '.( $is_interactive ? ' underdot ' : '' ).'" style="padding-right:8px;" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="'.$e___13544[13632]['m_title'].': '.$e___13544[13632]['m_message'].'" ': '' ).'>';
 
     //IDEA STATS
-    $ui .= '<span class="icon-block">'.( $has_idea ? ( $is_interactive ? $e___13544[13632]['m_icon'] : $e___13544[13629]['m_icon'] ) : '&nbsp;' ).'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="'.( $show_min ? 'min-width:70px;' : 'min-width:89px;' ).'">'.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' ).( $show_min ? '' : '&nbsp;IDEA'.view__s($i_stats['i___6170']) ) : '&nbsp;' ).'</span>';
+    $ui .= '<span class="icon-block">'.( $has_idea ? ( $is_interactive ? $e___13544[13632]['m_icon'] : $e___13544[13629]['m_icon'] ) : '&nbsp;' ).'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="'.( $show_min ? 'min-width:70px;' : 'min-width:89px;' ).'">'.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' ).( $show_min ? '' : '<span class="show-max">&nbsp;IDEA'.view__s($i_stats['i___6170']).'</span>' ) : '&nbsp;' ).'</span>';
 
 
     //TIME STATS
-    $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+    $ui .= '<span class="inline-block"><span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span></span>';
 
 
     $ui .= '</span>';
