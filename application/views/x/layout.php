@@ -231,7 +231,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(!$in_my_x){
 
             //NEXT IDEAS
-            $focus_tab .= '<div class="grey i_estimates">'.view_i_tree_stats($i_stats).'</div>';
+            $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats).'</div>';
 
             $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
 
@@ -556,7 +556,7 @@ if($in_my_x){
 
         if(count($is_next) > 1){
             //NEXT IDEAS
-            echo '<div class="grey i_estimates">'.view_i_tree_stats($i_stats).'</div>';
+            echo '<div class="i_estimates">'.view_i_tree_stats($i_stats).'</div>';
         }
 
         //DISCOVER ONLY
