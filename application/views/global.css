@@ -517,6 +517,9 @@ img.no-radius {
 
 .btn-e i, .btn-x i, .btn-i i { color: #000000 !important; }
 
+.i_estimates{
+    padding:0 0 5px;
+}
 .table-condense{
     margin-bottom: 5px;
 }
