@@ -236,13 +236,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
 
             //IDEA PREVIOUS
-            $focus_tab .= view_i_list($i_focus, $this->X_model->fetch(array(
+            $focus_tab .= '<div style="padding:33px 0;">'.view_i_list($i_focus, $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__right' => $i_focus['i__id'],
                 'x__left !=' => config_var(12137),
-            ), array('x__left'), 0), $user_e, 'THIS IDEA HELPS YOU:');
+            ), array('x__left'), 0), $user_e, 'THIS IDEA HELPS YOU:').'</div>';
 
         }
 
