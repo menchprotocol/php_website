@@ -33,7 +33,7 @@ function view_i_tree_stats($i_stats, $show_min = false){
 
 
     //TIME STATS
-    $ui .= '<span class="inline-block"><span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block '.extract_icon_color($e___13544[13292]['m_icon']).'">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span></span>';
+    $ui .= '<span class="inline-block grey"><span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span></span>';
 
 
     $ui .= '</span>';
