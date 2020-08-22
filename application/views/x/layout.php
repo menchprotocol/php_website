@@ -554,7 +554,7 @@ if($in_my_x){
 
     } elseif ($i_focus['i__type'] == 6677) {
 
-        if(count($is_next)){
+        if(count($is_next) > 1){
             //NEXT IDEAS
             echo '<div class="grey i_estimates">'.view_i_tree_stats($i_stats).'</div>';
         }

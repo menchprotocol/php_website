@@ -185,9 +185,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12273){
 
-        //IDEA TREE STATS
-        $focus_tab .= '<div class="grey i_estimates">'.view_i_tree_stats($i_stats).'</div>';
-
         //IDEAS
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -197,6 +194,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
         $counter = ( count($is_next) > $counter_i ? count($is_next) : view_number($i_stats['i___6170']) );
+
+        if($counter > 1){
+            //IDEA TREE STATS
+            $focus_tab .= '<div class="grey i_estimates">'.view_i_tree_stats($i_stats).'</div>';
+        }
 
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
         foreach($is_next as $next_i) {
