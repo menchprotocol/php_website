@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-22 10:53:58 PST
-$config['s___12274'] = 5054; //SOURCES
-$config['s___12273'] = 4025; //IDEAS
-$config['s___6255'] = 122282; //DISCOVERIES
+//Generated 2020-08-22 14:47:16 PST
+$config['s___12274'] = 5057; //SOURCES
+$config['s___12273'] = 4027; //IDEAS
+$config['s___6255'] = 122318; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -283,7 +283,7 @@ $config['e___13530'] = array(
         'm_profile' => array(13023,13530,11018,4485,10593,4593),
     ),
     7545 => array(
-        'm_title' => 'CERTIFICATES',
+        'm_title' => 'NEW PROFILES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
@@ -527,19 +527,13 @@ $config['e___13442'] = array(
 );
 
 //IDEA METADATA:
-$config['n___6159'] = array(13202,7545,13339,6208,6168,6283,12885,6228,6170,6162,6169,6161,3000);
+$config['n___6159'] = array(13202,13339,6208,6168,6283,12885,6228,6170,6162,6169,6161,7545,3000);
 $config['e___6159'] = array(
     13202 => array(
         'm_title' => 'AUTHORS',
         'm_message' => 'i___13202',
         'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
-    ),
-    7545 => array(
-        'm_title' => 'CERTIFICATES',
-        'm_message' => 'i___7545',
-        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
-        'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     13339 => array(
         'm_title' => 'EXPERTS',
@@ -600,6 +594,12 @@ $config['e___6159'] = array(
         'm_message' => 'i___6161',
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
         'm_profile' => array(6169,13292,4735,6159),
+    ),
+    7545 => array(
+        'm_title' => 'NEW PROFILES',
+        'm_message' => 'i___7545',
+        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
+        'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
@@ -885,14 +885,8 @@ $config['e___13304'] = array(
 );
 
 //DISCOVER TAB HIDE IF ZERO:
-$config['n___13298'] = array(7545,6255,12273);
+$config['n___13298'] = array(6255,12273,7545);
 $config['e___13298'] = array(
-    7545 => array(
-        'm_title' => 'CERTIFICATES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
-        'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
-    ),
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
@@ -904,6 +898,12 @@ $config['e___13298'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
         'm_profile' => array(13298,13300,12675,13530,11018,12574,11089,12761,12112,13291,12467,12228),
+    ),
+    7545 => array(
+        'm_title' => 'NEW PROFILES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
+        'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
 );
 
@@ -3087,7 +3087,7 @@ $config['e___11018'] = array(
         'm_profile' => array(11089,13510,12677,4485,7551,11018,4755,4593),
     ),
     7545 => array(
-        'm_title' => 'CERTIFICATES',
+        'm_title' => 'NEW PROFILES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
@@ -3176,7 +3176,7 @@ $config['e___11089'] = array(
         'm_profile' => array(11089,12701,6194,11081,6160,4341),
     ),
     7545 => array(
-        'm_title' => 'CERTIFICATES',
+        'm_title' => 'NEW PROFILES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
@@ -3521,7 +3521,7 @@ $config['e___10957'] = array(
         'm_profile' => array(10957),
     ),
     13421 => array(
-        'm_title' => 'CERTIFICATIONS',
+        'm_title' => 'NEW PROFILES',
         'm_message' => 'Manage Player Certificates',
         'm_icon' => '<i class="fas fa-file-certificate source" aria-hidden="true"></i>',
         'm_profile' => array(10957),
@@ -4270,7 +4270,7 @@ $config['e___4485'] = array(
         'm_profile' => array(13023,13530,11018,4485,10593,4593),
     ),
     7545 => array(
-        'm_title' => 'CERTIFICATES',
+        'm_title' => 'NEW PROFILES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
@@ -6420,14 +6420,8 @@ $config['e___5967'] = array(
 );
 
 //IDEA NOTES 1X SOURCE REQUIRED:
-$config['n___7551'] = array(7545,4983,10573,12896);
+$config['n___7551'] = array(4983,10573,7545,12896);
 $config['e___7551'] = array(
-    7545 => array(
-        'm_title' => 'CERTIFICATES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
-        'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
-    ),
     4983 => array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
@@ -6439,6 +6433,12 @@ $config['e___7551'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_profile' => array(13530,11035,13405,11054,4527,10984,11018,4485,4593,7551),
+    ),
+    7545 => array(
+        'm_title' => 'NEW PROFILES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
+        'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     12896 => array(
         'm_title' => 'SAVE THIS IDEA',
@@ -7474,14 +7474,8 @@ $config['e___4755'] = array(
 );
 
 //TRANSACTION TYPE:
-$config['n___4593'] = array(7545,12419,12129,12336,12334,12197,4554,7757,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,12360,10690,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,13481,4235,12773,4250,12453,4229,4228,10663,10664,12611,12612,12591,12592,6226,10676,10679,10677,6182,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,7561,7564,7560,7562,10573,5001,10625,5943,12318,5865,4999,4998,5000,11956,5981,13441,5982,5003,7495,13579,6415,12896,7563,6132,13412,6157,7489,4246,4251,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,4256,4258,12827,10646,7504,4559,6178,13007,13006,10654,6144,5007,7485,7486,6997,4994,6155,13415,10686,10673,12906,12489,12114);
+$config['n___4593'] = array(12419,12129,12336,12334,12197,4554,7757,5967,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,12360,10690,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,13481,4235,12773,4250,12453,4229,4228,10663,10664,12611,12612,12591,12592,6226,10676,10679,10677,6182,10681,10675,12450,4983,10662,10648,10650,10644,10651,4993,4601,4231,7561,7564,7560,7562,10573,7545,5001,10625,5943,12318,5865,4999,4998,5000,11956,5981,13441,5982,5003,7495,13579,6415,12896,7563,6132,13412,6157,7489,4246,4251,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,4256,4258,12827,10646,7504,4559,6178,13007,13006,10654,6144,5007,7485,7486,6997,4994,6155,13415,10686,10673,12906,12489,12114);
 $config['e___4593'] = array(
-    7545 => array(
-        'm_title' => 'CERTIFICATES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
-        'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
-    ),
     12419 => array(
         'm_title' => 'COMMENTS',
         'm_message' => '',
@@ -7973,6 +7967,12 @@ $config['e___4593'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-map-marker-plus idea" aria-hidden="true"></i>',
         'm_profile' => array(13530,11035,13405,11054,4527,10984,11018,4485,4593,7551),
+    ),
+    7545 => array(
+        'm_title' => 'NEW PROFILES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-file-certificate" aria-hidden="true"></i>',
+        'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     5001 => array(
         'm_title' => 'PORTFOLIO EDITOR CONTENT REPLACE',
