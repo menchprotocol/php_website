@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-22 14:47:16 PST
-$config['s___12274'] = 5057; //SOURCES
-$config['s___12273'] = 4027; //IDEAS
-$config['s___6255'] = 122318; //DISCOVERIES
+//Generated 2020-08-22 17:34:53 PST
+$config['s___12274'] = 5068; //SOURCES
+$config['s___12273'] = 4023; //IDEAS
+$config['s___6255'] = 122298; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -73,7 +73,7 @@ $config['e___13571'] = array(
         'm_title' => 'TRANSACTION TYPE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_profile' => array(13571,11089,12701,6194,6204,11081,10659,6160,4341,4527),
+        'm_profile' => array(13571,12701,6194,6204,11081,10659,6160,4341,4527),
     ),
     13572 => array(
         'm_title' => 'UPLOAD',
@@ -394,13 +394,13 @@ $config['e___12211'] = array(
 $config['n___13510'] = array(12896,12906);
 $config['e___13510'] = array(
     12896 => array(
-        'm_title' => 'SAVE THIS IDEA',
+        'm_title' => 'SAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(11089,13510,12677,4485,7551,11018,4755,4593),
     ),
     12906 => array(
-        'm_title' => 'UNSAVE THIS IDEA',
+        'm_title' => 'UNSAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fal fa-bookmark discover"></i>',
         'm_profile' => array(11035,13510,4755,4593),
@@ -1520,7 +1520,7 @@ $config['e___12677'] = array(
         'm_profile' => array(10939,13298,12574,13450,11089,13530,13291,12677,11018,12467,12228,4527),
     ),
     12896 => array(
-        'm_title' => 'SAVE THIS IDEA',
+        'm_title' => 'SAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(11089,13510,12677,4485,7551,11018,4755,4593),
@@ -3081,7 +3081,7 @@ $config['e___11018'] = array(
         'm_profile' => array(10939,13298,12574,13450,11089,13530,13291,12677,11018,12467,12228,4527),
     ),
     12896 => array(
-        'm_title' => 'SAVE THIS IDEA',
+        'm_title' => 'SAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(11089,13510,12677,4485,7551,11018,4755,4593),
@@ -3125,7 +3125,7 @@ $config['e___11018'] = array(
 );
 
 //SOURCE TABS:
-$config['n___11089'] = array(6225,11030,12274,12273,6255,12896,4593,4364,7545,12419,12887);
+$config['n___11089'] = array(6225,11030,12274,12273,6255,12896,7545,12419,12887);
 $config['e___11089'] = array(
     6225 => array(
         'm_title' => 'MY ACCOUNT',
@@ -3158,22 +3158,10 @@ $config['e___11089'] = array(
         'm_profile' => array(10939,13298,12574,13450,11089,13530,13291,12677,11018,12467,12228,4527),
     ),
     12896 => array(
-        'm_title' => 'SAVE THIS IDEA',
+        'm_title' => 'SAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(11089,13510,12677,4485,7551,11018,4755,4593),
-    ),
-    4593 => array(
-        'm_title' => 'TRANSACTION TYPE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_profile' => array(13571,11089,12701,6194,6204,11081,10659,6160,4341,4527),
-    ),
-    4364 => array(
-        'm_title' => 'TRANSACTION SOURCE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-tag" aria-hidden="true"></i>',
-        'm_profile' => array(11089,12701,6194,11081,6160,4341),
     ),
     7545 => array(
         'm_title' => 'NEW PROFILES',
@@ -3432,7 +3420,7 @@ $config['e___11035'] = array(
         'm_profile' => array(11035,4593),
     ),
     12906 => array(
-        'm_title' => 'UNSAVE THIS IDEA',
+        'm_title' => 'UNSAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fal fa-bookmark discover"></i>',
         'm_profile' => array(11035,13510,4755,4593),
@@ -3664,13 +3652,13 @@ $config['e___11081'] = array(
         'm_title' => 'SOURCE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-user-tag" aria-hidden="true"></i>',
-        'm_profile' => array(11089,12701,6194,11081,6160,4341),
+        'm_profile' => array(6194,11081,6160,4341),
     ),
     4593 => array(
         'm_title' => 'TYPE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_profile' => array(13571,11089,12701,6194,6204,11081,10659,6160,4341,4527),
+        'm_profile' => array(13571,12701,6194,6204,11081,10659,6160,4341,4527),
     ),
     4366 => array(
         'm_title' => 'UP',
@@ -4288,7 +4276,7 @@ $config['e___4485'] = array(
         'm_profile' => array(13530,11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     12896 => array(
-        'm_title' => 'SAVE THIS IDEA',
+        'm_title' => 'SAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(11089,13510,12677,4485,7551,11018,4755,4593),
@@ -5624,7 +5612,7 @@ $config['e___4527'] = array(
         'm_title' => 'TRANSACTION TYPE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_profile' => array(13571,11089,12701,6194,6204,11081,10659,6160,4341,4527),
+        'm_profile' => array(13571,12701,6194,6204,11081,10659,6160,4341,4527),
     ),
     13442 => array(
         'm_title' => 'TRANSACTION TYPE UPDATE',
@@ -5920,13 +5908,13 @@ $config['e___6194'] = array(
         'm_title' => 'SOURCE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-user-tag" aria-hidden="true"></i>',
-        'm_profile' => array(11089,12701,6194,11081,6160,4341),
+        'm_profile' => array(6194,11081,6160,4341),
     ),
     4593 => array(
         'm_title' => 'TYPE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_profile' => array(13571,11089,12701,6194,6204,11081,10659,6160,4341,4527),
+        'm_profile' => array(13571,12701,6194,6204,11081,10659,6160,4341,4527),
     ),
 );
 
@@ -6002,13 +5990,13 @@ $config['e___4341'] = array(
         'm_title' => 'TYPE',
         'm_message' => 'x__type',
         'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_profile' => array(13571,11089,12701,6194,6204,11081,10659,6160,4341,4527),
+        'm_profile' => array(13571,12701,6194,6204,11081,10659,6160,4341,4527),
     ),
     4364 => array(
         'm_title' => 'SOURCE',
         'm_message' => 'x__source',
         'm_icon' => '<i class="fas fa-user-tag" aria-hidden="true"></i>',
-        'm_profile' => array(11089,12701,6194,11081,6160,4341),
+        'm_profile' => array(6194,11081,6160,4341),
     ),
     4366 => array(
         'm_title' => 'UP',
@@ -6293,7 +6281,7 @@ $config['e___6204'] = array(
         'm_title' => 'TRANSACTION TYPE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-shapes" aria-hidden="true"></i>',
-        'm_profile' => array(13571,11089,12701,6194,6204,11081,10659,6160,4341,4527),
+        'm_profile' => array(13571,12701,6194,6204,11081,10659,6160,4341,4527),
     ),
 );
 
@@ -6441,7 +6429,7 @@ $config['e___7551'] = array(
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     12896 => array(
-        'm_title' => 'SAVE THIS IDEA',
+        'm_title' => 'SAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(11089,13510,12677,4485,7551,11018,4755,4593),
@@ -7346,7 +7334,7 @@ $config['e___4755'] = array(
         'm_profile' => array(13450,11035,4593,4755),
     ),
     12896 => array(
-        'm_title' => 'SAVE THIS IDEA',
+        'm_title' => 'SAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(11089,13510,12677,4485,7551,11018,4755,4593),
@@ -7448,7 +7436,7 @@ $config['e___4755'] = array(
         'm_profile' => array(4755,4593,13414),
     ),
     12906 => array(
-        'm_title' => 'UNSAVE THIS IDEA',
+        'm_title' => 'UNSAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fal fa-bookmark discover"></i>',
         'm_profile' => array(11035,13510,4755,4593),
@@ -8071,7 +8059,7 @@ $config['e___4593'] = array(
         'm_profile' => array(13450,11035,4593,4755),
     ),
     12896 => array(
-        'm_title' => 'SAVE THIS IDEA',
+        'm_title' => 'SAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(11089,13510,12677,4485,7551,11018,4755,4593),
@@ -8323,7 +8311,7 @@ $config['e___4593'] = array(
         'm_profile' => array(11035,4593),
     ),
     12906 => array(
-        'm_title' => 'UNSAVE THIS IDEA',
+        'm_title' => 'UNSAVE IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fal fa-bookmark discover"></i>',
         'm_profile' => array(11035,13510,4755,4593),
