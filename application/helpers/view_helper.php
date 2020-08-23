@@ -1310,13 +1310,16 @@ function view_time_hours($total_seconds, $hide_hour = false){
     return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
-function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_input = null){
+function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_input = null, $user_e = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
 
-    $user_e = superpower_assigned();
+    if(!$user_e){
+        $user_e = superpower_assigned();
+    }
+
     $i_stats = i_stats($i['i__metadata']);
     $href = ( $x__type == 6255 ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] ).( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
     $completion_rate['completion_percentage'] = 0; //Assume no progress
