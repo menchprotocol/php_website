@@ -563,7 +563,7 @@ if($in_my_x){
             } else {
 
                 //Give option to save:
-                echo '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+                //echo '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
 
             }
 
@@ -594,7 +594,7 @@ if($in_my_x){
             echo view_i_list($i_focus, $is_next, $user_e);
         } else {
             //Give Button option:
-            echo '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+            //echo '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
         }
 
         echo '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
