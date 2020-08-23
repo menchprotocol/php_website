@@ -525,7 +525,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     if($x__type==12896){
 
                         //Saved IDEA
-                        $focus_tab .= view_i_x($i_notes, null, true);
+                        $focus_tab .= view_i_x($i_notes, null, true, null, $e);
 
 
                     } else {

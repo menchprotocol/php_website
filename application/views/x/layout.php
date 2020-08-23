@@ -39,6 +39,7 @@ $messages = $this->X_model->fetch(array(
 
 $chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
+$u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
 
 
@@ -179,7 +180,7 @@ if(count($this->X_model->fetch(array(
 }
 
 //Recommend Going Next?
-if($user_e['e__id'] && in_array($i_focus['i__id'], $this->X_model->ids($user_e['e__id']))){
+if($user_e['e__id'] && in_array($i_focus['i__id'], $u_x_ids)){
     echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896">'.$e___11035[12211]['m_icon'].'</span>to save this idea in your profile for easy future access.</div></div>';
 }
 
@@ -657,7 +658,6 @@ if($in_my_x){
 
     //Discoveries
     $previous_level_id = 0; //The ID of the Idea one level up, if any
-    $u_x_ids = $this->X_model->ids($user_e['e__id']);
 
     if(!in_array($i_focus['i__id'], $u_x_ids)){
 
