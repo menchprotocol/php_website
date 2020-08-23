@@ -188,7 +188,7 @@ $main_title = '<div style="position: relative; display: block;">' . ( $show_perc
 
 //IDEA TITLE & MY DISCOVERY
 echo '<div class="list-group">';
-echo ( $in_my_x && $previous_level_id ? $sitemap_items[0] : '<div class="list-group-item no-padding"></div>');
+echo ( $in_my_x && $previous_level_id ? end($sitemap_items) : '<div class="list-group-item no-padding"></div>');
 echo '<div class="list-group-item no-padding">'.$main_title.'</div>';
 echo '</div>';
 
