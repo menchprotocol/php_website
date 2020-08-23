@@ -43,6 +43,44 @@ $u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
 
 
+
+if($in_my_x){
+
+    //Fetch Parents all the way to the Discovery Item
+    $previous_level_id = 0; //The ID of the Idea one level up, if any
+
+    if(!in_array($i_focus['i__id'], $u_x_ids)){
+
+        //Find it:
+        $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
+        $sitemap_items = array();
+
+        foreach($recursive_parents as $grand_parent_ids) {
+            foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
+                foreach($grand_parent_ids as $count => $previous_i__id) {
+
+                    if($count==0){
+                        //Reuser the first parent for the back button:
+                        $previous_level_id = $previous_i__id;
+                    }
+
+                    $is_this = $this->I_model->fetch(array(
+                        'i__id' => $previous_i__id,
+                    ));
+
+                    array_push($sitemap_items, view_i_x($is_this[0]));
+
+                    if(in_array($previous_i__id, $u_x_ids)){
+                        //We reached the top-level discovery:
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 if($user_e['e__id']){
 
     //VIEW DISCOVER
@@ -143,14 +181,16 @@ if($user_e['e__id']){
 
 
 $show_percentage = $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
+
+
 $main_title = '<div style="position: relative; display: block;">' . ( $show_percentage ? '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '' ) . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
-//IDEA TITLE
-echo $main_title;
 
-
-
-
+//IDEA TITLE & MY DISCOVERY
+echo '<div class="list-group">';
+echo ( $in_my_x && $previous_level_id ? $sitemap_items[0] : '<div class="list-group-item no-padding"></div>');
+echo '<div class="list-group-item no-padding">'.$main_title.'</div>';
+echo '</div>';
 
 
 
@@ -650,47 +690,12 @@ if($in_my_x){
     //DISCOVERY CONTROLLER
 
 
-    //Discoveries
-    $previous_level_id = 0; //The ID of the Idea one level up, if any
 
-    if(!in_array($i_focus['i__id'], $u_x_ids)){
-
-        //Find it:
-        $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
-        $sitemap_items = array();
-
-        foreach($recursive_parents as $grand_parent_ids) {
-            foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
-                foreach($grand_parent_ids as $count => $previous_i__id) {
-
-                    if($count==0){
-                        //Reuser the first parent for the back button:
-                        $previous_level_id = $previous_i__id;
-                    }
-
-                    $is_this = $this->I_model->fetch(array(
-                        'i__id' => $previous_i__id,
-                    ));
-
-                    array_push($sitemap_items, view_i_x($is_this[0]));
-
-                    if(in_array($previous_i__id, $u_x_ids)){
-                        //We reached the top-level discovery:
-                        break;
-                    }
-                }
-            }
-        }
-    }
 
 
 
     echo '<div class="container load_13210 hidden">';
     echo '<div class="list-group">';
-
-    //My Discoveries:
-    echo '<div class="list-group-item no-side-padding itemsource"><a href="/@'.$user_e['e__id'].'"><span class="icon-block">'.$user_e['e__icon'].'</span><span class="montserrat">'.$user_e['e__title'].'</span></a></div>';
-
 
     //Did We Find It?
     if($previous_level_id){
@@ -700,7 +705,6 @@ if($in_my_x){
 
     //Current Idea:
     echo '<div class="list-group-item no-padding itemdiscover"><a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');">'.$main_title.'</a></div>';
-
 
     echo '</div>';
     echo '</div>';
