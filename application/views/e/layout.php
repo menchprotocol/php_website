@@ -68,7 +68,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     } elseif($counter__i > 0){
         //IDEAS
         $active_x__type = 12273;
-    } elseif($source_is_e){
+    } elseif($counter__x > 0){
         //DISCOVERIES
         $active_x__type = 6255;
     } else {
