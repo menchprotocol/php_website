@@ -722,7 +722,7 @@ if($in_my_x){
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
         $url = '';
-        if($e__id==13510){
+        if($e__id==13510 && count($sitemap_items)){
 
             //Is Saved?
             $is_saved = count($this->X_model->fetch(array(
