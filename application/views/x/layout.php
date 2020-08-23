@@ -41,7 +41,7 @@ $chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
 $u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
-
+$sitemap_items = array();
 
 
 if($in_my_x){
@@ -53,7 +53,6 @@ if($in_my_x){
 
         //Find it:
         $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
-        $sitemap_items = array();
 
         foreach($recursive_parents as $grand_parent_ids) {
             foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
@@ -760,7 +759,7 @@ if($in_my_x){
             $url .= '</div>';
             $url .= '</div>';
 
-        } elseif($e__id==13210 /*&& count($sitemap_items) >= 2*/){
+        } elseif($e__id==13210 && count($sitemap_items) >= 2){
 
             //IDEA TREE
             $url = '<a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');" class="controller-nav" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
