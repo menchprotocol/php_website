@@ -473,7 +473,9 @@ function view_x($x, $is_parent_tr = false)
                 //PARENT DISCOVER
                 $x = $CI->X_model->fetch(array('x__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_title'].'">'.$e___4341[$e__id]['m_icon']. '</span><div class="x-ref">'.view_x($x[0], true).'</div></div>';
+                if(count($x)){
+                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_title'].'">'.$e___4341[$e__id]['m_icon']. '</span><div class="x-ref">'.view_x($x[0], true).'</div></div>';
+                }
 
             }
         }

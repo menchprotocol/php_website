@@ -41,6 +41,7 @@ $chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
 $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
 
+
 if($user_e['e__id']){
 
     //VIEW DISCOVER
@@ -162,6 +163,7 @@ foreach($messages as $message_x) {
         $user_e
     );
 }
+//Recommended to Save This Idea?
 if(count($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 4983, //IDEA SOURCES
@@ -173,9 +175,14 @@ if(count($this->X_model->fetch(array(
         'x__type' => 12896, //SAVED
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     )))){
-    //Recommended to Save This Idea:
     echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="far fa-bookmark discover"></i></span>to save this idea in your profile for easy future access.</div></div>';
 }
+
+//Recommend Going Next?
+if($user_e['e__id'] && in_array($i_focus['i__id'], $this->X_model->ids($user_e['e__id']))){
+    echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896">'.$e___11035[12211]['m_icon'].'</span>to save this idea in your profile for easy future access.</div></div>';
+}
+
 echo '</div>';
 
 
