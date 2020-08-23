@@ -717,6 +717,10 @@ if($in_my_x){
     echo '<div class="row">';
     echo '<div class="discover-controller">';
 
+    if(!count($sitemap_items)){
+        echo '<div class="montserrat">GO NEXT:</div>';
+    }
+
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
         $url = '';
@@ -764,7 +768,9 @@ if($in_my_x){
 
         }
 
-        echo '<div>'.( $url ? $url : '&nbsp;' ).'</div>';
+        if(count($sitemap_items) || $url){
+            echo '<div>'.( $url ? $url : '&nbsp;' ).'</div>';
+        }
 
     }
 
