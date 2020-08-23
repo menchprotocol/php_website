@@ -760,7 +760,7 @@ if($in_my_x){
             $url .= '</div>';
             $url .= '</div>';
 
-        } elseif($e__id==13210 && count($sitemap_items) >= 2){
+        } elseif($e__id==13210 /*&& count($sitemap_items) >= 2*/){
 
             //IDEA TREE
             $url = '<a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');" class="controller-nav" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
