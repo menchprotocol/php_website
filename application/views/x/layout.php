@@ -713,11 +713,13 @@ if($in_my_x){
 
 
 
-    $column_width = number_format(100/count($this->config->item('n___13289')), 2);
-
-    echo "\n\n".'<div class="container fixed-bottom">'."\n\n";
+    echo '<div class="container fixed-bottom">';
     echo '<div class="row">';
-    echo '<table class="discover-controller"><tr>';
+    echo '<div class="discover-controller">';
+
+    if(!count($sitemap_items)){
+        echo '<div class="triple-long montserrat">TAP NEXT WHEN READY:</div>';
+    }
 
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
@@ -766,11 +768,13 @@ if($in_my_x){
 
         }
 
-        echo '<td style="width:'.$column_width.'%;">'.( $url ? $url : '&nbsp;' ).'</td>';
+        if(count($sitemap_items) || $url){
+            echo '<div>'.( $url ? $url : '&nbsp;' ).'</div>';
+        }
 
     }
 
-    echo '</tr></table>';
+    echo '</div>';
     echo '</div>';
     echo '</div>';
 

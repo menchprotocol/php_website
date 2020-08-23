@@ -489,19 +489,6 @@ img.no-radius {
 }
 
 
-.discover-controller{
-    background-color: #FC1B44;
-    width: 100% !important;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-.discover-controller td{
-    padding:10px 0;
-    text-align: center;
-}
-.discover-controller td a{
-    display: block;
-}
 
 .controller-nav>i{
     color: #000 !important;
@@ -516,6 +503,31 @@ img.no-radius {
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
 .btn-e i, .btn-x i, .btn-i i { color: #000000 !important; }
+
+
+
+.discover-controller{
+    background-color: #FC1B44;
+    width: 100% !important;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: table;
+    table-layout: fixed;
+}
+.discover-controller div{
+    text-align: center;
+    display: table-cell;
+    padding:10px 0;
+    width: 2%;
+    margin-bottom: 0;
+}
+.discover-controller .triple-long {
+    text-align: center;
+    min-width: 200px;
+}
+.discover-controller div a{
+    display: block;
+}
 
 .i_estimates{
     padding:0 0 8px;
