@@ -523,7 +523,7 @@ img.no-radius {
 }
 .discover-controller .triple-long {
     text-align: center;
-    min-width: 200px;
+    width: 75% !important;
 }
 .discover-controller div a{
     display: block;
