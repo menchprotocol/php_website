@@ -431,7 +431,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 } else {
 
                     //Give option to unlock superpower:
-                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>LEARN HOW TO SUMMARIZE IDEAS &raquo;</a></div>';
+                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>GET STARTED: SUMMARIZE IDEAS WITH MENCH &raquo;</a></div>';
 
                 }
 
