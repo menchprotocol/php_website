@@ -178,12 +178,6 @@ if(count($this->X_model->fetch(array(
     )))){
     echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="far fa-bookmark discover"></i></span>to save this idea in your profile for easy future access.</div></div>';
 }
-
-//Recommend Going Next?
-if($user_e['e__id'] && in_array($i_focus['i__id'], $u_x_ids)){
-    echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896">'.$e___11035[12211]['m_icon'].'</span>to save this idea in your profile for easy future access.</div></div>';
-}
-
 echo '</div>';
 
 
