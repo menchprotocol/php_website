@@ -1531,12 +1531,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
                 $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
                 $ui .= '</a>';
 
-
-                if($is_x_progress && superpower_active(12701, true)){
-                    //Give option to Filter:
-                    $ui .= '&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'?filter__e='.$e['e__id'].'" class="inline-block" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>';
-                }
-
             }
         $ui .= '</div>';
 
@@ -1547,7 +1541,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             $ui .= '<div class="row">';
                 $ui .= '<div class="col-4">'.view_coins_e(12274, $e['e__id']).'</div>';
                 $ui .= '<div class="col-4">'.view_coins_e(12273, $e['e__id']).'</div>';
-                $ui .= '<div class="col-4">'.view_coins_e(6255, $e['e__id']).'</div>';
+                $ui .= '<div class="col-4">'.view_coins_e(6255, $e['e__id']).($is_x_progress && superpower_active(12701, true) ? ' <a href="/'.$CI->uri->segment(1).'?filter__e='.$e['e__id'].'" class="inline-block" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>' : '').'</div>';
             $ui .= '</div>';
 
         $ui .= '</div>';
