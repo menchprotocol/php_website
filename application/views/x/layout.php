@@ -698,7 +698,7 @@ if($tab_pill_count > 1){
 //Show All Tab Content:
 echo $tab_content;
 
-$focus_tab .= '</div>'; //CLOSE CONTAINER
+echo '</div>'; //CLOSE CONTAINER
 
 
 if($in_my_x){
