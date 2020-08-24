@@ -731,18 +731,22 @@ if($in_my_x){
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
         $url = '';
-        if($e__id==13510 && count($sitemap_items)){
+        if($e__id==13510){
 
-            //Is Saved?
-            $is_saved = count($this->X_model->fetch(array(
-                'x__up' => $user_e['e__id'],
-                'x__right' => $i_focus['i__id'],
-                'x__type' => 12896, //SAVED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )));
+            if(count($sitemap_items)){
+                //Is Saved?
+                $is_saved = count($this->X_model->fetch(array(
+                    'x__up' => $user_e['e__id'],
+                    'x__right' => $i_focus['i__id'],
+                    'x__type' => 12896, //SAVED
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                )));
 
-            $e___13510 = $this->config->item('e___13510'); //SAVED IDEAS
-            $url = '<a href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" title="'.$m['m_title'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
+                $e___13510 = $this->config->item('e___13510'); //SAVED IDEAS
+                $url = '<a href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" title="'.$m['m_title'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
+            } else {
+                $url = '<div style="font-size: 1.4em;" class="montserrat">NEXT:</div>';
+            }
 
         } elseif($e__id==12991 && count($sitemap_items)){
 
@@ -756,7 +760,7 @@ if($in_my_x){
 
         } elseif($e__id==13491){
 
-            //FONT SIZE
+            //FONT SIZE: DEPRECATED FOR NOW
             $url .= '<div class="dropdown inline-block" title="'.$m['m_title'].'">';
             $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
