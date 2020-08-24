@@ -1183,7 +1183,7 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
 }
 
 
-function view_i_note_mix($x__type, $i_notes){
+function view_i_note_mix($x__type, $i_notes, $e_of_i = true){
 
     $CI =& get_instance();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
@@ -1210,7 +1210,7 @@ function view_i_note_mix($x__type, $i_notes){
     }
 
     //ADD NEW:
-    if(!in_array($x__type, $CI->config->item('n___12677'))){
+    if(!in_array($x__type, $CI->config->item('n___12677')) && $e_of_i){
         $ui .= '<div class="list-group-item itemidea space-left add_notes_' . $x__type .'">';
         $ui .= '<div class="add_notes_form">';
         $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
