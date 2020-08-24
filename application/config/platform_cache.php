@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-24 12:49:06 PST
+//Generated 2020-08-24 13:30:57 PST
 $config['s___12274'] = 5076; //SOURCES
 $config['s___12273'] = 4031; //IDEAS
-$config['s___6255'] = 122558; //DISCOVERIES
+$config['s___6255'] = 122606; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -604,14 +604,8 @@ $config['e___6159'] = array(
 );
 
 //MENCH VARIABLES:
-$config['n___6212'] = array(13670,6201,6159,6206,6172,4341,6103,13442);
+$config['n___6212'] = array(6201,6159,6206,6172,4341,6103,13442);
 $config['e___6212'] = array(
-    13670 => array(
-        'm_title' => 'FILTER SOURCE DISCOVERIES',
-        'm_message' => 'filter__e',
-        'm_icon' => '<i class="fas fa-filter discover" aria-hidden="true"></i>',
-        'm_profile' => array(12701,11035,6212),
-    ),
     6201 => array(
         'm_title' => 'MENCH IDEAS',
         'm_message' => '',
@@ -3190,7 +3184,7 @@ $config['e___11035'] = array(
         'm_title' => 'FILTER SOURCE DISCOVERIES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-filter discover" aria-hidden="true"></i>',
-        'm_profile' => array(12701,11035,6212),
+        'm_profile' => array(12701,11035),
     ),
     12707 => array(
         'm_title' => 'FILTER TRANSACTIONS',
