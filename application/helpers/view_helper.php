@@ -164,7 +164,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
                 //Header For Time
                 if($end_time){
-                    $embed_html_code .= '<div class="headline" style="padding-bottom: 0;" title="FROM '.round_minutes($start_time).'<span class="mid-range">-</span>'.round_minutes($end_time).' MIN."><span class="icon-block-xs"><i class="fas fa-cut"></i></span>'.round_minutes($end_time-$start_time).' MIN ('.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).')</div>';
+                    $embed_html_code .= '<div class="headline" style="padding-bottom: 0;"><span class="icon-block-xs"><i class="fas fa-cut"></i></span>'.round_minutes($end_time-$start_time).' MIN | '.view_time_hours($start_time, true).'<span class="mid-range">-</span>'.view_time_hours($end_time, true).'</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -1301,10 +1301,7 @@ function view_unauthorized_message($superpower_e__id = 0){
 
 function view_time_hours($total_seconds, $hide_hour = false){
 
-    if(!$total_seconds){
-        return 'START';
-    }
-
+    $total_seconds = intval($total_seconds);
     //Turns seconds into HH:MM:SS
     $hours = floor($total_seconds/3600);
     $minutes = floor(fmod($total_seconds, 3600)/60);
