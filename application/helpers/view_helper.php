@@ -25,7 +25,7 @@ function view_i_tree_stats($i_stats, $hide_idea){
     $is_interactive = ( $i_stats['i___6169']!=$i_stats['i___6170'] );
     $has_idea = ( $i_stats['i___6169'] && $i_stats['i___6170'] );
 
-    if($has_idea <= 1 && $hide_idea && $i_stats['i___6162'] <= config_var(13673)){
+    if($hide_idea && $i_stats['i___6162'] <= config_var(13673)){
         return false;
     }
 
