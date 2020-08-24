@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-23 23:39:46 PST
-$config['s___12274'] = 5071; //SOURCES
+//Generated 2020-08-24 01:35:59 PST
+$config['s___12274'] = 5072; //SOURCES
 $config['s___12273'] = 4030; //IDEAS
-$config['s___6255'] = 122499; //DISCOVERIES
+$config['s___6255'] = 122500; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -145,7 +145,7 @@ $config['e___13544'] = array(
     13292 => array(
         'm_title' => 'DISCOVERY TIME RANGE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-stopwatch"></i>',
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
         'm_profile' => array(13544,13369,4356),
     ),
     13632 => array(
@@ -822,7 +822,7 @@ $config['e___13369'] = array(
     13292 => array(
         'm_title' => 'DISCOVERY TIME RANGE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-stopwatch"></i>',
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
         'm_profile' => array(13544,13369,4356),
     ),
     13413 => array(
@@ -3786,7 +3786,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.529',
+        'm_message' => 'v1.53000',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
