@@ -1036,7 +1036,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
     $ui .= '<div class="col-sm col-md">';
 
         //IDEA Transaction:
-        $href = '/i/i_go/'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
+        $href = '/~'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
 
         //IDEA STATUS:
         $ui .= '<a href="'.$href.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
@@ -1183,7 +1183,7 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
 }
 
 
-function view_i_note_mix($x__type, $i_notes, $e_of_i = true){
+function view_i_note_mix($x__type, $i_notes, $e_of_i){
 
     $CI =& get_instance();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES

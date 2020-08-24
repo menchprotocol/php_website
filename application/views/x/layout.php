@@ -334,7 +334,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = ( count($comments) > 0 ? count($comments) : null );
 
         $focus_tab .= '<div style="margin-bottom:33px;">';
-        $focus_tab .= view_i_note_mix($x__type, $comments);
+        $focus_tab .= view_i_note_mix($x__type, $comments, true);
         $focus_tab .= '</div>';
 
     } elseif($x__type==6255){

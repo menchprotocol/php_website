@@ -532,7 +532,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                     } else {
 
-                        $focus_tab .= view_i($i_notes, 0, false, false, $i_notes['x__message'], null, false);
+                        $focus_tab .= view_i_x($i_notes, 0, false, false, $i_notes['x__message'], null, false);
 
                     }
 
