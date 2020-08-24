@@ -197,14 +197,6 @@ echo '</div>';
 //MESSAGES
 $counter = null; //Hide message count
 echo '<div style="margin-bottom:33px;">';
-
-if($in_my_x && !count($sitemap_items)){
-
-    //Recommend to go next:
-    echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="fas fa-step-forward black"></i></span>to go next.</div></div>';
-
-}
-
 foreach($messages as $message_x) {
     echo $this->X_model->message_send(
         $message_x['x__message'],
@@ -212,7 +204,13 @@ foreach($messages as $message_x) {
     );
 }
 
-if(count($this->X_model->fetch(array(
+
+if($in_my_x && !count($sitemap_items)){
+
+    //Recommend to go next:
+    echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="fas fa-step-forward black"></i></span>to go next.</div></div>';
+
+} elseif(count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type' => 4983, //IDEA SOURCES
         'x__up' => 12896, //SAVE THIS IDAE
