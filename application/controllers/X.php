@@ -474,7 +474,7 @@ class X extends CI_Controller
         }
 
         //Go to this newly added idea:
-        return redirect_message('/x/x_next/'.$i__id_added, $success_message);
+        return redirect_message('/'.$i__id_added, $success_message);
 
     }
 
