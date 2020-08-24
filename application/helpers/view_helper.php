@@ -1137,7 +1137,7 @@ function view_caret($e__id, $m, $object__id){
 
     $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m_profile']);
 
-    $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_title'].'" data-toggle="tooltip" data-placement="top">';
+    $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_title'].'">';
     $ui .= '<a class="nav-x dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach($CI->config->item('e___'.$e__id) as $e__id => $m2){

@@ -371,7 +371,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             $show_editor = $source_is_e; //To manage idea bookmarks
 
-            if($counter>0 && !count($list_i)){
+            if($counter>0 && !count($list_i) && !$source_is_e){
                 //Load Flat List since this source has ideas but nothing bookmarked:
                 $list_i = $this->X_model->fetch(array(
                     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
