@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-24 14:38:17 PST
-$config['s___12274'] = 5077; //SOURCES
-$config['s___12273'] = 4023; //IDEAS
+//Generated 2020-08-24 15:31:03 PST
+$config['s___12274'] = 5078; //SOURCES
+$config['s___12273'] = 4025; //IDEAS
 $config['s___6255'] = 122609; //DISCOVERIES
 
 //SHOW URL:
@@ -3679,7 +3679,7 @@ $config['e___11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,4485,12137,4736,11064,11065,13014,13005,11079,11060,13556,13545,11066,12088,13206,11986,6197,12232,13572,12565,12568);
+$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,13673,12176,4356,4485,12137,4736,11064,11065,13014,13005,11079,11060,13556,13545,11066,12088,13206,11986,6197,12232,13572,12565,12568);
 $config['e___6404'] = array(
     12678 => array(
         'm_title' => 'ALGOLIA SEARCH ENABLED (0 OR 1)',
@@ -3728,6 +3728,12 @@ $config['e___6404'] = array(
         'm_message' => 'support@mench.com',
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
         'm_profile' => array(13531,6404,4269,12103,6225,4755),
+    ),
+    13673 => array(
+        'm_title' => 'HIDE IF <= SECONDS',
+        'm_message' => '180',
+        'm_icon' => '',
+        'm_profile' => array(6404),
     ),
     12176 => array(
         'm_title' => 'IDEA DEFAULT TIME SECONDS',

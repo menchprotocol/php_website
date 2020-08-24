@@ -25,6 +25,10 @@ function view_i_tree_stats($i_stats, $hide_idea){
     $is_interactive = ( $i_stats['i___6169']!=$i_stats['i___6170'] );
     $has_idea = ( $i_stats['i___6169'] && $i_stats['i___6170'] );
 
+    if(!$has_idea && $i_stats['i___6162'] <= config_var(13673)){
+        return false;
+    }
+
     //Variable time range:
     $ui = '<span class="montserrat doupper" style="padding-right:8px;" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="'.$e___13544[13632]['m_title'].': '.$e___13544[13632]['m_message'].'" ': '' ).'>';
 
