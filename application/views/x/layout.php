@@ -293,6 +293,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //Now we can make it look nice:
         $counter = view_number($counter);
+        $has_substance = false;
 
         if($in_my_x) {
 
@@ -308,6 +309,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //Did we have any steps unlocked?
             if (count($unlocked_x) > 0) {
                 $focus_tab .= view_i_list($i_focus, $unlocked_x, $user_e, 'UNLOCKED:');
+                $has_substance = true;
             }
 
 
@@ -330,11 +332,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     //List Unlock paths:
                     $focus_tab .= view_i_list($i_focus, $unlock_paths, $user_e, 'SUGGESTED IDEAS:');
+                    $has_substance = true;
 
                 }
 
                 //List Children if any:
                 $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+                $has_substance = count($is_next);
 
 
             } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
@@ -360,6 +364,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     }
 
                 } else {
+
+                    $has_substance = true;
 
                     //First fetch answers based on correct order:
                     $x_selects = array();
@@ -480,14 +486,17 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 if (count($is_next) > 1) {
                     //NEXT IDEAS
                     $focus_tab .= '<div class="i_estimates">' . view_i_tree_stats($i_stats, true) . '</div>';
+                    $has_substance = true;
                 }
 
                 //DISCOVER ONLY
                 $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+                $has_substance = count($is_next);
 
             } elseif ($i_focus['i__type'] == 6683) {
 
                 //TEXT RESPONSE
+                $has_substance = true;
 
                 $focus_tab .= '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR ANSWER:</div>';
 
@@ -505,6 +514,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
             } elseif ($i_focus['i__type'] == 7637) {
+
+                $has_substance = true;
 
                 //FILE UPLOAD
                 $focus_tab .= '<div class="userUploader">';
@@ -552,14 +563,20 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
 
-            //IDEA PREVIOUS
-            $focus_tab .= '<div style="padding:33px 0;">'.view_i_list($i_focus, $this->X_model->fetch(array(
+            $is_previous = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__right' => $i_focus['i__id'],
                 'x__left !=' => config_var(12137),
-            ), array('x__left'), 0), $user_e, 'THIS IDEA HELPS YOU:').'</div>';
+            ), array('x__left'), 0);
+
+            if(count($is_previous)){
+                //IDEA PREVIOUS
+                $focus_tab .= '<div style="padding:33px 0;">'.view_i_list($i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:').'</div>';
+            }
+
+            $has_substance = count($is_next) || count($is_previous);
 
         }
 
@@ -654,10 +671,14 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
-    $default_active = ( in_array($x__type, $this->config->item('n___13300')));
+    if(!$counter && $x__type==12273 && !$has_substance){
+        continue;
+    }
+
+    $default_active = ( in_array($x__type, $this->config->item('n___13300')) );
     $tab_pill_count++;
 
-    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'">'.$m['m_icon'].'&nbsp;'.( $pre_fix ? '<span class="show-max-active">'.$pre_fix.'</span>' : '' ).( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
+    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'">'.$m['m_icon'].'&nbsp;'.( $pre_fix ? '<span class="show-max-active">'.$pre_fix.'</span>' : '' ).( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'<span class="show-max-active">'.$m['m_title'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $focus_tab;
