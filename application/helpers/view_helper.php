@@ -1439,6 +1439,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     //Allow source to see all their own transactions:
     $is_hidden = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $e_url = '/@'.$e['e__id'];
+    $filter_not_set_already = (!isset($_GET['filter__e']) || $_GET['filter__e']!=$e['e__id']);
 
 
     if(!$user_e && (!$is_public || !$is_x_published)){
@@ -1534,14 +1535,13 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             }
         $ui .= '</div>';
 
-
         $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
 
             //MENCH COINS
             $ui .= '<div class="row">';
                 $ui .= '<div class="col-4">'.view_coins_e(12274, $e['e__id']).'</div>';
                 $ui .= '<div class="col-4">'.view_coins_e(12273, $e['e__id']).'</div>';
-                $ui .= '<div class="col-4">'.($is_x_progress && superpower_active(12701, true) && ( !isset($_GET['filter__e']) || $_GET['filter__e']!=$e['e__id'] ) ? '<a href="/'.$CI->uri->segment(1).'?filter__e='.$e['e__id'].'" class="inline-block" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>' : '').view_coins_e(6255, $e['e__id']).'</div>';
+                $ui .= '<div class="col-4">'.($is_x_progress && superpower_active(12701, true) && $filter_not_set_already ? '<a href="/'.$CI->uri->segment(1).'?filter__e='.$e['e__id'].'" class="inline-block" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>' : '').view_coins_e(6255, $e['e__id']).'</div>';
             $ui .= '</div>';
 
         $ui .= '</div>';
