@@ -163,12 +163,6 @@ if(!isset($hide_header)){
                                 //Fetch URL:
                                 $href = 'href="'.$e___10876[$x__type]['m_message'].'"';
 
-                            } elseif($x__type==6225){
-
-                                $m['m_icon'] = $user_e['e__icon'];
-                                $m['m_title'] = $user_e['e__title'];
-                                $href = 'href="/@'.$user_e['e__id'].'"';
-
                             } elseif($x__type==12899) {
 
                                 //FEEDBACK SUPPORT
