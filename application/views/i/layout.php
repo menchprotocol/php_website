@@ -129,6 +129,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     $counter = null; //Assume no counters
     $focus_tab = '';
+    $pre_fix = null;
 
 
     if($x__type==12274){
@@ -193,11 +194,18 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__left' => $i_focus['i__id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-        $counter = ( count($is_next) > $counter_i ? count($is_next) : view_number($i_stats['i___6170']) );
+        $counter = ( count($is_next) > $counter_i ? count($is_next) : $i_stats['i___6170'] );
+
+        if($counter > $i_stats['i___6169']){
+            $pre_fix = view_number($i_stats['i___6169']).'-';
+        }
+
+        //Now we can make it look nice:
+        $counter = view_number($counter);
 
         if($counter > 1){
             //IDEA TREE STATS
-            $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats).'</div>';
+            $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats, false, true).'</div>';
         }
 
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
@@ -358,7 +366,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].( $pre_fix ? '<span class="show-max-active">'.$pre_fix.'</span>' : '' ).( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';

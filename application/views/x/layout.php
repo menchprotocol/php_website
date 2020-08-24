@@ -269,6 +269,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
+    $pre_fix = null;
     $counter = null; //Assume no counters
     $focus_tab = '';
     $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
@@ -283,13 +284,20 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12273){
 
-        //COUNTER: Average Ideas
-        $counter = ( count($is_next) > $i_stats['i___6170'] ? count($is_next) : view_number($i_stats['i___6170']) );
+        //IDEAS
+        $counter = ( count($is_next) > $i_stats['i___6170'] ? count($is_next) : $i_stats['i___6170'] );
+
+        if($counter > $i_stats['i___6169']){
+            $pre_fix = view_number($i_stats['i___6169']).'-';
+        }
+
+        //Now we can make it look nice:
+        $counter = view_number($counter);
 
         if(!$in_my_x){
 
             //NEXT IDEAS
-            $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats).'</div>';
+            $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats, false, true).'</div>';
 
             $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
 
@@ -403,7 +411,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = ( $counter > 0 && in_array($x__type, $this->config->item('n___13300')));
     $tab_pill_count++;
 
-    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'">'.$m['m_icon'].( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
+    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'">'.$m['m_icon'].( $pre_fix ? '<span class="show-max-active">'.$pre_fix.'</span>' : '' ).( is_null($counter) ? '' : ' <span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $focus_tab;
@@ -614,7 +622,7 @@ if($in_my_x){
 
         if(count($is_next) > 1){
             //NEXT IDEAS
-            echo '<div class="i_estimates">'.view_i_tree_stats($i_stats).'</div>';
+            echo '<div class="i_estimates">'.view_i_tree_stats($i_stats, false, true).'</div>';
         }
 
         //DISCOVER ONLY
