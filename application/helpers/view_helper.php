@@ -30,7 +30,7 @@ function view_i_tree_stats($i_stats, $hide_idea){
 
 
     //TIME STATS
-    $ui .= '<span class="icon-block grey">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block grey" style="min-width:89px;">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+    $ui .= '<span class="icon-block grey">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block grey" style="min-width:96px;">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
 
 
     //IDEA STATS
