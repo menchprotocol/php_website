@@ -654,10 +654,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
-    $default_active = ( $counter > 0 && in_array($x__type, $this->config->item('n___13300')));
+    $default_active = ( in_array($x__type, $this->config->item('n___13300')));
     $tab_pill_count++;
 
-    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'">'.$m['m_icon'].'&nbsp;'.( $pre_fix ? '<span class="show-max-active">'.$pre_fix.'</span>' : '' ).( is_null($counter) ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
+    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'">'.$m['m_icon'].'&nbsp;'.( $pre_fix ? '<span class="show-max-active">'.$pre_fix.'</span>' : '' ).( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
     $tab_content .= $focus_tab;
