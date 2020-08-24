@@ -226,16 +226,6 @@ echo '</div>';
 
 
 
-if($in_my_x && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
-    //Give option to mark as read:
-    //echo '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[12211]['m_title'].' '.$e___11035[12211]['m_icon'].'</a></div>';
-}
-
-
-
-
-
-
 if(!$in_my_x){
 
     //GET STARTED
@@ -474,11 +464,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         //Cancel:
                         $focus_tab .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m_title'] . '">' . $e___11035[13502]['m_icon'] . '</a></div>';
 
-                    } else {
-
-                        //Give option to save:
-                        //$focus_tab .= '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
-
                     }
 
                     $focus_tab .= '</div>';
@@ -509,9 +494,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 if (count($x_completes)) {
                     //Next Ideas:
                     $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
-                } else {
-                    //Give Button option:
-                    //$focus_tab .= '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
                 }
 
                 $focus_tab .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
