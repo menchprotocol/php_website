@@ -8,19 +8,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-24 14:20:28 PST
+//Generated 2020-08-24 14:38:17 PST
 $config['s___12274'] = 5077; //SOURCES
-$config['s___12273'] = 4026; //IDEAS
+$config['s___12273'] = 4023; //IDEAS
 $config['s___6255'] = 122609; //DISCOVERIES
 
 //SHOW URL:
-$config['n___13672'] = array(10876);
+$config['n___13672'] = array(2793,10876,3320,3304);
 $config['e___13672'] = array(
+    2793 => array(
+        'm_title' => 'FACEBOOK URL',
+        'm_message' => '',
+        'm_icon' => '<i class="fab fa-facebook source" aria-hidden="true"></i>',
+        'm_profile' => array(13672,12889,1326,1326,1326),
+    ),
     10876 => array(
         'm_title' => 'MENCH URL',
         'm_message' => '',
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
         'm_profile' => array(13672,13023,6403,4527,1326),
+    ),
+    3320 => array(
+        'm_title' => 'MESSENGER URL',
+        'm_message' => '',
+        'm_icon' => '<i class="fab fa-facebook-messenger source" aria-hidden="true"></i>',
+        'm_profile' => array(13672,12890,1326,1326),
+    ),
+    3304 => array(
+        'm_title' => 'WIKIPEDIA URL',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-space-shuttle source rotate270"></i>',
+        'm_profile' => array(13672,12998,1326),
     ),
 );
 
