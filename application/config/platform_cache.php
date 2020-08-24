@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-23 23:03:35 PST
-$config['s___12274'] = 5073; //SOURCES
+//Generated 2020-08-23 23:39:46 PST
+$config['s___12274'] = 5071; //SOURCES
 $config['s___12273'] = 4030; //IDEAS
-$config['s___6255'] = 122462; //DISCOVERIES
+$config['s___6255'] = 122499; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -996,47 +996,6 @@ $config['e___13207'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
-    ),
-);
-
-//MONTHLY DONATIONS:
-$config['n___13037'] = array(13038,13039,13040,13041,13520,13599);
-$config['e___13037'] = array(
-    13038 => array(
-        'm_title' => '$5 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13039 => array(
-        'm_title' => '$13 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13040 => array(
-        'm_title' => '$21 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13041 => array(
-        'm_title' => '$55 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13520 => array(
-        'm_title' => '$233 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13599 => array(
-        'm_title' => '$987 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(13037),
     ),
 );
 
@@ -3178,7 +3137,7 @@ $config['e___11089'] = array(
 );
 
 //MY ACCOUNT:
-$config['n___6225'] = array(12289,10957,13491,3288,3286,13037,13519);
+$config['n___6225'] = array(12289,10957,13491,3288,3286);
 $config['e___6225'] = array(
     12289 => array(
         'm_title' => 'AVATAR',
@@ -3209,18 +3168,6 @@ $config['e___6225'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-key" aria-hidden="true"></i>',
         'm_profile' => array(13014,4269,6225,7578,4755),
-    ),
-    13037 => array(
-        'm_title' => 'MONTHLY DONATIONS',
-        'm_message' => 'Together we can spread ideas that matter. Your monthly donations are mostly paid to summarizers & partly for platform development:',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(13518,4527,6204,6225),
-    ),
-    13519 => array(
-        'm_title' => 'WEEKLY PAYOUTS',
-        'm_message' => 'You have not earned any payouts yet. Summarizers earn weekly payouts based on weekly 🔴DISCOVERIES generated from 🟡IDEAS summarized.',
-        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
-        'm_profile' => array(6225),
     ),
 );
 
@@ -4826,7 +4773,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(13202,10956,13533,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,13369,4229,12842,4486,12840,12589,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13543,13544,7585,13022,12330,7309,7712,12883,12884,12955,13207,12211,6170,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,6169,13037,6225,12969,10573,3000,12741,6287,12577,4755,13531,13439,13365,13438,13510,12761,13023,4269,6204,13413,6194,4251,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,13479,12500);
+$config['n___4527'] = array(13202,10956,13533,12279,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,13369,4229,12842,4486,12840,12589,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13543,13544,7585,13022,12330,7309,7712,12883,12884,12955,13207,12211,6170,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,6169,6225,12969,10573,3000,12741,6287,12577,4755,13531,13439,13365,13438,13510,12761,13023,4269,6204,13413,6194,4251,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,13479,12500);
 $config['e___4527'] = array(
     13202 => array(
         'm_title' => 'AUTHORS',
@@ -5307,12 +5254,6 @@ $config['e___4527'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
         'm_profile' => array(13629,4527,6159),
-    ),
-    13037 => array(
-        'm_title' => 'MONTHLY DONATIONS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(13518,4527,6204,6225),
     ),
     6225 => array(
         'm_title' => 'MY ACCOUNT',
@@ -6077,7 +6018,7 @@ $config['e___7304'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['n___6204'] = array(13491,4737,7585,10602,13037,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,12968,6186,4593);
+$config['n___6204'] = array(13491,4737,7585,10602,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,12968,6186,4593);
 $config['e___6204'] = array(
     13491 => array(
         'm_title' => 'FONT SIZE',
@@ -6102,12 +6043,6 @@ $config['e___6204'] = array(
         'm_message' => '',
         'm_icon' => '<i class="far fa-puzzle-piece idea"></i>',
         'm_profile' => array(10893,6204),
-    ),
-    13037 => array(
-        'm_title' => 'MONTHLY DONATIONS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(13518,4527,6204,6225),
     ),
     13158 => array(
         'm_title' => 'RATE ANGULAR',
@@ -6917,31 +6852,31 @@ $config['e___4755'] = array(
         'm_title' => '$13 USD PER MONTH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
+        'm_profile' => array(4755),
     ),
     13040 => array(
         'm_title' => '$21 USD PER MONTH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
+        'm_profile' => array(4755),
     ),
     13520 => array(
         'm_title' => '$233 USD PER MONTH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
+        'm_profile' => array(4755),
     ),
     13041 => array(
         'm_title' => '$55 USD PER MONTH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
+        'm_profile' => array(4755),
     ),
     13038 => array(
         'm_title' => '$5 USD PER MONTH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
+        'm_profile' => array(4755),
     ),
     12336 => array(
         'm_title' => 'DISCOVER ANSWER ONE LINK',
