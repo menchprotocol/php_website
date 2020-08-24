@@ -745,7 +745,7 @@ if($in_my_x){
                 $e___13510 = $this->config->item('e___13510'); //SAVED IDEAS
                 $url = '<a href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" title="'.$m['m_title'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
             } else {
-                $url = '<div style="font-size: 1.7em;" class="montserrat">NEXT:</div>';
+                $url = '<div style="font-size: 2em;">NEXT:</div>';
             }
 
         } elseif($e__id==12991 && count($sitemap_items)){
