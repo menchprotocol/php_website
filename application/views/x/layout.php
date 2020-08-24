@@ -543,10 +543,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             }
 
-
-            $focus_tab .= '</div>'; //CLOSE CONTAINER
-
-
         } else {
 
             //NOT IN READING LIST YET...
@@ -681,8 +677,7 @@ if($tab_pill_count > 1){
 //Show All Tab Content:
 echo $tab_content;
 
-
-
+$focus_tab .= '</div>'; //CLOSE CONTAINER
 
 
 if($in_my_x){
