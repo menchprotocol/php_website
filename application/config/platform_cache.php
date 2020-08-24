@@ -8,8 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-23 22:25:00 PST
-$config['s___12274'] = 5072; //SOURCES
+//Generated 2020-08-23 23:03:35 PST
+$config['s___12274'] = 5073; //SOURCES
 $config['s___12273'] = 4030; //IDEAS
 $config['s___6255'] = 122462; //DISCOVERIES
 
@@ -708,7 +708,7 @@ $config['e___13425'] = array(
         'm_title' => 'MY ACCOUNT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
-        'm_profile' => array(12500,13425,12574,11089,4527,11035),
+        'm_profile' => array(13425,12574,11089,4527,11035),
     ),
 );
 
@@ -1528,14 +1528,8 @@ $config['e___12677'] = array(
 );
 
 //VERTICAL MENU:
-$config['n___12500'] = array(6225,13207,6287,4341,7291);
+$config['n___12500'] = array(13207,6287,4341,7291);
 $config['e___12500'] = array(
-    6225 => array(
-        'm_title' => 'MY ACCOUNT',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
-        'm_profile' => array(12500,13425,12574,11089,4527,11035),
-    ),
     13207 => array(
         'm_title' => 'LEADERBOARD',
         'm_message' => '',
@@ -1726,7 +1720,7 @@ $config['e___12574'] = array(
         'm_title' => 'MY ACCOUNT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
-        'm_profile' => array(12500,13425,12574,11089,4527,11035),
+        'm_profile' => array(13425,12574,11089,4527,11035),
     ),
     11030 => array(
         'm_title' => 'PROFILE',
@@ -3131,7 +3125,7 @@ $config['e___11089'] = array(
         'm_title' => 'MY ACCOUNT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
-        'm_profile' => array(12500,13425,12574,11089,4527,11035),
+        'm_profile' => array(13425,12574,11089,4527,11035),
     ),
     11030 => array(
         'm_title' => 'PROFILE',
@@ -3327,7 +3321,7 @@ $config['e___11035'] = array(
         'm_title' => 'MY ACCOUNT',
         'm_message' => 'Manage avatar, superpowers, subscription & name',
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
-        'm_profile' => array(12500,13425,12574,11089,4527,11035),
+        'm_profile' => array(13425,12574,11089,4527,11035),
     ),
     12969 => array(
         'm_title' => 'MY DISCOVERIES',
@@ -5324,7 +5318,7 @@ $config['e___4527'] = array(
         'm_title' => 'MY ACCOUNT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
-        'm_profile' => array(12500,13425,12574,11089,4527,11035),
+        'm_profile' => array(13425,12574,11089,4527,11035),
     ),
     12969 => array(
         'm_title' => 'MY DISCOVERIES',
