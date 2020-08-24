@@ -105,8 +105,9 @@ if(!isset($hide_header)){
                     //MENCH LOGO
                     if ($user_e) {
                         $title_words = explode(' ', $user_e['e__title']);
-                        $title_words_exclude_fist = array_shift($title_words);
-                        echo '<div style="padding: 10px 0 0; font-size: 1.2em;"><a href="'.home_url().'" class="montserrat '.extract_icon_color($user_e['e__icon']).'"><span class="icon-block">'.$user_e['e__icon'].'</span>'.$title_words[0].'<span class="show-max"> '.join(' ', $title_words_exclude_fist).'</span></a></div>';
+                        $first_word = $title_words[0];
+                        array_shift($title_words);
+                        echo '<div style="padding: 10px 0 0; font-size: 1.2em;"><a href="'.home_url().'" class="montserrat '.extract_icon_color($user_e['e__icon']).'"><span class="icon-block">'.$user_e['e__icon'].'</span>'.$first_word.'<span class="show-max"> '.join(' ', $title_words).'</span></a></div>';
                     } else {
                         echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url().'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
                     }
