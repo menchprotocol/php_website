@@ -966,7 +966,8 @@ class X_model extends CI_Model
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
                         array_push($e_urls, $e_profile['x__message']);
-                        $e_appendix .= '<div class="e-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input) . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup"><a href="'.$e_profile['x__message'].'"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span>' . $e_profile['e__title'] . '</a></div>';
+                        //$e_appendix .= '<div class="e-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input) . '</div>';
 
                     } else {
 
