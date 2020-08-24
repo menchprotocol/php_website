@@ -203,24 +203,30 @@ foreach($messages as $message_x) {
         $user_e
     );
 }
-//Recommended to Save This Idea?
-if(count($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type' => 4983, //IDEA SOURCES
-    'x__up' => 12896, //SAVE THIS IDAE
-    'x__right' => $i_focus['i__id'],
-))) && !count($this->X_model->fetch(array(
+
+
+if($in_my_x && !count($sitemap_items)){
+
+    //Recommend to go next:
+    echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="fas fa-step-forward black"></i></span>to go next.</div></div>';
+
+} elseif(count($this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type' => 4983, //IDEA SOURCES
+        'x__up' => 12896, //SAVE THIS IDAE
+        'x__right' => $i_focus['i__id'],
+    ))) && !count($this->X_model->fetch(array(
         'x__up' => $user_e['e__id'],
         'x__right' => $i_focus['i__id'],
         'x__type' => 12896, //SAVED
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     )))){
+
+    //Recommended to Save This Idea:
     echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="far fa-bookmark discover"></i></span>to save this idea in your profile for easy future access.</div></div>';
+
 }
 
-if($in_my_x && !count($sitemap_items)){
-    echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="fas fa-step-forward black"></i></span>to mark idea as read & go next.</div></div>';
-}
 echo '</div>';
 
 
