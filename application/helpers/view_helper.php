@@ -28,12 +28,13 @@ function view_i_tree_stats($i_stats, $show_min = false){
     //Variable time range:
     $ui = '<span class="montserrat doupper" style="padding-right:8px;" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="'.$e___13544[13632]['m_title'].': '.$e___13544[13632]['m_message'].'" ': '' ).'>';
 
-    //IDEA STATS
-    $ui .= '<span class="icon-block">'.( $has_idea ? ( $is_interactive ? $e___13544[13632]['m_icon'] : $e___13544[13629]['m_icon'] ) : '&nbsp;' ).'</span><span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" style="min-width:60px;">'.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' ).( $show_min ? '' : '<span class="show-max">&nbsp;IDEA'.view__s($i_stats['i___6170']).'</span>' ) : '&nbsp;' ).'</span>';
-
 
     //TIME STATS
-    $ui .= '<span class="inline-block grey">&nbsp;&nbsp;'.$e___13544[13292]['m_icon'].' <span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span></span>';
+    $ui .= '<span class="icon-block grey">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block" style="min-width: 66px;">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span style="padding: 0 2px;">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+
+
+    //IDEA STATS
+    $ui .= '<span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">&nbsp;'.( $has_idea ? ( $is_interactive ? $e___13544[13632]['m_icon'] : $e___13544[13629]['m_icon'] ) : '' ).' '.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span style="padding: 0 2px;">-</span>'.view_number($i_stats['i___6170']) : '' ).( $show_min ? '' : '<span class="show-max">&nbsp;IDEA'.view__s($i_stats['i___6170']).'</span>' ) : '&nbsp;' ).'</span>';
 
 
     $ui .= '</span>';
