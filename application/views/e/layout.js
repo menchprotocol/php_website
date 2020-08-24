@@ -883,7 +883,7 @@ function e_avatar(type_css, icon_css){
         $('.avatar-item.avatar-name-'+icon_css).addClass('active');
     }
 
-    $('.e_ui_icon_'+js_pl_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.e_ui_icon_'+js_pl_id).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Update via call:
     $.post("/e/e_avatar", {
