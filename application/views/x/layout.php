@@ -294,7 +294,262 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //Now we can make it look nice:
         $counter = view_number($counter);
 
-        if(!$in_my_x){
+        if($in_my_x) {
+
+            //PREVIOUSLY UNLOCKED:
+            $unlocked_x = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__type' => 6140, //DISCOVER UNLOCK LINK
+                'x__source' => $user_e['e__id'],
+                'x__left' => $i_focus['i__id'],
+            ), array('x__right'), 0);
+
+            //Did we have any steps unlocked?
+            if (count($unlocked_x) > 0) {
+                $focus_tab .= view_i_list($i_focus, $unlocked_x, $user_e, 'UNLOCKED:');
+            }
+
+
+            /*
+             *
+             * IDEA TYPE INPUT CONTROLLER
+             * Now let's show the appropriate
+             * inputs that correspond to the
+             * idea type that enable the user
+             * to move forward.
+             *
+             * */
+
+
+            //LOCKED
+            if ($i_type_meet_requirement) {
+
+                //Requirement lock
+                if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
+
+                    //List Unlock paths:
+                    $focus_tab .= view_i_list($i_focus, $unlock_paths, $user_e, 'SUGGESTED IDEAS:');
+
+                }
+
+                //List Children if any:
+                $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+
+
+            } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
+
+                //SELECT ANSWER
+
+                //Has no children:
+                if (!$chapters) {
+
+                    //Mark this as complete since there is no child to choose from:
+                    if (!count($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
+                        'x__source' => $user_e['e__id'],
+                        'x__left' => $i_focus['i__id'],
+                    )))) {
+
+                        array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
+                            'x__type' => 4559, //DISCOVER MESSAGES
+                            'x__source' => $user_e['e__id'],
+                        )));
+
+                    }
+
+                } else {
+
+                    //First fetch answers based on correct order:
+                    $x_selects = array();
+                    foreach ($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                        'x__left' => $i_focus['i__id'],
+                    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $x) {
+                        //See if this answer was seleted:
+                        if (count($this->X_model->fetch(array(
+                            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINK
+                            'x__left' => $i_focus['i__id'],
+                            'x__right' => $x['i__id'],
+                            'x__source' => $user_e['e__id'],
+                        )))) {
+                            array_push($x_selects, $x);
+                        }
+                    }
+
+                    if (count($x_selects) > 0) {
+                        //MODIFY ANSWER
+                        $focus_tab .= '<div class="edit_select_answer">';
+
+                        //List answers:
+                        $focus_tab .= view_i_list($i_focus, $x_selects, $user_e, 'YOU SELECTED:');
+
+                        $focus_tab .= '<div class="doclear">&nbsp;</div>';
+
+
+                        //EDIT ANSWER:
+                        $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m_icon'] . ' ' . $e___11035[13495]['m_title'] . '</a></div>';
+
+                        $focus_tab .= '<div class="doclear">&nbsp;</div>';
+
+                        $focus_tab .= '</div>';
+                    }
+
+
+                    $focus_tab .= '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
+                    $focus_tab .= '<div class="doclear">&nbsp;</div>';
+
+                    //HTML:
+                    if ($i_focus['i__type'] == 6684) {
+
+                        $focus_tab .= '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
+
+                    } elseif ($i_focus['i__type'] == 7231) {
+
+                        //Give option to Select None/All
+                        $focus_tab .= '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">/</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
+
+                    }
+
+                    $focus_tab .= '<div class="doclear">&nbsp;</div>';
+
+
+                    //Open for list to be printed:
+                    $focus_tab .= '<div class="list-group list-answers" i__type="' . $i_focus['i__type'] . '">';
+
+
+                    //List children to choose from:
+                    $common_prefix = i_calc_common_prefix($is_next, 'i__title');
+                    foreach ($is_next as $key => $next_i) {
+
+                        //Has this been previously selected?
+                        $previously_selected = count($this->X_model->fetch(array(
+                            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
+                            'x__left' => $i_focus['i__id'],
+                            'x__right' => $next_i['i__id'],
+                            'x__source' => $user_e['e__id'],
+                        )));
+
+                        $focus_tab .= '<a href="javascript:void(0);" onclick="select_answer(' . $next_i['i__id'] . ')" selection_i__id="' . $next_i['i__id'] . '" class="x_select_' . $next_i['i__id'] . ' answer-item list-group-item itemdiscover no-left-padding">';
+
+
+                        $focus_tab .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
+                        $focus_tab .= '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas' : 'far') . ' fa-circle discover"></i></td>';
+
+                        $focus_tab .= '<td style="width:100%; padding: 0 !important;">';
+                        $focus_tab .= '<b class="montserrat i-url" style="margin-left:0;">' . view_i_title($next_i, $common_prefix) . '</b>';
+                        $focus_tab .= '</td>';
+
+                        $focus_tab .= '</tr></table>';
+
+
+                        $focus_tab .= '</a>';
+                    }
+
+
+                    //Close list:
+                    $focus_tab .= '</div>';
+
+
+                    if (count($x_selects) > 0) {
+
+                        //Save Answers:
+                        $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">' . $e___11035[13524]['m_icon'] . ' ' . $e___11035[13524]['m_title'] . '</a></div>';
+
+                        //Cancel:
+                        $focus_tab .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m_title'] . '">' . $e___11035[13502]['m_icon'] . '</a></div>';
+
+                    } else {
+
+                        //Give option to save:
+                        //$focus_tab .= '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+
+                    }
+
+                    $focus_tab .= '</div>';
+
+                }
+
+            } elseif ($i_focus['i__type'] == 6677) {
+
+                if (count($is_next) > 1) {
+                    //NEXT IDEAS
+                    $focus_tab .= '<div class="i_estimates">' . view_i_tree_stats($i_stats, false, true) . '</div>';
+                }
+
+                //DISCOVER ONLY
+                $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+
+            } elseif ($i_focus['i__type'] == 6683) {
+
+                //TEXT RESPONSE
+
+                $focus_tab .= '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR ANSWER:</div>';
+
+                $focus_tab .= '<textarea class="border i_content padded x_input" placeholder="Write `skip` if you prefer not to answer..." id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
+
+                if (count($x_completes)) {
+                    //Next Ideas:
+                    $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+                } else {
+                    //Give Button option:
+                    //$focus_tab .= '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
+                }
+
+                $focus_tab .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
+
+
+            } elseif ($i_focus['i__type'] == 7637) {
+
+                //FILE UPLOAD
+                $focus_tab .= '<div class="userUploader">';
+                $focus_tab .= '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
+
+                $focus_tab .= '<input class="inputfile" type="file" name="file" id="fileType' . $i_focus['i__type'] . '" />';
+
+
+                if (count($x_completes)) {
+
+                    $focus_tab .= '<div class="file_saving_result">';
+
+                    $focus_tab .= '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div>';
+
+                    $focus_tab .= '<div class="previous_answer">' . $this->X_model->message_send($x_completes[0]['x__message']) . '</div>';
+
+                    $focus_tab .= '</div>';
+
+                    //Any child ideas?
+                    $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+
+                } else {
+
+                    //for when added:
+                    $focus_tab .= '<div class="file_saving_result"></div>';
+
+                }
+
+                //UPLOAD BUTTON:
+                $focus_tab .= '<div class="margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m_icon'] . ' ' . $e___11035[13572]['m_title'] . '</label></div>';
+
+
+                $focus_tab .= '<div class="doclear">&nbsp;</div>';
+                $focus_tab .= '</form>';
+                $focus_tab .= '</div>';
+
+            }
+
+
+            $focus_tab .= '</div>'; //CLOSE CONTAINER
+
+
+        } else {
+
+            //NOT IN READING LIST YET...
 
             //NEXT IDEAS
             $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats, false, true).'</div>';
@@ -435,272 +690,9 @@ echo $tab_content;
 
 
 
-
-
 if($in_my_x){
 
-    //PREVIOUSLY UNLOCKED:
-    $unlocked_x = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        'x__type' => 6140, //DISCOVER UNLOCK LINK
-        'x__source' => $user_e['e__id'],
-        'x__left' => $i_focus['i__id'],
-    ), array('x__right'), 0);
-
-    //Did we have any steps unlocked?
-    if(count($unlocked_x) > 0){
-        echo view_i_list($i_focus, $unlocked_x, $user_e, 'UNLOCKED:');
-    }
-
-
-    /*
-     *
-     * IDEA TYPE INPUT CONTROLLER
-     * Now let's show the appropriate
-     * inputs that correspond to the
-     * idea type that enable the user
-     * to move forward.
-     *
-     * */
-
-
-    //LOCKED
-    if ($i_type_meet_requirement) {
-
-        //Requirement lock
-        if(!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)){
-
-            //List Unlock paths:
-            echo view_i_list($i_focus, $unlock_paths, $user_e, 'SUGGESTED IDEAS:');
-
-        }
-
-        //List Children if any:
-        echo view_i_list($i_focus, $is_next, $user_e);
-
-
-    } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))){
-
-        //SELECT ANSWER
-
-        //Has no children:
-        if(!$chapters){
-
-            //Mark this as complete since there is no child to choose from:
-            if(!count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',' , $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-                'x__source' => $user_e['e__id'],
-                'x__left' => $i_focus['i__id'],
-            )))){
-
-                array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
-                    'x__type' => 4559, //DISCOVER MESSAGES
-                    'x__source' => $user_e['e__id'],
-                )));
-
-            }
-
-        } else {
-
-            //First fetch answers based on correct order:
-            $x_selects = array();
-            foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $i_focus['i__id'],
-            ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $x){
-                //See if this answer was seleted:
-                if(count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINK
-                    'x__left' => $i_focus['i__id'],
-                    'x__right' => $x['i__id'],
-                    'x__source' => $user_e['e__id'],
-                )))){
-                    array_push($x_selects, $x);
-                }
-            }
-
-            if(count($x_selects) > 0){
-                //MODIFY ANSWER
-                echo '<div class="edit_select_answer">';
-
-                //List answers:
-                echo view_i_list($i_focus, $x_selects, $user_e, 'YOU SELECTED:');
-
-                echo '<div class="doclear">&nbsp;</div>';
-
-
-                //EDIT ANSWER:
-                echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">'.$e___11035[13495]['m_icon'].' '.$e___11035[13495]['m_title'].'</a></div>';
-
-                echo '<div class="doclear">&nbsp;</div>';
-
-                echo '</div>';
-            }
-
-
-            echo '<div class="edit_select_answer '.( count($x_selects)>0 ? 'hidden' : '' ).'">';
-            echo '<div class="doclear">&nbsp;</div>';
-
-            //HTML:
-            if ($i_focus['i__type'] == 6684) {
-
-                echo '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
-
-            } elseif ($i_focus['i__type'] == 7231) {
-
-                //Give option to Select None/All
-                echo '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">/</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
-
-            }
-
-            echo '<div class="doclear">&nbsp;</div>';
-
-
-            //Open for list to be printed:
-            echo '<div class="list-group list-answers" i__type="'.$i_focus['i__type'].'">';
-
-
-            //List children to choose from:
-            $common_prefix = i_calc_common_prefix($is_next, 'i__title');
-            foreach($is_next as $key => $next_i) {
-
-                //Has this been previously selected?
-                $previously_selected = count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
-                    'x__left' => $i_focus['i__id'],
-                    'x__right' => $next_i['i__id'],
-                    'x__source' => $user_e['e__id'],
-                )));
-
-                echo '<a href="javascript:void(0);" onclick="select_answer('.$next_i['i__id'].')" selection_i__id="'.$next_i['i__id'].'" class="x_select_'.$next_i['i__id'].' answer-item list-group-item itemdiscover no-left-padding">';
-
-
-                echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="'.( $previously_selected ? 'fas' : 'far' ).' fa-circle discover"></i></td>';
-
-                echo '<td style="width:100%; padding: 0 !important;">';
-                echo '<b class="montserrat i-url" style="margin-left:0;">'.view_i_title($next_i, $common_prefix).'</b>';
-                echo '</td>';
-
-                echo '</tr></table>';
-
-
-                echo '</a>';
-            }
-
-
-            //Close list:
-            echo '</div>';
-
-
-            if(count($x_selects)>0){
-
-                //Save Answers:
-                echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">'.$e___11035[13524]['m_icon'].' '.$e___11035[13524]['m_title'].'</a></div>';
-
-                //Cancel:
-                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="'.$e___11035[13502]['m_title'].'">'.$e___11035[13502]['m_icon'].'</a></div>';
-
-            } else {
-
-                //Give option to save:
-                //echo '<div class="margin-top-down"><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
-
-            }
-
-            echo '</div>';
-
-        }
-
-    } elseif ($i_focus['i__type'] == 6677) {
-
-        if(count($is_next) > 1){
-            //NEXT IDEAS
-            echo '<div class="i_estimates">'.view_i_tree_stats($i_stats, false, true).'</div>';
-        }
-
-        //DISCOVER ONLY
-        echo view_i_list($i_focus, $is_next, $user_e);
-
-    } elseif ($i_focus['i__type'] == 6683) {
-
-        //TEXT RESPONSE
-
-        echo '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR ANSWER:</div>';
-
-        echo '<textarea class="border i_content padded x_input" placeholder="Write `skip` if you prefer not to answer..." id="x_reply">'.( count($x_completes) ? trim($x_completes[0]['x__message']) : '' ).'</textarea>';
-
-        if(count($x_completes)){
-            //Next Ideas:
-            echo view_i_list($i_focus, $is_next, $user_e);
-        } else {
-            //Give Button option:
-            //echo '<div><span class="icon-block">&nbsp;</span><a class="btn btn-x" href="javascript:void(0);" onclick="go_12211()">'.$e___11035[13524]['m_title'].' '.$e___11035[13524]['m_icon'].'</a></div>';
-        }
-
-        echo '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
-
-
-    } elseif ($i_focus['i__type'] == 7637) {
-
-        //FILE UPLOAD
-        echo '<div class="userUploader">';
-        echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
-
-        echo '<input class="inputfile" type="file" name="file" id="fileType'.$i_focus['i__type'].'" />';
-
-
-        if(count($x_completes)) {
-
-            echo '<div class="file_saving_result">';
-
-            echo '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div>';
-
-            echo '<div class="previous_answer">'.$this->X_model->message_send($x_completes[0]['x__message']).'</div>';
-
-            echo '</div>';
-
-            //Any child ideas?
-            echo view_i_list($i_focus, $is_next, $user_e);
-
-        } else {
-
-            //for when added:
-            echo '<div class="file_saving_result"></div>';
-
-        }
-
-        //UPLOAD BUTTON:
-        echo '<div class="margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType'.$i_focus['i__type'].'" style="margin-left:5px;">'.$e___11035[13572]['m_icon'].' '.$e___11035[13572]['m_title'].'</label></div>';
-
-
-        echo '<div class="doclear">&nbsp;</div>';
-        echo '</form>';
-        echo '</div>';
-
-    }
-
-
-
-
-    echo '</div>'; //CLOSE CONTAINER
-
-
-
-
     //DISCOVERY CONTROLLER
-
-
-
-
-
-
     echo '<div class="container load_13210 hidden">';
     echo '<div class="list-group">';
 
