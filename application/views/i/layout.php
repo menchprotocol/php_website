@@ -197,7 +197,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = ( count($is_next) > $counter_i ? count($is_next) : $i_stats['i___6170'] );
 
         if($counter > $i_stats['i___6169']){
-            $pre_fix = view_number($i_stats['i___6169']).'-';
+            $pre_fix = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
         }
 
         //Now we can make it look nice:
