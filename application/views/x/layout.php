@@ -217,6 +217,10 @@ if(count($this->X_model->fetch(array(
     )))){
     echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="far fa-bookmark discover"></i></span>to save this idea in your profile for easy future access.</div></div>';
 }
+
+if(!count($sitemap_items)){
+    echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="fas fa-forward-step black"></i></span>to go to the next idea.</div></div>';
+}
 echo '</div>';
 
 
@@ -731,22 +735,18 @@ if($in_my_x){
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
         $url = '';
-        if($e__id==13510){
+        if($e__id==13510 && count($sitemap_items)){
 
-            if(count($sitemap_items)){
-                //Is Saved?
-                $is_saved = count($this->X_model->fetch(array(
-                    'x__up' => $user_e['e__id'],
-                    'x__right' => $i_focus['i__id'],
-                    'x__type' => 12896, //SAVED
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )));
+            //Is Saved?
+            $is_saved = count($this->X_model->fetch(array(
+                'x__up' => $user_e['e__id'],
+                'x__right' => $i_focus['i__id'],
+                'x__type' => 12896, //SAVED
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )));
 
-                $e___13510 = $this->config->item('e___13510'); //SAVED IDEAS
-                $url = '<a href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" title="'.$m['m_title'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
-            } else {
-                $url = '<div style="font-size: 2em;">NEXT:</div>';
-            }
+            $e___13510 = $this->config->item('e___13510'); //SAVED IDEAS
+            $url = '<a href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" title="'.$m['m_title'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___13510[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___13510[12906]['m_icon'].'</span></a>';
 
         } elseif($e__id==12991 && count($sitemap_items)){
 
