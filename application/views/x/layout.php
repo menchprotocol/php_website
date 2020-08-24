@@ -600,11 +600,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $focus_tab .= view_i_note_mix($x__type, $comments, true);
         $focus_tab .= '</div>';
 
-    } elseif($x__type==6255){
-
-        $counter = view_coins_i(6255,  $i_focus, false);
-        $focus_tab .= '<div class="i_content padded"><div class="msg">This idea has been discovered by '.$counter.' user'.view__s($counter).' so far.</div></div>';
-
     } elseif($x__type==13023){
 
         $this_url = $this->config->item('base_url').'/'.$i_focus['i__id'];
