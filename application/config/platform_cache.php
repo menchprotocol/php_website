@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-23 11:39:29 PST
-$config['s___12274'] = 5071; //SOURCES
-$config['s___12273'] = 4026; //IDEAS
-$config['s___6255'] = 122437; //DISCOVERIES
+//Generated 2020-08-23 22:25:00 PST
+$config['s___12274'] = 5072; //SOURCES
+$config['s___12273'] = 4030; //IDEAS
+$config['s___6255'] = 122462; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
