@@ -1578,7 +1578,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         } elseif($is_x_progress && strlen($e['x__message'])){
 
             //DISCOVER PROGRESS
-            $ui .= '<div class="message_content paddingup">';
+            $ui .= '<div class="message_content paddingup" style="margin-left: 0;">';
             $ui .= $CI->X_model->message_send($e['x__message']);
             $ui .= '</div>';
 
