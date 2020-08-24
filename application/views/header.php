@@ -104,7 +104,7 @@ if(!isset($hide_header)){
 
                     //MENCH LOGO
                     if ($user_e) {
-                        echo '<div><a href="'.home_url().'"><span class="icon-block">'.$user_e['e__icon'].'</span>'.$user_e['e__title'].'</a></div>';
+                        echo '<div style="padding: 5px 0;"><a href="'.home_url().'" class="montserrat"><span class="icon-block">'.$user_e['e__icon'].'</span>'.$user_e['e__title'].'</a></div>';
                     } else {
                         echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url().'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
                     }
