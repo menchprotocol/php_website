@@ -218,7 +218,7 @@ if(count($this->X_model->fetch(array(
     echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="far fa-bookmark discover"></i></span>to save this idea in your profile for easy future access.</div></div>';
 }
 
-if(!count($sitemap_items)){
+if($in_my_x && !count($sitemap_items)){
     echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="fas fa-step-forward black"></i></span>to mark idea as read & go next.</div></div>';
 }
 echo '</div>';
