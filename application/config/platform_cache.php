@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-24 02:15:35 PST
-$config['s___12274'] = 5072; //SOURCES
-$config['s___12273'] = 4030; //IDEAS
-$config['s___6255'] = 122507; //DISCOVERIES
+//Generated 2020-08-24 12:34:33 PST
+$config['s___12274'] = 5076; //SOURCES
+$config['s___12273'] = 4031; //IDEAS
+$config['s___6255'] = 122546; //DISCOVERIES
 
 //SOURCE ICON:
 $config['n___6198'] = array(4260,13577,13578);
@@ -604,8 +604,14 @@ $config['e___6159'] = array(
 );
 
 //MENCH VARIABLES:
-$config['n___6212'] = array(6201,6159,6206,6172,4341,6103,13442);
+$config['n___6212'] = array(13670,6201,6159,6206,6172,4341,6103,13442);
 $config['e___6212'] = array(
+    13670 => array(
+        'm_title' => 'FILTER SOURCE DISCOVERIES',
+        'm_message' => 'filter__e',
+        'm_icon' => '<i class="fas fa-filter discover" aria-hidden="true"></i>',
+        'm_profile' => array(12701,11035,6212),
+    ),
     6201 => array(
         'm_title' => 'MENCH IDEAS',
         'm_message' => '',
@@ -3142,13 +3148,19 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,13573,13574,13495,12707,4235,12991,13405,13210,12137,13207,11068,12211,4341,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(13502,13671,13401,13573,13574,13495,13670,12707,4235,12991,13405,13210,12137,13207,11068,12211,4341,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-times discover"></i>',
         'm_profile' => array(11035),
+    ),
+    13671 => array(
+        'm_title' => 'CLEAR FILTER',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-times"></i>',
+        'm_profile' => array(11035,13670),
     ),
     13401 => array(
         'm_title' => 'CLOSE SEARCH',
@@ -3174,10 +3186,16 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-pen discover"></i>',
         'm_profile' => array(11035),
     ),
+    13670 => array(
+        'm_title' => 'FILTER SOURCE DISCOVERIES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-filter discover" aria-hidden="true"></i>',
+        'm_profile' => array(12701,11035,6212),
+    ),
     12707 => array(
         'm_title' => 'FILTER TRANSACTIONS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-filter" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-filter" aria-hidden="true"></i>',
         'm_profile' => array(11035,12701),
     ),
     4235 => array(
@@ -3345,7 +3363,7 @@ $config['e___11035'] = array(
 );
 
 //SUPERPOWERS:
-$config['n___10957'] = array(10939,13354,12673,13403,10984,10986,13420,12700,13422,13402,12706,12703,13421,12699,12701,12705);
+$config['n___10957'] = array(10939,13354,12673,13403,10984,10986,13420,12700,13422,13402,12706,12703,13421,12699,12701);
 $config['e___10957'] = array(
     10939 => array(
         'm_title' => 'IDEATION',
@@ -3436,12 +3454,6 @@ $config['e___10957'] = array(
         'm_message' => 'Read info from all players',
         'm_icon' => '<i class="fas fa-glasses discover" aria-hidden="true"></i>',
         'm_profile' => array(13450,10957),
-    ),
-    12705 => array(
-        'm_title' => 'LEDGER FILTER',
-        'm_message' => 'Mass Edit Reads',
-        'm_icon' => '<i class="fas fa-filter discover" aria-hidden="true"></i>',
-        'm_profile' => array(10957),
     ),
 );
 

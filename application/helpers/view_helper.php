@@ -1438,7 +1438,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
     //Allow source to see all their own transactions:
     $is_hidden = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
-    $e_url = ( $is_x_progress ? '/'.$CI->uri->segment(1).'?filter__e='.$e['e__id'] : '/@'.$e['e__id'] );
+    $e_url = '/@'.$e['e__id'];
 
 
     if(!$user_e && (!$is_public || !$is_x_published)){
@@ -1530,6 +1530,12 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
                 $ui .= $box_items_list;
                 $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
                 $ui .= '</a>';
+
+
+                if($is_x_progress && superpower_active(12701, true)){
+                    //Give option to Filter:
+                    $ui .= '&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'?filter__e='.$e['e__id'].'" class="inline-block" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>';
+                }
 
             }
         $ui .= '</div>';
