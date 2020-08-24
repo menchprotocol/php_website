@@ -17,7 +17,7 @@ function view_e_load_more($page, $limit, $list_e_count)
     return $ui;
 }
 
-function view_i_tree_stats($i_stats, $hide_desc = false, $hide_idea = false){
+function view_i_tree_stats($i_stats, $hide_idea){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -35,7 +35,7 @@ function view_i_tree_stats($i_stats, $hide_desc = false, $hide_idea = false){
 
     //IDEA STATS
     if(!$hide_idea){
-        $ui .= '<span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">&nbsp;&nbsp;'.( $has_idea ? ( $is_interactive ? $e___13544[13632]['m_icon'] : $e___13544[13629]['m_icon'] ) : '' ).' '.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ).( $hide_desc ? '' : '<span class="show-max">&nbsp;IDEA'.view__s($i_stats['i___6170']).'</span>' ) : '&nbsp;' ).'</span>';
+        $ui .= '<span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">&nbsp;&nbsp;'.( $has_idea ? ( $is_interactive ? $e___13544[13632]['m_icon'] : $e___13544[13629]['m_icon'] ) : '' ).' '.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
     }
 
 
@@ -788,7 +788,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
         $ui .= '<div class="col-sm-5 col-md-4 col2nd">';
 
             //IDA STATS
-            $ui .= view_i_tree_stats($i_stats, true);
+            $ui .= view_i_tree_stats($i_stats, false);
 
         $ui .= '</div>';
     $ui .= '</div>';
@@ -1374,7 +1374,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 }
 
 
-                $ui .= '<div class="space-left">'.view_i_tree_stats($i_stats).'</div>';
+                $ui .= '<div class="space-left">'.view_i_tree_stats($i_stats, false).'</div>';
 
 
             $ui .= '</div>';

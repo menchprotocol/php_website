@@ -205,7 +205,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         if($counter > 1){
             //IDEA TREE STATS
-            $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats, false, true).'</div>';
+            $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats, true).'</div>';
         }
 
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';

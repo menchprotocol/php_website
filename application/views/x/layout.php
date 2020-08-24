@@ -479,7 +479,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 if (count($is_next) > 1) {
                     //NEXT IDEAS
-                    $focus_tab .= '<div class="i_estimates">' . view_i_tree_stats($i_stats, false, true) . '</div>';
+                    $focus_tab .= '<div class="i_estimates">' . view_i_tree_stats($i_stats, true) . '</div>';
                 }
 
                 //DISCOVER ONLY
@@ -548,7 +548,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //NOT IN READING LIST YET...
 
             //NEXT IDEAS
-            $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats, false, true).'</div>';
+            $focus_tab .= '<div class="i_estimates">'.view_i_tree_stats($i_stats, true).'</div>';
 
             $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
 
