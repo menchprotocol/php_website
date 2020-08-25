@@ -1205,12 +1205,13 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
     $ui = '';
 
 
+    /*
     if(!count($i_notes) && $e_of_i){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin-bottom:13px;">';
         $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m_title'])).'. Be the first to post one</div>';
         $ui .= '</div>';
     }
-
+    */
 
     //Show no-Message notifications for each message type:
     $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
@@ -1228,7 +1229,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
 
 
 
-        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="'.$e___4485[$x__type]['m_title'].', WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
         //Response result:
