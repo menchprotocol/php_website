@@ -696,7 +696,7 @@ echo $tab_content;
 
 
 //COMMENTS
-echo '<div style="margin-bottom:33px;">';
+echo '<div style="padding:33px 0;">';
 echo view_i_note_mix(12419, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 12419, //COMMENTS
