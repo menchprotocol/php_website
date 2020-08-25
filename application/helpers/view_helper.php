@@ -1176,7 +1176,7 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
         $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>'.$prefix_statement.( $common_prefix ? ' '.$common_prefix : '' ).'</div>';
     }
 
-    $ui .= '<a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="icon-block pull-right grey" title="'.$e___11035[13689]['m_title'].'" style="margin:-24px 5px 0 0;">'.$e___11035[13689]['m_icon'].'</a>';
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="icon-block pull-right grey right-adj" title="'.$e___11035[13689]['m_title'].'">'.$e___11035[13689]['m_icon'].'</a>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
     $ui .= '<div class="list-group">';

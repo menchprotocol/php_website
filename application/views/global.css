@@ -508,6 +508,9 @@ img.no-radius {
 .mid-range{
     padding: 0 2px;
 }
+.right-adj{
+    margin:-24px 5px 0 0;
+}
 .discover-controller{
     background-color: #FC1B44;
     width: 100% !important;
