@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-25 02:10:56 PST
+//Generated 2020-08-25 02:51:21 PST
 $config['s___12274'] = 5104; //SOURCES
-$config['s___12273'] = 4027; //IDEAS
-$config['s___6255'] = 123647; //DISCOVERIES
+$config['s___12273'] = 4026; //IDEAS
+$config['s___6255'] = 123668; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -413,7 +413,7 @@ $config['e___13510'] = array(
 );
 
 //DISCOVERY CONTROLLER:
-$config['n___13289'] = array(12991,12419,13210,13510,12211);
+$config['n___13289'] = array(12991,12419,13510,12211);
 $config['e___13289'] = array(
     12991 => array(
         'm_title' => 'GO BACK',
@@ -426,12 +426,6 @@ $config['e___13289'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
-    ),
-    13210 => array(
-        'm_title' => 'IDEA NAVIGATION',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-list discover"></i>',
-        'm_profile' => array(13450,11035,13289),
     ),
     13510 => array(
         'm_title' => 'SAVED IDEAS',
@@ -3147,7 +3141,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13671,13401,13573,13574,13495,13670,12707,4235,12991,13405,13210,12137,13207,11068,12211,4341,13689,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(13502,13671,13401,13573,13574,13495,13670,12707,4235,12991,13405,12137,13207,11068,12211,4341,13689,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3214,12 +3208,6 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
         'm_profile' => array(11035,10876),
-    ),
-    13210 => array(
-        'm_title' => 'IDEA NAVIGATION',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-list discover"></i>',
-        'm_profile' => array(13450,11035,13289),
     ),
     12137 => array(
         'm_title' => 'IDEAS FEATURED',
@@ -3785,7 +3773,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.531337',
+        'm_message' => 'v1.531',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),

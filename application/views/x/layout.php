@@ -14,7 +14,7 @@
 
 <?php
 
-echo '<div class="container load_13210">';
+echo '<div class="container">';
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
@@ -202,12 +202,18 @@ $show_percentage = $completion_rate['completion_percentage']>0 && $completion_ra
 $main_title = '<div style="position: relative; display: block;">' . ( $show_percentage ? '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '' ) . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
 
+
 //IDEA TITLE & MY DISCOVERY
 echo '<div class="list-group">';
-echo ( $in_my_x && $previous_level_id ? end($sitemap_items) : '<div class="list-group-item no-padding"></div>');
-echo '<div class="list-group-item no-padding">'.$main_title.'</div>';
-echo '</div>';
+    //HAVE PARENTS?
+    if($previous_level_id){
+        //Idea Map:
+        echo join('', array_reverse($sitemap_items));
+    }
 
+    //CURRENT IDEA
+    echo '<div class="list-group-item no-padding">'.$main_title.'</div>';
+echo '</div>';
 
 
 
@@ -716,27 +722,6 @@ echo '</div>'; //CLOSE CONTAINER
 
 if($in_my_x){
 
-    //DISCOVERY CONTROLLER
-    echo '<div class="container load_13210 hidden">';
-    echo '<div class="list-group">';
-
-    //Did We Find It?
-    if($previous_level_id){
-        //Idea Map:
-        echo join('', array_reverse($sitemap_items));
-    }
-
-    //Current Idea:
-    echo '<div class="list-group-item no-padding itemdiscover"><a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');">'.$main_title.'</a></div>';
-
-    echo '</div>';
-    echo '</div>';
-
-
-
-
-
-
     echo '<div class="container fixed-bottom">';
     echo '<div class="row">';
     echo '<div class="discover-controller">';
@@ -786,11 +771,6 @@ if($in_my_x){
             $control_btn .= '</div>';
             $control_btn .= '</div>';
             */
-
-        } elseif($e__id==13210 && count($sitemap_items) >= 2){
-
-            //IDEA TREE
-            $control_btn = '<a href="javascript:void(0);" onclick="$(\'.load_13210\').toggleClass(\'hidden\');" class="controller-nav" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
         }
 
