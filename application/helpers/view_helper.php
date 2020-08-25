@@ -1205,7 +1205,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
     $ui = '';
 
 
-    if(!count($i_notes)){
+    if(!count($i_notes) && $e_of_i){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin-bottom:13px;">';
         $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m_title'])).'. Be the first to post one</div>';
         $ui .= '</div>';
