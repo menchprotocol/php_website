@@ -43,6 +43,7 @@ $completion_rate['completion_percentage'] = 0;
 $u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
 $sitemap_items = array();
+$top_level_completion = 0;
 
 
 if($in_my_x){
@@ -50,7 +51,13 @@ if($in_my_x){
     //Fetch Parents all the way to the Discovery Item
     $previous_level_id = 0; //The ID of the Idea one level up, if any
 
-    if(!in_array($i_focus['i__id'], $u_x_ids)){
+    if(in_array($i_focus['i__id'], $u_x_ids)){
+
+        //Is in My Discovery
+        $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $i_focus);
+        $top_level_completion = $completion_rate['completion_percentage'];
+
+    } else {
 
         //Find it:
         $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
@@ -64,19 +71,24 @@ if($in_my_x){
                         $previous_level_id = $previous_i__id;
                     }
 
+
                     $is_this = $this->I_model->fetch(array(
                         'i__id' => $previous_i__id,
                     ));
 
-                    array_push($sitemap_items, view_i_x($is_this[0]));
+                    $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $is_this[0]);
+
+                    array_push($sitemap_items, view_i_x($is_this[0], null, false, $completion_rate));
 
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
+                        $top_level_completion = $completion_rate['completion_percentage'];
                         break;
                     }
                 }
             }
         }
+
     }
 }
 
@@ -717,8 +729,6 @@ if($in_my_x){
 
     echo '</div>';
     echo '</div>';
-
-
 
 
 
