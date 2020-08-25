@@ -199,21 +199,15 @@ if($user_e['e__id']){
 $show_percentage = $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
 
-$main_title = '<div style="position: relative; display: block;">' . ( $show_percentage ? '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '' ) . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
+if($previous_level_id){
+    //Idea Map:
+    echo '<div class="list-group">';
+    echo join('', array_reverse($sitemap_items));
+    echo '</div>';
+}
 
+echo '<div style="position: relative; display: block;">' . ( $show_percentage ? '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '' ) . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
-
-//IDEA TITLE & MY DISCOVERY
-echo '<div class="list-group">';
-    //HAVE PARENTS?
-    if($previous_level_id){
-        //Idea Map:
-        echo join('', array_reverse($sitemap_items));
-    }
-
-    //CURRENT IDEA
-    echo '<div class="list-group-item no-padding">'.$main_title.'</div>';
-echo '</div>';
 
 
 
