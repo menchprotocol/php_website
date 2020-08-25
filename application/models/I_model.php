@@ -608,9 +608,11 @@ class I_model extends CI_Model
                 }
             }
 
+            return array(13980);
             return $recursive_parents;
 
         } else {
+            return array();
             return $grand_parents;
         }
 
