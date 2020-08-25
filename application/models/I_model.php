@@ -600,12 +600,16 @@ class I_model extends CI_Model
                     array_push($recursive_parents[$index], intval($grand_parent_id));
                     if ($grand_parent_id == $start_i__id) {
                         $index++;
+                        break;
                     }
+                }
+                if($index > 0){
+                    break;
                 }
             }
 
             //Only the first one for now:
-            return array($recursive_parents[0]);
+            return $recursive_parents[0];
 
         } else {
             return $grand_parents;
