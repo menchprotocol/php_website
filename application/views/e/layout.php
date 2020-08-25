@@ -64,7 +64,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     $counter__i = view_coins_e(12273, $e['e__id'], 0, false);
     $counter__x = view_coins_e( 6255, $e['e__id'], 0, false);
 
-    if($counter__e > 0 && $counter__e > $counter__i){
+    if($counter__e > 0 && !$source_is_e && $counter__e > $counter__i){
         //SOURCES
         $active_x__type = 12274;
     } elseif($counter__i > 0){
