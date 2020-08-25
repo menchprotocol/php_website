@@ -1168,14 +1168,14 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
+    $ui = '';
 
-
-    $ui = '<div class="doclear">&nbsp;</div>';
 
     if(strlen($prefix_statement)){
         $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>'.$prefix_statement.( $common_prefix ? ' '.$common_prefix : '' ).'</div>';
     }
 
+    $ui .= '<div class="doclear">&nbsp;</div>';
     $ui .= '<div class="pull-right grey right-adj"><a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" title="'.$e___11035[13689]['m_title'].'">'.$e___11035[13689]['m_icon'].'</a></div>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
