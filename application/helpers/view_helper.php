@@ -789,7 +789,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
-        $ui .= '<div class="col-sm-5 col-md-4 col2nd">';
+        $ui .= '<div class="col-sm-5 col-md-4 col2nd i_x_stats hidden">';
 
             //IDA STATS
             $ui .= view_i_tree_stats($i_stats, false);
@@ -1175,6 +1175,8 @@ function view_i_list($i, $is_next, $user_e, $prefix_statement = null){
     if(strlen($prefix_statement)){
         $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>'.$prefix_statement.( $common_prefix ? ' '.$common_prefix : '' ).'</div>';
     }
+
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="icon-block pull-right grey" title="'.$e___11035[13689]['m_title'].'" style="margin-right: 8px;">'.$e___11035[13689]['m_icon'].'</a>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
     $ui .= '<div class="list-group">';

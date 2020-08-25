@@ -14,7 +14,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 
-$superpower_10939 = superpower_active(10939, true);
+$show_nav = superpower_active(10939, true) || in_array($i_focus['i__status'], $this->config->item('n___12138'));
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 $user_e = superpower_assigned();
@@ -481,7 +481,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 if (count($is_next) > 1) {
                     //NEXT IDEAS
-                    $focus_tab .= '<div class="i_estimates hideIfEmpty">' . view_i_tree_stats($i_stats, $superpower_10939) . '</div>';
+                    $focus_tab .= '<div class="i_estimates hideIfEmpty">' . view_i_tree_stats($i_stats, $show_nav) . '</div>';
                     $has_substance = true;
                 }
 
@@ -552,7 +552,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //NOT IN READING LIST YET...
 
             //NEXT IDEAS
-            $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, $superpower_10939).'</div>';
+            $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, $show_nav).'</div>';
 
             $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
 
@@ -683,7 +683,7 @@ $tab_pills .= '</ul>';
 
 
 
-if($tab_pill_count > 1 && $superpower_10939){
+if($tab_pill_count > 1 && $show_nav){
     //DISCOVER TABS
     echo $tab_pills;
 }

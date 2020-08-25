@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-24 21:12:41 PST
-$config['s___12274'] = 5090; //SOURCES
+//Generated 2020-08-24 22:04:37 PST
+$config['s___12274'] = 5094; //SOURCES
 $config['s___12273'] = 4024; //IDEAS
-$config['s___6255'] = 123002; //DISCOVERIES
+$config['s___6255'] = 123206; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(2793,10876,3320,3304);
@@ -3159,7 +3159,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13671,13401,13573,13574,13495,13670,12707,4235,12991,13405,13210,12137,13207,11068,12211,4341,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(13502,13671,13401,13573,13574,13495,13670,12707,4235,12991,13405,13210,12137,13207,11068,12211,4341,13689,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3262,6 +3262,12 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
+    ),
+    13689 => array(
+        'm_title' => 'MORE INFO',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-info-circle"></i>',
+        'm_profile' => array(11035),
     ),
     6225 => array(
         'm_title' => 'MY ACCOUNT',
