@@ -421,6 +421,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $focus_tab .= '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</span></div>';
 
                         //Give option to Select None/All
+                        $focus_tab .= '<div class="doclear">&nbsp;</div>';
                         $focus_tab .= '<div class="pull-right right-adj inline-block"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;" title="'.$e___11035[13692]['m_title'].'">'.$e___11035[13692]['m_icon'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;" title="'.$e___11035[13693]['m_title'].'">'.$e___11035[13693]['m_icon'].'</a></div>';
 
                     }
