@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-25 15:58:11 PST
-$config['s___12274'] = 5122; //SOURCES
-$config['s___12273'] = 4023; //IDEAS
-$config['s___6255'] = 124595; //DISCOVERIES
+//Generated 2020-08-25 16:35:13 PST
+$config['s___12274'] = 5123; //SOURCES
+$config['s___12273'] = 4025; //IDEAS
+$config['s___6255'] = 124615; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -106,7 +106,7 @@ $config['e___13550'] = array(
     4231 => array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
         'm_profile' => array(12994,13550,13294,12359,4485,10593,4986,4603,4593),
     ),
 );
@@ -278,7 +278,7 @@ $config['e___13530'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     4601 => array(
@@ -430,7 +430,7 @@ $config['e___13289'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     12211 => array(
@@ -798,7 +798,7 @@ $config['e___12994'] = array(
     4231 => array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
         'm_profile' => array(12994,13550,13294,12359,4485,10593,4986,4603,4593),
     ),
     4235 => array(
@@ -816,7 +816,7 @@ $config['e___12994'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     13289 => array(
@@ -885,7 +885,7 @@ $config['e___4603'] = array(
     4231 => array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
         'm_profile' => array(12994,13550,13294,12359,4485,10593,4986,4603,4593),
     ),
 );
@@ -1583,7 +1583,7 @@ $config['e___12359'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     4983 => array(
@@ -1595,7 +1595,7 @@ $config['e___12359'] = array(
     4231 => array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
         'm_profile' => array(12994,13550,13294,12359,4485,10593,4986,4603,4593),
     ),
 );
@@ -3035,7 +3035,7 @@ $config['e___11018'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     11047 => array(
@@ -3088,7 +3088,7 @@ $config['e___11089'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     12896 => array(
@@ -4176,13 +4176,13 @@ $config['e___4485'] = array(
     4231 => array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
         'm_profile' => array(12994,13550,13294,12359,4485,10593,4986,4603,4593),
     ),
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     4601 => array(
@@ -4719,13 +4719,13 @@ $config['e___4986'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     4231 => array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
         'm_profile' => array(12994,13550,13294,12359,4485,10593,4986,4603,4593),
     ),
 );
@@ -5598,7 +5598,7 @@ $config['e___10593'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     4554 => array(
@@ -5706,7 +5706,7 @@ $config['e___10593'] = array(
     4231 => array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
         'm_profile' => array(12994,13550,13294,12359,4485,10593,4986,4603,4593),
     ),
     4251 => array(
@@ -6288,7 +6288,7 @@ $config['e___5967'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '1',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     4235 => array(
@@ -7395,7 +7395,7 @@ $config['e___4593'] = array(
     12419 => array(
         'm_title' => 'CHATBOX',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comment-alt-plus discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment-plus discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     12129 => array(
@@ -7851,7 +7851,7 @@ $config['e___4593'] = array(
     4231 => array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comment-lines idea" aria-hidden="true"></i>',
         'm_profile' => array(12994,13550,13294,12359,4485,10593,4986,4603,4593),
     ),
     7561 => array(
