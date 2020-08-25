@@ -338,7 +338,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 }
 
                 //List Children if any:
-                $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+                $focus_tab .= view_i_list($i_focus, $is_next, $user_e, 'UP NEXT:');
                 $has_substance = count($is_next);
 
 
