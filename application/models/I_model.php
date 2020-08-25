@@ -589,27 +589,25 @@ class I_model extends CI_Model
         if ($first_level) {
 
             //Now we must break down the array:
+            $duplicate_detectors = array();
             $recursive_parents = array();
-            $start_i__id = config_var(12137);
             $index = 0;
             foreach($grand_parents as $grand_parent_ids) {
                 foreach($grand_parent_ids as $grand_parent_id) {
-                    if (!isset($recursive_parents[$index])) {
-                        $recursive_parents[$index] = array();
-                    }
-                    array_push($recursive_parents[$index], intval($grand_parent_id));
-                    if ($grand_parent_id == $start_i__id) {
+                    if (in_array($grand_parent_id, $duplicate_detectors)) {
                         $index++;
-                        break;
+                    } else {
+                        if (!isset($recursive_parents[$index])) {
+                            $recursive_parents[$index] = array();
+                        }
+                        array_push($recursive_parents[$index], intval($grand_parent_id));
+                        array_push($duplicate_detectors, intval($grand_parent_id));
                     }
-                }
-                if($index > 0){
-                    break;
                 }
             }
 
             //Only the first one for now:
-            return $recursive_parents[0];
+            return $recursive_parents;
 
         } else {
             return $grand_parents;
