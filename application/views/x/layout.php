@@ -51,12 +51,12 @@ $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_
 $sitemap_items = array();
 $i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
+$previous_level_id = 0; //The ID of the Idea one level up, if any
 
 
 if($in_my_x){
 
     //Fetch Parents all the way to the Discovery Item
-    $previous_level_id = 0; //The ID of the Idea one level up, if any
 
     if(!$in_my_discoveries){
 
