@@ -4,12 +4,10 @@ $(document).ready(function () {
 
 
     $(".add-comments").click(function(event) {
-        $('.add_notes_12419').show();
-        var $container = $("html,body");
-        var $scrollTo = $('.scroll-here');
-        $container.animate({scrollTop: $scrollTo.offset().top - $container.offset().top + $container.scrollTop(), scrollLeft: 0},300);
-        $('.input_note_12419').focus();
         $('.add-comments').hide();
+        $('.add_notes_12419').show();
+        $('.input_note_12419').focus();
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
     });
 
     i_note_activate();
