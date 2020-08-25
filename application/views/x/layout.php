@@ -731,9 +731,9 @@ if($in_my_x){
 
 
 
-
-    $found_buttons = 0;
-    $controller_ui = '';
+    echo '<div class="container fixed-bottom">';
+    echo '<div class="row">';
+    echo '<div class="discover-controller">';
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
         $control_btn = '';
@@ -760,6 +760,11 @@ if($in_my_x){
             //GO NEXT
             $control_btn = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
+        } elseif($e__id==12419){
+
+            //ADD COMMENT
+            $control_btn = '<a class="controller-nav add-comments" href="javascript:void(0);" onclick="$(\'.add_notes_12419\').toggleClass(\'hidden\');" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
+
         } elseif($e__id==13491){
 
             //FONT SIZE: DEPRECATED FOR NOW
@@ -783,21 +788,13 @@ if($in_my_x){
 
         }
 
-        $controller_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
-
-        $found_buttons += ( $control_btn ? 1 : 0 );
+        echo '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
 
     }
 
-    if($found_buttons > 0){
-        echo '<div class="container fixed-bottom">';
-        echo '<div class="row">';
-        echo '<div class="discover-controller">';
-        echo $controller_ui;
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-    }
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
 
 } else {
 
