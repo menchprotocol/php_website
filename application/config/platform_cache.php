@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-25 11:13:12 PST
+//Generated 2020-08-25 11:20:33 PST
 $config['s___12274'] = 5108; //SOURCES
 $config['s___12273'] = 4022; //IDEAS
-$config['s___6255'] = 123864; //DISCOVERIES
+$config['s___6255'] = 123866; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -154,10 +154,10 @@ $config['e___13544'] = array(
         'm_profile' => array(13544),
     ),
     13292 => array(
-        'm_title' => 'DISCOVERY TIME RANGE',
+        'm_title' => 'DISCOVERY TIME',
         'm_message' => '',
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_profile' => array(13544,13369,4356),
+        'm_profile' => array(11035,13544,13369,4356),
     ),
     13632 => array(
         'm_title' => 'INTERACTIVE IDEA TREE',
@@ -837,10 +837,10 @@ $config['e___13369'] = array(
         'm_profile' => array(13450,11054,13369,10939,12030,2738,4527),
     ),
     13292 => array(
-        'm_title' => 'DISCOVERY TIME RANGE',
+        'm_title' => 'DISCOVERY TIME',
         'm_message' => '',
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_profile' => array(13544,13369,4356),
+        'm_profile' => array(11035,13544,13369,4356),
     ),
     13413 => array(
         'm_title' => 'SORT',
@@ -3141,7 +3141,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13671,13401,13573,13574,13495,13670,12707,4235,12991,13405,12137,13207,11068,12211,4341,13689,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(13502,13671,13401,13292,13573,13574,13495,13670,12707,4235,12991,13405,12137,13207,11068,12211,4341,13689,6225,12969,10573,6287,13562,13579,6415,13510,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3160,6 +3160,12 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-search-minus"></i>',
         'm_profile' => array(11035,7256),
+    ),
+    13292 => array(
+        'm_title' => 'DISCOVERY TIME',
+        'm_message' => '',
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_profile' => array(11035,13544,13369,4356),
     ),
     13573 => array(
         'm_title' => 'DOWNLOAD',
