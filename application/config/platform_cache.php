@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-25 11:10:31 PST
+//Generated 2020-08-25 11:13:12 PST
 $config['s___12274'] = 5108; //SOURCES
 $config['s___12273'] = 4022; //IDEAS
-$config['s___6255'] = 123863; //DISCOVERIES
+$config['s___6255'] = 123864; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -407,7 +407,7 @@ $config['e___13510'] = array(
     12906 => array(
         'm_title' => 'UNSAVE IDEA',
         'm_message' => '',
-        'm_icon' => '<i class="fal fa-bookmark discover"></i>',
+        'm_icon' => '<i class="far fa-bookmark discover"></i>',
         'm_profile' => array(11035,13510,4755,4593),
     ),
 );
@@ -3356,7 +3356,7 @@ $config['e___11035'] = array(
     12906 => array(
         'm_title' => 'UNSAVE IDEA',
         'm_message' => '',
-        'm_icon' => '<i class="fal fa-bookmark discover"></i>',
+        'm_icon' => '<i class="far fa-bookmark discover"></i>',
         'm_profile' => array(11035,13510,4755,4593),
     ),
     13572 => array(
@@ -4777,7 +4777,7 @@ $config['e___4527'] = array(
     13533 => array(
         'm_title' => 'AVATARS SPECIES',
         'm_message' => '',
-        'm_icon' => '<i class="fal fa-paw-claws source"></i>',
+        'm_icon' => '<i class="far fa-paw-claws source"></i>',
         'm_profile' => array(4527,12289,10939),
     ),
     12279 => array(
@@ -5191,7 +5191,7 @@ $config['e___4527'] = array(
     11054 => array(
         'm_title' => 'MENCH MEMORY JAVASCRIPT',
         'm_message' => '',
-        'm_icon' => '<i class="fal fa-memory" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-memory" aria-hidden="true"></i>',
         'm_profile' => array(4755,6403,4527),
     ),
     12687 => array(
@@ -5287,7 +5287,7 @@ $config['e___4527'] = array(
     4755 => array(
         'm_title' => 'PRIVATE TRANSACTION',
         'm_message' => '',
-        'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-eye-slash" aria-hidden="true"></i>',
         'm_profile' => array(12701,4755,6771,4527),
     ),
     13531 => array(
@@ -7186,7 +7186,7 @@ $config['e___4755'] = array(
     11054 => array(
         'm_title' => 'MENCH MEMORY JAVASCRIPT',
         'm_message' => '',
-        'm_icon' => '<i class="fal fa-memory" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-memory" aria-hidden="true"></i>',
         'm_profile' => array(4755,6403,4527),
     ),
     6196 => array(
@@ -7240,7 +7240,7 @@ $config['e___4755'] = array(
     4755 => array(
         'm_title' => 'PRIVATE TRANSACTION',
         'm_message' => '',
-        'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-eye-slash" aria-hidden="true"></i>',
         'm_profile' => array(12701,4755,6771,4527),
     ),
     7495 => array(
@@ -7360,7 +7360,7 @@ $config['e___4755'] = array(
     12906 => array(
         'm_title' => 'UNSAVE IDEA',
         'm_message' => '',
-        'm_icon' => '<i class="fal fa-bookmark discover"></i>',
+        'm_icon' => '<i class="far fa-bookmark discover"></i>',
         'm_profile' => array(11035,13510,4755,4593),
     ),
     12489 => array(
@@ -8235,7 +8235,7 @@ $config['e___4593'] = array(
     12906 => array(
         'm_title' => 'UNSAVE IDEA',
         'm_message' => '',
-        'm_icon' => '<i class="fal fa-bookmark discover"></i>',
+        'm_icon' => '<i class="far fa-bookmark discover"></i>',
         'm_profile' => array(11035,13510,4755,4593),
     ),
     12489 => array(
