@@ -33,7 +33,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .row {margin-left:0px;margin-right:0px;}
 .container {
     max-width:767px;
-    padding:0 0 60px;
+    padding:0;
 }
 .padded {
     margin: 0 33px 33px 33px;
