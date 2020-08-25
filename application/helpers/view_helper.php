@@ -30,7 +30,7 @@ function view_i_tree_stats($i_stats, $hide_idea){
 
 
     //TIME STATS
-    if($i_stats['i___6161']<60 && $i_stats['i___6162']<60){
+    if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
         //SECONDS
         $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block" style="min-width:96px;">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
     } else {
@@ -172,7 +172,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
                 //Header For Time
                 if($end_time){
-                    $embed_html_code .= '<div class="headline black" style="padding-bottom: 0; font-size:0.8em;"><span class="icon-block-xs">'.$e___11035[13292]['m_icon'].'</span>'.round_minutes($end_time-$start_time).' MIN <span class="grey">FROM '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).'</span></div>';
+                    $embed_html_code .= '<div class="headline" style="padding-bottom: 0; font-size:0.89em;"><span class="icon-block-xs">'.$e___11035[13292]['m_icon'].'</span>'.round_minutes($end_time-$start_time).' MIN FROM '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).'</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
