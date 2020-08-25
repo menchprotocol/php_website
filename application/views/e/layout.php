@@ -414,12 +414,11 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             }
 
 
-            if($source_of_e){
-                //SMART SHOW/HIDE LIST LOGIC
-                if($superpower_10939 && ($source_is_e || count($list_i) <= 1 || $superpower_13422)){
+            //SMART SHOW/HIDE LIST LOGIC
+            if($superpower_10939){
 
-                    $focus_tab .= '<div class="list-group add_e_idea">';
-                    $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
+                $focus_tab .= '<div class="list-group add_e_idea">';
+                $focus_tab .= '<div class="list-group-item list-adder itemidea big-cover">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                         <input type="text"
@@ -428,14 +427,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                id="newIdeaTitle"
                                placeholder="NEW IDEA TITLE">
                     </div><div class="algolia_pad_search hidden"></div></div>';
-                    $focus_tab .= '</div>';
-
-                } else {
-
-                    //Give option to unlock superpower:
-                    $focus_tab .= '<div class="list-group-item itemsource"><a href="/'.config_var(13545).'" class="montserrat"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>GET STARTED: SUMMARIZE IDEAS WITH MENCH &raquo;</a></div>';
-
-                }
+                $focus_tab .= '</div>';
 
             }
 
@@ -672,7 +664,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
         }
 
-        if(!$counter && !in_array($x__type, $this->config->item('n___12574'))){
+        if(!$counter && !$superpower_13422 && !in_array($x__type, $this->config->item('n___12574'))){
             //Hide since Zero without exception @12574:
             continue;
         }
