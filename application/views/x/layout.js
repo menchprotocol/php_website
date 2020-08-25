@@ -6,8 +6,8 @@ $(document).ready(function () {
     $(".add-comments").click(function(event) {
         $('.add-comments').hide();
         $('.add_notes_12419').show();
+        $('html, body').scrollTop( $(document).height() );
         $('.input_note_12419').focus();
-        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
     });
 
     i_note_activate();
