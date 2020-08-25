@@ -1582,7 +1582,7 @@ label {
 }
 
 .headline, .headline a, .headline i {
-    color: #999999 !important;
+    color: #000000 !important;
     text-transform: uppercase;
 }
 
