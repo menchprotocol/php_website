@@ -516,7 +516,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
                 foreach($i_notes_query as $count => $i_notes) {
 
-                    if($x__type==12896){
+                    if($x__type==13510){
 
                         //Saved IDEA
                         $focus_tab .= view_i_x($i_notes, null, true);
