@@ -510,7 +510,7 @@ img.no-radius {
 }
 .right-adj {
     margin-top:-24px;
-    margin-right:2px !important;
+    margin-right:0;
 }
 .discover-controller{
     background-color: #FC1B44;
