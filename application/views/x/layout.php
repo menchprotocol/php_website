@@ -417,8 +417,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     } elseif ($i_focus['i__type'] == 7231) {
 
+
+                        $e___7231 = $this->config->item('e___7231');
+
                         //Give option to Select None/All
-                        $focus_tab .= '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE: [<span style="padding:0 2px;"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;">ALL</a><span style="padding:0 2px;">/</span><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;">NONE</a></span>]</div>';
+                        $focus_tab .= '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far\').addClass(\'fas\');" style="text-decoration: underline;" title="'.$e___7231[13692]['m_title'].'">'.$e___7231[13692]['m_icon'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;" title="'.$e___7231[13693]['m_title'].'">'.$e___7231[13693]['m_icon'].'</a></span></div>';
 
                     }
 
