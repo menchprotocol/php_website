@@ -510,7 +510,9 @@ img.no-radius {
 }
 .right-adj {
     margin-top:-24px;
-    margin-right:5px;
+}
+.right-adj a {
+    padding: 0 5px;
 }
 .discover-controller{
     background-color: #FC1B44;
@@ -1652,7 +1654,7 @@ label {
 @media (max-width:767px) {
 
     .right-adj{
-        margin-right:8px !important;
+        margin-right:5px !important;
     }
 
     .title-block{
