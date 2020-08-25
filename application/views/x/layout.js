@@ -7,6 +7,7 @@ $(document).ready(function () {
         var $container = $("html,body");
         var $scrollTo = $('.add_notes_12419');
         $container.animate({scrollTop: $scrollTo.offset().top - $container.offset().top + $container.scrollTop(), scrollLeft: 0},300);
+        $('.input_note_12419').focus();
     });
 
 
