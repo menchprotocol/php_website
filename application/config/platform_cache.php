@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-25 16:46:08 PST
+//Generated 2020-08-25 16:56:33 PST
 $config['s___12274'] = 5123; //SOURCES
 $config['s___12273'] = 4024; //IDEAS
 $config['s___6255'] = 124617; //DISCOVERIES
@@ -290,7 +290,7 @@ $config['e___13530'] = array(
     7545 => array(
         'm_title' => 'NEW PROFILES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-user-circle source" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     12589 => array(
@@ -603,7 +603,7 @@ $config['e___6159'] = array(
     7545 => array(
         'm_title' => 'NEW PROFILES',
         'm_message' => 'i___7545',
-        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-user-circle source" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     3000 => array(
@@ -901,7 +901,7 @@ $config['e___13298'] = array(
     7545 => array(
         'm_title' => 'NEW PROFILES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-user-circle source" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
 );
@@ -2987,7 +2987,7 @@ $config['e___11018'] = array(
     7545 => array(
         'm_title' => 'NEW PROFILES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-user-circle source" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     12274 => array(
@@ -3058,7 +3058,7 @@ $config['e___11089'] = array(
     7545 => array(
         'm_title' => 'NEW PROFILES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-user-circle source" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     11030 => array(
@@ -4194,7 +4194,7 @@ $config['e___4485'] = array(
     7545 => array(
         'm_title' => 'NEW PROFILES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-user-circle source" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     4983 => array(
@@ -6347,7 +6347,7 @@ $config['e___7551'] = array(
     7545 => array(
         'm_title' => 'NEW PROFILES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-user-circle source" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     10573 => array(
@@ -7881,7 +7881,7 @@ $config['e___4593'] = array(
     7545 => array(
         'm_title' => 'NEW PROFILES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-plus source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-user-circle source" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     5001 => array(
