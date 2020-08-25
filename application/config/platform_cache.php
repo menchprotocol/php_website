@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-24 22:16:02 PST
-$config['s___12274'] = 5098; //SOURCES
+//Generated 2020-08-24 22:23:02 PST
+$config['s___12274'] = 5100; //SOURCES
 $config['s___12273'] = 4024; //IDEAS
-$config['s___6255'] = 123223; //DISCOVERIES
+$config['s___6255'] = 123267; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(2793,10876,3320,3304);
@@ -3332,13 +3332,13 @@ $config['e___11035'] = array(
     13692 => array(
         'm_title' => 'SELECT ALL',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_profile' => array(11035,7231),
     ),
     13693 => array(
         'm_title' => 'SELECT NONE',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-square"></i>',
+        'm_icon' => '<i class="far fa-circle"></i>',
         'm_profile' => array(11035,7231),
     ),
     4269 => array(
@@ -3803,7 +3803,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.53000',
+        'm_message' => 'v1.531',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
