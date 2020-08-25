@@ -599,6 +599,7 @@ class I_model extends CI_Model
                     }
                     array_push($recursive_parents[$index], intval($grand_parent_id));
                     if ($grand_parent_id == $start_i__id) {
+                        break;
                         $index++;
                     }
                 }
