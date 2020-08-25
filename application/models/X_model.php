@@ -996,14 +996,14 @@ class X_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>'.' ', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span class="inline-block"><span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<a class="montserrat" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a>'.' ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<a class="montserrat inline-block" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a>'.' ', $output_body_message);
 
             }
 
