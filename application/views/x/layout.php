@@ -43,7 +43,8 @@ $completion_rate['completion_percentage'] = 0;
 $u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
 $sitemap_items = array();
-$top_level_completion = 0;
+$i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
+$in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
 
 
 if($in_my_x){
@@ -51,13 +52,7 @@ if($in_my_x){
     //Fetch Parents all the way to the Discovery Item
     $previous_level_id = 0; //The ID of the Idea one level up, if any
 
-    if(in_array($i_focus['i__id'], $u_x_ids)){
-
-        //Is in My Discovery
-        $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $i_focus);
-        $top_level_completion = $completion_rate['completion_percentage'];
-
-    } else {
+    if(!$in_my_discoveries){
 
         //Find it:
         $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
@@ -82,13 +77,12 @@ if($in_my_x){
 
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
-                        $top_level_completion = $completion_rate['completion_percentage'];
+                        $i_completed = $completion_rate['completion_percentage'] < 100;
                         break;
                     }
                 }
             }
         }
-
     }
 }
 
@@ -123,6 +117,10 @@ if($user_e['e__id']){
 
         // % DONE
         $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $i_focus);
+        if($in_my_discoveries){
+            $i_completed = $completion_rate['completion_percentage'] < 100;
+        }
+
 
         if($i_type_meet_requirement){
 
@@ -733,10 +731,9 @@ if($in_my_x){
 
 
 
-    echo '<div class="container fixed-bottom">';
-    echo '<div class="row">';
-    echo '<div class="discover-controller">';
 
+    $found_buttons = 0;
+    $controller_ui = '';
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
         $url = '';
@@ -758,7 +755,7 @@ if($in_my_x){
             //GO BACK
             $url = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
-        } elseif($e__id==12211){
+        } elseif($e__id==12211 && !$i_completed){
 
             //GO NEXT
             $url = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
@@ -766,6 +763,7 @@ if($in_my_x){
         } elseif($e__id==13491){
 
             //FONT SIZE: DEPRECATED FOR NOW
+            /*
             $url .= '<div class="dropdown inline-block" title="'.$m['m_title'].'">';
             $url .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $url .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
@@ -776,6 +774,7 @@ if($in_my_x){
             }
             $url .= '</div>';
             $url .= '</div>';
+            */
 
         } elseif($e__id==13210 && count($sitemap_items) >= 2){
 
@@ -784,13 +783,21 @@ if($in_my_x){
 
         }
 
-        echo '<div>'.( $url ? $url : '&nbsp;' ).'</div>';
+        $controller_ui .= '<div>'.( $url ? $url : '&nbsp;' ).'</div>';
+
+        $found_buttons += ( $url ? 1 : 0 );
 
     }
 
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
+    if($found_buttons){
+        echo '<div class="container fixed-bottom">';
+        echo '<div class="row">';
+        echo '<div class="discover-controller">';
+        echo $controller_ui;
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+    }
 
 } else {
 
