@@ -101,5 +101,5 @@ if($replace_with_set){
 }
 
 
-echo '<input type="submit" class="btn btn-i" value="Go">';
+echo '<input type="submit" class="btn btn-idea" value="Go">';
 echo '</form>';

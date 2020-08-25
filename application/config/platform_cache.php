@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-25 14:04:57 PST
-$config['s___12274'] = 5121; //SOURCES
-$config['s___12273'] = 4024; //IDEAS
-$config['s___6255'] = 124467; //DISCOVERIES
+//Generated 2020-08-25 15:50:01 PST
+$config['s___12274'] = 5122; //SOURCES
+$config['s___12273'] = 4023; //IDEAS
+$config['s___6255'] = 124595; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -3779,7 +3779,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.531',
+        'm_message' => 'v1.533',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),

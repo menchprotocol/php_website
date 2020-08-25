@@ -241,7 +241,7 @@ li a {
     border-radius: 0 !important;
 }
 
-.btn-x, .btn-e, btn-i {
+.btn-discover, .btn-source, btn-idea {
     font-size: 1.2em !important;
 }
 
@@ -502,7 +502,7 @@ img.no-radius {
 .grey, .grey i, .grey .source, .grey .idea, .grey .discover, .headline .source, .headline .idea, .headline .discover { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
-.btn-e i, .btn-x i, .btn-i i { color: #000000 !important; }
+.btn-source i, .btn-discover i, .btn-idea i { color: #000000 !important; }
 
 
 .mid-range{
@@ -1303,32 +1303,32 @@ label {
 
 
 
-.btn.btn-e, .btn.btn-e:hover, .btn.btn-e:focus, .btn.btn-e:active, .btn.btn-e.active, .btn.btn-e:active:focus, .btn.btn-e:active:hover, .btn.btn-e.active:focus, .btn.btn-e.active:hover, .open > .btn.btn-e.dropdown-toggle, .open > .btn.btn-e.dropdown-toggle:focus, .open > .btn.btn-e.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-e, .navbar .navbar-nav > li > a.btn.btn-e:hover, .navbar .navbar-nav > li > a.btn.btn-e:focus, .navbar .navbar-nav > li > a.btn.btn-e:active, .navbar .navbar-nav > li > a.btn.btn-e.active, .navbar .navbar-nav > li > a.btn.btn-e:active:focus, .navbar .navbar-nav > li > a.btn.btn-e:active:hover, .navbar .navbar-nav > li > a.btn.btn-e.active:focus, .navbar .navbar-nav > li > a.btn.btn-e.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-e.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-e.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-e.dropdown-toggle:hover {
+.btn.btn-source, .btn.btn-source:hover, .btn.btn-source:focus, .btn.btn-source:active, .btn.btn-source.active, .btn.btn-source:active:focus, .btn.btn-source:active:hover, .btn.btn-source.active:focus, .btn.btn-source.active:hover, .open > .btn.btn-source.dropdown-toggle, .open > .btn.btn-source.dropdown-toggle:focus, .open > .btn.btn-source.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-source, .navbar .navbar-nav > li > a.btn.btn-source:hover, .navbar .navbar-nav > li > a.btn.btn-source:focus, .navbar .navbar-nav > li > a.btn.btn-source:active, .navbar .navbar-nav > li > a.btn.btn-source.active, .navbar .navbar-nav > li > a.btn.btn-source:active:focus, .navbar .navbar-nav > li > a.btn.btn-source:active:hover, .navbar .navbar-nav > li > a.btn.btn-source.active:focus, .navbar .navbar-nav > li > a.btn.btn-source.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-source.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-source.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-source.dropdown-toggle:hover {
     background-color: #007AFD;
     color: #000000;
 }
 
-.btn-e .fas,.btn-e .far,.btn-e .fal,.btn-e .fad { color: #000000 !important; }
+.btn-source .fas,.btn-source .far,.btn-source .fal,.btn-source .fad { color: #000000 !important; }
 
 .btn.btn-main, .btn.btn-main:hover, .btn.btn-main:focus, .btn.btn-main:active, .btn.btn-main.active, .btn.btn-main:active:focus, .btn.btn-main:active:hover, .btn.btn-main.active:focus, .btn.btn-main.active:hover, .open > .btn.btn-main.dropdown-toggle, .open > .btn.btn-main.dropdown-toggle:focus, .open > .btn.btn-main.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-main, .navbar .navbar-nav > li > a.btn.btn-main:hover, .navbar .navbar-nav > li > a.btn.btn-main:focus, .navbar .navbar-nav > li > a.btn.btn-main:active, .navbar .navbar-nav > li > a.btn.btn-main.active, .navbar .navbar-nav > li > a.btn.btn-main:active:focus, .navbar .navbar-nav > li > a.btn.btn-main:active:hover, .navbar .navbar-nav > li > a.btn.btn-main.active:focus, .navbar .navbar-nav > li > a.btn.btn-main.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:hover {
     background-color: #000000;
     color: #FFFFFF !important;
 }
 
-.btn.btn-x, .btn.btn-x:hover, .btn.btn-x:focus, .btn.btn-x:active, .btn.btn-x.active, .btn.btn-x:active:focus, .btn.btn-x:active:hover, .btn.btn-x.active:focus, .btn.btn-x.active:hover, .open > .btn.btn-x.dropdown-toggle, .open > .btn.btn-x.dropdown-toggle:focus, .open > .btn.btn-x.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-x, .navbar .navbar-nav > li > a.btn.btn-x:hover, .navbar .navbar-nav > li > a.btn.btn-x:focus, .navbar .navbar-nav > li > a.btn.btn-x:active, .navbar .navbar-nav > li > a.btn.btn-x.active, .navbar .navbar-nav > li > a.btn.btn-x:active:focus, .navbar .navbar-nav > li > a.btn.btn-x:active:hover, .navbar .navbar-nav > li > a.btn.btn-x.active:focus, .navbar .navbar-nav > li > a.btn.btn-x.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-x.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-x.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-x.dropdown-toggle:hover {
+.btn.btn-discover, .btn.btn-discover:hover, .btn.btn-discover:focus, .btn.btn-discover:active, .btn.btn-discover.active, .btn.btn-discover:active:focus, .btn.btn-discover:active:hover, .btn.btn-discover.active:focus, .btn.btn-discover.active:hover, .open > .btn.btn-discover.dropdown-toggle, .open > .btn.btn-discover.dropdown-toggle:focus, .open > .btn.btn-discover.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-discover, .navbar .navbar-nav > li > a.btn.btn-discover:hover, .navbar .navbar-nav > li > a.btn.btn-discover:focus, .navbar .navbar-nav > li > a.btn.btn-discover:active, .navbar .navbar-nav > li > a.btn.btn-discover.active, .navbar .navbar-nav > li > a.btn.btn-discover:active:focus, .navbar .navbar-nav > li > a.btn.btn-discover:active:hover, .navbar .navbar-nav > li > a.btn.btn-discover.active:focus, .navbar .navbar-nav > li > a.btn.btn-discover.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-discover.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-discover.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-discover.dropdown-toggle:hover {
     background-color: #FC1B44;
     color: #000000;
 }
 
 
-.btn-x .fas,.btn-x .far,.btn-x .fal ,.btn-x .fad { color: #000000 !important; }
+.btn-discover .fas,.btn-discover .far,.btn-discover .fal ,.btn-discover .fad { color: #000000 !important; }
 
-.btn.btn-i, .btn.btn-i:hover, .btn.btn-i:focus, .btn.btn-i:active, .btn.btn-i.active, .btn.btn-i:active:focus, .btn.btn-i:active:hover, .btn.btn-i.active:focus, .btn.btn-i.active:hover, .open > .btn.btn-i.dropdown-toggle, .open > .btn.btn-i.dropdown-toggle:focus, .open > .btn.btn-i.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-i, .navbar .navbar-nav > li > a.btn.btn-i:hover, .navbar .navbar-nav > li > a.btn.btn-i:focus, .navbar .navbar-nav > li > a.btn.btn-i:active, .navbar .navbar-nav > li > a.btn.btn-i.active, .navbar .navbar-nav > li > a.btn.btn-i:active:focus, .navbar .navbar-nav > li > a.btn.btn-i:active:hover, .navbar .navbar-nav > li > a.btn.btn-i.active:focus, .navbar .navbar-nav > li > a.btn.btn-i.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-i.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-i.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-i.dropdown-toggle:hover {
+.btn.btn-idea, .btn.btn-idea:hover, .btn.btn-idea:focus, .btn.btn-idea:active, .btn.btn-idea.active, .btn.btn-idea:active:focus, .btn.btn-idea:active:hover, .btn.btn-idea.active:focus, .btn.btn-idea.active:hover, .open > .btn.btn-idea.dropdown-toggle, .open > .btn.btn-idea.dropdown-toggle:focus, .open > .btn.btn-idea.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-idea, .navbar .navbar-nav > li > a.btn.btn-idea:hover, .navbar .navbar-nav > li > a.btn.btn-idea:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active, .navbar .navbar-nav > li > a.btn.btn-idea.active, .navbar .navbar-nav > li > a.btn.btn-idea:active:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active:hover, .navbar .navbar-nav > li > a.btn.btn-idea.active:focus, .navbar .navbar-nav > li > a.btn.btn-idea.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:hover {
     background-color: #ffc500;
     color: #000000;
 }
 
-.btn-i .fas,.btn-i .far,.btn-i .fal,.btn-i .fad { color: #000000 !important; }
+.btn-idea .fas,.btn-idea .far,.btn-idea .fal,.btn-idea .fad { color: #000000 !important; }
 
 
 

@@ -252,7 +252,7 @@ echo '</div>';
 if(!$in_my_x){
 
     //GET STARTED
-    echo '<div class="margin-top-down left-margin"><a class="btn btn-x" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
+    echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
 
 }
 
@@ -415,7 +415,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
                         //EDIT ANSWER:
-                        $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m_icon'] . ' ' . $e___11035[13495]['m_title'] . '</a></div>';
+                        $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m_icon'] . ' ' . $e___11035[13495]['m_title'] . '</a></div>';
 
                         $focus_tab .= '<div class="doclear">&nbsp;</div>';
 
@@ -486,10 +486,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     if (count($x_selects) > 0) {
 
                         //Save Answers:
-                        $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="x_select()">' . $e___11035[13524]['m_icon'] . ' ' . $e___11035[13524]['m_title'] . '</a></div>';
+                        $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select()">' . $e___11035[13524]['m_icon'] . ' ' . $e___11035[13524]['m_title'] . '</a></div>';
 
                         //Cancel:
-                        $focus_tab .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-x" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m_title'] . '">' . $e___11035[13502]['m_icon'] . '</a></div>';
+                        $focus_tab .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m_title'] . '">' . $e___11035[13502]['m_icon'] . '</a></div>';
 
                     }
 
@@ -560,7 +560,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 }
 
                 //UPLOAD BUTTON:
-                $focus_tab .= '<div class="margin-top-down left-margin"><label class="btn btn-x inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m_icon'] . ' ' . $e___11035[13572]['m_title'] . '</label></div>';
+                $focus_tab .= '<div class="margin-top-down left-margin"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m_icon'] . ' ' . $e___11035[13572]['m_title'] . '</label></div>';
 
 
                 $focus_tab .= '<div class="doclear">&nbsp;</div>';

@@ -52,7 +52,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
         echo '<div class="margin-top-down left-margin">';
         echo '<p>'.$e___11035[6415]['m_message'].'</p>';
-        echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-x">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
+        echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-discover">'.$e___11035[6415]['m_icon'].' '.$e___11035[6415]['m_title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
         echo '</div>';
 
         echo '<div class="doclear">&nbsp;</div>';
@@ -283,7 +283,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 $focus_tab .= $input_options;
 
-                $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-e inline-block"></div>';
+                $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-source inline-block"></div>';
 
                 $focus_tab .= '</form>';
 
@@ -639,13 +639,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     ));
 
                     $focus_tab .= '<span><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
-                <a href="javascript:void(0)" onclick="e_email()" class="btn btn-e">Save</a>
+                <a href="javascript:void(0)" onclick="e_email()" class="btn btn-source">Save</a>
                 <span class="saving-account save_email"></span>';
 
                 } elseif ($acc_e__id == 3286 /* Password */) {
 
                     $focus_tab .= '<span><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
-                <a href="javascript:void(0)" onclick="e_password()" class="btn btn-e">Save</a>
+                <a href="javascript:void(0)" onclick="e_password()" class="btn btn-source">Save</a>
                 <span class="saving-account save_password"></span>';
 
                 } elseif ($is_multi_selectable || $is_single_selectable) {
@@ -796,7 +796,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="save_13571()" id="save_btn" class="btn btn-e">SAVE</button>
+                <button type="button" onclick="save_13571()" id="save_btn" class="btn btn-source">SAVE</button>
             </div>
         </div>
     </div>

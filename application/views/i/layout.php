@@ -88,16 +88,16 @@ echo view_i_note_mix(4231, $this->X_model->fetch(array(
 
 
 //IDEA TYPE
-echo '<div class="pull-left both-margin left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-i', $e_of_i && $is_active, true, $i_focus['i__id']).'</div>';
+echo '<div class="pull-left both-margin left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $e_of_i && $is_active, true, $i_focus['i__id']).'</div>';
 
 //IDEA STATUS
-echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-i', $e_of_i, true, $i_focus['i__id']).'</div>';
+echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
 
 //IDEA TIME
 echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
 
 //PREVIEW DISCOVERY
-echo '<div class="inline-block pull-right both-margin"><a class="btn btn-x" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13562]['m_title'].'">'.$e___11035[13562]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13562]['m_title'].'">'.$e___11035[13562]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
@@ -346,7 +346,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $focus_tab .= $input_options;
 
-        $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-i inline-block"></div>';
+        $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-idea inline-block"></div>';
 
         $focus_tab .= '</form>';
 

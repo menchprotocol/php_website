@@ -98,7 +98,7 @@ function view_x__message($x__message, $x__type, $full_message = null)
     } elseif ($x__type == 4261 /* File URL */) {
 
         $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-        return '<a href="' . $x__message . '" class="btn btn-i" target="_blank">'.$e___11035[13573]['m_icon'].' '.$e___11035[13573]['m_title'].'</a>';
+        return '<a href="' . $x__message . '" class="btn btn-idea" target="_blank">'.$e___11035[13573]['m_icon'].' '.$e___11035[13573]['m_title'].'</a>';
 
     } elseif(strlen($x__message) > 0) {
 
@@ -283,10 +283,10 @@ function view_13574($x, $note_e = false)
         $ui .= '<ul class="msg-nav space-left">';
 
             //SAVE
-            $ui .= '<li class="edit-on hidden"><a class="btn btn-i white-third" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
+            $ui .= '<li class="edit-on hidden"><a class="btn btn-idea white-third" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
             //CANCEL
-            $ui .= '<li class="edit-on hidden"><a class="btn btn-i white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
+            $ui .= '<li class="edit-on hidden"><a class="btn btn-idea white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
             //TEXT COUNTER
             $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
@@ -1240,7 +1240,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
         $ui .= '<table class="table table-condensed"><tr>';
 
         //Save button:
-        $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:i_note_text('.$x__type.');" class="btn '.( $x__type==12419 ? 'btn-x' : 'btn-i' ).' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
+        $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.trim(extract_icon_color($e___4485[$x__type]['m_icon'])).' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
 
 
         //File counter:

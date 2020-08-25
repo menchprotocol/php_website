@@ -5,7 +5,7 @@ echo '<form method="GET" action="">';
 
 echo '<div class="mini-header">Search String:</div>';
 echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
-echo '<input type="submit" class="btn btn-i" value="Search">';
+echo '<input type="submit" class="btn btn-idea" value="Search">';
 
 
 if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
@@ -58,7 +58,7 @@ if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
     echo '<div class="mini-header">Replace With:</div>';
     echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
-    echo '<input type="submit" name="do_replace" class="btn btn-i" value="Replace">';
+    echo '<input type="submit" name="do_replace" class="btn btn-idea" value="Replace">';
 }
 
 
