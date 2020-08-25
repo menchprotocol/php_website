@@ -4,6 +4,7 @@ $(document).ready(function () {
 
 
     $(".add-comments").click(function(event) {
+        $('.add_notes_12419').show();
         var $container = $("html,body");
         var $scrollTo = $('.add_notes_12419');
         $container.animate({scrollTop: $scrollTo.offset().top - $container.offset().top + $container.scrollTop(), scrollLeft: 0},300);
@@ -11,14 +12,9 @@ $(document).ready(function () {
         $('.add-comments').hide();
     });
 
-
     i_note_activate();
 
     autosize($('#x_reply'));
-
-    //Hide Comment Input:
-    $('.add_notes_12419').addClass('hidden');
-
 
     //Watchout for file uplods:
     $('.boxUpload').find('input[type="file"]').change(function () {

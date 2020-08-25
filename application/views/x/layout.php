@@ -3,6 +3,12 @@
     var focus_i__type = <?= $i_focus['i__type'] ?>;
 </script>
 
+<style>
+    .add_notes_12419{
+        display: none;
+    }
+</style>
+
 <script src="/application/views/x/layout.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
@@ -763,7 +769,7 @@ if($in_my_x){
         } elseif($e__id==12419){
 
             //ADD COMMENT
-            $control_btn = '<a class="controller-nav add-comments" href="javascript:void(0);" onclick="$(\'.add_notes_12419\').toggleClass(\'hidden\');" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
+            $control_btn = '<a class="controller-nav add-comments" href="javascript:void(0);" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==13491){
 
