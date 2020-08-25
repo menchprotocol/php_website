@@ -168,7 +168,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
                 //Header For Time
                 if($end_time){
-                    $embed_html_code .= '<div class="headline" style="padding-bottom: 0;"><span class="icon-block-xs"><i class="fas fa-cut"></i></span>'.round_minutes($end_time-$start_time).' MIN CLIP ('.view_time_hours($start_time, true).'<span class="mid-range">TO</span>'.view_time_hours($end_time, true).')</div>';
+                    $embed_html_code .= '<div class="headline" style="padding-bottom: 0;"><span class="icon-block-xs"><i class="fas fa-cut"></i></span>WATCH '.round_minutes($end_time-$start_time).' MIN ('.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).')</div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -1225,7 +1225,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
 
 
 
-        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', @SOURCE, PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
+        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL' : '' ).( $handles_uploads ? ', DROP FILE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
         //Response result:
