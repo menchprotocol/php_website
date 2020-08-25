@@ -25,16 +25,19 @@ function view_i_tree_stats($i_stats, $hide_idea){
     $is_interactive = ( $i_stats['i___6169']!=$i_stats['i___6170'] );
     $has_idea = ( $i_stats['i___6169'] && $i_stats['i___6170'] );
 
-    if($hide_idea && $i_stats['i___6162'] <= config_var(13673)){
-        return false;
-    }
-
     //Variable time range:
     $ui = '<span class="montserrat doupper" style="padding-right:8px;" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="'.$e___13544[13632]['m_title'].': '.$e___13544[13632]['m_message'].'" ': '' ).'>';
 
 
     //TIME STATS
-    $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block" style="min-width:96px;">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+    if($i_stats['i___6161']<60 && $i_stats['i___6162']<60){
+        //SECONDS
+        $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block" style="min-width:96px;">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
+    } else {
+        //MINUTES
+        $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block" style="min-width:96px;">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+    }
+
 
 
     //IDEA STATS

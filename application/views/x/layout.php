@@ -608,20 +608,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
         $focus_tab .= '</div>';
 
-    } elseif($x__type==12419){
-
-        //COMMENTS
-        $comments = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 12419, //COMMENTS
-            'x__right' => $i_focus['i__id'],
-        ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
-        $counter = ( count($comments) > 0 ? count($comments) : null );
-
-        $focus_tab .= '<div style="margin-bottom:33px;">';
-        $focus_tab .= view_i_note_mix($x__type, $comments, true);
-        $focus_tab .= '</div>';
-
     } elseif($x__type==13023){
 
         $this_url = $this->config->item('base_url').'/'.$i_focus['i__id'];
@@ -707,6 +693,20 @@ if($tab_pill_count > 1 && $show_nav){
 //Show All Tab Content:
 echo $tab_content;
 
+
+
+//COMMENTS
+$comments = $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type' => 12419, //COMMENTS
+    'x__right' => $i_focus['i__id'],
+), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
+
+echo '<div style="margin-bottom:33px;">';
+echo view_i_note_mix($x__type, $comments, true);
+echo '</div>';
+
+
 echo '</div>'; //CLOSE CONTAINER
 
 
@@ -727,6 +727,8 @@ if($in_my_x){
 
     echo '</div>';
     echo '</div>';
+
+
 
 
 
