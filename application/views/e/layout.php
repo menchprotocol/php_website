@@ -664,7 +664,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
         }
 
-        if(!$counter && !$superpower_13422 && !in_array($x__type, $this->config->item('n___12574'))){
+        if(!$counter && !$superpower_13422 && !($x__type==6255 && $source_is_e) && !in_array($x__type, $this->config->item('n___12574'))){
             //Hide since Zero without exception @12574:
             continue;
         }
