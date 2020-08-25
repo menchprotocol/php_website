@@ -1214,7 +1214,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
     */
 
     //Show no-Message notifications for each message type:
-    $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group" style="margin-top:10px;">';
+    $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
 
     //List current notes:
     foreach($i_notes as $i_notes) {
