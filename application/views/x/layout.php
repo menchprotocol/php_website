@@ -483,14 +483,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             } elseif ($i_focus['i__type'] == 6677) {
 
+                $has_stats = false;
                 if (count($is_next) > 1) {
                     //NEXT IDEAS
-                    $focus_tab .= '<div class="i_estimates hideIfEmpty">' . view_i_tree_stats($i_stats, $show_nav) . '</div>';
+                    $has_stats = view_i_tree_stats($i_stats, $show_nav);
+                    $focus_tab .= '<div class="i_estimates hideIfEmpty">' . $has_stats . '</div>';
                     $has_substance = true;
                 }
 
                 //DISCOVER ONLY
-                $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+                $focus_tab .= view_i_list($i_focus, $is_next, $user_e, ( $has_stats ? '' : 'UP NEXT:' ));
                 $has_substance = count($is_next);
 
             } elseif ($i_focus['i__type'] == 6683) {
@@ -504,7 +506,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 if (count($x_completes)) {
                     //Next Ideas:
-                    $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+                    $focus_tab .= view_i_list($i_focus, $is_next, $user_e, 'UP NEXT:');
                 }
 
                 $focus_tab .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -532,7 +534,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $focus_tab .= '</div>';
 
                     //Any child ideas?
-                    $focus_tab .= view_i_list($i_focus, $is_next, $user_e);
+                    $focus_tab .= view_i_list($i_focus, $is_next, $user_e, 'UP NEXT:');
 
                 } else {
 
