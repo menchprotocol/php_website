@@ -509,7 +509,7 @@ img.no-radius {
     padding: 0 2px;
 }
 .right-adj{
-    margin:-24px 8px 0 0;
+    margin:-24px 5px 0 0;
 }
 .discover-controller{
     background-color: #FC1B44;
@@ -1649,6 +1649,10 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .right-adj{
+        margin-right:8px;
+    }
 
     .title-block{
         padding-bottom: 3px !important;
