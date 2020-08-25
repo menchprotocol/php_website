@@ -696,14 +696,12 @@ echo $tab_content;
 
 
 //COMMENTS
-$comments = $this->X_model->fetch(array(
+echo '<div style="margin-bottom:33px;">';
+echo view_i_note_mix(12419, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 12419, //COMMENTS
     'x__right' => $i_focus['i__id'],
-), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
-
-echo '<div style="margin-bottom:33px;">';
-echo view_i_note_mix($x__type, $comments, true);
+), array('x__source'), 0, 0, array('x__sort' => 'ASC')), true);
 echo '</div>';
 
 
