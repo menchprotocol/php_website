@@ -518,7 +518,7 @@ class X extends CI_Controller
             return redirect_message('/'.$next_i__id.'?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ));
         } else {
             $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-            return redirect_message(home_url(), '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed everything in '.$e___11035[12969]['m_title'].'.</div></div>');
+            return redirect_message(home_url(), '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Finished '.$e___11035[12969]['m_title'].'</div></div>');
         }
 
     }
