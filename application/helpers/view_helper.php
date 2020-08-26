@@ -1604,7 +1604,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
         //Total Progress
-        $is = $this->I_model->fetch(array(
+        $is = $CI->I_model->fetch(array(
             'i__id' => $e['x__left'],
         ));
         $completion_rate = $CI->X_model->completion_progress($e['x__source'], $is[0]);
