@@ -26,7 +26,7 @@ function view_i_tree_stats($i_stats, $hide_idea){
     $has_idea = ( $i_stats['i___6169'] && $i_stats['i___6170'] );
 
     //Variable time range:
-    $ui = '<span class="montserrat doupper" style="padding-right:8px;" '.( $is_interactive ? ' data-toggle="tooltip" data-placement="right" title="'.$e___13544[13632]['m_title'].': '.$e___13544[13632]['m_message'].'" ': '' ).'>';
+    $ui = '<span class="montserrat doupper" style="padding-right:8px;">';
 
 
     //TIME STATS
@@ -42,7 +42,7 @@ function view_i_tree_stats($i_stats, $hide_idea){
 
     //IDEA STATS
     if(!$hide_idea){
-        $ui .= '<span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">&nbsp;&nbsp;'.( $has_idea ? ( $is_interactive ? $e___13544[13632]['m_icon'] : $e___13544[13629]['m_icon'] ) : '' ).' '.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
+        $ui .= '<span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">&nbsp;&nbsp;'.( $has_idea ? $e___13544[13629]['m_icon'] : '' ).' '.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
     }
 
 
