@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-26 11:31:04 PST
+//Generated 2020-08-26 13:33:22 PST
 $config['s___12274'] = 5132; //SOURCES
-$config['s___12273'] = 4024; //IDEAS
-$config['s___6255'] = 125132; //DISCOVERIES
+$config['s___12273'] = 4023; //IDEAS
+$config['s___6255'] = 124872; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -1223,7 +1223,7 @@ $config['e___12840'] = array(
 );
 
 //SOURCE LINK MESSAGE DISPLAY:
-$config['n___12822'] = array(4259,4257,4261,4260,7657,4255,4256,4258);
+$config['n___12822'] = array(4259,4257,4261,4260,7657,4255,4256,4258,12827);
 $config['e___12822'] = array(
     4259 => array(
         'm_title' => 'AUDIO',
@@ -1272,6 +1272,12 @@ $config['e___12822'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
+    ),
+    12827 => array(
+        'm_title' => 'WORD',
+        'm_message' => '',
+        'm_icon' => '<i class="fad fa-font source"></i>',
+        'm_profile' => array(12822,4593,4592),
     ),
 );
 
@@ -1740,14 +1746,8 @@ $config['e___12446'] = array(
 );
 
 //MENCH URL:
-$config['n___10876'] = array(13405,13207,7291,4341,13465,6287,4269);
+$config['n___10876'] = array(13207,7291,4341,13405,13465,6287,4269);
 $config['e___10876'] = array(
-    13405 => array(
-        'm_title' => 'IDEA HOME',
-        'm_message' => 'https://mench.com/~',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
-        'm_profile' => array(11035,10876),
-    ),
     13207 => array(
         'm_title' => 'LEADERBOARD',
         'm_message' => 'https://mench.com/@',
@@ -1765,6 +1765,12 @@ $config['e___10876'] = array(
         'm_message' => 'https://mench.com/ledger',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
+    ),
+    13405 => array(
+        'm_title' => 'MY IDEAS',
+        'm_message' => 'https://mench.com/~',
+        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_profile' => array(11035,10876),
     ),
     13465 => array(
         'm_title' => 'OUR 2020 BURNING MAN',
@@ -3130,7 +3136,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13671,13401,13292,13573,13574,13495,13670,12707,4235,12991,13405,12137,13207,11068,12211,4341,13689,6225,12969,6287,13562,13579,6415,12896,10573,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(13502,13671,13401,13292,13573,13574,13495,13670,12707,4235,12991,12137,13207,11068,12211,4341,13689,6225,12969,13405,6287,13562,13579,6415,12896,10573,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3198,12 +3204,6 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,11035),
     ),
-    13405 => array(
-        'm_title' => 'IDEA HOME',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
-        'm_profile' => array(11035,10876),
-    ),
     12137 => array(
         'm_title' => 'IDEAS FEATURED',
         'm_message' => '',
@@ -3251,6 +3251,12 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-home discover" aria-hidden="true"></i>',
         'm_profile' => array(12228,11035,4527),
+    ),
+    13405 => array(
+        'm_title' => 'MY IDEAS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_profile' => array(11035,10876),
     ),
     6287 => array(
         'm_title' => 'PLUGINS',
@@ -4052,7 +4058,7 @@ $config['e___4592'] = array(
     ),
     4257 => array(
         'm_title' => 'EMBED URL',
-        'm_message' => 'Embeddable videos',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_profile' => array(4758,12822,12605,12524,12403,4593,4592,4537),
     ),
@@ -4106,15 +4112,15 @@ $config['e___4592'] = array(
     ),
     4258 => array(
         'm_title' => 'VIDEO',
-        'm_message' => 'Uploaded videos',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
     ),
     12827 => array(
         'm_title' => 'WORD',
-        'm_message' => 'Single Word',
+        'm_message' => '',
         'm_icon' => '<i class="fad fa-font source"></i>',
-        'm_profile' => array(4593,4592),
+        'm_profile' => array(12822,4593,4592),
     ),
 );
 
@@ -7223,7 +7229,7 @@ $config['e___4755'] = array(
     4783 => array(
         'm_title' => 'PHONE',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-phone source"></i>',
+        'm_icon' => '<i class="fas fa-phone"></i>',
         'm_profile' => array(4755),
     ),
     4755 => array(
@@ -8117,7 +8123,7 @@ $config['e___4593'] = array(
         'm_title' => 'SOURCE LINK WORD',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-font source"></i>',
-        'm_profile' => array(4593,4592),
+        'm_profile' => array(12822,4593,4592),
     ),
     10646 => array(
         'm_title' => 'SOURCE NAME UPDATE',
