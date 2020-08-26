@@ -1797,15 +1797,7 @@ class X_model extends CI_Model
     {
 
         if(!isset($i['i__metadata'])){
-            //Fetch Idea:
-            $is = $this->I_model->fetch(array(
-                'i__id' => $i['i__id'],
-            ));
-            if(!count($is)){
-                return false;
-            } else {
-                $i = $is[0];
-            }
+            return false;
         }
 
         //Fetch/validate Discoveries Common Ideas:

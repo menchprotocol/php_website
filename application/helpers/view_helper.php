@@ -1604,7 +1604,10 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
         //Total Progress
-        $completion_rate = $CI->X_model->completion_progress($e['x__source'], $e['x__left']);
+        $is = $this->I_model->fetch(array(
+            'i__id' => $e['x__left'],
+        ));
+        $completion_rate = $CI->X_model->completion_progress($e['x__source'], $is[0]);
         $ui .= '<span style="min-width:34px;" class="inline-block" title="'.$e['x__source'].'/'.$e['x__left'].'">' . $completion_rate['completion_percentage'] . ' %</span>';
 
 
