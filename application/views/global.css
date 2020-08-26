@@ -527,9 +527,13 @@ img.no-radius {
     margin-bottom: 0;
 }
 .discover-controller div a{
-    display: block;
+    display: inline-block;
     border-radius: 50%;
     background-color: #FC1B44;
+    padding: 21px;
+}
+.discover-controller div a i{
+    min-width: 40px;
 }
 
 .i_estimates{
