@@ -1599,7 +1599,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="message_content paddingup x__message block">';
 
         //Method & Time:
-        $ui .= '<span style="min-width: 100px;" title="'.$e['x__time'].'"><span class="icon-block-xs">'.view_cache(12227, $e['x__type']).'</span>' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span>';
+        $ui .= '<span style="min-width:147px;" title="'.$e['x__time'].'" class="inline-block"><span class="icon-block-xs">'.view_cache(12227, $e['x__type']).'</span>' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span>';
 
         //Show Filter?
         if(!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id']){
