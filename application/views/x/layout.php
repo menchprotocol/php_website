@@ -26,7 +26,7 @@ $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n_
 
 //Determine Forcus User:
 $user_e = false;
-if(isset($_GET['focus__e'])){
+if(isset($_GET['focus__e']) && superpower_active(12701, true)){
     //Fetch This User
     $es = $this->E_model->fetch(array(
         'e__id' => $_GET['focus__e'],
