@@ -955,6 +955,11 @@ class X_model extends CI_Model
                     'e__weight' => 'DESC',
                 )) as $e_profile) {
 
+                    if(in_array($e_profile['e__id'], $this->config->item('n___4755'))){
+                        //Private Transactions Not Allowed:
+                        continue;
+                    }
+
                     $e_count++;
 
                     if (in_array($e_profile['x__type'], $this->config->item('n___12524'))) {
