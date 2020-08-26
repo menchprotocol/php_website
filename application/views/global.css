@@ -515,10 +515,7 @@ img.no-radius {
     padding: 0 5px;
 }
 .discover-controller{
-    background-color: #FC1B44;
     width: 100% !important;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
     display: table;
     table-layout: fixed;
 }
@@ -531,6 +528,8 @@ img.no-radius {
 }
 .discover-controller div a{
     display: block;
+    border-radius: 50%;
+    background-color: #FC1B44;
 }
 
 .i_estimates{
@@ -1728,9 +1727,6 @@ label {
         width:40px;
     }
 
-    .discover-controller{
-        border-radius: 0 !important;
-    }
 
 }
 
