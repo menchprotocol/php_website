@@ -1602,14 +1602,14 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             $ui .= '<a href="/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>';
         }
 
-
         //Total Progress
-        $is = $CI->I_model->fetch(array(
-            'i__id' => $e['x__left'],
-        ));
-        $completion_rate = $CI->X_model->completion_progress($e['x__source'], $is[0]);
-        $ui .= '<span style="min-width:34px;" class="inline-block" title="'.$e['x__source'].'/'.$e['x__left'].'">' . $completion_rate['completion_percentage'] . '%</span>';
-
+        if(isset($_GET['progress'])){
+            $is = $CI->I_model->fetch(array(
+                'i__id' => $e['x__left'],
+            ));
+            $completion_rate = $CI->X_model->completion_progress($e['x__source'], $is[0]);
+            $ui .= '<span style="min-width:34px;" class="inline-block" title="'.$e['x__source'].'/'.$e['x__left'].'">' . $completion_rate['completion_percentage'] . '%</span>';
+        }
 
         //Method & Time:
         $ui .= '<span style="min-width:147px;" title="'.$e['x__time'].'" class="inline-block"><span class="icon-block-xs">'.view_cache(12227, $e['x__type']).'</span>' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span>';
