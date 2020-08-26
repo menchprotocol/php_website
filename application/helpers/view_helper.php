@@ -1448,7 +1448,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
-    $superpower_12701 = superpower_active(12701, true);
 
     $source_of_e = ( $superpower_13422 ? true : $source_of_e );
 
@@ -1595,16 +1594,16 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
     //DISCOVERY DETAILS
-    if($is_x_progress && $superpower_12701){
-        $ui .= '<div class="message_content paddingup x__message block">';
-
-        //Method & Time:
-        $ui .= '<span style="min-width:147px;" title="'.$e['x__time'].'" class="inline-block"><span class="icon-block-xs">'.view_cache(12227, $e['x__type']).'</span>' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span>';
+    if($is_x_progress){
+        $ui .= '<div class="message_content paddingup x__message block '.superpower_active(12701).'">';
 
         //Show Filter?
         if(!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id']){
             $ui .= '<a href="/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>';
         }
+
+        //Method & Time:
+        $ui .= '<span style="min-width:147px;" title="'.$e['x__time'].'" class="inline-block"><span class="icon-block-xs">'.view_cache(12227, $e['x__type']).'</span>' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span>';
 
         $ui .= '</div>';
     }
