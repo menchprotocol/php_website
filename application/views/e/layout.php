@@ -454,11 +454,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         $focus_tab .= '</div>';
                         $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> #list_6132 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
-                    } else {
-
-                        //No Discoveries:
-                        $focus_tab .= '<div class="alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>Nothing found in '.$e___11035[12969]['m_title'].'</div>';
-
                     }
 
 
