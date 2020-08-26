@@ -6,8 +6,9 @@ $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
 $e___6198 = $this->config->item('e___6198'); //SOURCE ICON
 $source_of_e = source_of_e($e['e__id']);
 $source_is_e = $e['e__id']==$user_e['e__id'];
-$superpower_10939 = superpower_active(10939, true);
-$superpower_13422 = superpower_active(13422, true); //Advance Sourcing
+$superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEATION
+$superpower_13422 = superpower_active(13422, true); //SUPERPOWER OF SOURCING
+$superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GLASSES
 $superpower_any = ( $user_e ? count($this->session->userdata('session_superpowers_assigned')) : 0 );
 
 ?>
@@ -70,7 +71,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     } elseif($counter__i > 0){
         //IDEAS
         $active_x__type = 12273;
-    } elseif($source_is_e || ($counter__x > 0 && $user_e['e__id'] )){
+    } elseif($counter__x > 0 && ($source_is_e || $superpower_12701)){
         //DISCOVERIES
         $active_x__type = 6255;
     } else {
