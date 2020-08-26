@@ -744,7 +744,7 @@ function view_icon_i_x($completion_percentage, $i){
 
     $CI =& get_instance();
     $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
-    return '<span title="'.$e___12446[$x_legend]['m_title'].'">'.$e___12446[$x_legend]['m_icon'].'</span>';
+    return '<span title="'.$e___12446[$x_legend]['m_title'].' '.$completion_percentage.'%">'.$e___12446[$x_legend]['m_icon'].'</span>';
 
 }
 
