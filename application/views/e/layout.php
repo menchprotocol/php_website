@@ -84,9 +84,11 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     foreach($this->config->item('e___11089') as $x__type => $m) {
 
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
-        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true) && !$source_is_e && !(in_array($x__type, $this->config->item('n___13425')) && $source_is_e)){
-            //Missing Superpower:
-            continue;
+        if(count($superpower_actives)){
+            if(!superpower_active(end($superpower_actives), true) && !$source_is_e && !(in_array($x__type, $this->config->item('n___13425')) && $source_is_e)){
+                //Missing Superpower:
+                continue;
+            }
         } elseif(in_array($x__type, $this->config->item('n___13425')) && !$source_is_e){
             //SOURCE LAYOUT SHOW IF SOURCE:
             continue;
@@ -455,7 +457,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> #list_6132 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
                     }
-
 
                 } else {
 
