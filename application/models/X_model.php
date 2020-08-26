@@ -1799,7 +1799,7 @@ class X_model extends CI_Model
         if(!isset($i['i__metadata'])){
             //Fetch Idea:
             $is = $this->I_model->fetch(array(
-                'i__id' => $i['i__metadata'],
+                'i__id' => $i['i__id'],
             ));
             if(!count($is)){
                 return false;
