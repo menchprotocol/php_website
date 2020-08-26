@@ -1336,13 +1336,14 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
+    $user_input = $user_e;
 
     if(!$user_e){
         $user_e = superpower_assigned();
     }
 
     $i_stats = i_stats($i['i__metadata']);
-    $href = ( $x__type == 6255 ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] ).( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
+    $href = ( $x__type == 6255 ? '/'.$i['i__id'] . ( $user_input ? '?filter__e='.$user_e['e__id'] : '' ) : '/i/i_go/'.$i['i__id'] ).( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
     $completion_rate['completion_percentage'] = 0; //Assume no progress
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
