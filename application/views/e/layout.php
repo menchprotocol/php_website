@@ -403,7 +403,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     $string_references = extract_e_references($item['x__message']);
                 }
 
-                $focus_tab .= view_i_cover(12273, $item, $show_editor, null, $message_input, $user_e);
+                $focus_tab .= view_i_cover(12273, $item, $show_editor, null, $message_input, $e);
 
 
             }
@@ -450,7 +450,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                         $focus_tab .= '<div id="list_6132">';
                         foreach($list_x as $item){
-                            $focus_tab .= view_i_cover(6255, $item, $source_is_e, null, null, $user_e);
+                            $focus_tab .= view_i_cover(6255, $item, $source_is_e, null, null, $e);
                             array_push($my_x_ids, $item['i__id']);
                         }
                         $focus_tab .= '</div>';
@@ -483,7 +483,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 foreach($featured_i as $key => $x){
                     if(!in_array($x['i__id'], $my_x_ids)){
                         //Show only if not in discovering list:
-                        $focus_tab .= view_i_cover(6255, $x, false, null, null, $user_e);
+                        $focus_tab .= view_i_cover(6255, $x, false, null, null, $e);
                     }
                 }
                 $focus_tab .= '</div>';
