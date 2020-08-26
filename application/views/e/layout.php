@@ -74,9 +74,12 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     } elseif($counter__x > 0 && ($source_is_e || $superpower_12701)){
         //DISCOVERIES
         $active_x__type = 6255;
-    } else {
+    } elseif(!$source_is_e || $superpower_13422) {
         //PROFILE
         $active_x__type = 11030;
+    } elseif($source_is_e) {
+        //My Account
+        $active_x__type = 6225;
     }
 
     $tab_nav = '';
