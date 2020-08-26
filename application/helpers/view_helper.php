@@ -1358,7 +1358,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         if($show_editor){
 
             //RIGHT EDITING:
-            $ui .= '<div class="note-editor cover-editor edit-off '.superpower_active(10939).'">';
+            $ui .= '<div class="note-editor cover-editor edit-off '.( $x__type==6255 ? '' : superpower_active(10939) ).'">';
             $ui .= '<span class="show-on-hover">';
 
             //SORT
