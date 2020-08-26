@@ -402,7 +402,7 @@ function view_x($x, $is_parent_tr = false)
     $ui .= '<div class="simple-line"><a href="/ledger?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m_title'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m_icon']. '</span>'.$x['x__id'].'</a></div>';
 
     //TIME
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $e___4341[4362]['m_title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$e___4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' ago</span></div>';
+    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $e___4341[4362]['m_title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$e___4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' Ago</span></div>';
 
 
     //Order
@@ -748,7 +748,7 @@ function view_icon_i_x($completion_percentage, $i){
 
 }
 
-function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_rate = null, $extra_class = null)
+function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_rate = null)
 {
 
     //See if user is logged-in:
@@ -773,7 +773,7 @@ function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_r
     $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
-    $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).' '.$extra_class.'" style="padding-right:17px;">';
+    $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
 
     $ui .= ( $can_click ? '<a href="/'. $i['i__id'] .'" class="itemdiscover">' : '' );
 
@@ -1448,6 +1448,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
+    $superpower_12701 = superpower_active(12701, true);
+
     $source_of_e = ( $superpower_13422 ? true : $source_of_e );
 
     $e__profiles = $CI->X_model->fetch(array(
@@ -1463,7 +1465,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     //Allow source to see all their own transactions:
     $is_hidden = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $e_url = '/@'.$e['e__id'];
-    $filter_not_set_already = (!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id']);
 
 
     if(!$user_e && (!$is_public || !$is_x_published)){
@@ -1565,7 +1566,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             $ui .= '<div class="row">';
                 $ui .= '<div class="col-4">'.view_coins_e(12274, $e['e__id']).'</div>';
                 $ui .= '<div class="col-4">'.view_coins_e(12273, $e['e__id']).'</div>';
-                $ui .= '<div class="col-4">'.($is_x_progress && superpower_active(12701, true) && $filter_not_set_already ? '<a href="/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'].'" class="inline-block" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>' : '').view_coins_e(6255, $e['e__id']).'</div>';
+                $ui .= '<div class="col-4">'.view_coins_e(6255, $e['e__id']).'</div>';
             $ui .= '</div>';
 
         $ui .= '</div>';
@@ -1591,6 +1592,22 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '</div>';
     }
 
+
+
+    //DISCOVERY DETAILS
+    if($is_x_progress && $superpower_12701){
+        $ui .= '<div class="message_content paddingup x__message block">';
+
+        //Method & Time:
+        $ui .= '<span style="min-width: 100px;" title="'.$e['x__time'].'"><span class="icon-block-xs">'.view_cache(12227, $e['x__type']).'</span>' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span>';
+
+        //Show Filter?
+        if(!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id']){
+            $ui .= '<a href="/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>';
+        }
+
+        $ui .= '</div>';
+    }
 
 
     //MESSAGE
