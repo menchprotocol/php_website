@@ -1499,7 +1499,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             //Edit Raw Source
             $ui .= '<span><a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m_title'].'">'.$e___11035[13571]['m_icon'].'</a></span>';
 
-        } elseif(!$is_parent && $source_of_e){
+        } elseif($superpower_10939 && !$is_parent && $source_of_e){
 
             //UNLINK SOURCE
             $ui .= '<span><a href="javascript:void(0);" onclick="remove_10673(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m_title'].'">'.$e___11035[10673]['m_icon'].'</a></span>';
