@@ -722,9 +722,10 @@ if($in_my_x){
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
         $control_btn = '';
+
         if($e__id==12896 && count($sitemap_items)){
 
-            //Is Saved?
+            //Is Saved already by this user?
             $is_saved = count($this->X_model->fetch(array(
                 'x__up' => $user_e['e__id'],
                 'x__right' => $i_focus['i__id'],

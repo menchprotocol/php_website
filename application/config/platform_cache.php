@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-26 11:19:12 PST
+//Generated 2020-08-26 11:31:04 PST
 $config['s___12274'] = 5132; //SOURCES
 $config['s___12273'] = 4024; //IDEAS
 $config['s___6255'] = 125132; //DISCOVERIES
@@ -396,19 +396,19 @@ $config['e___12211'] = array(
 );
 
 //DISCOVERY CONTROLLER:
-$config['n___13289'] = array(12896,12991,12419,12211);
+$config['n___13289'] = array(12991,12896,12419,12211);
 $config['e___13289'] = array(
-    12896 => array(
-        'm_title' => 'SAVE DISCOVERY',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
-    ),
     12991 => array(
         'm_title' => 'GO BACK',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,11035),
+    ),
+    12896 => array(
+        'm_title' => 'SAVE DISCOVERY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-bookmark discover"></i>',
+        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
     ),
     12419 => array(
         'm_title' => 'COMMENTS',
