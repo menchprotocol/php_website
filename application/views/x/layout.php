@@ -750,22 +750,6 @@ if($in_my_x){
             //ADD COMMENT
             $control_btn = '<a class="controller-nav add-comments" href="javascript:void(0);" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
-        } elseif($e__id==13491){
-
-            //FONT SIZE: DEPRECATED FOR NOW
-            /*
-            $control_btn .= '<div class="dropdown inline-block" title="'.$m['m_title'].'">';
-            $control_btn .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-            $control_btn .= '<span class="icon-block controller-nav">' .$m['m_icon'].'</span>';
-            $control_btn .= '</button>';
-            $control_btn .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$e__id.'">';
-            foreach($this->config->item('e___'.$e__id) as $x__type2 => $m2) {
-                $control_btn .= '<a href="javascript:void(0);" onclick="set_13491('.$x__type2.')" class="dropdown-item montserrat font_items font_item_'.$x__type2.' '.( $this->session->userdata('session_var_13491')==$x__type2 ? ' active ' : '' ).'"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</a>';
-            }
-            $control_btn .= '</div>';
-            $control_btn .= '</div>';
-            */
-
         }
 
         echo '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';

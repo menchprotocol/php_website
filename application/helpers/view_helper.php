@@ -924,13 +924,23 @@ function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_m
         return false;
     }
 
+    $already_selected = array();
+    foreach($CI->X_model->fetch(array(
+        'x__up IN (' . join(',', $CI->config->item('n___'.$parent_e__id)) . ')' => null,
+        'x__down' => $child_e__id,
+        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+    )) as $sel){
+        array_push($already_selected, $sel['x__up']);
+    }
+
+    if(!count($already_selected) && $parent_e__id==13491){
+        //Medium Font as Default:
+        $already_selected = array(13493);
+    }
+
     foreach($CI->config->item('e___'.$parent_e__id) as $e__id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( count($CI->X_model->fetch(array(
-                'x__up' => $e__id,
-                'x__down' => $child_e__id,
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))>0 ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'<span class="change-results"></span></a>';
+        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m_icon']).' list-group-item montserrat itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'<span class="change-results"></span></a>';
         $count++;
     }
 
