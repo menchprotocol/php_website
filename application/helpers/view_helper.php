@@ -748,19 +748,17 @@ function view_icon_i_x($completion_percentage, $i){
 
 }
 
-function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_rate = null, $user_e = false, $extra_class = null)
+function view_i_x($i, $common_prefix = null, $show_editor = false, $completion_rate = null, $extra_class = null)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
-    if(!$user_e){
-        $user_e = superpower_assigned();
-    }
-
+    $user_session = superpower_assigned();
+    $user_e__id = ( (isset($_GET['focus__e']) ? $_GET['focus__e'] : ( $user_session ? $user_session['e__id'] : 0 ) );
 
     if(!$completion_rate){
-        if($user_e){
-            $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
+        if($user_e__id){
+            $completion_rate = $CI->X_model->completion_progress($user_e__id, $i);
         } else {
             $completion_rate['completion_percentage'] = 0;
         }
