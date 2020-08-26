@@ -703,8 +703,8 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
             'x__left' => $i['i__id'],
         );
 
-        if(isset($_GET['filter__e'])){
-            $query_filters['x__source'] = intval($_GET['filter__e']);
+        if(isset($_GET['focus__e'])){
+            $query_filters['x__source'] = intval($_GET['focus__e']);
         }
 
 
@@ -1056,7 +1056,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
     $ui .= '<div class="col-sm col-md">';
 
         //IDEA Transaction:
-        $href = '/~'.$i['i__id'].( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : '' );
+        $href = '/~'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
 
         //IDEA STATUS:
         $ui .= '<a href="'.$href.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
@@ -1337,13 +1337,14 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $CI =& get_instance();
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
     $user_input = $user_e;
+    $user_session = superpower_assigned();
 
     if(!$user_e){
-        $user_e = superpower_assigned();
+        $user_e = $user_session;
     }
 
     $i_stats = i_stats($i['i__metadata']);
-    $href = ( $x__type == 6255 && !superpower_assigned(12701, true) ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] . ( isset($_GET['filter__e']) ? '?filter__e='.intval($_GET['filter__e']) : ( $user_input ? '?filter__e='.$user_e['e__id'] : '' )));
+    $href = ( $x__type == 6255 ? '/'.$i['i__id'] . ( $user_input && $user_e['e__id']!=$user_session['e__id'] ? '?focus__e='.$user_e['e__id'] : '' ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
     $completion_rate['completion_percentage'] = 0; //Assume no progress
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
@@ -1458,7 +1459,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     //Allow source to see all their own transactions:
     $is_hidden = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $e_url = '/@'.$e['e__id'];
-    $filter_not_set_already = (!isset($_GET['filter__e']) || $_GET['filter__e']!=$e['e__id']);
+    $filter_not_set_already = (!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id']);
 
 
     if(!$user_e && (!$is_public || !$is_x_published)){
@@ -1560,7 +1561,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             $ui .= '<div class="row">';
                 $ui .= '<div class="col-4">'.view_coins_e(12274, $e['e__id']).'</div>';
                 $ui .= '<div class="col-4">'.view_coins_e(12273, $e['e__id']).'</div>';
-                $ui .= '<div class="col-4">'.($is_x_progress && superpower_active(12701, true) && $filter_not_set_already ? '<a href="/'.$CI->uri->segment(1).'?filter__e='.$e['e__id'].'" class="inline-block" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>' : '').view_coins_e(6255, $e['e__id']).'</div>';
+                $ui .= '<div class="col-4">'.($is_x_progress && superpower_active(12701, true) && $filter_not_set_already ? '<a href="/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'].'" class="inline-block" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>' : '').view_coins_e(6255, $e['e__id']).'</div>';
             $ui .= '</div>';
 
         $ui .= '</div>';

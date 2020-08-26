@@ -23,10 +23,26 @@ $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 $show_nav = superpower_active(10939, true) || in_array($i_focus['i__status'], $this->config->item('n___12138'));
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$user_e = superpower_assigned();
+
+//Determine Forcus User:
+$user_e = false;
+if(isset($_GET['focus__e'])){
+    //Fetch This User
+    $es = $this->E_model->fetch(array(
+        'e__id' => $_GET['focus__e'],
+    ));
+    if(count($es)){
+        $user_e = $es[0];
+    }
+}
+if(!$user_e){
+    $user_e = superpower_assigned();
+}
 if(!isset($user_e['e__id']) ){
     $user_e['e__id'] = 0;
 }
+
+
 
 
 //NEXT IDEAS

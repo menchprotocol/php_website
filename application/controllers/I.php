@@ -98,7 +98,7 @@ class I extends CI_Controller {
          *
          * */
         $e_of_i = e_of_i($i__id);
-        return redirect_message(( $e_of_i ? '/~' : '/' ) . $i__id . ( $e_of_i && isset($_GET['filter__e']) ? '?filter__e='.$_GET['filter__e'] : '' ) );
+        return redirect_message(( $e_of_i ? '/~' : '/' ) . $i__id . ( $e_of_i && isset($_GET['focus__e']) ? '?focus__e='.$_GET['focus__e'] : '' ) );
     }
 
 
