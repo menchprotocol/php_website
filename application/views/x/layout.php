@@ -28,11 +28,13 @@ $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n_
 $user_e = false;
 if(isset($_GET['focus__e']) && superpower_active(12701, true)){
     //Fetch This User
-    $es = $this->E_model->fetch(array(
+    $e_filters = $this->E_model->fetch(array(
         'e__id' => $_GET['focus__e'],
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
-    if(count($es)){
-        $user_e = $es[0];
+    if(count($e_filters)){
+        echo view__focus__e($e_filters[0]);
+        $user_e = $e_filters[0];
     }
 }
 if(!$user_e){

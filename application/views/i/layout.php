@@ -30,14 +30,14 @@ if(!$e_of_i){
     echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/i/i_e_request/'.$i_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/i/i_e_add/'.$i_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
-if(isset($_GET['focus__e'])){
+if(isset($_GET['focus__e']) && superpower_active(12701, true)){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
         'e__id' => intval($_GET['focus__e']),
         'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
-        echo '<div class="alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m_title'].'"><span class="icon-block">'.$e___11035[13670]['m_icon'].'</span>' . view_e__icon($e_filters[0]['e__icon']) . '&nbsp;<a href="/@'.$e_filters[0]['e__id'].'" class="'.extract_icon_color($e_filters[0]['e__icon']).'">' . $e_filters[0]['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$this->uri->segment(1).'" title="'.$e___11035[13671]['m_title'].'">'.$e___11035[13671]['m_icon'].'</a></div>';
+        echo view__focus__e($e_filters[0]);
     }
 }
 
