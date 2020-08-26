@@ -457,7 +457,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     } else {
 
                         //No Discoveries:
-                        $focus_tab .= '<div class="alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>No ideas in discovery list.</div>';
+                        $focus_tab .= '<div class="alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>Nothing found in '.$e___11035[12969]['m_title'].'</div>';
 
                     }
 
