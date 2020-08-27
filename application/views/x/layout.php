@@ -20,7 +20,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 
-$show_nav = superpower_active(10939, true) || in_array($i_focus['i__status'], $this->config->item('n___12138'));
+$show_nav = /* superpower_active(10939, true) || */ in_array($i_focus['i__status'], $this->config->item('n___12138'));
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 
