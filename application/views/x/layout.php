@@ -534,7 +534,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 //TEXT RESPONSE
                 $has_substance = true;
 
-                $focus_tab .= '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR ANSWER:</div>';
+                $focus_tab .= '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR RESPONSE:</div>';
 
                 $focus_tab .= '<textarea class="border i_content padded x_input" placeholder="Write `skip` if you prefer not to answer..." id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
 
