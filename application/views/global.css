@@ -518,6 +518,7 @@ img.no-radius {
     width: 100% !important;
     display: table;
     table-layout: fixed;
+    bacckg
 }
 .discover-controller div{
     text-align: center;
@@ -621,7 +622,6 @@ img.no-radius {
 
 .fixed-bottom{
     padding: 0;
-    background-color: #f0f0f0;
 }
 .fixed-top, .fixed-bottom {
     z-index: 9999 !important;
