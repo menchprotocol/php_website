@@ -954,6 +954,9 @@ textarea.note-textarea{
     margin-bottom:0;
     margin-top: -44px !important;
 }
+.title-block-squeeze{
+    margin-top: -50px !important;
+}
 .title-no-right {
     padding-right:5px !important;
 }
@@ -1685,6 +1688,9 @@ label {
     }
     .title-block-lg{
         margin-top: -32px !important;
+    }
+    .title-block-squeeze{
+        margin-top: -36px !important;
     }
     .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
