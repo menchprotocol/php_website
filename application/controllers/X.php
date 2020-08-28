@@ -517,8 +517,28 @@ class X extends CI_Controller
         if($next_i__id > 0){
             return redirect_message('/'.$next_i__id.'?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ));
         } else {
-            $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-            return redirect_message(home_url(), '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Finished '.$e___11035[12969]['m_title'].'</div></div>');
+
+            //All completed, find the top idea:
+            $top_i__id = $next_i__id; //Starting Assumption
+            $u_x_ids = $this->X_model->ids($user_e['e__id']);
+            if(!in_array($next_i__id, $u_x_ids)){
+                //Search for it:
+                $recursive_parents = $this->I_model->recursive_parents($is[0]['i__id'], true, true);
+                foreach($recursive_parents as $grand_parent_ids) {
+                    foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
+                        foreach($grand_parent_ids as $count => $previous_i__id) {
+                            if(in_array($previous_i__id, $u_x_ids)){
+                                //Update It:
+                                $top_i__id = $previous_i__id;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return redirect_message('/'.$top_i__id, '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed this idea & will be notified of new updates, if any.</div></div>');
+
         }
 
     }
