@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-28 12:35:11 PST
-$config['s___12274'] = 5159; //SOURCES
+//Generated 2020-08-28 15:00:47 PST
+$config['s___12274'] = 5160; //SOURCES
 $config['s___12273'] = 4026; //IDEAS
-$config['s___6255'] = 126096; //DISCOVERIES
+$config['s___6255'] = 126188; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -1726,9 +1726,9 @@ $config['e___12523'] = array(
 $config['n___12446'] = array(13752,13751,13757,12447,13338);
 $config['e___12446'] = array(
     13752 => array(
-        'm_title' => 'LOCKED',
+        'm_title' => 'NOT STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-lock discover"></i>',
+        'm_icon' => '<i class="fal fa-stop-circle discover"></i>',
         'm_profile' => array(12446),
     ),
     13751 => array(
