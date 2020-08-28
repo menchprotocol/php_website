@@ -97,7 +97,7 @@ if($in_my_x){
 
                     $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $is_this[0]);
 
-                    array_push($sitemap_items, view_i_x($is_this[0], 0 /* Unlocked */, null, $completion_rate));
+                    array_push($sitemap_items, view_i_x($is_this[0], -1 /* Unlocked */, null, $completion_rate));
 
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
