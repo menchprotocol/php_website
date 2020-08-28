@@ -456,7 +456,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                         //Give option to Select None/All
                         $focus_tab .= '<div class="doclear">&nbsp;</div>';
-                        $focus_tab .= '<div class="pull-right right-adj inline-block"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far fa-circle\').addClass(\'fas fa-check-circle\');" style="text-decoration: underline;" title="'.$e___11035[13692]['m_title'].'">'.$e___11035[13692]['m_icon'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas\').addClass(\'far\');" style="text-decoration: underline;" title="'.$e___11035[13693]['m_title'].'">'.$e___11035[13693]['m_icon'].'</a></div>';
+                        $focus_tab .= '<div class="pull-right right-adj inline-block"><a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'far fa-circle\').addClass(\'fas fa-check-circle\');" style="text-decoration: underline;" title="'.$e___11035[13692]['m_title'].'">'.$e___11035[13692]['m_icon'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item .fa-circle\').removeClass(\'fas fa-check-circle\').addClass(\'far fa-circle\');" style="text-decoration: underline;" title="'.$e___11035[13693]['m_title'].'">'.$e___11035[13693]['m_icon'].'</a></div>';
 
                     }
 
