@@ -105,12 +105,17 @@ if(count($current_sign_i_attempt) == 0){
             <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m_icon'].'</span>'.$e___4269[3286]['m_title'] ?></span>
             <div class="form-group"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="discover margin-top-down hideIfEmpty"></div>
-            <span id="step3buttons">
+
+            <div class="doclear">&nbsp;</div>
+            
+            <span class="pull-left inline-block" id="step3buttons">
                 <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source transparent btn-raised " title="<?= $e___11035[12991]['m_title'] ?>"><?= $e___11035[12991]['m_icon'] ?></a>
                 <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-raised " title="<?= $e___11035[12211]['m_title'] ?>"><?= $e___11035[12211]['m_icon'] ?></a>
             </span>
 
-            <span style="padding-left:13px;"><a href="javascript:void(0)" onclick="e_magic_email()" class="btn btn-source transparent btn-raised"><?= $e___11035[11068]['m_title'].' '.$e___11035[11068]['m_icon'] ?></a></span>
+            <span class="pull-right inline-block"><a href="javascript:void(0)" onclick="e_magic_email()" class="btn btn-source transparent btn-raised"><?= $e___11035[11068]['m_title'].' '.$e___11035[11068]['m_icon'] ?></a></span>
+
+            <div class="doclear">&nbsp;</div>
 
         </div>
 

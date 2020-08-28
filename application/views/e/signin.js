@@ -183,7 +183,7 @@ function e_signin_password(){
 }
 
 function e_magic_email(){
-    var r = confirm("Email login URL to "+$('#input_email').val()+"?");
+    var r = confirm("Receive an email with a 1-click login link.");
     if (r == true) {
 
         //Update UI:
