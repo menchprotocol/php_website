@@ -728,7 +728,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
 function view_icon_i_x($completion_percentage, $i, $not_started_type){
 
     $user_e = superpower_assigned();
-    if(!$user_e){
+    if(!$not_started_type || !$user_e){
         //IDAE Icon
         return view_i_icon($i);
     } elseif($completion_percentage <= 0){
@@ -1392,7 +1392,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 //Title
                 $ui .= '<div>';
-                $ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i, 13751 /* Next in Line */).'</a></span>';
+                $ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $x__type == 6255 ? 13751 /* Next in Line */ : 0 /* Idea Icon */ )).'</a></span>';
                 $ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
                 $ui .= '</div>';
 
