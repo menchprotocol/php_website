@@ -724,7 +724,7 @@ echo $tab_content;
 
 if($show_next_tip){
     //Recommend to go next:
-    echo '<div class="alert no-margin space-left">' . $i_completion_percentage . '% Done, Tap<span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span>to continue.</div>';
+    echo '<div class="alert no-margin space-left">' . $i_completion_percentage . '% Done, Tap<span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span>to go next</div>';
 }
 
 
