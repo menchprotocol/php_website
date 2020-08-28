@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-27 15:25:19 PST
-$config['s___12274'] = 5146; //SOURCES
+//Generated 2020-08-27 20:23:33 PST
+$config['s___12274'] = 5152; //SOURCES
 $config['s___12273'] = 4025; //IDEAS
-$config['s___6255'] = 125482; //DISCOVERIES
+$config['s___6255'] = 125538; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -1723,8 +1723,20 @@ $config['e___12523'] = array(
 );
 
 //DISCOVERY LEGEND:
-$config['n___12446'] = array(12447,13338);
+$config['n___12446'] = array(13752,13751,12447,13338);
 $config['e___12446'] = array(
+    13752 => array(
+        'm_title' => 'LOCKED',
+        'm_message' => '',
+        'm_icon' => '<i class="far fa-lock discover"></i>',
+        'm_profile' => array(12446),
+    ),
+    13751 => array(
+        'm_title' => 'NEXT IN LINE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-map-marker-alt discover"></i>',
+        'm_profile' => array(12446),
+    ),
     12447 => array(
         'm_title' => 'IN PROGRESS',
         'm_message' => '',
@@ -3768,7 +3780,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.53912',
+        'm_message' => 'v1.5399',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),

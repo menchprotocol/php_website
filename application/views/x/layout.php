@@ -97,7 +97,7 @@ if($in_my_x){
 
                     $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $is_this[0]);
 
-                    array_push($sitemap_items, view_i_x($is_this[0], null, $completion_rate));
+                    array_push($sitemap_items, view_i_x($is_this[0], 0 /* Unlocked */, null, $completion_rate));
 
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
@@ -224,7 +224,9 @@ if($previous_level_id){
     echo '</div>';
 }
 
-echo '<div style="position: relative; display: block;">' . ( $show_percentage ? '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '' ) . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus ).'</span><span class="title-block-lg '.( $show_percentage ? ' title-block-squeeze ' : '' ).'">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
+
+//HEADER
+echo '<div style="position: relative; display: block;">' . ( $show_percentage ? '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '' ) . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, false ).'</span><span class="title-block-lg '.( $show_percentage ? ' title-block-squeeze ' : '' ).'">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
 
 
