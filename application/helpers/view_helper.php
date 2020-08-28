@@ -42,7 +42,7 @@ function view_i_tree_stats($i_stats, $hide_idea){
 
     //IDEA STATS
     if(!$hide_idea){
-        $ui .= '<span class="inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">&nbsp;&nbsp;'.( $has_idea ? $e___13544[13629]['m_icon'] : '' ).' '.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
+        $ui .= '<span class="i_x_stats hidden inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">&nbsp;&nbsp;'.( $has_idea ? $e___13544[13629]['m_icon'] : '' ).' '.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
     }
 
 
