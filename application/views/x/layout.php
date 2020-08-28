@@ -235,7 +235,6 @@ echo '<div style="position: relative; display: block;">' . ( $show_percentage ? 
 
 
 //MESSAGES
-$counter = null; //Hide message count
 echo '<div style="margin-bottom:33px;">';
 foreach($messages as $message_x) {
     echo $this->X_model->message_send(
@@ -243,14 +242,35 @@ foreach($messages as $message_x) {
         $user_e
     );
 }
+echo '</div>';
 
 
-if($in_my_x /* && !count($sitemap_items) */ && !$i_completed){
 
-    //Recommend to go next:
-    echo '<div class="alert alert-info no-margin space-left">You are '.$i_completion_percentage.'% Done, tap <a href="javascript:void(0);" onclick="go_12211()" class="mini-circle e__icon_12896"><i class="fas fa-step-forward black"></i></a> to continue...</div>';
 
-} elseif(count($this->X_model->fetch(array(
+
+
+
+
+
+//DISCOVER LAYOUT
+$show_next_tip = $in_my_x /* && !count($sitemap_items) */ && !$i_completed;
+$i_stats = i_stats($i_focus['i__metadata']);
+$tab_group = 13291;
+$tab_pills = '<ul class="nav nav-tabs nav-sm">';
+$tab_content = '';
+$tab_pill_count = 0;
+
+
+
+
+if(!$in_my_x){
+
+    //GET STARTED
+    echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
+
+}
+
+if(!$show_next_tip && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type' => 4983, //IDEA SOURCES
         'x__up' => 12896, //SAVE THIS IDAE
@@ -267,28 +287,6 @@ if($in_my_x /* && !count($sitemap_items) */ && !$i_completed){
 
 }
 
-echo '</div>';
-
-
-
-
-if(!$in_my_x){
-
-    //GET STARTED
-    echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
-
-}
-
-
-
-
-
-//DISCOVER LAYOUT
-$i_stats = i_stats($i_focus['i__metadata']);
-$tab_group = 13291;
-$tab_pills = '<ul class="nav nav-tabs nav-sm">';
-$tab_content = '';
-$tab_pill_count = 0;
 
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
@@ -722,6 +720,12 @@ if($tab_pill_count > 1 && $show_nav){
 //Show All Tab Content:
 echo $tab_content;
 
+
+
+if($show_next_tip){
+    //Recommend to go next:
+    echo '<div class="alert alert-info no-margin space-left">You are ' . $i_completion_percentage . '% Done, tap <a href="javascript:void(0);" onclick="go_12211()" class="mini-circle e__icon_12896"><i class="fas fa-step-forward black"></i></a> to continue...</div>';
+}
 
 
 //COMMENTS
