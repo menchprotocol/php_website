@@ -1256,7 +1256,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
         $ui .= '<table class="table table-condensed" style="margin-bottom: 16px;"><tr>';
 
         //Save button:
-        $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.trim(extract_icon_color($e___4485[$x__type]['m_icon'])).' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
+        $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.trim(extract_icon_color($e___4485[$x__type]['m_icon'])).' save_notes_'.$x__type.'">'.$e___4485[$x__type]['m_icon'].'</a></td>';
 
 
         //File counter:
