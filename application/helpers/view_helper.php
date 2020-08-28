@@ -749,10 +749,10 @@ function view_icon_i_x($completion_percentage, $i, $is_locked){
 
 function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $completion_rate = null)
 {
-
     //See if user is logged-in:
     $CI =& get_instance();
     $user_session = superpower_assigned();
+    $is_locked = ($index_id > 0);
     $user_e__id = ( (isset($_GET['focus__e']) ? $_GET['focus__e'] : ( $user_session ? $user_session['e__id'] : 0 ) ));
 
     if(!$completion_rate){
@@ -765,7 +765,7 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
 
     $i_stats = i_stats($i['i__metadata']);
     $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
-    $can_click = ( $completion_rate['completion_percentage']>0 || $is_saved  ); // || superpower_active(10939, true) || $user_e
+    $can_click = ( $completion_rate['completion_percentage']>0 || !$is_locked ); // || superpower_active(10939, true) || $user_e
     $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
@@ -786,7 +786,9 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     $ui .= '<div class="row">';
         $ui .= '<div class="col-sm col-md">';
 
-            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ($index_id > 0)).'</span>';
+
+
+            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, $is_locked).'</span>';
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
