@@ -748,7 +748,7 @@ function view_icon_i_x($completion_percentage, $i, $not_started_type){
 
 }
 
-function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $completion_rate = null)
+function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor = false, $completion_rate = null)
 {
     //See if user is logged-in:
     $CI =& get_instance();
@@ -765,7 +765,6 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     }
 
     $i_stats = i_stats($i['i__metadata']);
-    $can_click = ( $completion_rate['completion_percentage']>=100 || $index_id<0 ); // || superpower_active(10939, true) || $user_e
     $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
@@ -786,9 +785,7 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     $ui .= '<div class="row">';
         $ui .= '<div class="col-sm col-md">';
 
-
-
-            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $index_id!=0 ? 13752 /* Locked */ : 13751 /* Next in Line */ ) ).'</span>';
+            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $index_id!=0 ? 13752 /* NOT STARTED */ : 13751 /* Next in Line */ ) ).'</span>';
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
@@ -1169,7 +1166,7 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($in_my_x, $i, $is_next, $user_e, $prefix_statement = null){
+function view_i_list($can_click, $in_my_x, $i, $is_next, $user_e, $prefix_statement = null){
 
     //If no list just return the next step:
     if(!count($is_next)){
