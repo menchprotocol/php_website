@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-28 08:31:34 PST
-$config['s___12274'] = 5157; //SOURCES
-$config['s___12273'] = 4025; //IDEAS
-$config['s___6255'] = 125966; //DISCOVERIES
+//Generated 2020-08-28 12:35:11 PST
+$config['s___12274'] = 5159; //SOURCES
+$config['s___12273'] = 4026; //IDEAS
+$config['s___6255'] = 126096; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -1723,7 +1723,7 @@ $config['e___12523'] = array(
 );
 
 //DISCOVERY LEGEND:
-$config['n___12446'] = array(13752,13757,13751,12447,13338);
+$config['n___12446'] = array(13752,13751,13757,12447,13338);
 $config['e___12446'] = array(
     13752 => array(
         'm_title' => 'LOCKED',
@@ -1731,16 +1731,16 @@ $config['e___12446'] = array(
         'm_icon' => '<i class="far fa-lock discover"></i>',
         'm_profile' => array(12446),
     ),
-    13757 => array(
-        'm_title' => 'CURRENT IDEA',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-map-marker-alt discover"></i>',
-        'm_profile' => array(12446),
-    ),
     13751 => array(
         'm_title' => 'NEXT IN LINE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-step-forward discover"></i>',
+        'm_profile' => array(12446),
+    ),
+    13757 => array(
+        'm_title' => 'CURRENT IDEA',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-map-marker-alt discover"></i>',
         'm_profile' => array(12446),
     ),
     12447 => array(
@@ -3381,7 +3381,7 @@ $config['e___11035'] = array(
 );
 
 //SUPERPOWERS:
-$config['n___10957'] = array(10939,13354,12673,13403,10984,10986,13420,12700,13422,13402,12706,12703,13421,12699,12701);
+$config['n___10957'] = array(10939,13354,12673,13403,10984,10986,13420,12700,13422,13402,12706,12703,13421,12699,12701,13758);
 $config['e___10957'] = array(
     10939 => array(
         'm_title' => 'SUMMARIZING',
@@ -3472,6 +3472,12 @@ $config['e___10957'] = array(
         'm_message' => 'Read info from all players',
         'm_icon' => '<i class="fas fa-glasses discover" aria-hidden="true"></i>',
         'm_profile' => array(13450,10957),
+    ),
+    13758 => array(
+        'm_title' => 'DISCOVERY TOOLBAR',
+        'm_message' => 'See Source Discovery Stats',
+        'm_icon' => '<i class="fas fa-ellipsis-h discover" aria-hidden="true"></i>',
+        'm_profile' => array(10957),
     ),
 );
 
@@ -3786,7 +3792,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.53992',
+        'm_message' => 'v1.5399',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
