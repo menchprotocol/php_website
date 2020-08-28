@@ -752,8 +752,8 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     //See if user is logged-in:
     $CI =& get_instance();
     $user_session = superpower_assigned();
-    $is_locked = ($index_id > 0);
     $user_e__id = ( (isset($_GET['focus__e']) ? $_GET['focus__e'] : ( $user_session ? $user_session['e__id'] : 0 ) ));
+    $is_locked = ($index_id > 0 || !$user_e__id);
 
     if(!$completion_rate){
         if($user_e__id){
