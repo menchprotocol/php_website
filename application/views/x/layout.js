@@ -195,7 +195,7 @@ function x_select(){
     var selection_i__id = [];
     $(".answer-item").each(function () {
         var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
-        if ($('.x_select_'+selection_i__id_this+' .fa-circle').hasClass('fas')) {
+        if ($('.x_select_'+selection_i__id_this+' i').hasClass('fas')) {
             selection_i__id.push(selection_i__id_this);
         }
     });
