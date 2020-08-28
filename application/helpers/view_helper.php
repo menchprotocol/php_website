@@ -753,7 +753,9 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     $CI =& get_instance();
     $user_session = superpower_assigned();
     $user_e__id = ( (isset($_GET['focus__e']) ? $_GET['focus__e'] : ( $user_session ? $user_session['e__id'] : 0 ) ));
-    $is_locked = ($index_id > 0 || !$user_e__id);
+    $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
+    $is_next = !$index_id;
+    $is_locked = (!$is_next || !$user_e__id);
 
     if(!$completion_rate){
         if($user_e__id){
@@ -764,7 +766,6 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     }
 
     $i_stats = i_stats($i['i__metadata']);
-    $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
     $can_click = ( $completion_rate['completion_percentage']>0 || !$is_locked ); // || superpower_active(10939, true) || $user_e
     $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
@@ -774,7 +775,7 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     //Build View:
     $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
 
-    $ui .= ( $can_click ? '<a href="/'. $i['i__id'] .'" class="itemdiscover">' : '' );
+    $ui .= ( $can_click ? '<a href="'. ( $is_next && !$is_saved ? '/x/x_next/'.$i['i__id'] : '/'.$i['i__id'] ) .'" class="itemdiscover">' : '' );
 
 
     if($has_completion){
