@@ -124,7 +124,7 @@ foreach($this->I_model->fetch($filters) as $in){
 
                 }
 
-                $estimated_time += $this_time;
+                $estimated_time += ( true ? 3 : $this_time ); //TEMPORARY OVERRISE TODO REMOVE LATER
                 if($i__id){
                     //Show details:
                     echo '&nbsp;&nbsp;'.$this_time.' Seconds MESSAGE SOURCE ['.$e___12822[$e_profile['x__type']]['m_title'].']: '.$e_profile['x__message'].'<hr />';
