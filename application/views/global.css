@@ -533,6 +533,12 @@ img.no-radius {
     width: 70px;
     padding: 18px 0;
 }
+.mini-circle{
+    display: inline-block;
+    border-radius: 50%;
+    background-color: #FC1B44;
+    padding: 8px 5px;
+}
 
 .i_estimates{
     padding:0 0 8px;

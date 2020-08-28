@@ -245,7 +245,7 @@ foreach($messages as $message_x) {
 if($in_my_x && !count($sitemap_items) && !$i_completed){
 
     //Recommend to go next:
-    echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="fas fa-step-forward black"></i></span>to go next.</div></div>';
+    echo '<div class="i_content padded"><div class="msg">You are '.$completion_rate['completion_percentage'].'% Done, tap <span class="mini-circle e__icon_12896"><i class="fas fa-step-forward black"></i></span> to continue...</div></div>';
 
 } elseif(count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
