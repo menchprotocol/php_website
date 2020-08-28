@@ -110,7 +110,7 @@ if(count($current_sign_i_attempt) == 0){
                 <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-raised " title="<?= $e___11035[12211]['m_title'] ?>"><?= $e___11035[12211]['m_icon'] ?></a>
             </span>
 
-            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="e_magic_email()" class="dounderline"><?= $e___11035[11068]['m_title'] ?></a> <?= $e___11035[11068]['m_icon'] ?></span>
+            <span style="padding-left:13px;"><a href="javascript:void(0)" onclick="e_magic_email()" class="btn btn-source transparent btn-raised"><?= $e___11035[11068]['m_title'].' '.$e___11035[11068]['m_icon'] ?></a></span>
 
         </div>
 
