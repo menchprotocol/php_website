@@ -1601,8 +1601,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
-    //DISCOVERY DETAILS
-    if($is_x_progress && superpower_active(12701, true)){
+    //DISCOVERY TOOLBAR
+    if($is_x_progress && superpower_active(13758, true)){
         $ui .= '<div class="message_content paddingup x__message block">';
 
         //Show Filter?
