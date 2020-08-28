@@ -754,8 +754,6 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     $user_session = superpower_assigned();
     $user_e__id = ( (isset($_GET['focus__e']) ? $_GET['focus__e'] : ( $user_session ? $user_session['e__id'] : 0 ) ));
     $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
-    $is_next = $index_id==0;
-    $is_locked = !$is_next;
 
     if(!$completion_rate){
         if($user_e__id){
@@ -775,7 +773,7 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     //Build View:
     $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
 
-    $ui .= ( $can_click ? '<a href="'. ( $is_next && !$completion_rate['completion_percentage'] && is_numeric($first_segment) ? '/x/x_next/'.$first_segment : '/'.$i['i__id'] ) .'" class="itemdiscover">' : '' );
+    $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
 
 
     if($has_completion){
@@ -789,7 +787,7 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
 
 
 
-            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, $is_locked).'</span>';
+            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, $index_id!=0).'</span>';
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
