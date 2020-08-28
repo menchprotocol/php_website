@@ -725,14 +725,15 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
 
 
 
-function view_icon_i_x($completion_percentage, $i, $is_locked){
+function view_icon_i_x($completion_percentage, $i, $not_started_type){
 
     $user_e = superpower_assigned();
     if(!$user_e){
         //IDAE Icon
         return view_i_icon($i);
     } elseif($completion_percentage <= 0){
-        $x_legend = ( $is_locked ? 13752 /* Locked */ : 13751 /* Next in Line */ );
+        //Assign default not started type:
+        $x_legend = $not_started_type;
     } elseif($completion_percentage<100){
         //DISCOVER IN PROGRESS
         $x_legend = 12447;
@@ -787,7 +788,7 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
 
 
 
-            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, $index_id!=0).'</span>';
+            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $index_id!=0 ? 13752 /* Locked */ : 13751 /* Next in Line */ ) ).'</span>';
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
@@ -1391,7 +1392,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 //Title
                 $ui .= '<div>';
-                $ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i, false).'</a></span>';
+                $ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i, 13751 /* Next in Line */).'</a></span>';
                 $ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
                 $ui .= '</div>';
 
