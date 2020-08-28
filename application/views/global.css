@@ -537,7 +537,10 @@ img.no-radius {
     display: inline-block;
     border-radius: 50%;
     background-color: #FC1B44;
-    padding: 8px 5px;
+    padding: 3px 0;
+    width: 34px;
+    text-align: center;
+    font-size: 0.9em;
 }
 
 .i_estimates{
