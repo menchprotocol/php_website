@@ -769,7 +769,7 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
-    $has_completion = $can_click && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
+    $has_completion = $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
 
     //Build View:
     $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
