@@ -68,6 +68,7 @@ $u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
 $sitemap_items = array();
 $i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
+$i_completion_percentage = 0; //Assume main intent not yet completed, unless proven otherwise...
 $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
 $previous_level_id = 0; //The ID of the Idea one level up, if any
 
@@ -102,6 +103,7 @@ if($in_my_x){
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
                         $i_completed = $completion_rate['completion_percentage'] >= 100;
+                        $i_completion_percentage = $completion_rate['completion_percentage'];
                         break;
                     }
                 }
@@ -143,6 +145,7 @@ if($user_e['e__id']){
         $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $i_focus);
         if($in_my_discoveries){
             $i_completed = $completion_rate['completion_percentage'] >= 100;
+            $i_completion_percentage = $completion_rate['completion_percentage'];
         }
 
 
@@ -245,7 +248,7 @@ foreach($messages as $message_x) {
 if($in_my_x /* && !count($sitemap_items) */ && !$i_completed){
 
     //Recommend to go next:
-    echo '<div class="alert alert-info no-margin space-left">You are '.$completion_rate['completion_percentage'].'% Done, tap <a href="javascript:void(0);" onclick="go_12211()" class="mini-circle e__icon_12896"><i class="fas fa-step-forward black"></i></a> to continue...</div>';
+    echo '<div class="alert alert-info no-margin space-left">You are '.$i_completion_percentage.'% Done, tap <a href="javascript:void(0);" onclick="go_12211()" class="mini-circle e__icon_12896"><i class="fas fa-step-forward black"></i></a> to continue...</div>';
 
 } elseif(count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
