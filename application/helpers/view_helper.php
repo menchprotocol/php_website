@@ -775,7 +775,7 @@ function view_i_x($i, $index_id, $common_prefix = null, $show_editor = false, $c
     //Build View:
     $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
 
-    $ui .= ( $can_click ? '<a href="'. ( $is_next && !$is_saved ? '/x/x_next/'.$i['i__id'] : '/'.$i['i__id'] ) .'" class="itemdiscover">' : '' );
+    $ui .= ( $can_click ? '<a href="'. ( $is_next && !$is_saved && is_numeric($first_segment) ? '/x/x_next/'.$first_segment : '/'.$i['i__id'] ) .'" class="itemdiscover">' : '' );
 
 
     if($has_completion){
