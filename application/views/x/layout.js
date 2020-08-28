@@ -98,7 +98,7 @@ function select_answer(i__id){
     //Clear all if single selection:
     if(i__type == 6684){
         //Single Selection, clear all:
-        $('.check-icon i').removeClass('fas').addClass('far');
+        $('.check-icon i').removeClass('fas fa-check-circle').addClass('far fa-circle');
     }
 
     //Is setected?
@@ -107,13 +107,13 @@ function select_answer(i__id){
         //Previously Selected, delete selection:
         if(i__type == 7231){
             //Multi Selection
-            $('.x_select_'+i__id+' .check-icon i').removeClass('fas').addClass('far');
+            $('.x_select_'+i__id+' .check-icon i').removeClass('fas fa-check-circle').addClass('far fa-circle');
         }
 
     } else {
 
         //Previously Selected, delete selection:
-        $('.x_select_'+i__id+' .check-icon i').removeClass('far').addClass('fas');
+        $('.x_select_'+i__id+' .check-icon i').removeClass('far fa-circle').addClass('fas fa-check-circle');
 
     }
 
