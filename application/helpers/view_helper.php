@@ -1606,7 +1606,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="message_content paddingup x__message block">';
 
         //Show Filter?
-        if(!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id']){
+        if(superpower_active(12701, true) && (!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id'])){
             $ui .= '<a href="/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>';
         }
 
