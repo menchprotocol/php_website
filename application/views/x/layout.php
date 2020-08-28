@@ -722,7 +722,7 @@ echo $tab_content;
 
 
 
-if($show_next_tip){
+if($show_next_tip && $user_e['e__id'] > 0 && view_coins_e(6255, $user_e['e__id'], 0, false) <= config_item(13762)){
     //Recommend to go next:
     echo '<div class="alert no-margin space-left">' . $i_completion_percentage . '% Done, Tap<span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span>(below) to go next</div>';
 }
