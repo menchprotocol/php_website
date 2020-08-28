@@ -245,7 +245,7 @@ foreach($messages as $message_x) {
 if($in_my_x && !count($sitemap_items) && !$i_completed){
 
     //Recommend to go next:
-    echo '<div class="i_content padded"><div class="msg">You are '.$completion_rate['completion_percentage'].'% Done, tap <a href="javascript:void(0);" onclick="go_12211()" class="mini-circle e__icon_12896"><i class="fas fa-step-forward black"></i></a> to continue...</div></div>';
+    echo '<div class="alert alert-info no-margin">You are '.$completion_rate['completion_percentage'].'% Done, tap <a href="javascript:void(0);" onclick="go_12211()" class="mini-circle e__icon_12896"><i class="fas fa-step-forward black"></i></a> to continue...</div>';
 
 } elseif(count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -260,7 +260,7 @@ if($in_my_x && !count($sitemap_items) && !$i_completed){
     )))){
 
     //Recommended to Save This Idea:
-    echo '<div class="i_content padded"><div class="msg">Tip: In the footer, tap<span class="icon-block-xs e__icon_12896"><i class="far fa-bookmark discover"></i></span>to save this idea in your profile for easy future access.</div></div>';
+    echo '<div class="alert alert-info no-margin">To save this idea for easy future access, tap<span class="icon-block-xs e__icon_12896"><i class="far fa-bookmark discover"></i></span></div>';
 
 }
 
