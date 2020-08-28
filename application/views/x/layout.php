@@ -242,7 +242,7 @@ foreach($messages as $message_x) {
 }
 
 
-if($in_my_x && !count($sitemap_items) && !$i_completed){
+if($in_my_x /* && !count($sitemap_items) */ && !$i_completed){
 
     //Recommend to go next:
     echo '<div class="alert alert-info no-margin space-left">You are '.$completion_rate['completion_percentage'].'% Done, tap <a href="javascript:void(0);" onclick="go_12211()" class="mini-circle e__icon_12896"><i class="fas fa-step-forward black"></i></a> to continue...</div>';

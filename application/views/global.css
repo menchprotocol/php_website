@@ -923,7 +923,7 @@ textarea.note-textarea{
     cursor: grab;
 }
 .space-left{
-    padding-left: 33px;
+    padding-left: 33px !important;
 }
 .icon-white-block{
     background-color: #FFFFFF;
