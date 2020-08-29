@@ -109,7 +109,7 @@ class I extends CI_Controller {
             'i__id' => $i__id,
         ));
         if ( count($is) < 1) {
-            return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>IDEA #' . $i__id . ' Not Found</div>');
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>IDEA #' . $i__id . ' Not Found</div>');
         }
 
 
@@ -120,7 +120,7 @@ class I extends CI_Controller {
             if($is_public){
                 return redirect_message('/'.$i__id);
             } else {
-                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__id . ' is not published yet.</div>');
+                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__id . ' is not published yet.</div>');
             }
         }
 
@@ -132,7 +132,7 @@ class I extends CI_Controller {
             $process_mass_action = $this->I_model->mass_update($i__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $user_e['e__id']);
 
             //Pass-on results to UI:
-            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>';
+            $message = '<div class="msg alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>';
 
         } else {
 
@@ -177,7 +177,7 @@ class I extends CI_Controller {
             'x__source' => $user_e['e__id'],
             'x__right' => $i__id,
         )))){
-            return redirect_message('/~'.$i__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
+            return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
 
         }
 
@@ -189,7 +189,7 @@ class I extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/~'.$i__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>Successfully submitted your request to become a source for this idea. You will receive an update once your request has been reviewed.</div>');
+        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>Successfully submitted your request to become a source for this idea. You will receive an update once your request has been reviewed.</div>');
 
     }
 
@@ -208,7 +208,7 @@ class I extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/~'.$i__id, '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY JOINED</div>');
+        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY JOINED</div>');
 
     }
 

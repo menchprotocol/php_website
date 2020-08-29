@@ -280,7 +280,7 @@ if(!$show_next_tip && count($this->X_model->fetch(array(
     )))){
 
     //Recommended to Save This Idea:
-    echo '<div class="alert no-margin space-left">To save this idea for easy future access, tap<span class="icon-block-xs"><i class="far fa-bookmark discover"></i></span></div>';
+    echo '<div class="msg alert no-margin space-left">To save this idea for easy future access, tap<span class="icon-block-xs"><i class="far fa-bookmark discover"></i></span></div>';
 
 }
 
@@ -722,12 +722,12 @@ echo $tab_content;
 if($show_next_tip && $user_e['e__id'] > 0 && view_coins_e(6255, $user_e['e__id'], 0, false) <= config_item(13762)){
 
     //Recommend to go next:
-    echo '<div class="alert no-margin"><span class="icon-block"><i class="fas fa-info-circle"></i></span>Tip: Continue to the next idea by tapping<span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span>(below)</div>';
+    echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-info-circle"></i></span>Tip: Continue to the next idea by tapping<span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span>(below)</div>';
 
 } elseif($i_completion_percentage>=100 && !count($sitemap_items)){
 
     //Recommend to go next:
-    echo '<div class="alert no-margin"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have successfully discovered all ideas</div>';
+    echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have successfully discovered all ideas</div>';
 
 }
 

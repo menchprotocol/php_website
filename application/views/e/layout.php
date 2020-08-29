@@ -413,7 +413,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             if($source_is_e && $counter > count($list_i)){
                 //Give option to browse all idea:
-                $focus_tab .= '<div style="padding: 13px 0;"><div class="alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>LIST ALL '.$counter.' IDEAS &raquo;</a></div></div>';
+                $focus_tab .= '<div style="padding: 13px 0;"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>LIST ALL '.$counter.' IDEAS &raquo;</a></div></div>';
             }
 
 
@@ -460,7 +460,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 } else {
 
-                    $focus_tab .= '<div class="alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>'.$e['e__title'].' has discovered '.$counter.' ideas so far.</div>';
+                    $focus_tab .= '<div class="msg alert alert-info" role="alert"><span class="icon-block">&nbsp;</span>'.$e['e__title'].' has discovered '.$counter.' ideas so far.</div>';
 
                 }
 
@@ -531,7 +531,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             //SHOW LASTEST 100
             if(!$counter){
 
-                $focus_tab .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_title'].' yet</div>';
+                $focus_tab .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m_title'].' yet</div>';
 
             }
 
@@ -720,7 +720,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 <div class="notify_e_delete hidden">
 
                     <input type="hidden" id="e_x_count" value="0" />
-                    <div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete source & <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
+                    <div class="msg alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete source & <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
 
                 </div>
 
@@ -762,7 +762,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     </select>
 
                     <div class="notify_unx_e hidden">
-                        <div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will remove source</div>
+                        <div class="msg alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will remove source</div>
                     </div>
 
 

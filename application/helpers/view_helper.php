@@ -1222,7 +1222,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
     /*
     if(!count($i_notes) && $e_of_i){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin-bottom:13px;">';
-        $ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m_title'])).'. Be the first to post one</div>';
+        $ui .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m_title'])).'. Be the first to post one</div>';
         $ui .= '</div>';
     }
     */
@@ -1247,7 +1247,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
 
 
         //Response result:
-        $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover alert alert-danger" style="margin:8px 0;"></div>';
+        $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
 
 
         $ui .= '<table class="table table-condensed" style="margin-bottom: 16px;"><tr>';
@@ -1337,7 +1337,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
 function view__focus__e($e){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-    return '<div class="alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m_title'].'"><span class="icon-block">'.$e___11035[13670]['m_icon'].'</span>' . view_e__icon($e['e__icon']) . '&nbsp;<a href="/@'.$e['e__id'].'" class="'.extract_icon_color($e['e__icon']).'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m_title'].'">'.$e___11035[13671]['m_icon'].'</a></div>';
+    return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m_title'].'"><span class="icon-block">'.$e___11035[13670]['m_icon'].'</span>' . view_e__icon($e['e__icon']) . '&nbsp;<a href="/@'.$e['e__id'].'" class="'.extract_icon_color($e['e__icon']).'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m_title'].'">'.$e___11035[13671]['m_icon'].'</a></div>';
 }
 
 function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_input = null, $user_e = false){

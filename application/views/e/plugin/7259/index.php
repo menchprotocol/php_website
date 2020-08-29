@@ -122,7 +122,7 @@ if($replace_with_set && !$completed_replacements){
         echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
         echo '<input type="text" class="form-control border maxout" name="confirm_statement" value="'. @$_GET['confirm_statement'] .'"><br />';
     } else {
-        echo '<div class="alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Fix errors above to then apply search/replace</div>';
+        echo '<div class="msg alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Fix errors above to then apply search/replace</div>';
     }
 }
 

@@ -27,7 +27,7 @@ $e_focus_found = false; //Used to determine the first tab to be opened
 echo '<div class="container" style="padding-bottom:42px;">';
 
 if(!$e_of_i){
-    echo '<div class="alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/i/i_e_request/'.$i_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/i/i_e_add/'.$i_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
+    echo '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/i/i_e_request/'.$i_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/i/i_e_add/'.$i_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
 }
 
 if(isset($_GET['focus__e']) && superpower_active(12701, true)){
@@ -258,7 +258,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             //No Results:
             $e___12467 = $this->config->item('e___12467'); //MENCH COINS
-            $focus_tab .= '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m_title'].' yet</div>';
+            $focus_tab .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m_title'].' yet</div>';
 
         }
 

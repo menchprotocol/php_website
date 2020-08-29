@@ -546,7 +546,7 @@ function load_13571(e__id, x__id) {
 
         } else {
 
-            $("#modal13571 .save_results").html('<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>');
+            $("#modal13571 .save_results").html('<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>');
 
         }
     });

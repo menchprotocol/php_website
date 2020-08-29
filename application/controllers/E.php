@@ -64,7 +64,7 @@ class E extends CI_Controller
             $process_mass_action = $this->E_model->mass_update($e__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $user_e['e__id']);
 
             //Pass-on results to UI:
-            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>';
+            $message = '<div class="msg alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>';
 
         } else {
 
@@ -1006,7 +1006,7 @@ class E extends CI_Controller
 
         if ($delete_redirect_url) {
             //Page will be refresh, set flash message to be shown after restart:
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>' . $success_message . '</div>');
+            $this->session->set_flashdata('flash_message', '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>' . $success_message . '</div>');
         }
 
         //Start return array:
@@ -1907,7 +1907,7 @@ class E extends CI_Controller
             return redirect_message(home_url());
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/e/signin/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
+            return redirect_message('/e/signin/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
         }
 
         //Validate DISCOVER ID and matching email:
@@ -1918,10 +1918,10 @@ class E extends CI_Controller
         )); //The user making the request
         if(count($validate_x) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
+            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
         } elseif(strtotime($validate_x[0]['x__time']) + config_var(11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
+            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
         }
 
         //Fetch source:
@@ -1929,14 +1929,14 @@ class E extends CI_Controller
             'e__id' => $validate_x[0]['x__source'],
         ));
         if(count($es) < 1){
-            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
+            return redirect_message('/e/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
         }
 
         //Log them in:
         $this->E_model->activate_session($es[0]);
 
         //Take them to DISCOVER HOME
-        return redirect_message( home_url() , '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
+        return redirect_message( home_url() , '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
 
     }
 

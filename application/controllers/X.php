@@ -116,7 +116,7 @@ class X extends CI_Controller
                         'x__message' => $new_content,
                     ), $user_e['e__id'], 12360, update_description($x['x__message'], $new_content));
 
-                    $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_search'].'] with ['.trim($_POST['x__message_replace']).']</div>';
+                    $message .= '<div class="msg alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_search'].'] with ['.trim($_POST['x__message_replace']).']</div>';
 
                 }
 
@@ -135,7 +135,7 @@ class X extends CI_Controller
         } else {
 
             //Show no transaction warning:
-            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Transactions found with the selected filters. Modify filters and try again.</div>';
+            $message .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Transactions found with the selected filters. Modify filters and try again.</div>';
 
         }
 
@@ -469,7 +469,7 @@ class X extends CI_Controller
             $i__id_added = $this->X_model->start($user_e['e__id'], $i__id);
             if(!$i__id_added){
                 //Failed to add to Discovery:
-                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>FAILED to add to '.$e___11035[12969]['m_title'].'.</div>');
+                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>FAILED to add to '.$e___11035[12969]['m_title'].'.</div>');
             }
         }
 
@@ -537,7 +537,7 @@ class X extends CI_Controller
                 }
             }
 
-            return redirect_message('/'.$top_i__id, '<div class="alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed this idea & will be notified of new updates, if any.</div></div>');
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed this idea & will be notified of new updates, if any.</div></div>');
 
         }
 
@@ -600,7 +600,7 @@ class X extends CI_Controller
         //Make sure we found it:
         if ( count($is) < 1) {
 
-            return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
         } elseif(!in_array($is[0]['i__status'], $this->config->item('n___7355') /* PUBLIC */)){
 
@@ -612,7 +612,7 @@ class X extends CI_Controller
             } else {
 
                 //Inform them not published:
-                return redirect_message(home_url(), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
+                return redirect_message(home_url(), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
 
             }
 
@@ -867,7 +867,7 @@ class X extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message(home_url(), '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+        return redirect_message(home_url(), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
 
     }
 
