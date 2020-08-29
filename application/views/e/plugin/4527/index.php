@@ -28,14 +28,6 @@ echo '/*<br />
 //PLATFORM STATS
 echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
 
-
-
-//CACHE MENCH COINS COUNT:
-foreach($this->config->item('e___12467') as $x__type => $m) {
-    echo '$config[\'s___'.$x__type.'\'] = '.count_unique_coins($x__type).'; //'.$m['m_title'].'<br />';
-}
-
-
 //CONFIG VARS
 foreach($config_e as $en){
 

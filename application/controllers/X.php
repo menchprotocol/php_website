@@ -91,7 +91,7 @@ class X extends CI_Controller
                 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
                 $e___12467 = $this->config->item('e___12467'); //MENCH COINS
 
-                $message .= '<div class="montserrat x-info">'.$e___11035[4341]['m_icon'].' '.$e___11035[4341]['m_title'].' has '.number_format($x_count[0]['total_count'] , 0).' TRANSACTIONS indexing <span class="source inline-block">'.$e___12467[12274]['m_icon'].' '.number_format($this->config->item('s___12274'), 0).' '.$e___12467[12274]['m_title'].'</span> & <span class="idea inline-block">'.$e___12467[12273]['m_icon'].' '.number_format($this->config->item('s___12273'), 0).' '.$e___12467[12273]['m_title'].'</span> with <span class="discover inline-block">'.$e___12467[6255]['m_icon'].' '.number_format($this->config->item('s___6255'), 0).' '.$e___12467[6255]['m_title'].'</span>. Here are the last '.$total_items_loaded.' TRANSACTIONS:</div>';
+                $message .= '<div class="montserrat x-info">'.$e___11035[4341]['m_icon'].' '.$e___11035[4341]['m_title'].' has '.number_format($x_count[0]['total_count'] , 0).' TRANSACTIONS indexing <span class="source inline-block">'.$e___12467[12274]['m_icon'].' '.number_format(count_unique_coins(12274), 0).' '.$e___12467[12274]['m_title'].'</span> & <span class="idea inline-block">'.$e___12467[12273]['m_icon'].' '.number_format(count_unique_coins(12273), 0).' '.$e___12467[12273]['m_title'].'</span> with <span class="discover inline-block">'.$e___12467[6255]['m_icon'].' '.number_format(count_unique_coins(6255), 0).' '.$e___12467[6255]['m_title'].'</span>. Here are the last '.$total_items_loaded.' TRANSACTIONS:</div>';
 
             } else {
                 //Subsequent messages:
