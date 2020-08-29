@@ -183,25 +183,21 @@ function e_signin_password(){
 }
 
 function e_magic_email(){
-    var r = confirm("Receive an email with a 1-click login link.");
-    if (r == true) {
+    //Update UI:
+    goto_step(5); //To check their email and create new account
+    $('.magic_result').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Sending Email...</div>');
 
-        //Update UI:
-        goto_step(5); //To check their email and create new account
-        $('.magic_result').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Sending Email...</div>');
-
-        //Check email and validate:
-        $.post("/e/e_magic_email", {
-            input_email: $('#input_email').val(),
-            sign_i__id: sign_i__id,
-        }, function (data) {
-            if (data.status) {
-                //All good, they can close window:
-                $('.magic_result').html('<div><i class="fas fa-eye"></i> Check your email and SPAM FOLDER</div>').hide().fadeIn();
-            } else {
-                //Show errors:
-                $('.magic_result').html('<div class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</div>').hide().fadeIn();
-            }
-        });
-    }
+    //Check email and validate:
+    $.post("/e/e_magic_email", {
+        input_email: $('#input_email').val(),
+        sign_i__id: sign_i__id,
+    }, function (data) {
+        if (data.status) {
+            //All good, they can close window:
+            $('.magic_result').html('<div><i class="fas fa-eye"></i> Check your email and SPAM FOLDER</div>').hide().fadeIn();
+        } else {
+            //Show errors:
+            $('.magic_result').html('<div class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</div>').hide().fadeIn();
+        }
+    });
 }
