@@ -58,6 +58,7 @@ if(count($current_sign_i_attempt) == 0){
 
     <div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>
 
+
     <?php
     $sign_i = array();
     if($sign_i__id > 0){
@@ -68,6 +69,8 @@ if(count($current_sign_i_attempt) == 0){
         if(count($sign_i)){
             echo '<p style="margin-top:13px;"><a href="/'.$sign_i__id.'" class="montserrat"><span class="icon-block"><i class="fas fa-arrow-left"></i></span>'.$sign_i[0]['i__title'].'</a></p>';
         }
+    } else {
+        echo '<h1 class="text-center">'.$e___11035[4269]['m_title'].'</h1>';
     }
 
     echo '<p style="margin-top:13px; text-align: center;">'.view_12687(4269).'</p>';
