@@ -66,11 +66,11 @@ $html_message = '<br />';
 $html_message .= '<div>In the last '.$last_x_days.' day'.view__s($last_x_days).' we grew:</div>';
 $html_message .= '<br />';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[12274]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $e_coins_growth_rate >= 0 ? '+' : '-' ).$e_coins_growth_rate.'%</b><span style="text-decoration:none;">TO '.view_number($e_coins_last_week[0]['totals']).' '.$e___12467[12274]['m_title'].'</span></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[12274]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $e_coins_growth_rate >= 0 ? '+' : '-' ).$e_coins_growth_rate.'%</b><span style="text-decoration:none;">TO <b>'.number_format($e_coins_last_week[0]['totals'], 0).'</b> '.$e___12467[12274]['m_title'].'</span></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[12273]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $i_coins_growth_rate >= 0 ? '+' : '-' ).$i_coins_growth_rate.'%</b><span style="text-decoration:none;">TO '.view_number($i_coins_last_week[0]['totals']).' '.$e___12467[12273]['m_title'].'</span></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[12273]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $i_coins_growth_rate >= 0 ? '+' : '-' ).$i_coins_growth_rate.'%</b><span style="text-decoration:none;">TO <b>'.number_format($i_coins_last_week[0]['totals'], 0).'</b> '.$e___12467[12273]['m_title'].'</span></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[6255]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $x_coins_growth_rate >= 0 ? '+' : '-' ).$x_coins_growth_rate.'%</b><span style="text-decoration:none;">TO '.view_number($x_coins_last_week[0]['totals']).' '.$e___12467[6255]['m_title'].'</span></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[6255]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $x_coins_growth_rate >= 0 ? '+' : '-' ).$x_coins_growth_rate.'%</b><span style="text-decoration:none;">TO <b>'.number_format($x_coins_last_week[0]['totals'], 0).'</b> '.$e___12467[6255]['m_title'].'</span></div>';
 
 
 
