@@ -58,9 +58,6 @@ if(count($current_sign_i_attempt) == 0){
 
     <div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>
 
-
-    <h1 class="text-center"><?= $e___11035[4269]['m_title'] ?></h1>
-
     <?php
     $sign_i = array();
     if($sign_i__id > 0){
