@@ -697,7 +697,7 @@ function extract_icon_color($e__icon, $return_coin = false){
 
 
 
-function count_unique_coins($x__type){
+function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null){
 
     /*
      *
@@ -737,6 +737,13 @@ function count_unique_coins($x__type){
 
         return 0;
 
+    }
+
+    if(strtotime($x__time_start) > 0){
+        $query_filters['x__time >='] = $x__time_start;
+    }
+    if(strtotime($x__time_end) > 0){
+        $query_filters['x__end <='] = $x__time_end;
     }
 
     //Fetch Results:
