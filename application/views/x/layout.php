@@ -743,9 +743,10 @@ echo '</div>'; //CLOSE CONTAINER
 
 if($in_my_x){
 
-    echo '<div class="container fixed-bottom">';
-    echo '<div class="row">';
-    echo '<div class="discover-controller">';
+    $buttons_found = 0;
+    $buttons_ui = '';
+
+
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
         $control_btn = '';
@@ -772,20 +773,30 @@ if($in_my_x){
             //GO NEXT
             $control_btn = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
-        } elseif($e__id==12419){
+        } elseif($e__id==12419 && count($sitemap_items)){
 
             //ADD COMMENT
             $control_btn = '<a class="controller-nav add-comments" href="javascript:void(0);" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
         }
 
-        echo '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
+        $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
+
+        if($control_btn){
+            $buttons_found++;
+        }
 
     }
 
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
+    if($buttons_found > 0){
+        echo '<div class="container fixed-bottom">';
+        echo '<div class="row">';
+        echo '<div class="discover-controller">';
+        echo $buttons_ui;
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+    }
 
 } else {
 
