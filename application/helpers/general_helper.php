@@ -743,7 +743,7 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
         $query_filters['x__time >='] = $x__time_start;
     }
     if(strtotime($x__time_end) > 0){
-        $query_filters['x__end <='] = $x__time_end;
+        $query_filters['x__time <='] = $x__time_end;
     }
 
     //Fetch Results:
