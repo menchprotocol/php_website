@@ -231,7 +231,11 @@ if($previous_level_id){
 //HEADER
 echo '<div style="position: relative; display: block;">' . ( $show_percentage ? '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>' : '' ) . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg '.( $show_percentage ? ' title-block-squeeze ' : '' ).'">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
-
+//Have they completed this?
+if($i_completion_percentage>=100){
+    //Recommend to go next:
+    echo '<div class="alert no-margin"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have successfully discovered all ideas</div>';
+}
 
 
 //MESSAGES
@@ -724,7 +728,7 @@ echo $tab_content;
 
 if($show_next_tip && $user_e['e__id'] > 0 && view_coins_e(6255, $user_e['e__id'], 0, false) <= config_item(13762)){
     //Recommend to go next:
-    echo '<div class="alert no-margin space-left">' . $i_completion_percentage . '% Done, Tap<span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span>(below) to go next</div>';
+    echo '<div class="alert no-margin"><span class="icon-block"><i class="fas fa-info-circle"></i></span>Tip: Continue to the next idea by tapping<span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span>(below)</div>';
 }
 
 
