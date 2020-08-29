@@ -2,8 +2,9 @@
 
 //Calculates the weekly coins issued:
 $e___12467 = $this->config->item('e___12467'); //MENCH COINS
+$last_x_days = 7;
 
-$last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-7, date("Y"));
+$last_week_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
 $last_week_end_timestamp = mktime(23, 59, 59, date("n"), date("j")-1, date("Y"));
 
 $last_week_start = date("Y-m-d H:i:s", $last_week_start_timestamp);
@@ -62,7 +63,7 @@ $subject = extract_icon_color($e___12467[6255]['m_icon'], true).' '.$e___12467[6
 
 //Email Body
 $html_message = '<br />';
-$html_message .= '<div>From '.date("F jS", $last_week_start_timestamp).' - '.date("jS", $last_week_end_timestamp).' we grew:</div>';
+$html_message .= '<div>In the last '.$last_x_days.' day'.view__s($last_x_days).' we grew:</div>';
 $html_message .= '<br />';
 
 $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[12274]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $e_coins_growth_rate >= 0 ? '+' : '-' ).$e_coins_growth_rate.'%</b><span style="text-decoration:none;">TO '.view_number($e_coins_last_week[0]['totals']).' '.$e___12467[12274]['m_title'].'</span></div>';
