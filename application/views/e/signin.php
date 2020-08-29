@@ -109,7 +109,7 @@ if(count($current_sign_i_attempt) == 0){
             <div class="doclear">&nbsp;</div>
             
             <div id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn transparent btn-raised " title="<?= $e___11035[12991]['m_title'] ?>"><?= $e___11035[12991]['m_icon'] ?></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source transparent btn-raised " title="<?= $e___11035[12991]['m_title'] ?>"><?= $e___11035[12991]['m_icon'] ?></a>
                 <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-raised " title="<?= $e___11035[4269]['m_title'] ?>"><?= $e___11035[4269]['m_icon'] ?></a>
             </div>
 
