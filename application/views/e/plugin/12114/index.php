@@ -62,14 +62,15 @@ $subject = extract_icon_color($e___12467[6255]['m_icon'], true).' '.$e___12467[6
 
 //Email Body
 $html_message = '<br />';
-$html_message .= '<div>Growth Report for '.date("F jS", $last_week_start_timestamp).'-'.date("jS", $last_week_end_timestamp).':</div>';
+$html_message .= '<div>From '.date("F jS", $last_week_start_timestamp).' - '.date("jS", $last_week_end_timestamp).' we grew:</div>';
 $html_message .= '<br />';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[6255]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $x_coins_growth_rate >= 0 ? '+' : '-' ).$x_coins_growth_rate.'%</b><span style="text-decoration:none;">'.view_number($x_coins_last_week[0]['totals']).' '.$e___12467[6255]['m_title'].'</span></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[12274]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $e_coins_growth_rate >= 0 ? '+' : '-' ).$e_coins_growth_rate.'%</b><span style="text-decoration:none;">TO '.view_number($e_coins_last_week[0]['totals']).' '.$e___12467[12274]['m_title'].'</span></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[12273]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $i_coins_growth_rate >= 0 ? '+' : '-' ).$i_coins_growth_rate.'%</b><span style="text-decoration:none;">'.view_number($i_coins_last_week[0]['totals']).' '.$e___12467[12273]['m_title'].'</span></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[12273]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $i_coins_growth_rate >= 0 ? '+' : '-' ).$i_coins_growth_rate.'%</b><span style="text-decoration:none;">TO '.view_number($i_coins_last_week[0]['totals']).' '.$e___12467[12273]['m_title'].'</span></div>';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[12274]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $e_coins_growth_rate >= 0 ? '+' : '-' ).$e_coins_growth_rate.'%</b><span style="text-decoration:none;">'.view_number($e_coins_last_week[0]['totals']).' '.$e___12467[12274]['m_title'].'</span></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.extract_icon_color($e___12467[6255]['m_icon'], true).'</b><b style="min-width:55px; display: inline-block;">'.( $x_coins_growth_rate >= 0 ? '+' : '-' ).$x_coins_growth_rate.'%</b><span style="text-decoration:none;">TO '.view_number($x_coins_last_week[0]['totals']).' '.$e___12467[6255]['m_title'].'</span></div>';
+
 
 
 
