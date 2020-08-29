@@ -8,10 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-28 16:42:29 PST
-$config['s___12274'] = 5162; //SOURCES
+//Generated 2020-08-29 10:19:03 PST
+$config['s___12274'] = 5175; //SOURCES
 $config['s___12273'] = 4028; //IDEAS
-$config['s___6255'] = 126111; //DISCOVERIES
+$config['s___6255'] = 126753; //DISCOVERIES
 
 //SHOW URL:
 $config['n___13672'] = array(10876);
@@ -3148,7 +3148,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13671,13401,13292,13573,13574,13495,13670,12707,4235,12991,12137,13207,11068,12211,4341,13689,6225,12969,13405,6287,13562,13579,6415,12896,10573,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(13502,13671,13401,13292,13573,13574,13495,13670,12707,4235,12991,12137,11068,13207,12211,4341,13689,6225,12969,13405,6287,13562,13579,6415,12896,10573,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3222,17 +3222,17 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,11035,13420,10648,12138,7356,7355,4737),
     ),
+    11068 => array(
+        'm_title' => 'INSTANT EMAIL LOGIN',
+        'm_message' => '',
+        'm_icon' => '<i class="far fa-envelope-open" aria-hidden="true"></i>',
+        'm_profile' => array(11035,11065),
+    ),
     13207 => array(
         'm_title' => 'LEADERBOARD',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-medal"></i>',
         'm_profile' => array(11035,12500,12489,10876,4527),
-    ),
-    11068 => array(
-        'm_title' => 'MAGIC LOGIN',
-        'm_message' => '',
-        'm_icon' => '<i class="far fa-envelope-open" aria-hidden="true"></i>',
-        'm_profile' => array(11035,11065),
     ),
     12211 => array(
         'm_title' => 'MARK AS READ & NEXT',
@@ -3774,7 +3774,7 @@ $config['e___6404'] = array(
     ),
     11065 => array(
         'm_title' => 'MAGIC LINK VALID SECONDS',
-        'm_message' => '3600',
+        'm_message' => '86400',
         'm_icon' => '',
         'm_profile' => array(6404),
     ),
