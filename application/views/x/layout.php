@@ -736,7 +736,7 @@ if(!count($sitemap_items)){
     } else {
 
         //Completed
-        echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-check-circle"></i>You have successfully discovered all ideas</span></div>';
+        echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have successfully discovered all ideas</div>';
 
     }
 }
