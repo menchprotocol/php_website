@@ -26,10 +26,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     echo '<table style="width: 100%;">';
 
-    echo '<tr>';
-    echo '<td style="width: 200px;">USER</td>';
-    echo '<td style="width: 200px;">EMAIL</td>';
-    echo '<td style="width: 200px;">PHONE</td>';
+    echo '<tr style="font-weight:bold;">';
+    echo '<td>USER</td>';
+    echo '<td>EMAIL</td>';
+    echo '<td>PHONE</td>';
     foreach($list_ids as $list_id){
 
         $is = $this->I_model->fetch(array(
@@ -37,7 +37,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
 
-        echo '<td style="width: 200px;">'.( count($is) ? '<a href="/~'.$ideas[$list_id]['i__id'].'" class="montserrat">'.$ideas[$list_id]['i__title'].'</a>' : '#'.$list_id.' INVALID' ).'</td>';
+        echo '<td>'.( count($is) ? '<a href="/~'.$ideas[$list_id]['i__id'].'" class="montserrat">'.$ideas[$list_id]['i__title'].'</a>' : '#'.$list_id.' INVALID' ).'</td>';
 
         if(count($is)){
             $ideas[$list_id] = $is[0];
@@ -55,7 +55,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<tr>';
 
         //User
-        echo '<td><a href="/@'.$x['e__id'].'">'.$x['e__title'].'</a></td>';
+        echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
 
         //Fetch Phone & Email:
         $u_emails = $this->X_model->fetch(array(
