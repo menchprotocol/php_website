@@ -37,11 +37,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     $column_ideas = array();
     $column_sources = array();
     if(isset($_GET['e_sources_id']) && strlen($_GET['e_sources_id'])){
-        foreach(explode('|', $_GET['e_sources_id']) as $e__id){
-            foreach($this->E_model->fetch(array( 'e__id' => $e__id )) as $e){
-                array_push($column_sources, $e);
-            }
-        }
+        $column_sources = $this->X_model->fetch(array(
+            'x__up' => $_POST['e_sources_id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        ), array('x__down'), 0, 0, array(), 'x__id');
     }
     if(isset($_GET['i__tree_id']) && strlen($_GET['i__tree_id'])){
         foreach($this->X_model->fetch(array(
