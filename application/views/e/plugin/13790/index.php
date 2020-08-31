@@ -6,11 +6,16 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     echo '<div class="form-group" style="max-width:550px; margin:1px 0 10px; display: inline-block;">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Completed #</span>
-                        <input style="padding-left:3px; min-width:56px;" type="number" placeholder="7766" name="i__id" id="i__id" value="'.( isset($_GET['i__id']) ? $_GET['i__id'] : '' ).'" class="form-control">
-                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">& Chart Columns for #</span>
-
-                        <input style="padding-left:3px; min-width:56px;" type="text" placeholder="123,345,456" name="i__list_ids" id="i__list_ids" value="'.( isset($_GET['i__list_ids']) ? $_GET['i__list_ids'] : '' ).'" class="form-control">
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Start #</span>
+                        <input style="padding-left:3px; min-width:56px;" type="number" name="i__id" value="'.( isset($_GET['i__id']) ? $_GET['i__id'] : '' ).'" class="form-control">
+                        
+                        <br />
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Idea Tree #</span>
+                        <input style="padding-left:3px; min-width:56px;" type="number" name="i__tree_id" value="'.( isset($_GET['i__tree_id']) ? $_GET['i__tree_id'] : '' ).'" class="form-control">
+                        
+                        <br />
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Profiles Sources @</span>
+                        <input style="padding-left:3px; min-width:56px;" type="number" name="e_profiles" value="'.( isset($_GET['e_profiles']) ? $_GET['e_profiles'] : '4783|3288' /* Email/Phone are Default */ ).'" class="form-control">
 
                     </div>
                 </div>
@@ -19,32 +24,54 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 } else {
 
-    $ideas = array();
-    $list_ids = ( isset($_GET['i__list_ids']) && strlen($_GET['i__list_ids']) ? explode(',', $_GET['i__list_ids']) : array() );
+    //Fetch Main Idea:
+    $is = $this->I_model->fetch(array(
+        'i__id' => $_GET['i__id'],
+    ));
+    if(!count($is)){
+        die('Invalid Idea ID');
+    }
 
 
 
-    echo '<table style="width:'.( ( count($list_ids) * 200 ) + 620  ).'px;">';
-    echo '<tr style="font-weight:bold;">';
-    echo '<td style="width:20px;">#</td>';
-    echo '<td style="width:200px;">USER</td>';
-    echo '<td style="width:200px;">EMAIL</td>';
-    echo '<td style="width:200px;">PHONE</td>';
-    foreach($list_ids as $list_id){
-
-        $is = $this->I_model->fetch(array(
-            'i__id' => $list_id,
-            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-        ));
-
-        if(count($is)){
-            $ideas[$list_id] = $is[0];
+    $column_ideas = array();
+    $column_sources = array();
+    if(isset($_GET['e_profiles']) && strlen($_GET['e_profiles'])){
+        foreach(explode('|', $_GET['e_profiles']) as $e__id){
+            foreach($this->E_model->fetch(array( 'e__id' => $e__id )) as $e){
+                array_push($column_ideas, $e);
+            }
         }
+    }
+    if(isset($_GET['i__tree_id']) && strlen($_GET['i__tree_id'])){
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__left' => $_GET['i__tree_id'],
+        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $x){
+            array_push($column_ideas, $x);
+        }
+    }
 
-        echo '<td style="width:200px;">'.( count($is) ? '<a href="/~'.$ideas[$list_id]['i__id'].'" class="montserrat">'.$ideas[$list_id]['i__title'].'</a>' : '#'.$list_id.' INVALID' ).'</td>';
 
+
+    echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_ideas) * 200 ) + 280  ).'px;">';
+    echo '<tr style="font-weight:bold; font-size:1.4em;"><td colspan="'.( 3 + count($column_sources) + count($column_ideas) ).'"><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</a></td></tr>';
+
+    echo '<tr style="font-weight:bold;">';
+    echo '<td style="width:30px;">#</td>';
+    echo '<td style="width:200px;">USER</td>';
+    echo '<td style="width:50px;">DONE</td>';
+    foreach($column_sources as $e){
+        echo '<td style="width:200px;"><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';
+    }
+    foreach($column_ideas as $i){
+        echo '<td style="width:200px;"><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></td>';
     }
     echo '</tr>';
+
+
 
 
 
@@ -58,39 +85,30 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<tr>';
 
         //User
+        $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
         echo '<td>'.($count+1).'</td>';
         echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
+        echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
 
-        //Fetch Phone & Email:
-        $u_emails = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $x['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288,
-        ));
-        $u_phones = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $x['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 4783,
-        ));
-        echo '<td>'.( count($u_emails) ? $u_emails[0]['x__message'] : '---' ).'</td>';
-        echo '<td>'.( count($u_phones) ? $u_phones[0]['x__message'] : '---' ).'</td>';
+        //SOURCES
+        foreach($column_sources as $e){
+            $fetch_data = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__down' => $x['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__up' => $e['e__id'],
+            ));
+            echo '<td>'.( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '❌' ).'</td>';
+        }
 
-
-        //List Idea Responses:
-        foreach($list_ids as $list_id){
-            //Fetch Response:
-            $discovery = array();
-            if(isset($ideas[$list_id])){
-                $discovery = $this->X_model->fetch(array(
-                    'x__left' => $ideas[$list_id]['i__id'],
-                    'x__source' => $x['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array(), 1);
-            }
-
+        //IDEAS
+        foreach($column_ideas as $i){
+            $discovery = $this->X_model->fetch(array(
+                'x__left' => $i['i__id'],
+                'x__source' => $x['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array(), 1);
             echo '<td>'.( count($discovery) ? ( strlen($discovery[0]['x__message']) > 0 ? $discovery[0]['x__message'] : '✅' )  : '❌').'</td>';
         }
 
