@@ -68,6 +68,7 @@ $u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
 $sitemap_items_raw = array();
 $sitemap_items = array();
+$i = array(); //Assume main intent not yet completed, unless proven otherwise...
 $i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_completion_percentage = 0; //Assume main intent not yet completed, unless proven otherwise...
 $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
@@ -108,16 +109,15 @@ if($in_my_x){
                         //We reached the top-level discovery:
                         $i_completed = $completion_rate['completion_percentage'] >= 100;
                         $i_completion_percentage = $completion_rate['completion_percentage'];
+                        $i = $is_this[0];
                         break;
                     }
                 }
             }
         }
 
-        $count = -1;
-        foreach(array_reverse($sitemap_items_raw) as $si) {
-            array_push($sitemap_items, view_i_x($si['i'], $count, true, null, $si['completion_rate']));
-            $count--;
+        foreach($sitemap_items_raw as $si) {
+            array_push($sitemap_items, view_i_x($si['i'], ( $i['i__id']==$si['i']['i__id'] ? -1 : -2 ), true, null, $si['completion_rate']));
         }
 
     }
