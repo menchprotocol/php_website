@@ -805,6 +805,8 @@ class E extends CI_Controller
         if (!in_array($e__update['e__status'], $this->config->item('n___7358') /* ACTIVE */) && !($e__update['e__status'] == $es[0]['e__status'])) {
 
 
+
+
             //Count source references in IDEA NOTES:
             $i_notes = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE

@@ -351,27 +351,15 @@ class E_model extends CI_Model
 
         //Fetch all SOURCE LINKS:
         $adjusted_count = 0;
-        foreach(array_merge(
-                //User references within IDEA NOTES:
-                    $this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
-                        'x__up' => $e__id,
-                    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')),
-                    //User transactions:
-                    $this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                        '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ')' => null,
-                    ), array(), 0)
-                ) as $adjust_tr){
 
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ' OR x__source = ' . $e__id . ')' => null,
+        ), array(), 0) as $adjust_tr){
             //Delete this transaction:
             $adjusted_count += $this->X_model->update($adjust_tr['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
             ), $x__source, 10673 /* User Transaction Unpublished */);
-
         }
 
         return $adjusted_count;
