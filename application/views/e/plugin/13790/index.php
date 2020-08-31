@@ -39,7 +39,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     if(isset($_GET['e_profiles']) && strlen($_GET['e_profiles'])){
         foreach(explode('|', $_GET['e_profiles']) as $e__id){
             foreach($this->E_model->fetch(array( 'e__id' => $e__id )) as $e){
-                array_push($column_ideas, $e);
+                array_push($column_sources, $e);
             }
         }
     }
