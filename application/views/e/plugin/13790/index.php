@@ -77,7 +77,19 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         //List Idea Responses:
         foreach($list_ids as $list_id){
-            echo '<td>'.(isset($ideas[$list_id]) ? $ideas[$list_id]['x__message']  : '---').'</td>';
+            //Fetch Response:
+            $discovery = array();
+            if(isset($ideas[$list_id])){
+                $discovery = $this->X_model->fetch(array(
+                    'x__left' => $ideas[$list_id],
+                    'x__source' => $x['e__id'],
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                ), array(), 1);
+            }
+
+            echo '<td>'.( count($discovery) ? '✅ '.$discovery[0]['x__message']  : '❌').'</td>';
         }
 
         echo '</tr>';
