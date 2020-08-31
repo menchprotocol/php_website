@@ -25,6 +25,33 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
     <?php
 
+
+
+    //PROFILE
+    echo '<div id="list_11030" class="list-group ">';
+    foreach($this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__down' => $e['e__id'],
+    ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $e_profile) {
+        echo view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+    }
+    //ADD NEW
+    echo '<div id="new_11030" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
+                <div class="input-group border">
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
+                    <input type="text"
+                           class="form-control form-control-thick algolia_search dotransparent add-input"
+                           maxlength="' . config_var(6197) . '"
+                           placeholder="NEW SOURCE">
+                </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+    echo '</div>';
+
+
+
+
+
     //SOURCE DRAFTING?
     if(!in_array($e['e__status'], $this->config->item('n___7357'))){
         echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).'"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
@@ -74,9 +101,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     } elseif($source_is_e || ($superpower_12701 && $counter__x > 0)){
         //DISCOVERIES
         $active_x__type = 6255;
-    } elseif(!$source_is_e || $superpower_13422) {
-        //PROFILE
-        $active_x__type = 11030;
     }
 
     $tab_nav = '';
@@ -117,43 +141,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 continue;
             }
             $focus_tab .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m_icon'].' '.$m['m_title'].' '.number_format($counter, 0).' times.</div>';
-
-        } elseif($x__type==11030){
-
-            if($source_is_e && !$superpower_13422){
-                continue;
-            }
-
-            //PROFILE
-            $e__profiles = $this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                'x__down' => $e['e__id'],
-            ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
-
-            $counter = count($e__profiles);
-            if(!$counter && !$superpower_13422){
-                continue;
-            }
-
-            $focus_tab .= '<div id="list_11030" class="list-group ">';
-
-            foreach($e__profiles as $e_profile) {
-                $focus_tab .= view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
-            }
-
-            //Input to add new parents:
-            $focus_tab .= '<div id="new_11030" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
-                <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
-                    <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent add-input"
-                           maxlength="' . config_var(6197) . '"
-                           placeholder="NEW SOURCE">
-                </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
-
-            $focus_tab .= '</div>';
 
         } elseif($x__type==12274){
 

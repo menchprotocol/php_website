@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-31 00:54:46 PST
+//Generated 2020-08-31 12:30:53 PST
 
 //SCHEDULED UPDATES:
 $config['n___13783'] = array(13784,13785,13786);
@@ -85,7 +85,7 @@ $config['e___13571'] = array(
         'm_title' => 'SOURCE STATUS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     6197 => array(
         'm_title' => 'SOURCE TITLE',
@@ -1674,19 +1674,13 @@ $config['e___12577'] = array(
 );
 
 //SOURCE TAB SHOW EVEN IF ZERO:
-$config['n___12574'] = array(6225,11030);
+$config['n___12574'] = array(6225);
 $config['e___12574'] = array(
     6225 => array(
         'm_title' => 'MY ACCOUNT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
         'm_profile' => array(13425,12574,11089,4527,11035),
-    ),
-    11030 => array(
-        'm_title' => 'PROFILE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13296,7545,13411,11089,11028),
     ),
 );
 
@@ -1795,8 +1789,14 @@ $config['e___12446'] = array(
 );
 
 //MENCH URL:
-$config['n___10876'] = array(13207,7291,4341,13405,13465,6287,4269);
+$config['n___10876'] = array(13465,13207,7291,4341,13405,6287,4269);
 $config['e___10876'] = array(
+    13465 => array(
+        'm_title' => 'EVENT #1 OUR 2020 BURNING MAN 🔥',
+        'm_message' => 'https://mench.com/13980',
+        'm_icon' => '<i class="fad fa-calendar-star source"></i>',
+        'm_profile' => array(13802,10876),
+    ),
     13207 => array(
         'm_title' => 'LEADERBOARD',
         'm_message' => 'https://mench.com/@',
@@ -1820,12 +1820,6 @@ $config['e___10876'] = array(
         'm_message' => 'https://mench.com/~',
         'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
         'm_profile' => array(11035,10876),
-    ),
-    13465 => array(
-        'm_title' => 'OUR 2020 BURNING MAN',
-        'm_message' => 'https://mench.com/13980',
-        'm_icon' => '<i class="fad fa-calendar-star source"></i>',
-        'm_profile' => array(10876),
     ),
     6287 => array(
         'm_title' => 'PLUGINS',
@@ -3097,7 +3091,7 @@ $config['e___11018'] = array(
 );
 
 //SOURCE TABS:
-$config['n___11089'] = array(6225,7545,11030,12274,12273,6255,12896,12419,12887);
+$config['n___11089'] = array(6225,7545,12274,12273,6255,12896,12419,12887);
 $config['e___11089'] = array(
     6225 => array(
         'm_title' => 'MY ACCOUNT',
@@ -3110,12 +3104,6 @@ $config['e___11089'] = array(
         'm_message' => '',
         'm_icon' => '<i class="far fa-user-circle source" aria-hidden="true"></i>',
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
-    ),
-    11030 => array(
-        'm_title' => 'PROFILE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13296,7545,13411,11089,11028),
     ),
     12274 => array(
         'm_title' => 'SOURCES',
@@ -4004,7 +3992,7 @@ $config['e___11054'] = array(
         'm_title' => 'SOURCE STATUS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     7357 => array(
         'm_title' => 'SOURCE STATUS PUBLIC',
@@ -4204,7 +4192,7 @@ $config['e___6206'] = array(
         'm_title' => 'STATUS',
         'm_message' => 'e__status',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     6197 => array(
         'm_title' => 'TITLE',
@@ -5524,7 +5512,7 @@ $config['e___4527'] = array(
         'm_title' => 'SOURCE STATUS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     7358 => array(
         'm_title' => 'SOURCE STATUS ACTIVE',
@@ -6259,7 +6247,7 @@ $config['e___6204'] = array(
         'm_title' => 'SOURCE STATUS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     12968 => array(
         'm_title' => 'SYNC ICONS IF DIFFERENT',
