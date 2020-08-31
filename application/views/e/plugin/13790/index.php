@@ -80,7 +80,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
         'x__left' => $_GET['i__id'],
-    ), array('x__source'), config_var(11064), 0, array('x__id' => 'DESC')) as $count => $x){
+    ), array('x__source'), 0, 0, array('x__id' => 'DESC')) as $count => $x){
 
         echo '<tr>';
 
