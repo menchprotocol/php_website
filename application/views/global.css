@@ -607,7 +607,7 @@ img.no-radius {
 }
 
 .progress-bg-list .progress-done, .progress-bg-image .progress-done{
-    height: 5px;
+    height:21px;
     background-color: #FC1B44;
 }
 
