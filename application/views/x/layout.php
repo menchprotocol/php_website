@@ -779,12 +779,12 @@ if($in_my_x){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $control_btn = '<a href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" title="'.$m['m_title'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a>';
+            $control_btn = '<a class="grey" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" title="'.$m['m_title'].'"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a>';
 
         } elseif($e__id==12991 && !$i_completed && count($sitemap_items)){
 
             //GO BACK
-            $control_btn = '<a class="controller-nav" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
+            $control_btn = '<a class="controller-nav grey" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
         } elseif($e__id==12211 && !$i_completed){
 
@@ -794,7 +794,7 @@ if($in_my_x){
         } elseif($e__id==12419 && count($sitemap_items)){
 
             //ADD COMMENT
-            $control_btn = '<a class="controller-nav add-comments" href="javascript:void(0);" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
+            $control_btn = '<a class="controller-nav add-comments grey" href="javascript:void(0);" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
         }
 
