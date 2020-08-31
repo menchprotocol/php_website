@@ -91,7 +91,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 ), array(), 1);
             }
 
-            echo '<td>'.( count($discovery) ? '✅ '.$discovery[0]['x__message']  : '❌').'</td>';
+            echo '<td>'.( count($discovery) ? ( strlen($discovery[0]['x__message']) > 0 ? $discovery[0]['x__message'] : '✅' )  : '❌').'</td>';
         }
 
         echo '</tr>';

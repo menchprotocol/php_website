@@ -719,11 +719,11 @@ echo $tab_content;
 
 
 //Home Navigation Notice
-if(!count($sitemap_items)){
+if(!count($sitemap_items) && $in_my_x){
     if($i_completion_percentage<100){
 
         //Not Yet Completed
-        echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-lock"></i></span><span class="title-block">Navigation unlocked once completed. You\'re '.$i_completion_percentage.'% complete. Ta <span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span> to continue.</span></div>';
+        echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-lock"></i></span><span class="title-block-md">Navigation unlocked once completed. You\'re '.$i_completion_percentage.'% complete. Tap <span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span> to continue.</span></div>';
 
     } else {
 

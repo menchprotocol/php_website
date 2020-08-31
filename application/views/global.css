@@ -956,6 +956,13 @@ textarea.note-textarea{
     margin-top: -17px !important;
     margin-bottom:0;
 }
+.title-block-md{
+    display: block;
+    padding-left: 33px;
+    padding-right:0;
+    margin-bottom:0;
+    margin-top: -28px !important;
+}
 .title-block-lg{
     display: block;
     padding-left: 33px;

@@ -1043,12 +1043,13 @@ function remove_13579(x__id, note_type_id){
 
 function i_note_start_adding(note_type_id) {
 
-    $('.save_notes_' + note_type_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
+    $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
     $('.add_notes_' + note_type_id).addClass('is-working');
     $('.no_notes_' + note_type_id).remove();
     $('#x__message' + note_type_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
+
 
 function i_note_end_adding(result, note_type_id) {
 
