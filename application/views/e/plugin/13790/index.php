@@ -85,7 +85,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                     'x__source' => $x['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 ), array(), 1);
             }
 
