@@ -278,6 +278,7 @@ class I_model extends CI_Model
 
         $status_converter = array(
             12137 => 12399, //IDEA FEATURE  => DISCOVER FEATURE
+            13811 => 6176,  //IDEA LOCKED   => DISCOVER PUBLISH
             6184 => 6176,   //IDEA PUBLISH  => DISCOVER PUBLISH
             6183 => 6175,   //IDEA DRAFT    => DISCOVER DRAFT
             6182 => 6173,   //IDEA DELETE   => DISCOVER DELETE
