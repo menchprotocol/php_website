@@ -58,7 +58,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
     echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 280  ).'px;">';
-    echo '<tr style="font-weight:bold; font-size:1.4em;"><td colspan="'.( 3 + count($column_sources) + count($column_ideas) ).'"><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</a></td></tr>';
 
     echo '<tr style="font-weight:bold;">';
     echo '<td style="width:30px;">#</td>';
