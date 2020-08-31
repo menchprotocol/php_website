@@ -57,10 +57,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 
-    echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 480  ).'px;">';
+    echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 450  ).'px;">';
 
     echo '<tr style="font-weight:bold;">';
-    echo '<td style="width:30px;">#</td>';
     echo '<td style="width:200px;">USER</td>';
     echo '<td style="width:200px;">STARTED</td>';
     echo '<td style="width:50px;">DONE</td>';
@@ -87,7 +86,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         //User
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
-        echo '<td>'.($count+1).'</td>';
         echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
         echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
         echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
