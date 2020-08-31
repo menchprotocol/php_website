@@ -267,7 +267,7 @@ if(!$in_my_x){
 
         //LOCKED
         $e___13812 = $this->config->item('e___13812'); //Idea Status
-        echo '<div class="margin-top-down left-margin"><span class="icon-block">'.$e___13812[$i_focus['i__status']]['m_title'].'</span>'.$e___13812[$i_focus['i__status']]['m_title'].'</div>';
+        echo '<div class="margin-top-down left-margin"><span class="icon-block">'.$e___13812[$i_focus['i__status']]['m_icon'].'</span>'.$e___13812[$i_focus['i__status']]['m_title'].'</div>';
 
     } else {
 
