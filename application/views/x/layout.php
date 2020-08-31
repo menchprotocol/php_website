@@ -85,7 +85,7 @@ if($in_my_x){
 
         foreach($recursive_parents as $grand_parent_ids) {
             foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
-                foreach($grand_parent_ids as $count => $previous_i__id) {
+                foreach(array_reverse($grand_parent_ids) as $count => $previous_i__id) {
 
                     if($count==0){
                         //Reuser the first parent for the back button:
@@ -225,7 +225,7 @@ $show_percentage = $completion_rate['completion_percentage']>0 && $completion_ra
 if($previous_level_id){
     //Idea Map:
     echo '<div class="list-group">';
-    echo join('', array_reverse($sitemap_items));
+    echo join('', $sitemap_items);
     echo '</div>';
 }
 
