@@ -263,7 +263,18 @@ $tab_pill_count = 0;
 if(!$in_my_x){
 
     //GET STARTED
-    echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
+    if(in_array($i_focus['i__status'], $this->config->item('n___13812'))){
+
+        //LOCKED
+        $e___13812 = $this->config->item('e___13812'); //Idea Status
+        echo '<div class="margin-top-down left-margin"><span class="icon-block">'.$e___13812[$i_focus['i__status']]['m_title'].'</span>'.$e___13812[$i_focus['i__status']]['m_title'].'</div>';
+
+    } else {
+
+        //OPEN TO REGISTER
+        echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
+
+    }
 
 }
 

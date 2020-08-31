@@ -853,7 +853,7 @@ class E extends CI_Controller
             }
 
             //Display proper message:
-            $success_message = 'Source deleted & removed ' . $x_adjusted . ' Links.';
+            $success_message = 'Source deleted & removed ' . $x_adjusted . ' Transactions.';
 
         }
 

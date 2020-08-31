@@ -14,8 +14,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                         <input style="padding-left:3px; min-width:56px;" type="number" name="i__tree_id" value="'.( isset($_GET['i__tree_id']) ? $_GET['i__tree_id'] : '' ).'" class="form-control">
                         
                         <br />
-                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Profiles Sources @</span>
-                        <input style="padding-left:3px; min-width:56px;" type="text" name="e_profiles" value="'.( isset($_GET['e_profiles']) ? $_GET['e_profiles'] : '4783|3288' /* Email/Phone are Default */ ).'" class="form-control">
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Sources of </span>
+                        <input style="padding-left:3px; min-width:56px;" type="number" name="e_sources_id" value="'.( isset($_GET['e_sources_id']) ? $_GET['e_sources_id'] : '' ).'" class="form-control">
 
                     </div>
                 </div>
@@ -36,8 +36,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     $column_ideas = array();
     $column_sources = array();
-    if(isset($_GET['e_profiles']) && strlen($_GET['e_profiles'])){
-        foreach(explode('|', $_GET['e_profiles']) as $e__id){
+    if(isset($_GET['e_sources_id']) && strlen($_GET['e_sources_id'])){
+        foreach(explode('|', $_GET['e_sources_id']) as $e__id){
             foreach($this->E_model->fetch(array( 'e__id' => $e__id )) as $e){
                 array_push($column_sources, $e);
             }
