@@ -25,12 +25,13 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     $ideas = array();
     $list_ids = ( isset($_GET['i__list_ids']) && strlen($_GET['i__list_ids']) ? explode(',', $_GET['i__list_ids']) : array() );
 
-    echo '<table style="width: 100%;">';
 
+
+    echo '<table style="width:'.( ( count($list_ids) + 3 ) * 200 ).'px;">';
     echo '<tr style="font-weight:bold;">';
-    echo '<td>USER</td>';
-    echo '<td>EMAIL</td>';
-    echo '<td>PHONE</td>';
+    echo '<td style="width:200px;">USER</td>';
+    echo '<td style="width:200px;">EMAIL</td>';
+    echo '<td style="width:200px;">PHONE</td>';
     foreach($list_ids as $list_id){
 
         $is = $this->I_model->fetch(array(
@@ -42,7 +43,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             $ideas[$list_id] = $is[0];
         }
 
-        echo '<td>'.( count($is) ? '<a href="/~'.$ideas[$list_id]['i__id'].'" class="montserrat">'.$ideas[$list_id]['i__title'].'</a>' : '#'.$list_id.' INVALID' ).'</td>';
+        echo '<td style="width:200px;">'.( count($is) ? '<a href="/~'.$ideas[$list_id]['i__id'].'" class="montserrat">'.$ideas[$list_id]['i__title'].'</a>' : '#'.$list_id.' INVALID' ).'</td>';
 
     }
     echo '</tr>';
