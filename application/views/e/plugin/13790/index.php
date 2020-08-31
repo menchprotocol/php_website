@@ -1,9 +1,10 @@
 <?php
 
+if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
-echo '<form method="GET" action="">';
+    echo '<form method="GET" action="">';
 
-echo '<div class="form-group" style="max-width:550px; margin:1px 0 10px; display: inline-block;">
+    echo '<div class="form-group" style="max-width:550px; margin:1px 0 10px; display: inline-block;">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Completed #</span>
                         <input style="padding-left:3px; min-width:56px;" type="number" placeholder="7766" name="i__id" id="i__id" value="'.( isset($_GET['i__id']) ? $_GET['i__id'] : '' ).'" class="form-control">
@@ -14,11 +15,7 @@ echo '<div class="form-group" style="max-width:550px; margin:1px 0 10px; display
                     </div>
                 </div>
                 <input type="submit" class="btn btn-idea" value="Go" style="display: inline-block; margin-top: -41px;" />';
-echo '</form>';
-
-if(!isset($_GET['i__id']) || !$_GET['i__id']){
-
-    echo 'Enter IDs to get started';
+    echo '</form>';
 
 } else {
 
