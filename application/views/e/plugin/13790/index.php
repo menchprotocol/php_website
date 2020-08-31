@@ -22,6 +22,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 } else {
 
+    $ideas = array();
     $list_ids = ( isset($_GET['i__list_ids']) && strlen($_GET['i__list_ids']) ? explode(',', $_GET['i__list_ids']) : array() );
 
     echo '<table style="width: 100%;">';
