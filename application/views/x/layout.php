@@ -81,6 +81,7 @@ if($in_my_x){
 
         //Find it:
         $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
+        $parent_index = -1;
 
         foreach($recursive_parents as $grand_parent_ids) {
             foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
@@ -98,7 +99,9 @@ if($in_my_x){
 
                     $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $is_this[0]);
 
-                    array_push($sitemap_items, view_i_x($is_this[0], -1 /* Unlocked */, true, null, $completion_rate));
+                    array_push($sitemap_items, view_i_x($is_this[0], $parent_index /* Unlocked */, true, null, $completion_rate));
+
+                    $parent_index--;
 
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:

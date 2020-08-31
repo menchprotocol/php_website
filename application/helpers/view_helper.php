@@ -776,8 +776,8 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
     $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
 
 
-    if($has_completion){
-        //$ui .= '<div class="progress-bg-list" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%">'.$completion_rate['completion_percentage'].'% DONE</div></div>';
+    if($has_completion && $index_id==-1){
+        $ui .= '<div class="progress-bg-list" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><span class="progress-connector"></span><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%">'.$completion_rate['completion_percentage'].'% DONE</div></div>';
     }
 
 
