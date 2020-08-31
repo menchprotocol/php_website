@@ -42,7 +42,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__down'), 0, 0, array(), 'x__id');
+        ), array('x__down'), 0);
     }
     if(isset($_GET['i__tree_id']) && strlen($_GET['i__tree_id'])){
         foreach($this->X_model->fetch(array(
