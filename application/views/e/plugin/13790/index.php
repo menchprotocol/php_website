@@ -38,7 +38,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     $column_sources = array();
     if(isset($_GET['e_sources_id']) && strlen($_GET['e_sources_id'])){
         $column_sources = $this->X_model->fetch(array(
-            'x__up' => $_POST['e_sources_id'],
+            'x__up' => $_GET['e_sources_id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
