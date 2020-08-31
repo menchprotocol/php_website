@@ -74,7 +74,7 @@ echo '</div>';
 
 
 //IDEA TITLE
-echo '<div class="itemidea" style="padding:5px 0;">';
+echo '<div class="itemidea" style="padding:8px 0; margin-top: 13px;">';
 echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true, view_i_icon($i_focus));
 echo '</div>';
 
