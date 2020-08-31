@@ -89,7 +89,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
         echo '<td>'.($count+1).'</td>';
         echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
-        echo '<td>'.date("Y-m-d H:i:s", $x['x__time']).'</td>';
+        echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
         echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
 
         //SOURCES
