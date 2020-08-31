@@ -283,6 +283,7 @@ img.no-radius {
     border: 0 !important;
 }
 
+
 .alert a{
     text-decoration: underline;
 }
@@ -1797,4 +1798,7 @@ label {
 .divider{
     height: 1px;
     background-color: #000000 !important;
+}
+.grey-bg{
+    background-color: #999999 !important;
 }
