@@ -805,27 +805,6 @@ class E extends CI_Controller
         if (!in_array($e__update['e__status'], $this->config->item('n___7358') /* ACTIVE */) && !($e__update['e__status'] == $es[0]['e__status'])) {
 
 
-            //Make sure source is not referenced in key DB reference fields:
-            $e_count_6194 = e_count_6194($_POST['e__id']);
-            if(count($e_count_6194) > 0){
-
-                $e___6194 = $this->config->item('e___6194');
-
-                //Construct the message:
-                $error_message = 'Cannot be deleted because source is referenced as ';
-                foreach($e_count_6194 as $e__id=>$e_count){
-                    $error_message .= $e___6194[$e__id]['m_title'].' '.view_number($e_count).' times ';
-                }
-
-                return view_json(array(
-                    'status' => 0,
-                    'message' => $error_message,
-                ));
-
-            }
-
-
-
             //Count source references in IDEA NOTES:
             $i_notes = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
