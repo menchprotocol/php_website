@@ -38,11 +38,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
 
-        echo '<td>'.( count($is) ? '<a href="/~'.$ideas[$list_id]['i__id'].'" class="montserrat">'.$ideas[$list_id]['i__title'].'</a>' : '#'.$list_id.' INVALID' ).'</td>';
-
         if(count($is)){
             $ideas[$list_id] = $is[0];
         }
+
+        echo '<td>'.( count($is) ? '<a href="/~'.$ideas[$list_id]['i__id'].'" class="montserrat">'.$ideas[$list_id]['i__title'].'</a>' : '#'.$list_id.' INVALID' ).'</td>';
 
     }
     echo '</tr>';
