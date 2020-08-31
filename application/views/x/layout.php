@@ -722,13 +722,23 @@ echo $tab_content;
 if($show_next_tip && $user_e['e__id'] > 0 && view_coins_e(6255, $user_e['e__id'], 0, false) <= config_item(13762)){
 
     //Recommend to go next:
-    echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-info-circle"></i></span>Tip: Continue to the next idea by tapping<span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span>(below)</div>';
+    echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-step-forward"></i></span>Continue to the next idea by tapping<span class="icon-block-xs"><i class="fas fa-step-forward black"></i></span>(below)</div>';
 
-} elseif($i_completion_percentage>=100 && !count($sitemap_items)){
+}
 
-    //Recommend to go next:
-    echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have successfully discovered all ideas</div>';
+//Home Navigation Notice
+if(!count($sitemap_items)){
+    if($i_completion_percentage<100){
 
+        //Not Yet Completed
+        echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-lock"></i></span>Navigation unlocked once 100% complete. You\'re '.$i_completion_percentage.'% complete.</div>';
+
+    } else {
+
+        //Completed
+        echo '<div class="msg alert no-margin"><span class="icon-block"><i class="fas fa-check-circle"></i>You have successfully discovered all ideas</span></div>';
+
+    }
 }
 
 
