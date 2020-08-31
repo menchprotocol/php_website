@@ -66,6 +66,7 @@ $chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
 $u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
+$sitemap_items_raw = array();
 $sitemap_items = array();
 $i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_completion_percentage = 0; //Assume main intent not yet completed, unless proven otherwise...
@@ -97,8 +98,11 @@ if($in_my_x){
                     ));
 
                     $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $is_this[0]);
+                    array_push($sitemap_items, array(
+                        'i' => $is_this[0],
+                        'completion_rate' => $completion_rate,
+                    ));
 
-                    array_push($sitemap_items, view_i_x($is_this[0], ( $is_this[0]['i__id']==$previous_level_id ? -1 : -2 ) /* Unlocked */, true, null, $completion_rate));
 
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
@@ -109,6 +113,17 @@ if($in_my_x){
                 }
             }
         }
+
+        $count = -1;
+        foreach(array_reverse($sitemap_items) as $sitemap_item) {
+            array_push($sitemap_items, view_i_x($sitemap_item['i'], $count, true, null, $sitemap_item['completion_rate']));
+            $count--;
+        }
+
+
+        array_push($sitemap_items, view_i_x($is_this[0], ( $is_this[0]['i__id']==$previous_level_id ? -1 : -2 ) /* Unlocked */, true, null, $completion_rate));
+
+
     }
 }
 
@@ -222,7 +237,7 @@ $show_percentage = $completion_rate['completion_percentage']>0 && $completion_ra
 if($previous_level_id){
     //Idea Map:
     echo '<div class="list-group">';
-    echo join('', array_reverse($sitemap_items));
+    echo join('', $sitemap_items);
     echo '</div>';
 }
 
