@@ -27,8 +27,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 
-    echo '<table style="width:'.( ( count($list_ids) + 3 ) * 200 ).'px;">';
+    echo '<table style="width:'.( ( count($list_ids) * 200 ) + 620  ).'px;">';
     echo '<tr style="font-weight:bold;">';
+    echo '<td style="width:20px;">#</td>';
     echo '<td style="width:200px;">USER</td>';
     echo '<td style="width:200px;">EMAIL</td>';
     echo '<td style="width:200px;">PHONE</td>';
@@ -48,15 +49,19 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     }
     echo '</tr>';
 
+
+
     //Return UI:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
         'x__left' => $_GET['i__id'],
-    ), array('x__source'), config_var(11064), 0, array('x__id' => 'DESC')) as $x){
+    ), array('x__source'), config_var(11064), 0, array('x__id' => 'DESC')) as $count => $x){
+
         echo '<tr>';
 
         //User
+        echo '<td>'.($count+1).'</td>';
         echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
 
         //Fetch Phone & Email:
