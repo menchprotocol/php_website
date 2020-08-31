@@ -44,7 +44,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . config_var(6197) . '"
-                           placeholder="NEW SOURCE">
+                           placeholder="NEW PROFILE">
                 </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
     echo '</div>';
 
