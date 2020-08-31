@@ -81,7 +81,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             $discovery = array();
             if(isset($ideas[$list_id])){
                 $discovery = $this->X_model->fetch(array(
-                    'x__left' => $ideas[$list_id],
+                    'x__left' => $ideas[$list_id]['i__id'],
                     'x__source' => $x['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
