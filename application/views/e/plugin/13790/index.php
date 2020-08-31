@@ -57,11 +57,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 
-    echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 280  ).'px;">';
+    echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 480  ).'px;">';
 
     echo '<tr style="font-weight:bold;">';
     echo '<td style="width:30px;">#</td>';
     echo '<td style="width:200px;">USER</td>';
+    echo '<td style="width:200px;">STARTED</td>';
     echo '<td style="width:50px;">DONE</td>';
     foreach($column_sources as $e){
         echo '<td style="width:200px;"><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';
@@ -80,7 +81,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
         'x__left' => $_GET['i__id'],
-    ), array('x__source'), 0, 0, array('x__id' => 'DESC')) as $count => $x){
+    ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
         echo '<tr>';
 
@@ -88,6 +89,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
         echo '<td>'.($count+1).'</td>';
         echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
+        echo '<td>'.date("Y-m-d H:i:s", $x['x__time']).'</td>';
         echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
 
         //SOURCES
