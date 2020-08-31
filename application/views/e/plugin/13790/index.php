@@ -15,7 +15,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                         
                         <br />
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Profiles Sources @</span>
-                        <input style="padding-left:3px; min-width:56px;" type="number" name="e_profiles" value="'.( isset($_GET['e_profiles']) ? $_GET['e_profiles'] : '4783|3288' /* Email/Phone are Default */ ).'" class="form-control">
+                        <input style="padding-left:3px; min-width:56px;" type="text" name="e_profiles" value="'.( isset($_GET['e_profiles']) ? $_GET['e_profiles'] : '4783|3288' /* Email/Phone are Default */ ).'" class="form-control">
 
                     </div>
                 </div>
