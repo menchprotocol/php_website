@@ -6,7 +6,7 @@ echo '<form method="GET" action="">';
 echo '<div class="form-group" style="max-width:550px; margin:1px 0 10px; display: inline-block;">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">Completed #</span>
-                        <input style="padding-left:3px; min-width:56px;" type="number" placeholder="7766" min="1" step="1" name="i__id" id="i__id" value="'.( isset($_GET['i__id']) ? $_GET['i__id'] : '' ).'" class="form-control">
+                        <input style="padding-left:3px; min-width:56px;" type="number" placeholder="7766" name="i__id" id="i__id" value="'.( isset($_GET['i__id']) ? $_GET['i__id'] : '' ).'" class="form-control">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#000000; font-weight: 300;">& Chart Columns for #</span>
 
                         <input style="padding-left:3px; min-width:56px;" type="text" placeholder="123,345,456" name="i__list_ids" id="i__list_ids" value="'.( isset($_GET['i__list_ids']) ? $_GET['i__list_ids'] : '' ).'" class="form-control">
@@ -22,7 +22,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 } else {
 
-    $list_ids = ( isset($_GET['i__list_ids']) ? explode(',', $_GET['i__list_ids']) : array() );
+    $list_ids = ( isset($_GET['i__list_ids']) && strlen($_GET['i__list_ids']) ? explode(',', $_GET['i__list_ids']) : array() );
 
     echo '<table style="width: 100%;">';
 
