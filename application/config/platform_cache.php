@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-31 12:45:19 PST
+//Generated 2020-08-31 12:55:39 PST
 
 //SCHEDULED UPDATES:
 $config['n___13783'] = array(13784,13785,13786);
@@ -3179,7 +3179,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13671,13401,13292,13573,13574,13495,13670,12707,4235,12991,12137,13207,11068,12211,4341,13689,6225,12969,13405,6287,13562,13579,6415,12896,10573,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(13502,13671,13401,13292,13573,13574,13495,13670,12707,4235,12991,12137,13207,11068,12211,4341,13689,6225,12969,13405,6287,13562,13579,6415,12896,10573,13524,7256,13805,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3348,6 +3348,12 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
         'm_profile' => array(12678,13357,12701,11035,3323),
+    ),
+    13805 => array(
+        'm_title' => 'SEE FULL PROFILE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-search-plus source" aria-hidden="true"></i>',
+        'm_profile' => array(11035),
     ),
     13692 => array(
         'm_title' => 'SELECT ALL',
