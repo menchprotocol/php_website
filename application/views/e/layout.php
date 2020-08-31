@@ -63,15 +63,17 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
+
+
+
+    //SOURCE NAME
+    echo '<div class="itemsource" style="padding: 8px 0; margin-top:13px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
+    echo '<div class="doclear">&nbsp;</div>';
+
     //SOURCE DRAFTING?
     if(!in_array($e['e__status'], $this->config->item('n___7357'))){
         echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).'"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
     }
-
-
-    //SOURCE NAME
-    echo '<div class="itemsource" style="padding: 8px 0;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
-    echo '<div class="doclear">&nbsp;</div>';
 
 
     //SOURCE MODIFY BUTTON
