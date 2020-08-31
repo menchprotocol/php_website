@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-30 21:12:51 PST
+//Generated 2020-08-30 21:19:31 PST
 
 //SCHEDULED UPDATES:
 $config['n___13783'] = array(13784,13785,13786);
@@ -1318,7 +1318,7 @@ $config['e___10573'] = array(
 );
 
 //PLUGIN RETURN CODE ONLY:
-$config['n___12741'] = array(12733,12722,7276,4356,11049,7275,4527,7277,12710,12709,12888,12732,12712,7278,12967,7279,12114,12569);
+$config['n___12741'] = array(12733,12722,7276,4356,11049,7275,4527,7277,12710,12709,12888,13790,12732,12712,7278,12967,7279,12114,12569);
 $config['e___12741'] = array(
     12733 => array(
         'm_title' => 'DISCOVER REVIEW JSON',
@@ -1385,6 +1385,12 @@ $config['e___12741'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-shield-check source"></i>',
         'm_profile' => array(12741,6287,12887),
+    ),
+    13790 => array(
+        'm_title' => 'SOURCE IDEA SPREADSHEET',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-table idea"></i>',
+        'm_profile' => array(12741,6287),
     ),
     12732 => array(
         'm_title' => 'SOURCE/IDEA SYNC STATUSES',
@@ -6623,7 +6629,7 @@ $config['e___6287'] = array(
         'm_title' => 'SOURCE IDEA SPREADSHEET',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-table idea"></i>',
-        'm_profile' => array(6287),
+        'm_profile' => array(12741,6287),
     ),
     12736 => array(
         'm_title' => 'SOURCE/IDEAS SYNC & FIX',

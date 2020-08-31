@@ -55,7 +55,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<tr>';
 
         //User
-        echo '<td><a href="/@'.$x['e__id'].'" class="'.extract_icon_color($x['e__icon']).' montserrat"><span class="icon-block">'.$x['e__icon'].'</span>'.$x['e__title'].'</td>';
+        echo '<td><a href="/@'.$x['e__id'].'">'.$x['e__title'].'</a></td>';
 
         //Fetch Phone & Email:
         $u_emails = $this->X_model->fetch(array(
