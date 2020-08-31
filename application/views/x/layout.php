@@ -98,7 +98,7 @@ if($in_my_x){
                     ));
 
                     $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $is_this[0]);
-                    array_push($sitemap_items, array(
+                    array_push($sitemap_items_raw, array(
                         'i' => $is_this[0],
                         'completion_rate' => $completion_rate,
                     ));
@@ -115,14 +115,10 @@ if($in_my_x){
         }
 
         $count = -1;
-        foreach(array_reverse($sitemap_items) as $sitemap_item) {
-            array_push($sitemap_items, view_i_x($sitemap_item['i'], $count, true, null, $sitemap_item['completion_rate']));
+        foreach(array_reverse($sitemap_items_raw) as $si) {
+            array_push($sitemap_items, view_i_x($si['i'], $count, true, null, $si['completion_rate']));
             $count--;
         }
-
-
-        array_push($sitemap_items, view_i_x($is_this[0], ( $is_this[0]['i__id']==$previous_level_id ? -1 : -2 ) /* Unlocked */, true, null, $completion_rate));
-
 
     }
 }
