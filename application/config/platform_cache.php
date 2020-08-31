@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-30 21:19:31 PST
+//Generated 2020-08-31 00:54:46 PST
 
 //SCHEDULED UPDATES:
 $config['n___13783'] = array(13784,13785,13786);
@@ -3789,7 +3789,7 @@ $config['e___6404'] = array(
         'm_title' => 'IDEA NOTES',
         'm_message' => '1000',
         'm_icon' => '<i class="fas fa-comment-plus idea" aria-hidden="true"></i>',
-        'm_profile' => array(6768,6404,4527),
+        'm_profile' => array(11054,6768,6404,4527),
     ),
     12137 => array(
         'm_title' => 'IDEAS FEATURED',
@@ -3908,13 +3908,19 @@ $config['e___6404'] = array(
 );
 
 //MENCH MEMORY JAVASCRIPT:
-$config['n___11054'] = array(4486,4737,7356,7355,7585,7712,2738,12467,6404,6201,12687,11035,10573,4592,6177,7357,6186);
+$config['n___11054'] = array(4486,4485,4737,7356,7355,7585,7712,2738,12467,6404,6201,12687,11035,10573,4592,6177,7357,6186);
 $config['e___11054'] = array(
     4486 => array(
         'm_title' => 'IDEA LINKS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-link idea" aria-hidden="true"></i>',
         'm_profile' => array(13442,13408,12700,11054,12079,10662,4527),
+    ),
+    4485 => array(
+        'm_title' => 'IDEA NOTES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-comment-plus idea" aria-hidden="true"></i>',
+        'm_profile' => array(11054,6768,6404,4527),
     ),
     4737 => array(
         'm_title' => 'IDEA STATUS',
@@ -5032,7 +5038,7 @@ $config['e___4527'] = array(
         'm_title' => 'IDEA NOTES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-comment-plus idea" aria-hidden="true"></i>',
-        'm_profile' => array(6768,6404,4527),
+        'm_profile' => array(11054,6768,6404,4527),
     ),
     7551 => array(
         'm_title' => 'IDEA NOTES 1X SOURCE REQUIRED',

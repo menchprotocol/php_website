@@ -1042,6 +1042,7 @@ function remove_13579(x__id, note_type_id){
 }
 
 function i_note_start_adding(note_type_id) {
+
     $('.save_notes_' + note_type_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
     $('.add_notes_' + note_type_id).addClass('is-working');
     $('.no_notes_' + note_type_id).remove();
@@ -1052,7 +1053,7 @@ function i_note_start_adding(note_type_id) {
 function i_note_end_adding(result, note_type_id) {
 
     //Update UI to unlock:
-    $('.save_notes_' + note_type_id).html('<i class="fas fa-plus"></i>').attr('href', 'javascript:i_note_text('+note_type_id+');');
+    $('.save_notes_' + note_type_id).html(js_e___4485[note_type_id]['m_icon']).attr('href', 'javascript:i_note_text('+note_type_id+');');
     $('.add_notes_' + note_type_id).removeClass('is-working');
     $('#x__message' + note_type_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
