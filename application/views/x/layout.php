@@ -81,11 +81,10 @@ if($in_my_x){
 
         //Find it:
         $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
-        $parent_index = -1;
 
         foreach($recursive_parents as $grand_parent_ids) {
             foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
-                foreach(array_reverse($grand_parent_ids) as $count => $previous_i__id) {
+                foreach($grand_parent_ids as $count => $previous_i__id) {
 
                     if($count==0){
                         //Reuser the first parent for the back button:
@@ -99,9 +98,7 @@ if($in_my_x){
 
                     $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $is_this[0]);
 
-                    array_push($sitemap_items, view_i_x($is_this[0], $parent_index /* Unlocked */, true, null, $completion_rate));
-
-                    $parent_index--;
+                    array_push($sitemap_items, view_i_x($is_this[0], ( $is_this[0]['i__id']==$previous_level_id ? -1 : -2 ) /* Unlocked */, true, null, $completion_rate));
 
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
@@ -225,7 +222,7 @@ $show_percentage = $completion_rate['completion_percentage']>0 && $completion_ra
 if($previous_level_id){
     //Idea Map:
     echo '<div class="list-group">';
-    echo join('', $sitemap_items);
+    echo join('', array_reverse($sitemap_items));
     echo '</div>';
 }
 
