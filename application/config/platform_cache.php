@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-31 12:30:53 PST
+//Generated 2020-08-31 12:45:19 PST
 
 //SCHEDULED UPDATES:
 $config['n___13783'] = array(13784,13785,13786);
@@ -85,7 +85,7 @@ $config['e___13571'] = array(
         'm_title' => 'SOURCE STATUS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     6197 => array(
         'm_title' => 'SOURCE TITLE',
@@ -3711,7 +3711,7 @@ $config['e___11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,4485,12137,4736,11064,11065,13014,13005,11079,11060,13556,13545,11066,12088,13206,11986,6197,12232,13572,12565,12568);
+$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,4485,12137,4736,11064,11065,13014,13005,11079,11060,13556,13545,11066,13803,12088,13206,11986,6197,12232,13572,12565,12568);
 $config['e___6404'] = array(
     12678 => array(
         'm_title' => 'ALGOLIA SEARCH ENABLED (0 OR 1)',
@@ -3842,6 +3842,12 @@ $config['e___6404'] = array(
     11066 => array(
         'm_title' => 'PASSWORD MIN CHARACTERS',
         'm_message' => '6',
+        'm_icon' => '',
+        'm_profile' => array(6404),
+    ),
+    13803 => array(
+        'm_title' => 'SHOW MAX PROFILE',
+        'm_message' => '3',
         'm_icon' => '',
         'm_profile' => array(6404),
     ),
@@ -3992,13 +3998,13 @@ $config['e___11054'] = array(
         'm_title' => 'SOURCE STATUS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     7357 => array(
         'm_title' => 'SOURCE STATUS PUBLIC',
         'm_message' => '',
         'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
-        'm_profile' => array(12572,11054,4527),
+        'm_profile' => array(13296,12572,11054,4527),
     ),
     6186 => array(
         'm_title' => 'TRANSACTION STATUS',
@@ -4192,7 +4198,7 @@ $config['e___6206'] = array(
         'm_title' => 'STATUS',
         'm_message' => 'e__status',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     6197 => array(
         'm_title' => 'TITLE',
@@ -5512,7 +5518,7 @@ $config['e___4527'] = array(
         'm_title' => 'SOURCE STATUS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     7358 => array(
         'm_title' => 'SOURCE STATUS ACTIVE',
@@ -5530,7 +5536,7 @@ $config['e___4527'] = array(
         'm_title' => 'SOURCE STATUS PUBLIC',
         'm_message' => '',
         'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
-        'm_profile' => array(12572,11054,4527),
+        'm_profile' => array(13296,12572,11054,4527),
     ),
     12401 => array(
         'm_title' => 'SOURCE STATUS SYNC',
@@ -6247,7 +6253,7 @@ $config['e___6204'] = array(
         'm_title' => 'SOURCE STATUS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
-        'm_profile' => array(13296,13571,12701,12766,4527,11054,6204,5003,6160,6206),
+        'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
     ),
     12968 => array(
         'm_title' => 'SYNC ICONS IF DIFFERENT',

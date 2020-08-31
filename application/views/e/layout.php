@@ -29,13 +29,23 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
     //PROFILE
     echo '<div id="list_11030" class="list-group ">';
-    foreach($this->X_model->fetch(array(
+    $profiles = $this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__down' => $e['e__id'],
-    ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $e_profile) {
-        echo view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+    ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
+    $show_max = config_var(13803);
+    $hide = false;
+    foreach($profiles as $count => $e_profile) {
+
+        if(!$hide && $count==$show_max){
+            $hide = true;
+            echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source">SEE ALL '.count($profiles).'</b></a></div>';
+        }
+
+        echo view_e($e_profile,true, ( $hide ? ' see_all_11030 hidden ' : null ), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+
     }
     //ADD NEW
     echo '<div id="new_11030" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
@@ -57,11 +67,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).'"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
     }
 
+
     //SOURCE NAME
-    if(!$source_is_e){
-        echo '<div class="itemsource" style="padding: 8px 0;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
-        echo '<div class="doclear">&nbsp;</div>';
-    }
+    echo '<div class="itemsource" style="padding: 8px 0;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
+    echo '<div class="doclear">&nbsp;</div>';
 
 
     //SOURCE MODIFY BUTTON
@@ -91,6 +100,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
     $counter__i = view_coins_e(12273, $e['e__id'], 0, false);
     $counter__x = view_coins_e( 6255, $e['e__id'], 0, false);
+    $active_x__type = 0;
 
     if($counter__e > 0 && !$source_is_e && $counter__e > $counter__i){
         //SOURCES
