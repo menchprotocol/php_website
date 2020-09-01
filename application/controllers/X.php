@@ -756,7 +756,7 @@ class X extends CI_Controller
         } elseif (!isset($_POST['x_reply']) || !strlen($_POST['x_reply'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Write a text reply before going next.',
+                'message' => 'You must write your response before going next...',
             ));
         }
 
