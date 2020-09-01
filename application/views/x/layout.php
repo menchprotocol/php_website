@@ -795,7 +795,7 @@ if($in_my_x){
             //GO NEXT
             $control_btn = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
 
-        } elseif($e__id==12419 && count($sitemap_items) && $i_focus['i__type']!=6683){
+        } elseif($e__id==12419 && count($sitemap_items)){
 
             //ADD COMMENT
             $control_btn = '<a class="controller-nav add-comments grey-bg" href="javascript:void(0);">'.$m['m_icon'].'</a><span class="nav-title add-comments">'.$m['m_title'].'</span>';
