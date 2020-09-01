@@ -35,13 +35,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__down' => $e['e__id'],
     ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
-    $show_max = config_var(13803);
+    $show_max = ( $superpower_13422 ? config_var(13803) : 0 );
     $hide = false;
     foreach($profiles as $count => $e_profile) {
 
         if(!$hide && $count==$show_max){
             $hide = true;
-            echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[13805]['m_icon'].'</span><b class="montserrat source">'.$e___11035[13805]['m_title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
+            echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[11030]['m_icon'].'</span><b class="montserrat source">'.$e___11035[11030]['m_title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
             echo '<div class="list-group-item see_all_11030 no-padding"></div>';
         }
 
