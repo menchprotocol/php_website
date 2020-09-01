@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-31 20:00:33 PST
+//Generated 2020-08-31 20:03:54 PST
 
 //IDEA STATUS LOCK:
 $config['n___13812'] = array(13811);
@@ -1770,17 +1770,17 @@ $config['e___12446'] = array(
     13752 => array(
         'm_title' => 'LOCKED',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-lock discover"></i>',
+        'm_icon' => '<i class="fas fa-lock discover"></i>',
         'm_profile' => array(12446),
     ),
     13757 => array(
-        'm_title' => 'CURRENT IDEA',
+        'm_title' => 'CURRENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-map-marker discover" aria-hidden="true"></i>',
         'm_profile' => array(12446),
     ),
     13822 => array(
-        'm_title' => 'NEXT IDEA',
+        'm_title' => 'NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-step-forward discover"></i>',
         'm_profile' => array(12446),
