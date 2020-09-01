@@ -102,7 +102,7 @@ function select_answer(i__id){
     }
 
     //Is setected?
-    if($('.x_select_'+i__id+' .fa-circle').hasClass('fas')){
+    if($('.x_select_'+i__id+' i').hasClass('fas')){
 
         //Previously Selected, delete selection:
         if(i__type == 7231){
