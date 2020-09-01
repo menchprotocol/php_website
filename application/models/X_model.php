@@ -1075,7 +1075,7 @@ class X_model extends CI_Model
             }
 
 
-            if ( ( $i_completed || (!$is_complete && $is_fixed_x) ) && ( !$is_or_i || $is_selected )) {
+            if (  $i_completed || (!$is_complete && $is_fixed_x && ( !$is_or_i || $is_selected )) ) {
 
                 //FIXED LINK, or Selected OR IDEA, that is NOT COMPLETE, It's This:
                 return intval($next_i['i__id']);
