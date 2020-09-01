@@ -801,7 +801,7 @@ if($in_my_x){
         } elseif($e__id==12419 && count($sitemap_items)){
 
             //ADD COMMENT
-            $control_btn = '<a class="controller-nav add-comments grey-bg" href="javascript:void(0);"><span class="the-btn">'.$m['m_icon'].'</span><span class="the-txt">'.$m['m_title'].'</span></a>';
+            $control_btn = '<a class="controller-nav add-comments grey-bg" href="javascript:void(0);" title="'.$m['m_title'].'">'.$m['m_icon'].'</a>';
 
         }
 
