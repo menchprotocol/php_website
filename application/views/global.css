@@ -920,6 +920,9 @@ textarea.note-textarea{
 .space-left{
     padding-left: 33px !important;
 }
+.space-both{
+    padding:0 33px !important;
+}
 .icon-white-block{
     background-color: #FFFFFF;
     padding: 8px 0 7px;
