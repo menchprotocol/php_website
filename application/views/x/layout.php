@@ -303,7 +303,7 @@ if($in_my_x && count($this->X_model->fetch(array(
     )))){
 
     //Recommended to Save This Idea:
-    echo '<div class="msg alert no-margin"><span class="icon-block"><i class="far fa-bookmark discover"></i></span>Tip: Save this idea for easy future access</div>';
+    echo '<div class="msg alert no-margin"><span class="icon-block"><i class="far fa-bookmark discover"></i></span>Tip: Save this idea for easy future access from your profile</div>';
 
 }
 
