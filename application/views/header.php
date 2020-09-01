@@ -107,7 +107,7 @@ if(!isset($hide_header)){
                         $title_words = explode(' ', $user_e['e__title']);
                         $first_word = $title_words[0];
                         array_shift($title_words);
-                        echo '<div class="mench_nav left_nav" style="padding: 11px 0 0;"><a href="'.home_url().'" class="montserrat '.extract_icon_color($user_e['e__icon']).'"><span class="icon-block e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span style="font-size: 1.2em;">'.$first_word.'</span></a></div>';//<span class="show-max"> '.join(' ', $title_words).'</span>
+                        echo '<div class="mench_nav left_nav" style="padding: 11px 0 0;"><a href="'.home_url().'" class="montserrat '.extract_icon_color($user_e['e__icon']).'"><span class="icon-block e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span style="font-size: 1.2em;">'.$first_word.'<span class="show-max"> '.join(' ', $title_words).'</span></span></a></div>';
                     } else {
                         echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url().'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
                     }
