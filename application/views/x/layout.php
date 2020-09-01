@@ -282,7 +282,7 @@ $tab_pill_count = 0;
 if(!$in_my_x){
 
     //GET STARTED
-    if(in_array($i_focus['i__status'], $this->config->item('n___13812'))){
+    if(in_array($i_focus['i__status'], $this->config->item('n___13812')) && !isset($_GET['unlock'])){
 
         //LOCKED
         $e___13812 = $this->config->item('e___13812'); //Idea Status
