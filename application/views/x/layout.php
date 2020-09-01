@@ -89,6 +89,11 @@ if($in_my_x){
             foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
                 foreach($grand_parent_ids as $count => $previous_i__id) {
 
+                    if(filter_array($sitemap_items_raw, 'i__id', $previous_i__id)){
+                        //Already There
+                        continue;
+                    }
+
                     if($count==0){
                         //Reuser the first parent for the back button:
                         $previous_level_id = $previous_i__id;
@@ -101,6 +106,7 @@ if($in_my_x){
 
                     $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $is_this[0]);
                     array_push($sitemap_items_raw, array(
+                        'i__id' => $previous_i__id,
                         'i' => $is_this[0],
                         'completion_rate' => $completion_rate,
                     ));
