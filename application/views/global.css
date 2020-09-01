@@ -719,8 +719,9 @@ img.no-radius {
 
 #x_reply{
     padding: 5px;
-    border: 1px solid #000000 !important;
+    border: 5px solid #FC1B44 !important;
     height: 55px;
+    border-radius: 10px;
 }
 .previous_answer{
     display: block;
@@ -1497,11 +1498,6 @@ label {
 .icon-block-lg img {
     width: 38px !important;
     height: 38px !important;
-}
-
-.x_input{
-    border:5px solid #FC1B44 !important;
-    border-radius: 10px;
 }
 
 .i-left {
