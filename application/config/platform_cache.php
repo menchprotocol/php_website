@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-31 15:01:53 PST
+//Generated 2020-08-31 16:55:40 PST
 
 //IDEA STATUS LOCK:
 $config['n___13812'] = array(13811);
@@ -1788,7 +1788,7 @@ $config['e___12446'] = array(
     12447 => array(
         'm_title' => 'IN PROGRESS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-play-circle discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin discover" aria-hidden="true"></i>',
         'm_profile' => array(13450,12446),
     ),
     13338 => array(
@@ -1800,7 +1800,7 @@ $config['e___12446'] = array(
 );
 
 //MENCH URL:
-$config['n___10876'] = array(13465,13817,13207,7291,4341,13405,6287,4269);
+$config['n___10876'] = array(13465,13810,13207,7291,4341,13405,6287,4269);
 $config['e___10876'] = array(
     13465 => array(
         'm_title' => 'EVENT #1 OUR 2020 BURNING MAN 🔥',
@@ -1808,11 +1808,11 @@ $config['e___10876'] = array(
         'm_icon' => '<i class="fad fa-calendar-star source"></i>',
         'm_profile' => array(13802,10876),
     ),
-    13817 => array(
-        'm_title' => 'EVENT #1 PEOPLE DASHBOARD',
+    13810 => array(
+        'm_title' => 'EVENT #1 REGISTRY',
         'm_message' => 'https://mench.com/e/plugin/13790?i__id=13980&i__tree_id=14289&e_sources_id=13810',
-        'm_icon' => '<i class="fas fa-users source" aria-hidden="true"></i>',
-        'm_profile' => array(13465,1,10876),
+        'm_icon' => '<i class="fas fa-users"></i>',
+        'm_profile' => array(10876,13465),
     ),
     13207 => array(
         'm_title' => 'LEADERBOARD',
@@ -3858,7 +3858,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.5399912',
+        'm_message' => 'v1.53999',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),

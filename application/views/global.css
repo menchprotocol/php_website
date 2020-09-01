@@ -609,24 +609,13 @@ img.no-radius {
 .progress-bg-list .progress-done, .progress-bg-image .progress-done{
     height:21px;
     background-color: #FC1B44;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .progress-bg-list{
     margin: -21px 0 10px 0;
     width: 100% !important;
     background-color: #CCCCCC;
-}
-.progress-connector{
-    border-left: 3px solid #FC1B44 !important;
-    height: 24px;
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-bottom: 2px solid #FC1B44 !important;
-    width: 9px;
-    border-color:#FC1B44 !important;
-    border-bottom-left-radius: 8px;
 }
 
 .fixed-bottom{
