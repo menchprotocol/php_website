@@ -1194,7 +1194,7 @@ function view_i_list($can_click, $in_my_x, $i, $is_next, $user_e, $prefix_statem
     $index_id = 0;
     foreach($is_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $next_i);
-        $ui .= view_i_x($next_i, ( $in_my_x ? $index_id : 99 /* Locked */ ), $can_click, $common_prefix, false, $completion_rate);
+        $ui .= view_i_x($next_i, ( $in_my_x ? $index_id : 99 /* Locked */ ), $completion_rate['completion_percentage'] > 0, $common_prefix, false, $completion_rate);
 
         //Search for the first unlocked idea right after the first stack of continuously completed ideas
         $is_last_continious_complete = ( $is_last_continious_complete && $completion_rate['completion_percentage']>=100 ? true : false );
