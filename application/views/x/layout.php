@@ -244,7 +244,7 @@ if($show_percentage && !count($sitemap_items)){
 }
 
 //HEADER
-echo '<div style="position: relative; display: block; padding: 8px 0; margin-top:13px;">' . $progress_bar . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg '.( $show_percentage ? ' title-block-squeeze ' : '' ).'">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
+echo '<div style="position: relative; display: block; margin-top:13px;">' . $progress_bar . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg '.( $show_percentage ? ' title-block-squeeze ' : '' ).'">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
 
 //MESSAGES
