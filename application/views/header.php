@@ -84,7 +84,7 @@ if(strlen($flash_message) > 0) {
     //Delete from Flash:
     $this->session->unmark_flash('flash_message');
 
-    echo '<div class="container '.( isset($hide_header) ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 0;">'.$flash_message.'</div>';
+    echo '<div class="container '.( isset($hide_header) ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;">'.$flash_message.'</div>';
 }
 
 
