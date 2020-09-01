@@ -1166,7 +1166,7 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($can_click, $in_my_x, $i, $is_next, $user_e, $prefix_statement = null){
+function view_i_list($in_my_x, $i, $is_next, $user_e, $prefix_statement = null){
 
     //If no list just return the next step:
     if(!count($is_next)){
