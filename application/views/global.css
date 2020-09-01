@@ -611,6 +611,7 @@ img.no-radius {
     margin: -20px 0 20px 0;
     width: 100% !important;
     background-color: #CCCCCC;
+    position: relative !important;
 }
 
 
