@@ -240,7 +240,7 @@ if($previous_level_id){
 
 $progress_bar = '';
 if($show_percentage && !count($sitemap_items)){
-    $progress_bar = '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">'.$completion_rate['completion_percentage'].'% COMPLETE</div></div>';
+    $progress_bar = '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$completion_rate['completion_percentage'].'% COMPLETE</div></div>';
 }
 
 //HEADER
