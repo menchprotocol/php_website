@@ -243,7 +243,7 @@ if($previous_level_id){
 
 
 //HEADER
-echo '<div style="position: relative; display: block; margin-top:13px;"><h1 class="block-one"><span class="icon-block top-icon">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
+echo '<div style="position: relative; display: block; margin-top:13px;"><h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
 
 //MESSAGES
@@ -753,17 +753,12 @@ echo view_i_note_mix(12419, $this->X_model->fetch(array(
 echo '</div>';
 
 
+echo '</div>'; //CLOSE CONTAINER
 
 
 
 
 if($in_my_x){
-
-    if($i_completion_percentage>0){
-        echo view_progress($i_completion_rate, $i_focus);
-    }
-
-    echo '</div>'; //CLOSE CONTAINER
 
 
     $buttons_found = 0;
@@ -826,9 +821,9 @@ if($in_my_x){
         echo '</div>';
     }
 
-} else {
-
-    echo '</div>'; //CLOSE CONTAINER
+    if($i_completion_percentage>0){
+        echo view_progress($i_completion_rate, $i_focus);
+    }
 
 }
 
