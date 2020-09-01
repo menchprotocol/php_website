@@ -233,9 +233,11 @@ if($user_e['e__id']){
 $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion_rate['completion_percentage']<100 */ ;
 
 
+
 if($i_completion_percentage>0){
-    echo '<div class="container space-sides">'.view_progress($i_completion_rate, $i_focus).'</div>';
+    echo '<div class="container">'.view_progress($i_completion_rate, $i_focus).'</div>';
 }
+
 
 if($previous_level_id){
     //Idea Map:
@@ -243,7 +245,6 @@ if($previous_level_id){
     echo join('', array_reverse($sitemap_items));
     echo '</div>';
 }
-
 
 
 //HEADER
