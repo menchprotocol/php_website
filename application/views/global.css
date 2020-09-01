@@ -534,6 +534,12 @@ img.no-radius {
     width: 70px;
     padding: 18px 0;
 }
+.nav-title{
+    width: 100%;
+    text-align: center;
+    padding: 5px 0;
+}
+
 
 .mini-circle{
     display: inline-block;
