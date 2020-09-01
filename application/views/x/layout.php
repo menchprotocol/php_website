@@ -805,7 +805,7 @@ if($in_my_x){
 
         }
 
-        $buttons_ui .= '<div>'.( $control_btn ? $control_btn.'<div class="nav-title">'.$m['m_title'].'</div>' : '&nbsp;' ).'</div>';
+        $buttons_ui .= '<div>'.( $control_btn ? $control_btn.'<span class="nav-title">'.$m['m_title'].'</span>' : '&nbsp;' ).'</div>';
 
         if($control_btn){
             $buttons_found++;
