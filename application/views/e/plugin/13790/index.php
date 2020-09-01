@@ -61,7 +61,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     echo '<tr style="font-weight:bold;">';
     echo '<td style="width:200px;">USER</td>';
-    echo '<td style="width:200px;">STARTED</td>';
     echo '<td style="width:50px;">DONE</td>';
     foreach($column_sources as $e){
         echo '<td style="width:200px;"><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';
@@ -69,7 +68,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     foreach($column_ideas as $i){
         echo '<td style="width:200px;"><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></td>';
     }
-    echo '<td style="width:30px;">&nbsp;</td>';
+    echo '<td style="width:200px;">STARTED</td>';
     echo '</tr>';
 
 
@@ -88,7 +87,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         //User
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
         echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
-        echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
         echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
 
         //SOURCES
@@ -113,9 +111,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             echo '<td>'.( count($discovery) ? ( strlen($discovery[0]['x__message']) > 0 ? $discovery[0]['x__message'] : '✅' )  : '❌').'</td>';
         }
 
-
-        echo '<td><a href="/x/x_clear_coins/'.$x['e__id'].'" style="font-weight:bold;">x</a></td>';
-
+        echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
         echo '</tr>';
 
     }
