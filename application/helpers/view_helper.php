@@ -1370,7 +1370,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
             //RIGHT EDITING:
             $ui .= '<div class="note-editor cover-editor edit-off '.( $x__type==6255 ? '' : superpower_active(10939) ).'">';
-            $ui .= '<span class="show-on-hover">';
+            $ui .= '<span class="show-on-hover" style="padding: 15px 0 0 0;">';
 
             //SORT
             $ui .= '<span title="'.$e___13369[13413]['m_title'].'" class="x_sort">'.$e___13369[13413]['m_icon'].'</span>';
