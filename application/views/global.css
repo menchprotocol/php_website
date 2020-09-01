@@ -607,16 +607,16 @@ img.no-radius {
 }
 
 .progress-done{
-    height:21px;
+    height:20px;
     background-color: #FC1B44;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .progress-rate{
     position: absolute;
-    left: 0;
+    left: 4px;
     top: 2px;
     width: 100%;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .progress-bg-list{
