@@ -537,7 +537,7 @@ class X extends CI_Controller
                 }
             }
 
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed this idea & will be notified of new updates, if any.</div></div>');
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully completed & will be notified of new updates, if any.</div></div>');
 
         }
 

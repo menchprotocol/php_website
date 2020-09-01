@@ -227,7 +227,7 @@ if($user_e['e__id']){
 }
 
 
-$show_percentage = $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
+$show_percentage = $completion_rate['completion_percentage']>0 /* && $completion_rate['completion_percentage']<100 */ ;
 
 
 if($previous_level_id){
