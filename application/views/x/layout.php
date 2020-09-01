@@ -246,6 +246,11 @@ if($previous_level_id){
 echo '<div style="position: relative; display: block; margin-top:13px;"><h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
 
+if($i_completion_percentage>0){
+    echo '<div class="container space-all">'.view_progress($i_completion_rate, $i_focus).'</div>';
+}
+
+
 //MESSAGES
 echo '<div style="margin-bottom:33px;">';
 foreach($messages as $message_x) {
@@ -819,10 +824,6 @@ if($in_my_x){
         echo '</div>';
         echo '</div>';
         echo '</div>';
-    }
-
-    if($i_completion_percentage>0){
-        echo '<div class="container">'.view_progress($i_completion_rate, $i_focus).'</div>';
     }
 
 }
