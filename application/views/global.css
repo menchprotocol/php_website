@@ -621,11 +621,10 @@ img.no-radius {
 }
 
 .progress-rate{
-    margin: -17px 0 0 0;
+    margin: -18px 0 0 0;
     width: 100%;
-    font-size: 0.89em;
     line-height: 100%;
-    padding: 0px 0 3px;
+    padding: 0px 0 1px;
     font-family: 'Montserrat', sans-serif;
 }
 .progress-rate i{
