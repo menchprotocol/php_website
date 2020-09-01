@@ -1358,13 +1358,6 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
-        if($user_e && $x__type==6255){
-            $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
-            if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
-                $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">'.$completion_rate['completion_percentage'].'% COMPLETE</div></div>';
-            }
-        }
-
         //EDITING TOOLBAR
         if($show_editor){
 
@@ -1404,6 +1397,14 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
                 $ui .= '<div class="space-left hideIfEmpty">'.view_i_tree_stats($i_stats, false).'</div>';
+
+
+                if($user_e && $x__type==6255){
+                    $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
+                    if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
+                        $ui .= '<div class="progress-bg-image" title="discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">'.$completion_rate['completion_percentage'].'% COMPLETE</div></div>';
+                    }
+                }
 
 
             $ui .= '</div>';
