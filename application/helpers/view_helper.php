@@ -89,7 +89,7 @@ function view_x__message($x__message, $x__type, $full_message = null)
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
-        return  '<audio controls autoplay="1"><source src="' . $x__message . '" type="audio/mpeg"></audio>' ;
+        return  '<audio controls src="' . $x__message . '">Your Browser Does Not Support Audio</audio>' ;
 
     } elseif ($x__type == 4258 /* Video URL */) {
 
