@@ -233,6 +233,10 @@ if($user_e['e__id']){
 $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion_rate['completion_percentage']<100 */ ;
 
 
+if($i_completion_percentage>0){
+    echo '<div class="container space-sides">'.view_progress($i_completion_rate, $i_focus).'</div>';
+}
+
 if($previous_level_id){
     //Idea Map:
     echo '<div class="list-group">';
@@ -244,11 +248,6 @@ if($previous_level_id){
 
 //HEADER
 echo '<div style="position: relative; display: block; margin-top:13px;"><h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
-
-
-if($i_completion_percentage>0){
-    echo '<div class="container space-all">'.view_progress($i_completion_rate, $i_focus).'</div>';
-}
 
 
 //MESSAGES
