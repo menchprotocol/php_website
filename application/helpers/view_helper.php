@@ -1402,7 +1402,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 if($user_e && $x__type==6255){
                     $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
                     if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
-                        $ui .= '<div class="left-margin"><div class="progress-bg-list" title="discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">'.$completion_rate['completion_percentage'].'% COMPLETE</div></div></div>';
+                        $ui .= '<div class="space-left"><div class="progress-bg-list" title="discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">'.$completion_rate['completion_percentage'].'% COMPLETE</div></div></div>';
                     }
                 }
 
