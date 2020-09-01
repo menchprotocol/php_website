@@ -303,7 +303,7 @@ if($in_my_x && count($this->X_model->fetch(array(
     )))){
 
     //Recommended to Save This Idea:
-    echo '<div class="msg alert no-margin space-left">Save idea for quicker access? Tap <i class="far fa-bookmark black"></i></div>';
+    echo '<div class="msg alert no-margin space-left">Save idea for quick access? <span class="inline-block">Tap <i class="far fa-bookmark black"></i></span></div>';
 
 }
 
