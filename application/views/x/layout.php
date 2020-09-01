@@ -822,7 +822,7 @@ if($in_my_x){
     }
 
     if($i_completion_percentage>0){
-        echo view_progress($i_completion_rate, $i_focus);
+        echo '<div class="container">'.view_progress($i_completion_rate, $i_focus).'</div>';
     }
 
 }
