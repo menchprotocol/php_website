@@ -1417,7 +1417,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 }
 
 function view_progress($completion_rate, $i, $extra_class = null){
-    return '<div class="progress-bg-list"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate"><span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, 13752 /* NOT STARTED */ ).'</span>'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED</div></div>';
+    return '<div class="progress-bg-list"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate"><span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, 13752 /* NOT STARTED */ ).'</span>'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED ['.$completion_rate['completion_percentage'].'%]</div></div>';
 }
 
 function view_e_basic($e)
