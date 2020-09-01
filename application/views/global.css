@@ -601,16 +601,30 @@ img.no-radius {
     top: 5px;
 }
 
+
+.progress-bg-mini{
+    margin: -10px 0 10px 0;
+    width: 100% !important;
+    background-color: #CCCCCC;
+}
+.progress-bg-list{
+    margin: -20px 0 20px 0;
+    width: 100% !important;
+    background-color: #CCCCCC;
+}
+
+
+
 .progress-bg-image{
     width:100% !important;
     background-color: #CCCCCC;
 }
 
-.progress-mini-done{
+.progress-bg-mini .progress-done{
     height:5px;
     background-color: #FC1B44;
 }
-.progress-done{
+.progress-bg-list .progress-done{
     height:20px;
     background-color: #FC1B44;
 }
@@ -623,11 +637,6 @@ img.no-radius {
     font-family: 'Montserrat', sans-serif;
 }
 
-.progress-bg-list{
-    margin: -21px 0 10px 0;
-    width: 100% !important;
-    background-color: #CCCCCC;
-}
 
 .fixed-bottom{
     padding: 0;
