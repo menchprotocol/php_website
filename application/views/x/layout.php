@@ -750,7 +750,7 @@ if(!count($sitemap_items) && $in_my_x){
     if($i_completion_percentage<100){
 
         //Not Yet Completed
-        echo '<div class="alert no-margin"><span class="icon-block"><i class="fas fa-lock"></i></span><span class="title-block">Navigation will unlock once 100% done. You\'re '.$i_completion_percentage.'% done. Tap <i class="fas fa-step-forward black"></i> (below) to continue.</span></div>';
+        echo '<div class="alert no-margin"><span class="icon-block"><i class="fas fa-lock"></i></span><span class="title-block">Navigation will unlock once you are 100% complete. Tap <i class="fas fa-step-forward black"></i> (below) to continue.</span></div>';
 
     } else {
 
