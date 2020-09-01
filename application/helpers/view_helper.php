@@ -785,7 +785,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
     $ui .= '<div class="row">';
         $ui .= '<div class="col-sm col-md">';
 
-            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $index_id!=0 ? 13752 /* NOT STARTED */ : 13757 /* Current Idea */ ) ).'</span>';
+            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $index_id!=0 ? 13752 /* NOT STARTED */ : 13822 /* Next Idea */ ) ).'</span>';
             $ui .= '<b class="'.( $can_click ? 'montserrat' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
@@ -1382,7 +1382,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 //Title
                 $ui .= '<div>';
-                $ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $x__type == 6255 ? 13757 /* Current Idea */ : 0 /* Idea Icon */ )).'</a></span>';
+                $ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $x__type == 6255 ? 13822 /* Next Idea */ : 0 /* Idea Icon */ )).'</a></span>';
                 $ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
                 $ui .= '</div>';
 
