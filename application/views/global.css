@@ -606,11 +606,6 @@ img.no-radius {
     margin: -10px 0 10px 0;
     width: 100% !important;
     background-color: #CCCCCC;
-}
-
-.progress-bg-image{
-    width:100% !important;
-    background-color: #CCCCCC;
     position: relative !important;
 }
 
