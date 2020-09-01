@@ -238,10 +238,7 @@ if($previous_level_id){
 }
 
 
-$progress_bar = '';
-if($show_percentage && !count($sitemap_items)){
-    $progress_bar = '<div class="progress-bg-list no-horizonal-margin" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate"><span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i_focus, 13752 /* NOT STARTED */ ).'</span>'.$completion_rate['completion_percentage'].'% COMPLETE</div></div>';
-}
+$progress_bar = ($show_percentage && !count($sitemap_items) ? view_progress($completion_rate, $i_focus, 'no-horizonal-margin') : '' );
 
 //HEADER
 echo '<div style="position: relative; display: block; margin-top:13px;">' . $progress_bar . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg '.( $show_percentage ? ' title-block-squeeze ' : '' ).'">' . view_i_title($i_focus) . '</span></h1>'.'</div>';

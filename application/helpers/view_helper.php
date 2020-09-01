@@ -777,7 +777,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
 
 
     if($has_completion && $index_id==-1){
-        $ui .= '<div class="progress-bg-list" title="Discovered '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$completion_rate['completion_percentage'].'% COMPLETE</div></div>';
+        $ui .= view_progress($completion_rate, $i);
     }
 
 
@@ -1402,7 +1402,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 if($user_e && $x__type==6255){
                     $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
                     if($completion_rate['completion_percentage']>0){
-                        $ui .= '<div class="space-all"><div class="progress-bg-list" title="discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$completion_rate['completion_percentage'].'% COMPLETE</div></div></div>';
+                        $ui .= '<div class="space-all">'.view_progress($completion_rate, $i).'</div>';
                     }
                 }
 
@@ -1416,6 +1416,9 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 }
 
+function view_progress($completion_rate, $i, $extra_class = null){
+    return '<div class="progress-bg-list"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate"><span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, 13752 /* NOT STARTED */ ).'</span>'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED</div></div>';
+}
 
 function view_e_basic($e)
 {
