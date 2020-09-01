@@ -1402,7 +1402,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 if($user_e && $x__type==6255){
                     $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
                     if($completion_rate['completion_percentage']>0){
-                        $ui .= '<div class="space-all">'.view_progress($completion_rate, $i).'</div>';
+                        $ui .= '<div class="space-all">'.view_progress($completion_rate, $i, null, true).'</div>';
                     }
                 }
 
@@ -1416,8 +1416,8 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 }
 
-function view_progress($completion_rate, $i, $extra_class = null){
-    return '<div class="progress-bg-list '.$extra_class.'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">&nbsp;'.$completion_rate['completion_percentage'].'% COMPLETED<span class="show-max"> '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS</span></div></div>';
+function view_progress($completion_rate, $i, $extra_class = null, $show_max = false){
+    return '<div class="progress-bg-list '.$extra_class.'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">&nbsp;'.$completion_rate['completion_percentage'].'% COMPLETED<span class="'.( $show_max ? 'show-max': '' ).'"> '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS</span></div></div>';
 }
 
 function view_e_basic($e)
