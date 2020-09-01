@@ -87,7 +87,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         //User
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
         echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
-        echo '<td>'.( $completion_rate['completion_percentage']>=100 ? '✅' : '❌' ).$completion_rate['completion_percentage'].'%</td>';
+        echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
 
         //SOURCES
         foreach($column_sources as $e){

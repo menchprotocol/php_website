@@ -468,6 +468,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             if($source_is_e && 0){
 
+                //DISABLE FOR NOW TODO enable later...
+
                 //FEATURED IDEAS
                 $featured_i = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
