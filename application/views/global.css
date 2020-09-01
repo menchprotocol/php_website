@@ -528,12 +528,25 @@ img.no-radius {
     margin-bottom: 0;
 }
 .discover-controller div a{
+    text-align: center;
+    display: inline-block;
+    padding:0;
+    margin:0;
+}
+.the-btn{
     display: inline-block;
     border-radius: 50%;
     background-color: #FC1B44;
     width: 70px;
     padding: 18px 0;
 }
+.the-txt{
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 8px 0;
+}
+
 .mini-circle{
     display: inline-block;
     border-radius: 50%;
