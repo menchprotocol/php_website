@@ -71,6 +71,7 @@ $sitemap_items = array();
 $i = array(); //Assume main intent not yet completed, unless proven otherwise...
 $i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_completion_percentage = 0; //Assume main intent not yet completed, unless proven otherwise...
+$i_completion_rate = array();
 $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
 $previous_level_id = 0; //The ID of the Idea one level up, if any
 
@@ -109,6 +110,7 @@ if($in_my_x){
                         //We reached the top-level discovery:
                         $i_completed = $completion_rate['completion_percentage'] >= 100;
                         $i_completion_percentage = $completion_rate['completion_percentage'];
+                        $i_completion_rate = $completion_rate;
                         $i = $is_this[0];
                         break;
                     }
@@ -157,6 +159,7 @@ if($user_e['e__id']){
         if($in_my_discoveries){
             $i_completed = $completion_rate['completion_percentage'] >= 100;
             $i_completion_percentage = $completion_rate['completion_percentage'];
+            $i_completion_rate = $completion_rate;
         }
 
 
@@ -238,10 +241,9 @@ if($previous_level_id){
 }
 
 
-$progress_bar = ($show_percentage && !count($sitemap_items) ? view_progress($completion_rate, $i_focus, 'no-horizonal-margin') : '' );
 
 //HEADER
-echo '<div style="position: relative; display: block; margin-top:13px;">' . $progress_bar . '<h1 class="block-one"><span class="icon-block top-icon '.( $show_percentage ? '' : ' thin-top ' ).'">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg '.( $show_percentage ? ' title-block-squeeze ' : '' ).'">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
+echo '<div style="position: relative; display: block; margin-top:13px;"><h1 class="block-one"><span class="icon-block top-icon">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
 
 
 //MESSAGES
@@ -751,10 +753,18 @@ echo view_i_note_mix(12419, $this->X_model->fetch(array(
 echo '</div>';
 
 
-echo '</div>'; //CLOSE CONTAINER
+
+
 
 
 if($in_my_x){
+
+    if($i_completion_percentage>0){
+        echo view_progress($i_completion_rate, $i_focus);
+    }
+
+    echo '</div>'; //CLOSE CONTAINER
+
 
     $buttons_found = 0;
     $buttons_ui = '';

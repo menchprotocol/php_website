@@ -777,7 +777,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
 
 
     if($has_completion && $index_id==-1){
-        $ui .= view_progress($completion_rate, $i);
+        //$ui .= view_progress($completion_rate, $i);
     }
 
 
