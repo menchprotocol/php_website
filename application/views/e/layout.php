@@ -27,53 +27,51 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-    //PROFILE
-    echo '<div id="list_11030" class="list-group ">';
-    $profiles = $this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'x__down' => $e['e__id'],
-    ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
-    $show_max = ( $superpower_13422 ? config_var(13803) : 0 );
-    $hide = false;
-    foreach($profiles as $count => $e_profile) {
+    if(!$source_is_e || $superpower_13422){
+        //PROFILE
+        echo '<div id="list_11030" class="list-group ">';
+        $profiles = $this->X_model->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__down' => $e['e__id'],
+        ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
+        $show_max = config_var(13803);
+        $hide = false;
+        foreach($profiles as $count => $e_profile) {
 
-        if(!$hide && $count==$show_max){
-            $hide = true;
-            echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[11030]['m_icon'].'</span><b class="montserrat source">'.$e___11035[11030]['m_title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
-            echo '<div class="list-group-item see_all_11030 no-padding"></div>';
+            if(!$hide && $count==$show_max){
+                $hide = true;
+                echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[11030]['m_icon'].'</span><b class="montserrat source">'.$e___11035[11030]['m_title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
+                echo '<div class="list-group-item see_all_11030 no-padding"></div>';
+            }
+
+            echo view_e($e_profile,true, ( $hide ? ' see_all_11030 hidden ' : null ), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+
+        }
+        //ADD NEW
+        echo '<div id="new_11030" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               maxlength="' . config_var(6197) . '"
+                               placeholder="NEW PROFILE">
+                    </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+        echo '</div>';
+
+
+        //SOURCE NAME
+        echo '<div class="itemsource" style="padding: 8px 0; margin-top:13px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
+        echo '<div class="doclear">&nbsp;</div>';
+
+        //SOURCE DRAFTING?
+        if(!in_array($e['e__status'], $this->config->item('n___7357'))){
+            echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).'"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
         }
 
-        echo view_e($e_profile,true, ( $hide ? ' see_all_11030 hidden ' : null ), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
-
     }
-    //ADD NEW
-    echo '<div id="new_11030" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
-                <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
-                    <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent add-input"
-                           maxlength="' . config_var(6197) . '"
-                           placeholder="NEW PROFILE">
-                </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
-    echo '</div>';
 
-
-
-
-
-
-
-
-    //SOURCE NAME
-    echo '<div class="itemsource" style="padding: 8px 0; margin-top:13px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
-    echo '<div class="doclear">&nbsp;</div>';
-
-    //SOURCE DRAFTING?
-    if(!in_array($e['e__status'], $this->config->item('n___7357'))){
-        echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).'"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
-    }
 
 
     //SOURCE MODIFY BUTTON
