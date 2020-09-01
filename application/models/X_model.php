@@ -1083,7 +1083,7 @@ class X_model extends CI_Model
             } elseif ($is_complete) {
 
                 //This is complete, but maybe there is a child that's not:
-                $found_next = $this->X_model->find_next($e__id, $next_i, 0, false);
+                $found_next = $this->X_model->find_next($e__id, $next_i, 0, false, $i_completed);
                 if ($found_next) {
                     return $found_next;
                 }
@@ -1107,7 +1107,7 @@ class X_model extends CI_Model
                         $is_this = $this->I_model->fetch(array(
                             'i__id' => $previous_i__id,
                         ));
-                        $found_next = $this->X_model->find_next($e__id, $is_this[0], $current_previous, false);
+                        $found_next = $this->X_model->find_next($e__id, $is_this[0], $current_previous, false, $i_completed);
                         if ($found_next) {
                             return $found_next;
                         }
@@ -1124,7 +1124,7 @@ class X_model extends CI_Model
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ), array('x__left'), 0, 0, array('x__sort' => 'ASC')) as $x_list_i) {
-                $found_next = $this->X_model->find_next($e__id, $x_list_i, $find_after_i__id, false);
+                $found_next = $this->X_model->find_next($e__id, $x_list_i, $find_after_i__id, false, $i_completed);
                 if ($found_next) {
                     return $found_next;
                 }
