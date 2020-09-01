@@ -70,6 +70,7 @@ $sitemap_items_raw = array();
 $sitemap_items = array();
 $i = array(); //Assume main intent not yet completed, unless proven otherwise...
 $i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
+$i_started = false; //Assume main intent not yet started, unless proven otherwise...
 $i_completion_percentage = 0; //Assume main intent not yet completed, unless proven otherwise...
 $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
 $previous_level_id = 0; //The ID of the Idea one level up, if any
@@ -108,6 +109,7 @@ if($in_my_x){
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
                         $i_completed = $completion_rate['completion_percentage'] >= 100;
+                        $i_started = $completion_rate['completion_percentage'] > 0;
                         $i_completion_percentage = $completion_rate['completion_percentage'];
                         $i = $is_this[0];
                         break;
@@ -156,6 +158,7 @@ if($user_e['e__id']){
         $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $i_focus);
         if($in_my_discoveries){
             $i_completed = $completion_rate['completion_percentage'] >= 100;
+            $i_started = $completion_rate['completion_percentage'] > 0;
             $i_completion_percentage = $completion_rate['completion_percentage'];
         }
 
@@ -263,7 +266,6 @@ echo '</div>';
 
 
 //DISCOVER LAYOUT
-$show_next_tip = $in_my_x /* && !count($sitemap_items) */ && !$i_completed;
 $i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 13291;
 $tab_pills = '<ul class="nav nav-tabs nav-sm">';
@@ -291,7 +293,7 @@ if(!$in_my_x){
 
 }
 
-if(!$show_next_tip && count($this->X_model->fetch(array(
+if($in_my_x && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type' => 4983, //IDEA SOURCES
         'x__up' => 12896, //SAVE THIS IDAE
@@ -367,7 +369,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             //Did we have any steps unlocked?
             if (count($unlocked_x) > 0) {
-                $focus_tab .= view_i_list($i_completed, $in_my_x, $i_focus, $unlocked_x, $user_e, 'UNLOCKED:');
+                $focus_tab .= view_i_list($i_started, $in_my_x, $i_focus, $unlocked_x, $user_e, 'UNLOCKED:');
                 $has_substance = true;
             }
 
@@ -390,13 +392,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
 
                     //List Unlock paths:
-                    $focus_tab .= view_i_list($i_completed, $in_my_x, $i_focus, $unlock_paths, $user_e, 'SUGGESTED IDEAS:');
+                    $focus_tab .= view_i_list($i_started, $in_my_x, $i_focus, $unlock_paths, $user_e, 'SUGGESTED IDEAS:');
                     $has_substance = true;
 
                 }
 
                 //List Children if any:
-                $focus_tab .= view_i_list($i_completed, $in_my_x, $i_focus, $is_next, $user_e, 'UP NEXT:');
+                $focus_tab .= view_i_list($i_started, $in_my_x, $i_focus, $is_next, $user_e, 'UP NEXT:');
                 $has_substance = count($is_next);
 
 
@@ -451,7 +453,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $focus_tab .= '<div class="edit_select_answer">';
 
                         //List answers:
-                        $focus_tab .= view_i_list($i_completed, $in_my_x, $i_focus, $x_selects, $user_e, 'YOU SELECTED:');
+                        $focus_tab .= view_i_list($i_started, $in_my_x, $i_focus, $x_selects, $user_e, 'YOU SELECTED:');
 
                         $focus_tab .= '<div class="doclear">&nbsp;</div>';
 
@@ -549,7 +551,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 }
 
                 //DISCOVER ONLY
-                $focus_tab .= view_i_list($i_completed, $in_my_x, $i_focus, $is_next, $user_e, ( $has_stats ? '' : 'UP NEXT:' ));
+                $focus_tab .= view_i_list($i_started, $in_my_x, $i_focus, $is_next, $user_e, ( $has_stats ? '' : 'UP NEXT:' ));
                 $has_substance = count($is_next);
 
             } elseif ($i_focus['i__type'] == 6683) {
@@ -564,7 +566,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 if (count($x_completes)) {
                     //Next Ideas:
-                    $focus_tab .= view_i_list($i_completed, $in_my_x, $i_focus, $is_next, $user_e, 'UP NEXT:');
+                    $focus_tab .= view_i_list($i_started, $in_my_x, $i_focus, $is_next, $user_e, 'UP NEXT:');
                 }
 
                 $focus_tab .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -592,7 +594,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $focus_tab .= '</div>';
 
                     //Any child ideas?
-                    $focus_tab .= view_i_list($i_completed, $in_my_x, $i_focus, $is_next, $user_e, 'UP NEXT:');
+                    $focus_tab .= view_i_list($i_started, $in_my_x, $i_focus, $is_next, $user_e, 'UP NEXT:');
 
                 } else {
 
@@ -618,7 +620,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //NEXT IDEAS
             $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, $show_nav).'</div>';
 
-            $focus_tab .= view_i_list($i_completed, $in_my_x, $i_focus, $is_next, $user_e);
+            $focus_tab .= view_i_list($i_started, $in_my_x, $i_focus, $is_next, $user_e);
 
             $is_previous = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -630,7 +632,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             if(count($is_previous)){
                 //IDEA PREVIOUS
-                $focus_tab .= '<div style="padding:33px 0;">'.view_i_list($i_completed, $in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:').'</div>';
+                $focus_tab .= '<div style="padding:33px 0;">'.view_i_list($i_started, $in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:').'</div>';
             }
 
             $has_substance = count($is_next) || count($is_previous);
@@ -740,14 +742,6 @@ if($tab_pill_count > 1 && $show_nav){
 
 //Show All Tab Content:
 echo $tab_content;
-
-
-//Home Navigation Notice
-if(!count($sitemap_items) && $in_my_x && $i_completion_percentage<100){
-    //Not Yet Completed
-    echo '<div class="alert no-margin"><span class="icon-block"><i class="fas fa-lock"></i></span><span class="title-block">Navigation unlocks once 100% complete</span></div>';
-}
-
 
 
 //COMMENTS
