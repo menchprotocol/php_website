@@ -1446,6 +1446,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
+    $is_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $is_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
     $inline_editing = $control_enabled && superpower_active(13402, true);
     $superpower_10939 = superpower_active(10939, true);
@@ -1502,13 +1503,13 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
-    if($control_enabled && $source_of_e && $is_e_link){
+    if($control_enabled && $source_of_e && ($is_e_link || $is_note)){
 
         //RIGHT EDITING:
         $ui .= '<div class="note-editor edit-off">';
         $ui .= '<span class="show-on-hover">';
 
-        if($superpower_13422){
+        if($is_e_link && $superpower_13422){
 
             //Sort
             if(!$is_parent && $superpower_10939){
@@ -1520,7 +1521,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
         }
 
-        if($superpower_10939 && !$is_parent && ($superpower_13422 || $source_of_e)){
+        if($superpower_10939 && !$is_parent && $source_of_e){
 
             //UNLINK SOURCE
             $ui .= '<span><a href="javascript:void(0);" onclick="remove_10673(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m_title'].'">'.$e___11035[10673]['m_icon'].'</a></span>';
