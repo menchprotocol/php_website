@@ -248,7 +248,7 @@ if($previous_level_id){
 
 
 //HEADER
-echo '<div style="position: relative; display: block; margin-top:13px;"><h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>'.'</div>';
+echo '<h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
 
 
 //MESSAGES
