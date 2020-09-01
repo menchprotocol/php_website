@@ -877,27 +877,29 @@ class X extends CI_Controller
 
 
 
-    function x_clear_coins(){
+    function x_clear_coins($u_id = 0){
+
 
         $user_e = superpower_assigned(null, true);
+        $u_id = ( $u_id > 0 ? $u_id : $user_e['e__id'] );
 
         //Fetch their current progress transactions:
         $progress_x = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
-            'x__source' => $user_e['e__id'],
+            'x__source' => $u_id,
         ), array(), 0);
 
         if(count($progress_x) > 0){
 
             //Yes they did have some:
-            $message = 'Removed '.count($progress_x).' idea'.view__s(count($progress_x));
+            $message = 'Removed '.count($progress_x).' idea'.view__s(count($progress_x)).' for @'.$u_id;
 
             //Log transaction:
             $clear_all_x = $this->X_model->create(array(
                 'x__message' => $message,
                 'x__type' => 6415,
-                'x__source' => $user_e['e__id'],
+                'x__source' => $u_id,
             ));
 
             //Delete all progressions:
@@ -905,7 +907,7 @@ class X extends CI_Controller
                 $this->X_model->update($progress_x['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
                     'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
-                ), $user_e['e__id'], 6415 /* Reset All Discoveries */);
+                ), $u_id, 6415 /* Reset All Discoveries */);
             }
 
         } else {

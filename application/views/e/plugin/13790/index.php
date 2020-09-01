@@ -57,7 +57,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 
-    echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 450  ).'px;">';
+    echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 480  ).'px;">';
 
     echo '<tr style="font-weight:bold;">';
     echo '<td style="width:200px;">USER</td>';
@@ -69,6 +69,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     foreach($column_ideas as $i){
         echo '<td style="width:200px;"><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></td>';
     }
+    echo '<td style="width:30px;">&nbsp;</td>';
     echo '</tr>';
 
 
@@ -111,6 +112,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             ), array(), 1);
             echo '<td>'.( count($discovery) ? ( strlen($discovery[0]['x__message']) > 0 ? $discovery[0]['x__message'] : '✅' )  : '❌').'</td>';
         }
+
+
+        echo '<td><a href="/x/x_clear_coins/'.$x['e__id'].'" style="font-weight:bold;">x</a></td>';
 
         echo '</tr>';
 
