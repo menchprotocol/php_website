@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-31 20:28:32 PST
+//Generated 2020-08-31 22:44:09 PST
 
 //IDEA STATUS LOCK:
 $config['n___13812'] = array(13811);
@@ -1765,12 +1765,18 @@ $config['e___12523'] = array(
 );
 
 //DISCOVERY LEGEND:
-$config['n___12446'] = array(13752,13757,13822,12447,13338);
+$config['n___12446'] = array(13752,13822,13757,12447,13338);
 $config['e___12446'] = array(
     13752 => array(
         'm_title' => 'LOCKED',
         'm_message' => '',
         'm_icon' => '<i class="far fa-lock discover"></i>',
+        'm_profile' => array(12446),
+    ),
+    13822 => array(
+        'm_title' => 'NEXT',
+        'm_message' => '',
+        'm_icon' => '<i class="far fa-step-forward discover"></i>',
         'm_profile' => array(12446),
     ),
     13757 => array(
@@ -1779,16 +1785,10 @@ $config['e___12446'] = array(
         'm_icon' => '<i class="fas fa-map-marker discover" aria-hidden="true"></i>',
         'm_profile' => array(12446),
     ),
-    13822 => array(
-        'm_title' => 'NEXT',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-forward discover"></i>',
-        'm_profile' => array(12446),
-    ),
     12447 => array(
         'm_title' => 'IN PROGRESS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-play-circle discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13450,12446),
     ),
     13338 => array(
@@ -3858,7 +3858,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.542392',
+        'm_message' => 'v1.5433',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
