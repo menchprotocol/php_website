@@ -91,7 +91,7 @@ if($in_my_x){
 
                     if(filter_array($sitemap_items_raw, 'i__id', $previous_i__id)){
                         //Already There
-                        continue;
+                        break;
                     }
 
                     if($count==0){
