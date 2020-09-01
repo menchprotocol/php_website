@@ -786,26 +786,26 @@ if($in_my_x){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $control_btn = '<a class="grey-bg" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a>';
+            $control_btn = '<a class="grey-bg" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a><span class="nav-title">'.$m['m_title'].'</span>';
 
         } elseif($e__id==12991 && !$i_completed && count($sitemap_items)){
 
             //GO BACK
-            $control_btn = '<a class="controller-nav grey-bg" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'">'.$m['m_icon'].'</a>';
+            $control_btn = '<a class="controller-nav grey-bg" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
 
         } elseif($e__id==12211 && !$i_completed){
 
             //GO NEXT
-            $control_btn = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()">'.$m['m_icon'].'</a>';
+            $control_btn = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211()">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
 
         } elseif($e__id==12419 && count($sitemap_items)){
 
             //ADD COMMENT
-            $control_btn = '<a class="controller-nav add-comments grey-bg" href="javascript:void(0);">'.$m['m_icon'].'</a>';
+            $control_btn = '<a class="controller-nav add-comments grey-bg" href="javascript:void(0);">'.$m['m_icon'].'</a><span class="nav-title add-comments">'.$m['m_title'].'</span>';
 
         }
 
-        $buttons_ui .= '<div>'.( $control_btn ? $control_btn.'<span class="nav-title">'.$m['m_title'].'</span>' : '&nbsp;' ).'</div>';
+        $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
 
         if($control_btn){
             $buttons_found++;
