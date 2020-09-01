@@ -135,7 +135,7 @@ if(!isset($hide_header)){
                         //echo '<td class="block-x"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m_title'].'">'.$e___11035[12899]['m_icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-x"><a href="'.( $i__id > 0 ? '/x/x_start/'.$i__id : '/e/signin' ).'" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-x"><a href="'.( $i__id > 0 && 0 ? '/x/x_start/'.$i__id : '/e/signin' ).'" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
 
                     } else {
 
