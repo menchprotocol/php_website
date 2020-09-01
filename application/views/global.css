@@ -606,6 +606,10 @@ img.no-radius {
     background-color: #CCCCCC;
 }
 
+.progress-mini-done{
+    height:5px;
+    background-color: #FC1B44;
+}
 .progress-done{
     height:20px;
     background-color: #FC1B44;
