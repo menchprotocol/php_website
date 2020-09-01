@@ -768,7 +768,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
     $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
-    $has_completion = $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100;
+    $has_completion = $completion_rate['completion_percentage']>0;
 
     //Build View:
     $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
@@ -1401,7 +1401,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 if($user_e && $x__type==6255){
                     $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
-                    if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
+                    if($completion_rate['completion_percentage']>0){
                         $ui .= '<div class="space-all"><div class="progress-bg-list" title="discover '.$completion_rate['steps_completed'].' of '.$completion_rate['steps_total'].' Ideas ('.$completion_rate['completion_percentage'].'%)" data-toggle="tooltip" data-placement="bottom"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">'.$completion_rate['completion_percentage'].'% COMPLETE</div></div></div>';
                     }
                 }
