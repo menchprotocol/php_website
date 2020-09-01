@@ -466,7 +466,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-            if($source_is_e){
+            if($source_is_e && 0){
 
                 //FEATURED IDEAS
                 $featured_i = $this->X_model->fetch(array(
