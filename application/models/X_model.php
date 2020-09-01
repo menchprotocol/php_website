@@ -1034,7 +1034,7 @@ class X_model extends CI_Model
 
 
 
-    function find_next($e__id, $i, $find_after_i__id = 0, $search_up = true)
+    function find_next($e__id, $i, $find_after_i__id = 0, $search_up = true, $i_completed = false)
     {
 
         //CHECK DOWN/NEXT
@@ -1054,15 +1054,14 @@ class X_model extends CI_Model
                 continue;
             }
 
-
             $is_or_i = in_array($i['i__type'], $this->config->item('n___6193'));
             $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
-            $is_complete = count($this->X_model->fetch(array(
+            $is_complete = ( $i_completed || count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
                 'x__source' => $e__id,
                 'x__left' => $next_i['i__id'],
-            )));
+            ))));
 
             if($is_or_i){
                 //OR IDEAS - Must be Selected
@@ -1076,7 +1075,7 @@ class X_model extends CI_Model
             }
 
 
-            if (!$is_complete && $is_fixed_x && ( !$is_or_i || $is_selected )) {
+            if ( ( $i_completed || (!$is_complete && $is_fixed_x) ) && ( !$is_or_i || $is_selected )) {
 
                 //FIXED LINK, or Selected OR IDEA, that is NOT COMPLETE, It's This:
                 return intval($next_i['i__id']);

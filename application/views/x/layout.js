@@ -45,17 +45,17 @@ $(document).ready(function () {
 });
 
 
-function go_12211(){
+function go_12211(go_next_url){
     //Attempts to go next if no submissions:
     if(focus_i__type==6683) {
 
         //TEXT RESPONSE:
-        return x_reply();
+        return x_reply(go_next_url);
 
     } else if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
 
         //SELECT ONE/SOME
-        return x_select();
+        return x_select(go_next_url);
 
     } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
 
@@ -65,7 +65,7 @@ function go_12211(){
     } else {
 
         //Go Next:
-        window.location = '/x/x_next/' + focus_i__id;
+        window.location = go_next_url + focus_i__id;
 
     }
 }
@@ -174,14 +174,14 @@ function x_upload(droppedFiles, uploadType) {
 }
 
 
-function x_reply(){
+function x_reply(go_next_url){
     $.post("/x/x_reply", {
         i__id:focus_i__id,
         x_reply:$('#x_reply').val(),
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            window.location = '/x/x_next/'+focus_i__id;
+            window.location = go_next_url+focus_i__id;
         } else {
             //Show error:
             alert(data.message);
@@ -189,7 +189,7 @@ function x_reply(){
     });
 }
 
-function x_select(){
+function x_select(go_next_url){
 
     //Check
     var selection_i__id = [];
@@ -207,7 +207,7 @@ function x_select(){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            window.location = '/x/x_next/'+focus_i__id;
+            window.location = go_next_url+focus_i__id;
         } else {
             //Show error:
             alert(data.message);

@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-08-31 23:00:43 PST
+//Generated 2020-09-01 00:17:20 PST
 
 //IDEA STATUS LOCK:
 $config['n___13812'] = array(13811);
@@ -3858,7 +3858,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.5434',
+        'm_message' => 'v1.5435',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
