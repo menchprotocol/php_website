@@ -1500,7 +1500,7 @@ label {
 }
 
 .x_input{
-    border:5px solid #FC1B44;
+    border:5px solid #FC1B44 !important;
     border-radius: 10px;
 }
 
