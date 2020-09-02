@@ -60,7 +60,9 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
         echo '</div>';
 
+    }
 
+    if($superpower_13422 || !$source_is_e){
         //SOURCE NAME
         echo '<div class="itemsource" style="padding: 8px 0; margin-top:13px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
         echo '<div class="doclear">&nbsp;</div>';
@@ -69,9 +71,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         if(!in_array($e['e__status'], $this->config->item('n___7357'))){
             echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).'"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
         }
-
     }
-
 
 
     //SOURCE MODIFY BUTTON
@@ -86,7 +86,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-    if(isset($_GET['reset'])){
+    if($source_is_e && isset($_GET['reset'])){
         //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
         echo '<div class="margin-top-down left-margin">';
         echo '<p>'.$e___11035[6415]['m_message'].'</p>';
