@@ -111,7 +111,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             echo '<td>'.( count($discovery) ? ( strlen($discovery[0]['x__message']) > 0 ? $discovery[0]['x__message'] : '✅' )  : '❌').'</td>';
         }
 
-        echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'<a href="/x/x_clear_coins/'.$x['e__id'].'" style="color:#CCC; font-weight:0.5em;">.</a></td>';
+        echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
         echo '</tr>';
 
     }
