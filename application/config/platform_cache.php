@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-02 11:47:04 PST
+//Generated 2020-09-02 12:00:01 PST
 
 //SPREADSHEET DEFAULTS:
 $config['n___13861'] = array(3288,4783);
@@ -1863,7 +1863,7 @@ $config['e___10876'] = array(
     ),
     4269 => array(
         'm_title' => 'SIGN IN/UP',
-        'm_message' => 'https://mench.com/e/signin',
+        'm_message' => 'https://mench.com/signin',
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_profile' => array(12687,13479,10876,4527,11035),
     ),

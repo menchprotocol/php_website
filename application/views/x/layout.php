@@ -296,7 +296,7 @@ if(!$in_my_x){
             echo '<div class="margin-top-down left-margin"><span class="icon-block">'.$e___13812[$i_focus['i__status']]['m_icon'].'</span>'.$e___13812[$i_focus['i__status']]['m_title'].'</div>';
         } else {
             //Signin:
-            echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/e/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
+            echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
         }
 
     } else {

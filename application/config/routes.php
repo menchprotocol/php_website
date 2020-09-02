@@ -6,6 +6,7 @@ $route['translate_uri_dashes']      = FALSE;
 //Home
 $route['default_controller']        = "x/index"; //Home page
 $route['@']                         = "e/index"; //Source home
+$route['signin']                    = "e/signin"; //Sign
 
 //COINS
 $route['(:num)']                    = "x/x_coin/$1";

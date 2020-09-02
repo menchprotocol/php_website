@@ -457,7 +457,7 @@ class X extends CI_Controller
 
         //Check to see if added to Discovery for logged-in users:
         if(!$user_e){
-            return redirect_message('/e/signin/'.$i__id);
+            return redirect_message('/signin/'.$i__id);
         }
 
         //Add this Idea to their Discovery If not there:
@@ -482,7 +482,7 @@ class X extends CI_Controller
 
         $user_e = superpower_assigned();
         if(!$user_e){
-            return redirect_message('/e/signin/');
+            return redirect_message('/signin/');
         }
 
         if($i__id > 0){
@@ -549,7 +549,7 @@ class X extends CI_Controller
 
         $user_e = superpower_assigned();
         if(!$user_e){
-            return redirect_message('/e/signin/');
+            return redirect_message('/signin/');
         }
 
         if(!$i__id){

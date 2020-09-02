@@ -851,7 +851,7 @@ function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
         if($has_session){
             $goto_url = '/@'.$user_e['e__id'];
         } else {
-            $goto_url = '/e/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:
