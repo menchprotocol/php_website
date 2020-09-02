@@ -34,16 +34,15 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 
-    $column_ideas = array();
-    $column_sources = array();
-    if(isset($_GET['e_sources_id']) && strlen($_GET['e_sources_id'])){
-        $column_sources = $this->X_model->fetch(array(
-            'x__up' => $_GET['e_sources_id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__down'), 0, 0, array('x__sort' => 'ASC'));
-    }
+
+    $column_sources = $this->X_model->fetch(array(
+        'x__up IN (' . join(',', ( isset($_GET['e_sources_id']) && strlen($_GET['e_sources_id']) ? array($_GET['e_sources_id'], 13861) : array(13861)) ) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+    ), array('x__down'), 0, 0, array('x__sort' => 'ASC'));
+
+
     if(isset($_GET['i__tree_id']) && strlen($_GET['i__tree_id'])){
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -53,6 +52,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $x){
             array_push($column_ideas, $x);
         }
+    } else {
+        $column_ideas = array();
     }
 
 
