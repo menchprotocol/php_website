@@ -290,9 +290,14 @@ if(!$in_my_x){
     //GET STARTED
     if(in_array($i_focus['i__status'], $this->config->item('n___13812')) && !isset($_GET['unlock'])){
 
-        //LOCKED
-        $e___13812 = $this->config->item('e___13812'); //Idea Status
-        echo '<div class="margin-top-down left-margin"><span class="icon-block">'.$e___13812[$i_focus['i__status']]['m_icon'].'</span>'.$e___13812[$i_focus['i__status']]['m_title'].'</div>';
+        if($user_e['e__id'] > 0){
+            //LOCKED
+            $e___13812 = $this->config->item('e___13812'); //Idea Status
+            echo '<div class="margin-top-down left-margin"><span class="icon-block">'.$e___13812[$i_focus['i__status']]['m_icon'].'</span>'.$e___13812[$i_focus['i__status']]['m_title'].'</div>';
+        } else {
+            //Signin:
+            echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/e/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
+        }
 
     } else {
 
