@@ -27,9 +27,9 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-    if(!$source_is_e || $superpower_13422){
+    if($superpower_13422){ //!$source_is_e ||
         //PROFILE
-        echo '<div id="list_11030" class="list-group ">';
+        echo '<div id="list_11030" class="list-group">';
         $profiles = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
