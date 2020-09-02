@@ -1831,8 +1831,14 @@ class E extends CI_Controller
             ));
         }
 
+        $has_i = ( intval($_POST['sign_i__id']) > 0 );
+        if($has_i){
+
+        }
+
+
         //Cleanup/validate email:
-        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
+        $_POST['input_email'] = trim(strtolower($_POST['input_email']));
         $u_emails = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['input_email'],
@@ -1858,7 +1864,7 @@ class E extends CI_Controller
 
         ##Email Subject
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $subject = 'MENCH '.$e___11035[11068]['m_title'];
+        $subject = ( $has_i ? '| MENCH' : 'MENCH '.$e___11035[11068]['m_title'] );
 
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';

@@ -15,7 +15,7 @@ $current_mench = current_mench();
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['x_name'] ) ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?= ( isset($title) ? $title : '' ) ?></title>
+    <title><?= ( isset($title) ? $title : 'MENCH' ) ?></title>
 
 
     <script type="text/javascript">
