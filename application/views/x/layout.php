@@ -647,7 +647,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             if(count($is_previous)){
                 //IDEA PREVIOUS
-                $focus_tab .= '<div style="padding:33px 0;">'.view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:').'</div>';
+                $focus_tab .= '<div style="padding:33px 0;">'.view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA COMES AFTER:').'</div>';
             }
 
             $has_substance = count($is_next) || count($is_previous);

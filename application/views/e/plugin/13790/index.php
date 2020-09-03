@@ -97,7 +97,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => $e['e__id'],
             ));
-            echo '<td>'.( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '❌' ).'</td>';
+            echo '<td>'.( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' ).'</td>';
         }
 
         //IDEAS
@@ -108,7 +108,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
-            echo '<td>'.( count($discovery) ? ( strlen($discovery[0]['x__message']) > 0 ? $discovery[0]['x__message'] : '✅' )  : '❌').'</td>';
+            echo '<td>'.( count($discovery) ? ( strlen($discovery[0]['x__message']) > 0 ? $discovery[0]['x__message'] : '✅' )  : '').'</td>';
         }
 
         echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
