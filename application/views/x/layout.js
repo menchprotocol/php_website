@@ -3,8 +3,8 @@
 $(document).ready(function () {
 
 
-    $(".add-comments").click(function(event) {
-        $('.add-comments').hide();
+    $(".new-13871").click(function(event) {
+        $('.new-13871').hide();
         $('.add_notes_12419').show();
         $('html, body').scrollTop( $(document).height() );
         $('.input_note_12419').focus();

@@ -812,10 +812,10 @@ if($in_my_x){
                 $control_btn = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211(\'/x/x_next/\')">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
             }
 
-        } elseif($e__id==12419){
+        } elseif($e__id==13871){
 
             //ADD COMMENT
-            $control_btn = '<a class="controller-nav add-comments grey-bg" href="javascript:void(0);">'.$m['m_icon'].'</a><span class="nav-title add-comments">'.$m['m_title'].'</span>';
+            $control_btn = '<a class="controller-nav new-13871 grey-bg" href="javascript:void(0);">'.$m['m_icon'].'</a><span class="nav-title new-13871">'.$m['m_title'].'</span>';
 
         }
 
