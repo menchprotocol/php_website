@@ -288,7 +288,7 @@ if(count($fetch_13865)){
 
     $missing_13865 = 0;
     $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
-    echo '<div class="list-group">';
+    echo '<div class="list-group" style="margin-bottom: 34px;">';
     foreach($fetch_13865 as $e_pre){
 
         $meets_this = ($user_e['e__id'] > 0 && count($this->X_model->fetch(array(
@@ -333,8 +333,6 @@ if(!$in_my_x && $i_status_startable && $meets_13865){
         echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
 
     } elseif(!$user_e['e__id']) {
-
-        //
 
         //Signin:
         echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
@@ -687,7 +685,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             if(count($is_previous)){
                 //IDEA PREVIOUS
-                $focus_tab .= '<div style="padding:33px 0;">'.view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA COMES AFTER:').'</div>';
+                $focus_tab .= '<div style="padding:33px 0;">'.view_i_list(true, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:').'</div>';
             }
 
             $has_substance = count($is_next) || count($is_previous);
