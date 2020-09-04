@@ -8,7 +8,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-03 14:51:04 PST
+//Generated 2020-09-03 23:47:15 PST
+
+//PREREQUISITES:
+$config['n___13865'] = array(13875,13876);
+$config['e___13865'] = array(
+    13875 => array(
+        'm_title' => 'MEETS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
+        'm_profile' => array(13865),
+    ),
+    13876 => array(
+        'm_title' => 'MISSING',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-times"></i>',
+        'm_profile' => array(13865),
+    ),
+);
+
+//IDEA STATUS STARTING POINT:
+$config['n___13874'] = array(12137);
+$config['e___13874'] = array(
+    12137 => array(
+        'm_title' => 'IDEA FEATURED',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
+        'm_profile' => array(13874,13813,6404,11035,13420,10648,12138,7356,7355,4737),
+    ),
+);
 
 //IDEA STATUS LOCK:
 $config['n___13812'] = array(13811);
@@ -315,7 +343,7 @@ $config['e___13530'] = array(
         'm_title' => 'PREREQUISITES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lock source"></i>',
-        'm_profile' => array(13421,13298,7551,13530,4593,11018,11089,4485),
+        'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
     ),
     12419 => array(
         'm_title' => 'CHATROOM',
@@ -438,7 +466,7 @@ $config['e___12211'] = array(
 );
 
 //DISCOVERY CONTROLLER:
-$config['n___13289'] = array(12991,12896,13871,12211);
+$config['n___13289'] = array(12991,13877,13563,13871,12211);
 $config['e___13289'] = array(
     12991 => array(
         'm_title' => 'GO BACK',
@@ -446,11 +474,17 @@ $config['e___13289'] = array(
         'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
         'm_profile' => array(13289,11035),
     ),
-    12896 => array(
+    13877 => array(
         'm_title' => 'SAVE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_icon' => '<i class="far fa-bookmark discover"></i>',
+        'm_profile' => array(13289),
+    ),
+    13563 => array(
+        'm_title' => 'EDIT',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-pen discover"></i>',
+        'm_profile' => array(10939,13289,13291),
     ),
     13871 => array(
         'm_title' => 'CHAT',
@@ -741,10 +775,10 @@ $config['e___13425'] = array(
         'm_profile' => array(13425,12574,11089,4527,11035),
     ),
     12896 => array(
-        'm_title' => 'SAVE',
+        'm_title' => 'SAVED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_profile' => array(13877,12701,13425,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
 );
 
@@ -939,7 +973,7 @@ $config['e___13298'] = array(
         'm_title' => 'PREREQUISITES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lock source"></i>',
-        'm_profile' => array(13421,13298,7551,13530,4593,11018,11089,4485),
+        'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
     ),
 );
 
@@ -976,10 +1010,10 @@ $config['e___13291'] = array(
         'm_profile' => array(13291,4527,13024),
     ),
     13563 => array(
-        'm_title' => 'MODIFY IDEA',
+        'm_title' => 'EDIT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-pen"></i>',
-        'm_profile' => array(13291),
+        'm_icon' => '<i class="fas fa-pen discover"></i>',
+        'm_profile' => array(10939,13289,13291),
     ),
 );
 
@@ -1515,10 +1549,10 @@ $config['e___12677'] = array(
         'm_profile' => array(13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
-        'm_title' => 'SAVE',
+        'm_title' => 'SAVED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_profile' => array(13877,12701,13425,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
 );
 
@@ -2809,7 +2843,7 @@ $config['e___12138'] = array(
         'm_title' => 'IDEA FEATURED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
-        'm_profile' => array(13813,6404,11035,13420,10648,12138,7356,7355,4737),
+        'm_profile' => array(13874,13813,6404,11035,13420,10648,12138,7356,7355,4737),
     ),
 );
 
@@ -3055,7 +3089,7 @@ $config['e___11018'] = array(
         'm_title' => 'PREREQUISITES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lock source"></i>',
-        'm_profile' => array(13421,13298,7551,13530,4593,11018,11089,4485),
+        'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
     ),
     7545 => array(
         'm_title' => 'CERTIFICATES',
@@ -3100,10 +3134,10 @@ $config['e___11018'] = array(
         'm_profile' => array(13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
-        'm_title' => 'SAVE',
+        'm_title' => 'SAVED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_profile' => array(13877,12701,13425,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
     12419 => array(
         'm_title' => 'CHATROOM',
@@ -3138,7 +3172,7 @@ $config['e___11089'] = array(
         'm_title' => 'PREREQUISITES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lock source"></i>',
-        'm_profile' => array(13421,13298,7551,13530,4593,11018,11089,4485),
+        'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
     ),
     7545 => array(
         'm_title' => 'CERTIFICATES',
@@ -3165,10 +3199,10 @@ $config['e___11089'] = array(
         'm_profile' => array(13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
-        'm_title' => 'SAVE',
+        'm_title' => 'SAVED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_profile' => array(13877,12701,13425,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
     12419 => array(
         'm_title' => 'CHATROOM',
@@ -3220,7 +3254,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(10573,13502,13671,13401,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13207,11068,4341,13689,6225,12969,13405,6287,13562,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(10573,13502,13671,13401,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13207,11068,4341,13689,6225,12969,13405,6287,13865,13562,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     10573 => array(
         'm_title' => 'BOOKMARK',
@@ -3310,7 +3344,7 @@ $config['e___11035'] = array(
         'm_title' => 'IDEA FEATURED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
-        'm_profile' => array(13813,6404,11035,13420,10648,12138,7356,7355,4737),
+        'm_profile' => array(13874,13813,6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     13207 => array(
         'm_title' => 'LEADERBOARD',
@@ -3360,6 +3394,12 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fad fa-plug" aria-hidden="true"></i>',
         'm_profile' => array(12500,4367,12701,6405,12699,10876,11035,4527),
     ),
+    13865 => array(
+        'm_title' => 'PREREQUISITES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-lock source"></i>',
+        'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
+    ),
     13562 => array(
         'm_title' => 'PREVIEW DISCOVERY',
         'm_message' => '',
@@ -3385,10 +3425,10 @@ $config['e___11035'] = array(
         'm_profile' => array(13450,11035,4593,4755),
     ),
     12896 => array(
-        'm_title' => 'SAVE',
+        'm_title' => 'SAVED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_profile' => array(13877,12701,13425,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
     13524 => array(
         'm_title' => 'SAVE & NEXT',
@@ -3630,7 +3670,7 @@ $config['e___4737'] = array(
         'm_title' => 'FEATURED',
         'm_message' => 'Searchable by all players',
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
-        'm_profile' => array(13813,6404,11035,13420,10648,12138,7356,7355,4737),
+        'm_profile' => array(13874,13813,6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     6184 => array(
         'm_title' => 'PUBLISHED',
@@ -3836,7 +3876,7 @@ $config['e___6404'] = array(
         'm_title' => 'IDEA FEATURED',
         'm_message' => '7766',
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
-        'm_profile' => array(13813,6404,11035,13420,10648,12138,7356,7355,4737),
+        'm_profile' => array(13874,13813,6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     4485 => array(
         'm_title' => 'IDEA NOTES',
@@ -4316,7 +4356,7 @@ $config['e___4485'] = array(
         'm_title' => 'PREREQUISITES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lock source"></i>',
-        'm_profile' => array(13421,13298,7551,13530,4593,11018,11089,4485),
+        'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
     ),
     4983 => array(
         'm_title' => 'IDEA SOURCES',
@@ -4331,10 +4371,10 @@ $config['e___4485'] = array(
         'm_profile' => array(13530,11035,13405,11054,4527,10984,11018,4485,4593,7551),
     ),
     12896 => array(
-        'm_title' => 'SAVE',
+        'm_title' => 'SAVED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_profile' => array(13877,12701,13425,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
 );
 
@@ -4887,7 +4927,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(10956,13533,12279,10573,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,12211,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,13812,7355,12400,12677,12675,11018,13530,13408,13543,13544,7585,13022,12330,7309,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,6169,6225,12969,3000,12741,6287,12577,13776,4755,13531,13439,13365,13438,13783,12761,13023,13672,4269,6204,13413,6194,4251,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,13202,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,13479,12500);
+$config['n___4527'] = array(10956,13533,12279,10573,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,12211,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,13812,7355,13874,12400,12677,12675,11018,13530,13408,13543,13544,7585,13022,12330,7309,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,6169,6225,12969,3000,12741,6287,12577,13865,13776,4755,13531,13439,13365,13438,13783,12761,13023,13672,4269,6204,13413,6194,4251,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,13202,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,13479,12500);
 $config['e___4527'] = array(
     10956 => array(
         'm_title' => 'AVATARS BASIC',
@@ -5171,6 +5211,12 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
         'm_profile' => array(11054,10891,4527),
     ),
+    13874 => array(
+        'm_title' => 'IDEA STATUS STARTING POINT',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-play discover"></i>',
+        'm_profile' => array(4527,10891),
+    ),
     12400 => array(
         'm_title' => 'IDEA STATUS SYNC',
         'm_message' => '',
@@ -5410,6 +5456,12 @@ $config['e___4527'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-text" aria-hidden="true"></i>',
         'm_profile' => array(4527,4758),
+    ),
+    13865 => array(
+        'm_title' => 'PREREQUISITES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-lock source"></i>',
+        'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
     ),
     13776 => array(
         'm_title' => 'PRIMARY COIN',
@@ -6493,13 +6545,13 @@ $config['e___7551'] = array(
         'm_title' => 'PREREQUISITES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lock source"></i>',
-        'm_profile' => array(13421,13298,7551,13530,4593,11018,11089,4485),
+        'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
     ),
     12896 => array(
-        'm_title' => 'SAVE',
+        'm_title' => 'SAVED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_profile' => array(13877,12701,13425,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
 );
 
@@ -6898,7 +6950,7 @@ $config['e___7356'] = array(
         'm_title' => 'FEATURED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
-        'm_profile' => array(13813,6404,11035,13420,10648,12138,7356,7355,4737),
+        'm_profile' => array(13874,13813,6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     13811 => array(
         'm_title' => 'LOCKED',
@@ -6921,7 +6973,7 @@ $config['e___7355'] = array(
         'm_title' => 'FEATURED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
-        'm_profile' => array(13813,6404,11035,13420,10648,12138,7356,7355,4737),
+        'm_profile' => array(13874,13813,6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     13811 => array(
         'm_title' => 'LOCKED',
@@ -7419,10 +7471,10 @@ $config['e___4755'] = array(
         'm_profile' => array(13450,11035,4593,4755),
     ),
     12896 => array(
-        'm_title' => 'SAVE',
+        'm_title' => 'SAVED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_profile' => array(13877,12701,13425,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
     7563 => array(
         'm_title' => 'SIGN-IN MAGIC LINK',
@@ -8127,9 +8179,9 @@ $config['e___4593'] = array(
     ),
     13865 => array(
         'm_title' => 'PREREQUISITES',
-        'm_message' => '',
+        'm_message' => 'If set for an idea, then the user must meet all prerequisites to be able to complete the idea.',
         'm_icon' => '<i class="fas fa-lock source"></i>',
-        'm_profile' => array(13421,13298,7551,13530,4593,11018,11089,4485),
+        'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
     ),
     7495 => array(
         'm_title' => 'RECOMMENDED DISCOVERY',
@@ -8150,10 +8202,10 @@ $config['e___4593'] = array(
         'm_profile' => array(13450,11035,4593,4755),
     ),
     12896 => array(
-        'm_title' => 'SAVE',
+        'm_title' => 'SAVED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(12701,13425,11035,13289,11018,11089,12677,4485,7551,4755,4593),
+        'm_profile' => array(13877,12701,13425,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
     7563 => array(
         'm_title' => 'SIGN-IN MAGIC LINK',

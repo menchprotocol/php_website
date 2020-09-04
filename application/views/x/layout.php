@@ -23,6 +23,7 @@ $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 $show_nav = /* superpower_active(10939, true) || */ in_array($i_focus['i__status'], $this->config->item('n___12138'));
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
+$i_status_startable = in_array($i_focus['i__status'], $this->config->item('n___13874'));
 
 //Determine Forcus User:
 $user_e = false;
@@ -65,7 +66,7 @@ $messages = $this->X_model->fetch(array(
 $chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
 $u_x_ids = $this->X_model->ids($user_e['e__id']);
-$in_my_x = ( $user_e['e__id'] ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
+$in_my_x = ( $user_e['e__id'] > 0 ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
 $sitemap_items_raw = array();
 $sitemap_items = array();
 $i = array(); //Assume main intent not yet completed, unless proven otherwise...
@@ -273,6 +274,46 @@ echo '</div>';
 
 
 
+$fetch_13865 = $this->X_model->fetch(array(
+    'x__right' => $i_focus['i__id'],
+    'x__type' => 13865, //PREREQUISITES
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+), array('x__up'), 0);
+$meets_13865 = !count($fetch_13865);
+
+if(count($fetch_13865)){
+
+    echo '<div class="headline margin-top-down"><span class="icon-block">'.$e___11035[13865]['m_icon'].'</span>'.$e___11035[13865]['m_title'].':</div>';
+
+    $missing_13865 = 0;
+    $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
+    echo '<div class="list-group">';
+    foreach($fetch_13865 as $e_pre){
+
+        $meets_this = ($user_e['e__id'] > 0 && count($this->X_model->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__up' => $e_pre['x__up'],
+            'x__down' => $user_e['e__id'],
+        ))));
+
+        $meets_this_id = ( $meets_this ? 13875 : 13876 );
+
+        echo '<div class="list-group-item no-left-padding"><span class="icon-block">'.$e___13865[$meets_this_id]['m_icon'].'</span>'.$e_pre['e__title'].': '.$e___13865[$meets_this_id]['m_title'].'</div>';
+
+        if(!$meets_this){
+            $missing_13865++;
+        }
+
+    }
+    echo '</div>';
+    $meets_13865 = !$missing_13865;
+}
+
+
+
+
 
 
 //DISCOVER LAYOUT
@@ -283,30 +324,27 @@ $tab_content = '';
 $tab_pill_count = 0;
 
 
-
-
-if(!$in_my_x){
+if(!$in_my_x && $i_status_startable && $meets_13865){
 
     //GET STARTED
-    if(in_array($i_focus['i__status'], $this->config->item('n___13812')) && !isset($_GET['unlock'])){
-
-        if($user_e['e__id'] > 0){
-            //LOCKED
-            $e___13812 = $this->config->item('e___13812'); //Idea Status
-            echo '<div class="margin-top-down left-margin"><span class="icon-block">'.$e___13812[$i_focus['i__status']]['m_icon'].'</span>'.$e___13812[$i_focus['i__status']]['m_title'].'</div>';
-        } else {
-            //Signin:
-            echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
-        }
-
-    } else {
+    if($meets_13865){
 
         //OPEN TO REGISTER
         echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
 
+    } elseif(!$user_e['e__id']) {
+
+        //
+
+        //Signin:
+        echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
+
     }
 
 }
+
+
+
 
 if($in_my_x && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -539,6 +577,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     //Close list:
                     $focus_tab .= '</div>';
+
+
 
 
                     if (count($x_selects) > 0) {
@@ -783,9 +823,15 @@ if($in_my_x){
 
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
+
+        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
+        if(count($superpower_actives) && !superpower_assigned(end($superpower_actives))){
+            continue;
+        }
+
         $control_btn = '';
 
-        if($e__id==12896 && count($sitemap_items)){
+        if($e__id==13877 && count($sitemap_items)){
 
             //Is Saved already by this user?
             $is_saved = count($this->X_model->fetch(array(
@@ -801,6 +847,11 @@ if($in_my_x){
 
             //GO BACK
             $control_btn = '<a class="controller-nav grey-bg" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
+
+        } elseif($e__id==13563){
+
+            //EDIT
+            $control_btn = '<a class="controller-nav grey-bg" href="/~'.$i_focus['i__id'].'">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
 
         } elseif($e__id==12211){
 

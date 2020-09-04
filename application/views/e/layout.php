@@ -466,7 +466,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-            if($source_is_e && 0){
+            if($source_is_e){
 
                 //DISABLE FOR NOW TODO enable later...
 
