@@ -284,7 +284,7 @@ $meets_13865 = !count($fetch_13865);
 
 if(count($fetch_13865)){
 
-    echo '<div class="headline margin-top-down"><span class="icon-block">'.$e___11035[13865]['m_icon'].'</span>'.$e___11035[13865]['m_title'].':</div>';
+    echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13865]['m_icon'].'</span>'.$e___11035[13865]['m_title'].':</div>';
 
     $missing_13865 = 0;
     $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
@@ -300,7 +300,7 @@ if(count($fetch_13865)){
 
         $meets_this_id = ( $meets_this ? 13875 : 13876 );
 
-        echo '<div class="list-group-item no-left-padding"><span class="icon-block">'.$e___13865[$meets_this_id]['m_icon'].'</span>'.$e_pre['e__title'].': '.$e___13865[$meets_this_id]['m_title'].'</div>';
+        echo '<div class="list-group-item no-left-padding"><span class="icon-block">'.$e___13865[$meets_this_id]['m_icon'].'</span>'.$e_pre['e__title'].'</div>';
 
         if(!$meets_this){
             $missing_13865++;
