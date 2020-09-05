@@ -324,24 +324,6 @@ $tab_content = '';
 $tab_pill_count = 0;
 
 
-if(!$in_my_x && $i_status_startable && $meets_13865){
-
-    //GET STARTED
-    if($meets_13865){
-
-        //OPEN TO REGISTER
-        echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
-
-    } elseif(!$user_e['e__id']) {
-
-        //Signin:
-        echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
-
-    }
-
-}
-
-
 
 
 if($in_my_x && count($this->X_model->fetch(array(
@@ -886,7 +868,23 @@ if($in_my_x){
         echo '</div>';
     }
 
+} elseif($i_status_startable && $meets_13865){
+
+    //GET STARTED
+    if($meets_13865){
+
+        //OPEN TO REGISTER
+        echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
+
+    } elseif(!$user_e['e__id']) {
+
+        //Signin:
+        echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
+
+    }
+
 }
+
 
 
 
