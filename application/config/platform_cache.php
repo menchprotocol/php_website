@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-03 23:58:24 PST
+//Generated 2020-09-05 13:46:28 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -1305,7 +1305,7 @@ $config['e___12840'] = array(
 );
 
 //SOURCE LINK MESSAGE DISPLAY:
-$config['n___12822'] = array(4259,4257,4261,4260,7657,4255,4256,4258,12827);
+$config['n___12822'] = array(4259,4257,4261,4260,7657,4255,4256,4258);
 $config['e___12822'] = array(
     4259 => array(
         'm_title' => 'AUDIO',
@@ -1354,12 +1354,6 @@ $config['e___12822'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-play-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12822,12605,12524,11080,11059,10593,4593,4592,4537),
-    ),
-    12827 => array(
-        'm_title' => 'WORD',
-        'm_message' => '',
-        'm_icon' => '<i class="fad fa-font source"></i>',
-        'm_profile' => array(12822,4593,4592),
     ),
 );
 
@@ -4280,7 +4274,7 @@ $config['e___4592'] = array(
         'm_title' => 'WORD',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-font source"></i>',
-        'm_profile' => array(12822,4593,4592),
+        'm_profile' => array(4593,4592),
     ),
 );
 
@@ -8349,7 +8343,7 @@ $config['e___4593'] = array(
         'm_title' => 'SOURCE LINK WORD',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-font source"></i>',
-        'm_profile' => array(12822,4593,4592),
+        'm_profile' => array(4593,4592),
     ),
     10646 => array(
         'm_title' => 'SOURCE NAME UPDATE',
