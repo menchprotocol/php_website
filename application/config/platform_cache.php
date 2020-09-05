@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-05 13:46:28 PST
+//Generated 2020-09-05 16:24:34 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -471,31 +471,31 @@ $config['e___13289'] = array(
     12991 => array(
         'm_title' => 'GO BACK',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward" aria-hidden="true"></i>',
         'm_profile' => array(13289,11035),
     ),
     13877 => array(
         'm_title' => 'SAVE',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-bookmark discover"></i>',
+        'm_icon' => '<i class="far fa-bookmark"></i>',
         'm_profile' => array(13289),
     ),
     13563 => array(
         'm_title' => 'EDIT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-pen discover"></i>',
+        'm_icon' => '<i class="fas fa-pen"></i>',
         'm_profile' => array(10939,13289,13291),
     ),
     13871 => array(
         'm_title' => 'CHAT',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comments discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comments" aria-hidden="true"></i>',
         'm_profile' => array(13289),
     ),
     12211 => array(
         'm_title' => 'GO NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
         'm_profile' => array(4527,13289,11035),
     ),
 );
@@ -1012,7 +1012,7 @@ $config['e___13291'] = array(
     13563 => array(
         'm_title' => 'EDIT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-pen discover"></i>',
+        'm_icon' => '<i class="fas fa-pen"></i>',
         'm_profile' => array(10939,13289,13291),
     ),
 );
@@ -3325,13 +3325,13 @@ $config['e___11035'] = array(
     12991 => array(
         'm_title' => 'GO BACK',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-backward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-backward" aria-hidden="true"></i>',
         'm_profile' => array(13289,11035),
     ),
     12211 => array(
         'm_title' => 'GO NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
         'm_profile' => array(4527,13289,11035),
     ),
     12137 => array(
@@ -5088,7 +5088,7 @@ $config['e___4527'] = array(
     12211 => array(
         'm_title' => 'GO NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
         'm_profile' => array(4527,13289,11035),
     ),
     13369 => array(
