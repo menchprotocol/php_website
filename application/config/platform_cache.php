@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-06 17:04:17 PST
+//Generated 2020-09-06 17:19:18 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -1185,14 +1185,8 @@ $config['e___12968'] = array(
 );
 
 //IDEA TYPE TAKES COMPLETION TIME:
-$config['n___12955'] = array(7231,6683,6684,7637);
+$config['n___12955'] = array(6683,6684,7231,7637);
 $config['e___12955'] = array(
-    7231 => array(
-        'm_title' => 'MULTI-SELECT THEN NEXT',
-        'm_message' => '20',
-        'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
-        'm_profile' => array(12955,12884,12334,12129,7585,7712,6193,7489),
-    ),
     6683 => array(
         'm_title' => 'REPLY THEN NEXT',
         'm_message' => '60',
@@ -1200,10 +1194,16 @@ $config['e___12955'] = array(
         'm_profile' => array(13022,12955,6144,7585,6192),
     ),
     6684 => array(
-        'm_title' => 'SELECT THEN NEXT',
+        'm_title' => 'SELECT-ONE THEN NEXT',
         'm_message' => '15',
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12955,12883,12336,12129,7585,7712,6193,6157),
+    ),
+    7231 => array(
+        'm_title' => 'SELECT-SOME THEN NEXT',
+        'm_message' => '20',
+        'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
+        'm_profile' => array(12955,12884,12334,12129,7585,7712,6193,7489),
     ),
     7637 => array(
         'm_title' => 'UPLOAD THEN NEXT',
@@ -1258,7 +1258,7 @@ $config['e___12887'] = array(
 $config['n___12883'] = array(6684,6907);
 $config['e___12883'] = array(
     6684 => array(
-        'm_title' => 'IF SELECT THEN NEXT',
+        'm_title' => 'IF SELECT-ONE THEN NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12955,12883,12336,12129,7585,7712,6193,6157),
@@ -1275,7 +1275,7 @@ $config['e___12883'] = array(
 $config['n___12884'] = array(7231);
 $config['e___12884'] = array(
     7231 => array(
-        'm_title' => 'IF MULTI-SELECT THEN NEXT',
+        'm_title' => 'IF SELECT-SOME THEN NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
         'm_profile' => array(12955,12884,12334,12129,7585,7712,6193,7489),
@@ -4135,13 +4135,13 @@ $config['e___7585'] = array(
         'm_profile' => array(13022,12955,12117,7585,6192),
     ),
     6684 => array(
-        'm_title' => 'IF SELECT THEN NEXT',
+        'm_title' => 'IF SELECT-ONE THEN NEXT',
         'm_message' => 'Select a single next idea',
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12955,12883,12336,12129,7585,7712,6193,6157),
     ),
     7231 => array(
-        'm_title' => 'IF MULTI-SELECT THEN NEXT',
+        'm_title' => 'IF SELECT-SOME THEN NEXT',
         'm_message' => 'Select 1 or more next idea(s)',
         'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
         'm_profile' => array(12955,12884,12334,12129,7585,7712,6193,7489),
@@ -5948,13 +5948,13 @@ $config['e___10593'] = array(
 $config['n___6193'] = array(6684,7231,6907);
 $config['e___6193'] = array(
     6684 => array(
-        'm_title' => 'IF SELECT THEN NEXT',
+        'm_title' => 'IF SELECT-ONE THEN NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12955,12883,12336,12129,7585,7712,6193,6157),
     ),
     7231 => array(
-        'm_title' => 'IF MULTI-SELECT THEN NEXT',
+        'm_title' => 'IF SELECT-SOME THEN NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
         'm_profile' => array(12955,12884,12334,12129,7585,7712,6193,7489),
@@ -6399,19 +6399,19 @@ $config['e___6204'] = array(
 );
 
 //IDEA TYPE SELECT NEXT:
-$config['n___7712'] = array(7231,6684);
+$config['n___7712'] = array(6684,7231);
 $config['e___7712'] = array(
-    7231 => array(
-        'm_title' => 'MULTI-SELECT THEN NEXT',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
-        'm_profile' => array(12955,12884,12334,12129,7585,7712,6193,7489),
-    ),
     6684 => array(
-        'm_title' => 'SELECT THEN NEXT',
+        'm_title' => 'SELECT-ONE THEN NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-check-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12955,12883,12336,12129,7585,7712,6193,6157),
+    ),
+    7231 => array(
+        'm_title' => 'SELECT-SOME THEN NEXT',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-check-square idea" aria-hidden="true"></i>',
+        'm_profile' => array(12955,12884,12334,12129,7585,7712,6193,7489),
     ),
 );
 
