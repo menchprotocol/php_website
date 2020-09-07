@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-07 09:45:06 PST
+//Generated 2020-09-07 11:48:17 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -484,7 +484,7 @@ $config['e___13289'] = array(
         'm_title' => 'EDIT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-pen"></i>',
-        'm_profile' => array(10939,13289,13291),
+        'm_profile' => array(10939,13289),
     ),
     13871 => array(
         'm_title' => 'CHAT',
@@ -989,7 +989,7 @@ $config['e___13300'] = array(
 );
 
 //DISCOVER TABS:
-$config['n___13291'] = array(12274,12273,13023,13563);
+$config['n___13291'] = array(12274,12273,13023);
 $config['e___13291'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
@@ -1008,12 +1008,6 @@ $config['e___13291'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-share"></i>',
         'm_profile' => array(13291,4527,13024),
-    ),
-    13563 => array(
-        'm_title' => 'EDIT',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-pen"></i>',
-        'm_profile' => array(10939,13289,13291),
     ),
 );
 
