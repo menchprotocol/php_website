@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-07 18:53:34 PST
+//Generated 2020-09-08 20:54:05 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -78,7 +78,7 @@ $config['e___13776'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
@@ -170,7 +170,7 @@ $config['e___13550'] = array(
     4983 => array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     4231 => array(
@@ -187,7 +187,7 @@ $config['e___13548'] = array(
     4251 => array(
         'm_title' => 'SOURCE CREATED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13548,4527,12401,12149,12141,10593,4593),
     ),
 );
@@ -220,7 +220,7 @@ $config['e___13544'] = array(
     13629 => array(
         'm_title' => 'IDEA RANGE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(13544),
     ),
     13292 => array(
@@ -237,25 +237,25 @@ $config['e___13543'] = array(
     4983 => array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     13202 => array(
         'm_title' => 'SUMMARIZERS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     13339 => array(
         'm_title' => 'EXPERT SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
     ),
 );
@@ -378,13 +378,13 @@ $config['e___13530'] = array(
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
 );
@@ -413,7 +413,7 @@ $config['e___12563'] = array(
     13339 => array(
         'm_title' => 'EXPERT SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
     ),
     3147 => array(
@@ -460,7 +460,7 @@ $config['e___12211'] = array(
     6677 => array(
         'm_title' => 'READ & NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12211,13022,12330,7585,6192,4559),
     ),
 );
@@ -529,7 +529,7 @@ $config['e___13480'] = array(
     4250 => array(
         'm_title' => 'IDEA CREATED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13480,5967,12400,12149,10593,4593),
     ),
 );
@@ -602,7 +602,7 @@ $config['e___6159'] = array(
     13339 => array(
         'm_title' => 'EXPERT SOURCES',
         'm_message' => 'i___13339',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
     ),
     6208 => array(
@@ -638,7 +638,7 @@ $config['e___6159'] = array(
     6170 => array(
         'm_title' => 'MAXIMUM IDEAS',
         'm_message' => 'i___6170',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(13629,4527,6159),
     ),
     6162 => array(
@@ -650,7 +650,7 @@ $config['e___6159'] = array(
     6169 => array(
         'm_title' => 'MINIMUM IDEAS',
         'm_message' => 'i___6169',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(13629,4527,6159),
     ),
     6161 => array(
@@ -662,13 +662,13 @@ $config['e___6159'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => 'i___3000',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     13202 => array(
         'm_title' => 'SUMMARIZERS',
         'm_message' => 'i___13202',
-        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
 );
@@ -726,19 +726,19 @@ $config['e___4251'] = array(
     13202 => array(
         'm_title' => 'SUMMARIZERS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     13339 => array(
         'm_title' => 'EXPERT SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
     ),
 );
@@ -927,19 +927,19 @@ $config['e___13365'] = array(
     13339 => array(
         'm_title' => 'EXPERT SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
     ),
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     13202 => array(
         'm_title' => 'SUMMARIZERS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
 );
@@ -983,7 +983,7 @@ $config['e___13300'] = array(
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
 );
@@ -994,13 +994,13 @@ $config['e___13291'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
     13023 => array(
@@ -1028,7 +1028,7 @@ $config['e___13207'] = array(
     13202 => array(
         'm_title' => 'SUMMARIZERS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     13438 => array(
@@ -1040,13 +1040,13 @@ $config['e___13207'] = array(
     13339 => array(
         'm_title' => 'EXPERT SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
     ),
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
 );
@@ -1057,13 +1057,13 @@ $config['e___12761'] = array(
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
 );
@@ -1097,7 +1097,7 @@ $config['e___13022'] = array(
     6677 => array(
         'm_title' => 'READ & NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12211,13022,12330,7585,6192,4559),
     ),
     6683 => array(
@@ -1214,7 +1214,7 @@ $config['e___12887'] = array(
         'm_title' => 'GOOGLE',
         'm_message' => '/e/search_google/',
         'm_icon' => '<i class="fab fa-google"></i>',
-        'm_profile' => array(12891,12887,3088),
+        'm_profile' => array(12891,12887),
     ),
     4341 => array(
         'm_title' => 'MENCH LEDGER',
@@ -1522,7 +1522,7 @@ $config['e___12675'] = array(
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
 );
@@ -1533,7 +1533,7 @@ $config['e___12677'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
@@ -1579,19 +1579,19 @@ $config['e___12467'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
@@ -1660,7 +1660,7 @@ $config['e___12359'] = array(
     4983 => array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     4231 => array(
@@ -1724,7 +1724,7 @@ $config['e___12574'] = array(
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
     6225 => array(
@@ -1787,7 +1787,7 @@ $config['e___12523'] = array(
     13339 => array(
         'm_title' => 'EXPERT SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
     ),
     6293 => array(
@@ -1840,14 +1840,8 @@ $config['e___12446'] = array(
 );
 
 //MENCH URL:
-$config['n___10876'] = array(13465,13810,13207,7291,4341,13405,6287,4269);
+$config['n___10876'] = array(13810,13207,7291,4341,13405,6287,4269);
 $config['e___10876'] = array(
-    13465 => array(
-        'm_title' => 'EVENT #1 OUR 2020 BURNING MAN 🔥',
-        'm_message' => 'https://mench.com/13980',
-        'm_icon' => '<i class="fad fa-calendar-star source"></i>',
-        'm_profile' => array(13802,10876),
-    ),
     13810 => array(
         'm_title' => 'EVENT #1 REGISTRY',
         'm_message' => 'https://mench.com/e/plugin/13790?i__id=13980&i__tree_id=14289&e_sources_id=13810',
@@ -1875,7 +1869,7 @@ $config['e___10876'] = array(
     13405 => array(
         'm_title' => 'MY IDEAS',
         'm_message' => 'https://mench.com/~',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(11035,10876),
     ),
     6287 => array(
@@ -1909,7 +1903,7 @@ $config['e___12401'] = array(
     4251 => array(
         'm_title' => 'SOURCE CREATED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13548,4527,12401,12149,12141,10593,4593),
     ),
     6178 => array(
@@ -1932,7 +1926,7 @@ $config['e___12400'] = array(
     4250 => array(
         'm_title' => 'CREATED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13480,5967,12400,12149,10593,4593),
     ),
     6182 => array(
@@ -1967,7 +1961,7 @@ $config['e___12330'] = array(
     6677 => array(
         'm_title' => 'READ & NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12211,13022,12330,7585,6192,4559),
     ),
 );
@@ -2647,7 +2641,7 @@ $config['e___12229'] = array(
     4559 => array(
         'm_title' => 'SOURCE READ MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_icon' => '<i class="far fa-circle discover"></i>',
         'm_profile' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
@@ -2736,7 +2730,7 @@ $config['e___12227'] = array(
     4559 => array(
         'm_title' => 'SOURCE READ MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_icon' => '<i class="far fa-circle discover"></i>',
         'm_profile' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
@@ -2771,7 +2765,7 @@ $config['e___12141'] = array(
     4983 => array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     6157 => array(
@@ -2789,7 +2783,7 @@ $config['e___12141'] = array(
     4251 => array(
         'm_title' => 'SOURCE CREATED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13548,4527,12401,12149,12141,10593,4593),
     ),
     12117 => array(
@@ -2801,7 +2795,7 @@ $config['e___12141'] = array(
     4559 => array(
         'm_title' => 'SOURCE READ MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_icon' => '<i class="far fa-circle discover"></i>',
         'm_profile' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
@@ -2859,7 +2853,7 @@ $config['e___12112'] = array(
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
     4736 => array(
@@ -2894,7 +2888,7 @@ $config['e___12079'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     4486 => array(
@@ -3094,13 +3088,13 @@ $config['e___11018'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
     10573 => array(
@@ -3124,7 +3118,7 @@ $config['e___11018'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
@@ -3177,19 +3171,19 @@ $config['e___11089'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(10939,12574,13300,12675,13530,11018,11089,12761,12112,13291,12467,12228),
     ),
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
@@ -3379,7 +3373,7 @@ $config['e___11035'] = array(
     13405 => array(
         'm_title' => 'MY IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(11035,10876),
     ),
     6287 => array(
@@ -3397,7 +3391,7 @@ $config['e___11035'] = array(
     13562 => array(
         'm_title' => 'PREVIEW DISCOVERY',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover"></i>',
+        'm_icon' => '<i class="fas fa-circle discover"></i>',
         'm_profile' => array(11035),
     ),
     11030 => array(
@@ -3504,7 +3498,7 @@ $config['e___10957'] = array(
     10939 => array(
         'm_title' => 'IDEATION',
         'm_message' => 'Add & Organize Ideas',
-        'm_icon' => '<i class="far fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13450,10957),
     ),
     13354 => array(
@@ -3552,7 +3546,7 @@ $config['e___10957'] = array(
     13422 => array(
         'm_title' => 'SOURCING',
         'm_message' => 'Manage Sources with Advance Tools',
-        'm_icon' => '<i class="far fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(10957),
     ),
     13402 => array(
@@ -3821,7 +3815,7 @@ $config['e___6404'] = array(
     12904 => array(
         'm_title' => 'DEFAULT IDEA COVER',
         'm_message' => '//s3foundation.s3-us-west-2.amazonaws.com/b7f2539c61129478d3614c55a798b21a.png',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,7524),
     ),
     11057 => array(
@@ -4030,7 +4024,7 @@ $config['e___11054'] = array(
     7355 => array(
         'm_title' => 'IDEA STATUS PUBLIC',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-circle" aria-hidden="true"></i>',
         'm_profile' => array(11054,10891,4527),
     ),
     7585 => array(
@@ -4113,7 +4107,7 @@ $config['e___7585'] = array(
     6677 => array(
         'm_title' => 'READ & NEXT',
         'm_message' => 'Read messages & go next',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12211,13022,12330,7585,6192,4559),
     ),
     6683 => array(
@@ -4355,7 +4349,7 @@ $config['e___4485'] = array(
     4983 => array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     10573 => array(
@@ -4974,7 +4968,7 @@ $config['e___4527'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12994 => array(
@@ -5010,13 +5004,13 @@ $config['e___4527'] = array(
     7359 => array(
         'm_title' => 'DISCOVER STATUS PUBLIC',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-circle" aria-hidden="true"></i>',
         'm_profile' => array(10624,4527),
     ),
     13298 => array(
         'm_title' => 'DISCOVER TAB HIDE IF ZERO',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-eye-slash discover"></i>',
+        'm_icon' => '<i class="fas fa-circle-slash discover"></i>',
         'm_profile' => array(4527,13299),
     ),
     13300 => array(
@@ -5034,7 +5028,7 @@ $config['e___4527'] = array(
     13304 => array(
         'm_title' => 'DISCOVER TAB SHOW IF LOGGED-IN',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-eye discover"></i>',
+        'm_icon' => '<i class="fas fa-circle discover"></i>',
         'm_profile' => array(4527,13299),
     ),
     10593 => array(
@@ -5202,7 +5196,7 @@ $config['e___4527'] = array(
     7355 => array(
         'm_title' => 'IDEA STATUS PUBLIC',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-circle" aria-hidden="true"></i>',
         'm_profile' => array(11054,10891,4527),
     ),
     13874 => array(
@@ -5238,7 +5232,7 @@ $config['e___4527'] = array(
     13530 => array(
         'm_title' => 'IDEA TAB SHOW EVEN IF ZERO',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(4527,12676),
     ),
     13408 => array(
@@ -5256,7 +5250,7 @@ $config['e___4527'] = array(
     13544 => array(
         'm_title' => 'IDEA TREE STATS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(4527,11020),
     ),
     13022 => array(
@@ -5316,7 +5310,7 @@ $config['e___4527'] = array(
     6170 => array(
         'm_title' => 'MAXIMUM IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(13629,4527,6159),
     ),
     2738 => array(
@@ -5412,7 +5406,7 @@ $config['e___4527'] = array(
     6169 => array(
         'm_title' => 'MINIMUM IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(13629,4527,6159),
     ),
     6225 => array(
@@ -5430,7 +5424,7 @@ $config['e___4527'] = array(
     3000 => array(
         'm_title' => 'NONFICTION SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     12741 => array(
@@ -5466,7 +5460,7 @@ $config['e___4527'] = array(
     4755 => array(
         'm_title' => 'PRIVATE TRANSACTION',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye-slash" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-circle-slash" aria-hidden="true"></i>',
         'm_profile' => array(12701,4755,6771,4527),
     ),
     13531 => array(
@@ -5478,13 +5472,13 @@ $config['e___4527'] = array(
     13439 => array(
         'm_title' => 'RANK BY DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover"></i>',
+        'm_icon' => '<i class="fas fa-circle discover"></i>',
         'm_profile' => array(13450,13446,4527,4758),
     ),
     13365 => array(
         'm_title' => 'RANK BY IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(13446,4527,4758),
     ),
     13438 => array(
@@ -5544,7 +5538,7 @@ $config['e___4527'] = array(
     4251 => array(
         'm_title' => 'SOURCE CREATED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13548,4527,12401,12149,12141,10593,4593),
     ),
     13571 => array(
@@ -5562,7 +5556,7 @@ $config['e___4527'] = array(
     13550 => array(
         'm_title' => 'SOURCE IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(4527,12273),
     ),
     11080 => array(
@@ -5574,7 +5568,7 @@ $config['e___4527'] = array(
     12822 => array(
         'm_title' => 'SOURCE LINK MESSAGE DISPLAY',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-eye source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(4527,12821),
     ),
     4592 => array(
@@ -5670,19 +5664,19 @@ $config['e___4527'] = array(
     12574 => array(
         'm_title' => 'SOURCE TAB SHOW EVEN IF ZERO',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(4527,12573),
     ),
     13425 => array(
         'm_title' => 'SOURCE TAB SHOW IF SOURCE',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-eye source"></i>',
+        'm_icon' => '<i class="fas fa-circle source"></i>',
         'm_profile' => array(4527,12573),
     ),
     13202 => array(
         'm_title' => 'SUMMARIZERS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     10957 => array(
@@ -5742,7 +5736,7 @@ $config['e___4527'] = array(
     13480 => array(
         'm_title' => 'UNIQUE IDEAS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(12273,6768,4527),
     ),
     13548 => array(
@@ -5855,7 +5849,7 @@ $config['e___10593'] = array(
     4250 => array(
         'm_title' => 'IDEA CREATED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13480,5967,12400,12149,10593,4593),
     ),
     10679 => array(
@@ -5867,7 +5861,7 @@ $config['e___10593'] = array(
     4983 => array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     10644 => array(
@@ -5891,7 +5885,7 @@ $config['e___10593'] = array(
     4251 => array(
         'm_title' => 'SOURCE CREATED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13548,4527,12401,12149,12141,10593,4593),
     ),
     4259 => array(
@@ -6485,7 +6479,7 @@ $config['e___5967'] = array(
     4250 => array(
         'm_title' => 'IDEA CREATED',
         'm_message' => '1',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13480,5967,12400,12149,10593,4593),
     ),
     12453 => array(
@@ -6532,7 +6526,7 @@ $config['e___7551'] = array(
     4983 => array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     13865 => array(
@@ -7024,7 +7018,7 @@ $config['e___6255'] = array(
     4559 => array(
         'm_title' => 'READ MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_icon' => '<i class="far fa-circle discover"></i>',
         'm_profile' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
@@ -7161,7 +7155,7 @@ $config['e___4755'] = array(
     4283 => array(
         'm_title' => 'DISCOVER IDEA LISTED',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(6153,4755,4593),
     ),
     6969 => array(
@@ -7179,7 +7173,7 @@ $config['e___4755'] = array(
     7610 => array(
         'm_title' => 'DISCOVER IDEA VIEW',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(4755,4593),
     ),
     4555 => array(
@@ -7209,7 +7203,7 @@ $config['e___4755'] = array(
     4282 => array(
         'm_title' => 'DISCOVER OPENED PROFILE',
         'm_message' => '',
-        'm_icon' => '<i class="discover fad fa-eye"></i>',
+        'm_icon' => '<i class="discover fas fa-circle"></i>',
         'm_profile' => array(4755,4593),
     ),
     6563 => array(
@@ -7263,7 +7257,7 @@ $config['e___4755'] = array(
     4278 => array(
         'm_title' => 'DISCOVER SENT MESSENGER',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(7654,4755,4593),
     ),
     4279 => array(
@@ -7455,7 +7449,7 @@ $config['e___4755'] = array(
     4755 => array(
         'm_title' => 'PRIVATE TRANSACTION',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye-slash" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-circle-slash" aria-hidden="true"></i>',
         'm_profile' => array(12701,4755,6771,4527),
     ),
     7495 => array(
@@ -7533,7 +7527,7 @@ $config['e___4755'] = array(
     4559 => array(
         'm_title' => 'SOURCE READ MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_icon' => '<i class="far fa-circle discover"></i>',
         'm_profile' => array(12229,12227,12141,6255,4755,4593),
     ),
     6144 => array(
@@ -7581,7 +7575,7 @@ $config['e___4755'] = array(
     12489 => array(
         'm_title' => 'VIEWED TOP SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye source"></i>',
+        'm_icon' => '<i class="far fa-circle source"></i>',
         'm_profile' => array(4755,4593),
     ),
     12114 => array(
@@ -7706,7 +7700,7 @@ $config['e___4593'] = array(
     4283 => array(
         'm_title' => 'DISCOVER IDEA LISTED',
         'm_message' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its intentions.',
-        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(6153,4755,4593),
     ),
     6969 => array(
@@ -7724,7 +7718,7 @@ $config['e___4593'] = array(
     7610 => array(
         'm_title' => 'DISCOVER IDEA VIEW',
         'm_message' => 'When a user viewes the public intent landing page.',
-        'm_icon' => '<i class="fas fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(4755,4593),
     ),
     4555 => array(
@@ -7760,7 +7754,7 @@ $config['e___4593'] = array(
     4282 => array(
         'm_title' => 'DISCOVER OPENED PROFILE',
         'm_message' => '',
-        'm_icon' => '<i class="discover fad fa-eye"></i>',
+        'm_icon' => '<i class="discover fas fa-circle"></i>',
         'm_profile' => array(4755,4593),
     ),
     6563 => array(
@@ -7814,7 +7808,7 @@ $config['e___4593'] = array(
     4278 => array(
         'm_title' => 'DISCOVER SENT MESSENGER',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-eye discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(7654,4755,4593),
     ),
     4279 => array(
@@ -7916,7 +7910,7 @@ $config['e___4593'] = array(
     4250 => array(
         'm_title' => 'IDEA CREATED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13480,5967,12400,12149,10593,4593),
     ),
     6182 => array(
@@ -8024,7 +8018,7 @@ $config['e___4593'] = array(
     4983 => array(
         'm_title' => 'IDEA SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12359,7551,13550,13543,13407,4485,12141,10939,12450,12228,4593,10593),
     ),
     10662 => array(
@@ -8060,7 +8054,7 @@ $config['e___4593'] = array(
     4993 => array(
         'm_title' => 'IDEA VIEWED',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-eye idea" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(4593),
     ),
     4601 => array(
@@ -8246,7 +8240,7 @@ $config['e___4593'] = array(
     4251 => array(
         'm_title' => 'SOURCE CREATED',
         'm_message' => 'Logged when a new entity is created.',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13548,4527,12401,12149,12141,10593,4593),
     ),
     12117 => array(
@@ -8366,7 +8360,7 @@ $config['e___4593'] = array(
     4559 => array(
         'm_title' => 'SOURCE READ MESSAGES',
         'm_message' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
-        'm_icon' => '<i class="far fa-eye discover"></i>',
+        'm_icon' => '<i class="far fa-circle discover"></i>',
         'm_profile' => array(12229,12227,12141,6255,4755,4593),
     ),
     6178 => array(
@@ -8426,7 +8420,7 @@ $config['e___4593'] = array(
     4994 => array(
         'm_title' => 'SOURCE VIEWED',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-eye source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(4593),
     ),
     6155 => array(
@@ -8462,7 +8456,7 @@ $config['e___4593'] = array(
     12489 => array(
         'm_title' => 'VIEWED TOP SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-eye source"></i>',
+        'm_icon' => '<i class="far fa-circle source"></i>',
         'm_profile' => array(4755,4593),
     ),
     12114 => array(
