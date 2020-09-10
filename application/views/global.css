@@ -1114,6 +1114,7 @@ td.MENCHcolumn3  { width: 13%; }
     width: 100%;
     padding: 5px 0;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .story-bar li{
@@ -1127,6 +1128,19 @@ td.MENCHcolumn3  { width: 13%; }
     background-color: #666666;
     background-position: 100% 50%;
 }
+
+.story-bar .progress{
+    height: 3px;
+    flex-grow: 1;
+    border-radius: 4px;
+    margin: 0 5px;
+    display: flex;
+    background-repeat: no-repeat;
+    background-size: 200%;
+    background-color: #666666;
+    background-position: 100% 50%;
+}
+
 
 .story-bar .active{
     background-color: #FC1B44;

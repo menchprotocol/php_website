@@ -1415,9 +1415,9 @@ function view_x_progress($completion_rate, $i, $show_max = false){
     $user_e = superpower_assigned();
     if($user_e && $user_e['e__id']==1){
 
-        $ui = '<ul class="story-bar">';
+        $ui = '<ul class="story-bar '.( 1 ? ' compact ' : '' ).'">';
         for($i=0;$i<$completion_rate['steps_total'];$i++){
-            $ui .= '<li class="'.( $i<$completion_rate['steps_completed'] ? 'active' : ''  ).'" title="IDEA '.($i+1).'/'.$completion_rate['steps_total'].'">&nbsp;</li>';
+            $ui .= '<li class="'.( $i<$completion_rate['steps_completed'] ? 'active' : ''  ).'" title="IDEA '.($i+1).'/'.$completion_rate['steps_total'].'"></li>';
         }
         $ui .= '</ul>';
 
