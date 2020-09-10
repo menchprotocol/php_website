@@ -254,7 +254,7 @@ if($previous_level_id){
 
 
 //HEADER
-echo '<h1 style="text-align: center; margin:0 33px;">' . view_i_title($i_focus) . '</h1>';
+echo '<h1 style="text-align: center; margin:0 33px 55px;">' . view_i_title($i_focus) . '</h1>';
 
 
 //MESSAGES
