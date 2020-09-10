@@ -1121,7 +1121,7 @@ td.MENCHcolumn3  { width: 13%; }
     height: 3px;
     flex-grow: 1;
     border-radius: 4px;
-    margin: 0 5px;
+    margin: 0 5px 0 0;
     display: flex;
     background-repeat: no-repeat;
     background-size: 200%;
@@ -1721,6 +1721,10 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .story-bar li{
+        margin: 0 1px 0 0;
+    }
 
     .right-adj{
         margin-right:10px !important;
