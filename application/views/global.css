@@ -72,7 +72,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     display: inline-block;
 }
 .media-content, .x__message video {
-    max-width: 377px;
+    /* max-width: 377px; */
 }
 .x__message img, .i_content img, .content-image {
     max-width: 100%;
