@@ -1396,7 +1396,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                 if($user_e && $x__type==6255){
                     $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
                     if($completion_rate['completion_percentage']>0){
-                        $ui .= '<div class="space-all">'.view_x_progress($completion_rate, $i, null, true).'</div>';
+                        $ui .= '<div class="space-all">'.view_x_progress($completion_rate, $i, true).'</div>';
                     }
                 }
 
@@ -1410,8 +1410,25 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 }
 
-function view_x_progress($completion_rate, $i, $extra_class = null, $show_max = false){
-    return '<div class="progress-bg-list '.$extra_class.'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">&nbsp;'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS ('.$completion_rate['completion_percentage'].'%)</div></div>';
+function view_x_progress($completion_rate, $i, $show_max = false){
+
+    $user_e = superpower_assigned();
+    if($user_e && $user_e['e__id']==1){
+
+        $ui = '<ul class="story-bar">';
+        for($i=0;$i<$completion_rate['steps_total'];$i++){
+            $ui .= '<li class="'.( ($i+1)>=$completion_rate['steps_completed'] ? 'active' : ''  ).'" title="IDEA '.($i+1).'/'.$completion_rate['steps_total'].'">&nbsp;</li>';
+        }
+        $ui .= '</ul>';
+
+    } else {
+
+        $ui = '<div class="progress-bg-list"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">&nbsp;'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS ('.$completion_rate['completion_percentage'].'%)</div></div>';
+
+    }
+
+    return $ui;
+
 }
 
 function view_e_basic($e)
