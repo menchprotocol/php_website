@@ -1117,25 +1117,19 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .story-bar li{
-    height: 2px;
+    height: 3px;
     flex-grow: 1;
     border-radius: 4px;
     margin: 0 5px;
     display: flex;
-    background-image: -webkit-linear-gradient(left,
-    rgba(255,255,255,.5) 0%,
-    rgba(255,255,255,.5) 50%,
-    rgba(88, 89, 104,.5) 50.001%,
-    rgba(88, 89, 104,.5) 100%
-    );
     background-repeat: no-repeat;
     background-size: 200%;
-    backgound-color: #666;
+    background-color: #666666;
     background-position: 100% 50%;
 }
 
 .story-bar .active{
-    backgound-color: #FC1B44;
+    background-color: #FC1B44;
 }
 
 .x-msg{
