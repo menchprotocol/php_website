@@ -24,7 +24,7 @@ $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 
 $e_focus_found = false; //Used to determine the first tab to be opened
 
-echo '<div class="container" style="padding-bottom:42px;">';
+echo '<div class="container">';
 
 if(!$e_of_i){
     echo '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/i/i_e_request/'.$i_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/i/i_e_add/'.$i_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';

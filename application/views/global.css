@@ -1712,6 +1712,12 @@ label {
     position: relative;
 }
 
+.main-card{
+    background-color: #FFFFFF;
+    border-radius: 34px;
+    padding: 13px 0;
+}
+
 .feature-content .padded{
     margin: 0 !important;
 }
