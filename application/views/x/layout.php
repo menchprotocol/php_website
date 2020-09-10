@@ -242,20 +242,19 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 
 if($i_completion_percentage>0){
-    echo '<div class="container">'.view_x_progress($i_completion_rate, $i_focus).'</div>';
+    echo view_x_progress($i_completion_rate, $i_focus);
 }
-
 
 if($previous_level_id){
     //Idea Map:
-    echo '<div class="list-group">';
+    echo '<div class="list-group idea-map hidden">';
     echo join('', array_reverse($sitemap_items));
     echo '</div>';
 }
 
 
 //HEADER
-echo '<h1 class="block-one"><span class="icon-block top-icon thin-top">'.view_icon_i_x( $completion_rate['completion_percentage'], $i_focus, 13757 /* Current Idea */ ).'</span><span class="title-block-lg">' . view_i_title($i_focus) . '</span></h1>';
+echo '<h1 style="text-align: center;">' . view_i_title($i_focus) . '</h1>';
 
 
 //MESSAGES
