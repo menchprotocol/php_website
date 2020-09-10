@@ -1118,9 +1118,9 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .story-bar li{
-    height: 3px;
+    height: 5px;
     flex-grow: 1;
-    border-radius: 4px;
+    border-radius: 5px;
     margin: 0 5px 0 0;
     display: flex;
     background-repeat: no-repeat;

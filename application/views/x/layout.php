@@ -242,7 +242,7 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 
 if($i_completion_percentage>0){
-    echo view_x_progress($i_completion_rate, $i_focus);
+    echo '<div style="margin:0 33px;">'.view_x_progress($i_completion_rate, $i_focus).'</div>';
 }
 
 if($previous_level_id){
