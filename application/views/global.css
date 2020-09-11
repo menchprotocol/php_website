@@ -648,7 +648,8 @@ img.no-radius {
     padding: 2px;
     width: calc(100% - 33px);
     height: 330px;
-    max-width: 220px;
+    max-width: 240px;
+    min-width: 200px;
 }
 .cover-done img{
     border-color: #999999 !important;
