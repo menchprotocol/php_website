@@ -680,7 +680,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
     if($tab_nav){
 
-        echo '<ul class="nav nav-tabs nav-sm">';
+        echo '<ul class="nav nav-tabs nav-sm nav-source">';
         echo $tab_nav;
         echo '</ul>';
 

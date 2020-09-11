@@ -793,6 +793,20 @@ img.no-radius {
 .nav-tabs, .dropdown-menu {
     border-color:#999999 !important;
 }
+
+.nav-source{
+    border-color:#007AFD !important;
+}
+.nav-idea{
+    border-color:#ffc500 !important;
+}
+.nav-discover{
+    border-color:#FC1B44 !important;
+}
+
+
+
+
 .nav-tabs .nav-item {
     margin-bottom: -3px;
 }
