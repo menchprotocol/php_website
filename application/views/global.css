@@ -317,7 +317,7 @@ img.no-radius {
 
 .card-header{
     padding: 0;
-    background-color:#FFFFFF;
+    background-color:transparent !important;
 }
 .card-body{
     padding-top: 10px;
