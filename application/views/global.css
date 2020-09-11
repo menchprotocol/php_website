@@ -1756,7 +1756,7 @@ label {
 .main-card{
     background-color: #FFFFFF;
     border-radius: 55px;
-    padding:0;
+    padding:21px 0 0 0;
     border: 3px solid #FC1B44;
 }
 
