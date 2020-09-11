@@ -1218,7 +1218,8 @@ class X_model extends CI_Model
             ));
 
             //Mark as complete if possible:
-            if(in_array($is[0]['i__type'], $this->config->item('n___12211'))){
+            if(0 && in_array($is[0]['i__type'], $this->config->item('n___12211'))){
+                //Disabled for now... TODO Enable later?
                 $this->X_model->mark_complete($is[0], array(
                     'x__type' => 4559, //DISCOVER MESSAGES
                     'x__source' => $e__id,
