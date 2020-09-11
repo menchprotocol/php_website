@@ -624,7 +624,11 @@ img.no-radius {
     top: 5px;
 }
 
-
+.progress-title{
+    text-align: center;
+    width: 100%;
+    padding-top: 8px;
+}
 .progress-bg-list{
     margin: 0;
     width: 100% !important;
@@ -632,7 +636,6 @@ img.no-radius {
     position: relative !important;
     width: 100%;
     height:5px;
-    margin: 5px 0;
     cursor: pointer;
     overflow: hidden;
 }
@@ -1136,7 +1139,6 @@ td.MENCHcolumn3  { width: 13%; }
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding: 5px 0;
     cursor: pointer;
     overflow: hidden;
 }
