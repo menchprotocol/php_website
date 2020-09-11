@@ -639,6 +639,9 @@ img.no-radius {
     overflow: hidden;
     margin-left: 33px;
 }
+.cover-photo {
+    padding:13px 33px;
+}
 .cover-photo img{
     border-radius:34px;
     height: 387px;
