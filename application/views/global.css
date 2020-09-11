@@ -646,7 +646,8 @@ img.no-radius {
 .big-cover{
     margin:0 0 21px 0;
     position: relative;
-    width: 222px;
+    width: 255px;
+    max-width: none;
 }
 
 .main-card{
