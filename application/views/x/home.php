@@ -6,7 +6,7 @@
     $e___12467 = $this->config->item('e___12467'); //MENCH COINS
 
     //IDEA TITLE
-    echo '<h1 class="cen">' . view_i_title($i) . '</h1>';
+    echo '<h1 class="cen" style="padding-top: 34px;">' . view_i_title($i) . '</h1>';
 
     //IDEA MESSAGES
     echo '<div style="margin-bottom:33px;">';
