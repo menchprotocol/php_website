@@ -633,6 +633,9 @@ img.no-radius {
     width: 100%;
     padding-top: 5px;
     padding-bottom: 3px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    color: #999999;
 }
 .progress-bg-list{
     margin: 0;
@@ -1948,9 +1951,9 @@ label {
     height: 1px;
     background-color: #000000 !important;
 }
-.grey-bg{
-    background-color: #FFFFFF !important;
+.round-btn{
+    background-color: #FC1B44 !important;
 }
-.grey-bg i{
-    color: #FC1B44 !important;
+.round-btn i{
+    color: #000000 !important;
 }
