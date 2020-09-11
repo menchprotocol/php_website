@@ -846,10 +846,10 @@ if($in_my_x){
 
             if($i_completed){
                 //GO NEXT IN TREE
-                $control_btn = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211(\'/x/i_next/\')">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
+                $control_btn = '<a class="controller-nav grey-bg" href="javascript:void(0);" onclick="go_12211(\'/x/i_next/\')">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
             } else {
                 //GO NEXT INCOMPLETE
-                $control_btn = '<a class="controller-nav" href="javascript:void(0);" onclick="go_12211(\'/x/x_next/\')">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
+                $control_btn = '<a class="controller-nav grey-bg" href="javascript:void(0);" onclick="go_12211(\'/x/x_next/\')">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
             }
 
         } elseif($e__id==13871){
