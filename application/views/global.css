@@ -626,10 +626,14 @@ img.no-radius {
 
 
 .progress-bg-list{
-    margin: -10px 0 0 0;
+    margin: 0;
     width: 100% !important;
     background-color: #CCCCCC;
     position: relative !important;
+    width: 100%;
+    padding: 5px 0;
+    cursor: pointer;
+    overflow: hidden;
 }
 
 .progress-done{
