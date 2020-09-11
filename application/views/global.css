@@ -648,6 +648,7 @@ img.no-radius {
     padding: 2px;
     width: calc(100% - 33px);
     height: 387px;
+    max-width: 258px;
 }
 .progress-done{
     height:5px;
