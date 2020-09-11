@@ -351,7 +351,7 @@ img.no-radius {
     background-color:#FFFFFF;
 }
 .table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even), .card:nth-of-type(even) .card-header, .table-striped tbody tr:nth-of-type(even), .x-list:nth-of-type(even) {
-    background-color:#f0f0f0;
+    background-color:#FFFFFF; /*f0f0f0*/
 }
 
 .form-control:disabled, .form-control[readonly] {
