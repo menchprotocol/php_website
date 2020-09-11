@@ -41,7 +41,7 @@
         }
 
 
-        echo '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+        echo '<div class="headline"><span class="icon-block">&nbsp;</span>TOP '.$m['m_title'].'</div>';
         echo '<div class="list-group" style="padding-bottom:33px;">';
 
 
