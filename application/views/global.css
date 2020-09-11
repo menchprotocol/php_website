@@ -328,7 +328,7 @@ img.no-radius {
 .table-striped tbody tr:nth-of-type(odd), .x-list:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
     background-color:#FFFFFF;
 }
-.table-striped tbody tr:nth-of-type(even), .list-group:not(.no-stripe) .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even), .card:nth-of-type(even) .card-header {
+.table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even):not(.nostripe), .accordion .card:nth-of-type(even), .card:nth-of-type(even) .card-header {
     background-color:#f0f0f0;
 }
 
