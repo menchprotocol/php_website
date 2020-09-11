@@ -262,7 +262,7 @@ if($i_completion_percentage>0){
 }
 
 //HEADER
-echo '<h1 style="text-align: center; margin:21px 33px 55px;">' . view_i_title($i_focus) . '</h1>';
+echo '<h1 style="text-align: center; margin:33px 33px 55px;">' . view_i_title($i_focus) . '</h1>';
 
 
 //MESSAGES
