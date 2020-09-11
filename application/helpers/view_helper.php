@@ -1176,7 +1176,7 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $prefix_statement = null, 
 
 
     if(strlen($prefix_statement)){
-        $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>'.$prefix_statement.'</div>';
+        $ui .= '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>'.$prefix_statement.'</div>';
     }
 
     $ui .= '<div class="doclear">&nbsp;</div>';
