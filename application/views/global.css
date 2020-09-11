@@ -643,7 +643,7 @@ img.no-radius {
     padding:8px 0 0 8px;
 }
 .cover-photo img{
-    border: 1px solid #000;
+    border: 5px solid #FFFFFF;
     border-radius:34px;
     width: calc(100% - 18px);
     height: 387px;
