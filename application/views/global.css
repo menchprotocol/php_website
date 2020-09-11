@@ -808,10 +808,13 @@ img.no-radius {
 
 .nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
     border: 1px solid #000000 !important;
-    border-bottom-color: #FFFFFF !important;
+    border-bottom-color: #f0f0f0 !important;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     position: relative;
+}
+.main-card .nav-tabs .nav-item.show .nav-x, .main-card .nav-tabs .nav-x.active, .main-card .nav-tabs .nav-x:focus, .main-card .nav-tabs .nav-x:hover{
+    border-bottom-color: #FFFFFF !important;
 }
 
 .note-editor{
