@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-11 10:26:17 PST
+//Generated 2020-09-11 10:39:34 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -78,7 +78,7 @@ $config['e___13776'] = array(
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
@@ -220,7 +220,7 @@ $config['e___13544'] = array(
     13629 => array(
         'm_title' => 'IDEA CARD RANGE',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover"></i>',
         'm_profile' => array(13544),
     ),
     13292 => array(
@@ -983,7 +983,7 @@ $config['e___13300'] = array(
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
@@ -1000,7 +1000,7 @@ $config['e___13291'] = array(
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     13023 => array(
@@ -1533,7 +1533,7 @@ $config['e___12677'] = array(
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
@@ -1591,7 +1591,7 @@ $config['e___12467'] = array(
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
@@ -1822,13 +1822,13 @@ $config['e___12446'] = array(
     13757 => array(
         'm_title' => 'CURRENT',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover"></i>',
         'm_profile' => array(12446),
     ),
     12447 => array(
         'm_title' => 'IN PROGRESS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover"></i>',
         'm_profile' => array(13450,12446),
     ),
     13338 => array(
@@ -3118,7 +3118,7 @@ $config['e___11018'] = array(
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
@@ -3183,7 +3183,7 @@ $config['e___11089'] = array(
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
@@ -5094,7 +5094,7 @@ $config['e___4527'] = array(
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     13369 => array(
