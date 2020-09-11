@@ -1419,12 +1419,11 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 }
 
-function view_x_progress($completion_rate, $i, $show_max = false){
+function view_x_progress($completion_rate, $i, $show_micro){
 
     $ui = '<div class="progress-title">'.$completion_rate['completion_percentage'].'% DONE '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS</div><div class="doclear">&nbsp;</div>';
 
-
-    if($completion_rate['steps_total'] < 55){
+    if($completion_rate['steps_total'] < 55 && !$show_micro){
 
         $ui .= '<ul class="story-bar '.( 1 ? ' compact ' : '' ).'">';
         for($i=0;$i<$completion_rate['steps_total'];$i++){
