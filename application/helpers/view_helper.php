@@ -1415,7 +1415,7 @@ function view_x_progress($completion_rate, $i, $show_max = false){
     $ui = '<div class="progress-title montserrat">'.$completion_rate['completion_percentage'].'% DISCOVERED '.$completion_rate['steps_completed'].' OF '.$completion_rate['steps_total'].' IDEAS</div><div class="doclear">&nbsp;</div>';
 
 
-    if($completion_rate['steps_total'] < 55){
+    if($completion_rate['steps_total'] < 89){
 
         $ui .= '<ul class="story-bar '.( 1 ? ' compact ' : '' ).'">';
         for($i=0;$i<$completion_rate['steps_total'];$i++){
