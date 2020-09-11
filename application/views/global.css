@@ -631,7 +631,7 @@ img.no-radius {
     padding-bottom: 3px;
 }
 .progress-bg-list{
-    margin: 0 33px;
+    margin: 0;
     width: 100% !important;
     background-color: #CCCCCC;
     position: relative !important;
@@ -1584,7 +1584,7 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.input-group .algolia-autocomplete, .x__message, .x_input {
+.input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list {
     width: -webkit-calc(100% - 68px);
     width:    -moz-calc(100% - 68px);
     width:         calc(100% - 68px);
