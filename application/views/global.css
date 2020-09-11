@@ -511,9 +511,7 @@ img.no-radius {
 }
 .right-adj {
     margin-top:-24px;
-}
-.right-adj a {
-    padding: 0 5px;
+    margin-right:33px !important;
 }
 .discover-controller{
     width: 100% !important;
@@ -1733,10 +1731,6 @@ label {
 
     .story-bar li{
         margin: 0 1px 0 0;
-    }
-
-    .right-adj{
-        margin-right:10px !important;
     }
 
     .title-block{
