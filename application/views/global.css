@@ -1159,9 +1159,9 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 .story-bar li{
-    height: 5px;
+    height: 3px;
     flex-grow: 1;
-    border-radius: 5px;
+    border-radius: 3px;
     margin: 0 5px 0 0;
     display: flex;
     background-repeat: no-repeat;
@@ -1755,7 +1755,7 @@ label {
 
 .main-card{
     background-color: #FFFFFF;
-    border-radius: 21px;
+    border-radius: 34px;
     padding:21px 0 0 0;
     border: 3px solid #FC1B44;
 }
