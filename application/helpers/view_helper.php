@@ -1371,8 +1371,21 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         }
 
 
-        $ui .= '<div class="row">';
-            $ui .= '<div class="col-9 feature-content">';
+
+
+
+
+    $ui .= '<a class="cover-photo" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a>';
+
+    if($user_e && $x__type==6255){
+        $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
+        if($completion_rate['completion_percentage']>0){
+            $ui .= '<div class="space-all">'.view_x_progress($completion_rate, $i, true).'</div>';
+        }
+    }
+
+    //$ui .= '<div class="row">';
+            //$ui .= '<div class="col-9 feature-content">';
 
                 //Title
 
@@ -1394,21 +1407,13 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
                 */
 
-                $ui .= '<div class="space-left hideIfEmpty">'.view_i_tree_stats($i_stats, false).'</div>';
+                //$ui .= '<div class="space-left hideIfEmpty">'.view_i_tree_stats($i_stats, false).'</div>';
 
 
-                if($user_e && $x__type==6255){
-                    $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
-                    if($completion_rate['completion_percentage']>0){
-                        $ui .= '<div class="space-all">'.view_x_progress($completion_rate, $i, true).'</div>';
-                    }
-                }
-
-
-            $ui .= '</div>';
-            $ui .= '<div class="col-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
-        $ui .= '</div>';
-    $ui .= '</div>';
+            //$ui .= '</div>';
+    //$ui .= '<div class="col-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
+       // $ui .= '</div>';
+    //$ui .= '</div>';
 
     return $ui;
 
@@ -1416,7 +1421,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 function view_x_progress($completion_rate, $i, $show_max = false){
 
-    $ui = '<div class="progress-title">'.$completion_rate['completion_percentage'].'% DISCOVERED '.$completion_rate['steps_completed'].' OF '.$completion_rate['steps_total'].' IDEAS</div><div class="doclear">&nbsp;</div>';
+    $ui = '<div class="progress-title">'.$completion_rate['completion_percentage'].'% DONE '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS</div><div class="doclear">&nbsp;</div>';
 
 
     if($completion_rate['steps_total'] < 55){

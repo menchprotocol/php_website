@@ -639,7 +639,10 @@ img.no-radius {
     overflow: hidden;
     margin-left: 33px;
 }
-
+.cover-photo{
+    width: 100%;
+    border-radius:21px;
+}
 .progress-done{
     height:5px;
     background-color: #FC1B44;

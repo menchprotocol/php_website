@@ -258,7 +258,7 @@ echo '</div>';
 echo '<div class="container main-card">';
 
 if($i_completion_percentage>0){
-    echo view_x_progress($i_completion_rate, $i_focus);
+    echo view_x_progress($i_completion_rate, $i_focus, false);
 }
 
 //HEADER
