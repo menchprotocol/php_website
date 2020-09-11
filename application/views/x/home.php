@@ -23,7 +23,7 @@
 
 
     //FEATURED IDEAS
-    echo '<div>';
+    echo '<div class="row">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC

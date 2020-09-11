@@ -1350,7 +1350,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $href = ( $x__type == 6255 ? ( $user_input && $user_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?focus__e='.$user_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
     $completion_rate['completion_percentage'] = 0; //Assume no progress
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-sm-4 col-md-6 i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
         //EDITING TOOLBAR
         if($show_editor){
@@ -1375,12 +1375,15 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
             $ui .= '<div class="col-9 feature-content">';
 
                 //Title
-                $ui .= '<div>';
-                $ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $x__type == 6255 ? 13822 /* Next Idea */ : 0 /* Idea Icon */ )).'</a></span>';
-                $ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
-                $ui .= '</div>';
 
 
+                //$ui .= '<div>';
+                //$ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $x__type == 6255 ? 13822 /* Next Idea */ : 0 /* Idea Icon */ )).'</a></span>';
+                //$ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
+                //$ui .= '</div>';
+
+
+                /*
                 if(strlen(strip_tags($message_input))){
                     //Description, if any
                     $ui .= '<div class="inline-block space-left">'.$message_input.'</div>';
@@ -1389,6 +1392,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
                     $ui .= '<div class="inline-block space-left hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
                 }
 
+                */
 
                 $ui .= '<div class="space-left hideIfEmpty">'.view_i_tree_stats($i_stats, false).'</div>';
 

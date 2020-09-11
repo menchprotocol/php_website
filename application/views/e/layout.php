@@ -388,7 +388,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-            $focus_tab .= '<div id="list_13412">';
+            $focus_tab .= '<div class="row" id="list_13412">';
             foreach($list_i as $count => $item){
 
                 $message_input = null;
@@ -446,7 +446,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
 
-                        $focus_tab .= '<div id="list_6132">';
+                        $focus_tab .= '<div class="row" id="list_6132">';
                         foreach($list_x as $item){
                             $focus_tab .= view_i_cover(6255, $item, $source_is_e, null, null, $e);
                             array_push($my_x_ids, $item['i__id']);
@@ -477,7 +477,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
                 $focus_tab .= '<div class="headline margin-top-down"><span class="icon-block">'.$e___11035[13813]['m_icon'].'</span>'.$e___11035[13813]['m_title'].':</div>';
-                $focus_tab .= '<div>';
+                $focus_tab .= '<div class="row">';
                 foreach($featured_i as $key => $x){
                     if(!in_array($x['i__id'], $my_x_ids)){
                         //Show only if not in discovering list:
