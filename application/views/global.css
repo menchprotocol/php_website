@@ -658,6 +658,9 @@ img.no-radius {
     border: 3px solid #FC1B44;
     overflow: hidden;
 }
+.card-grey{
+    border-color:#999999 !important;
+}
 
 .cover-photo {
     padding:0 0 0 33px;
