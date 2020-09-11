@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-11 10:25:10 PST
+//Generated 2020-09-11 10:26:17 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -79,7 +79,7 @@ $config['e___13776'] = array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
         'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
-        'm_profile' => array(13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
+        'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
 
@@ -379,7 +379,7 @@ $config['e___13530'] = array(
         'm_title' => 'IDEA COINS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13300,12675,13530,11018,11089,12761,12112,12467,12228),
+        'm_profile' => array(12574,12675,13530,11018,11089,12761,12112,12467,12228),
     ),
     12274 => array(
         'm_title' => 'SOURCES',
@@ -978,13 +978,13 @@ $config['e___13298'] = array(
 );
 
 //DISCOVER TAB OPEN BY DEFAULT:
-$config['n___13300'] = array(12273);
+$config['n___13300'] = array(6255);
 $config['e___13300'] = array(
-    12273 => array(
-        'm_title' => 'IDEA COINS',
+    6255 => array(
+        'm_title' => 'IDEA CARDS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13300,12675,13530,11018,11089,12761,12112,12467,12228),
+        'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
 
@@ -1001,7 +1001,7 @@ $config['e___13291'] = array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
         'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
-        'm_profile' => array(13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
+        'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     13023 => array(
         'm_title' => 'SHARE',
@@ -1058,7 +1058,7 @@ $config['e___12761'] = array(
         'm_title' => 'IDEA COINS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13300,12675,13530,11018,11089,12761,12112,12467,12228),
+        'm_profile' => array(12574,12675,13530,11018,11089,12761,12112,12467,12228),
     ),
     12274 => array(
         'm_title' => 'SOURCES',
@@ -1523,7 +1523,7 @@ $config['e___12675'] = array(
         'm_title' => 'IDEA COINS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13300,12675,13530,11018,11089,12761,12112,12467,12228),
+        'm_profile' => array(12574,12675,13530,11018,11089,12761,12112,12467,12228),
     ),
 );
 
@@ -1534,7 +1534,7 @@ $config['e___12677'] = array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
         'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
-        'm_profile' => array(13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
+        'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
         'm_title' => 'SAVED',
@@ -1586,13 +1586,13 @@ $config['e___12467'] = array(
         'm_title' => 'IDEA COINS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13300,12675,13530,11018,11089,12761,12112,12467,12228),
+        'm_profile' => array(12574,12675,13530,11018,11089,12761,12112,12467,12228),
     ),
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
         'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
-        'm_profile' => array(13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
+        'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
 
@@ -1725,7 +1725,7 @@ $config['e___12574'] = array(
         'm_title' => 'IDEA COINS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13300,12675,13530,11018,11089,12761,12112,12467,12228),
+        'm_profile' => array(12574,12675,13530,11018,11089,12761,12112,12467,12228),
     ),
     6225 => array(
         'm_title' => 'MY ACCOUNT',
@@ -2848,7 +2848,7 @@ $config['e___12112'] = array(
         'm_title' => 'IDEA COINS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13300,12675,13530,11018,11089,12761,12112,12467,12228),
+        'm_profile' => array(12574,12675,13530,11018,11089,12761,12112,12467,12228),
     ),
     4356 => array(
         'm_title' => 'IDEA DURATION (SECONDS)',
@@ -3095,7 +3095,7 @@ $config['e___11018'] = array(
         'm_title' => 'IDEA COINS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13300,12675,13530,11018,11089,12761,12112,12467,12228),
+        'm_profile' => array(12574,12675,13530,11018,11089,12761,12112,12467,12228),
     ),
     10573 => array(
         'm_title' => 'BOOKMARK',
@@ -3119,7 +3119,7 @@ $config['e___11018'] = array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
         'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
-        'm_profile' => array(13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
+        'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
         'm_title' => 'SAVED',
@@ -3178,13 +3178,13 @@ $config['e___11089'] = array(
         'm_title' => 'IDEA COINS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(12574,13300,12675,13530,11018,11089,12761,12112,12467,12228),
+        'm_profile' => array(12574,12675,13530,11018,11089,12761,12112,12467,12228),
     ),
     6255 => array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
         'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
-        'm_profile' => array(13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
+        'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
         'm_title' => 'SAVED',
@@ -5095,7 +5095,7 @@ $config['e___4527'] = array(
         'm_title' => 'IDEA CARDS',
         'm_message' => '',
         'm_icon' => '<i class="far fa-rectangle-portrait discover" aria-hidden="true"></i>',
-        'm_profile' => array(13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
+        'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     13369 => array(
         'm_title' => 'IDEA COVER UI',
