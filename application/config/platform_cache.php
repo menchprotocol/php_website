@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-11 15:19:59 PST
+//Generated 2020-09-11 15:25:35 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -384,7 +384,7 @@ $config['e___13530'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
 );
@@ -994,7 +994,7 @@ $config['e___13291'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     6255 => array(
@@ -1063,7 +1063,7 @@ $config['e___12761'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
 );
@@ -1579,7 +1579,7 @@ $config['e___12467'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
@@ -3088,7 +3088,7 @@ $config['e___11018'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
@@ -3171,7 +3171,7 @@ $config['e___11089'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
@@ -3922,7 +3922,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.543623',
+        'm_message' => 'v1.55',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
