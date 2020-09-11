@@ -326,10 +326,10 @@ img.no-radius {
     background-color:transparent;
 }
 .table-striped tbody tr:nth-of-type(odd), .x-list:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
-    background-color:#FFFFFF;
+    background-color:transparent; /*FFFFFF*/
 }
 .table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even), .card:nth-of-type(even) .card-header {
-    background-color:#FFFFFF; /*f0f0f0*/
+    background-color:transparent; /*f0f0f0*/
 }
 
 .form-control:disabled, .form-control[readonly] {
