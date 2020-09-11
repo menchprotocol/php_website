@@ -657,11 +657,14 @@ img.no-radius {
     min-width: 200px;
 }
 .cover-photo h4{
-    max-width: 255px;
-    min-width: 233px;
     padding:8px 0 0 33px;
     font-size:1em;
     text-align: center;
+}
+.cover-editor, .cover-photo h4{
+    max-width: 255px;
+    min-width: 233px;
+    position: relative;
 }
 .cover-done img{
     border-color: #999999 !important;
