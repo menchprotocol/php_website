@@ -650,10 +650,18 @@ img.no-radius {
     border: 3px solid #FC1B44;
     border-radius:34px;
     padding: 2px;
-    width: calc(100% - 33px);
     height: 330px;
+    width: calc(100% - 33px);
     max-width: 240px;
     min-width: 200px;
+}
+.cover-photo h4{
+    width: calc(100% - 33px);
+    max-width: 240px;
+    min-width: 200px;
+    padding:8px 0 0 33px;
+    font-size:1em;
+    text-align: center;
 }
 .cover-done img{
     border-color: #999999 !important;
@@ -1486,7 +1494,7 @@ label {
 
 .cover-editor {
     width: 30px;
-    right: 0;
+    right: 13px;
     top: 3px;
     margin-right: 0;
 }
@@ -1762,6 +1770,7 @@ label {
     border-radius: 34px;
     padding:21px 0 0 0;
     border: 3px solid #FC1B44;
+    overflow: hidden;
 }
 
 
@@ -1775,6 +1784,7 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    /*    .active .show-max-active {display:none !important;}  */
     .main-card{
         margin: 5px;
         width: -webkit-calc(100% - 10px) !important;
@@ -1823,7 +1833,6 @@ label {
         font-size:0.667em !important;
     }
 
-    .active .show-max-active {display:none !important;}
     .mini-hidden{
         display: none;
     }

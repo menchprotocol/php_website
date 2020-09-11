@@ -8,7 +8,6 @@
     //IDEA TITLE
     echo '<h1 class="cen">' . view_i_title($i) . '</h1>';
 
-
     //IDEA MESSAGES
     echo '<div style="margin-bottom:33px;">';
     foreach($this->X_model->fetch(array(
