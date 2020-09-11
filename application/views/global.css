@@ -641,7 +641,7 @@ img.no-radius {
 }
 .cover-photo img{
     border-radius:34px;
-    width: 233px;
+    width: 100%;
     height: 387px;
 }
 .progress-done{
