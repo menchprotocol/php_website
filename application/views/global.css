@@ -637,6 +637,7 @@ img.no-radius {
     height:5px;
     cursor: pointer;
     overflow: hidden;
+    margin-left: 33px;
 }
 
 .progress-done{
@@ -1583,9 +1584,9 @@ label {
     width:         calc(100% - 15px);
 }
 .input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list {
-    width: -webkit-calc(100% - 68px);
-    width:    -moz-calc(100% - 68px);
-    width:         calc(100% - 68px);
+    width: -webkit-calc(100% - 66px);
+    width:    -moz-calc(100% - 66px);
+    width:         calc(100% - 66px);
 }
 .texttype__lg, #newIdeaTitle, .add_notes_form, .i-info, .note-textarea.edit-on, .cover-title {
     width: -webkit-calc(100% - 33px) !important;
