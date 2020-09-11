@@ -476,7 +476,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     'x__left' => config_var(12137),
                 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-                $focus_tab .= '<div class="headline margin-top-down"><span class="icon-block">'.$e___11035[13813]['m_icon'].'</span>'.$e___11035[13813]['m_title'].':</div>';
+                $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13813]['m_icon'].'</span>'.$e___11035[13813]['m_title'].'</div>';
                 $focus_tab .= '<div class="row">';
                 foreach($featured_i as $key => $x){
                     if(!in_array($x['i__id'], $my_x_ids)){

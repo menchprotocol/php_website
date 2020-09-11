@@ -345,10 +345,10 @@ img.no-radius {
     background-color:transparent;
 }
 .table-striped tbody tr:nth-of-type(odd), .x-list:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd) {
-    background-color:transparent; /*FFFFFF*/
+    background-color:#FFFFFF;
 }
 .table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even), .card:nth-of-type(even) .card-header {
-    background-color:transparent; /*f0f0f0*/
+    background-color:#f0f0f0;
 }
 
 .form-control:disabled, .form-control[readonly] {
@@ -1051,7 +1051,7 @@ td.MENCHcolumn3  { width: 13%; }
     padding:10px 0 !important;
 }
 .top-margin{
-    margin-top: 10px;
+    margin-top: 33px;
 }
 .both-margin{
     margin-top: 30px;
@@ -1772,7 +1772,6 @@ label {
 @media (max-width:767px) {
 
     .main-card{
-        border-radius: 34px;
         margin: 5px;
         width: -webkit-calc(100% - 10px) !important;
         width:    -moz-calc(100% - 10px) !important;
