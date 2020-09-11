@@ -1345,12 +1345,16 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     if(!$user_e){
         $user_e = $user_session;
     }
+    if($user_e && $x__type==6255){
+        $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
+    }
+
 
     $i_stats = i_stats($i['i__metadata']);
     $href = ( $x__type == 6255 ? ( $user_input && $user_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?focus__e='.$user_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
     $completion_rate['completion_percentage'] = 0; //Assume no progress
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-4 col-sm-6 i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
         //EDITING TOOLBAR
         if($show_editor){
@@ -1375,14 +1379,8 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
 
-    $ui .= '<a class="cover-photo" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a>';
+    $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'<h4 style="padding: 8px 0 0 0;">'.view_i_title($i).'</h4></a>';
 
-    if($user_e && $x__type==6255){
-        $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
-        if($completion_rate['completion_percentage']>0){
-            $ui .= '<div style="">'.view_x_progress($completion_rate, $i, true).'</div>';
-        }
-    }
 
     //$ui .= '<div class="row">';
             //$ui .= '<div class="col-9 feature-content">';

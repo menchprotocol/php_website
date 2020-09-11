@@ -650,6 +650,9 @@ img.no-radius {
     height: 330px;
     max-width: 220px;
 }
+.cover-done img{
+    border-color: #999999 !important;
+}
 .progress-done{
     height:5px;
     background-color: #FC1B44;
