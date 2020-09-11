@@ -787,6 +787,18 @@ img.no-radius {
     box-shadow: none;
 }
 
+
+.nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
+    border: 3px solid #999999 !important;
+    border-bottom-color: #f0f0f0 !important;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    position: relative;
+}
+.main-card .nav-tabs .nav-item.show .nav-x, .main-card .nav-tabs .nav-x.active, .main-card .nav-tabs .nav-x:focus, .main-card .nav-tabs .nav-x:hover{
+    border-bottom-color: #FFFFFF !important;
+}
+
 .nav-tabs {
     border-bottom: 3px solid #999999;
 }
@@ -794,16 +806,15 @@ img.no-radius {
     border-color:#999999 !important;
 }
 
-.nav-source{
+.nav-source, .nav-source .nav-item.show .nav-x, .nav-source .nav-x.active, .nav-source .nav-x:focus, .nav-source .nav-x:hover {
     border-color:#007AFD !important;
 }
-.nav-idea{
+.nav-idea, .nav-idea .nav-item.show .nav-x, .nav-idea .nav-x.active, .nav-idea .nav-x:focus, .nav-idea .nav-x:hover{
     border-color:#ffc500 !important;
 }
-.nav-discover{
+.nav-discover, .nav-discover .nav-item.show .nav-x, .nav-discover .nav-x.active, .nav-discover .nav-x:focus, .nav-discover .nav-x:hover{
     border-color:#FC1B44 !important;
 }
-
 
 
 
@@ -893,17 +904,6 @@ img.no-radius {
 
 .btn-group-sm>.btn, .btn-sm {
     padding: .25rem 0;
-}
-
-.nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
-    border: 3px solid #999999 !important;
-    border-bottom-color: #f0f0f0 !important;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    position: relative;
-}
-.main-card .nav-tabs .nav-item.show .nav-x, .main-card .nav-tabs .nav-x.active, .main-card .nav-tabs .nav-x:focus, .main-card .nav-tabs .nav-x:hover{
-    border-bottom-color: #FFFFFF !important;
 }
 
 .note-editor{
