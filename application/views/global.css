@@ -1951,3 +1951,6 @@ label {
 .grey-bg{
     background-color: #FFFFFF !important;
 }
+.grey-bg i{
+    background-color: #f6e8e8 !important;
+}
