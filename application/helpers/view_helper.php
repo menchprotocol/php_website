@@ -1380,7 +1380,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         }
 
 
-        $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'<h4 class="montserrat">'.view_i_title($i).'</h4></a>';
+        $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).' '.( $x__type==6255 ? '' : ' cover-gold ' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'<h4 class="montserrat">'.view_i_title($i).'</h4></a>';
 
     $ui .= '</div>';
 
