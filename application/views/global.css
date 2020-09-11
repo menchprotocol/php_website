@@ -640,11 +640,11 @@ img.no-radius {
     margin-left: 33px;
 }
 .cover-photo {
-    padding:13px 33px;
+    padding:13px 5px;
 }
 .cover-photo img{
     border-radius:34px;
-    width: calc(100% - 38px);
+    width: calc(100% - 10px);
     height: 387px;
 }
 .progress-done{
