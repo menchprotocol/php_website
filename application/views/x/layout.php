@@ -126,7 +126,7 @@ if($in_my_x){
         }
 
         foreach($sitemap_items_raw as $si) {
-            array_push($sitemap_items, view_i_x($si['i'], -1, true, null, $si['completion_rate']));
+            array_push($sitemap_items, view_i_x($si['i'], 0, true, null, $si['completion_rate']));
         }
 
     }
