@@ -262,7 +262,7 @@ if($in_my_x){
 }
 
 //HEADER
-echo '<h1 style="text-align: center; margin:33px 33px 55px;">' . view_i_title($i_focus) . '</h1>';
+echo '<h1 class="cen">' . view_i_title($i_focus) . '</h1>';
 
 
 //MESSAGES

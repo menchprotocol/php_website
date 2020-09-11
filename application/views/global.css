@@ -120,6 +120,10 @@ h1 {
     margin-left: 0;
     padding-left: 0;
 }
+.cen{
+    text-align: center;
+    margin:33px 33px 55px;
+}
 
 .list-group-item h1 {
     margin-bottom:8px;
