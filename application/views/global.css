@@ -323,25 +323,25 @@ img.no-radius {
 }
 
 .indentation .list-group-item:nth-child(1) {
-    margin-left: 5px;
+    margin-left: 8px;
 }
 .indentation .list-group-item:nth-child(2) {
-    margin-left: 10px;
+    margin-left: 16px;
 }
 .indentation .list-group-item:nth-child(3) {
-    margin-left: 15px;
+    margin-left: 24px;
 }
 .indentation .list-group-item:nth-child(4) {
-    margin-left: 20px;
+    margin-left: 32px;
 }
 .indentation .list-group-item:nth-child(5) {
-    margin-left: 25px;
+    margin-left: 40px;
 }
 .indentation .list-group-item:nth-child(6) {
-    margin-left: 30px;
+    margin-left: 48px;
 }
 .indentation .list-group-item:nth-child(7) {
-    margin-left: 35px;
+    margin-left: 56px;
 }
 
 .table-striped tbody tr:nth-of-type(even), .x-list:nth-of-type(even) {
