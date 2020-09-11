@@ -1350,7 +1350,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $href = ( $x__type == 6255 ? ( $user_input && $user_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?focus__e='.$user_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
     $completion_rate['completion_percentage'] = 0; //Assume no progress
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-4 col-sm-6 i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
         //EDITING TOOLBAR
         if($show_editor){
