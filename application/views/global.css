@@ -646,7 +646,7 @@ img.no-radius {
     border: 3px solid #FC1B44;
     border-radius:34px;
     padding: 2px;
-    width: calc(100% - 43px);
+    width: calc(100% - 33px);
     height: 387px;
 }
 .progress-done{
