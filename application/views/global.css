@@ -631,7 +631,7 @@ img.no-radius {
     padding-bottom: 3px;
 }
 .progress-bg-list{
-    margin: 0;
+    margin: 0 33px;
     width: 100% !important;
     background-color: #CCCCCC;
     position: relative !important;
@@ -639,7 +639,6 @@ img.no-radius {
     height:5px;
     cursor: pointer;
     overflow: hidden;
-    padding-right: 33px;
 }
 
 .progress-done{
