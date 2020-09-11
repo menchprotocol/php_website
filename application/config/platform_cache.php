@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-11 15:30:44 PST
+//Generated 2020-09-11 15:31:48 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -247,13 +247,13 @@ $config['e___13543'] = array(
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION SOURCES',
+        'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     13339 => array(
-        'm_title' => 'EXPERT SOURCES',
+        'm_title' => 'EXPERTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
@@ -411,7 +411,7 @@ $config['e___12563'] = array(
         'm_profile' => array(12563,12968,3000),
     ),
     13339 => array(
-        'm_title' => 'EXPERT SOURCES',
+        'm_title' => 'EXPERTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
@@ -600,7 +600,7 @@ $config['e___6159'] = array(
         'm_profile' => array(11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
     ),
     13339 => array(
-        'm_title' => 'EXPERT SOURCES',
+        'm_title' => 'EXPERTS',
         'm_message' => 'i___13339',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
@@ -666,7 +666,7 @@ $config['e___6159'] = array(
         'm_profile' => array(6169,13292,4735,6159),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION SOURCES',
+        'm_title' => 'NONFICTION CONTENT',
         'm_message' => 'i___3000',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
@@ -730,13 +730,13 @@ $config['e___4251'] = array(
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION SOURCES',
+        'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
     ),
     13339 => array(
-        'm_title' => 'EXPERT SOURCES',
+        'm_title' => 'EXPERTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
@@ -925,7 +925,7 @@ $config['e___13369'] = array(
 $config['n___13365'] = array(13339,13202,3000);
 $config['e___13365'] = array(
     13339 => array(
-        'm_title' => 'EXPERT SOURCES',
+        'm_title' => 'EXPERTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
@@ -937,7 +937,7 @@ $config['e___13365'] = array(
         'm_profile' => array(13543,13450,6159,4251,13365,4527,13207),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION SOURCES',
+        'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
@@ -1038,13 +1038,13 @@ $config['e___13207'] = array(
         'm_profile' => array(13450,13207,4527,13439),
     ),
     13339 => array(
-        'm_title' => 'EXPERT SOURCES',
+        'm_title' => 'EXPERTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION SOURCES',
+        'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
@@ -1785,7 +1785,7 @@ $config['e___12524'] = array(
 $config['n___12523'] = array(13339,6293,13450);
 $config['e___12523'] = array(
     13339 => array(
-        'm_title' => 'EXPERT SOURCES',
+        'm_title' => 'EXPERTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13596,12523,13543,12563,6159,4251,13365,13207),
@@ -2886,7 +2886,7 @@ $config['e___12112'] = array(
 $config['n___12079'] = array(3000,4486,4737,7585,12500);
 $config['e___12079'] = array(
     3000 => array(
-        'm_title' => 'NONFICTION SOURCES',
+        'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
@@ -5440,7 +5440,7 @@ $config['e___4527'] = array(
         'm_profile' => array(12228,11035,4527),
     ),
     3000 => array(
-        'm_title' => 'NONFICTION SOURCES',
+        'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(12079,13543,6159,4251,13365,13207,4527),
@@ -5967,7 +5967,7 @@ $config['e___6193'] = array(
     ),
 );
 
-//NONFICTION SOURCES:
+//NONFICTION CONTENT:
 $config['n___3000'] = array(3005,2998,2997,13218,3147,4446,13350,3192);
 $config['e___3000'] = array(
     3005 => array(
