@@ -459,7 +459,7 @@ img.no-radius {
 }
 
 .nav-tabs {
-    margin:0 0 33px 0;
+    margin:0 0 21px 0;
     padding-left: 33px !important;
 }
 
@@ -645,7 +645,7 @@ img.no-radius {
 }
 
 .big-cover{
-    margin:0 0 21px 0;
+    margin:21px 0 21px 0;
     position: relative;
     width: 255px;
     max-width: none;
