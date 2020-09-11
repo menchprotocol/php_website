@@ -1183,7 +1183,7 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $prefix_statement = null, 
     $ui .= '<div class="pull-right grey right-adj"><a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" title="'.$e___11035[13689]['m_title'].'">'.$e___11035[13689]['m_icon'].'</a></div>';
 
     $ui .= '<div class="doclear">&nbsp;</div>';
-    $ui .= '<div class="list-group nostripe">';
+    $ui .= '<div class="list-group">';
     $is_last_continious_complete = true;
     $index_id = 0;
     foreach($is_next as $key => $next_i){
