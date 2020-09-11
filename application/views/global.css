@@ -651,17 +651,14 @@ img.no-radius {
     border: 3px solid #FC1B44;
     border-radius:34px;
     padding: 2px;
-    height: 320px;
-    width: calc(100% - 33px);
-    max-width: 233px;
-    min-width: 200px;
+    height: 333px;
+    width: 222px;
 }
 .cover-photo h4{
     padding:8px 0 0 33px;
     font-size:1em;
     text-align: center;
-    max-width: 255px;
-    min-width: 233px;
+    width: 222px;
 }
 .cover-editor{
 
