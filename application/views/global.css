@@ -660,10 +660,11 @@ img.no-radius {
     padding:8px 0 0 33px;
     font-size:1em;
     text-align: center;
-}
-.cover-editor, .cover-photo h4{
     max-width: 255px;
     min-width: 233px;
+}
+.cover-editor{
+
     position: relative;
 }
 .cover-done img{
@@ -1766,6 +1767,8 @@ label {
 .big-cover{
     margin:0 0 21px 0;
     position: relative;
+    max-width: 255px;
+    min-width: 233px;
 }
 
 .main-card{
