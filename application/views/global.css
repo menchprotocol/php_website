@@ -640,8 +640,9 @@ img.no-radius {
     margin-left: 33px;
 }
 .cover-photo img{
-    border-radius:21px;
-    margin-left:33px;
+    border-radius:34px;
+    width: 233px;
+    height: 667px;
 }
 .progress-done{
     height:5px;
@@ -1586,7 +1587,7 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list, .hundred66 {
+.input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list {
     width: -webkit-calc(100% - 66px);
     width:    -moz-calc(100% - 66px);
     width:         calc(100% - 66px);
