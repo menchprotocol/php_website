@@ -632,10 +632,8 @@ img.no-radius {
 }
 .progress-bg-list{
     margin: 0;
-    width: 100% !important;
     background-color: #CCCCCC;
     position: relative !important;
-    width: 100%;
     height:5px;
     cursor: pointer;
     overflow: hidden;
