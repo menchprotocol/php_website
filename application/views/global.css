@@ -787,9 +787,14 @@ img.no-radius {
     box-shadow: none;
 }
 
-
+.nav-tabs {
+    border-bottom: 3px solid #999999;
+}
 .nav-tabs, .dropdown-menu {
-    border-color:#000000 !important;
+    border-color:#999999 !important;
+}
+.nav-tabs .nav-item {
+    margin-bottom: -3px;
 }
 
 #x_reply{
@@ -877,7 +882,7 @@ img.no-radius {
 }
 
 .nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
-    border: 1px solid #000000 !important;
+    border: 3px solid #999999 !important;
     border-bottom-color: #f0f0f0 !important;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
