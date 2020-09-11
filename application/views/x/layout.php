@@ -266,7 +266,7 @@ echo '<h1 style="text-align: center; margin:33px 33px 55px;">' . view_i_title($i
 
 
 //MESSAGES
-echo '<div style="margin-bottom:33px;">';
+echo '<div style="padding-bottom:55px;">';
 foreach($messages as $message_x) {
     echo $this->X_model->message_send(
         $message_x['x__message'],
