@@ -1412,8 +1412,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 function view_x_progress($completion_rate, $i, $show_max = false){
 
-    $user_e = superpower_assigned();
-    if($user_e && $user_e['e__id']==1){
+    if($completion_rate['steps_total'] < 55){
 
         $ui = '<ul class="story-bar '.( 1 ? ' compact ' : '' ).'">';
         for($i=0;$i<$completion_rate['steps_total'];$i++){
