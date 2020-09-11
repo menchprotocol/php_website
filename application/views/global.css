@@ -645,8 +645,6 @@ img.no-radius {
 }
 .cover-photo {
     padding:0 0 0 33px;
-    max-width: 260px;
-    min-width: 220px;
 }
 .cover-photo img{
     border: 3px solid #FC1B44;
@@ -654,9 +652,13 @@ img.no-radius {
     padding: 2px;
     height: 330px;
     width: calc(100% - 33px);
+    max-width: 260px;
+    min-width: 200px;
 }
 .cover-photo h4{
     width: calc(100% - 33px);
+    max-width: 260px;
+    min-width: 200px;
     padding:8px 0 0 33px;
     font-size:1em;
     text-align: center;
