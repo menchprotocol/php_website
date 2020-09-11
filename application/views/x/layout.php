@@ -385,9 +385,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             continue;
         }
 
-    } elseif($x__type==12273){
+    } elseif($x__type==6255){
 
-        //IDEAS
+        //IDEA CARDS
         $counter = ( count($is_next) > $i_stats['i___6170'] ? count($is_next) : $i_stats['i___6170'] );
 
         if($counter > $i_stats['i___6169'] && $i_stats['i___6169'] > 0){
@@ -760,7 +760,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
-    if(!$counter && $x__type==12273 && !$has_substance){
+    if(!$counter && $x__type==6255 && !$has_substance){
         continue;
     }
 
