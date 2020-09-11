@@ -1419,7 +1419,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 function view_x_progress($completion_rate, $i, $show_micro){
 
-    $ui = '<div class="progress-title">'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS '.$completion_rate['completion_percentage'].'%</div><div class="doclear">&nbsp;</div>';
+    $ui = '<div class="progress-title">'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEA CARDS '.$completion_rate['completion_percentage'].'%</div><div class="doclear">&nbsp;</div>';
 
     if($completion_rate['steps_total'] < 55 && !$show_micro){
 
