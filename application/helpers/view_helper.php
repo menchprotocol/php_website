@@ -1375,7 +1375,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
 
-    $ui .= '<a class="cover-photo" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a>';
+    $ui .= '<a class="cover-photo hundred66" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a>';
 
     if($user_e && $x__type==6255){
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
