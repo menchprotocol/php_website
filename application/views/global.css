@@ -1773,6 +1773,9 @@ label {
 
     .main-card{
         margin: 5px;
+        width: -webkit-calc(100% - 10px) !important;
+        width:    -moz-calc(100% - 10px) !important;
+        width:         calc(100% - 10px) !important;
     }
 
     .story-bar li{
