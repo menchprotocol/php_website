@@ -322,25 +322,25 @@ img.no-radius {
     border:0;
 }
 
-.indentation:nth-child(1) {
+.indentation .list-group-item:nth-child(1) {
     margin-left: 5px;
 }
-.indentation:nth-child(2) {
+.indentation .list-group-item:nth-child(2) {
     margin-left: 10px;
 }
-.indentation:nth-child(3) {
+.indentation .list-group-item:nth-child(3) {
     margin-left: 15px;
 }
-.indentation:nth-child(4) {
+.indentation .list-group-item:nth-child(4) {
     margin-left: 20px;
 }
-.indentation:nth-child(5) {
+.indentation .list-group-item:nth-child(5) {
     margin-left: 25px;
 }
-.indentation:nth-child(6) {
+.indentation .list-group-item:nth-child(6) {
     margin-left: 30px;
 }
-.indentation:nth-child(7) {
+.indentation .list-group-item:nth-child(7) {
     margin-left: 35px;
 }
 
