@@ -762,8 +762,8 @@ img.no-radius {
 }
 
 #x_reply{
-    padding: 5px;
-    border: 5px solid #FC1B44 !important;
+    padding: 2px;
+    border: 3px solid #FC1B44 !important;
     height: 55px;
 }
 .previous_answer{
@@ -1756,9 +1756,10 @@ label {
 .main-card{
     background-color: #FFFFFF;
     border-radius: 55px;
-    padding: 13px 0;
-    border: 5px solid #999999;
+    padding: 2px 0;
+    border: 3px solid #FC1B44;
 }
+
 
 .feature-content .padded{
     margin: 0 !important;
@@ -1769,6 +1770,10 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .main-card{
+        margin: 5px;
+    }
 
     .story-bar li{
         margin: 0 1px 0 0;
