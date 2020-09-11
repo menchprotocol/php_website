@@ -1380,7 +1380,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     if($user_e && $x__type==6255){
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
         if($completion_rate['completion_percentage']>0){
-            $ui .= '<div class="space-all">'.view_x_progress($completion_rate, $i, true).'</div>';
+            $ui .= '<div style="">'.view_x_progress($completion_rate, $i, true).'</div>';
         }
     }
 
@@ -1413,7 +1413,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
             //$ui .= '</div>';
     //$ui .= '<div class="col-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
        // $ui .= '</div>';
-    //$ui .= '</div>';
+    $ui .= '</div>';
 
     return $ui;
 
