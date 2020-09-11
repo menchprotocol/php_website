@@ -1422,7 +1422,7 @@ function view_x_progress($completion_rate, $i, $show_max = false){
 
     } else {
 
-        $ui = '<div class="progress-bg-list"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div><div class="progress-rate">&nbsp;'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS ('.$completion_rate['completion_percentage'].'%)</div></div>';
+        $ui = '<div class="progress-bg-list" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS ('.$completion_rate['completion_percentage'].'%)"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
 
     }
 
