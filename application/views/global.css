@@ -644,6 +644,21 @@ img.no-radius {
     overflow: hidden;
     margin-left: 33px;
 }
+
+.big-cover{
+    margin:0 0 21px 0;
+    position: relative;
+    width: 222px;
+}
+
+.main-card{
+    background-color: #FFFFFF;
+    border-radius: 34px;
+    padding:21px 0 0 0;
+    border: 3px solid #FC1B44;
+    overflow: hidden;
+}
+
 .cover-photo {
     padding:0 0 0 33px;
 }
@@ -655,15 +670,12 @@ img.no-radius {
     width: 222px;
 }
 .cover-photo h4{
-    padding:8px 0 0 33px;
+    margin:8px 0 0 33px !important;
     font-size:1em;
     text-align: center;
     width: 222px;
 }
-.cover-editor{
 
-    position: relative;
-}
 .cover-done img{
     border-color: #999999 !important;
 }
@@ -1498,6 +1510,7 @@ label {
     right: 13px;
     top: 3px;
     margin-right: 0;
+    position: relative;
 }
 .cover-editor > span {
     padding: 2px 0 0 0;
@@ -1761,20 +1774,7 @@ label {
 .thin-top{
     margin-top: -7px !important;
 }
-.big-cover{
-    margin:0 0 21px 0;
-    position: relative;
-    max-width: 255px;
-    min-width: 233px;
-}
 
-.main-card{
-    background-color: #FFFFFF;
-    border-radius: 34px;
-    padding:21px 0 0 0;
-    border: 3px solid #FC1B44;
-    overflow: hidden;
-}
 
 
 .feature-content .padded{
