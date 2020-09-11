@@ -650,14 +650,13 @@ img.no-radius {
     border: 3px solid #FC1B44;
     border-radius:34px;
     padding: 2px;
-    height: 330px;
+    height: 377px;
     width: calc(100% - 33px);
-    max-width: 260px;
+    max-width: 233px;
     min-width: 200px;
 }
 .cover-photo h4{
-    width: calc(100% - 33px);
-    max-width: 260px;
+    max-width: 233px;
     min-width: 200px;
     padding:8px 0 0 33px;
     font-size:1em;
