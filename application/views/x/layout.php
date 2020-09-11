@@ -14,7 +14,7 @@
 
 <?php
 
-echo '<div class="container main-card">';
+echo '<div class="container">';
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
@@ -241,17 +241,25 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 
 
-if($i_completion_percentage>0){
-    echo '<div style="margin:0 33px;">'.view_x_progress($i_completion_rate, $i_focus).'</div>';
-}
 
 if($previous_level_id){
     //Idea Map:
-    echo '<div class="list-group idea-map hidden">';
+    echo '<div class="list-group">';
     echo join('', array_reverse($sitemap_items));
     echo '</div>';
 }
 
+echo '</div>';
+
+
+
+
+
+echo '<div class="container main-card">';
+
+if($i_completion_percentage>0){
+    echo '<div style="margin:0 33px;">'.view_x_progress($i_completion_rate, $i_focus).'</div>';
+}
 
 //HEADER
 echo '<h1 style="text-align: center; margin:21px 33px 55px;">' . view_i_title($i_focus) . '</h1>';
