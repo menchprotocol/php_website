@@ -650,7 +650,7 @@ img.no-radius {
     border: 3px solid #FC1B44;
     border-radius:34px;
     padding: 2px;
-    height: 377px;
+    height: 320px;
     width: calc(100% - 33px);
     max-width: 233px;
     min-width: 200px;
