@@ -266,7 +266,7 @@ echo '<h1 style="text-align: center; margin:33px 33px 55px;">' . view_i_title($i
 
 
 //MESSAGES
-echo '<div style="padding-bottom:55px;">';
+echo '<div style="margin-bottom:33px;">';
 foreach($messages as $message_x) {
     echo $this->X_model->message_send(
         $message_x['x__message'],
@@ -789,7 +789,7 @@ echo $tab_content;
 
 
 //COMMENTS
-echo '<div style="padding:33px 0;">';
+echo '<div style="padding:55px 0;">';
 echo view_i_note_mix(12419, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 12419, //COMMENTS
