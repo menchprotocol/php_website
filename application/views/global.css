@@ -639,10 +639,10 @@ img.no-radius {
     overflow: hidden;
     margin-left: 33px;
 }
-.cover-photo{
+.cover-photo img{
     width: 100%;
-    height: 100%;
     border-radius:21px;
+    margin: 11px;
 }
 .progress-done{
     height:5px;
