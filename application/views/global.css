@@ -123,6 +123,7 @@ h1 {
 .cen{
     text-align: center;
     margin:33px 33px 55px;
+    font-size: 3.4em;
 }
 
 .list-group-item h1 {
@@ -1782,6 +1783,10 @@ label {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .cen{
+        font-size: 2.1em;
+    }
 
     /*    .active .show-max-active {display:none !important;}  */
     .main-card{
