@@ -323,22 +323,22 @@ img.no-radius {
 }
 
 .indentation .list-group-item:nth-child(2) {
-    margin-left: 8px;
+    padding-left: 8px;
 }
 .indentation .list-group-item:nth-child(3) {
-    margin-left: 16px;
+    padding-left: 16px;
 }
 .indentation .list-group-item:nth-child(4) {
-    margin-left: 24px;
+    padding-left: 24px;
 }
 .indentation .list-group-item:nth-child(5) {
-    margin-left: 32px;
+    padding-left: 32px;
 }
 .indentation .list-group-item:nth-child(6) {
-    margin-left: 40px;
+    padding-left: 40px;
 }
 .indentation .list-group-item:nth-child(7) {
-    margin-left: 48px;
+    padding-left: 48px;
 }
 
 .table-striped tbody tr:nth-of-type(even), .x-list:nth-of-type(even) {
