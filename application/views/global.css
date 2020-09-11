@@ -326,19 +326,19 @@ img.no-radius {
     padding-left: 8px !important;
 }
 .indentation .list-group-item:nth-child(3) {
-    padding-left: 16px;
+    padding-left: 16px !important;
 }
 .indentation .list-group-item:nth-child(4) {
-    padding-left: 24px;
+    padding-left: 24px !important;
 }
 .indentation .list-group-item:nth-child(5) {
-    padding-left: 32px;
+    padding-left: 32px !important;
 }
 .indentation .list-group-item:nth-child(6) {
-    padding-left: 40px;
+    padding-left: 40px !important;
 }
 .indentation .list-group-item:nth-child(7) {
-    padding-left: 48px;
+    padding-left: 48px !important;
 }
 
 .table-striped tbody tr:nth-of-type(even), .x-list:nth-of-type(even) {
