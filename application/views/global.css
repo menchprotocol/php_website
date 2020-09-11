@@ -639,6 +639,7 @@ img.no-radius {
     height:5px;
     cursor: pointer;
     overflow: hidden;
+    padding-right: 33px;
 }
 
 .progress-done{
@@ -1142,6 +1143,7 @@ td.MENCHcolumn3  { width: 13%; }
     width: 100%;
     cursor: pointer;
     overflow: hidden;
+    padding-right: 33px;
 }
 
 .story-bar li{
