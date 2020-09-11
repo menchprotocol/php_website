@@ -1772,6 +1772,7 @@ label {
 @media (max-width:767px) {
 
     .main-card{
+        border-radius: 34px;
         margin: 5px;
         width: -webkit-calc(100% - 10px) !important;
         width:    -moz-calc(100% - 10px) !important;
