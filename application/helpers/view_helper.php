@@ -728,10 +728,13 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
 function view_icon_i_x($completion_percentage, $i, $not_started_type){
 
     $user_e = superpower_assigned();
+    /*
     if(!$not_started_type || !$user_e){
         //IDAE Icon
         return view_i_icon($i);
-    } elseif($completion_percentage <= 0){
+    } else
+        */
+    if($completion_percentage <= 0){
         //Assign default not started type:
         $x_legend = $not_started_type;
     } elseif($completion_percentage<100){
