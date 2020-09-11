@@ -1382,7 +1382,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
 
-    $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'<h4 class="montserrat" style="padding:0 0 0 33px; font-size:1em; text-align: center;">'.view_i_title($i).'</h4></a>';
+    $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'<h4 class="montserrat" style="padding:8px 0 0 33px; font-size:1em; text-align: center;">'.view_i_title($i).'</h4></a>';
 
 
     //$ui .= '<div class="row">';
