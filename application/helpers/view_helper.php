@@ -1378,42 +1378,8 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         }
 
 
+        $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'<h4 class="montserrat">'.view_i_title($i).'</h4></a>';
 
-
-
-
-    $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'<h4 class="montserrat">'.view_i_title($i).'</h4></a>';
-
-
-    //$ui .= '<div class="row">';
-            //$ui .= '<div class="col-9 feature-content">';
-
-                //Title
-
-
-                //$ui .= '<div>';
-                //$ui .= '<span class="icon-block icon-title"><a href="'.$href.'">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $x__type == 6255 ? 13822 /* Next Idea */ : 0 /* Idea Icon */ )).'</a></span>';
-                //$ui .= '<h2 class="inline-block cover-title"><a href="'.$href.'">'.view_i_title($i).'</a></h2>';
-                //$ui .= '</div>';
-
-
-                /*
-                if(strlen(strip_tags($message_input))){
-                    //Description, if any
-                    $ui .= '<div class="inline-block space-left">'.$message_input.'</div>';
-                } else {
-                    //Description, if any
-                    $ui .= '<div class="inline-block space-left hideIfEmpty">'.i_fetch_description($i['i__id']).'</div>';
-                }
-
-                */
-
-                //$ui .= '<div class="space-left hideIfEmpty">'.view_i_tree_stats($i_stats, false).'</div>';
-
-
-            //$ui .= '</div>';
-    //$ui .= '<div class="col-3"><a href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'</a></div>';
-       // $ui .= '</div>';
     $ui .= '</div>';
 
     return $ui;
