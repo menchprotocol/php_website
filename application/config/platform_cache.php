@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-10 18:39:35 PST
+//Generated 2020-09-10 20:21:44 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -910,7 +910,7 @@ $config['e___13369'] = array(
     13413 => array(
         'm_title' => 'SORT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-sort"></i>',
+        'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(4527,13369),
     ),
     13414 => array(
@@ -5544,7 +5544,7 @@ $config['e___4527'] = array(
     13413 => array(
         'm_title' => 'SORT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-sort"></i>',
+        'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(4527,13369),
     ),
     6194 => array(
