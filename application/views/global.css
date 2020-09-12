@@ -1542,17 +1542,21 @@ label {
     background-color: #999999 !important;
 }
 
-.cover-editor {
-    width: 30px;
+.btn-right{
     right: 13px;
-    top: 3px;
-    margin-right: 0;
 }
-.cover-editor > span {
+.btn-left{
+    left: 13px;
+}
+.note-btn {
+    width: 30px;
+    top: 5px;
+}
+.note-btn > span {
     padding: 2px 0 0 0;
     display: block !important;
 }
-.cover-editor > span > span {
+.note-btn > span > span {
     border-radius: 10px;
     padding: 5px 0 !important;
     margin: 3px 3px 0 0;
@@ -1563,7 +1567,7 @@ label {
 .editor-idea > span > span {
     background-color: #ffc500 !important;
 }
-.cover-editor i {
+.note-btn i {
     color: #000000 !important;
 }
 
@@ -1681,7 +1685,7 @@ label {
     width:         calc(100% - 10px) !important;
 }
 .progress-micro{
-    width:calc(100% - 75px);
+    width:160px;
     left: 20px;
     top: -50px;
 }

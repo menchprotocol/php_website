@@ -1365,16 +1365,22 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         if($show_editor){
 
             //RIGHT EDITING:
-            $ui .= '<div class="note-editor cover-editor edit-off '.( $x__type==6255 ? ' editor-discover ' : ' editor-idea '.superpower_active(10939) ).'">';
-            $ui .= '<span class="show-on-hover">';
+            $ui .= '<div class="note-editor edit-off '.( $x__type==6255 ? ' editor-discover ' : ' editor-idea '.superpower_active(10939) ).'">';
 
-            //SORT
+            $ui .= '<div class="note-btn btn-right">';
+            $ui .= '<span class="show-on-hover">';
             $ui .= '<span title="'.$e___13369[13413]['m_title'].'" class="x_sort">'.$e___13369[13413]['m_icon'].'</span>';
+            $ui .= '</span>';
+            $ui .= '</div>';
+
 
             //Remove:
+            $ui .= '<div class="note-btn btn-left">';
+            $ui .= '<span class="show-on-hover">';
             $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' </span>';
-
             $ui .= '</span>';
+            $ui .= '</div>';
+
             $ui .= '</div>';
 
         }
