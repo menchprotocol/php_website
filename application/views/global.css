@@ -25,7 +25,7 @@ body {
 .custom_ui_13884_13886 .mench-navigation a,
 .custom_ui_13884_ .grey-list .list-group-item,
 .custom_ui_13884_13885 .grey-list .list-group-item {
-    background-color: #000000 !important;
+    background-color: #111111 !important;
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .table-striped tbody tr,
@@ -36,7 +36,7 @@ body {
 .custom_ui_13884_ .x-list,
 .custom_ui_13884_ .list-group .list-group-item,
 .custom_ui_13884_ .accordion .card{
-    background-color:#000000 !important;
+    background-color:#111111 !important;
     color: #FFFFFF !important;
 }
 .custom_ui_13884_ .nav-tabs .nav-item.show .nav-x,
@@ -47,7 +47,7 @@ body {
 .custom_ui_13884_13886 .nav-tabs .nav-x.active,
 .custom_ui_13884_13886 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13886 .nav-tabs .nav-x:hover{
-    border-bottom-color: #000000 !important;
+    border-bottom-color: #111111 !important;
 }
 
 
