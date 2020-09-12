@@ -1671,7 +1671,11 @@ label {
     width:    -moz-calc(100% - 10px) !important;
     width:         calc(100% - 10px) !important;
 }
-
+.progress-micro{
+    width:         calc(100% - 55px);
+    left: 10px;
+    top: -50px;
+}
 .cover-title {
     padding-top: 2px;
     margin-bottom: 0;
