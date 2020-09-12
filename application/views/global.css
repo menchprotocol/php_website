@@ -2054,25 +2054,14 @@ label {
 
 @media (min-width:767px) {
 
-    /* DARK */
-    .custom_ui_13884_13886 .itemidea:hover, .custom_ui_13884_ .itemidea:hover {
-        background-color:#ffc500 !important;
-    }
-    .custom_ui_13884_13886 .itemsource:hover, .custom_ui_13884_ .itemsource:hover {
-        background-color:#007AFD !important;
-    }
-    .custom_ui_13884_13886 .itemdiscover:hover, .custom_ui_13884_ .itemdiscover:hover {
-        background-color: #FC1B44 !important;
-    }
-
     /* WHITE */
-    .custom_ui_13884_13885 .itemidea:hover {
+    .itemidea:hover {
         background-color:#fff4b5 !important;
     }
-    .custom_ui_13884_13885 .itemsource:hover {
+    .itemsource:hover {
         background-color:#b2defd !important;
     }
-    .custom_ui_13884_13885 .itemdiscover:hover {
+    .itemdiscover:hover {
         background-color: #f6e8e8 !important;
     }
 
