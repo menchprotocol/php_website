@@ -2025,7 +2025,6 @@ label {
 .custom_ui_13884_13885,
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .mench-navigation,
-.custom_ui_13884_13885 .mench-navigation a,
 .custom_ui_13884_13885 .fade,
 .custom_ui_13884_13885 .outside-card{
     background-color: #f0f0f0;
@@ -2040,7 +2039,8 @@ label {
     background-color:#FFFFFF;
     color: #222222;
 }
-.custom_ui_13884_13885 a {
+.custom_ui_13884_13885 a,
+.custom_ui_13884_13885 .mench-navigation a{
     color: #222222;
 }
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
