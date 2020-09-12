@@ -1187,10 +1187,6 @@ td.MENCHcolumn3  { width: 13%; }
 .mench-navigation .block-x .fas, .block-x .fal, .block-x .far, .block-x .fad{
     font-size: 1.2em;
 }
-.mench-navigation .block-x a:hover, .block-x a:hover .fas, .block-x a:hover .fal, .block-x a:hover .far, .block-x a:hover .fad {
-    background-color:#FFFFFF;
-    color:#222222 !important;
-}
 .coin-type{
     display: block;
     padding-left: 8px;
