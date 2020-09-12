@@ -25,8 +25,6 @@ $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 $e_focus_found = false; //Used to determine the first tab to be opened
 
 
-//IDEA PREVIOUS
-echo '<div class="container wrap-card">';
 $is_previous = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -34,29 +32,28 @@ $is_previous = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0);
 
-echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
-foreach($is_previous as $previous_i) {
-    echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
+//IDEA PREVIOUS
+if(count($is_previous) || superpower_active(10984, true)){
+    echo '<div class="container wrap-card">';
+    echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
+    foreach($is_previous as $previous_i) {
+        echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
+    }
+    if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
+        echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
+                        <input type="text"
+                               class="form-control form-control-thick montserrat add-input algolia_search dotransparent"
+                               maxlength="' . config_var(4736) . '"
+                               i-id="' . $i_focus['i__id'] . '"
+                               id="addi-c-' . $i_focus['i__id'] . '-1"
+                               placeholder="PREVIOUS IDEA">
+                    </div><div class="algolia_pad_search hidden"></div></div>';
+    }
+    echo '</div>';
+    echo '</div>';
 }
-if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
-    echo '<div class="list-group-item list-adder itemidea '.superpower_active(10984).'">
-                <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
-                    <input type="text"
-                           class="form-control form-control-thick montserrat add-input algolia_search dotransparent"
-                           maxlength="' . config_var(4736) . '"
-                           i-id="' . $i_focus['i__id'] . '"
-                           id="addi-c-' . $i_focus['i__id'] . '-1"
-                           placeholder="PREVIOUS IDEA">
-                </div><div class="algolia_pad_search hidden"></div></div>';
-}
-echo '</div>';
-echo '</div>';
-
-
-
-
-
 
 
 
