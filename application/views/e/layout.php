@@ -26,7 +26,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     if(!$source_is_e || $superpower_13422 ){
 
         //PROFILE
-        echo '<div class="container wrap-card">';
+        echo '<div class="container outside-card">';
         echo '<div id="list_11030" class="list-group grey-list">';
         $profiles = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -633,7 +633,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                     if(!$superpowers_unlocked){
                         //Let them know they do not have any superpowers yet...
-                        $focus_tab .= '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You have not unlocked any superpowers yet</div>';
+                        $focus_tab .= '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>No superpowers unlocked yet</div>';
                     }
 
                     $focus_tab .= '</div>';
