@@ -845,8 +845,8 @@ img.no-radius {
 .nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
     border: 3px solid #999999;
     border-bottom-color: #f0f0f0 !important;
-    border-top-left-radius: 21px;
-    border-top-right-radius: 21px;
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
     position: relative;
 }
 .nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
