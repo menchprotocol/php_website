@@ -680,7 +680,7 @@ img.no-radius {
     top: -50px;
 }
 .btn-right{
-    left: 288px;
+    left: 279px;
 }
 .btn-left{
     left: 51px;
@@ -1564,7 +1564,7 @@ label {
 }
 .note-btn > span > span {
     border-radius: 50%;
-    padding: 5px 0 !important;
+    padding: 8px 0 !important;
     margin: 3px 3px 0 0;
 }
 .editor-discover > span > span {
