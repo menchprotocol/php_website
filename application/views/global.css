@@ -656,7 +656,7 @@ img.no-radius {
 
 .wrap-card{
     border-radius: 34px;
-    padding:21px 0 0 0;
+    padding:21px 0;
     overflow: hidden;
     background-color: #FFFFFF;
 }

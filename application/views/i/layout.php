@@ -24,26 +24,9 @@ $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 
 $e_focus_found = false; //Used to determine the first tab to be opened
 
-echo '<div class="container wrap-card card-idea">';
-
-if(!$e_of_i){
-    echo '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/i/i_e_request/'.$i_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/i/i_e_add/'.$i_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
-}
-
-if(isset($_GET['focus__e']) && superpower_active(12701, true)){
-    //Filtered Specific Source:
-    $e_filters = $this->E_model->fetch(array(
-        'e__id' => intval($_GET['focus__e']),
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ));
-    if(count($e_filters)){
-        echo view__focus__e($e_filters[0]);
-    }
-}
-
-
 
 //IDEA PREVIOUS
+echo '<div class="container">';
 $is_previous = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -68,6 +51,32 @@ if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
                 </div><div class="algolia_pad_search hidden"></div></div>';
 }
 echo '</div>';
+echo '</div>';
+
+
+
+
+
+
+
+
+echo '<div class="container wrap-card card-idea">';
+
+if(!$e_of_i){
+    echo '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <a href="/i/i_e_request/'.$i_focus['i__id'].'" class="inline-block montserrat">REQUEST INVITE</a><span class="inline-block '.superpower_active(10984).'">&nbsp;or <a href="/i/i_e_add/'.$i_focus['i__id'].'" class="montserrat">ADD MYSELF AS SOURCE</a></span></div>';
+}
+
+if(isset($_GET['focus__e']) && superpower_active(12701, true)){
+    //Filtered Specific Source:
+    $e_filters = $this->E_model->fetch(array(
+        'e__id' => intval($_GET['focus__e']),
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    ));
+    if(count($e_filters)){
+        echo view__focus__e($e_filters[0]);
+    }
+}
+
 
 
 
