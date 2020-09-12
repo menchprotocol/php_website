@@ -355,7 +355,10 @@ img.no-radius {
 }
 
 .grey-list .list-group-item {
-    background-color:#f0f0f0;
+    background-color:#f0f0f0 !important;
+}
+.grey-list {
+    margin-bottom: 13px;
 }
 
 
