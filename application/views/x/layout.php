@@ -262,7 +262,7 @@ if($in_my_x && $previous_level_id){
     if(count($is_previous)){
         //IDEA PREVIOUS
         echo '<div class="grey-list">';
-        echo view_i_list($in_my_x, $i_focus, $is_previous, $user_e, '', true, 0);
+        echo view_i_list($in_my_x, $i_focus, $is_previous, $user_e, '', true, -1);
         echo '</div>';
     }
 
