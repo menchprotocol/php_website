@@ -328,22 +328,22 @@ img.no-radius {
 }
 
 .indentation .list-group-item:nth-child(2) {
-    padding-left: 8px !important;
+    padding-left: 13px !important;
 }
 .indentation .list-group-item:nth-child(3) {
-    padding-left: 16px !important;
+    padding-left: 26px !important;
 }
 .indentation .list-group-item:nth-child(4) {
-    padding-left: 24px !important;
+    padding-left: 39px !important;
 }
 .indentation .list-group-item:nth-child(5) {
-    padding-left: 32px !important;
+    padding-left: 42px !important;
 }
 .indentation .list-group-item:nth-child(6) {
-    padding-left: 40px !important;
+    padding-left: 55px !important;
 }
 .indentation .list-group-item:nth-child(7) {
-    padding-left: 48px !important;
+    padding-left: 68px !important;
 }
 
 
