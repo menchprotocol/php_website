@@ -1419,8 +1419,9 @@ function view_x_progress($completion_rate, $i, $show_micro){
 
 function view_e_basic($e)
 {
-    $ui = '<div class="list-group-item no-side-padding">';
+    $ui = '<div class="list-group-item no-side-padding '.(superpower_active(10939, true) ? ' itemsource ' : '').'">';
     $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
+
     if(superpower_active(10939, true)){
         $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
     } else {
