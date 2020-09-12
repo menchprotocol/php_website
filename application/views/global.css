@@ -675,12 +675,12 @@ img.no-radius {
 
 
 .progress-micro{
-    width:240px;
+    width:260px !important;
     left: 20px;
     top: -50px;
 }
 .btn-right{
-    left: 269px;
+    left: 288px;
 }
 .btn-left{
     left: 51px;
@@ -932,7 +932,7 @@ img.no-radius {
 
 .note-editor{
     line-height: 100%;
-    width: 20px;
+    width: 30px;
     text-align: center;
     position: absolute;
     overflow: hidden;
@@ -1552,7 +1552,7 @@ label {
 }
 
 .note-btn {
-    width: 30px;
+    width: 40px;
     top: 13px;
 }
 .note-btn > span {
