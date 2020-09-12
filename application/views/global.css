@@ -1840,7 +1840,17 @@ label {
     margin-top: -7px !important;
 }
 
-
+.name-block{
+    height: 15px;
+    overflow: hidden;
+    display: block;
+    width: 75%;
+    background-color: #F00;
+    display: block;
+    margin-top: -18px;
+    margin-left: 40px;
+    line-height: 100%;
+}
 
 .feature-content .padded{
     margin: 0 !important;
