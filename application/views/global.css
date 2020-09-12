@@ -16,6 +16,8 @@ body {
 /* DARK - DEFAULT */
 .custom_ui_13884_13886,
 .custom_ui_13884_,
+.custom_ui_13884_13886 .fade,
+.custom_ui_13884_ .fade,
 .custom_ui_13884_13886 .container,
 .custom_ui_13884_ .container,
 .custom_ui_13884_ .mench-navigation,
@@ -54,6 +56,7 @@ body {
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .mench-navigation,
 .custom_ui_13884_13885 .mench-navigation a,
+.custom_ui_13884_13885 .fade,
 .custom_ui_13884_13885 .grey-list .list-group-item {
     background-color: #f0f0f0 !important;
     color: #000000 !important;
