@@ -26,7 +26,7 @@ $e_focus_found = false; //Used to determine the first tab to be opened
 
 
 //IDEA PREVIOUS
-echo '<div class="container" style="margin-bottom: 13px;">';
+echo '<div class="container wrap-card">';
 $is_previous = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
