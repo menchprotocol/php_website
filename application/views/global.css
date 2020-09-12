@@ -1561,10 +1561,10 @@ label {
     padding: 5px 0 !important;
     margin: 3px 3px 0 0;
 }
-.editor-discover > span > span {
+.editor-discover > div > span > span {
     background-color: #FC1B44 !important;
 }
-.editor-idea > span > span {
+.editor-idea > div > span > span {
     background-color: #ffc500 !important;
 }
 .note-btn i {
