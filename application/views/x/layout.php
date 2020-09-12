@@ -23,7 +23,6 @@ $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 $show_nav = /* superpower_active(10939, true) || */ in_array($i_focus['i__status'], $this->config->item('n___12138'));
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$i_status_startable = in_array($i_focus['i__status'], $this->config->item('n___13874'));
 
 //Determine Forcus User:
 $user_e = false;
@@ -883,22 +882,31 @@ if($in_my_x){
         echo '</div>';
     }
 
-} elseif($i_status_startable && $meets_13865){
+} else {
 
-    //GET STARTED
     if($meets_13865){
 
-        //OPEN TO REGISTER
-        echo '<div class="container">'; // fixed-bottom
-        echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
-        echo '</div>';
+        //GET STARTED
+        if($meets_13865){
 
-    } elseif(!$user_e['e__id']) {
+            //OPEN TO REGISTER
+            echo '<div class="container">'; // fixed-bottom
+            echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
+            echo '</div>';
 
-        //Signin:
-        echo '<div class="container">'; // fixed-bottom
-        echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
-        echo '</div>';
+        } elseif(!$user_e['e__id']) {
+
+            //Signin:
+            echo '<div class="container">'; // fixed-bottom
+            echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
+            echo '</div>';
+
+        }
+
+    } else {
+
+        //Locked to meet requirements...
+        //TODO show message...
 
     }
 
