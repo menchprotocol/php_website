@@ -249,7 +249,7 @@ if($in_my_x && $previous_level_id){
     echo join('', array_reverse($sitemap_items));
     echo '</div>';
 
-} else {
+} elseif(!$in_my_x) {
 
     $is_previous = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
