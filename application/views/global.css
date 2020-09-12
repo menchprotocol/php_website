@@ -188,7 +188,7 @@ li a {
     padding: 20px 0  !important;
 }
 .avatar-item.active, .btn-group a.active , .itemsetting.active{
-    background-color: #007bff !important;
+    background-color: #999999 !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
 }
