@@ -873,7 +873,7 @@ if($in_my_x){
     }
 
     if($buttons_found > 0){
-        echo '<div class="container">'; // fixed-bottom
+        echo '<div class="container outside-card">'; // fixed-bottom
         echo '<div class="row">';
         echo '<div class="discover-controller margin-top-down">';
         echo $buttons_ui;
@@ -890,14 +890,14 @@ if($in_my_x){
         if($meets_13865){
 
             //OPEN TO REGISTER
-            echo '<div class="container">'; // fixed-bottom
+            echo '<div class="container outside-card">'; // fixed-bottom
             echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
             echo '</div>';
 
         } elseif(!$user_e['e__id']) {
 
             //Signin:
-            echo '<div class="container">'; // fixed-bottom
+            echo '<div class="container outside-card">'; // fixed-bottom
             echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
             echo '</div>';
 
