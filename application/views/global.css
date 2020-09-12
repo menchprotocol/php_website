@@ -1952,19 +1952,8 @@ label {
     min-width:50px;
     display: inline-block;
 }
-/*
-@media (min-width:767px) {
-    .itemidea:hover {
-        background-color:#fff4b5 !important;
-    }
-    .itemsource:hover {
-        background-color:#b2defd !important;
-    }
-    .itemdiscover:hover {
-        background-color: #f6e8e8 !important;
-    }
-}
-*/
+
+
 .hideIfEmpty:empty {
     display: none !important;
 }
@@ -2061,6 +2050,33 @@ label {
     border-bottom-color: #FFFFFF !important;
 }
 
+
+
+@media (min-width:767px) {
+
+    /* DARK */
+    .custom_ui_13884_13886 .itemidea:hover, .custom_ui_13884_ .itemidea:hover {
+        background-color:#ffc500 !important;
+    }
+    .custom_ui_13884_13886 .itemsource:hover, .custom_ui_13884_ .itemsource:hover {
+        background-color:#007AFD !important;
+    }
+    .custom_ui_13884_13886 .itemdiscover:hover, .custom_ui_13884_ .itemdiscover:hover {
+        background-color: #FC1B44 !important;
+    }
+
+    /* WHITE */
+    .custom_ui_13884_13885 .itemidea:hover {
+        background-color:#fff4b5 !important;
+    }
+    .custom_ui_13884_13885 .itemsource:hover {
+        background-color:#b2defd !important;
+    }
+    .custom_ui_13884_13885 .itemdiscover:hover {
+        background-color: #f6e8e8 !important;
+    }
+
+}
 
 
 
