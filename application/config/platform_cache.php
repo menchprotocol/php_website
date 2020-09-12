@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-11 19:36:07 PST
+//Generated 2020-09-11 20:56:12 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -3248,7 +3248,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(10573,13502,13671,13401,12419,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13207,11068,4341,13689,6225,12969,13405,6287,13865,13562,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(10573,13502,13671,13401,12419,13562,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13207,11068,4341,13689,6225,12969,13405,6287,13865,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
 $config['e___11035'] = array(
     10573 => array(
         'm_title' => 'BOOKMARK',
@@ -3279,6 +3279,12 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="far fa-comments discover" aria-hidden="true"></i>',
         'm_profile' => array(11035,13871,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
+    ),
+    13562 => array(
+        'm_title' => 'DISCOVER',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-arrow-right discover"></i>',
+        'm_profile' => array(11035),
     ),
     13292 => array(
         'm_title' => 'DISCOVERY TIME',
@@ -3399,12 +3405,6 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lock source"></i>',
         'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
-    ),
-    13562 => array(
-        'm_title' => 'PREVIEW DISCOVERY',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle discover"></i>',
-        'm_profile' => array(11035),
     ),
     11030 => array(
         'm_title' => 'PROFILE',
@@ -3922,7 +3922,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.553',
+        'm_message' => 'v1.55',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),

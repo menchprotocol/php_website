@@ -106,7 +106,7 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_in
 echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
 
 //PREVIEW DISCOVERY
-echo '<div class="inline-block pull-right both-margin"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13562]['m_title'].'">'.$e___11035[13562]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin" style="margin-right: 33px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13562]['m_title'].'"><span class="show-max">'.$e___11035[13562]['m_name'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
