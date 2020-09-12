@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-11 22:38:43 PST
+//Generated 2020-09-11 22:40:10 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -3254,7 +3254,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(10573,13502,13671,13401,12419,13562,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13207,11068,4341,13689,6225,12969,13405,6287,13865,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10957,10673,12906,13572);
+$config['n___11035'] = array(10573,13502,13671,13401,12419,13562,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13207,11068,4341,13689,6225,12969,13405,6287,13865,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10939,10957,10673,12906,13572);
 $config['e___11035'] = array(
     10573 => array(
         'm_title' => 'BOOKMARK',
@@ -3484,6 +3484,12 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fad fa-sort-alpha-down source"></i>',
         'm_profile' => array(13422,13429,11035,4593),
     ),
+    10939 => array(
+        'm_title' => 'SUPERPOWER OF IDEATION',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_profile' => array(11035,6404,13450,10957),
+    ),
     10957 => array(
         'm_title' => 'SUPERPOWERS',
         'm_message' => '',
@@ -3517,7 +3523,7 @@ $config['e___10957'] = array(
         'm_title' => 'IDEATION',
         'm_message' => 'Add & Organize Ideas',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(6404,13450,10957),
+        'm_profile' => array(11035,6404,13450,10957),
     ),
     13354 => array(
         'm_title' => 'INLINE EDITING',
@@ -3990,7 +3996,7 @@ $config['e___6404'] = array(
         'm_title' => 'SUPERPOWER OF IDEATION',
         'm_message' => '/14001',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(6404,13450,10957),
+        'm_profile' => array(11035,6404,13450,10957),
     ),
     13572 => array(
         'm_title' => 'UPLOAD',
