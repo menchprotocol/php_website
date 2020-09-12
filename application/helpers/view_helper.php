@@ -1693,7 +1693,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
     $e___4527 = $CI->config->item('e___4527');
 
     //data-toggle="tooltip" data-placement="top" title="'.$e___4527[$cache_e__id]['m_title'].'"
-    $ui = '<div title="'.$e___12079[$cache_e__id]['m_title'].'" data-toggle="tooltip" data-placement="top" class="inline-block">';
+    $ui = '<div title="'.$e___12079[$cache_e__id]['m_title'].'" data-toggle="tooltip" data-placement="bottom" class="inline-block">';
     $ui .= '<div class="dropdown dropup inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' '.( !$show_full_name ? ' icon-block ' : '' ).'" selected-val="'.$selected_e__id.'">';
 
     $ui .= '<button type="button" '.( $e_of_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' '.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
