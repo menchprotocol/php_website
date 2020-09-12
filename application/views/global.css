@@ -1998,7 +1998,9 @@ label {
 .custom_ui_13884_13886 .wrap-card,
 .custom_ui_13884_ .wrap-card,
 .custom_ui_13884_13886 .btn-block,
-.custom_ui_13884_ .btn-block{
+.custom_ui_13884_ .btn-block,
+.custom_ui_13884_13886 .dropdown-menu,
+.custom_ui_13884_ .dropdown-menu {
     background-color:#222222;
     color: #FFFFFF;
 
@@ -2040,7 +2042,8 @@ label {
 .custom_ui_13884_13885 .x-list,
 .custom_ui_13884_13885 .accordion .card,
 .custom_ui_13884_13885 .wrap-card,
-.custom_ui_13884_13885 .btn-block{
+.custom_ui_13884_13885 .btn-block,
+.custom_ui_13884_13885 .dropdown-menu{
     background-color:#FFFFFF;
     color: #222222;
 }
