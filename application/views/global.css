@@ -650,7 +650,6 @@ img.no-radius {
 .big-cover{
     margin:13px 0;
     position: relative;
-    width: 200px;
     max-width: none;
 }
 
@@ -681,14 +680,14 @@ img.no-radius {
     border: 3px solid #FC1B44;
     border-radius:34px;
     padding: 2px;
-    height: 300px;
-    width: 200px;
+    height: 270px;
+    width: 180px;
 }
 .cover-photo h4{
     margin:8px 0 0 33px !important;
     font-size:1em;
     text-align: center;
-    width: 200px;
+    width: 180px;
 }
 
 .cover-done img{
@@ -1540,7 +1539,7 @@ label {
 }
 
 .btn-right{
-    left: 188px;
+    left: 169px;
 }
 .btn-left{
     left: 51px;
