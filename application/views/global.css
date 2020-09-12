@@ -673,6 +673,19 @@ img.no-radius {
 }
 
 
+
+.progress-micro{
+    width:240px;
+    left: 20px;
+    top: -50px;
+}
+.btn-right{
+    left: 269px;
+}
+.btn-left{
+    left: 51px;
+}
+
 .cover-photo {
     padding:0 0 0 33px;
 }
@@ -680,14 +693,14 @@ img.no-radius {
     border: 3px solid #FC1B44;
     border-radius:34px;
     padding: 2px;
-    height: 270px;
-    width: 180px;
+    height: 450px;
+    width: 300px;
 }
 .cover-photo h4{
     margin:8px 0 0 33px !important;
     font-size:1em;
     text-align: center;
-    width: 180px;
+    width: 300px;
 }
 
 .cover-done img{
@@ -1538,12 +1551,6 @@ label {
     background-color: #999999 !important;
 }
 
-.btn-right{
-    left: 169px;
-}
-.btn-left{
-    left: 51px;
-}
 .note-btn {
     width: 30px;
     top: 13px;
@@ -1679,11 +1686,6 @@ label {
     width: -webkit-calc(100% - 10px) !important;
     width:    -moz-calc(100% - 10px) !important;
     width:         calc(100% - 10px) !important;
-}
-.progress-micro{
-    width:140px;
-    left: 20px;
-    top: -50px;
 }
 .cover-title {
     padding-top: 2px;
