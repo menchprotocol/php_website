@@ -1845,10 +1845,9 @@ label {
     overflow: hidden;
     display: block;
     width: 75%;
-    background-color: #F00;
     display: block;
     margin-top: -18px;
-    margin-left: 40px;
+    margin-left: 36px;
     line-height: 100%;
 }
 
@@ -1863,6 +1862,7 @@ label {
 @media (max-width:767px) {
 
     .icon-tweak{ padding-left: 8px; }
+    .name-block{ margin-left: 41px; }
 
     .cen{
         font-size: 2.1em;
