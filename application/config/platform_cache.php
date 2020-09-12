@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-12 14:32:50 PST
+//Generated 2020-09-12 14:53:51 PST
 
 //CUSTOMIZABLE UI:
 $config['n___13890'] = array(13491,13884);
@@ -23,7 +23,7 @@ $config['e___13890'] = array(
         'm_title' => 'DISPLAY MODE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-adjust"></i>',
-        'm_profile' => array(11054,13890,4527,6225),
+        'm_profile' => array(6204,11054,13890,4527,6225),
     ),
 );
 
@@ -3283,7 +3283,7 @@ $config['e___6225'] = array(
         'm_title' => 'DISPLAY MODE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-adjust"></i>',
-        'm_profile' => array(11054,13890,4527,6225),
+        'm_profile' => array(6204,11054,13890,4527,6225),
     ),
     3288 => array(
         'm_title' => 'EMAIL',
@@ -4083,7 +4083,7 @@ $config['e___11054'] = array(
         'm_title' => 'DISPLAY MODE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-adjust"></i>',
-        'm_profile' => array(11054,13890,4527,6225),
+        'm_profile' => array(6204,11054,13890,4527,6225),
     ),
     13491 => array(
         'm_title' => 'FONT SIZE',
@@ -5183,7 +5183,7 @@ $config['e___4527'] = array(
         'm_title' => 'DISPLAY MODE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-adjust"></i>',
-        'm_profile' => array(11054,13890,4527,6225),
+        'm_profile' => array(6204,11054,13890,4527,6225),
     ),
     13491 => array(
         'm_title' => 'FONT SIZE',
@@ -6296,8 +6296,14 @@ $config['e___7304'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['n___6204'] = array(13491,4737,10602,7585,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,12968,6186,4593);
+$config['n___6204'] = array(13884,13491,4737,10602,7585,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,12968,6186,4593);
 $config['e___6204'] = array(
+    13884 => array(
+        'm_title' => 'DISPLAY MODE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-adjust"></i>',
+        'm_profile' => array(6204,11054,13890,4527,6225),
+    ),
     13491 => array(
         'm_title' => 'FONT SIZE',
         'm_message' => '',
