@@ -14,7 +14,7 @@
 
 <?php
 
-echo '<div class="container wrap-card">';
+echo '<div class="container wrap-card hideIfEmpty">';
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
