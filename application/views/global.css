@@ -654,16 +654,25 @@ img.no-radius {
     max-width: none;
 }
 
-.main-card{
-    background-color: #FFFFFF;
+.wrap-card{
     border-radius: 34px;
     padding:21px 0 0 0;
-    border: 3px solid #FC1B44;
     overflow: hidden;
+    background-color: #FFFFFF;
+}
+.card-source{
+    border: 3px solid #007AFD;
+}
+.card-idea{
+    border: 3px solid #ffc500;
+}
+.card-discover{
+    border: 3px solid #FC1B44;
 }
 .card-grey{
     border-color:#999999 !important;
 }
+
 
 .cover-photo {
     padding:0 0 0 33px;
@@ -817,7 +826,7 @@ img.no-radius {
     border-top-right-radius: 10px;
     position: relative;
 }
-.main-card .nav-tabs .nav-item.show .nav-x, .main-card .nav-tabs .nav-x.active, .main-card .nav-tabs .nav-x:focus, .main-card .nav-tabs .nav-x:hover{
+.nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
     border-bottom-color: #FFFFFF !important;
 }
 
@@ -1828,7 +1837,7 @@ label {
     }
 
     /*    .active .show-max-active {display:none !important;}  */
-    .main-card{
+    .wrap-card{
         margin: 5px;
         width: -webkit-calc(100% - 10px) !important;
         width:    -moz-calc(100% - 10px) !important;

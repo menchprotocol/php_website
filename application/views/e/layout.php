@@ -21,7 +21,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 <script src="/application/views/e/layout.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
-<div class="container">
+<div class="container wrap-card card-source">
 
     <?php
 
