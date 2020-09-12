@@ -923,10 +923,7 @@ img.no-radius {
     width: 20px;
     text-align: center;
     position: absolute;
-    right: 0;
-    top: -10px;
     overflow: hidden;
-    margin-right: 3px;
     z-index: 999 !important;
 }
 
@@ -1561,10 +1558,10 @@ label {
     padding: 5px 0 !important;
     margin: 3px 3px 0 0;
 }
-.editor-discover > div > span > span {
+.editor-discover > span > span {
     background-color: #FC1B44 !important;
 }
-.editor-idea > div > span > span {
+.editor-idea > span > span {
     background-color: #ffc500 !important;
 }
 .note-btn i {
