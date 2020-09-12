@@ -1672,8 +1672,8 @@ label {
     width:         calc(100% - 10px) !important;
 }
 .progress-micro{
-    width:         calc(100% - 55px);
-    left: 10px;
+    width:calc(100% - 75px);
+    left: 20px;
     top: -50px;
 }
 .cover-title {
