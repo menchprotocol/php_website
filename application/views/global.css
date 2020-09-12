@@ -693,14 +693,14 @@ img.no-radius {
     border: 3px solid #FC1B44;
     border-radius:34px;
     padding: 2px;
-    height: 450px;
-    width: 300px;
+    height: 375px;
+    width: 250px;
 }
 .cover-photo h4{
     margin:8px 0 0 33px !important;
     font-size:1em;
     text-align: center;
-    width: 300px;
+    width: 250px;
 }
 
 .cover-done img{
