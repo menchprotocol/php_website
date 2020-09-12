@@ -650,7 +650,7 @@ img.no-radius {
 .big-cover{
     margin:21px 0 21px 0;
     position: relative;
-    width: 255px;
+    width: 200px;
     max-width: none;
 }
 
@@ -688,7 +688,7 @@ img.no-radius {
     margin:8px 0 0 33px !important;
     font-size:1em;
     text-align: center;
-    width: 222px;
+    width: 200px;
 }
 
 .cover-done img{
