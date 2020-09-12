@@ -937,6 +937,8 @@ img.no-radius {
     position: absolute;
     overflow: hidden;
     z-index: 999 !important;
+    top:0;
+    right: 0;
 }
 
 
