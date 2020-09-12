@@ -1365,7 +1365,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         if($show_editor){
 
             //RIGHT EDITING:
-            $ui .= '<div class="note-editor cover-editor edit-off '.( $x__type==6255 ? '' : superpower_active(10939) ).'">';
+            $ui .= '<div class="note-editor cover-editor edit-off '.( $x__type==6255 ? ' editor-discover ' : ' editor-idea '.superpower_active(10939) ).'">';
             $ui .= '<span class="show-on-hover">';
 
             //SORT
@@ -1380,7 +1380,8 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         }
 
 
-        $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).' '.( $x__type==6255 ? '' : ' cover-gold ' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).'<h4 class="montserrat">'.view_i_title($i).'</h4></a>';
+        $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).' '.( $x__type==6255 ? '' : ' cover-gold ' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).( $completion_rate['completion_percentage']>0 ? view_x_progress($completion_rate, $i, true) : '' ).'<h4 class="montserrat">'.view_i_title($i).'</h4></a>';
+
 
     $ui .= '</div>';
 
@@ -1390,7 +1391,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 function view_x_progress($completion_rate, $i, $show_micro){
 
-    $ui = '<div class="progress-title">'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED</div><div class="doclear">&nbsp;</div>'; // '.$completion_rate['completion_percentage'].'%
+    $ui = ( !$show_micro ? '<div class="progress-title">'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED</div><div class="doclear">&nbsp;</div>' : '' ); // '.$completion_rate['completion_percentage'].'%
 
     if($completion_rate['steps_total'] < 55 && !$show_micro){
 
