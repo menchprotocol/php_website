@@ -1188,14 +1188,14 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $prefix_statement = null, 
     $ui .= '<div class="doclear">&nbsp;</div>';
     $ui .= '<div class="list-group">';
     $is_last_continious_complete = true;
-    $index_id = 0;
+    $counter = 0;
     foreach($is_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $next_i);
-        $ui .= view_i_x($next_i, ( $in_my_x ? $index_id : $index_id ), ($can_click || $completion_rate['completion_percentage'] > 0), $common_prefix, false, $completion_rate);
+        $ui .= view_i_x($next_i, ( $in_my_x ? $counter : $index_id ), ($can_click || $completion_rate['completion_percentage'] > 0), $common_prefix, false, $completion_rate);
 
         //Search for the first unlocked idea right after the first stack of continuously completed ideas
         $is_last_continious_complete = ( $is_last_continious_complete && $completion_rate['completion_percentage']>=100 ? true : false );
-        $index_id = ( $is_last_continious_complete ? 0 : $index_id+1 );
+        $counter = ( $is_last_continious_complete ? 0 : $counter+1 );
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
