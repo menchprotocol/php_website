@@ -482,6 +482,8 @@ function e_load_page(page, load_new_filter) {
             $(data).insertBefore('#new_11029');
         }
 
+        lazy_load();
+
         x_set_text_start();
 
         //Tooltips:
