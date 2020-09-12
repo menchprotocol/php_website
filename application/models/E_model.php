@@ -23,11 +23,15 @@ class E_model extends CI_Model
         //PROFILE
         $session_data = array(
             'session_profile' => $e,
-            'session_var_13491' => 13493, //Medium
             'session_parent_ids' => array(),
             'session_superpowers_assigned' => array(),
             'session_superpowers_activated' => array(),
         );
+
+        //Load Customizable UI:
+        foreach($this->config->item('e___13890') as $e__id => $m){
+            $session_data['session_custom_ui_'.$e__id] = 0;
+        }
 
         if(!$update_session){
 
@@ -50,9 +54,11 @@ class E_model extends CI_Model
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up')) as $e_profile){
 
-            //FONT SIZE?
-            if(in_array($e_profile['e__id'], $this->config->item('n___13491'))){
-                $session_data['session_var_13491'] = intval($e_profile['e__id']);
+            //IN Custom UI?
+            foreach($this->config->item('e___13890') as $e__id => $m){
+                if(in_array($e_profile['e__id'], $this->config->item('n___'.$e__id))){
+                    $session_data['session_custom_ui_'.$e__id] = intval($e_profile['e__id']);
+                }
             }
 
             //Push to parent IDs:
@@ -76,6 +82,20 @@ class E_model extends CI_Model
 
             }
         }
+
+
+        //Determine Account Defaults if missing any of the CUSTOM UI
+        foreach($this->config->item('e___13890') as $e__id => $m){
+            if(!$session_data['session_custom_ui_'.$e__id]){
+                foreach($this->config->item('e___'.$e__id) as $e__id2 => $m2){
+                    if(in_array($e__id2, $this->config->item('n___13889') /* ACCOUNT DEFAULTS */ )){
+                        $session_data['session_custom_ui_'.$e__id] = $e__id2;
+                        break;
+                    }
+                }
+            }
+        }
+
 
         //SESSION
         $this->session->set_userdata($session_data);

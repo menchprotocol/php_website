@@ -72,24 +72,6 @@ function go_12211(go_next_url){
 
 
 
-function set_13491(font_size_e__id){
-
-    html_13491(font_size_e__id);
-
-    //Save to profile:
-    $.post("/e/e_radio", {
-        parent_e__id: 13491,
-        selected_e__id: font_size_e__id,
-        enable_mulitiselect: 0,
-        was_previously_selected: false,
-    }, function (data) {
-        if (!data.status) {
-            alert(data.message);
-        }
-    });
-
-}
-
 function select_answer(i__id){
 
     //Allow answer to be saved/updated:

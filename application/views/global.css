@@ -5,8 +5,6 @@
 }
 
 body {
-    background-color: #f0f0f0 !important; /* #f4f5f7 */
-    color: #000000;
     font-size: 1em;
     margin:55px 0 89px 0 !important;
     font-weight: 400;
@@ -14,10 +12,20 @@ body {
     font-family: 'Rubik', sans-serif;
 }
 
+.custom_ui_13884_13885 {
+    background-color: #f0f0f0 !important;
+    color: #000000;
+}
 
-#font_size_13492 .msg{ font-size:1em; }
-#font_size_13493 .msg, #font_size_ .msg{ font-size:1.2em; }
-#font_size_13494 .msg{ font-size:1.5em; }
+.custom_ui_13884_13886, .custom_ui_13884_ {
+    background-color: #000000 !important;
+    color: #FFFFFF;
+}
+
+
+.custom_ui_13491_13492 .msg{ font-size:1em; }
+.custom_ui_13491_13493 .msg, .custom_ui_13491_ .msg{ font-size:1.2em; }
+.custom_ui_13491_13494 .msg{ font-size:1.5em; }
 
 
 /*
@@ -1658,8 +1666,8 @@ label {
 .underline{ text-decoration: underline !important; }
 .icon-block { width:33px !important; display: inline-block; text-align: center; vertical-align: top; }
 .icon-block-xs{ width:25px; display: inline-block; text-align: center; vertical-align: top; }
-#font_size_13493 .icon-block-xs{ width:30px; }
-#font_size_13494 .icon-block-xs{ width:36px; }
+.custom_ui_13491_13493 .icon-block-xs, .custom_ui_13491_ .icon-block-xs{ width:30px; }
+.custom_ui_13491_13494 .icon-block-xs{ width:36px; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; vertical-align: top; }
 .icon-block-img img,
 .icon-block-lg img,

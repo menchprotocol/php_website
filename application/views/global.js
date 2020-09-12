@@ -489,12 +489,6 @@ function x_save(i__id){
     });
 }
 
-function html_13491(font_size_e__id){
-    //Update Font:
-    $('body').attr("id", "font_size_"+font_size_e__id);
-    $('.font_items').removeClass('active');
-    $('.font_item_'+font_size_e__id).addClass('active');
-}
 
 function e_fetch_canonical(query_string, not_found){
 
