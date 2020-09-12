@@ -930,6 +930,7 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
     //Updating Font?
     if(js_n___13890.includes(parent_e__id)){
         current_focus = parent_e__id;
+        $('body').removeClass('custom_ui_'+parent_e__id+'_');
         window['js_n___'+parent_e__id].forEach(remove_ui_class); //Removes all Classes
         $('body').addClass('custom_ui_'+parent_e__id+'_'+selected_e__id);
     }
