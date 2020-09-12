@@ -39,8 +39,8 @@ body {
 .custom_ui_13884_ .icon-block i,
 .custom_ui_13884_13886 .montserrat,
 .custom_ui_13884_ .montserrat{
-    background-color:#111111 !important;
-    color: #FFFFFF !important;
+    background-color:#111111;
+    color: #FFFFFF;
 
 }
 .custom_ui_13884_ .nav-tabs .nav-item.show .nav-x,
@@ -51,7 +51,7 @@ body {
 .custom_ui_13884_13886 .nav-tabs .nav-x.active,
 .custom_ui_13884_13886 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13886 .nav-tabs .nav-x:hover{
-    border-bottom-color: #111111 !important;
+    border-bottom-color: #111111;
 }
 
 
@@ -62,22 +62,22 @@ body {
 .custom_ui_13884_13885 .mench-navigation a,
 .custom_ui_13884_13885 .fade,
 .custom_ui_13884_13885 .outside-card{
-    background-color: #f0f0f0 !important;
-    color: #000000 !important;
+    background-color: #f0f0f0;
+    color: #000000;
 }
 .custom_ui_13884_13885 .table-striped tbody tr,
 .custom_ui_13884_13885 .x-list,
 .custom_ui_13884_13885 .accordion .card,
 .custom_ui_13884_13885 .wrap-card,
 .custom_ui_13884_13885 .btn-block{
-    background-color:#FFFFFF !important;
-    color: #000000 !important;
+    background-color:#FFFFFF;
+    color: #000000;
 }
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
 .custom_ui_13884_13885 .nav-tabs .nav-x.active,
 .custom_ui_13884_13885 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
-    border-bottom-color: #FFFFFF !important;
+    border-bottom-color: #FFFFFF;
 }
 
 
