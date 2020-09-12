@@ -2024,7 +2024,7 @@ label {
     min-width:50px;
     display: inline-block;
 }
-
+/*
 @media (min-width:767px) {
     .itemidea:hover {
         background-color:#fff4b5 !important;
@@ -2036,6 +2036,7 @@ label {
         background-color: #f6e8e8 !important;
     }
 }
+*/
 .hideIfEmpty:empty {
     display: none !important;
 }
