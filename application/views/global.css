@@ -20,12 +20,22 @@ body {
 .custom_ui_13884_ .container,
 .custom_ui_13884_ .mench-navigation,
 .custom_ui_13884_13886 .mench-navigation,
-.custom_ui_13884_13886 .mench-navigation a i {
+.custom_ui_13884_13886 .mench-navigation a,
+.custom_ui_13884_ .grey-list .list-group-item,
+.custom_ui_13884_13885 .grey-list .list-group-item {
     background-color: #000000 !important;
     color: #FFFFFF !important;
 }
-.nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
-    border-bottom-color: #FFFFFF !important;
+.custom_ui_13884_13886 .table-striped tbody tr,
+.custom_ui_13884_13886 .x-list,
+.custom_ui_13884_13886 .list-group .list-group-item,
+.custom_ui_13884_13886 .accordion .card,
+.custom_ui_13884_ .table-striped tbody tr,
+.custom_ui_13884_ .x-list,
+.custom_ui_13884_ .list-group .list-group-item,
+.custom_ui_13884_ .accordion .card{
+    background-color:#000000 !important;
+    color: #FFFFFF !important;
 }
 .custom_ui_13884_ .nav-tabs .nav-item.show .nav-x,
 .custom_ui_13884_ .nav-tabs .nav-x.active,
@@ -43,8 +53,16 @@ body {
 .custom_ui_13884_13885,
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .mench-navigation,
-.custom_ui_13884_13885 .mench-navigation a i  {
+.custom_ui_13884_13885 .mench-navigation a,
+.custom_ui_13884_13885 .grey-list .list-group-item {
     background-color: #f0f0f0 !important;
+    color: #000000 !important;
+}
+.custom_ui_13884_13885 .table-striped tbody tr,
+.custom_ui_13884_13885 .x-list,
+.custom_ui_13884_13885 .list-group .list-group-item,
+.custom_ui_13884_13885 .accordion .card {
+    background-color:#FFFFFF !important;
     color: #000000 !important;
 }
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
@@ -53,6 +71,9 @@ body {
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
     border-bottom-color: #FFFFFF !important;
 }
+
+
+
 
 
 
@@ -391,17 +412,6 @@ img.no-radius {
     padding-left: 78px !important;
 }
 
-
-.table-striped tbody tr:nth-of-type(odd), .x-list:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .accordion .card:nth-of-type(odd), .table-striped tbody tr:nth-of-type(odd), .x-list:nth-of-type(odd) {
-    background-color:#FFFFFF;
-}
-.table-striped tbody tr:nth-of-type(even), .list-group .list-group-item:nth-of-type(even), .accordion .card:nth-of-type(even), .card:nth-of-type(even) .card-header, .table-striped tbody tr:nth-of-type(even), .x-list:nth-of-type(even) {
-    background-color:#FFFFFF; /*f0f0f0*/
-}
-
-.grey-list .list-group-item {
-    background-color:#f0f0f0 !important;
-}
 
 .form-control:disabled, .form-control[readonly] {
     background-color:transparent !important;
