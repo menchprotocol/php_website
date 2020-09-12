@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-11 15:31:48 PST
+//Generated 2020-09-11 19:36:07 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -78,7 +78,7 @@ $config['e___13776'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
@@ -218,9 +218,9 @@ $config['e___6169'] = array(
 $config['n___13544'] = array(13629,13292);
 $config['e___13544'] = array(
     13629 => array(
-        'm_title' => 'IDEA CARD RANGE',
+        'm_title' => 'IDEA DISCOVERY RANGE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover"></i>',
+        'm_icon' => '<i class="fas fa-circle discover"></i>',
         'm_profile' => array(13544),
     ),
     13292 => array(
@@ -384,7 +384,7 @@ $config['e___13530'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
 );
@@ -896,7 +896,7 @@ $config['e___12994'] = array(
 $config['n___13369'] = array(12467,13292,13413,13414);
 $config['e___13369'] = array(
     12467 => array(
-        'm_title' => 'MENCH OBJECTS',
+        'm_title' => 'MENCH COINS',
         'm_message' => '',
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
         'm_profile' => array(13450,11054,13369,10939,12030,2738,4527),
@@ -983,7 +983,7 @@ $config['e___13300'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
@@ -994,13 +994,13 @@ $config['e___13291'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     13023 => array(
@@ -1063,7 +1063,7 @@ $config['e___12761'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
 );
@@ -1533,7 +1533,7 @@ $config['e___12677'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
@@ -1573,13 +1573,13 @@ $config['e___12500'] = array(
     ),
 );
 
-//MENCH OBJECTS:
+//MENCH COINS:
 $config['n___12467'] = array(12274,12273,6255);
 $config['e___12467'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
@@ -1591,7 +1591,7 @@ $config['e___12467'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
 );
@@ -1822,19 +1822,19 @@ $config['e___12446'] = array(
     13757 => array(
         'm_title' => 'CURRENT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover"></i>',
+        'm_icon' => '<i class="fas fa-circle discover"></i>',
         'm_profile' => array(12446),
     ),
     12447 => array(
         'm_title' => 'IN PROGRESS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover"></i>',
+        'm_icon' => '<i class="fas fa-circle discover"></i>',
         'm_profile' => array(13450,12446),
     ),
     13338 => array(
         'm_title' => 'COMPLETED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-check discover"></i>',
+        'm_icon' => '<i class="fas fa-check-circle discover"></i>',
         'm_profile' => array(12446),
     ),
 );
@@ -3088,7 +3088,7 @@ $config['e___11018'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
@@ -3118,7 +3118,7 @@ $config['e___11018'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
@@ -3171,7 +3171,7 @@ $config['e___11089'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-triangle rotate90 source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
@@ -3183,7 +3183,7 @@ $config['e___11089'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12896 => array(
@@ -4001,7 +4001,7 @@ $config['e___6404'] = array(
 );
 
 //MENCH MEMORY JAVASCRIPT:
-$config['n___11054'] = array(10573,4486,4485,4737,7356,7355,7585,7712,2738,6404,6201,12687,11035,12467,4592,6177,7357,6186);
+$config['n___11054'] = array(10573,4486,4485,4737,7356,7355,7585,7712,2738,12467,6404,6201,12687,11035,4592,6177,7357,6186);
 $config['e___11054'] = array(
     10573 => array(
         'm_title' => 'BOOKMARK',
@@ -4057,6 +4057,12 @@ $config['e___11054'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
         'm_profile' => array(2,1,13507,13436,12891,11054,12041,4527,7312),
     ),
+    12467 => array(
+        'm_title' => 'MENCH COINS',
+        'm_message' => '',
+        'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
+        'm_profile' => array(13450,11054,13369,10939,12030,2738,4527),
+    ),
     6404 => array(
         'm_title' => 'MENCH CONFIG VARIABLES',
         'm_message' => '',
@@ -4080,12 +4086,6 @@ $config['e___11054'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
         'm_profile' => array(11054,6403,4527),
-    ),
-    12467 => array(
-        'm_title' => 'MENCH OBJECTS',
-        'm_message' => '',
-        'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
-        'm_profile' => array(13450,11054,13369,10939,12030,2738,4527),
     ),
     4592 => array(
         'm_title' => 'SOURCE LINKS',
@@ -4831,7 +4831,7 @@ $config['e___2738'] = array(
         'm_profile' => array(2738),
     ),
     12467 => array(
-        'm_title' => 'OBJECTS',
+        'm_title' => 'COINS',
         'm_message' => '',
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
         'm_profile' => array(13450,11054,13369,10939,12030,2738,4527),
@@ -4927,7 +4927,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(10956,13533,12279,10573,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,12211,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,13812,7355,13874,12400,12677,12675,11018,13530,13408,13202,13543,13544,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,6404,12079,6201,4341,4527,11054,12687,11035,12467,6206,12112,10876,6212,7277,6169,6225,12969,3000,12741,6287,12577,13865,13776,4755,13531,13439,13365,13438,13783,12761,13023,13672,4269,6204,13413,6194,4251,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,13479,12500);
+$config['n___4527'] = array(10956,13533,12279,10573,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13291,13304,10593,12141,12327,12229,13289,12446,6150,13491,12211,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,13812,7355,13874,12400,12677,12675,11018,13530,13408,13202,13543,13544,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,6169,6225,12969,3000,12741,6287,12577,13865,13776,4755,13531,13439,13365,13438,13783,12761,13023,13672,4269,6204,13413,6194,4251,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,13479,12500);
 $config['e___4527'] = array(
     10956 => array(
         'm_title' => 'AVATARS BASIC',
@@ -4980,7 +4980,7 @@ $config['e___4527'] = array(
     6255 => array(
         'm_title' => 'DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-rectangle-portrait discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13300,13291,13776,10939,13450,11089,12677,11018,12467,12228,4527),
     ),
     12994 => array(
@@ -5337,6 +5337,12 @@ $config['e___4527'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
         'm_profile' => array(2,1,13507,13436,12891,11054,12041,4527,7312),
     ),
+    12467 => array(
+        'm_title' => 'MENCH COINS',
+        'm_message' => '',
+        'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
+        'm_profile' => array(13450,11054,13369,10939,12030,2738,4527),
+    ),
     6404 => array(
         'm_title' => 'MENCH CONFIG VARIABLES',
         'm_message' => '',
@@ -5384,12 +5390,6 @@ $config['e___4527'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
         'm_profile' => array(11054,6403,4527),
-    ),
-    12467 => array(
-        'm_title' => 'MENCH OBJECTS',
-        'm_message' => '',
-        'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
-        'm_profile' => array(13450,11054,13369,10939,12030,2738,4527),
     ),
     6206 => array(
         'm_title' => 'MENCH SOURCES',
