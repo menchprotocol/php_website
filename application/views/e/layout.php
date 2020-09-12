@@ -555,11 +555,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             //Display account fields ordered with their SOURCE LINKS:
             foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
-                //Do they have any assigned? Skip this section if not:
-                if($acc_e__id == 10957 /* Superpowers */ && !$superpower_any){
-                    continue;
-                }
-
                 //Print header:
                 $focus_tab .= '<div class="card">
 <div class="card-header" id="heading' . $acc_e__id . '">
@@ -621,6 +616,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
                     //List avatars:
+                    $superpowers_unlocked = 0;
                     $focus_tab .= '<div class="list-group">';
                     foreach($this->config->item('e___10957') as $superpower_e__id => $m3){
 
@@ -629,10 +625,17 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                             continue;
                         }
 
+                        $superpowers_unlocked++;
                         $extract_icon_color = extract_icon_color($m3['m_icon']);
                         $focus_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_e__id.'">'.$m3['m_icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m_title'].'</b> '.$m3['m_message'].'</a>';
 
                     }
+
+                    if(!$superpowers_unlocked){
+                        //Let them know they do not have any superpowers yet...
+                        echo '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You have not unlocked any superpowers yet</div>';
+                    }
+
                     $focus_tab .= '</div>';
 
                 } elseif ($acc_e__id == 3288 /* Email */) {
