@@ -909,10 +909,12 @@ function e_avatar(type_css, icon_css){
 }
 
 
+var current_focus = 0;
 
 function remove_ui_class(item, index) {
-    console.log('REMOVED: '+item);
-    $('body').removeClass('custom_ui_'+item);
+    var the_class = 'custom_ui_'+current_focus+'_'+item;
+    console.log('REMOVED: '+the_class);
+    $('body').removeClass(the_class);
 }
 
 function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
@@ -927,8 +929,9 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
 
     //Updating Font?
     if(js_n___13890.includes(parent_e__id)){
+        current_focus = parent_e__id;
         window['js_n___'+parent_e__id].forEach(remove_ui_class); //Removes all Classes
-        $('body').addClass('custom_ui_'+custom_ui_e__id);
+        $('body').addClass('custom_ui_'+parent_e__id+'_'+selected_e__id);
     }
 
     //Show spinner on the notification element:
