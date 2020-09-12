@@ -2009,9 +2009,7 @@ label {
 .custom_ui_13884_13886 .wrap-card,
 .custom_ui_13884_ .wrap-card,
 .custom_ui_13884_13886 .btn-block,
-.custom_ui_13884_ .btn-block,
-.custom_ui_13884_13886 .montserrat,
-.custom_ui_13884_ .montserrat{
+.custom_ui_13884_ .btn-block{
     background-color:#111111;
     color: #FFFFFF;
 
@@ -2019,7 +2017,9 @@ label {
 .custom_ui_13884_13886 .icon-block i,
 .custom_ui_13884_ .icon-block i,
 .custom_ui_13884_13886 .mench-navigation a,
-.custom_ui_13884_ .mench-navigation a{
+.custom_ui_13884_ .mench-navigation a,
+.custom_ui_13884_13886 .montserrat,
+.custom_ui_13884_ .montserrat{
     color: #FFFFFF;
 }
 .custom_ui_13884_ .nav-tabs .nav-item.show .nav-x,
