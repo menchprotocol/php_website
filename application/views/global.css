@@ -2027,7 +2027,7 @@ label {
 .custom_ui_13884_13886 .nav-tabs .nav-x.active,
 .custom_ui_13884_13886 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13886 .nav-tabs .nav-x:hover {
-    border-bottom-color: #111111;
+    border-bottom-color: #111111 !important;
 }
 
 
@@ -2053,7 +2053,7 @@ label {
 .custom_ui_13884_13885 .nav-tabs .nav-x.active,
 .custom_ui_13884_13885 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
-    border-bottom-color: #FFFFFF;
+    border-bottom-color: #FFFFFF !important;
 }
 
 
