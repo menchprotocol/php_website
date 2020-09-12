@@ -357,10 +357,6 @@ img.no-radius {
 .grey-list .list-group-item {
     background-color:#f0f0f0 !important;
 }
-.grey-list {
-    margin-bottom: 13px;
-}
-
 
 .form-control:disabled, .form-control[readonly] {
     background-color:transparent !important;
@@ -663,7 +659,7 @@ img.no-radius {
 
 .wrap-card{
     border: 3px solid transparent;
-    padding:0 0 25px 0;
+    padding:0 0 21px 0;
     overflow: hidden;
 }
 .card-source{
