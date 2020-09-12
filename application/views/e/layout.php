@@ -434,7 +434,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             } else {
 
                 //Give option to get started:
-                $focus_tab .= '<div class="msg alert alert-warning montserrat" role="alert"><span class="icon-block">'.$e___11035[10939]['m_icon'].'</span><a href="'.config_var(10939).'">UNLOCK '.$e___11035[10939]['m_title'].'</a></div>';
+                $focus_tab .= '<div class="msg alert alert-warning montserrat" role="alert" style="text-decoration: none;"><span class="icon-block">'.$e___11035[10939]['m_icon'].'</span><a href="'.config_var(10939).'">'.$e___11035[10939]['m_title'].'<span class="icon-block"><i class="fas fa-arrow-right"></i></span></a></div>';
 
             }
 
