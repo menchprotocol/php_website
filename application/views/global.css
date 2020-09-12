@@ -1540,14 +1540,14 @@ label {
 }
 
 .btn-right{
-    right: 13px;
+    left: 188px;
 }
 .btn-left{
-    left: 13px;
+    left: 51px;
 }
 .note-btn {
     width: 30px;
-    top: 5px;
+    top: 13px;
 }
 .note-btn > span {
     padding: 2px 0 0 0;
