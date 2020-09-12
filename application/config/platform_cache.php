@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-11 22:40:10 PST
+//Generated 2020-09-11 22:56:52 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -3838,7 +3838,7 @@ $config['e___6404'] = array(
     ),
     12904 => array(
         'm_title' => 'DEFAULT IDEA COVER',
-        'm_message' => '//s3foundation.s3-us-west-2.amazonaws.com/b7f2539c61129478d3614c55a798b21a.png',
+        'm_message' => '//s3foundation.s3-us-west-2.amazonaws.com/a7aea066ff79ab42937c92bf2519bbd7.png',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(6404,7524),
     ),
