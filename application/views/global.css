@@ -1998,7 +1998,6 @@ label {
 .custom_ui_13884_ .container,
 .custom_ui_13884_ .mench-navigation,
 .custom_ui_13884_13886 .mench-navigation,
-.custom_ui_13884_13886 .mench-navigation a,
 .custom_ui_13884_13886 .table-striped tbody tr,
 .custom_ui_13884_13886 .x-list,
 .custom_ui_13884_13886 .accordion .card,
@@ -2011,13 +2010,17 @@ label {
 .custom_ui_13884_ .wrap-card,
 .custom_ui_13884_13886 .btn-block,
 .custom_ui_13884_ .btn-block,
-.custom_ui_13884_13886 .icon-block i,
-.custom_ui_13884_ .icon-block i,
 .custom_ui_13884_13886 .montserrat,
 .custom_ui_13884_ .montserrat{
     background-color:#111111;
     color: #FFFFFF;
 
+}
+.custom_ui_13884_13886 .icon-block i,
+.custom_ui_13884_ .icon-block i,
+.custom_ui_13884_13886 .mench-navigation a,
+.custom_ui_13884_ .mench-navigation a{
+    color: #FFFFFF;
 }
 .custom_ui_13884_ .nav-tabs .nav-item.show .nav-x,
 .custom_ui_13884_ .nav-tabs .nav-x.active,
@@ -2029,6 +2032,7 @@ label {
 .custom_ui_13884_13886 .nav-tabs .nav-x:hover {
     border-bottom-color: #111111 !important;
 }
+
 
 
 /* WHITE */
