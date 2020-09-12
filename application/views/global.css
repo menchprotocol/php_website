@@ -1848,9 +1848,11 @@ label {
 .feature-content>div{
     margin:0 0 8px 0 !important;
 }
-
+.icon-tweak{ padding-left: 5px; }
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .icon-tweak{ padding-left: 10px; }
 
     .cen{
         font-size: 2.1em;
