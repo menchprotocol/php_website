@@ -34,7 +34,11 @@ body {
 .custom_ui_13884_13886 .wrap-card,
 .custom_ui_13884_ .wrap-card,
 .custom_ui_13884_13886 .btn-block,
-.custom_ui_13884_ .btn-block{
+.custom_ui_13884_ .btn-block,
+.custom_ui_13884_13886 .icon-block i,
+.custom_ui_13884_ .icon-block i,
+.custom_ui_13884_13886 .montserrat,
+.custom_ui_13884_ .montserrat{
     background-color:#111111 !important;
     color: #FFFFFF !important;
 
