@@ -360,6 +360,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                    placeholder="NEW SOURCE URL OR TITLE">
                         </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
 
+            } else {
+
+                $focus_tab .= '<div id="new_11029" class="hideIfEmpty"></div>';
+
             }
 
             $focus_tab .= '</div>';
