@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-11 20:56:12 PST
+//Generated 2020-09-11 22:38:43 PST
 
 //PREREQUISITES:
 $config['n___13865'] = array(13875,13876);
@@ -385,7 +385,7 @@ $config['e___13530'] = array(
         'm_title' => 'SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
+        'm_profile' => array(12574,13530,11018,11089,12761,13291,12467,12228),
     ),
 );
 
@@ -995,7 +995,7 @@ $config['e___13291'] = array(
         'm_title' => 'SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
+        'm_profile' => array(12574,13530,11018,11089,12761,13291,12467,12228),
     ),
     6255 => array(
         'm_title' => 'DISCOVERIES',
@@ -1064,7 +1064,7 @@ $config['e___12761'] = array(
         'm_title' => 'SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
+        'm_profile' => array(12574,13530,11018,11089,12761,13291,12467,12228),
     ),
 );
 
@@ -1580,7 +1580,7 @@ $config['e___12467'] = array(
         'm_title' => 'SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
+        'm_profile' => array(12574,13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
@@ -1719,7 +1719,7 @@ $config['e___12577'] = array(
 );
 
 //SOURCE TAB SHOW EVEN IF ZERO:
-$config['n___12574'] = array(12273,6225);
+$config['n___12574'] = array(12273,6225,12274);
 $config['e___12574'] = array(
     12273 => array(
         'm_title' => 'IDEAS',
@@ -1732,6 +1732,12 @@ $config['e___12574'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
         'm_profile' => array(13425,12574,11089,4527,11035),
+    ),
+    12274 => array(
+        'm_title' => 'SOURCES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
+        'm_profile' => array(12574,13530,11018,11089,12761,13291,12467,12228),
     ),
 );
 
@@ -3089,7 +3095,7 @@ $config['e___11018'] = array(
         'm_title' => 'SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
+        'm_profile' => array(12574,13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
@@ -3172,7 +3178,7 @@ $config['e___11089'] = array(
         'm_title' => 'SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(13530,11018,11089,12761,13291,12467,12228),
+        'm_profile' => array(12574,13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
@@ -3511,7 +3517,7 @@ $config['e___10957'] = array(
         'm_title' => 'IDEATION',
         'm_message' => 'Add & Organize Ideas',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
-        'm_profile' => array(13450,10957),
+        'm_profile' => array(6404,13450,10957),
     ),
     13354 => array(
         'm_title' => 'INLINE EDITING',
@@ -3810,7 +3816,7 @@ $config['e___11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,12137,4485,4736,11064,11065,13014,13005,11079,11060,13556,13545,11066,13803,12088,13206,11986,6197,12232,13572,12565,12568);
+$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,12137,4485,4736,11064,11065,13014,13005,11079,11060,13556,13545,11066,13803,12088,13206,11986,6197,12232,10939,13572,12565,12568);
 $config['e___6404'] = array(
     12678 => array(
         'm_title' => 'ALGOLIA SEARCH ENABLED (0 OR 1)',
@@ -3922,7 +3928,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.5523',
+        'm_message' => 'v1.55',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
@@ -3979,6 +3985,12 @@ $config['e___6404'] = array(
         'm_message' => '2',
         'm_icon' => '',
         'm_profile' => array(6404),
+    ),
+    10939 => array(
+        'm_title' => 'SUPERPOWER OF IDEATION',
+        'm_message' => '/14001',
+        'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
+        'm_profile' => array(6404,13450,10957),
     ),
     13572 => array(
         'm_title' => 'UPLOAD',

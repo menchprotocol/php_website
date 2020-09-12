@@ -431,6 +431,12 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     </div><div class="algolia_pad_search hidden"></div></div>';
                 $focus_tab .= '</div>';
 
+            } else {
+
+                //Give option to get started:
+                $e___10957 = $this->config->item('e___10957');
+                $focus_tab .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block">'.$e___10957[10939]['m_icon'].'</span><a href="'.config_var(10939).'">UNLOCK '.$e___10957[10939]['m_title'].'</a></div>';
+
             }
 
         } elseif($x__type==6255){
