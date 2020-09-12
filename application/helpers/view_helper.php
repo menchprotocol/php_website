@@ -1667,7 +1667,7 @@ function view_input_text($cache_e__id, $current_value, $object__id, $e_of_i, $ta
     //Also Append Counter to the end?
     if($extra_large){
 
-        $focus_element = '<textarea '.( !strlen($append_css) ? ' style="color:#000000 !important;" ' : '' ).' onkeyup="view_input_text_count('.$cache_e__id.','.$object__id.')" placeholder="'.$e___12112[$cache_e__id]['m_title'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        $focus_element = '<textarea '.( !strlen($append_css) ? ' style="color:#222222 !important;" ' : '' ).' onkeyup="view_input_text_count('.$cache_e__id.','.$object__id.')" placeholder="'.$e___12112[$cache_e__id]['m_title'].'" '.$attributes.'>'.$current_value.'</textarea>';
         $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$object__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$object__id.'">0</span>/'.config_var($cache_e__id).' CHARACTERS</div>';
         $icon = '<span class="icon-block title-icon">'.$e__icon.'</span>';
 
