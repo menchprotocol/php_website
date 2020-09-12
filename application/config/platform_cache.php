@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-12 14:53:51 PST
+//Generated 2020-09-12 16:26:33 PST
 
 //CUSTOMIZABLE UI:
 $config['n___13890'] = array(13491,13884);
@@ -33,13 +33,13 @@ $config['e___13884'] = array(
     13885 => array(
         'm_title' => 'LIGHT MODE',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-circle"></i>',
+        'm_icon' => '<i class="far fa-sun"></i>',
         'm_profile' => array(13884),
     ),
     13886 => array(
         'm_title' => 'DARK MODE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle"></i>',
+        'm_icon' => '<i class="fas fa-moon"></i>',
         'm_profile' => array(13889,13884),
     ),
 );
@@ -50,7 +50,7 @@ $config['e___13889'] = array(
     13886 => array(
         'm_title' => 'DARK MODE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle"></i>',
+        'm_icon' => '<i class="fas fa-moon"></i>',
         'm_profile' => array(13889,13884),
     ),
     13493 => array(
