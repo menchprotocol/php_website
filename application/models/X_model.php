@@ -400,7 +400,7 @@ class X_model extends CI_Model
                 $html_message .= '<div>TRANSACTION ID: <a href="'.$this->config->item('base_url').'/e/plugin/12722?x__id=' . $add_fields['x__id'] . '">' . $add_fields['x__id'] . '</a></div>';
 
                 //Inform how to change settings:
-                $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'/@5967" target="_blank">@5967</a></div>';
+                $html_message .= '<div style="color: #999999; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'/@5967" target="_blank">@5967</a></div>';
 
                 //Send email:
                 $this->X_model->email_sent($sub_emails, $subject, $html_message);

@@ -408,7 +408,7 @@ img.no-radius {
 }
 
 .aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
-    background-color: #DDDDDD;
+    background-color: #999999;
     text-decoration: none;
 }
 
@@ -1386,7 +1386,7 @@ label {
 }
 
 .dolight{
-    color: #DDDDDD;
+    color: #999999;
 }
 .dotransparent, .dotransparent * {
     background-color: transparent;
@@ -1410,7 +1410,7 @@ label {
 
 .dropdown-item:focus, .dropdown-item:hover {
     text-decoration: none;
-    background-color: #DDDDDD;
+    background-color: #999999;
 }
 .dropdown-item, .dropdown-item {
     text-decoration: none;
