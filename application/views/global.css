@@ -191,6 +191,7 @@ li a {
     background-color: #999999 !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
+    border-radius: 21px;
 }
 
 .avatar-item .avatar-icon {
