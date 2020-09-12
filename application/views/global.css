@@ -2011,7 +2011,7 @@ label {
 .custom_ui_13884_ .wrap-card,
 .custom_ui_13884_13886 .btn-block,
 .custom_ui_13884_ .btn-block{
-    background-color:#111111;
+    background-color:#222222;
     color: #FFFFFF;
 
 }
@@ -2031,7 +2031,7 @@ label {
 .custom_ui_13884_13886 .nav-tabs .nav-x.active,
 .custom_ui_13884_13886 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13886 .nav-tabs .nav-x:hover {
-    border-bottom-color: #111111 !important;
+    border-bottom-color: #222222 !important;
 }
 
 
@@ -2044,7 +2044,7 @@ label {
 .custom_ui_13884_13885 .fade,
 .custom_ui_13884_13885 .outside-card{
     background-color: #f0f0f0;
-    color: #000000;
+    color: #222222;
 }
 .custom_ui_13884_13885 .table-striped tbody tr,
 .custom_ui_13884_13885 .x-list,
@@ -2052,7 +2052,7 @@ label {
 .custom_ui_13884_13885 .wrap-card,
 .custom_ui_13884_13885 .btn-block{
     background-color:#FFFFFF;
-    color: #000000;
+    color: #222222;
 }
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
 .custom_ui_13884_13885 .nav-tabs .nav-x.active,
