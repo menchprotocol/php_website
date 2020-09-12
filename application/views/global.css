@@ -663,21 +663,23 @@ img.no-radius {
 
 .wrap-card{
     border: 3px solid transparent;
-    border-radius: 34px;
     padding:13px 0;
     overflow: hidden;
 }
 .card-source{
     border: 3px solid #007AFD;
     background-color: #FFFFFF;
+    border-radius: 34px;
 }
 .card-idea{
     border: 3px solid #ffc500;
     background-color: #FFFFFF;
+    border-radius: 34px;
 }
 .card-discover{
     border: 3px solid #FC1B44;
     background-color: #FFFFFF;
+    border-radius: 34px;
 }
 .card-grey{
     border-color:#999999 !important;
