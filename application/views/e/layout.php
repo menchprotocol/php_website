@@ -431,7 +431,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     </div><div class="algolia_pad_search hidden"></div></div>';
                 $focus_tab .= '</div>';
 
-            } else {
+            } elseif($user_e && $user_e['e__id']>0) {
 
                 //Give option to get started:
                 $focus_tab .= '<div class="msg alert alert-warning montserrat" role="alert" style="text-decoration: none;"><span class="icon-block">'.$e___11035[10939]['m_icon'].'</span><a href="'.config_var(10939).'">'.$e___11035[10939]['m_title'].'<span class="icon-block"><i class="fas fa-arrow-right"></i></span></a></div>';
