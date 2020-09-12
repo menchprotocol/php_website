@@ -23,7 +23,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
     <?php
 
-    if($superpower_13422){ //!$source_is_e ||
+    if(!$source_is_e || $superpower_13422 ){
+
         //PROFILE
         echo '<div class="container wrap-card">';
         echo '<div id="list_11030" class="list-group grey-list">';
@@ -36,16 +37,15 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         $show_max = config_var(13803);
         $hide = false;
         foreach($profiles as $count => $e_profile) {
-
             if(!$hide && $count==$show_max){
                 $hide = true;
                 echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[11030]['m_icon'].'</span><b class="montserrat source">'.$e___11035[11030]['m_title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
                 echo '<div class="list-group-item see_all_11030 no-padding"></div>';
             }
-
             echo view_e($e_profile,true, ( $hide ? ' see_all_11030 hidden ' : null ), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
 
         }
+
         //ADD NEW
         echo '<div id="new_11030" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
                     <div class="input-group border">
@@ -57,6 +57,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
         echo '</div>';
         echo '</div>';
+
 
     }
 
