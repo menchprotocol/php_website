@@ -1681,7 +1681,7 @@ label {
     width:         calc(100% - 10px) !important;
 }
 .progress-micro{
-    width:160px;
+    width:140px;
     left: 20px;
     top: -50px;
 }
