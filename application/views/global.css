@@ -12,14 +12,23 @@ body {
     font-family: 'Rubik', sans-serif;
 }
 
-.custom_ui_13884_13885 {
-    background-color: #f0f0f0 !important;
-    color: #000000;
-}
-
-.custom_ui_13884_13886, .custom_ui_13884_ {
+/* DARK - DEFAULT */
+.custom_ui_13884_13886,
+.custom_ui_13884_,
+.custom_ui_13884_ .mench-navigation,
+.custom_ui_13884_13886 .mench-navigation,
+.custom_ui_13884_13886 .mench-navigation a i {
     background-color: #000000 !important;
     color: #FFFFFF;
+}
+
+/* WHITE */
+.custom_ui_13884_13885,
+.custom_ui_13884_13885
+.mench-navigation,
+.custom_ui_13884_13885 .mench-navigation a i  {
+    background-color: #f0f0f0 !important;
+    color: #000000;
 }
 
 
@@ -1171,7 +1180,6 @@ td.MENCHcolumn3  { width: 13%; }
 
 .mench-navigation {
     width: 100%;
-    background-color: #f0f0f0;
 }
 
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-hint{
