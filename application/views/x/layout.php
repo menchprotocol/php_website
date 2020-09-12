@@ -242,11 +242,30 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 
 
-if($previous_level_id){
+if($in_my_x && $previous_level_id){
+
     //Idea Map:
     echo '<div class="list-group grey-list indentation">';
     echo join('', array_reverse($sitemap_items));
     echo '</div>';
+
+} else {
+
+    $is_previous = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+        'x__right' => $i_focus['i__id'],
+        'x__left !=' => config_var(12137),
+    ), array('x__left'), 0);
+
+    if(count($is_previous)){
+        //IDEA PREVIOUS
+        echo '<div class="grey-list">';
+        echo view_i_list($in_my_x, $i_focus, $is_previous, $user_e, '', true);
+        echo '</div>';
+    }
+
 }
 
 echo '</div>';
@@ -666,20 +685,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e);
 
-            $is_previous = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                'x__right' => $i_focus['i__id'],
-                'x__left !=' => config_var(12137),
-            ), array('x__left'), 0);
-
-            if(count($is_previous)){
-                //IDEA PREVIOUS
-                $focus_tab .= '<div style="padding:33px 0;">'.view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:', true).'</div>';
-            }
-
-            $has_substance = count($is_next) || count($is_previous);
+            $has_substance = count($is_next);
 
         }
 
