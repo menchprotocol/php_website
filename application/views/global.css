@@ -2057,12 +2057,15 @@ label {
     /* WHITE */
     .itemidea:hover {
         background-color:#fff4b5 !important;
+        color: #222222 !important;
     }
     .itemsource:hover {
         background-color:#b2defd !important;
+        color: #222222 !important;
     }
     .itemdiscover:hover {
         background-color: #ffcbcb !important;
+        color: #222222 !important;
     }
 
 }
