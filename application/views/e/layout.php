@@ -21,15 +21,12 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 <script src="/application/views/e/layout.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
 
-<div class="container wrap-card card-source">
-
     <?php
-
-
 
     if($superpower_13422){ //!$source_is_e ||
         //PROFILE
-        echo '<div id="list_11030" class="list-group">';
+        echo '<div class="container">';
+        echo '<div id="list_11030" class="list-group grey-list">';
         $profiles = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -59,8 +56,12 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                placeholder="NEW PROFILE">
                     </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
         echo '</div>';
+        echo '</div>';
 
     }
+
+
+    echo '<div class="container wrap-card card-source">';
 
 
     //SOURCE NAME
@@ -688,10 +689,9 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
     }
 
+
+    echo '</div>';
     ?>
-
-</div>
-
 
 <!-- Source Editor Modal -->
 <div class="modal fade" id="modal13571" tabindex="-1" role="dialog" aria-labelledby="modal13571Label" aria-hidden="true">

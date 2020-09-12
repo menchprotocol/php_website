@@ -354,6 +354,11 @@ img.no-radius {
     background-color:#FFFFFF; /*f0f0f0*/
 }
 
+.grey-list .list-group-item {
+    background-color:#f0f0f0;
+}
+
+
 .form-control:disabled, .form-control[readonly] {
     background-color:transparent !important;
 }
@@ -937,7 +942,7 @@ img.no-radius {
     position: absolute;
     overflow: hidden;
     z-index: 999 !important;
-    top:0;
+    top:-5px;
     right: 0;
 }
 

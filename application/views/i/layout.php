@@ -34,7 +34,7 @@ $is_previous = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0);
 
-echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group previous_i">';
+echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
 foreach($is_previous as $previous_i) {
     echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
 }
