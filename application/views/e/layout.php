@@ -75,7 +75,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
     //SOURCE MODIFY BUTTON
-    echo '<div class="pull-right inline-block" style="margin:8px 0 -40px 0;">';
+    echo '<div class="pull-right inline-block" style="margin:0 0 -40px 0;">';
 
         if($superpower_13422) {
             echo '<a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',0)" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m_title'].'">'.$e___11035[13571]['m_icon'].'</a>';
