@@ -110,7 +110,7 @@ if(!isset($hide_header)){
                             $title_words = explode(' ', $user_e['e__title']);
                             $first_word = $title_words[0];
                             array_shift($title_words);
-                            echo '<a href="'.home_url().'" class="montserrat icon-tweak '.extract_icon_color($user_e['e__icon']).'"><span class="icon-block e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span style="font-size: 1.2em;">'.$first_word.'<span class="show-max"> '.join(' ', $title_words).'</span></span></a>';
+                            echo '<a href="'.home_url().'" class="montserrat icon-tweak '.extract_icon_color($user_e['e__icon']).'"><span class="icon-block e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span>'.$first_word.'<span class="show-max"> '.join(' ', $title_words).'</span></a>';
                             echo '</div>';
                         } else {
                             echo '<div class="mench_nav left_nav">';
