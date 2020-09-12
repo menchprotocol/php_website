@@ -391,7 +391,7 @@ function x_type_preview_load(){
 
 function remove_10673(x__id, note_type_id) {
 
-    var r = confirm("Unlink this source?");
+    var r = confirm("Remove this source?");
     if (r == true) {
         $.post("/e/remove_10673", {
 
