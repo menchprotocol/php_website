@@ -663,7 +663,7 @@ img.no-radius {
 
 .wrap-card{
     border: 3px solid transparent;
-    padding:13px 0;
+    padding:0 0 8px 0;
     overflow: hidden;
 }
 .card-source{
