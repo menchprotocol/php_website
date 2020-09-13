@@ -106,7 +106,7 @@ if(!isset($hide_header)){
                     //MENCH LOGO
                     if ($user_e) {
                         if($first_segment!='@'.$user_e['e__id']){
-                            echo '<div class="mench_nav left_nav" style="padding: 15px 0 0;">';
+                            echo '<div class="mench_nav left_nav" style="padding: 13px 0 0;">';
                             echo '<a href="'.home_url().'" class="montserrat icon-tweak '.extract_icon_color($user_e['e__icon']).'"><span class="icon-block e_ui_icon_'.$user_e['e__id'].'" style="margin-top:-2px;">'.$user_e['e__icon'].'</span><span class="text__6197_'.$user_e['e__id'].' name-block">'.$user_e['e__title'].'</span></a>';
                             echo '</div>';
                         } else {
