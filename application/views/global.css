@@ -268,14 +268,6 @@ img.no-radius {
     border-radius:0 !important;
 }
 
-.breadcrumb {
-    margin-bottom: 10px;
-    background-color: #FFFFFF;
-    border-radius:0;
-    padding: 10px 0;
-    font-family: 'Montserrat', sans-serif;
-}
-
 #MyAccountAccordion .padded {
     margin: 0 13px 13px 13px !important;
 }
@@ -370,7 +362,6 @@ img.no-radius {
     width: 100%;
     border-top: none;
     font-weight: normal;
-    background-color: #FFFFFF;
     z-index: 99999 !important;
 }
 
@@ -388,7 +379,6 @@ img.no-radius {
 .panel-body .form-control {
     padding:7px 0;
     width: 100%;
-    color:#222222;
 }
 
 .edit-off .content-image{
@@ -396,11 +386,9 @@ img.no-radius {
 }
 
 .aa-dropdown-menu .aa-suggestion, .suggestion {
-    background-color: #FFFFFF;
-    border:0px solid #f0f0f0;
+    border:0;
     cursor: pointer;
     padding: 7px 3px;
-    color: #222222;
     font-weight: 500;
     margin: 0;
     display: block;
@@ -1993,7 +1981,11 @@ label {
 .custom_ui_13884_13886 .btn-block,
 .custom_ui_13884_ .btn-block,
 .custom_ui_13884_13886 .dropdown-menu,
-.custom_ui_13884_ .dropdown-menu {
+.custom_ui_13884_ .dropdown-menu,
+.custom_ui_13884_ .algolia-autocomplete .aa-dropdown-menu,
+.custom_ui_13884_ .aa-dropdown-menu .aa-suggestion, .suggestion,
+.custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu,
+.custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion {
     background-color:#222222;
     color: #FFFFFF;
 
@@ -2035,7 +2027,9 @@ label {
 .custom_ui_13884_13885 .accordion .card,
 .custom_ui_13884_13885 .wrap-card,
 .custom_ui_13884_13885 .btn-block,
-.custom_ui_13884_13885 .dropdown-menu{
+.custom_ui_13884_13885 .dropdown-menu,
+.custom_ui_13884_13885 .algolia-autocomplete .aa-dropdown-menu,
+.custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion {
     background-color:#FFFFFF;
     color: #222222;
 }
