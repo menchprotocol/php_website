@@ -196,7 +196,7 @@ li a {
     border-radius: 0 !important;
 }
 
-.btn-discover, .btn-source, btn-idea {
+.btn-discover, .btn-source, .btn-idea {
     font-size: 1.2em !important;
 }
 
@@ -1872,7 +1872,7 @@ label {
 }
 
 .btn-label{
-    width: 44px;
+    width: 48px;
     margin-left: 10px !important;
     padding-right: 0 !important;
     padding-left: 0 !important;
