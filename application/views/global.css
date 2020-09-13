@@ -375,7 +375,7 @@ img.no-radius {
 }
 
 .form-control{
-    border-radius: 21px;
+    border-radius: 21px !important;
 }
 
 .panel-body .form-control {
@@ -780,7 +780,6 @@ img.no-radius {
 .btn-main .far, .btn-main .fas, .btn-main .fal, .btn-main .fad { font-size: 1.5em; margin-top:3px; }
 
 .form-control, .border {
-    border-radius:0;
     border:0 !important;
     height: 100%;
     line-height: 100%;
