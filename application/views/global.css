@@ -1547,6 +1547,15 @@ label {
     width: 38px !important;
     height: 38px !important;
 }
+.social-footer{
+    text-align: center;
+    list-style: none;
+}
+.social-footer li{
+    display: inline-block;
+    font-size: 1.2em;
+    margin: 0 5px;
+}
 
 .i-left {
     display: block;
