@@ -2041,14 +2041,29 @@ label {
 
 @media (min-width:767px) {
 
-    /* WHITE */
-    .itemidea:hover {
+    /* DARK */
+    .custom_ui_13884_13886 .itemidea:hover,
+    .custom_ui_13884_ .itemidea:hover{
         background-color:#fff4b5 !important;
     }
-    .itemsource:hover {
+    .custom_ui_13884_13886 .itemsource:hover,
+    .custom_ui_13884_ .itemsource:hover{
         background-color:#a2cdec !important;
     }
-    .itemdiscover:hover {
+    .custom_ui_13884_13886 .itemdiscover:hover,
+    .custom_ui_13884_ .itemdiscover:hover{
+        background-color: #774040 !important;
+    }
+
+
+    /* WHITE */
+    .custom_ui_13884_13885 .itemidea:hover {
+        background-color:#fff4b5 !important;
+    }
+    .custom_ui_13884_13885 .itemsource:hover {
+        background-color:#a2cdec !important;
+    }
+    .custom_ui_13884_13885 .itemdiscover:hover {
         background-color: #ffcbcb !important;
     }
 
