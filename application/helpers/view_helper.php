@@ -1272,7 +1272,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
             //Upload File:
             if($handles_uploads){
                 $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
-                $ui .= '<label class="btn btn-'.$color_code.' file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m_message'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m_icon'].'</span></label>';
+                $ui .= '<label class="btn btn-'.$color_code.' btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m_message'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m_icon'].'</span></label>';
             }
 
         $ui .= '</td>';
