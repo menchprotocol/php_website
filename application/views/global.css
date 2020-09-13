@@ -721,9 +721,13 @@ img.no-radius {
 .btn-main .far, .btn-main .fas, .btn-main .fal, .btn-main .fad { font-size: 1.5em; margin-top:3px; }
 
 .form-control, .border {
-    border: 3px solid #FFFFFF !important;
+    border:0 !important;
     height: 100%;
     line-height: 100%;
+}
+
+.white-border {
+    border: 3px solid #FFFFFF !important;
     border-radius: 13px;
 }
 
