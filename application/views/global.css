@@ -784,14 +784,6 @@ img.no-radius {
     line-height: 100%;
 }
 
-.form-control:focus {
-    color: inherit;
-    background-color: transparent;
-    border-color: transparent;
-    outline: 0;
-    box-shadow: none;
-}
-
 
 
 .nav-tabs {
