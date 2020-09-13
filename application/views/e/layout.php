@@ -67,7 +67,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
     //SOURCE DRAFTING?
     if(!in_array($e['e__status'], $this->config->item('n___7357'))){
-        echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).'"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
+        echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
     }
 
 
