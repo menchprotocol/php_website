@@ -37,5 +37,12 @@
 
 
 
+    //SOCIAL FOOTER
+    echo '<ul class="social-footer">';
+    foreach($this->config->item('e___13894') as $e__id => $m) {
+        echo '<li><a href="/x/go_url/'.$e__id.'" title="'.$m['m_title'].'">'.$m['m_icon'].'</a></li>';
+    }
+    echo '</ul>';
+
     ?>
 </div>

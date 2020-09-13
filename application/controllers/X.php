@@ -922,6 +922,41 @@ class X extends CI_Controller
 
     }
 
+    function go_url($e__id){
+
+        //Fetch parent URLs:
+        $user_e = superpower_assigned();
+        $profiles = $this->X_model->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__down' => $e__id,
+        ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
+
+        if(!count($profiles)){
+
+            $this->X_model->create(array(
+                'x__down' => $e__id,
+                'x__message' => 'go_url() failed to find URL',
+                'x__type' => 4246, //Platform Bug Reports
+                'x__source' => ( $user_e ? $user_e['e__id'] : 0 ),
+            ));
+
+            return redirect_message('/');
+
+        } else {
+
+            //Log click:
+            $this->X_model->create(array(
+                'x__type' => 13894,
+                'x__source' => ( $user_e ? $user_e['e__id'] : 0 ),
+                'x__down' => $e__id,
+                'x__reference' => $profiles[0]['x__id'],
+            ));
+
+            return redirect_message($profiles[0]['x__message']);
+        }
+    }
 
     function x_save(){
 
