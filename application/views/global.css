@@ -2037,7 +2037,7 @@ label {
     border-bottom-color: #FFFFFF !important;
 }
 
-.alert a {
+.alert a, .alert i {
     color: #222222 !important;
 }
 
