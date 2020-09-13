@@ -1981,6 +1981,11 @@ label {
     color: #FFFFFF;
 
 }
+.custom_ui_13884_13886 .new-note,
+.custom_ui_13884_ .new-note{
+    background-color:#222222 !important;
+    color: #FFFFFF !important;
+}
 .custom_ui_13884_13886 .icon-block i,
 .custom_ui_13884_ .icon-block i,
 .custom_ui_13884_13886 .mench-navigation a,
@@ -2024,6 +2029,10 @@ label {
 .custom_ui_13884_13885 textarea {
     background-color:#FFFFFF;
     color: #222222;
+}
+.custom_ui_13884_13885 .new-note {
+    background-color:#FFFFFF !important;
+    color: #222222 !important;
 }
 
 .custom_ui_13884_13885 a,
