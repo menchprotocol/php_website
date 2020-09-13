@@ -1917,7 +1917,9 @@ label {
 .custom_ui_13884_13886 .montserrat,
 .custom_ui_13884_ .montserrat,
 .custom_ui_13884_13886 a,
-.custom_ui_13884_ a {
+.custom_ui_13884_ a,
+custom_ui_13884_13886 .close span,
+custom_ui_13884_ .close span{
     color: #FFFFFF;
 }
 .custom_ui_13884_ .nav-tabs .nav-item.show .nav-x,
