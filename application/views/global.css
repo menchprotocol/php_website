@@ -1898,7 +1898,9 @@ label {
 .custom_ui_13884_13886 textarea,
 .custom_ui_13884_ textarea,
 .custom_ui_13884_13886 .modal-content,
-.custom_ui_13884_ .modal-content {
+.custom_ui_13884_ .modal-content,
+.custom_ui_13884_13886 .form-control,
+.custom_ui_13884_ .form-control{
     background-color:#111111;
     color: #FFFFFF;
 
@@ -1930,7 +1932,6 @@ label {
 }
 
 
-
 /* WHITE */
 .custom_ui_13884_13885,
 .custom_ui_13884_13885 .container,
@@ -1949,6 +1950,7 @@ label {
 .custom_ui_13884_13885 .algolia-autocomplete .aa-dropdown-menu,
 .custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13885 textarea,
+.custom_ui_13884_13885 .form-control,
 .custom_ui_13884_13885 .modal-content {
     background-color:#FFFFFF;
     color: #111111;
