@@ -627,6 +627,7 @@ img.no-radius {
     font-size:1em;
     text-align: center;
     width: 200px;
+    display: block;
 }
 
 .cover-done img{
