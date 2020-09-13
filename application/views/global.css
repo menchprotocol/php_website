@@ -1537,7 +1537,7 @@ label {
 .img-block img {
     width: 16px !important;
     height: 16px !important;
-    margin: 8px 3px 0 !important; /* Used to be -5px 0 -3px */
+    margin: -5px 0 -3px !important; /* 8px 3px 0 */
     border-radius: 50%;
 }
 .icon-demo img {
