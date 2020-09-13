@@ -1943,7 +1943,7 @@ label {
 }
 
 
-.form-group {
+.form-group, .form-control:focus {
     background-color: transparent;
 }
 
