@@ -6,15 +6,15 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     echo '<div class="form-group" style="max-width:550px; margin:1px 0 10px; display: inline-block;">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean addon-grey" style="color:#111111; font-weight: 300;">Start #</span>
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#181818; font-weight: 300;">Start #</span>
                         <input style="padding-left:3px; min-width:56px;" type="number" name="i__id" value="'.( isset($_GET['i__id']) ? $_GET['i__id'] : '' ).'" class="form-control">
                         
                         <br />
-                        <span class="input-group-addon addon-lean addon-grey" style="color:#111111; font-weight: 300;">Idea Tree #</span>
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#181818; font-weight: 300;">Idea Tree #</span>
                         <input style="padding-left:3px; min-width:56px;" type="number" name="i__tree_id" value="'.( isset($_GET['i__tree_id']) ? $_GET['i__tree_id'] : '' ).'" class="form-control">
                         
                         <br />
-                        <span class="input-group-addon addon-lean addon-grey" style="color:#111111; font-weight: 300;">Sources of </span>
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#181818; font-weight: 300;">Sources of </span>
                         <input style="padding-left:3px; min-width:56px;" type="number" name="e_sources_id" value="'.( isset($_GET['e_sources_id']) ? $_GET['e_sources_id'] : '' ).'" class="form-control">
 
                     </div>
