@@ -1340,11 +1340,6 @@ td.MENCHcolumn3  { width: 13%; }
 }
 
 
-
-.form-group {
-    background-color: #FFFFFF;
-}
-
 .list-group-item .form-group {
     background-color: inherit;
 }
@@ -1948,8 +1943,9 @@ label {
 }
 
 
-
-
+.form-group {
+    background-color: transparent;
+}
 
 
 /* DARK - DEFAULT */
