@@ -374,7 +374,9 @@ img.no-radius {
     width: 100% !important;
 }
 
-
+.form-control{
+    border-radius: 21px;
+}
 
 .panel-body .form-control {
     padding:7px 0;
