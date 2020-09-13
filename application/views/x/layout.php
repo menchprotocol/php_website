@@ -14,7 +14,7 @@
 
 <?php
 
-echo '<div class="containeroutside-card hideIfEmpty">';
+echo '<div class="container outside-card hideIfEmpty">';
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
