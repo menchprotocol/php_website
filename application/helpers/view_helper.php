@@ -1248,7 +1248,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
 
         $color_code = trim(extract_icon_color($e___4485[$x__type]['m_icon']));
 
-        $ui .= '<div class="list-group-item add_notes_' . $x__type .'">';
+        $ui .= '<div class="list-group-item no-side-padding add_notes_' . $x__type .'">';
         $ui .= '<div class="add_notes_form">';
         $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
