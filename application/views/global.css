@@ -923,7 +923,6 @@ textarea.note-textarea{
     margin: 0;
     background-color: transparent !important;
     box-shadow: none;
-    color: #222222;
     padding: 0 33px 5px 0;
     line-height: 144% !important;
 }
@@ -1975,7 +1974,9 @@ label {
 .custom_ui_13884_ .algolia-autocomplete .aa-dropdown-menu,
 .custom_ui_13884_ .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu,
-.custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion {
+.custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
+.custom_ui_13884_13886 textarea,
+.custom_ui_13884_ textarea {
     background-color:#222222;
     color: #FFFFFF;
 
@@ -2008,7 +2009,7 @@ label {
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .mench-navigation,
 .custom_ui_13884_13885 .fade,
-.custom_ui_13884_13885 .outside-card{
+.custom_ui_13884_13885 .outside-card {
     background-color: #f0f0f0;
     color: #222222;
 }
@@ -2019,7 +2020,8 @@ label {
 .custom_ui_13884_13885 .btn-block,
 .custom_ui_13884_13885 .dropdown-menu,
 .custom_ui_13884_13885 .algolia-autocomplete .aa-dropdown-menu,
-.custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion {
+.custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion,
+.custom_ui_13884_13885 textarea {
     background-color:#FFFFFF;
     color: #222222;
 }
