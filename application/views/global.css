@@ -1550,7 +1550,8 @@ label {
 .social-footer{
     text-align: center;
     list-style: none;
-    margin: 89px 0 34px;
+    padding: 89px 0 34px;
+    margin: 0;
 }
 .social-footer li{
     display: inline-block;
@@ -1738,6 +1739,10 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .social-footer li{
+        margin: 0 5px;
+        font-size: 1.2em;
+    }
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 41px; }
 
