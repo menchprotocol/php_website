@@ -46,7 +46,7 @@ function search_email(){
     //Lock fields:
     email_searching = true;
     $('#email_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-    $('#input_email').prop('disabled', true).css('background-color','#f0f0f0');
+    $('#input_email').prop('disabled', true);
     $('#password_errors').html('');
     $('#flash_message').html(''); //Delete previous errors, if any
 
@@ -61,7 +61,7 @@ function search_email(){
         //Release field lock:
         email_searching = false;
         $('#email_check_next').html(go_next_icon);
-        $('#input_email').prop('disabled', false).css('background-color','#FFFFFF');
+        $('#input_email').prop('disabled', false);
 
         if (data.status) {
 
@@ -95,7 +95,7 @@ function add_account(){
     //Lock fields:
     account_adding = true;
     $('#add_acount_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-    $('#input_name, #new_password').prop('disabled', true).css('background-color','#f0f0f0');
+    $('#input_name, #new_password').prop('disabled', true);
 
     //Check email and validate:
     $.post("/e/e_signin_create", {
@@ -123,7 +123,7 @@ function add_account(){
             //Release field lock:
             account_adding = false;
             $('#add_acount_next').html(go_next_icon);
-            $('#new_password, #input_name').prop('disabled', false).css('background-color','#FFFFFF');
+            $('#new_password, #input_name').prop('disabled', false);
 
             //Do we know which field to focus on?
             if(data.focus_input_field.length>0) {
@@ -148,7 +148,7 @@ function e_signin_password(){
     //Lock fields:
     password_checking = true;
     $('#password_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-    $('#input_password').prop('disabled', true).css('background-color','#f0f0f0');
+    $('#input_password').prop('disabled', true);
 
     //Check email and validate:
     $.post("/e/e_signin_password", {
@@ -172,7 +172,7 @@ function e_signin_password(){
             //Release field lock:
             password_checking = false;
             $('#password_check_next').html(go_next_icon);
-            $('#input_password').prop('disabled', false).css('background-color','#FFFFFF').focus();
+            $('#input_password').prop('disabled', false).focus();
 
             //Show errors:
             $('#password_errors').html('<b class="montserrat discover"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();

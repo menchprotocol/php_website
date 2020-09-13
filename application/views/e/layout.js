@@ -555,7 +555,7 @@ function load_13571(e__id, x__id) {
 }
 
 function e_x_form_lock(){
-    $('#x__message').prop("disabled", true).css('background-color','#999999');
+    $('#x__message').prop("disabled", true);
 
     $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Uploading');
 
@@ -569,7 +569,7 @@ function e_x_form_unlock(result){
     }
 
     //Unlock either way:
-    $('#x__message').prop("disabled", false).css('background-color','#FFF');
+    $('#x__message').prop("disabled", false);
 
     $('.btn-save').removeClass('grey').attr('href', 'javascript:save_13571();').html('Save');
 
