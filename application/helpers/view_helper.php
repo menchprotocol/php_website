@@ -1191,7 +1191,7 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $prefix_statement = null, 
         }
 
         $ui .= '<div class="doclear">&nbsp;</div>';
-        $ui .= '<div class="pull-right right-adj"><a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="montserrat grey">'.$e___11035[13689]['m_title'].' '.$e___11035[13689]['m_icon'].'</a></div>';
+        $ui .= '<div class="pull-right right-adj"><a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="montserrat">'.$e___11035[13689]['m_title'].' '.$e___11035[13689]['m_icon'].'</a></div>';
 
         $ui .= '<div class="doclear">&nbsp;</div>';
     }
