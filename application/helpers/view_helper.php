@@ -929,9 +929,14 @@ function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_m
         array_push($already_selected, $sel['x__up']);
     }
 
-    if(!count($already_selected) && $parent_e__id==13491){
-        //Medium Font as Default:
-        $already_selected = array(13493);
+    if(!count($already_selected) && in_array($parent_e__id, $this->config->item('n___13890'))){
+        //FIND DEFAULT:
+        foreach($this->config->item('e___'.$parent_e__id) as $e__id2 => $m2){
+            if(in_array($e__id2, $this->config->item('n___13889') /* ACCOUNT DEFAULTS */ )){
+                $already_selected = array($e__id2);
+                break;
+            }
+        }
     }
 
     foreach($CI->config->item('e___'.$parent_e__id) as $e__id => $m) {
