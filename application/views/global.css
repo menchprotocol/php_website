@@ -1550,12 +1550,12 @@ label {
 .social-footer{
     text-align: center;
     list-style: none;
-    margin: 34px 0;
+    margin: 55px 0;
 }
 .social-footer li{
     display: inline-block;
     font-size: 1.5em;
-    margin: 0 5px;
+    margin: 0 13px;
 }
 
 .i-left {
