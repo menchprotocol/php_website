@@ -120,7 +120,7 @@ if(!isset($hide_header)){
                     }
 
                     //SEARCH BAR (initially hidden)
-                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m_title'].'"></form></div>';
+                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search white-border" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m_title'].'"></form></div>';
 
                     echo '</td>';
 

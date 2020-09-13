@@ -726,10 +726,6 @@ img.no-radius {
     line-height: 100%;
 }
 
-.white-border {
-    border: 3px solid #FFFFFF !important;
-    border-radius: 13px;
-}
 
 
 
@@ -1873,6 +1869,18 @@ label {
 
 .form-group, .form-control:focus {
     background-color: transparent;
+}
+
+
+
+.custom_ui_13884_13886 .white-border,
+.custom_ui_13884_ .white-border {
+    border: 3px solid #FFFFFF !important;
+    border-radius: 13px;
+}
+.custom_ui_13884_13885 .white-border {
+    border: 3px solid #222222 !important;
+    border-radius: 13px;
 }
 
 
