@@ -1245,6 +1245,9 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
 
     //ADD NEW:
     if(!in_array($x__type, $CI->config->item('n___12677')) && $e_of_i){
+
+        $color_code = trim(extract_icon_color($e___4485[$x__type]['m_icon']));
+
         $ui .= '<div class="list-group-item add_notes_' . $x__type .'">';
         $ui .= '<div class="add_notes_form">';
         $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
@@ -1261,20 +1264,22 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
         $ui .= '<table class="table table-condensed" style="margin-bottom: 16px;"><tr>';
 
         //Save button:
-        $ui .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.trim(extract_icon_color($e___4485[$x__type]['m_icon'])).' save_notes_'.$x__type.'">'.$e___4485[$x__type]['m_icon'].'</a></td>';
+        $ui .= '<td style="width:100px; padding: 10px 0 0 0;">';
+
+            //Add Button:
+            $ui .= '<a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a>';
+
+            //Upload File:
+            if($handles_uploads){
+                $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
+                $ui .= '<label class="btn btn-'.$color_code.' file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m_message'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m_icon'].'</span></label>';
+            }
+
+        $ui .= '</td>';
 
 
         //File counter:
         $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden"><span id="charNum' . $x__type . '">0</span>/' . config_var(4485).'</span></td>';
-
-
-        //Upload File:
-        if($handles_uploads){
-            $ui .= '<td style="width:42px; padding:42px 23px 0 0;">';
-            $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
-            $ui .= '<label class="file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m_message'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m_icon'].'</span></label>';
-            $ui .= '</td>';
-        }
 
 
         $ui .= '</tr></table>';
