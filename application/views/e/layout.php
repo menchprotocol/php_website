@@ -47,7 +47,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         }
 
         //ADD NEW
-        echo '<div id="new_11030" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(13422).'">
+        echo '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                         <input type="text"
@@ -351,7 +351,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             //Input to add new child:
             if($superpower_13422){
 
-                $focus_tab .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder itemsource no-side-padding '.superpower_active(10939).'">
+                $focus_tab .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
                             <input type="text"
@@ -425,7 +425,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             if($superpower_10939){
 
                 $focus_tab .= '<div class="list-group add_e_idea">';
-                $focus_tab .= '<div class="list-group-item list-adder itemidea">
+                $focus_tab .= '<div class="list-group-item list-adder">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
                         <input type="text"
