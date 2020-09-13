@@ -196,10 +196,6 @@ li a {
     border-radius: 0 !important;
 }
 
-.btn-discover, .btn-source, .btn-idea {
-    font-size: 1.2em !important;
-}
-
 a.btn, .btn.dropdown-toggle, label.btn {
     padding:15px;
 }
@@ -1872,7 +1868,7 @@ label {
 }
 
 .btn-label{
-    width: 48px;
+    width: 44px;
     margin-left: 10px !important;
     padding-right: 0 !important;
     padding-left: 0 !important;
