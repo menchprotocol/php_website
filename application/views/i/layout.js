@@ -183,7 +183,7 @@ function i_remove(i__id, x__id, is_parent){
             if (data.status) {
 
                 //Delete from UI:
-                $('.i__tr_' + x__id).html('<span style="color:#181818;"><i class="fas fa-trash-alt"></i></span>');
+                $('.i__tr_' + x__id).html('<span style="color:#222222;"><i class="fas fa-trash-alt"></i></span>');
 
                 //Hide the editor & saving results:
                 $('.i__tr_' + x__id).fadeOut();
