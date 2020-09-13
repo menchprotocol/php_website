@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-12 16:26:33 PST
+//Generated 2020-09-12 20:58:16 PST
 
 //CUSTOMIZABLE UI:
 $config['n___13890'] = array(13491,13884);
@@ -3300,7 +3300,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(10573,13502,13671,13401,12419,13562,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13207,11068,4341,13689,6225,12969,13405,6287,13865,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10939,10957,10673,12906,13572);
+$config['n___11035'] = array(10573,13502,13671,13401,12419,13562,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13689,13207,11068,4341,6225,12969,13405,6287,13865,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10939,10957,10673,12906,13572);
 $config['e___11035'] = array(
     10573 => array(
         'm_title' => 'BOOKMARK',
@@ -3404,6 +3404,12 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_profile' => array(13813,6404,11035,13420,10648,12138,7356,7355,4737),
     ),
+    13689 => array(
+        'm_title' => 'INFO',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-info-circle"></i>',
+        'm_profile' => array(11035),
+    ),
     13207 => array(
         'm_title' => 'LEADERBOARD',
         'm_message' => '',
@@ -3421,12 +3427,6 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
         'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
-    ),
-    13689 => array(
-        'm_title' => 'MORE INFO',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-info-circle"></i>',
-        'm_profile' => array(11035),
     ),
     6225 => array(
         'm_title' => 'MY ACCOUNT',
