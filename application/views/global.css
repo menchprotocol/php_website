@@ -1550,12 +1550,12 @@ label {
 .social-footer{
     text-align: center;
     list-style: none;
-    margin: 55px 0;
+    margin: 89px 0 34px;
 }
 .social-footer li{
     display: inline-block;
     font-size: 1.5em;
-    margin: 0 13px;
+    margin: 0 10px;
 }
 
 .i-left {
@@ -1738,6 +1738,7 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .social-footer li{ margin: 0 5px; }
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 41px; }
 
