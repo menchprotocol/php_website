@@ -1952,7 +1952,6 @@ label {
 .custom_ui_13884_13885 .algolia-autocomplete .aa-dropdown-menu,
 .custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13885 textarea,
-.custom_ui_13884_13885 .form-control,
 .custom_ui_13884_13885 .modal-content {
     background-color:#FFFFFF;
     color: #111111;
@@ -1963,7 +1962,8 @@ label {
 }
 
 .custom_ui_13884_13885 a,
-.custom_ui_13884_13885 .mench-navigation a{
+.custom_ui_13884_13885 .mench-navigation a,
+.custom_ui_13884_13885 .form-control {
     color: #111111;
 }
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
