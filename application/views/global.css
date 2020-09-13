@@ -1684,7 +1684,7 @@ label {
     margin-top: 10px;
 }
 
-.texttype__lg::placeholder, .alert {
+.texttype__lg::placeholder, .alert a {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
