@@ -1738,10 +1738,6 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
-    .social-footer li{
-        margin: 0 5px;
-        font-size: 1.2em;
-    }
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 41px; }
 
