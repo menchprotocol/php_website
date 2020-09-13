@@ -1613,19 +1613,19 @@ label {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
-.form-control::placeholder{
+.form-control::placeholder {
     color: #999999;
 }
-.texttype__sm{
+.texttype__sm {
     width:55px;
     margin-bottom: 5px;
 }
-.text_e_4736, .text_e_6197{
+.text_e_4736, .text_e_6197 {
     width:calc(100% - 38px);
     margin-bottom: 0;
 }
 
-.pull-middle{
+.pull-middle {
     display: block;
     width: 90px;
     margin: 0 auto;
