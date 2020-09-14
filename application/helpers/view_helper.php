@@ -822,7 +822,7 @@ function view_i_tree_e($i){
     $i_stats = i_stats($i['i__metadata']);
     $ui = '';
 
-    foreach($CI->config->item('e___4251') as $e__id => $m2){
+    foreach($CI->config->item('e___13207') as $e__id => $m2){
         if($i_stats['count_'.$e__id]>0){
             $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].':</div>';
             $ui .= '<div class="list-group" style="margin-bottom:33px;">';

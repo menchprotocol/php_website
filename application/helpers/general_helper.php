@@ -781,10 +781,10 @@ function i_stats($i__metadata){
     $array_3000 = ( isset($metadata['i___3000']) ? $metadata['i___3000'] : array() );
     usort($array_3000, 'sortByWeight');
 
-    $array_13202 = ( isset($metadata['i___13202']) ? $metadata['i___13202'] : array() );
-    usort($array_13202, 'sortByWeight');
+    $array_4430 = ( isset($metadata['i___4430']) ? $metadata['i___4430'] : array() );
+    usort($array_4430, 'sortByWeight');
 
-    $e_count = count($array_13202) + count($array_3000) + count($array_13339);
+    $e_count = count($array_4430) + count($array_3000) + count($array_13339);
 
     //Return stats:
     return array(
@@ -803,8 +803,8 @@ function i_stats($i__metadata){
         'count_13339' => count($array_13339),
         'array_3000' => $array_3000,
         'count_3000' => count($array_3000),
-        'array_13202' => $array_13202,
-        'count_13202' => count($array_13202),
+        'array_4430' => $array_4430,
+        'count_4430' => count($array_4430),
 
         //CERTIFICATES
         'count_7545' => count($array_7545),
