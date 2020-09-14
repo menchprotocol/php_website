@@ -17,7 +17,7 @@ function view_e_load_more($page, $limit, $list_e_count)
     return $ui;
 }
 
-function view_i_tree_stats($i_stats, $hide_idea){
+function view_i_tree_stats($i_stats, $hide_idea, $auto_hide = true){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -30,7 +30,7 @@ function view_i_tree_stats($i_stats, $hide_idea){
 
 
     //TIME STATS
-    $ui .= '<span class="i_x_stats hidden inline-block grey">';
+    $ui .= '<span class="i_x_stats inline-block grey '.( $auto_hide ? ' hidden ' : '' ).'">';
     if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
         //SECONDS
         $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block" style="min-width:96px;">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
