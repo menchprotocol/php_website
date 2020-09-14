@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-14 08:50:28 PST
+//Generated 2020-09-14 08:59:17 PST
 
 //MENCH FOOTER URLS:
 $config['n___13894'] = array(13019,13017,13018,13021,13016,13015,13418);
@@ -246,7 +246,7 @@ $config['e___13571'] = array(
     13572 => array(
         'm_title' => 'UPLOAD',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-photo-video"></i>',
+        'm_icon' => '<i class="fas fa-image"></i>',
         'm_profile' => array(6404,11035,13571),
     ),
 );
@@ -3610,7 +3610,7 @@ $config['e___11035'] = array(
     13572 => array(
         'm_title' => 'UPLOAD',
         'm_message' => 'Upload files up to 25 MB. Larger files can be uploaded to a 3rd-party platform & paste URL here.',
-        'm_icon' => '<i class="fas fa-photo-video"></i>',
+        'm_icon' => '<i class="fas fa-image"></i>',
         'm_profile' => array(6404,11035,13571),
     ),
 );
@@ -4100,7 +4100,7 @@ $config['e___6404'] = array(
     13572 => array(
         'm_title' => 'UPLOAD',
         'm_message' => '25',
-        'm_icon' => '<i class="fas fa-photo-video"></i>',
+        'm_icon' => '<i class="fas fa-image"></i>',
         'm_profile' => array(6404,11035,13571),
     ),
     12565 => array(
