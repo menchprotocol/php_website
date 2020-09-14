@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-14 12:00:55 PST
+//Generated 2020-09-14 13:16:05 PST
 
 //MENCH FOOTER URLS:
 $config['n___13894'] = array(13019,13017,13018,13021,13016,13015,13418);
@@ -454,7 +454,7 @@ $config['e___13530'] = array(
 );
 
 //SOURCES FEATURED:
-$config['n___12563'] = array(4446,2997,3005,13339,3147,13218,13350,10984,3192,2998);
+$config['n___12563'] = array(4446,2997,3005,13339,3147,13218,13350,3192,2998);
 $config['e___12563'] = array(
     4446 => array(
         'm_title' => 'ASSESSMENTS',
@@ -497,12 +497,6 @@ $config['e___12563'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-file-chart-line source"></i>',
         'm_profile' => array(12563,12968,3000),
-    ),
-    10984 => array(
-        'm_title' => 'SUPERPOWER OF WALKIE TALKIE',
-        'm_message' => '',
-        'm_icon' => '<i class="far fa-walkie-talkie idea" aria-hidden="true"></i>',
-        'm_profile' => array(12563,10957),
     ),
     3192 => array(
         'm_title' => 'TOOLS',
@@ -768,7 +762,7 @@ $config['e___6212'] = array(
         'm_title' => 'MENCH LEDGER',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
+        'm_profile' => array(12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     6103 => array(
         'm_title' => 'TRANSACTION METADATA',
@@ -1199,7 +1193,7 @@ $config['e___12887'] = array(
         'm_title' => 'MENCH LEDGER',
         'm_message' => '/ledger?any_e__id=',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
+        'm_profile' => array(12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     12888 => array(
         'm_title' => 'SOURCE EXPLORE EXPERTS',
@@ -1536,7 +1530,7 @@ $config['e___12500'] = array(
         'm_title' => 'MENCH LEDGER',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
+        'm_profile' => array(12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     7291 => array(
         'm_title' => 'LOGOUT',
@@ -1843,7 +1837,7 @@ $config['e___10876'] = array(
         'm_title' => 'MENCH LEDGER',
         'm_message' => 'https://mench.com/ledger',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
+        'm_profile' => array(12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     13405 => array(
         'm_title' => 'MY IDEAS',
@@ -3266,7 +3260,7 @@ $config['e___11035'] = array(
         'm_profile' => array(12701,11035,13871,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     13562 => array(
-        'm_title' => 'DISCOVER',
+        'm_title' => 'DISCOVERY MODE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-arrow-right discover"></i>',
         'm_profile' => array(11035),
@@ -3359,7 +3353,7 @@ $config['e___11035'] = array(
         'm_title' => 'MENCH LEDGER',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
+        'm_profile' => array(12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     6225 => array(
         'm_title' => 'MY ACCOUNT',
@@ -3526,7 +3520,7 @@ $config['e___10957'] = array(
         'm_title' => 'WALKIE TALKIE',
         'm_message' => 'Collaborative Publishing Powers',
         'm_icon' => '<i class="far fa-walkie-talkie idea" aria-hidden="true"></i>',
-        'm_profile' => array(12563,10957),
+        'm_profile' => array(10957),
     ),
     10986 => array(
         'm_title' => 'IDEA TIMING',
@@ -4212,7 +4206,7 @@ $config['e___11047'] = array(
         'm_title' => 'MENCH LEDGER',
         'm_message' => '/ledger?any_i__id=',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
+        'm_profile' => array(12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     7279 => array(
         'm_title' => 'SYNC SEARCH INDEX',
@@ -4861,7 +4855,7 @@ $config['e___2738'] = array(
         'm_title' => 'PLATFORM',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-code" aria-hidden="true"></i>',
-        'm_profile' => array(13450,2738),
+        'm_profile' => array(2738),
     ),
     7254 => array(
         'm_title' => 'SETTINGS',
@@ -5392,7 +5386,7 @@ $config['e___4527'] = array(
         'm_title' => 'MENCH LEDGER',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-atlas" aria-hidden="true"></i>',
-        'm_profile' => array(13450,12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
+        'm_profile' => array(12701,12500,6212,12887,11047,12707,10876,11035,4527,7735),
     ),
     4527 => array(
         'm_title' => 'MENCH MEMORY',
