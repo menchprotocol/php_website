@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-14 08:59:17 PST
+//Generated 2020-09-14 09:48:13 PST
 
 //MENCH FOOTER URLS:
 $config['n___13894'] = array(13019,13017,13018,13021,13016,13015,13418);
@@ -1392,7 +1392,7 @@ $config['e___12840'] = array(
 );
 
 //SOURCE LINK MESSAGE DISPLAY:
-$config['n___12822'] = array(4259,4257,4261,4260,7657,4255,4256,4258);
+$config['n___12822'] = array(4259,4257,4261,4260,4255,4256,4258);
 $config['e___12822'] = array(
     4259 => array(
         'm_title' => 'AUDIO',
@@ -1417,12 +1417,6 @@ $config['e___12822'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-image source" aria-hidden="true"></i>',
         'm_profile' => array(12822,12605,12524,11080,6198,11059,10593,4593,4592,4537),
-    ),
-    7657 => array(
-        'm_title' => 'PERCENT',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-divide source" aria-hidden="true"></i>',
-        'm_profile' => array(12822,4593,4592),
     ),
     4255 => array(
         'm_title' => 'TEXT',
@@ -4379,7 +4373,7 @@ $config['e___4592'] = array(
         'm_title' => 'PERCENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-divide source" aria-hidden="true"></i>',
-        'm_profile' => array(12822,4593,4592),
+        'm_profile' => array(4593,4592),
     ),
     4230 => array(
         'm_title' => 'RAW',
@@ -8472,7 +8466,7 @@ $config['e___4593'] = array(
         'm_title' => 'SOURCE LINK PERCENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-divide source" aria-hidden="true"></i>',
-        'm_profile' => array(12822,4593,4592),
+        'm_profile' => array(4593,4592),
     ),
     4230 => array(
         'm_title' => 'SOURCE LINK RAW',
