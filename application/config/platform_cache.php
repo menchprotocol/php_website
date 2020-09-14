@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-13 12:30:17 PST
+//Generated 2020-09-13 22:24:33 PST
 
 //MENCH FOOTER URLS:
 $config['n___13894'] = array(13019,13017,13018,13021,13016,13015,13418);
@@ -3312,7 +3312,7 @@ $config['e___11089'] = array(
 );
 
 //MY ACCOUNT:
-$config['n___6225'] = array(12289,10957,13491,13884,3288,3286);
+$config['n___6225'] = array(12289,10957,13884,13491,3288,3286);
 $config['e___6225'] = array(
     12289 => array(
         'm_title' => 'AVATAR',
@@ -3326,17 +3326,17 @@ $config['e___6225'] = array(
         'm_icon' => '<i class="fas fa-bolt" aria-hidden="true"></i>',
         'm_profile' => array(6225,11035,5007,4527),
     ),
-    13491 => array(
-        'm_title' => 'FONT SIZE',
-        'm_message' => 'Here is the current font size...',
-        'm_icon' => '<i class="fas fa-text-size"></i>',
-        'm_profile' => array(11054,13890,6225,4527,6204),
-    ),
     13884 => array(
         'm_title' => 'DISPLAY MODE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-adjust"></i>',
         'm_profile' => array(6204,11054,13890,4527,6225),
+    ),
+    13491 => array(
+        'm_title' => 'FONT SIZE',
+        'm_message' => 'Here is the current font size...',
+        'm_icon' => '<i class="fas fa-text-size"></i>',
+        'm_profile' => array(11054,13890,6225,4527,6204),
     ),
     3288 => array(
         'm_title' => 'EMAIL',
@@ -4033,7 +4033,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.563',
+        'm_message' => 'v1.56',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
