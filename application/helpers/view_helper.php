@@ -1537,7 +1537,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
         }
 
-        if($superpower_10939 && !$is_parent && $source_of_e){
+        if($superpower_10939 && (($source_of_e && !$is_parent) || $superpower_13422)){
 
             //UNLINK SOURCE
             $ui .= '<span><a href="javascript:void(0);" onclick="remove_10673(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m_title'].'">'.$e___11035[10673]['m_icon'].'</a></span>';
