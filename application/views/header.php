@@ -70,7 +70,7 @@ $current_mench = current_mench();
 
 </head>
 
-<body class="<?php foreach($this->config->item('e___13890') as $e__id => $m){ echo ' custom_ui_'.$e__id.'_'.$this->session->userdata('session_custom_ui_'.$e__id).' '; } ?>">
+<body class="mench-<?= $current_mench['x_name'] ?> <?php foreach($this->config->item('e___13890') as $e__id => $m){ echo ' custom_ui_'.$e__id.'_'.$this->session->userdata('session_custom_ui_'.$e__id).' '; } ?>">
 
 <?php
 //Any message we need to show here?

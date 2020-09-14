@@ -62,10 +62,17 @@ body {
 }
 .x__message img, .i_content img, .content-image {
     max-width: 100%;
-    max-height: 610px;
+    max-height: 377px;
     border-radius: 21px !important;
-    margin: 0 auto;
+    margin: 0;
     display: block;
+}
+.mench-idea .media-content, .mench-idea .x__message video {
+    max-width: 377px;
+}
+.mench-discover .x__message img, .mench-discover .i_content img, .mench-discover .content-image {
+    max-height: 610px;
+    margin: 0 auto;
 }
 .yt-container{
     margin: 10px 0 0;
