@@ -1435,7 +1435,8 @@ function view_e_basic($e)
 
 
     if(superpower_active(10939, true)){
-        $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'"><span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>'.$e['e__title'].'</a>';
+        $ui .= '<span class="icon-block"><a href="/@'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</a></span>';
+        $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
     } else {
         $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
         $ui .= '<b class="title-block title-no-right">'.$e['e__title'].'</b>';
