@@ -778,13 +778,13 @@ function i_stats($i__metadata){
     $array_13339 = ( isset($metadata['i___13339']) ? $metadata['i___13339'] : array() );
     usort($array_13339, 'sortByWeight');
 
-    $array_3000 = ( isset($metadata['i___3000']) ? $metadata['i___3000'] : array() );
-    usort($array_3000, 'sortByWeight');
+    $array_13897 = ( isset($metadata['i___13897']) ? $metadata['i___13897'] : array() );
+    usort($array_13897, 'sortByWeight');
 
     $array_4430 = ( isset($metadata['i___4430']) ? $metadata['i___4430'] : array() );
     usort($array_4430, 'sortByWeight');
 
-    $e_count = count($array_4430) + count($array_3000) + count($array_13339);
+    $e_count = count($array_4430) + count($array_13897) + count($array_13339);
 
     //Return stats:
     return array(
@@ -801,8 +801,8 @@ function i_stats($i__metadata){
         'e_count' => ( $e_count>0 ? $e_count : 1 ),
         'array_13339' => $array_13339,
         'count_13339' => count($array_13339),
-        'array_3000' => $array_3000,
-        'count_3000' => count($array_3000),
+        'array_13897' => $array_13897,
+        'count_13897' => count($array_13897),
         'array_4430' => $array_4430,
         'count_4430' => count($array_4430),
 
@@ -1543,7 +1543,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
-                if(count($profile_ids) && array_intersect($profile_ids, $CI->config->item('n___3000'))){
+                if(count($profile_ids) && in_array(13897, $profile_ids)){
                     array_push($export_row['_tags'], 'is_nonfiction');
                 }
 

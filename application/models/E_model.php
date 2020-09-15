@@ -552,7 +552,7 @@ class E_model extends CI_Model
         $max_search_levels = 3;
         $metadata_this = array(
             'p___13339' => array(),
-            'p___3000' => array(),
+            'p___13897' => array(),
         );
 
         //SOURCE PROFILE
@@ -564,10 +564,10 @@ class E_model extends CI_Model
         ), array('x__up'), 0) as $e__profile){
 
 
-            if(in_array($e__profile['e__id'], $this->config->item('n___3000'))){
+            if($e__profile['e__id']==13897){
                 //EXPERT CONTENT
-                if (!isset($metadata_this['p___3000'][$e['e__id']])) {
-                    $metadata_this['p___3000'][$e['e__id']] = $e;
+                if (!isset($metadata_this['p___13897'][$e['e__id']])) {
+                    $metadata_this['p___13897'][$e['e__id']] = $e;
                 }
             } elseif($e__profile['e__id']==13339) {
                 //EXPERT AUTHORS
@@ -583,9 +583,9 @@ class E_model extends CI_Model
                 $metadata_recursion = $this->E_model->metadata_experts($e__profile, ($level + 1));
 
                 //CONTENT CHANNELS
-                foreach($metadata_recursion['p___3000'] as $e__id => $e_content) {
-                    if (!isset($metadata_this['p___3000'][$e__id])) {
-                        $metadata_this['p___3000'][$e__id] = $e_content;
+                foreach($metadata_recursion['p___13897'] as $e__id => $e_content) {
+                    if (!isset($metadata_this['p___13897'][$e__id])) {
+                        $metadata_this['p___13897'][$e__id] = $e_content;
                     }
                 }
 

@@ -963,7 +963,7 @@ class I_model extends CI_Model
             'p___6162' => $i['i__duration'],
             'p___4430' => array(),
             'p___13339' => array(),
-            'p___3000' => array(),
+            'p___13897' => array(),
             'p___7545' => array(),
             'p___ids' => array($i['i__id']), //Keeps Track of the IDs scanned here
         );
@@ -988,9 +988,9 @@ class I_model extends CI_Model
                     $e_metadata_experts = $this->E_model->metadata_experts($ref_e[0]);
 
                     //CONTENT CHANNELS
-                    foreach($e_metadata_experts['p___3000'] as $e__id => $e_content) {
-                        if (!isset($metadata_this['p___3000'][$e__id])) {
-                            $metadata_this['p___3000'][$e__id] = $e_content;
+                    foreach($e_metadata_experts['p___13897'] as $e__id => $e_content) {
+                        if (!isset($metadata_this['p___13897'][$e__id])) {
+                            $metadata_this['p___13897'][$e__id] = $e_content;
                         }
                     }
 
@@ -1124,9 +1124,9 @@ class I_model extends CI_Model
             }
 
             //EXPERT CONTENT
-            foreach($metadata_recursion['p___3000'] as $e__id => $e_content) {
-                if (!isset($metadata_this['p___3000'][$e__id])) {
-                    $metadata_this['p___3000'][$e__id] = $e_content;
+            foreach($metadata_recursion['p___13897'] as $e__id => $e_content) {
+                if (!isset($metadata_this['p___13897'][$e__id])) {
+                    $metadata_this['p___13897'][$e__id] = $e_content;
                 }
             }
 
@@ -1175,7 +1175,7 @@ class I_model extends CI_Model
             'i___6162' => intval($metadata_this['p___6162']),
             'i___4430' => $metadata_this['p___4430'], //Mench Ideators
             'i___13339' => $metadata_this['p___13339'], //Expert Authors
-            'i___3000' => $metadata_this['p___3000'], //Expert Content
+            'i___13897' => $metadata_this['p___13897'], //Expert Content
             'i___7545' => $metadata_this['p___7545'], //Certificates
         ));
 
