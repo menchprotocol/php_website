@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-14 17:11:21 PST
+//Generated 2020-09-15 15:16:58 PST
 
-//MENCH FOOTER URLS:
+//MENCH SOCIAL LINKS:
 $config['n___13894'] = array(13019,13017,13018,13021,13016,13015,13418);
 $config['e___13894'] = array(
     13019 => array(
@@ -372,7 +372,7 @@ $config['e___13531'] = array(
         'm_title' => 'EMAIL',
         'm_message' => 'email',
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_profile' => array(13861,13531,6404,4269,12103,6225,4755),
+        'm_profile' => array(13861,13531,6404,4269,6225,4755),
     ),
     3099 => array(
         'm_title' => 'REDDIT',
@@ -1518,7 +1518,7 @@ $config['e___12500'] = array(
         'm_title' => 'LEADERBOARD',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_profile' => array(13450,13543,11035,12500,12489,10876,4527),
+        'm_profile' => array(13543,11035,12500,12489,10876,4527),
     ),
     6287 => array(
         'm_title' => 'PLUGINS',
@@ -1599,7 +1599,7 @@ $config['e___4269'] = array(
         'm_title' => 'EMAIL',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_profile' => array(13861,13531,6404,4269,12103,6225,4755),
+        'm_profile' => array(13861,13531,6404,4269,6225,4755),
     ),
     13025 => array(
         'm_title' => 'FULL NAME',
@@ -1772,7 +1772,7 @@ $config['e___12523'] = array(
     13450 => array(
         'm_title' => 'MENCH GLOSSARY',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-font"></i>',
+        'm_icon' => '<i class="fas fa-shapes"></i>',
         'm_profile' => array(2738,12523),
     ),
 );
@@ -1825,7 +1825,7 @@ $config['e___10876'] = array(
         'm_title' => 'LEADERBOARD',
         'm_message' => 'https://mench.com/@',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_profile' => array(13450,13543,11035,12500,12489,10876,4527),
+        'm_profile' => array(13543,11035,12500,12489,10876,4527),
     ),
     7291 => array(
         'm_title' => 'LOGOUT',
@@ -3216,7 +3216,7 @@ $config['e___6225'] = array(
         'm_title' => 'EMAIL',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_profile' => array(13861,13531,6404,4269,12103,6225,4755),
+        'm_profile' => array(13861,13531,6404,4269,6225,4755),
     ),
     3286 => array(
         'm_title' => 'PASSWORD',
@@ -3227,7 +3227,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(10573,13502,13671,13401,12419,13562,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13689,13207,11068,4341,6225,12969,13405,6287,13865,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10939,10957,10673,12906,13572);
+$config['n___11035'] = array(10573,13502,13671,13401,12419,13292,13573,13574,13495,13813,13670,12707,4235,12991,12211,12137,13689,13207,11068,4341,6225,12969,13405,6287,13865,13562,11030,13579,6415,12896,13524,7256,13692,13693,4269,13571,4997,13007,10939,10957,10673,12906,13572);
 $config['e___11035'] = array(
     10573 => array(
         'm_title' => 'BOOKMARK',
@@ -3259,12 +3259,6 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="far fa-comments discover" aria-hidden="true"></i>',
         'm_profile' => array(12701,11035,13871,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
-    13562 => array(
-        'm_title' => 'DISCOVERY MODE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-arrow-right discover"></i>',
-        'm_profile' => array(11035),
-    ),
     13292 => array(
         'm_title' => 'DISCOVERY TIME',
         'm_message' => '',
@@ -3293,7 +3287,7 @@ $config['e___11035'] = array(
         'm_title' => 'FEATURED',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
-        'm_profile' => array(13450,11035),
+        'm_profile' => array(11035),
     ),
     13670 => array(
         'm_title' => 'FILTER SOURCE DISCOVERIES',
@@ -3341,7 +3335,7 @@ $config['e___11035'] = array(
         'm_title' => 'LEADERBOARD',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_profile' => array(13450,13543,11035,12500,12489,10876,4527),
+        'm_profile' => array(13543,11035,12500,12489,10876,4527),
     ),
     11068 => array(
         'm_title' => 'MAGIC LOGIN',
@@ -3384,6 +3378,12 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lock source"></i>',
         'm_profile' => array(4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
+    ),
+    13562 => array(
+        'm_title' => 'PREVIEW DISCOVERY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-arrow-right discover"></i>',
+        'm_profile' => array(11035),
     ),
     11030 => array(
         'm_title' => 'PROFILE',
@@ -3795,19 +3795,13 @@ $config['e___11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['n___6404'] = array(12678,7274,12904,11057,11056,12331,12427,3288,12176,4356,12137,4485,4736,11064,11065,13014,13005,11079,11060,13556,13545,11066,13803,12088,13206,11986,6197,12232,10939,13572,12565,12568);
+$config['n___6404'] = array(12678,12904,11057,11056,12331,12427,3288,12176,4356,12137,4485,4736,11064,11065,13014,13005,7274,11079,11060,13556,13545,11066,13803,12088,13206,11986,6197,12232,10939,13572,12565,12568);
 $config['e___6404'] = array(
     12678 => array(
         'm_title' => 'ALGOLIA SEARCH ENABLED (0 OR 1)',
         'm_message' => '1',
         'm_icon' => '',
         'm_profile' => array(3323,6404),
-    ),
-    7274 => array(
-        'm_title' => 'CRON JOBS',
-        'm_message' => '/usr/bin/php /var/www/platform/index.php e plugin',
-        'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
-        'm_profile' => array(6404,6287,6403,12999),
     ),
     12904 => array(
         'm_title' => 'DEFAULT IDEA COVER',
@@ -3843,7 +3837,7 @@ $config['e___6404'] = array(
         'm_title' => 'EMAIL',
         'm_message' => 'support@mench.com',
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_profile' => array(13861,13531,6404,4269,12103,6225,4755),
+        'm_profile' => array(13861,13531,6404,4269,6225,4755),
     ),
     12176 => array(
         'm_title' => 'IDEA DEFAULT TIME SECONDS',
@@ -3898,6 +3892,12 @@ $config['e___6404'] = array(
         'm_message' => '34',
         'm_icon' => '<i class="fas fa-sort source"></i>',
         'm_profile' => array(6404),
+    ),
+    7274 => array(
+        'm_title' => 'MENCH CRON JOBS',
+        'm_message' => '/usr/bin/php /var/www/platform/index.php e plugin',
+        'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
+        'm_profile' => array(6404,6287,6403,12999),
     ),
     11079 => array(
         'm_title' => 'MENCH TIMEZONE',
@@ -4872,7 +4872,7 @@ $config['e___2738'] = array(
     13450 => array(
         'm_title' => 'MENCH GLOSSARY',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-font"></i>',
+        'm_icon' => '<i class="fas fa-shapes"></i>',
         'm_profile' => array(2738,12523),
     ),
     13150 => array(
@@ -4936,7 +4936,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(13889,10956,13533,12279,10573,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13491,12211,13479,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,13812,7355,12400,12677,12675,11018,13530,13408,13544,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,13894,6201,4341,4527,11054,12687,11035,6206,12112,10876,6212,7277,6169,6225,12969,3000,12741,6287,12577,13865,13776,4755,13531,13783,12761,13023,13672,4269,6204,13413,6194,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,12500);
+$config['n___4527'] = array(13889,10956,13533,12279,10573,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13491,12211,13479,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,13812,7355,12400,12677,12675,11018,13530,13408,13544,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,13894,6206,12112,10876,6212,7277,6169,6225,12969,3000,12741,6287,12577,13865,13776,4755,13531,13783,12761,13023,13672,4269,6204,13413,6194,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12968,12523,10692,6103,6186,4593,13442,6146,13480,13548,13414,12500);
 $config['e___4527'] = array(
     13889 => array(
         'm_title' => 'ACCOUNT DEFAULTS',
@@ -5338,7 +5338,7 @@ $config['e___4527'] = array(
         'm_title' => 'LEADERBOARD',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-medal source"></i>',
-        'm_profile' => array(13450,13543,11035,12500,12489,10876,4527),
+        'm_profile' => array(13543,11035,12500,12489,10876,4527),
     ),
     6170 => array(
         'm_title' => 'MAXIMUM IDEAS',
@@ -5369,12 +5369,6 @@ $config['e___4527'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
         'm_profile' => array(12829,6403,4527),
-    ),
-    13894 => array(
-        'm_title' => 'MENCH FOOTER URLS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-laugh"></i>',
-        'm_profile' => array(4593,4527,12103),
     ),
     6201 => array(
         'm_title' => 'MENCH IDEAS',
@@ -5411,6 +5405,12 @@ $config['e___4527'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
         'm_profile' => array(11054,6403,4527),
+    ),
+    13894 => array(
+        'm_title' => 'MENCH SOCIAL LINKS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_profile' => array(6403,4593,4527),
     ),
     6206 => array(
         'm_title' => 'MENCH SOURCES',
@@ -5602,7 +5602,7 @@ $config['e___4527'] = array(
         'm_title' => 'SOURCE LINK UPLOAD FILE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-file-plus source"></i>',
-        'm_profile' => array(12821,6196,4527),
+        'm_profile' => array(12821,4527),
     ),
     4537 => array(
         'm_title' => 'SOURCE LINK URLS',
@@ -6587,31 +6587,25 @@ $config['e___7309'] = array(
 );
 
 //PLUGINS:
-$config['n___6287'] = array(7274,12739,12733,12722,7264,7276,13369,4356,7261,12731,12734,7260,7263,11049,7259,12138,7275,12735,7712,4527,7277,13602,12710,12709,12729,12888,7267,13790,12736,12732,13881,7268,7269,12730,12738,12712,12737,7278,12967,7279,4367,12114,12569);
+$config['n___6287'] = array(12739,12722,12733,7264,7276,13369,4356,7261,12731,12734,7260,7263,11049,7259,12138,7275,12735,7712,7274,4527,7277,13602,12710,12709,12729,12888,7267,13790,12736,12732,13881,7268,7269,12730,12738,12712,12737,7278,12967,7279,4367,12114,12569);
 $config['e___6287'] = array(
-    7274 => array(
-        'm_title' => 'CRON JOBS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
-        'm_profile' => array(6404,6287,6403,12999),
-    ),
     12739 => array(
         'm_title' => 'DISCOVER ANALYZE URLS',
         'm_message' => '',
         'm_icon' => '',
         'm_profile' => array(6287),
     ),
-    12733 => array(
-        'm_title' => 'DISCOVER REVIEW JSON',
-        'm_message' => '',
-        'm_icon' => '<i class="fad fa-code discover"></i>',
-        'm_profile' => array(11047,12741,12701,6287),
-    ),
     12722 => array(
         'm_title' => 'DISCOVER REVIEW JSON',
         'm_message' => '',
         'm_icon' => '',
         'm_profile' => array(12741,6287),
+    ),
+    12733 => array(
+        'm_title' => 'DISCOVER REVIEW JSON',
+        'm_message' => '',
+        'm_icon' => '<i class="fad fa-code discover"></i>',
+        'm_profile' => array(11047,12741,12701,6287),
     ),
     7264 => array(
         'm_title' => 'IDEA BIRDS EYE MARKS',
@@ -6702,6 +6696,12 @@ $config['e___6287'] = array(
         'm_message' => '',
         'm_icon' => '<i class="far fa-question-circle idea"></i>',
         'm_profile' => array(11054,13028,6287,10893,4527),
+    ),
+    7274 => array(
+        'm_title' => 'MENCH CRON JOBS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-clock mench-spin" aria-hidden="true"></i>',
+        'm_profile' => array(6404,6287,6403,12999),
     ),
     4527 => array(
         'm_title' => 'MENCH MEMORY',
@@ -7057,7 +7057,7 @@ $config['e___6255'] = array(
 );
 
 //PRIVATE INFORMATION:
-$config['n___4755'] = array(13039,13040,13520,13041,13038,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,6196,7561,7564,7560,7562,13042,3286,4783,4755,7495,6415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,6155,13415,12906,12489,12114,13377);
+$config['n___4755'] = array(13039,13040,13520,13041,13038,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,7561,7564,7560,7562,13042,3286,4783,4755,7495,6415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,6155,13415,12906,12489,12114,13377);
 $config['e___4755'] = array(
     13039 => array(
         'm_title' => '$13 USD PER MONTH',
@@ -7351,7 +7351,7 @@ $config['e___4755'] = array(
         'm_title' => 'EMAIL',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
-        'm_profile' => array(13861,13531,6404,4269,12103,6225,4755),
+        'm_profile' => array(13861,13531,6404,4269,6225,4755),
     ),
     4235 => array(
         'm_title' => 'GET STARTED',
@@ -7406,12 +7406,6 @@ $config['e___4755'] = array(
         'm_message' => '',
         'm_icon' => '<i class="far fa-memory" aria-hidden="true"></i>',
         'm_profile' => array(4755,6403,4527),
-    ),
-    6196 => array(
-        'm_title' => 'MENCH MESSENGER',
-        'm_message' => '',
-        'm_icon' => '<i class="fab fa-facebook-messenger" aria-hidden="true"></i>',
-        'm_profile' => array(4755,12890),
     ),
     7561 => array(
         'm_title' => 'MINER SIGNIN NO IDEA',
@@ -8067,10 +8061,10 @@ $config['e___4593'] = array(
         'm_profile' => array(12700,13023,13530,11018,4485,10593,4593),
     ),
     13894 => array(
-        'm_title' => 'MENCH FOOTER URLS',
+        'm_title' => 'MENCH SOCIAL LINKS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-laugh"></i>',
-        'm_profile' => array(4593,4527,12103),
+        'm_icon' => '<i class="fas fa-share"></i>',
+        'm_profile' => array(6403,4593,4527),
     ),
     4231 => array(
         'm_title' => 'MESSAGE',
