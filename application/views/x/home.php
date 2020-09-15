@@ -9,7 +9,7 @@
     echo '<h1 class="cen" style="padding-top: 34px;">' . view_i_title($i) . '</h1>';
 
     //IDEA MESSAGES
-    echo '<div style="margin-bottom:33px;">';
+    echo '<div class="message-center" style="margin-bottom:33px;">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
