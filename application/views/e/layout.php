@@ -34,7 +34,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__down' => $e['e__id'],
         ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
-        $show_max = config_var(13803) + 1; //For example If max 3 should not show expansion unless 5 or more.
+        $show_max = config_var(13803);
         $hide = false;
         foreach($profiles as $count => $e_profile) {
             if(!$hide && $count==$show_max){
