@@ -118,7 +118,6 @@ if(!isset($hide_header)){
 
                     }
 
-
                     if (!$user_e) {
 
                         //GUESTS
