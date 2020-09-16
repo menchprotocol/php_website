@@ -70,7 +70,7 @@ body {
 .mench-idea .media-content, .mench-idea .x__message video {
     max-width: 377px;
 }
-.mench-discover .e-appendix {
+.mench-discover .e-appendix, .mench-discover .x__message img, .mench-discover .i_content img, .mench-discover .content-image {
     max-height: 610px;
     margin: 0 auto;
 }
