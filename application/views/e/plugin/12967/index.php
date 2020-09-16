@@ -25,12 +25,15 @@ foreach($this->config->item('e___12523') as $e__id => $m) {
     }
 
 }
-echo $updated.' Icons updated across '.count($this->config->item('e___12523')).' IF NEW sources.<br />';
+echo $updated.' Icons updated across '.count($this->config->item('e___12523')).' sources.<br />';
 
 
 
 
 //IF DIFFERENT
+/*
+ * Retired for now
+ *
 $updated = 0;
 foreach($this->config->item('e___12968') as $e__id => $m) {
     //Update All Child Icons that are not the same:
@@ -50,3 +53,5 @@ foreach($this->config->item('e___12968') as $e__id => $m) {
 
 }
 echo $updated.' Icons updated across '.count($this->config->item('e___12968')).' IF DIFFERENT sources.<br />';
+
+*/
