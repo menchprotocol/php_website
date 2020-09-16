@@ -57,6 +57,14 @@ class E extends CI_Controller
             $user_e = superpower_assigned();
         }
 
+        if($user_e['e__id']==1){
+            view_json(array(
+                'idea' => status_converter(4737),
+                'source' => status_converter(6177),
+            ));
+            return false;
+        }
+
         //Do we have any mass action to process here?
         if (superpower_assigned(12703) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 

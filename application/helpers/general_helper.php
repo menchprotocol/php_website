@@ -1302,7 +1302,18 @@ function e_of_i($i__id, $user_e = array()){
 
 }
 
-
+function status_converter($status_id){
+    //Create a map of statuses between transactions and ideas/sources:
+    $status_converter = array();
+    $CI =& get_instance();
+    foreach($CI->config->item('n___6186') as $e__id) {
+        $matching_status = array_intersect($CI->config->item('n___'.$status_id), $CI->config->item('n___'.$e__id));
+        if(count($matching_status)){
+            $status_converter[end($matching_status)] = $e__id;
+        }
+    }
+    return $status_converter;
+}
 
 function boost_power()
 {

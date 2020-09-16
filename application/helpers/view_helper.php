@@ -1360,6 +1360,8 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
     $user_input = $user_e;
     $user_session = superpower_assigned();
+    $discovery_mode = $x__type==6255;
+    $show_wide_view = ( !$discovery_mode || strlen($message_input) );
 
     if(!$user_e){
         $user_e = $user_session;
@@ -1367,13 +1369,13 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
 
 
     $completion_rate['completion_percentage'] = 0; //Assume no progress
-    if($user_e && $x__type==6255){
+    if($user_e && $discovery_mode){
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
     }
 
 
     $i_stats = i_stats($i['i__metadata']);
-    $href = ( $x__type == 6255 ? ( $user_input && $user_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?focus__e='.$user_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
+    $href = ( $discovery_mode ? ( $user_input && $user_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?focus__e='.$user_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-sm-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
 
@@ -1381,14 +1383,14 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         if($show_editor){
 
             //SORT
-            $ui .= '<div class="note-btn btn-left note-editor edit-off '.( $x__type==6255 ? ' editor-discover ' : ' editor-idea '.superpower_active(10939) ).'">';
+            $ui .= '<div class="note-btn btn-left note-editor edit-off '.( $discovery_mode ? ' editor-discover ' : ' editor-idea '.superpower_active(10939) ).'">';
             $ui .= '<span class="show-on-hover">';
             $ui .= '<span title="'.$e___13369[13413]['m_title'].'" class="x_sort">'.$e___13369[13413]['m_icon'].'</span>';
             $ui .= '</span>';
             $ui .= '</div>';
 
             //REMOVE
-            $ui .= '<div class="note-btn btn-right note-editor edit-off '.( $x__type==6255 ? ' editor-discover ' : ' editor-idea '.superpower_active(10939) ).'">';
+            $ui .= '<div class="note-btn btn-right note-editor edit-off '.( $discovery_mode ? ' editor-discover ' : ' editor-idea '.superpower_active(10939) ).'">';
             $ui .= '<span class="show-on-hover">';
             $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' </span>';
             $ui .= '</span>';
@@ -1398,7 +1400,7 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         }
 
 
-        $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).' '.( $x__type==6255 ? '' : ' cover-gold ' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).( $completion_rate['completion_percentage']>0 ? view_x_progress($completion_rate, $i, true) : '' ).'<b class="montserrat">'.view_i_title($i).'</b></a>';
+        $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).' '.( $discovery_mode ? '' : ' cover-gold ' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).( $completion_rate['completion_percentage']>0 ? view_x_progress($completion_rate, $i, true) : '' ).'<b class="montserrat">'.view_i_title($i).'</b></a>';
 
 
     $ui .= '</div>';

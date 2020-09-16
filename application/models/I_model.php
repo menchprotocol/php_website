@@ -284,7 +284,6 @@ class I_model extends CI_Model
             6182 => 6173,   //IDEA DELETE   => DISCOVER DELETE
         );
 
-
         foreach($this->I_model->fetch($query) as $i){
 
             $stats['scanned']++;
