@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-16 11:23:51 PST
+//Generated 2020-09-16 11:26:23 PST
 
 //TRANSACTIONS UNPUBLISHED:
 $config['n___6173'] = array(6182,6178);
@@ -777,7 +777,7 @@ $config['e___6159'] = array(
         'm_title' => 'MENCH MEMBERS',
         'm_message' => 'i___4430',
         'm_icon' => '<i class="fas fa-user source" aria-hidden="true"></i>',
-        'm_profile' => array(6159,13450,2738,4364,10573),
+        'm_profile' => array(13207,6159,13450,2738,4364,10573),
     ),
     6169 => array(
         'm_title' => 'MINIMUM IDEAS',
@@ -1070,13 +1070,13 @@ $config['e___13291'] = array(
 );
 
 //LEADERBOARD:
-$config['n___13207'] = array(13898,13897,13339);
+$config['n___13207'] = array(4430,13897,13339);
 $config['e___13207'] = array(
-    13898 => array(
-        'm_title' => 'SHAREHOLDERS',
+    4430 => array(
+        'm_title' => 'MENCH MEMBERS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-chart-pie idea"></i>',
-        'm_profile' => array(4527,13207,11018,13450),
+        'm_icon' => '<i class="fas fa-user source" aria-hidden="true"></i>',
+        'm_profile' => array(13207,6159,13450,2738,4364,10573),
     ),
     13897 => array(
         'm_title' => 'NONFICTION CONTENT',
@@ -1434,7 +1434,7 @@ $config['e___10573'] = array(
         'm_title' => 'MENCH MEMBERS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-user source" aria-hidden="true"></i>',
-        'm_profile' => array(6159,13450,2738,4364,10573),
+        'm_profile' => array(13207,6159,13450,2738,4364,10573),
     ),
 );
 
@@ -3177,7 +3177,7 @@ $config['e___11018'] = array(
         'm_title' => 'SHAREHOLDERS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-chart-pie idea"></i>',
-        'm_profile' => array(4527,13207,11018,13450),
+        'm_profile' => array(4527,11018,13450),
     ),
     4601 => array(
         'm_title' => 'KEYWORD',
@@ -4946,7 +4946,7 @@ $config['e___2738'] = array(
         'm_title' => 'MENCH MEMBERS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-user source" aria-hidden="true"></i>',
-        'm_profile' => array(6159,13450,2738,4364,10573),
+        'm_profile' => array(13207,6159,13450,2738,4364,10573),
     ),
     13518 => array(
         'm_title' => 'MEMBER DONATIONS',
@@ -5645,7 +5645,7 @@ $config['e___4527'] = array(
         'm_title' => 'SHAREHOLDERS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-chart-pie idea"></i>',
-        'm_profile' => array(4527,13207,11018,13450),
+        'm_profile' => array(4527,11018,13450),
     ),
     13672 => array(
         'm_title' => 'SHOW URL',
