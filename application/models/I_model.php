@@ -275,14 +275,7 @@ class I_model extends CI_Model
             'missing_creation_fix' => 0,
             'status_sync' => 0,
         );
-
-        $status_converter = array(
-            12137 => 12399, //IDEA FEATURE  => DISCOVER FEATURE
-            13811 => 6176,  //IDEA LOCKED   => DISCOVER PUBLISH
-            6184 => 6176,   //IDEA PUBLISH  => DISCOVER PUBLISH
-            6183 => 6175,   //IDEA DRAFT    => DISCOVER DRAFT
-            6182 => 6173,   //IDEA DELETE   => DISCOVER DELETE
-        );
+        $status_converter = status_converter(4737);
 
         foreach($this->I_model->fetch($query) as $i){
 

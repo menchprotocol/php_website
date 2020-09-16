@@ -501,12 +501,8 @@ class E_model extends CI_Model
         );
 
         //SOURCE
-        $status_converter = array(
-            12563 => 12399, //SOURCE FEATURED => DISCOVER FEATURED
-            6181 => 6176, //SOURCE PUBLISH => DISCOVER PUBLISH
-            6180 => 6175, //SOURCE DRAFT => DISCOVER DRAFT
-            6178 => 6173, //SOURCE DELETE => DISCOVER DELETE
-        );
+        $status_converter = status_converter(6177);
+
         foreach($this->E_model->fetch($query) as $e){
 
             $stats['scanned']++;
