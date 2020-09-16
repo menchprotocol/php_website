@@ -8,7 +8,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-16 11:26:23 PST
+//Generated 2020-09-16 11:47:50 PST
+
+//SOURCE LINK DISPLAY TOOLTIP-ONLY:
+$config['n___13899'] = array(4255);
+$config['e___13899'] = array(
+    4255 => array(
+        'm_title' => 'SOURCE LINK TEXT',
+        'm_message' => '',
+        'm_icon' => '<i class="fad fa-align-left source"></i>',
+        'm_profile' => array(13899,12822,10593,4593,4592),
+    ),
+);
 
 //TRANSACTIONS UNPUBLISHED:
 $config['n___6173'] = array(6182,6178);
@@ -244,7 +255,7 @@ $config['e___13672'] = array(
     10876 => array(
         'm_title' => 'MENCH URL',
         'm_message' => '',
-        'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
+        'm_icon' => '<i class="fas fa-link"></i>',
         'm_profile' => array(13672,13023,6403,4527,1326),
     ),
 );
@@ -1156,7 +1167,7 @@ $config['e___13023'] = array(
     10876 => array(
         'm_title' => 'MENCH URL',
         'm_message' => '',
-        'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
+        'm_icon' => '<i class="fas fa-link"></i>',
         'm_profile' => array(13672,13023,6403,4527,1326),
     ),
     13531 => array(
@@ -1380,7 +1391,7 @@ $config['e___12840'] = array(
     ),
 );
 
-//SOURCE LINK MESSAGE DISPLAY:
+//SOURCE LINK DISPLAY MESSAGE:
 $config['n___12822'] = array(4259,4257,4261,4260,4255,4256,4258);
 $config['e___12822'] = array(
     4259 => array(
@@ -1411,7 +1422,7 @@ $config['e___12822'] = array(
         'm_title' => 'TEXT',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-align-left source"></i>',
-        'm_profile' => array(12822,10593,4593,4592),
+        'm_profile' => array(13899,12822,10593,4593,4592),
     ),
     4256 => array(
         'm_title' => 'URL',
@@ -4202,13 +4213,13 @@ $config['e___11054'] = array(
     12687 => array(
         'm_title' => 'MENCH MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-comments-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comments-alt" aria-hidden="true"></i>',
         'm_profile' => array(6403,11054,4527),
     ),
     11035 => array(
         'm_title' => 'MENCH NAVIGATION',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-compass" aria-hidden="true"></i>',
         'm_profile' => array(11054,6403,4527),
     ),
     4592 => array(
@@ -4380,7 +4391,7 @@ $config['e___4592'] = array(
         'm_title' => 'TEXT',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-align-left source"></i>',
-        'm_profile' => array(12822,10593,4593,4592),
+        'm_profile' => array(13899,12822,10593,4593,4592),
     ),
     4318 => array(
         'm_title' => 'TIME',
@@ -5051,7 +5062,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(13889,13783,10956,13533,12279,10573,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13491,12211,13479,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13544,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6287,13894,6206,12112,10876,6212,7277,6169,13037,6225,12969,3000,12741,12577,13865,13776,4755,13531,12761,13023,13898,13672,4269,6204,13413,6194,13571,6198,13550,11080,12822,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12968,12523,10692,6103,6175,12399,6176,6186,6173,4593,13442,6146,13480,13548,13414,12500);
+$config['n___4527'] = array(13889,13783,10956,13533,12279,10573,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13491,12211,13479,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13544,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6287,13894,6206,12112,10876,6212,7277,6169,13037,6225,12969,3000,12741,12577,13865,13776,4755,13531,12761,13023,13898,13672,4269,6204,13413,6194,13571,6198,13550,12822,13899,11080,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12968,12523,10692,6103,6175,12399,6176,6186,6173,4593,13442,6146,13480,13548,13414,12500);
 $config['e___4527'] = array(
     13889 => array(
         'm_title' => 'ACCOUNT DEFAULTS',
@@ -5512,13 +5523,13 @@ $config['e___4527'] = array(
     12687 => array(
         'm_title' => 'MENCH MESSAGES',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-comments-alt" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-comments-alt" aria-hidden="true"></i>',
         'm_profile' => array(6403,11054,4527),
     ),
     11035 => array(
         'm_title' => 'MENCH NAVIGATION',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-compass" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-compass" aria-hidden="true"></i>',
         'm_profile' => array(11054,6403,4527),
     ),
     6287 => array(
@@ -5548,7 +5559,7 @@ $config['e___4527'] = array(
     10876 => array(
         'm_title' => 'MENCH URL',
         'm_message' => '',
-        'm_icon' => '<img src="https://mench.com/img/mench.png" class="mench-spin no-radius">',
+        'm_icon' => '<i class="fas fa-link"></i>',
         'm_profile' => array(13672,13023,6403,4527,1326),
     ),
     6212 => array(
@@ -5695,17 +5706,23 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(4527,12273),
     ),
+    12822 => array(
+        'm_title' => 'SOURCE LINK DISPLAY MESSAGE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-eye source"></i>',
+        'm_profile' => array(4527,12821),
+    ),
+    13899 => array(
+        'm_title' => 'SOURCE LINK DISPLAY TOOLTIP-ONLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-comment-alt source"></i>',
+        'm_profile' => array(4527,12821),
+    ),
     11080 => array(
         'm_title' => 'SOURCE LINK FILE EXTENSIONS',
         'm_message' => '',
         'm_icon' => '<i class="far fa-file source"></i>',
         'm_profile' => array(12821,4527),
-    ),
-    12822 => array(
-        'm_title' => 'SOURCE LINK MESSAGE DISPLAY',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle source"></i>',
-        'm_profile' => array(4527,12821),
     ),
     4592 => array(
         'm_title' => 'SOURCE LINKS',
@@ -5728,13 +5745,13 @@ $config['e___4527'] = array(
     4537 => array(
         'm_title' => 'SOURCE LINK URLS',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-spider-web source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-spider-web source" aria-hidden="true"></i>',
         'm_profile' => array(12821,4527),
     ),
     12524 => array(
         'm_title' => 'SOURCE LINK VISUAL',
         'm_message' => '',
-        'm_icon' => '<i class="fad fa-film-alt source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-film-alt source" aria-hidden="true"></i>',
         'm_profile' => array(12821,4527),
     ),
     4997 => array(
@@ -6064,7 +6081,7 @@ $config['e___10593'] = array(
         'm_title' => 'SOURCE LINK TEXT',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-align-left source"></i>',
-        'm_profile' => array(12822,10593,4593,4592),
+        'm_profile' => array(13899,12822,10593,4593,4592),
     ),
     4258 => array(
         'm_title' => 'SOURCE LINK VIDEO',
@@ -8461,7 +8478,7 @@ $config['e___4593'] = array(
         'm_title' => 'SOURCE LINK TEXT',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-align-left source"></i>',
-        'm_profile' => array(12822,10593,4593,4592),
+        'm_profile' => array(13899,12822,10593,4593,4592),
     ),
     4318 => array(
         'm_title' => 'SOURCE LINK TIME',
