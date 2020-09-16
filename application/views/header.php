@@ -104,27 +104,12 @@ if(!isset($hide_header)){
                     echo '<td>';
 
                     //MENCH LOGO
-                    if ($user_e) {
-                        if($first_segment!='@'.$user_e['e__id']){
-                            echo '<div class="mench_nav left_nav" style="padding: 13px 0 0;">';
-                            echo '<a href="'.home_url().'" class="montserrat icon-tweak '.extract_icon_color($user_e['e__icon']).'"><span class="icon-block e_ui_icon_'.$user_e['e__id'].'" style="margin-top:-2px;">'.$user_e['e__icon'].'</span><span class="text__6197_'.$user_e['e__id'].' name-block">'.$user_e['e__title'].'</span></a>';
-                            echo '</div>';
-                        } else {
-                            echo '<div class="mench_nav left_nav">';
-                            echo '<span class="inline-block pull-left"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></span>';
-                            echo '</div>';
-                        }
+                    echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url().'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
 
-                    } else {
-                        echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url().'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
-                    }
-
-                    //SEARCH BAR (initially hidden)
+                    //SEARCH BAR (hidden, replaces LOGO when active)
                     echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search white-border" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m_title'].'"></form></div>';
 
                     echo '</td>';
-
-
 
                     if(intval(config_var(12678))){
 
