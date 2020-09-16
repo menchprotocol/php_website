@@ -37,7 +37,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         $show_max = config_var(13803);
         $hide = false;
         foreach($profiles as $count => $e_profile) {
-            if(!$hide && $count==$show_max){
+            if(!$hide && $count==($show_max+1)){
                 $hide = true;
                 echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[11030]['m_icon'].'</span><b class="montserrat source">'.$e___11035[11030]['m_title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
                 echo '<div class="list-group-item see_all_11030 no-padding"></div>';
