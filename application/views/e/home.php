@@ -33,7 +33,7 @@
                 echo '<div class="list-group-item see_more_who'.$e__id.' no-height"></div>';
             }
 
-            echo view_e($e, false, ( $count<$show_max ? '' : 'see_more_who'.$e__id.' hidden'));
+            echo view_e($e, false, ( $count<$show_max ? '' : 'see_more_who'.$e__id.' hidden'), false, true);
 
         }
 

@@ -1585,7 +1585,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             }
         $ui .= '</div>';
 
-        $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
+        if($superpower_10939 || $source_of_e){
+            $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
 
             //MENCH COINS
             $ui .= '<div class="row">';
@@ -1594,7 +1595,10 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
                 $ui .= '<div class="col-4">'.view_coins_e(6255, $e['e__id']).'</div>';
             $ui .= '</div>';
 
-        $ui .= '</div>';
+            $ui .= '</div>';
+        }
+
+
 
 
 
