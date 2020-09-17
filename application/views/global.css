@@ -336,6 +336,9 @@ img.no-radius {
 .edit-off .content-image{
     max-height:250px;
 }
+.big-frame{
+    padding:89px 0 34px;
+}
 
 .aa-dropdown-menu .aa-suggestion, .suggestion {
     border:0;

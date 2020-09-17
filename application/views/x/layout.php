@@ -280,7 +280,7 @@ if($in_my_x){
 }
 
 //HEADER
-echo '<h1 class="cen">' . view_i_title($i_focus) . '</h1>';
+echo '<h1 class="cen big-frame">' . view_i_title($i_focus) . '</h1>';
 
 
 //MESSAGES
