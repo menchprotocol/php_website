@@ -590,11 +590,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     if (count($x_selects) > 0) {
 
-                        //Save Answers:
-                        $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/\')">' . $e___11035[13524]['m_icon'] . ' ' . $e___11035[13524]['m_title'] . '</a></div>';
-
                         //Cancel:
-                        $focus_tab .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m_title'] . '">' . $e___11035[13502]['m_icon'] . '</a></div>';
+                        $focus_tab .= '<div class="inline-block margin-top-down left-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m_title'] . '">' . $e___11035[13502]['m_icon'] . '</a></div>';
+
+                        //Save Answers:
+                        $focus_tab .= '<div class="margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/\')">' . $e___11035[13524]['m_title'] . ' ' . $e___11035[13524]['m_icon'] . '</a></div>';
 
                     }
 
