@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-17 12:49:11 PST
+//Generated 2020-09-17 13:05:48 PST
 
 //MEMBER DONATIONS:
 $config['n___13518'] = array(13042,13038,13039,13040,13041,13520,13599);
@@ -1517,7 +1517,7 @@ $config['e___12741'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-chart-pie discover"></i>',
-        'm_profile' => array(6225,13450,4593,4755,6287,12741,7274,7569),
+        'm_profile' => array(6225,13450,4593,6287,12741,7274,7569),
     ),
     12569 => array(
         'm_title' => 'WEIGHT ALGORITHM',
@@ -3349,7 +3349,7 @@ $config['e___6225'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => 'You have not received any weekly payouts yet. Summarize ideas to start receiving weekly payouts.',
         'm_icon' => '<i class="fas fa-chart-pie discover"></i>',
-        'm_profile' => array(6225,13450,4593,4755,6287,12741,7274,7569),
+        'm_profile' => array(6225,13450,4593,6287,12741,7274,7569),
     ),
 );
 
@@ -6990,7 +6990,7 @@ $config['e___6287'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-chart-pie discover"></i>',
-        'm_profile' => array(6225,13450,4593,4755,6287,12741,7274,7569),
+        'm_profile' => array(6225,13450,4593,6287,12741,7274,7569),
     ),
     12569 => array(
         'm_title' => 'WEIGHT ALGORITHM',
@@ -7196,7 +7196,7 @@ $config['e___6255'] = array(
 );
 
 //PRIVATE INFORMATION:
-$config['n___4755'] = array(12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,13039,13040,13520,13041,13038,13042,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,7561,7564,7560,7562,3286,4783,4755,7495,6415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,6155,13415,12906,12489,13377,12114);
+$config['n___4755'] = array(12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,13039,13040,13520,13041,13038,13042,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,7561,7564,7560,7562,3286,4783,4755,7495,6415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,6155,13415,12906,12489,13377);
 $config['e___4755'] = array(
     12336 => array(
         'm_title' => 'DISCOVER ANSWER ONE LINK',
@@ -7725,12 +7725,6 @@ $config['e___4755'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
         'm_profile' => array(4755,7569),
-    ),
-    12114 => array(
-        'm_title' => 'WEEKLY PAYOUTS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-chart-pie discover"></i>',
-        'm_profile' => array(6225,13450,4593,4755,6287,12741,7274,7569),
     ),
 );
 
@@ -8611,6 +8605,6 @@ $config['e___4593'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-chart-pie discover"></i>',
-        'm_profile' => array(6225,13450,4593,4755,6287,12741,7274,7569),
+        'm_profile' => array(6225,13450,4593,6287,12741,7274,7569),
     ),
 );
