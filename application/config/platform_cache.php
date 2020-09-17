@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-17 12:41:55 PST
+//Generated 2020-09-17 12:49:11 PST
 
 //MEMBER DONATIONS:
 $config['n___13518'] = array(13042,13038,13039,13040,13041,13520,13599);
@@ -3539,7 +3539,7 @@ $config['e___11035'] = array(
     13524 => array(
         'm_title' => 'SAVE & NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-forward discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
         'm_profile' => array(11035),
     ),
     7256 => array(
