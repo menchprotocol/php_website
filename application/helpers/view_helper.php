@@ -581,7 +581,30 @@ function view_cache($config_var_id, $e__id, $micro_status = true, $data_placemen
 
 
 
+function view_mench_coins(){
+    $CI =& get_instance();
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
+    $ui = '';
 
+    $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[12467]['m_title'].'</div>';
+    $ui .= '<div class="list-group" style="padding-bottom:33px;">';
+    $ui .= '<div class="list-group-item no-side-padding">';
+    $ui .= '<div class="row">';
+    $ui .= '<div class="col-sm col-md">&nbsp;</div>';
+    $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
+    $ui .= '<div class="row">';
+    foreach($CI->config->item('e___12467') as $e__id => $m) {
+        $count = count_unique_coins($e__id);
+        $ui .= '<div class="col-4"><span class="montserrat '.extract_icon_color($m['m_icon']).'" title="'.number_format($count, 0).' '.$m['m_title'].'" data-toggle="tooltip" data-placement="top">'.$m['m_icon'].'&nbsp;'.view_number($count).'</span></div>';
+    }
+    $ui .= '</div>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+    return $ui;
+}
 
 
 

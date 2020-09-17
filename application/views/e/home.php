@@ -3,28 +3,8 @@
     <?php
 
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-
     echo '<h1 class="big-frame '.extract_icon_color($e___11035[13207]['m_icon']).'">' . $e___11035[13207]['m_title'] . '</h1>';
-
-    echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[12467]['m_title'].'</div>';
-    echo '<div class="list-group" style="padding-bottom:33px;">';
-    echo '<div class="list-group-item no-side-padding">';
-    echo '<div class="row">';
-    echo '<div class="col-sm col-md">&nbsp;</div>';
-    echo '<div class="col-sm-6 col-md-4 col2nd">';
-    echo '<div class="row">';
-    foreach($this->config->item('e___12467') as $e__id => $m) {
-        $count = count_unique_coins($e__id);
-        echo '<div class="col-4"><span class="montserrat '.extract_icon_color($m['m_icon']).'" title="'.number_format($count, 0).' '.$m['m_title'].'" data-toggle="tooltip" data-placement="top">'.$m['m_icon'].'&nbsp;'.view_number($count).'</span></div>';
-    }
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-
-
-
+    echo view_mench_coins();
 
 
     $load_max = config_var(13206);
