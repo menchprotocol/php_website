@@ -916,6 +916,7 @@ class X_model extends CI_Model
             'x__up'   => 0,
             'x__down' => 0,
         );
+        $tooltip_info = null;
 
         foreach($string_references['ref_e'] as $referenced_e){
 
@@ -940,7 +941,6 @@ class X_model extends CI_Model
             $e_count = 0;
             $e_appendix = null;
             $is_current_e = $this->uri->segment(1)=='@'.$referenced_e;
-            $tooltip_info = null;
 
 
             //Determine what type of Media this reference has:
