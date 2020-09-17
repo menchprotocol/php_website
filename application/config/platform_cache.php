@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-17 16:50:43 PST
+//Generated 2020-09-17 16:54:59 PST
 
 //SUBSCRIPTIONS:
 $config['n___13518'] = array(13038,13042);
@@ -3287,7 +3287,7 @@ $config['n___6225'] = array(12289,10957,13884,13491,3288,3286,13518,12114);
 $config['e___6225'] = array(
     12289 => array(
         'm_title' => 'AVATAR',
-        'm_message' => 'Welcome to the jungle 🙊 Pick your spirit animal:',
+        'm_message' => 'Pick your spirit animal',
         'm_icon' => '<i class="fas fa-paw-claws" aria-hidden="true"></i>',
         'm_profile' => array(6225),
     ),
@@ -3305,7 +3305,7 @@ $config['e___6225'] = array(
     ),
     13491 => array(
         'm_title' => 'FONT SIZE',
-        'm_message' => 'Here is the current font size...',
+        'm_message' => 'Here is the current font size',
         'm_icon' => '<i class="fas fa-text-size"></i>',
         'm_profile' => array(11054,13890,6225,4527,6204),
     ),
@@ -3329,7 +3329,7 @@ $config['e___6225'] = array(
     ),
     12114 => array(
         'm_title' => 'WEEKLY PAYOUTS',
-        'm_message' => 'You have not received any weekly payouts yet. Summarize ideas to start receiving weekly payouts.',
+        'm_message' => 'No earnings yet, you can map ideas to receive weekly payouts',
         'm_icon' => '<i class="fas fa-chart-pie discover"></i>',
         'm_profile' => array(6225,13450,4593,6287,12741,7274,7569),
     ),
