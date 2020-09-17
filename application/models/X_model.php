@@ -940,6 +940,7 @@ class X_model extends CI_Model
             $e_count = 0;
             $e_appendix = null;
             $is_current_e = $this->uri->segment(1)=='@'.$referenced_e;
+            $tooltip_info = null;
 
 
             //Determine what type of Media this reference has:
@@ -962,7 +963,13 @@ class X_model extends CI_Model
 
                     $e_count++;
 
-                    if (in_array($e_profile['x__type'], $this->config->item('n___12524'))) {
+                    if (in_array($e_profile['x__type'], $this->config->item('n___13899'))) {
+
+                        //SOURCE LINK VISUAL
+                        $e_media_count++;
+                        $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_profile['e__title'].': ' . $e_profile['x__message'];
+
+                    } elseif (in_array($e_profile['x__type'], $this->config->item('n___12524'))) {
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
@@ -989,6 +996,7 @@ class X_model extends CI_Model
             $output_body_message .= $e_appendix;
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
             $is_discovery_mode = is_numeric($this->uri->segment(1)) || !strlen($this->uri->segment(1));
+            $tooltip_class = ( $tooltip_info ? ' class="inline-block underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : ' class="inline-block"' );
 
             //USER REFERENCE
             if(( $is_discovery_mode && !superpower_active(10939, true)) || $is_current_e || $simple_version){
@@ -1002,14 +1010,14 @@ class X_model extends CI_Model
                 } else {
 
                     //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span class="inline-block"><span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
 
                 }
 
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<a class="montserrat inline-block '.extract_icon_color($es[0]['e__icon']).'" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a>'.' ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a class="montserrat '.extract_icon_color($es[0]['e__icon']).'" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a></span>'.' ', $output_body_message);
 
             }
 

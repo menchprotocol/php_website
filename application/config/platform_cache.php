@@ -8,7 +8,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-16 16:07:27 PST
+//Generated 2020-09-16 17:12:01 PST
+
+//MEMBER DONATIONS:
+$config['n___13518'] = array(13042,13038,13039,13040,13041,13520,13599);
+$config['e___13518'] = array(
+    13042 => array(
+        'm_title' => '$ ONE-TIME',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-usd-circle"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13038 => array(
+        'm_title' => '$5 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13039 => array(
+        'm_title' => '$13 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13040 => array(
+        'm_title' => '$21 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13041 => array(
+        'm_title' => '$55 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13520 => array(
+        'm_title' => '$233 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13599 => array(
+        'm_title' => '$987 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518),
+    ),
+);
 
 //SOURCE LINK DISPLAY TOOLTIP-ONLY:
 $config['n___13899'] = array(4255);
@@ -1103,47 +1150,6 @@ $config['e___13207'] = array(
     ),
 );
 
-//MONTHLY DONATIONS:
-$config['n___13037'] = array(13038,13039,13040,13041,13520,13599);
-$config['e___13037'] = array(
-    13038 => array(
-        'm_title' => '$5 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13039 => array(
-        'm_title' => '$13 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13040 => array(
-        'm_title' => '$21 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13041 => array(
-        'm_title' => '$55 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13520 => array(
-        'm_title' => '$233 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13599 => array(
-        'm_title' => '$987 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(13037),
-    ),
-);
-
 //SEARCH INDEX:
 $config['n___12761'] = array(12273,12274);
 $config['e___12761'] = array(
@@ -1222,11 +1228,6 @@ $config['e___12969'] = array(
         'm_icon' => '<i class="fad fa-megaphone discover" aria-hidden="true"></i>',
         'm_profile' => array(12969,12227,4593,4755),
     ),
-);
-
-//SYNC FORCE ICONS:
-$config['n___12968'] = array();
-$config['e___12968'] = array(
 );
 
 //IDEA TYPE TAKES COMPLETION TIME:
@@ -1501,7 +1502,7 @@ $config['e___12741'] = array(
         'm_profile' => array(6287,12741,7287,7274),
     ),
     12967 => array(
-        'm_title' => 'SYNC ICONS',
+        'm_title' => 'SYNC ICON MODES',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-sync source mench-spin" aria-hidden="true"></i>',
         'm_profile' => array(6287,12741,4758,7274),
@@ -1832,7 +1833,7 @@ $config['e___12524'] = array(
     ),
 );
 
-//SYNC NEW ICONS:
+//SYNC ICONS:
 $config['n___12523'] = array(2997,4446,3005,6293,13339,3147,13350,3192,2998);
 $config['e___12523'] = array(
     2997 => array(
@@ -1856,7 +1857,7 @@ $config['e___12523'] = array(
     6293 => array(
         'm_title' => 'GIPHY GIFS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-image source"></i>',
+        'm_icon' => '<i class="far fa-file-image source"></i>',
         'm_profile' => array(12523,12891,1326),
     ),
     13339 => array(
@@ -3300,7 +3301,7 @@ $config['e___11089'] = array(
 );
 
 //MY ACCOUNT:
-$config['n___6225'] = array(12289,10957,13884,13491,3288,3286,13037,13042,12114);
+$config['n___6225'] = array(12289,10957,13884,13491,3288,3286,13518,12114);
 $config['e___6225'] = array(
     12289 => array(
         'm_title' => 'AVATAR',
@@ -3338,21 +3339,15 @@ $config['e___6225'] = array(
         'm_icon' => '<i class="fas fa-key" aria-hidden="true"></i>',
         'm_profile' => array(13014,4269,6225,7578,4755),
     ),
-    13037 => array(
-        'm_title' => 'MONTHLY DONATIONS',
-        'm_message' => 'Together we can spread ideas that matter. Your monthly donations fund weekly payouts to members who summarize ideas & build the Mench Network',
-        'm_icon' => '<i class="fas fa-hands-heart discover"></i>',
-        'm_profile' => array(13518,4527,6204,6225),
-    ),
-    13042 => array(
-        'm_title' => 'ONE-TIME DONATION',
-        'm_message' => 'Make a one-time donation',
+    13518 => array(
+        'm_title' => 'MEMBER DONATIONS',
+        'm_message' => 'Together we can spread ideas that matter. Your donations fund weekly payouts for members who summarize ideas & build the Mench Network',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
-        'm_profile' => array(6225,13518,4755),
+        'm_profile' => array(4527,6225,13450,2738),
     ),
     12114 => array(
         'm_title' => 'WEEKLY PAYOUTS',
-        'm_message' => '',
+        'm_message' => 'You have not received any weekly payouts yet. Summarize ideas to start receiving weekly payouts.',
         'm_icon' => '<i class="fas fa-chart-pie discover"></i>',
         'm_profile' => array(6225,13450,4593,4755,6287,12741,7274,7569),
     ),
@@ -4963,7 +4958,7 @@ $config['e___2738'] = array(
         'm_title' => 'MEMBER DONATIONS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
-        'm_profile' => array(13450,2738),
+        'm_profile' => array(4527,6225,13450,2738),
     ),
     12467 => array(
         'm_title' => 'MENCH COINS',
@@ -5062,7 +5057,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(13889,13783,10956,13533,12279,10573,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13491,12211,13479,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,13898,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13544,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6287,13894,6206,12112,10876,6212,7277,6169,13037,6225,12969,3000,12741,12577,13865,13776,4755,13531,12761,13023,13672,4269,6204,13413,6194,13571,6198,13550,12822,13899,11080,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12968,12523,10692,6103,6175,12399,6176,6186,6173,4593,13442,6146,13480,13548,13414,12500);
+$config['n___4527'] = array(13889,13783,10956,13533,12279,10573,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13491,12211,13479,13369,12589,4229,12842,4486,12840,11047,6159,4485,7551,4986,12359,4603,6193,13898,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13544,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,13518,2738,12467,6404,12079,6201,4341,4527,11054,12687,11035,6287,13894,6206,12112,10876,6212,7277,6169,6225,12969,3000,12741,12577,13865,13776,4755,13531,12761,13023,13672,4269,6204,13413,6194,13571,6198,13550,12822,13899,11080,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12523,10692,6103,6175,12399,6176,6186,6173,4593,13442,6146,13480,13548,13414,12500);
 $config['e___4527'] = array(
     13889 => array(
         'm_title' => 'ACCOUNT DEFAULTS',
@@ -5478,6 +5473,12 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(13629,4527,6159),
     ),
+    13518 => array(
+        'm_title' => 'MEMBER DONATIONS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
+        'm_profile' => array(4527,6225,13450,2738),
+    ),
     2738 => array(
         'm_title' => 'MENCH',
         'm_message' => '',
@@ -5585,12 +5586,6 @@ $config['e___4527'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(13629,4527,6159),
-    ),
-    13037 => array(
-        'm_title' => 'MONTHLY DONATIONS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-hands-heart discover"></i>',
-        'm_profile' => array(13518,4527,6204,6225),
     ),
     6225 => array(
         'm_title' => 'MY ACCOUNT',
@@ -5832,14 +5827,8 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fas fa-bolt" aria-hidden="true"></i>',
         'm_profile' => array(6225,11035,5007,4527),
     ),
-    12968 => array(
-        'm_title' => 'SYNC FORCE ICONS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-sync source fa-spin" aria-hidden="true"></i>',
-        'm_profile' => array(6204,4527,12967),
-    ),
     12523 => array(
-        'm_title' => 'SYNC NEW ICONS',
+        'm_title' => 'SYNC ICONS',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-sync source fa-spin" aria-hidden="true"></i>',
         'm_profile' => array(12967,4527),
@@ -6355,7 +6344,7 @@ $config['e___7304'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['n___6204'] = array(13884,13491,4737,10602,7585,13037,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,12968,6186,4593);
+$config['n___6204'] = array(13884,13491,4737,10602,7585,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,6186,4593);
 $config['e___6204'] = array(
     13884 => array(
         'm_title' => 'DISPLAY MODE',
@@ -6386,12 +6375,6 @@ $config['e___6204'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-shapes idea" aria-hidden="true"></i>',
         'm_profile' => array(12701,13408,13295,11054,12079,6201,4527,6204,10651,6160),
-    ),
-    13037 => array(
-        'm_title' => 'MONTHLY DONATIONS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-hands-heart discover"></i>',
-        'm_profile' => array(13518,4527,6204,6225),
     ),
     13158 => array(
         'm_title' => 'RATE ANGULAR',
@@ -6542,12 +6525,6 @@ $config['e___6204'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sliders-h source" aria-hidden="true"></i>',
         'm_profile' => array(13571,12701,12766,4527,11054,6204,5003,6160,6206),
-    ),
-    12968 => array(
-        'm_title' => 'SYNC FORCE ICONS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-sync source fa-spin" aria-hidden="true"></i>',
-        'm_profile' => array(6204,4527,12967),
     ),
     6186 => array(
         'm_title' => 'TRANSACTION STATUS',
@@ -6986,7 +6963,7 @@ $config['e___6287'] = array(
         'm_profile' => array(6287,12741,7287,7274),
     ),
     12967 => array(
-        'm_title' => 'SYNC ICONS',
+        'm_title' => 'SYNC ICON MODES',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-sync source mench-spin" aria-hidden="true"></i>',
         'm_profile' => array(6287,12741,4758,7274),
@@ -7213,38 +7190,8 @@ $config['e___6255'] = array(
 );
 
 //PRIVATE INFORMATION:
-$config['n___4755'] = array(13039,13040,13520,13041,13038,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,7561,7564,7560,7562,13042,3286,4783,4755,7495,6415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,6155,13415,12906,12489,13377,12114);
+$config['n___4755'] = array(12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,13039,13040,13520,13041,13038,13042,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,7561,7564,7560,7562,3286,4783,4755,7495,6415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,6155,13415,12906,12489,13377,12114);
 $config['e___4755'] = array(
-    13039 => array(
-        'm_title' => '$13 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13040 => array(
-        'm_title' => '$21 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13520 => array(
-        'm_title' => '$233 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13041 => array(
-        'm_title' => '$55 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
-    13038 => array(
-        'm_title' => '$5 USD PER MONTH',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle"></i>',
-        'm_profile' => array(4755,13037),
-    ),
     12336 => array(
         'm_title' => 'DISCOVER ANSWER ONE LINK',
         'm_message' => '',
@@ -7503,6 +7450,42 @@ $config['e___4755'] = array(
         'm_icon' => '<i class="discover fad fa-video"></i>',
         'm_profile' => array(10593,4755,4593,4280),
     ),
+    13039 => array(
+        'm_title' => 'DONATE $13 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13040 => array(
+        'm_title' => 'DONATE $21 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13520 => array(
+        'm_title' => 'DONATE $233 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13041 => array(
+        'm_title' => 'DONATE $55 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13038 => array(
+        'm_title' => 'DONATE $5 MONTHLY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync"></i>',
+        'm_profile' => array(13518,4755),
+    ),
+    13042 => array(
+        'm_title' => 'DONATE $ ONE-TIME',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-usd-circle"></i>',
+        'm_profile' => array(13518,4755),
+    ),
     3288 => array(
         'm_title' => 'EMAIL',
         'm_message' => '',
@@ -7586,12 +7569,6 @@ $config['e___4755'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-envelope-open discover"></i>',
         'm_profile' => array(12687,4755,7569,4593),
-    ),
-    13042 => array(
-        'm_title' => 'ONE-TIME DONATION',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
-        'm_profile' => array(6225,13518,4755),
     ),
     3286 => array(
         'm_title' => 'PASSWORD',
