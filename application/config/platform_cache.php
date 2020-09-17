@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-16 17:13:15 PST
+//Generated 2020-09-17 12:39:15 PST
 
 //MEMBER DONATIONS:
 $config['n___13518'] = array(13042,13038,13039,13040,13041,13520,13599);
@@ -655,7 +655,7 @@ $config['e___13289'] = array(
     12991 => array(
         'm_title' => 'GO BACK',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-backward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-left" aria-hidden="true"></i>',
         'm_profile' => array(13289,11035),
     ),
     13877 => array(
@@ -673,13 +673,13 @@ $config['e___13289'] = array(
     13871 => array(
         'm_title' => 'COMMENT',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comments" aria-hidden="true"></i>',
+        'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_profile' => array(13289),
     ),
     12211 => array(
         'm_title' => 'GO NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right" aria-hidden="true"></i>',
         'm_profile' => array(4527,13289,11035),
     ),
 );
@@ -3437,13 +3437,13 @@ $config['e___11035'] = array(
     12991 => array(
         'm_title' => 'GO BACK',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-backward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-left" aria-hidden="true"></i>',
         'm_profile' => array(13289,11035),
     ),
     12211 => array(
         'm_title' => 'GO NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right" aria-hidden="true"></i>',
         'm_profile' => array(4527,13289,11035),
     ),
     12137 => array(
@@ -5248,7 +5248,7 @@ $config['e___4527'] = array(
     12211 => array(
         'm_title' => 'GO NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-step-forward" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right" aria-hidden="true"></i>',
         'm_profile' => array(4527,13289,11035),
     ),
     13479 => array(
