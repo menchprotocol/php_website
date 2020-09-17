@@ -1472,7 +1472,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
-
     $source_of_e = ( $superpower_13422 ? true : $source_of_e );
 
     $e__profiles = $CI->X_model->fetch(array(
