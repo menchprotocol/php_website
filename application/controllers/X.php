@@ -85,7 +85,7 @@ class X extends CI_Controller
         //Display filter:
         if($total_items_loaded > 0){
 
-            if($total_items_loaded==1){
+            if($page_num==1){
                 $message .= view_mench_coins();
             }
 
