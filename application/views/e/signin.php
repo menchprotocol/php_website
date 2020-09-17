@@ -168,6 +168,4 @@ if(count($current_sign_i_attempt) == 0){
 
     </div>
 
-    <?= view_mench_coins(); ?>
-
 </div>
