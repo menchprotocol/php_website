@@ -11,7 +11,8 @@
     echo '<div class="col-sm-6 col-md-4 col2nd">';
     echo '<div class="row">';
     foreach($this->config->item('e___12467') as $e__id => $m) {
-        echo '<div class="col-4"><span class="montserrat '.extract_icon_color($m['m_icon']).'" title="'.$m['m_title'].'">'.$m['m_icon'].'&nbsp;'.count_unique_coins($e__id).'</span></div>';
+        $count = count_unique_coins($e__id);
+        echo '<div class="col-4"><span class="montserrat '.extract_icon_color($m['m_icon']).'" title="'.number_format($count, 0).' '.$m['m_title'].'">'.$m['m_icon'].'&nbsp;'.view_number($count).'</span></div>';
     }
     echo '</div>';
     echo '</div>';
