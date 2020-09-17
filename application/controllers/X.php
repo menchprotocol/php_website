@@ -86,7 +86,7 @@ class X extends CI_Controller
         if($total_items_loaded > 0){
 
             //Subsequent messages:
-            $message .= '<div class="montserrat x-info"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
+            $message .= '<div class="montserrat x-info">'.( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
 
         }
 
