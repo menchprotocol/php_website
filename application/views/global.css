@@ -332,7 +332,7 @@ img.no-radius {
     max-height:250px;
 }
 .big-frame{
-    padding:89px 0 34px;
+    padding:89px 0;
     text-align: center;
     margin:0;
     font-size: 3em;
