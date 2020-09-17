@@ -161,7 +161,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $counter = $counter__e;
             $list_e = view_coins_e(12274, $e['e__id'], 1);
 
-            if(!count($list_e) && !$superpower_10939){
+            if(!$counter && !$superpower_10939){
                 continue;
             }
 
@@ -393,7 +393,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $show_editor = false; //Since it's a flat list, not bookmarks!
             }
 
-            if(!count($list_i) && !$superpower_10939){
+            if(!$counter && !$superpower_10939){
                 continue;
             }
 
