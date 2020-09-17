@@ -2,6 +2,27 @@
 
     <?php
 
+    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+    echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[12467]['m_title'].'</div>';
+    echo '<div class="list-group" style="padding-bottom:33px;">';
+    echo '<div class="list-group-item no-side-padding">';
+    echo '<div class="row">';
+    echo '<div class="col-sm col-md">&nbsp;</div>';
+    echo '<div class="col-sm-6 col-md-4 col2nd">';
+    echo '<div class="row">';
+    foreach($this->config->item('e___12467') as $e__id => $m) {
+        echo '<div class="col-4"><span class="montserrat '.extract_icon_color($m['m_icon']).'" title="'.$m['m_title'].'">'.$m['m_icon'].'&nbsp;'.count_unique_coins($e__id).'</span></div>';
+    }
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
+
+
+
+
+
     $load_max = config_var(13206);
     $show_max = config_var(11986);
     $select = 'COUNT(x__id) as totals, e__id, e__title, e__icon, e__metadata, e__status, e__weight';
@@ -22,7 +43,7 @@
             continue;
         }
 
-        echo '<div class="headline"><span class="icon-block">&nbsp;</span>TOP '.$m['m_title'].'</div>';
+        echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$m['m_title'].'</div>';
         echo '<div class="list-group" style="padding-bottom:33px;">';
 
 
