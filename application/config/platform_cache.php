@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-17 16:45:48 PST
+//Generated 2020-09-17 16:47:16 PST
 
 //MEMBER SUBSCRIPTIONS:
 $config['n___13518'] = array(13038,13042);
@@ -3317,8 +3317,8 @@ $config['e___6225'] = array(
     ),
     13518 => array(
         'm_title' => 'MEMBER SUBSCRIPTIONS',
-        'm_message' => 'Together we can spread ideas that matter. Your donations fund weekly payouts for members who summarize ideas & build the Mench Network',
-        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
+        'm_message' => 'Your subscription funds weekly payouts to members who map ideas & build the Mench Network',
+        'm_icon' => '<i class="fas fa-sync discover"></i>',
         'm_profile' => array(6204,4527,6225,13450,2738),
     ),
     12114 => array(
@@ -4939,7 +4939,7 @@ $config['e___2738'] = array(
     13518 => array(
         'm_title' => 'MEMBER SUBSCRIPTIONS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
+        'm_icon' => '<i class="fas fa-sync discover"></i>',
         'm_profile' => array(6204,4527,6225,13450,2738),
     ),
     12467 => array(
@@ -5458,7 +5458,7 @@ $config['e___4527'] = array(
     13518 => array(
         'm_title' => 'MEMBER SUBSCRIPTIONS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
+        'm_icon' => '<i class="fas fa-sync discover"></i>',
         'm_profile' => array(6204,4527,6225,13450,2738),
     ),
     2738 => array(
@@ -6361,7 +6361,7 @@ $config['e___6204'] = array(
     13518 => array(
         'm_title' => 'MEMBER SUBSCRIPTIONS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
+        'm_icon' => '<i class="fas fa-sync discover"></i>',
         'm_profile' => array(6204,4527,6225,13450,2738),
     ),
     13158 => array(
