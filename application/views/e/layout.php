@@ -161,6 +161,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $counter = $counter__e;
             $list_e = view_coins_e(12274, $e['e__id'], 1);
 
+            if(!count($list_e) && !$superpower_10939){
+                continue;
+            }
+
             //SOURCE MASS EDITOR
             if($superpower_13422){
 
