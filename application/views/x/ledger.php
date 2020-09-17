@@ -225,7 +225,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 echo '<div class="container">';
 
 
-    echo '<h1 class="cen big-frame '.extract_icon_color($e___11035[4341]['m_icon']).'">' . $e___11035[4341]['m_title'] . '</h1>';
+    echo '<h1 class="big-frame '.extract_icon_color($e___11035[4341]['m_icon']).'">' . $e___11035[4341]['m_title'] . '</h1>';
 
 
     echo '<div class="inline-block margin-top-down '.superpower_active(12701).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m_icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$e___11035[12707]['m_title'].'</a></div>';

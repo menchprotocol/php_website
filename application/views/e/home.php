@@ -4,7 +4,7 @@
 
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
-    echo '<h1 class="cen big-frame '.extract_icon_color($e___11035[13207]['m_icon']).'">' . $e___11035[13207]['m_title'] . '</h1>';
+    echo '<h1 class="big-frame '.extract_icon_color($e___11035[13207]['m_icon']).'">' . $e___11035[13207]['m_title'] . '</h1>';
 
     echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[12467]['m_title'].'</div>';
     echo '<div class="list-group" style="padding-bottom:33px;">';
