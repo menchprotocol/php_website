@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-16 17:12:01 PST
+//Generated 2020-09-16 17:13:15 PST
 
 //MEMBER DONATIONS:
 $config['n___13518'] = array(13042,13038,13039,13040,13041,13520,13599);
@@ -3343,7 +3343,7 @@ $config['e___6225'] = array(
         'm_title' => 'MEMBER DONATIONS',
         'm_message' => 'Together we can spread ideas that matter. Your donations fund weekly payouts for members who summarize ideas & build the Mench Network',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
-        'm_profile' => array(4527,6225,13450,2738),
+        'm_profile' => array(6204,4527,6225,13450,2738),
     ),
     12114 => array(
         'm_title' => 'WEEKLY PAYOUTS',
@@ -4958,7 +4958,7 @@ $config['e___2738'] = array(
         'm_title' => 'MEMBER DONATIONS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
-        'm_profile' => array(4527,6225,13450,2738),
+        'm_profile' => array(6204,4527,6225,13450,2738),
     ),
     12467 => array(
         'm_title' => 'MENCH COINS',
@@ -5477,7 +5477,7 @@ $config['e___4527'] = array(
         'm_title' => 'MEMBER DONATIONS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
-        'm_profile' => array(4527,6225,13450,2738),
+        'm_profile' => array(6204,4527,6225,13450,2738),
     ),
     2738 => array(
         'm_title' => 'MENCH',
@@ -6344,7 +6344,7 @@ $config['e___7304'] = array(
 );
 
 //SINGLE SELECTABLE:
-$config['n___6204'] = array(13884,13491,4737,10602,7585,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,6186,4593);
+$config['n___6204'] = array(13884,13491,4737,10602,7585,13518,13158,13172,13167,13166,13153,13174,13171,13152,13162,13156,13157,13155,13173,13170,13164,13160,13168,13165,13169,13159,13163,13161,13154,3290,6177,6186,4593);
 $config['e___6204'] = array(
     13884 => array(
         'm_title' => 'DISPLAY MODE',
@@ -6375,6 +6375,12 @@ $config['e___6204'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-shapes idea" aria-hidden="true"></i>',
         'm_profile' => array(12701,13408,13295,11054,12079,6201,4527,6204,10651,6160),
+    ),
+    13518 => array(
+        'm_title' => 'MEMBER DONATIONS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
+        'm_profile' => array(6204,4527,6225,13450,2738),
     ),
     13158 => array(
         'm_title' => 'RATE ANGULAR',
