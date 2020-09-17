@@ -1537,7 +1537,7 @@ label {
 .underline{ text-decoration: underline !important; }
 .icon-block { width:33px !important; display: inline-block; text-align: center; vertical-align: top; }
 .icon-block-xs{ width:25px; display: inline-block; text-align: center; vertical-align: top; }
-.custom_ui_13491_13493 .icon-block-xs, .custom_ui_13491_ .icon-block-xs{ width:30px; }
+.custom_ui_13491_13493 .icon-block-xs, .custom_ui_13491_ .icon-block-xs{ width:26px; }
 .custom_ui_13491_13494 .icon-block-xs{ width:36px; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; vertical-align: top; }
 .icon-block-img img,
