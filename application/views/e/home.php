@@ -3,6 +3,9 @@
     <?php
 
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+
+    echo '<h1 class="cen" style="padding:89px 0 34px;">' . $e___11035[13207]['m_icon'] . ' ' . $e___11035[13207]['m_title'] . '</h1>';
+
     echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[12467]['m_title'].'</div>';
     echo '<div class="list-group" style="padding-bottom:33px;">';
     echo '<div class="list-group-item no-side-padding">';
