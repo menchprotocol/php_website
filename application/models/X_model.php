@@ -965,20 +965,20 @@ class X_model extends CI_Model
 
                     if (in_array($e_profile['x__type'], $this->config->item('n___13899'))) {
 
-                        //SOURCE LINK VISUAL
+                        //TOOLTIP INFO
                         $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_profile['e__title'].': ' . $e_profile['x__message'];
 
                     } elseif (in_array($e_profile['x__type'], $this->config->item('n___12524'))) {
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
-                        $e_appendix .= '<div class="e-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input) . '</div>';
+                        $e_appendix .= '<div class="e-appendix center paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input) . '</div>';
 
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
                         $e_media_count++;
                         array_push($e_urls, $e_profile['x__message']);
-                        $e_appendix .= '<div class="e-appendix paddingup"><a href="'.$e_profile['x__message'].'" target="_blank"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span>' . ( in_array($e_profile['e__id'], $this->config->item('n___13672')) ? view_url_clean($e_profile['x__message']) : $e_profile['e__title'].'<span class="icon-block-xs"><i class="fas fa-external-link"></i></span>'  ) . '</a></div>';
+                        $e_appendix .= '<div class="e-appendix center paddingup"><a href="'.$e_profile['x__message'].'" target="_blank"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span>' . ( in_array($e_profile['e__id'], $this->config->item('n___13672')) ? view_url_clean($e_profile['x__message']) : $e_profile['e__title'].'<span class="icon-block-xs"><i class="fas fa-external-link"></i></span>'  ) . '</a></div>';
 
                     } else {
 
