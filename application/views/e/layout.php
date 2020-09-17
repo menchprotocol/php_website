@@ -389,6 +389,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $show_editor = false; //Since it's a flat list, not bookmarks!
             }
 
+            if(!count($list_i) && !$superpower_10939){
+                continue;
+            }
+
             $focus_tab .= ( count($list_i) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> #list_13412 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
 
