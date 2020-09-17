@@ -74,7 +74,10 @@ body {
     max-height: 610px;
     margin: 0 auto;
 }
-
+.mench-discover .e-appendix a {
+    text-align: center;
+    display: block;
+}
 .yt-container{
     margin: 10px 0 0;
     position: relative;
