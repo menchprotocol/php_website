@@ -966,7 +966,6 @@ class X_model extends CI_Model
                     if (in_array($e_profile['x__type'], $this->config->item('n___13899'))) {
 
                         //SOURCE LINK VISUAL
-                        $e_media_count++;
                         $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_profile['e__title'].': ' . $e_profile['x__message'];
 
                     } elseif (in_array($e_profile['x__type'], $this->config->item('n___12524'))) {
