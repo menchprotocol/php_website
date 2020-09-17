@@ -430,8 +430,6 @@ img.no-radius {
     background-color:transparent !important;
 }
 .underdot{
-    border-bottom: 1px dotted #999999;
-    padding-bottom: 2px;
     cursor: help;
 }
 

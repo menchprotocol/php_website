@@ -995,7 +995,7 @@ class X_model extends CI_Model
             $output_body_message .= $e_appendix;
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
             $is_discovery_mode = is_numeric($this->uri->segment(1)) || !strlen($this->uri->segment(1));
-            $tooltip_class = ( $tooltip_info ? ' class="inline-block" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : ' class="inline-block"' );
+            $tooltip_class = ( $tooltip_info ? ' class="inline-block underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : ' class="inline-block"' );
 
             //USER REFERENCE
             if(( $is_discovery_mode && !superpower_active(10939, true)) || $is_current_e || $simple_version){
