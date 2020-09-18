@@ -93,17 +93,19 @@ echo view_i_note_mix(4231, $this->X_model->fetch(array(
 ), array('x__source'), 0, 0, array('x__sort' => 'ASC')), $e_of_i);
 
 
+//IDEA TIME
+echo '<div class="inline-block both-margin left-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
+echo '<div class="doclear">&nbsp;</div>';
+
+
 //IDEA TYPE
 echo '<div class="pull-left both-margin left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $e_of_i && $is_active, true, $i_focus['i__id']).'</div>';
 
 //IDEA STATUS
 echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
 
-//IDEA TIME
-echo '<div class="inline-block pull-left both-margin left-half-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
-
 //PREVIEW DISCOVERY
-echo '<div class="inline-block pull-right both-margin" style="margin-right:30px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin" style="margin-right:33px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 

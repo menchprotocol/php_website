@@ -572,7 +572,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $focus_tab .= '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle discover' : 'far fa-circle discover') . '"></i></td>';
 
                         $focus_tab .= '<td style="width:100%; padding: 0 !important;">';
-                        $focus_tab .= '<b class="montserrat i-url" style="margin-left:0;">' . view_i_title($next_i, $common_prefix) . '</b>';
+                        $focus_tab .= '<b class="montserrat i-url" style="margin-left:0;">' . view_i_title($next_i, $common_prefix, true) . '</b>';
                         $focus_tab .= '</td>';
 
                         $focus_tab .= '</tr></table>';
