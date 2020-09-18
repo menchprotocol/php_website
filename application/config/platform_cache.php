@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-17 17:06:42 PST
+//Generated 2020-09-17 17:07:35 PST
 
 //SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -183,7 +183,7 @@ $config['e___13890'] = array(
         'm_title' => 'SUBSCRIPTION',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sync discover"></i>',
-        'm_profile' => array(13890,6204,4527,6225,13450,2738),
+        'm_profile' => array(11054,13890,6204,4527,6225,13450,2738),
     ),
 );
 
@@ -3325,7 +3325,7 @@ $config['e___6225'] = array(
         'm_title' => 'SUBSCRIPTION',
         'm_message' => 'Your subscription funds weekly payouts to members who map ideas & build the Mench Network',
         'm_icon' => '<i class="fas fa-sync discover"></i>',
-        'm_profile' => array(13890,6204,4527,6225,13450,2738),
+        'm_profile' => array(11054,13890,6204,4527,6225,13450,2738),
     ),
     12114 => array(
         'm_title' => 'WEEKLY PAYOUTS',
@@ -4101,7 +4101,7 @@ $config['e___6404'] = array(
 );
 
 //MENCH MEMORY JAVASCRIPT:
-$config['n___11054'] = array(10573,13890,13884,13491,4486,4485,4737,7356,7355,7585,7712,2738,12467,6404,6201,12687,11035,4592,6177,7357,6186);
+$config['n___11054'] = array(10573,13890,13884,13491,4486,4485,4737,7356,7355,7585,7712,2738,12467,6404,6201,12687,11035,4592,6177,7357,13518,6186);
 $config['e___11054'] = array(
     10573 => array(
         'm_title' => 'BOOKMARK',
@@ -4222,6 +4222,12 @@ $config['e___11054'] = array(
         'm_message' => '',
         'm_icon' => '<i class="far fa-globe source" aria-hidden="true"></i>',
         'm_profile' => array(13296,12572,11054,4527),
+    ),
+    13518 => array(
+        'm_title' => 'SUBSCRIPTION',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sync discover"></i>',
+        'm_profile' => array(11054,13890,6204,4527,6225,13450,2738),
     ),
     6186 => array(
         'm_title' => 'TRANSACTION STATUS',
@@ -4946,7 +4952,7 @@ $config['e___2738'] = array(
         'm_title' => 'SUBSCRIPTION',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sync discover"></i>',
-        'm_profile' => array(13890,6204,4527,6225,13450,2738),
+        'm_profile' => array(11054,13890,6204,4527,6225,13450,2738),
     ),
     12467 => array(
         'm_title' => 'MENCH COINS',
@@ -5807,7 +5813,7 @@ $config['e___4527'] = array(
         'm_title' => 'SUBSCRIPTION',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sync discover"></i>',
-        'm_profile' => array(13890,6204,4527,6225,13450,2738),
+        'm_profile' => array(11054,13890,6204,4527,6225,13450,2738),
     ),
     10957 => array(
         'm_title' => 'SUPERPOWERS',
@@ -6518,7 +6524,7 @@ $config['e___6204'] = array(
         'm_title' => 'SUBSCRIPTION',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sync discover"></i>',
-        'm_profile' => array(13890,6204,4527,6225,13450,2738),
+        'm_profile' => array(11054,13890,6204,4527,6225,13450,2738),
     ),
     6186 => array(
         'm_title' => 'TRANSACTION STATUS',
