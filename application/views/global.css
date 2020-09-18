@@ -1754,10 +1754,6 @@ label {
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 41px; }
 
-    .big-frame{
-        font-size: 2.1em;
-    }
-
     /*    .active .show-max-active {display:none !important;}  */
     .wrap-card, .outside-card{
         margin: 0 5px;
@@ -1801,6 +1797,9 @@ label {
     .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
         font-size:0.667em !important;
+    }
+    .big-frame{
+        font-size: 2.3em;
     }
 
     .mini-hidden{
