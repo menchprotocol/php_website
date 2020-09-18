@@ -1927,12 +1927,6 @@ label {
 .custom_ui_13884_ .wrap-card,
 .custom_ui_13884_13886 .btn-block,
 .custom_ui_13884_ .btn-block,
-.custom_ui_13884_13886 .dropdown-menu,
-.custom_ui_13884_ .dropdown-menu,
-.custom_ui_13884_ .algolia-autocomplete .aa-dropdown-menu,
-.custom_ui_13884_ .aa-dropdown-menu .aa-suggestion, .suggestion,
-.custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu,
-.custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13886 textarea,
 .custom_ui_13884_ textarea,
 .custom_ui_13884_13886 .modal-content,
@@ -1944,7 +1938,13 @@ label {
 
 }
 .custom_ui_13884_13886 .new-note,
-.custom_ui_13884_ .new-note{
+.custom_ui_13884_ .new-note,
+.custom_ui_13884_13886 .dropdown-menu,
+.custom_ui_13884_ .dropdown-menu,
+.custom_ui_13884_ .algolia-autocomplete .aa-dropdown-menu,
+.custom_ui_13884_ .aa-dropdown-menu .aa-suggestion, .suggestion,
+.custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
+.custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu {
     background-color:#222222 !important;
     color: #FFFFFF !important;
 }
