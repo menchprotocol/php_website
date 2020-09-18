@@ -226,9 +226,10 @@ function view_i_title($i, $common_prefix = null, $force_single_line = false){
     }
 
     //Turn Spaced Colon into double lines:
-    $title = ( $force_single_line ? $i['i__title'] : str_replace(' : ','<br />', $i['i__title']) );
+    $title = htmlentities(trim($i['i__title']));
+    $title = ( $force_single_line ? $title : str_replace(' : ','<br />', $title) );
 
-    return '<span class="text__4736_'.$i['i__id'].'">'.htmlentities(trim($title)).'</span>';
+    return '<span class="text__4736_'.$i['i__id'].'">'.$title.'</span>';
 }
 
 
