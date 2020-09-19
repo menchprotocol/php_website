@@ -1181,7 +1181,7 @@ function x_sort_load(x__type){
     //Load sorter:
     var sort = Sortable.create(document.getElementById('list_'+x__type), {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: "#list_"+x__type+" .home_sort", // Specifies which items inside the element should be sortable
+        draggable: "#list_"+x__type+" .cover_sort", // Specifies which items inside the element should be sortable
         handle: "#list_"+x__type+" .x_sort", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             x_sort(x__type);
@@ -1194,7 +1194,7 @@ function x_sort(x__type) {
 
     var sort_rank = 0;
     var new_x_order = [];
-    $("#list_"+x__type+" .home_sort").each(function () {
+    $("#list_"+x__type+" .cover_sort").each(function () {
         var x_id = parseInt($(this).attr('x__id'));
         if(x_id > 0){
             sort_rank++;

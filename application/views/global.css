@@ -1747,17 +1747,20 @@ label {
 .icon-tweak{ padding-left: 3px; }
 
 
+.cover-wrapper {
+    border: 3px solid #999999;
+    border-radius: 34px;
+    margin:0 50px;
+}
 
 .cover-link {
-    background-image: url("https://s3foundation.s3-us-west-2.amazonaws.com/087ac2f72d0c99185197be100b1a735d.jpg");
+    border: 3px solid #FFFFFF;
+    width: calc(100% - 6px);
     position: relative;
-    width: calc(100% - 20px);
     padding-top: 150%;
-    margin:0 5px;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: right -5px top 0;
-    border: 5px solid transparent;
+    background-position: right 0 top 0;
     border-radius: 34px;
 }
 
@@ -1769,6 +1772,7 @@ label {
     border-radius: 50%;
     width:34px;
     height: 34px;
+    background-color: #FC1B44 !important;
 }
 
 .inside-btn.top-left {
@@ -1780,17 +1784,14 @@ label {
     right: 15px;
 }
 
-.cover-link.idea-link {
-    border-color:#ffc500;
-}
-.cover-link.discover-link {
+.cover-wrapper.wrap-discover {
     border-color:#FC1B44;
 }
-.idea-link .inside-btn {
-    background-color: #ffc500 !important;
+.cover-wrapper.wrap-idea {
+    border-color:#ffc500;
 }
-.discover-link .inside-btn {
-    background-color: #FC1B44 !important;
+.wrap-idea .inside-btn {
+    background-color: #ffc500 !important;
 }
 
 

@@ -804,7 +804,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
     $has_completion = $completion_rate['completion_percentage']>0;
 
     //Build View:
-    $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' home_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
+    $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' cover_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
 
     $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
 
@@ -1379,7 +1379,7 @@ function view__focus__e($e){
     return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m_title'].'"><span class="icon-block">'.$e___11035[13670]['m_icon'].'</span>' . view_e__icon($e['e__icon']) . '&nbsp;<a href="/@'.$e['e__id'].'" class="'.extract_icon_color($e['e__icon']).'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m_title'].'">'.$e___11035[13671]['m_icon'].'</a></div>';
 }
 
-function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_input = null, $user_e = false){
+function view_i_cover($x__type, $i, $show_editor, $message_input = null, $user_e = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1393,17 +1393,18 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
         $user_e = $user_session;
     }
 
-
     $completion_rate['completion_percentage'] = 0; //Assume no progress
     if($user_e && $discovery_mode){
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
     }
 
-
     $i_stats = i_stats($i['i__metadata']);
     $href = ( $discovery_mode ? ( $user_input && $user_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?focus__e='.$user_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-sm-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' home_sort ' : '' ).' '.$extra_class.'">';
+
+
+    /*
+    $ui = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-sm-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' cover_sort ' : '' ).'">';
 
         //EDITING TOOLBAR
         if($show_editor){
@@ -1421,14 +1422,38 @@ function view_i_cover($x__type, $i, $show_editor, $extra_class = null, $message_
             $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' </span>';
             $ui .= '</span>';
             $ui .= '</div>';
-
-
         }
-
 
         $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).' '.( $discovery_mode ? '' : ' cover-gold ' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).( $completion_rate['completion_percentage']>0 ? view_x_progress($completion_rate, $i, true) : '' ).'<b class="montserrat">'.view_i_title($i).'</b></a>';
 
+    $ui .= '</div>';
 
+    */
+
+
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-sm-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $show_editor ? ' cover_sort ' : '' ).'">';
+    $ui .= '<div class="cover-wrapper '.( $discovery_mode ? ( $completion_rate['completion_percentage']<100 ? 'wrap-discover' : '' /* grey */ ) : 'wrap-idea' ).'">';
+    $ui .= '<div class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
+
+    //EDITING TOOLBAR
+    if($show_editor){
+        //SORT
+        $ui .= '<span class="inside-btn top-left x_sort" title="'.$e___13369[13413]['m_title'].'">'.$e___13369[13413]['m_icon'].'</span>';
+        //REMOVE
+        $ui .= '<span class="inside-btn top-right x_remove" title="'.$e___13369[13414]['m_title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].'</span>';
+    }
+
+    if($completion_rate['completion_percentage']>0){
+        $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
+    }
+
+    if($message_input){
+        $ui .= '<div class="cover-content">'.$message_input.'</div>';
+    }
+
+    $ui .= '</div>';
+    $ui .= '</div>';
+    $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">'.view_i_title($i).'</a></div>';
     $ui .= '</div>';
 
     return $ui;
