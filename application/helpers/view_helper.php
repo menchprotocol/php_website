@@ -1431,7 +1431,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $user_e
     */
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-sm-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $show_editor ? ' cover_sort ' : '' ).'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-4 col-sm-6 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $show_editor ? ' cover_sort ' : '' ).'">';
     $ui .= '<div class="cover-wrapper '.( $discovery_mode ? ( $completion_rate['completion_percentage']<100 ? 'wrap-discover' : '' /* grey */ ) : 'wrap-idea' ).'">';
     $ui .= '<div class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
