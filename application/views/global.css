@@ -332,7 +332,7 @@ img.no-radius {
     max-height:250px;
 }
 .big-frame{
-    padding:89px 33px;
+    padding:89px 13px;
     text-align: center;
     margin:0;
     font-size: 3em;
@@ -1852,7 +1852,7 @@ label {
         font-size:0.667em !important;
     }
     .big-frame{
-        font-size: 2.1em;
+        font-size: 1.8em;
     }
 
     .mini-hidden{
