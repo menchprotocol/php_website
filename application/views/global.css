@@ -1775,12 +1775,12 @@ label {
     margin-top: 4px;
 }
 .cover-text{
-    margin: 8px 33px 33px;
+    margin: 8px 33px 55px;
     text-align: center;
 }
 .cover-progress{
     width: calc(100% - 42px);
-    bottom:34px;
+    top:-21px;
     left:21px;
     position: absolute;
 }
