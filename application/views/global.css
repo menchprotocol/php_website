@@ -606,8 +606,6 @@ img.no-radius {
 
 .progress-micro{
     width:160px !important;
-    left: 20px;
-    top: -50px;
 }
 .btn-right{
     left: 179px;
@@ -1767,16 +1765,24 @@ label {
 .cover-link .inside-btn {
     position:  absolute;
     text-align: center;
-    font-size: 20px;
+    font-size: 25px;
     color:#222222;
     border-radius: 50%;
     width:34px;
     height: 34px;
     background-color: #FC1B44 !important;
 }
+.inside-btn i {
+    margin-top: 4px;
+}
 .cover-text{
     margin: 8px 33px 33px;
     text-align: center;
+}
+.cover-progress{
+    width: calc(100% - 40px);
+    bottom:33px;
+    left:20px;
 }
 .inside-btn.top-left {
     top: 15px;
