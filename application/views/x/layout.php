@@ -663,7 +663,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //NEXT IDEAS
             $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, $show_nav).'</div>';
 
-            $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e);
+            $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, 'THIS IDEA INCLUDES:');
 
             //IDEA PREVIOUS
             $is_previous = $this->X_model->fetch(array(
@@ -675,7 +675,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             ), array('x__left'), 0);
             if(count($is_previous)){
                 $focus_tab .= '<div style="padding-top: 34px;">';
-                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:', true, -1);
+                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:', -1);
                 $focus_tab .= '</div>';
             }
 

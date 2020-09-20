@@ -1749,7 +1749,7 @@ label {
 
 .cover-wrapper {
     border: 5px solid #999999;
-    border-radius: 55px;
+    border-radius: 34px;
     margin:0 33px;
 }
 
@@ -1761,7 +1761,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    border-radius: 50px;
+    border-radius: 29px;
 }
 
 .cover-link .inside-btn {

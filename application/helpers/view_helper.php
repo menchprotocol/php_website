@@ -1198,7 +1198,7 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $can_click = false, $index_id = 99 /* Locked */){
+function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $index_id = 99 /* Locked */){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -1230,8 +1230,9 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $can_c
     $is_last_continious_complete = true;
     $counter = 0;
     foreach($is_next as $key => $next_i){
+        $is_featured = in_array($next_i['i__status'], $CI->config->item('n___12138'));
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $next_i);
-        $ui .= view_i_x($next_i, ( $in_my_x ? $counter : $index_id ), ($can_click || $completion_rate['completion_percentage'] > 0), $common_prefix, false, $completion_rate);
+        $ui .= view_i_x($next_i, ( $in_my_x ? $counter : $index_id ), ($is_featured || $completion_rate['completion_percentage'] > 0), $common_prefix, false, $completion_rate);
 
         //Search for the first unlocked idea right after the first stack of continuously completed ideas
         $is_last_continious_complete = ( $is_last_continious_complete && $completion_rate['completion_percentage']>=100 ? true : false );
