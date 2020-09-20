@@ -1209,7 +1209,7 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $can_c
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-    $common_prefix = ( $index_id ? i_calc_common_prefix($is_next, 'i__title') : '' );
+    $common_prefix = ( $index_id > 0 ? i_calc_common_prefix($is_next, 'i__title') : '' );
     $ui = '';
 
 
