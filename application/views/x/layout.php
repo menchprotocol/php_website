@@ -665,8 +665,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e);
 
-            $has_substance = count($is_next);
-
             //IDEA PREVIOUS
             $is_previous = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -678,6 +676,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             if(count($is_previous)){
                 $focus_tab .= view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:', true, -1);
             }
+
+            $has_substance = count($is_next) || count($is_previous);
+
 
         }
 
