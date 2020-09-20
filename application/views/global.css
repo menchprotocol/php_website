@@ -1748,20 +1748,20 @@ label {
 
 
 .cover-wrapper {
-    border: 3px solid #999999;
-    border-radius: 34px;
+    border: 5px solid #999999;
+    border-radius: 55px;
     margin:0 33px;
 }
 
 .cover-link {
-    border: 2px solid #222222;
+    border: 3px solid #222222;
     width: 100%;
     position: relative;
     padding-top: 150%;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: right 0 top 0;
-    border-radius: 31px;
+    border-radius: 50px;
 }
 
 .cover-link .inside-btn {
