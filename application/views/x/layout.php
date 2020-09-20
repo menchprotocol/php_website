@@ -242,29 +242,10 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 
 if($in_my_x && $previous_level_id){
-
     //Idea Map:
     echo '<div class="list-group grey-list indentation">';
     echo join('', array_reverse($sitemap_items));
     echo '</div>';
-
-} elseif(!$in_my_x) {
-
-    $is_previous = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-        'x__right' => $i_focus['i__id'],
-        'x__left !=' => config_var(12137),
-    ), array('x__left'), 0);
-
-    if(count($is_previous)){
-        //IDEA PREVIOUS
-        echo '<div class="grey-list">';
-        echo view_i_list($in_my_x, $i_focus, $is_previous, $user_e, '', true, -1);
-        echo '</div>';
-    }
-
 }
 
 echo '</div>';
@@ -405,7 +386,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==6255){
 
-        //IDEA CARDS
+        //DISCOVERIES
         $counter = ( count($is_next) > $i_stats['i___6170'] ? count($is_next) : $i_stats['i___6170'] );
 
         if($counter > $i_stats['i___6169'] && $i_stats['i___6169'] > 0){
@@ -685,6 +666,18 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e);
 
             $has_substance = count($is_next);
+
+            //IDEA PREVIOUS
+            $is_previous = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                'x__right' => $i_focus['i__id'],
+                'x__left !=' => config_var(12137),
+            ), array('x__left'), 0);
+            if(count($is_previous)){
+                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:', true, -1);
+            }
 
         }
 
