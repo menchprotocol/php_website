@@ -1476,7 +1476,7 @@ function view_x_progress($completion_rate, $i, $show_micro){
 
     } else {
 
-        $ui .= '<div class="progress-bg-list" '.( $show_micro ? '' : 'style="margin-left: 33px;"' ).'><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        $ui .= '<div class="progress-bg-list" style="'.( $show_micro ? 'width:100%;' : 'margin-left:33px;' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
 
     }
 

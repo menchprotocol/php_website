@@ -1779,9 +1779,10 @@ label {
     text-align: center;
 }
 .cover-progress{
-    width: calc(100% - 40px);
-    bottom:33px;
-    left:20px;
+    width: calc(100% - 42px);
+    bottom:34px;
+    left:21px;
+    position: absolute;
 }
 .inside-btn.top-left {
     top: 15px;
