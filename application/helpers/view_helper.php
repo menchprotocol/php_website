@@ -1437,16 +1437,16 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $user_e
     $ui .= '<div class="cover-wrapper '.( $discovery_mode ? ( $completion_rate['completion_percentage']<100 ? 'wrap-discover' : '' /* grey */ ) : 'wrap-idea' ).'">';
     $ui .= '<div class="cover-link" jshref="'.$href.'" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
+    if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
+        $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
+    }
+
     //EDITING TOOLBAR
     if($show_editor){
         //SORT
         $ui .= '<span class="inside-btn top-left x_sort" title="'.$e___13369[13413]['m_title'].'">'.$e___13369[13413]['m_icon'].'</span>';
         //REMOVE
         $ui .= '<span class="inside-btn top-right x_remove" title="'.$e___13369[13414]['m_title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].'</span>';
-    }
-
-    if($completion_rate['completion_percentage']>0){
-        $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
     }
 
     if($message_input){
