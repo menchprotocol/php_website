@@ -202,6 +202,11 @@ $(document).ready(function () {
         }
     });
 
+    $('.cover-link').click(function (e) {
+        window.location = $(this).attr('jshref');
+    });
+
+
     lazy_load();
     //load_intercom();
 

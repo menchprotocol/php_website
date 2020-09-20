@@ -1750,12 +1750,12 @@ label {
 .cover-wrapper {
     border: 3px solid #999999;
     border-radius: 34px;
-    margin:0 50px;
+    margin:0 33px;
 }
 
 .cover-link {
-    border: 3px solid #FFFFFF;
-    width: calc(100% - 6px);
+    border: 2px solid #222222;
+    width: 100%;
     position: relative;
     padding-top: 150%;
     background-repeat: no-repeat;
@@ -1774,7 +1774,10 @@ label {
     height: 34px;
     background-color: #FC1B44 !important;
 }
-
+.cover-text{
+    margin: 8px 33px 33px;
+    text-align: center;
+}
 .inside-btn.top-left {
     top: 15px;
     left: 15px;
