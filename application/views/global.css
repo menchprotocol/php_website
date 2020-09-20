@@ -1760,7 +1760,7 @@ label {
     padding-top: 150%;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: right 0 top 0;
+    background-position: center;
     border-radius: 50px;
 }
 
