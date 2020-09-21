@@ -385,7 +385,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $superpower_10984 = superpower_active(10984, true);
             if($superpower_10939){
                 //Give Option to Add New Idea:
-                $focus_tab .= '<div class="list-group add_e_idea">';
+                $focus_tab .= '<div class="list-group add_e_idea" style="padding-top: 3px;">';
                 $focus_tab .= '<div class="list-group-item list-adder">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>

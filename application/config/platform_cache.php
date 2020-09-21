@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-20 20:40:40 PST
+//Generated 2020-09-21 00:35:57 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -3287,7 +3287,7 @@ $config['n___6225'] = array(12289,10957,13884,13491,3288,3286,13518,12114);
 $config['e___6225'] = array(
     12289 => array(
         'm_title' => 'AVATAR',
-        'm_message' => 'Pick your spirit animal',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-paw-claws" aria-hidden="true"></i>',
         'm_profile' => array(6225),
     ),
@@ -3305,7 +3305,7 @@ $config['e___6225'] = array(
     ),
     13491 => array(
         'm_title' => 'FONT SIZE',
-        'm_message' => 'Here is the current font size',
+        'm_message' => 'Here is the current font size...',
         'm_icon' => '<i class="fas fa-text-size"></i>',
         'm_profile' => array(11054,13890,6225,4527,6204),
     ),
@@ -3323,7 +3323,7 @@ $config['e___6225'] = array(
     ),
     13518 => array(
         'm_title' => 'MONTHLY SUBSCRIPTION',
-        'm_message' => 'Your subscription funds weekly payouts to members who map ideas & build the Mench Network',
+        'm_message' => '',
         'm_icon' => '<i class="fas fa-sync discover"></i>',
         'm_profile' => array(11054,13890,6204,4527,6225,13450),
     ),
@@ -4028,7 +4028,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.563',
+        'm_message' => 'v1.57',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
