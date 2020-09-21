@@ -1779,12 +1779,12 @@ label {
     height:         calc(100% - 10px);
     left: 5px;
     top: 5px;
-    background:black(0.5);
+    background-color: #222222;
+    opacity: 0.55;
     overflow-x: hidden;
     overflow-y: scroll;
     color: #FFFFFF;
-    padding: 5px;
-    border-radius: 34px;
+    padding: 8px;
 }
 .cover-content .padded,
 .cover-content .msg{
