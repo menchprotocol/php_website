@@ -1786,11 +1786,13 @@ label {
     padding: 8px;
     border-radius: 25px;
 }
-.cover-content .padded,
-.cover-content .msg{
+.cover-content .padded{
     margin: 0 !important;
-    font-size: 0.65em;
 }
+.cover-content .msg{
+    font-size: 0.75em;
+}
+
 .inside-btn.top-left {
     top: 10px;
     left: 10px;
