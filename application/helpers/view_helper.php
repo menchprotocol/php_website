@@ -1291,7 +1291,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
         $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
 
 
-        $ui .= '<table class="table table-condensed" style="margin-bottom: 16px; padding-top: 10px;"><tr>';
+        $ui .= '<table class="table table-condensed" style="margin-bottom: 16px; margin-top: 10px;"><tr>';
 
         //Add button:
         $ui .= '<td style="width:55px; padding:0;"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
