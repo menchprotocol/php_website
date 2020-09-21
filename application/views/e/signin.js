@@ -194,7 +194,7 @@ function e_magic_email(){
     }, function (data) {
         if (data.status) {
             //All good, they can close window:
-            $('.magic_result').html('<div><i class="fas fa-eye"></i> Check your email and SPAM FOLDER</div>').hide().fadeIn();
+            $('.magic_result').html('<div><span class="icon-block"><i class="fas fa-eye"></i></span>Check your email and SPAM FOLDER</div>').hide().fadeIn();
         } else {
             //Show errors:
             $('.magic_result').html('<div class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</div>').hide().fadeIn();

@@ -160,7 +160,7 @@ if(count($current_sign_i_attempt) == 0){
 
         <!-- Step 5: Check your email -->
         <div id="step5" class="signup-steps hidden">
-            <span style="padding-bottom: 10px;"><i class="fas fa-envelope-open"></i> <span class="focus_email"></span></span>
+            <div style="padding-bottom: 10px;"><span class="icon-block"><i class="fas fa-envelope-open"></i></span><span class="focus_email"></span></div>
             <span class="medium-header magic_result"></span>
         </div>
 
