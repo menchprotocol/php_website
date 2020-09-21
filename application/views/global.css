@@ -1770,27 +1770,23 @@ label {
     position: absolute;
 }
 .cover-content{
-    width: -webkit-calc(100% - 10px);
-    width:    -moz-calc(100% - 10px);
-    width:         calc(100% - 10px);
+    width:100%;
+    height:100%;
     position: absolute;
-    height: -webkit-calc(100% - 10px);
-    height:    -moz-calc(100% - 10px);
-    height:         calc(100% - 10px);
-    left: 5px;
-    top: 5px;
+    left: 0;
+    top: 0;
     background: rgba(0, 0, 0, 0.75);
     overflow-x: hidden;
     overflow-y: scroll;
     color: #FFFFFF;
-    padding: 8px;
-    border-radius: 25px;
+    padding: 5px;
+    border-radius: 28px;
 }
 .cover-content .padded{
     margin: 0 !important;
 }
 .cover-content .msg{
-    font-size: 0.75em;
+    font-size: 0.7em !important;
 }
 
 .inside-btn.top-left {
