@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-21 03:32:10 PST
+//Generated 2020-09-21 03:35:05 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -16,13 +16,13 @@ $config['e___13518'] = array(
     13038 => array(
         'm_title' => 'ALWAYAS FREE : 80 DISCOVERIES/MONTH',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle discover"></i>',
+        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
         'm_profile' => array(13889,13518,4755),
     ),
     13042 => array(
         'm_title' => 'USD $8/MONTH : UNLIMITED DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle discover"></i>',
+        'm_icon' => '<i class="fas fa-hand-holding-usd discover"></i>',
         'm_profile' => array(13518,4755),
     ),
 );
@@ -199,7 +199,7 @@ $config['e___13889'] = array(
     13038 => array(
         'm_title' => 'ALWAYAS FREE : 80 DISCOVERIES/MONTH',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle discover"></i>',
+        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
         'm_profile' => array(13889,13518,4755),
     ),
     13886 => array(
@@ -7172,7 +7172,7 @@ $config['e___4755'] = array(
     13038 => array(
         'm_title' => 'ALWAYAS FREE : 80 DISCOVERIES/MONTH',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle discover"></i>',
+        'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
         'm_profile' => array(13889,13518,4755),
     ),
     12336 => array(
@@ -7658,7 +7658,7 @@ $config['e___4755'] = array(
     13042 => array(
         'm_title' => 'USD $8/MONTH : UNLIMITED DISCOVERIES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-usd-circle discover"></i>',
+        'm_icon' => '<i class="fas fa-hand-holding-usd discover"></i>',
         'm_profile' => array(13518,4755),
     ),
     12489 => array(
