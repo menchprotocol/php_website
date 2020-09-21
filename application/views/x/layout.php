@@ -384,7 +384,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             continue;
         }
 
-    } elseif($x__type==6255){
+    } elseif($x__type==12273){
 
         //DISCOVERIES
         $counter = ( count($is_next) > $i_stats['i___6170'] ? count($is_next) : $i_stats['i___6170'] );
@@ -760,7 +760,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
-    if(!$counter && $x__type==6255 && !$has_substance){
+    if(!$counter && $x__type==12273 && !$has_substance){
         continue;
     }
 
