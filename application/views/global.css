@@ -1729,20 +1729,20 @@ label {
 
 
 .cover-wrapper {
-    border: 5px solid #999999;
+    border: 3px solid #999999;
     border-radius: 34px;
     margin:0 33px;
 }
 
 .cover-link {
-    border: 3px solid #222222;
+    border: 2px solid #222222;
     width: 100%;
     position: relative;
     padding-top: 150%;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    border-radius: 29px;
+    border-radius: 31px;
 }
 .cover-link.can-click{
     cursor: pointer;
