@@ -1389,6 +1389,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $user_e
     $user_input = $user_e;
     $user_session = superpower_assigned();
     $discovery_mode = $x__type==6255;
+    $can_click = !strlen($message_input); //Otherwise top part would show content
 
     if(!$user_e){
         $user_e = $user_session;
@@ -1406,7 +1407,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $user_e
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-4 col-sm-6 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $show_editor ? ' cover_sort ' : '' ).'">';
     $ui .= '<div class="cover-wrapper '.( $discovery_mode ? ( $completion_rate['completion_percentage']<100 ? 'wrap-discover' : '' /* grey */ ) : 'wrap-idea' ).'">';
-    $ui .= '<div '.( !strlen($message_input) ? 'class="cover-link can-click" jshref="'.$href.'"' : 'class="cover-link" jshref="'.$href.'"' ).' style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
+    $ui .= ( $can_click ? '<a href="'.$href.'"' : '<div' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
     if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
         $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
@@ -1424,7 +1425,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $user_e
         $ui .= '<div class="cover-content">'.$message_input.'</div>';
     }
 
-    $ui .= '</div>';
+    $ui .= ( $can_click ? '</a>' : '</div>' );
     $ui .= '</div>';
     $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">'.view_i_title($i).'</a></div>';
     $ui .= '</div>';

@@ -1744,9 +1744,6 @@ label {
     background-position: center;
     border-radius: 31px;
 }
-.cover-link.can-click{
-    cursor: pointer;
-}
 
 .cover-link .inside-btn {
     position:  absolute;
