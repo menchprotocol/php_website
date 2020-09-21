@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-21 15:17:27 PST
+//Generated 2020-09-21 15:24:57 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -1869,7 +1869,7 @@ $config['e___12446'] = array(
     13752 => array(
         'm_title' => 'LOCKED',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-lock discover"></i>',
+        'm_icon' => '<i class="far fa-lock"></i>',
         'm_profile' => array(12446),
     ),
     13822 => array(
@@ -1881,7 +1881,7 @@ $config['e___12446'] = array(
     13757 => array(
         'm_title' => 'CURRENT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle discover"></i>',
+        'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(12446),
     ),
     12447 => array(
