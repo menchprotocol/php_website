@@ -1770,24 +1770,27 @@ label {
     position: absolute;
 }
 .cover-content{
-    width: -webkit-calc(100% - 42px);
-    width:    -moz-calc(100% - 42px);
-    width:         calc(100% - 42px);
-    height: -webkit-calc(100% - 55px);
-    height:    -moz-calc(100% - 55px);
-    height:         calc(100% - 55px);
+    width: -webkit-calc(100% - 10px);
+    width:    -moz-calc(100% - 10px);
+    width:         calc(100% - 10px);
     position: absolute;
-    left: 21px;
-    top: 42px;
-    background-color: #FFFFFF;
-    overflow: scroll;
-    color: #222222;
-    padding: 0;
+    height: -webkit-calc(100% - 10px);
+    height:    -moz-calc(100% - 10px);
+    height:         calc(100% - 10px);
+    left: 5px;
+    top: 5px;
+    background:black(0.5);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    color: #FFFFFF;
+    padding: 5px;
     border-radius: 34px;
 }
 .cover-content .message_content,
-.cover-content .padded{
+.cover-content .padded,
+.cover-content .msg{
     margin: 0 !important;
+    font-size: 0.8em;
 }
 .inside-btn.top-left {
     top: 15px;
