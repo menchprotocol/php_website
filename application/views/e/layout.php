@@ -414,27 +414,23 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         'x__up' => $e['e__id'],
                     ), array('x__right'), config_var(11064), 0, array('x__sort' => 'ASC'));
 
-                    //Need 2 or more to sort...
-                    if(count($i_bookmarks) > 1){
-                        //SORTING ENABLED
-                        $focus_tab .= '<script> $(document).ready(function () {x_sort_load(10573)}); </script>';
-                    } else {
-                        //SORTING DISABLED
-                        $focus_tab .= '<style> #list_10573 .x_sort {display:none !important;} </style>';
-                    }
-
-                    $focus_tab .= '<div class="headline" style="margin-top:21px;"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_title'].'</div>';
                     if(count($i_bookmarks) > 0){
 
+                        //Need 2 or more to sort...
+                        if(count($i_bookmarks) > 1){
+                            //SORTING ENABLED
+                            $focus_tab .= '<script> $(document).ready(function () {x_sort_load(10573)}); </script>';
+                        } else {
+                            //SORTING DISABLED
+                            $focus_tab .= '<style> #list_10573 .x_sort {display:none !important;} </style>';
+                        }
+
+                        $focus_tab .= '<div class="headline" style="margin-top:21px;"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_title'].'</div>';
                         $focus_tab .= '<div class="row top-margin" id="list_10573">';
                         foreach($i_bookmarks as $item){
                             $focus_tab .= view_i_cover(12273, $item, $source_is_e, null, $e);
                         }
                         $focus_tab .= '</div>';
-
-                    } else {
-
-                        $focus_tab .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Ideas Mapped Yet</div>';
 
                     }
                 }
@@ -446,7 +442,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $focus_tab .= '<div class="headline" style="margin-top:21px;"><span class="icon-block">'.$e___11035[13550]['m_icon'].'</span>'.$e___11035[13550]['m_title'].'</div>';
             if(count($list_i)){
 
-                $focus_tab .= '<div class="row top-margin" id="list_13550">';
+                $focus_tab .= '<div class="row" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
                     $focus_tab .= view_i_cover(12273, $item, false, ( $show_message ? $this->X_model->message_send($item['x__message']) : null), $e);
