@@ -469,10 +469,11 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
             //Show My Discoveries
-            $focus_tab .= '<div class="headline" style="margin-top:18px;"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_title'].'</div>';
             if($counter){
 
                 if($source_is_e || superpower_active(12701, true)){
+
+                    $focus_tab .= '<div class="headline" style="margin-top:18px;"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_title'].'</div>';
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
@@ -490,7 +491,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 } else {
 
-                    $focus_tab .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block">&nbsp;</span>'.$e['e__title'].' has discovered '.$counter.' ideas so far.</div>';
+                    $focus_tab .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-eye-slash"></i></span>Discoveries are private</div>';
 
                 }
 
