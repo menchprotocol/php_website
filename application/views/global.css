@@ -1809,13 +1809,6 @@ label {
     background-color: #ffc500 !important;
 }
 
-@media (max-width:576px) {
-    .col2nd .row { padding-left: 33px; padding-top: 8px; }
-    .big-frame{
-        font-size: 1.8em;
-    }
-}
-
 /* RESPONSIVE */
 @media (max-width:767px) {
 
@@ -1906,7 +1899,13 @@ label {
         width:40px;
     }
 
+}
 
+@media (max-width:576px) {
+    .col2nd .row { padding-left: 33px; padding-top: 8px; }
+    .big-frame{
+        font-size: 1.8em;
+    }
 }
 
 
