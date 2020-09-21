@@ -1809,6 +1809,9 @@ label {
     background-color: #ffc500 !important;
 }
 
+@media (max-width:576px) {
+    .col2nd .row { padding-left: 33px; padding-top: 8px; }
+}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
@@ -1842,8 +1845,6 @@ label {
     .feature-content>div{
         margin:0 0 5px 0 !important;
     }
-
-    .col2nd .row { padding-left: 33px; padding-top: 8px; }
 
     .top-icon{
         margin-top: -12px;
