@@ -1398,7 +1398,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $ui .= '<div class="cover-wrapper '.( $discovery_mode ? ( $completion_rate['completion_percentage']<100 ? 'wrap-discover' : '' /* grey */ ) : 'wrap-idea' ).'">';
     $ui .= ( $can_click ? '<a href="'.$href.'"' : '<div' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
-    if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
+    if($completion_rate['completion_percentage']>0){
         $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
     }
 
