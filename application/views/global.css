@@ -1811,10 +1811,17 @@ label {
 
 @media (max-width:576px) {
     .col2nd .row { padding-left: 33px; padding-top: 8px; }
+    .big-frame{
+        font-size: 1.8em;
+    }
 }
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .big-frame{
+        font-size: 2.5em;
+    }
 
     .social-footer li{
         font-size: 1.2em;
@@ -1861,9 +1868,6 @@ label {
     .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
         font-size:0.667em !important;
-    }
-    .big-frame{
-        font-size: 1.8em;
     }
 
     .mini-hidden{
