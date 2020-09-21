@@ -640,24 +640,13 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
 
         //IDEAS
         $join_objects = array('x__right');
-
-        if($page_num > 0){
-            $order_columns = array('x__sort' => 'ASC');
-            $query_filters = array(
-                'i__status IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 10573, //BOOKMARKED IDEAS
-                'x__up' => $e__id, //For this user
-            );
-        } else {
-            $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
-            $query_filters = array(
-                'i__status IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
-            );
-        }
+        $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
+        $query_filters = array(
+            'i__status IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
+        );
 
     } elseif($x__type==6255){
 
@@ -1381,27 +1370,27 @@ function view__focus__e($e){
     return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m_title'].'"><span class="icon-block">'.$e___11035[13670]['m_icon'].'</span>' . view_e__icon($e['e__icon']) . '&nbsp;<a href="/@'.$e['e__id'].'" class="'.extract_icon_color($e['e__icon']).'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m_title'].'">'.$e___11035[13671]['m_icon'].'</a></div>';
 }
 
-function view_i_cover($x__type, $i, $show_editor, $message_input = null, $user_e = false){
+function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_e = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
-    $user_input = $user_e;
+    $user_input = $focus_e;
     $user_session = superpower_assigned();
     $discovery_mode = $x__type==6255;
     $can_click = !strlen($message_input); //Otherwise top part would show content
 
-    if(!$user_e){
-        $user_e = $user_session;
+    if(!$focus_e){
+        $focus_e = $user_session;
     }
 
     $completion_rate['completion_percentage'] = 0; //Assume no progress
-    if($user_e && $discovery_mode){
-        $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $i);
+    if($focus_e && $discovery_mode){
+        $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
     }
 
     $i_stats = i_stats($i['i__metadata']);
-    $href = ( $discovery_mode ? ( $user_input && $user_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?focus__e='.$user_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
+    $href = ( $discovery_mode ? ( $user_input && $focus_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?focus__e='.$focus_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
 
 
 

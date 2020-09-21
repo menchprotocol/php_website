@@ -377,62 +377,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             //IDEAS
             $counter = $counter__i;
-
-            $list_i = view_coins_e(12273, $e['e__id'], 1);
-
-            $show_editor = $source_is_e; //To manage idea bookmarks
-
-            if($counter>0 && !count($list_i) && !$source_is_e){
-                //Load Flat List since this source has ideas but nothing bookmarked:
-                $list_i = $this->X_model->fetch(array(
-                    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    '(x__up = '.$e['e__id'].' OR x__down = '.$e['e__id'].')' => null,
-                ), array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
-                $show_editor = false; //Since it's a flat list, not bookmarks!
-            }
-
             if(!$counter && !$superpower_10939 && !$source_is_e){
                 continue;
             }
 
-            $focus_tab .= ( count($list_i) > 1 ? '<script> $(document).ready(function () {x_sort_load(13412)}); </script>' : '<style> #list_13412 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
-
-
-
-            $focus_tab .= '<div class="row top-margin" id="list_13412">';
-            foreach($list_i as $count => $item){
-
-                $message_input = null;
-                $string_references['ref_time_found'] = false;
-
-                if(strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1) /* Message references current user only */){
-                    $message_input .= '<div class="message_content">';
-                    $message_input .= $this->X_model->message_send($item['x__message']);
-                    $message_input .= '</div>';
-                    $string_references = extract_e_references($item['x__message']);
-                }
-
-                $focus_tab .= view_i_cover(12273, $item, $show_editor, $message_input, $e);
-
-
-            }
-            $focus_tab .= '</div>';
-            $focus_tab .= '<div class="doclear">&nbsp;</div>';
-
-
-
-            if($source_is_e && $counter > count($list_i)){
-                //Give option to browse all idea:
-                $focus_tab .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>LIST ALL '.$counter.' IDEAS &raquo;</a></div></div>';
-            }
-
-
-            //SMART SHOW/HIDE LIST LOGIC
             if($superpower_10939){
-
+                //Give Option to Add New Idea:
                 $focus_tab .= '<div class="list-group add_e_idea">';
                 $focus_tab .= '<div class="list-group-item list-adder">
                     <div class="input-group border">
@@ -444,11 +395,72 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                placeholder="NEW IDEA TITLE">
                     </div><div class="algolia_pad_search hidden"></div></div>';
                 $focus_tab .= '</div>';
+            }
 
-            } elseif($user_e && $user_e['e__id']>0 && !count($list_i)) {
 
-                //Give option to get started:
-                $focus_tab .= '<div class="msg alert alert-warning" role="alert" style="text-decoration: none;"><span class="icon-block">'.$e___11035[10939]['m_icon'].'</span><a href="'.config_var(10939).'">'.$e___11035[10939]['m_title'].'<span class="icon-block"><i class="fas fa-arrow-right"></i></span></a></div>';
+            if($source_is_e || superpower_active(10984, true)){
+
+                if($source_is_e && !superpower_assigned(10939)){
+
+                    //Give Option to Get Started:
+                    $focus_tab .= '<div class="msg alert alert-warning" role="alert" style="text-decoration: none;"><span class="icon-block">'.$e___11035[10939]['m_icon'].'</span><a href="'.config_var(10939).'">'.$e___11035[10939]['m_title'].'<span class="icon-block"><i class="fas fa-arrow-right"></i></span></a></div>';
+
+                } else {
+
+                    $i_bookmarks = $this->X_model->fetch(array(
+                        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type' => 10573, //BOOKMARKED IDEAS
+                        'x__up' => $e['e__id'],
+                    ), array('x__right'), config_var(11064), 0, array('x__sort' => 'ASC'));
+
+                    //Need 2 or more to sort...
+                    if(count($i_bookmarks) > 1){
+                        //SORTING ENABLED
+                        $focus_tab .= '<script> $(document).ready(function () {x_sort_load(10573)}); </script>';
+                    } else {
+                        //SORTING DISABLED
+                        $focus_tab .= '<style> #list_10573 .x_sort {display:none !important;} </style>';
+                    }
+
+                    $focus_tab .= '<div class="headline" style="margin-top:21px;"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_title'].'</div>';
+                    if(count($i_bookmarks) > 0){
+
+                        $focus_tab .= '<div class="row top-margin" id="list_10573">';
+                        foreach($i_bookmarks as $item){
+                            $focus_tab .= view_i_cover(12273, $item, $source_is_e, null, $e);
+                        }
+                        $focus_tab .= '</div>';
+
+                    } else {
+
+                        $focus_tab .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Ideas Mapped Yet</div>';
+
+                    }
+                }
+            }
+
+
+            //List All Ideas:
+            $list_i = view_coins_e(12273, $e['e__id'], 1);
+            $focus_tab .= '<div class="headline" style="margin-top:21px;"><span class="icon-block">'.$e___11035[13550]['m_icon'].'</span>'.$e___11035[13550]['m_title'].'</div>';
+            if(count($list_i)){
+
+                $focus_tab .= '<div class="row top-margin" id="list_13550">';
+                foreach($list_i as $count => $item){
+                    $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
+                    $focus_tab .= view_i_cover(12273, $item, false, ( $show_message ? $this->X_model->message_send($item['x__message']) : null), $e);
+                }
+                $focus_tab .= '</div>';
+
+                //Are there more?
+                if($counter > count($list_i)){
+                    $focus_tab .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>LIST ALL '.$counter.' IDEAS &raquo;</a></div></div>';
+                }
+
+            } else {
+
+                $focus_tab .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Ideas Mapped Yet</div>';
 
             }
 
@@ -459,6 +471,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $my_x_ids = array();
 
 
+            //Show My Discoveries
+            $focus_tab .= '<div class="headline" style="margin-top:21px;"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_title'].'</div>';
             if($counter){
 
                 if($source_is_e || superpower_active(12701, true)){
@@ -466,14 +480,14 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
 
-                        $focus_tab .= '<div class="row top-margin" id="list_6132">';
+                        $focus_tab .= '<div class="row top-margin" id="list_12969">';
                         foreach($list_x as $item){
                             $focus_tab .= view_i_cover(6255, $item, $source_is_e, null, $e);
                             array_push($my_x_ids, $item['i__id']);
                         }
                         $focus_tab .= '</div>';
-                        $focus_tab .= '<div class="doclear">&nbsp;</div>';
-                        $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> #list_6132 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+
+                        $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list_12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
                     }
 
@@ -495,21 +509,18 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => config_var(12137),
+                    'i__id NOT IN (' . join(',', $my_x_ids) . ')' => null, //Already Started
                 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
-                $focus_tab .= '<div class="headline" style="margin-top:21px;"><span class="icon-block">'.$e___11035[13813]['m_icon'].'</span>'.$e___11035[13813]['m_title'].'</div>';
-                $focus_tab .= '<div class="row top-margin">';
-                foreach($featured_i as $key => $x){
-                    if(!in_array($x['i__id'], $my_x_ids)){
-                        //Show only if not in discovering list:
+                if(count($featured_i)){
+                    $focus_tab .= '<div class="headline" style="margin-top:21px;"><span class="icon-block">'.$e___11035[13813]['m_icon'].'</span>'.$e___11035[13813]['m_title'].'</div>';
+                    $focus_tab .= '<div class="row top-margin">';
+                    foreach($featured_i as $key => $x){
                         $focus_tab .= view_i_cover(6255, $x, false, null, $e);
                     }
+                    $focus_tab .= '</div>';
                 }
-                $focus_tab .= '</div>';
-                $focus_tab .= '<div class="doclear">&nbsp;</div>';
-
             }
-
 
         } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
