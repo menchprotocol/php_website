@@ -1779,8 +1779,7 @@ label {
     height:         calc(100% - 10px);
     left: 5px;
     top: 5px;
-    background-color: #222222;
-    opacity: 0.55;
+    background: rgba(0, 0, 0, 0.5);
     overflow-x: hidden;
     overflow-y: scroll;
     color: #FFFFFF;
