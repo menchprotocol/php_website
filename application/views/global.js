@@ -202,7 +202,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.cover-link').click(function (e) {
+    $('.can-click').click(function (e) {
         window.location = $(this).attr('jshref');
     });
 

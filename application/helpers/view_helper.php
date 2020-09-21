@@ -1291,14 +1291,14 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
         $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
 
 
-        $ui .= '<table class="table table-condensed" style="margin-bottom: 16px;"><tr>';
+        $ui .= '<table class="table table-condensed" style="margin-bottom: 16px; padding-top: 10px;"><tr>';
 
         //Add button:
-        $ui .= '<td style="width:55px; padding: 10px 0 0 0;"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
+        $ui .= '<td style="width:55px; padding:0;"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
 
 
         //File counter:
-        $ui .= '<td style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden"><span id="charNum' . $x__type . '">0</span>/' . config_var(4485).'</span></td>';
+        $ui .= '<td style="padding:0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden"><span id="charNum' . $x__type . '">0</span>/' . config_var(4485).'</span></td>';
 
 
         //Upload File:
@@ -1389,7 +1389,6 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $user_e
     $user_input = $user_e;
     $user_session = superpower_assigned();
     $discovery_mode = $x__type==6255;
-    $show_wide_view = ( !$discovery_mode || strlen($message_input) );
 
     if(!$user_e){
         $user_e = $user_session;
@@ -1405,37 +1404,9 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $user_e
 
 
 
-    /*
-    $ui = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-sm-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding big-cover '.( $show_editor ? ' cover_sort ' : '' ).'">';
-
-        //EDITING TOOLBAR
-        if($show_editor){
-
-            //SORT
-            $ui .= '<div class="note-btn btn-left note-editor edit-off '.( $discovery_mode ? ' editor-discover ' : ' editor-idea '.superpower_active(10939) ).'">';
-            $ui .= '<span class="show-on-hover">';
-            $ui .= '<span title="'.$e___13369[13413]['m_title'].'" class="x_sort">'.$e___13369[13413]['m_icon'].'</span>';
-            $ui .= '</span>';
-            $ui .= '</div>';
-
-            //REMOVE
-            $ui .= '<div class="note-btn btn-right note-editor edit-off '.( $discovery_mode ? ' editor-discover ' : ' editor-idea '.superpower_active(10939) ).'">';
-            $ui .= '<span class="show-on-hover">';
-            $ui .= '<span title="'.$e___13369[13414]['m_title'].'" class="x_remove" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].' </span>';
-            $ui .= '</span>';
-            $ui .= '</div>';
-        }
-
-        $ui .= '<a class="cover-photo '.( $completion_rate['completion_percentage']>=100 ? 'cover-done' : '' ).' '.( $discovery_mode ? '' : ' cover-gold ' ).'" href="'.$href.'">'.i_fetch_cover($i['i__id'], true).( $completion_rate['completion_percentage']>0 ? view_x_progress($completion_rate, $i, true) : '' ).'<b class="montserrat">'.view_i_title($i).'</b></a>';
-
-    $ui .= '</div>';
-
-    */
-
-
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-4 col-sm-6 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $show_editor ? ' cover_sort ' : '' ).'">';
     $ui .= '<div class="cover-wrapper '.( $discovery_mode ? ( $completion_rate['completion_percentage']<100 ? 'wrap-discover' : '' /* grey */ ) : 'wrap-idea' ).'">';
-    $ui .= '<div class="cover-link" jshref="'.$href.'" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
+    $ui .= '<div '.( !strlen($message_input) ? 'class="cover-link can-click" jshref="'.$href.'"' : 'class="cover-link" jshref="'.$href.'"' ).' style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
     if($completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
         $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';

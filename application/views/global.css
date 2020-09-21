@@ -575,12 +575,6 @@ img.no-radius {
     overflow: hidden;
 }
 
-.big-cover{
-    margin:21px 0;
-    position: relative;
-    max-width: none;
-}
-
 .wrap-card, .outside-card{
     border: 3px solid transparent;
     padding:0 0 25px 0;
@@ -1159,16 +1153,6 @@ td.MENCHcolumn3  { width: 13%; }
     margin-bottom:0 !important;
     padding-top:0 !important;
     padding-bottom:0 !important;
-}
-.big-cover .i_content {
-    padding-right: 13px !important;
-    font-size: 0.89em !important;
-}
-.big-cover .cover-title {
-    padding-right: 13px !important;
-}
-.big-cover .message_content {
-    margin-left: 0 !important;
 }
 .no-height{
     height: 0;
@@ -1760,6 +1744,9 @@ label {
     background-position: center;
     border-radius: 29px;
 }
+.cover-link.can-click{
+    cursor: pointer;
+}
 
 .cover-link .inside-btn {
     position:  absolute;
@@ -1791,7 +1778,6 @@ label {
     height: -webkit-calc(100% - 55px);
     height:    -moz-calc(100% - 55px);
     height:         calc(100% - 55px);
-
     position: absolute;
     left: 21px;
     top: 42px;
@@ -1853,8 +1839,6 @@ label {
     .cover-title {
         padding-top: 6px;
     }
-
-    .big-cover{ margin-right:5px; }
 
     .feature-content>div{
         margin:0 0 5px 0 !important;
