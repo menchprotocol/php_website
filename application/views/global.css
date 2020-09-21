@@ -1779,16 +1779,17 @@ label {
     height:         calc(100% - 10px);
     left: 5px;
     top: 5px;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.75);
     overflow-x: hidden;
     overflow-y: scroll;
     color: #FFFFFF;
     padding: 8px;
+    border-radius: 25px;
 }
 .cover-content .padded,
 .cover-content .msg{
     margin: 0 !important;
-    font-size: 0.8em;
+    font-size: 0.65em;
 }
 .inside-btn.top-left {
     top: 10px;
