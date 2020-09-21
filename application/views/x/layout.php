@@ -658,8 +658,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         } else {
 
-            //NOT IN READING LIST YET...
+            //TIME ESTIMATE
+            $focus_tab .= '<div class="i_estimates hideIfEmpty i_x_stats hidden">'.view_i_tree_stats($i_stats, $show_nav).'</div>';
 
+            //NEXT IDEAS
             $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, 'THIS IDEA INCLUDES:');
 
             //IDEA PREVIOUS
@@ -675,9 +677,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $focus_tab .= view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:', -1);
                 $focus_tab .= '</div>';
             }
-
-            //NEXT IDEAS
-            $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, $show_nav).'</div>';
 
             $has_substance = count($is_next) || count($is_previous);
 
