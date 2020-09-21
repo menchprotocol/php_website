@@ -1542,7 +1542,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="note-editor edit-off">';
         $ui .= '<span class="show-on-hover">';
 
-        if($is_e_link && $superpower_13422){
+        $main_controller = $is_e_link && $superpower_13422;
+        if($main_controller){
 
             //Sort
             if(!$is_parent && $superpower_10939){
@@ -1557,7 +1558,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         if($superpower_10939 && (($source_of_e && !$is_parent) || $superpower_13422)){
 
             //UNLINK SOURCE
-            $ui .= '<span><a href="javascript:void(0);" onclick="remove_10673(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m_title'].'">'.$e___11035[10673]['m_icon'].'</a></span>';
+            $ui .= '<span class="'.( $main_controller ? ' show-max ' : '' ).'"><a href="javascript:void(0);" onclick="remove_10673(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m_title'].'">'.$e___11035[10673]['m_icon'].'</a></span>';
 
         }
 
