@@ -1782,6 +1782,9 @@ label {
     padding: 21px 5px;
     border-radius: 28px;
 }
+.cover-content .icon-block-xs {
+    display: none;
+}
 .cover-content .icon-block-xs img {
     margin: 1px 0 0 3px !important;
 }
