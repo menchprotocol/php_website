@@ -1760,7 +1760,7 @@ label {
 }
 .cover-progress{
     width: calc(100% - 42px);
-    top:-16px;
+    top:-18px;
     left:21px;
     position: absolute;
 }
