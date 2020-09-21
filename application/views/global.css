@@ -1743,6 +1743,7 @@ label {
     background-size: cover;
     background-position: center;
     border-radius: 31px;
+    display: block;
 }
 
 .cover-link .inside-btn {
