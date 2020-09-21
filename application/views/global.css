@@ -1524,7 +1524,7 @@ label {
 .img-block img {
     width: 16px !important;
     height: 16px !important;
-    margin: -5px 0 -3px !important; /* 8px 3px 0 */
+    margin: 3px 0 0 3px !important;
     border-radius: 50%;
 }
 .icon-demo img {
@@ -1781,9 +1781,6 @@ label {
     color: #FFFFFF;
     padding: 21px 5px;
     border-radius: 28px;
-}
-.cover-content .icon-block-xs img {
-    margin: 1px 0 0 3px !important;
 }
 .cover-content .padded{
     margin: 0 !important;
