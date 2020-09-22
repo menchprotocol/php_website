@@ -292,7 +292,11 @@ img.no-radius {
 }
 
 .algolia_pad_search{
-    height:777px;
+    height:610px;
+    font-family: 'Montserrat', sans-serif;
+    padding: 33px;
+    color: #999999;
+    font-weight: bold;
 }
 .gateway{
     color:transparent !important;
