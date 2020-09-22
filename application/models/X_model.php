@@ -1046,7 +1046,6 @@ class X_model extends CI_Model
     {
 
         //CHECK DOWN/NEXT
-        $first_incomplete = null;
         $found_trigger = false;
         foreach ($this->X_model->fetch(array(
             'x__left' => $i['i__id'],

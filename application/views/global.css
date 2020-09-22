@@ -1907,7 +1907,6 @@ label {
 
 @media (max-width:576px) {
     .col2nd { padding-left: 33px !important; padding-top: 8px; }
-    .col2nd-icon-block{ padding-left: 22px !important; }
     .big-frame{
         font-size: 2em;
     }

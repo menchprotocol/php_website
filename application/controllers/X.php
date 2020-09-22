@@ -472,37 +472,34 @@ class X extends CI_Controller
 
     }
 
-    function x_next($i__id = 0){
+    function x_next($i__id){
 
         $user_e = superpower_assigned();
         if(!$user_e){
             return redirect_message('/signin/');
         }
 
-        if($i__id > 0){
+        //Fetch Idea:
+        $is = $this->I_model->fetch(array(
+            'i__id' => $i__id,
+        ));
 
-            //Fetch Idea:
-            $is = $this->I_model->fetch(array(
-                'i__id' => $i__id,
+        //Should we check for auto next redirect if empty? Only if this is a selection:
+        if($is[0]['i__type']==6677){
+
+            //Mark as discover If not previously:
+            $x_completes = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
+                'x__source' => $user_e['e__id'],
+                'x__left' => $is[0]['i__id'],
             ));
 
-            //Should we check for auto next redirect if empty? Only if this is a selection:
-            if($is[0]['i__type']==6677){
-
-                //Mark as discover If not previously:
-                $x_completes = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
+            if(!count($x_completes)){
+                $this->X_model->mark_complete($is[0], array(
+                    'x__type' => 4559, //DISCOVER MESSAGES
                     'x__source' => $user_e['e__id'],
-                    'x__left' => $is[0]['i__id'],
                 ));
-
-                if(!count($x_completes)){
-                    $this->X_model->mark_complete($is[0], array(
-                        'x__type' => 4559, //DISCOVER MESSAGES
-                        'x__source' => $user_e['e__id'],
-                    ));
-                }
             }
         }
 

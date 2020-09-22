@@ -29,6 +29,14 @@ function view_i_tree_stats($i_stats, $hide_idea, $auto_hide = true){
     $ui = '<span class="montserrat doupper" style="padding-right:8px;">';
 
 
+
+    //IDEAS
+    if(!$hide_idea){
+        $ui .= '<span class="i_x_stats hidden inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">&nbsp;&nbsp;'.( $has_idea ? $e___13544[13629]['m_icon'] : '' ).' '.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
+    }
+
+
+
     //TIME STATS
     $ui .= '<span class="i_x_stats inline-block grey '.( $auto_hide ? ' hidden ' : '' ).'">';
     if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
@@ -40,12 +48,6 @@ function view_i_tree_stats($i_stats, $hide_idea, $auto_hide = true){
     }
     $ui .= '</span>';
 
-
-
-    //IDEAS
-    if(!$hide_idea){
-        $ui .= '<span class="i_x_stats hidden inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">&nbsp;&nbsp;'.( $has_idea ? $e___13544[13629]['m_icon'] : '' ).' '.( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
-    }
 
 
     $ui .= '</span>';
@@ -804,7 +806,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
             $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix, true).'</b>';
 
         $ui .= '</div>';
-        $ui .= '<div class="col-sm-5 col-md-4 col2nd col2nd-icon-block i_x_stats hidden">';
+        $ui .= '<div class="col-sm-5 col-md-4 col2nd i_x_stats hidden">';
 
             //IDA STATS
             $ui .= view_i_tree_stats($i_stats, false);
