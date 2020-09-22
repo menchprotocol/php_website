@@ -462,7 +462,7 @@ img.no-radius {
     padding: 0 2px;
 }
 .right-adj {
-    margin-top:-24px;
+    margin-top:-22px;
     margin-right:33px !important;
 }
 .discover-controller{
@@ -1902,7 +1902,7 @@ label {
 }
 
 @media (max-width:576px) {
-    .col2nd .row { padding-left: 33px; padding-top: 8px; }
+    .col2nd { padding-left: 33px; padding-top: 8px; }
     .big-frame{
         font-size: 2em;
     }

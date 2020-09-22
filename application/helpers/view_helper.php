@@ -789,7 +789,6 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
     $i_stats = i_stats($i['i__metadata']);
     $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-    $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
     $has_completion = $completion_rate['completion_percentage']>0;
 
     //Build View:
@@ -1374,7 +1373,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
-    $e___13369 = $CI->config->item('e___13369'); //IDEA COVER UI
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $user_input = $focus_e;
     $user_session = superpower_assigned();
     $discovery_mode = $x__type==6255;
@@ -1404,10 +1403,13 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
 
     //EDITING TOOLBAR
     if($show_editor){
+        $sort_id = ( $discovery_mode ? 6132 : 13412 );
+        $remove_id = ( $discovery_mode ? 6132 : 13412 );
+
         //SORT
-        $ui .= '<span class="inside-btn top-left x_sort" title="'.$e___13369[13413]['m_title'].'">'.$e___13369[13413]['m_icon'].'</span>';
+        $ui .= '<span class="inside-btn top-left x_sort" title="'.$e___11035[13413]['m_title'].'">'.$e___11035[13413]['m_icon'].'</span>';
         //REMOVE
-        $ui .= '<span class="inside-btn top-right x_remove" title="'.$e___13369[13414]['m_title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___13369[13414]['m_icon'].'</span>';
+        $ui .= '<span class="inside-btn top-right x_remove" title="'.$e___11035[13414]['m_title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___11035[13414]['m_icon'].'</span>';
     }
 
     if($message_input){
