@@ -8,19 +8,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-22 10:37:35 PST
+//Generated 2020-09-22 10:51:45 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
 $config['e___13518'] = array(
     13038 => array(
-        'm_title' => 'ALWAYAS FREE : 80 DISCOVERIES/MONTH',
+        'm_title' => '80 DISCOVERIES PER MONTH FOR FREE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
         'm_profile' => array(13889,13518,4755),
     ),
     13042 => array(
-        'm_title' => 'USD $8/MONTH : UNLIMITED DISCOVERIES',
+        'm_title' => 'UNLIMITED DISCOVERIES $8/MONTH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-usd discover"></i>',
         'm_profile' => array(13518,4755),
@@ -197,7 +197,7 @@ $config['e___13884'] = array(
 $config['n___13889'] = array(13038,13886,13493);
 $config['e___13889'] = array(
     13038 => array(
-        'm_title' => 'ALWAYAS FREE : 80 DISCOVERIES/MONTH',
+        'm_title' => '80 DISCOVERIES PER MONTH FOR FREE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
         'm_profile' => array(13889,13518,4755),
@@ -415,7 +415,7 @@ $config['e___13544'] = array(
     ),
 );
 
-//AVATARS SPECIES:
+//AVATARS TYPES:
 $config['n___13533'] = array(13535,13536,13534);
 $config['e___13533'] = array(
     13535 => array(
@@ -3225,7 +3225,7 @@ $config['e___6225'] = array(
     12289 => array(
         'm_title' => 'AVATAR',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-paw-claws" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-mask" aria-hidden="true"></i>',
         'm_profile' => array(6225),
     ),
     10957 => array(
@@ -3266,7 +3266,7 @@ $config['e___6225'] = array(
     ),
     12114 => array(
         'm_title' => 'WEEKLY PAYOUTS',
-        'm_message' => 'No earnings yet, you can map ideas to receive weekly payouts',
+        'm_message' => 'No earnings yet. Map ideas to receive weekly payouts.',
         'm_icon' => '<i class="fas fa-sync discover"></i>',
         'm_profile' => array(6225,13450,4593,6287,12741,7274,7569),
     ),
@@ -5018,7 +5018,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(13889,13783,10956,13533,12279,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13571,13491,12211,13479,4229,12842,4486,12840,12589,13544,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,11035,6287,12687,13894,6206,12112,10876,6212,7277,6169,13518,6225,12969,10573,3000,12741,12577,13865,13776,4755,13531,13550,12761,13023,13672,4269,6204,13413,6194,6198,12822,13899,11080,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12523,10692,6103,6175,12399,6176,6186,6173,4593,13442,6146,13480,13548,12500);
+$config['n___4527'] = array(13889,13783,10956,12279,13533,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13571,13491,12211,13479,4229,12842,4486,12840,12589,13544,11047,6159,4485,7551,4986,12359,4603,6193,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,11035,6287,12687,13894,6206,12112,10876,6212,7277,6169,13518,6225,12969,10573,3000,12741,12577,13865,13776,4755,13531,13550,12761,13023,13672,4269,6204,13413,6194,6198,12822,13899,11080,4592,12403,11059,4537,12524,4997,12887,6172,12563,6177,7358,12575,7357,12401,11089,12574,13425,10957,12523,10692,6103,6175,12399,6176,6186,6173,4593,13442,6146,13480,13548,12500);
 $config['e___4527'] = array(
     13889 => array(
         'm_title' => 'ACCOUNT DEFAULTS',
@@ -5038,17 +5038,17 @@ $config['e___4527'] = array(
         'm_icon' => '<i class="fad fa-paw source" aria-hidden="true"></i>',
         'm_profile' => array(12289,4527),
     ),
-    13533 => array(
-        'm_title' => 'AVATARS SPECIES',
-        'm_message' => '',
-        'm_icon' => '<i class="far fa-paw-claws source"></i>',
-        'm_profile' => array(4527,12289,10939),
-    ),
     12279 => array(
         'm_title' => 'AVATARS SUPER',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-paw-claws source" aria-hidden="true"></i>',
         'm_profile' => array(12289,4527),
+    ),
+    13533 => array(
+        'm_title' => 'AVATARS TYPES',
+        'm_message' => '',
+        'm_icon' => '<i class="far fa-paw-claws source"></i>',
+        'm_profile' => array(4527,12289,10939),
     ),
     13890 => array(
         'm_title' => 'CUSTOMIZABLE UI',
@@ -7139,10 +7139,10 @@ $config['e___6255'] = array(
 );
 
 //PRIVATE INFORMATION:
-$config['n___4755'] = array(13038,6415,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,7561,7564,7560,3286,4783,4755,7495,6155,13415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,12906,13042,12489,13377);
+$config['n___4755'] = array(13038,6415,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,7561,7564,7560,3286,4783,4755,7495,6155,13415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,13042,12906,12489,13377);
 $config['e___4755'] = array(
     13038 => array(
-        'm_title' => 'ALWAYAS FREE : 80 DISCOVERIES/MONTH',
+        'm_title' => '80 DISCOVERIES PER MONTH FOR FREE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
         'm_profile' => array(13889,13518,4755),
@@ -7615,17 +7615,17 @@ $config['e___4755'] = array(
         'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
         'm_profile' => array(6140,12327,12229,12227,12141,4229,6255,4593,4755),
     ),
+    13042 => array(
+        'm_title' => 'UNLIMITED DISCOVERIES $8/MONTH',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-hand-holding-usd discover"></i>',
+        'm_profile' => array(13518,4755),
+    ),
     12906 => array(
         'm_title' => 'UNSAVE DISCOVERY',
         'm_message' => '',
         'm_icon' => '<i class="far fa-bookmark discover"></i>',
         'm_profile' => array(12896,11035,4755,4593),
-    ),
-    13042 => array(
-        'm_title' => 'USD $8/MONTH : UNLIMITED DISCOVERIES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-hand-holding-usd discover"></i>',
-        'm_profile' => array(13518,4755),
     ),
     12489 => array(
         'm_title' => 'VIEWED LEADERBOARD',
