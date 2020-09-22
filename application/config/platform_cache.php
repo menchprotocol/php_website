@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-21 23:14:24 PST
+//Generated 2020-09-21 23:32:28 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -696,7 +696,7 @@ $config['e___13479'] = array(
         'm_title' => 'SIGN IN/UP',
         'm_message' => 'For guests',
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
-        'm_profile' => array(12687,13479,10876,4527,11035),
+        'm_profile' => array(13479,10876,4527,11035),
     ),
     12500 => array(
         'm_title' => 'VERTICAL MENU',
@@ -1453,7 +1453,7 @@ $config['e___12741'] = array(
 );
 
 //MENCH RANDOM MESSAGES:
-$config['n___12687'] = array(12691,12694,7562,12695,4269,7256);
+$config['n___12687'] = array(12691,12694,12695);
 $config['e___12687'] = array(
     12691 => array(
         'm_title' => 'EMAIL YOURS TRULY LINE',
@@ -1467,29 +1467,11 @@ $config['e___12687'] = array(
         'm_icon' => '',
         'm_profile' => array(12687),
     ),
-    7562 => array(
-        'm_title' => 'MEMBER WELCOME EMAIL',
-        'm_message' => 'Welcome to Mench, a Social Ideation Network where anyone can summarize or discover key ideas in nonfiction sources. Our mission is to empower you to learn faster! Let us know if you\'d like to collaborate on summarizing your favourite nonfiction books, podcasts, videos or articles.',
-        'm_icon' => '<i class="fad fa-envelope-open discover"></i>',
-        'm_profile' => array(12687,4755,7569,4593),
-    ),
     12695 => array(
         'm_title' => 'SAVING MESSAGE',
         'm_message' => 'Learning everyday 😎 | Growing with you 🌸 | Getting smarter ^~^',
         'm_icon' => '',
         'm_profile' => array(12687),
-    ),
-    4269 => array(
-        'm_title' => 'SIGN IN/UP',
-        'm_message' => 'Login or create a free account to continue.',
-        'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
-        'm_profile' => array(12687,13479,10876,4527,11035),
-    ),
-    7256 => array(
-        'm_title' => 'SEARCH MENCH',
-        'm_message' => 'Link to Existing or Create New...',
-        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
-        'm_profile' => array(12687,12678,13357,12701,11035,3323),
     ),
 );
 
@@ -1895,7 +1877,7 @@ $config['e___10876'] = array(
         'm_title' => 'SIGN IN/UP',
         'm_message' => 'https://mench.com/signin',
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
-        'm_profile' => array(12687,13479,10876,4527,11035),
+        'm_profile' => array(13479,10876,4527,11035),
     ),
 );
 
@@ -3507,7 +3489,7 @@ $config['e___11035'] = array(
         'm_title' => 'SEARCH MENCH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
-        'm_profile' => array(12687,12678,13357,12701,11035,3323),
+        'm_profile' => array(6404,12678,13357,12701,11035,3323),
     ),
     13692 => array(
         'm_title' => 'SELECT ALL',
@@ -3525,7 +3507,7 @@ $config['e___11035'] = array(
         'm_title' => 'SIGN IN/UP',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
-        'm_profile' => array(12687,13479,10876,4527,11035),
+        'm_profile' => array(13479,10876,4527,11035),
     ),
     6132 => array(
         'm_title' => 'SORT DISCOVERY',
@@ -3895,7 +3877,7 @@ $config['e___11059'] = array(
 );
 
 //MENCH CONFIG VARIABLES:
-$config['n___6404'] = array(12678,12904,11057,11056,12331,12427,3288,12176,4356,12137,4485,4736,11064,11065,13014,13005,7274,11079,11060,13556,13545,11066,13803,12088,13206,11986,6197,12232,10939,13572,12565,12568);
+$config['n___6404'] = array(12678,12904,11057,11056,12331,12427,3288,12176,4356,12137,4485,4736,11064,11065,13014,13005,7274,11079,11060,13556,13545,11066,7256,13803,12088,13206,11986,6197,12232,10939,13572,12565,12568);
 $config['e___6404'] = array(
     12678 => array(
         'm_title' => 'ALGOLIA SEARCH ENABLED (0 OR 1)',
@@ -4007,7 +3989,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.571',
+        'm_message' => 'v1.572',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
@@ -4028,6 +4010,12 @@ $config['e___6404'] = array(
         'm_message' => '6',
         'm_icon' => '',
         'm_profile' => array(6404),
+    ),
+    7256 => array(
+        'm_title' => 'SEARCH MENCH',
+        'm_message' => 'Link to Existing or Create New...',
+        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
+        'm_profile' => array(6404,12678,13357,12701,11035,3323),
     ),
     13803 => array(
         'm_title' => 'SHOW MAX PROFILE',
@@ -5624,7 +5612,7 @@ $config['e___4527'] = array(
         'm_title' => 'SIGN IN/UP',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
-        'm_profile' => array(12687,13479,10876,4527,11035),
+        'm_profile' => array(13479,10876,4527,11035),
     ),
     6204 => array(
         'm_title' => 'SINGLE SELECTABLE',
@@ -7139,7 +7127,7 @@ $config['e___6255'] = array(
 );
 
 //PRIVATE INFORMATION:
-$config['n___4755'] = array(13038,6415,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,4235,12773,12453,10681,12450,13494,13493,7562,4527,11054,7561,7564,7560,3286,4783,4755,7495,6155,13415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,12906,13042,12489,13377);
+$config['n___4755'] = array(13038,6415,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,4235,12773,12453,10681,12450,13494,13493,4527,11054,7561,7564,7560,3286,4783,4755,7495,6155,13415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,12906,13042,12489,13377);
 $config['e___4755'] = array(
     13038 => array(
         'm_title' => 'ALWAYAS FREE : 80 DISCOVERIES/MONTH',
@@ -7459,12 +7447,6 @@ $config['e___4755'] = array(
         'm_icon' => '<i class="fas fa-h2"></i>',
         'm_profile' => array(13889,4755,13491),
     ),
-    7562 => array(
-        'm_title' => 'MEMBER WELCOME EMAIL',
-        'm_message' => '',
-        'm_icon' => '<i class="fad fa-envelope-open discover"></i>',
-        'm_profile' => array(12687,4755,7569,4593),
-    ),
     4527 => array(
         'm_title' => 'MENCH MEMORY',
         'm_message' => '',
@@ -7648,7 +7630,7 @@ $config['e___4755'] = array(
 );
 
 //TRANSACTION TYPE:
-$config['n___4593'] = array(7545,12419,6415,13579,12129,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,12360,10690,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,13481,4235,12773,6182,4250,12453,4229,4228,10663,10664,12611,12612,12591,12592,6226,10676,10679,10677,10681,10675,12450,10662,10648,10650,10644,10651,4993,4601,7562,13894,4231,7561,7564,7560,10573,5001,10625,5943,12318,5865,4999,4998,5000,11956,5981,13441,5982,5003,13865,7495,4983,6155,13415,10673,12896,7563,6132,13412,13007,6157,7489,4246,4251,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,4256,4258,12827,10646,7504,4559,6178,13006,10654,6144,5007,7485,7486,6997,4994,10686,12906,12489,12114);
+$config['n___4593'] = array(7545,12419,6415,13579,12129,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,12360,10690,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,13481,4235,12773,6182,4250,12453,4229,4228,10663,10664,12611,12612,12591,12592,6226,10676,10679,10677,10681,10675,12450,10662,10648,10650,10644,10651,4993,4601,13894,4231,7561,7564,7560,10573,5001,10625,5943,12318,5865,4999,4998,5000,11956,5981,13441,5982,5003,13865,7495,4983,6155,13415,10673,12896,7563,6132,13412,13007,6157,7489,4246,4251,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,4256,4258,12827,10646,7504,4559,6178,13006,10654,6144,5007,7485,7486,6997,4994,10686,12906,12489,12114);
 $config['e___4593'] = array(
     7545 => array(
         'm_title' => 'CERTIFICATES',
@@ -8117,12 +8099,6 @@ $config['e___4593'] = array(
         'm_message' => '',
         'm_icon' => '<i class="far fa-tags idea" aria-hidden="true"></i>',
         'm_profile' => array(12700,13023,13530,11018,4485,10593,4593),
-    ),
-    7562 => array(
-        'm_title' => 'MEMBER WELCOME EMAIL',
-        'm_message' => '',
-        'm_icon' => '<i class="fad fa-envelope-open discover"></i>',
-        'm_profile' => array(12687,4755,7569,4593),
     ),
     13894 => array(
         'm_title' => 'MENCH SOCIAL LINKS',

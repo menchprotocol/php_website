@@ -1311,17 +1311,11 @@ function view_i_note_list($x__type, $i_notes, $e_of_i){
 
 }
 
-function view_message($e__id){
+function view_random_message($e__id){
     $CI =& get_instance();
     $e___12687 = $CI->config->item('e___12687');
-    if(!substr_count($e___12687[$e__id]['m_message'], " | ")){
-        //Single message:
-        return $e___12687[$e__id]['m_message'];
-    } else {
-        //Random message:
-        $line_messages = explode(" | ", $e___12687[$e__id]['m_message']);
-        return $line_messages[rand(0, (count($line_messages) - 1))];
-    }
+    $line_messages = explode(" | ", $e___12687[$e__id]['m_message']);
+    return $line_messages[rand(0, (count($line_messages) - 1))];
 }
 
 function view_unauthorized_message($superpower_e__id = 0){

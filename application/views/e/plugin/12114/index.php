@@ -33,7 +33,7 @@ foreach($this->config->item('e___12467') as $x__type => $m) {
 }
 
 $html_message .= '<br />';
-$html_message .= '<div>'.view_message(12691).'</div>';
+$html_message .= '<div>'.view_random_message(12691).'</div>';
 $html_message .= '<div>MENCH</div>';
 
 

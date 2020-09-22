@@ -1624,27 +1624,6 @@ class E extends CI_Controller
             $referrer_i = array();
         }
 
-
-
-        ##Email Subject
-        $subject = 'Welcome to Mench 👐';
-        $profile_url = $this->config->item('base_url').'/@'.$added_e['new_e']['e__id'];
-
-        ##Email Body
-        $html_message  = '<div>Hi, '.$name_parts[0].'! 👋</div><br />';
-        $html_message .= '<div>'.view_message(7562).'</div><br />';
-        $html_message .= '<div>You can manage your profile here: <a href="'.$profile_url.'">'.$profile_url.'</a></div><br />';
-        $html_message .= '<div>'.view_message(12691).'</div><br />';
-        $html_message .= '<div>MENCH</div>';
-
-        //Send & Log Email:
-        $this->X_model->email_sent(array($_POST['input_email']), $subject, $html_message);
-        $invite_x = $this->X_model->create(array(
-            'x__type' => 7562, //User Signin Joined Mench
-            'x__source' => $added_e['new_e']['e__id'],
-            'x__left' => intval($_POST['sign_i__id']),
-        ));
-
         //Assign session & log login transaction:
         $this->E_model->activate_session($added_e['new_e']);
 
@@ -1874,7 +1853,7 @@ class E extends CI_Controller
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
-        $html_message .= '<div>'.view_message(12691).'</div>';
+        $html_message .= '<div>'.view_random_message(12691).'</div>';
         $html_message .= '<div>MENCH</div>';
 
         //Send email:

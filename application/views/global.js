@@ -158,7 +158,7 @@ function view_search_result(algolia_object){
 }
 
 
-function js_view_message(e__id){
+function js_view_random_message(e__id){
     var messages = js_e___12687[e__id]['m_message'].split(" | ");
     if(messages.length == 1){
         //Return message:
