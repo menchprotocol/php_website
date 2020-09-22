@@ -478,14 +478,14 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
 
-                        $focus_tab .= '<div class="row top-margin" id="list_12969">';
+                        $focus_tab .= '<div class="row top-margin" id="list_6132">';
                         foreach($list_x as $item){
                             $focus_tab .= view_i_cover(6255, $item, $source_is_e, null, $e);
                             array_push($my_x_ids, $item['i__id']);
                         }
                         $focus_tab .= '</div>';
 
-                        $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list_12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+                        $focus_tab .= ( count($list_x) > 1 ? '<script> $(document).ready(function () {x_sort_load(6132)}); </script>' : '<style> #list_6132 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
                     }
 
