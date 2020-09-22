@@ -290,7 +290,7 @@ $meets_13865 = !count($fetch_13865);
 
 if(count($fetch_13865)){
 
-    echo '<div class="headline" style="margin-top: 34px;">'.$e___11035[13865]['m_title'].':</div>';
+    echo '<div class="headline" style="margin-top: 34px;">'.$e___11035[13865]['m_title'].'</div>';
 
     $missing_13865 = 0;
     $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
@@ -513,12 +513,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     //HTML:
                     if ($i_focus['i__type'] == 6684) {
 
-                        $focus_tab .= '<div class="pull-left headline">SELECT ONE:</div>';
+                        $focus_tab .= '<div class="pull-left headline">SELECT ONE</div>';
 
                     } elseif ($i_focus['i__type'] == 7231) {
 
 
-                        $focus_tab .= '<div class="pull-left headline">SELECT ONE OR MORE:</span></div>';
+                        $focus_tab .= '<div class="pull-left headline">SELECT ONE OR MORE</span></div>';
 
                         //Give option to Select None/All
                         $focus_tab .= '<div class="doclear">&nbsp;</div>';
@@ -602,7 +602,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 //TEXT RESPONSE
                 $has_substance = true;
 
-                $focus_tab .= '<div class="headline">YOUR RESPONSE:</div>';
+                $focus_tab .= '<div class="headline">YOUR RESPONSE</div>';
 
                 //Write `skip` if you prefer not to answer...
                 $focus_tab .= '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
@@ -630,7 +630,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     $focus_tab .= '<div class="file_saving_result">';
 
-                    $focus_tab .= '<div class="headline">YOUR UPLOAD:</div>';
+                    $focus_tab .= '<div class="headline">YOUR UPLOAD</div>';
 
                     $focus_tab .= '<div class="previous_answer">' . $this->X_model->message_send($x_completes[0]['x__message']) . '</div>';
 
