@@ -389,7 +389,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
                         <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               class="form-control form-control-thick algolia_search dotransparent add-input montserrat"
                                maxlength="' . config_var(4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[13912]['m_title'].'">
