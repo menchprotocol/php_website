@@ -86,7 +86,7 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo view_i_note_mix(4231, $this->X_model->fetch(array(
+echo view_i_note_list(4231, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 4231,
     'x__right' => $i_focus['i__id'],
@@ -151,7 +151,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = view_coins_i(12274,  $i_focus, false);
         $counter = ( count($i_notes) > $counter ? count($i_notes) : $counter );
-        $focus_tab .= view_i_note_mix(4983, $i_notes, $e_of_i);
+        $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i);
 
         //Show tree sources only if more than the sources for this idea:
         if( $counter > count($i_notes) ){
@@ -280,7 +280,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
 
         $counter = count($i_notes);
-        $focus_tab .= view_i_note_mix($x__type, $i_notes, $e_of_i);
+        $focus_tab .= view_i_note_list($x__type, $i_notes, $e_of_i);
 
     } elseif($x__type==12969){
 

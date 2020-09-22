@@ -158,7 +158,7 @@ function view_search_result(algolia_object){
 }
 
 
-function js_view_12687(e__id){
+function js_view_message(e__id){
     var messages = js_e___12687[e__id]['m_message'].split(" | ");
     if(messages.length == 1){
         //Return message:
@@ -953,7 +953,7 @@ function i_note_sort_load(note_type_id) {
 
 }
 
-function load_13574(x__id) {
+function load_i_note_editor(x__id) {
 
     //Start editing:
     $("#ul-nav-" + x__id).addClass('in-editing');

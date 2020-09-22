@@ -763,7 +763,7 @@ function save_13571() {
     };
 
     //Show spinner:
-    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695) +  '').hide().fadeIn();
+    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_message(12695) +  '').hide().fadeIn();
 
 
     $.post("/e/save_13571", modify_data, function (data) {
@@ -979,7 +979,7 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
 function e_email(){
 
     //Show spinner:
-    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695)).hide().fadeIn();
+    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_email", {
@@ -1010,7 +1010,7 @@ function e_email(){
 function e_password(){
 
     //Show spinner:
-    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_12687(12695)).hide().fadeIn();
+    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_password", {

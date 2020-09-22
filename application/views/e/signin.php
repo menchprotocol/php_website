@@ -73,7 +73,7 @@ if(count($current_sign_i_attempt) == 0){
         echo '<h1 class="text-center">'.$e___11035[4269]['m_title'].'</h1>';
     }
 
-    echo '<p style="margin-top:13px; text-align: center;">'.view_12687(4269).'</p>';
+    echo '<p style="margin-top:13px; text-align: center;">'.view_message(4269).'</p>';
 
     ?>
 

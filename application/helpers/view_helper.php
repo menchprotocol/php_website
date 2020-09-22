@@ -233,7 +233,7 @@ function view_i_title($i, $common_prefix = null, $force_single_line = false){
 }
 
 
-function view_13574($x, $note_e = false)
+function view_i_note($x, $note_e = false)
 {
 
     /*
@@ -270,14 +270,14 @@ function view_13574($x, $note_e = false)
 
             //SORT NOTE
             if(in_array($x['x__type'], $CI->config->item('n___4603'))){
-                $ui .= '<span title="SORT"><i class="fas fa-sort i_note_sorting"></i></span>';
+                $ui .= '<span title="'.$e___11035[13909]['m_title'].'" class="i_note_sorting">'.$e___11035[13909]['m_icon'].'</span>';
             }
 
             //MODIFY NOTE
-            $ui .= '<span title="MODIFY"><a href="javascript:load_13574(' . $x['x__id'] . ');" title="'.$e___11035[13574]['m_title'].'">'.$e___11035[13574]['m_icon'].'</a></span>';
+            $ui .= '<span title="'.$e___11035[13574]['m_title'].'"><a href="javascript:load_i_note_editor(' . $x['x__id'] . ');">'.$e___11035[13574]['m_icon'].'</a></span>';
 
             //REMOVE NOTE
-            $ui .= '<span><a href="javascript:void(0);" onclick="remove_13579(' . $x['x__id'] . ', '.$x['x__type'].')" title="'.$e___11035[13579]['m_title'].'">'.$e___11035[13579]['m_icon'].'</a></span>';
+            $ui .= '<span title="'.$e___11035[13579]['m_title'].'"><a href="javascript:void(0);" onclick="remove_13579(' . $x['x__id'] . ', '.$x['x__type'].')">'.$e___11035[13579]['m_icon'].'</a></span>';
 
         $ui .= '</span></div>';
 
@@ -1231,7 +1231,7 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $index
 }
 
 
-function view_i_note_mix($x__type, $i_notes, $e_of_i){
+function view_i_note_list($x__type, $i_notes, $e_of_i){
 
     $CI =& get_instance();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
@@ -1255,7 +1255,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
 
     //List current notes:
     foreach($i_notes as $i_notes) {
-        $ui .= view_13574($i_notes, ($i_notes['x__source']==$user_e['e__id']));
+        $ui .= view_i_note($i_notes, ($i_notes['x__source']==$user_e['e__id']));
     }
 
     //ADD NEW:
@@ -1311,7 +1311,7 @@ function view_i_note_mix($x__type, $i_notes, $e_of_i){
 
 }
 
-function view_12687($e__id){
+function view_message($e__id){
     $CI =& get_instance();
     $e___12687 = $CI->config->item('e___12687');
     if(!substr_count($e___12687[$e__id]['m_message'], " | ")){

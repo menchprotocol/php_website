@@ -791,7 +791,7 @@ echo $tab_content;
 if($in_my_x){
     //COMMENTS
     echo '<div style="margin:55px 0 21px;">';
-    echo view_i_note_mix(12419, $this->X_model->fetch(array(
+    echo view_i_note_list(12419, $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 12419, //COMMENTS
         'x__right' => $i_focus['i__id'],

@@ -1632,9 +1632,9 @@ class E extends CI_Controller
 
         ##Email Body
         $html_message  = '<div>Hi, '.$name_parts[0].'! 👋</div><br />';
-        $html_message .= '<div>'.view_12687(7562).'</div><br />';
+        $html_message .= '<div>'.view_message(7562).'</div><br />';
         $html_message .= '<div>You can manage your profile here: <a href="'.$profile_url.'">'.$profile_url.'</a></div><br />';
-        $html_message .= '<div>'.view_12687(12691).'</div><br />';
+        $html_message .= '<div>'.view_message(12691).'</div><br />';
         $html_message .= '<div>MENCH</div>';
 
         //Send & Log Email:
@@ -1874,7 +1874,7 @@ class E extends CI_Controller
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
-        $html_message .= '<div>'.view_12687(12691).'</div>';
+        $html_message .= '<div>'.view_message(12691).'</div>';
         $html_message .= '<div>MENCH</div>';
 
         //Send email:
