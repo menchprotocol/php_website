@@ -1012,16 +1012,12 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
     $CI =& get_instance();
     $user_e = superpower_assigned();
-    $e___6186 = $CI->config->item('e___6186');
-    $e___4737 = $CI->config->item('e___4737'); //IDEA STATUS
-    $e___7585 = $CI->config->item('e___7585');
-    $e___4486 = $CI->config->item('e___4486');
-    $e___12467 = $CI->config->item('e___12467');
-    $e___13408 = $CI->config->item('e___13408');
+    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
     //DISCOVER
     $x__id = ( isset($i['x__id']) ? $i['x__id'] : 0 );
     $is_i_link = ($x__id && in_array($i['x__type'], $CI->config->item('n___4486')));
+    $e___6186 = $CI->config->item('e___6186');
 
     //IDEA
     $i_stats = i_stats($i['i__metadata']);
@@ -1034,6 +1030,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
     //DISCOVER STATUS
     if($x__id && !in_array($i['x__status'], $CI->config->item('n___7359'))){
+        $e___6186 = $CI->config->item('e___6186');
         $box_items_list .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$i['x__status']]['m_title'].' @'.$i['x__status'].'">' . $e___6186[$i['x__status']]['m_icon'] . '</span>&nbsp;</span>';
     }
 
@@ -1056,7 +1053,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         }
 
         //Remove:
-        $ui .= '<span title="REMOVE"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')"><i class="fas fa-times black"></i></a></span>';
+        $ui .= '<span title="'.$e___11035[13415]['m_title'].'"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')">'.$e___11035[13415]['m_icon'].'</a></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
@@ -1403,13 +1400,15 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
 
     //EDITING TOOLBAR
     if($show_editor){
-        $sort_id = ( $discovery_mode ? 6132 : 13412 );
-        $remove_id = ( $discovery_mode ? 6132 : 13412 );
 
         //SORT
-        $ui .= '<span class="inside-btn top-left x_sort" title="'.$e___11035[13413]['m_title'].'">'.$e___11035[13413]['m_icon'].'</span>';
+        $sort_id = ( $discovery_mode ? 6132 : 13412 );
+        $ui .= '<span class="inside-btn top-left x_sort" title="'.$e___11035[$sort_id]['m_title'].'">'.$e___11035[$sort_id]['m_icon'].'</span>';
+
         //REMOVE
-        $ui .= '<span class="inside-btn top-right x_remove" title="'.$e___11035[13414]['m_title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___11035[13414]['m_icon'].'</span>';
+        $remove_id = ( $discovery_mode ? 6155 : 13415 );
+        $ui .= '<span class="inside-btn top-right x_remove" title="'.$e___11035[$remove_id]['m_title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___11035[$remove_id]['m_icon'].'</span>';
+
     }
 
     if($message_input){
