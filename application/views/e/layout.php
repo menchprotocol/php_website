@@ -501,14 +501,19 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             if($source_is_e){
 
-                //FEATURED IDEAS
-                $featured_i = $this->X_model->fetch(array(
+                $featured_filter = array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => config_var(12137),
-                    'i__id NOT IN (' . join(',', $my_x_ids) . ')' => null, //Already Started
-                ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+                );
+                if(count($my_x_ids)){
+                    //Exclude Featured Ideas already added to Discoveries:
+                    $featured_filter['i__id NOT IN (' . join(',', $my_x_ids) . ')'] = null;
+                }
+
+                //FETCH FEATURED IDEAS
+                $featured_i = $this->X_model->fetch($featured_filter, array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
                 if(count($featured_i)){
                     $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13813]['m_icon'].'</span>'.$e___11035[13813]['m_title'].'</div>';
