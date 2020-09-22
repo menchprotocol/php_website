@@ -1744,12 +1744,13 @@ label {
 .cover-link .inside-btn {
     position:  absolute;
     text-align: center;
-    font-size: 25px;
+    font-size: 22px;
     color:#222222;
     border-radius: 50%;
     width:34px;
     height: 34px;
     background-color: #FC1B44 !important;
+    padding-top: 1px;
 }
 .inside-btn i {
     margin-top: 4px;
