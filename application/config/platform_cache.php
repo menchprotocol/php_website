@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-21 23:44:48 PST
+//Generated 2020-09-22 00:23:56 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -4013,7 +4013,7 @@ $config['e___6404'] = array(
     ),
     7256 => array(
         'm_title' => 'SEARCH MENCH',
-        'm_message' => 'Link to Existing or Create New...',
+        'm_message' => 'Search Existing or Create New...',
         'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
         'm_profile' => array(6404,12678,13357,12701,11035,3323),
     ),
