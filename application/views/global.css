@@ -58,12 +58,12 @@ body {
 }
 .media-content, .x__message video {
     /* max-width: 377px; */
-    border-radius: 21px !important;
+    border-radius: 13px !important;
 }
 .x__message img, .i_content img, .content-image {
     max-width: 100%;
     max-height: 377px;
-    border-radius: 21px !important;
+    border-radius: 13px !important;
     margin: 0;
     display: block;
 }
@@ -87,7 +87,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 21px !important;
+    border-radius: 13px !important;
 }
 .list-group-item {
     border: 0;
@@ -144,7 +144,7 @@ li a {
     background-color: #999999 !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
-    border-radius: 21px !important;
+    border-radius: 13px !important;
 }
 
 .avatar-item .avatar-icon {
@@ -1204,7 +1204,7 @@ td.MENCHcolumn3  { width: 13%; }
 
 .dynamic_saving, .avatar-item:hover {
     background-color: #999999 !important;
-    border-radius: 21px !important;
+    border-radius: 13px !important;
 }
 
 .itemsource{
