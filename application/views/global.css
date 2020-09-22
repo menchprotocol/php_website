@@ -582,7 +582,7 @@ img.no-radius {
 
 .wrap-card, .coin-frame{
     border: 3px solid transparent;
-    padding:10px 0 25px 0;
+    padding:13px 0 25px 0;
     border-radius: 34px;
 }
 
