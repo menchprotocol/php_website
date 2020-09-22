@@ -4,13 +4,16 @@ $(document).ready(function () {
 
 
     $(".new-13871").click(function(event) {
-        var was_hidden = $('.idea-comments').hasClass('hidden');
-        $('.idea-comments').toggleClass('hidden');
-        if(was_hidden){
+        if($('.idea-comments').hasClass('hidden')){
+            //Show
+            $('.idea-comments').removeClass('hidden');
             $([document.documentElement, document.body]).animate({
-                scrollTop: $("#idea-comments").offset().top
+                scrollTop: $(".idea-comments").offset().top
             }, 377);
             $('.input_note_12419').focus();
+        } else {
+            //Hide
+            $('.idea-comments').addClass('hidden');
         }
     });
 
