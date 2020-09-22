@@ -321,6 +321,34 @@ if(count($fetch_13865)){
 
 
 
+if(!$in_my_x){
+    if($meets_13865){
+
+        //GET STARTED
+        if($meets_13865){
+
+            //OPEN TO REGISTER
+            echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
+
+        } elseif(!$user_e['e__id']) {
+
+            //Signin to see if they meet requirement:
+            echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
+
+        }
+
+    } else {
+
+        //Locked to meet requirements...
+        //TODO show message...
+
+    }
+}
+
+
+
+
+
 
 //DISCOVER LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
@@ -880,36 +908,7 @@ if($in_my_x){
         echo '</div>';
     }
 
-} else {
-
-    if($meets_13865){
-
-        //GET STARTED
-        if($meets_13865){
-
-            //OPEN TO REGISTER
-            echo '<div class="container">'; // fixed-bottom
-            echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_icon'].' '.$e___11035[4235]['m_title'].'</a></div>';
-            echo '</div>';
-
-        } elseif(!$user_e['e__id']) {
-
-            //Signin:
-            echo '<div class="container">'; // fixed-bottom
-            echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
-            echo '</div>';
-
-        }
-
-    } else {
-
-        //Locked to meet requirements...
-        //TODO show message...
-
-    }
-
 }
-
 
 
 
