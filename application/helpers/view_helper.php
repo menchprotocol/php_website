@@ -1012,7 +1012,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
     $CI =& get_instance();
     $user_e = superpower_assigned();
-    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
 
     //DISCOVER
     $x__id = ( isset($i['x__id']) ? $i['x__id'] : 0 );
