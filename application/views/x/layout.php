@@ -3,12 +3,6 @@
     var focus_i__type = <?= $i_focus['i__type'] ?>;
 </script>
 
-<style>
-    .add_notes_12419{
-        display: none;
-    }
-</style>
-
 <script src="/application/views/x/layout.js?v=<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
@@ -818,7 +812,8 @@ echo $tab_content;
 
 if($in_my_x){
     //COMMENTS
-    echo '<div style="margin:55px 0 21px;">';
+    echo '<div class="idea-comments hidden margin-top-down">';
+    echo '<div class="headline">'.$e___11035[12419]['m_title'].'</div>';
     echo view_i_note_list(12419, $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 12419, //COMMENTS

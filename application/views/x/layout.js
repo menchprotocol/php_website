@@ -4,10 +4,14 @@ $(document).ready(function () {
 
 
     $(".new-13871").click(function(event) {
-        $('.new-13871').hide();
-        $('.add_notes_12419').show();
-        $('html, body').scrollTop( $(document).height() );
-        $('.input_note_12419').focus();
+        var was_hidden = $('.idea-comments').hasClass('hidden');
+        $('.idea-comments').toggleClass('hidden');
+        if(was_hidden){
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#idea-comments").offset().top
+            }, 377);
+            $('.input_note_12419').focus();
+        }
     });
 
     i_note_activate();
