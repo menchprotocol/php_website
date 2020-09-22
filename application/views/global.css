@@ -15,7 +15,7 @@ body {
 
 
 [class*="col-"], .no-side-padding {padding-left:0px !important;padding-right:0px !important;}
-.no-left-padding {padding-left:0px;}
+.no-left-padding {padding-left:0px !important;}
 .row {margin-left:0px;margin-right:0px;}
 .container {
     max-width:767px;

@@ -746,7 +746,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 <div class="save_results margin-top-down-half hideIfEmpty"></div>
 
                 <!-- Source Status -->
-                <div class="headline"><?= $e___13571[6177]['m_title'] ?></div>
+                <div class="headline no-left-padding"><?= $e___13571[6177]['m_title'] ?></div>
                 <select class="form-control border" id="e__status">
                     <?php
                     foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
@@ -764,13 +764,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
                 <!-- Source Title -->
-                <div class="headline"><?= $e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</div>
+                <div class="headline no-left-padding"><?= $e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</div>
                 <textarea class="form-control text-edit border montserrat doupper" id="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
 
 
 
                 <!-- Source Icon -->
-                <div class="headline"><?= $e___13571[6198]['m_title'] ?>
+                <div class="headline no-left-padding"><?= $e___13571[6198]['m_title'] ?>
 
                     <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;https://mench.com/img/mench.png&quot; />' );update_demo_icon();" title="<?= $e___6198[4260]['m_title'].': '.$e___6198[4260]['m_message'] ?>"><?= $e___6198[4260]['m_icon'] ?></a>
 
@@ -789,7 +789,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 <div class="e_has_link">
 
-                    <div class="headline"><?= $e___13571[6186]['m_title'] ?></div>
+                    <div class="headline no-left-padding"><?= $e___13571[6186]['m_title'] ?></div>
                     <select class="form-control border" id="x__status">
                         <?php
                         foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
@@ -805,7 +805,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
                     <!-- Transaction Message -->
-                    <div class="headline" style="margin-top: 20px;"><?= $e___13571[4372]['m_title'] ?></div>
+                    <div class="headline no-left-padding" style="margin-top: 20px;"><?= $e___13571[4372]['m_title'] ?></div>
                     <form class="drag-box" method="post" enctype="multipart/form-data">
 
                         <textarea class="form-control text-edit border" id="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m_message'] ?>"></textarea>
