@@ -789,7 +789,6 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
     }
 
     $i_stats = i_stats($i['i__metadata']);
-    $first_segment = $CI->uri->segment(1);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $has_completion = $completion_rate['completion_percentage']>0;
 
@@ -1218,7 +1217,8 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $index
     $counter = 0;
     foreach($is_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $next_i);
-        $ui .= view_i_x($next_i, ( $in_my_x ? $counter : $index_id ), ((!$in_my_x && in_array($next_i['i__status'], $CI->config->item('n___12138'))) || $completion_rate['completion_percentage'] > 0), $common_prefix, false, $completion_rate);
+        $is_featured = in_array($next_i['i__status'], $CI->config->item('n___12138'));
+        $ui .= view_i_x($next_i, ( $in_my_x ? $counter : ( $is_featured ? -1 : $index_id ) ), ((!$in_my_x && $is_featured) || $completion_rate['completion_percentage'] > 0), $common_prefix, false, $completion_rate);
 
         //Search for the first unlocked idea right after the first stack of continuously completed ideas
         $is_last_continious_complete = ( $is_last_continious_complete && $completion_rate['completion_percentage']>=100 ? true : false );
