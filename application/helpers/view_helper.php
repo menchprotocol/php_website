@@ -235,7 +235,7 @@ function view_i_title($i, $common_prefix = null, $force_single_line = false){
 }
 
 
-function view_i_note($x, $note_e = false)
+function view_i_note($x__type, $x, $note_e = false)
 {
 
     /*
@@ -252,12 +252,13 @@ function view_i_note($x, $note_e = false)
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035');
+    $color_code = trim(extract_icon_color($e___4485[$x__type]['m_icon']));
     $note_e = ( $note_e || superpower_active(10984, true) );
 
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item itemidea is-msg note_sortable msg_e_type_' . $x['x__type'] . '" id="ul-nav-' . $x['x__id'] . '" x__id="' . $x['x__id'] . '">'; //title="'.$x['e__title'].' Posted On '.substr($x['x__time'], 0, 19).'" data-toggle="tooltip" data-placement="top"
+    $ui .= '<div class="list-group-item item'.$color_code.' is-msg note_sortable msg_e_type_' . $x['x__type'] . '" id="ul-nav-' . $x['x__id'] . '" x__id="' . $x['x__id'] . '">'; //title="'.$x['e__title'].' Posted On '.substr($x['x__time'], 0, 19).'" data-toggle="tooltip" data-placement="top"
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
@@ -292,13 +293,13 @@ function view_i_note($x, $note_e = false)
         $ui .= '<ul class="msg-nav space-left">';
 
             //SAVE
-            $ui .= '<li class="edit-on hidden"><a class="btn btn-idea white-third" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
+            $ui .= '<li class="edit-on hidden"><a class="btn btn-'.$color_code.' white-third" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
             //CANCEL
-            $ui .= '<li class="edit-on hidden"><a class="btn btn-idea white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
+            $ui .= '<li class="edit-on hidden"><a class="btn btn-'.$color_code.' white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
             //TEXT COUNTER
-            $ui .= '<li class="edit-on hidden"><span id="ideaNoteCount' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
+            $ui .= '<li class="edit-on hidden"><span id="NoteCounter' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
 
             //Update result:
             $ui .= '<li class="edit-updates hideIfEmpty"></li>'; //Show potential errors
@@ -1256,7 +1257,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i){
 
     //List current notes:
     foreach($i_notes as $i_notes) {
-        $ui .= view_i_note($i_notes, ($i_notes['x__source']==$user_e['e__id']));
+        $ui .= view_i_note($x__type, $i_notes, ($i_notes['x__source']==$user_e['e__id']));
     }
 
     //ADD NEW:

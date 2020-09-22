@@ -852,9 +852,9 @@ function count_13574(x__id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_e___6404[4485]['m_message'] * js_e___6404[12088]['m_message'] )){
-        $('#ideaNoteCount' + x__id).removeClass('hidden');
+        $('#NoteCounter' + x__id).removeClass('hidden');
     } else {
-        $('#ideaNoteCount' + x__id).addClass('hidden');
+        $('#NoteCounter' + x__id).addClass('hidden');
     }
 }
 
