@@ -148,13 +148,8 @@ function view_search_result(algolia_object){
 
     var title = ( algolia_object._highlightResult && algolia_object._highlightResult.object__title.value ? algolia_object._highlightResult.object__title.value : algolia_object.object__title );
 
-    if(algolia_object.object__type==12274){
-        //Sources:
-        return '<span class="icon-block">'+ algolia_object.object__icon +'</span><span class="montserrat '+ js_extract_icon_color(algolia_object.object__icon) +'">' + title + '</span>';
-    } else {
-        //Ideas:
-        return '<span class="icon-block">'+ js_e___12467[( js_session_superpowers_assigned.includes(10939) ? 12273 : 6255 )]['m_icon'] +'</span><span class="montserrat">' + title + '</span>';
-    }
+    return '<span class="icon-block">'+ algolia_object.object__icon +'</span><span class="montserrat '+ (algolia_object.object__type==12274 ? js_extract_icon_color(algolia_object.object__icon) : '' ) +'">' + title + '</span>';
+
 }
 
 
