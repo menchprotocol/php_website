@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-22 11:14:23 PST
+//Generated 2020-09-22 11:24:45 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -3273,7 +3273,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,12419,6415,13579,13292,13573,13495,13574,13571,13813,13670,12707,4235,12991,12211,12137,13689,13207,13913,11068,12467,4341,6287,12969,10573,13912,13914,13542,13865,13562,11019,11030,13550,6155,13671,13415,10673,12896,13524,7256,13692,13693,4269,6132,13412,13908,13909,13911,13007,4997,10939,10957,12906,13572);
+$config['n___11035'] = array(13502,13401,12419,6415,13579,13292,13573,13495,13574,13571,13813,13670,12707,4235,12991,12211,12137,13689,13207,13913,13915,11068,12467,4341,6287,12969,10573,13912,13914,13542,13865,13562,11019,13550,6155,13671,13415,10673,12896,13524,7256,13692,13693,4269,6132,13412,13908,13909,13911,13007,4997,10939,10957,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3395,6 +3395,12 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-search-plus idea"></i>',
         'm_profile' => array(11035),
     ),
+    13915 => array(
+        'm_title' => 'LIST ALL SOURCES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-search-plus source"></i>',
+        'm_profile' => array(11035),
+    ),
     11068 => array(
         'm_title' => 'MAGIC LOGIN',
         'm_message' => '',
@@ -3466,12 +3472,6 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(11035,11020,13294),
-    ),
-    11030 => array(
-        'm_title' => 'PROFILE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(11035,13296,7545,13411,11028),
     ),
     13550 => array(
         'm_title' => 'REFERENCED IDEAS',
