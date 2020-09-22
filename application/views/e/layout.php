@@ -54,7 +54,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . config_var(6197) . '"
                                placeholder="NEW PROFILE">
-                    </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+                    </div><div class="algolia_pad_search hidden pad_expand">'.config_var(7256).'</div></div>';
         echo '</div>';
         echo '</div>';
 
@@ -363,7 +363,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    maxlength="' . config_var(6197) . '"
                                    placeholder="NEW SOURCE URL OR TITLE">
-                        </div><div class="algolia_pad_search hidden pad_expand"></div></div>';
+                        </div><div class="algolia_pad_search hidden pad_expand">'.config_var(7256).'</div></div>';
 
             } else {
 
@@ -394,7 +394,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                maxlength="' . config_var(4736) . '"
                                id="newIdeaTitle"
                                placeholder="NEW IDEA TITLE">
-                    </div><div class="algolia_pad_search hidden"></div></div>';
+                    </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
                 $focus_tab .= '</div>';
             }
 

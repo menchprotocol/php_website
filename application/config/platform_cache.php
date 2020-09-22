@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-21 22:48:10 PST
+//Generated 2020-09-21 23:05:40 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -1453,7 +1453,7 @@ $config['e___12741'] = array(
 );
 
 //MENCH MESSAGES:
-$config['n___12687'] = array(12691,12694,7562,12695,13910,4269);
+$config['n___12687'] = array(12691,12694,7562,12695,4269,7256);
 $config['e___12687'] = array(
     12691 => array(
         'm_title' => 'EMAIL YOURS TRULY LINE',
@@ -1479,17 +1479,17 @@ $config['e___12687'] = array(
         'm_icon' => '',
         'm_profile' => array(12687),
     ),
-    13910 => array(
-        'm_title' => 'SEARCH PAD',
-        'm_message' => '',
-        'm_icon' => '',
-        'm_profile' => array(12687),
-    ),
     4269 => array(
         'm_title' => 'SIGN IN/UP',
         'm_message' => 'Login or create a free account to continue.',
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_profile' => array(12687,13479,10876,4527,11035),
+    ),
+    7256 => array(
+        'm_title' => 'SEARCH MENCH',
+        'm_message' => 'Search Mench or Create',
+        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
+        'm_profile' => array(12687,12678,13357,12701,11035,3323),
     ),
 );
 
@@ -3507,7 +3507,7 @@ $config['e___11035'] = array(
         'm_title' => 'SEARCH MENCH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
-        'm_profile' => array(12678,13357,12701,11035,3323),
+        'm_profile' => array(12687,12678,13357,12701,11035,3323),
     ),
     13692 => array(
         'm_title' => 'SELECT ALL',
