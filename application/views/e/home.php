@@ -27,7 +27,7 @@
             continue;
         }
 
-        echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$m['m_title'].'</div>';
+        echo '<div class="headline">'.$m['m_title'].'</div>';
         echo '<div class="list-group" style="padding-bottom:33px;">';
 
 

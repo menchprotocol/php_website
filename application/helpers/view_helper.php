@@ -176,7 +176,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
                 //Header For Time
                 if($end_time){
-                    $embed_html_code .= '<div class="headline" style="padding-bottom: 0; font-size:0.84em;"><span class="icon-block-xs">'.$e___11035[13292]['m_icon'].'</span>'.round_minutes($end_time-$start_time).' MIN CLIP <span class="inline-block">('.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).')</span></div>';
+                    $embed_html_code .= '<div class="grey montserrat" style="padding:5px 0 0 0; font-size:0.84em;"><span class="icon-block-xs">'.$e___11035[13292]['m_icon'].'</span>'.round_minutes($end_time-$start_time).' MIN CLIP <span class="inline-block">('.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).')</span></div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
@@ -593,7 +593,7 @@ function view_mench_coins(){
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $ui = '';
 
-    $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[12467]['m_title'].'</div>';
+    $ui .= '<div class="headline">'.$e___11035[12467]['m_title'].'</div>';
     $ui .= '<div class="list-group" style="padding-bottom:33px;">';
     $ui .= '<div class="list-group-item no-side-padding">';
     $ui .= '<div class="row">';
@@ -842,7 +842,7 @@ function view_i_tree_e($i){
 
     foreach($CI->config->item('e___13207') as $e__id => $m2){
         if(isset($i_stats['count_'.$e__id]) && $i_stats['count_'.$e__id]>0){
-            $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].':</div>';
+            $ui .= '<div class="headline">'.$i_stats['count_'.$e__id].' '.$m2['m_title'].':</div>';
             $ui .= '<div class="list-group" style="margin-bottom:33px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
                 $ui .= view_e_basic($e);
@@ -1200,7 +1200,7 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $index
     $ui = '';
 
     if(strlen($list_title)){
-        $ui .= '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>'.$list_title.'</div>';
+        $ui .= '<div class="pull-left headline">'.$list_title.'</div>';
         $ui .= '<div class="doclear">&nbsp;</div>';
     }
 

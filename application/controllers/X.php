@@ -774,7 +774,7 @@ class X extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div><div class="previous_answer">'.$this->X_model->message_send($new_message).'</div>',
+            'message' => '<div class="headline">YOUR UPLOAD:</div><div class="previous_answer">'.$this->X_model->message_send($new_message).'</div>',
         ));
 
     }

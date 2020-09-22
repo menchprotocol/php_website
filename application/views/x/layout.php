@@ -290,7 +290,7 @@ $meets_13865 = !count($fetch_13865);
 
 if(count($fetch_13865)){
 
-    echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$e___11035[13865]['m_icon'].'</span>'.$e___11035[13865]['m_title'].':</div>';
+    echo '<div class="headline" style="margin-top: 34px;">'.$e___11035[13865]['m_title'].':</div>';
 
     $missing_13865 = 0;
     $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
@@ -513,12 +513,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     //HTML:
                     if ($i_focus['i__type'] == 6684) {
 
-                        $focus_tab .= '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE:</div>';
+                        $focus_tab .= '<div class="pull-left headline">SELECT ONE:</div>';
 
                     } elseif ($i_focus['i__type'] == 7231) {
 
 
-                        $focus_tab .= '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>SELECT ONE OR MORE:</span></div>';
+                        $focus_tab .= '<div class="pull-left headline">SELECT ONE OR MORE:</span></div>';
 
                         //Give option to Select None/All
                         $focus_tab .= '<div class="doclear">&nbsp;</div>';
@@ -602,7 +602,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 //TEXT RESPONSE
                 $has_substance = true;
 
-                $focus_tab .= '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR RESPONSE:</div>';
+                $focus_tab .= '<div class="headline">YOUR RESPONSE:</div>';
 
                 //Write `skip` if you prefer not to answer...
                 $focus_tab .= '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
@@ -630,7 +630,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     $focus_tab .= '<div class="file_saving_result">';
 
-                    $focus_tab .= '<div class="headline"><span class="icon-block">&nbsp;</span>YOUR UPLOAD:</div>';
+                    $focus_tab .= '<div class="headline">YOUR UPLOAD:</div>';
 
                     $focus_tab .= '<div class="previous_answer">' . $this->X_model->message_send($x_completes[0]['x__message']) . '</div>';
 
@@ -662,7 +662,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= '<div class="i_estimates hideIfEmpty i_x_stats hidden">'.view_i_tree_stats($i_stats, $show_nav).'</div>';
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, 'THIS IDEA INCLUDES:');
+            $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, $e___11035[13542]['m_title'].':');
 
             //IDEA PREVIOUS
             $is_previous = $this->X_model->fetch(array(
@@ -674,7 +674,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             ), array('x__left'), 0);
             if(count($is_previous)){
                 $focus_tab .= '<div style="padding-top: 34px;">';
-                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_previous, $user_e, 'THIS IDEA HELPS YOU:', -1);
+                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_previous, $user_e, $e___11035[11019]['m_title'].':', -1);
                 $focus_tab .= '</div>';
             }
 
@@ -711,13 +711,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             if($x__type2==10876){
 
                 //MENCH URL
-                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
+                $focus_tab .= '<div class="headline">'.$m2['m_title'].'</div>';
                 $focus_tab .= '<div style="margin: 5px 0 33px 33px; cursor: text;">'.$this_url.'</div>';
 
             } elseif($x__type2==13531){
 
                 //SHARE ON SOCIAL MEDIA
-                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
+                $focus_tab .= '<div class="headline">'.$m2['m_title'].'</div>';
                 $focus_tab .= '<div class="share-this space-content" style="margin:5px 0 33px;">';
                 foreach($this->config->item('e___13531') as $m2) {
                     $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_message'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share with '.$m2['m_title'].'" data-toggle="tooltip" data-placement="top">'.$m2['m_icon'].'</div></div>';
@@ -733,7 +733,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     'x__right' => $i_focus['i__id'],
                 ), array(), 0);
                 if(count($keywords)){
-                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
+                    $focus_tab .= '<div class="headline">'.$m2['m_title'].'</div>';
                     $focus_tab .= '<div class="share-this space-content" style="margin-bottom:33px;">';
                     foreach($keywords as $count => $keyword) {
                         if($count > 0){
