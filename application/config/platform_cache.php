@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-22 10:51:45 PST
+//Generated 2020-09-22 11:14:23 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -20,7 +20,7 @@ $config['e___13518'] = array(
         'm_profile' => array(13889,13518,4755),
     ),
     13042 => array(
-        'm_title' => 'UNLIMITED DISCOVERIES $8/MONTH',
+        'm_title' => 'UNLIMITED DISCOVERIES $8 PER MONTH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-usd discover"></i>',
         'm_profile' => array(13518,4755),
@@ -3273,7 +3273,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,12419,6415,13579,13292,13573,13495,13574,13571,13813,13670,12707,4235,12991,12211,12137,13689,13207,11068,12467,4341,6287,12969,10573,13542,13865,13562,11019,11030,13550,6155,13671,13415,10673,12896,13524,7256,13692,13693,4269,6132,13412,13908,13909,13911,13007,4997,10939,10957,12906,13572);
+$config['n___11035'] = array(13502,13401,12419,6415,13579,13292,13573,13495,13574,13571,13813,13670,12707,4235,12991,12211,12137,13689,13207,13913,11068,12467,4341,6287,12969,10573,13912,13914,13542,13865,13562,11019,11030,13550,6155,13671,13415,10673,12896,13524,7256,13692,13693,4269,6132,13412,13908,13909,13911,13007,4997,10939,10957,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3389,6 +3389,12 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-medal"></i>',
         'm_profile' => array(13907,13543,11035,12500,12489,10876,4527),
     ),
+    13913 => array(
+        'm_title' => 'LIST ALL IDEAS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-search-plus idea"></i>',
+        'm_profile' => array(11035),
+    ),
     11068 => array(
         'm_title' => 'MAGIC LOGIN',
         'm_message' => '',
@@ -3424,6 +3430,18 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
         'm_profile' => array(13530,11035,11054,4527,10984,11018,4485,4593,7551),
+    ),
+    13912 => array(
+        'm_title' => 'NEW IDEA TITLE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-plus-circle idea"></i>',
+        'm_profile' => array(11035),
+    ),
+    13914 => array(
+        'm_title' => 'NEW SOURCE TITLE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-plus-circle source"></i>',
+        'm_profile' => array(11035),
     ),
     13542 => array(
         'm_title' => 'NEXT IDEAS',
@@ -7616,7 +7634,7 @@ $config['e___4755'] = array(
         'm_profile' => array(6140,12327,12229,12227,12141,4229,6255,4593,4755),
     ),
     13042 => array(
-        'm_title' => 'UNLIMITED DISCOVERIES $8/MONTH',
+        'm_title' => 'UNLIMITED DISCOVERIES $8 PER MONTH',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-usd discover"></i>',
         'm_profile' => array(13518,4755),

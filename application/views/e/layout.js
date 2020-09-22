@@ -302,14 +302,14 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
                 header: function (data) {
                     if (!data.isEmpty) {
                         if(js_session_superpowers_assigned.includes(13422)){
-                            return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' + '</a>';
+                            return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' + '</a>';
                         } else {
                             return '';
                         }
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion montserrat"><span class="icon-block"><i class="far fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:e__add(0,'+is_e_parent+')" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);

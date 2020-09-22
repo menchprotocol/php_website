@@ -1,6 +1,5 @@
 <?php
 $e___6177 = $this->config->item('e___6177'); //Source Status
-$e___12467 = $this->config->item('e___12467'); //MENCH
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
 $e___6198 = $this->config->item('e___6198'); //SOURCE ICON
@@ -49,11 +48,11 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         //ADD NEW
         echo '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
+                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13914]['m_icon'].'</span></span>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . config_var(6197) . '"
-                               placeholder="NEW PROFILE">
+                               placeholder="'.$e___11035[13914]['m_title'].'">
                     </div><div class="algolia_pad_search hidden pad_expand">'.config_var(7256).'</div></div>';
         echo '</div>';
         echo '</div>';
@@ -358,11 +357,11 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 $focus_tab .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
-                            <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12274]['m_icon'].'</span></span>
+                            <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13914]['m_icon'].'</span></span>
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    maxlength="' . config_var(6197) . '"
-                                   placeholder="NEW SOURCE URL OR TITLE">
+                                   placeholder="'.$e___11035[13914]['m_title'].'">
                         </div><div class="algolia_pad_search hidden pad_expand">'.config_var(7256).'</div></div>';
 
             } else {
@@ -388,12 +387,12 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $focus_tab .= '<div class="list-group add_e_idea">';
                 $focus_tab .= '<div class="list-group-item list-adder">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span></span>
+                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . config_var(4736) . '"
                                id="newIdeaTitle"
-                               placeholder="NEW IDEA TITLE">
+                               placeholder="'.$e___11035[13912]['m_title'].'">
                     </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
                 $focus_tab .= '</div>';
             }
@@ -455,7 +454,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                     //Are there more?
                     if($counter > count($list_i)){
-                        $focus_tab .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___12467[12273]['m_icon'].'</span>LIST ALL '.$counter.' IDEAS &raquo;</a></div></div>';
+                        $focus_tab .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m_icon'].'</span>'.$e___11035[13913]['m_title'].' ['.$counter.']</a></div></div>';
                     }
 
                 }

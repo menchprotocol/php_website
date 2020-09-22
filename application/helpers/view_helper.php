@@ -11,7 +11,7 @@ function view_e_load_more($page, $limit, $list_e_count)
     //Regular section:
     $max_e = (($page + 1) * $limit);
     $max_e = ($max_e > $list_e_count ? $list_e_count : $max_e);
-    $ui .= '<span class="icon-block"><i class="far fa-plus-circle source"></i></span><b class="montserrat source">SEE MORE</b>';
+    $ui .= '<span class="icon-block"><i class="fas fa-plus-circle source"></i></span><b class="montserrat source">SEE MORE</b>';
     $ui .= '</a></div>';
 
     return $ui;
