@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-22 11:24:45 PST
+//Generated 2020-09-22 11:27:22 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -3273,7 +3273,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13502,13401,12419,6415,13579,13292,13573,13495,13574,13571,13813,13670,12707,4235,12991,12211,12137,13689,13207,13913,13915,11068,12467,4341,6287,12969,10573,13912,13914,13542,13865,13562,11019,13550,6155,13671,13415,10673,12896,13524,7256,13692,13693,4269,6132,13412,13908,13909,13911,13007,4997,10939,10957,12906,13572);
+$config['n___11035'] = array(13502,13401,12419,6415,13579,13292,13573,13495,13574,13571,13813,13670,12707,4235,12991,12211,12137,13689,13207,13913,13915,11068,12467,4341,6287,12969,10573,13912,13914,13542,13865,13562,11019,4755,13550,6155,13671,13415,10673,12896,13524,7256,13692,13693,4269,6132,13412,13908,13909,13911,13007,4997,10939,10957,12906,13572);
 $config['e___11035'] = array(
     13502 => array(
         'm_title' => 'CANCEL EDITING',
@@ -3472,6 +3472,12 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(11035,11020,13294),
+    ),
+    4755 => array(
+        'm_title' => 'PRIVATE INFORMATION',
+        'm_message' => '',
+        'm_icon' => '<i class="far fa-eye-slash" aria-hidden="true"></i>',
+        'm_profile' => array(11035,12701,4755,6771,4527),
     ),
     13550 => array(
         'm_title' => 'REFERENCED IDEAS',
@@ -5606,7 +5612,7 @@ $config['e___4527'] = array(
         'm_title' => 'PRIVATE INFORMATION',
         'm_message' => '',
         'm_icon' => '<i class="far fa-eye-slash" aria-hidden="true"></i>',
-        'm_profile' => array(12701,4755,6771,4527),
+        'm_profile' => array(11035,12701,4755,6771,4527),
     ),
     13531 => array(
         'm_title' => 'QUICK SHARE',
@@ -7523,7 +7529,7 @@ $config['e___4755'] = array(
         'm_title' => 'PRIVATE INFORMATION',
         'm_message' => '',
         'm_icon' => '<i class="far fa-eye-slash" aria-hidden="true"></i>',
-        'm_profile' => array(12701,4755,6771,4527),
+        'm_profile' => array(11035,12701,4755,6771,4527),
     ),
     7495 => array(
         'm_title' => 'RECOMMENDED DISCOVERY',

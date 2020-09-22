@@ -490,7 +490,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 } else {
 
-                    $focus_tab .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-eye-slash"></i></span>Discoveries are private</div>';
+                    $focus_tab .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[4755]['m_icon'].'</span>'.$e___11035[4755]['m_title'].'</div>';
 
                 }
 
