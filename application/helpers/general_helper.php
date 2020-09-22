@@ -904,7 +904,7 @@ function i_calc_common_prefix($child_list, $child_field){
                 $word = substr($word, 1);
             }
 
-            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word || $add_colon){
+            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word || $add_colon || strlen($word)<2){
                 //Not the same:
                 $all_the_same = false;
                 break;
