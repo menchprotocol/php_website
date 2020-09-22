@@ -425,7 +425,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                             $focus_tab .= '<style> #list_13412 .x_sort {display:none !important;} </style>';
                         }
 
-                        $focus_tab .= '<div class="headline top-margin">'.$e___11035[10573]['m_title'].'</div>';
+                        //$focus_tab .= '<div class="headline top-margin">'.$e___11035[10573]['m_title'].'</div>';
                         $focus_tab .= '<div class="row top-margin" id="list_13412">';
                         foreach($i_bookmarks as $item){
                             $focus_tab .= view_i_cover(12273, $item, $source_is_e, null, $e);
