@@ -818,7 +818,7 @@ if($in_my_x){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 12419, //COMMENTS
         'x__right' => $i_focus['i__id'],
-    ), array('x__source'), 0, 0, array('x__sort' => 'ASC')), ( $user_e['e__id'] > 0 ));
+    ), array('x__source'), 0, 0, array('x__sort' => 'ASC')), ( $user_e['e__id'] > 0 ), true);
     echo '</div>';
 }
 
