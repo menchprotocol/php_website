@@ -25,7 +25,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     if(!$source_is_e || $superpower_13422 ){
 
         //PROFILE
-        echo '<div class="container outside-card">';
+        echo '<div class="container coin-frame">';
         echo '<div id="list_11030" class="list-group grey-list">';
         $profiles = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS

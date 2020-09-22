@@ -580,9 +580,9 @@ img.no-radius {
     overflow: hidden;
 }
 
-.wrap-card, .outside-card{
+.wrap-card, .coin-frame{
     border: 3px solid transparent;
-    padding:0 0 25px 0;
+    padding:10px 0 25px 0;
     border-radius: 34px;
 }
 
@@ -1828,7 +1828,7 @@ label {
     .name-block{ margin-left: 41px; }
 
     /*    .active .show-max-active {display:none !important;}  */
-    .wrap-card, .outside-card{
+    .wrap-card, .coin-frame{
         margin: 0 5px;
         width: -webkit-calc(100% - 10px) !important;
         width:    -moz-calc(100% - 10px) !important;
@@ -1993,8 +1993,8 @@ label {
 .custom_ui_13884_ .table-striped tbody tr,
 .custom_ui_13884_ .x-list,
 .custom_ui_13884_ .accordion .card,
-.custom_ui_13884_13886 .outside-card,
-.custom_ui_13884_ .outside-card,
+.custom_ui_13884_13886 .coin-frame,
+.custom_ui_13884_ .coin-frame,
 .custom_ui_13884_13886 .wrap-card,
 .custom_ui_13884_ .wrap-card,
 .custom_ui_13884_13886 .btn-block,
@@ -2049,7 +2049,7 @@ label {
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .mench-navigation,
 .custom_ui_13884_13885 .fade,
-.custom_ui_13884_13885 .outside-card {
+.custom_ui_13884_13885 .coin-frame {
     background-color: #f0f0f0;
     color: #222222;
 }
