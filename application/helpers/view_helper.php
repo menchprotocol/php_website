@@ -1049,7 +1049,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $ui .= '<span class="show-on-hover">';
 
         if(!$is_parent){
-            $ui .= '<span title="SORT"><i class="fas fa-sort black"></i></span>';
+            $ui .= '<span title="'.$e___11035[13908]['m_title'].'">'.$e___11035[13908]['m_icon'].'</span>';
         }
 
         //Remove:
@@ -1072,7 +1072,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $href = '/~'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
 
         //IDEA STATUS:
-        $ui .= '<a href="'.$href.'" title="Idea Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
+        $ui .= '<a href="'.$href.'" title="Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
 
         //IDEA TITLE
         if($is_i_link && superpower_active(13354, true)){
