@@ -237,7 +237,6 @@ function i_sort_save(i__id) {
 
 function i_sort_load(i__id) {
 
-
     var element_key = null;
     var theobject = document.getElementById("list-in-" + focus_i__id + "-0");
     if (!theobject) {
@@ -248,7 +247,7 @@ function i_sort_load(i__id) {
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".i_sortable", // Specifies which items inside the element should be sortable
-        handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+        handle: ".sort_i", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             i_sort_save(i__id);
         }

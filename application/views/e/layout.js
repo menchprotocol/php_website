@@ -719,12 +719,12 @@ function e_sort_portfolio_load() {
     }
 
     //Show sort icon:
-    $('.fa-sort, .sort_reset').removeClass('hidden');
+    $('.sort_e, .sort_reset').removeClass('hidden');
 
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".en-item", // Specifies which items inside the element should be sortable
-        handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+        handle: ".sort_e", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             e_sort_save();
         }

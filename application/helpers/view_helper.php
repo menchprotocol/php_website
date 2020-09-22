@@ -1049,7 +1049,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $ui .= '<span class="show-on-hover">';
 
         if(!$is_parent){
-            $ui .= '<span title="'.$e___11035[13908]['m_title'].'">'.$e___11035[13908]['m_icon'].'</span>';
+            $ui .= '<span title="'.$e___11035[13908]['m_title'].'" class="sort_i">'.$e___11035[13908]['m_icon'].'</span>';
         }
 
         //Remove:
@@ -1548,7 +1548,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
             //Sort
             if(!$is_parent && $superpower_10939){
-                $ui .= '<span title="SORT"><i class="fas fa-sort source hidden"></i></span>';
+                $ui .= '<span title="'.$e___11035[13911]['m_title'].'" class="sort_e hidden">'.$e___11035[13911]['m_icon'].'</span>';
             }
 
             //Edit Raw Source
