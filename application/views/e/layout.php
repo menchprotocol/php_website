@@ -121,13 +121,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
         if(count($superpower_actives)){
-            if(!superpower_active(end($superpower_actives), true) && !$source_is_e && !(in_array($x__type, $this->config->item('n___13425')) && $source_is_e)){
+            if(!superpower_active(end($superpower_actives), true) && !$source_is_e){
                 //Missing Superpower:
                 continue;
             }
-        } elseif(in_array($x__type, $this->config->item('n___13425')) && !$source_is_e){
-            //SOURCE LAYOUT SHOW IF SOURCE:
-            continue;
         }
 
 
