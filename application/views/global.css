@@ -176,6 +176,7 @@ li a {
 .add-input{
     margin-bottom: 0;
     padding: 5px 0 !important;
+    width: 100%;
 }
 
 .large-icon{
@@ -1564,7 +1565,7 @@ label {
     width:    -moz-calc(100% - 66px);
     width:         calc(100% - 66px);
 }
-.texttype__lg, #newIdeaTitle, .i-info, .note-textarea.edit-on, .cover-title {
+.texttype__lg, .i-info, .note-textarea.edit-on, .cover-title {
     width: -webkit-calc(100% - 33px) !important;
     width:    -moz-calc(100% - 33px) !important;
     width:         calc(100% - 33px) !important;
