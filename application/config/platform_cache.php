@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-21 22:14:22 PST
+//Generated 2020-09-21 22:16:44 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -341,7 +341,7 @@ $config['e___13571'] = array(
         'm_profile' => array(13571,12701,6194,6204,11081,10659,6160,4341,4527),
     ),
     13572 => array(
-        'm_title' => 'UPLOAD',
+        'm_title' => 'UPLOAD MEDIA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-image"></i>',
         'm_profile' => array(6404,11035,13571),
@@ -896,13 +896,13 @@ $config['e___13425'] = array(
 $config['n___13413'] = array(6132,13412);
 $config['e___13413'] = array(
     6132 => array(
-        'm_title' => 'DISCOVERIES',
+        'm_title' => 'DISCOVERY',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(11035,13413,6153,4593,4755),
     ),
     13412 => array(
-        'm_title' => 'IDEAS',
+        'm_title' => 'IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(11035,13413,4755,4593),
@@ -3504,19 +3504,19 @@ $config['e___11035'] = array(
         'm_profile' => array(12687,13479,10876,4527,11035),
     ),
     6132 => array(
-        'm_title' => 'SORT DISCOVERIES',
+        'm_title' => 'SORT DISCOVERY',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(11035,13413,6153,4593,4755),
     ),
     13412 => array(
-        'm_title' => 'SORT IDEAS',
+        'm_title' => 'SORT IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(11035,13413,4755,4593),
     ),
     13908 => array(
-        'm_title' => 'SORT IDEAS UP/DOWN',
+        'm_title' => 'SORT IDEA UP/DOWN',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sort"></i>',
         'm_profile' => array(11035),
@@ -3524,7 +3524,7 @@ $config['e___11035'] = array(
     13571 => array(
         'm_title' => 'SOURCE EDITOR',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-pen-square source"></i>',
+        'm_icon' => '<i class="fas fa-pen-square"></i>',
         'm_profile' => array(13297,11035,4527,13566),
     ),
     4997 => array(
@@ -3560,7 +3560,7 @@ $config['e___11035'] = array(
     10673 => array(
         'm_title' => 'UNLINK SOURCE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-unlink source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-unlink" aria-hidden="true"></i>',
         'm_profile' => array(11035,4593),
     ),
     12906 => array(
@@ -3570,7 +3570,7 @@ $config['e___11035'] = array(
         'm_profile' => array(12896,11035,4755,4593),
     ),
     13572 => array(
-        'm_title' => 'UPLOAD',
+        'm_title' => 'UPLOAD MEDIA',
         'm_message' => 'Upload files up to 25 MB. Larger files can be uploaded to a 3rd-party platform & paste URL here.',
         'm_icon' => '<i class="fas fa-image"></i>',
         'm_profile' => array(6404,11035,13571),
@@ -4054,7 +4054,7 @@ $config['e___6404'] = array(
         'm_profile' => array(13450,11035,6404,10957),
     ),
     13572 => array(
-        'm_title' => 'UPLOAD',
+        'm_title' => 'UPLOAD MEDIA',
         'm_message' => '25',
         'm_icon' => '<i class="fas fa-image"></i>',
         'm_profile' => array(6404,11035,13571),
@@ -5623,7 +5623,7 @@ $config['e___4527'] = array(
     13571 => array(
         'm_title' => 'SOURCE EDITOR',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-pen-square source"></i>',
+        'm_icon' => '<i class="fas fa-pen-square"></i>',
         'm_profile' => array(13297,11035,4527,13566),
     ),
     6198 => array(
@@ -7526,13 +7526,13 @@ $config['e___4755'] = array(
         'm_profile' => array(4755,13491),
     ),
     6132 => array(
-        'm_title' => 'SORT DISCOVERIES',
+        'm_title' => 'SORT DISCOVERY',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(11035,13413,6153,4593,4755),
     ),
     13412 => array(
-        'm_title' => 'SORT IDEAS',
+        'm_title' => 'SORT IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(11035,13413,4755,4593),
@@ -8257,13 +8257,13 @@ $config['e___4593'] = array(
         'm_profile' => array(4755,7569,4593),
     ),
     6132 => array(
-        'm_title' => 'SORT DISCOVERIES',
+        'm_title' => 'SORT DISCOVERY',
         'm_message' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
         'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(11035,13413,6153,4593,4755),
     ),
     13412 => array(
-        'm_title' => 'SORT IDEAS',
+        'm_title' => 'SORT IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-arrows"></i>',
         'm_profile' => array(11035,13413,4755,4593),
@@ -8487,7 +8487,7 @@ $config['e___4593'] = array(
     10673 => array(
         'm_title' => 'UNLINK SOURCE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-unlink source" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-unlink" aria-hidden="true"></i>',
         'm_profile' => array(11035,4593),
     ),
     12906 => array(
