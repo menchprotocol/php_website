@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-22 12:03:01 PST
+//Generated 2020-09-22 12:05:27 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -962,7 +962,7 @@ $config['e___12994'] = array(
     4235 => array(
         'm_title' => 'GET STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     13291 => array(
@@ -1144,7 +1144,7 @@ $config['e___12969'] = array(
     4235 => array(
         'm_title' => 'GET STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     7495 => array(
@@ -2695,7 +2695,7 @@ $config['e___12227'] = array(
     4235 => array(
         'm_title' => 'GET STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     7495 => array(
@@ -3356,7 +3356,7 @@ $config['e___11035'] = array(
     4235 => array(
         'm_title' => 'GET STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     12991 => array(
@@ -6594,7 +6594,7 @@ $config['e___5967'] = array(
     4235 => array(
         'm_title' => 'GET STARTED',
         'm_message' => '1',
-        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     12773 => array(
@@ -7444,7 +7444,7 @@ $config['e___4755'] = array(
     4235 => array(
         'm_title' => 'GET STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     12773 => array(
@@ -7977,7 +7977,7 @@ $config['e___4593'] = array(
     4235 => array(
         'm_title' => 'GET STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     12773 => array(
