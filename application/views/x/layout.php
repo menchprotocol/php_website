@@ -410,7 +410,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             //Did we have any steps unlocked?
             if (count($unlocked_x) > 0) {
-                $focus_tab .= view_i_list($in_my_x, $i_focus, $unlocked_x, $user_e, 'UNLOCKED:');
+                $focus_tab .= view_i_list($in_my_x, $i_focus, $unlocked_x, $user_e, 'UNLOCKED IDEAS');
                 $has_substance = true;
             }
 
@@ -433,13 +433,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
 
                     //List Unlock paths:
-                    $focus_tab .= view_i_list($in_my_x, $i_focus, $unlock_paths, $user_e, 'SUGGESTED IDEAS:');
+                    $focus_tab .= view_i_list($in_my_x, $i_focus, $unlock_paths, $user_e, 'SUGGESTED IDEAS');
                     $has_substance = true;
 
                 }
 
                 //List Children if any:
-                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, 'UP NEXT:');
+                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, $e___11035[13542]['m_title'] );
                 $has_substance = count($is_next);
 
 
@@ -494,7 +494,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $focus_tab .= '<div class="edit_select_answer">';
 
                         //List answers:
-                        $focus_tab .= view_i_list($in_my_x, $i_focus, $x_selects, $user_e, 'YOU SELECTED:');
+                        $focus_tab .= view_i_list($in_my_x, $i_focus, $x_selects, $user_e, 'YOU SELECTED');
 
                         $focus_tab .= '<div class="doclear">&nbsp;</div>';
 
@@ -594,7 +594,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 }
 
                 //DISCOVER ONLY
-                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, ( $has_stats ? '' : 'UP NEXT:' ));
+                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, ( $has_stats ? '' : $e___11035[13542]['m_title'] ));
                 $has_substance = count($is_next);
 
             } elseif ($i_focus['i__type'] == 6683) {
@@ -609,7 +609,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 if (count($x_completes)) {
                     //Next Ideas:
-                    $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, 'UP NEXT:');
+                    $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, $e___11035[13542]['m_title']);
                 }
 
                 $focus_tab .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -637,7 +637,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $focus_tab .= '</div>';
 
                     //Any child ideas?
-                    $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, 'UP NEXT:');
+                    $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, $e___11035[13542]['m_title']);
 
                 } else {
 
@@ -662,7 +662,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= '<div class="i_estimates hideIfEmpty i_x_stats hidden">'.view_i_tree_stats($i_stats, $show_nav).'</div>';
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, $e___11035[13542]['m_title'].':');
+            $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, $e___11035[13542]['m_title']);
 
             //IDEA PREVIOUS
             $is_previous = $this->X_model->fetch(array(
@@ -674,7 +674,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             ), array('x__left'), 0);
             if(count($is_previous)){
                 $focus_tab .= '<div style="padding-top: 34px;">';
-                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_previous, $user_e, $e___11035[11019]['m_title'].':', -1);
+                $focus_tab .= view_i_list($in_my_x, $i_focus, $is_previous, $user_e, $e___11035[11019]['m_title'], -1);
                 $focus_tab .= '</div>';
             }
 
