@@ -800,7 +800,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
 
 
     $ui .= '<div class="row">';
-        $ui .= '<div class="col-sm col-md">';
+        $ui .= '<div class="col-sm col-md" title="'.$completion_rate['completion_percentage'].'% COMPLETE">';
 
             $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $index_id==0 ? 13822 /* Next Idea */ : ( $index_id==-1 ? 13757 /* DISCOVERY CURRENT */ : 13752 /* DISCOVERY LOCKED */ ) ) ).'</span>';
             $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix, true).'</b>';
@@ -1290,7 +1290,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i){
         //Upload File:
         if($handles_uploads){
             $ui .= '<td style="width:55px; padding:0;">';
-            $ui .= '<label class="pull-right btn btn-'.$color_code.' btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m_message'].'" data-placement="right"><span class="icon-block">'.$e___11035[13572]['m_icon'].'</span></label>';
+            $ui .= '<label class="pull-right btn btn-'.$color_code.' btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m_message'].'" data-placement="left"><span class="icon-block">'.$e___11035[13572]['m_icon'].'</span></label>';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
             $ui .= '</td>';
         }

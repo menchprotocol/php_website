@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2020-09-22 09:30:10 PST
+//Generated 2020-09-22 10:37:35 PST
 
 //MONTHLY SUBSCRIPTION:
 $config['n___13518'] = array(13038,13042);
@@ -137,7 +137,7 @@ $config['e___13894'] = array(
         'm_title' => 'LINKEDIN',
         'm_message' => '',
         'm_icon' => '<i class="fab fa-linkedin" aria-hidden="true"></i>',
-        'm_profile' => array(13894,3302,7146),
+        'm_profile' => array(13904,13894,3302,7146),
     ),
     13015 => array(
         'm_title' => 'YOUTUBE',
@@ -439,7 +439,7 @@ $config['e___13533'] = array(
 );
 
 //QUICK SHARE:
-$config['n___13531'] = array(3300,12889,13904,12890,3288,3099,13026);
+$config['n___13531'] = array(3300,12889,12890,13904,3288,3099,13026);
 $config['e___13531'] = array(
     3300 => array(
         'm_title' => 'TWITTER',
@@ -453,17 +453,17 @@ $config['e___13531'] = array(
         'm_icon' => '<i class="fab fa-facebook source"></i>',
         'm_profile' => array(13531,12891),
     ),
-    13904 => array(
-        'm_title' => 'LINKEDIN',
-        'm_message' => 'linkedin',
-        'm_icon' => '<i class="fab fa-linkedin" aria-hidden="true"></i>',
-        'm_profile' => array(13531,12891),
-    ),
     12890 => array(
         'm_title' => 'MESSENGER',
         'm_message' => 'messenger',
         'm_icon' => '<i class="fab fa-facebook-messenger source" aria-hidden="true"></i>',
         'm_profile' => array(13531,12889),
+    ),
+    13904 => array(
+        'm_title' => 'LINKEDIN',
+        'm_message' => 'linkedin',
+        'm_icon' => '<i class="fab fa-linkedin" aria-hidden="true"></i>',
+        'm_profile' => array(13531,12891),
     ),
     3288 => array(
         'm_title' => 'EMAIL',
