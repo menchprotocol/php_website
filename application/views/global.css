@@ -200,6 +200,7 @@ li a {
 
 a.btn, .btn.dropdown-toggle, label.btn {
     padding:15px;
+    min-width: 65px;
 }
 
 .left_nav a.btn, .left_nav .btn.dropdown-toggle, .left_nav label.btn{

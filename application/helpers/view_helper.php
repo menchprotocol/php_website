@@ -1237,7 +1237,6 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
     $CI =& get_instance();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
-    $e___11035 = $CI->config->item('e___11035');
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $handles_url = (in_array($x__type, $CI->config->item('n___7551')) || in_array($x__type, $CI->config->item('n___4986')));
     $user_e = superpower_assigned();
@@ -1251,7 +1250,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
     }
 
     //Show no-Message notifications for each message type:
-    $ui .= '<div class="headline">'.$e___11035[$x__type]['m_title'].'</div>';
+    $ui .= '<div class="headline">'.$e___4485[$x__type]['m_title'].'</div>';
     $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
 
     //List current notes:
@@ -1289,6 +1288,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
         //Upload File:
         if($handles_uploads){
+            $e___11035 = $CI->config->item('e___11035');
             $ui .= '<td style="width:55px; padding:0;">';
             $ui .= '<label class="pull-right btn btn-'.$color_code.' btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m_message'].'" data-placement="left"><span class="icon-block">'.$e___11035[13572]['m_icon'].'</span></label>';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
