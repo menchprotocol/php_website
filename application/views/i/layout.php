@@ -49,7 +49,7 @@ if(count($is_previous) || superpower_active(10984, true)){
                                i-id="' . $i_focus['i__id'] . '"
                                id="addi-c-' . $i_focus['i__id'] . '-1"
                                placeholder="PREVIOUS IDEA">
-                    </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
+                    </div><div class="algolia_pad_search hidden">'.view_message(7256).'</div></div>';
     }
     echo '</div>';
     echo '</div>';
@@ -187,7 +187,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
                            placeholder="NEW SOURCE">
-                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.config_var(7256).'</div></div>';
+                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.view_message(7256).'</div></div>';
         }
 
         $focus_tab .= '</div>';
@@ -231,7 +231,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-0"
                            placeholder="NEXT IDEA">
-                </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
+                </div><div class="algolia_pad_search hidden">'.view_message(7256).'</div></div>';
         }
 
         $focus_tab .= '</div>';
