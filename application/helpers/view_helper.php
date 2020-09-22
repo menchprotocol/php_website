@@ -1251,6 +1251,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
     }
 
     //Show no-Message notifications for each message type:
+    $ui .= '<div class="headline">'.$e___11035[$x__type]['m_title'].'</div>';
     $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
 
     //List current notes:
