@@ -4359,14 +4359,8 @@ $config['e___11054'] = array(
 );
 
 //IDEA TYPES:
-$config['n___7585'] = array(13930,6677,6683,7637,6684,7231,6907,6914,13931,13932);
+$config['n___7585'] = array(6677,6683,7637,6684,7231,6907,6914);
 $config['e___7585'] = array(
-    13930 => array(
-        'm_title' => 'START & NEXT',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-star idea"></i>',
-        'm_profile' => array(7585),
-    ),
     6677 => array(
         'm_title' => 'READ & NEXT',
         'm_message' => 'Read messages & go next',
@@ -4408,18 +4402,6 @@ $config['e___7585'] = array(
         'm_message' => 'Complete by reading all next ideas',
         'm_icon' => '<i class="fas fa-cubes idea" aria-hidden="true"></i>',
         'm_profile' => array(12330,12700,7486,7485,6140,7585,6192,7309,6997),
-    ),
-    13931 => array(
-        'm_title' => 'ON HOLD',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-pause idea"></i>',
-        'm_profile' => array(7585),
-    ),
-    13932 => array(
-        'm_title' => 'ARCHIVED',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-trash-alt idea"></i>',
-        'm_profile' => array(7585),
     ),
 );
 
