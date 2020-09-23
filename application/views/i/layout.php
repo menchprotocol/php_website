@@ -78,12 +78,7 @@ echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && 
 echo '</div>';
 
 
-//IDEA MESSAGES:
-echo view_i_note_list(4231, $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type' => 4231,
-    'x__right' => $i_focus['i__id'],
-), array('x__source'), 0, 0, array('x__sort' => 'ASC')), $e_of_i);
+
 
 
 //IDEA TIME
@@ -101,6 +96,15 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_in
 echo '<div class="inline-block pull-right both-margin" style="margin-right:33px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
+
+
+
+//IDEA MESSAGES:
+echo view_i_note_list(4231, $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type' => 4231,
+    'x__right' => $i_focus['i__id'],
+), array('x__source'), 0, 0, array('x__sort' => 'ASC')), $e_of_i);
 
 
 
