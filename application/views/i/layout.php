@@ -75,7 +75,7 @@ if(isset($_GET['focus__e']) && superpower_active(12701, true)){
 
 
 if(!$e_of_i){
-    echo '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> to contribute to this idea.</span></div>';
+    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> if you\'d like to contribute.</span></div>';
 }
 
 
