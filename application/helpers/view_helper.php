@@ -1242,9 +1242,6 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
     $user_e = superpower_assigned();
     $ui = '';
 
-
-    $ui .= '<div class="headline">'.$e___4485[$x__type]['m_title'].'</div>';
-
     if($show_empty_error && !count($i_notes) && $e_of_i){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin-bottom:13px;">';
         $ui .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m_title'])).' yet</div>';
