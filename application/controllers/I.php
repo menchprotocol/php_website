@@ -165,34 +165,6 @@ class I extends CI_Controller {
 
     }
 
-
-    function i_e_join($i__id){
-
-        //Make sure it's a logged in user:
-        $user_e = superpower_assigned(null, true);
-
-        if(count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 12450,
-            'x__source' => $user_e['e__id'],
-            'x__right' => $i__id,
-        )))){
-            return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You have previously requested to join this idea. No further action is necessary.</div>');
-
-        }
-
-        //Inform moderators:
-        $this->X_model->create(array(
-            'x__type' => 12450,
-            'x__source' => $user_e['e__id'],
-            'x__right' => $i__id,
-        ));
-
-        //Go back to idea:
-        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>Successfully submitted your request to become a source for this idea. You will receive an update once your request has been reviewed.</div>');
-
-    }
-
     function i_e_add($i__id){
 
         //Make sure it's a logged in user:
@@ -372,20 +344,6 @@ class I extends CI_Controller {
 
                     //Delete all transactions:
                     $this->I_model->remove($_POST['i__id'] , $user_e['e__id']);
-
-                //Notify moderators of Feature request? Only if they don't have the powers themselves:
-                } elseif(in_array($_POST['new_e__id'], $this->config->item('n___12138')) && !superpower_assigned(10984) && !count($this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 12453, //Idea Feature Request
-                        'x__source' => $user_e['e__id'],
-                        'x__right' => $_POST['i__id'],
-                    )))){
-
-                    $this->X_model->create(array(
-                        'x__type' => 12453, //Idea Feature Request
-                        'x__source' => $user_e['e__id'],
-                        'x__right' => $_POST['i__id'],
-                    ));
 
                 }
             }
