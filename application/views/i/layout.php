@@ -147,7 +147,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i);
 
         //Show tree sources only if more than the sources for this idea:
-        if( $counter > count($i_notes) ){
+        if( $counter > count($i_notes) && $superpower_13422 ){
             //Add Tree Sources
             $focus_tab .= '<div style="margin:21px 0 33px;">';
                 $focus_tab .= '<div class="tree_sources list-group"><a class="list-group-item montserrat doupper source itemsource" href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>LIST '.$counter.' SOURCES'.( $counter_i > 1 ? ' FOR ALL '.$counter_i.' IDEAS' : '' ).'</a></div>';
