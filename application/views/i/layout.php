@@ -54,6 +54,10 @@ echo '</div>';
 echo '</div>';
 
 
+
+
+
+
 echo '<div class="container wrap-card card-idea">';
 
 if(isset($_GET['focus__e']) && superpower_active(12701, true)){
@@ -70,6 +74,9 @@ if(isset($_GET['focus__e']) && superpower_active(12701, true)){
 
 
 
+if(!$e_of_i){
+    echo '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> to contribute to this idea.</span></div>';
+}
 
 
 //IDEA TITLE
@@ -367,7 +374,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].'&nbsp;'.( $pre_fix ? '<span class="show-max-active">'.$pre_fix.'</span>' : '' ).( is_null($counter) ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].'&nbsp;'.( $pre_fix ? '<span class="show-max-active">'.$pre_fix.'</span>' : '' ).( is_null($counter) ? '' : '<span class="en-type-counter-'.$x__type.'">'.( $counter > 0 ? view_number($counter) : '' ).'</span>' ).'<span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';

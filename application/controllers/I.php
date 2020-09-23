@@ -165,12 +165,12 @@ class I extends CI_Controller {
 
     }
 
+
     function i_e_add($i__id){
 
         //Make sure it's a logged in user:
-        $user_e = superpower_assigned(10984, true);
+        $user_e = superpower_assigned(10939, true);
 
-        //Idea Source:
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA SOURCES
             'x__source' => $user_e['e__id'],
@@ -179,8 +179,14 @@ class I extends CI_Controller {
             'x__right' => $i__id,
         ));
 
+        $this->X_model->create(array(
+            'x__type' => 13933, //JOIN AS CONTRIBUTOR
+            'x__source' => $user_e['e__id'],
+            'x__right' => $i__id,
+        ));
+
         //Go back to idea:
-        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY JOINED</div>');
+        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined as contributor & notified current sources of your intent for collaboration.</div>');
 
     }
 
