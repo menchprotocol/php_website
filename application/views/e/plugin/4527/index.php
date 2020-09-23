@@ -7,14 +7,6 @@
  *
  * */
 
-//First first all sources that have Cache in PHP Config @4527 as their parent:
-$config_e = $this->X_model->fetch(array(
-    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-    'x__up' => 4527,
-), array('x__down'), 0);
-
 echo htmlentities('<?php').'<br /><br />';
 echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br /><br />';
 
@@ -24,12 +16,22 @@ echo '/*<br />
  *<br />
  */<br /><br />';
 
+$all_sources = array();
 
 //PLATFORM STATS
 echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
 
 //CONFIG VARS
-foreach($config_e as $en){
+foreach($this->X_model->fetch(array(
+    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'x__up' => 4527,
+), array('x__down'), 0) as $en){
+
+    if(!in_array($en['e__id'], $all_sources)){
+        array_push($all_sources, $en['e__id']);
+    }
 
     //Now fetch all its children:
     $children = $this->X_model->fetch(array(
@@ -46,6 +48,9 @@ foreach($config_e as $en){
     //Generate raw IDs:
     $child_ids = array();
     foreach($children as $child){
+        if(!in_array($child['e__id'], $all_sources)){
+            array_push($all_sources, $child['e__id']);
+        }
         array_push($child_ids , $child['e__id']);
     }
 
@@ -53,6 +58,10 @@ foreach($config_e as $en){
     echo '$config[\'n___'.$en['x__down'].'\'] = array('.join(',',$child_ids).');<br />';
     echo '$config[\'e___'.$en['x__down'].'\'] = array(<br />';
     foreach($children as $child){
+
+        if(!in_array($child['e__id'], $all_sources)){
+            array_push($all_sources, $child['e__id']);
+        }
 
         //Do we have an omit command?
         if(strlen($common_prefix) > 0){
@@ -68,6 +77,9 @@ foreach($config_e as $en){
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         ), array('x__up'), 0);
         foreach($child_parents as $cp_en){
+            if(!in_array($cp_en['e__id'], $all_sources)){
+                array_push($all_sources, $cp_en['e__id']);
+            }
             array_push($child_parent_ids, intval($cp_en['e__id']));
         }
 
@@ -82,3 +94,5 @@ foreach($config_e as $en){
     echo ');<br />';
 }
 
+//Append all unique sources:
+echo '<br /><br />$config[\'n___all\'] = array('.join(',',$all_sources).'); //'.number_format(count($all_sources), 0).'<br />';
