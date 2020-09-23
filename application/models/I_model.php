@@ -160,11 +160,7 @@ class I_model extends CI_Model
 
                 } elseif($key=='i__status'){
 
-                    if(in_array($value, $this->config->item('n___7356') /* ACTIVE */)){
-                        $x__type = 10648; //Idea updated Status
-                    } else {
-                        $x__type = 6182; //Idea Deleted
-                    }
+                    $x__type = 10648; //Idea updated Status
                     $e___4737 = $this->config->item('e___4737'); //Idea Status
                     $x__message = view_db_field($key) . ' updated from [' . $e___4737[$before_data[0][$key]]['m_title'] . '] to [' . $e___4737[$value]['m_title'] . ']';
                     $x__up = $value;
