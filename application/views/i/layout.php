@@ -33,14 +33,13 @@ $is_previous = $this->X_model->fetch(array(
 ), array('x__left'), 0);
 
 //IDEA PREVIOUS
-if(count($is_previous) || superpower_active(10984, true)){
-    echo '<div class="container coin-frame">';
-    echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
-    foreach($is_previous as $previous_i) {
-        echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
-    }
-    if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
-        echo '<div class="list-group-item list-adder '.superpower_active(10939).'">
+echo '<div class="container coin-frame">';
+echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
+foreach($is_previous as $previous_i) {
+    echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
+}
+if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
+    echo '<div class="list-group-item list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
                         <input type="text"
@@ -50,11 +49,9 @@ if(count($is_previous) || superpower_active(10984, true)){
                                id="addi-c-' . $i_focus['i__id'] . '-1"
                                placeholder="'.$e___11035[13912]['m_title'].'">
                     </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
-    }
-    echo '</div>';
-    echo '</div>';
 }
-
+echo '</div>';
+echo '</div>';
 
 
 echo '<div class="container wrap-card card-idea">';
