@@ -1253,7 +1253,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
     //List current notes:
     foreach($i_notes as $i_notes) {
-        $ui .= view_i_note($x__type, $i_notes, ($i_notes['x__source']==$user_e['e__id']));
+        $ui .= view_i_note($x__type, $i_notes, ($i_notes['x__source']==$user_e['e__id'] || $e_of_i));
     }
 
     //ADD NEW:
