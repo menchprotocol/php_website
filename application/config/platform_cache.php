@@ -724,7 +724,7 @@ $config['e___12563'] = array(
 $config['n___12211'] = array(6677);
 $config['e___12211'] = array(
     6677 => array(
-        'm_title' => 'IDEA READ-ONLY',
+        'm_title' => 'IDEA READ & NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12211,13022,12330,7585,6192,4559),
@@ -1224,19 +1224,19 @@ $config['e___13023'] = array(
 $config['n___13022'] = array(6677,6683,7637);
 $config['e___13022'] = array(
     6677 => array(
-        'm_title' => 'READ-ONLY',
+        'm_title' => 'READ & NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12211,13022,12330,7585,6192,4559),
     ),
     6683 => array(
-        'm_title' => 'REPLY',
+        'm_title' => 'REPLY & NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-keyboard idea" aria-hidden="true"></i>',
         'm_profile' => array(13022,12955,6144,7585,6192),
     ),
     7637 => array(
-        'm_title' => 'UPLOAD',
+        'm_title' => 'UPLOAD & NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cloud-upload idea" aria-hidden="true"></i>',
         'm_profile' => array(11035,13022,12955,12117,7585,6192),
@@ -1264,7 +1264,7 @@ $config['e___12969'] = array(
 $config['n___12955'] = array(6683,6684,7231,7637);
 $config['e___12955'] = array(
     6683 => array(
-        'm_title' => 'REPLY',
+        'm_title' => 'REPLY & NEXT',
         'm_message' => '60',
         'm_icon' => '<i class="fas fa-keyboard idea" aria-hidden="true"></i>',
         'm_profile' => array(13022,12955,6144,7585,6192),
@@ -1282,7 +1282,7 @@ $config['e___12955'] = array(
         'm_profile' => array(12955,12884,12334,12129,7585,7712,6193,7489),
     ),
     7637 => array(
-        'm_title' => 'UPLOAD',
+        'm_title' => 'UPLOAD & NEXT',
         'm_message' => '30',
         'm_icon' => '<i class="fas fa-cloud-upload idea" aria-hidden="true"></i>',
         'm_profile' => array(11035,13022,12955,12117,7585,6192),
@@ -2036,7 +2036,7 @@ $config['e___12330'] = array(
         'm_profile' => array(12330,12883,12700,7486,7485,6140,7585,6193,7309,6997),
     ),
     6677 => array(
-        'm_title' => 'READ-ONLY',
+        'm_title' => 'READ & NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12211,13022,12330,7585,6192,4559),
@@ -3700,7 +3700,7 @@ $config['e___11035'] = array(
         'm_profile' => array(6404,11035,13571),
     ),
     7637 => array(
-        'm_title' => 'IDEA UPLOAD',
+        'm_title' => 'IDEA UPLOAD & NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cloud-upload idea" aria-hidden="true"></i>',
         'm_profile' => array(11035,13022,12955,12117,7585,6192),
@@ -4362,25 +4362,25 @@ $config['e___11054'] = array(
 $config['n___7585'] = array(13930,6677,6683,7637,6684,7231,6907,6914,13931,13932);
 $config['e___7585'] = array(
     13930 => array(
-        'm_title' => 'STARTING POINT',
+        'm_title' => 'START & NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-star idea"></i>',
         'm_profile' => array(7585),
     ),
     6677 => array(
-        'm_title' => 'READ-ONLY',
+        'm_title' => 'READ & NEXT',
         'm_message' => 'Read messages & go next',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(12211,13022,12330,7585,6192,4559),
     ),
     6683 => array(
-        'm_title' => 'REPLY',
+        'm_title' => 'REPLY & NEXT',
         'm_message' => 'Reply with text & go next',
         'm_icon' => '<i class="fas fa-keyboard idea" aria-hidden="true"></i>',
         'm_profile' => array(13022,12955,6144,7585,6192),
     ),
     7637 => array(
-        'm_title' => 'UPLOAD',
+        'm_title' => 'UPLOAD & NEXT',
         'm_message' => 'Upload a file & go next',
         'm_icon' => '<i class="fas fa-cloud-upload idea" aria-hidden="true"></i>',
         'm_profile' => array(11035,13022,12955,12117,7585,6192),
