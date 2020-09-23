@@ -166,7 +166,7 @@ class I extends CI_Controller {
     }
 
 
-    function i_e_request($i__id){
+    function i_e_join($i__id){
 
         //Make sure it's a logged in user:
         $user_e = superpower_assigned(null, true);
