@@ -3406,13 +3406,13 @@ $config['e___11035'] = array(
         'm_profile' => array(13450,11035,6404,10957),
     ),
     13542 => array(
-        'm_title' => 'NEXT IDEAS',
+        'm_title' => 'NEXT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap idea"></i>',
         'm_profile' => array(11035,12273,11020),
     ),
     11019 => array(
-        'm_title' => 'PREVIOUS IDEAS',
+        'm_title' => 'PREVIOUS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-sitemap rotate180 idea"></i>',
         'm_profile' => array(11035,11020,13294),

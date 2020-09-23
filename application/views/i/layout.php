@@ -47,7 +47,7 @@ if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
                                maxlength="' . config_var(4736) . '"
                                i-id="' . $i_focus['i__id'] . '"
                                id="addi-c-' . $i_focus['i__id'] . '-1"
-                               placeholder="'.$e___11035[13912]['m_title'].'">
+                               placeholder="'.$e___11035[11019]['m_title'].' '.$e___11035[13912]['m_title'].'">
                     </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
 }
 echo '</div>';
@@ -223,7 +223,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                            maxlength="' . config_var(4736) . '"
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-0"
-                           placeholder="'.$e___11035[13912]['m_title'].'">
+                           placeholder="'.$e___11035[13542]['m_title'].' '.$e___11035[13912]['m_title'].'">
                 </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
         }
 
