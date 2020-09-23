@@ -644,17 +644,7 @@ class X extends CI_Controller
 
         } elseif(!in_array($is[0]['i__status'], $this->config->item('n___7355') /* PUBLIC */)){
 
-            if(superpower_assigned(10939)){
-
-                //Give them idea access:
-                return redirect_message('/~' . $i__id);
-
-            } else {
-
-                //Inform them not published:
-                return redirect_message(home_url(), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
-
-            }
+            return redirect_message((superpower_assigned(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
 
         }
 
