@@ -1762,6 +1762,7 @@ label {
 }
 .inside-btn i {
     margin-top: 4px;
+    color: #222222 !important;
 }
 .cover-text{
     margin: 8px 33px 55px;
