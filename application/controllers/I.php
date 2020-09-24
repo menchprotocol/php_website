@@ -179,6 +179,16 @@ class I extends CI_Controller {
             'x__right' => $i__id,
         ));
 
+        //Add to top of my ideas:
+        $this->X_model->create(array(
+            'x__type' => 10573, //MY IDEAS
+            'x__source' => $user_e['e__id'],
+            'x__right' => $i__id,
+            'x__up' => $user_e['e__id'],
+            'x__message' => '@'.$user_e['e__id'],
+            'x__sort' => 0, //Top of the list
+        ), true);
+
         $this->X_model->create(array(
             'x__type' => 13933, //JOIN AS CONTRIBUTOR
             'x__source' => $user_e['e__id'],
