@@ -26,28 +26,6 @@ $e_focus_found = false; //Used to determine the first tab to be opened
 
 
 
-
-
-
-
-
-echo '<div class="container wrap-card card-idea">';
-
-
-
-if(isset($_GET['focus__e']) && superpower_active(12701, true)){
-    //Filtered Specific Source:
-    $e_filters = $this->E_model->fetch(array(
-        'e__id' => intval($_GET['focus__e']),
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ));
-    if(count($e_filters)){
-        echo view__focus__e($e_filters[0]);
-    }
-}
-
-
-
 //IDEA PREVIOUS
 echo '<div class="container coin-frame">';
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
@@ -76,16 +54,34 @@ echo '</div>';
 
 
 
-//IDEA TITLE
-echo '<div style="padding:8px 0; margin-top: 13px;">';
-echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true, view_i_icon($i_focus));
-echo '</div>';
+
+
+
+echo '<div class="container wrap-card card-idea">';
+
+if(isset($_GET['focus__e']) && superpower_active(12701, true)){
+    //Filtered Specific Source:
+    $e_filters = $this->E_model->fetch(array(
+        'e__id' => intval($_GET['focus__e']),
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    ));
+    if(count($e_filters)){
+        echo view__focus__e($e_filters[0]);
+    }
+}
+
 
 
 
 if(!$e_of_i){
-    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> if you\'d like to contribute.</span></div>';
+    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> if you\'d like to contribute.</span></div>';
 }
+
+
+//IDEA TITLE
+echo '<div style="padding:8px 0; margin-top: 13px;">';
+echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true, view_i_icon($i_focus));
+echo '</div>';
 
 
 //IDEA MESSAGES:
