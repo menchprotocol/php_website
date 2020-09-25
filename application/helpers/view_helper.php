@@ -333,6 +333,10 @@ function view_e__icon($e__icon = null)
 function view_number($number)
 {
 
+    if(intval($number) < 1){
+        return false;
+    }
+
     //Round & format numbers
 
     if ($number < 950) {
