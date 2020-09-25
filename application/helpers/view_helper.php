@@ -26,9 +26,7 @@ function view_i_tree_stats($i_stats, $hide_idea, $auto_hide = true){
     $has_idea = ( $i_stats['i___6169'] && $i_stats['i___6170'] );
 
     //Variable time range:
-    $ui = '<span class="montserrat doupper" style="padding-right:8px;">';
-
-
+    $ui = null;
 
     //IDEAS
     if(!$hide_idea){
@@ -36,24 +34,21 @@ function view_i_tree_stats($i_stats, $hide_idea, $auto_hide = true){
     }
 
 
-
     //TIME STATS
-    $ui .= '<span class="i_x_stats inline-block grey '.( $auto_hide ? ' hidden ' : '' ).'">';
-    if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
-        //SECONDS
-        $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
-    } else {
-        //MINUTES
-        $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+    if($i_stats['i___6161'] > 0){
+        $ui .= '<span class="i_x_stats inline-block grey '.( $auto_hide ? ' hidden ' : '' ).'">';
+        if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
+            //SECONDS
+            $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
+        } else {
+            //MINUTES
+            $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+        }
+        $ui .= '</span>';
     }
-    $ui .= '</span>';
 
 
-
-    $ui .= '</span>';
-
-
-    return $ui;
+    return ( $ui ? '<span class="montserrat doupper" style="padding-right:8px;">'.$ui.'</span>' : $ui );
 }
 
 function view_db_field($field_name){
