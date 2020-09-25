@@ -1058,8 +1058,8 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
             $ui .= '<span title="'.$e___11035[13908]['m_title'].'" class="sort_i">'.$e___11035[13908]['m_icon'].'</span>';
         }
 
-        //Remove:
-        $ui .= '<span title="'.$e___11035[13415]['m_title'].'"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')">'.$e___11035[13415]['m_icon'].'</a></span>';
+        //Unlink:
+        $ui .= '<span title="'.$e___11035[10686]['m_title'].'"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')">'.$e___11035[10686]['m_icon'].'</a></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
