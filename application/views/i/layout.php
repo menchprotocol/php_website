@@ -25,17 +25,38 @@ $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 $e_focus_found = false; //Used to determine the first tab to be opened
 
 
-$is_previous = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-    'x__right' => $i_focus['i__id'],
-), array('x__left'), 0);
+
+
+
+
+
+
+echo '<div class="container wrap-card card-idea">';
+
+
+
+if(isset($_GET['focus__e']) && superpower_active(12701, true)){
+    //Filtered Specific Source:
+    $e_filters = $this->E_model->fetch(array(
+        'e__id' => intval($_GET['focus__e']),
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    ));
+    if(count($e_filters)){
+        echo view__focus__e($e_filters[0]);
+    }
+}
+
+
 
 //IDEA PREVIOUS
 echo '<div class="container coin-frame">';
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
-foreach($is_previous as $previous_i) {
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+    'x__right' => $i_focus['i__id'],
+), array('x__left'), 0) as $previous_i) {
     echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
 }
 if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
@@ -55,34 +76,16 @@ echo '</div>';
 
 
 
-
-
-
-echo '<div class="container wrap-card card-idea">';
-
-if(isset($_GET['focus__e']) && superpower_active(12701, true)){
-    //Filtered Specific Source:
-    $e_filters = $this->E_model->fetch(array(
-        'e__id' => intval($_GET['focus__e']),
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ));
-    if(count($e_filters)){
-        echo view__focus__e($e_filters[0]);
-    }
-}
-
-
-
-
-if(!$e_of_i){
-    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> if you\'d like to contribute.</span></div>';
-}
-
-
 //IDEA TITLE
 echo '<div style="padding:8px 0; margin-top: 13px;">';
 echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true, view_i_icon($i_focus));
 echo '</div>';
+
+
+
+if(!$e_of_i){
+    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> if you\'d like to contribute.</span></div>';
+}
 
 
 //IDEA MESSAGES:

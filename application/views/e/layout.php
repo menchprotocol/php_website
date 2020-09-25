@@ -22,6 +22,12 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
     <?php
 
+
+    echo '<div class="container wrap-card card-source">';
+
+
+
+
     if(!$source_is_e || $superpower_13422 ){
 
         //PROFILE
@@ -61,7 +67,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     }
 
 
-    echo '<div class="container wrap-card card-source">';
+
 
 
     //SOURCE DRAFTING?
