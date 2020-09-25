@@ -1480,7 +1480,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
     $is_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $is_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
-    $inline_editing = $control_enabled && superpower_active(13402, true);
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
@@ -1578,7 +1577,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
             //SOURCE TITLE TEXT EDITOR
-            if($inline_editing){
+            if($user_e && $source_of_e && $is_e_link){
 
                 $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, 0, false, null, extract_icon_color($e['e__icon']));
 
@@ -1588,7 +1587,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
             } else {
 
-                //SOURCE NAME
+                //SOURCE NAME with PREFIX
                 $ui .= '<a href="'.$e_url.'" class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'">';
                 $ui .= $box_items_list;
                 $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';

@@ -3750,7 +3750,7 @@ $config['e___11035'] = array(
 );
 
 //SUPERPOWERS:
-$config['n___10957'] = array(10939,12673,13403,10984,10986,13420,12700,13422,13402,12706,12703,13421,12699,12701,13758);
+$config['n___10957'] = array(10939,12673,13403,10984,10986,13420,12700,13422,12706,12703,13421,12699,12701,13758);
 $config['e___10957'] = array(
     10939 => array(
         'm_title' => 'IDEATION',
@@ -3798,12 +3798,6 @@ $config['e___10957'] = array(
         'm_title' => 'SOURCING',
         'm_message' => 'Manage Sources with Advance Tools',
         'm_icon' => '<i class="far fa-circle source" aria-hidden="true"></i>',
-        'm_profile' => array(10957),
-    ),
-    13402 => array(
-        'm_title' => 'INLINE SOURCING',
-        'm_message' => 'Rename Source Titles Inline',
-        'm_icon' => '<i class="far fa-money-check-edit source"></i>',
         'm_profile' => array(10957),
     ),
     12706 => array(
