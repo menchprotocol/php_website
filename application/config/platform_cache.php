@@ -3379,7 +3379,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13007,13914,13571,13915,4997,10673,13207,6287,13911,11059,13865,13813,13912,10939,13542,11019,13913,13908,4235,12137,10573,13919,7637,13550,13689,12896,13502,12906,12419,6415,13670,13495,13562,12969,13524,4341,12707,12991,12211,13692,13693,12467,13579,13909,13401,13292,4755,13573,6155,13574,13415,11068,13671,7256,4269,10957,13572,6132,13412,12117);
+$config['n___11035'] = array(13007,13914,13571,13915,4997,10673,13207,6287,13911,11059,13865,13813,13912,10939,13542,11019,13913,13908,4235,12137,10573,13919,10686,7637,13550,12896,13689,12906,13502,6415,12419,13670,13495,13562,12969,13524,4341,12707,12991,12211,13692,13693,12467,13579,13909,13401,4755,13292,6155,13573,13415,13574,11068,13671,7256,4269,10957,13572,6132,13412,12117);
 $config['e___11035'] = array(
     13007 => array(
         'm_title' => 'SORT ALPHABETICALLY',
@@ -3513,6 +3513,12 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-list idea"></i>',
         'm_profile' => array(13920,11035),
     ),
+    10686 => array(
+        'm_title' => 'UNLINK IDEA',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-unlink idea" aria-hidden="true"></i>',
+        'm_profile' => array(11035,4593),
+    ),
     7637 => array(
         'm_title' => 'IDEA UPLOAD & NEXT',
         'm_message' => '',
@@ -3525,22 +3531,16 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(11035,4527,12273),
     ),
-    13689 => array(
-        'm_title' => 'INFO',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-info-circle idea"></i>',
-        'm_profile' => array(11035),
-    ),
     12896 => array(
         'm_title' => 'SAVED IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(13877,12701,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
-    13502 => array(
-        'm_title' => 'CANCEL EDITING',
+    13689 => array(
+        'm_title' => 'INFO',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-times discover"></i>',
+        'm_icon' => '<i class="fas fa-info-circle idea"></i>',
         'm_profile' => array(11035),
     ),
     12906 => array(
@@ -3549,17 +3549,23 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="far fa-bookmark discover"></i>',
         'm_profile' => array(12896,11035,4755,4593),
     ),
-    12419 => array(
-        'm_title' => 'COMMENTS',
+    13502 => array(
+        'm_title' => 'CANCEL EDITING',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-comments discover" aria-hidden="true"></i>',
-        'm_profile' => array(12701,11035,13871,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
+        'm_icon' => '<i class="fas fa-times discover"></i>',
+        'm_profile' => array(11035),
     ),
     6415 => array(
         'm_title' => 'DELETE ALL DISCOVERIES',
         'm_message' => 'Resetting your discoveries will remove all the discovery coins you mined so you can start from scratch again.',
         'm_icon' => '<i class="fas fa-trash-alt discover" aria-hidden="true"></i>',
         'm_profile' => array(11035,4593,4755),
+    ),
+    12419 => array(
+        'm_title' => 'COMMENTS',
+        'm_message' => '',
+        'm_icon' => '<i class="far fa-comments discover" aria-hidden="true"></i>',
+        'm_profile' => array(12701,11035,13871,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
     ),
     13670 => array(
         'm_title' => 'FILTER DISCOVERIES',
@@ -3651,23 +3657,17 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-search-minus"></i>',
         'm_profile' => array(11035,7256),
     ),
-    13292 => array(
-        'm_title' => 'DISCOVERY TIME',
-        'm_message' => '',
-        'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_profile' => array(11035,13544,4356),
-    ),
     4755 => array(
         'm_title' => 'PRIVATE INFORMATION',
         'm_message' => '',
         'm_icon' => '<i class="far fa-eye-slash" aria-hidden="true"></i>',
         'm_profile' => array(11035,12701,4755,6771,4527),
     ),
-    13573 => array(
-        'm_title' => 'DOWNLOAD',
+    13292 => array(
+        'm_title' => 'DISCOVERY TIME',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-cloud-download"></i>',
-        'm_profile' => array(11035),
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_profile' => array(11035,13544,4356),
     ),
     6155 => array(
         'm_title' => 'REMOVE DISCOVERY',
@@ -3675,10 +3675,10 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-times discover"></i>',
         'm_profile' => array(11035,6150,4593,4755),
     ),
-    13574 => array(
-        'm_title' => 'EDIT NOTE',
+    13573 => array(
+        'm_title' => 'DOWNLOAD',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-pen-square"></i>',
+        'm_icon' => '<i class="fas fa-cloud-download"></i>',
         'm_profile' => array(11035),
     ),
     13415 => array(
@@ -3686,6 +3686,12 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-times idea"></i>',
         'm_profile' => array(11035,4755,4593),
+    ),
+    13574 => array(
+        'm_title' => 'EDIT NOTE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-pen-square"></i>',
+        'm_profile' => array(11035),
     ),
     11068 => array(
         'm_title' => 'MAGIC LOGIN',
@@ -8582,7 +8588,7 @@ $config['e___4593'] = array(
         'm_title' => 'UNLINK IDEA',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-unlink idea" aria-hidden="true"></i>',
-        'm_profile' => array(4593),
+        'm_profile' => array(11035,4593),
     ),
     13579 => array(
         'm_title' => 'UNLINK NOTE',
