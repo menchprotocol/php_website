@@ -3448,7 +3448,7 @@ $config['e___11035'] = array(
         'm_profile' => array(13898,4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
     ),
     13813 => array(
-        'm_title' => 'FEATURED',
+        'm_title' => 'FEATURED IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_profile' => array(11035),
