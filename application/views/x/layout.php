@@ -681,10 +681,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //TIME ESTIMATE
-            $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, $show_nav, false).'</div>';
+            $time_estimate = view_i_tree_stats($i_stats, $show_nav, false);
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, $e___11035[13542]['m_title']);
+            $focus_tab .= view_i_list($in_my_x, $i_focus, $is_next, $user_e, ( $time_estimate ? $time_estimate : $e___11035[13542]['m_title'] ));
 
             //IDEA PREVIOUS
             $is_previous = $this->X_model->fetch(array(
