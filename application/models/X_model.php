@@ -1001,7 +1001,7 @@ class X_model extends CI_Model
             if($is_discovery_mode || $is_current_e || $simple_version){ //( $is_discovery_mode && !superpower_active(10939, true)) ||
 
                 //NO LINK so we can maintain focus...
-                if((!$has_text && $is_current_e) || ($is_discovery_mode && $e_count>0 && $e_media_count==$e_count /* All media */)){
+                if((!$has_text && $is_current_e) || (!$has_text && $is_discovery_mode && $e_count>0 && $e_media_count==$e_count /* All media */)){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, ' ', $output_body_message);
