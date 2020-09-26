@@ -31,8 +31,7 @@ function goto_step(this_count){
 
     $('.signup-steps').addClass('hidden');
     $('#step'+step_count).removeClass('hidden');
-
-    $('#step'+step_count+' :input:visible:first').focus();
+    $('#step'+step_count+' .white-border:first').focus();
 }
 
 
