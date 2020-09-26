@@ -1405,7 +1405,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $ui .= ( $can_click ? '</a>' : '</div>' );
     $ui .= '</div>';
     $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
-    $ui .= view_i_tree_stats($i_stats, false, false, false).'<br />';
+    $ui .= '<div style="padding-bottom: 8px;">'.view_i_tree_stats($i_stats, false, false, false).'</div>';
     $ui .= view_i_title($i);
     $ui .= '</a></div>';
     $ui .= '</div>';
