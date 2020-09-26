@@ -808,7 +808,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
         $ui .= '<div class="col-sm-5 col-md-4 col2nd i_x_stats hidden">';
 
             //IDA STATS
-            $ui .= view_i_tree_stats($i_stats, false);
+            $ui .= view_i_tree_stats($i_stats, false, false);
 
         $ui .= '</div>';
     $ui .= '</div>';
