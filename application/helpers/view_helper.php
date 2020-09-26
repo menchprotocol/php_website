@@ -36,7 +36,7 @@ function view_i_tree_stats($i_stats, $hide_idea, $auto_hide){
 
     //TIME STATS
     if($i_stats['i___6161'] > 0){
-        $ui .= '<span class="i_x_stats inline-block grey '.( $auto_hide ? ' hidden ' : '' ).'">';
+        $ui .= '<span class="inline-block grey '.( $auto_hide ? ' i_x_stats hidden ' : '' ).'">';
         if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
             //SECONDS
             $ui .= '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span><span class="inline-block">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
