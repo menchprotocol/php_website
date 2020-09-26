@@ -17,7 +17,7 @@ function view_e_load_more($page, $limit, $list_e_count)
     return $ui;
 }
 
-function view_i_tree_stats($i_stats, $hide_idea, $hide_time, $hide_idea = true){
+function view_i_tree_stats($i_stats, $noshow_idea, $hide_time, $hide_idea = true){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -43,7 +43,7 @@ function view_i_tree_stats($i_stats, $hide_idea, $hide_time, $hide_idea = true){
     }
 
     //IDEAS
-    if(!$hide_idea && $i_stats['i___6169'] > 0){
+    if(!$noshow_idea && $i_stats['i___6169'] > 0){
         $ui .= '<span class="'.( $hide_idea ? ' i_x_stats hidden ' : '' ).' inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">'.( $has_idea ? '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span>' : '' ).( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
     }
 
