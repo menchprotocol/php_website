@@ -217,16 +217,11 @@ function view_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function view_i_title($i, $common_prefix = null, $force_single_line = false){
+function view_i_title($i, $common_prefix = null){
     if(strlen($common_prefix) > 0){
         $i['i__title'] = trim(substr($i['i__title'], strlen($common_prefix)));
     }
-
-    //Turn Spaced Colon into double lines:
-    $title = htmlentities(trim($i['i__title']));
-    $title = ( $force_single_line ? $title : str_replace(' : ','<br />', $title) );
-
-    return '<span class="text__4736_'.$i['i__id'].'">'.$title.'</span>';
+    return '<span class="text__4736_'.$i['i__id'].'">'.htmlentities(trim($i['i__title'])).'</span>';
 }
 
 
@@ -486,7 +481,7 @@ function view_x($x, $is_parent_tr = false)
                 //IDEA
                 $is = $CI->I_model->fetch(array('i__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_title'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.view_cache(4737 /* Idea Status */, $is[0]['i__status'], true, 'right', $is[0]['i__id']).view_i_title($is[0], null, true).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_title'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.view_cache(4737 /* Idea Status */, $is[0]['i__status'], true, 'right', $is[0]['i__id']).view_i_title($is[0], null).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_profile'])){
 
@@ -802,7 +797,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
         $ui .= '<div class="col-sm col-md" title="'.$completion_rate['completion_percentage'].'% COMPLETE">';
 
             $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $index_id==0 ? 13822 /* Next Idea */ : ( $index_id==-1 ? 13757 /* DISCOVERY CURRENT */ : 13752 /* DISCOVERY LOCKED */ ) ) ).'</span>';
-            $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix, true).'</b>';
+            $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
         $ui .= '<div class="col-sm-5 col-md-4 col2nd i_x_stats hidden">';
@@ -894,7 +889,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___7585[$i_x['i__type']]['m_title'].'">'. $e___7585[$i_x['i__type']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_x['i__status']]['m_title'].'">'. $e___4737[$i_x['i__status']]['m_icon']. '</span>';
-        $ui .= '<a href="?i__id='.$i_x['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_x, null, true) . '</u></a>';
+        $ui .= '<a href="?i__id='.$i_x['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_x, null) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_x['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('n___6193') /* OR Ideas */ )) || ($i_x['x__type'] == 4229) ? view_i_marks($i_x) : '' ).'</span>]';
 
@@ -1084,7 +1079,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
             $ui .= '<a href="'.$href.'" class="title-block montserrat">';
             $ui .= $box_items_list;
-            $ui .= view_i_title($i, null, true); //IDEA TITLE
+            $ui .= view_i_title($i, null); //IDEA TITLE
             $ui .= '</a>';
 
         }
