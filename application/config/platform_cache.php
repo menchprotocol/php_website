@@ -689,7 +689,7 @@ $config['e___12563'] = array(
         'm_profile' => array(12523,12563,3000),
     ),
     13339 => array(
-        'm_title' => 'EXPERTS',
+        'm_title' => 'INDUSTRY EXPERTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13450,12523,12563,6159,13207),
@@ -863,19 +863,13 @@ $config['e___13442'] = array(
 );
 
 //IDEA METADATA:
-$config['n___6159'] = array(7545,13339,6208,6168,6283,12885,6228,6170,6162,4430,6169,6161,13897);
+$config['n___6159'] = array(7545,6208,6168,6283,12885,6228,13339,6170,6162,4430,6169,6161,13897);
 $config['e___6159'] = array(
     7545 => array(
         'm_title' => 'AWARDS',
         'm_message' => 'i___7545',
         'm_icon' => '<i class="fas fa-ribbon idea" aria-hidden="true"></i>',
         'm_profile' => array(13898,11089,13530,6159,13421,13298,12197,11018,4485,7551,4593),
-    ),
-    13339 => array(
-        'm_title' => 'EXPERTS',
-        'm_message' => 'i___13339',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_profile' => array(13450,12523,12563,6159,13207),
     ),
     6208 => array(
         'm_title' => 'IDEA METADATA ALGOLIA ID',
@@ -906,6 +900,12 @@ $config['e___6159'] = array(
         'm_message' => 'i___6228',
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_profile' => array(6159),
+    ),
+    13339 => array(
+        'm_title' => 'INDUSTRY EXPERTS',
+        'm_message' => 'i___13339',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_profile' => array(13450,12523,12563,6159,13207),
     ),
     6170 => array(
         'm_title' => 'MAX IDEAS',
@@ -938,7 +938,7 @@ $config['e___6159'] = array(
         'm_profile' => array(6169,13292,4735,6159),
     ),
     13897 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION CONTENT',
         'm_message' => 'i___13897',
         'm_icon' => '<i class="fas fa-book-reader source"></i>',
         'm_profile' => array(6159,13450,13207),
@@ -1173,13 +1173,13 @@ $config['e___13207'] = array(
         'm_profile' => array(13937,13450,13207,6159,4364,10573),
     ),
     13339 => array(
-        'm_title' => 'EXPERTS',
+        'm_title' => 'INDUSTRY EXPERTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-badge-check source"></i>',
         'm_profile' => array(13450,12523,12563,6159,13207),
     ),
     13897 => array(
-        'm_title' => 'NONFICTION',
+        'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-book-reader source"></i>',
         'm_profile' => array(6159,13450,13207),
@@ -1841,7 +1841,7 @@ $config['e___12524'] = array(
 );
 
 //SYNC ICONS:
-$config['n___12523'] = array(2997,4446,3005,13339,6293,3147,13350,3192,2998);
+$config['n___12523'] = array(2997,4446,3005,6293,13339,3147,13350,3192,2998);
 $config['e___12523'] = array(
     2997 => array(
         'm_title' => 'ARTICLES',
@@ -1861,17 +1861,17 @@ $config['e___12523'] = array(
         'm_icon' => '<i class="fas fa-book source" aria-hidden="true"></i>',
         'm_profile' => array(12523,12563,3000),
     ),
-    13339 => array(
-        'm_title' => 'EXPERTS',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-badge-check source"></i>',
-        'm_profile' => array(13450,12523,12563,6159,13207),
-    ),
     6293 => array(
         'm_title' => 'GIPHY GIFS',
         'm_message' => '',
         'm_icon' => '<i class="far fa-file-image source"></i>',
         'm_profile' => array(12523,12891,1326),
+    ),
+    13339 => array(
+        'm_title' => 'INDUSTRY EXPERTS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-badge-check source"></i>',
+        'm_profile' => array(13450,12523,12563,6159,13207),
     ),
     3147 => array(
         'm_title' => 'ONLINE COURSES',
