@@ -38,7 +38,7 @@ function view_i_tree_stats($i_stats, $noshow_idea, $hide_time, $hide_idea = true
             $ui .= ( $cover_show ? $e___13544[13292]['m_icon'].' ' : '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span>' ).'<span class="inline-block">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
         } else {
             //MINUTES
-            $ui .= ( $cover_show ? $e___13544[13292]['m_icon'].' ' : '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span>' ).'<span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+            $ui .= ( $cover_show ? $e___13544[13292]['m_icon'].' ' : '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span>' ).'<span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).( !$cover_show ? '&nbsp;MIN' : '' ).'</span>';
         }
         $ui .= '</span>';
     }
