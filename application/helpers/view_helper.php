@@ -17,7 +17,7 @@ function view_e_load_more($page, $limit, $list_e_count)
     return $ui;
 }
 
-function view_i_tree_stats($i_stats, $hide_idea, $auto_hide = true){
+function view_i_tree_stats($i_stats, $hide_idea, $auto_hide){
 
     //IDEA STATUS BAR
     $CI =& get_instance();
@@ -1206,7 +1206,7 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $index
     if($index_id >= 0){
 
         $common_prefix = i_calc_common_prefix($is_next, 'i__title');
-        $ui .= '<div class="pull-right right-adj i_x_stats"><a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="montserrat">'.$e___11035[13689]['m_title'].' '.$e___11035[13689]['m_icon'].'</a></div>';
+        $ui .= '<div class="pull-right right-adj i_x_stats"><a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="montserrat '.extract_icon_color($e___11035[13689]['m_icon']).'">'.$e___11035[13689]['m_title'].' '.$e___11035[13689]['m_icon'].'</a></div>';
 
         $ui .= '<div class="doclear">&nbsp;</div>';
     }
