@@ -33,8 +33,8 @@ function goto_step(this_count){
     $('#step'+step_count).removeClass('hidden');
 
     setTimeout(function () {
-        $('#step'+step_count+' .white-border').focus();
-    }, 89);
+        $('#step'+step_count+' .white-border:first').focus();
+    }, 144);
 
 }
 
