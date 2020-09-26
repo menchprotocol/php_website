@@ -610,7 +610,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $has_stats = false;
                 if (count($is_next) > 1) {
                     //NEXT IDEAS
-                    $has_stats = view_i_tree_stats($i_stats, $show_nav, true);
+                    $has_stats = view_i_tree_stats($i_stats, $show_nav, false);
                     $focus_tab .= '<div class="i_estimates hideIfEmpty">' . $has_stats . '</div>';
                     $has_substance = true;
                 }
