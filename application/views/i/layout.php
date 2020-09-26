@@ -105,7 +105,7 @@ echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_in
 
 //PREVIEW DISCOVERY
 $e___11047 = $this->config->item('e___11047');
-echo '<div class="inline-block pull-right both-margin" style="margin-right:10px;"><a class="btn btn-discover" href="'.$e___11047[13942]['m_desc'].$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13942]['m_title'].' </span>'.$e___11035[13942]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin" style="margin-right:10px;"><a class="btn btn-discover" href="'.$e___11047[13942]['m_message'].$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13942]['m_title'].' </span>'.$e___11035[13942]['m_icon'].'</a></div>';
 
 echo '<div class="inline-block pull-right both-margin" style="margin-right:33px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
 
