@@ -211,9 +211,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $pre_fix = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
         }
 
-        //Now we can make it look nice:
-        $counter = view_number($counter);
-
         if($counter > 1){
             //IDEA TREE STATS
             $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, true, false).'</div>';
