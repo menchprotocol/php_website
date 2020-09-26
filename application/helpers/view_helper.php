@@ -1197,7 +1197,11 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $index
     $ui = '';
 
     if(strlen($list_title)){
-        $ui .= '<div class="pull-left headline">'.$list_title.'</div>';
+        if(strip_tags($list_title)!=$list_title){
+            $ui .= $list_title;
+        } else {
+            $ui .= '<div class="pull-left headline">'.$list_title.'</div>';
+        }
         $ui .= '<div class="doclear">&nbsp;</div>';
     }
 
