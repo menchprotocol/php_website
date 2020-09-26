@@ -1915,7 +1915,7 @@ label {
 @media (max-width:576px) {
     .col2nd { padding-left: 33px !important; padding-top: 8px; }
     .big-frame{
-        font-size: 2em;
+        font-size: 1.8em;
     }
 }
 
