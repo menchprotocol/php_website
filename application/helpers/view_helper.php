@@ -1406,7 +1406,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $ui .= '</div>';
     $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
     $ui .= view_i_tree_stats($i_stats, false, false, false);
-    $ui .= view_i_title($i);
+    $ui .= view_i_title($i).'<br />';
     $ui .= '</a></div>';
     $ui .= '</div>';
 
