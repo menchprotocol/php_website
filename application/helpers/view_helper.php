@@ -33,19 +33,21 @@ function view_i_tree_stats($i_stats, $noshow_idea, $hide_time, $hide_idea = true
     //TIME STATS
     if($i_stats['i___6161'] > 0){
         $ui .= '<span class="inline-block grey '.( $hide_time ? ' i_x_stats hidden ' : '' ).'" '.( !$cover_show ? 'style="min-width:120px;"' : '' ).'>';
+        $ui .= ( $cover_show ? $e___13544[13292]['m_icon'].' ' : '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span>' );
+
         if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
             //SECONDS
-            $ui .= ( $cover_show ? $e___13544[13292]['m_icon'].' ' : '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span>' ).'<span class="inline-block">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
+            $ui .= '<span class="inline-block">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
         } else {
             //MINUTES
-            $ui .= ( $cover_show ? $e___13544[13292]['m_icon'].' ' : '<span class="icon-block">'.$e___13544[13292]['m_icon'].'</span>' ).'<span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).( !$cover_show ? '&nbsp;MIN' : '' ).'</span>';
+            $ui .= '<span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).( !$cover_show ? '&nbsp;MIN' : '' ).'</span>';
         }
         $ui .= '</span>';
     }
 
     //IDEAS
     if(!$noshow_idea && $i_stats['i___6169'] > 0){
-        $ui .= '<span class="'.( $hide_idea ? ' i_x_stats hidden ' : '' ).' inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">'.( $has_idea ? '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span>' : '' ).( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
+        $ui .= '<span class="'.( $hide_idea ? ' i_x_stats hidden ' : '' ).' inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'">'.( $has_idea ? ( $cover_show ? $e___13544[13629]['m_icon'].' ' : '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span>' ) : '' ).( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ).'</span>';
     }
 
 
