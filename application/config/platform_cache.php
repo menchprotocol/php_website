@@ -27,7 +27,7 @@ $config['e___13898'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     4601 => array(
@@ -477,7 +477,7 @@ $config['e___13550'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
 );
@@ -1559,7 +1559,7 @@ $config['e___12741'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(13937,6225,13450,4593,6287,12741,7274,7569),
+        'm_profile' => array(13937,6225,4593,6287,12741,7274,7569),
     ),
     12569 => array(
         'm_title' => 'WEIGHT ALGORITHM',
@@ -1742,7 +1742,7 @@ $config['e___12359'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
 );
@@ -2854,7 +2854,7 @@ $config['e___12141'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     6157 => array(
@@ -3255,7 +3255,7 @@ $config['e___11018'] = array(
 );
 
 //SOURCE TABS:
-$config['n___11089'] = array(6225,12274,12273,13898,13865,7545,6255,13927,12896,12419,12887);
+$config['n___11089'] = array(6225,12274,12273,13898,13865,7545,6255,13927,12896,13947,12419,12887);
 $config['e___11089'] = array(
     6225 => array(
         'm_title' => 'MY ACCOUNT',
@@ -3310,6 +3310,12 @@ $config['e___11089'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(13877,12701,11035,11018,11089,12677,4485,7551,4755,4593),
+    ),
+    13947 => array(
+        'm_title' => 'USD WALLET',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-wallet discover"></i>',
+        'm_profile' => array(11089,13937),
     ),
     12419 => array(
         'm_title' => 'COMMENTS',
@@ -3374,7 +3380,7 @@ $config['e___6225'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => 'No earnings yet. Map ideas to receive weekly payouts.',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(13937,6225,13450,4593,6287,12741,7274,7569),
+        'm_profile' => array(13937,6225,4593,6287,12741,7274,7569),
     ),
 );
 
@@ -3756,7 +3762,7 @@ $config['e___11035'] = array(
 );
 
 //SUPERPOWERS:
-$config['n___10957'] = array(10939,12673,13403,10984,10986,13420,12700,13422,12706,12703,13421,12699,12701,13758);
+$config['n___10957'] = array(10939,12673,13403,10984,10986,13420,12700,13421,13422,12706,12703,12699,12701,13758);
 $config['e___10957'] = array(
     10939 => array(
         'm_title' => 'IDEATION',
@@ -3765,13 +3771,13 @@ $config['e___10957'] = array(
         'm_profile' => array(13450,11035,6404,10957),
     ),
     12673 => array(
-        'm_title' => 'IDEA TOOLBAR',
+        'm_title' => 'IDEA BAR',
         'm_message' => 'Edit next & previous ideas on the fly',
         'm_icon' => '<i class="far fa-ellipsis-h idea" aria-hidden="true"></i>',
         'm_profile' => array(10957),
     ),
     13403 => array(
-        'm_title' => 'IDEA LIST EDIT',
+        'm_title' => 'IDEA MASS EDIT',
         'm_message' => 'Mass Idea Edit',
         'm_icon' => '<i class="far fa-list idea" aria-hidden="true"></i>',
         'm_profile' => array(10957),
@@ -3800,6 +3806,12 @@ $config['e___10957'] = array(
         'm_icon' => '<i class="far fa-user-shield idea" aria-hidden="true"></i>',
         'm_profile' => array(10957),
     ),
+    13421 => array(
+        'm_title' => 'IDEA FLOW',
+        'm_message' => 'Manage Player Certificates',
+        'm_icon' => '<i class="far fa-file-certificate idea" aria-hidden="true"></i>',
+        'm_profile' => array(10957),
+    ),
     13422 => array(
         'm_title' => 'SOURCING',
         'm_message' => 'Manage Sources with Advance Tools',
@@ -3807,21 +3819,15 @@ $config['e___10957'] = array(
         'm_profile' => array(10957),
     ),
     12706 => array(
-        'm_title' => 'SOURCE TOOLBAR',
+        'm_title' => 'SOURCE BAR',
         'm_message' => 'List Parent Sources',
         'm_icon' => '<i class="far fa-ellipsis-h source" aria-hidden="true"></i>',
         'm_profile' => array(10957),
     ),
     12703 => array(
-        'm_title' => 'SOURCE LIST EDIT',
+        'm_title' => 'SOURCE MASS EDIT',
         'm_message' => 'Mass Source Edit',
         'm_icon' => '<i class="far fa-list source" aria-hidden="true"></i>',
-        'm_profile' => array(10957),
-    ),
-    13421 => array(
-        'm_title' => 'REQUIREMENTS & CERTIFICATES',
-        'm_message' => 'Manage Player Certificates',
-        'm_icon' => '<i class="far fa-file-certificate source" aria-hidden="true"></i>',
         'm_profile' => array(10957),
     ),
     12699 => array(
@@ -3837,7 +3843,7 @@ $config['e___10957'] = array(
         'm_profile' => array(10957),
     ),
     13758 => array(
-        'm_title' => 'DISCOVERY TOOLBAR',
+        'm_title' => 'DISCOVERY BAR',
         'm_message' => 'See Source Discovery Stats',
         'm_icon' => '<i class="far fa-ellipsis-h discover" aria-hidden="true"></i>',
         'm_profile' => array(10957),
@@ -4167,7 +4173,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.5732345',
+        'm_message' => 'v1.58',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
@@ -4595,8 +4601,14 @@ $config['e___6206'] = array(
 );
 
 //IDEA NOTES:
-$config['n___4485'] = array(4231,4601,7545,13865,4983,10573,12419,12896);
+$config['n___4485'] = array(4983,4231,4601,7545,13865,10573,12419,12896);
 $config['e___4485'] = array(
+    4983 => array(
+        'm_title' => 'REFERENCES',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
+    ),
     4231 => array(
         'm_title' => 'MESSAGES',
         'm_message' => '',
@@ -4620,12 +4632,6 @@ $config['e___4485'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-shield-check idea"></i>',
         'm_profile' => array(13898,4527,11035,13421,13298,7551,13530,4593,11018,11089,4485),
-    ),
-    4983 => array(
-        'm_title' => 'REFERENCES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
-        'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     10573 => array(
         'm_title' => 'MY IDEAS',
@@ -6142,7 +6148,7 @@ $config['e___10593'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     4251 => array(
@@ -6783,7 +6789,7 @@ $config['e___7551'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     13865 => array(
@@ -7087,7 +7093,7 @@ $config['e___6287'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(13937,6225,13450,4593,6287,12741,7274,7569),
+        'm_profile' => array(13937,6225,4593,6287,12741,7274,7569),
     ),
     12569 => array(
         'm_title' => 'WEIGHT ALGORITHM',
@@ -8335,7 +8341,7 @@ $config['e___4593'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
+        'm_icon' => '<i class="fas fa-user-edit source"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     6155 => array(
@@ -8624,6 +8630,6 @@ $config['e___4593'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(13937,6225,13450,4593,6287,12741,7274,7569),
+        'm_profile' => array(13937,6225,4593,6287,12741,7274,7569),
     ),
 );
