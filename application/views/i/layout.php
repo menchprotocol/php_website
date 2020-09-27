@@ -76,24 +76,27 @@ if(isset($_GET['focus__e']) && superpower_active(12701, true)){
 
 
 //IDEA STATUS
-echo '<div style="padding: 21px 0 0 0;">';
+echo '<div style="padding: 21px 0 8px 0;">';
 
-echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
+echo '<div class="inline-block pull-left left-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
 
 //IDEA TYPE
-echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $e_of_i && $is_active, true, $i_focus['i__id']).'</div>';
+echo '<div class="inline-block pull-left left-half-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $e_of_i && $is_active, true, $i_focus['i__id']).'</div>';
 
 //PREVIEW DISCOVERY
-echo '<div class="inline-block pull-right both-margin" style="margin-right:10px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right" style="margin-right:33px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
+
+echo '<div class="doclear">&nbsp;</div>';
 
 echo '</div>';
-echo '<div class="doclear">&nbsp;</div>';
+
 
 
 //IDEA TIME
-echo '<div class="inline-block both-margin left-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
-echo '<div class="doclear">&nbsp;</div>';
+echo '<div class="inline-block left-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
 
+
+echo '<div class="doclear">&nbsp;</div>';
 
 
 
