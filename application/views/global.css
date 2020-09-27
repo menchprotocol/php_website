@@ -347,6 +347,10 @@ img.no-radius {
     font-size: 3.4em;
 }
 
+.extra-big{
+    font-size: 3.8em !important;
+}
+
 .aa-dropdown-menu .aa-suggestion, .suggestion {
     border:0;
     cursor: pointer;
