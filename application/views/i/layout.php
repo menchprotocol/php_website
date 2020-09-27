@@ -84,11 +84,7 @@ echo '<div class="inline-block pull-left both-margin left-margin">'.view_input_d
 echo '<div class="inline-block pull-left both-margin left-half-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $e_of_i && $is_active, true, $i_focus['i__id']).'</div>';
 
 //PREVIEW DISCOVERY
-echo '<div class="inline-block pull-right both-margin" style="margin-right:33px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
-
-//EDIT HISTORY
-$e___11047 = $this->config->item('e___11047');
-echo '<div class="inline-block pull-right both-margin" style="margin-right:10px;"><a class="btn btn-discover" href="'.$e___11047[13942]['m_message'].$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13942]['m_title'].' </span>'.$e___11035[13942]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right both-margin" style="margin-right:10px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
 
 echo '</div>';
 echo '<div class="doclear">&nbsp;</div>';

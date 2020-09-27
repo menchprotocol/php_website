@@ -651,7 +651,7 @@ $config['e___13530'] = array(
         'm_title' => 'IDEA MENU',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
-        'm_profile' => array(13530,12700,11018,4527,11040),
+        'm_profile' => array(13530,11018,4527,11040),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
@@ -1332,7 +1332,7 @@ $config['e___12887'] = array(
         'm_title' => 'SYNC SEARCH INDEX',
         'm_message' => '/e/plugin/7279?obj=4536&object__id=',
         'm_icon' => '<i class="fad fa-search"></i>',
-        'm_profile' => array(6287,12741,12887,11047,3323,7287),
+        'm_profile' => array(12700,12699,6287,12741,12887,11047,3323,7287),
     ),
 );
 
@@ -1469,7 +1469,7 @@ $config['e___12741'] = array(
         'm_title' => 'IDEA CACHED SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
-        'm_profile' => array(6287,12741,11047,7286,7274),
+        'm_profile' => array(12700,6287,12741,11047,7286,7274),
     ),
     4356 => array(
         'm_title' => 'IDEA DURATION IN SECONDS',
@@ -1481,7 +1481,7 @@ $config['e___12741'] = array(
         'm_title' => 'IDEA REVIEW JSON',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
-        'm_profile' => array(12741,6287,11047),
+        'm_profile' => array(12700,12741,6287,11047),
     ),
     7275 => array(
         'm_title' => 'IDEA SYNC COMMON BASE',
@@ -1553,7 +1553,7 @@ $config['e___12741'] = array(
         'm_title' => 'SYNC SEARCH INDEX',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-search"></i>',
-        'm_profile' => array(6287,12741,12887,11047,3323,7287),
+        'm_profile' => array(12700,12699,6287,12741,12887,11047,3323,7287),
     ),
     12114 => array(
         'm_title' => 'WEEKLY PAYOUTS',
@@ -3169,9 +3169,9 @@ $config['e___4486'] = array(
 $config['n___11018'] = array(13927,12274,12273,4601,12589,10573,13898,13865,7545,6255,12419,12896,13783,11047);
 $config['e___11018'] = array(
     13927 => array(
-        'm_title' => 'DISCOVERY SHARES',
+        'm_title' => 'DISCOVERY CREDITS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate discover"></i>',
+        'm_icon' => '<i class="fas fa-user-check discover"></i>',
         'm_profile' => array(13937,11018,11089),
     ),
     12274 => array(
@@ -3250,12 +3250,12 @@ $config['e___11018'] = array(
         'm_title' => 'IDEA MENU',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
-        'm_profile' => array(13530,12700,11018,4527,11040),
+        'm_profile' => array(13530,11018,4527,11040),
     ),
 );
 
 //SOURCE TABS:
-$config['n___11089'] = array(6225,12274,12273,13898,13865,7545,6255,13927,12896,13947,12419,12887);
+$config['n___11089'] = array(6225,12274,12273,13898,13865,7545,6255,13927,13947,12896,12419,12887);
 $config['e___11089'] = array(
     6225 => array(
         'm_title' => 'MY ACCOUNT',
@@ -3300,22 +3300,22 @@ $config['e___11089'] = array(
         'm_profile' => array(13937,13920,13530,13776,13450,11089,12677,11018,12467,12228,4527),
     ),
     13927 => array(
-        'm_title' => 'DISCOVERY SHARES',
+        'm_title' => 'DISCOVERY CREDITS',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-file-certificate discover"></i>',
+        'm_icon' => '<i class="fas fa-user-check discover"></i>',
         'm_profile' => array(13937,11018,11089),
+    ),
+    13947 => array(
+        'm_title' => 'MENCH WALLET',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-wallet discover"></i>',
+        'm_profile' => array(11089,13937),
     ),
     12896 => array(
         'm_title' => 'SAVED IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark discover"></i>',
         'm_profile' => array(13877,12701,11035,11018,11089,12677,4485,7551,4755,4593),
-    ),
-    13947 => array(
-        'm_title' => 'USD WALLET',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-wallet discover"></i>',
-        'm_profile' => array(11089,13937),
     ),
     12419 => array(
         'm_title' => 'COMMENTS',
@@ -4448,19 +4448,19 @@ $config['e___11047'] = array(
         'm_title' => 'IDEA CACHED SOURCES',
         'm_message' => '/e/plugin/7276?i__id=',
         'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
-        'm_profile' => array(6287,12741,11047,7286,7274),
+        'm_profile' => array(12700,6287,12741,11047,7286,7274),
     ),
     7264 => array(
         'm_title' => 'IDEA BIRDS EYE MARKS',
         'm_message' => '/e/plugin/7264?i__id=',
         'm_icon' => '<i class="fad fa-sitemap idea"></i>',
-        'm_profile' => array(11047,6287),
+        'm_profile' => array(12700,11047,6287),
     ),
     11049 => array(
         'm_title' => 'IDEA REVIEW JSON',
         'm_message' => '/e/plugin/11049?i__id=',
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
-        'm_profile' => array(12741,6287,11047),
+        'm_profile' => array(12700,12741,6287,11047),
     ),
     12733 => array(
         'm_title' => 'DISCOVER REVIEW JSON',
@@ -4478,7 +4478,7 @@ $config['e___11047'] = array(
         'm_title' => 'SYNC SEARCH INDEX',
         'm_message' => '/e/plugin/7279?obj=4535&object__id=',
         'm_icon' => '<i class="fad fa-search"></i>',
-        'm_profile' => array(6287,12741,12887,11047,3323,7287),
+        'm_profile' => array(12700,12699,6287,12741,12887,11047,3323,7287),
     ),
 );
 
@@ -5418,7 +5418,7 @@ $config['e___4527'] = array(
         'm_title' => 'IDEA MENU',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-caret-down" aria-hidden="true"></i>',
-        'm_profile' => array(13530,12700,11018,4527,11040),
+        'm_profile' => array(13530,11018,4527,11040),
     ),
     6159 => array(
         'm_title' => 'IDEA METADATA',
@@ -6865,13 +6865,13 @@ $config['e___6287'] = array(
         'm_title' => 'IDEA BIRDS EYE MARKS',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-sitemap idea"></i>',
-        'm_profile' => array(11047,6287),
+        'm_profile' => array(12700,11047,6287),
     ),
     7276 => array(
         'm_title' => 'IDEA CACHED SOURCES',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-sync idea mench-spin" aria-hidden="true"></i>',
-        'm_profile' => array(6287,12741,11047,7286,7274),
+        'm_profile' => array(12700,6287,12741,11047,7286,7274),
     ),
     13369 => array(
         'm_title' => 'IDEA COVER',
@@ -6919,7 +6919,7 @@ $config['e___6287'] = array(
         'm_title' => 'IDEA REVIEW JSON',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-lambda idea" aria-hidden="true"></i>',
-        'm_profile' => array(12741,6287,11047),
+        'm_profile' => array(12700,12741,6287,11047),
     ),
     7259 => array(
         'm_title' => 'IDEA SEARCH & REPLACE',
@@ -7081,7 +7081,7 @@ $config['e___6287'] = array(
         'm_title' => 'SYNC SEARCH INDEX',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-search"></i>',
-        'm_profile' => array(6287,12741,12887,11047,3323,7287),
+        'm_profile' => array(12700,12699,6287,12741,12887,11047,3323,7287),
     ),
     4367 => array(
         'm_title' => 'TRANSACTION ID',
