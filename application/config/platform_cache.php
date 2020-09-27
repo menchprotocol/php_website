@@ -1644,7 +1644,7 @@ $config['e___12500'] = array(
     7291 => array(
         'm_title' => 'LOGOUT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-power-off"></i>',
+        'm_icon' => '<i class="fas fa-power-off source"></i>',
         'm_profile' => array(13920,12500,10876),
     ),
 );
@@ -1952,7 +1952,7 @@ $config['e___10876'] = array(
     7291 => array(
         'm_title' => 'LOGOUT',
         'm_message' => 'https://mench.com/e/signout',
-        'm_icon' => '<i class="fas fa-power-off"></i>',
+        'm_icon' => '<i class="fas fa-power-off source"></i>',
         'm_profile' => array(13920,12500,10876),
     ),
     4341 => array(
