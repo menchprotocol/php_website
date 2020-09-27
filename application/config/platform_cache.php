@@ -1305,7 +1305,7 @@ $config['e___12887'] = array(
         'm_profile' => array(12891,12887),
     ),
     13942 => array(
-        'm_title' => 'HISTORY',
+        'm_title' => 'REVISION HISTORY',
         'm_message' => '/ledger?any_e__id=',
         'm_icon' => '<i class="fas fa-history discover"></i>',
         'm_profile' => array(12887,11047,11035),
@@ -3634,7 +3634,7 @@ $config['e___11035'] = array(
         'm_profile' => array(11035,7231),
     ),
     13942 => array(
-        'm_title' => 'HISTORY',
+        'm_title' => 'REVISION HISTORY',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-history discover"></i>',
         'm_profile' => array(12887,11047,11035),
@@ -4469,7 +4469,7 @@ $config['e___11047'] = array(
         'm_profile' => array(11047,12741,12701,6287),
     ),
     13942 => array(
-        'm_title' => 'HISTORY',
+        'm_title' => 'REVISION HISTORY',
         'm_message' => '/ledger?any_i__id=',
         'm_icon' => '<i class="fas fa-history discover"></i>',
         'm_profile' => array(12887,11047,11035),
