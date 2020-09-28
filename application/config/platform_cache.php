@@ -3772,7 +3772,7 @@ $config['e___11035'] = array(
         'm_profile' => array(11035,12229,12227,12141,4593,4755,6255),
     ),
     13952 => array(
-        'm_title' => 'LEARN HOW IT WORKS',
+        'm_title' => 'HOW IT WORKS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-info-circle"></i>',
         'm_profile' => array(11035),
@@ -4167,7 +4167,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.58123',
+        'm_message' => 'v1.58234',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
