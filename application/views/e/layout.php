@@ -378,7 +378,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             }
 
             $i_bookmarks = array();
-            $superpower_10984 = superpower_active(10984, true);
             if($superpower_10939){
                 //Give Option to Add New Idea:
                 $focus_tab .= '<div class="list-group add_e_idea">';
@@ -395,7 +394,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             }
 
 
-            if($source_is_e || $superpower_10984){
+            if($source_is_e){
 
                 if($source_is_e && !superpower_assigned(10939)){
 

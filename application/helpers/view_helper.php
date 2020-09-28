@@ -246,7 +246,6 @@ function view_i_note($x__type, $x, $note_e = false)
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035');
     $color_code = trim(extract_icon_color($e___4485[$x__type]['m_icon']));
-    $note_e = ( $note_e || superpower_active(10984, true) );
 
 
     //Build the HTML UI:

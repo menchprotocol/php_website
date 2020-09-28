@@ -93,7 +93,7 @@ echo '</div>';
 
 
 //IDEA TIME
-echo '<div class="inline-block left-margin '.superpower_active(10986).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
+echo '<div class="inline-block left-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
 
 
 echo '<div class="doclear">&nbsp;</div>';
