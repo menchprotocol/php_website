@@ -1654,19 +1654,19 @@ $config['n___12467'] = array(12274,12273,6255);
 $config['e___12467'] = array(
     12274 => array(
         'm_title' => 'SOURCES',
-        'm_message' => '',
+        'm_message' => 'Awarded for every new source added',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(13920,13450,13530,11018,11089,12761,13291,12467,12228),
     ),
     12273 => array(
         'm_title' => 'IDEAS',
-        'm_message' => '',
+        'm_message' => 'Awarded for every new idea summarized',
         'm_icon' => '<i class="fas fa-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13937,13920,13300,13291,13450,12675,13530,11018,11089,12761,12112,12467,12228),
     ),
     6255 => array(
         'm_title' => 'DISCOVERIES',
-        'm_message' => '',
+        'm_message' => 'Awarded for every time an idea is discovered',
         'm_icon' => '<i class="fas fa-circle discover" aria-hidden="true"></i>',
         'm_profile' => array(13937,13920,13530,13776,13450,11089,12677,11018,12467,12228,4527),
     ),
