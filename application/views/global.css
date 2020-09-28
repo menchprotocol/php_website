@@ -1721,7 +1721,7 @@ label {
     margin-left: 36px;
     line-height: 100%;
 }
-.message-center .msg {
+.message-center, .message-center .msg {
     text-align: center;
 }
 
