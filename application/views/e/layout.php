@@ -469,7 +469,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 if($source_is_e || superpower_active(12701, true)){
 
-                    $focus_tab .= '<div class="headline" style="margin-top:18px;">'.$e___11035[12969]['m_title'].'</div>';
+                    //$focus_tab .= '<div class="headline" style="margin-top:18px;">'.$e___11035[12969]['m_title'].'</div>';
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
