@@ -474,7 +474,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
 
-                        $focus_tab .= '<div class="row" style="margin-top: 34px;" id="list_6132">';
+                        $focus_tab .= '<div class="row" style="margin-top:55px;" id="list_6132">';
                         foreach($list_x as $item){
                             $focus_tab .= view_i_cover(6255, $item, $source_is_e, null, $e);
                             array_push($my_x_ids, $item['i__id']);
