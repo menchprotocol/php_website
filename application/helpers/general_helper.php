@@ -815,7 +815,7 @@ function i_stats($i__metadata){
 
 function home_url($came_from = null){
     $user_e = superpower_assigned();
-    return ( $user_e ? '/@'.$user_e['e__id'] . ( $came_from ? '?came_from='.$came_from : '' ) : '/' );
+    return ( $user_e ? '/@'.$user_e['e__id'] . ( $came_from && $this->uri->segment(1)!='@'.$user_e['e__id'] ? '?came_from='.$came_from : '' ) : '/' );
 }
 
 function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
