@@ -326,7 +326,7 @@ $config['e___13889'] = array(
         'm_profile' => array(13889,13884),
     ),
     13493 => array(
-        'm_title' => 'MEDIUM FONT',
+        'm_title' => 'FONT MEDIUM',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-h2"></i>',
         'm_profile' => array(13889,4755,13491),
@@ -776,19 +776,19 @@ $config['e___13289'] = array(
 $config['n___13491'] = array(13494,13493,13492);
 $config['e___13491'] = array(
     13494 => array(
-        'm_title' => 'LARGE FONT',
+        'm_title' => 'LARGE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-h1"></i>',
         'm_profile' => array(4755,13491),
     ),
     13493 => array(
-        'm_title' => 'MEDIUM FONT',
+        'm_title' => 'MEDIUM',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-h2"></i>',
         'm_profile' => array(13889,4755,13491),
     ),
     13492 => array(
-        'm_title' => 'SMALL FONT',
+        'm_title' => 'SMALL',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-h3"></i>',
         'm_profile' => array(4755,13491),
@@ -7275,7 +7275,7 @@ $config['e___6255'] = array(
 );
 
 //PRIVATE INFORMATION:
-$config['n___4755'] = array(13038,6415,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,10681,13494,13493,7561,7564,7560,4527,11054,3286,4783,4755,7495,6155,13415,12896,7563,13492,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,4235,13042,12906,12489,13377);
+$config['n___4755'] = array(13038,6415,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,13494,13493,13492,10681,7561,7564,7560,4527,11054,3286,4783,4755,7495,6155,13415,12896,7563,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,4235,13042,12906,12489,13377);
 $config['e___4755'] = array(
     13038 => array(
         'm_title' => '80 DISCOVERIES PER MONTH ALWAYS FREE',
@@ -7553,23 +7553,29 @@ $config['e___4755'] = array(
         'm_icon' => '<i class="fas fa-envelope-open" aria-hidden="true"></i>',
         'm_profile' => array(13861,13531,6404,4269,6225,4755),
     ),
-    10681 => array(
-        'm_title' => 'IDEA AUTO SORT',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-sort idea" aria-hidden="true"></i>',
-        'm_profile' => array(4755,4593),
-    ),
     13494 => array(
-        'm_title' => 'LARGE FONT',
+        'm_title' => 'FONT LARGE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-h1"></i>',
         'm_profile' => array(4755,13491),
     ),
     13493 => array(
-        'm_title' => 'MEDIUM FONT',
+        'm_title' => 'FONT MEDIUM',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-h2"></i>',
         'm_profile' => array(13889,4755,13491),
+    ),
+    13492 => array(
+        'm_title' => 'FONT SMALL',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-h3"></i>',
+        'm_profile' => array(4755,13491),
+    ),
+    10681 => array(
+        'm_title' => 'IDEA AUTO SORT',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-sort idea" aria-hidden="true"></i>',
+        'm_profile' => array(4755,4593),
     ),
     7561 => array(
         'm_title' => 'MEMBER SIGNIN NO IDEA',
@@ -7648,12 +7654,6 @@ $config['e___4755'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-envelope-open discover" aria-hidden="true"></i>',
         'm_profile' => array(4755,7569,4593),
-    ),
-    13492 => array(
-        'm_title' => 'SMALL FONT',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-h3"></i>',
-        'm_profile' => array(4755,13491),
     ),
     6132 => array(
         'm_title' => 'SORT DISCOVERY',
