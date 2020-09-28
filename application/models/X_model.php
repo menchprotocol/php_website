@@ -992,7 +992,11 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $output_body_message .= $e_appendix;
+            $is_single_link = ( count($e_urls)==1 && $e_media_count==1 && $has_text );
+            if(!$is_single_link){
+                //For single link it would be linked directly
+                $output_body_message .= $e_appendix;
+            }
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
             $is_discovery_mode = is_numeric($this->uri->segment(1)) || !strlen($this->uri->segment(1));
             $tooltip_class = ( $tooltip_info ? ' class="inline-block underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : ' class="inline-block"' );
@@ -1008,8 +1012,13 @@ class X_model extends CI_Model
 
                 } else {
 
-                    //TEXT ONLY
-                    $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+                    if($is_single_link){
+                        //SINGLE LINK:
+                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].'" style="text-decoration:underline;">' . $es[0]['e__title'] . '</a></span> ', $output_body_message);
+                    } else {
+                        //TEXT ONLY
+                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+                    }
 
                 }
 
