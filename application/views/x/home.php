@@ -9,7 +9,8 @@
     echo '<h1 class="big-frame extra-big">' . view_i_title($i) . '</h1>';
 
     //IDEA MESSAGES
-    echo '<div class="message-center" style="margin-bottom:89px;">';
+    echo '<div class="message-center" style="margin-bottom:34px;"><a href="javascript:void(0);" onclick="$(\'.message-center\').toggleClass(\'hidden\');">'.$e___11035[13952]['m_icon'].' '.$e___11035[13952]['m_title'].'</a></div>';
+    echo '<div class="message-center hidden" style="margin-bottom:89px;">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
@@ -18,7 +19,6 @@
         echo $this->X_model->message_send( $x['x__message'] );
     }
     echo '</div>';
-
 
 
 
