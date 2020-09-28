@@ -697,7 +697,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         }
 
 
-        $default_active = ($x__type==$active_x__type);
+        $default_active = ( (!isset($_GET['came_from']) && $x__type==$active_x__type) || ($_GET['came_from']==$x__type));
 
         $tab_nav .= '<li class="nav-item"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')">'.$m['m_icon'].' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span><span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
 
