@@ -992,13 +992,13 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $is_single_link = ( count($e_urls)==1 && $e_media_count==1 && $has_text );
+            $is_discovery_mode = is_numeric($this->uri->segment(1)) || !strlen($this->uri->segment(1));
+            $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 && $has_text );
             if(!$is_single_link){
                 //For single link it would be linked directly
                 $output_body_message .= $e_appendix;
             }
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
-            $is_discovery_mode = is_numeric($this->uri->segment(1)) || !strlen($this->uri->segment(1));
             $tooltip_class = ( $tooltip_info ? ' class="inline-block underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : ' class="inline-block"' );
 
             //USER REFERENCE
