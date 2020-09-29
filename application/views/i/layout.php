@@ -85,14 +85,16 @@ echo '<div class="inline-block pull-left left-margin">'.view_input_dropdown(4737
 echo '<div class="inline-block pull-left left-half-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $e_of_i && $is_active, true, $i_focus['i__id']).'</div>';
 
 
-//MY IDEAS
-$is_in_my_ideas = count($this->X_model->fetch(array(
-    'x__up' => $user_e['e__id'],
-    'x__right' => $i_focus['i__id'],
-    'x__type' => 10573, //MY IDEAS
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-)));
-echo '<div class="inline-block pull-left left-half-margin"><a class="btn btn-idea btn-tiny" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_in_my_ideas ? '' : 'hidden' ).'" title="'.$e___11035[10573]['m_title'].'">'.$e___11035[10573]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_in_my_ideas ? 'hidden' : '' ).'" title="'.$e___11035[13955]['m_title'].'">'.$e___11035[13955]['m_icon'].'</span></a></div>';
+if($e_of_i){
+    //MY IDEAS
+    $is_in_my_ideas = count($this->X_model->fetch(array(
+        'x__up' => $user_e['e__id'],
+        'x__right' => $i_focus['i__id'],
+        'x__type' => 10573, //MY IDEAS
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    )));
+    echo '<div class="inline-block pull-left left-half-margin"><a class="btn btn-idea btn-tiny" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_in_my_ideas ? '' : 'hidden' ).'" title="'.$e___11035[10573]['m_title'].'">'.$e___11035[10573]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_in_my_ideas ? 'hidden' : '' ).'" title="'.$e___11035[13955]['m_title'].'">'.$e___11035[13955]['m_icon'].'</span></a></div>';
+}
 
 
 //IDEA TIME
