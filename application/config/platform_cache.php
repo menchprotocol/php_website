@@ -615,7 +615,7 @@ $config['e___13530'] = array(
         'm_title' => 'MY IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
-        'm_profile' => array(13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
+        'm_profile' => array(13295,13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
     ),
     13865 => array(
         'm_title' => 'REQUIREMENTS',
@@ -940,7 +940,7 @@ $config['e___6159'] = array(
     13897 => array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => 'i___13897',
-        'm_icon' => '<i class="fas fa-book-reader source"></i>',
+        'm_icon' => '<i class="fas fa-book source"></i>',
         'm_profile' => array(6159,13450,13207),
     ),
 );
@@ -1181,7 +1181,7 @@ $config['e___13207'] = array(
     13897 => array(
         'm_title' => 'NONFICTION CONTENT',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-book-reader source"></i>',
+        'm_icon' => '<i class="fas fa-book source"></i>',
         'm_profile' => array(6159,13450,13207),
     ),
 );
@@ -1559,7 +1559,7 @@ $config['e___12741'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(11089,11018,13937,6225,4593,6287,12741,7274,7569),
+        'm_profile' => array(13450,11089,11018,13937,6225,4593,6287,12741,7274,7569),
     ),
     12569 => array(
         'm_title' => 'WEIGHT ALGORITHM',
@@ -3196,7 +3196,7 @@ $config['e___11018'] = array(
         'm_title' => 'MY IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
-        'm_profile' => array(13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
+        'm_profile' => array(13295,13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
     ),
     13898 => array(
         'm_title' => 'IDEA SHARES',
@@ -3244,7 +3244,7 @@ $config['e___11018'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(11089,11018,13937,6225,4593,6287,12741,7274,7569),
+        'm_profile' => array(13450,11089,11018,13937,6225,4593,6287,12741,7274,7569),
     ),
     12419 => array(
         'm_title' => 'COMMENTS',
@@ -3321,7 +3321,7 @@ $config['e___11089'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(11089,11018,13937,6225,4593,6287,12741,7274,7569),
+        'm_profile' => array(13450,11089,11018,13937,6225,4593,6287,12741,7274,7569),
     ),
     13947 => array(
         'm_title' => 'MENCH WALLET',
@@ -3392,12 +3392,12 @@ $config['e___6225'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => 'No payouts yet. Summarize ideas to earn weekly payouts.',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(11089,11018,13937,6225,4593,6287,12741,7274,7569),
+        'm_profile' => array(13450,11089,11018,13937,6225,4593,6287,12741,7274,7569),
     ),
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13007,13914,13571,13915,4997,10673,13207,6287,13911,11059,13865,13813,13912,10939,13542,11019,13913,13908,12137,4235,13955,10573,13919,10686,7637,13550,12896,13689,12906,13502,6415,12419,13670,13495,13562,12969,13524,4341,12707,12991,12211,13692,13942,13693,12467,13579,13909,4755,13401,6155,13292,13415,13573,13574,11068,13671,7256,4269,6132,10957,13572,13412,12117,13952);
+$config['n___11035'] = array(13007,13914,13571,13915,4997,10673,13207,6287,13911,11059,13865,13813,13912,10939,13542,11019,13913,13908,12137,13955,10573,13919,10686,7637,13550,13415,13412,13689,4235,12896,12906,13502,6415,12419,13670,13495,13562,12969,13524,4341,12707,12991,12211,6155,13692,12117,13942,6132,13693,12467,13579,13909,4755,13401,13292,13573,13574,11068,13671,7256,4269,10957,13572,13952);
 $config['e___11035'] = array(
     13007 => array(
         'm_title' => 'SORT ALPHABETICALLY',
@@ -3513,12 +3513,6 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-star idea" aria-hidden="true"></i>',
         'm_profile' => array(12399,13813,6404,11035,13420,10648,12138,7356,7355,4737),
     ),
-    4235 => array(
-        'm_title' => 'START FROM HERE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
-        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
-    ),
     13955 => array(
         'm_title' => 'REMOVE FROM MY IDEAS',
         'm_message' => '',
@@ -3529,7 +3523,7 @@ $config['e___11035'] = array(
         'm_title' => 'MY IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
-        'm_profile' => array(13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
+        'm_profile' => array(13295,13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
     ),
     13919 => array(
         'm_title' => 'MY IDEAS LIST',
@@ -3555,17 +3549,35 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-circle idea"></i>',
         'm_profile' => array(11035,4527,12273),
     ),
-    12896 => array(
-        'm_title' => 'SAVED',
+    13415 => array(
+        'm_title' => 'REMOVE MY IDEA',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-bookmark discover"></i>',
-        'm_profile' => array(13877,12701,11035,11018,11089,12677,4485,7551,4755,4593),
+        'm_icon' => '<i class="fas fa-times idea"></i>',
+        'm_profile' => array(11035,4755,4593),
+    ),
+    13412 => array(
+        'm_title' => 'SORT IDEA',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-arrows idea"></i>',
+        'm_profile' => array(11035,13413,4755,4593),
     ),
     13689 => array(
         'm_title' => 'INFO',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-info-circle idea"></i>',
         'm_profile' => array(11035),
+    ),
+    4235 => array(
+        'm_title' => 'START FROM HERE',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
+        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
+    ),
+    12896 => array(
+        'm_title' => 'SAVED',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-bookmark discover"></i>',
+        'm_profile' => array(13877,12701,11035,11018,11089,12677,4485,7551,4755,4593),
     ),
     12906 => array(
         'm_title' => 'UNSAVE',
@@ -3645,17 +3657,35 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
         'm_profile' => array(4527,13289,11035),
     ),
+    6155 => array(
+        'm_title' => 'REMOVE DISCOVERY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-times discover"></i>',
+        'm_profile' => array(11035,6150,4593,4755),
+    ),
     13692 => array(
         'm_title' => 'SELECT ALL',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-check-circle discover"></i>',
         'm_profile' => array(11035,7231),
     ),
+    12117 => array(
+        'm_title' => 'SOURCE FILE UPLOAD',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
+        'm_profile' => array(11035,12229,12227,12141,4593,4755,6255),
+    ),
     13942 => array(
         'm_title' => 'REVISION HISTORY',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-history discover"></i>',
         'm_profile' => array(12887,11047,11035),
+    ),
+    6132 => array(
+        'm_title' => 'SORT DISCOVERY',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-arrows discover"></i>',
+        'm_profile' => array(11035,13413,6153,4593,4755),
     ),
     13693 => array(
         'm_title' => 'SELECT NONE',
@@ -3693,23 +3723,11 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-search-minus"></i>',
         'm_profile' => array(11035,7256),
     ),
-    6155 => array(
-        'm_title' => 'REMOVE DISCOVERY',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-times discover"></i>',
-        'm_profile' => array(11035,6150,4593,4755),
-    ),
     13292 => array(
         'm_title' => 'DISCOVERY TIME',
         'm_message' => '',
         'm_icon' => '<i class="far fa-stopwatch"></i>',
         'm_profile' => array(11035,13544,4356),
-    ),
-    13415 => array(
-        'm_title' => 'REMOVE MY IDEA',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-times idea"></i>',
-        'm_profile' => array(11035,4755,4593),
     ),
     13573 => array(
         'm_title' => 'DOWNLOAD',
@@ -3747,12 +3765,6 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
         'm_profile' => array(13479,10876,4527,11035),
     ),
-    6132 => array(
-        'm_title' => 'SORT DISCOVERY',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-arrows discover"></i>',
-        'm_profile' => array(11035,13413,6153,4593,4755),
-    ),
     10957 => array(
         'm_title' => 'SUPERPOWERS',
         'm_message' => '',
@@ -3764,18 +3776,6 @@ $config['e___11035'] = array(
         'm_message' => 'Upload files up to 25 MB. Larger files can be uploaded to a 3rd-party platform & paste URL here.',
         'm_icon' => '<i class="fas fa-cloud-upload"></i>',
         'm_profile' => array(6404,11035,13571),
-    ),
-    13412 => array(
-        'm_title' => 'SORT IDEA',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-arrows idea"></i>',
-        'm_profile' => array(11035,13413,4755,4593),
-    ),
-    12117 => array(
-        'm_title' => 'SOURCE FILE UPLOAD',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-cloud-upload discover" aria-hidden="true"></i>',
-        'm_profile' => array(11035,12229,12227,12141,4593,4755,6255),
     ),
     13952 => array(
         'm_title' => 'HOW IT WORKS',
@@ -4360,7 +4360,7 @@ $config['e___11054'] = array(
         'm_title' => 'MY IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
-        'm_profile' => array(13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
+        'm_profile' => array(13295,13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
     ),
     4592 => array(
         'm_title' => 'SOURCE LINKS',
@@ -4637,7 +4637,7 @@ $config['e___4485'] = array(
         'm_title' => 'MY IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
-        'm_profile' => array(13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
+        'm_profile' => array(13295,13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
     ),
     12419 => array(
         'm_title' => 'COMMENTS',
@@ -5718,7 +5718,7 @@ $config['e___4527'] = array(
         'm_title' => 'MY IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
-        'm_profile' => array(13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
+        'm_profile' => array(13295,13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
     ),
     12211 => array(
         'm_title' => 'NEXT',
@@ -6784,7 +6784,7 @@ $config['e___7551'] = array(
         'm_title' => 'MY IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
-        'm_profile' => array(13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
+        'm_profile' => array(13295,13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
     ),
     4983 => array(
         'm_title' => 'REFERENCES',
@@ -7093,7 +7093,7 @@ $config['e___6287'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(11089,11018,13937,6225,4593,6287,12741,7274,7569),
+        'm_profile' => array(13450,11089,11018,13937,6225,4593,6287,12741,7274,7569),
     ),
     12569 => array(
         'm_title' => 'WEIGHT ALGORITHM',
@@ -8252,7 +8252,7 @@ $config['e___4593'] = array(
         'm_title' => 'MY IDEAS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-bookmark idea" aria-hidden="true"></i>',
-        'm_profile' => array(13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
+        'm_profile' => array(13295,13955,12700,13920,13530,11035,11054,4527,11018,4485,4593,7551),
     ),
     5001 => array(
         'm_title' => 'PORTFOLIO EDITOR CONTENT REPLACE',
@@ -8636,6 +8636,6 @@ $config['e___4593'] = array(
         'm_title' => 'WEEKLY PAYOUTS',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-envelope-open-dollar discover"></i>',
-        'm_profile' => array(11089,11018,13937,6225,4593,6287,12741,7274,7569),
+        'm_profile' => array(13450,11089,11018,13937,6225,4593,6287,12741,7274,7569),
     ),
 );
