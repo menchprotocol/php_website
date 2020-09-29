@@ -136,9 +136,7 @@ a:hover {
 li a {
     text-decoration: none;
 }
-.btn-tiny{
-    font-size: 0.55em !important;
-}
+
 .avatar-item {
     display: block;
     float: left;
@@ -2094,6 +2092,9 @@ label {
 
 .alert a, .alert i {
     color: #222222 !important;
+}
+.btn-tiny{
+    font-size: 0.55em !important;
 }
 
 @media (min-width:767px) {
