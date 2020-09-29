@@ -242,7 +242,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
                     <input type="text"
-                           class="form-control form-control-thick add-input montserrat algolia_search dotransparent"
+                           class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . config_var(4736) . '"
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-0"
