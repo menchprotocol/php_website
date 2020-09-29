@@ -2029,10 +2029,12 @@ label {
     background-color:#222222 !important;
     color: #FFFFFF !important;
 }
-.custom_ui_13884_13886 .icon-block i,
-.custom_ui_13884_ .icon-block i{
+.custom_ui_13884_13886 .edit-locked i,
+.custom_ui_13884_ .edit-locked i{
     color: #FFFFFF !important;
 }
+.custom_ui_13884_13886 .icon-block i,
+.custom_ui_13884_ .icon-block i,
 .custom_ui_13884_13886 .mench-navigation a,
 .custom_ui_13884_ .mench-navigation a,
 .custom_ui_13884_13886 .montserrat,
