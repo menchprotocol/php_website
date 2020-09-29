@@ -1047,9 +1047,9 @@ $config['e___12994'] = array(
         'm_profile' => array(13898,12994,13550,13294,12359,4485,10593,4986,4603,4593),
     ),
     4235 => array(
-        'm_title' => 'START FROM HERE',
+        'm_title' => 'GET STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     13291 => array(
@@ -1225,20 +1225,20 @@ $config['e___13022'] = array(
     ),
 );
 
-//MY DISCOVERIES:
-$config['n___12969'] = array(7495,4235);
+//GOT STARTED:
+$config['n___12969'] = array(4235,7495);
 $config['e___12969'] = array(
+    4235 => array(
+        'm_title' => 'GET STARTED',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
+    ),
     7495 => array(
         'm_title' => 'RECOMMENDED DISCOVERY',
         'm_message' => '',
         'm_icon' => '<i class="fad fa-megaphone discover" aria-hidden="true"></i>',
         'm_profile' => array(12969,12227,4593,4755),
-    ),
-    4235 => array(
-        'm_title' => 'START FROM HERE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
-        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
 );
 
@@ -2736,7 +2736,7 @@ $config['e___12229'] = array(
 );
 
 //DISCOVER PROGRESS:
-$config['n___12227'] = array(12336,12334,7492,6140,7495,6157,7489,12117,4559,6144,7485,7486,6997,4235);
+$config['n___12227'] = array(12336,12334,7492,6140,4235,7495,6157,7489,12117,4559,6144,7485,7486,6997);
 $config['e___12227'] = array(
     12336 => array(
         'm_title' => 'DISCOVER ANSWER ONE LINK',
@@ -2761,6 +2761,12 @@ $config['e___12227'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fad fa-lock-open discover" aria-hidden="true"></i>',
         'm_profile' => array(12326,12227,6410,4229,4755,4593),
+    ),
+    4235 => array(
+        'm_title' => 'GET STARTED',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     7495 => array(
         'm_title' => 'RECOMMENDED DISCOVERY',
@@ -2815,12 +2821,6 @@ $config['e___12227'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
         'm_profile' => array(6140,12327,12229,12227,12141,4229,6255,4593,4755),
-    ),
-    4235 => array(
-        'm_title' => 'START FROM HERE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
-        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
 );
 
@@ -3199,9 +3199,9 @@ $config['e___11018'] = array(
         'm_profile' => array(13937,13920,13530,13776,13450,11089,12677,11018,12467,12228,4527),
     ),
     12969 => array(
-        'm_title' => 'MY DISCOVERIES',
+        'm_title' => 'GOT STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
         'm_profile' => array(11018,12701,11035,12228,4527),
     ),
     12896 => array(
@@ -3544,9 +3544,9 @@ $config['e___11035'] = array(
         'm_profile' => array(11035),
     ),
     4235 => array(
-        'm_title' => 'START FROM HERE',
+        'm_title' => 'GET STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     12896 => array(
@@ -3598,9 +3598,9 @@ $config['e___11035'] = array(
         'm_profile' => array(13295,11035),
     ),
     12969 => array(
-        'm_title' => 'MY DISCOVERIES',
+        'm_title' => 'GOT STARTED',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
         'm_profile' => array(11018,12701,11035,12228,4527),
     ),
     13524 => array(
@@ -5160,7 +5160,7 @@ $config['e___10692'] = array(
 );
 
 //MENCH MEMORY:
-$config['n___4527'] = array(13889,13783,10956,12279,13533,10573,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13571,13491,13479,4229,12842,4486,12840,12589,13544,11047,6159,4485,7551,4986,12359,4603,6193,13898,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,11035,6287,12687,13894,6206,12112,10876,6212,7277,6169,13518,6225,12969,12211,3000,12741,12577,13776,4755,13531,13550,13865,12761,13023,13672,4269,6204,13413,6194,12563,6198,12822,13899,11080,4592,12403,11059,4537,12524,4997,12887,6172,6177,7358,12575,7357,12401,11089,12574,13425,10957,12523,10692,6175,12399,6103,6176,6186,4593,13442,6173,6146,13480,13548,12500);
+$config['n___4527'] = array(13889,13783,10956,12279,13533,10573,13890,11081,7704,5967,12326,6255,12994,12227,7304,7360,7364,7359,13298,13300,13304,10593,12141,12327,12229,13289,12446,6150,13291,13884,13571,13491,12969,13479,4229,12842,4486,12840,12589,13544,11047,6159,4485,7551,4986,12359,4603,6193,13898,4737,7356,12138,7355,12400,12677,12675,11018,13530,13408,13022,12330,7309,7585,7712,12883,12884,12955,13207,6170,2738,12467,6404,12079,6201,4341,4527,11054,11035,6287,12687,13894,6206,12112,10876,6212,7277,6169,13518,6225,12211,3000,12741,12577,13776,4755,13531,13550,13865,12761,13023,13672,4269,6204,13413,6194,12563,6198,12822,13899,11080,4592,12403,11059,4537,12524,4997,12887,6172,6177,7358,12575,7357,12401,11089,12574,13425,10957,12523,10692,6175,12399,6103,6176,6186,4593,13442,6173,6146,13480,13548,12500);
 $config['e___4527'] = array(
     13889 => array(
         'm_title' => 'ACCOUNT DEFAULTS',
@@ -5353,6 +5353,12 @@ $config['e___4527'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-text-size"></i>',
         'm_profile' => array(11054,13890,6225,4527,6204),
+    ),
+    12969 => array(
+        'm_title' => 'GOT STARTED',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_profile' => array(11018,12701,11035,12228,4527),
     ),
     13479 => array(
         'm_title' => 'HEADER NAVIGATION',
@@ -5689,12 +5695,6 @@ $config['e___4527'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-cog source" aria-hidden="true"></i>',
         'm_profile' => array(12574,13425,11089,4527),
-    ),
-    12969 => array(
-        'm_title' => 'MY DISCOVERIES',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-compass discover" aria-hidden="true"></i>',
-        'm_profile' => array(11018,12701,11035,12228,4527),
     ),
     12211 => array(
         'm_title' => 'NEXT',
@@ -6707,13 +6707,19 @@ $config['e___4229'] = array(
 );
 
 //DISCOVER CARBON COPY:
-$config['n___5967'] = array(12419,4250,13933,4246,7504,4235);
+$config['n___5967'] = array(12419,4235,4250,13933,4246,7504);
 $config['e___5967'] = array(
     12419 => array(
         'm_title' => 'COMMENTS',
         'm_message' => '1',
         'm_icon' => '<i class="far fa-comment discover" aria-hidden="true"></i>',
         'm_profile' => array(11035,13871,12994,11089,13530,11018,12359,5967,10593,4986,4593,4485),
+    ),
+    4235 => array(
+        'm_title' => 'GET STARTED',
+        'm_message' => '1',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     4250 => array(
         'm_title' => 'IDEA CREATED',
@@ -6738,12 +6744,6 @@ $config['e___5967'] = array(
         'm_message' => '1',
         'm_icon' => '<i class="fad fa-comment-exclamation source" aria-hidden="true"></i>',
         'm_profile' => array(5967,4755,4593),
-    ),
-    4235 => array(
-        'm_title' => 'START FROM HERE',
-        'm_message' => '1',
-        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
-        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
 );
 
@@ -7275,7 +7275,7 @@ $config['e___6255'] = array(
 );
 
 //PRIVATE INFORMATION:
-$config['n___4755'] = array(13038,6415,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,13494,13493,13492,10681,7561,7564,7560,4527,11054,3286,4783,4755,7495,6155,13415,12896,7563,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,4235,13042,12906,12489,13377);
+$config['n___4755'] = array(13038,6415,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,13494,13493,13492,4235,10681,7561,7564,7560,4527,11054,3286,4783,4755,7495,6155,13415,12896,7563,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,13042,12906,12489,13377);
 $config['e___4755'] = array(
     13038 => array(
         'm_title' => '80 DISCOVERIES PER MONTH ALWAYS FREE',
@@ -7571,6 +7571,12 @@ $config['e___4755'] = array(
         'm_icon' => '<i class="fas fa-h3"></i>',
         'm_profile' => array(4755,13491),
     ),
+    4235 => array(
+        'm_title' => 'GET STARTED',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
+    ),
     10681 => array(
         'm_title' => 'IDEA AUTO SORT',
         'm_message' => '',
@@ -7727,12 +7733,6 @@ $config['e___4755'] = array(
         'm_icon' => '<i class="fas fa-clipboard-check discover" aria-hidden="true"></i>',
         'm_profile' => array(6140,12327,12229,12227,12141,4229,6255,4593,4755),
     ),
-    4235 => array(
-        'm_title' => 'START FROM HERE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
-        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
-    ),
     13042 => array(
         'm_title' => 'UNLIMITED DISCOVERIES USD $8/MONTH',
         'm_message' => '',
@@ -7760,7 +7760,7 @@ $config['e___4755'] = array(
 );
 
 //TRANSACTION TYPE:
-$config['n___4593'] = array(7545,10573,12419,6415,12129,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,12360,10690,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,13481,10681,4250,4229,10675,4228,10664,10663,13935,12611,12612,12591,12592,10676,10677,10679,10648,10650,10644,10651,4993,13933,4601,7561,7564,7560,13894,4231,5001,10625,5943,12318,5865,4999,4998,5000,11956,5981,13441,5982,5003,7495,4983,6155,13415,13865,12896,7563,13007,6132,13412,6157,7489,6178,4246,4251,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,4256,4258,12827,10646,7504,4559,13006,10654,6144,5007,7485,7486,6997,4994,4235,13955,10686,13579,10673,12906,12489,12114);
+$config['n___4593'] = array(7545,10573,12419,6415,12129,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,10683,4556,6149,4283,6969,4275,7610,4555,12360,10690,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,13481,4235,10681,4250,4229,10675,4228,10664,10663,13935,12611,12612,12591,12592,10676,10677,10679,10648,10650,10644,10651,4993,13933,4601,7561,7564,7560,13894,4231,5001,10625,5943,12318,5865,4999,4998,5000,11956,5981,13441,5982,5003,7495,4983,6155,13415,13865,12896,7563,13007,6132,13412,6157,7489,6178,4246,4251,12117,10653,4259,10657,4257,4261,4260,4319,7657,4230,10656,4255,4318,10659,4256,4258,12827,10646,7504,4559,13006,10654,6144,5007,7485,7486,6997,4994,13955,10686,13579,10673,12906,12489,12114);
 $config['e___4593'] = array(
     7545 => array(
         'm_title' => 'AWARDS',
@@ -8067,6 +8067,12 @@ $config['e___4593'] = array(
         'm_message' => 'Records a financial transaction into (+) or out of (-) Mench',
         'm_icon' => '<i class="fas fa-money-bill-wave-alt"></i>',
         'm_profile' => array(4593),
+    ),
+    4235 => array(
+        'm_title' => 'GET STARTED',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     10681 => array(
         'm_title' => 'IDEA AUTO SORT',
@@ -8565,12 +8571,6 @@ $config['e___4593'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-circle source" aria-hidden="true"></i>',
         'm_profile' => array(4593),
-    ),
-    4235 => array(
-        'm_title' => 'START FROM HERE',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-chevron-right discover" aria-hidden="true"></i>',
-        'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
     13955 => array(
         'm_title' => 'UNBOOKMARK',
