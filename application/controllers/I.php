@@ -179,24 +179,14 @@ class I extends CI_Controller {
             'x__right' => $i__id,
         ));
 
-        //Add to top of my ideas:
         $this->X_model->create(array(
-            'x__type' => 10573, //MY IDEAS
-            'x__source' => $user_e['e__id'],
-            'x__right' => $i__id,
-            'x__up' => $user_e['e__id'],
-            'x__message' => '@'.$user_e['e__id'],
-            'x__sort' => 0, //Top of the list
-        ), true);
-
-        $this->X_model->create(array(
-            'x__type' => 13933, //JOIN AS CONTRIBUTOR
+            'x__type' => 13933, //JOIN AS SOURCE
             'x__source' => $user_e['e__id'],
             'x__right' => $i__id,
         ));
 
         //Go back to idea:
-        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined & Notified other contributors of your arrival.</div>');
+        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined & Notified other members of your arrival.</div>');
 
     }
 
