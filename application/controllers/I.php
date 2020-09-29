@@ -196,7 +196,71 @@ class I extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined as contributor & notified current sources of your intent for collaboration.</div>');
+        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined & Notified other contributors of your arrival.</div>');
+
+    }
+
+    function i_save(){
+
+        //See if we need to add or remove a highlight:
+        //Authenticate User:
+        $user_e = superpower_assigned(10939);
+        if (!$user_e) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(10939),
+            ));
+
+        } elseif (!isset($_POST['i__id'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Idea ID',
+            ));
+
+        }
+
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+        ));
+        if (!count($is)) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea ID',
+            ));
+        }
+
+        //First try to remove:
+        $removed = 0;
+        foreach($this->X_model->fetch(array(
+            'x__up' => $user_e['e__id'],
+            'x__right' => $_POST['i__id'],
+            'x__type' => 10573, //MY IDEAS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        )) as $remove_saved){
+            $removed++;
+            $this->X_model->update($remove_saved['x__id'], array(
+                'x__status' => 6173, //Transaction Removed
+            ), $user_e['e__id'], 13955 /* UNSAVED */);
+        }
+
+        //Need to add?
+        if(!$removed){
+            //Then we must add:
+            $this->X_model->create(array(
+                'x__source' => $user_e['e__id'],
+                'x__up' => $user_e['e__id'],
+                'x__message' => '@'.$user_e['e__id'],
+                'x__right' => $_POST['i__id'],
+                'x__type' => 10573, //MY IDEAS
+            ));
+        }
+
+        //All Good:
+        return view_json(array(
+            'status' => 1,
+        ));
 
     }
 
