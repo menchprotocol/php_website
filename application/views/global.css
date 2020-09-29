@@ -136,7 +136,9 @@ a:hover {
 li a {
     text-decoration: none;
 }
-
+.btn-tiny{
+    font-size: 0.55em !important;
+}
 .avatar-item {
     display: block;
     float: left;
