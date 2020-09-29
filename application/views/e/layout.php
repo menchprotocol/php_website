@@ -161,6 +161,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 continue;
             }
 
+            $focus_tab .= '<div class="headline top-margin">'.$e___11035[11029]['m_title'].'</div>';
+
             //SOURCE MASS EDITOR
             if($superpower_13422){
 
@@ -378,20 +380,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             }
 
             $i_bookmarks = array();
-            if($superpower_10939){
-                //Give Option to Add New Idea:
-                $focus_tab .= '<div class="list-group add_e_idea">';
-                $focus_tab .= '<div class="list-group-item list-adder">
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input montserrat"
-                               maxlength="' . config_var(4736) . '"
-                               id="newIdeaTitle"
-                               placeholder="'.$e___11035[13912]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
-                $focus_tab .= '</div>';
-            }
 
 
             if($source_is_e){
@@ -433,6 +421,22 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             }
 
 
+            if($superpower_10939){
+                //Give Option to Add New Idea:
+                $focus_tab .= '<div class="list-group add_e_idea">';
+                $focus_tab .= '<div class="list-group-item list-adder">
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input montserrat"
+                               maxlength="' . config_var(4736) . '"
+                               id="newIdeaTitle"
+                               placeholder="'.$e___11035[13912]['m_title'].'">
+                    </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
+                $focus_tab .= '</div>';
+            }
+
+
             if(!count($i_bookmarks)){
 
                 //List All Ideas:
@@ -468,7 +472,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 if($source_is_e || superpower_active(12701, true)){
 
-                    $focus_tab .= '<div class="headline" style="margin-top:18px;">'.$e___11035[12969]['m_title'].'</div>';
+                    $focus_tab .= '<div class="headline top-margin">'.$e___11035[12969]['m_title'].'</div>';
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
