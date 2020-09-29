@@ -13,10 +13,16 @@ $(document).ready(function () {
 
 
     if(parseInt(js_e___6404[12678]['m_message'])){
+
+
         $("#searchDiscoveries").on('autocomplete:selected', function (event, suggestion, dataset) {
 
             window.location = suggestion.object__url;
 
+        }).focus(function() {
+            $('#searchDiscoveries .algolia_pad_search' ).removeClass('hidden');
+        }).focusout(function() {
+            $('#searchDiscoveries .algolia_pad_search' ).addClass('hidden');
         }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['d']}, [
             {
                 source: function (q, cb) {
