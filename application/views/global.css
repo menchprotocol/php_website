@@ -2011,7 +2011,9 @@ label {
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_ .modal-content,
 .custom_ui_13884_13886 .form-control,
-.custom_ui_13884_ .form-control{
+.custom_ui_13884_ .form-control,
+.custom_ui_13884_13886 .edit-locked span,
+.custom_ui_13884_ .edit-locked span{
     background-color:#222222;
     color: #FFFFFF;
 
@@ -2028,7 +2030,9 @@ label {
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .icon-block i,
-.custom_ui_13884_ .icon-block i,
+.custom_ui_13884_ .icon-block i{
+    color: #FFFFFF !important;
+}
 .custom_ui_13884_13886 .mench-navigation a,
 .custom_ui_13884_ .mench-navigation a,
 .custom_ui_13884_13886 .montserrat,
