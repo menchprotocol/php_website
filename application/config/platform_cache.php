@@ -3373,7 +3373,7 @@ $config['e___6225'] = array(
 );
 
 //MENCH NAVIGATION:
-$config['n___11035'] = array(13007,13914,13571,13915,11029,4997,10673,13207,6287,13911,11059,13865,13813,13912,10939,13542,11019,13913,13908,12137,13955,10573,10686,7637,13550,13415,13412,13689,4235,12896,12906,13502,6415,12419,13670,13495,13562,12969,13524,4341,12707,12991,12211,6155,13692,12117,13942,6132,13693,12467,13579,13909,4755,13401,13292,13573,13574,11068,13671,7256,4269,10957,13572,13952);
+$config['n___11035'] = array(13007,13914,13571,13915,11029,4997,10673,13207,6287,13911,11059,13865,13813,13912,10939,13542,11019,13913,13908,12137,13955,10573,10686,7637,13550,13415,13412,13689,4235,12969,13956,12896,12906,13502,6415,12419,13670,13495,13562,13524,4341,12707,12991,12211,6155,13692,12117,13942,6132,13693,12467,13579,13909,4755,13401,13292,13573,13574,11068,13671,7256,4269,10957,13572,13952);
 $config['e___11035'] = array(
     13007 => array(
         'm_title' => 'SORT ALPHABETICALLY',
@@ -3456,7 +3456,7 @@ $config['e___11035'] = array(
     13912 => array(
         'm_title' => 'NEW IDEA',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-plus-circle rotate90 idea"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle idea"></i>',
         'm_profile' => array(11035),
     ),
     10939 => array(
@@ -3549,6 +3549,18 @@ $config['e___11035'] = array(
         'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
         'm_profile' => array(12994,11035,12969,12227,4593,5967,4755),
     ),
+    12969 => array(
+        'm_title' => 'GOT STARTED',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
+        'm_profile' => array(11018,12701,11035,12228,4527),
+    ),
+    13956 => array(
+        'm_title' => 'SEARCH IDEAS',
+        'm_message' => '',
+        'm_icon' => '<i class="fas fa-plus-circle discover"></i>',
+        'm_profile' => array(11035),
+    ),
     12896 => array(
         'm_title' => 'SAVED',
         'm_message' => '',
@@ -3596,12 +3608,6 @@ $config['e___11035'] = array(
         'm_message' => '',
         'm_icon' => '<i class="fas fa-chevron-right discover"></i>',
         'm_profile' => array(13295,11035),
-    ),
-    12969 => array(
-        'm_title' => 'GOT STARTED',
-        'm_message' => '',
-        'm_icon' => '<i class="fas fa-play discover" aria-hidden="true"></i>',
-        'm_profile' => array(11018,12701,11035,12228,4527),
     ),
     13524 => array(
         'm_title' => 'SAVE & NEXT',
@@ -4149,7 +4155,7 @@ $config['e___6404'] = array(
     ),
     11060 => array(
         'm_title' => 'MENCH VERSION',
-        'm_message' => 'v1.585',
+        'm_message' => 'v1.586',
         'm_icon' => '<i class="fad fa-code"></i>',
         'm_profile' => array(6404),
     ),
