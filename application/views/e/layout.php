@@ -480,7 +480,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     $focus_tab .= '<div class="headline top-margin">'.$e___11035[12969]['m_title'].'</div>';
 
                     //Give Option to Add New Idea:
-                    $focus_tab .= '<div class="list-group">';
+                    $focus_tab .= '<div class="list-group" id="discoveryNew">';
                     $focus_tab .= '<div class="list-group-item list-adder">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13956]['m_icon'].'</span></span>

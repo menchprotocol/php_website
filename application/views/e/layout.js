@@ -20,9 +20,9 @@ $(document).ready(function () {
             window.location = suggestion.object__url;
 
         }).focus(function() {
-            $('#searchDiscoveries .algolia_pad_search' ).removeClass('hidden');
+            $('#discoveryNew .algolia_pad_search' ).removeClass('hidden');
         }).focusout(function() {
-            $('#searchDiscoveries .algolia_pad_search' ).addClass('hidden');
+            $('#discoveryNew .algolia_pad_search' ).addClass('hidden');
         }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['d']}, [
             {
                 source: function (q, cb) {
