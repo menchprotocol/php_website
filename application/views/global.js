@@ -342,6 +342,9 @@ $(document).ready(function () {
 
                         }
                     },
+                    footer: function (data) {
+                        return '<div class="suggestion montserrat"><span class="icon-block"><i class="fab fa-algolia" style="margin: 0 5px;"></i></span>Search Powered by Algolia</div>';
+                    },
                     empty: function (data) {
                         if(validURL(data.query)){
                             return e_fetch_canonical(data.query, true);
