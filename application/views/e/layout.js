@@ -23,7 +23,7 @@ $(document).ready(function () {
                     //Append filters:
                     algolia_index.search(q, {
                         hitsPerPage: 34,
-                        filters:"object__type=12273 AND _tags:is_featured",
+                        filters:'object__type=12273 AND ( _tags:is_featured OR _tags:alg_e_' + js_pl_id + ' )',
                     }, function (error, content) {
                         if (error) {
                             cb([]);
