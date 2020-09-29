@@ -391,6 +391,21 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 } else {
 
+                    if($superpower_10939){
+                        //Give Option to Add New Idea:
+                        $focus_tab .= '<div class="list-group add_e_idea">';
+                        $focus_tab .= '<div class="list-group-item list-adder">
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input montserrat"
+                               maxlength="' . config_var(4736) . '"
+                               id="newIdeaTitle"
+                               placeholder="'.$e___11035[13912]['m_title'].'">
+                    </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
+                        $focus_tab .= '</div>';
+                    }
+
                     $i_bookmarks = $this->X_model->fetch(array(
                         'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -420,21 +435,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 }
             }
 
-
-            if($superpower_10939){
-                //Give Option to Add New Idea:
-                $focus_tab .= '<div class="list-group add_e_idea">';
-                $focus_tab .= '<div class="list-group-item list-adder">
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input montserrat"
-                               maxlength="' . config_var(4736) . '"
-                               id="newIdeaTitle"
-                               placeholder="'.$e___11035[13912]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
-                $focus_tab .= '</div>';
-            }
 
 
             if(!count($i_bookmarks)){
