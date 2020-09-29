@@ -3556,7 +3556,7 @@ $config['e___11035'] = array(
         'm_profile' => array(11018,12701,11035,12228,4527),
     ),
     13956 => array(
-        'm_title' => 'SEARCH IDEAS TO START',
+        'm_title' => 'NEW DISCOVERY',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-plus-circle discover"></i>',
         'm_profile' => array(11035),
