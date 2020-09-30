@@ -3467,7 +3467,7 @@ $config['e___11035'] = array(
     ),
     10939 => array(
         'm_title' => 'SUPERPOWER OF IDEATION',
-        'm_message' => '',
+        'm_message' => 'Unlocking this superpower to summarize ideas in your head or in Nonfiction Content such as Books, Videos, Podcasts or Articles',
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
         'm_profile' => array(13450,11035,6404,10957),
     ),
@@ -3502,7 +3502,7 @@ $config['e___11035'] = array(
         'm_profile' => array(12399,13813,6404,11035,13420,10648,12138,7356,7355,4737),
     ),
     13955 => array(
-        'm_title' => 'UNBOOKMARK',
+        'm_title' => 'UNBOOKMARK IDEA',
         'm_message' => '',
         'm_icon' => '<i class="far fa-bookmark idea"></i>',
         'm_profile' => array(4593,11035),
@@ -3778,7 +3778,7 @@ $config['n___10957'] = array(10939,12673,13420,12700,13422,12706,12703,12699,127
 $config['e___10957'] = array(
     10939 => array(
         'm_title' => 'IDEATION',
-        'm_message' => 'Collaboratively Summarize Ideas',
+        'm_message' => 'Summarize Ideas in your Head or Nonfiction Content',
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
         'm_profile' => array(13450,11035,6404,10957),
     ),
@@ -8585,7 +8585,7 @@ $config['e___4593'] = array(
         'm_profile' => array(4593),
     ),
     13955 => array(
-        'm_title' => 'UNBOOKMARK',
+        'm_title' => 'UNBOOKMARK IDEA',
         'm_message' => '',
         'm_icon' => '<i class="far fa-bookmark idea"></i>',
         'm_profile' => array(4593,11035),
