@@ -1899,7 +1899,7 @@ $config['e___12446'] = array(
     13822 => array(
         'm_title' => 'NEXT',
         'm_message' => '',
-        'm_icon' => '<i class="far fa-step-forward discover"></i>',
+        'm_icon' => '<i class="fas fa-chevron-right discover"></i>',
         'm_profile' => array(12446),
     ),
     12447 => array(
