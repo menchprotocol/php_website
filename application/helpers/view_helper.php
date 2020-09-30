@@ -626,6 +626,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
     if($x__type==12274){
 
         //SOURCES
+        $limit = config_var(11064);
         $order_columns = array('x__sort' => 'ASC', 'e__title' => 'ASC');
         $join_objects = array('x__down');
         $query_filters = array(
@@ -638,6 +639,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
     } elseif($x__type==12273){
 
         //IDEAS
+        $limit = config_var(13958);
         $join_objects = array('x__right');
         $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
         $query_filters = array(
@@ -651,6 +653,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
 
         //DISCOVERIES
         $join_objects = array('x__left');
+        $limit = config_var(11064);
 
         if($page_num > 0){
             $order_columns = array('x__sort' => 'ASC');
@@ -675,7 +678,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
     //Return Results:
     if($page_num > 0){
 
-        return $CI->X_model->fetch($query_filters, $join_objects, config_var(13958), ($page_num-1)*config_var(13958), $order_columns);
+        return $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
 
     } else {
         $count_query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
