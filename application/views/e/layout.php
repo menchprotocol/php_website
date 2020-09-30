@@ -161,7 +161,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 continue;
             }
 
-            $focus_tab .= '<div class="headline top-margin">'.$e___11035[11029]['m_title'].'</div>';
 
             //SOURCE MASS EDITOR
             if($superpower_13422){
@@ -340,6 +339,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 }
             }
 
+            $focus_tab .= '<div class="headline top-margin">'.$e___11035[11029]['m_title'].'</div>';
             $focus_tab .= '<div id="list_e" class="list-group">';
 
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
