@@ -446,28 +446,23 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-            if(!count($i_bookmarks)){
+            //Are there more?
+            $list_i = view_coins_e(12273, $e['e__id'], 1);
 
-                //List All Ideas:
-                $list_i = view_coins_e(12273, $e['e__id'], 1);
-
-                if(count($list_i)){
-
-                    $focus_tab .= '<div class="headline top-margin">'.$e___11035[13550]['m_title'].'</div>';
-                    $focus_tab .= '<div class="row top-margin" id="list_13550">';
-                    foreach($list_i as $count => $item){
-                        $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                        $focus_tab .= view_i_cover(12273, $item, false, ( $show_message ? $this->X_model->message_send($item['x__message']) : null), $e);
-                    }
-                    $focus_tab .= '</div>';
-
-                    //Are there more?
-                    if($counter > count($list_i)){
-                        $focus_tab .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m_icon'].'</span>'.$e___11035[13913]['m_title'].' ['.$counter.']</a></div></div>';
-                    }
-
+            if(!count($i_bookmarks) && count($list_i)){
+                $focus_tab .= '<div class="headline top-margin">'.$e___11035[13550]['m_title'].'</div>';
+                $focus_tab .= '<div class="row top-margin" id="list_13550">';
+                foreach($list_i as $count => $item){
+                    $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
+                    $focus_tab .= view_i_cover(12273, $item, false, ( $show_message ? $this->X_model->message_send($item['x__message']) : null), $e);
                 }
+                $focus_tab .= '</div>';
             }
+
+            if($counter > count($list_i)){
+                $focus_tab .= '<div style="padding: 13px 0;" class="'.superpower_active(10939).'"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m_icon'].'</span>'.$e___11035[13913]['m_title'].' ['.$counter.']</a></div></div>';
+            }
+
 
         } elseif($x__type==6255){
 
