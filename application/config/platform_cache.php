@@ -3467,7 +3467,7 @@ $config['e___11035'] = array(
     ),
     10939 => array(
         'm_title' => 'SUPERPOWER OF IDEATION',
-        'm_message' => 'Unlocking this superpower to summarize ideas in your head or in Nonfiction Content such as Books, Videos, Podcasts or Articles',
+        'm_message' => 'Unlock this superpower to summarize ideas in your head or in Nonfiction Content such as Books, Videos, Podcasts or Articles',
         'm_icon' => '<i class="fas fa-lightbulb-on idea" aria-hidden="true"></i>',
         'm_profile' => array(13450,11035,6404,10957),
     ),
