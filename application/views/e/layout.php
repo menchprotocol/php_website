@@ -379,28 +379,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             //IDEAS
             $counter = $counter__i;
-            if(!$counter && !$superpower_10939 && !$source_is_e){
-                continue;
-            }
-
             $i_bookmarks = array();
 
+            if($superpower_10939){
 
-            if($source_is_e){
-
-                if(!superpower_assigned(10939)){
-
-                    //Give Option to Get Started:
-                    $focus_tab .= '<div class="msg alert alert-warning" role="alert" style="text-decoration: none;"><span class="icon-block">'.$e___11035[10939]['m_icon'].'</span><a href="'.config_var(10939).'">'.$e___11035[10939]['m_title'].'<span class="icon-block"><i class="fas fa-arrow-right"></i></span></a><div class="padded">'.$e___11035[10939]['m_message'].'</div></div>';
-
-                } else {
-
-                    $focus_tab .= '<div class="headline top-margin">'.$e___11035[10573]['m_title'].'</div>';
-
-                    if($superpower_10939){
-                        //Give Option to Add New Idea:
-                        $focus_tab .= '<div class="list-group add_e_idea">';
-                        $focus_tab .= '<div class="list-group-item list-adder">
+                //Give Option to Add New Idea:
+                $focus_tab .= '<div class="list-group add_e_idea top-margin">';
+                $focus_tab .= '<div class="list-group-item list-adder">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
                         <input type="text"
@@ -409,9 +394,12 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[13912]['m_title'].'">
                     </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
-                        $focus_tab .= '</div>';
-                    }
+                $focus_tab .= '</div>';
 
+                //MY IDEAS?
+                if($source_is_e){
+
+                    $focus_tab .= '<div class="headline top-margin">'.$e___11035[10573]['m_title'].'</div>';
                     $i_bookmarks = $this->X_model->fetch(array(
                         'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -442,14 +430,21 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                     }
                 }
+
+            } else {
+
+                //Give Option to Get Started:
+                $focus_tab .= '<div class="msg alert alert-warning" role="alert" style="text-decoration: none;"><span class="icon-block">'.$e___11035[10939]['m_icon'].'</span><a href="'.config_var(10939).'">'.$e___11035[10939]['m_title'].'<span class="icon-block"><i class="fas fa-arrow-right"></i></span></a><div class="padded">'.$e___11035[10939]['m_message'].'</div></div>';
+
             }
 
 
 
-            //Are there more?
-            $list_i = view_coins_e(12273, $e['e__id'], 1);
 
-            if(!count($i_bookmarks) && count($list_i)){
+            //List References
+            $list_i = view_coins_e(12273, $e['e__id'], 1);
+            if(count($list_i)){
+
                 $focus_tab .= '<div class="headline top-margin">'.$e___11035[13550]['m_title'].'</div>';
                 $focus_tab .= '<div class="row top-margin" id="list_13550">';
                 foreach($list_i as $count => $item){
@@ -457,12 +452,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     $focus_tab .= view_i_cover(12273, $item, false, ( $show_message ? $this->X_model->message_send($item['x__message']) : null), $e);
                 }
                 $focus_tab .= '</div>';
-            }
 
-            if($counter > count($list_i)){
-                $focus_tab .= '<div style="padding: 13px 0;" class="'.superpower_active(10939).'"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m_icon'].'</span>'.$e___11035[13913]['m_title'].' ['.$counter.']</a></div></div>';
-            }
+                //Are there more?
+                if($counter > count($list_i)){
+                    $focus_tab .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m_icon'].'</span>'.$e___11035[13913]['m_title'].' ['.$counter.']</a></div></div>';
+                }
 
+            }
 
         } elseif($x__type==6255){
 

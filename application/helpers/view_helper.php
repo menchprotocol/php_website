@@ -675,7 +675,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
     //Return Results:
     if($page_num > 0){
 
-        return $CI->X_model->fetch($query_filters, $join_objects, config_var(11064), ($page_num-1)*config_var(11064), $order_columns);
+        return $CI->X_model->fetch($query_filters, $join_objects, config_var(13958), ($page_num-1)*config_var(13958), $order_columns);
 
     } else {
         $count_query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
