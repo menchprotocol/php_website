@@ -128,6 +128,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         }
 
 
+        if(in_array($x__type, $this->config->item('n___13425')) && !$source_is_e){
+            continue;
+        }
+
         $counter = null;
         $focus_tab = null;
 

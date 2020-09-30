@@ -8,7 +8,7 @@ $config['n___13898'] = array(4250,4228,4229,13935,4231,4983,13865,7545,4601,1064
 $config['e___13898'] = array(
     4250 => array(
         'm_title' => 'IDEA CREATED',
-        'm_message' => '4181',
+        'm_message' => '6765',
         'm_icon' => '<i class="fas fa-plus-circle idea" aria-hidden="true"></i>',
         'm_profile' => array(13898,13480,5967,12400,12149,10593,4593),
     ),
@@ -38,8 +38,8 @@ $config['e___13898'] = array(
     ),
     4983 => array(
         'm_title' => 'REFERENCES',
-        'm_message' => '144 IF NOT SELF',
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_message' => '144',
+        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     13865 => array(
@@ -459,7 +459,7 @@ $config['e___13550'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
 );
@@ -1724,7 +1724,7 @@ $config['e___12359'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
 );
@@ -2836,7 +2836,7 @@ $config['e___12141'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     6157 => array(
@@ -4594,7 +4594,7 @@ $config['e___4485'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     4231 => array(
@@ -5285,7 +5285,7 @@ $config['e___4527'] = array(
     13298 => array(
         'm_title' => 'DISCOVER TAB HIDE IF ZERO',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle-slash discover"></i>',
+        'm_icon' => '<i class="fas fa-eye-slash discover"></i>',
         'm_profile' => array(4527,13299),
     ),
     13300 => array(
@@ -5297,7 +5297,7 @@ $config['e___4527'] = array(
     13304 => array(
         'm_title' => 'DISCOVER TAB SHOW IF LOGGED-IN',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle discover"></i>',
+        'm_icon' => '<i class="fas fa-user-unlock discover"></i>',
         'm_profile' => array(4527,13299),
     ),
     10593 => array(
@@ -5513,7 +5513,7 @@ $config['e___4527'] = array(
     13530 => array(
         'm_title' => 'IDEA TAB SHOW EVEN IF ZERO',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle idea"></i>',
+        'm_icon' => '<i class="fas fa-eye idea"></i>',
         'm_profile' => array(4527,12676),
     ),
     13408 => array(
@@ -5921,13 +5921,13 @@ $config['e___4527'] = array(
     12574 => array(
         'm_title' => 'SOURCE TAB SHOW EVEN IF ZERO',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle source"></i>',
+        'm_icon' => '<i class="fas fa-eye source"></i>',
         'm_profile' => array(4527,12573),
     ),
     13425 => array(
         'm_title' => 'SOURCE TAB SHOW IF SOURCE',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-circle source"></i>',
+        'm_icon' => '<i class="fas fa-user-check source"></i>',
         'm_profile' => array(4527,12573),
     ),
     10957 => array(
@@ -6136,7 +6136,7 @@ $config['e___10593'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     4251 => array(
@@ -6777,7 +6777,7 @@ $config['e___7551'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     13865 => array(
@@ -8335,7 +8335,7 @@ $config['e___4593'] = array(
     4983 => array(
         'm_title' => 'REFERENCES',
         'm_message' => '',
-        'm_icon' => '<i class="fas fa-user-edit source"></i>',
+        'm_icon' => '<i class="fas fa-user-edit idea"></i>',
         'm_profile' => array(13898,12359,7551,13550,13543,13407,4485,12141,10939,12228,4593,10593),
     ),
     6155 => array(
