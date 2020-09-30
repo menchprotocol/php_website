@@ -492,7 +492,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                id="searchDiscoveries"
                                placeholder="'.$e___11035[13956]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">Search Featured Ideas to Start a New Discovery</div></div>';
+                    </div><div class="algolia_pad_search hidden">Search Ideas to Start a New Discovery</div></div>';
                     $focus_tab .= '</div>';
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
