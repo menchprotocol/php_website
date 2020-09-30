@@ -113,7 +113,7 @@ $config['e___12574'] = array(
 $config['n___13518'] = array(13038,13042);
 $config['e___13518'] = array(
     13038 => array(
-        'm_title' => '80 DISCOVERIES PER MONTH ALWAYS FREE',
+        'm_title' => '80 DISCOVERIES PER MONTH FOR FREE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
         'm_profile' => array(13889,13518,4755),
@@ -296,7 +296,7 @@ $config['e___13884'] = array(
 $config['n___13889'] = array(13038,13886,13493);
 $config['e___13889'] = array(
     13038 => array(
-        'm_title' => '80 DISCOVERIES PER MONTH ALWAYS FREE',
+        'm_title' => '80 DISCOVERIES PER MONTH FOR FREE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
         'm_profile' => array(13889,13518,4755),
@@ -7290,7 +7290,7 @@ $config['e___6255'] = array(
 $config['n___4755'] = array(13038,6415,12336,12334,4554,7757,5967,12197,6559,6560,6556,6578,4556,6149,4283,6969,4275,7610,4555,12360,4266,4267,4282,6563,4570,7702,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7492,4552,6140,6224,12328,7578,4553,3288,13494,13493,13492,4235,10681,7561,7564,7560,4527,11054,3286,4783,4755,7495,6155,13415,12896,7563,6132,13412,6157,7489,4246,12117,7504,4559,6144,7485,7486,6997,13042,12906,12489,13377);
 $config['e___4755'] = array(
     13038 => array(
-        'm_title' => '80 DISCOVERIES PER MONTH ALWAYS FREE',
+        'm_title' => '80 DISCOVERIES PER MONTH FOR FREE',
         'm_message' => '',
         'm_icon' => '<i class="fas fa-hand-holding-heart discover"></i>',
         'm_profile' => array(13889,13518,4755),
