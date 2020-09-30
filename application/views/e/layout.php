@@ -467,16 +467,11 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $my_x_ids = array();
 
 
-            //Show My Discoveries
-            if($counter){
 
-                if($source_is_e || superpower_active(12701, true)){
-
-                    $focus_tab .= '<div class="headline top-margin">'.$e___11035[12969]['m_title'].'</div>';
-
-                    //Give Option to Add New Idea:
-                    $focus_tab .= '<div class="list-group" id="discoveryNew">';
-                    $focus_tab .= '<div class="list-group-item list-adder">
+            if($source_is_e){
+                //Give Option to Add New Idea:
+                $focus_tab .= '<div class="list-group top-margin" id="discoveryNew">';
+                $focus_tab .= '<div class="list-group-item list-adder">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13956]['m_icon'].'</span></span>
                         <input type="text"
@@ -484,7 +479,16 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                id="searchDiscoveries"
                                placeholder="'.$e___11035[13956]['m_title'].'">
                     </div><div class="algolia_pad_search hidden">Search Ideas to Start a New Discovery</div></div>';
-                    $focus_tab .= '</div>';
+                $focus_tab .= '</div>';
+            }
+
+
+            //Show My Discoveries
+            if($counter){
+
+                if($source_is_e || superpower_active(12701, true)){
+
+                    $focus_tab .= '<div class="headline top-margin">'.$e___11035[12969]['m_title'].'</div>';
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
