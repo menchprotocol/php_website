@@ -994,8 +994,8 @@ function view_i_icon($i){
 
     $CI =& get_instance();
 
-    if(!in_array($i['i__status'], $CI->config->item('n___7355'))){
-        //Not Public, Show Drafting Icon:
+    if(!in_array($i['i__status'], $CI->config->item('n___7355')) || in_array($i['i__status'], $CI->config->item('n___12138'))){
+        //Drafting OR Featured
         $config_var_id = 4737; //Idea Status
         $e__id = $i['i__status'];
     } else {
