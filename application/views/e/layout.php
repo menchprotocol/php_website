@@ -48,9 +48,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         //ADD NEW
         echo '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13914]['m_icon'].'</span></span>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m_icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
+                               id="New11030input"
                                maxlength="' . config_var(6197) . '"
                                placeholder="'.$e___11035[13914]['m_title'].'">
                     </div><div class="algolia_pad_search hidden pad_expand">'.config_var(7256).'</div></div>';
@@ -360,9 +361,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 $focus_tab .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
-                            <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13914]['m_icon'].'</span></span>
+                            <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[13914]['m_icon'].'</span></a>
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
+                                   maxlength="New11029input"
                                    maxlength="' . config_var(6197) . '"
                                    placeholder="'.$e___11035[13914]['m_title'].'">
                         </div><div class="algolia_pad_search hidden pad_expand">'.config_var(7256).'</div></div>';
@@ -387,7 +389,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $focus_tab .= '<div class="list-group add_e_idea top-margin">';
                 $focus_tab .= '<div class="list-group-item list-adder">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . config_var(4736) . '"
@@ -473,7 +475,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $focus_tab .= '<div class="list-group top-margin" id="discoveryNew">';
                 $focus_tab .= '<div class="list-group-item list-adder">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13956]['m_icon'].'</span></span>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#searchDiscoveries\').focus();"><span class="icon-block">'.$e___11035[13956]['m_icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                id="searchDiscoveries"
