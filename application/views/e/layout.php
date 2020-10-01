@@ -54,7 +54,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                id="New11030input"
                                maxlength="' . config_var(6197) . '"
                                placeholder="'.$e___11035[13914]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden pad_expand">'.config_var(7256).'</div></div>';
+                    </div><div class="algolia_pad_search hidden pad_expand">'.config_var(13914).'</div></div>';
         echo '</div>';
         echo '</div>';
 
@@ -367,7 +367,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                    maxlength="New11029input"
                                    maxlength="' . config_var(6197) . '"
                                    placeholder="'.$e___11035[13914]['m_title'].'">
-                        </div><div class="algolia_pad_search hidden pad_expand">'.config_var(7256).'</div></div>';
+                        </div><div class="algolia_pad_search hidden pad_expand">'.config_var(13914).'</div></div>';
 
             } else {
 
@@ -395,7 +395,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                maxlength="' . config_var(4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[13912]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
+                    </div><div class="algolia_pad_search hidden">'.config_var(13914).'</div></div>';
                 $focus_tab .= '</div>';
 
                 //MY IDEAS?
@@ -480,7 +480,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                id="searchDiscoveries"
                                placeholder="'.$e___11035[13956]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">Search Ideas to Start a New Discovery</div></div>';
+                    </div><div class="algolia_pad_search hidden">'.config_var(13956).'</div></div>';
                 $focus_tab .= '</div>';
             }
 

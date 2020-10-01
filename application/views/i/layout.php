@@ -47,7 +47,7 @@ if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
                                i-id="' . $i_focus['i__id'] . '"
                                id="addi-c-' . $i_focus['i__id'] . '-1"
                                placeholder="'.$e___11035[11019]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
+                    </div><div class="algolia_pad_search hidden">'.config_var(13912).'</div></div>';
 }
 echo '</div>';
 echo '</div>';
@@ -206,7 +206,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . config_var(6197) . '"                          
                            placeholder="' . $e___11035[13914]['m_title'] . '">
-                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.config_var(7256).'</div></div>';
+                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.config_var(13912).'</div></div>';
         }
 
         $focus_tab .= '</div>';
@@ -247,7 +247,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-0"
                            placeholder="'.$e___11035[13542]['m_title'].'">
-                </div><div class="algolia_pad_search hidden">'.config_var(7256).'</div></div>';
+                </div><div class="algolia_pad_search hidden">'.config_var(13912).'</div></div>';
         }
 
         $focus_tab .= '</div>';
