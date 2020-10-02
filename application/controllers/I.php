@@ -354,7 +354,7 @@ class I extends CI_Controller {
             if(count($x_update_types)!=1){
                 return view_json(array(
                     'status' => 0,
-                    'message' => '@'.$_POST['element_id'].' has '.count($x_update_types).' parents that belog to @4593 [Should be exactly 1]',
+                    'message' => '@'.$_POST['element_id'].' has '.count($x_update_types).' parents that belong to @4593 [Should be exactly 1]',
                 ));
             }
 
