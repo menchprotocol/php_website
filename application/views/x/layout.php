@@ -727,21 +727,14 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==4601){
 
         //KEYWORDS
-        $counter = $i_stats['count_7545'];
         $keywords = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => $x__type,
             'x__right' => $i_focus['i__id'],
         ), array(), 0);
-        if(count($keywords)){
-            //$focus_tab .= '<div class="space-content" style="margin-bottom:33px;">';
-            foreach($keywords as $count => $keyword) {
-                if($count > 0){
-                    $focus_tab .= ', ';
-                }
-                $focus_tab .= $keyword['x__message'];
-            }
-            //$focus_tab .= '</div>';
+        $counter = count($keywords);
+        foreach($keywords as $count => $keyword) {
+            $focus_tab .= '<div class="space-content">'.$keyword['x__message'].'</div>';
         }
 
     } elseif($x__type==13023){
