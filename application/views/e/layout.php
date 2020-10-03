@@ -364,7 +364,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                             <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[13914]['m_icon'].'</span></a>
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
-                                   maxlength="New11029input"
+                                   id="New11029input"
                                    maxlength="' . config_var(6197) . '"
                                    placeholder="'.$e___11035[13914]['m_title'].'">
                         </div><div class="algolia_pad_search hidden pad_expand">'.config_var(13914).'</div></div>';
