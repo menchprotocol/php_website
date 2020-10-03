@@ -734,7 +734,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array(), 0);
         $counter = count($keywords);
         foreach($keywords as $count => $keyword) {
-            $focus_tab .= '<div class="space-content">'.$keyword['x__message'].'</div>';
+            $focus_tab .= '<div class="top-margin">'.$keyword['x__message'].'</div>';
         }
 
     } elseif($x__type==13023){
