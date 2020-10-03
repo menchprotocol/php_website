@@ -733,9 +733,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__right' => $i_focus['i__id'],
         ), array(), 0);
         $counter = count($keywords);
+        $focus_tab .= '<ul style="list-style: decimal;">';
         foreach($keywords as $count => $keyword) {
-            $focus_tab .= '<div class="top-margin">'.$keyword['x__message'].'</div>';
+            $focus_tab .= '<li class="space-content top-margin">'.$keyword['x__message'].'</li>';
         }
+        $focus_tab .= '</ul>';
 
     } elseif($x__type==13023){
 
