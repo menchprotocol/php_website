@@ -724,6 +724,26 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
         $focus_tab .= '</div>';
 
+    } elseif($x__type==4601){
+
+        //KEYWORDS
+        $counter = $i_stats['count_7545'];
+        $keywords = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => $x__type,
+            'x__right' => $i_focus['i__id'],
+        ), array(), 0);
+        if(count($keywords)){
+            //$focus_tab .= '<div class="space-content" style="margin-bottom:33px;">';
+            foreach($keywords as $count => $keyword) {
+                if($count > 0){
+                    $focus_tab .= ', ';
+                }
+                $focus_tab .= $keyword['x__message'];
+            }
+            //$focus_tab .= '</div>';
+        }
+
     } elseif($x__type==13023){
 
         $this_url = $this->config->item('base_url').'/'.$i_focus['i__id'];
@@ -746,25 +766,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 }
                 $focus_tab .= '</div>';
 
-            } elseif($x__type2==4601){
-
-                //KEYWORDS
-                $keywords = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 4601, //IDEA NOTES Messages
-                    'x__right' => $i_focus['i__id'],
-                ), array(), 0);
-                if(count($keywords)){
-                    $focus_tab .= '<div class="headline">'.$m2['m_title'].'</div>';
-                    $focus_tab .= '<div class="share-this space-content" style="margin-bottom:33px;">';
-                    foreach($keywords as $count => $keyword) {
-                        if($count > 0){
-                            $focus_tab .= ', ';
-                        }
-                        $focus_tab .= $keyword['x__message'];
-                    }
-                    $focus_tab .= '</div>';
-                }
             }
         }
 
