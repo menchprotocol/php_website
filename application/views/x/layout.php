@@ -721,7 +721,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
         $counter = view_number($discovered[0]['totals']);
-        $focus_tab .= '<div class="i_content padded top-margin"><div class="msg">This idea has been discovered '.number_format($counter, 0).' time'.view__s($counter).'.</div></div>';
+        $focus_tab .= '<div class="i_content padded top-margin"><div class="msg">This idea has been discovered by '.number_format($counter, 0).' membmer'.view__s($counter).'.</div></div>';
 
     } elseif($x__type==7545){
 
