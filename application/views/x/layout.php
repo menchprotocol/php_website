@@ -712,6 +712,17 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //List Sources:
         $focus_tab .= view_i_tree_e($i_focus);
 
+    } elseif($x__type==6255){
+
+        $discovered = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+            'x__left' => $i_focus['i__id'],
+        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
+        $counter = view_number($discovered[0]['totals']);
+        $focus_tab .= 'This idea has been discovered '.number_format($counter, 0).' time'.view__s($counter).'.';
+
     } elseif($x__type==7545){
 
         //CERTIFICATES
