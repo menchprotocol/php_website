@@ -2,7 +2,7 @@
 
 $update_time = date("Y-m-d H:i:s");
 $memory_text = '';
-$memory_text .= htmlentities('<?php')."\n\n";
+$memory_text .= "<?php\n\n";
 $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'//'.$update_time."\n\n";
 
 //CONFIG VARS
@@ -54,9 +54,9 @@ foreach($this->X_model->fetch(array(
         }
 
         $memory_text .= '     '.$child['e__id'].' => array('."\n";
-        $memory_text .= '        \'m_title\' => \''.htmlentities(str_replace('\'','\\\'',$child['e__title'])).'\','."\n";
-        $memory_text .= '        \'m_message\' => \''.htmlentities(str_replace('\'','\\\'',$child['x__message'])).'\','."\n";
-        $memory_text .= '        \'m_icon\' => \''.htmlentities($child['e__icon']).'\','."\n";
+        $memory_text .= '        \'m_title\' => \''.(str_replace('\'','\\\'',$child['e__title'])).'\','."\n";
+        $memory_text .= '        \'m_message\' => \''.(str_replace('\'','\\\'',$child['x__message'])).'\','."\n";
+        $memory_text .= '        \'m_icon\' => \''.($child['e__icon']).'\','."\n";
         $memory_text .= '        \'m_profile\' => array('.join(',',$child_parent_ids).'),'."\n";
         $memory_text .= '     ),'."\n";
 
@@ -64,8 +64,12 @@ foreach($this->X_model->fetch(array(
     $memory_text .= ');'."\n";
 }
 
+echo $memory_text;
+/*
 //Now Save File:
 $myfile = fopen("application/config/mench_memory.php", "w+") or die("Unable to open file!");
 fwrite($myfile, $memory_text);
 fclose($myfile);
+
 echo 'File Updated As of '.$update_time;
+*/
