@@ -2,6 +2,7 @@
 
 application/config/database.php
 application/config/credentials.php
+application/config/mench_memory.php
 
 application/cache/*
 !application/cache/index.html
