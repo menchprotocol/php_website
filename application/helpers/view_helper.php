@@ -1184,7 +1184,7 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e, $index_id = 99 /* Locked */, $headline_append = null){
+function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e, $index_id = 99 /* Locked */){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -1198,8 +1198,7 @@ function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e, $index_id = 9
     $common_prefix = '';
     $ui = '';
 
-    //Headline:
-    $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[$list_e__id]['m_icon'].'</span>'.$e___11035[$list_e__id]['m_title'].$headline_append.'</div>';
+    $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[$list_e__id]['m_icon'].'</span>'.$e___11035[$list_e__id]['m_title'].'</div>';
 
     if($index_id >= 0){
         $common_prefix = i_calc_common_prefix($is_next, 'i__title');
@@ -1207,6 +1206,7 @@ function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e, $index_id = 9
     }
 
     $ui .= '<div class="doclear">&nbsp;</div>';
+
     $ui .= '<div class="list-group">';
     $is_last_continious_complete = true;
     $counter = 0;

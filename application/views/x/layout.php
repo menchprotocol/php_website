@@ -652,7 +652,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     $focus_tab .= '<div class="file_saving_result">';
 
-                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m_icon'].'</span>'.$e___11035[13980]['m_title'].'</div>';
+                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m_icon'].'</span>'.$e___11035[13977]['m_title'].'</div>';
 
                     $focus_tab .= '<div class="previous_answer">' . $this->X_model->message_send($x_completes[0]['x__message']) . '</div>';
 
@@ -684,7 +684,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $time_estimate = view_i_tree_stats($i_stats, $show_nav, false);
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e, 99, ( $time_estimate ? '<div class="i_estimates">'.$time_estimate.'</div>' : null ));
+            $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
+            $focus_tab .= ( $time_estimate ? '<div class="i_estimates">'.$time_estimate.'</div>' : '' );
 
             //IDEA PREVIOUS
             $is_previous = $this->X_model->fetch(array(
