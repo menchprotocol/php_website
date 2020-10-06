@@ -607,6 +607,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             } elseif ($i_focus['i__type'] == 6677) {
 
+                //DISCOVER ONLY
+                $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
+
+                $has_substance = count($is_next);
                 $has_stats = false;
                 if (count($is_next) > 1) {
                     //NEXT IDEAS
@@ -614,10 +618,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $focus_tab .= '<div class="i_estimates hideIfEmpty">' . $has_stats . '</div>';
                     $has_substance = true;
                 }
-
-                //DISCOVER ONLY
-                $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
-                $has_substance = count($is_next);
 
             } elseif ($i_focus['i__type'] == 6683) {
 
