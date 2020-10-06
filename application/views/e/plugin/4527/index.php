@@ -70,5 +70,5 @@ $myfile = fopen("application/config/mench_memory.php", "w+") or die("Unable to o
 fwrite($myfile, $memory_text);
 fclose($myfile);
 
-echo 'File Updated As of '.$update_time;
+//Show:
 echo nl2br($memory_text);
