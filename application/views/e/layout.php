@@ -444,16 +444,16 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-
             //List References
             $list_i = view_coins_e(12273, $e['e__id'], 1, true, $exclude_ids);
+
             if(count($list_i)){
-
                 $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m_icon'].'</span>'.$e___11035[13550]['m_title'].'</div>';
+            }
 
-                if($superpower_10939 && !$source_is_e){
-                    //Give Option to Add New Idea:
-                    $focus_tab .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
+            if($superpower_10939 && !$source_is_e){
+                //Give Option to Add New Idea:
+                $focus_tab .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></a>
                         <input type="text"
@@ -462,8 +462,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[13912]['m_title'].'">
                     </div><div class="algolia_pad_search hidden">'.config_var(13914).'</div></div></div>';
-                }
+            }
 
+
+            if(count($list_i)){
                 $focus_tab .= '<div class="row top-margin" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
@@ -475,7 +477,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 if($counter > count($list_i)){
                     $focus_tab .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/ledger?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m_icon'].'</span>'.$e___11035[13913]['m_title'].' ['.$counter.']</a></div></div>';
                 }
-
             }
 
         } elseif($x__type==6255){
