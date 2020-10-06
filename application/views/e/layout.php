@@ -445,7 +445,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
             //List References
-            $list_i = view_coins_e(12273, $e['e__id'], 1);
+            $list_i = view_coins_e(12273, $e['e__id'], 1, true, $exclude_ids);
             if(count($list_i)){
 
                 $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m_icon'].'</span>'.$e___11035[13550]['m_title'].'</div>';
