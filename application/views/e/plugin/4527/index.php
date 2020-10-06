@@ -31,7 +31,7 @@ foreach($this->X_model->fetch(array(
         array_push($child_ids , $child['e__id']);
     }
 
-    $memory_text .= '<br />//'.$en['e__title'].':'."\n";
+    $memory_text .= "\n".'//'.$en['e__title'].':'."\n";
     $memory_text .= '$config[\'n___'.$en['x__down'].'\'] = array('.join(',',$child_ids).');'."\n";
     $memory_text .= '$config[\'e___'.$en['x__down'].'\'] = array('."\n";
     foreach($children as $child){
@@ -53,12 +53,12 @@ foreach($this->X_model->fetch(array(
             array_push($child_parent_ids, intval($cp_en['e__id']));
         }
 
-        $memory_text .= '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['e__id'].' => array('."\n";
-        $memory_text .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_title\' => \''.htmlentities(str_replace('\'','\\\'',$child['e__title'])).'\','."\n";
-        $memory_text .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_message\' => \''.htmlentities(str_replace('\'','\\\'',$child['x__message'])).'\','."\n";
-        $memory_text .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['e__icon']).'\','."\n";
-        $memory_text .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_profile\' => array('.join(',',$child_parent_ids).'),'."\n";
-        $memory_text .= '&nbsp;&nbsp;&nbsp;&nbsp; ),'."\n";
+        $memory_text .= '     '.$child['e__id'].' => array('."\n";
+        $memory_text .= '        \'m_title\' => \''.htmlentities(str_replace('\'','\\\'',$child['e__title'])).'\','."\n";
+        $memory_text .= '        \'m_message\' => \''.htmlentities(str_replace('\'','\\\'',$child['x__message'])).'\','."\n";
+        $memory_text .= '        \'m_icon\' => \''.htmlentities($child['e__icon']).'\','."\n";
+        $memory_text .= '        \'m_profile\' => array('.join(',',$child_parent_ids).'),'."\n";
+        $memory_text .= '     ),'."\n";
 
     }
     $memory_text .= ');'."\n";
