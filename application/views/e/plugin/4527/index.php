@@ -3,7 +3,8 @@
 $update_time = date("Y-m-d H:i:s");
 $memory_text = '';
 $memory_text .= "<?php\n\n";
-$memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'//'.$update_time."\n\n";
+$memory_text .= '//UPDATED: '.$update_time."\n\n";
+$memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'."\n\n";
 
 //CONFIG VARS
 foreach($this->X_model->fetch(array(
@@ -64,12 +65,10 @@ foreach($this->X_model->fetch(array(
     $memory_text .= ');'."\n";
 }
 
-echo $memory_text;
-/*
 //Now Save File:
 $myfile = fopen("application/config/mench_memory.php", "w+") or die("Unable to open file!");
 fwrite($myfile, $memory_text);
 fclose($myfile);
 
 echo 'File Updated As of '.$update_time;
-*/
+echo nl2br($memory_text);
