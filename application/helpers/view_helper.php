@@ -1247,7 +1247,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
     $ui = '';
 
     //Header:
-    $ui .= '<div class="headline"><span class="icon-block">'.$e___4485[$x__type]['m_icon'].'</span>'.$e___4485[$x__type]['m_title'].'</div>';
+    $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___4485[$x__type]['m_icon'].'</span>'.$e___4485[$x__type]['m_title'].'</div>';
 
     if($show_empty_error && !count($i_notes) && $e_of_i){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin-bottom:13px;">';
