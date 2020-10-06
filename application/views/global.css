@@ -1655,7 +1655,7 @@ label {
 }
 
 .headline{
-    padding:5px 0 5px 33px;
+    padding:5px 0;
 }
 
 .headline, .headline a, .headline i {

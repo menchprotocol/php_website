@@ -590,7 +590,7 @@ function view_mench_coins(){
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $ui = '';
 
-    $ui .= '<div class="headline">'.$e___11035[12467]['m_title'].'</div>';
+    $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12467]['m_icon'].'</span>'.$e___11035[12467]['m_title'].'</div>';
     $ui .= '<div class="list-group" style="padding-bottom:33px;">';
     $ui .= '<div class="list-group-item no-side-padding">';
     $ui .= '<div class="row">';
@@ -841,7 +841,7 @@ function view_i_tree_e($i){
 
     foreach($CI->config->item('e___13207') as $e__id => $m2){
         if(isset($i_stats['count_'.$e__id]) && $i_stats['count_'.$e__id]>0){
-            $ui .= '<div class="headline">'.$i_stats['count_'.$e__id].' '.$m2['m_title'].'</div>';
+            $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].'</div>';
             $ui .= '<div class="list-group" style="margin-bottom:33px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
                 $ui .= view_e_basic($e);
@@ -1184,7 +1184,7 @@ function view_caret($e__id, $m, $object__id){
 }
 
 
-function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $index_id = 99 /* Locked */){
+function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e, $index_id = 99 /* Locked */){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -1198,12 +1198,8 @@ function view_i_list($in_my_x, $i, $is_next, $user_e, $list_title = null, $index
     $common_prefix = '';
     $ui = '';
 
-    if(strlen($list_title)){
-        if(strip_tags($list_title)!=$list_title){
-            $ui .= $list_title;
-        } else {
-            $ui .= '<div class="pull-left headline">'.$list_title.'</div>';
-        }
+    if(strlen($list_e__id)){
+        $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[$list_e__id]['m_icon'].'</span>'.$e___11035[$list_e__id]['m_title'].'</div>';
         $ui .= '<div class="doclear">&nbsp;</div>';
     }
 

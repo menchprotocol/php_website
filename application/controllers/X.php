@@ -762,9 +762,10 @@ class X extends CI_Controller
         ));
 
         //All good:
+        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         return view_json(array(
             'status' => 1,
-            'message' => '<div class="headline">YOUR UPLOAD</div><div class="previous_answer">'.$this->X_model->message_send($new_message).'</div>',
+            'message' => '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m_icon'].'</span>'.$e___11035[13980]['m_title'].'</div><div class="previous_answer">'.$this->X_model->message_send($new_message).'</div>',
         ));
 
     }
