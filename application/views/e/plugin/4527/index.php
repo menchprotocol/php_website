@@ -65,7 +65,7 @@ foreach($this->X_model->fetch(array(
 }
 
 //Now Save File:
-$myfile = fopen("application/cache/platform_memory.php", "w+") or die("Unable to open file!");
+$myfile = fopen("application/config/mench_memory.php", "w+") or die("Unable to open file!");
 fwrite($myfile, $memory_text);
 fclose($myfile);
 echo 'File Updated As of '.$update_time;
