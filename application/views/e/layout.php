@@ -386,9 +386,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             if($superpower_10939){
 
-                //Give Option to Add New Idea:
-                $focus_tab .= '<div class="list-group add_e_idea top-margin">';
-                $focus_tab .= '<div class="list-group-item list-adder">
+                //MY IDEAS?
+                if($source_is_e){
+
+                    $focus_tab .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m_icon'] . '</span>' . $e___11035[10573]['m_title'] . '</div>';
+
+                    //Give Option to Add New Idea:
+                    $focus_tab .= '<div class="list-group add_e_idea top-margin"><div class="list-group-item list-adder">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></a>
                         <input type="text"
@@ -396,13 +400,9 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                maxlength="' . config_var(4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[13912]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.config_var(13914).'</div></div>';
-                $focus_tab .= '</div>';
+                    </div><div class="algolia_pad_search hidden">'.config_var(13914).'</div></div></div>';
 
-                //MY IDEAS?
-                if($source_is_e){
 
-                    $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[10573]['m_icon'].'</span>'.$e___11035[10573]['m_title'].'</div>';
                     $i_bookmarks = $this->X_model->fetch(array(
                         'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -450,6 +450,20 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             if(count($list_i)){
 
                 $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m_icon'].'</span>'.$e___11035[13550]['m_title'].'</div>';
+
+                if($superpower_10939 && !$source_is_e){
+                    //Give Option to Add New Idea:
+                    $focus_tab .= '<div class="list-group add_e_idea top-margin"><div class="list-group-item list-adder">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               maxlength="' . config_var(4736) . '"
+                               id="newIdeaTitle"
+                               placeholder="'.$e___11035[13912]['m_title'].'">
+                    </div><div class="algolia_pad_search hidden">'.config_var(13914).'</div></div></div>';
+                }
+
                 $focus_tab .= '<div class="row top-margin" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
