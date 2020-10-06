@@ -70,5 +70,7 @@ $myfile = fopen("application/config/mench_memory.php", "w+") or die("Unable to o
 fwrite($myfile, $memory_text);
 fclose($myfile);
 
+echo '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully updated file, see details below.</div>';
+
 //Show:
-echo nl2br($memory_text);
+echo '<textarea style="background-color:#FFFFFF; color:#222222 !important; padding:20px; font-family: monospace; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.$memory_text.'</textarea>';
