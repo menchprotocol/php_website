@@ -9,8 +9,8 @@
     echo '<h1 class="big-frame extra-big">' . view_i_title($i) . '</h1>';
 
     //IDEA MESSAGES
-    echo '<div class="message-center" style="margin-bottom:89px;"><a href="javascript:void(0);" onclick="$(\'.message-center\').toggleClass(\'hidden\');">'.$e___11035[13952]['m_icon'].' '.$e___11035[13952]['m_title'].'</a></div>';
-    echo '<div class="message-center hidden" style="margin-bottom:89px;">';
+    echo '<div class="how_it_works" style="margin-bottom:89px;"><a href="javascript:void(0);" onclick="$(\'.how_it_works\').toggleClass(\'hidden\');">'.$e___11035[13952]['m_icon'].' '.$e___11035[13952]['m_title'].'</a></div>';
+    echo '<div class="message-center how_it_works hidden" style="margin-bottom:89px;">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
@@ -31,7 +31,7 @@
         'x__left' => $i['i__id'],
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $key => $x){
         //Show only if not in discovering list:
-        echo view_i_cover(6255, $x, false);
+        echo view_i_cover(6255, $x, false, null, false, true);
     }
     echo '</div>';
 

@@ -31,7 +31,7 @@ function view_i_tree_stats($i_stats, $noshow_idea, $hide_time, $hide_idea = true
 
     //IDEAS
     if(!$noshow_idea){
-        $ui .= '<span class="'.( $hide_idea ? ' i_x_stats hidden ' : '' ).' inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" '.( !$cover_show ? 'style="min-width:100px;"' : '' ).'>'.( $i_stats['i___6169'] > 0 ? ( $has_idea ? ( $cover_show ? $e___13544[13629]['m_icon'].'&nbsp;' : '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span>' ) : '' ).( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ) : '&nbsp;' ).'</span>';
+        $ui .= '<span class="how_it_works '.( $hide_idea ? ' i_x_stats hidden ' : '' ).' inline-block '.extract_icon_color($e___13544[13629]['m_icon']).'" '.( !$cover_show ? 'style="min-width:100px;"' : '' ).' title="'.$e___13544[13629]['m_title'].'" data-toggle="tooltip" data-placement="top">'.( $i_stats['i___6169'] > 0 ? ( $has_idea ? ( $cover_show ? $e___13544[13629]['m_icon'].'&nbsp;' : '<span class="icon-block">'.$e___13544[13629]['m_icon'].'</span>' ) : '' ).( $has_idea ? view_number($i_stats['i___6169']).( $is_interactive ? '<span class="mid-range">-</span>'.view_number($i_stats['i___6170']) : '' ) : '&nbsp;' ) : '&nbsp;' ).'</span>';
     }
 
 
@@ -1361,7 +1361,7 @@ function view__focus__e($e){
     return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m_title'].'"><span class="icon-block">'.$e___11035[13670]['m_icon'].'</span>' . view_e__icon($e['e__icon']) . '&nbsp;<a href="/@'.$e['e__id'].'" class="'.extract_icon_color($e['e__icon']).'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m_title'].'">'.$e___11035[13671]['m_icon'].'</a></div>';
 }
 
-function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_e = false){
+function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_e = false, $hide_idea = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1413,7 +1413,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $ui .= ( $can_click ? '</a>' : '</div>' );
     $ui .= '</div>';
     $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
-    $ui .= '<div style="padding-bottom:5px;">'.view_i_tree_stats($i_stats, false, false, false).'</div>';
+    $ui .= '<div style="padding-bottom:5px;">'.view_i_tree_stats($i_stats, false, false, $hide_idea).'</div>';
     $ui .= view_i_title($i);
     $ui .= '</a></div>';
     $ui .= '</div>';
