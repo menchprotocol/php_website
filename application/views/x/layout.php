@@ -819,7 +819,6 @@ echo $tab_content;
 if($in_my_x){
     //COMMENTS
     echo '<div class="idea-comments hidden margin-top-down">';
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[12419]['m_icon'].'</span>'.$e___11035[12419]['m_title'].'</div>';
     echo view_i_note_list(12419, $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 12419, //COMMENTS
