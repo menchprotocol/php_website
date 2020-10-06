@@ -1,4 +1,4 @@
-<?php
+    <?php
 $e___12467 = $this->config->item('e___12467');
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
@@ -227,14 +227,14 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $pre_fix = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
         }
 
-        if($counter > 1){
-            //IDEA TREE STATS
-            $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, true, false).'</div>';
-        }
-
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
         foreach($is_next as $next_i) {
             $focus_tab .= view_i($next_i, $i_focus['i__id'], false, $e_of_i);
+        }
+
+        if($counter > 1){
+            //IDEA TREE STATS
+            $focus_tab .= '<div class="list-group-item i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, true, false).'</div>';
         }
 
         if($e_of_i && $is_active){
