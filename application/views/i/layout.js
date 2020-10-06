@@ -383,7 +383,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         //Deleting?
         if(!is_i_active){
             //Seems to be deleting, confirm:
-            var r = confirm("Delete this idea AND remove all its transactions to other ideas?");
+            var r = confirm("Delete this idea AND remove all its links to other ideas?");
             if (r == false) {
                 return false;
             }
