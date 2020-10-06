@@ -103,7 +103,7 @@ $autoload['helper'] = array('general_helper','view_helper','cookie');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('', 'credentials');
+$autoload['config'] = array('old_memory', 'credentials');
 
 /*
 | -------------------------------------------------------------------
