@@ -232,11 +232,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= view_i($next_i, $i_focus['i__id'], false, $e_of_i);
         }
 
-        if($counter > 1){
-            //IDEA TREE STATS
-            $focus_tab .= '<div class="list-group-item i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, true, false).'</div>';
-        }
-
         if($e_of_i && $is_active){
             $focus_tab .= '<div class="list-group-item list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
@@ -251,6 +246,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $focus_tab .= '</div>';
+
+        if($counter > 1){
+            //IDEA TREE STATS
+            $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, true, false).'</div>';
+        }
 
     } elseif($x__type==6255) {
 
