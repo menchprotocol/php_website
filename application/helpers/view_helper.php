@@ -613,7 +613,7 @@ function view_mench_coins(){
 
 
 
-function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
+function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true, $i_exclude_ids = array()){
 
     /*
      *
@@ -647,6 +647,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
+            'i__id NOT IN (' . join(',', $i_exclude_ids) . ')' => null,
         );
 
     } elseif($x__type==6255){

@@ -381,7 +381,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
             //IDEAS
             $counter = $counter__i;
-            $i_bookmarks = array();
+            $i_exclude_ids = array();
 
             if($superpower_10939){
 
@@ -422,6 +422,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                         $focus_tab .= '<div class="row top-margin" id="list_13412">';
                         foreach($i_bookmarks as $item){
+                            array_push($i_exclude_ids, $item['i__id']);
                             $focus_tab .= view_i_cover(12273, $item, $source_is_e, null, $e);
                         }
                         $focus_tab .= '</div>';
