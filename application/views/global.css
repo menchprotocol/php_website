@@ -1831,8 +1831,6 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
-    .show-max-active {display: none !important;}
-
     .big-frame{
         font-size: 2.5em;
     }
@@ -1843,7 +1841,7 @@ label {
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 41px; }
 
-    /*    .active .show-max-active {display:none !important;}  */
+    .active .show-max-active {display:none !important;}
     .wrap-card, .coin-frame{
         margin: 0 5px;
         width: -webkit-calc(100% - 10px) !important;
