@@ -1766,9 +1766,12 @@ div.dropdown-item {
     display: block;
 }
 .chat-title{
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
+    position: fixed;
+    bottom: 3px;
+    left: 8px;
+    z-index: 99999;
+    padding: 1px 4px;
+    border-radius: 8px;
 }
 .cover-link .inside-btn {
     position:  absolute;
