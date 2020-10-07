@@ -1404,7 +1404,7 @@ div.dropdown-item {
 
 .btn.btn-idea, .btn.btn-idea:hover, .btn.btn-idea:focus, .btn.btn-idea:active, .btn.btn-idea.active, .btn.btn-idea:active:focus, .btn.btn-idea:active:hover, .btn.btn-idea.active:focus, .btn.btn-idea.active:hover, .open > .btn.btn-idea.dropdown-toggle, .open > .btn.btn-idea.dropdown-toggle:focus, .open > .btn.btn-idea.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-idea, .navbar .navbar-nav > li > a.btn.btn-idea:hover, .navbar .navbar-nav > li > a.btn.btn-idea:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active, .navbar .navbar-nav > li > a.btn.btn-idea.active, .navbar .navbar-nav > li > a.btn.btn-idea:active:focus, .navbar .navbar-nav > li > a.btn.btn-idea:active:hover, .navbar .navbar-nav > li > a.btn.btn-idea.active:focus, .navbar .navbar-nav > li > a.btn.btn-idea.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-idea.dropdown-toggle:hover {
     background-color: #ffc500;
-    color: #FFFFFF;
+    color: #222222;
 }
 
 .btn-idea .fas,.btn-idea .far,.btn-idea .fal,.btn-idea .fad { color: #FFFFFF !important; }
