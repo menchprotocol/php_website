@@ -28,7 +28,7 @@ $e_focus_found = false; //Used to determine the first tab to be opened
 
 //IDEA PREVIOUS
 echo '<div class="container coin-frame">';
-echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[11019]['m_icon'].'</span>'.$e___11035[11019]['m_title'].'</div>';
+echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m_icon'].'</span>'.$e___11035[11019]['m_title'].'</div>';
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -228,7 +228,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $pre_fix = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
         }
 
-        $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13542]['m_icon'].'</span>'.$e___11035[13542]['m_title'].'</div>';
+        $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m_icon'].'</span>'.$e___11035[13542]['m_title'].'</div>';
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
         foreach($is_next as $next_i) {
             $focus_tab .= view_i($next_i, $i_focus['i__id'], false, $e_of_i);

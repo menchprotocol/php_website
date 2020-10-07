@@ -1662,6 +1662,7 @@ label {
 
 .headline{
     padding:5px 0;
+    margin-top: 10px;
 }
 
 .headline, .headline a, .headline i {

@@ -26,7 +26,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
         //PROFILE
         echo '<div class="container coin-frame">';
-        echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[11030]['m_icon'].'</span>'.$e___11035[11030]['m_title'].'</div>';
+        echo '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m_icon'].'</span>'.$e___11035[11030]['m_title'].'</div>';
         echo '<div id="list_11030" class="list-group grey-list">';
         $profiles = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -345,7 +345,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 }
             }
 
-            $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[11029]['m_icon'].'</span>'.$e___11035[11029]['m_title'].'</div>';
+            $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[11029]['m_icon'].'</span>'.$e___11035[11029]['m_title'].'</div>';
             $focus_tab .= '<div id="list_e" class="list-group">';
 
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
@@ -389,7 +389,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 //MY IDEAS?
                 if($source_is_e){
 
-                    $focus_tab .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m_icon'] . '</span>' . $e___11035[10573]['m_title'] . '</div>';
+                    $focus_tab .= '<div class="headline"><span class="icon-block">' . $e___11035[10573]['m_icon'] . '</span>' . $e___11035[10573]['m_title'] . '</div>';
 
                     //Give Option to Add New Idea:
                     $focus_tab .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
@@ -448,7 +448,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $list_i = view_coins_e(12273, $e['e__id'], 1, true, $exclude_ids);
 
             if(count($list_i)){
-                $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m_icon'].'</span>'.$e___11035[13550]['m_title'].'</div>';
+                $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13550]['m_icon'].'</span>'.$e___11035[13550]['m_title'].'</div>';
             }
 
             if($superpower_10939 && !$source_is_e){
@@ -488,7 +488,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             if($source_is_e){
 
                 //Give Option to Add New Idea:
-                $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_title'].'</div>';
+                $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_title'].'</div>';
 
                 $focus_tab .= '<div class="list-group" id="discoveryNew"><div class="list-group-item list-adder">
                     <div class="input-group border">
@@ -547,7 +547,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $featured_i = $this->X_model->fetch($featured_filter, array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
                 if(count($featured_i)){
-                    $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13813]['m_icon'].'</span>'.$e___11035[13813]['m_title'].'</div>';
+                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13813]['m_icon'].'</span>'.$e___11035[13813]['m_title'].'</div>';
                     $focus_tab .= '<div class="row top-margin">';
                     foreach($featured_i as $key => $x){
                         $focus_tab .= view_i_cover(6255, $x, false, null, $e);

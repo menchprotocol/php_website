@@ -284,7 +284,7 @@ $meets_13865 = !count($fetch_13865);
 
 if(count($fetch_13865)){
 
-    echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13865]['m_icon'].'</span>'.$e___11035[13865]['m_title'].'</div>';
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[13865]['m_icon'].'</span>'.$e___11035[13865]['m_title'].'</div>';
 
     $missing_13865 = 0;
     $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
