@@ -847,8 +847,8 @@ class E extends CI_Controller
                 if(count($e__profiles)){
                     $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
                 } else {
-                    //Is the plugin activated?
-                    $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/e/plugin/7269' : '/@' );
+                    //Is the app activated?
+                    $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/app/7269' : '/@' );
                 }
             }
 
@@ -1671,11 +1671,11 @@ class E extends CI_Controller
 
             if(( substr_count($es[0]['e__icon'], 'class="') ?  : null )){
 
-                return redirect_message('/e/plugin/7267?search_for='.urlencode(one_two_explode('class="','"',$es[0]['e__icon'])));
+                return redirect_message('/app/7267?search_for='.urlencode(one_two_explode('class="','"',$es[0]['e__icon'])));
 
             } elseif(strlen($es[0]['e__icon'])) {
 
-                return redirect_message('/e/plugin/7267?search_for=' . urlencode($es[0]['e__icon']));
+                return redirect_message('/app/7267?search_for=' . urlencode($es[0]['e__icon']));
 
             } else {
                 return view_json(array(
@@ -1965,24 +1965,24 @@ class E extends CI_Controller
     }
 
 
-    function plugin($plugin_e__id = 0){
+    function app($app_e__id = 0){
 
-        if($plugin_e__id < 1){
+        if($app_e__id < 1){
 
-            //List Plugins to choose from:
+            //List apps to choose from:
             $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
             $this->load->view('header', array(
                 'title' => $e___11035[6287]['m_title'],
             ));
-            $this->load->view('e/plugin_home');
+            $this->load->view('e/app_home');
             $this->load->view('footer');
 
         } else {
 
-            //Load a specific plugin:
-            //Valud Plugin?
-            if(!in_array($plugin_e__id, $this->config->item('n___6287'))){
-                die('Invalid Plugin ID');
+            //Load a specific app:
+            //Valud app?
+            if(!in_array($app_e__id, $this->config->item('n___6287'))){
+                die('Invalid app ID');
             }
 
             //Running from browser? If so, authenticate:
@@ -1996,32 +1996,32 @@ class E extends CI_Controller
             //Needs extra superpowers?
             boost_power();
             $e___6287 = $this->config->item('e___6287'); //MENCH PLUGIN
-            $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$plugin_e__id]['m_profile']);
+            $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m_profile']);
             if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
             }
 
 
-            //This is also duplicated in plugin_frame to pass-on to plugin file:
+            //This is also duplicated in app_frame to pass-on to app file:
             $view_data = array(
-                'plugin_e__id' => $plugin_e__id,
+                'app_e__id' => $app_e__id,
                 'user_e' => $user_e,
                 'is_u_request' => $is_u_request,
             );
 
-            if(in_array($plugin_e__id, $this->config->item('n___12741'))){
+            if(in_array($app_e__id, $this->config->item('n___12741'))){
 
                 //Raw UI:
-                $this->load->view('e/plugin/'.$plugin_e__id.'/index', $view_data);
+                $this->load->view('e/app/'.$app_e__id.'/index', $view_data);
 
             } else {
 
                 //Regular UI:
                 //Load Plugin:
                 $this->load->view('header', array(
-                    'title' => strip_tags($e___6287[$plugin_e__id]['m_icon']).$e___6287[$plugin_e__id]['m_title'].' | PLUGIN',
+                    'title' => strip_tags($e___6287[$app_e__id]['m_icon']).$e___6287[$app_e__id]['m_title'].' | PLUGIN',
                 ));
-                $this->load->view('e/plugin_frame', $view_data);
+                $this->load->view('e/app_frame', $view_data);
                 $this->load->view('footer');
 
             }
@@ -2077,7 +2077,7 @@ class E extends CI_Controller
 
     }
 
-    function plugin_7264(){
+    function app_7264(){
 
         //Authenticate User:
         $user_e = superpower_assigned(12700);

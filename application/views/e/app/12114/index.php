@@ -45,7 +45,7 @@ if($is_u_request && !isset($_GET['send_email'])){
 
     echo '<div style="font-weight: bold; padding: 0 0 13px 0;">'.$subject.'</div>';
     echo $html_message;
-    echo '<div style="padding: 21px 0;"><a href="/e/plugin/12114?send_email=1">Email Me This Report</a></div>';
+    echo '<div style="padding: 21px 0;"><a href="/app/12114?send_email=1">Email Me This Report</a></div>';
 
 } else {
 

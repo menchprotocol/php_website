@@ -398,7 +398,7 @@ class I extends CI_Controller {
 
                         //If still not found, go to main page if no parent found:
                         if(!$deletion_redirect){
-                            $deletion_redirect = ( intval($this->session->userdata('session_time_7260')) ? '/e/plugin/7260' : home_url() );
+                            $deletion_redirect = ( intval($this->session->userdata('session_time_7260')) ? '/app/7260' : home_url() );
                         }
 
                     } else {

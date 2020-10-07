@@ -10,7 +10,7 @@ echo '<h1 style="padding-top:5px;"><span class="icon-block">'.view_e__icon($e___
 echo '<div class="list-group">';
 foreach($this->config->item('e___6287') as $e__id => $m) {
 
-    echo '<a href="/e/plugin/'.$e__id.'" class="list-group-item no-side-padding">';
+    echo '<a href="/app/'.$e__id.'" class="list-group-item no-side-padding">';
 
     //SOURCE
     echo '<span class="icon-block">' . view_e__icon($m['m_icon']) . '</span>';

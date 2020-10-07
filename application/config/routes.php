@@ -12,9 +12,10 @@ $route['signin/(:num)']             = "e/signin/$1"; //Sign
 //COINS
 $route['(:num)']                    = "x/x_coin/$1";
 $route['@(:num)']                   = "e/e_coin/$1";
-$route['_(:num)']                   = "e/e_coin/$1";
 $route['~(:num)']                   = "i/i_coin/$1";
 
 //OTHER
+$route['app']                       = "e/app";
+$route['app/(:num)']                = "e/app/$1";
 $route['ledger']                    = "x/x_list"; //Transactions
 $route['404_override']              = 'e/e_404'; //Page not found, etc...

@@ -429,7 +429,7 @@ function view_x($x, $is_parent_tr = false)
     if(!$hide_sensitive){
         //Metadata
         if(strlen($x['x__metadata']) > 0){
-            $ui .= '<div class="simple-line"><a href="/e/plugin/12722?x__id=' . $x['x__id'] . '"><span class="icon-block">'.$e___4341[6103]['m_icon']. '</span><u>'.$e___4341[6103]['m_title']. '</u></a></div>';
+            $ui .= '<div class="simple-line"><a href="/app/12722?x__id=' . $x['x__id'] . '"><span class="icon-block">'.$e___4341[6103]['m_icon']. '</span><u>'.$e___4341[6103]['m_title']. '</u></a></div>';
         }
 
         //Message

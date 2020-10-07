@@ -1,5 +1,5 @@
 
-<script src="/application/views/e/plugin/7264/index.js?v=1.0" type="text/javascript"></script>
+<script src="/application/views/e/app/7264/index.js?v=1.0" type="text/javascript"></script>
 
 <?php
 
@@ -33,6 +33,6 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     echo '</form>';
 
     //Load the report via Ajax here on page load:
-    echo '<div id="plugin_7264"></div>';
+    echo '<div id="app_7264"></div>';
 
 }
