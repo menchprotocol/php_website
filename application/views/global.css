@@ -1313,14 +1313,14 @@ label {
     border-top-width:0 !important;
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
+a.dropdown-item:focus, a.dropdown-item:hover {
     text-decoration: none;
     background-color: #999999;
 }
-.dropdown-item, .dropdown-item {
+.dropdown-item {
     text-decoration: none;
 }
-.dropdown-item.active, .dropdown-item:active {
+a.dropdown-item.active, a.dropdown-item:active {
     color: #fff !important;
     background-color: #999999 !important;
     cursor: default !important;
