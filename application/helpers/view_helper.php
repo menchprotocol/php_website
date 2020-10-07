@@ -407,6 +407,15 @@ function view_x($x, $is_parent_tr = false)
     //ID
     $ui .= '<div class="simple-line"><a href="/ledger?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m_title'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m_icon']. '</span>'.$x['x__id'].'</a></div>';
 
+
+    //STATUS
+    //$ui .= '<div class="simple-line"><a href="/@'.$x['x__status'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_title'].( strlen($e___6186[$x['x__status']]['m_message']) ? ': '.$e___6186[$x['x__status']]['m_message'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;<span class="'.extract_icon_color($e___6186[$x['x__status']]['m_icon']).'">'.$e___6186[$x['x__status']]['m_title'].'</span></a></div>';
+
+
+    //TYPE
+    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_title'].( strlen($e___4593[$x['x__type']]['m_message']) ? ': '.$e___4593[$x['x__type']]['m_message'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span>'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;<span class="'.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'">' . $e___4593[$x['x__type']]['m_title'] . '</span></a></div>';
+
+
     //TIME
     $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $e___4341[4362]['m_title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$e___4341[4362]['m_icon']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' Ago</span></div>';
 
@@ -428,15 +437,6 @@ function view_x($x, $is_parent_tr = false)
             $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4372]['m_title'].'"><span class="icon-block">'.$e___4341[4372]['m_icon'].'</span><div class="title-block x-msg">'.htmlentities($x['x__message']).'</div></div>';
         }
     }
-
-
-    //STATUS
-    //$ui .= '<div class="simple-line"><a href="/@'.$x['x__status'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m_title'].( strlen($e___6186[$x['x__status']]['m_message']) ? ': '.$e___6186[$x['x__status']]['m_message'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[6186]['m_icon']. '</span>'.$e___6186[$x['x__status']]['m_icon'].'&nbsp;<span class="'.extract_icon_color($e___6186[$x['x__status']]['m_icon']).'">'.$e___6186[$x['x__status']]['m_title'].'</span></a></div>';
-
-
-
-    //TYPE
-    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m_title'].( strlen($e___4593[$x['x__type']]['m_message']) ? ': '.$e___4593[$x['x__type']]['m_message'] : '' ).'" class="montserrat"><span class="icon-block">'.$e___4341[4593]['m_icon']. '</span>'. $e___4593[$x['x__type']]['m_icon'] . '&nbsp;<span class="'.extract_icon_color($e___4593[$x['x__type']]['m_icon']).'">' . $e___4593[$x['x__type']]['m_title'] . '</span></a></div>';
 
 
     //Hide Sensitive Details?
