@@ -282,7 +282,6 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
 
-                $focus_tab .= '<div class="doclear">&nbsp;</div>';
                 $focus_tab .= '<div class="e_editor hidden">';
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[4997]['m_icon'].'</span>'.$e___11035[4997]['m_title'].'</div>';
                 $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
@@ -304,7 +303,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     $focus_tab .= $e_portfolio['e__id'].',';
                 }
                 $focus_tab .= '</div>';
-
+                $focus_tab .= '<div class="doclear">&nbsp;</div>';
                 $focus_tab .= '</div>';
 
 
