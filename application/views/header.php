@@ -99,6 +99,7 @@ $current_mench = current_mench();
      ref=""
      theme_color="#FC1B44">
 </div>
+<div class="chat-title"><?= $e___11035[12899]['m_title'] ?></div>
 
 <?php
 //Any message we need to show here?

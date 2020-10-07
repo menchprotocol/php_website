@@ -1765,7 +1765,11 @@ div.dropdown-item {
     border-radius: 31px;
     display: block;
 }
-
+.chat-title{
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+}
 .cover-link .inside-btn {
     position:  absolute;
     text-align: center;
@@ -2031,7 +2035,9 @@ div.dropdown-item {
 .custom_ui_13884_13886 .form-control,
 .custom_ui_13884_ .form-control,
 .custom_ui_13884_13886 .edit-locked span,
-.custom_ui_13884_ .edit-locked span{
+.custom_ui_13884_ .edit-locked span,
+.custom_ui_13884_13886 .chat-title,
+.custom_ui_13884_ .chat-title{
     background-color:#222222;
     color: #FFFFFF;
 
@@ -2080,7 +2086,8 @@ div.dropdown-item {
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .mench-navigation,
 .custom_ui_13884_13885 .fade,
-.custom_ui_13884_13885 .coin-frame {
+.custom_ui_13884_13885 .coin-frame,
+.custom_ui_13884_13885 .chat-title{
     background-color: #f0f0f0;
     color: #222222;
 }
