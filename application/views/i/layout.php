@@ -157,6 +157,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     $counter = null; //Assume no counters
     $focus_tab = '';
+    $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
     $pre_fix = null;
 
 
@@ -171,7 +172,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = view_coins_i(12274,  $i_focus, false);
         $counter = ( count($i_notes) > $counter ? count($i_notes) : $counter );
-        $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i);
+        $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i, false, false);
 
         //Show tree sources only if more than the sources for this idea:
         if( $counter > count($i_notes) && $superpower_13422 ){
