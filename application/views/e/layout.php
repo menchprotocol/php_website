@@ -155,6 +155,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             if(!$counter){
                 continue;
             }
+            $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
             $focus_tab .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m_icon'].' '.$m['m_title'].' '.number_format($counter, 0).' times.</div>';
 
         } elseif($x__type==12274){
@@ -570,6 +571,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $item_counters = $this->X_model->fetch($i_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
             $counter = $item_counters[0]['totals'];
 
+            $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
             $focus_tab .= '<div class="list-group">';
             if($counter>0){
 
@@ -604,7 +606,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         } elseif($x__type==6225){
 
             //ACCOUNT SETTING
-            $focus_tab = '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:33px;">';
+            $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+            $focus_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:33px;">';
 
             //Display account fields ordered with their SOURCE LINKS:
             foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
