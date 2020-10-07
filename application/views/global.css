@@ -1768,7 +1768,7 @@ div.dropdown-item {
 .chat-title{
     position: fixed;
     bottom: 2px;
-    left: 2px;
+    left: 11px;
     z-index: 99999;
     padding: 1px 4px;
     border-radius: 8px;
