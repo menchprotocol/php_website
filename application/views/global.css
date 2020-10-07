@@ -1831,6 +1831,8 @@ label {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .show-max-active {display: none !important;}
+
     .big-frame{
         font-size: 2.5em;
     }
