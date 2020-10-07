@@ -181,7 +181,7 @@ if(!isset($hide_header)){
                             if($x__type==11060) {
 
                                 //JUST SHOW VERSION:
-                                echo '<div class="dropdown-item '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_title'].'" style="font-size: 0.89em;"><span class="icon-block">'.$m['m_icon'].'</span>'.config_var(11060).'</div>';
+                                echo '<div class="dropdown-item '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_title'].'"><span class="icon-block">'.$m['m_icon'].'</span>'.config_var(11060).'</div>';
                                 continue;
 
                             } elseif(in_array($x__type, $this->config->item('n___10876'))){

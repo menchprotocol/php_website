@@ -1331,12 +1331,6 @@ label {
     cursor: default !important;
 }
 
-div.dropdown-item {
-    background-color: transparent !important;
-}
-
-
-
 .list-group-item .montserrat, .list-group-item{
     text-decoration: none;
 }
@@ -2044,7 +2038,9 @@ div.dropdown-item {
 .custom_ui_13884_13886 .edit-locked span,
 .custom_ui_13884_ .edit-locked span,
 .custom_ui_13884_13886 .chat-title,
-.custom_ui_13884_ .chat-title{
+.custom_ui_13884_ .chat-title,
+.custom_ui_13884_13886 div.dropdown-item,
+.custom_ui_13884_ div.dropdown-item{
     background-color:#222222;
     color: #FFFFFF;
 
@@ -2094,7 +2090,8 @@ div.dropdown-item {
 .custom_ui_13884_13885 .mench-navigation,
 .custom_ui_13884_13885 .fade,
 .custom_ui_13884_13885 .coin-frame,
-.custom_ui_13884_13885 .chat-title{
+.custom_ui_13884_13885 .chat-title,
+.custom_ui_13884_13885 div.dropdown-item{
     background-color: #f0f0f0;
     color: #222222;
 }
