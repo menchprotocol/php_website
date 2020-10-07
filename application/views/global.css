@@ -458,7 +458,7 @@ img.no-radius {
 
 .controller-nav>i{
     color: #222222 !important;
-    font-size: 2.7em;
+    font-size: 2.6em;
 }
 
 /* MENCH Colors */
@@ -496,7 +496,7 @@ img.no-radius {
     background-color: #FC1B44;
     width: 60px;
     height: 60px;
-    padding:8px 0 0 0;
+    padding:9px 0 0 2px;
 }
 .nav-title{
     display: block;
