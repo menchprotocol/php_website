@@ -93,7 +93,7 @@ if($e_of_i){
         'x__type' => 10573, //MY IDEAS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     )));
-    echo '<div class="inline-block pull-left left-half-margin"><a class="btn btn-idea btn-tiny" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')" data-toggle="tooltip" data-placement="top" title="ADD TO '.$e___11035[10573]['m_title'].'"><span class="toggle_i_saved '.( $is_in_my_ideas ? '' : 'hidden' ).'">'.$e___11035[10573]['m_icon'].'</span><span class="controller-nav toggle_i_saved '.( $is_in_my_ideas ? 'hidden' : '' ).'">'.$e___11035[13955]['m_icon'].'</span></a></div>';
+    echo '<div class="inline-block pull-left left-half-margin"><a class="btn btn-idea btn-tiny" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')" data-toggle="tooltip" data-placement="top" title="ADD TO '.$e___11035[10573]['m_title'].'"><span class="toggle_i_saved '.( $is_in_my_ideas ? '' : 'hidden' ).'">'.$e___11035[10573]['m_icon'].'</span><span class="toggle_i_saved '.( $is_in_my_ideas ? 'hidden' : '' ).'">'.$e___11035[13955]['m_icon'].'</span></a></div>';
 }
 
 
