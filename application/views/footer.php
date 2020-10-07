@@ -22,7 +22,8 @@
      attribution=setup_tool
      page_id="381488558920384"
      greeting_dialog_display="hide"
-     theme_color="#007AFD">
+     ref=""
+     theme_color="#FC1B44">
 </div>
 
 
