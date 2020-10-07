@@ -697,7 +697,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             ), array('x__left'), 0);
             if(count($is_previous)){
                 $focus_tab .= '<div style="padding-top: 34px;">';
-                $focus_tab .= view_i_list(11019, $in_my_x, $i_focus, $is_previous, $user_e, -1);
+                $focus_tab .= view_i_list(11019, $in_my_x, $i_focus, $is_previous, $user_e);
                 $focus_tab .= '</div>';
             }
 
