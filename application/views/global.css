@@ -1778,8 +1778,14 @@ div.dropdown-item {
 }
 .inside-btn i {
     margin-top: 4px;
+}
+.wrap-discover .inside-btn i{
+    color: #FFFFFF !important;
+}
+.wrap-idea .inside-btn i{
     color: #222222 !important;
 }
+
 .cover-text{
     margin: 8px 33px 55px;
     text-align: center;
