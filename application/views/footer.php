@@ -21,6 +21,7 @@
 <div class="fb-customerchat"
      attribution=setup_tool
      page_id="381488558920384"
+     greeting_dialog_display="hide"
      theme_color="#007AFD">
 </div>
 
