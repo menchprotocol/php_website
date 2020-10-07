@@ -157,7 +157,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     $counter = null; //Assume no counters
     $focus_tab = '';
-    $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
     $pre_fix = null;
 
 
@@ -172,7 +171,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = view_coins_i(12274,  $i_focus, false);
         $counter = ( count($i_notes) > $counter ? count($i_notes) : $counter );
-        $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i, false, false);
+        $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i);
 
         //Show tree sources only if more than the sources for this idea:
         if( $counter > count($i_notes) && $superpower_13422 ){
@@ -195,6 +194,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = count($i_notes);
 
+        $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:33px;">';
         foreach($i_notes as $i_note) {
             $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
@@ -260,6 +260,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //DISCOVERIES
         $counter = view_coins_i(6255,  $i_focus, false);
 
+        $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
         if($counter){
 
             $query_filters = array(
@@ -299,10 +300,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
 
         $counter = count($i_notes);
-        $focus_tab .= view_i_note_list($x__type, $i_notes, $e_of_i, true, false);
+        $focus_tab .= view_i_note_list($x__type, $i_notes, $e_of_i, true, true);
 
     } elseif($x__type==12969){
 
+        $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
         $u_x = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
@@ -330,6 +332,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $input_options = '';
         $counter = 0;
 
+        $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
         foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
 
             $counter++;
@@ -393,7 +396,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].'&nbsp;'.( $pre_fix ? '<span class="show-max-active hideIfEmpty">'.$pre_fix.'</span>' : '' ).'<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span><span class="show-max-active">&nbsp;'.$m['m_title'].'</span></a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')">'.$m['m_icon'].'&nbsp;'.( $pre_fix ? '<span class="show-max-active hideIfEmpty">'.$pre_fix.'</span>' : '' ).'<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span><span class="show-max-active hidden">&nbsp;'.$m['m_title'].'</span></a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
