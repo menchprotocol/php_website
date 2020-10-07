@@ -149,7 +149,13 @@ if(!isset($hide_header)){
                             $extra_class = null;
                             $text_class = null;
 
-                            if(in_array($x__type, $this->config->item('n___10876'))){
+                            if($x__type==11060) {
+
+                                //JUST SHOW VERSION:
+                                echo '<div class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].' '.config_var(11060).'</div>';
+                                continue;
+
+                            } elseif(in_array($x__type, $this->config->item('n___10876'))){
 
                                 //Fetch URL:
                                 $href = 'href="'.$e___10876[$x__type]['m_message'].'"';
