@@ -336,7 +336,7 @@ class E_model extends CI_Model
             'x__down' => $x__source,
             'x__up IN (' . join(',', $children) . ')' => null, //Current children
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), config_var(11064)) as $x) {
+        ), array(), view_memory(6404,11064)) as $x) {
 
             if (!$previously_assigned && $x['x__up'] == $set_e_child_id) {
                 $previously_assigned = true;

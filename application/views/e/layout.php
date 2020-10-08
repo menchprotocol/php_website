@@ -18,7 +18,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
     var e_focus_id = <?= $e['e__id'] ?>;
 </script>
 
-<script src="/application/views/e/layout.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/e/layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <?php
 
@@ -34,7 +34,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__down' => $e['e__id'],
         ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
-        $show_max = config_var(13803);
+        $show_max = view_memory(6404,13803);
         $hide = false;
         foreach($profiles as $count => $e_profile) {
             if(!$hide && $count==$show_max){
@@ -53,9 +53,9 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                id="New11030input"
-                               maxlength="' . config_var(6197) . '"
+                               maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[13914]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden pad_expand">'.config_var(13914).'</div></div>';
+                    </div><div class="algolia_pad_search hidden pad_expand">'.view_memory(6404,13914).'</div></div>';
         echo '</div>';
         echo '</div>';
 
@@ -355,7 +355,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $focus_tab .= view_e($e_portfolio,false, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
             }
             if ($counter > count($list_e)) {
-                $focus_tab .= view_e_load_more(1, config_var(11064), $counter);
+                $focus_tab .= view_e_load_more(1, view_memory(6404,11064), $counter);
             }
 
             //Input to add new child:
@@ -367,9 +367,9 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    id="New11029input"
-                                   maxlength="' . config_var(6197) . '"
+                                   maxlength="' . view_memory(6404,6197) . '"
                                    placeholder="'.$e___11035[13914]['m_title'].'">
-                        </div><div class="algolia_pad_search hidden pad_expand">'.config_var(13914).'</div></div>';
+                        </div><div class="algolia_pad_search hidden pad_expand">'.view_memory(6404,13914).'</div></div>';
 
             } else {
 
@@ -398,10 +398,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
-                               maxlength="' . config_var(4736) . '"
+                               maxlength="' . view_memory(6404,4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[13912]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.config_var(13914).'</div></div></div>';
+                    </div><div class="algolia_pad_search hidden">'.view_memory(6404,13914).'</div></div></div>';
 
 
                     $i_bookmarks = $this->X_model->fetch(array(
@@ -409,7 +409,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 10573, //BOOKMARKED IDEAS
                         'x__up' => $e['e__id'],
-                    ), array('x__right'), config_var(11064), 0, array('x__sort' => 'ASC'));
+                    ), array('x__right'), view_memory(6404,11064), 0, array('x__sort' => 'ASC'));
 
                     if(count($i_bookmarks) > 0){
 
@@ -439,7 +439,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             } elseif($user_e) {
 
                 //Give Option to Get Started:
-                $focus_tab .= '<div class="msg alert alert-warning" role="alert" style="text-decoration: none;"><span class="icon-block">'.$e___11035[10939]['m_icon'].'</span><a href="'.config_var(10939).'">'.$e___11035[10939]['m_title'].'<span class="icon-block"><i class="fas fa-arrow-right"></i></span></a><div class="padded">'.$e___11035[10939]['m_message'].'</div></div>';
+                $focus_tab .= '<div class="msg alert alert-warning" role="alert" style="text-decoration: none;"><span class="icon-block">'.$e___11035[10939]['m_icon'].'</span><a href="'.view_memory(6404,10939).'">'.$e___11035[10939]['m_title'].'<span class="icon-block"><i class="fas fa-arrow-right"></i></span></a><div class="padded">'.$e___11035[10939]['m_message'].'</div></div>';
 
             }
 
@@ -459,10 +459,10 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
-                               maxlength="' . config_var(4736) . '"
+                               maxlength="' . view_memory(6404,4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[13912]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.config_var(13914).'</div></div></div>';
+                    </div><div class="algolia_pad_search hidden">'.view_memory(6404,13914).'</div></div></div>';
             }
 
 
@@ -498,7 +498,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                id="searchDiscoveries"
                                placeholder="'.$e___11035[13956]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.config_var(13956).'</div></div></div>';
+                    </div><div class="algolia_pad_search hidden">'.view_memory(6404,13956).'</div></div></div>';
             }
 
             //Show My Discoveries
@@ -537,7 +537,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => config_var(12138),
+                    'x__left' => view_memory(6404,12138),
                 );
                 if(count($my_x_ids)){
                     //Exclude Featured Ideas already added to Discoveries:
@@ -575,7 +575,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $focus_tab .= '<div class="list-group">';
             if($counter>0){
 
-                $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), config_var(11064), 0, array('i__weight' => 'DESC'));
+                $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__weight' => 'DESC'));
                 foreach($i_notes_query as $count => $i_notes) {
 
                     if($x__type==12896){
@@ -797,7 +797,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
                 <!-- Source Title -->
-                <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6197]['m_icon'].'</span>'.$e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= config_var(6197) ?></span>]</div>
+                <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6197]['m_icon'].'</span>'.$e___13571[6197]['m_title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= view_memory(6404,6197) ?></span>]</div>
                 <textarea class="form-control text-edit border montserrat doupper" id="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
 
 

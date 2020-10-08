@@ -18,12 +18,12 @@ $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
     //Include some cached sources:
     var focus_i__id = <?= $i_focus['i__id'] ?>;
 </script>
-<script src="/application/views/i/layout.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/application/views/i/layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
 
 $e_focus_found = false; //Used to determine the first tab to be opened
-$show_previous = $e_of_i && $is_active && $i_focus['i__id']!=config_var(12138);
+$show_previous = $e_of_i && $is_active && $i_focus['i__id']!=view_memory(6404,12138);
 
 
 //IDEA PREVIOUS
@@ -46,11 +46,11 @@ if($show_previous){
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
-                               maxlength="' . config_var(4736) . '"
+                               maxlength="' . view_memory(6404,4736) . '"
                                i-id="' . $i_focus['i__id'] . '"
                                id="addi-c-' . $i_focus['i__id'] . '-1"
                                placeholder="'.$e___11035[13912]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.config_var(13912).'</div></div>';
+                    </div><div class="algolia_pad_search hidden">'.view_memory(6404,13912).'</div></div>';
 }
 echo '</div>';
 echo '</div>';
@@ -205,9 +205,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___11035[13914]['m_icon'] . '</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
-                           maxlength="' . config_var(6197) . '"                          
+                           maxlength="' . view_memory(6404,6197) . '"                          
                            placeholder="' . $e___11035[13914]['m_title'] . '">
-                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.config_var(13912).'</div></div>';
+                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.view_memory(6404,13912).'</div></div>';
         }
 
         $focus_tab .= '</div>';
@@ -240,11 +240,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
-                           maxlength="' . config_var(4736) . '"
+                           maxlength="' . view_memory(6404,4736) . '"
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-0"
                            placeholder="'.$e___11035[13912]['m_title'].'">
-                </div><div class="algolia_pad_search hidden">'.config_var(13912).'</div></div>';
+                </div><div class="algolia_pad_search hidden">'.view_memory(6404,13912).'</div></div>';
         }
 
         $focus_tab .= '</div>';
@@ -272,7 +272,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             }
 
             //Fetch Results:
-            $query = $this->X_model->fetch($query_filters, array('x__source'), config_var(11064), 0, array('x__id' => 'DESC'));
+            $query = $this->X_model->fetch($query_filters, array('x__source'), view_memory(6404,11064), 0, array('x__id' => 'DESC'));
 
             //Return UI:
             $focus_tab .= '<div class="list-group">';

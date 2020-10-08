@@ -643,7 +643,7 @@ class X_model extends CI_Model
 
         $this->CLIENT->sendEmail(array(
             // Source is required
-            'Source' => config_var(3288),
+            'Source' => view_memory(6404,3288),
             // Destination is required
             'Destination' => array(
                 'ToAddresses' => $to_array,
@@ -672,8 +672,8 @@ class X_model extends CI_Model
                     ),
                 ),
             ),
-            'ReplyToAddresses' => array(config_var(3288)),
-            'ReturnPath' => config_var(3288),
+            'ReplyToAddresses' => array(view_memory(6404,3288)),
+            'ReturnPath' => view_memory(6404,3288),
         ));
 
         return true;
@@ -772,10 +772,10 @@ class X_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Message Content',
             );
-        } elseif ($strict_validation && strlen($message_input) > config_var(4485)) {
+        } elseif ($strict_validation && strlen($message_input) > view_memory(6404,4485)) {
             return array(
                 'status' => 0,
-                'message' => 'Message is '.strlen($message_input).' characters long which is more than the allowed ' . config_var(4485) . ' characters',
+                'message' => 'Message is '.strlen($message_input).' characters long which is more than the allowed ' . view_memory(6404,4485) . ' characters',
             );
         } elseif (!preg_match('//u', $message_input)) {
             return array(
@@ -1929,7 +1929,7 @@ class X_model extends CI_Model
 
             //Set default seconds per step:
             $metadata_this['completion_percentage'] = 0;
-            $step_default_seconds = config_var(12176);
+            $step_default_seconds = view_memory(6404,12176);
 
 
             //Calculate completion rate based on estimated time cost:

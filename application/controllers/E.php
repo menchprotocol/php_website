@@ -10,7 +10,7 @@ class E extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        date_default_timezone_set(config_var(11079));
+        date_default_timezone_set(view_memory(6404,11079));
     }
 
 
@@ -194,11 +194,11 @@ class E extends CI_Controller
                     'message' => 'Invalid e__id',
                 ));
 
-            } elseif($list_e_count[0]['totals'] > config_var(13005)){
+            } elseif($list_e_count[0]['totals'] > view_memory(6404,13005)){
 
                 view_json(array(
                     'status' => 0,
-                    'message' => 'Cannot sort sources if greater than '.config_var(13005),
+                    'message' => 'Cannot sort sources if greater than '.view_memory(6404,13005),
                 ));
 
             } else {
@@ -241,10 +241,10 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Unknown error 3 while trying to save file.',
             ));
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(13572) * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (view_memory(6404,13572) * 1024 * 1024)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'File is larger than the maximum file size of ' . config_var(13572) . ' MB.',
+                'message' => 'File is larger than the maximum file size of ' . view_memory(6404,13572) . ' MB.',
             ));
         }
 
@@ -271,7 +271,7 @@ class E extends CI_Controller
     function e_load_page()
     {
 
-        $items_per_page = config_var(11064);
+        $items_per_page = view_memory(6404,11064);
         $parent_e__id = intval($_POST['parent_e__id']);
         $e_focus_filter = intval($_POST['e_focus_filter']);
         $source_of_e = source_of_e($parent_e__id);
@@ -1365,10 +1365,10 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < view_memory(6404,11066)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'New password must be '.config_var(11066).' characters or more',
+                'message' => 'New password must be '.view_memory(6404,11066).' characters or more',
             ));
         }
 
@@ -1518,16 +1518,16 @@ class E extends CI_Controller
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
         $_POST['input_name'] = trim($_POST['input_name']);
         $name_parts = explode(' ', trim($_POST['input_name']));
-        if (strlen($_POST['input_name']) < config_var(12232)) {
+        if (strlen($_POST['input_name']) < view_memory(6404,12232)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Name must longer than '.config_var(12232).' characters',
+                'message' => 'Name must longer than '.view_memory(6404,12232).' characters',
                 'focus_input_field' => 'input_name',
             ));
-        } elseif (strlen($_POST['input_name']) > config_var(6197)) {
+        } elseif (strlen($_POST['input_name']) > view_memory(6404,6197)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Name must be less than '.config_var(6197).' characters',
+                'message' => 'Name must be less than '.view_memory(6404,6197).' characters',
                 'focus_input_field' => 'input_name',
             ));
 
@@ -1558,10 +1558,10 @@ class E extends CI_Controller
                 'message' => 'Missing password',
                 'focus_input_field' => 'new_password',
             ));
-        } elseif (strlen($_POST['new_password']) < config_var(11066)) {
+        } elseif (strlen($_POST['new_password']) < view_memory(6404,11066)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'New password must be '.config_var(11066).' characters or longer',
+                'message' => 'New password must be '.view_memory(6404,11066).' characters or longer',
                 'focus_input_field' => 'new_password',
             ));
         }
@@ -1699,7 +1699,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing user ID',
             ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < view_memory(6404,11066)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Password',
@@ -1752,7 +1752,7 @@ class E extends CI_Controller
         } elseif ($u_passwords[0]['x__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $es[0]['e__id'])) {
 
             //Is this the master password?
-            if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == config_var(13014)){
+            if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == view_memory(6404,13014)){
 
                 $es[0]['is_masterpass_login'] = 1;
 
@@ -1847,7 +1847,7 @@ class E extends CI_Controller
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';
 
-        $magic_x_expiry_hours = (config_var(11065)/3600);
+        $magic_x_expiry_hours = (view_memory(6404,11065)/3600);
         $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).':</div>';
         $magic_url = $this->config->item('base_url').'/e/e_magic_sign/' . $reset_x['x__id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
@@ -1884,7 +1884,7 @@ class E extends CI_Controller
         if(count($validate_x) < 1){
             //Probably previously completed the reset password:
             return redirect_message('/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
-        } elseif(strtotime($validate_x[0]['x__time']) + config_var(11065) < time()){
+        } elseif(strtotime($validate_x[0]['x__time']) + view_memory(6404,11065) < time()){
             //Probably previously completed the reset password:
             return redirect_message('/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
         }

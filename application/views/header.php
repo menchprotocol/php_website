@@ -2,7 +2,7 @@
 
 $user_e = superpower_assigned();
 $first_segment = $this->uri->segment(1);
-$i__id = is_numeric($first_segment) && $first_segment!=config_var(12138) ? intval($first_segment) : 0;
+$i__id = is_numeric($first_segment) && $first_segment!=view_memory(6404,12138) ? intval($first_segment) : 0;
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
@@ -49,7 +49,7 @@ $current_mench = current_mench();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.35.1/algoliasearch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js" type="text/javascript"></script>
 
-    <script src="/application/views/global.js?v=<?= config_var(11060) ?>" type="text/javascript"></script>
+    <script src="/application/views/global.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=custom-share-buttons&cms=website' async='async'></script>
 
@@ -58,7 +58,7 @@ $current_mench = current_mench();
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:800|Roboto+Mono:wght@500|Rubik&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
-    <link href="/application/views/global.css?v=<?= config_var(11060) ?>" rel="stylesheet"/>
+    <link href="/application/views/global.css?v=<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
     <script type="text/javascript">
@@ -140,7 +140,7 @@ if(!isset($hide_header)){
 
                     echo '</td>';
 
-                    if(intval(config_var(12678))){
+                    if(intval(view_memory(6404,12678))){
 
                         //Search button
                         echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m_icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m_title'].'">'.$e___11035[13401]['m_icon'].'</span></a></td>';
@@ -181,7 +181,7 @@ if(!isset($hide_header)){
                             if($x__type==11060) {
 
                                 //JUST SHOW VERSION:
-                                echo '<div class="dropdown-item '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_title'].'"><span class="icon-block">'.$m['m_icon'].'</span>'.config_var(11060).'</div>';
+                                echo '<div class="dropdown-item '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_title'].'"><span class="icon-block">'.$m['m_icon'].'</span>'.view_memory(6404,11060).'</div>';
                                 continue;
 
                             } elseif(in_array($x__type, $this->config->item('n___10876'))){

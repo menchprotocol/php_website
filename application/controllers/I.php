@@ -9,7 +9,7 @@ class I extends CI_Controller {
 
         $this->output->enable_profiler(FALSE);
 
-        date_default_timezone_set(config_var(11079));
+        date_default_timezone_set(view_memory(6404,11079));
     }
 
 
@@ -507,10 +507,10 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing either Idea Outcome OR Child Idea ID',
             ));
-        } elseif (strlen($_POST['i__title']) > config_var(4736)) {
+        } elseif (strlen($_POST['i__title']) > view_memory(6404,4736)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Idea outcome cannot be longer than '.config_var(4736).' characters',
+                'message' => 'Idea outcome cannot be longer than '.view_memory(6404,4736).' characters',
             ));
         } elseif($_POST['i_x_child_id'] >= 2147483647){
             return view_json(array(
@@ -718,11 +718,11 @@ class I extends CI_Controller {
                 'message' => 'Unknown error 1 while trying to save file.'.print_r($_FILES, true),
             ));
 
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(13572) * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (view_memory(6404,13572) * 1024 * 1024)) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'File is larger than the maximum allowed file size of ' . config_var(13572) . ' MB.',
+                'message' => 'File is larger than the maximum allowed file size of ' . view_memory(6404,13572) . ' MB.',
             ));
 
         }

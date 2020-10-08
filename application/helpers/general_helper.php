@@ -463,7 +463,7 @@ function i_fetch_cover($i__id, $html_format = false){
     }
 
     //Return something:
-    $image_url = ( $i_fetch_cover ? $i_fetch_cover : config_var(12904) );
+    $image_url = ( $i_fetch_cover ? $i_fetch_cover : view_memory(6404,12904) );
     return ( $html_format ? '<img src="'.$image_url.'" class="cover-image" />' : $image_url );
 
 }
@@ -482,7 +482,7 @@ function i_fetch_description($i__id){
         if(substr_count($fetched_e['x__message'], ' ')>=2){ //Require 3+ words
             //This is it, return:
             return $CI->X_model->message_send(
-                join(' ', array_slice(explode(' ', trim(preg_replace('/\s\s+/', ' ', $fetched_e['x__message']))), 0, config_var(13556))).( substr_count($fetched_e['x__message'], ' ') >= (config_var(13556) - 1) ? '...' : '' ), //Limit Length
+                join(' ', array_slice(explode(' ', trim(preg_replace('/\s\s+/', ' ', $fetched_e['x__message']))), 0, view_memory(6404,13556))).( substr_count($fetched_e['x__message'], ' ') >= (view_memory(6404,13556) - 1) ? '...' : '' ), //Limit Length
                 superpower_assigned(),
                 0,
                 true
@@ -514,8 +514,8 @@ function i__weight_calculator($i){
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Returns the weight of a idea:
-    $weight = ( $count_x[0]['totals'] * config_var(12568) )
-        + ( $counts[0]['totals'] * config_var(12565) );
+    $weight = ( $count_x[0]['totals'] * view_memory(6404,12568) )
+        + ( $counts[0]['totals'] * view_memory(6404,12565) );
 
     //Should we update?
     if($weight != $i['i__weight']){
@@ -546,8 +546,8 @@ function e__weight_calculator($e){
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Returns the weight of a source:
-    $weight = ( $count_x[0]['totals'] * config_var(12568) )
-            + ( $counts[0]['totals'] * config_var(12565) );
+    $weight = ( $count_x[0]['totals'] * view_memory(6404,12568) )
+            + ( $counts[0]['totals'] * view_memory(6404,12565) );
 
     //Should we update?
     if($weight != $e['e__weight']){
@@ -571,12 +571,6 @@ function filter_cache_group($search_e__id, $cache_e__id){
         }
     }
     return false;
-}
-
-function config_var($e__id){
-    $CI =& get_instance();
-    $e___6404 = $CI->config->item('e___6404');
-    return $e___6404[$e__id]['m_message'];
 }
 
 function update_description($before_string, $after_string){
@@ -793,9 +787,9 @@ function i_stats($i__metadata){
         'i___6169' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
         'i___6170' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? $metadata['i___6170']-1 : 0 ),
 
-        'i___6161' => ( isset($metadata['i___6161']) ? $metadata['i___6161'] : config_var(12427) ),
-        'i___6162' => ( isset($metadata['i___6162']) ? $metadata['i___6162'] : config_var(12427) ),
-        'i___13292' => ( isset($metadata['i___6162']) ? round(($metadata['i___6161']+$metadata['i___6162'])/2) : config_var(12427) ),
+        'i___6161' => ( isset($metadata['i___6161']) ? $metadata['i___6161'] : view_memory(6404,12427) ),
+        'i___6162' => ( isset($metadata['i___6162']) ? $metadata['i___6162'] : view_memory(6404,12427) ),
+        'i___13292' => ( isset($metadata['i___6162']) ? round(($metadata['i___6161']+$metadata['i___6162'])/2) : view_memory(6404,12427) ),
 
         //SOURCES
         'e_count' => ( $e_count>0 ? $e_count : 1 ),
@@ -1133,11 +1127,11 @@ function i__title_validate($string){
             'message' => 'Title cannot include double spaces',
         );
 
-    } elseif (strlen($string) > config_var(4736)) {
+    } elseif (strlen($string) > view_memory(6404,4736)) {
 
         return array(
             'status' => 0,
-            'message' => 'Title must be '.config_var(4736).' characters or less',
+            'message' => 'Title must be '.view_memory(6404,4736).' characters or less',
         );
 
     }
@@ -1169,7 +1163,7 @@ function e__title_validate($string, $x__type = 0){
             'message' => 'Name missing',
         );
 
-    } elseif(strlen(trim($string)) < config_var(12232)){
+    } elseif(strlen(trim($string)) < view_memory(6404,12232)){
 
         if($x__type){
             $e__title_clean = $e___4592[$x__type]['m_title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
@@ -1177,7 +1171,7 @@ function e__title_validate($string, $x__type = 0){
 
         $errors = array(
             'status' => 0,
-            'message' => 'Name is shorter than the minimum ' . config_var(12232) . ' characters.',
+            'message' => 'Name is shorter than the minimum ' . view_memory(6404,12232) . ' characters.',
         );
 
     } elseif(substr_count($string , '  ') > 0){
@@ -1191,15 +1185,15 @@ function e__title_validate($string, $x__type = 0){
             'message' => 'Name cannot include double spaces',
         );
 
-    } elseif (strlen($string) > config_var(6197)) {
+    } elseif (strlen($string) > view_memory(6404,6197)) {
 
         if($x__type){
-            $e__title_clean = substr($string, 0, config_var(6197));
+            $e__title_clean = substr($string, 0, view_memory(6404,6197));
         }
 
         $errors = array(
             'status' => 0,
-            'message' => 'Name must be '.config_var(6197).' characters or less',
+            'message' => 'Name must be '.view_memory(6404,6197).' characters or less',
         );
 
     }
@@ -1344,7 +1338,7 @@ function sources_currently_sorted($e__id){
 function update_algolia($object__type = null, $object__id = 0, $return_row_only = false)
 {
 
-    if(!intval(config_var(12678))){
+    if(!intval(view_memory(6404,12678))){
         return false;
     }
 

@@ -23,8 +23,8 @@ class I_model extends CI_Model
             return false;
         }
 
-        if(!isset($add_fields['i__duration']) || $add_fields['i__duration'] < config_var(12427)){
-            $add_fields['i__duration'] = config_var(12176);
+        if(!isset($add_fields['i__duration']) || $add_fields['i__duration'] < view_memory(6404,12427)){
+            $add_fields['i__duration'] = view_memory(6404,12176);
         }
 
         //Lets now add:

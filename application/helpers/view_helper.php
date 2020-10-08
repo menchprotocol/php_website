@@ -291,7 +291,7 @@ function view_i_note($x__type, $x, $note_e = false)
             $ui .= '<li class="edit-on hidden"><a class="btn btn-'.$color_code.' white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
 
             //TEXT COUNTER
-            $ui .= '<li class="edit-on hidden"><span id="NoteCounter' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . config_var(4485) . '</span></li>';
+            $ui .= '<li class="edit-on hidden"><span id="NoteCounter' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . view_memory(6404,4485) . '</span></li>';
 
             //Update result:
             $ui .= '<li class="edit-updates hideIfEmpty"></li>'; //Show potential errors
@@ -550,7 +550,13 @@ function view_time_difference($t, $second_time = null)
 }
 
 
-function view_cache($config_var_id, $e__id, $micro_status = true, $data_placement = 'top', $i__id = 0)
+function view_memory($parent, $child, $filed = 'm_message'){
+    $CI =& get_instance();
+    $memory_tree = $CI->config->item('e___'.$parent);
+    return $memory_tree[$child][$filed];
+}
+
+function view_cache($parent, $e__id, $micro_status = true, $data_placement = 'top', $i__id = 0)
 {
 
     /*
@@ -560,7 +566,7 @@ function view_cache($config_var_id, $e__id, $micro_status = true, $data_placemen
      * */
 
     $CI =& get_instance();
-    $config_array = $CI->config->item('e___'.$config_var_id);
+    $config_array = $CI->config->item('e___'.$parent);
     $cache = $config_array[$e__id];
     if (!$cache) {
         //Could not find matching item
@@ -577,7 +583,7 @@ function view_cache($config_var_id, $e__id, $micro_status = true, $data_placemen
         }
     } else {
         //data-toggle="tooltip" data-placement="' . $data_placement . '"
-        return '<span class="'.( $micro_status ? 'cache_micro_'.$config_var_id.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m_title'] : '') . (strlen($cache['m_message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_title']) . '</span>';
+        return '<span class="'.( $micro_status ? 'cache_micro_'.$parent.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m_title'] : '') . (strlen($cache['m_message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m_message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m_icon'] . ' ' . ($micro_status ? '' : $cache['m_title']) . '</span>';
     }
 }
 
@@ -626,7 +632,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     if($x__type==12274){
 
         //SOURCES
-        $limit = config_var(11064);
+        $limit = view_memory(6404,11064);
         $order_columns = array('x__sort' => 'ASC', 'e__title' => 'ASC');
         $join_objects = array('x__down');
         $query_filters = array(
@@ -642,7 +648,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     } elseif($x__type==12273){
 
         //IDEAS
-        $limit = config_var(13958);
+        $limit = view_memory(6404,13958);
         $join_objects = array('x__right');
         $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
         $query_filters = array(
@@ -659,7 +665,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         //DISCOVERIES
         $join_objects = array('x__left');
-        $limit = config_var(11064);
+        $limit = view_memory(6404,11064);
 
         if($page_num > 0){
             $order_columns = array('x__sort' => 'ASC');
@@ -1275,7 +1281,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
 
         //File counter:
-        $ui .= '<td style="padding:0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden"><span id="charNum' . $x__type . '">0</span>/' . config_var(4485).'</span></td>';
+        $ui .= '<td style="padding:0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).'</span></td>';
 
 
         //Upload File:
@@ -1692,7 +1698,7 @@ function view_input_text($cache_e__id, $current_value, $object__id, $e_of_i, $ta
     if($extra_large){
 
         $focus_element = '<textarea onkeyup="view_input_text_count('.$cache_e__id.','.$object__id.')" placeholder="'.$e___12112[$cache_e__id]['m_title'].'" '.$attributes.'>'.$current_value.'</textarea>';
-        $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$object__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$object__id.'">0</span>/'.config_var($cache_e__id).' CHARACTERS</div>';
+        $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$object__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$object__id.'">0</span>/'.view_memory(6404,$cache_e__id).' CHARACTERS</div>';
         $icon = '<span class="icon-block title-icon">'.$e__icon.'</span>';
 
     } else {

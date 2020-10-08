@@ -22,7 +22,7 @@ foreach($this->I_model->fetch($filters) as $in){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 10650,
             'x__right' => $i__id,
-        ))) && $in['i__duration']!=config_var(12176)){
+        ))) && $in['i__duration']!=view_memory(6404,12176)){
         //Yes, so we ignore:
         if($i__id){
             //Show details:

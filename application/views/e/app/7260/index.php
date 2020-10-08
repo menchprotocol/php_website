@@ -6,7 +6,7 @@ $this->session->set_userdata('session_time_7260', time());
 $orphan_i = $this->I_model->fetch(array(
     ' NOT EXISTS (SELECT 1 FROM mench__x WHERE i__id=x__right AND x__type IN (' . join(',', $this->config->item('n___4486')) . ') AND x__status IN ('.join(',', $this->config->item('n___7360')) /* ACTIVE */.')) ' => null,
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-    'i__id !=' => config_var(12138),
+    'i__id !=' => view_memory(6404,12138),
 ));
 
 if(count($orphan_i) > 0){

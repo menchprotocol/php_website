@@ -50,7 +50,7 @@ if(count($current_sign_i_attempt) == 0){
     var sign_i__id = <?= $sign_i__id ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
 </script>
-<script src="/application/views/e/signin.js?v=<?= config_var(11060) ?>"
+<script src="/application/views/e/signin.js?v=<?= view_memory(6404,11060) ?>"
         type="text/javascript"></script>
 
 
@@ -136,7 +136,7 @@ if(count($current_sign_i_attempt) == 0){
             <!-- Full Name -->
             <div class="margin-top-down">
                 <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.str_replace(' source','',$e___4269[13025]['m_icon']).'</span>'.$e___4269[13025]['m_title'] ?>:</span>
-                <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m_message'] ?>" id="input_name" maxlength="<?= config_var(6197) ?>" class="form-control border doupper montserrat white-border"></div>
+                <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m_message'] ?>" id="input_name" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border doupper montserrat white-border"></div>
             </div>
 
             <!-- New Password -->

@@ -200,7 +200,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
     var x__message_search = '<?= ( isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0 ? $_GET['x__message_search'] : '' ) ?>';
     var x__message_replace = '<?= ( isset($_GET['x__message_replace']) && strlen($_GET['x__message_replace']) > 0 ? $_GET['x__message_replace'] : '' ) ?>';
 </script>
-<script src="/application/views/x/ledger.js?v=<?= config_var(11060) ?>"
+<script src="/application/views/x/ledger.js?v=<?= view_memory(6404,11060) ?>"
         type="text/javascript"></script>
 
 <?php

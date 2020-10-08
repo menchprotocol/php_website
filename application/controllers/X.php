@@ -10,7 +10,7 @@ class X extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        date_default_timezone_set(config_var(11079));
+        date_default_timezone_set(view_memory(6404,11079));
 
     }
 
@@ -22,7 +22,7 @@ class X extends CI_Controller
         }
 
         $is = $this->I_model->fetch(array(
-            'i__id' => config_var(12138),
+            'i__id' => view_memory(6404,12138),
         ));
 
         //Load header:
@@ -70,13 +70,13 @@ class X extends CI_Controller
         $joined_by = unserialize($_POST['x_joined_by']);
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
-        $query_offset = (($page_num-1)*config_var(11064));
+        $query_offset = (($page_num-1)*view_memory(6404,11064));
         $user_e = superpower_assigned();
 
         $message = '';
 
         //Fetch transactions and total transaction counts:
-        $x = $this->X_model->fetch($filters, $joined_by, config_var(11064), $query_offset);
+        $x = $this->X_model->fetch($filters, $joined_by, view_memory(6404,11064), $query_offset);
         $x_count = $this->X_model->fetch($filters, $joined_by, 0, 0, array(), 'COUNT(x__id) as total_count');
         $total_items_loaded = ($query_offset+count($x));
         $has_more_x = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
@@ -312,20 +312,20 @@ class X extends CI_Controller
                     'original_val' => $is[0]['i__duration'],
                 ));
 
-            } elseif($_POST['field_value'] > config_var(4356)){
+            } elseif($_POST['field_value'] > view_memory(6404,4356)){
 
-                $hours = rtrim(number_format((config_var(4356)/3600), 1), '.0');
+                $hours = rtrim(number_format((view_memory(6404,4356)/3600), 1), '.0');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.config_var(4356).' Seconds long. You can break down your idea into smaller ideas.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.view_memory(6404,4356).' Seconds long. You can break down your idea into smaller ideas.',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
-            } elseif($_POST['field_value'] < config_var(12427)){
+            } elseif($_POST['field_value'] < view_memory(6404,12427)){
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' should be at-least '.config_var(12427).' Seconds long. It takes time to discover ideas ;)',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' should be at-least '.view_memory(6404,12427).' Seconds long. It takes time to discover ideas ;)',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -363,11 +363,11 @@ class X extends CI_Controller
                     'original_val' => '',
                 ));
 
-            } elseif(!is_numeric($_POST['field_value']) || fmod($_POST['field_value'], 1)>0 || $_POST['field_value'] < config_var(11056) ||  $_POST['field_value'] > config_var(11057)){
+            } elseif(!is_numeric($_POST['field_value']) || fmod($_POST['field_value'], 1)>0 || $_POST['field_value'] < view_memory(6404,11056) ||  $_POST['field_value'] > view_memory(6404,11057)){
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' must be an integer between '.config_var(11056).' and '.config_var(11057).'.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' must be an integer between '.view_memory(6404,11056).' and '.view_memory(6404,11057).'.',
                     'original_val' => ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : 0 ),
                 ));
 
@@ -628,7 +628,7 @@ class X extends CI_Controller
          *
          * */
 
-        if($i__id==config_var(12138)){
+        if($i__id==view_memory(6404,12138)){
             return redirect_message(home_url());
         }
 
@@ -698,11 +698,11 @@ class X extends CI_Controller
                 'message' => 'Unknown error 2 while trying to save file.',
             ));
 
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(13572) * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (view_memory(6404,13572) * 1024 * 1024)) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'File is larger than the maximum allowed file size of ' . config_var(13572) . ' MB.',
+                'message' => 'File is larger than the maximum allowed file size of ' . view_memory(6404,13572) . ' MB.',
             ));
 
         }
