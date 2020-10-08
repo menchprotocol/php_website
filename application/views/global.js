@@ -200,6 +200,7 @@ $(document).ready(function () {
 
     $('.note_type_id').click(function (e) {
         e.preventDefault();
+        alert('NICE:'+$(this).attr('note_type_id'));
         e_only_add(0, $(this).attr('note_type_id'));
     });
 
