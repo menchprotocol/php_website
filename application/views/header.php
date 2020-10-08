@@ -91,7 +91,7 @@ $current_mench = current_mench();
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
 
-<!-- Your Chat Plugin code -->
+<!-- Your Chat App code -->
 <div class="fb-customerchat"
      attribution=setup_tool
      page_id="381488558920384"

@@ -1995,7 +1995,7 @@ class E extends CI_Controller
 
             //Needs extra superpowers?
             boost_power();
-            $e___6287 = $this->config->item('e___6287'); //MENCH PLUGIN
+            $e___6287 = $this->config->item('e___6287'); //MENCH APP
             $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m_profile']);
             if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
@@ -2017,9 +2017,9 @@ class E extends CI_Controller
             } else {
 
                 //Regular UI:
-                //Load Plugin:
+                //Load App:
                 $this->load->view('header', array(
-                    'title' => strip_tags($e___6287[$app_e__id]['m_icon']).$e___6287[$app_e__id]['m_title'].' | PLUGIN',
+                    'title' => strip_tags($e___6287[$app_e__id]['m_icon']).$e___6287[$app_e__id]['m_title'].' | APP',
                 ));
                 $this->load->view('e/app_frame', $view_data);
                 $this->load->view('footer');

@@ -20,7 +20,7 @@ foreach($cron_jobs as $cron_job){
 
 echo '<div style="margin-bottom:13px;">Copy/Paste the following code in crontab -e</div>';
 echo '<textarea style="background-color:#FFFFFF; color:#222222 !important; padding:20px; font-family: monospace; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">';
-echo '# PLUGINS WITH CRON JOBS:'."\n"."\n";
+echo '# APPS WITH CRON JOBS:'."\n"."\n";
 foreach($cron_jobs as $cron_job){
     echo str_pad($cron_job['x__message'], $longest_time, " ", STR_PAD_RIGHT).' '.config_var(7274).' '.str_pad($cron_job['e__id'], $longest_id, " ", STR_PAD_RIGHT).' #'.$cron_job['e__title']."\n";
 }

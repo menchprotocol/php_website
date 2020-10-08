@@ -2,7 +2,7 @@
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
-//List Plugins:
+//List Apps:
 echo '<div class="container">';
 
 echo '<h1 style="padding-top:5px;"><span class="icon-block">'.view_e__icon($e___11035[6287]['m_icon']).'</span>'.count($this->config->item('e___6287')).' '.$e___11035[6287]['m_title'].'</h1>';
