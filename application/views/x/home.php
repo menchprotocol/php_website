@@ -43,7 +43,7 @@
         echo '<li><a href="/x/go_url/'.$e__id.'" title="'.$m['m_title'].'">'.$m['m_icon'].'</a></li>';
     }
     echo '</ul>';
-    echo '<div class="footer-center">'.view_memory(6404,11060).'</div>';
+    echo '<div class="footer-center"><a href="https://github.com/menchdotcom" title="Open-Source Code Hosted on Github" data-toggle="tooltip" data-placement="top">'.view_memory(6404,11060).'</a></div>';
 
     ?>
 </div>

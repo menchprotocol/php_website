@@ -422,8 +422,11 @@ img.no-radius {
 .footer-center{
     width: 100%;
     text-align: center;
-    font-size: 0.89em;
     padding: 0 0 34px;
+}
+.footer-center a{
+    font-size: 0.89em;
+    text-decoration: underline;
 }
 .message_content{
     margin-left: 33px;
