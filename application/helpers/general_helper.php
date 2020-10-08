@@ -1364,6 +1364,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 
     $e___4737 = $CI->config->item('e___4737'); //Idea Status
+    $n___12138 = $CI->config->item('n___12138');
 
     //Define the support objects indexed on algolia:
     $object__id = intval($object__id);
@@ -1540,7 +1541,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 }
 
                 //Feature source? Only if it's featured or belong to a featured parent:
-                if(array_intersect($profile_ids, $CI->config->item('n___12138'))){
+                if(array_intersect($profile_ids, $n___12138)){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
