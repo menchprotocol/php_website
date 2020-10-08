@@ -23,12 +23,14 @@ $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 <?php
 
 $e_focus_found = false; //Used to determine the first tab to be opened
-
+$show_previous = $e_of_i && $is_active && $i_focus['i__id']!=config_var(12138);
 
 
 //IDEA PREVIOUS
 echo '<div class="container coin-frame">';
-echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m_icon'].'</span>'.$e___11035[11019]['m_title'].'</div>';
+if($show_previous){
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m_icon'].'</span>'.$e___11035[11019]['m_title'].'</div>';
+}
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -38,7 +40,7 @@ foreach($this->X_model->fetch(array(
 ), array('x__left'), 0) as $previous_i) {
     echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
 }
-if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12138)){
+if($show_previous){
     echo '<div class="list-group-item list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
