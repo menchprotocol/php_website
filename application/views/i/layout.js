@@ -57,7 +57,6 @@ function e_only_add(e_existing_id, note_type_id) {
         if (e_new_string.length < 1) {
             alert('Missing source name or URL, try again');
             input.focus();
-            return false;
         }
     }
 
@@ -94,9 +93,6 @@ function e_only_add(e_existing_id, note_type_id) {
         }
 
     });
-
-    return false;
-
 }
 
 function e_e_only_search(note_type_id) {
@@ -126,7 +122,6 @@ function e_e_only_search(note_type_id) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            event.preventDefault();
             e_only_add(suggestion.object__id, note_type_id);
 
         }).autocomplete({hint: false, minLength: 1}, [{
@@ -150,11 +145,11 @@ function e_e_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
