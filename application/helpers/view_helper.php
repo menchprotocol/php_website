@@ -862,7 +862,7 @@ function view_i_tree_e($i){
     return $ui;
 }
 
-function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $previous_i__type){
+function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $previous_i__status){
 
     if($depth_levels<=0){
         //End recursion:
@@ -877,7 +877,6 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___4486 = $CI->config->item('e___4486');
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
-    $e___7585 = $CI->config->item('e___7585'); // Idea Subtypes
 
 
     $ui = null;
@@ -902,11 +901,11 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Type: '.$e___4486[$i_x['x__type']]['m_title'].'">'. $e___4486[$i_x['x__type']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Status: '.$e___6186[$i_x['x__status']]['m_title'].'">'. $e___6186[$i_x['x__status']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___7585[$i_x['i__type']]['m_title'].'">'. $e___7585[$i_x['i__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___4737[$i_x['i__status']]['m_title'].'">'. $e___4737[$i_x['i__status']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_x['i__status']]['m_title'].'">'. $e___4737[$i_x['i__status']]['m_icon']. '</span>';
         $ui .= '<a href="?i__id='.$i_x['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_x, null) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_x['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('n___6193') /* OR Ideas */ )) || ($i_x['x__type'] == 4229) ? view_i_marks($i_x) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_x['x__type'] == 4228 && in_array($previous_i__status , $CI->config->item('n___6193') /* OR Ideas */ )) || ($i_x['x__type'] == 4229) ? view_i_marks($i_x) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$i_x['i__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -923,7 +922,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  view_i_scores_answer($i_x['i__id'], $depth_levels, $original_depth_levels, $i_x['i__type']);
+        $ui .=  view_i_scores_answer($i_x['i__id'], $depth_levels, $original_depth_levels, $i_x['i__status']);
 
     }
 
@@ -1002,18 +1001,7 @@ function view_i_marks($i_x){
 
 function view_i_icon($i){
 
-    $CI =& get_instance();
-
-    if(!in_array($i['i__status'], $CI->config->item('n___7355')) || in_array($i['i__status'], $CI->config->item('n___12138'))){
-        //Drafting OR Featured
-        $config_var_id = 4737; //Idea Status
-        $e__id = $i['i__status'];
-    } else {
-        $config_var_id = 7585; //Idea Type
-        $e__id = $i['i__type'];
-    }
-
-    return '<span class="this_i__icon_'.$i['i__id'].'">'.view_cache($config_var_id, $e__id, true, 'right', $i['i__id']).'</span>';
+    return '<span class="this_i__icon_'.$i['i__id'].'">'.view_cache(4737, $i['i__status'], true, 'right', $i['i__id']).'</span>';
 
 }
 
@@ -1123,9 +1111,6 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $ui .= '<div class="space-content ' . superpower_active(12673) . '" style="padding-left:25px; padding-top:13px;">';
 
         $ui .= $box_items_list;
-
-        //IDEA TYPE
-        $ui .= '<div class="inline-block">'.view_input_dropdown(7585, $i['i__type'], null, $e_of_i, false, $i['i__id']).'</div>';
 
         //IDEA STATUS
         $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__status'], null, $e_of_i, false, $i['i__id']) . ' </div>';

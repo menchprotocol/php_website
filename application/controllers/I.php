@@ -43,7 +43,7 @@ class I extends CI_Controller {
 
 
         //Create Idea:
-        $i = $this->I_model->create_or_link($i__title_validation['i_clean_title'], $user_e['e__id']);
+        $i = $this->I_model->create_or_link($i__title_validation['i_clean_title'], $user_e['e__id'], 0, false, 12137);
 
 
         //Add additional source if different than user:
@@ -539,13 +539,13 @@ class I extends CI_Controller {
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($x_i[0]['i__type'], $this->config->item('n___7712'))){
+            if(!intval($_POST['is_parent']) && in_array($x_i[0]['i__status'], $this->config->item('n___7712'))){
                 $new_i_type = 6914; //Require All
             }
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->I_model->create_or_link(trim($_POST['i__title']), $user_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), 6184, $new_i_type, $_POST['i_x_child_id']));
+        return view_json($this->I_model->create_or_link(trim($_POST['i__title']), $user_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), $new_i_type, $_POST['i_x_child_id']));
 
     }
 

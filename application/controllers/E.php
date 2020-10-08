@@ -2113,14 +2113,13 @@ class E extends CI_Controller
 
 
         //Load AND/OR Ideas:
-        $e___7585 = $this->config->item('e___7585'); // Idea Subtypes
         $e___4737 = $this->config->item('e___4737'); // Idea Status
 
 
         //Return report:
         return view_json(array(
             'status' => 1,
-            'message' => '<h3>'.$e___7585[$is[0]['i__type']]['m_icon'].' '.$e___4737[$is[0]['i__status']]['m_icon'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__type']),
+            'message' => '<h3>'.$e___4737[$is[0]['i__status']]['m_icon'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__status']),
         ));
 
 

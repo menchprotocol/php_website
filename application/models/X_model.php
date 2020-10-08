@@ -139,28 +139,26 @@ class X_model extends CI_Model
             ));
 
 
-            if(in_array($is[0]['i__type'], $this->config->item('n___7712'))){
+            if(in_array($is[0]['i__status'], $this->config->item('n___7712'))){
 
                 //IDEA TYPE SELECT NEXT
                 $is_next_autoscan = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__status IN (' . join(',', $this->config->item('n___12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVER ANSWERED
                     'x__source' => $add_fields['x__source'],
                     'x__left' => $is[0]['i__id'],
                     'x__right>' => 0, //With an answer
                     'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                    'i__type IN (' . join(',', $this->config->item('n___12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
                 ), array('x__right'), 0);
 
-            } elseif(in_array($is[0]['i__type'], $this->config->item('n___13022'))){
+            } elseif(in_array($is[0]['i__status'], $this->config->item('n___13022'))){
 
                 //IDEA TYPE ALL NEXT
                 $is_next_autoscan = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $is[0]['i__id'],
-                    'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                    'i__type IN (' . join(',', $this->config->item('n___12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
+                    'i__status IN (' . join(',', $this->config->item('n___12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
                 ), array('x__right'), 0);
 
             }
@@ -1070,7 +1068,7 @@ class X_model extends CI_Model
                 continue;
             }
 
-            $is_or_i = in_array($i['i__type'], $this->config->item('n___6193'));
+            $is_or_i = in_array($i['i__status'], $this->config->item('n___6193'));
             $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
             $is_complete = ( $i_completed || count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1234,7 +1232,7 @@ class X_model extends CI_Model
             ));
 
             //Mark as complete if possible:
-            if(0 && in_array($is[0]['i__type'], $this->config->item('n___12211'))){
+            if(0 && in_array($is[0]['i__status'], $this->config->item('n___12211'))){
                 //Disabled for now... TODO Enable later?
                 $this->X_model->mark_complete($is[0], array(
                     'x__type' => 4559, //DISCOVER MESSAGES
@@ -1494,7 +1492,7 @@ class X_model extends CI_Model
          * OR Ideas are completed when a single child is completed
          *
          * */
-        $requires_all_children = ( $i['i__type'] == 6914 /* AND Lock, meaning all children are needed */ );
+        $requires_all_children = in_array($i['i__status'], $this->config->item('n___13987') /* REQUIRE ALL CHILDREN */ );
 
         //Generate list of users who have completed it:
         $qualified_completed = array();
@@ -1990,7 +1988,7 @@ class X_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid source ID',
             );
-        } elseif (!in_array($is[0]['i__type'], $this->config->item('n___7712'))) {
+        } elseif (!in_array($is[0]['i__status'], $this->config->item('n___7712'))) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Idea type [Must be Answer]',
@@ -2004,13 +2002,13 @@ class X_model extends CI_Model
 
 
         //Define completion transactions for each answer:
-        if($is[0]['i__type'] == 6684){
+        if($is[0]['i__status'] == 6684){
 
             //ONE ANSWER
             $x__type = 6157; //Award Coin
             $i_x__type = 12336; //Save Answer
 
-        } elseif($is[0]['i__type'] == 7231){
+        } elseif($is[0]['i__status'] == 7231){
 
             //SOME ANSWERS
             $x__type = 7489; //Award Coin

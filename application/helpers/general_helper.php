@@ -1370,7 +1370,6 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
     }
 
 
-    $e___7585 = $CI->config->item('e___7585'); // Idea Subtypes
     $e___4737 = $CI->config->item('e___4737'); //Idea Status
 
     //Define the support objects indexed on algolia:

@@ -82,14 +82,14 @@ if($search_for_set){
 
 
                 //Loop through parents:
-                $e___7585 = $this->config->item('e___7585'); // Idea Subtypes
+                $e___4737 = $this->config->item('e___4737'); // Idea Status
                 foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__right' => $in['i__id'],
                 ), array('x__left')) as $i_previous) {
-                    echo '<span class="next_i_icon_' . $i_previous['i__id'] . '"><a href="/i/i_go/' . $i_previous['i__id'] . '" data-toggle="tooltip" title="' . $i_previous['i__title'] . '" data-placement="bottom">' . $e___7585[$i_previous['i__type']]['m_icon'] . '</a> &nbsp;</span>';
+                    echo '<span class="next_i_icon_' . $i_previous['i__id'] . '"><a href="/i/i_go/' . $i_previous['i__id'] . '" data-toggle="tooltip" title="' . $i_previous['i__title'] . '" data-placement="bottom">' . $e___4737[$i_previous['i__status']]['m_icon'] . '</a> &nbsp;</span>';
                 }
 
                 echo '</td>';

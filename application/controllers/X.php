@@ -485,7 +485,7 @@ class X extends CI_Controller
         ));
 
         //Should we check for auto next redirect if empty? Only if this is a selection:
-        if($is[0]['i__type']==6677){
+        if($is[0]['i__status']==6677){
 
             //Mark as discover If not previously:
             $x_completes = $this->X_model->fetch(array(
@@ -593,7 +593,7 @@ class X extends CI_Controller
         //Make sure not a select idea:
         if(!count($this->I_model->fetch(array(
             'i__id' => $current_i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //SELECT IDEA
+            'i__status IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //SELECT IDEA
         )))){
             //FIND NEXT IDEAS
             foreach($this->X_model->fetch(array(

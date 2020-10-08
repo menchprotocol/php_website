@@ -48,11 +48,10 @@ foreach($this->X_model->fetch(array(
 
         if(count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                'i__type NOT IN (6907,6914)' => null, //NOT AND/OR Lock
+                'i__status NOT IN (' . join(',', $this->config->item('n___7309')) . ')' => null, //IDEA TYPE MEET REQUIREMENT
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__right' => $i_x['i__id'],
-            ), array('x__left'))) > 1 || $i_x['i__type'] != 6677){
+            ), array('x__left'))) > 1 || $i_x['i__status'] != 6677){
 
             echo '<div>';
             echo 'NOT COOL';

@@ -78,9 +78,6 @@ if(isset($_GET['focus__e']) && superpower_active(12701, true)){
 //IDEA CONTROLLER
 echo '<div style="padding: 21px 0 8px 0;">';
 
-//IDEA TYPE
-echo '<div class="inline-block pull-left left-margin">'.view_input_dropdown(7585, $i_focus['i__type'], 'btn-idea', $e_of_i && $is_active, true, $i_focus['i__id']).'</div>';
-
 //IDEA STATUS
 echo '<div class="inline-block pull-left left-half-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
 

@@ -27,23 +27,6 @@ if(isset($_GET['i__status']) && strlen($_GET['i__status']) > 0){
     }
 }
 
-
-
-if(isset($_GET['i__type']) && strlen($_GET['i__type']) > 0){
-    if(isset($_GET['x__type']) && $_GET['x__type']==4250){ //IDEA created
-        //Filter idea status based on
-        $joined_by = array('x__right');
-        if (substr_count($_GET['i__type'], ',') > 0) {
-            //This is multiple:
-            $filters['( i__type IN (' . $_GET['i__type'] . '))'] = null;
-        } else {
-            $filters['i__type'] = intval($_GET['i__type']);
-        }
-    } else {
-        unset($_GET['i__type']);
-    }
-}
-
 if(isset($_GET['e__status']) && strlen($_GET['e__status']) > 0){
     if(isset($_GET['x__type']) && $_GET['x__type']==4251){ //SOURCE Created
 
@@ -186,7 +169,7 @@ if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
 //Fetch unique transaction types recorded so far:
 $ini_filter = array();
 foreach($filters as $key => $value){
-    if(!includes_any($key, array('i__status', 'i__type', 'e__status'))){
+    if(!includes_any($key, array('i__status', 'e__status'))){
         $ini_filter[$key] = $value;
     }
 }
@@ -389,9 +372,7 @@ echo '</div></td>';
 
     //Optional IDEA/SOURCE status filter ONLY IF DISCOVER Type = Create New IDEA/SOURCE
 
-echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Status(es)</span><input type="text" name="i__status" value="' . ((isset($_GET['i__status'])) ? $_GET['i__status'] : '') . '" class="form-control border"></div>';
-
-    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(s)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
+echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(es)</span><input type="text" name="i__status" value="' . ((isset($_GET['i__status'])) ? $_GET['i__status'] : '') . '" class="form-control border"></div>';
 
     echo '<div class="filter-statuses e_status_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__status" value="' . ((isset($_GET['e__status'])) ? $_GET['e__status'] : '') . '" class="form-control border"></div>';
 

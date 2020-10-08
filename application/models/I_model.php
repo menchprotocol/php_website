@@ -19,7 +19,7 @@ class I_model extends CI_Model
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('i__title', 'i__type', 'i__status'), $x__source)) {
+        if (detect_missing_columns($add_fields, array('i__title', 'i__status'), $x__source)) {
             return false;
         }
 
@@ -166,14 +166,6 @@ class I_model extends CI_Model
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
 
-                } elseif($key=='i__type'){
-
-                    $x__type = 10651; //Idea updated Subtype
-                    $e___7585 = $this->config->item('e___7585'); //Idea Subtypes
-                    $x__message = view_db_field($key) . ' updated from [' . $e___7585[$before_data[0][$key]]['m_title'] . '] to [' . $e___7585[$value]['m_title'] . ']';
-                    $x__up = $value;
-                    $x__down = $before_data[0][$key];
-
                 } elseif($key=='i__duration') {
 
                     $x__type = 10650; //Idea updated Completion Time
@@ -309,7 +301,7 @@ class I_model extends CI_Model
         return $stats;
     }
 
-    function create_or_link($i__title, $x__source, $x_to_i__id = 0, $is_parent = false, $new_i_status = 6184, $i__type = 6677, $x_i__id = 0)
+    function create_or_link($i__title, $x__source, $x_to_i__id = 0, $is_parent = false, $new_i_status = 6677, $x_i__id = 0)
     {
 
         /*
@@ -446,7 +438,6 @@ class I_model extends CI_Model
             //Create new Idea:
             $i_new = $this->I_model->create(array(
                 'i__title' => $i__title_validation['i_clean_title'],
-                'i__type' => $i__type,
                 'i__status' => $new_i_status,
             ), $x__source);
 
@@ -643,8 +634,8 @@ class I_model extends CI_Model
 
         //Set variables:
         $is_first_in = ( !isset($focus_in['x__id']) ); //First idea does not have a transaction, just the idea
-        $select_one = in_array($focus_in['i__type'] , $this->config->item('n___12883')); //IDEA TYPE SELECT ONE
-        $select_some = in_array($focus_in['i__type'] , $this->config->item('n___12884')); //IDEA TYPE SELECT SOME
+        $select_one = in_array($focus_in['i__status'] , $this->config->item('n___12883')); //IDEA TYPE SELECT ONE
+        $select_some = in_array($focus_in['i__status'] , $this->config->item('n___12884')); //IDEA TYPE SELECT SOME
         $select_one_children = array(); //To be populated only if $focus_in is select one
         $select_some_children = array(); //To be populated only if $focus_in is select some
         $conditional_x = array(); //To be populated only for Conditional Ideas
@@ -856,7 +847,7 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->create_or_link('', $x__source, $adjust_i__id, false, 6184, 6677, $next_i['i__id']);
+                    $this->I_model->create_or_link('', $x__source, $adjust_i__id, false, 6677, $next_i['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;
@@ -1053,7 +1044,7 @@ class I_model extends CI_Model
 
 
             //MERGE (3 SCENARIOS)
-            if(in_array($is_next['x__type'], $this->config->item('n___12842')) || in_array($i['i__type'], $this->config->item('n___12883'))){
+            if(in_array($is_next['x__type'], $this->config->item('n___12842')) || in_array($i['i__status'], $this->config->item('n___12883'))){
 
                 //ONE
 
@@ -1073,7 +1064,7 @@ class I_model extends CI_Model
                     $metadata_local['localp___6162'] = $metadata_recursion['p___6162'];
                 }
 
-            } elseif(in_array($i['i__type'], $this->config->item('n___12884'))){
+            } elseif(in_array($i['i__status'], $this->config->item('n___12884'))){
 
                 //SOME
 
@@ -1194,10 +1185,9 @@ class I_model extends CI_Model
         //Discovery 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__right' => $i['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null,
+            'i__status IN (' . join(',', $this->config->item('n___7712')) . ')' => null,
         ), array('x__left'), 0) as $i_or_parent){
             if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $i_or_parent['i__id'])) {
                 array_push($child_unlock_paths, $i_or_parent);
