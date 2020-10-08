@@ -423,9 +423,9 @@ img.no-radius {
     width: 100%;
     text-align: center;
     padding: 0 0 34px;
+    font-size: 0.89em;
 }
 .footer-center a{
-    font-size: 0.89em;
     text-decoration: underline;
 }
 .message_content{
