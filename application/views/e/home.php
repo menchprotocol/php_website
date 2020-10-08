@@ -45,5 +45,9 @@
         echo '</div>';
     }
 
+
+    //Show Version:
+    echo '<div class="footer-center">'.view_memory(6404,11060).'</div>';
+
     ?>
 </div>

@@ -178,13 +178,7 @@ if(!isset($hide_header)){
                             $extra_class = null;
                             $text_class = null;
 
-                            if($x__type==11060) {
-
-                                //JUST SHOW VERSION:
-                                echo '<div class="dropdown-item '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_title'].'"><span class="icon-block">'.$m['m_icon'].'</span>'.view_memory(6404,11060).'</div>';
-                                continue;
-
-                            } elseif(in_array($x__type, $this->config->item('n___10876'))){
+                            if(in_array($x__type, $this->config->item('n___10876'))){
 
                                 //Fetch URL:
                                 $href = 'href="'.$e___10876[$x__type]['m_message'].'"';
