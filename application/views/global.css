@@ -2138,7 +2138,9 @@ label {
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
     border-bottom-color: #FFFFFF !important;
 }
-
+.form-control{
+    background-color: transparent !important;
+}
 .alert a, .alert i {
     color: #222222 !important;
 }
