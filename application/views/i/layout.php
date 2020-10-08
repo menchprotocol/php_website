@@ -123,7 +123,7 @@ echo view_i_note_list(4231, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 4231,
     'x__right' => $i_focus['i__id'],
-), array('x__source'), 0, 0, array('x__sort' => 'ASC')), $e_of_i);
+), array('x__source'), 0, 0, array('x__sort' => 'ASC')), $e_of_i, false, false);
 
 
 
