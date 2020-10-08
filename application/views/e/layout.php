@@ -537,7 +537,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => config_var(12137),
+                    'x__left' => config_var(12138),
                 );
                 if(count($my_x_ids)){
                     //Exclude Featured Ideas already added to Discoveries:
@@ -548,7 +548,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $featured_i = $this->X_model->fetch($featured_filter, array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
                 if(count($featured_i)){
-                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13813]['m_icon'].'</span>'.$e___11035[13813]['m_title'].'</div>';
+                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12138]['m_icon'].'</span>'.$e___11035[12138]['m_title'].'</div>';
                     $focus_tab .= '<div class="row top-margin">';
                     foreach($featured_i as $key => $x){
                         $focus_tab .= view_i_cover(6255, $x, false, null, $e);

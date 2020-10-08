@@ -22,7 +22,7 @@ class X extends CI_Controller
         }
 
         $is = $this->I_model->fetch(array(
-            'i__id' => config_var(12137),
+            'i__id' => config_var(12138),
         ));
 
         //Load header:
@@ -628,7 +628,7 @@ class X extends CI_Controller
          *
          * */
 
-        if($i__id==config_var(12137)){
+        if($i__id==config_var(12138)){
             return redirect_message(home_url());
         }
 

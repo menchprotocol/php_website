@@ -38,7 +38,7 @@ foreach($this->X_model->fetch(array(
 ), array('x__left'), 0) as $previous_i) {
     echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
 }
-if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12137)){
+if( $e_of_i && $is_active && $i_focus['i__id']!=config_var(12138)){
     echo '<div class="list-group-item list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
