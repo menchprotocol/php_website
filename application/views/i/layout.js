@@ -95,6 +95,8 @@ function e_only_add(e_existing_id, note_type_id) {
 
     });
 
+    return false;
+
 }
 
 function e_e_only_search(note_type_id) {
