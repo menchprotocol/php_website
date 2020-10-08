@@ -1541,7 +1541,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 }
 
                 //Feature source? Only if it's featured or belong to a featured parent:
-                if(array_intersect($profile_ids, $n___12138)){
+                if(array_intersect($profile_ids, $n___12138) && in_array($db_row['e__status'], $this->config->item('n___7357'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
@@ -1583,7 +1583,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     if($e['x__down']>0){
                         array_push($export_row['_tags'], 'alg_e_' . $e['x__down']);
                     }
-                    if ($e['x__down']==12138 || $e['x__up']==12138) {
+                    if (in_array($db_row['i__type'], $this->config->item('n___7355')) && ($e['x__down']==12138 || $e['x__up']==12138)) {
                         array_push($export_row['_tags'], 'is_featured');
                     }
                 }
