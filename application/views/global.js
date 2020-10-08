@@ -198,10 +198,10 @@ $(document).ready(function () {
     });
 
 
-    $('.note_type_id').click(function (e) {
+    $('.e_only_add').click(function (e) {
+        alert('HIii');
         e.preventDefault();
-        alert('NICE:'+$(this).attr('note_type_id'));
-        e_only_add(0, $(this).attr('note_type_id'));
+        e_only_add(0, $(this).attr('e_only_add'));
     });
 
 
