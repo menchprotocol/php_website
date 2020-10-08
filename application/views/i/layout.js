@@ -120,6 +120,8 @@ function e_e_only_search(note_type_id) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
+            alert('aaaa');
+            event.preventDefault();
             e_only_add(suggestion.object__id, note_type_id);
 
         }).autocomplete({hint: false, minLength: 1}, [{
