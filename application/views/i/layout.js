@@ -52,7 +52,6 @@ function e_only_add(e_existing_id, note_type_id) {
     var list_id = 'add-e-'+note_type_id;
 
     if (e_existing_id == 0) {
-
         e_new_string = input.val();
         if (e_new_string.length < 1) {
             alert('Missing source name or URL, try again');
@@ -94,9 +93,6 @@ function e_only_add(e_existing_id, note_type_id) {
         }
 
     });
-
-    return true;
-
 }
 
 function e_e_only_search(note_type_id) {
