@@ -602,7 +602,7 @@ class I extends CI_Controller {
     {
 
         //Authenticate User:
-        $user_e = superpower_assigned();
+        $user_e = superpower_assigned(); //Superpower not required as it may be just a comment
 
         if (!$user_e) {
 
