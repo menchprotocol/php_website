@@ -43,7 +43,6 @@
         echo '<li><a href="/x/go_url/'.$e__id.'" title="'.$m['m_title'].'">'.$m['m_icon'].'</a></li>';
     }
     echo '</ul>';
-    echo '<div class="footer-center">'.view_memory(6404,11060).'</div>';
 
     ?>
 </div>
