@@ -297,7 +297,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
 
         $counter = count($i_notes);
-        $focus_tab .= view_i_note_list($x__type, $i_notes, $e_of_i, true, true);
+        $focus_tab .= view_i_note_list($x__type, $i_notes, $e_of_i, false, true);
 
     } elseif($x__type==12969){
 
