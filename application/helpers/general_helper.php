@@ -1305,9 +1305,8 @@ function status_converter($status_id){
     $status_converter = array();
     $CI =& get_instance();
     foreach($CI->config->item('n___6186') as $e__id) {
-        $matching_status = array_intersect($CI->config->item('n___'.$status_id), $CI->config->item('n___'.$e__id));
-        if(count($matching_status)){
-            $status_converter[end($matching_status)] = $e__id;
+        foreach(array_intersect($CI->config->item('n___'.$status_id), $CI->config->item('n___'.$e__id)) as $matching_status){
+            $status_converter[$matching_status] = $e__id;
         }
     }
     return $status_converter;
