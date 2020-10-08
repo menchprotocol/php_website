@@ -1540,12 +1540,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 }
 
                 //Feature source? Only if it's featured or belong to a featured parent:
-                if(array_intersect($profile_ids, $CI->config->item('n___12563'))){
+                if(array_intersect($profile_ids, $CI->config->item('n___12138'))){
                     array_push($export_row['_tags'], 'is_featured');
-                }
-
-                if(count($profile_ids) && in_array(13897, $profile_ids)){
-                    array_push($export_row['_tags'], 'is_nonfiction');
                 }
 
                 $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
@@ -1573,11 +1569,6 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 }
                 $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
 
-                if(1){
-                    //How to Feature Ideas?
-                    array_push($export_row['_tags'], 'is_featured');
-                }
-
                 //Is SOURCE for any IDEA?
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1590,6 +1581,9 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     }
                     if($e['x__down']>0){
                         array_push($export_row['_tags'], 'alg_e_' . $e['x__down']);
+                    }
+                    if ($e['x__down']==12138 || $e['x__up']==12138) {
+                        array_push($export_row['_tags'], 'is_featured');
                     }
                 }
 
