@@ -548,7 +548,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 $featured_i = $this->X_model->fetch($featured_filter, array('x__right'), 0, 0, array('x__sort' => 'ASC'));
 
                 if(count($featured_i)){
-                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12138]['m_icon'].'</span>'.$e___11035[13813]['m_title'].'</div>';
+                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12138]['m_icon'].'</span>'.$e___11035[12138]['m_title'].'</div>';
                     $focus_tab .= '<div class="row top-margin">';
                     foreach($featured_i as $key => $x){
                         $focus_tab .= view_i_cover(6255, $x, false, null, $e);
