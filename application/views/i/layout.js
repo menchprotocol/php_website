@@ -145,7 +145,7 @@ function e_e_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<div e_only_add="'+note_type_id+'" class="e_only_add suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></div>';
+                        return '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + ' NOW</b>';
                     }
                 },
                 empty: function (data) {
