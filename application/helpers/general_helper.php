@@ -1546,7 +1546,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 }
 
                 //Feature source? Only if it's featured or belong to a featured parent:
-                if(in_array($db_row['e__status'], $CI->config->item('n___12575')) || (count($profile_ids) && array_intersect($profile_ids, $CI->config->item('n___12563')))){
+                if(array_intersect($profile_ids, $CI->config->item('n___12563'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
@@ -1568,10 +1568,6 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__title'] = $db_row['i__title'];
                 $export_row['object__weight'] = intval($db_row['i__weight']);
 
-                if(in_array($db_row['i__type'], $CI->config->item('n___12138'))){
-                    array_push($export_row['_tags'], 'is_featured');
-                }
-
                 //Add keywords:
                 $export_row['object__keywords'] = '';
                 foreach($CI->X_model->fetch(array(
@@ -1583,6 +1579,10 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 }
                 $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
 
+                if(1){
+                    //How to Feature Ideas?
+                    array_push($export_row['_tags'], 'is_featured');
+                }
 
                 //Is SOURCE for any IDEA?
                 foreach($CI->X_model->fetch(array(
@@ -1591,14 +1591,12 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     'x__right' => $db_row['i__id'],
                     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array(), 0) as $e){
-
                     if($e['x__up']>0){
                         array_push($export_row['_tags'], 'alg_e_' . $e['x__up']);
                     }
                     if($e['x__down']>0){
                         array_push($export_row['_tags'], 'alg_e_' . $e['x__down']);
                     }
-
                 }
 
             }

@@ -43,7 +43,7 @@ class I extends CI_Controller {
 
 
         //Create Idea:
-        $i = $this->I_model->create_or_link($i__title_validation['i_clean_title'], $user_e['e__id'], 0, false, 12137);
+        $i = $this->I_model->create_or_link($i__title_validation['i_clean_title'], $user_e['e__id']);
 
 
         //Add additional source if different than user:
