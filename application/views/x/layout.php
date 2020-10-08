@@ -67,7 +67,7 @@ $i_completion_percentage = 0; //Assume main intent not yet completed, unless pro
 $i_completion_rate = array();
 $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
 $previous_level_id = 0; //The ID of the Idea one level up, if any
-$show_nav = superpower_active(10939, true) || !$in_my_x;
+$show_nav = superpower_active(10939, true) || !$in_my_x || $in_my_discoveries;
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 
