@@ -1080,7 +1080,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $ui .= '<a href="'.$href.'" title="Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
 
         //IDEA TITLE
-        if($is_i_link && superpower_active(10939, true)){
+        if($is_i_link && $e_of_i){
 
             $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__sort']*100)+1));
 
