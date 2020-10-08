@@ -2091,14 +2091,14 @@ label {
 .custom_ui_13884_13886 .nav-tabs .nav-x:hover {
     border-bottom-color: #222222 !important;
 }
-.custom_ui_13884_ .list-group-item:nth-child(even),
-.custom_ui_13884_13886 .list-group-item:nth-child(even) {
+.custom_ui_13884_ .list-group-item:nth-child(odd),
+.custom_ui_13884_13886 .list-group-item:nth-child(odd) {
     background-color: #333333;
 }
 
 
 /* WHITE */
-.custom_ui_13884_13885 .list-group-item:nth-child(even),
+.custom_ui_13884_13885 .list-group-item:nth-child(odd),
 .custom_ui_13884_13885,
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .mench-navigation,
