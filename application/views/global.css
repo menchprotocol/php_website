@@ -1857,7 +1857,7 @@ label {
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 41px; }
 
-    .active .show-max-active {display:none !important;}
+    /* .active .show-max-active {display:none !important;} */
     .wrap-card, .coin-frame{
         margin: 0 5px;
         width: -webkit-calc(100% - 10px) !important;
