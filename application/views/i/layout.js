@@ -315,7 +315,6 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
                 i_note_counter(12273, +1);
             }
 
-
             //Add new
             add_to_list(sort_list_id, sort_handler, data.next_i_html);
 
