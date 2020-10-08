@@ -57,6 +57,7 @@ function e_only_add(e_existing_id, note_type_id) {
         if (e_new_string.length < 1) {
             alert('Missing source name or URL, try again');
             input.focus();
+            return false;
         }
     }
 
@@ -93,6 +94,9 @@ function e_only_add(e_existing_id, note_type_id) {
         }
 
     });
+
+    return true;
+
 }
 
 function e_e_only_search(note_type_id) {
@@ -112,9 +116,7 @@ function e_e_only_search(note_type_id) {
     }).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            e_only_add(0, note_type_id);
-            e.preventDefault();
-            return false;
+            return e_only_add(0, note_type_id);
         }
     });
 
@@ -145,11 +147,11 @@ function e_e_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                        return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
