@@ -16,7 +16,7 @@ foreach($this->I_model->fetch() as $in) {
 
     $stats['ideas']++;
 
-    $is_deleted = !in_array($in['i__status'], $this->config->item('n___7356'));
+    $is_deleted = !in_array($in['i__type'], $this->config->item('n___7356'));
 
     //Scan sources:
     $i_e = $this->X_model->fetch(array(

@@ -483,7 +483,7 @@ function view_x($x, $is_parent_tr = false)
                 //IDEA
                 $is = $CI->I_model->fetch(array('i__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_title'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.view_cache(4737 /* Idea Status */, $is[0]['i__status'], true, 'right', $is[0]['i__id']).view_i_title($is[0], null).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m_title'].'" class="montserrat"><span class="icon-block">'.$e___4341[$e__id]['m_icon']. '</span>'.view_cache(4737 /* Idea Status */, $is[0]['i__type'], true, 'right', $is[0]['i__id']).view_i_title($is[0], null).'</a></div>';
 
             } elseif(in_array(4367 , $m['m_profile'])){
 
@@ -646,7 +646,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $join_objects = array('x__right');
         $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
         $query_filters = array(
-            'i__status IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
@@ -667,7 +667,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
                 'x__source' => $e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__status IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             );
         } else {
             $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
@@ -675,7 +675,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
                 'x__source' => $e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__status IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             );
         }
 
@@ -862,7 +862,7 @@ function view_i_tree_e($i){
     return $ui;
 }
 
-function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $previous_i__status){
+function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $previous_i__type){
 
     if($depth_levels<=0){
         //End recursion:
@@ -884,7 +884,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         'x__left' => $i__id,
         'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__status IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+        'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $i_x){
 
         //Prep Metadata:
@@ -901,11 +901,11 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Type: '.$e___4486[$i_x['x__type']]['m_title'].'">'. $e___4486[$i_x['x__type']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Status: '.$e___6186[$i_x['x__status']]['m_title'].'">'. $e___6186[$i_x['x__status']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___4737[$i_x['i__status']]['m_title'].'">'. $e___4737[$i_x['i__status']]['m_icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_x['i__status']]['m_title'].'">'. $e___4737[$i_x['i__status']]['m_icon']. '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___4737[$i_x['i__type']]['m_title'].'">'. $e___4737[$i_x['i__type']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_x['i__type']]['m_title'].'">'. $e___4737[$i_x['i__type']]['m_icon']. '</span>';
         $ui .= '<a href="?i__id='.$i_x['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_x, null) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_x['x__type'] == 4228 && in_array($previous_i__status , $CI->config->item('n___6193') /* OR Ideas */ )) || ($i_x['x__type'] == 4229) ? view_i_marks($i_x) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_x['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('n___6193') /* OR Ideas */ )) || ($i_x['x__type'] == 4229) ? view_i_marks($i_x) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$i_x['i__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -922,7 +922,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  view_i_scores_answer($i_x['i__id'], $depth_levels, $original_depth_levels, $i_x['i__status']);
+        $ui .=  view_i_scores_answer($i_x['i__id'], $depth_levels, $original_depth_levels, $i_x['i__type']);
 
     }
 
@@ -1001,7 +1001,7 @@ function view_i_marks($i_x){
 
 function view_i_icon($i){
 
-    return '<span class="this_i__icon_'.$i['i__id'].'">'.view_cache(4737, $i['i__status'], true, 'right', $i['i__id']).'</span>';
+    return '<span class="this_i__icon_'.$i['i__id'].'">'.view_cache(4737, $i['i__type'], true, 'right', $i['i__id']).'</span>';
 
 }
 
@@ -1020,7 +1020,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
     //IDEA
     $i_stats = i_stats($i['i__metadata']);
-    $is_public = in_array($i['i__status'], $CI->config->item('n___7355'));
+    $is_public = in_array($i['i__type'], $CI->config->item('n___7355'));
     $e_of_i = ( !$is_i_link ? false : $e_of_i ); //Disable Edits on Idea List Page
     $show_toolbar = ($control_enabled && superpower_active(12673, true));
 
@@ -1113,7 +1113,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $ui .= $box_items_list;
 
         //IDEA STATUS
-        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__status'], null, $e_of_i, false, $i['i__id']) . ' </div>';
+        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . ' </div>';
 
 
 

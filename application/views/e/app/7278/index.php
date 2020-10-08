@@ -30,7 +30,7 @@ $node_size = array(
 
 //Add Ideas:
 $is = $this->I_model->fetch(array(
-    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
 ));
 foreach($is as $in){
 
@@ -44,13 +44,13 @@ foreach($is as $in){
         //'size' => ( isset($i__metadata['i___6162']) ? round(($i__metadata['i___6162']/3600),0) : 0 ), //Max time
         'size' => $node_size[12273],
         'node_type' => 1, //Idea
-        'node_status' => $in['i__status'],
+        'node_status' => $in['i__type'],
     ));
 
     //Fetch children:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0) as $next_i){
@@ -106,7 +106,7 @@ foreach($es as $en){
 //Add messages:
 $messages = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
 ), array('x__right'), 0, 0);
 foreach($messages as $message) {

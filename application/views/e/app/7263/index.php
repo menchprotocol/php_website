@@ -15,7 +15,7 @@ $counter = 0;
 $total_count = 0;
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
     'LENGTH(x__metadata) > 0' => null,
 ), array('x__right'), 0, 0) as $i_x) {
@@ -37,21 +37,21 @@ foreach($this->X_model->fetch(array(
         echo '<td style="text-align: left;">';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__status']]['m_icon'].'</span>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__type']]['m_icon'].'</span>';
         echo '<a href="/i/i_go/'.$previous_i[0]['i__id'].'">'.$previous_i[0]['i__title'].'</a>';
         echo '</div>';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_x['i__status']]['m_icon'].'</span>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_x['i__type']]['m_icon'].'</span>';
         echo '<a href="/i/i_go/'.$i_x['i__id'].'">'.$i_x['i__title'].' [child]</a>';
         echo '</div>';
 
         if(count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__status NOT IN (' . join(',', $this->config->item('n___7309')) . ')' => null, //IDEA TYPE MEET REQUIREMENT
+                'i__type NOT IN (' . join(',', $this->config->item('n___7309')) . ')' => null, //IDEA TYPE MEET REQUIREMENT
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__right' => $i_x['i__id'],
-            ), array('x__left'))) > 1 || $i_x['i__status'] != 6677){
+            ), array('x__left'))) > 1 || $i_x['i__type'] != 6677){
 
             echo '<div>';
             echo 'NOT COOL';
@@ -94,7 +94,7 @@ if(1){
     $counter = 0;
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'LENGTH(x__metadata) > 0' => null,
     ), array('x__right'), 0, 0) as $i_x) {
@@ -115,12 +115,12 @@ if(1){
             echo '<td>'.$e___6186[$i_x['x__status']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__status']]['m_icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__type']]['m_icon'].'</span>';
             echo '<a href="/i/i_go/'.$previous_i[0]['i__id'].'">'.$previous_i[0]['i__title'].'</a>';
             echo '</div>';
 
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_x['i__status']]['m_icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_x['i__type']]['m_icon'].'</span>';
             echo '<a href="/i/i_go/'.$i_x['i__id'].'">'.$i_x['i__title'].'</a>';
             echo '</div>';
             echo '</td>';

@@ -6,16 +6,16 @@ $updated = 0;
 $user_e = superpower_assigned();
 
 foreach($this->I_model->fetch(array(
-    'i__status IN (' . join(',', $this->config->item('n___7712')) . ')' => null,
+    'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null,
 ), 0, 0, array('i__id' => 'DESC')) as $count => $in) {
 
-    echo '<div>'.($count+1).')'.view_cache(6193 /* OR Ideas */, $in['i__status']).'<a href="/i/i_go/'.$in['i__id'].'">'.view_i_title($in).'</a></div>';
+    echo '<div>'.($count+1).')'.view_cache(6193 /* OR Ideas */, $in['i__type']).'<a href="/i/i_go/'.$in['i__id'].'">'.view_i_title($in).'</a></div>';
 
     echo '<ul style="list-style: decimal;">';
     //Fetch all children for this OR:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $child_or){

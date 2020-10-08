@@ -26,7 +26,7 @@
     echo '<div class="row">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $i['i__id'],
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $key => $x){

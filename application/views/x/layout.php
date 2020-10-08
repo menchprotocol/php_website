@@ -1,6 +1,6 @@
 <script>
     var focus_i__id = <?= $i_focus['i__id'] ?>;
-    var focus_i__status = <?= $i_focus['i__status'] ?>;
+    var focus_i__type = <?= $i_focus['i__type'] ?>;
 </script>
 
 <script src="/application/views/x/layout.js?v=<?= config_var(11060) ?>"
@@ -14,9 +14,9 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 
-$show_nav = superpower_active(10939, true) || in_array($i_focus['i__status'], $this->config->item('n___12138'));
+$show_nav = superpower_active(10939, true) || in_array($i_focus['i__type'], $this->config->item('n___12138'));
 $x_completes = array();
-$i_type_meet_requirement = in_array($i_focus['i__status'], $this->config->item('n___7309'));
+$i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 
 //Determine Forcus User:
 $user_e = false;
@@ -44,7 +44,7 @@ if(!isset($user_e['e__id']) ){
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
@@ -147,7 +147,7 @@ if($user_e['e__id']){
         ));
 
         //No message, so automatically mark as read:
-        if(!count($x_completes) && !count($messages) && in_array($i_focus['i__status'], $this->config->item('n___12211'))){
+        if(!count($x_completes) && !count($messages) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
             array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                 'x__type' => 4559, //DISCOVER MESSAGES
                 'x__source' => $user_e['e__id'],
@@ -167,7 +167,7 @@ if($user_e['e__id']){
 
             //Reverse check answers to see if they have previously unlocked a path:
             $unlocked_connections = $this->X_model->fetch(array(
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                 'x__right' => $i_focus['i__id'],
@@ -422,7 +422,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //PREVIOUSLY UNLOCKED:
             $unlocked_x = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type' => 6140, //DISCOVER UNLOCK LINK
                 'x__source' => $user_e['e__id'],
                 'x__left' => $i_focus['i__id'],
@@ -463,7 +463,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $has_substance = count($is_next);
 
 
-            } elseif (in_array($i_focus['i__status'], $this->config->item('n___7712'))) {
+            } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
 
                 //SELECT ANSWER
 
@@ -493,7 +493,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $x_selects = array();
                     foreach ($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                         'x__left' => $i_focus['i__id'],
                     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $x) {
@@ -531,11 +531,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $focus_tab .= '<div class="doclear">&nbsp;</div>';
 
                     //HTML:
-                    if ($i_focus['i__status'] == 6684) {
+                    if ($i_focus['i__type'] == 6684) {
 
                         $focus_tab .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13981]['m_icon'].'</span>'.$e___11035[13981]['m_title'].'</div>';
 
-                    } elseif ($i_focus['i__status'] == 7231) {
+                    } elseif ($i_focus['i__type'] == 7231) {
 
 
                         $focus_tab .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13982]['m_icon'].'</span>'.$e___11035[13982]['m_title'].'</div>';
@@ -550,7 +550,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
                     //Open for list to be printed:
-                    $focus_tab .= '<div class="list-group list-answers" i__status="' . $i_focus['i__status'] . '">';
+                    $focus_tab .= '<div class="list-group list-answers" i__type="' . $i_focus['i__type'] . '">';
 
 
                     //List children to choose from:
@@ -603,7 +603,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 }
 
-            } elseif ($i_focus['i__status'] == 6677) {
+            } elseif ($i_focus['i__type'] == 6677) {
 
                 //DISCOVER ONLY
                 $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
@@ -617,7 +617,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $has_substance = true;
                 }
 
-            } elseif ($i_focus['i__status'] == 6683) {
+            } elseif ($i_focus['i__type'] == 6683) {
 
                 //TEXT RESPONSE
                 $has_substance = true;
@@ -635,7 +635,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $focus_tab .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
 
 
-            } elseif ($i_focus['i__status'] == 7637) {
+            } elseif ($i_focus['i__type'] == 7637) {
 
                 $has_substance = true;
 
@@ -643,7 +643,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $focus_tab .= '<div class="userUploader">';
                 $focus_tab .= '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
-                $focus_tab .= '<input class="inputfile" type="file" name="file" id="fileType' . $i_focus['i__status'] . '" />';
+                $focus_tab .= '<input class="inputfile" type="file" name="file" id="fileType' . $i_focus['i__type'] . '" />';
 
 
                 if (count($x_completes)) {
@@ -667,7 +667,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 }
 
                 //UPLOAD BUTTON:
-                $focus_tab .= '<div class="margin-top-down left-margin"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__status'] . '" style="margin-left:5px;">' . $e___11035[13572]['m_icon'] . ' ' . $e___11035[13572]['m_title'] . '</label></div>';
+                $focus_tab .= '<div class="margin-top-down left-margin"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m_icon'] . ' ' . $e___11035[13572]['m_title'] . '</label></div>';
 
 
                 $focus_tab .= '<div class="doclear">&nbsp;</div>';
@@ -688,7 +688,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //IDEA PREVIOUS
             $is_previous = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__right' => $i_focus['i__id'],
                 'x__left !=' => config_var(12138),

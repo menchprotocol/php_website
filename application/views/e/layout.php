@@ -405,7 +405,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
                     $i_bookmarks = $this->X_model->fetch(array(
-                        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                        'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 10573, //BOOKMARKED IDEAS
                         'x__up' => $e['e__id'],
@@ -535,7 +535,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 $featured_filter = array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => config_var(12138),
                 );
@@ -562,7 +562,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             //IDEA NOTES
             $i_notes_filters = array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__type' => $x__type,
                 'x__up' => $e['e__id'],
             );

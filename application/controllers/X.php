@@ -222,7 +222,7 @@ class X extends CI_Controller
 
             $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['object__id'],
-                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
             if(!count($is)){
                 return view_json(array(
@@ -293,7 +293,7 @@ class X extends CI_Controller
 
             $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['object__id'],
-                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
             if(!count($is)){
@@ -485,7 +485,7 @@ class X extends CI_Controller
         ));
 
         //Should we check for auto next redirect if empty? Only if this is a selection:
-        if($is[0]['i__status']==6677){
+        if($is[0]['i__type']==6677){
 
             //Mark as discover If not previously:
             $x_completes = $this->X_model->fetch(array(
@@ -593,11 +593,11 @@ class X extends CI_Controller
         //Make sure not a select idea:
         if(!count($this->I_model->fetch(array(
             'i__id' => $current_i__id,
-            'i__status IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //SELECT IDEA
+            'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //SELECT IDEA
         )))){
             //FIND NEXT IDEAS
             foreach($this->X_model->fetch(array(
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $previous_level_id,
@@ -642,7 +642,7 @@ class X extends CI_Controller
 
             return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
-        } elseif(!in_array($is[0]['i__status'], $this->config->item('n___7355') /* PUBLIC */)){
+        } elseif(!in_array($is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
 
             return redirect_message((superpower_assigned(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
 
@@ -710,7 +710,7 @@ class X extends CI_Controller
         //Validate Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
         if(count($is)<1){
             return view_json(array(
@@ -794,7 +794,7 @@ class X extends CI_Controller
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
         if(count($is) < 1){
             return view_json(array(
@@ -963,7 +963,7 @@ class X extends CI_Controller
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
         if (!count($is)) {
             return view_json(array(

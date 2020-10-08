@@ -63,7 +63,7 @@ if(count($current_sign_i_attempt) == 0){
     $sign_i = array();
     if($sign_i__id > 0){
         $sign_i = $this->I_model->fetch(array(
-            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'i__id' => $sign_i__id,
         ));
         if(count($sign_i)){

@@ -11,7 +11,7 @@ $filters = array();
 if($i__id > 0){
     $filters['i__id'] = $i__id;
 } else {
-    $filters['i__status IN (' . join(',', $this->config->item('n___7355')) . ')'] = null; //PUBLIC
+    $filters['i__type IN (' . join(',', $this->config->item('n___7355')) . ')'] = null; //PUBLIC
 }
 
 foreach($this->I_model->fetch($filters) as $in){
@@ -38,13 +38,13 @@ foreach($this->I_model->fetch($filters) as $in){
 
 
     //Idea Type Has Time?
-    if(array_key_exists($in['i__status'], $e___12955)){
+    if(array_key_exists($in['i__type'], $e___12955)){
         //Yes, add Extra Time:
-        $extra_time = intval($e___12955[$in['i__status']]['m_message']);
+        $extra_time = intval($e___12955[$in['i__type']]['m_message']);
         $estimated_time += $extra_time;
         if($i__id){
             //Show details:
-            echo $extra_time.' Seconds For being '.$e___12955[$in['i__status']]['m_title'].'<hr />';
+            echo $extra_time.' Seconds For being '.$e___12955[$in['i__type']]['m_title'].'<hr />';
         }
     }
 
@@ -52,7 +52,7 @@ foreach($this->I_model->fetch($filters) as $in){
     //Then count the title of next ideas:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $is_next){

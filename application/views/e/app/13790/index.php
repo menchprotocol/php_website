@@ -47,7 +47,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     if(isset($_GET['i__tree_id']) && strlen($_GET['i__tree_id'])){
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $_GET['i__tree_id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $x){

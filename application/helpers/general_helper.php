@@ -625,7 +625,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function i_unlockable($i){
     $CI =& get_instance();
-    return in_array($i['i__status'], $CI->config->item('n___7355') /* PUBLIC */);
+    return in_array($i['i__type'], $CI->config->item('n___7355') /* PUBLIC */);
 }
 
 function redirect_message($url, $message = null)
@@ -1378,7 +1378,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
     if($object__type==12273){
         $focus_field_id = 'i__id';
-        $focus_field_status = 'i__status';
+        $focus_field_status = 'i__type';
     } elseif($object__type==12274){
         $focus_field_id = 'e__id';
         $focus_field_status = 'e__status';
@@ -1433,7 +1433,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             if($object__id){
                 $limits['x__right'] = $object__id;
             } else {
-                $limits['i__status IN (' . join(',', $CI->config->item('n___7356')) . ')'] = null; //ACTIVE
+                $limits['i__type IN (' . join(',', $CI->config->item('n___7356')) . ')'] = null; //ACTIVE
                 $limits['x__status IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 
@@ -1563,12 +1563,12 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['i__id']);
                 $export_row['object__url'] = '/i/i_go/' . $db_row['i__id'];
-                $export_row['object__status'] = intval($db_row['i__status']);
+                $export_row['object__status'] = intval($db_row['i__type']);
                 $export_row['object__icon'] = view_i_icon($db_row);
                 $export_row['object__title'] = $db_row['i__title'];
                 $export_row['object__weight'] = intval($db_row['i__weight']);
 
-                if(in_array($db_row['i__status'], $CI->config->item('n___12138'))){
+                if(in_array($db_row['i__type'], $CI->config->item('n___12138'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 

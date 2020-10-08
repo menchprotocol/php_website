@@ -54,17 +54,17 @@ $(document).ready(function () {
 
 function go_12211(go_next_url){
     //Attempts to go next if no submissions:
-    if(focus_i__status==6683) {
+    if(focus_i__type==6683) {
 
         //TEXT RESPONSE:
         return x_reply(go_next_url);
 
-    } else if (js_n___7712.includes(focus_i__status) && $('.list-answers .answer-item').length){
+    } else if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
 
         //SELECT ONE/SOME
         return x_select(go_next_url);
 
-    } else if (focus_i__status==7637 && !$('.file_saving_result').html().length ) {
+    } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
 
         //Must upload file first:
         alert('You must upload file before going next.');
@@ -82,10 +82,10 @@ function go_12211(go_next_url){
 function select_answer(i__id){
 
     //Allow answer to be saved/updated:
-    var i__status = parseInt($('.list-answers').attr('i__status'));
+    var i__type = parseInt($('.list-answers').attr('i__type'));
 
     //Clear all if single selection:
-    if(i__status == 6684){
+    if(i__type == 6684){
         //Single Selection, clear all:
         $('.check-icon i').removeClass('fas fa-check-circle').addClass('far fa-circle');
     }
@@ -94,7 +94,7 @@ function select_answer(i__id){
     if($('.x_select_'+i__id+' i').hasClass('fas')){
 
         //Previously Selected, delete selection:
-        if(i__status == 7231){
+        if(i__type == 7231){
             //Multi Selection
             $('.x_select_'+i__id+' .check-icon i').removeClass('fas fa-check-circle').addClass('far fa-circle');
         }

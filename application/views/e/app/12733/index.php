@@ -13,7 +13,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
         'x__source' => $_GET['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     ), array('x__left'), 0, 0, array('x__sort' => 'ASC'));
 
     foreach($u_x as $priority => $x) {
@@ -24,7 +24,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     $is = $this->I_model->fetch(array(
         'i__id' => $_GET['i__id'],
-        'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     ));
 
     if(count($is) < 1){

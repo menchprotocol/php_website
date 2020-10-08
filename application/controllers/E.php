@@ -363,7 +363,7 @@ class E extends CI_Controller
         //Validate Idea
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if (count($is) < 1) {
             return view_json(array(
@@ -810,7 +810,7 @@ class E extends CI_Controller
             //Count source references in IDEA NOTES:
             $i_notes = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
                 'x__up' => $_POST['e__id'],
             ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
@@ -1608,7 +1608,7 @@ class E extends CI_Controller
 
             //Fetch the Idea:
             $referrer_i = $this->I_model->fetch(array(
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'i__id' => $_POST['sign_i__id'],
             ));
 
@@ -1927,7 +1927,7 @@ class E extends CI_Controller
         if(intval($_POST['sign_i__id']) > 0){
             //Fetch the idea:
             $referrer_i = $this->I_model->fetch(array(
-                'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'i__id' => $_POST['sign_i__id'],
             ));
         } else {
@@ -2102,7 +2102,7 @@ class E extends CI_Controller
         //Fetch/Validate idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if(count($is) != 1){
             return view_json(array(
@@ -2119,7 +2119,7 @@ class E extends CI_Controller
         //Return report:
         return view_json(array(
             'status' => 1,
-            'message' => '<h3>'.$e___4737[$is[0]['i__status']]['m_icon'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__status']),
+            'message' => '<h3>'.$e___4737[$is[0]['i__type']]['m_icon'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__type']),
         ));
 
 

@@ -3,7 +3,7 @@
 //IDEA LIST INVALID TITLES
 
 $active_i = $this->I_model->fetch(array(
-    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
 ));
 
 //Give an overview:
@@ -31,7 +31,7 @@ foreach($active_i as $count=>$in){
         //Update idea:
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-        echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__status'], true, 'right').' <a href="/i/i_go/'.$in['i__id'].'">'.view_i_title($in, null).'</a></td>';
+        echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/i/i_go/'.$in['i__id'].'">'.view_i_title($in, null).'</a></td>';
         echo '</tr>';
 
     }

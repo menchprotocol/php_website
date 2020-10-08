@@ -3,8 +3,8 @@ $e___12467 = $this->config->item('e___12467');
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 $e_of_i = e_of_i($i_focus['i__id']);
-$is_active = in_array($i_focus['i__status'], $this->config->item('n___7356'));
-$is_public = in_array($i_focus['i__status'], $this->config->item('n___7355'));
+$is_active = in_array($i_focus['i__type'], $this->config->item('n___7356'));
+$is_public = in_array($i_focus['i__type'], $this->config->item('n___7355'));
 $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 
 ?>
@@ -32,7 +32,7 @@ echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m_icon
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0) as $previous_i) {
@@ -79,7 +79,7 @@ if(isset($_GET['focus__e']) && superpower_active(12701, true)){
 echo '<div style="padding: 21px 0 8px 0;">';
 
 //IDEA STATUS
-echo '<div class="inline-block pull-left left-margin">'.view_input_dropdown(4737, $i_focus['i__status'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
+echo '<div class="inline-block pull-left left-margin">'.view_input_dropdown(4737, $i_focus['i__type'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
 
 
 if($e_of_i){
@@ -215,7 +215,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //IDEAS
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i_focus['i__id'],
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));

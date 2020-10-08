@@ -114,7 +114,7 @@ class I extends CI_Controller {
 
 
         $user_e = superpower_assigned(10939); //Idea Pen?
-        $is_public = in_array($is[0]['i__status'], $this->config->item('n___7355'));
+        $is_public = in_array($is[0]['i__type'], $this->config->item('n___7355'));
 
         if(!$user_e){
             if($is_public){
@@ -262,7 +262,7 @@ class I extends CI_Controller {
 
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
         ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $i){
@@ -377,7 +377,7 @@ class I extends CI_Controller {
                         //Find Published Parents:
                         foreach($this->X_model->fetch(array(
                             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'i__status IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                             'x__right' => $_POST['i__id'],
                         ), array('x__left'), 1) as $previous_i) {
@@ -388,7 +388,7 @@ class I extends CI_Controller {
                         if(!$deletion_redirect){
                             foreach($this->X_model->fetch(array(
                                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                                 'x__right' => $_POST['i__id'],
                             ), array('x__left'), 1) as $previous_i) {
@@ -528,7 +528,7 @@ class I extends CI_Controller {
             //Fetch transaction idea to determine idea type:
             $x_i = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['i_x_child_id']),
-                'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
             if(count($x_i)==0){
@@ -539,7 +539,7 @@ class I extends CI_Controller {
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($x_i[0]['i__status'], $this->config->item('n___7712'))){
+            if(!intval($_POST['is_parent']) && in_array($x_i[0]['i__type'], $this->config->item('n___7712'))){
                 $new_i_type = 6914; //Require All
             }
         }
@@ -631,7 +631,7 @@ class I extends CI_Controller {
         //Fetch/Validate the idea:
         $is = $this->I_model->fetch(array(
             'i__id' => intval($_POST['i__id']),
-            'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if(count($is)<1){
             return view_json(array(

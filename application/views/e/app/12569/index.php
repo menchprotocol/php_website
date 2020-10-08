@@ -17,7 +17,7 @@ if(!$obj || $obj==12273){
 
     //Update the weights for ideas and sources
     foreach($this->I_model->fetch(array(
-        'i__status IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     )) as $in) {
         $stats['i_scanned']++;
         $stats['i_updated'] += i__weight_calculator($in);
