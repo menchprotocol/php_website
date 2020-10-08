@@ -1766,7 +1766,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
         }
 
-        $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' montserrat optiond_'.$e__id.'_'.$i__id.'_'.$x__id.' doupper '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.'><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</a>'; //Used to show desc but caused JS click conflict sp retired for now: ( strlen($m['m_message']) && !$is_url_desc ? 'title="'.$m['m_message'].'" data-toggle="tooltip" data-placement="right"' : '' )
+        $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' montserrat optiond_'.$e__id.'_'.$i__id.'_'.$x__id.' doupper '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.' title="'.$m['m_message'].'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</a>'; //Used to show desc but caused JS click conflict sp retired for now: ( strlen($m['m_message']) && !$is_url_desc ? 'title="'.$m['m_message'].'" data-toggle="tooltip" data-placement="right"' : '' )
 
     }
 
