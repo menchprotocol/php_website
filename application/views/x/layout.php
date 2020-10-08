@@ -860,7 +860,7 @@ if($in_my_x){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $control_btn = '<a class="round-btn" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')"><span class="toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a><span class="nav-title">'.$m['m_title'].'</span>';
+            $control_btn = '<a class="round-btn" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')"><span class="toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m_icon'].'</span><span class="toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m_icon'].'</span></a><span class="nav-title">'.$m['m_title'].'</span>';
 
         } elseif($e__id==12991 && count($sitemap_items)){
 
