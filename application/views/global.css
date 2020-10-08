@@ -419,6 +419,12 @@ img.no-radius {
     margin:0;
     line-height: 144%;
 }
+.footer-center{
+    width: 100%;
+    text-align: center;
+    font-size: 0.89em;
+    padding: 0 0 34px;
+}
 .message_content{
     margin-left: 33px;
 }
