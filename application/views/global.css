@@ -2061,8 +2061,10 @@ label {
 .custom_ui_13884_ .algolia-autocomplete .aa-dropdown-menu,
 .custom_ui_13884_ .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
-.custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu {
-    background-color:#222222 !important;
+.custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu,
+.custom_ui_13884_13886 .form-control,
+.custom_ui_13884_ .form-control{
+    background-color:transparent !important;
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .adj-btn i,
@@ -2122,8 +2124,9 @@ label {
     background-color:#FFFFFF;
     color: #222222;
 }
-.custom_ui_13884_13885 .new-note {
-    background-color:#FFFFFF !important;
+.custom_ui_13884_13885 .new-note,
+.custom_ui_13884_13885 .form-control{
+    background-color:transparent !important;
     color: #222222 !important;
 }
 
@@ -2184,7 +2187,3 @@ label {
 .custom_ui_13491_13492 .msg{ font-size:0.9em; }
 .custom_ui_13491_13493 .msg, .custom_ui_13491_ .msg{ font-size:1.1em; }
 .custom_ui_13491_13494 .msg{ font-size:1.5em; }
-
-.form-control, body .form-control{
-    background-color: transparent !important;
-}
