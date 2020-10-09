@@ -147,7 +147,7 @@ if($user_e['e__id']){
         ));
 
         //Auto go next?
-        if(!count($x_completes) && !count($messages) && !count($is_next) && in_array($i_focus['i__type'], $this->config->item('n___14000'))){
+        if(!count($x_completes) && !count($messages) && !count($is_next) && in_array($i_focus['i__type'], $this->config->item('n___12330'))){
             echo '<script> $(document).ready(function () { go_12211(\'/x/x_next/\') }); </script>';
         }
 

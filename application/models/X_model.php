@@ -1234,7 +1234,7 @@ class X_model extends CI_Model
             ));
 
             //Can we auto complete since they have already discovered this idea?
-            if(in_array($is[0]['i__type'], $this->config->item('n___14000'))){
+            if(in_array($is[0]['i__type'], $this->config->item('n___12330'))){
 
                 //YES, Mark as complete:
                 $this->X_model->mark_complete($is[0], array(
