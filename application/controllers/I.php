@@ -117,7 +117,7 @@ class I extends CI_Controller {
         $is_public = in_array($is[0]['i__type'], $this->config->item('n___7355'));
 
         if(!$user_e){
-            if($is_public && $i__id!=view_memory(6404,14002)){
+            if($is_public){
                 return redirect_message('/'.$i__id);
             } else {
                 return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__id . ' is not published yet.</div>');
