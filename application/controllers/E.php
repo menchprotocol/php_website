@@ -1612,13 +1612,8 @@ class E extends CI_Controller
                 'i__id' => $_POST['sign_i__id'],
             ));
 
-            if(count($referrer_i) > 0){
-                //Add this Idea to their Discoveries:
-                $this->X_model->start($added_e['new_e']['e__id'], $_POST['sign_i__id']);
-            } else {
-                //Cannot be added, likely because its not published:
-                $_POST['sign_i__id'] = 0;
-            }
+            //We might update this here if it's auto completed:
+            $_POST['sign_i__id'] = ( count($referrer_i) > 0 ? $this->X_model->start($added_e['new_e']['e__id'], $_POST['sign_i__id']) : 0 );
 
         } else {
             $referrer_i = array();
@@ -1641,8 +1636,6 @@ class E extends CI_Controller
             'status' => 1,
             'sign_url' => $sign_url,
         ));
-
-
 
     }
 

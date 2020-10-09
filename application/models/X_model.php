@@ -1213,6 +1213,8 @@ class X_model extends CI_Model
             return 0;
         }
 
+        $next_i__id = $i__id;
+
         //Make sure not previously added to this User's Discoveries:
         if(!count($this->X_model->fetch(array(
                 'x__source' => $e__id,
@@ -1231,13 +1233,17 @@ class X_model extends CI_Model
                 'x__sort' => $i_rank, //Always place at the top of their Discoveries
             ));
 
-            //Mark as complete if possible:
+            //Can we auto complete since they have already discovered this idea?
             if(in_array($is[0]['i__type'], $this->config->item('n___14000'))){
-                //Disabled for now... TODO Enable later?
+
+                //YES, Mark as complete:
                 $this->X_model->mark_complete($is[0], array(
                     'x__type' => 4559, //DISCOVER MESSAGES
                     'x__source' => $e__id,
                 ));
+
+                //Now find next idea:
+                $next_i__id = $this->X_model->find_next($e__id, $is[0]);
             }
 
             //Move other ideas down in the Discovery List:
@@ -1260,7 +1266,7 @@ class X_model extends CI_Model
 
         }
 
-        return $i__id;
+        return $next_i__id;
 
     }
 
