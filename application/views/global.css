@@ -1568,6 +1568,10 @@ label {
     font-size: 1.5em;
     margin: 0 10px;
 }
+.texttype__sm {
+    width:55px;
+    margin-bottom: 5px;
+}
 .text_e_4736, .text_e_6197 {
     width:calc(100% - 38px);
     margin-bottom: 0;
@@ -1638,10 +1642,7 @@ label {
 .form-control::placeholder {
     color: #999999;
 }
-.texttype__sm {
-    width:55px;
-    margin-bottom: 5px;
-}
+
 
 .pull-middle {
     display: block;
