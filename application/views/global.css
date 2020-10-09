@@ -1765,15 +1765,17 @@ label {
     bottom: 0px;
     right: 0px;
     text-align: center;
-    width: 100px;
-    height: 30px;
+    width: 110px;
+    height: 21px;
     overflow: hidden;
     z-index: 99999999;
+    padding-top: 2px;
 }
 .chat-title span{
     z-index: 99999999;
-    padding: 4px 6px;
-    border-radius: 13px;
+    padding: 1px 3px;
+    border-radius: 10px;
+    line-height: 125%;
 }
 .cover-link .inside-btn {
     position:  absolute;
