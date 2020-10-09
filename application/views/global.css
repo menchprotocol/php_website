@@ -1577,7 +1577,7 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.texttype__lg, .input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list, .add_notes_form {
+.texttype__lg, .text_e_4736, .text_e_6197, .input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list, .add_notes_form {
     width: -webkit-calc(100% - 66px);
     width:    -moz-calc(100% - 66px);
     width:         calc(100% - 66px);
@@ -1640,7 +1640,6 @@ label {
     margin-bottom: 5px;
 }
 .text_e_4736, .text_e_6197 {
-    width:calc(100% - 38px);
     margin-bottom: 0;
 }
 
