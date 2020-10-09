@@ -55,7 +55,6 @@ $messages = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
 ), array(), 0, 0, array('x__sort' => 'ASC'));
 
-$chapters = count($is_next);
 $completion_rate['completion_percentage'] = 0;
 $u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] > 0 ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
@@ -147,12 +146,9 @@ if($user_e['e__id']){
             'x__left' => $i_focus['i__id'],
         ));
 
-        //No message, so automatically mark as read:
-        if(!count($x_completes) && !count($messages) && in_array($i_focus['i__type'], $this->config->item('n___14000'))){
-            array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
-                'x__type' => 4559, //DISCOVER MESSAGES
-                'x__source' => $user_e['e__id'],
-            )));
+        //Auto go next?
+        if(!count($x_completes) && !count($messages) && !count($is_next) && in_array($i_focus['i__type'], $this->config->item('n___14000'))){
+            echo '<script> $(document).ready(function () { go_12211(\'/x/x_next/\') }); </script>';
         }
 
         // % DONE
@@ -439,7 +435,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 //SELECT ANSWER
 
                 //Has no children:
-                if (!$chapters) {
+                if (!count($is_next)) {
 
                     //Mark this as complete since there is no child to choose from:
                     if (!count($this->X_model->fetch(array(
@@ -834,7 +830,7 @@ if($in_my_x){
 
         } elseif($e__id==12991 && count($sitemap_items)){
 
-            //GO BACK
+            //BACK
             $control_btn = '<a class="controller-nav round-btn" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
 
         } elseif($e__id==13563){
@@ -844,13 +840,8 @@ if($in_my_x){
 
         } elseif($e__id==12211){
 
-            if($i_completed){
-                //GO NEXT IN TREE
-                $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_12211(\'/x/i_next/\')">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
-            } else {
-                //GO NEXT INCOMPLETE
-                $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_12211(\'/x/x_next/\')">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
-            }
+            //NEXT
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_12211(\''.($i_completed ? '/x/i_next/' : '/x/x_next/').'\')">'.$m['m_icon'].'</a><span class="nav-title">'.$m['m_title'].'</span>';
 
         } elseif($e__id==13871){
 
