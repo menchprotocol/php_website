@@ -1769,7 +1769,7 @@ label {
     height: 26px;
     overflow: hidden;
     z-index: 99999999;
-    padding-top: 2px;
+    padding-top: 3px;
 }
 .chat-title span{
     z-index: 99999999;
