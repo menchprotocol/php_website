@@ -167,7 +167,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = view_coins_i(12274,  $i_focus, false);
         $counter = ( count($i_notes) > $counter ? count($i_notes) : $counter );
-        $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i, false);
+        $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i, false, false);
 
         //Show tree sources only if more than the sources for this idea:
         if( $counter > count($i_notes) && $superpower_13422 ){
@@ -296,7 +296,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
 
         $counter = count($i_notes);
-        $focus_tab .= view_i_note_list($x__type, $i_notes, $e_of_i, false, true);
+        $focus_tab .= view_i_note_list($x__type, $i_notes, $e_of_i, false, false);
 
     } elseif($x__type==12969){
 
