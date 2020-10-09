@@ -203,7 +203,7 @@ if($user_e['e__id']){
                     $this->X_model->create(array(
                         'x__type' => 4246, //Platform Bug Reports
                         'x__source' => $user_e['e__id'],
-                        'x__message' => 'x_coin() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
+                        'x__message' => 'x_layout() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
                         'x__left' => $i_focus['i__id'],
                         'x__reference' => $unlocked_connections[0]['x__id'],
                     ));

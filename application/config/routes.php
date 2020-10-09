@@ -10,9 +10,9 @@ $route['signin']                    = "e/signin"; //Sign
 $route['signin/(:num)']             = "e/signin/$1"; //Sign
 
 //COINS
-$route['(:num)']                    = "x/x_coin/$1";
-$route['@(:num)']                   = "e/e_coin/$1";
-$route['~(:num)']                   = "i/i_coin/$1";
+$route['(:num)']                    = "x/x_layout/$1";
+$route['@(:num)']                   = "e/e_layout/$1";
+$route['~(:num)']                   = "i/i_layout/$1";
 
 //OTHER
 $route['app']                       = "e/app";

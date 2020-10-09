@@ -47,7 +47,7 @@ class E extends CI_Controller
     }
 
     //Lists sources
-    function e_coin($e__id)
+    function e_layout($e__id)
     {
 
         //Make sure not a private discover:

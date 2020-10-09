@@ -618,7 +618,7 @@ class X extends CI_Controller
 
 
 
-    function x_coin($i__id)
+    function x_layout($i__id)
     {
 
         /*
