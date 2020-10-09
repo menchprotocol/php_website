@@ -545,7 +545,9 @@ img.no-radius {
     z-index: 1;
     font-family: 'Montserrat', sans-serif;
 }
-
+.btn-lrg{
+    font-size: 2em !important;
+}
 .click-info {
     padding: 5px 10px;
 }

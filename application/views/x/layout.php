@@ -316,34 +316,6 @@ if(count($fetch_13865)){
 
 
 
-if(!$in_my_x){
-    if($meets_13865){
-
-        //GET STARTED
-        if($meets_13865){
-
-            //OPEN TO REGISTER
-            echo '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_title'].' '.$e___11035[4235]['m_icon'].'</a></div>';
-
-        } elseif(!$user_e['e__id']) {
-
-            //Signin to see if they meet requirement:
-            echo '<div class="margin-top-down left-margin"><a class="btn btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a></div>';
-
-        }
-
-    } else {
-
-        //Locked to meet requirements...
-        //TODO show message...
-
-    }
-}
-
-
-
-
-
 
 //DISCOVER LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
@@ -351,8 +323,6 @@ $tab_group = 13291;
 $tab_pills = '<ul class="nav nav-tabs nav-sm nav-discover">';
 $tab_content = '';
 $tab_pill_count = 0;
-
-
 
 
 if($in_my_x && count($this->X_model->fetch(array(
@@ -906,6 +876,36 @@ if($in_my_x){
         echo '</div>';
         echo '</div>';
     }
+
+} else {
+
+    echo '<div class="container">'; // fixed-bottom
+    echo '<div class="margin-top-down center">';
+
+    if($meets_13865){
+
+        //GET STARTED
+        if($meets_13865){
+
+            //OPEN TO REGISTER
+            echo '<a class="btn btn-lrg btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m_title'].' '.$e___11035[4235]['m_icon'].'</a>';
+
+        } elseif(!$user_e['e__id']) {
+
+            //Signin to see if they meet requirement:
+            echo '<a class="btn btn-lrg btn-source" href="/signin">'.$e___11035[4269]['m_icon'].' '.$e___11035[4269]['m_title'].'</a>';
+
+        }
+
+    } else {
+
+        //Locked to meet requirements...
+        //TODO show message...
+
+    }
+
+    echo '</div>';
+    echo '</div>';
 
 }
 
