@@ -14,7 +14,7 @@ $replace_with_confirmed = false;
 if($search_for_set){
 
     $matching_results = $this->E_model->fetch(array(
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'LOWER(e__title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 
@@ -62,7 +62,7 @@ if($search_for_set){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__status'], true, 'right').' <a href="/@'.$en['e__id'].'">'.$en['e__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__type'], true, 'right').' <a href="/@'.$en['e__id'].'">'.$en['e__title'].'</a></td>';
 
             if($replace_with_set){
 

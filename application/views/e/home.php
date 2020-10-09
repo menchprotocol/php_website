@@ -9,8 +9,8 @@
 
     $load_max = view_memory(6404,13206);
     $show_max = view_memory(6404,11986);
-    $select = 'COUNT(x__id) as totals, e__id, e__title, e__icon, e__metadata, e__status, e__weight';
-    $group_by =                       'e__id, e__title, e__icon, e__metadata, e__status, e__weight';
+    $select = 'COUNT(x__id) as totals, e__id, e__title, e__icon, e__metadata, e__type, e__weight';
+    $group_by =                       'e__id, e__title, e__icon, e__metadata, e__type, e__weight';
 
     //SOURCE LEADERBOARD
     foreach($this->config->item('e___13207') as $e__id => $m) {

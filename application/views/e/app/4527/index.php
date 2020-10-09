@@ -8,7 +8,7 @@ $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed
 
 //CONFIG VARS
 foreach($this->X_model->fetch(array(
-    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
     'x__up' => 4527,
@@ -17,7 +17,7 @@ foreach($this->X_model->fetch(array(
     //Now fetch all its children:
     $children = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         'x__up' => $en['x__down'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
     ), array('x__down'), 0, 0, array('x__sort' => 'ASC', 'e__title' => 'ASC'));
@@ -46,7 +46,7 @@ foreach($this->X_model->fetch(array(
         $child_parent_ids = array(); //To be populated soon
         $child_parents = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__down' => $child['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         ), array('x__up'), 0);

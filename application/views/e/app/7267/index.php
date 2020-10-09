@@ -11,7 +11,7 @@ echo '<input type="submit" class="btn btn-idea" value="Search">';
 if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
     $matching_results = $this->E_model->fetch(array(
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'LOWER(e__icon) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 
@@ -43,7 +43,7 @@ if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__status'], true, 'right').' <span class="icon-block">'.view_e__icon($en['e__icon']).'</span><a href="/@'.$en['e__id'].'">'.$en['e__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__type'], true, 'right').' <span class="icon-block">'.view_e__icon($en['e__icon']).'</span><a href="/@'.$en['e__id'].'">'.$en['e__title'].'</a></td>';
             echo '</tr>';
 
         }

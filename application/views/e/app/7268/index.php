@@ -2,7 +2,7 @@
 
 //SOURCE LIST DUPLICATES
 
-$q = $this->db->query('select en1.* from mench__e en1 where (select count(*) from mench__e en2 where en2.e__title = en1.e__title AND en2.e__status IN (' . join(',', $this->config->item('n___7358')) . ')) > 1 AND en1.e__status IN (' . join(',', $this->config->item('n___7358')) . ') ORDER BY en1.e__title ASC');
+$q = $this->db->query('select en1.* from mench__e en1 where (select count(*) from mench__e en2 where en2.e__title = en1.e__title AND en2.e__type IN (' . join(',', $this->config->item('n___7358')) . ')) > 1 AND en1.e__type IN (' . join(',', $this->config->item('n___7358')) . ') ORDER BY en1.e__title ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){
@@ -17,7 +17,7 @@ if(count($duplicates) > 0){
             $prev_title = $en['e__title'];
         }
 
-        echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__status']]['m_title'].': '.$e___6177[$en['e__status']]['m_message'].'">' . $e___6177[$en['e__status']]['m_icon'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
+        echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__type']]['m_title'].': '.$e___6177[$en['e__type']]['m_message'].'">' . $e___6177[$en['e__type']]['m_icon'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
     }
 
 } else {

@@ -255,7 +255,7 @@ class X extends CI_Controller
 
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['object__id'],
-                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if(!count($es)){
                 return view_json(array(
@@ -911,7 +911,7 @@ class X extends CI_Controller
         $profiles = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__down' => $e__id,
         ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
 

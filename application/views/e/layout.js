@@ -172,9 +172,9 @@ $(document).ready(function () {
         }
     });
 
-    $('#e__status').change(function () {
+    $('#e__type').change(function () {
 
-        if (parseInt($('#e__status').find(":selected").val()) == 6178 /* User Deleted */) {
+        if (parseInt($('#e__type').find(":selected").val()) == 6178 /* User Deleted */) {
 
             //Notify User:
             $('.notify_e_delete').removeClass('hidden');
@@ -566,7 +566,7 @@ function load_13571(e__id, x__id) {
 
 
             $('#e__title').val(data.e__title).focus();
-            $('#e__status').val(data.e__status);
+            $('#e__type').val(data.e__type);
             $('#e__icon').val(data.e__icon);
 
             autosize($('#e__title'));
@@ -798,7 +798,7 @@ function save_13571() {
         e__id: $('#modal13571 .modal_e__id').val(),
         e__title: $('#e__title').val().toUpperCase(),
         e__icon: $('#e__icon').val(),
-        e__status: $('#e__status').val(), //The new status (might not have changed too)
+        e__type: $('#e__type').val(), //The new status (might not have changed too)
         //Transaction data:
         x__id: $('#modal13571 .modal_x__id').val(),
         x__message: $('#x__message').val(),
@@ -847,7 +847,7 @@ function save_13571() {
 
 
                 //User Status:
-                $('.e__status_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__status']]["m_title"] + ': ' + js_e___6177[modify_data['e__status']]["m_message"] + '">' + js_e___6177[modify_data['e__status']]["m_icon"] + '</span>');
+                $('.e__type_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__type']]["m_title"] + ': ' + js_e___6177[modify_data['e__type']]["m_message"] + '">' + js_e___6177[modify_data['e__type']]["m_icon"] + '</span>');
 
 
                 //User Icon:

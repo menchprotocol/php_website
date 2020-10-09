@@ -39,7 +39,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'x__up IN (' . join(',', ( isset($_GET['e_sources_id']) && strlen($_GET['e_sources_id']) ? array($_GET['e_sources_id'], 13861) : array(13861)) ) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__sort' => 'ASC'));
 
 

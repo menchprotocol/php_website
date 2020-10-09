@@ -15,7 +15,7 @@ foreach($this->config->item('e___12523') as $e__id => $m) {
         'x__up' => $e__id,
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         '(LENGTH(e__icon) < 1 OR e__icon IS NULL)' => null, //Missing Icon
     ), array('x__down'), 0) as $en) {
         $updated++;
@@ -41,7 +41,7 @@ foreach($this->config->item('e___12968') as $e__id => $m) {
         'x__up' => $e__id,
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         '(LENGTH(e__icon) < 1 OR e__icon IS NULL OR e__icon != \''.$m['m_icon'].'\')' => null, //Missing Icon
     ), array('x__down'), 0) as $en) {
         $updated++;

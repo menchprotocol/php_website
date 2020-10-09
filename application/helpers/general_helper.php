@@ -1376,7 +1376,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
         $focus_field_status = 'i__type';
     } elseif($object__type==12274){
         $focus_field_id = 'e__id';
-        $focus_field_status = 'e__status';
+        $focus_field_status = 'e__type';
     }
 
 
@@ -1443,7 +1443,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             if($object__id){
                 $limits['x__down'] = $object__id;
             } else {
-                $limits['e__status IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
+                $limits['e__type IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
                 $limits['x__status IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 
@@ -1506,7 +1506,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $export_row['object__type'] = $loop_obj;
                 $export_row['object__id'] = intval($db_row['e__id']);
                 $export_row['object__url'] = '/@' . $db_row['e__id'];
-                $export_row['object__status'] = intval($db_row['e__status']);
+                $export_row['object__status'] = intval($db_row['e__type']);
                 $export_row['object__icon'] = view_e__icon($db_row['e__icon']);
                 $export_row['object__title'] = $db_row['e__title'];
                 $export_row['object__weight'] = intval($db_row['e__weight']);
@@ -1526,7 +1526,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $db_row['e__id'], //This child source
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+                    'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $x) {
 
                     //Always add to tags:
@@ -1541,7 +1541,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 }
 
                 //Feature source? Only if it's featured or belong to a featured parent:
-                if(array_intersect($profile_ids, $n___12138) && in_array($db_row['e__status'], $CI->config->item('n___7357'))){
+                if(array_intersect($profile_ids, $n___12138) && in_array($db_row['e__type'], $CI->config->item('n___7357'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 

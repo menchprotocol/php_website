@@ -22,7 +22,7 @@ if(isset($_GET['focus__e']) && superpower_active(12701, true)){
     //Fetch This User
     $e_filters = $this->E_model->fetch(array(
         'e__id' => $_GET['focus__e'],
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
         echo view__focus__e($e_filters[0]);
@@ -279,7 +279,7 @@ $fetch_13865 = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
     'x__type' => 13865, //PREREQUISITES
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 ), array('x__up'), 0);
 $meets_13865 = !count($fetch_13865);
 

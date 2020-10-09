@@ -115,7 +115,7 @@ class E extends CI_Controller
         //Validate Source:
         $es = $this->E_model->fetch(array(
             'e__id' => $_POST['e__id'],
-            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
 
         if (!$user_e) {
@@ -137,7 +137,7 @@ class E extends CI_Controller
             'x__up' => $_POST['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0, 0, array(), 'x__id') as $x) {
             $this->X_model->update($x['x__id'], array(
                 'x__sort' => 0,
@@ -176,7 +176,7 @@ class E extends CI_Controller
             //Validate Source:
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e__id'],
-                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
             //Count Portfolio:
@@ -184,7 +184,7 @@ class E extends CI_Controller
                 'x__up' => $_POST['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
             if (count($es) < 1) {
@@ -279,7 +279,7 @@ class E extends CI_Controller
         $filters = array(
             'x__up' => $parent_e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'e__status IN (' . join(',', ( $e_focus_filter<0 /* Remove Filters */ ? $this->config->item('n___7358') /* ACTIVE */ : array($e_focus_filter) /* This specific filter*/ )) . ')' => null,
+            'e__type IN (' . join(',', ( $e_focus_filter<0 /* Remove Filters */ ? $this->config->item('n___7358') /* ACTIVE */ : array($e_focus_filter) /* This specific filter*/ )) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         );
 
@@ -382,7 +382,7 @@ class E extends CI_Controller
             //Validate this existing source:
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e_existing_id'],
-                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if (count($es) < 1) {
                 return view_json(array(
@@ -498,7 +498,7 @@ class E extends CI_Controller
             //Validate this existing source:
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e_existing_id'],
-                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
             if (count($es) < 1) {
@@ -627,7 +627,7 @@ class E extends CI_Controller
         //Fetch latest version:
         $es_latest = $this->E_model->fetch(array(
             'e__id' => $focus_e['e__id'],
-            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if(!count($es_latest)){
             return view_json(array(
@@ -765,7 +765,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Focus ID',
             ));
-        } elseif (!isset($_POST['e__status'])) {
+        } elseif (!isset($_POST['e__type'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing status',
@@ -798,11 +798,11 @@ class E extends CI_Controller
         $e__update = array(
             'e__title' => $e__title_validate['e__title_clean'],
             'e__icon' => trim($_POST['e__icon']),
-            'e__status' => intval($_POST['e__status']),
+            'e__type' => intval($_POST['e__type']),
         );
 
         //Is this being deleted?
-        if (!in_array($e__update['e__status'], $this->config->item('n___7358') /* ACTIVE */) && !($e__update['e__status'] == $es[0]['e__status'])) {
+        if (!in_array($e__update['e__type'], $this->config->item('n___7358') /* ACTIVE */) && !($e__update['e__type'] == $es[0]['e__type'])) {
 
 
 
@@ -832,7 +832,7 @@ class E extends CI_Controller
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $_POST['e__id'],
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__up'), 1);
 
             }
@@ -1098,7 +1098,7 @@ class E extends CI_Controller
                 'x__up' => $_POST['parent_e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
             );
 
             if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
@@ -1722,7 +1722,7 @@ class E extends CI_Controller
         $es = $this->E_model->fetch(array(
             'e__id' => $_POST['sign_e__id'],
         ));
-        if (!in_array($es[0]['e__status'], $this->config->item('n___7357') /* PUBLIC */)) {
+        if (!in_array($es[0]['e__type'], $this->config->item('n___7357') /* PUBLIC */)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Your account source is not public. Contact us to adjust your account.',
@@ -2050,7 +2050,7 @@ class E extends CI_Controller
         $return_data = array(
             'status' => 1,
             'e__title' => $es[0]['e__title'],
-            'e__status' => $es[0]['e__status'],
+            'e__type' => $es[0]['e__type'],
             'e__icon' => $es[0]['e__icon'],
         );
 

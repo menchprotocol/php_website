@@ -66,7 +66,7 @@ if(isset($_GET['focus__e']) && superpower_active(12701, true)){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
         'e__id' => intval($_GET['focus__e']),
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
         echo view__focus__e($e_filters[0]);

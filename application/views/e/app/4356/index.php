@@ -87,7 +87,7 @@ foreach($this->I_model->fetch($filters) as $in){
             //Yes, see
             //Source Profile
             foreach($this->X_model->fetch(array(
-                'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                 'x__down' => $message['x__up'],

@@ -322,7 +322,7 @@ class X_model extends CI_Model
                 //Try fetching subscribers email:
                 foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__up' => 3288, //Mench Email
                     'x__down' => $subscriber_e__id,
@@ -919,7 +919,7 @@ class X_model extends CI_Model
 
             //We have a reference within this message, let's fetch it to better understand it:
             $es = $this->E_model->fetch(array(
-                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'e__id' => $referenced_e, //Alert: We will only have a single reference per message
             ));
             if (count($es) < 1) {
@@ -945,7 +945,7 @@ class X_model extends CI_Model
             if(!$simple_version && (!$is_current_e || $string_references['ref_time_found'])){
 
                 foreach($this->X_model->fetch(array(
-                    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'x__down' => $referenced_e,
@@ -1023,7 +1023,7 @@ class X_model extends CI_Model
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a class="montserrat '.extract_icon_color($es[0]['e__icon']).'" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__status'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__status']]['m_icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a></span>'.' ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a class="montserrat '.extract_icon_color($es[0]['e__icon']).'" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__type'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__type']]['m_icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a></span>'.' ', $output_body_message);
 
             }
 
@@ -1976,7 +1976,7 @@ class X_model extends CI_Model
         ));
         $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
-            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ));
         if (!count($is)) {
             return array(

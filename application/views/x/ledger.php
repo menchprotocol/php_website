@@ -27,20 +27,20 @@ if(isset($_GET['i__type']) && strlen($_GET['i__type']) > 0){
     }
 }
 
-if(isset($_GET['e__status']) && strlen($_GET['e__status']) > 0){
+if(isset($_GET['e__type']) && strlen($_GET['e__type']) > 0){
     if(isset($_GET['x__type']) && $_GET['x__type']==4251){ //SOURCE Created
 
         //Filter idea status based on
         $joined_by = array('x__down');
 
-        if (substr_count($_GET['e__status'], ',') > 0) {
+        if (substr_count($_GET['e__type'], ',') > 0) {
             //This is multiple:
-            $filters['( e__status IN (' . $_GET['e__status'] . '))'] = null;
+            $filters['( e__type IN (' . $_GET['e__type'] . '))'] = null;
         } else {
-            $filters['e__status'] = intval($_GET['e__status']);
+            $filters['e__type'] = intval($_GET['e__type']);
         }
     } else {
-        unset($_GET['e__status']);
+        unset($_GET['e__type']);
     }
 }
 
@@ -169,7 +169,7 @@ if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
 //Fetch unique transaction types recorded so far:
 $ini_filter = array();
 foreach($filters as $key => $value){
-    if(!includes_any($key, array('i__type', 'e__status'))){
+    if(!includes_any($key, array('i__type', 'e__type'))){
         $ini_filter[$key] = $value;
     }
 }
@@ -374,7 +374,7 @@ echo '</div></td>';
 
 echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(es)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
 
-    echo '<div class="filter-statuses e_status_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__status" value="' . ((isset($_GET['e__status'])) ? $_GET['e__status'] : '') . '" class="form-control border"></div>';
+    echo '<div class="filter-statuses e_status_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__type" value="' . ((isset($_GET['e__type'])) ? $_GET['e__type'] : '') . '" class="form-control border"></div>';
 
     echo '</td>';
 

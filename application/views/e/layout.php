@@ -31,7 +31,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         $profiles = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__down' => $e['e__id'],
         ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
         $show_max = view_memory(6404,13803);
@@ -67,13 +67,13 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
 
     //SOURCE DRAFTING?
-    if(!in_array($e['e__status'], $this->config->item('n___7357'))){
-        echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__status']]['m_icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__status']]['m_icon'] . '</span>'.$e___6177[$e['e__status']]['m_title'].'</div>';
+    if(!in_array($e['e__type'], $this->config->item('n___7357'))){
+        echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__type']]['m_icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m_icon'] . '</span>'.$e___6177[$e['e__type']]['m_title'].'</div>';
     }
 
 
     //SOURCE NAME
-    echo '<div style="padding: 8px 0; margin-top:13px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__status'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
+    echo '<div style="padding: 8px 0; margin-top:13px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
     echo '<div class="doclear">&nbsp;</div>';
 
 
@@ -321,8 +321,8 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                         'x__up' => $e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                    ), array('x__down'), 0, 0, array('e__status' => 'ASC'), 'COUNT(e__id) as totals, e__status', 'e__status');
+                        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                    ), array('x__down'), 0, 0, array('e__type' => 'ASC'), 'COUNT(e__id) as totals, e__type', 'e__type');
 
                     //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
                     if (count($child_e_filters) > 0 && $child_e_filters[0]['totals'] < $e_count) {
@@ -335,9 +335,9 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                         //Show each specific filter based on DB counts:
                         foreach($child_e_filters as $c_c) {
-                            $st = $e___6177[$c_c['e__status']];
+                            $st = $e___6177[$c_c['e__type']];
                             $extract_icon_color = extract_icon_color($st['m_icon']);
-                            $focus_tab .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(' . $c_c['e__status'] . ')" class="nav-x nav-link e_filter_status en_status_' . $c_c['e__status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_message'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_title'] . '</span></a></li>';
+                            $focus_tab .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status en_status_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_message'] . '">' . $st['m_icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m_title'] . '</span></a></li>';
                         }
 
                         $focus_tab .= '</div>';
@@ -780,7 +780,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                 <!-- Source Status -->
                 <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6177]['m_icon'].'</span>'.$e___13571[6177]['m_title'] ?></div>
-                <select class="form-control border" id="e__status">
+                <select class="form-control border" id="e__type">
                     <?php
                     foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
                         echo '<option value="' . $x__type . '" title="' . $m['m_message'] . '">' . $m['m_title'] . '</option>';

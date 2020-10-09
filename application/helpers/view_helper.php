@@ -639,7 +639,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
         if(count($exclude_ids)){
             $query_filters['e__id NOT IN (' . join(',', $exclude_ids) . ')'] = null;
@@ -1489,10 +1489,10 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         'x__up !=' => $focus_e__id, //Do Not Fetch Current Source
         'x__down' => $e['e__id'], //This child source
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
     ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
 
-    $is_public = in_array($e['e__status'], $CI->config->item('n___7357'));
+    $is_public = in_array($e['e__type'], $CI->config->item('n___7357'));
     $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
     //Allow source to see all their own transactions:
     $is_hidden = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
@@ -1516,7 +1516,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     //SOURCE STATUS
     if(!$is_public){
-        $box_items_list .= '<span class="inline-block e__status_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$e['e__status']]['m_title'].' @'.$e['e__status'].'">' . $e___6177[$e['e__status']]['m_icon'] . '</span>&nbsp;</span>';
+        $box_items_list .= '<span class="inline-block e__type_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$e['e__type']]['m_title'].' @'.$e['e__type'].'">' . $e___6177[$e['e__type']]['m_icon'] . '</span>&nbsp;</span>';
     }
 
     //DISCOVER STATUS

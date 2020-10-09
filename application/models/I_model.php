@@ -1003,7 +1003,7 @@ class I_model extends CI_Model
             'x__right' => $i['i__id'],
             'x__type' => 7545, //CERTIFICATES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $e) {
             if (!isset($metadata_this['p___7545'][$e['e__id']])) {
                 $metadata_this['p___7545'][$e['e__id']] = $e;

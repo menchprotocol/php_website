@@ -25,7 +25,7 @@ foreach($this->config->item('e___6287') as $e__id => $m) {
         'x__down' => $e__id,
         'x__up !=' => 6287,
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ), array('x__up')) as $e_profile){
         echo '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '" data-toggle="tooltip" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '" data-placement="top">' . view_e__icon($e_profile['e__icon']) . '</span>&nbsp;';
     }
