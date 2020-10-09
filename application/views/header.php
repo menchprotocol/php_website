@@ -97,7 +97,7 @@ $current_mench = current_mench();
      page_id="381488558920384"
      greeting_dialog_display="hide"
      ref=""
-     theme_color="#FC1B44">
+     theme_color="#222222">
 </div>
 <div class="chat-title"><?= $e___11035[12899]['m_title'] ?></div>
 
