@@ -1935,6 +1935,9 @@ label {
     .mench-navigation .block-sign-x{
         width:40px;
     }
+    .btn-lrg{
+        font-size: 1.7em !important;
+    }
 
 }
 
