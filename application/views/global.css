@@ -2138,9 +2138,7 @@ label {
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
     border-bottom-color: #FFFFFF !important;
 }
-.form-control{
-    background-color: transparent !important;
-}
+
 .alert a, .alert i {
     color: #222222 !important;
 }
@@ -2186,3 +2184,7 @@ label {
 .custom_ui_13491_13492 .msg{ font-size:0.9em; }
 .custom_ui_13491_13493 .msg, .custom_ui_13491_ .msg{ font-size:1.1em; }
 .custom_ui_13491_13494 .msg{ font-size:1.5em; }
+
+.form-control, body .form-control{
+    background-color: transparent !important;
+}
