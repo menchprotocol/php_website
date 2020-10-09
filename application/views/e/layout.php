@@ -526,7 +526,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => view_memory(6404,12138),
+                    'x__left' => view_memory(6404,14002),
                 );
                 if(count($my_x_ids)){
                     //Exclude Featured Ideas already added to Discoveries:

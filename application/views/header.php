@@ -2,7 +2,7 @@
 
 $user_e = superpower_assigned();
 $first_segment = $this->uri->segment(1);
-$i__id = is_numeric($first_segment) && $first_segment!=view_memory(6404,12138) ? intval($first_segment) : 0;
+$i__id = is_numeric($first_segment) && $first_segment!=view_memory(6404,14002) ? intval($first_segment) : 0;
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');

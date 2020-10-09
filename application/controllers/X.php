@@ -22,7 +22,7 @@ class X extends CI_Controller
         }
 
         $is = $this->I_model->fetch(array(
-            'i__id' => view_memory(6404,12138),
+            'i__id' => view_memory(6404,14002),
         ));
 
         //Load header:
@@ -628,7 +628,7 @@ class X extends CI_Controller
          *
          * */
 
-        if($i__id==view_memory(6404,12138)){
+        if($i__id==view_memory(6404,14002)){
             return redirect_message(home_url());
         }
 

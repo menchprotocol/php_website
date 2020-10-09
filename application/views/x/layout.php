@@ -662,7 +662,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__right' => $i_focus['i__id'],
-                'x__left !=' => view_memory(6404,12138),
+                'x__left !=' => view_memory(6404,14002),
             ), array('x__left'), 0);
             if(count($is_previous)){
                 $focus_tab .= '<div style="padding-top: 34px;">';

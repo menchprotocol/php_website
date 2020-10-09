@@ -23,13 +23,16 @@ $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 <?php
 
 $e_focus_found = false; //Used to determine the first tab to be opened
-$show_previous = $e_of_i && $is_active && $i_focus['i__id']!=view_memory(6404,12138);
+$is_north_star = $i_focus['i__id']==view_memory(6404,14002);
+$show_previous = $e_of_i && $is_active && !$is_north_star;
 
 
 //IDEA PREVIOUS
 echo '<div class="container coin-frame">';
 if($show_previous){
     echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m_icon'].'</span>'.$e___11035[11019]['m_title'].'</div>';
+} elseif($is_north_star) {
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[14002]['m_icon'].'</span>'.$e___11035[14002]['m_title'].'</div>';
 }
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
 foreach($this->X_model->fetch(array(
