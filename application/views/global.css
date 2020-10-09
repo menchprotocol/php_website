@@ -1762,7 +1762,7 @@ label {
 }
 .chat-title{
     position: fixed;
-    bottom: 0px;
+    bottom: 2px;
     right: 0px;
     text-align: center;
     width: 110px;
