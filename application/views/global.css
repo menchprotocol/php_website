@@ -1767,11 +1767,11 @@ label {
 }
 .chat-title{
     position: fixed;
-    bottom: 2px;
+    bottom: 0px;
     left: 11px;
     z-index: 99999999;
-    padding: 1px 4px;
-    border-radius: 8px;
+    padding: 4px 6px;
+    border-radius: 13px;
 }
 .cover-link .inside-btn {
     position:  absolute;
