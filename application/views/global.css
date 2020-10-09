@@ -1763,7 +1763,14 @@ label {
 .chat-title{
     position: fixed;
     bottom: 0px;
-    right: 2px;
+    right: 0px;
+    text-align: center;
+    width: 100px;
+    height: 30px;
+    overflow: hidden;
+    z-index: 99999999;
+}
+.chat-title span{
     z-index: 99999999;
     padding: 4px 6px;
     border-radius: 13px;
@@ -2037,8 +2044,8 @@ label {
 .custom_ui_13884_ .form-control,
 .custom_ui_13884_13886 .edit-locked span,
 .custom_ui_13884_ .edit-locked span,
-.custom_ui_13884_13886 .chat-title,
-.custom_ui_13884_ .chat-title,
+.custom_ui_13884_13886 .chat-title span,
+.custom_ui_13884_ .chat-title span,
 .custom_ui_13884_13886 div.dropdown-item,
 .custom_ui_13884_ div.dropdown-item{
     background-color:#222222;
@@ -2106,7 +2113,7 @@ label {
 .custom_ui_13884_13885 .mench-navigation,
 .custom_ui_13884_13885 .fade,
 .custom_ui_13884_13885 .coin-frame,
-.custom_ui_13884_13885 .chat-title,
+.custom_ui_13884_13885 .chat-title span,
 .custom_ui_13884_13885 div.dropdown-item{
     background-color: #f0f0f0;
     color: #222222;

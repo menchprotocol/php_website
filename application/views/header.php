@@ -104,7 +104,7 @@ if(intval(view_memory(6404,12899))){
          ref="<?= ( $user_e ? $user_e['e__id'] : '' ) ?>"
          theme_color="#222222">
     </div>
-    <div class="chat-title"><?= $e___11035[12899]['m_title'] ?></div>
+    <div class="chat-title"><span><?= $e___11035[12899]['m_title'] ?></span></div>
 
     <?php
 }
