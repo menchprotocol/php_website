@@ -2067,10 +2067,14 @@ label {
 
 
 
+.custom_ui_13884_13886 .new-note,
+.custom_ui_13884_ .new-note{
+    background-color:transparent !important;
+    color: #FFFFFF !important;
+}
 .custom_ui_13884_13886 .form-control,
 .custom_ui_13884_ .form-control{
     background-color:transparent !important;
-    color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .adj-btn i,
 .custom_ui_13884_ .adj-btn i{
@@ -2131,6 +2135,8 @@ label {
 }
 .custom_ui_13884_13885 .form-control{
     background-color:transparent !important;
+}
+.custom_ui_13884_13885 .new-note{
     color: #222222 !important;
 }
 
