@@ -1763,7 +1763,7 @@ label {
 .chat-title{
     position: fixed;
     bottom: 0px;
-    left: 0px;
+    right: 2px;
     z-index: 99999999;
     padding: 4px 6px;
     border-radius: 13px;
