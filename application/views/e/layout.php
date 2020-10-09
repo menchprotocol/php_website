@@ -26,7 +26,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
         //PROFILE
         echo '<div class="container coin-frame">';
-        echo '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m_icon'].'</span>'.$e___11035[11030]['m_title'].'</div>';
+        //echo '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m_icon'].'</span>'.$e___11035[11030]['m_title'].'</div>';
         echo '<div id="list_11030" class="list-group grey-list">';
         $profiles = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -155,7 +155,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             if(!$counter){
                 continue;
             }
-            $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+            //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
             $focus_tab .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m_icon'].' '.$m['m_title'].' '.number_format($counter, 0).' times.</div>';
 
         } elseif($x__type==12274){
@@ -346,7 +346,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 }
             }
 
-            $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[11029]['m_icon'].'</span>'.$e___11035[11029]['m_title'].'</div>';
+            $focus_tab .= '<div class="headline '.superpower_active(13422).'"><span class="icon-block">'.$e___11035[11029]['m_icon'].'</span>'.$e___11035[11029]['m_title'].'</div>';
             $focus_tab .= '<div id="list_e" class="list-group">';
 
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
@@ -390,7 +390,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 //MY IDEAS?
                 if($source_is_e){
 
-                    $focus_tab .= '<div class="headline"><span class="icon-block">' . $e___11035[10573]['m_icon'] . '</span>' . $e___11035[10573]['m_title'] . '</div>';
+                    //$focus_tab .= '<div class="headline"><span class="icon-block">' . $e___11035[10573]['m_icon'] . '</span>' . $e___11035[10573]['m_title'] . '</div>';
 
                     //Give Option to Add New Idea:
                     $focus_tab .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
@@ -489,7 +489,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             if($source_is_e){
 
                 //Give Option to Add New Idea:
-                $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_title'].'</div>';
+                //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_title'].'</div>';
 
                 $focus_tab .= '<div class="list-group" id="discoveryNew"><div class="list-group-item list-adder">
                     <div class="input-group border">
@@ -571,7 +571,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $item_counters = $this->X_model->fetch($i_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
             $counter = $item_counters[0]['totals'];
 
-            $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+            //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
             $focus_tab .= '<div class="list-group">';
             if($counter>0){
 
@@ -606,7 +606,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         } elseif($x__type==6225){
 
             //ACCOUNT SETTING
-            $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+            //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
             $focus_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:33px;">';
 
             //Display account fields ordered with their SOURCE LINKS:
