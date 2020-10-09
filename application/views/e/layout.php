@@ -737,7 +737,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
         $default_active = ( (!isset($_GET['came_from']) && $x__type==$active_x__type) || ( isset($_GET['came_from']) && $_GET['came_from']==$x__type));
 
-        $tab_nav .= '<li class="nav-item"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m_title'].( $m['m_message'] ? ' '.$m['m_message'] : '' ).'" data-toggle="tooltip" data-placement="top">'.$m['m_icon'].' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span></a></li>';
+        $tab_nav .= '<li class="nav-item"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m_title'].'" data-toggle="tooltip" data-placement="top">'.$m['m_icon'].' <span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span></a></li>';
 
 
         $tab_content .= '<div class="tab-content tab-group-11089 tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
