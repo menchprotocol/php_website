@@ -72,36 +72,45 @@ $current_mench = current_mench();
 
 <body class="mench-<?= $current_mench['x_name'] ?> <?php foreach($this->config->item('e___13890') as $e__id => $m){ echo ' custom_ui_'.$e__id.'_'.$this->session->userdata('session_custom_ui_'.$e__id).' '; } ?>">
 
-
-<!-- Load Facebook SDK for JavaScript -->
-<div id="fb-root"></div>
-<script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            xfbml            : true,
-            version          : 'v8.0'
-        });
-    };
-
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
-
-<!-- Your Chat App code -->
-<div class="fb-customerchat"
-     attribution=setup_tool
-     page_id="381488558920384"
-     greeting_dialog_display="hide"
-     ref="<?= ( $user_e ? $user_e['e__id'] : '' ) ?>"
-     theme_color="#222222">
-</div>
-<div class="chat-title"><?= $e___11035[12899]['m_title'] ?></div>
-
 <?php
+
+//Load live chat?
+if(intval(view_memory(6404,12899))){
+    ?>
+
+    <!-- Load Facebook SDK for JavaScript -->
+    <div id="fb-root"></div>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                xfbml            : true,
+                version          : 'v8.0'
+            });
+        };
+
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+    <!-- Your Chat App code -->
+    <div class="fb-customerchat"
+         attribution=setup_tool
+         page_id="381488558920384"
+         greeting_dialog_display="hide"
+         ref="<?= ( $user_e ? $user_e['e__id'] : '' ) ?>"
+         theme_color="#222222">
+    </div>
+    <div class="chat-title"><?= $e___11035[12899]['m_title'] ?></div>
+
+    <?php
+}
+
+
+
 //Any message we need to show here?
 if (!isset($flash_message)) {
     $flash_message = $this->session->flashdata('flash_message');
