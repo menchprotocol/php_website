@@ -487,18 +487,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
             $my_x_ids = array();
 
             if($source_is_e){
-
-                //Give Option to Add New Idea:
                 //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>'.$e___11035[12969]['m_title'].'</div>';
-
-                $focus_tab .= '<div class="list-group" id="discoveryNew"><div class="list-group-item list-adder">
-                    <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#searchDiscoveries\').focus();"><span class="icon-block">'.$e___11035[13956]['m_icon'].'</span></a>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="searchDiscoveries"
-                               placeholder="'.$e___11035[13956]['m_title'].'">
-                    </div><div class="algolia_pad_search hidden">'.view_memory(6404,13956).'</div></div></div>';
             }
 
             //Show My Discoveries

@@ -11,49 +11,6 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
-
-    if(parseInt(js_e___6404[12678]['m_message'])){
-
-
-        $("#searchDiscoveries").on('autocomplete:selected', function (event, suggestion, dataset) {
-
-            window.location = suggestion.object__url;
-
-        }).focus(function() {
-            $('#discoveryNew .algolia_pad_search' ).removeClass('hidden');
-        }).focusout(function() {
-            $('#discoveryNew .algolia_pad_search' ).addClass('hidden');
-        }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['d']}, [
-            {
-                source: function (q, cb) {
-                    //Append filters:
-                    algolia_index.search(q, {
-                        hitsPerPage: 34,
-                        filters:'object__type=12273 AND ( _tags:is_featured OR _tags:alg_e_' + js_pl_id + ' )',
-                    }, function (error, content) {
-                        if (error) {
-                            cb([]);
-                            return;
-                        }
-                        cb(content.hits, content);
-                    });
-                },
-                displayKey: function(suggestion) {
-                    return ""
-                },
-                templates: {
-                    suggestion: function (suggestion) {
-                        return view_search_result(suggestion);
-                    },
-                    empty: function (data) {
-                        return '<div class="not-found suggestion montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No results found</div>';
-                    },
-                }
-            }
-        ]);
-    }
-
-
     //Load Idea Search
     i_load_search(".add_e_idea",0, 'a', 'x_my_in');
 
