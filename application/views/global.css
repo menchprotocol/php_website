@@ -419,16 +419,6 @@ img.no-radius {
     margin:0;
     line-height: 144%;
 }
-.footer-center{
-    width: 100%;
-    text-align: center;
-    padding: 0 0 34px;
-    font-size: 0.89em;
-    z-index: 9999999;
-}
-.footer-center a{
-    text-decoration: underline;
-}
 .message_content{
     margin-left: 33px;
 }
@@ -1777,7 +1767,7 @@ label {
     position: fixed;
     bottom: 2px;
     left: 11px;
-    z-index: 99999;
+    z-index: 99999999;
     padding: 1px 4px;
     border-radius: 8px;
 }
