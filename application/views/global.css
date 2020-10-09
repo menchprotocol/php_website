@@ -1773,7 +1773,7 @@ label {
 }
 .chat-title span{
     z-index: 99999999;
-    padding: 3px;
+    padding: 5px 3px;
     border-radius: 10px;
     line-height: 125%;
 }
