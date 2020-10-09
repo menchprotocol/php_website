@@ -148,7 +148,7 @@ if($user_e['e__id']){
         ));
 
         //No message, so automatically mark as read:
-        if(!count($x_completes) && !count($messages) && in_array($i_focus['i__type'], $this->config->item('n___12211'))){
+        if(!count($x_completes) && !count($messages) && in_array($i_focus['i__type'], $this->config->item('n___14000'))){
             array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                 'x__type' => 4559, //DISCOVER MESSAGES
                 'x__source' => $user_e['e__id'],
