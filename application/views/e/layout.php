@@ -390,7 +390,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 //MY IDEAS?
                 if($source_is_e){
 
-                    //$focus_tab .= '<div class="headline"><span class="icon-block">' . $e___11035[10573]['m_icon'] . '</span>' . $e___11035[10573]['m_title'] . '</div>';
+                    $focus_tab .= '<div class="headline"><span class="icon-block">' . $e___11035[10573]['m_icon'] . '</span>' . $e___11035[10573]['m_title'] . '</div>';
 
                     //Give Option to Add New Idea:
                     $focus_tab .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
