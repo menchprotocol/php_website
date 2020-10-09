@@ -29,10 +29,10 @@ $show_previous = $e_of_i && $is_active && !$is_north_star;
 
 //IDEA PREVIOUS
 echo '<div class="container coin-frame">';
-if($show_previous){
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m_icon'].'</span>'.$e___11035[11019]['m_title'].'</div>';
-} elseif($is_north_star) {
+if($is_north_star) {
     echo '<div class="headline"><span class="icon-block">'.$e___11035[14002]['m_icon'].'</span>'.$e___11035[14002]['m_title'].'</div>';
+} elseif($show_previous){
+    //echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m_icon'].'</span>'.$e___11035[11019]['m_title'].'</div>';
 }
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
 foreach($this->X_model->fetch(array(
@@ -85,18 +85,6 @@ echo '<div style="padding: 21px 0 8px 0;">';
 
 //IDEA STATUS
 echo '<div class="inline-block pull-left left-margin">'.view_input_dropdown(4737, $i_focus['i__type'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
-
-
-if($e_of_i){
-    //MY IDEAS
-    $is_in_my_ideas = count($this->X_model->fetch(array(
-        'x__up' => $user_e['e__id'],
-        'x__right' => $i_focus['i__id'],
-        'x__type' => 10573, //MY IDEAS
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    )));
-    echo '<div class="inline-block pull-left left-half-margin"><a class="btn btn-idea btn-tiny" href="javascript:void(0);" onclick="i_save('.$i_focus['i__id'].')" data-toggle="tooltip" data-placement="top" title="ADD TO '.$e___11035[10573]['m_title'].'"><span class="toggle_i_saved '.( $is_in_my_ideas ? '' : 'hidden' ).'">'.$e___11035[10573]['m_icon'].'</span><span class="toggle_i_saved '.( $is_in_my_ideas ? 'hidden' : '' ).'">'.$e___11035[13955]['m_icon'].'</span></a></div>';
-}
 
 
 //IDEA TIME
@@ -196,7 +184,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = count($i_notes);
 
-        $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:33px;">';
         foreach($i_notes as $i_note) {
             $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
@@ -231,7 +219,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $pre_fix = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
         }
 
-        $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m_icon'].'</span>'.$e___11035[13542]['m_title'].'</div>';
+        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m_icon'].'</span>'.$e___11035[13542]['m_title'].'</div>';
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
         foreach($is_next as $next_i) {
             $focus_tab .= view_i($next_i, $i_focus['i__id'], false, $e_of_i);
@@ -262,7 +250,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //DISCOVERIES
         $counter = view_coins_i(6255,  $i_focus, false);
 
-        $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
         if($counter){
 
             $query_filters = array(
@@ -306,7 +294,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12969){
 
-        $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
         $u_x = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
@@ -334,7 +322,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $input_options = '';
         $counter = 0;
 
-        $focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
         foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
 
             $counter++;

@@ -460,10 +460,6 @@ img.no-radius {
     color: #222222 !important;
     font-size: 2.6em;
 }
-.toggle_i_saved>i{
-    color: #222222 !important;
-    font-size: 2em;
-}
 
 /* MENCH Colors */
 .source, .source .fas, .source .far, .source .fal, .source .fad, .color12274, .info-item i.source:hover, .info-item a.source:hover, .headline.source, .headline.source a, .headline.source i  { color:#007AFD !important; }

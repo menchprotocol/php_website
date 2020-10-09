@@ -340,18 +340,6 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
 }
 
 
-function i_save(i__id){
-    $('.toggle_i_saved').toggleClass('hidden');
-    $.post("/i/i_save", {
-        i__id:i__id,
-    }, function (data) {
-        if (!data.status) {
-            alert(data.message);
-            $('.toggle_i_saved').toggleClass('hidden');
-        }
-    });
-}
-
 function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
     /*
