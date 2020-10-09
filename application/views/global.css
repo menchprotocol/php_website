@@ -1577,12 +1577,12 @@ label {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list, .add_notes_form {
+.texttype__lg, .input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list, .add_notes_form {
     width: -webkit-calc(100% - 66px);
     width:    -moz-calc(100% - 66px);
     width:         calc(100% - 66px);
 }
-.texttype__lg, .i-info, .note-textarea.edit-on, .cover-title {
+.i-info, .note-textarea.edit-on, .cover-title {
     width: -webkit-calc(100% - 33px) !important;
     width:    -moz-calc(100% - 33px) !important;
     width:         calc(100% - 33px) !important;
@@ -1622,7 +1622,6 @@ label {
     color:#222222;
     padding:0;
     margin-bottom: 5px;
-    padding-right: 33px;
 }
 .title-icon{
     vertical-align: top;
