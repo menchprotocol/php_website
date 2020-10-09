@@ -606,6 +606,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
         } elseif($x__type==6225){
 
             //ACCOUNT SETTING
+            echo '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
             $focus_tab .= '<div class="accordion" id="MyAccountAccordion" style="margin-bottom:33px;">';
 
             //Display account fields ordered with their SOURCE LINKS:
