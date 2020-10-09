@@ -25,6 +25,12 @@ $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
 $e_focus_found = false; //Used to determine the first tab to be opened
 $is_north_star = $i_focus['i__id']==view_memory(6404,14002);
 $show_previous = $e_of_i && $is_active && !$is_north_star;
+$is_in_my_ideas = count($this->X_model->fetch(array(
+    'x__up' => $user_e['e__id'],
+    'x__right' => $i_focus['i__id'],
+    'x__type' => 10573, //MY IDEAS
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+)));
 
 
 //IDEA PREVIOUS
@@ -44,7 +50,7 @@ foreach($this->X_model->fetch(array(
     echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
 }
 if($show_previous){
-    echo '<div class="list-group-item list-adder '.superpower_active(10939).'">
+    echo '<div class="list-group-item list-adder '.superpower_active(( $is_in_my_ideas ? 12700 : 10939 )).'">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
                         <input type="text"
