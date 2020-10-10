@@ -1547,6 +1547,8 @@ i {
     margin-bottom: 0 !important;
 }
 .mench-logo{
+    margin-top: 3px;
+    border-radius:0 !important;
     display: block;
     float: left;
 }
