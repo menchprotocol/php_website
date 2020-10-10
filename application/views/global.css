@@ -991,7 +991,7 @@ textarea.note-textarea{
     display: block;
     padding-left: 41px;
     padding-right:0;
-    margin-top: -17px !important;
+    margin-top: -19px !important;
     margin-bottom:0;
 }
 .title-block-md{
@@ -1771,7 +1771,7 @@ i {
     bottom: 0;
     right: 0px;
     text-align: center;
-    width: 110px;
+    width: 114px;
     height: 26px;
     overflow: hidden;
     z-index: 99999999;
