@@ -83,6 +83,7 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
             foreach($this->config->item('e___10957') as $superpower_e__id => $m3){
 
                 $unlocked = superpower_assigned($superpower_e__id);
+                $public_link = in_array($superpower_e__id, $this->config->item('n___6404'));
                 $extract_icon_color = extract_icon_color($m3['m__icon']);
                 $anchor = '<span class="icon-block '.$extract_icon_color.'">'.$m3['m__icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'];
 
@@ -92,13 +93,13 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
                     $total_count++;
                     $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')">'.$anchor.'</a>';
 
-                } elseif($progress_type_id==14011 && !$unlocked && in_array($superpower_e__id, $this->config->item('n___6404'))){
+                } elseif($progress_type_id==14011 && !$unlocked && $public_link){
 
                     //SUPERPOWERS AVAILABLE
                     $total_count++;
                     $this_tab .= '<a class="list-group-item" href="'.view_memory(6404,$superpower_e__id).'">'.$anchor.'</a>';
 
-                } elseif($progress_type_id==14009){
+                } elseif($progress_type_id==14009 && !$unlocked && !$public_link){
 
                     //SUPERPOWERS UNAVAILABLE
                     $total_count++;
@@ -106,6 +107,10 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
                 }
 
+            }
+
+            if($progress_type_id!=14008 && !$total_count){
+                continue;
             }
 
             echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$m4['m__icon'].'</span>'.$total_count.' '.$m4['m__title'].'</div>';
