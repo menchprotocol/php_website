@@ -230,15 +230,14 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(superpower_active(12700, true)){
 
             //IDEA LIST EDITOR
-            $focus_tab .= '<div class="i_link_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m_icon'].'</a></div>';
+            $focus_tab .= '<div style="margin:-45px 0 22px 9px"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m_icon'].'</a></div>';
             $focus_tab .= '<div class="doclear">&nbsp;</div>';
 
 
-            $focus_tab .= '<div class="toggle_12589 hidden">';
+            $focus_tab .= '<div class="toggle_12589 hidden margin-top-down">';
             $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m_icon'].'</span>'.$e___11035[12589]['m_title'].'</div>';
             $dropdown_options = '';
             $input_options = '';
-            $counter = 0;
 
             //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
             foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
