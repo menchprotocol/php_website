@@ -279,7 +279,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
                 }
 
 
-                $focus_tab .= '<div class="pull-right" style="margin:-45px 0px 0px 9px;"><a href="javascript:void(0);" onclick="$(\'.toggle_4997\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
+                $focus_tab .= '<div class="pull-left" style="margin:-45px 0px 0px 9px;"><a href="javascript:void(0);" onclick="$(\'.toggle_4997\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m_icon'].'</a></div>';
 
 
 
