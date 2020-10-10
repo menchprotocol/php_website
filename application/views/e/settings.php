@@ -113,10 +113,10 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
                 continue;
             }
 
-            echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$m4['m__icon'].'</span>'.$total_count.' '.$m4['m__title'].'</div>';
+            echo '<div class="headline"><span class="icon-block">'.$m4['m__icon'].'</span>'.$total_count.' '.$m4['m__title'].'</div>';
             if($total_count){
 
-                echo '<div class="list-group">';
+                echo '<div class="list-group" style="margin-bottom: 21px;">';
                 echo $this_tab;
                 echo '</div>';
 
