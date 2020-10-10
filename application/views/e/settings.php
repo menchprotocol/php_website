@@ -6,7 +6,6 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-$superpower_assigned = count($this->session->userdata('session_superpowers_assigned'));
 
 //ACCOUNT SETTING
 echo '<h1 class="big-frame"><a href="/@'.$user_e['e__id'].'" style="text-decoration:none;" class="'.extract_icon_color($user_e['e__icon']).'">' . $user_e['e__title'] . '</a></h1>';
@@ -60,15 +59,14 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
             $superpower_actives3 = array_intersect($this->config->item('n___10957'), $m3['m__profile']);
 
             echo '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
-            echo '<a href="javascript:void(0);" onclick="e_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item avatar-item item-square avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m__icon'] . '</div></a>';
+            echo '<a href="javascript:void(0);" onclick="e_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item avatar-item avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m__icon'] . '</div></a>';
             echo '</span>';
 
         }
 
     } elseif ($acc_e__id == 10957 /* Superpowers */) {
 
-
-        if($superpower_assigned >= 2){
+        if(count($this->session->userdata('session_superpowers_assigned')) >= 2){
             //Mass Toggle Option:
             echo '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_toggle_all(1)" class="btn btn-far"><i class="fas fa-toggle-on"></i></a>
@@ -85,28 +83,32 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
             foreach($this->config->item('e___10957') as $superpower_e__id => $m3){
 
                 $unlocked = superpower_assigned($superpower_e__id);
+                $extract_icon_color = extract_icon_color($m3['m__icon']);
+                $anchor = '<span class="icon-block '.$extract_icon_color.'">'.$m3['m__icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'];
 
                 if($progress_type_id==14008 && $unlocked){
 
-                    //UNLOCKED SUPERPOWERS
+                    //SUPERPOWERS UNLOCKED
                     $total_count++;
-                    $extract_icon_color = extract_icon_color($m3['m__icon']);
-                    $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_e__id.'">'.$m3['m__icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m__title'].'</b> '.$m3['m__message'].'</a>';
+                    $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')">'.$anchor.'</a>';
 
                 } elseif($progress_type_id==14011 && !$unlocked && in_array($superpower_e__id, $this->config->item('n___6404'))){
 
-                    //AVAILABLE SUPERPOWERS
+                    //SUPERPOWERS AVAILABLE
                     $total_count++;
-                    $extract_icon_color = extract_icon_color($m3['m__icon']);
-                    $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block '.$extract_icon_color.'" title="Source @'.$superpower_e__id.'">'.$m3['m__icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m__title'].'</b> '.$m3['m__message'].'</a>';
+                    $this_tab .= '<a class="list-group-item" href="'.view_memory(6404,$superpower_e__id).'">'.$anchor.'</a>';
+
+                } elseif($progress_type_id==14009 && !$unlocked && in_array($superpower_e__id, $this->config->item('n___6404'))){
+
+                    //SUPERPOWERS UNAVAILABLE
+                    $total_count++;
+                    $this_tab .= '<div class="list-group-item">'.$anchor.'</div>';
 
                 }
 
-
-
             }
 
-            echo '<div class="headline"><span class="icon-block">'.$m4['m__icon'].'</span>'.$total_count.' '.$m4['m__title'].'</div>';
+            echo '<div class="headline" style="margin-top: 34px;"><span class="icon-block">'.$m4['m__icon'].'</span>'.$total_count.' '.$m4['m__title'].'</div>';
             if($total_count){
 
                 echo '<div class="list-group">';
