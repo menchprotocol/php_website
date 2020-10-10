@@ -1986,7 +1986,7 @@ class E extends CI_Controller
             $app_e__id = 4527;
         }
 
-        if($app_e__id < 1){
+        if(!$app_e__id){
 
             //List apps to choose from:
             $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION

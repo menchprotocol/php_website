@@ -341,7 +341,7 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
                 }
             }
 
-            $focus_tab .= '<div class="headline '.superpower_active(13422).'"><span class="icon-block">'.$e___11035[11029]['m__icon'].'</span>'.$e___11035[11029]['m__title'].'</div>';
+            //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[11029]['m__icon'].'</span>'.$e___11035[11029]['m__title'].'</div>';
             $focus_tab .= '<div id="list_e" class="list-group">';
 
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
