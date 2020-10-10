@@ -1525,7 +1525,7 @@ label {
 }
 
 i {
-    font-size: 1.44em;
+    font-size: 1.44em !important;
 }
 
 /* FUNCTIONAL */
