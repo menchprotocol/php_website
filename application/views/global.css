@@ -837,7 +837,7 @@ img.no-radius {
 .nav-sm .nav-x {
     border: 1px solid transparent;
     display: block;
-    padding: .5rem .5rem;
+    padding: .5rem .1rem;
     font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
 }

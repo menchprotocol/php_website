@@ -225,6 +225,72 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $pre_fix = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
         }
 
+
+
+        if(superpower_active(12700, true)){
+
+            //IDEA LIST EDITOR
+            $focus_tab .= '<div class="i_link_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m_icon'].'</a></div>';
+            $focus_tab .= '<div class="doclear">&nbsp;</div>';
+
+
+            $focus_tab .= '<div class="toggle_12589 hidden">';
+            $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m_icon'].'</span>'.$e___11035[12589]['m_title'].'</div>';
+            $dropdown_options = '';
+            $input_options = '';
+            $counter = 0;
+
+            //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+            foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
+
+                $counter++;
+                $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m_title'] . '</option>';
+
+
+                //Start with the input wrapper:
+                $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m_message'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+
+                if(in_array($action_e__id, array(12591, 12592))){
+
+                    //Source search box:
+
+                    //String command:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border montserrat">';
+
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
+
+                } elseif(in_array($action_e__id, array(12611, 12612))){
+
+                    //String command:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border montserrat">';
+
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
+
+                }
+
+                $input_options .= '</span>';
+
+            }
+
+            $counter = null;
+            $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
+
+            //Drop Down
+            $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
+            $focus_tab .= $dropdown_options;
+            $focus_tab .= '</select>';
+
+            $focus_tab .= $input_options;
+
+            $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-idea inline-block"></div>';
+
+            $focus_tab .= '</form>';
+            $focus_tab .= '</div>';
+        }
+
+
         //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m_icon'].'</span>'.$e___11035[13542]['m_title'].'</div>';
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
         foreach($is_next as $next_i) {
@@ -320,61 +386,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= '</div>';
 
         }
-
-    } elseif($x__type==12589){
-
-        //IDEA LIST EDITOR
-        $dropdown_options = '';
-        $input_options = '';
-        $counter = 0;
-
-        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
-        foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
-
-            $counter++;
-            $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m_title'] . '</option>';
-
-
-            //Start with the input wrapper:
-            $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m_message'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
-
-            if(in_array($action_e__id, array(12591, 12592))){
-
-                //Source search box:
-
-                //String command:
-                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border montserrat">';
-
-                //We don't need the second value field here:
-                $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
-
-            } elseif(in_array($action_e__id, array(12611, 12612))){
-
-                //String command:
-                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border montserrat">';
-
-                //We don't need the second value field here:
-                $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
-
-            }
-
-            $input_options .= '</span>';
-
-        }
-
-        $counter = null;
-        $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
-
-        //Drop Down
-        $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
-        $focus_tab .= $dropdown_options;
-        $focus_tab .= '</select>';
-
-        $focus_tab .= $input_options;
-
-        $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-idea inline-block"></div>';
-
-        $focus_tab .= '</form>';
 
     } else {
 
