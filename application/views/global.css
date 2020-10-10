@@ -991,25 +991,8 @@ textarea.note-textarea{
     display: block;
     padding-left: 41px;
     padding-right:0;
-    margin-top: -19px !important;
+    margin-top: -21px !important;
     margin-bottom:0;
-}
-.title-block-md{
-    display: block;
-    padding-left: 41px;
-    padding-right:0;
-    margin-bottom:0;
-    margin-top: -28px !important;
-}
-.title-block-lg{
-    display: block;
-    padding-left: 41px;
-    padding-right:0;
-    margin-bottom:0;
-    margin-top: -44px !important;
-}
-.title-block-squeeze{
-    margin-top: -50px !important;
 }
 .title-no-right {
     padding-right:5px !important;
@@ -1898,12 +1881,6 @@ i {
     }
     .todiscover .top-icon{
         margin-top: -7px;
-    }
-    .title-block-lg{
-        margin-top: -40px !important;
-    }
-    .title-block-squeeze{
-        margin-top: -36px !important;
     }
     .texttype__lg, h1{ font-size: 1.5em; margin-top: 8px; }
     h1 i {
