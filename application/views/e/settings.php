@@ -94,13 +94,13 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
                 //SUPERPOWERS AVAILABLE
                 $progress_type_id=14011;
-                echo '<a class="list-group-item" href="'.view_memory(6404,$superpower_e__id).'"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
+                echo '<a class="list-group-item no-side-padding" href="'.view_memory(6404,$superpower_e__id).'"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
             } elseif(!$unlocked && !$public_link){
 
                 //SUPERPOWERS UNAVAILABLE
                 $progress_type_id=14009;
-                echo '<a href="javascript:void();" onclick="alert(\'This superpower is locked & cannot be unlocked at this time. Start by unlocking available superpowers.\')" class="list-group-item islocked"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
+                echo '<a href="javascript:void();" onclick="alert(\'This superpower is locked & cannot be unlocked at this time. Start by unlocking other available superpowers.\')" class="list-group-item no-side-padding islocked"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
             }
 
