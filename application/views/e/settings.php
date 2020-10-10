@@ -100,7 +100,7 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
                 //SUPERPOWERS UNAVAILABLE
                 $progress_type_id=14009;
-                echo '<div class="list-group-item islocked"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</div>';
+                echo '<a href="javascript:void();" onclick="alert(\'This superpower is locked & cannot be unlocked at this time. Start by unlocking available superpowers.\')" class="list-group-item islocked"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
             }
 
