@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="padding: 0 5px;">
 
     <?php
 
