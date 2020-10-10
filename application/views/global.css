@@ -1527,7 +1527,7 @@ label {
 i {
     font-size: 1.44em !important;
 }
-.btn i, .inside-btn i {
+.btn-lrg i, .inside-btn i {
     font-size: 1em !important;
 }
 
