@@ -1493,7 +1493,7 @@ label {
     padding: 10px 10px 10px 0;
 }
 
-i {
+i, .btn .show-max {
     font-size: 1.44em !important;
 }
 .btn-lrg i, .inside-btn i, .controller-nav i {
