@@ -2030,20 +2030,29 @@ class E extends CI_Controller
                 'memory_detected' => $memory_detected,
             );
 
-            if($memory_detected && in_array($app_e__id, $this->config->item('n___12741'))){
+            if(!$memory_detected){
 
-                //Raw UI:
-                $this->load->view('e/app/'.$app_e__id.'/index', $view_data);
+                //Just focus on the core:
+                $this->load->view('e/app_frame', $view_data);
 
             } else {
 
-                //Regular UI:
-                //Load App:
-                $this->load->view('header', array(
-                    'title' => ( $memory_detected ? strip_tags($e___6287[$app_e__id]['m__icon']).$e___6287[$app_e__id]['m__title'] : 'UNKNOWN' ).' | APP',
-                ));
-                $this->load->view('e/app_frame', $view_data);
-                $this->load->view('footer');
+                if(in_array($app_e__id, $this->config->item('n___12741'))){
+
+                    //Raw UI:
+                    $this->load->view('e/app/'.$app_e__id.'/index', $view_data);
+
+                } else {
+
+                    //Regular UI:
+                    //Load App:
+                    $this->load->view('header', array(
+                        'title' => strip_tags($e___6287[$app_e__id]['m__icon']).$e___6287[$app_e__id]['m__title'].' | APP',
+                    ));
+                    $this->load->view('e/app_frame', $view_data);
+                    $this->load->view('footer');
+
+                }
 
             }
         }
