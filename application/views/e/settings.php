@@ -98,7 +98,7 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
                     $total_count++;
                     $this_tab .= '<a class="list-group-item" href="'.view_memory(6404,$superpower_e__id).'">'.$anchor.'</a>';
 
-                } elseif($progress_type_id==14009 && !$unlocked && in_array($superpower_e__id, $this->config->item('n___6404'))){
+                } elseif($progress_type_id==14009){
 
                     //SUPERPOWERS UNAVAILABLE
                     $total_count++;
