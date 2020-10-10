@@ -1524,6 +1524,9 @@ label {
     padding: 10px 10px 10px 0;
 }
 
+i {
+    font-size: 1.44em;
+}
 
 /* FUNCTIONAL */
 .inline-block{ display: inline-block !important; }
@@ -1531,7 +1534,7 @@ label {
 .block{ display: block !important; width: 100%; }
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
-.icon-block { width:41px !important; display: inline-block; text-align: center; font-size: 1.44em; }
+.icon-block { width:41px !important; display: inline-block; text-align: center; }
 .icon-block-xs{ width:25px; display: inline-block; text-align: center; }
 .custom_ui_13491_13493 .icon-block-xs, .custom_ui_13491_ .icon-block-xs{ width:26px; }
 .custom_ui_13491_13494 .icon-block-xs{ width:36px; }
