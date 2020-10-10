@@ -238,16 +238,17 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m_icon'].'</span>'.$e___11035[12589]['m_title'].'</div>';
             $dropdown_options = '';
             $input_options = '';
+            $this_counter = 0;
 
             //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
             foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
 
-                $counter++;
+                $this_counter++;
                 $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m_title'] . '</option>';
 
 
                 //Start with the input wrapper:
-                $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m_message'].'" class="inline-block '. ( $counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m_message'].'" class="inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
                 if(in_array($action_e__id, array(12591, 12592))){
 
@@ -273,7 +274,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             }
 
-            $counter = null;
             $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
 
             //Drop Down
