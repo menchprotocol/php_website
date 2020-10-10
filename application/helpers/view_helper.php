@@ -1176,7 +1176,14 @@ function view_caret($e__id, $m, $object__id){
     $ui .= '<div class="dropdown-menu">';
     foreach($CI->config->item('e___'.$e__id) as $e__id => $m2){
         $superpower_actives2 = array_intersect($CI->config->item('n___10957'), $m2['m_profile']);
-        $ui .= '<a class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).' '.( count($superpower_actives2) ? superpower_active(end($superpower_actives2)) : '' ).'" href="' . $m2['m_message'] . $object__id . '"><span class="icon-block">'.view_e__icon($m2['m_icon']).'</span> '.$m2['m_title'].'</a>';
+
+        if($e__id==13007){
+            $href = 'href="javascript:void(0);" onclick="e_sort_reset()"';
+        } else {
+            $href = 'href="' . $m2['m_message'] . $object__id . '"';
+        }
+
+        $ui .= '<a '.$href.' class="dropdown-item montserrat '.extract_icon_color($m2['m_icon']).' '.( count($superpower_actives2) ? superpower_active(end($superpower_actives2)) : '' ).'"><span class="icon-block">'.view_e__icon($m2['m_icon']).'</span> '.$m2['m_title'].'</a>';
     }
     $ui .= '</div>';
     $ui .= '</li>';
