@@ -16,9 +16,9 @@ $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 
 
 
-//Determine Forcus User:
+//Determine Focus User:
 $user_e = false;
-if(isset($_GET['focus__e']) && superpower_active(12701, true)){
+if(isset($_GET['focus__e']) && superpower_active(14005, true)){
     //Fetch This User
     $e_filters = $this->E_model->fetch(array(
         'e__id' => $_GET['focus__e'],
@@ -256,7 +256,7 @@ echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
 
 
 //MESSAGES
-echo '<div style="margin-bottom:33px;">';
+echo '<div style="margin-bottom:41px;">';
 foreach($messages as $message_x) {
     echo $this->X_model->message_send(
         $message_x['x__message'],
@@ -694,7 +694,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //CERTIFICATES
         $counter = $i_stats['count_7545'];
         $focus_tab .= '<div class="i_content padded"><div class="msg">Completion could earn you some of the following certificates:</div></div>';
-        $focus_tab .= '<div class="list-group" style="margin-bottom:33px;">';
+        $focus_tab .= '<div class="list-group" style="margin-bottom:41px;">';
         foreach ($i_stats['array_7545'] as $e) {
             $e['x__message'] = ''; //Remove for this
             $focus_tab .= view_e_basic($e);
@@ -724,13 +724,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 //MENCH URL
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
-                $focus_tab .= '<div style="margin: 5px 0 33px 33px; cursor: text;">'.$this_url.'</div>';
+                $focus_tab .= '<div style="margin: 5px 0 41px 41px; cursor: text;">'.$this_url.'</div>';
 
             } elseif($x__type2==13531){
 
                 //SHARE ON SOCIAL MEDIA
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$m2['m_title'].'</div>';
-                $focus_tab .= '<div class="share-this space-content" style="margin:5px 0 33px;">';
+                $focus_tab .= '<div class="share-this space-content" style="margin:5px 0 41px;">';
                 foreach($this->config->item('e___13531') as $m2) {
                     $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m_message'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share with '.$m2['m_title'].'" data-toggle="tooltip" data-placement="top">'.$m2['m_icon'].'</div></div>';
                 }

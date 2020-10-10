@@ -71,7 +71,7 @@ echo '</div>';
 
 echo '<div class="container wrap-card card-idea">';
 
-if(isset($_GET['focus__e']) && superpower_active(12701, true)){
+if(isset($_GET['focus__e']) && superpower_active(14005, true)){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
         'e__id' => intval($_GET['focus__e']),
@@ -97,7 +97,7 @@ echo '<div class="inline-block pull-left left-margin">'.view_input_dropdown(4737
 echo '<div class="inline-block pull-left left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
 
 //PREVIEW DISCOVERY
-echo '<div class="inline-block pull-right" style="margin-right:33px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right" style="margin-right:41px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
@@ -172,7 +172,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //Show tree sources only if more than the sources for this idea:
         if( $counter > count($i_notes) && $superpower_13422 ){
             //Add Tree Sources
-            $focus_tab .= '<div style="margin:21px 0 33px;">';
+            $focus_tab .= '<div style="margin:21px 0 41px;">';
                 $focus_tab .= '<div class="tree_sources list-group"><a class="list-group-item montserrat doupper source itemsource" href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>LIST '.$counter.' SOURCES'.( $counter_i > 1 ? ' FOR ALL '.$counter_i.' IDEAS' : '' ).'</a></div>';
                 $focus_tab .= '<div class="tree_sources hidden">'.view_i_tree_e($i_focus).'</div>';
             $focus_tab .= '</div>';
@@ -191,7 +191,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = count($i_notes);
 
         //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
-        $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:33px;">';
+        $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:41px;">';
         foreach($i_notes as $i_note) {
             $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
         }
@@ -363,7 +363,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $counter = null;
-        $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 33px;">';
+        $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
 
         //Drop Down
         $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';

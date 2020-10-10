@@ -211,7 +211,7 @@ echo '<div class="container">';
     echo '<h1 class="big-frame '.extract_icon_color($e___11035[4341]['m_icon']).'">' . $e___11035[4341]['m_title'] . '</h1>';
 
 
-    echo '<div class="inline-block margin-top-down '.superpower_active(12701).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m_icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$e___11035[12707]['m_title'].'</a></div>';
+    echo '<div class="inline-block margin-top-down '.superpower_active(14005).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m_icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="montserrat">'.$e___11035[12707]['m_title'].'</a></div>';
 
 
     echo '<div class="show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
@@ -295,7 +295,7 @@ echo '<div class="container">';
 
     if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0){
         //Give Option to Replace:
-        echo '<td class="' . superpower_active(12701) . '"><div style="padding-right:5px;">';
+        echo '<td class="' . superpower_active(14005) . '"><div style="padding-right:5px;">';
         echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
         echo '<input type="text" name="x__message_replace" value="' . ((isset($_GET['x__message_replace'])) ? $_GET['x__message_replace'] : '') . '" class="form-control border">';
         echo '</div></td>';

@@ -78,7 +78,7 @@ if(count($current_sign_i_attempt) == 0){
     ?>
 
 
-    <div class="login-content" style="margin-top:33px;">
+    <div class="login-content" style="margin-top:41px;">
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">

@@ -597,7 +597,7 @@ function view_mench_coins(){
     $ui = '';
 
     $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12467]['m_icon'].'</span>'.$e___11035[12467]['m_title'].'</div>';
-    $ui .= '<div class="list-group" style="padding-bottom:33px;">';
+    $ui .= '<div class="list-group" style="padding-bottom:41px;">';
     $ui .= '<div class="list-group-item no-side-padding">';
     $ui .= '<div class="row">';
     $ui .= '<div class="col-sm col-md">&nbsp;</div>';
@@ -858,7 +858,7 @@ function view_i_tree_e($i){
     foreach($CI->config->item('e___13207') as $e__id => $m2){
         if(isset($i_stats['count_'.$e__id]) && $i_stats['count_'.$e__id]>0){
             $ui .= '<div class="headline"><span class="icon-block">'.$m2['m_icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m_title'].'</div>';
-            $ui .= '<div class="list-group" style="margin-bottom:33px;">';
+            $ui .= '<div class="list-group" style="margin-bottom:41px;">';
             foreach ($i_stats['array_'.$e__id] as $e) {
                 $ui .= view_e_basic($e);
             }
@@ -1434,7 +1434,7 @@ function view_x_progress($completion_rate, $i, $show_micro){
 
     } else {
 
-        $ui .= '<div class="progress-bg-list" style="'.( $show_micro ? 'width:100%;' : 'margin-left:33px;' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+        $ui .= '<div class="progress-bg-list" style="'.( $show_micro ? 'width:100%;' : 'margin-left:41px;' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
 
     }
 
@@ -1638,7 +1638,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="message_content paddingup x__message block">';
 
         //Show Filter?
-        if(superpower_active(12701, true) && (!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id'])){
+        if(superpower_active(14005, true) && (!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id'])){
             $ui .= '<a href="/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m_title'].'">'.$e___11035[13670]['m_icon'].'</a>';
         }
 
