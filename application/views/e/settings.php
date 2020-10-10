@@ -9,7 +9,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $superpower_assigned = count($this->session->userdata('session_superpowers_assigned'));
 
 //ACCOUNT SETTING
-echo '<a href="/@'.$user_e['e__id'].'" style="text-decoration:none;" class="big-frame '.extract_icon_color($user_e['e__icon']).'">' . $user_e['e__title'] . '</a>';
+echo '<h1 class="big-frame"><a href="/@'.$user_e['e__id'].'" style="text-decoration:none;" class="'.extract_icon_color($user_e['e__icon']).'">' . $user_e['e__title'] . '</a></h1>';
 
 echo '<div class="headline"><span class="icon-block">'.$e___11035[6225]['m__icon'].'</span>'.$e___11035[6225]['m__title'].'</div>';
 echo '<div class="accordion" id="MyAccountAccordion">';
