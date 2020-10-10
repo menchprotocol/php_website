@@ -1180,8 +1180,8 @@ td.MENCHcolumn3  { width: 13%; }
     line-height: 100%;
     width: 33px !important;
     height: 33px !important;
-    margin-left: 10px !important;
-    margin-right: 4px !important;
+    margin-left: 5px !important;
+    margin-right: 1px !important;
     margin-bottom: 0 !important;
     margin-top: 3px !important;
     display: block;
@@ -1548,10 +1548,13 @@ i {
 .icon-block-xs img,
 .icon-block img,
 .img-block img {
-    width: 16px !important;
-    height: 16px !important;
-    margin: 3px 0 0 3px !important;
     border-radius: 50%;
+    line-height: 100%;
+    width: 33px !important;
+    height: 33px !important;
+    margin-left: 5px !important;
+    margin-right: 1px !important;
+    margin-bottom: -10px !important;
 }
 .icon-demo img {
     border-radius: 0% !important;
