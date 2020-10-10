@@ -109,21 +109,11 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
             }
 
-            if($progress_type_id!=14008 && !$total_count){
-                continue;
-            }
-
-            echo '<div class="headline"><span class="icon-block">'.$m4['m__icon'].'</span>'.$total_count.' '.$m4['m__title'].'</div>';
             if($total_count){
-
+                echo '<div class="headline"><span class="icon-block">'.$m4['m__icon'].'</span>'.$total_count.' '.$m4['m__title'].'</div>';
                 echo '<div class="list-group" style="margin-bottom: 21px;">';
                 echo $this_tab;
                 echo '</div>';
-
-            } else {
-
-                //echo '<div class="msg alert alert-warning no-margin"><span class="icon-block">'.$m4['m__icon'].'</span>No '.$m4['m__title'].'</div>';
-
             }
         }
 
