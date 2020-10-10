@@ -1527,6 +1527,9 @@ label {
 i {
     font-size: 1.55em !important;
 }
+.btn i {
+    font-size: 1em !important;
+}
 
 /* FUNCTIONAL */
 .inline-block{ display: inline-block !important; }
