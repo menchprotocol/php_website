@@ -8,7 +8,7 @@ $route['default_controller']        = "x/index"; //Home page
 $route['@']                         = "e/index"; //Source home
 $route['signin']                    = "e/signin"; //Sign
 $route['signin/(:num)']             = "e/signin/$1"; //Sign
-$route['settings']                  = "e/e_layout/$1";
+$route['settings']                  = "e/e_settings";
 
 //COINS
 $route['(:num)']                    = "x/x_layout/$1";
