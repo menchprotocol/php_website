@@ -679,7 +679,7 @@ $superpower_any = ( $user_e ? count($this->session->userdata('session_superpower
 
                     if(!$superpowers_unlocked){
                         //Let them know they do not have any superpowers yet...
-                        $focus_tab .= '<div class="msg alert alert-info no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>No superpowers unlocked yet.</div>';
+                        $focus_tab .= '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>No superpowers unlocked yet.</div>';
                     }
 
                     $focus_tab .= '</div>';
