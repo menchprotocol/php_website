@@ -1550,8 +1550,8 @@ label {
     border-radius: 0% !important;
 }
 .icon-block-lg img {
-    width: 38px !important;
-    height: 38px !important;
+    width: 46px !important;
+    height: 46px !important;
 }
 .social-footer{
     text-align: center;
@@ -1569,7 +1569,7 @@ label {
     margin-bottom: 5px;
 }
 .text_e_4736, .text_e_6197 {
-    width:calc(100% - 38px);
+    width:calc(100% - 46px);
     margin-bottom: 0;
 }
 .i-left {
