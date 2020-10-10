@@ -762,6 +762,9 @@ img.no-radius {
     border-top-right-radius: 13px;
     position: relative;
 }
+.nav-x.dropdown-toggle{
+    margin-top: 3px;
+}
 
 .nav-tabs .nav-item {
     margin-bottom: -3px;
