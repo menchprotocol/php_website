@@ -1758,7 +1758,7 @@ i {
 }
 
 .cover-link {
-    border: 2px solid #222222;
+    border: 2px solid transparent;
     width: 100%;
     position: relative;
     padding-top: 150%;
@@ -2115,6 +2115,10 @@ i {
     background-color: #333333;
 }
 
+.custom_ui_13884_ .cover-link ,
+.custom_ui_13884_13886 .cover-link {
+    border-color: #222222 !important;
+}
 
 /* WHITE */
 .custom_ui_13884_13885.mench-idea .list-group-item:nth-child(odd),
@@ -2158,6 +2162,9 @@ i {
 .custom_ui_13884_13885 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
     border-bottom-color: #FFFFFF !important;
+}
+.custom_ui_13884_13885 .cover-link {
+    border-color: #FFFFFF !important;
 }
 
 .alert a, .alert i {
