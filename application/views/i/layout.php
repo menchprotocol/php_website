@@ -234,7 +234,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= '<div class="doclear">&nbsp;</div>';
 
 
-            $focus_tab .= '<div class="toggle_12589 hidden margin-top-down">';
+            $focus_tab .= '<div class="toggle_12589 hidden" style="margin-bottom:41px;">';
             $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m_icon'].'</span>'.$e___11035[12589]['m_title'].'</div>';
             $dropdown_options = '';
             $input_options = '';
