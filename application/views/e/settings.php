@@ -1,11 +1,15 @@
+
+<script src="/application/views/e/settings.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+
 <div class="container" style="padding: 0 5px;">
+
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $superpower_assigned = count($this->session->userdata('session_superpowers_assigned'));
 
 //ACCOUNT SETTING
-echo '<h1 class="big-frame '.extract_icon_color($user_e['e__icon']).'">' . $user_e['e__title'] . '</h1>';
+echo '<h1 class="big-frame '.extract_icon_color($user_e['e__icon']).'">'.$user_e['e__icon'].' ' . $user_e['e__title'] . '</h1>';
 
 echo '<div class="headline"><span class="icon-block">'.$e___11035[6225]['m__icon'].'</span>'.$e___11035[6225]['m__title'].'</div>';
 echo '<div class="accordion" id="MyAccountAccordion">';

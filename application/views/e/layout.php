@@ -81,7 +81,7 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
     echo '<div class="pull-right inline-block" style="margin:0 0 -40px 0;">';
 
         if($superpower_13422) {
-            echo '<a href="javascript:void(0);" onclick="load_13571(' . $e['e__id'] . ',0)" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a>';
+            echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a>';
         }
 
     echo '</div>';
@@ -93,7 +93,7 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
         //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
         echo '<div class="margin-top-down left-margin">';
         echo '<p>'.$e___11035[6415]['m__message'].'</p>';
-        echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="reset_6415()" class="btn btn-discover">'.$e___11035[6415]['m__icon'].' '.$e___11035[6415]['m__title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
+        echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="x_reset_all()" class="btn btn-discover">'.$e___11035[6415]['m__icon'].' '.$e___11035[6415]['m__title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
         echo '</div>';
 
         echo '<div class="doclear">&nbsp;</div>';
@@ -720,7 +720,7 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
 
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="save_13571()" id="save_btn" class="btn btn-source">SAVE</button>
+                <button type="button" onclick="e_modify_save()" id="save_btn" class="btn btn-source">SAVE</button>
             </div>
         </div>
     </div>

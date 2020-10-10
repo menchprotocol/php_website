@@ -752,7 +752,7 @@ class E extends CI_Controller
 
 
 
-    function save_13571()
+    function e_modify_save()
     {
 
         //Auth user and check required variables:
@@ -2059,7 +2059,7 @@ class E extends CI_Controller
     }
 
 
-    function load_13571(){
+    function e_modify_load(){
 
         if (!isset($_POST['e__id']) || !isset($_POST['x__id'])) {
             return view_json(array(
