@@ -6,6 +6,7 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+$e___14010 = $this->config->item('e___14010');
 
 //ACCOUNT SETTING
 echo '<h1 class="big-frame"><a href="/@'.$user_e['e__id'].'" style="text-decoration:none;" class="'.extract_icon_color($user_e['e__icon']).'">' . $user_e['e__title'] . '</a></h1>';
@@ -74,48 +75,38 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
                 </div><div class="doclear">&nbsp;</div>';
         }
 
-        //SUPERPOWER AVAILABILITY
-        foreach($this->config->item('e___14010') as $progress_type_id => $m4) {
+        //SUPERPOWERS
+        echo '<div class="list-group">';
+        foreach($this->config->item('e___10957') as $superpower_e__id => $m3){
 
-            $total_count = 0;
-            $this_tab = '';
+            $unlocked = superpower_assigned($superpower_e__id);
+            $public_link = in_array($superpower_e__id, $this->config->item('n___6404'));
+            $extract_icon_color = extract_icon_color($m3['m__icon']);
+            $anchor = '<span class="icon-block '.$extract_icon_color.'">'.$m3['m__icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'];
 
-            foreach($this->config->item('e___10957') as $superpower_e__id => $m3){
+            if($unlocked){
 
-                $unlocked = superpower_assigned($superpower_e__id);
-                $public_link = in_array($superpower_e__id, $this->config->item('n___6404'));
-                $extract_icon_color = extract_icon_color($m3['m__icon']);
-                $anchor = '<span class="icon-block '.$extract_icon_color.'">'.$m3['m__icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'];
+                //SUPERPOWERS UNLOCKED
+                $progress_type_id=14008;
+                echo '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
-                if($progress_type_id==14008 && $unlocked){
+            } elseif(!$unlocked && $public_link){
 
-                    //SUPERPOWERS UNLOCKED
-                    $total_count++;
-                    $this_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')">'.$anchor.'</a>';
+                //SUPERPOWERS AVAILABLE
+                $progress_type_id=14011;
+                echo '<a class="list-group-item" href="'.view_memory(6404,$superpower_e__id).'"><span class="icon-block" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
-                } elseif($progress_type_id==14011 && !$unlocked && $public_link){
+            } elseif(!$unlocked && !$public_link){
 
-                    //SUPERPOWERS AVAILABLE
-                    $total_count++;
-                    $this_tab .= '<a class="list-group-item" href="'.view_memory(6404,$superpower_e__id).'">'.$anchor.'</a>';
-
-                } elseif($progress_type_id==14009 && !$unlocked && !$public_link){
-
-                    //SUPERPOWERS UNAVAILABLE
-                    $total_count++;
-                    $this_tab .= '<div class="list-group-item">'.$anchor.'</div>';
-
-                }
+                //SUPERPOWERS UNAVAILABLE
+                $progress_type_id=14009;
+                echo '<div class="list-group-item"><span class="icon-block" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</div>';
 
             }
 
-            if($total_count){
-                echo '<div class="headline"><span class="icon-block">'.$m4['m__icon'].'</span>'.$total_count.' '.$m4['m__title'].'</div>';
-                echo '<div class="list-group" style="margin-bottom: 21px;">';
-                echo $this_tab;
-                echo '</div>';
-            }
         }
+
+        echo '</div>';
 
     } elseif ($acc_e__id == 3288 /* Email */) {
 
