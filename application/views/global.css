@@ -2208,10 +2208,10 @@ i {
 
 /* FONT SIZE */
 .custom_ui_13491_13492 .msg{ font-size:0.9em; }
-.custom_ui_13491_13492 .msg i{ font-size:0.9em; }
+.custom_ui_13491_13492 .msg i{ font-size:1.6em !important; } /* To get to 1.44em*/
 
 .custom_ui_13491_13493 .msg, .custom_ui_13491_ .msg{ font-size:1.1em; }
-.custom_ui_13491_13493 .msg i, .custom_ui_13491_ .msg i{ font-size:0.89em; }
+.custom_ui_13491_13493 .msg i, .custom_ui_13491_ .msg i{ font-size:1.31em !important; } /* To get to 1.44em*/
 
 .custom_ui_13491_13494 .msg{ font-size:1.5em; }
-.custom_ui_13491_13494 .msg i{ font-size:0.67em; }
+.custom_ui_13491_13494 .msg i{ font-size:0.96em !important; } /* To get to 1.44em*/
