@@ -1175,18 +1175,7 @@ td.MENCHcolumn3  { width: 13%; }
     margin-left:0 !important;
     margin-right:0 !important;
 }
-.mench-logo{
-    font-size: 1.44em;
-    line-height: 100%;
-    width: 33px !important;
-    height: 33px !important;
-    margin-left: 5px !important;
-    margin-right: 1px !important;
-    margin-bottom: 0 !important;
-    margin-top: 3px !important;
-    display: block;
-    float: left;
-}
+
 
 .x_marks{
     display: inline-block;
@@ -1547,14 +1536,21 @@ i {
 .icon-block-lg img,
 .icon-block-xs img,
 .icon-block img,
-.img-block img {
+.img-block img,
+.mench-logo{
     border-radius: 50%;
     line-height: 100%;
     width: 33px !important;
     height: 33px !important;
-    margin-left: 5px !important;
-    margin-right: 1px !important;
+    margin-left: 7px !important;
+    margin-right: 7px !important;
+    margin-bottom: 0 !important;
 }
+.mench-logo{
+    display: block;
+    float: left;
+}
+
 .icon-demo img {
     border-radius: 0% !important;
 }
