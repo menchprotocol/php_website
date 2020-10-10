@@ -88,19 +88,19 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
                 //SUPERPOWERS UNLOCKED
                 $progress_type_id=14008;
-                echo '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block grey" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
+                echo '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( in_array($superpower_e__id, $this->session->userdata('session_superpowers_activated')) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block grey pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
             } elseif(!$unlocked && $public_link){
 
                 //SUPERPOWERS AVAILABLE
                 $progress_type_id=14011;
-                echo '<a class="list-group-item" href="'.view_memory(6404,$superpower_e__id).'"><span class="icon-block grey" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
+                echo '<a class="list-group-item" href="'.view_memory(6404,$superpower_e__id).'"><span class="icon-block grey pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
             } elseif(!$unlocked && !$public_link){
 
                 //SUPERPOWERS UNAVAILABLE
                 $progress_type_id=14009;
-                echo '<div class="list-group-item islocked"><span class="icon-block grey" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</div>';
+                echo '<div class="list-group-item islocked"><span class="icon-block grey pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</div>';
 
             }
 
