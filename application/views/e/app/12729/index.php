@@ -16,7 +16,7 @@ $full_coins = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ), array(), 0, 0, array(), 'COUNT(x__id) as total_x');
 echo '<tr class="panel-title down-border" style="font-weight: bold;">';
-echo '<td style="text-align: left;" class="montserrat doupper">'.$e___12140[12141]['m_icon'].' '.$e___12140[12141]['m_title'].'</td>';
+echo '<td style="text-align: left;" class="montserrat doupper">'.$e___12140[12141]['m__icon'].' '.$e___12140[12141]['m__title'].'</td>';
 echo '<td style="text-align: left;">'.number_format($full_coins[0]['total_x'], 0).'</td>';
 echo '</tr>';
 
@@ -35,7 +35,7 @@ foreach($this->X_model->fetch(array(
 
     echo '<tr class="panel-title down-border">';
     echo '<td style="text-align: left;"><span class="icon-block">'.$x['e__icon'].'</span><a href="/@'.$x['e__id'].'" class="montserrat doupper">'.$x['e__title'].'</a></td>';
-    echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m_icon'].'</span>'.number_format($x['total_x'], 0).'</td>';
+    echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m__icon'].'</span>'.number_format($x['total_x'], 0).'</td>';
     echo '</tr>';
 
 }

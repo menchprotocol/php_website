@@ -54,7 +54,7 @@ $(document).ready(function () {
 
     //Source Loader:
     var portfolio_count = parseInt($('#new_11029').attr('current-count'));
-    if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m_message'])){
+    if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m__message'])){
         e_sort_portfolio_load();
     }
 
@@ -275,7 +275,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
     });
 
-    if(parseInt(js_e___6404[12678]['m_message'])){
+    if(parseInt(js_e___6404[12678]['m__message'])){
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -443,7 +443,7 @@ function e_filter_status(new_val) {
 
 function e__title_word_count() {
     var len = $('#e__title').val().length;
-    if (len > js_e___6404[6197]['m_message']) {
+    if (len > js_e___6404[6197]['m__message']) {
         $('#charEnNum').addClass('overload').text(len);
     } else {
         $('#charEnNum').removeClass('overload').text(len);
@@ -495,7 +495,7 @@ function e_load_page(page, load_new_filter) {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___12467[12274]['m_icon'] ));
+    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___12467[12274]['m__icon'] ));
 }
 
 function load_13571(e__id, x__id) {
@@ -763,7 +763,7 @@ function save_13571() {
     };
 
     //Show spinner:
-    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_random_message(12695) +  '').hide().fadeIn();
+    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695) +  '').hide().fadeIn();
 
 
     $.post("/e/save_13571", modify_data, function (data) {
@@ -804,14 +804,14 @@ function save_13571() {
 
 
                 //User Status:
-                $('.e__type_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__type']]["m_title"] + ': ' + js_e___6177[modify_data['e__type']]["m_message"] + '">' + js_e___6177[modify_data['e__type']]["m_icon"] + '</span>');
+                $('.e__type_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__type']]["m__title"] + ': ' + js_e___6177[modify_data['e__type']]["m__message"] + '">' + js_e___6177[modify_data['e__type']]["m__icon"] + '</span>');
 
 
                 //User Icon:
                 var icon_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
                 if(!icon_set){
                     //Set source default icon:
-                    modify_data['e__icon'] = js_e___12467[12274]['m_icon'];
+                    modify_data['e__icon'] = js_e___12467[12274]['m__icon'];
                 }
                 $('.e_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
                 $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
@@ -829,7 +829,7 @@ function save_13571() {
                     }
 
                     //Transaction Status:
-                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m_title"] + ': ' + js_e___6186[modify_data['x__status']]["m_message"] + '">' + js_e___6186[modify_data['x__status']]["m_icon"] + '</span>');
+                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m__title"] + ': ' + js_e___6186[modify_data['x__status']]["m__message"] + '">' + js_e___6186[modify_data['x__status']]["m__icon"] + '</span>');
 
                 }
 
@@ -979,7 +979,7 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
 function e_email(){
 
     //Show spinner:
-    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_random_message(12695)).hide().fadeIn();
+    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_email", {
@@ -1010,7 +1010,7 @@ function e_email(){
 function e_password(){
 
     //Show spinner:
-    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_random_message(12695)).hide().fadeIn();
+    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_password", {

@@ -18,22 +18,22 @@ $html_message .= '<br />';
 foreach($this->config->item('e___12467') as $x__type => $m) {
 
     //Calculate Growth Rate:
-    $icon = extract_icon_color($m['m_icon'], true);
+    $icon = extract_icon_color($m['m__icon'], true);
     $unique = count_unique_coins($x__type, null, $x__time_end);
     $growth = format_percentage(($unique / ( $unique - count_unique_coins($x__type, $x__time_start, $x__time_end) ) * 100) - 100);
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.$icon.'</b><b style="min-width:55px; display: inline-block;">'.$growth.'</b><span style="text-decoration:none;">TO <b>'.number_format($unique, 0).'</b> '.$m['m_title'].'</span></div>';
+    $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.$icon.'</b><b style="min-width:55px; display: inline-block;">'.$growth.'</b><span style="text-decoration:none;">TO <b>'.number_format($unique, 0).'</b> '.$m['m__title'].'</span></div>';
 
     //Primary Coin?
     if(in_array($x__type, $this->config->item('n___13776'))){
-        $subject = $icon.' '.$m['m_title'].' '.$growth.' for the Week of '.date("M jS", $x__time_start_timestamp);
+        $subject = $icon.' '.$m['m__title'].' '.$growth.' for the Week of '.date("M jS", $x__time_start_timestamp);
     }
 }
 
 $html_message .= '<br />';
-$html_message .= '<div>'.view_random_message(12691).'</div>';
+$html_message .= '<div>'.view_shuffle_message(12691).'</div>';
 $html_message .= '<div>MENCH</div>';
 
 

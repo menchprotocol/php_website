@@ -51,7 +51,7 @@ class X extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
         $this->load->view('header', array(
-            'title' => $e___11035[4341]['m_title'],
+            'title' => $e___11035[4341]['m__title'],
         ));
         $this->load->view('x/ledger');
         $this->load->view('footer');
@@ -187,7 +187,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'x__type_preview' => '<b class="montserrat doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m_icon']).'">' . $e___4592[$detected_x_type['x__type']]['m_icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m_title'] . '</b>',
+            'x__type_preview' => '<b class="montserrat doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m__icon']).'">' . $e___4592[$detected_x_type['x__type']]['m__icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
             'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type']).'</span>' : ''),
         ));
 
@@ -308,7 +308,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' must be a number greater than zero.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' must be a number greater than zero.',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -317,7 +317,7 @@ class X extends CI_Controller
                 $hours = rtrim(number_format((view_memory(6404,4356)/3600), 1), '.0');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.view_memory(6404,4356).' Seconds long. You can break down your idea into smaller ideas.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.view_memory(6404,4356).' Seconds long. You can break down your idea into smaller ideas.',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -325,7 +325,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' should be at-least '.view_memory(6404,12427).' Seconds long. It takes time to discover ideas ;)',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be at-least '.view_memory(6404,12427).' Seconds long. It takes time to discover ideas ;)',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -367,7 +367,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' must be an integer between '.view_memory(6404,11056).' and '.view_memory(6404,11057).'.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' must be an integer between '.view_memory(6404,11056).' and '.view_memory(6404,11057).'.',
                     'original_val' => ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : 0 ),
                 ));
 
@@ -378,7 +378,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $user_e['e__id'], 10663 /* Idea Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m_title'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $user_e['e__id'], 10663 /* Idea Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m__title'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return view_json(array(
                     'status' => 1,
@@ -409,7 +409,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m_title'].' must be an integer between 0 and 100.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' must be an integer between 0 and 100.',
                     'original_val' => ( isset($x__metadata[$field_name]) ? $x__metadata[$field_name] : '' ),
                 ));
 
@@ -420,7 +420,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $user_e['e__id'], 10664 /* Idea Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m_title'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $user_e['e__id'], 10664 /* Idea Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m__title'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return view_json(array(
                     'status' => 1,
@@ -463,7 +463,7 @@ class X extends CI_Controller
             $i__id_added = $this->X_model->start($user_e['e__id'], $i__id);
             if(!$i__id_added){
                 //Failed to add to Discovery:
-                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m_icon'].'</span>FAILED to add to '.$e___11035[12969]['m_title'].'.</div>');
+                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>FAILED to add to '.$e___11035[12969]['m__title'].'.</div>');
             }
         }
 
@@ -765,7 +765,7 @@ class X extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         return view_json(array(
             'status' => 1,
-            'message' => '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m_icon'].'</span>'.$e___11035[13980]['m_title'].'</div><div class="previous_answer">'.$this->X_model->message_send($new_message).'</div>',
+            'message' => '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__icon'].'</span>'.$e___11035[13980]['m__title'].'</div><div class="previous_answer">'.$this->X_model->message_send($new_message).'</div>',
         ));
 
     }

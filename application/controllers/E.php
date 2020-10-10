@@ -29,7 +29,7 @@ class E extends CI_Controller
 
         $e___11035 = $this->config->item('e___11035');
         $this->load->view('header', array(
-            'title' => $e___11035[13207]['m_title'],
+            'title' => $e___11035[13207]['m__title'],
         ));
         $this->load->view('e/home', array(
             'user_e' => $user_e,
@@ -331,6 +331,27 @@ class E extends CI_Controller
 
     }
 
+    function e_settings(){
+
+        $user_e = superpower_assigned(null, 1);
+
+        //Log View:
+        $this->X_model->create(array(
+            'x__source' => $user_e['e__id'],
+            'x__type' => 14013, //User Viewed Source
+        ));
+
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+        $this->load->view('header', array(
+            'title' => $e___11035[6225]['m__title'].' | '.$user_e['e__title'],
+        ));
+        $this->load->view('e/settings', array(
+            'user_e' => $user_e,
+        ));
+        $this->load->view('footer');
+
+    }
+
     function e_only_add()
     {
 
@@ -401,7 +422,7 @@ class E extends CI_Controller
                 $e___7551 = $this->config->item('e___7551');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m_title'],
+                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m__title'],
                 ));
             }
 
@@ -690,7 +711,7 @@ class E extends CI_Controller
             //Access not authorized:
             return view_json(array(
                 'status' => 0,
-                'message' => 'You have not yet unlocked the superpower of '.$e___10957[$superpower_e__id]['m_title'],
+                'message' => 'You have not yet unlocked the superpower of '.$e___10957[$superpower_e__id]['m__title'],
             ));
 
         }
@@ -1193,7 +1214,7 @@ class E extends CI_Controller
         $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'].' source';
         $validated = false;
         foreach($this->config->item('e___12279') as $e__id => $m) {
-            if(substr_count($m['m_icon'], $icon_new_css) == 1){
+            if(substr_count($m['m__icon'], $icon_new_css) == 1){
                 $validated = true;
                 break;
             }
@@ -1475,7 +1496,7 @@ class E extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
             'hide_header' => 1,
-            'title' => $e___11035[4269]['m_title'],
+            'title' => $e___11035[4269]['m__title'],
         ));
         $this->load->view('e/signin', array(
             'sign_i__id' => $i__id,
@@ -1835,7 +1856,7 @@ class E extends CI_Controller
 
         ##Email Subject
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $subject = ( $has_i ? '| MENCH' : 'MENCH '.$e___11035[11068]['m_title'] );
+        $subject = ( $has_i ? '| MENCH' : 'MENCH '.$e___11035[11068]['m__title'] );
 
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';
@@ -1846,7 +1867,7 @@ class E extends CI_Controller
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
-        $html_message .= '<div>'.view_random_message(12691).'</div>';
+        $html_message .= '<div>'.view_shuffle_message(12691).'</div>';
         $html_message .= '<div>MENCH</div>';
 
         //Send email:
@@ -1960,12 +1981,17 @@ class E extends CI_Controller
 
     function app($app_e__id = 0){
 
+        $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
+        if(!$memory_detected){
+            $app_e__id = 4527;
+        }
+
         if($app_e__id < 1){
 
             //List apps to choose from:
             $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
             $this->load->view('header', array(
-                'title' => $e___11035[6287]['m_title'],
+                'title' => $e___11035[6287]['m__title'],
             ));
             $this->load->view('e/app_home');
             $this->load->view('footer');
@@ -1974,24 +2000,25 @@ class E extends CI_Controller
 
             //Load a specific app:
             //Valud app?
-            if(!in_array($app_e__id, $this->config->item('n___6287'))){
+            if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
                 die('Invalid app ID');
             }
 
-            //Running from browser? If so, authenticate:
-            $is_u_request = isset($_SERVER['SERVER_NAME']);
-            if($is_u_request){
-                $user_e = superpower_assigned(12699, true);
-            } else {
-                $user_e = false;
-            }
-
-            //Needs extra superpowers?
             boost_power();
-            $e___6287 = $this->config->item('e___6287'); //MENCH APP
-            $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m_profile']);
-            if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-                die(view_unauthorized_message(end($superpower_actives)));
+            $user_e = false;
+            $is_u_request = isset($_SERVER['SERVER_NAME']);
+
+            if($memory_detected && $is_u_request){
+
+                $user_e = superpower_assigned(12699, true);
+
+                //Needs extra superpowers?
+                $e___6287 = $this->config->item('e___6287'); //MENCH APP
+                $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__profile']);
+                if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                    die(view_unauthorized_message(end($superpower_actives)));
+                }
+
             }
 
 
@@ -2000,9 +2027,10 @@ class E extends CI_Controller
                 'app_e__id' => $app_e__id,
                 'user_e' => $user_e,
                 'is_u_request' => $is_u_request,
+                'memory_detected' => $memory_detected,
             );
 
-            if(in_array($app_e__id, $this->config->item('n___12741'))){
+            if($memory_detected && in_array($app_e__id, $this->config->item('n___12741'))){
 
                 //Raw UI:
                 $this->load->view('e/app/'.$app_e__id.'/index', $view_data);
@@ -2012,7 +2040,7 @@ class E extends CI_Controller
                 //Regular UI:
                 //Load App:
                 $this->load->view('header', array(
-                    'title' => strip_tags($e___6287[$app_e__id]['m_icon']).$e___6287[$app_e__id]['m_title'].' | APP',
+                    'title' => ( $memory_detected ? strip_tags($e___6287[$app_e__id]['m__icon']).$e___6287[$app_e__id]['m__title'] : 'UNKNOWN' ).' | APP',
                 ));
                 $this->load->view('e/app_frame', $view_data);
                 $this->load->view('footer');
@@ -2112,7 +2140,7 @@ class E extends CI_Controller
         //Return report:
         return view_json(array(
             'status' => 1,
-            'message' => '<h3>'.$e___4737[$is[0]['i__type']]['m_icon'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__type']),
+            'message' => '<h3>'.$e___4737[$is[0]['i__type']]['m__icon'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__type']),
         ));
 
 

@@ -3,7 +3,7 @@
     <?php
 
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-    echo '<h1 class="big-frame '.extract_icon_color($e___11035[13207]['m_icon']).'">' . $e___11035[13207]['m_title'] . '</h1>';
+    echo '<h1 class="big-frame '.extract_icon_color($e___11035[13207]['m__icon']).'">' . $e___11035[13207]['m__title'] . '</h1>';
     echo view_mench_coins();
 
 
@@ -27,7 +27,7 @@
             continue;
         }
 
-        echo '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+        echo '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
         echo '<div class="list-group" style="padding-bottom:41px;">';
 
 

@@ -206,7 +206,7 @@ function current_mench(){
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
 
-    if($first_letter=='@' || $first_segment=='e' || $first_segment=='app'){
+    if($first_letter=='@' || $first_segment=='e' || $first_segment=='app' || $first_segment=='me'){
 
         return array(
             'x_id' => 12274,
@@ -580,7 +580,7 @@ function update_description($before_string, $after_string){
 function random_avatar(){
     $CI =& get_instance();
     $e___10956 = $CI->config->item('e___10956');
-    return $e___10956[array_rand($e___10956)]['m_icon'];
+    return $e___10956[array_rand($e___10956)]['m__icon'];
 }
 
 function format_percentage($percent){
@@ -753,8 +753,8 @@ function var_index(){
     $var_index = array();
     foreach($CI->config->item('e___6212') as $e__id => $m){
         foreach($CI->config->item('e___'.$e__id) as $e__id2 => $m2){
-            if(strlen($m2['m_message']) > 0){
-                $var_index[$e__id2] = $m2['m_message'];
+            if(strlen($m2['m__message']) > 0){
+                $var_index[$e__id2] = $m2['m__message'];
             }
         }
     }
@@ -1155,7 +1155,7 @@ function e__title_validate($string, $x__type = 0){
     if(!strlen(trim($string))){
 
         if($x__type){
-            $e__title_clean = $e___4592[$x__type]['m_title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+            $e__title_clean = $e___4592[$x__type]['m__title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1166,7 +1166,7 @@ function e__title_validate($string, $x__type = 0){
     } elseif(strlen(trim($string)) < view_memory(6404,12232)){
 
         if($x__type){
-            $e__title_clean = $e___4592[$x__type]['m_title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+            $e__title_clean = $e___4592[$x__type]['m__title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(

@@ -255,7 +255,7 @@ class E_model extends CI_Model
                         $x__type = 6178; //Source Deleted
                     }
                     $e___6177 = $this->config->item('e___6177'); //Source Status
-                    $x__message = view_db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m_title'] . '] to [' . $e___6177[$value]['m_title'] . ']';
+                    $x__message = view_db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m__title'] . '] to [' . $e___6177[$value]['m__title'] . ']';
 
                 } elseif($key=='e__icon') {
 
@@ -680,7 +680,7 @@ class E_model extends CI_Model
 
                 $detected_extension = false;
                 foreach($this->config->item('e___11080') as $e__id => $m){
-                    if(in_array($url_analysis['url_file_extension'], explode('|' , $m['m_message']))){
+                    if(in_array($url_analysis['url_file_extension'], explode('|' , $m['m__message']))){
                         $x__type = $e__id;
                         $detected_extension = true;
                         break;
@@ -755,12 +755,12 @@ class E_model extends CI_Model
 
                 if(!$page_title){
                     //Assign a generic source name:
-                    $page_title = $e___4592[$x__type]['m_title'].' '.substr(md5($url), 0, 8);
+                    $page_title = $e___4592[$x__type]['m__title'].' '.substr(md5($url), 0, 8);
                     $page_title_generic = 1;
                 }
 
                 //Create a new source for this URL ONLY If user source is provided...
-                $added_e = $this->E_model->verify_create($page_title, $x__source, 6181, $e___4592[$x__type]['m_icon']);
+                $added_e = $this->E_model->verify_create($page_title, $x__source, 6181, $e___4592[$x__type]['m__icon']);
                 if($added_e['status']){
 
                     //All good:

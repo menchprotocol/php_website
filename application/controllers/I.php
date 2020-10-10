@@ -29,7 +29,7 @@ class I extends CI_Controller {
             //Do not treat this case as error as it could happen in moving Messages between types:
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing '.$e___6201[4736]['m_title'],
+                'message' => 'Missing '.$e___6201[4736]['m__title'],
             ));
 
         }
@@ -277,7 +277,7 @@ class I extends CI_Controller {
 
             //Validate the transaction update Type ID:
             $e___4527 = $this->config->item('e___4527');
-            if(!is_array($e___4527[$_POST['element_id']]['m_profile']) || !count($e___4527[$_POST['element_id']]['m_profile'])){
+            if(!is_array($e___4527[$_POST['element_id']]['m__profile']) || !count($e___4527[$_POST['element_id']]['m__profile'])){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Missing @'.$_POST['element_id'].' in @4527',
@@ -285,7 +285,7 @@ class I extends CI_Controller {
             }
 
             //Find the single discover type in parent transactions:
-            $x_update_types = array_intersect($this->config->item('n___4593'), $e___4527[$_POST['element_id']]['m_profile']);
+            $x_update_types = array_intersect($this->config->item('n___4593'), $e___4527[$_POST['element_id']]['m__profile']);
             if(count($x_update_types)!=1){
                 return view_json(array(
                     'status' => 0,

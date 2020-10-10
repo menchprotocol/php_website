@@ -62,7 +62,7 @@ function load_editor(){
         mass_action_ui();
     });
 
-    if(parseInt(js_e___6404[12678]['m_message'])){
+    if(parseInt(js_e___6404[12678]['m__message'])){
         $('.e_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('@' + suggestion.object__id + ' ' + suggestion.object__title);
@@ -153,8 +153,8 @@ function view_search_result(algolia_object){
 }
 
 
-function js_view_random_message(e__id){
-    var messages = js_e___12687[e__id]['m_message'].split(" | ");
+function js_view_shuffle_message(e__id){
+    var messages = js_e___12687[e__id]['m__message'].split(" | ");
     if(messages.length == 1){
         //Return message:
         return messages[0];
@@ -224,7 +224,7 @@ $(document).ready(function () {
 
     //Load Algolia on Focus:
     $(".algolia_search").focus(function () {
-        if(!algolia_index && parseInt(js_e___6404[12678]['m_message'])){
+        if(!algolia_index && parseInt(js_e___6404[12678]['m__message'])){
             //Loadup Algolia once:
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
             algolia_index = client.initIndex('alg_index');
@@ -254,7 +254,7 @@ $(document).ready(function () {
     });
 
 
-    if(parseInt(js_e___6404[12678]['m_message'])){
+    if(parseInt(js_e___6404[12678]['m__message'])){
 
         $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -588,7 +588,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
         }
     });
 
-    if(!parseInt(js_e___6404[12678]['m_message'])){
+    if(!parseInt(js_e___6404[12678]['m__message'])){
         //Previously loaded:
         return false;
     }
@@ -674,14 +674,14 @@ function view_input_text_count(cache_e__id, object__id) {
 
     //Update count:
     var len = $('.text__'+cache_e__id+'_'+object__id).val().length;
-    if (len > js_e___6404[cache_e__id]['m_message']) {
+    if (len > js_e___6404[cache_e__id]['m__message']) {
         $('#current_count_'+cache_e__id+'_'+object__id).addClass('overload').text(len);
     } else {
         $('#current_count_'+cache_e__id+'_'+object__id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_e___6404[cache_e__id]['m_message'] * js_e___6404[12088]['m_message'] )){
+    if(len > ( js_e___6404[cache_e__id]['m__message'] * js_e___6404[12088]['m__message'] )){
         $('.title_counter_'+cache_e__id+'_'+object__id).removeClass('hidden');
     } else {
         $('.title_counter_'+cache_e__id+'_'+object__id).addClass('hidden');
@@ -825,14 +825,14 @@ function i_note_count_new(note_type_id) {
 
     //Update count:
     var len = $('#x__message' + note_type_id).val().length;
-    if (len > js_e___6404[4485]['m_message']) {
+    if (len > js_e___6404[4485]['m__message']) {
         $('#charNum' + note_type_id).addClass('overload').text(len);
     } else {
         $('#charNum' + note_type_id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_e___6404[4485]['m_message'] * js_e___6404[12088]['m_message'] )){
+    if(len > ( js_e___6404[4485]['m__message'] * js_e___6404[12088]['m__message'] )){
         $('#ideaNoteNewCount' + note_type_id).removeClass('hidden');
     } else {
         $('#ideaNoteNewCount' + note_type_id).addClass('hidden');
@@ -847,14 +847,14 @@ function count_13574(x__id) {
     }
     //Update count:
     var len = $('#message_body_' + x__id).val().length;
-    if (len > js_e___6404[4485]['m_message']) {
+    if (len > js_e___6404[4485]['m__message']) {
         $('#charEditingNum' + x__id).addClass('overload').text(len);
     } else {
         $('#charEditingNum' + x__id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_e___6404[4485]['m_message'] * js_e___6404[12088]['m_message'] )){
+    if(len > ( js_e___6404[4485]['m__message'] * js_e___6404[12088]['m__message'] )){
         $('#NoteCounter' + x__id).removeClass('hidden');
     } else {
         $('#NoteCounter' + x__id).addClass('hidden');
@@ -863,7 +863,7 @@ function count_13574(x__id) {
 
 function i_note_e_search(obj) {
 
-    if(parseInt(js_e___6404[12678]['m_message'])){
+    if(parseInt(js_e___6404[12678]['m__message'])){
         obj.textcomplete([
             {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
@@ -1127,7 +1127,7 @@ function i_note_file(droppedFiles, uploadType, note_type_id) {
                 i_note_end_adding(data, note_type_id);
 
                 //Adjust icon again:
-                $('.file_label_' + note_type_id).html('<span class="icon-block">'+js_e___11035[13572]['m_icon']+'</span>');
+                $('.file_label_' + note_type_id).html('<span class="icon-block">'+js_e___11035[13572]['m__icon']+'</span>');
 
             },
             error: function (data) {

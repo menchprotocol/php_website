@@ -3,7 +3,7 @@
 $(document).ready(function () {
 
     //Show spinner:
-    $('#app_7264').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_random_message(12694)).hide().fadeIn();
+    $('#app_7264').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12694)).hide().fadeIn();
 
     //Load report based on input fields:
     $.post("/e/app_7264", {

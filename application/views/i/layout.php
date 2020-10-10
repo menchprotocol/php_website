@@ -36,9 +36,9 @@ $is_in_my_ideas = count($this->X_model->fetch(array(
 //IDEA PREVIOUS
 echo '<div class="container coin-frame">';
 if($is_north_star) {
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[14002]['m_icon'].'</span>'.$e___11035[14002]['m_title'].'</div>';
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[14002]['m__icon'].'</span>'.$e___11035[14002]['m__title'].'</div>';
 } elseif($show_previous){
-    //echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m_icon'].'</span>'.$e___11035[11019]['m_title'].'</div>';
+    //echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m__icon'].'</span>'.$e___11035[11019]['m__title'].'</div>';
 }
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
 foreach($this->X_model->fetch(array(
@@ -52,13 +52,13 @@ foreach($this->X_model->fetch(array(
 if($show_previous){
     echo '<div class="list-group-item list-adder '.superpower_active(( $is_in_my_ideas ? 12700 : 10939 )).'">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
+                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m__icon'].'</span></span>
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                i-id="' . $i_focus['i__id'] . '"
                                id="addi-c-' . $i_focus['i__id'] . '-1"
-                               placeholder="'.$e___11035[13912]['m_title'].'">
+                               placeholder="'.$e___11035[13912]['m__title'].'">
                     </div><div class="algolia_pad_search hidden">'.view_memory(6404,13912).'</div></div>';
 }
 echo '</div>';
@@ -97,7 +97,7 @@ echo '<div class="inline-block pull-left left-margin">'.view_input_dropdown(4737
 echo '<div class="inline-block pull-left left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
 
 //PREVIEW DISCOVERY
-echo '<div class="inline-block pull-right" style="margin-right:41px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m_title'].' </span>'.$e___11035[13562]['m_icon'].'</a></div>';
+echo '<div class="inline-block pull-right" style="margin-right:41px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m__title'].' </span>'.$e___11035[13562]['m__icon'].'</a></div>';
 
 echo '<div class="doclear">&nbsp;</div>';
 
@@ -139,13 +139,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
     //Is this a caret menu?
-    if(in_array(11040 , $m['m_profile'])){
+    if(in_array(11040 , $m['m__profile'])){
         echo view_caret($x__type, $m, $i_focus['i__id']);
         continue;
     }
 
     //Have Needed Superpowers?
-    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
+    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
     if(count($superpower_actives) && !superpower_assigned(end($superpower_actives))){
         continue;
     }
@@ -190,7 +190,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $counter = count($i_notes);
 
-        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:41px;">';
         foreach($i_notes as $i_note) {
             $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
@@ -199,11 +199,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
             $focus_tab .= '<div class="list-group-item list-adder no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___11035[13914]['m_icon'] . '</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___11035[13914]['m__icon'] . '</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"                          
-                           placeholder="' . $e___11035[13914]['m_title'] . '">
+                           placeholder="' . $e___11035[13914]['m__title'] . '">
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.view_memory(6404,13912).'</div></div>';
         }
 
@@ -230,25 +230,24 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(superpower_active(12700, true)){
 
             //IDEA LIST EDITOR
-            $focus_tab .= '<div style="margin:-45px 0 22px 9px"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m_title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m_icon'].'</a></div>';
-            $focus_tab .= '<div class="doclear">&nbsp;</div>';
+            $focus_tab .= '<div class="action-top-left grey toggle_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m__icon'].'</a></div>';
 
 
             $focus_tab .= '<div class="toggle_12589 hidden" style="margin-bottom:41px;">';
-            $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m_icon'].'</span>'.$e___11035[12589]['m_title'].'</div>';
+            $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m__icon'].'</span>'.$e___11035[12589]['m__title'].'</div>';
             $dropdown_options = '';
             $input_options = '';
             $this_counter = 0;
 
-            //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+            //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
             foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
 
                 $this_counter++;
-                $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m_title'] . '</option>';
+                $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m__title'] . '</option>';
 
 
                 //Start with the input wrapper:
-                $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m_message'].'" class="inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m__message'].'" class="inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
                 if(in_array($action_e__id, array(12591, 12592))){
 
@@ -290,7 +289,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
 
-        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m_icon'].'</span>'.$e___11035[13542]['m_title'].'</div>';
+        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m__icon'].'</span>'.$e___11035[13542]['m__title'].'</div>';
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
         foreach($is_next as $next_i) {
             $focus_tab .= view_i($next_i, $i_focus['i__id'], false, $e_of_i);
@@ -299,13 +298,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($e_of_i && $is_active){
             $focus_tab .= '<div class="list-group-item list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m_icon'].'</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m__icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-0"
-                           placeholder="'.$e___11035[13912]['m_title'].'">
+                           placeholder="'.$e___11035[13912]['m__title'].'">
                 </div><div class="algolia_pad_search hidden">'.view_memory(6404,13912).'</div></div>';
         }
 
@@ -321,7 +320,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //DISCOVERIES
         $counter = view_coins_i(6255,  $i_focus, false);
 
-        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
         if($counter){
 
             $query_filters = array(
@@ -347,7 +346,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             //No Results:
             $e___12467 = $this->config->item('e___12467'); //MENCH COINS
-            //$focus_tab .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m_title'].' yet</div>';
+            //$focus_tab .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m__title'].' yet</div>';
 
         }
 
@@ -365,7 +364,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12969){
 
-        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_title'].'</div>';
+        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
         $u_x = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
@@ -402,7 +401,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m_icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" title="'.$m['m_title'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m_icon'].'&nbsp;'.$pre_fix.'<span class="en-type-counter-'.$x__type.'">'.view_number($counter).( intval($counter) ? '&nbsp;' : '' ).'</span></a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.$pre_fix.'<span class="en-type-counter-'.$x__type.'">'.view_number($counter).( intval($counter) ? '&nbsp;' : '' ).'</span></a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';

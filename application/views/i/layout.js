@@ -120,7 +120,7 @@ function e_e_only_search(note_type_id) {
         }
     });
 
-    if(parseInt(js_e___6404[12678]['m_message'])){
+    if(parseInt(js_e___6404[12678]['m__message'])){
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -294,7 +294,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
 
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item montserrat no-side-padding"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_view_random_message(12695) +  '</div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item montserrat no-side-padding"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_view_shuffle_message(12695) +  '</div>');
 
 
     //Update backend:
@@ -415,7 +415,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         if (data.status) {
 
             //Update on page:
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m_icon']+'</span><span class="show-max">' + ( show_full_name ? data_object[new_e__id]['m_title'] : '' ) + '</span>');
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__icon']+'</span><span class="show-max">' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ) + '</span>');
 
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .dropi_' + element_id +'_'+i__id+ '_' + x__id).removeClass('active');
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .optiond_' + new_e__id+'_'+i__id+ '_' + x__id).addClass('active');
@@ -450,7 +450,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         } else {
 
             //Reset to default:
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m_icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m_title'] : '' ));
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m__icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m__title'] : '' ));
 
             //Show error:
             alert(data.message);

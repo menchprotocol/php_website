@@ -104,7 +104,7 @@ if(intval(view_memory(6404,12899))){
          ref="<?= ( $user_e ? $user_e['e__id'] : '' ) ?>"
          theme_color="#222222">
     </div>
-    <div class="chat-title"><span><?= $e___11035[12899]['m_title'] ?></span></div>
+    <div class="chat-title"><span><?= $e___11035[12899]['m__title'] ?></span></div>
 
     <?php
 }
@@ -145,14 +145,14 @@ if(!isset($hide_header)){
                     echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
 
                     //SEARCH BAR (hidden, replaces LOGO when active)
-                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search white-border" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m_title'].'"></form></div>';
+                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search white-border" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
                     echo '</td>';
 
                     if(intval(view_memory(6404,12678))){
 
                         //Search button
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m_icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m_title'].'">'.$e___11035[13401]['m_icon'].'</span></a></td>';
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></a></td>';
 
                     }
 
@@ -161,10 +161,10 @@ if(!isset($hide_header)){
                         //GUESTS
 
                         //FEEDBACK SUPPORT
-                        //echo '<td class="block-x"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m_title'].'">'.$e___11035[12899]['m_icon'].'</a></td>';
+                        //echo '<td class="block-x"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m__title'].'">'.$e___11035[12899]['m__icon'].'</a></td>';
 
                         //Sign In/Up
-                        echo '<td class="block-x"><a href="/signin" class="montserrat">'.$e___13479[4269]['m_icon'].'</a></td>';
+                        echo '<td class="block-x"><a href="/signin" class="montserrat">'.$e___13479[4269]['m__icon'].'</a></td>';
 
                     } else {
 
@@ -172,7 +172,7 @@ if(!isset($hide_header)){
                         echo '<td class="block-menu">';
                         echo '<div class="dropdown inline-block">';
                         echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton12500" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                        echo '<span class="icon-block">' .$e___13479[12500]['m_icon'].'</span>';
+                        echo '<span class="icon-block">' .$e___13479[12500]['m__icon'].'</span>';
                         echo '</button>';
 
                         echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
@@ -183,14 +183,14 @@ if(!isset($hide_header)){
                                 continue;
                             }
 
-                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m_profile']);
+                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
                             $extra_class = null;
                             $text_class = null;
 
                             if(in_array($x__type, $this->config->item('n___10876'))){
 
                                 //Fetch URL:
-                                $href = 'href="'.$e___10876[$x__type]['m_message'].'"';
+                                $href = 'href="'.$e___10876[$x__type]['m__message'].'"';
 
                             } elseif($x__type==12899) {
 
@@ -205,7 +205,7 @@ if(!isset($hide_header)){
                             }
 
                             //Navigation
-                            echo '<a '.$href.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m_icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m_icon'].'</span><span class="'.$text_class.'">'.$m['m_title'].'</span></a>';
+                            echo '<a '.$href.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                         }
 
