@@ -24,6 +24,7 @@ body {
 .padded {
     margin: 0 40px 41px 41px;
 }
+
 .edit-off .padded, .edit-on .padded {
     margin-bottom: 0;
 }
@@ -264,8 +265,8 @@ img.no-radius {
     margin: 0;
     padding: 0;
 }
-.card-body .list-group {
-    margin: 0 41px;
+.card-body .padded, .card-body .list-group {
+    margin: 13px 41px;
 }
 .accordion>.card {
     border-radius: 0 !important;
