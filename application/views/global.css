@@ -263,10 +263,10 @@ img.no-radius {
 }
 .card-body{
     margin: 0;
-    padding: 0;
+    padding: 0 41px;
 }
 .card-body .padded, .card-body .list-group {
-    margin: 13px 41px;
+    margin: 13px 0;
 }
 .accordion>.card {
     border-radius: 0 !important;
