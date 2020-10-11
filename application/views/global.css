@@ -1185,7 +1185,7 @@ td.MENCHcolumn3  { width: 13%; }
     padding-left: 0;
 }
 
-.dynamic_saving, .avatar-item:hover {
+.dynamic_saving {
     background-color: #999999 !important;
     border-radius: 13px !important;
 }
