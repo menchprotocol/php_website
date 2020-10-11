@@ -222,10 +222,6 @@ img.no-radius {
     border-radius:0 !important;
 }
 
-#MyAccountAccordion .padded {
-    margin:0 !important;
-}
-
 .alert{
     padding:10px 0 !important;
     border-radius: 0;
@@ -267,6 +263,9 @@ img.no-radius {
 .card-body{
     margin: 0;
     padding: 0;
+}
+.card-body .list-group {
+    margin: 0 41px;
 }
 .accordion>.card {
     border-radius: 0 !important;
