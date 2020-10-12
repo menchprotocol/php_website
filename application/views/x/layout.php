@@ -687,7 +687,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
         $counter = view_number($discovered[0]['totals']);
-        $focus_tab .= '<div class="i_content padded top-margin"><div class="msg">This idea has been discovered by '.number_format($counter, 0).' member'.view__s($counter).'.</div></div>';
+
+        if($counter > 0){
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+                'x__left' => $i_focus['i__id'],
+            ), array('x__source'), view_memory(6404,11064), 0, array( 'x__id' => 'DESC' )) as $discover_e){
+                $focus_tab .= view_e_basic($discover_e);
+            }
+        }
 
     } elseif($x__type==7545){
 
@@ -761,7 +770,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $tab_pill_count++;
 
     if(!in_array($x__type, $this->config->item('n___14007'))){
-        $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.$pre_fix.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
+        $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.$pre_fix.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
     }
 
 
