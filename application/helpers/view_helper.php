@@ -1465,7 +1465,7 @@ function view_e_basic($e, $m = false)
     }
 
     if($m){
-        $ui .= '<span class="icon-block pull-right grey" style="margin-top:-25px;" title="'.$m['m__title'].(isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' '.$e['x__message'] : '').'" data-toggle="tooltip" data-placement="top">' . view_e__icon($m['m__icon']) . '</span>';
+        $ui .= '<span class="icon-block pull-right grey" style="margin-top:-24px;" title="'.$m['m__title'].(isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' '.$e['x__message'] : '').'" data-toggle="tooltip" data-placement="top">' . view_e__icon($m['m__icon']) . '</span>';
     }
 
 
