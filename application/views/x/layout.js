@@ -2,7 +2,6 @@
 
 $(document).ready(function () {
 
-
     $(".new-13871").click(function(event) {
         if($('.idea-comments').hasClass('hidden')){
             //Show

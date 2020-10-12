@@ -1577,7 +1577,7 @@ i, .btn .show-max {
     width:    -moz-calc(100% - 82px);
     width:         calc(100% - 82px);
 }
-.i-info, .note-textarea.edit-on, .cover-title {
+.i-info, .note-textarea.edit-on, .cover-title, .width-icon-block {
     width: -webkit-calc(100% - 41px) !important;
     width:    -moz-calc(100% - 41px) !important;
     width:         calc(100% - 41px) !important;

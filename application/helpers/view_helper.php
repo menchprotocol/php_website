@@ -177,7 +177,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
                     $embed_html_code .= '<div class="grey montserrat" style="padding:5px 0 0 0; font-size:0.84em;"><span class="icon-block-xs">'.$e___11035[13292]['m__icon'].'</span>'.round_minutes($end_time-$start_time).' MIN CLIP <span class="inline-block">('.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).')</span></div>';
                 }
 
-                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
+                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe id="youtubeplayer'.$video_id.'"  src="//www.youtube.com/embed/' . $video_id . '?enablejsapi=1&wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframeid></div></div>';
 
             }
 
@@ -189,7 +189,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
             //This should be an integer!
             if (intval($video_id) == $video_id) {
                 $clean_url = 'https://vimeo.com/' . $video_id;
-                $embed_html_code = '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
+                $embed_html_code = '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="vm-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
             }
 
         } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
@@ -1453,23 +1453,32 @@ function view_x_progress($completion_rate, $i, $show_micro){
 function view_e_basic($e, $m = false)
 {
 
+    $CI =& get_instance();
+
+
     $ui = '<div class="list-group-item no-side-padding '.(superpower_active(10939, true) ? ' itemsource ' : '').'">';
 
 
+
+    if(!$m){
+        $e___13207 = $CI->config->item('e___13207');
+        $m = $e___13207[4430]; //Members
+    }
+
+    $ui .= '<span class="icon-block pull-right grey" title="'.$m['m__title'].(isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' '.$e['x__message'] : '').'" data-toggle="tooltip" data-placement="top">' . view_e__icon($m['m__icon']) . '</span>';
+
     if(1 || superpower_active(10939, true)){
+        $ui .= '<div class="inline-block pull-left width-icon-block">';
         $ui .= '<span class="icon-block"><a href="/@'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</a></span>';
         $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
+        $ui .= '</div>';
     } else {
         $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
         $ui .= '<b class="title-block title-no-right">'.$e['e__title'].'</b>';
     }
 
-    if($m){
-        $ui .= '<span class="icon-block pull-right grey" style="margin-top:-24px;" title="'.$m['m__title'].(isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' '.$e['x__message'] : '').'" data-toggle="tooltip" data-placement="top">' . view_e__icon($m['m__icon']) . '</span>';
-    }
 
-
-    $ui .= '</div>';
+    $ui .= '<div class="doclear">&nbsp;</div></div>';
     return $ui;
 }
 
