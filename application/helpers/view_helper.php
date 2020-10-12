@@ -1465,12 +1465,10 @@ function view_e_basic($e, $m = false)
     }
 
     if($m){
-        $ui .= '<span class="inline-block pull-right grey" title="'.$m['m__title'].' '.$e['x__message'].'" data-toggle="tooltip" data-placement="top">' . view_e__icon($m['m__icon']) . '</span>';
+        $ui .= '<span class="inline-block pull-right grey" title="'.$m['m__title'].(isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' '.$e['x__message'] : '').'" data-toggle="tooltip" data-placement="top">' . view_e__icon($m['m__icon']) . '</span>';
     }
 
-    if(isset($e['x__message']) && strlen($e['x__message']) > 0){
-        //$ui .= '<div class="space-content" style="padding-top:5px;"></div>';
-    }
+
     $ui .= '</div>';
     return $ui;
 }
