@@ -22,7 +22,7 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
 
     <?php
 
-    if(!$source_is_e || $superpower_13422 ){
+    if( !$source_is_e || $superpower_13422 ){
 
         //PROFILE
         echo '<div class="container coin-frame">';
@@ -158,11 +158,6 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
             //SOURCES
             $counter = $counter__e;
             $list_e = view_coins_e(12274, $e['e__id'], 1);
-
-            if(!$counter && !$superpower_10939 && !$source_is_e){
-                continue;
-            }
-
 
             //SOURCE MASS EDITOR
             if($superpower_13422){
