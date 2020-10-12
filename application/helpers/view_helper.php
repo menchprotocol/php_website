@@ -856,11 +856,14 @@ function view_i_tree_e($i){
     $ui = '';
     $ui .= '<div class="list-group" style="margin-bottom:41px;">';
     foreach($CI->config->item('e___13207') as $e__id => $m2){
+        //$ui .= '<div class="headline"><span class="icon-block">'.$m2['m__icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m__title'].'</div>';
+        //$ui .= '<div class="list-group" style="margin-bottom:41px;">';
         if(isset($i_stats['count_'.$e__id]) && $i_stats['count_'.$e__id]>0){
             foreach ($i_stats['array_'.$e__id] as $e) {
                 $ui .= view_e_basic($e);
             }
         }
+        //$ui .= '</div>';
     }
     $ui .= '</div>';
     return $ui;
@@ -1449,8 +1452,6 @@ function view_x_progress($completion_rate, $i, $show_micro){
 
 function view_e_basic($e)
 {
-
-    //return view_e($e);
 
     $ui = '<div class="list-group-item no-side-padding '.(superpower_active(10939, true) ? ' itemsource ' : '').'">';
 
