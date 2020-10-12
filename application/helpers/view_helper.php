@@ -860,7 +860,7 @@ function view_i_tree_e($i){
         //$ui .= '<div class="list-group" style="margin-bottom:41px;">';
         if(isset($i_stats['count_'.$e__id]) && $i_stats['count_'.$e__id]>0){
             foreach ($i_stats['array_'.$e__id] as $e) {
-                $ui .= view_e_basic($e);
+                $ui .= view_e_basic($e, $m2);
             }
         }
         //$ui .= '</div>';
@@ -1450,7 +1450,7 @@ function view_x_progress($completion_rate, $i, $show_micro){
 
 }
 
-function view_e_basic($e)
+function view_e_basic($e, $m = false)
 {
 
     $ui = '<div class="list-group-item no-side-padding '.(superpower_active(10939, true) ? ' itemsource ' : '').'">';
@@ -1463,8 +1463,13 @@ function view_e_basic($e)
         $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
         $ui .= '<b class="title-block title-no-right">'.$e['e__title'].'</b>';
     }
+
+    if($m){
+        $ui .= '<span class="inline-block pull-right grey" title="'.$m['m__title'].' '.$e['x__message'].'" data-toggle="tooltip" data-placement="top">' . view_e__icon($m['m__icon']) . '</span>';
+    }
+
     if(isset($e['x__message']) && strlen($e['x__message']) > 0){
-        $ui .= '<div class="space-content" style="padding-top:5px;">'.$e['x__message'].'</div>';
+        //$ui .= '<div class="space-content" style="padding-top:5px;"></div>';
     }
     $ui .= '</div>';
     return $ui;
