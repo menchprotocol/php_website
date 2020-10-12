@@ -1450,7 +1450,7 @@ function view_x_progress($completion_rate, $i, $show_micro){
 function view_e_basic($e)
 {
 
-    return view_e($e);
+    //return view_e($e);
 
     $ui = '<div class="list-group-item no-side-padding '.(superpower_active(10939, true) ? ' itemsource ' : '').'">';
 
