@@ -438,7 +438,7 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
             //List References
             $list_i = view_coins_e(12273, $e['e__id'], 1, true, $exclude_ids);
 
-            if(count($list_i)){
+            if(count($list_i) && count($exclude_ids)){
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
             }
 
