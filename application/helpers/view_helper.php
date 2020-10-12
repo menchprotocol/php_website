@@ -1455,7 +1455,7 @@ function view_e_basic($e)
     $ui = '<div class="list-group-item no-side-padding '.(superpower_active(10939, true) ? ' itemsource ' : '').'">';
 
 
-    if(superpower_active(10939, true)){
+    if(1 || superpower_active(10939, true)){
         $ui .= '<span class="icon-block"><a href="/@'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</a></span>';
         $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
     } else {
