@@ -66,7 +66,8 @@ $i_completion_percentage = 0; //Assume main intent not yet completed, unless pro
 $i_completion_rate = array();
 $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
 $previous_level_id = 0; //The ID of the Idea one level up, if any
-$show_nav = superpower_active(10939, true) || !$in_my_x || $in_my_discoveries;
+$superpower_10939 = superpower_active(10939, true);
+$show_nav = !$user_e['e__id'] || $superpower_10939 || !$in_my_x || $in_my_discoveries;
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 
@@ -365,7 +366,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     if($x__type==13563){
 
-        if($user_e['e__id']>0 && superpower_active(10939, true) && source_of_e($user_e['e__id'])){
+        if($user_e['e__id']>0 && $superpower_10939 && source_of_e($user_e['e__id'])){
             $href = 'href="/~'.$i_focus['i__id'].'"';
         } else {
             continue;
