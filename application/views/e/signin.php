@@ -58,25 +58,10 @@ if(count($current_sign_i_attempt) == 0){
 
     <div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>
 
-
     <?php
-    $sign_i = array();
-    if($sign_i__id > 0){
-        $sign_i = $this->I_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'i__id' => $sign_i__id,
-        ));
-        if(count($sign_i)){
-            echo '<p style="margin-top:13px;"><a href="/'.$sign_i__id.'" class="montserrat"><span class="icon-block"><i class="fas fa-arrow-left"></i></span>'.$sign_i[0]['i__title'].'</a></p>';
-        }
-    } else {
-        echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
-    }
-
+    echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
     echo '<p style="margin-top:13px; text-align: center;">'.$e___11035[4269]['m__message'].'</p>';
-
     ?>
-
 
     <div class="login-content" style="margin-top:41px;">
 
@@ -86,7 +71,18 @@ if(count($current_sign_i_attempt) == 0){
             <div class="form-group"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
             <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
-
+                <?php
+                //Back only if coming from an idea:
+                if($sign_i__id > 0){
+                    $sign_i = $this->I_model->fetch(array(
+                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                        'i__id' => $sign_i__id,
+                    ));
+                    if(count($sign_i)){
+                        echo '<a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="/'.$sign_i__id.'" class="btn btn-source transparent btn-raised " title="'.$e___11035[12991]['m__title'].' '.$sign_i[0]['i__title'].'">'.$e___11035[12991]['m__icon'].'</a>';
+                    }
+                }
+                ?>
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
 
             </span>
