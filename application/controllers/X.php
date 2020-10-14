@@ -210,7 +210,7 @@ class X extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif(!isset($_POST['object__id']) || !isset($_POST['cache_e__id']) || !isset($_POST['field_value'])){
+        } elseif(!isset($_POST['s__id']) || !isset($_POST['cache_e__id']) || !isset($_POST['field_value'])){
 
             return view_json(array(
                 'status' => 0,
@@ -221,7 +221,7 @@ class X extends CI_Controller
         } elseif($_POST['cache_e__id']==4736 /* IDEA TITLE */){
 
             $is = $this->I_model->fetch(array(
-                'i__id' => $_POST['object__id'],
+                'i__id' => $_POST['s__id'],
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
             if(!count($is)){
@@ -243,7 +243,7 @@ class X extends CI_Controller
 
 
             //All good, go ahead and update:
-            $this->I_model->update($_POST['object__id'], array(
+            $this->I_model->update($_POST['s__id'], array(
                 'i__title' => trim($_POST['field_value']),
             ), true, $user_e['e__id']);
 
@@ -254,7 +254,7 @@ class X extends CI_Controller
         } elseif($_POST['cache_e__id']==6197 /* SOURCE FULL NAME */){
 
             $es = $this->E_model->fetch(array(
-                'e__id' => $_POST['object__id'],
+                'e__id' => $_POST['s__id'],
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if(!count($es)){
@@ -292,7 +292,7 @@ class X extends CI_Controller
         } elseif($_POST['cache_e__id']==4356 /* DISCOVER TIME */){
 
             $is = $this->I_model->fetch(array(
-                'i__id' => $_POST['object__id'],
+                'i__id' => $_POST['s__id'],
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
@@ -332,7 +332,7 @@ class X extends CI_Controller
             } else {
 
                 //All good, go ahead and update:
-                $this->I_model->update($_POST['object__id'], array(
+                $this->I_model->update($_POST['s__id'], array(
                     'i__duration' => $_POST['field_value'],
                 ), true, $user_e['e__id']);
 
@@ -346,7 +346,7 @@ class X extends CI_Controller
 
             //Fetch/Validate Transaction:
             $x = $this->X_model->fetch(array(
-                'x__id' => $_POST['object__id'],
+                'x__id' => $_POST['s__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             ));
@@ -374,7 +374,7 @@ class X extends CI_Controller
             } else {
 
                 //All good, go ahead and update:
-                $this->X_model->update($_POST['object__id'], array(
+                $this->X_model->update($_POST['s__id'], array(
                     'x__metadata' => array_merge($x__metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
@@ -390,7 +390,7 @@ class X extends CI_Controller
 
             //Fetch/Validate Transaction:
             $x = $this->X_model->fetch(array(
-                'x__id' => $_POST['object__id'],
+                'x__id' => $_POST['s__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             ));
@@ -416,7 +416,7 @@ class X extends CI_Controller
             } else {
 
                 //All good, go ahead and update:
-                $this->X_model->update($_POST['object__id'], array(
+                $this->X_model->update($_POST['s__id'], array(
                     'x__metadata' => array_merge($x__metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),

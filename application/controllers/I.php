@@ -98,7 +98,7 @@ class I extends CI_Controller {
          *
          * */
         $user_e = superpower_assigned(10939);
-        return redirect_message(( $user_e ? '/~' : '/' ) . $i__id . ( $user_e && isset($_GET['focus__e']) ? '?focus__e='.$_GET['focus__e'] : '' ) );
+        return redirect_message(( $user_e ? '/~' : '/' ) . $i__id . ( $user_e && isset($_GET['load__e']) ? '?load__e='.$_GET['load__e'] : '' ) );
     }
 
 

@@ -740,8 +740,8 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
             'x__left' => $i['i__id'],
         );
 
-        if(isset($_GET['focus__e'])){
-            $query_filters['x__source'] = intval($_GET['focus__e']);
+        if(isset($_GET['load__e'])){
+            $query_filters['x__source'] = intval($_GET['load__e']);
         }
 
 
@@ -793,7 +793,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
     //See if user is logged-in:
     $CI =& get_instance();
     $user_session = superpower_assigned();
-    $user_e__id = ( (isset($_GET['focus__e']) ? $_GET['focus__e'] : ( $user_session ? $user_session['e__id'] : 0 ) ));
+    $user_e__id = ( (isset($_GET['load__e']) ? $_GET['load__e'] : ( $user_session ? $user_session['e__id'] : 0 ) ));
     $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
 
     if(!$completion_rate){
@@ -1075,7 +1075,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
     $ui .= '<div class="col-sm col-md">';
 
         //IDEA Transaction:
-        $href = '/~'.$i['i__id'].( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
+        $href = '/~'.$i['i__id'].( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
 
         //IDEA STATUS:
         $ui .= '<a href="'.$href.'" title="Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
@@ -1167,7 +1167,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
 
 
-function view_caret($e__id, $m, $object__id){
+function view_caret($e__id, $m, $s__id){
     //Display drop down menu:
     $CI =& get_instance();
 
@@ -1181,7 +1181,7 @@ function view_caret($e__id, $m, $object__id){
         if($e__id==13007){
             $href = 'href="javascript:void(0);" onclick="e_sort_reset()"';
         } else {
-            $href = 'href="' . $m2['m__message'] . $object__id . '"';
+            $href = 'href="' . $m2['m__message'] . $s__id . '"';
         }
 
         $ui .= '<a '.$href.' class="dropdown-item montserrat '.extract_icon_color($m2['m__icon']).' '.( count($superpower_actives2) ? superpower_active(end($superpower_actives2)) : '' ).'"><span class="icon-block">'.view_e__icon($m2['m__icon']).'</span> '.$m2['m__title'].'</a>';
@@ -1361,7 +1361,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
     return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
-function view__focus__e($e){
+function view__load__e($e){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
     return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__icon'].'</span>' . view_e__icon($e['e__icon']) . '&nbsp;<a href="/@'.$e['e__id'].'" class="'.extract_icon_color($e['e__icon']).'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__icon'].'</a></div>';
@@ -1387,7 +1387,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     }
 
     $i_stats = i_stats($i['i__metadata']);
-    $href = ( $discovery_mode ? ( $user_input && $focus_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?focus__e='.$focus_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' ));
+    $href = ( $discovery_mode ? ( $user_input && $focus_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?load__e='.$focus_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
 
 
 
@@ -1659,8 +1659,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="message_content paddingup x__message block">';
 
         //Show Filter?
-        if(superpower_active(14005, true) && (!isset($_GET['focus__e']) || $_GET['focus__e']!=$e['e__id'])){
-            $ui .= '<a href="/'.$CI->uri->segment(1).'?focus__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m__title'].'">'.$e___11035[13670]['m__icon'].'</a>';
+        if(superpower_active(14005, true) && (!isset($_GET['load__e']) || $_GET['load__e']!=$e['e__id'])){
+            $ui .= '<a href="/'.$CI->uri->segment(1).'?load__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m__title'].'">'.$e___11035[13670]['m__icon'].'</a>';
         }
 
         //Total Progress
@@ -1706,20 +1706,20 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 }
 
 
-function view_input_text($cache_e__id, $current_value, $object__id, $e_of_i, $tabindex = 0, $extra_large = false, $e__icon = null, $append_css = null){
+function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabindex = 0, $extra_large = false, $e__icon = null, $append_css = null){
 
     $CI =& get_instance();
     $e___12112 = $CI->config->item('e___12112');
     $current_value = htmlentities($current_value);
 
     //Define element attributes:
-    $attributes = ( $e_of_i ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$object__id.'" class="form-control dotransparent montserrat inline-block x_set_text text__'.$cache_e__id.'_'.$object__id.($extra_large?' texttype__lg ':' texttype__sm ').' text_e_'.$cache_e__id.' '.$append_css.'" cache_e__id="'.$cache_e__id.'" object__id="'.$object__id.'" ';
+    $attributes = ( $e_of_i ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$s__id.'" class="form-control dotransparent montserrat inline-block x_set_text text__'.$cache_e__id.'_'.$s__id.($extra_large?' texttype__lg ':' texttype__sm ').' text_e_'.$cache_e__id.' '.$append_css.'" cache_e__id="'.$cache_e__id.'" s__id="'.$s__id.'" ';
 
     //Also Append Counter to the end?
     if($extra_large){
 
-        $focus_element = '<textarea onkeyup="view_input_text_count('.$cache_e__id.','.$object__id.')" placeholder="'.$e___12112[$cache_e__id]['m__title'].'" '.$attributes.'>'.$current_value.'</textarea>';
-        $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$object__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$object__id.'">0</span>/'.view_memory(6404,$cache_e__id).' CHARACTERS</div>';
+        $focus_element = '<textarea onkeyup="view_input_text_count('.$cache_e__id.','.$s__id.')" placeholder="'.$e___12112[$cache_e__id]['m__title'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$s__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$s__id.'">0</span>/'.view_memory(6404,$cache_e__id).' CHARACTERS</div>';
         $icon = '<span class="icon-block title-icon">'.$e__icon.'</span>';
 
     } else {

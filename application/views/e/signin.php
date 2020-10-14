@@ -110,7 +110,7 @@ if(count($current_sign_i_attempt) == 0){
             
             <div id="step3buttons">
                 <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source transparent btn-raised " title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
-                <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-raised " title="<?= $e___11035[4269]['m__title'] ?>"><?= $e___11035[4269]['m__icon'] ?></a>
+                <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-raised " title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
             </div>
 
             <div style="padding-top:13px;">Forgot Password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration: underline;font-weight: bold;"><?= $e___11035[11068]['m__title'] ?></a> <?= $e___11035[11068]['m__icon'] ?></div>
@@ -128,20 +128,23 @@ if(count($current_sign_i_attempt) == 0){
 
             <!-- pre-set Email -->
             <div class="margin-top-down">
-                <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"><i class="fas fa-user-plus"></i></span>NEW ACCOUNT:</span>
-                <div><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
+                <div class="montserrat"><span class="icon-block"><?= $e___4269[14026]['m__icon'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+                <div style="padding-bottom: 8px;"><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
+                <div><span class="icon-block"><?= $e___11035[4755]['m__icon'] ?></span><?= $e___11035[4755]['m__title'] ?></div>
+                <div><span class="icon-block">&nbsp;</span><?= $e___11035[4755]['m__message'] ?></div>
             </div>
 
 
             <!-- Full Name -->
             <div class="margin-top-down">
-                <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.str_replace(' source','',$e___4269[13025]['m__icon']).'</span>'.$e___4269[13025]['m__title'] ?>:</span>
+                <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__icon'].'</span>'.$e___4269[13025]['m__title'] ?></span>
                 <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="input_name" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border doupper montserrat white-border"></div>
             </div>
 
+
             <!-- New Password -->
             <div class="margin-top-down">
-                <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[3286]['m__icon'] ?></span>NEW PASSWORD:</span>
+                <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__icon'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
                 <div class="form-group"><input type="password" id="new_password" class="form-control border white-border"></div>
             </div>
 

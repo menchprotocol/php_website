@@ -427,6 +427,15 @@ class E extends CI_Controller
             }
 
 
+            //Make sure not featured, or have superpower to do so:
+            if($_POST['e_existing_id']==12138 && !superpower_active(13994, true)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => view_unauthorized_message(13994),
+                ));
+            }
+
+
             //All good, assign:
             $focus_e = $es[0];
 
@@ -1624,33 +1633,24 @@ class E extends CI_Controller
         //Now update Algolia:
         update_algolia(12274,  $added_e['new_e']['e__id']);
 
-        //Fetch referral Idea, if any:
-        if(intval($_POST['sign_i__id']) > 0){
-
-            //Fetch the Idea:
-            $referrer_i = $this->I_model->fetch(array(
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                'i__id' => $_POST['sign_i__id'],
-            ));
-
-            //We might update this here if it's auto completed:
-            $_POST['sign_i__id'] = ( count($referrer_i) > 0 ? $this->X_model->start($added_e['new_e']['e__id'], $_POST['sign_i__id']) : 0 );
-
-        } else {
-            $referrer_i = array();
-        }
 
         //Assign session & log login transaction:
         $this->E_model->activate_session($added_e['new_e']);
 
 
-        if (strlen($_POST['referrer_url']) > 0) {
+        if(intval($_POST['sign_i__id']) > 0){
+
+            $_POST['sign_i__id'] = '/x/x_start/'.$_POST['sign_i__id'];
+
+        } elseif (strlen($_POST['referrer_url']) > 0) {
+
             $sign_url = urldecode($_POST['referrer_url']);
-        } elseif(intval($_POST['sign_i__id']) > 0) {
-            $sign_url = '/i/i_go/'.$_POST['sign_i__id'];
+
         } else {
+
             //Go to home page and let them continue from there:
             $sign_url = home_url();
+
         }
 
         return view_json(array(

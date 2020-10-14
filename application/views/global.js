@@ -56,13 +56,13 @@ function load_editor(){
     if(parseInt(js_e___6404[12678]['m__message'])){
         $('.e_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            $(this).val('@' + suggestion.object__id + ' ' + suggestion.object__title);
+            $(this).val('@' + suggestion.s__id + ' ' + suggestion.s__title);
 
         }).autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'object__type=12274',
+                    filters: 's__type=12274',
                     hitsPerPage: 8,
                 }, function (error, content) {
                     if (error) {
@@ -73,7 +73,7 @@ function load_editor(){
                 });
             },
             displayKey: function (suggestion) {
-                return '@' + suggestion.object__id + ' ' + suggestion.object__title;
+                return '@' + suggestion.s__id + ' ' + suggestion.s__title;
             },
             templates: {
                 suggestion: function (suggestion) {
@@ -87,13 +87,13 @@ function load_editor(){
 
         $('.i_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            $(this).val('#' + suggestion.object__id + ' ' + suggestion.object__title);
+            $(this).val('#' + suggestion.s__id + ' ' + suggestion.s__title);
 
         }).autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'object__type=12273',
+                    filters: 's__type=12273',
                     hitsPerPage: 8,
                 }, function (error, content) {
                     if (error) {
@@ -104,7 +104,7 @@ function load_editor(){
                 });
             },
             displayKey: function (suggestion) {
-                return '#' + suggestion.object__id + ' ' + suggestion.object__title;
+                return '#' + suggestion.s__id + ' ' + suggestion.s__title;
             },
             templates: {
                 suggestion: function (suggestion) {
@@ -137,9 +137,9 @@ function js_extract_icon_color(e__icon){
 
 function view_search_result(algolia_object){
 
-    var title = ( algolia_object._highlightResult && algolia_object._highlightResult.object__title.value ? algolia_object._highlightResult.object__title.value : algolia_object.object__title );
+    var title = ( algolia_object._highlightResult && algolia_object._highlightResult.s__title.value ? algolia_object._highlightResult.s__title.value : algolia_object.s__title );
 
-    return '<span class="icon-block">'+ algolia_object.object__icon +'</span><span class="montserrat '+ (algolia_object.object__type==12274 ? js_extract_icon_color(algolia_object.object__icon) : '' ) +'">' + title + '</span>';
+    return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ (algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + title + '</span>';
 
 }
 
@@ -250,7 +250,7 @@ $(document).ready(function () {
 
             $('#mench_search').prop("disabled", true).val('Loading...');
 
-            window.location = suggestion.object__url;
+            window.location = suggestion.s__url;
 
         }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
             {
@@ -272,7 +272,7 @@ $(document).ready(function () {
                         var search_filters = '';
 
                         if(search_only_e || search_only_in){
-                            search_filters += ' object__type='+( search_only_in ? 12273 : 12274 );
+                            search_filters += ' s__type='+( search_only_in ? 12273 : 12274 );
                         }
 
                         if(js_pl_id > 0){
@@ -493,7 +493,7 @@ function e_fetch_canonical(query_string, not_found){
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-e-suggest').remove();
-            $('.not-found').html('<a href="/@'+searchdata.algolia_object.object__id+'" class="suggestion montserrat">' + view_search_result(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/@'+searchdata.algolia_object.s__id+'" class="suggestion montserrat">' + view_search_result(searchdata.algolia_object)+'</a>');
         }
     });
 
@@ -587,10 +587,10 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
     $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='x_in'){
-            i_add($(element_focus + ' .add-input').attr('i-id'), is_i_previous, suggestion.object__id);
+            i_add($(element_focus + ' .add-input').attr('i-id'), is_i_previous, suggestion.s__id);
         } else {
             //Go to idea:
-            window.location = suggestion.object__url;
+            window.location = suggestion.s__url;
             return true;
         }
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_i_previous ? 'q' : 'a' )]}, [{
@@ -603,7 +603,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             } else {
                 algolia_index.search(q, {
 
-                    filters: ' object__type=12273 ' + ( js_session_superpowers_assigned.includes(12701) ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
+                    filters: ' s__type=12273 ' + ( js_session_superpowers_assigned.includes(12701) ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
                     hitsPerPage:21,
 
                 }, function (error, content) {
@@ -658,23 +658,23 @@ function x_set_text_start(){
     });
 }
 
-function view_input_text_count(cache_e__id, object__id) {
+function view_input_text_count(cache_e__id, s__id) {
 
     //Count text area characters:
 
     //Update count:
-    var len = $('.text__'+cache_e__id+'_'+object__id).val().length;
+    var len = $('.text__'+cache_e__id+'_'+s__id).val().length;
     if (len > js_e___6404[cache_e__id]['m__message']) {
-        $('#current_count_'+cache_e__id+'_'+object__id).addClass('overload').text(len);
+        $('#current_count_'+cache_e__id+'_'+s__id).addClass('overload').text(len);
     } else {
-        $('#current_count_'+cache_e__id+'_'+object__id).removeClass('overload').text(len);
+        $('#current_count_'+cache_e__id+'_'+s__id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
     if(len > ( js_e___6404[cache_e__id]['m__message'] * js_e___6404[12088]['m__message'] )){
-        $('.title_counter_'+cache_e__id+'_'+object__id).removeClass('hidden');
+        $('.title_counter_'+cache_e__id+'_'+s__id).removeClass('hidden');
     } else {
-        $('.title_counter_'+cache_e__id+'_'+object__id).addClass('hidden');
+        $('.title_counter_'+cache_e__id+'_'+s__id).addClass('hidden');
     }
 
 }
@@ -689,7 +689,7 @@ function update_text_name(cache_e__id, e__id, e__title){
 function x_set_text(this_handler){
 
     var modify_data = {
-        object__id: parseInt($(this_handler).attr('object__id')),
+        s__id: parseInt($(this_handler).attr('s__id')),
         cache_e__id: parseInt($(this_handler).attr('cache_e__id')),
         field_value: $(this_handler).val().trim()
     };
@@ -701,7 +701,7 @@ function x_set_text(this_handler){
     }
 
     //Grey background to indicate saving...
-    var handler = '.text__'+modify_data['cache_e__id']+'_'+modify_data['object__id'];
+    var handler = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
     $(handler).addClass('dynamic_saving');
 
     $.post("/x/x_set_text", modify_data, function (data) {
@@ -717,7 +717,7 @@ function x_set_text(this_handler){
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_name(modify_data['cache_e__id'], modify_data['object__id'], modify_data['field_value']);
+            update_text_name(modify_data['cache_e__id'], modify_data['s__id'], modify_data['field_value']);
 
         }
 
@@ -860,7 +860,7 @@ function i_note_e_search(obj) {
                 search: function (query, callback) {
                     algolia_index.search(query, {
                         hitsPerPage: 8,
-                        filters: 'object__type=12274',
+                        filters: 's__type=12274',
                     })
                         .then(function searchSuccess(content) {
                             if (content.query === query) {
@@ -875,7 +875,7 @@ function i_note_e_search(obj) {
                     return '<div style="padding: 3px 0;">' + view_search_result(suggestion) + '</div>';
                 },
                 replace: function (suggestion) {
-                    return ' @' + suggestion.object__id + ' ';
+                    return ' @' + suggestion.s__id + ' ';
                 }
             },
         ]);

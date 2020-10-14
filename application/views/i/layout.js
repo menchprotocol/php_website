@@ -124,13 +124,13 @@ function e_e_only_search(note_type_id) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            e_only_add(suggestion.object__id, note_type_id);
+            e_only_add(suggestion.s__id, note_type_id);
 
         }).autocomplete({hint: false, minLength: 1}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'object__type=12274',
+                    filters: 's__type=12274',
                     hitsPerPage: 21,
                 }, function (error, content) {
                     if (error) {

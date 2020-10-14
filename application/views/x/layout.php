@@ -18,14 +18,14 @@ $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 
 //Determine Focus User:
 $user_e = false;
-if(isset($_GET['focus__e']) && superpower_active(14005, true)){
+if(isset($_GET['load__e']) && superpower_active(14005, true)){
     //Fetch This User
     $e_filters = $this->E_model->fetch(array(
-        'e__id' => $_GET['focus__e'],
+        'e__id' => $_GET['load__e'],
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
-        echo view__focus__e($e_filters[0]);
+        echo view__load__e($e_filters[0]);
         $user_e = $e_filters[0];
     }
 }
@@ -876,20 +876,38 @@ if($in_my_x){
     echo '<div class="container">'; // fixed-bottom
     echo '<div class="margin-top-down center">';
 
+    //GET STARTED
     if($meets_13865){
 
-        //GET STARTED
-        if($meets_13865){
+        if(i_is_startable($i_focus)){
 
             //OPEN TO REGISTER
             echo '<a class="btn btn-lrg btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__icon'].'</a>';
 
-        } elseif(!$user_e['e__id']) {
+        } else {
 
-            //Signin to see if they meet requirement:
-            echo '<a class="btn btn-lrg btn-source" href="/signin">'.$e___11035[4269]['m__icon'].' '.$e___11035[4269]['m__title'].'</a>';
+            //Try to find the top registrable idea:
+            $top_startable = $this->I_model->top_startable($i_focus);
+            if($top_startable){
 
+                //Give link to go to top:
+                echo '<a class="btn btn-lrg btn-discover" href="/'.$top_startable['i__id'].'" title="'.$top_startable['i__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__icon'].'</a>';
+
+            } else {
+
+                //Inform them that nothing was found:
+                echo '<div style="text-align:center;"><div class="montserrat '.extract_icon_color($e___11035[14023]['m__title']).'">'.$e___11035[14023]['m__title'].' '.$e___11035[14023]['m__icon'].'</div><div>'.$e___11035[14023]['m__icon'].'</div></div>';
+
+
+            }
         }
+
+
+
+    } elseif(!$user_e['e__id']) {
+
+        //Signin to see if they meet requirement:
+        echo '<a class="btn btn-lrg btn-source" href="/signin">'.$e___11035[4269]['m__icon'].' '.$e___11035[4269]['m__title'].'</a>';
 
     } else {
 

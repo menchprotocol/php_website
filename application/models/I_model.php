@@ -301,6 +301,13 @@ class I_model extends CI_Model
         return $stats;
     }
 
+    function top_startable($i){
+
+        //Return the first top startable idea:
+
+
+    }
+
     function create_or_link($i__title, $x__source, $x_to_i__id = 0, $is_parent = false, $new_i_type = 6677, $x_i__id = 0)
     {
 

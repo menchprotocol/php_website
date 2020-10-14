@@ -262,13 +262,13 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            e__add(suggestion.object__id, is_e_parent);
+            e__add(suggestion.s__id, is_e_parent);
 
         }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_e_parent ? 'q' : 'a' )]}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 'object__type=12274' + ( js_session_superpowers_assigned.includes(13422) ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
+                    filters: 's__type=12274' + ( js_session_superpowers_assigned.includes(13422) ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
                     hitsPerPage: ( validURL(q) ? 1 : 21 ),
                 }, function (error, content) {
                     if (error) {

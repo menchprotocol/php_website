@@ -231,6 +231,46 @@ function current_mench(){
 
 }
 
+function e_is_featured($e)
+{
+    $CI =& get_instance();
+    return in_array($e['e__type'], $CI->config->item('n___7357') /* PUBLIC */) && count($CI->X_model->fetch(array(
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__up IN (' . join(',', $CI->config->item('n___12138')) . ')' => null, //FEATURED PARENT
+            'x__down' => $e['e__id'],
+        )));
+
+}
+
+function i_is_featured($i)
+{
+    $CI =& get_instance();
+    return in_array($i['i__type'], $CI->config->item('n___7355')) && count($CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__right' => $i['i__id'],
+        '(x__up = 12138 OR x__down = 12138)' => null,
+    )));
+
+}
+
+function i_is_startable($i)
+{
+    $CI =& get_instance();
+    return
+        (
+            i_is_featured($i)
+            || (
+                in_array($i['i__type'], $CI->config->item('n___7355')) &&
+                count($CI->X_model->fetch(array(
+                    'x__type' => 10573, //MY IDEAS
+                    'x__right' => $i['i__id'],
+                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                )))
+            )
+        );
+}
 
 
 function x_detect_type($string)
@@ -1335,7 +1375,7 @@ function sources_currently_sorted($e__id){
     ), array(), 1) );
 }
 
-function update_algolia($object__type = null, $object__id = 0, $return_row_only = false)
+function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 {
 
     if(!intval(view_memory(6404,12678))){
@@ -1350,12 +1390,12 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
      *
      * */
 
-    if($object__type && !in_array($object__type , $CI->config->item('n___12761'))){
+    if($s__type && !in_array($s__type , $CI->config->item('n___12761'))){
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif(($object__type && !$object__id) || ($object__id && !$object__type)){
+    } elseif(($s__type && !$s__id) || ($s__id && !$s__type)){
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
@@ -1367,14 +1407,14 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
     $n___12138 = $CI->config->item('n___12138');
 
     //Define the support objects indexed on algolia:
-    $object__id = intval($object__id);
+    $s__id = intval($s__id);
     $limits = array();
 
 
-    if($object__type==12273){
+    if($s__type==12273){
         $focus_field_id = 'i__id';
         $focus_field_status = 'i__type';
-    } elseif($object__type==12274){
+    } elseif($s__type==12274){
         $focus_field_id = 'e__id';
         $focus_field_status = 'e__type';
     }
@@ -1387,10 +1427,10 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 
     //Which objects are we fetching?
-    if ($object__type) {
+    if ($s__type) {
 
         //We'll only fetch a specific type:
-        $fetch_objects = array($object__type);
+        $fetch_objects = array($s__type);
 
     } else {
 
@@ -1425,8 +1465,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             $loop_filed_name = 'i__metadata';
             $limits['x__type'] = 4250;
 
-            if($object__id){
-                $limits['x__right'] = $object__id;
+            if($s__id){
+                $limits['x__right'] = $s__id;
             } else {
                 $limits['i__type IN (' . join(',', $CI->config->item('n___7356')) . ')'] = null; //ACTIVE
                 $limits['x__status IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
@@ -1440,8 +1480,8 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             $loop_filed_name = 'e__metadata';
             $limits['x__type'] = 4251;
 
-            if($object__id){
-                $limits['x__down'] = $object__id;
+            if($s__id){
+                $limits['x__down'] = $s__id;
             } else {
                 $limits['e__type IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
                 $limits['x__status IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
@@ -1455,7 +1495,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 
         //Build the index:
-        foreach($db_rows[$loop_obj] as $db_row) {
+        foreach($db_rows[$loop_obj] as $s) {
 
             //Prepare variables:
             unset($export_row);
@@ -1463,23 +1503,23 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 
             //Update Weight if single update:
-            if($object__id){
+            if($s__id){
                 //Update weight before updating this object:
-                if($object__type==12274){
-                    e__weight_calculator($db_row);
-                } elseif($object__type==12273){
-                    i__weight_calculator($db_row);
+                if($s__type==12274){
+                    e__weight_calculator($s);
+                } elseif($s__type==12273){
+                    i__weight_calculator($s);
                 }
             }
 
 
             //Attempt to fetch Algolia object ID from object Metadata:
-            if($object__type){
+            if($s__type){
 
-                if (strlen($db_row[$loop_filed_name]) > 0) {
+                if (strlen($s[$loop_filed_name]) > 0) {
 
                     //We have a metadata, so we might have the Algolia ID stored. Let's check:
-                    $metadata = unserialize($db_row[$loop_filed_name]);
+                    $metadata = unserialize($s[$loop_filed_name]);
                     if (isset($metadata['algolia__id']) && intval($metadata['algolia__id']) > 0) {
                         //We found it! Let's just update existing algolia record
                         $export_row['objectID'] = intval($metadata['algolia__id']);
@@ -1490,7 +1530,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             } else {
 
                 //Clear possible metadata algolia ID's that have been cached:
-                update_metadata($loop_obj, $db_row[$loop_filed_id], array(
+                update_metadata($loop_obj, $s[$loop_filed_id], array(
                     'algolia__id' => null, //Since all objects have been mass deleted!
                 ));
 
@@ -1503,78 +1543,81 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
             if ($loop_obj == 12274) {
 
                 //SOURCES
-                $export_row['object__type'] = $loop_obj;
-                $export_row['object__id'] = intval($db_row['e__id']);
-                $export_row['object__url'] = '/@' . $db_row['e__id'];
-                $export_row['object__status'] = intval($db_row['e__type']);
-                $export_row['object__icon'] = view_e__icon($db_row['e__icon']);
-                $export_row['object__title'] = $db_row['e__title'];
-                $export_row['object__weight'] = intval($db_row['e__weight']);
+                $export_row['s__type'] = $loop_obj;
+                $export_row['s__id'] = intval($s['e__id']);
+                $export_row['s__url'] = '/@' . $s['e__id'];
+                $export_row['s__status'] = intval($s['e__type']);
+                $export_row['s__icon'] = view_e__icon($s['e__icon']);
+                $export_row['s__title'] = $s['e__title'];
+                $export_row['s__weight'] = intval($s['e__weight']);
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_e_' . $db_row['x__source']);
-                if($db_row['x__source']!=$db_row['e__id']){
+                array_push($export_row['_tags'], 'alg_e_' . $s['x__source']);
+
+                if($s['x__source']!=$s['e__id']){
                     //Also give access to source themselves, in case they can login:
-                    array_push($export_row['_tags'], 'alg_e_' . $db_row['e__id']);
+                    array_push($export_row['_tags'], 'alg_e_' . $s['e__id']);
+                }
+
+                //Featured?
+                if (e_is_featured($s)) {
+                    array_push($export_row['_tags'], 'is_featured');
                 }
 
 
                 //Fetch Profiles:
-                $profile_ids = array();
-                $export_row['object__keywords'] = '';
+                $export_row['s__keywords'] = '';
                 foreach($CI->X_model->fetch(array(
                     'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $db_row['e__id'], //This child source
+                    'x__down' => $s['e__id'], //This child source
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $x) {
 
                     //Always add to tags:
-                    array_push($profile_ids, intval($x['e__id']));
                     array_push($export_row['_tags'], 'alg_e_' . $x['e__id']);
 
                     //Add content to keywords if any:
                     if (strlen($x['x__message']) > 0) {
-                        $export_row['object__keywords'] .= $x['x__message'] . ' ';
+                        $export_row['s__keywords'] .= $x['x__message'] . ' ';
                     }
 
                 }
-
-                //Feature source? Only if it's featured or belong to a featured parent:
-                if(array_intersect($profile_ids, $n___12138) && in_array($db_row['e__type'], $CI->config->item('n___7357'))){
-                    array_push($export_row['_tags'], 'is_featured');
-                }
-
-                $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
+                $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
 
             } elseif ($loop_obj == 12273) {
 
                 //IDEAS
                 //See if this idea has a time-range:
-                $export_row['object__type'] = $loop_obj;
-                $export_row['object__id'] = intval($db_row['i__id']);
-                $export_row['object__url'] = '/i/i_go/' . $db_row['i__id'];
-                $export_row['object__status'] = intval($db_row['i__type']);
-                $export_row['object__icon'] = view_i_icon($db_row);
-                $export_row['object__title'] = $db_row['i__title'];
-                $export_row['object__weight'] = intval($db_row['i__weight']);
+                $export_row['s__type'] = $loop_obj;
+                $export_row['s__id'] = intval($s['i__id']);
+                $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
+                $export_row['s__status'] = intval($s['i__type']);
+                $export_row['s__icon'] = view_i_icon($s);
+                $export_row['s__title'] = $s['i__title'];
+                $export_row['s__weight'] = intval($s['i__weight']);
 
                 //Add keywords:
-                $export_row['object__keywords'] = '';
+                $export_row['s__keywords'] = '';
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('n___4485')) . ')' => null, //IDEA NOTES
-                    'x__right' => $db_row['i__id'],
+                    'x__right' => $s['i__id'],
                 ), array(), 0, 0, array('x__sort' => 'ASC')) as $keyword) {
-                    $export_row['object__keywords'] .= $keyword['x__message'] . ' ';
+                    $export_row['s__keywords'] .= $keyword['x__message'] . ' ';
                 }
-                $export_row['object__keywords'] = trim(strip_tags($export_row['object__keywords']));
+                $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
+
+                //Featured?
+                if (i_is_featured($s)) {
+                    array_push($export_row['_tags'], 'is_featured');
+                }
 
                 //Is SOURCE for any IDEA?
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    'x__right' => $db_row['i__id'],
+                    'x__right' => $s['i__id'],
                     '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array(), 0) as $e){
                     if($e['x__up']>0){
@@ -1583,16 +1626,13 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                     if($e['x__down']>0){
                         array_push($export_row['_tags'], 'alg_e_' . $e['x__down']);
                     }
-                    if (in_array($db_row['i__type'], $CI->config->item('n___7355')) && ($e['x__down']==12138 || $e['x__up']==12138)) {
-                        array_push($export_row['_tags'], 'is_featured');
-                    }
                 }
 
             }
 
             //Add to main array
             array_push($all_export_rows, $export_row);
-            array_push($all_db_rows, $db_row);
+            array_push($all_db_rows, $s);
 
         }
     }
@@ -1604,7 +1644,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
     } elseif($return_row_only){
 
-        if($object__id > 0){
+        if($s__id > 0){
             //We  have a specific item we're looking for...
             return $all_export_rows[0];
         } else {
@@ -1614,7 +1654,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
     }
 
     //Now let's see what to do with the index (Update, Create or delete)
-    if ($object__type) {
+    if ($s__type) {
 
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
@@ -1629,7 +1669,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
 
                 //also set its algolia_id to 0 locally:
-                update_metadata($object__type, $all_db_rows[0][$focus_field_id], array(
+                update_metadata($s__type, $all_db_rows[0][$focus_field_id], array(
                     'algolia__id' => null, //Since this item has been deleted!
                 ));
 
@@ -1654,7 +1694,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
                 //Now update local database with the new objectIDs:
                 if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
                     foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
-                        update_metadata($object__type, $all_db_rows[$key][$focus_field_id], array(
+                        update_metadata($s__type, $all_db_rows[$key][$focus_field_id], array(
                             'algolia__id' => $algolia_id, //The newly created algolia object
                         ));
                     }
@@ -1707,7 +1747,7 @@ function update_algolia($object__type = null, $object__id = 0, $return_row_only 
 
 }
 
-function update_metadata($object__type, $object__id, $new_fields, $x__source = 0)
+function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
 {
 
     $CI =& get_instance();
@@ -1716,7 +1756,7 @@ function update_metadata($object__type, $object__id, $new_fields, $x__source = 0
      *
      * Enables the easy manipulation of the text metadata field which holds cache data for developers
      *
-     * $object__type:           DISCOVER, SOURCE OR IDEA
+     * $s__type:           DISCOVER, SOURCE OR IDEA
      *
      * $obj:                    The User, Idea or Transaction itself.
      *                          We're looking for the $obj ID and METADATA
@@ -1726,33 +1766,33 @@ function update_metadata($object__type, $object__id, $new_fields, $x__source = 0
      *
      * */
 
-    if (!in_array($object__type, $CI->config->item('n___12467')) || $object__id < 1 || count($new_fields) < 1) {
+    if (!in_array($s__type, $CI->config->item('n___12467')) || $s__id < 1 || count($new_fields) < 1) {
         return false;
     }
 
     //Fetch metadata for this object:
-    if ($object__type == 12273) {
+    if ($s__type == 12273) {
 
         $obj_filed_id = 'i__id';
         $obj_filed_name = 'i__metadata';
         $db_objects = $CI->I_model->fetch(array(
-            $obj_filed_id => $object__id,
+            $obj_filed_id => $s__id,
         ));
 
-    } elseif ($object__type == 12274) {
+    } elseif ($s__type == 12274) {
 
         $obj_filed_id = 'e__id';
         $obj_filed_name = 'e__metadata';
         $db_objects = $CI->E_model->fetch(array(
-            $obj_filed_id => $object__id,
+            $obj_filed_id => $s__id,
         ));
 
-    } elseif ($object__type == 6255) {
+    } elseif ($s__type == 6255) {
 
         $obj_filed_id = 'x__id';
         $obj_filed_name = 'x__metadata';
         $db_objects = $CI->X_model->fetch(array(
-            $obj_filed_id => $object__id,
+            $obj_filed_id => $s__id,
         ));
 
     }
@@ -1783,21 +1823,21 @@ function update_metadata($object__type, $object__id, $new_fields, $x__source = 0
     }
 
     //Now update DB without logging any transactions as this is considered a back-end update:
-    if ($object__type == 12273) {
+    if ($s__type == 12273) {
 
-        $affected_rows = $CI->I_model->update($object__id, array(
+        $affected_rows = $CI->I_model->update($s__id, array(
             'i__metadata' => $metadata,
         ), false, $x__source);
 
-    } elseif ($object__type == 12274) {
+    } elseif ($s__type == 12274) {
 
-        $affected_rows = $CI->E_model->update($object__id, array(
+        $affected_rows = $CI->E_model->update($s__id, array(
             'e__metadata' => $metadata,
         ), false, $x__source);
 
-    } elseif ($object__type == 6255) {
+    } elseif ($s__type == 6255) {
 
-        $affected_rows = $CI->X_model->update($object__id, array(
+        $affected_rows = $CI->X_model->update($s__id, array(
             'x__metadata' => $metadata,
         ));
 

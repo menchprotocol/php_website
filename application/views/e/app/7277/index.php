@@ -27,12 +27,12 @@ foreach($this->config->item('e___7277') as $e__id => $m) {
     //Cleanup Metadata Variables:
     if($e__id==6159){
         $query = $this->I_model->fetch(array());
-        $object__type = 12273;
-        $object__id_key = 'i__id';
+        $s__type = 12273;
+        $s__id_key = 'i__id';
     } elseif($e__id==6172){
         $query = $this->E_model->fetch(array());
-        $object__type = 12274;
-        $object__id_key = 'e__id';
+        $s__type = 12274;
+        $s__id_key = 'e__id';
     }
 
     foreach($query as $item) {
@@ -42,7 +42,7 @@ foreach($this->config->item('e___7277') as $e__id => $m) {
                 if(!in_array($variable_name, $var_index)){
 
                     //Invalid variable, Delete this:
-                    update_metadata($object__type, $item[$object__id_key], array(
+                    update_metadata($s__type, $item[$s__id_key], array(
                         $variable_name => null,
                     ));
 

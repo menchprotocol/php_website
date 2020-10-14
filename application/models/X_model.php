@@ -920,12 +920,20 @@ class X_model extends CI_Model
             //We have a reference within this message, let's fetch it to better understand it:
             $es = $this->E_model->fetch(array(
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                'e__id' => $referenced_e, //Alert: We will only have a single reference per message
+                'e__id' => $referenced_e,
             ));
             if (count($es) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'The referenced source @' . $referenced_e . ' not found',
+                );
+            }
+
+            //Make sure not featured, or have superpower to do so:
+            if($referenced_e==12138 && !superpower_active(13994, true)){
+                return array(
+                    'status' => 0,
+                    'message' => view_unauthorized_message(13994),
                 );
             }
 
@@ -1209,11 +1217,12 @@ class X_model extends CI_Model
             'i__id' => $i__id,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
-        if (count($is) != 1) {
+        if (count($is) != 1 || !i_is_startable($is[0])) {
             return 0;
         }
 
         $next_i__id = $i__id;
+
 
         //Make sure not previously added to this User's Discoveries:
         if(!count($this->X_model->fetch(array(

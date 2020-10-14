@@ -71,14 +71,14 @@ echo '</div>';
 
 echo '<div class="container wrap-card card-idea">';
 
-if(isset($_GET['focus__e']) && superpower_active(14005, true)){
+if(isset($_GET['load__e']) && superpower_active(14005, true)){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
-        'e__id' => intval($_GET['focus__e']),
+        'e__id' => intval($_GET['load__e']),
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
-        echo view__focus__e($e_filters[0]);
+        echo view__load__e($e_filters[0]);
     }
 }
 
@@ -328,8 +328,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__left' => $i_focus['i__id'],
             );
-            if(isset($_GET['focus__e'])){
-                $query_filters['x__source'] = intval($_GET['focus__e']);
+            if(isset($_GET['load__e'])){
+                $query_filters['x__source'] = intval($_GET['load__e']);
             }
 
             //Fetch Results:
