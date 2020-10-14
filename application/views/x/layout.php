@@ -914,6 +914,8 @@ if($in_my_x){
     } else {
 
         //Locked to meet requirements...
+        echo '<div style="text-align:center;">You must meet all requirements</div>';
+
         //TODO show message...
 
     }
