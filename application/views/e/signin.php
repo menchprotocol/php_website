@@ -129,7 +129,7 @@ if(count($current_sign_i_attempt) == 0){
             <!-- pre-set Email -->
             <div class="margin-top-down">
                 <div class="montserrat"><span class="icon-block"><?= $e___4269[14026]['m__icon'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
-                <div style="padding-bottom: 8px;"><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
+                <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
                 <div><span class="icon-block"><?= $e___11035[4755]['m__icon'] ?></span><?= $e___11035[4755]['m__title'] ?></div>
                 <div><span class="icon-block">&nbsp;</span><?= $e___11035[4755]['m__message'] ?></div>
             </div>
