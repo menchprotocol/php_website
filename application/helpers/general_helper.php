@@ -1549,7 +1549,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__status'] = intval($s['e__type']);
                 $export_row['s__icon'] = view_e__icon($s['e__icon']);
                 $export_row['s__title'] = $s['e__title'];
-                $export_row['object__weight'] = intval($s['e__weight']);
+                $export_row['s___weight'] = intval($s['e__weight']);
 
                 //Add source as their own author:
                 array_push($export_row['_tags'], 'alg_e_' . $s['x__source']);
@@ -1595,7 +1595,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__status'] = intval($s['i__type']);
                 $export_row['s__icon'] = view_i_icon($s);
                 $export_row['s__title'] = $s['i__title'];
-                $export_row['object__weight'] = intval($s['i__weight']);
+                $export_row['s___weight'] = intval($s['i__weight']);
 
                 //Add keywords:
                 $export_row['s__keywords'] = '';
