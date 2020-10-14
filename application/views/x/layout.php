@@ -888,15 +888,17 @@ if($in_my_x){
 
             //Try to find the top registrable idea:
             $top_startable = $this->I_model->top_startable($i_focus);
-            if($top_startable){
+            if(count($top_startable)){
 
-                //Give link to go to top:
-                echo '<a class="btn btn-lrg btn-discover" href="/'.$top_startable['i__id'].'" title="'.$top_startable['i__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__icon'].'</a>';
+                foreach($top_startable as $start_i){
+                    //Give link to go to top:
+                    echo '<div><a class="btn btn-lrg btn-discover" href="/'.$top_startable['i__id'].'">'.$e___11035[14022]['m__title'].' '.$top_startable['i__title'].' '.$e___11035[14022]['m__icon'].'</a></div>';
+                }
 
             } else {
 
                 //Inform them that nothing was found:
-                echo '<div style="text-align:center;"><div class="montserrat '.extract_icon_color($e___11035[14023]['m__title']).'">'.$e___11035[14023]['m__title'].' '.$e___11035[14023]['m__icon'].'</div><div>'.$e___11035[14023]['m__icon'].'</div></div>';
+                echo '<div style="text-align:center;"><div class="montserrat '.extract_icon_color($e___11035[14023]['m__title']).'">'.$e___11035[14023]['m__icon'].' '.$e___11035[14023]['m__title'].'</div><div>'.$e___11035[14023]['m__message'].'</div></div>';
 
 
             }

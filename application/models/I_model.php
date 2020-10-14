@@ -303,8 +303,43 @@ class I_model extends CI_Model
 
     function top_startable($i){
 
-        //Return the first top startable idea:
+        $top_startable = array();
 
+
+        //Return the first top startable idea:
+        $previous_is = $this->X_model->fetch(array(
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $i['i__id'],
+        ), array('x__left'), 0);
+        if(!count($previous_is)){
+            //No parent, so no change to find startable
+            return $top_startable;
+        }
+
+
+        //Try to find a startable parent idea:
+        foreach($previous_is as $previous_i) {
+            if(i_is_startable($previous_i)){
+                array_push($top_startable, $previous_i);
+            }
+        }
+        if(count($top_startable)){
+            //Bingo:
+            return $top_startable;
+        }
+
+
+        //Recursively go up and try to find startable idea:
+        foreach($previous_is as $previous_i) {
+            $top_startable_recursive = $this->I_model->top_startable($previous_i);
+            if(count($top_startable_recursive)){
+                $top_startable = array_merge($top_startable, $top_startable_recursive);
+            }
+        }
+
+        return $top_startable;
 
     }
 
