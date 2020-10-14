@@ -79,7 +79,7 @@ if(count($current_sign_i_attempt) == 0){
                         'i__id' => $sign_i__id,
                     ));
                     if(count($sign_i)){
-                        echo '<a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="/'.$sign_i__id.'" class="btn btn-source transparent btn-raised " title="'.$e___11035[12991]['m__title'].' '.$sign_i[0]['i__title'].'">'.$e___11035[12991]['m__icon'].'</a>';
+                        echo '<a href="/'.$sign_i__id.'" data-toggle="tooltip" data-placement="bottom" class="btn btn-source transparent btn-raised " title="'.$sign_i[0]['i__title'].'">'.$e___11035[12991]['m__icon'].'</a>';
                     }
                 }
                 ?>
