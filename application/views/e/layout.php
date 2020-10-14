@@ -560,11 +560,11 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
                     if($x__type==12896){
 
                         //Saved IDEA
-                        $focus_tab .= view_i_x($i_notes, -2 /* Unlocked */, true, null, true);
+                        $focus_tab .= view_i_x($i_notes, true, null, true);
 
 
                     } else {
-                        $focus_tab .= view_i_x($i_notes, -2 /* Unlocked */, true); //Inputs when it used to use view_i() : 0, false, false, $i_notes['x__message'], null, false
+                        $focus_tab .= view_i_x($i_notes, true); //Inputs when it used to use view_i() : 0, false, false, $i_notes['x__message'], null, false
                     }
 
                 }

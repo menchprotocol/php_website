@@ -761,34 +761,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
 }
 
 
-
-function view_icon_i_x($completion_percentage, $i, $not_started_type){
-
-    $user_e = superpower_assigned();
-    /*
-    if(!$not_started_type || !$user_e){
-        //IDAE Icon
-        return view_i_icon($i);
-    } else
-        */
-    if($completion_percentage <= 0){
-        //Assign default not started type:
-        $x_legend = $not_started_type;
-    } elseif($completion_percentage<100){
-        //DISCOVER IN PROGRESS
-        $x_legend = 12447;
-    } else {
-        //DISCOVER COMPLETED
-        $x_legend = 13338;
-    }
-
-    $CI =& get_instance();
-    $e___12446 = $CI->config->item('e___12446'); //DISCOVER ICON LEGEND
-    return '<span title="'.$e___12446[$x_legend]['m__title'].' '.$completion_percentage.'% DONE">'.$e___12446[$x_legend]['m__icon'].'</span>';
-
-}
-
-function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor = false, $completion_rate = null)
+function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $completion_rate = null)
 {
     //See if user is logged-in:
     $CI =& get_instance();
@@ -807,6 +780,7 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
     $i_stats = i_stats($i['i__metadata']);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $has_completion = $completion_rate['completion_percentage']>0;
+    $x_mode = ( !$completion_rate['completion_percentage'] ? 12273 /* Still an idea */ : 6255 /* Made some Discovery */ );
 
     //Build View:
     $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' cover_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
@@ -815,9 +789,9 @@ function view_i_x($i, $index_id, $can_click, $common_prefix = null, $show_editor
 
 
     $ui .= '<div class="row">';
-        $ui .= '<div class="col-sm col-md" title="'.$completion_rate['completion_percentage'].'% COMPLETE">';
+        $ui .= '<div class="col-sm col-md" title="'.$e___12467[$x_mode]['m__title'].' '.$completion_rate['completion_percentage'].'% COMPLETE">';
 
-            $ui .= '<span class="icon-block">'.view_icon_i_x($completion_rate['completion_percentage'], $i, ( $index_id==0 ? 13822 /* Next Idea */ : ( $index_id==-1 ? 13757 /* DISCOVERY CURRENT */ : 13752 /* DISCOVERY LOCKED */ ) ) ).'</span>';
+            $ui .= '<span class="icon-block">'.$e___12467[$x_mode]['m__icon'].'</span>';
             $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
@@ -1193,7 +1167,7 @@ function view_caret($e__id, $m, $s__id){
 }
 
 
-function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e, $index_id = 99 /* Locked */){
+function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -1210,11 +1184,9 @@ function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e, $index_id = 9
     $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[$list_e__id]['m__icon'].'</span>'.$e___11035[$list_e__id]['m__title'].'</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
 
-    if($index_id >= 0){
-        $common_prefix = i_calc_common_prefix($is_next, 'i__title');
-        $ui .= '<div class="pull-right right-adj i_x_stats"><a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="montserrat '.extract_icon_color($e___11035[13689]['m__icon']).'" title="'.$e___11035[13689]['m__title'].'">'.$e___11035[13689]['m__icon'].'</a></div>';
-        $ui .= '<div class="doclear">&nbsp;</div>';
-    }
+    $common_prefix = i_calc_common_prefix($is_next, 'i__title');
+    $ui .= '<div class="pull-right right-adj i_x_stats"><a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="montserrat '.extract_icon_color($e___11035[13689]['m__icon']).'" title="'.$e___11035[13689]['m__title'].'">'.$e___11035[13689]['m__icon'].'</a></div>';
+    $ui .= '<div class="doclear">&nbsp;</div>';
 
 
     $ui .= '<div class="list-group">';
@@ -1222,7 +1194,7 @@ function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e, $index_id = 9
     $counter = 0;
     foreach($is_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $next_i);
-        $ui .= view_i_x($next_i, ( $in_my_x ? $counter : $index_id ), ( $completion_rate['completion_percentage'] > 0 ), $common_prefix, false, $completion_rate);
+        $ui .= view_i_x($next_i, ( $completion_rate['completion_percentage'] > 0 ), $common_prefix, false, $completion_rate);
 
         //Search for the first unlocked idea right after the first stack of continuously completed ideas
         $is_last_continious_complete = ( $is_last_continious_complete && $completion_rate['completion_percentage']>=100 ? true : false );
