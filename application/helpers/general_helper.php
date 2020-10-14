@@ -1436,6 +1436,14 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
         //Do both ideas and sources:
         $fetch_objects = $CI->config->item('n___12761');
+        $batch_command = array(); //TODO To be populated:
+        /*
+        array_push($batch_command, array(
+            'action' => 'addObject',
+            'indexName' => 'alg_index',
+            'body' => $export_row,
+        ));
+        */
 
         if (!$return_row_only) {
 
