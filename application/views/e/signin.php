@@ -73,7 +73,7 @@ if(count($current_sign_i_attempt) == 0){
         echo '<h1 class="text-center">'.$e___11035[4269]['m__title'].'</h1>';
     }
 
-    echo '<p style="margin-top:13px; text-align: center;">Login or create a free account to continue.</p>';
+    echo '<p style="margin-top:13px; text-align: center;">'.$e___11035[4269]['m__message'].'</p>';
 
     ?>
 
