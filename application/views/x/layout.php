@@ -774,7 +774,7 @@ $tab_pills .= '</ul>';
 
 
 
-
+echo 'Show nav ('.intval($show_nav).') $tab_pill_count ('.$tab_pill_count.')';
 if($tab_pill_count > 1 && $show_nav){
     //DISCOVER TABS
     echo $tab_pills;
