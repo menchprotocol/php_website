@@ -781,7 +781,15 @@ function i_note_activate(){
         $(this).emojioneArea({
             emojiPlaceholder: ":smile_cat:",
             hideSource: false,
-            standalone: true
+            inline:false,
+            standalone: true,
+            tones: false,
+            shortnames: true,
+            saveEmojisAs:'shortname',
+            textcomplete: {
+                maxCount  : 7,
+                placement : 'absleft'
+            }
         });
 
 
