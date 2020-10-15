@@ -1503,10 +1503,10 @@ class E extends CI_Controller
                 return redirect_message(home_url());
             }
 
-        } elseif(isset($_COOKIE['mench_persistent_login'])){
+        } elseif(isset($_COOKIE['mench_auto_login'])){
 
             //Authenticate Cookie:
-            $cookie_parts = explode(';',$_COOKIE['mench_persistent_login']);
+            $cookie_parts = explode('ABCEFG',$_COOKIE['mench_auto_login']);
 
             $es = $this->E_model->fetch(array(
                 'e__id' => $cookie_parts[0],

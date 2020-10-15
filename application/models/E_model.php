@@ -46,8 +46,8 @@ class E_model extends CI_Model
 
                 //Create Cookie:
                 $cookie_time = time();
-                $cookie_val = $e['e__id'].';'.$cookie_time.';'.md5($e['e__id'].$u_passwords[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt'));
-                setcookie('mench_persistent_login', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
+                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$u_passwords[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt'));
+                setcookie('mench_auto_login', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
             }
 
