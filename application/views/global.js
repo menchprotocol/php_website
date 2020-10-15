@@ -740,7 +740,8 @@ function x_set_text(this_handler){
 function i_note_activate(){
     //Loop through all new idea inboxes:
     $(".new-note").emojioneArea({
-        inline: false
+        emojiPlaceholder: ":smile_cat:",
+        standalone: true
     }).each(function () {
 
         var note_type_id = parseInt($(this).attr('note_type_id'));
