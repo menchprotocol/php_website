@@ -778,18 +778,9 @@ function i_note_activate(){
             i_note_file(droppedFiles, 'file', note_type_id);
         });
 
-        $(this).emojioneArea({
-            emojiPlaceholder: ":smile_cat:",
-            hideSource: false,
-            inline:false,
-            standalone: true,
-            tones: false,
-            shortnames: true,
-            saveEmojisAs:'shortname',
-            textcomplete: {
-                maxCount  : 7,
-                placement : 'absleft'
-            }
+        $(this).emojiPicker({
+            height: '300px',
+            width:  '450px'
         });
 
 

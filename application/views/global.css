@@ -2122,7 +2122,8 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .fade,
 .custom_ui_13884_13885 .coin-frame,
 .custom_ui_13884_13885 .chat-title span,
-.custom_ui_13884_13885 div.dropdown-item{
+.custom_ui_13884_13885 div.dropdown-item
+{
     background-color: #f0f0f0;
     color: #222222;
 }
