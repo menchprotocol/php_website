@@ -779,8 +779,9 @@ function i_note_activate(){
         });
 
         $(this).emojiPicker({
-            height: '300px',
-            width:  '450px'
+            width: '300px',
+            height: '200px',
+            button: false
         });
 
 

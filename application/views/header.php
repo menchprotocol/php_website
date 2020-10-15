@@ -51,11 +51,13 @@ $current_mench = current_mench();
 
     <script src="/application/views/global.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/emoji-picker/1.1.5/js/emoji-picker.min.js" integrity="sha512-EDnYyP0SRH/j5K7bYQlIQCwjm8dQtwtsE+Xt0Oyo9g2qEPDlwE+1fbvKqXuCoMfRR/9zsjSBOFDO6Urjefo28w==" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emoji-picker/1.1.5/css/emoji.min.css" integrity="sha512-g85Z5r0tA1tvV9xX6Ox6ZLhJPkX1k0diGsJcVm56Zd++P69y82MJ0qG6BAMeKfHrDWE+0DoFl7TUqEha63u5GA==" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/emoji-picker/1.1.5/js/jquery.emojiarea.min.js" integrity="sha512-mGa/ehqlsnXVGkJJhvP0t1+UFDqm8FtZHkJdDUhMbircdEe+unkimR2UL7V7uRFe9Yf/kul+naEh65I9p43R5w==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/emoji-picker/1.1.5/js/jquery.emojiarea.min.js" integrity="sha512-mGa/ehqlsnXVGkJJhvP0t1+UFDqm8FtZHkJdDUhMbircdEe+unkimR2UL7V7uRFe9Yf/kul+naEh65I9p43R5w==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/emoji-picker/1.1.5/js/util.min.js" integrity="sha512-rTVSXeGNtYZ5y59UtVTHvenNsJ6xkNiaft0eM38EjZBMDPmVkMsxpmDLYZ1y0DJQ5F9lm3a8yQMMw2HIXyEOeQ==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="http://wedgies.github.io/jquery-emoji-picker/css/jquery.emojipicker.css">
+    <script type="text/javascript" src="http://wedgies.github.io/jquery-emoji-picker/js/jquery.emojipicker.js"></script>
+
+    <!-- Emoji Data -->
+    <link rel="stylesheet" type="text/css" href="http://wedgies.github.io/jquery-emoji-picker/css/jquery.emojipicker.a.css">
+    <script type="text/javascript" src="http://wedgies.github.io/jquery-emoji-picker/js/jquery.emojipicker.a.js"></script>
+
 
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=custom-share-buttons&cms=website' async='async'></script>
 
