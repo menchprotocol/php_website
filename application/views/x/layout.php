@@ -890,7 +890,7 @@ if($in_my_x){
 
                 foreach($top_startable as $start_i){
                     //Give link to go to top:
-                    echo '<div><a class="btn btn-lrg btn-discover" href="/'.$top_startable['i__id'].'">'.$e___11035[14022]['m__title'].' '.$top_startable['i__title'].' '.$e___11035[14022]['m__icon'].'</a></div>';
+                    echo '<div><a class="btn btn-lrg btn-discover" href="/'.$start_i['i__id'].'">'.$e___11035[14022]['m__title'].' '.$start_i['i__title'].' '.$e___11035[14022]['m__icon'].'</a></div>';
                 }
 
             } else {
