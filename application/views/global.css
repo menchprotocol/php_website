@@ -1024,6 +1024,9 @@ td.MENCHcolumn3  { width: 13%; }
 .top-margin{
     margin-top: 21px;
 }
+.bottom-margin{
+    margin-bottom: 21px;
+}
 .left-margin{
     margin-left: 41px;
     display: inline-block;
