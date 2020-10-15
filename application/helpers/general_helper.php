@@ -690,7 +690,7 @@ function check_cookie()
     if(/*!superpower_assigned() &&*/ isset($_COOKIE['mench_keep_login'])) {
         echo '/signin?url=' . urlencode($_SERVER['PHP_SELF']);
         return false;
-        header("Location: " . '/signin?url=' . urlencode($_SERVER['PHP_SELF']), true, 307);
+        header("Location: " . '/signin?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
         exit;
     }
 
