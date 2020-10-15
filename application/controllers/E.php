@@ -11,8 +11,8 @@ class E extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         date_default_timezone_set(view_memory(6404,11079));
-
-        if(!superpower_assigned() && isset($_COOKIE['mench_keep_login'])) {
+        //!superpower_assigned() &&
+        if(isset($_COOKIE['mench_keep_login'])) {
             echo $_COOKIE['mench_keep_login'];
         }
 
