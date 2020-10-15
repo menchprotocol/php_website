@@ -681,8 +681,11 @@ function redirect_message($url, $message = null)
     }
 }
 
+function cookie_delete(){
+    setcookie("mench_persistent_login", "", time() - 3600);
+}
 
-function check_cookie()
+function cookie_check()
 {
 
     date_default_timezone_set(view_memory(6404,11079));

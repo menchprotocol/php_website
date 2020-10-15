@@ -10,7 +10,7 @@ class E extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        check_cookie();
+        cookie_check();
 
     }
 
@@ -1527,8 +1527,7 @@ class E extends CI_Controller
 
             } else {
 
-                //Delete Cookie
-                setcookie("mench_persistent_login", "", time() - 3600);
+                cookie_delete();
 
             }
         }
@@ -1549,6 +1548,7 @@ class E extends CI_Controller
     function signout()
     {
         //Destroys Session
+        cookie_delete();
         $this->session->sess_destroy();
         header('Location: /');
     }
