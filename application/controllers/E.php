@@ -1550,7 +1550,15 @@ class E extends CI_Controller
         //Destroys Session
         cookie_delete();
         $this->session->sess_destroy();
-        header('Location: /' );
+
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+        $this->load->view('header', array(
+            'hide_header' => 1,
+            'title' => $e___11035[7291]['m__title'],
+        ));
+        $this->load->view('e/signout');
+        $this->load->view('footer');
+
     }
 
 
