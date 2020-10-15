@@ -263,7 +263,6 @@ foreach($messages as $message_x) {
         $message_x['x__message'],
         $user_e
     );
-    echo '=====';
 }
 echo '</div>';
 
@@ -313,8 +312,6 @@ if(count($fetch_13865)){
 
 
 
-
-
 //DISCOVER LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 13291;
@@ -340,7 +337,6 @@ if($in_my_x && count($this->X_model->fetch(array(
 
 }
 
-echo '?????';
 
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
@@ -901,7 +897,6 @@ if($in_my_x){
 
                 //Inform them that nothing was found:
                 echo '<div style="text-align:center;"><div class="montserrat '.extract_icon_color($e___11035[14023]['m__title']).'">'.$e___11035[14023]['m__icon'].' '.$e___11035[14023]['m__title'].'</div><div>'.$e___11035[14023]['m__message'].'</div></div>';
-
 
             }
         }
