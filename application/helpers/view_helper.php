@@ -390,6 +390,30 @@ function view_x($x, $is_parent_tr = false)
     $ui = '<div class="x-list">';
 
 
+    //ID
+    $ui .= '<div class="simple-line"><a href="/ledger?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m__title'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m__icon']. '</span>'.$x['x__id'].'</a></div>';
+
+
+
+    //STATUS
+    $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/@'.$x['x__status'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m__title'].( strlen($e___6186[$x['x__status']]['m__message']) ? ': '.$e___6186[$x['x__status']]['m__message'] : '' ).'" class="montserrat"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[6186]['m__icon']. '</span><span class="icon-block">'.$e___6186[$x['x__status']]['m__icon'].'</span><span class="'.extract_icon_color($e___6186[$x['x__status']]['m__icon']).'">'.$e___6186[$x['x__status']]['m__title'].'</span></a></div>';
+
+
+    //SOURCE
+    if($x['x__source'] > 0 && $x['x__source']!=$x['x__up'] && $x['x__source']!=$x['x__down']){
+
+        $add_e = $CI->E_model->fetch(array(
+            'e__id' => $x['x__source'],
+        ));
+
+        $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m__title'].'" class="montserrat"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4364]['m__icon']. '</span><span class="'.extract_icon_color($add_e[0]['e__icon']).'"><span class="icon-block">'.view_e__icon($add_e[0]['e__icon']) . '</span>' . $add_e[0]['e__title'] . '</span></a></div>';
+
+    }
+
+
+
+
+
     //HIDE PRIVATE INFO?
     if(in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$user_e || $x['x__source']!=$user_e['e__id']) && !superpower_active(12701, true)){
 
@@ -410,29 +434,6 @@ function view_x($x, $is_parent_tr = false)
 
     }
 
-
-
-
-
-    //ID
-    $ui .= '<div class="simple-line"><a href="/ledger?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m__title'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m__icon']. '</span>'.$x['x__id'].'</a></div>';
-
-
-
-    //STATUS
-    $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/@'.$x['x__status'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m__title'].( strlen($e___6186[$x['x__status']]['m__message']) ? ': '.$e___6186[$x['x__status']]['m__message'] : '' ).'" class="montserrat"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[6186]['m__icon']. '</span><span class="icon-block">'.$e___6186[$x['x__status']]['m__icon'].'</span><span class="'.extract_icon_color($e___6186[$x['x__status']]['m__icon']).'">'.$e___6186[$x['x__status']]['m__title'].'</span></a></div>';
-
-
-    //SOURCE
-    if($x['x__source'] > 0 && $x['x__source']!=$x['x__up'] && $x['x__source']!=$x['x__down']){
-
-        $add_e = $CI->E_model->fetch(array(
-            'e__id' => $x['x__source'],
-        ));
-
-        $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m__title'].'" class="montserrat"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4364]['m__icon']. '</span><span class="'.extract_icon_color($add_e[0]['e__icon']).'"><span class="icon-block">'.view_e__icon($add_e[0]['e__icon']) . '</span>' . $add_e[0]['e__title'] . '</span></a></div>';
-
-    }
 
 
     //TIME
