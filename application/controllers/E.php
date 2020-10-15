@@ -1503,10 +1503,10 @@ class E extends CI_Controller
                 return redirect_message(home_url());
             }
 
-        } elseif(isset($_COOKIE['mench_keep_login'])){
+        } elseif(isset($_COOKIE['mench_persistent_login'])){
 
-            //Authenticate Member:
-            $cookie_parts = explode(';',$_COOKIE['mench_keep_login']);
+            //Authenticate Cookie:
+            $cookie_parts = explode(';',$_COOKIE['mench_persistent_login']);
 
             $es = $this->E_model->fetch(array(
                 'e__id' => $cookie_parts[0],
@@ -1520,8 +1520,6 @@ class E extends CI_Controller
 
             if(count($es) && count($u_passwords) && $cookie_parts[2]==md5($cookie_parts[0].$u_passwords[0]['x__message'].$cookie_parts[1].$this->config->item('cred_password_salt'))){
 
-                //Log Cookie Login
-
                 //Assign session & log transaction:
                 $this->E_model->activate_session($es[0], false, true);
 
@@ -1530,7 +1528,7 @@ class E extends CI_Controller
             } else {
 
                 //Delete Cookie
-                setcookie("mench_keep_login", "", time() - 3600);
+                setcookie("mench_persistent_login", "", time() - 3600);
 
             }
         }
@@ -1817,12 +1815,6 @@ class E extends CI_Controller
 
         //Assign session & log transaction:
         $this->E_model->activate_session($es[0]);
-
-
-        //Create Cookie:
-        $cookie_time = time();
-        $cookie_val = $es[0]['e__id'].';'.$cookie_time.';'.md5($es[0]['e__id'].$u_passwords[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt'));
-        setcookie('mench_keep_login', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
 
         if (intval($_POST['sign_i__id']) > 0) {
