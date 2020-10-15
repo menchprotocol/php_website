@@ -682,7 +682,7 @@ function redirect_message($url, $message = null)
 }
 
 function cookie_delete(){
-    setcookie("mench_auto_login", "", time() - 3600);
+    setcookie("mench_auto_login", "", 1);
 }
 
 function cookie_check()
