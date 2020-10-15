@@ -1793,7 +1793,8 @@ class E extends CI_Controller
 
         //Create Cookie:
         $cookie_time = time();
-        setcookie('mench_keep_login', $es[0]['e__id'].';'.$cookie_time.';'.md5($es[0]['e__id'].$u_passwords[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt')), ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
+        $cookie_val = $es[0]['e__id'].';'.$cookie_time.';'.md5($es[0]['e__id'].$u_passwords[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt'));
+        setcookie('mench_keep_login', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
 
         if (intval($_POST['sign_i__id']) > 0) {
