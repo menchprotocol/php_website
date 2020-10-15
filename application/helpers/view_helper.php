@@ -400,7 +400,7 @@ function view_x($x, $is_parent_tr = false)
 
 
     //SOURCE
-    if($x['x__source'] > 0 && $x['x__source']!=$x['x__up'] && $x['x__source']!=$x['x__down']){
+    if($x['x__source'] > 0){
 
         $add_e = $CI->E_model->fetch(array(
             'e__id' => $x['x__source'],
@@ -1269,7 +1269,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
         if($handles_uploads){
             $e___11035 = $CI->config->item('e___11035');
             $ui .= '<td style="width:55px; padding:0;">';
-            $ui .= '<label class="pull-right btn btn-'.$color_code.' btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+            $ui .= '<label class="pull-right btn btn-grey btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
             $ui .= '</td>';
         }
