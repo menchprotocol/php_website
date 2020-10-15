@@ -255,6 +255,7 @@ if($in_my_x){
 //HEADER
 echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
 
+echo 'hiiii';
 
 //MESSAGES
 echo '<div style="margin-bottom:41px;">';
@@ -268,7 +269,6 @@ echo '</div>';
 
 
 
-echo 'hiiii';
 
 
 
