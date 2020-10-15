@@ -739,10 +739,7 @@ function x_set_text(this_handler){
 
 function i_note_activate(){
     //Loop through all new idea inboxes:
-    $(".new-note").emojioneArea({
-        emojiPlaceholder: ":smile_cat:",
-        hideSource: false
-    }).each(function () {
+    $(".new-note").each(function () {
 
         var note_type_id = parseInt($(this).attr('note_type_id'));
 
@@ -779,6 +776,12 @@ function i_note_activate(){
         //Watchout for file uplods:
         $('.box' + note_type_id).find('input[type="file"]').change(function () {
             i_note_file(droppedFiles, 'file', note_type_id);
+        });
+
+        $(this).emojioneArea({
+            emojiPlaceholder: ":smile_cat:",
+            hideSource: false,
+            standalone: true
         });
 
 
