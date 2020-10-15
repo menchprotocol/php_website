@@ -137,11 +137,12 @@ function js_extract_icon_color(e__icon){
 
 function view_search_result(algolia_object){
 
-    var title = ( algolia_object._highlightResult && algolia_object._highlightResult.s__title.value ? algolia_object._highlightResult.s__title.value : algolia_object.s__title );
+    var title = htmlentitiesjs( algolia_object._highlightResult && algolia_object._highlightResult.s__title.value ? algolia_object._highlightResult.s__title.value : algolia_object.s__title );
 
     return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ (algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + title + '</span>';
 
 }
+
 
 
 function js_view_shuffle_message(e__id){
