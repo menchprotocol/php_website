@@ -18,7 +18,7 @@ class E_model extends CI_Model
 
 
 
-    function activate_session($e, $update_session = false){
+    function activate_session($e, $update_session = false, $is_cookie = false){
 
         //PROFILE
         $session_data = array(
@@ -40,7 +40,7 @@ class E_model extends CI_Model
 
             $this->X_model->create(array(
                 'x__source' => $e['e__id'],
-                'x__type' => 7564, //USER SIGN
+                'x__type' => ( $is_cookie ? 7564 /* COOKIE SIGN */ : 7564 /* USER SIGN */ ),
                 'x__metadata' => $e,
             ));
 

@@ -1495,11 +1495,43 @@ class E extends CI_Controller
 
         //Check to see if they are previously logged in?
         if(superpower_assigned()) {
+
             //Lead user and above, go to console:
             if($i__id > 0){
                 return redirect_message(( superpower_assigned(10939) ? '/i/i_go/' : home_url() ) . $i__id);
             } else {
                 return redirect_message(home_url());
+            }
+
+        } elseif(isset($_COOKIE['mench_keep_login'])){
+
+            //Authenticate Member:
+            $cookie_parts = explode(';',$_COOKIE['mench_keep_login']);
+
+            $es = $this->E_model->fetch(array(
+                'e__id' => $cookie_parts[0],
+            ));
+            $u_passwords = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__up' => 3286, //Password
+                'x__down' => $cookie_parts[0],
+            ));
+
+            if(count($es) && count($u_passwords) && $cookie_parts[2]==md5($cookie_parts[0].$u_passwords[0]['x__message'].$cookie_parts[1].$this->config->item('cred_password_salt'))){
+
+                //Log Cookie Login
+
+                //Assign session & log transaction:
+                $this->E_model->activate_session($es[0], false, true);
+
+                return redirect_message( isset($_GET['url']) ? urldecode($_GET['url']) : home_url() );
+
+            } else {
+
+                //Delete Cookie
+                setcookie("mench_keep_login", "", time() - 3600);
+
             }
         }
 

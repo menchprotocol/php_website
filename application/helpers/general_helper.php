@@ -687,9 +687,7 @@ function check_cookie()
 
     date_default_timezone_set(view_memory(6404,11079));
 
-    if(/*!superpower_assigned() &&*/ isset($_COOKIE['mench_keep_login'])) {
-        echo '/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
-        return false;
+    if(!superpower_assigned() && isset($_COOKIE['mench_keep_login']) && !substr_count($_SERVER['REQUEST_URI'], 'signin')) {
         header("Location: " . '/signin?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
         exit;
     }
