@@ -11,6 +11,11 @@ class E extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         date_default_timezone_set(view_memory(6404,11079));
+
+        if(!superpower_assigned() && isset($_COOKIE['mench_keep_login'])) {
+            echo $_COOKIE['mench_keep_login'];
+        }
+
     }
 
 
@@ -1784,6 +1789,11 @@ class E extends CI_Controller
 
         //Assign session & log transaction:
         $this->E_model->activate_session($es[0]);
+
+
+        //Create Cookie:
+        $cookie_time = time();
+        setcookie('mench_keep_login', $es[0]['e__id'].';'.$cookie_time.';'.md5($es[0]['e__id'].$u_passwords[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt')), ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
 
         if (intval($_POST['sign_i__id']) > 0) {
