@@ -22,6 +22,11 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
     $is_multi_selectable = in_array(6122, $acc_detail['m__profile']);
     $is_single_selectable = in_array(6204, $acc_detail['m__profile']);
 
+    //Append description if any:
+    if(strlen($acc_detail['m__message']) > 0){
+        $focus_tab .= '<div class="i_content padded"><div class="msg">' . $acc_detail['m__message'] . '</div></div>';
+    }
+
     if ($acc_e__id == 12289) {
 
         $e__icon_parts = explode(' ',one_two_explode('class="', '"', $user_e['e__icon']));
@@ -116,6 +121,9 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
     }
 
+
+
+
     if($focus_tab){
 
         //Print header:
@@ -132,8 +140,7 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 <div class="card-body">';
 
 
-        //Show description if any:
-        echo (strlen($acc_detail['m__message']) > 0 ? '<div class="i_content padded"><div class="msg">' . $acc_detail['m__message'] . '</div></div>' : '');
+
 
 
         echo $focus_tab;
