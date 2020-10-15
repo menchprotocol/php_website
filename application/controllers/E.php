@@ -1552,7 +1552,7 @@ class E extends CI_Controller
             cookie_delete();
         }
         $this->session->sess_destroy();
-        header('Location: /');
+        header('Location: '.( isset($_GET['keep_cookie']) ? '/signin_404' : '/' ) );
     }
 
 
