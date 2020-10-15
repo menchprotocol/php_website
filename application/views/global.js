@@ -739,7 +739,12 @@ function x_set_text(this_handler){
 
 function i_note_activate(){
     //Loop through all new idea inboxes:
-    $(".new-note").each(function () {
+    $(".new-" +
+        "" +
+        "note").emojioneArea({
+        pickerPosition: "right",
+        tonesStyle: "bullet"
+    }).each(function () {
 
         var note_type_id = parseInt($(this).attr('note_type_id'));
 
