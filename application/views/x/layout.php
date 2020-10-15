@@ -255,7 +255,6 @@ if($in_my_x){
 //HEADER
 echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
 
-echo 'hiiii';
 
 //MESSAGES
 echo '<div style="margin-bottom:41px;">';
@@ -264,8 +263,10 @@ foreach($messages as $message_x) {
         $message_x['x__message'],
         $user_e
     );
+    echo '=====';
 }
 echo '</div>';
+
 
 
 
@@ -774,7 +775,7 @@ $tab_pills .= '</ul>';
 
 
 
-echo 'Show nav ('.intval($show_nav).') $tab_pill_count ('.$tab_pill_count.')';
+
 if($tab_pill_count > 1 && $show_nav){
     //DISCOVER TABS
     echo $tab_pills;
