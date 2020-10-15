@@ -10,7 +10,7 @@ class X extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        date_default_timezone_set(view_memory(6404,11079));
+        check_cookie();
 
     }
 
