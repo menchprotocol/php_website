@@ -1548,11 +1548,9 @@ class E extends CI_Controller
     function signout()
     {
         //Destroys Session
-        if(!isset($_GET['keep_cookie'])){
-            cookie_delete();
-        }
+        cookie_delete();
         $this->session->sess_destroy();
-        header('Location: '.( isset($_GET['keep_cookie']) ? '/signin_404' : '/' ) );
+        header('Location: /' );
     }
 
 
