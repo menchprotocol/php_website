@@ -739,11 +739,10 @@ function x_set_text(this_handler){
 
 function i_note_activate(){
     //Loop through all new idea inboxes:
-    $(".new-" +
-        "" +
-        "note").emojioneArea({
-        pickerPosition: "right",
-        tonesStyle: "bullet"
+    $(".new-note").emojioneArea({
+        emojiPlaceholder: ":smile_cat:",
+        tonesStyle: "bullet",
+        inline:true,
     }).each(function () {
 
         var note_type_id = parseInt($(this).attr('note_type_id'));
