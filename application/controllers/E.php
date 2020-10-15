@@ -332,7 +332,7 @@ class E extends CI_Controller
 
     }
 
-    function e_settings(){
+    function e_account(){
 
         $user_e = superpower_assigned(null, 1);
 
@@ -346,7 +346,7 @@ class E extends CI_Controller
         $this->load->view('header', array(
             'title' => $e___11035[6225]['m__title'].' | '.$user_e['e__title'],
         ));
-        $this->load->view('e/settings', array(
+        $this->load->view('e/account', array(
             'user_e' => $user_e,
         ));
         $this->load->view('footer');

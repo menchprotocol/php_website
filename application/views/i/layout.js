@@ -444,7 +444,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
             if(element_id==4486){
                 $('.i__tr_'+x__id+' .x_marks').addClass('hidden');
-                $('.i__tr_'+x__id+' .settings_' + new_e__id).removeClass('hidden');
+                $('.i__tr_'+x__id+' .account_' + new_e__id).removeClass('hidden');
             }
 
         } else {

@@ -1,5 +1,5 @@
 
-<script src="/application/views/e/settings.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+<script src="/application/views/e/account.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <div class="container" style="padding: 0 5px;">
 
