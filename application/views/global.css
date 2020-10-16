@@ -880,8 +880,8 @@ textarea.note-textarea{
 }
 
 .note-textarea.edit-on {
-    margin-left: 41px;
-    padding: 5px 41px 10px 0;
+    margin:0 41px;
+    padding: 5px;
     line-height: 144% !important;
 }
 
