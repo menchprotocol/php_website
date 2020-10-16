@@ -1212,6 +1212,7 @@ function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e){
 function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false, $show_headline = true){
 
     $CI =& get_instance();
+    $e___11035 = $CI->config->item('e___11035');
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $handles_url = (in_array($x__type, $CI->config->item('n___7551')) || in_array($x__type, $CI->config->item('n___4986')));
@@ -1267,7 +1268,6 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
         //Upload File:
         if($handles_uploads){
-            $e___11035 = $CI->config->item('e___11035');
             $ui .= '<td style="width:55px; padding:0;">';
             $ui .= '<label class="pull-right btn btn-grey btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
