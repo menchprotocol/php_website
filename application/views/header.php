@@ -55,7 +55,6 @@ $current_mench = current_mench();
         });
 
 
-        trigger.addEventListener('click', () => picker.togglePicker(trigger));
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.min.js"></script>
