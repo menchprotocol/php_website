@@ -184,8 +184,7 @@ $(document).ready(function () {
 
     //Load Emoji
     $('.emoji-picker').click(function(e) {
-        alert($(this).attr('x__type')+'now');
-        $('#x__message'+$(this).attr('x__type')).emojiPicker('toggle');
+        //$('#x__message'+$(this).attr('x__type')).emojiPicker('toggle');
     });
 
     //For the S shortcut to load search:
