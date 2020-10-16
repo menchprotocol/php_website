@@ -1269,10 +1269,15 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
         if($handles_uploads){
             $e___11035 = $CI->config->item('e___11035');
             $ui .= '<td style="width:55px; padding:0;">';
-            $ui .= '<label class="pull-right btn btn-grey btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+            $ui .= '<label class="pull-right btn btn-grey btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
             $ui .= '</td>';
         }
+
+        //EMOJI PICKER
+        $ui .= '<td style="width:55px; padding:0;">';
+        $ui .= '<label class="pull-right btn btn-grey btn-label emoji-picker" x__type="'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[14308]['m__title'].' '.$e___11035[14308]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[14308]['m__icon'].'</span></label>';
+        $ui .= '</td>';
 
 
         $ui .= '</tr></table>';
