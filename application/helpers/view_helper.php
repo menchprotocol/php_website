@@ -269,7 +269,7 @@ function view_i_note($x__type, $x, $note_e = false)
             }
 
             //MODIFY NOTE
-            $ui .= '<span title="'.$e___11035[13574]['m__title'].'"><a href="javascript:load_i_note_editor(' . $x['x__id'] . ');">'.$e___11035[13574]['m__icon'].'</a></span>';
+            $ui .= '<span title="'.$e___11035[13574]['m__title'].'"><a href="javascript:void(0);" onclick="load_i_note_editor(' . $x['x__id'] . ');">'.$e___11035[13574]['m__icon'].'</a></span>';
 
             //REMOVE NOTE
             $ui .= '<span title="'.$e___11035[13579]['m__title'].'"><a href="javascript:void(0);" onclick="remove_13579(' . $x['x__id'] . ', '.$x['x__type'].')">'.$e___11035[13579]['m__icon'].'</a></span>';
@@ -278,7 +278,7 @@ function view_i_note($x__type, $x, $note_e = false)
 
 
         //Text editing:
-        $ui .= '<textarea onkeyup="count_13574(' . $x['x__id'] . ')" name="x__message" id="message_body_' . $x['x__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($x['x__message']).'">' . $x['x__message'] . '</textarea>';
+        $ui .= '<textarea onkeyup="count_13574(' . $x['x__id'] . ')" name="x__message'.$x['x__id'].'" id="message_body_' . $x['x__id'] . '" class="edit-on hidden msg note-textarea edit-note algolia_search" x__id="'.$x['x__id'].'" placeholder="'.stripslashes($x['x__message']).'">' . $x['x__message'] . '</textarea>';
 
 
         //Update result & Show potential errors
@@ -290,13 +290,13 @@ function view_i_note($x__type, $x, $note_e = false)
 
 
         //SAVE
-        $ui .= '<td class="table-btn" style="width: 120px;"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></td>';
+        $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');" data-toggle="tooltip" title="'.$e___11035[14039]['m__title'].'" data-placement="top">'.$e___11035[14039]['m__icon'].'</a></td>';
 
         //EMOJI
-        $ui .= '<td class="table-btn"><label class="btn btn-grey" id="emojiPicker'.$x['x__id'].'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
+        $ui .= '<td class="table-btn"><label class="btn btn-grey" id="emoji_pick_id'.$x['x__id'].'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
 
         //CANCEL
-        $ui .= '<td class="table-btn"><a class="btn btn-grey" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></td>';
+        $ui .= '<td class="table-btn"><a class="btn btn-grey" data-toggle="tooltip" title="'.$e___11035[13502]['m__title'].' '.$e___11035[13502]['m__message'].'" data-placement="top" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__icon'].'</td>';
 
         //TEXT COUNTER
         $ui .= '<td style="padding:0;"><span id="NoteCounter' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . view_memory(6404,4485) . '</span></td>';
@@ -1269,7 +1269,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
         $ui .= '<td class="table-btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
 
         //EMOJI
-        $ui .= '<td class="table-btn"><label class="btn btn-grey" id="emojiPick'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
+        $ui .= '<td class="table-btn"><label class="btn btn-grey" id="emoji_pick_type'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
 
         //UPLOAD
         if($handles_uploads){

@@ -50,9 +50,19 @@ $current_mench = current_mench();
         $(".new-note").each(function () {
             var note_type_id = $(this).attr('note_type_id');
             const picker = new EmojiButton();
-            const trigger = document.querySelector('#emojiPick'+note_type_id);
+            const trigger = document.querySelector('#emoji_pick_type'+note_type_id);
             picker.on('emoji', selection => {
                 document.querySelector('#x__message'+note_type_id).value += selection.emoji;
+            });
+            trigger.addEventListener('click', () => picker.togglePicker(trigger));
+        });
+
+        $(".edit-note").each(function () {
+            var x__id = $(this).attr('x__id');
+            const picker = new EmojiButton();
+            const trigger = document.querySelector('#emoji_pick_id'+x__id);
+            picker.on('emoji', selection => {
+                document.querySelector('#message_body_'+x__id).value += selection.emoji;
             });
             trigger.addEventListener('click', () => picker.togglePicker(trigger));
         });
