@@ -881,7 +881,7 @@ textarea.note-textarea{
 
 .note-textarea.edit-on {
     margin:0 0 0 41px;
-    padding: 5px;
+    padding:5px 0;
     line-height: 144% !important;
 }
 
