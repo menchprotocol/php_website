@@ -57,16 +57,15 @@ $current_mench = current_mench();
             trigger.addEventListener('click', () => picker.togglePicker(trigger));
         });
 
-        $(".load_i_note_editor").click(function () {
-            var x__id = $(this).attr('x__id');
-            alert(x__id);
+        function enable_emoji_edit(x__id){
             const picker = new EmojiButton();
             const trigger = document.querySelector('#emoji_pick_id'+x__id);
             picker.on('emoji', selection => {
                 document.querySelector('#message_body_'+x__id).value += selection.emoji;
             });
             trigger.addEventListener('click', () => picker.togglePicker(trigger));
-        });
+        }
+
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.min.js"></script>

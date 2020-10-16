@@ -962,6 +962,9 @@ function load_i_note_editor(x__id) {
     //Initiate search:
     i_note_e_search(textinput);
 
+    //Emoji:
+    enable_emoji_edit(x__id);
+
     //Try to initiate the editor, which only applies to text messages:
     count_13574(x__id);
 
