@@ -50,10 +50,10 @@ $current_mench = current_mench();
 
         window.addEventListener('DOMContentLoaded', () => {
             const picker = new EmojiButton();
-            const button = document.querySelector('.emoji-picker');
+            const button = document.querySelector('#emojiPick4231');
 
             picker.on('emoji', emoji => {
-                document.querySelector('input').value += emoji;
+                document.querySelector('#x__message4231').value += emoji;
             });
 
             button.addEventListener('click', () => {
