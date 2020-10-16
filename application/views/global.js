@@ -186,6 +186,7 @@ $(document).ready(function () {
 
 
     var note_type_id = 4231;
+    const picker = new EmojiButton();
     const trigger = document.querySelector('#emojiPick'+note_type_id);
 
     picker.on('emoji', selection => {
