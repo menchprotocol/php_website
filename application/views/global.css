@@ -885,6 +885,11 @@ textarea.note-textarea{
     line-height: 144% !important;
 }
 
+.table-btn{
+    width:66px;
+    padding:0;
+}
+
 .text_message{
     margin:5px 0;
 }
