@@ -57,7 +57,7 @@ $current_mench = current_mench();
             trigger.addEventListener('click', () => picker.togglePicker(trigger));
         });
 
-        $(".edit-note").each(function () {
+        $(".load_i_note_editor").click(function () {
             var x__id = $(this).attr('x__id');
             const picker = new EmojiButton();
             const trigger = document.querySelector('#emoji_pick_id'+x__id);
