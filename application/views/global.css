@@ -886,8 +886,8 @@ textarea.note-textarea{
 }
 
 .table-btn{
-    width:66px;
-    padding:0;
+    width:65px;
+    padding:0 !important;
 }
 
 .text_message{
@@ -2003,13 +2003,6 @@ i, .btn .show-max {
 
 .form-group, .form-control:focus {
     background-color: transparent;
-}
-
-.btn-label{
-    width: 44px;
-    margin-left: 10px !important;
-    padding-right: 0 !important;
-    padding-left: 0 !important;
 }
 
 .custom_ui_13884_13886 .white-border,

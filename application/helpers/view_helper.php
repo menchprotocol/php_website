@@ -281,22 +281,28 @@ function view_i_note($x__type, $x, $note_e = false)
         $ui .= '<textarea onkeyup="count_13574(' . $x['x__id'] . ')" name="x__message" id="message_body_' . $x['x__id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="'.stripslashes($x['x__message']).'">' . $x['x__message'] . '</textarea>';
 
 
+        //Update result & Show potential errors
+        $ui .= '<div class="edit-updates hideIfEmpty"></div>';
+
+
         //Editing menu:
-        $ui .= '<ul class="msg-nav space-left">';
+        $ui .= '<table class="table table-condensed edit-on hidden" style="margin-top: 10px;"><tr>';
 
-            //SAVE
-            $ui .= '<li class="edit-on hidden"><a class="btn btn-'.$color_code.' white-third" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
-            //CANCEL
-            $ui .= '<li class="edit-on hidden"><a class="btn btn-'.$color_code.' white-third" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></li>';
+        //SAVE
+        $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></td>';
 
-            //TEXT COUNTER
-            $ui .= '<li class="edit-on hidden"><span id="NoteCounter' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . view_memory(6404,4485) . '</span></li>';
+        //EMOJI
+        $ui .= '<td class="table-btn"><label class="btn btn-grey" id="emojiPicker'.$x['x__id'].'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
 
-            //Update result:
-            $ui .= '<li class="edit-updates hideIfEmpty"></li>'; //Show potential errors
+        //CANCEL
+        $ui .= '<td class="table-btn"><a class="btn btn-grey" href="javascript:cancel_13574(' . $x['x__id'] . ');"><i class="fas fa-times"></i></a></td>';
 
-        $ui .= '</ul>';
+        //TEXT COUNTER
+        $ui .= '<td style="padding:0;"><span id="NoteCounter' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . view_memory(6404,4485) . '</span></td>';
+
+        $ui .= '</tr></table>';
+
     }
 
     $ui .= '</div>';
@@ -1263,12 +1269,12 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
         $ui .= '<td class="table-btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
 
         //EMOJI
-        $ui .= '<td class="table-btn"><label class="btn btn-grey btn-label" id="emojiPick'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
+        $ui .= '<td class="table-btn"><label class="btn btn-grey" id="emojiPick'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
 
         //UPLOAD
         if($handles_uploads){
             $ui .= '<td class="table-btn">';
-            $ui .= '<label class="btn btn-grey btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+            $ui .= '<label class="btn btn-grey file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
             $ui .= '</td>';
         }
