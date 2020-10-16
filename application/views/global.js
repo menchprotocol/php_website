@@ -179,6 +179,22 @@ function lazy_load(){
     });
 }
 
+
+window.addEventListener('DOMContentLoaded', () => {
+    const picker = new EmojiButton();
+    const button = document.querySelector('.emoji-picker');
+
+    picker.on('emoji', emoji => {
+        document.querySelector('input').value += emoji;
+    });
+
+    button.addEventListener('click', () => {
+        picker.pickerVisible ? picker.hidePicker() : picker.showPicker(button);
+    });
+});
+
+
+
 var algolia_index = false;
 $(document).ready(function () {
 
@@ -195,17 +211,6 @@ $(document).ready(function () {
         $('#x__message'+$(this).attr('x__type')).emojiPicker('toggle');
     });
         */
-
-    const picker = new EmojiButton();
-    const trigger = document.querySelector('.emoji-picker');
-
-    picker.on('emoji', selection => {
-        alert('seeee');
-        trigger.innerHTML = selection.emoji;
-    });
-
-    trigger.addEventListener('click', () => picker.togglePicker(trigger));
-
 
 
     //For the S shortcut to load search:
