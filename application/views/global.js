@@ -184,22 +184,6 @@ function lazy_load(){
 var algolia_index = false;
 $(document).ready(function () {
 
-        /*
-    $('.new-note').emojiPicker({
-        width: '300px',
-        height: '200px',
-        button: false
-    });
-
-
-    //Load Emoji
-    $('.emoji-picker').click(function(e) {
-        $('#x__message'+$(this).attr('x__type')).emojiPicker('toggle');
-    });
-        */
-
-
-
 
     //For the S shortcut to load search:
     $("#mench_search").focus(function() {
