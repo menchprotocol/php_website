@@ -46,10 +46,10 @@ $current_mench = current_mench();
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@15.1.1/dist/lazyload.min.js"></script>
     <script type="module">
         import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/index.min.js';
-        const picker = new EmojiButton();
 
         $(".new-note").each(function () {
-            var note_type_id = parseInt($(this).attr('note_type_id'));
+            var note_type_id = $(this).attr('note_type_id');
+            const picker = new EmojiButton();
             const trigger = document.querySelector('#emojiPick'+note_type_id);
             picker.on('emoji', selection => {
                 document.querySelector('#x__message'+note_type_id).value += selection.emoji;
