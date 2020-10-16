@@ -1282,7 +1282,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
 
         //File counter:
-        $ui .= '<td style="padding:10px 0 0 0;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden some-text"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).'</span></td>';
+        $ui .= '<td style="padding:10px 0 0 0;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden some-text"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).' CHARACTERS</span></td>';
 
 
         $ui .= '</tr></table>';
