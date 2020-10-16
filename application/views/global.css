@@ -880,7 +880,7 @@ textarea.note-textarea{
 }
 
 .note-textarea.edit-on {
-    margin:0 41px;
+    margin:0 0 0 41px;
     padding: 5px;
     line-height: 144% !important;
 }
@@ -1574,12 +1574,12 @@ i, .btn .show-max {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.texttype__lg, .input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list, .add_notes_form {
+.texttype__lg, .input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list, .add_notes_form, .note-textarea.edit-on {
     width: -webkit-calc(100% - 82px);
     width:    -moz-calc(100% - 82px);
     width:         calc(100% - 82px);
 }
-.i-info, .note-textarea.edit-on, .cover-title, .width-icon-block {
+.i-info, .cover-title, .width-icon-block {
     width: -webkit-calc(100% - 41px) !important;
     width:    -moz-calc(100% - 41px) !important;
     width:         calc(100% - 41px) !important;
