@@ -1674,7 +1674,7 @@ class E extends CI_Controller
 
 
         //Send Welcome Email:
-        email_template(14044, $added_e, $_POST['input_email']);
+        email_template(14044, $added_e['new_e'], $_POST['input_email']);
 
 
         //Assign session & log login transaction:
