@@ -1276,7 +1276,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
         //EMOJI PICKER
         $ui .= '<td style="width:55px; padding:0;">';
-        $ui .= '<label class="pull-right btn btn-grey btn-label emoji-picker" x__type="'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[14308]['m__title'].' '.$e___11035[14308]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[14308]['m__icon'].'</span></label>';
+        $ui .= '<label class="pull-right btn btn-grey btn-label emoji-picker" x__type="'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label>';
         $ui .= '</td>';
 
 
