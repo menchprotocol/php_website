@@ -967,6 +967,7 @@ function load_i_note_editor(x__id) {
     textinput.focus().val('').val(data);
     autosize(textinput); //Adjust height
 
+
     //Initiate search:
     i_note_e_search(textinput);
 
