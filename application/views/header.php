@@ -43,8 +43,10 @@ $current_mench = current_mench();
     <script src="https://cdn.jsdelivr.net/npm/typeit@6.1.1/dist/typeit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@15.1.1/dist/lazyload.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.2.0/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.2.0/dist/index.min.js" type="module"></script>
     <script>
+        import { EmojiButton } from '@joeattardi/emoji-button';
+
         window.addEventListener('DOMContentLoaded', () => {
             const picker = new EmojiButton();
             const button = document.querySelector('.emoji-picker');
