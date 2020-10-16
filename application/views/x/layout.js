@@ -2,20 +2,6 @@
 
 $(document).ready(function () {
 
-    $(".new-13871").click(function(event) {
-        if($('.idea-comments').hasClass('hidden')){
-            //Show
-            $('.idea-comments').removeClass('hidden');
-            $([document.documentElement, document.body]).animate({
-                scrollTop: $(".idea-comments").offset().top
-            }, 377);
-            $('.input_note_12419').focus();
-        } else {
-            //Hide
-            $('.idea-comments').addClass('hidden');
-        }
-    });
-
     i_note_activate();
 
     autosize($('#x_reply'));

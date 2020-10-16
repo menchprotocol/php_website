@@ -709,18 +709,17 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
         $focus_tab .= '</div>';
 
-    } elseif($x__type==4601){
+    } elseif( in_array($x__type, $this->config->item('n___4485')) ){
 
-        //KEYWORDS
-        $keywords = $this->X_model->fetch(array(
+        //NOTES
+        $notes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => $x__type,
             'x__right' => $i_focus['i__id'],
-        ), array(), 0);
-        $counter = count($keywords);
-        foreach($keywords as $count => $keyword) {
-            $focus_tab .= '<div class="space-content top-margin">'.$keyword['x__message'].'</div>';
-        }
+        ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
+        $counter = count($notes);
+        $is_editable = in_array($x__type, $this->config->item('n___14043'));
+        $focus_tab .= view_i_note_list($x__type, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true);
 
     } elseif($x__type==13023){
 
@@ -758,9 +757,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = ( in_array($x__type, $this->config->item('n___13300')) );
     $tab_pill_count++;
 
-    if(!in_array($x__type, $this->config->item('n___14007'))){
-        $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.$pre_fix.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
-    }
+
+    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.$pre_fix.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
@@ -780,20 +778,6 @@ if($tab_pill_count > 1 && $show_nav){
 
 //Show All Tab Content:
 echo $tab_content;
-
-
-if($in_my_x){
-    //COMMENTS
-    echo '<div class="idea-comments hidden margin-top-down">';
-    echo view_i_note_list(12419, $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 12419, //COMMENTS
-        'x__right' => $i_focus['i__id'],
-    ), array('x__source'), 0, 0, array('x__sort' => 'ASC')), ( $user_e['e__id'] > 0 ), true);
-    echo '</div>';
-}
-
-
 
 echo '</div>'; //CLOSE CONTAINER
 
@@ -843,11 +827,6 @@ if($in_my_x){
 
             //NEXT
             $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_12211(\''.($i_completed ? '/x/i_next/' : '/x/x_next/').'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
-
-        } elseif($e__id==13871){
-
-            //ADD COMMENT
-            $control_btn = '<a class="controller-nav new-13871 round-btn" href="javascript:void(0);">'.$m['m__icon'].'</a><span class="nav-title new-13871">'.$m['m__title'].'</span>';
 
         }
 
