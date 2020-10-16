@@ -299,7 +299,7 @@ function view_i_note($x__type, $x, $note_e = false)
         $ui .= '<td class="table-btn"><a class="btn btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__icon'].'</a></td>';
 
         //TEXT COUNTER
-        $ui .= '<td style="padding:10px;"><span id="NoteCounter' . $x['x__id'] . '" class="some-text"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . view_memory(6404,4485) . ' CHARACTERS</span></td>';
+        $ui .= '<td style="padding:10px 0 0 0;"><span id="NoteCounter' . $x['x__id'] . '" class="some-text"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . view_memory(6404,4485) . ' CHARACTERS</span></td>';
 
         $ui .= '</tr></table>';
 
