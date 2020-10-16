@@ -67,7 +67,7 @@ $i_completion_rate = array();
 $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
 $previous_level_id = 0; //The ID of the Idea one level up, if any
 $superpower_10939 = superpower_active(10939, true);
-$show_nav = $superpower_10939 || !$in_my_x || $in_my_discoveries || 1;
+$show_nav = $superpower_10939 || !$in_my_x || $in_my_discoveries || 1; //Showing at all times
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 

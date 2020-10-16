@@ -84,6 +84,29 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 
 
 
+if(!$e_of_i){
+    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> to contribute.</span></div>';
+}
+
+
+//IDEA TITLE
+echo '<div style="padding:8px 0; margin-top: 13px;">';
+echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true); //, view_i_icon($i_focus)
+echo '</div>';
+
+
+//IDEA MESSAGES:
+echo view_i_note_list(4231, $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type' => 4231,
+    'x__right' => $i_focus['i__id'],
+), array('x__source'), 0, 0, array('x__sort' => 'ASC')), $e_of_i, false, false);
+
+
+
+
+
+
 
 
 //IDEA CONTROLLER
@@ -104,25 +127,6 @@ echo '<div class="doclear">&nbsp;</div>';
 echo '</div>';
 
 
-
-
-if(!$e_of_i){
-    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> to contribute.</span></div>';
-}
-
-
-//IDEA TITLE
-echo '<div style="padding:8px 0; margin-top: 13px;">';
-echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true); //, view_i_icon($i_focus)
-echo '</div>';
-
-
-//IDEA MESSAGES:
-echo view_i_note_list(4231, $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type' => 4231,
-    'x__right' => $i_focus['i__id'],
-), array('x__source'), 0, 0, array('x__sort' => 'ASC')), $e_of_i, false, false);
 
 
 
