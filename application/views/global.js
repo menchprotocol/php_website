@@ -182,6 +182,12 @@ function lazy_load(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    //Load Emoji
+    $('.emoji-picker').click(function(e) {
+        alert($(this).attr('x__type')+'now');
+        $('#x__message'+$(this).attr('x__type')).emojiPicker('toggle');
+    });
+
     //For the S shortcut to load search:
     $("#mench_search").focus(function() {
         if(!search_on){
@@ -737,14 +743,6 @@ function x_set_text(this_handler){
 * IDEA NOTES
 *
 * */
-$(document).ready(function(e) {
-
-    $('.emoji-picker').click(function(e) {
-        e.preventDefault();
-        $('#x__message'+$(this).attr('x__type')).emojiPicker('toggle');
-    });
-
-});
 function i_note_activate(){
     //Loop through all new idea inboxes:
     $(".new-note").each(function () {
