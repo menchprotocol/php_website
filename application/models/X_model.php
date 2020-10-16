@@ -998,7 +998,7 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $is_discovery_mode = is_numeric($this->uri->segment(1)) || !strlen($this->uri->segment(1));
+            $is_discovery_mode = !superpower_active(10939, true);
             $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 && $has_text );
             if(!$is_single_link){
                 //For single link it would be linked directly
@@ -1008,7 +1008,7 @@ class X_model extends CI_Model
             $tooltip_class = ( $tooltip_info ? ' class="inline-block underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : ' class="inline-block"' );
 
             //USER REFERENCE
-            if($is_discovery_mode || $is_current_e || $simple_version || !$has_text){ //( $is_discovery_mode && !superpower_active(10939, true)) ||
+            if($is_discovery_mode || $is_current_e || $simple_version){ //( $is_discovery_mode && !superpower_active(10939, true)) ||
 
                 //NO LINK so we can maintain focus...
                 if((!$has_text && $is_current_e) || (!$has_text && $is_discovery_mode && $e_count>0 && $e_media_count==$e_count /* All media */)){
