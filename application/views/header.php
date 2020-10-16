@@ -44,6 +44,20 @@ $current_mench = current_mench();
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@15.1.1/dist/lazyload.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.2.0/dist/index.min.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const picker = new EmojiButton();
+            const button = document.querySelector('.emoji-picker');
+
+            picker.on('emoji', emoji => {
+                document.querySelector('input').value += emoji;
+            });
+
+            button.addEventListener('click', () => {
+                picker.pickerVisible ? picker.hidePicker() : picker.showPicker(button);
+            });
+        });
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.37.0/autocomplete.jquery.min.js"></script>

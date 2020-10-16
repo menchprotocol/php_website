@@ -180,20 +180,6 @@ function lazy_load(){
 }
 
 
-window.addEventListener('DOMContentLoaded', () => {
-    const picker = new EmojiButton();
-    const button = document.querySelector('.emoji-picker');
-
-    picker.on('emoji', emoji => {
-        document.querySelector('input').value += emoji;
-    });
-
-    button.addEventListener('click', () => {
-        picker.pickerVisible ? picker.hidePicker() : picker.showPicker(button);
-    });
-});
-
-
 
 var algolia_index = false;
 $(document).ready(function () {
