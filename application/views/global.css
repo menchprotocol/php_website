@@ -2067,7 +2067,9 @@ i, .btn .show-max {
 
 
 .custom_ui_13884_13886 .new-note,
-.custom_ui_13884_ .new-note{
+.custom_ui_13884_ .new-note,
+.custom_ui_13884_13886 .some-text,
+.custom_ui_13884_ .some-text{
     background-color:transparent !important;
     color: #FFFFFF !important;
 }
@@ -2111,6 +2113,9 @@ i, .btn .show-max {
     border-color: #222222 !important;
 }
 
+
+
+
 /* WHITE */
 .custom_ui_13884_13885.mench-idea .list-group-item:nth-child(odd),
 .custom_ui_13884_13885,
@@ -2139,6 +2144,11 @@ i, .btn .show-max {
 }
 .custom_ui_13884_13885 .form-control{
     background-color:transparent !important;
+}
+
+.custom_ui_13884_13885 .some-text{
+    background-color:transparent !important;
+    color: #222222;
 }
 .custom_ui_13884_13885 .new-note{
     color: #222222 !important;
