@@ -46,19 +46,6 @@ $current_mench = current_mench();
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@15.1.1/dist/lazyload.min.js"></script>
     <script type="module">
         import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/index.min.js';
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const picker = new EmojiButton();
-            const button = document.querySelector('#emojiPick4231');
-
-            picker.on('emoji', emoji => {
-                document.querySelector('#x__message4231').value += emoji;
-            });
-
-            button.addEventListener('click', () => {
-                picker.pickerVisible ? picker.hidePicker() : picker.showPicker(button);
-            });
-        });
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.min.js"></script>
