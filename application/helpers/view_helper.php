@@ -290,13 +290,13 @@ function view_i_note($x__type, $x, $note_e = false)
 
 
         //SAVE
-        $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');" data-toggle="tooltip" title="'.$e___11035[14039]['m__title'].'" data-placement="top">'.$e___11035[14039]['m__icon'].'</a></td>';
+        $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__icon'].'</a></td>';
 
         //EMOJI
-        $ui .= '<td class="table-btn"><label class="btn btn-grey" id="emoji_pick_id'.$x['x__id'].'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
+        $ui .= '<td class="table-btn"><label class="btn btn-grey" id="emoji_pick_id'.$x['x__id'].'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
 
         //CANCEL
-        $ui .= '<td class="table-btn"><a class="btn btn-grey" data-toggle="tooltip" title="'.$e___11035[13502]['m__title'].' '.$e___11035[13502]['m__message'].'" data-placement="top" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__icon'].'</td>';
+        $ui .= '<td class="table-btn"><a class="btn btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__icon'].'</a></td>';
 
         //TEXT COUNTER
         $ui .= '<td style="padding:0;"><span id="NoteCounter' . $x['x__id'] . '"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . view_memory(6404,4485) . '</span></td>';
