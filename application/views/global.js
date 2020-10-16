@@ -184,7 +184,7 @@ $(document).ready(function () {
 
     //Load Emoji
     $('.emoji-picker').click(function(e) {
-        //$('#x__message'+$(this).attr('x__type')).emojiPicker('toggle');
+        $('#x__message'+$(this).attr('x__type')).emojiPicker('toggle');
     });
 
     //For the S shortcut to load search:
@@ -781,12 +781,6 @@ function i_note_activate(){
         //Watchout for file uplods:
         $('.box' + note_type_id).find('input[type="file"]').change(function () {
             i_note_file(droppedFiles, 'file', note_type_id);
-        });
-
-        $(this).emojiPicker({
-            width: '300px',
-            height: '200px',
-            button: false
         });
 
 
