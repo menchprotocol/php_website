@@ -269,7 +269,7 @@ function view_i_note($x__type, $x, $note_e = false)
             }
 
             //MODIFY NOTE
-            $ui .= '<span title="'.$e___11035[13574]['m__title'].'"><a href="javascript:void(0);" onclick="load_i_note_editor(' . $x['x__id'] . ');">'.$e___11035[13574]['m__icon'].'</a></span>';
+            $ui .= '<span title="'.$e___11035[13574]['m__title'].'"><a href="javascript:void(0);" class="load_i_note_editor" x__id="' . $x['x__id'] . '" onclick="load_i_note_editor(' . $x['x__id'] . ');">'.$e___11035[13574]['m__icon'].'</a></span>';
 
             //REMOVE NOTE
             $ui .= '<span title="'.$e___11035[13579]['m__title'].'"><a href="javascript:void(0);" onclick="remove_13579(' . $x['x__id'] . ', '.$x['x__type'].')">'.$e___11035[13579]['m__icon'].'</a></span>';
@@ -293,7 +293,7 @@ function view_i_note($x__type, $x, $note_e = false)
         $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__icon'].'</a></td>';
 
         //EMOJI
-        $ui .= '<td class="table-btn"><span class="btn btn-grey" id="emoji_pick_id'.$x['x__id'].'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+        $ui .= '<td class="table-btn"><span class="btn btn-grey emoji_edit hidden" id="emoji_pick_id'.$x['x__id'].'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
 
         //CANCEL
         $ui .= '<td class="table-btn"><a class="btn btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__icon'].'</a></td>';

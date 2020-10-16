@@ -962,16 +962,6 @@ function load_i_note_editor(x__id) {
     //Initiate search:
     i_note_e_search(textinput);
 
-    //Emoji:
-    const picker = new EmojiButton();
-    const trigger = document.querySelector('#emoji_pick_id'+x__id);
-    picker.on('emoji', selection => {
-        document.querySelector('#message_body_'+x__id).value += selection.emoji;
-    });
-    trigger.addEventListener('click', () => picker.togglePicker(trigger));
-
-
-
     //Try to initiate the editor, which only applies to text messages:
     count_13574(x__id);
 
