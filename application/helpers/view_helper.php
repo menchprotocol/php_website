@@ -1692,6 +1692,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
     $CI =& get_instance();
     $e___12112 = $CI->config->item('e___12112');
     $current_value = htmlentities($current_value);
+    $name = 'input'.substr(md5($cache_e__id.$current_value.$s__id.$e_of_i.$tabindex), 0, 8);
 
     //Define element attributes:
     $attributes = ( $e_of_i ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$s__id.'" class="form-control dotransparent montserrat inline-block x_set_text text__'.$cache_e__id.'_'.$s__id.($extra_large?' texttype__lg ':' texttype__sm ').' text_e_'.$cache_e__id.' '.$append_css.'" cache_e__id="'.$cache_e__id.'" s__id="'.$s__id.'" ';
@@ -1699,13 +1700,13 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
     //Also Append Counter to the end?
     if($extra_large){
 
-        $focus_element = '<textarea onkeyup="view_input_text_count('.$cache_e__id.','.$s__id.')" placeholder="'.$e___12112[$cache_e__id]['m__title'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        $focus_element = '<textarea name="'.$name.'" onkeyup="view_input_text_count('.$cache_e__id.','.$s__id.')" placeholder="'.$e___12112[$cache_e__id]['m__title'].'" '.$attributes.'>'.$current_value.'</textarea>';
         $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$s__id.' hidden grey montserrat doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$s__id.'">0</span>/'.view_memory(6404,$cache_e__id).' CHARACTERS</div>';
         $icon = '<span class="icon-block title-icon">'.$e__icon.'</span>';
 
     } else {
 
-        $focus_element = '<input type="text" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
+        $focus_element = '<input type="text" name="'.$name.'" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
         $character_counter = ''; //None
         $icon = $e__icon;
 
