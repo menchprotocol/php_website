@@ -46,7 +46,6 @@ $current_mench = current_mench();
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@15.1.1/dist/lazyload.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/index.min.js" type="module" ></script>
     <script>
-        import { EmojiButton } from '@joeattardi/emoji-button';
 
         window.addEventListener('DOMContentLoaded', () => {
             const picker = new EmojiButton();
