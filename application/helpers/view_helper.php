@@ -286,11 +286,11 @@ function view_i_note($x__type, $x, $note_e = false)
 
 
         //Editing menu:
-        $ui .= '<table class="table table-condensed edit-on hidden" style="margin-top: 10px;"><tr>';
+        $ui .= '<table class="table table-condensed edit-on hidden" style="margin:10px 41px 0;"><tr>';
 
 
         //SAVE
-        $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></td>';
+        $ui .= '<td class="table-btn" style="width: 120px;"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');"><i class="fas fa-check"></i> Save</a></td>';
 
         //EMOJI
         $ui .= '<td class="table-btn"><label class="btn btn-grey" id="emojiPicker'.$x['x__id'].'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
