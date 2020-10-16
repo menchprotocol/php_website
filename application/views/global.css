@@ -205,7 +205,7 @@ li a {
 
 a.btn, .btn.dropdown-toggle, label.btn {
     padding:15px;
-    min-width: 60px;
+    min-width: 80px;
 }
 
 .left_nav a.btn, .left_nav .btn.dropdown-toggle, .left_nav label.btn{
@@ -886,7 +886,7 @@ textarea.note-textarea{
 }
 
 .table-btn{
-    width:65px;
+    width:85px;
     padding:0 !important;
 }
 
