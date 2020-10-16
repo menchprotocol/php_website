@@ -43,6 +43,7 @@ $current_mench = current_mench();
     <script src="https://cdn.jsdelivr.net/npm/typeit@6.1.1/dist/typeit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@15.1.1/dist/lazyload.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.2.0/dist/index.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.37.0/autocomplete.jquery.min.js"></script>
@@ -50,13 +51,6 @@ $current_mench = current_mench();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js" type="text/javascript"></script>
 
     <script src="/application/views/global.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
-
-    <link rel="stylesheet" type="text/css" href="http://wedgies.github.io/jquery-emoji-picker/css/jquery.emojipicker.css">
-    <script type="text/javascript" src="http://wedgies.github.io/jquery-emoji-picker/js/jquery.emojipicker.js"></script>
-
-    <!-- Emoji Data -->
-    <link rel="stylesheet" type="text/css" href="http://wedgies.github.io/jquery-emoji-picker/css/jquery.emojipicker.a.css">
-    <script type="text/javascript" src="http://wedgies.github.io/jquery-emoji-picker/js/jquery.emojipicker.a.js"></script>
 
 
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=custom-share-buttons&cms=website' async='async'></script>
