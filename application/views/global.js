@@ -185,17 +185,6 @@ var algolia_index = false;
 $(document).ready(function () {
 
 
-    var note_type_id = 4231;
-    const picker = new EmojiButton();
-    const trigger = document.querySelector('#emojiPick'+note_type_id);
-
-    picker.on('emoji', selection => {
-        document.querySelector('#x__message'+note_type_id).value += selection.emoji;
-    });
-
-    trigger.addEventListener('click', () => picker.togglePicker(trigger));
-
-
     //For the S shortcut to load search:
     $("#mench_search").focus(function() {
         if(!search_on){

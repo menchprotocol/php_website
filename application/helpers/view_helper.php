@@ -1258,26 +1258,26 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
         $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
 
-        //Add button:
+
+        //ADD
         $ui .= '<td style="width:55px; padding:0;"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
 
 
-        //File counter:
-        $ui .= '<td style="padding:0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).'</span></td>';
-
-
-        //Upload File:
+        //UPLOAD
         if($handles_uploads){
             $ui .= '<td style="width:55px; padding:0;">';
-            $ui .= '<label class="pull-right btn btn-grey btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+            $ui .= '<label class="btn btn-grey btn-label file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
             $ui .= '</td>';
         }
 
-        //EMOJI PICKER
-        $ui .= '<td style="width:55px; padding:0;">';
-        $ui .= '<label class="pull-right btn btn-grey btn-label" id="emojiPick'.$x__type.'" x__type="'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label>';
-        $ui .= '</td>';
+        //EMOJI
+        $ui .= '<td style="width:55px; padding:0;"><label class="btn btn-grey btn-label" id="emojiPick'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[14038]['m__title'].' '.$e___11035[14038]['m__message'].'" data-placement="left"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></label></td>';
+
+
+
+        //File counter:
+        $ui .= '<td style="padding:0; font-size: 0.85em;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).'</span></td>';
 
 
         $ui .= '</tr></table>';
