@@ -1066,9 +1066,7 @@ function i_note_end_adding(result, note_type_id) {
         lazy_load();
 
         //Hide any errors:
-        setTimeout(function () {
-            $(".note_error_"+note_type_id).fadeOut();
-        }, 4181);
+        $(".note_error_"+note_type_id).fadeOut();
 
     } else {
 
